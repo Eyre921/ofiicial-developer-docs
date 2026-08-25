@@ -41,7 +41,7 @@ Vision language models (VLMs) can also use [function calling](/docs/inference/fu
   ]
 
   response = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="moonshotai/Kimi-K3",
       reasoning={"enabled": False},
       messages=[
           {
@@ -102,7 +102,7 @@ Vision language models (VLMs) can also use [function calling](/docs/inference/fu
 
   (async () => {
     const response = await client.chat.completions.create({
-      model: "moonshotai/Kimi-K2.6",
+      model: "moonshotai/Kimi-K3",
       reasoning: { enabled: false },
       messages: [
         {
@@ -135,7 +135,7 @@ Vision language models (VLMs) can also use [function calling](/docs/inference/fu
     -H "Authorization: Bearer $TOGETHER_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
-    "model": "moonshotai/Kimi-K2.6",
+    "model": "moonshotai/Kimi-K3",
     "reasoning": {"enabled": false},
     "messages": [
       {

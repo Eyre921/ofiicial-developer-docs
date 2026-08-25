@@ -23,9 +23,9 @@ Building a personal website normally requires a lot of manual data entry, plus s
 Self.so uses two models, each chosen to perform a specific job:
 
 * [**Llama Guard 4 12B**](https://api.together.ai/models/meta-llama/Llama-Guard-4-12B): Content safety classification.
-* [**Kimi K2.6**](https://api.together.ai/models/moonshotai/Kimi-K2.6): Structured data extraction.
+* [**Kimi K3**](https://api.together.ai/models/moonshotai/Kimi-K3): Structured data extraction.
 
-Llama Guard is purpose-built for safety classification, and Kimi K2.6 follows schema instructions reliably for structured output generation. See [recommended models](/docs/inference/recommended-models) for our current picks.
+Llama Guard is purpose-built for safety classification, and Kimi K3 follows schema instructions reliably for structured output generation. See [recommended models](/docs/inference/recommended-models) for our current picks.
 
 ## Data flow
 
@@ -112,7 +112,7 @@ export const isFileContentBad = async (fileContent: string) => {
 
 ## Generate structured data
 
-The core of Self.so is turning unstructured resume text into structured JSON. The `generateResumeObject` function in [`lib/server/ai/generateResumeObject.ts`](https://github.com/nutlope/self.so/blob/main/lib/server/ai/generateResumeObject.ts) uses Kimi K2.6 with [structured outputs](/docs/inference/chat/structured-outputs) so the response always matches the schema the site renderer expects:
+The core of Self.so is turning unstructured resume text into structured JSON. The `generateResumeObject` function in [`lib/server/ai/generateResumeObject.ts`](https://github.com/nutlope/self.so/blob/main/lib/server/ai/generateResumeObject.ts) uses Kimi K3 with [structured outputs](/docs/inference/chat/structured-outputs) so the response always matches the schema the site renderer expects:
 
 ```typescript theme={null}
 import { generateText, Output } from "ai";
@@ -126,7 +126,7 @@ const togetherai = createTogetherAI({
 
 export const generateResumeObject = async (resumeText: string) => {
   const { output } = await generateText({
-    model: togetherai("moonshotai/Kimi-K2.6"),
+    model: togetherai("moonshotai/Kimi-K3"),
     maxRetries: 1,
     timeout: 15_000,
     maxOutputTokens: 4096,
@@ -152,7 +152,7 @@ export const generateResumeObject = async (resumeText: string) => {
 
 Two details in this call are worth calling out:
 
-* Kimi K2.6 is a hybrid reasoning model with reasoning on by default. Passing `reasoning: { enabled: false }` through `providerOptions` keeps extraction fast, because the schema does the work that reasoning tokens would otherwise pay for.
+* Kimi K3 is a hybrid reasoning model with reasoning on by default. Passing `reasoning: { enabled: false }` through `providerOptions` keeps extraction fast, because the schema does the work that reasoning tokens would otherwise pay for.
 * `Output.object` accepts the Zod schema directly and validates the result against it.
 
 ### Define the schema with Zod
@@ -212,7 +212,7 @@ The full server-side pipeline runs when a user uploads a resume:
 1. **Upload:** The PDF is uploaded to S3.
 2. **Extraction:** `pdfjs-dist` converts the PDF to plain text.
 3. **Safety check:** Llama Guard validates the content.
-4. **Generation:** Kimi K2.6 extracts the text into the `ResumeDataSchema` shape.
+4. **Generation:** Kimi K3 extracts the text into the `ResumeDataSchema` shape.
 5. **Storage:** The structured data is stored in Upstash Redis.
 6. **Rendering:** The site renders from the structured data.
 

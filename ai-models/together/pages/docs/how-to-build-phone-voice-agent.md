@@ -76,7 +76,7 @@ TOGETHER_API_KEY=your_together_api_key
 PORT=3001
 PERSONA=kira
 STT_MODEL=openai/whisper-large-v3
-LLM_MODEL=Qwen/Qwen2.5-7B-Instruct-Turbo
+LLM_MODEL=Qwen/Qwen3.5-9B
 TTS_MODEL=hexgrad/Kokoro-82M
 TTS_VOICE=af_heart
 ```
@@ -1548,7 +1548,7 @@ Create `media-stream.ts`. This is the per-call state machine. It handles:
         persona: process.env.PERSONA || "kira",
         sttModel: process.env.STT_MODEL || "openai/whisper-large-v3",
         llmModel:
-          process.env.LLM_MODEL || "Qwen/Qwen2.5-7B-Instruct-Turbo",
+          process.env.LLM_MODEL || "Qwen/Qwen3.5-9B",
         ttsModel: process.env.TTS_MODEL || "hexgrad/Kokoro-82M",
         ttsVoice: process.env.TTS_VOICE || "af_heart",
       };

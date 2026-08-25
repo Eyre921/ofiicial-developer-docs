@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1146 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1150 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -560,6 +560,7 @@
 - `langsmith/smith-api/api-key/get-api-keys` — [Get API keys](pages/langsmith/smith-api/api-key/get-api-keys.md) · [原文](https://docs.langchain.com/langsmith/smith-api/api-key/get-api-keys)
 - `langsmith/smith-api/api-key/get-personal-access-tokens` — [Get personal access tokens](pages/langsmith/smith-api/api-key/get-personal-access-tokens.md) · [原文](https://docs.langchain.com/langsmith/smith-api/api-key/get-personal-access-tokens)
 - `langsmith/smith-api/audit-logs/get-audit-logs` — [Get audit logs](pages/langsmith/smith-api/audit-logs/get-audit-logs.md) · [原文](https://docs.langchain.com/langsmith/smith-api/audit-logs/get-audit-logs)
+- `langsmith/smith-api/audit-logs/list-audit-log-operations` — [List audit log operations](pages/langsmith/smith-api/audit-logs/list-audit-log-operations.md) · [原文](https://docs.langchain.com/langsmith/smith-api/audit-logs/list-audit-log-operations)
 - `langsmith/smith-api/auth/check-sso-email-verification-status` — [Check SSO email verification status](pages/langsmith/smith-api/auth/check-sso-email-verification-status.md) · [原文](https://docs.langchain.com/langsmith/smith-api/auth/check-sso-email-verification-status)
 - `langsmith/smith-api/auth/confirm-sso-user-email` — [Confirm SSO user email](pages/langsmith/smith-api/auth/confirm-sso-user-email.md) · [原文](https://docs.langchain.com/langsmith/smith-api/auth/confirm-sso-user-email)
 - `langsmith/smith-api/auth/get-public-auth-info` — [Get public auth info](pages/langsmith/smith-api/auth/get-public-auth-info.md) · [原文](https://docs.langchain.com/langsmith/smith-api/auth/get-public-auth-info)
@@ -615,6 +616,7 @@
 - `langsmith/smith-api/data_planes/create-a-new-data-plane` — [Create a new data plane](pages/langsmith/smith-api/data_planes/create-a-new-data-plane.md) · [原文](https://docs.langchain.com/langsmith/smith-api/data_planes/create-a-new-data-plane)
 - `langsmith/smith-api/data_planes/delete-a-data-plane` — [Delete a data plane](pages/langsmith/smith-api/data_planes/delete-a-data-plane.md) · [原文](https://docs.langchain.com/langsmith/smith-api/data_planes/delete-a-data-plane)
 - `langsmith/smith-api/data_planes/list-data-planes-for-the-current-organization` — [List data planes for the current organization](pages/langsmith/smith-api/data_planes/list-data-planes-for-the-current-organization.md) · [原文](https://docs.langchain.com/langsmith/smith-api/data_planes/list-data-planes-for-the-current-organization)
+- `langsmith/smith-api/data_planes/update-data-plane-settings` — [Update data plane settings](pages/langsmith/smith-api/data_planes/update-data-plane-settings.md) · [原文](https://docs.langchain.com/langsmith/smith-api/data_planes/update-data-plane-settings)
 - `langsmith/smith-api/datasets/clone-dataset` — [Clone dataset](pages/langsmith/smith-api/datasets/clone-dataset.md) · [原文](https://docs.langchain.com/langsmith/smith-api/datasets/clone-dataset)
 - `langsmith/smith-api/datasets/create-comparative-experiment` — [Create comparative experiment](pages/langsmith/smith-api/datasets/create-comparative-experiment.md) · [原文](https://docs.langchain.com/langsmith/smith-api/datasets/create-comparative-experiment)
 - `langsmith/smith-api/datasets/create-dataset` — [Create dataset](pages/langsmith/smith-api/datasets/create-dataset.md) · [原文](https://docs.langchain.com/langsmith/smith-api/datasets/create-dataset)
@@ -917,8 +919,10 @@
 - `langsmith/smith-api/sandboxes/delete-a-sandbox` — [Delete a sandbox](pages/langsmith/smith-api/sandboxes/delete-a-sandbox.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/delete-a-sandbox)
 - `langsmith/smith-api/sandboxes/delete-a-snapshot` — [Delete a snapshot](pages/langsmith/smith-api/sandboxes/delete-a-snapshot.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/delete-a-snapshot)
 - `langsmith/smith-api/sandboxes/download-a-sandbox-file` — [Download a sandbox file](pages/langsmith/smith-api/sandboxes/download-a-sandbox-file.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/download-a-sandbox-file)
+- `langsmith/smith-api/sandboxes/download-a-sandbox-file-1` — [Download a sandbox file](pages/langsmith/smith-api/sandboxes/download-a-sandbox-file-1.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/download-a-sandbox-file-1)
 - `langsmith/smith-api/sandboxes/execute-a-sandbox-command` — [Execute a sandbox command](pages/langsmith/smith-api/sandboxes/execute-a-sandbox-command.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/execute-a-sandbox-command)
 - `langsmith/smith-api/sandboxes/execute-a-sandbox-command-over-websocket` — [Execute a sandbox command over WebSocket](pages/langsmith/smith-api/sandboxes/execute-a-sandbox-command-over-websocket.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/execute-a-sandbox-command-over-websocket)
+- `langsmith/smith-api/sandboxes/generate-a-sandbox-file-download-link` — [Generate a sandbox file download link](pages/langsmith/smith-api/sandboxes/generate-a-sandbox-file-download-link.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/generate-a-sandbox-file-download-link)
 - `langsmith/smith-api/sandboxes/generate-a-service-access-token` — [Generate a service access token](pages/langsmith/smith-api/sandboxes/generate-a-service-access-token.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/generate-a-service-access-token)
 - `langsmith/smith-api/sandboxes/get-a-registry` — [Get a registry](pages/langsmith/smith-api/sandboxes/get-a-registry.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/get-a-registry)
 - `langsmith/smith-api/sandboxes/get-a-sandbox` — [Get a sandbox](pages/langsmith/smith-api/sandboxes/get-a-sandbox.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/get-a-sandbox)

@@ -127,7 +127,7 @@ def JSON_llm(user_prompt: str, schema, system_prompt: str = None):
       "Best model choice for code generation tasks.",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo":
       "Best model choice for story-telling, role-playing and fantasy tasks.",
-    "moonshotai/Kimi-K2.6":
+    "moonshotai/Kimi-K3":
       "Best model for reasoning, planning and multi-step tasks",
   };
 
@@ -204,7 +204,7 @@ prompt_list = [
 model_routes = {
     "moonshotai/Kimi-K2.7-Code": "Best model choice for code generation tasks.",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo": "Best model choice for story-telling, role-playing and fantasy tasks.",
-    "moonshotai/Kimi-K2.6": "Best model for reasoning, planning and multi-step tasks",
+    "moonshotai/Kimi-K3": "Best model for reasoning, planning and multi-step tasks",
 }
 
 for i, prompt in enumerate(prompt_list):

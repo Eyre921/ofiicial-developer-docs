@@ -6567,6 +6567,10 @@ components:
       example:
         type: 'container_auto'
       properties:
+        file_ids:
+          $ref: '#/components/schemas/ContainerFileIds'
+        network_policy:
+          $ref: '#/components/schemas/ContainerNetworkPolicy'
         type:
           enum:
             - 'container_auto'
@@ -6616,6 +6620,15 @@ components:
         - 'path'
         - 'source'
       type: 'object'
+    ContainerFileIds:
+      description: 'Workspace file ids (or_file_…) to attach into the container before the first command runs. Each file is copied to the container home as a writable copy named {last 8 characters of the file id}-{base filename} (a file stored as data/report.csv with id or_file_…NR6q4V8w attaches to ~/NR6q4V8w-report.csv), so same-named files never collide; the source document is never modified. Unknown, foreign, or malformed ids fail the request with a 400 before any command executes. Max 20 ids.'
+      example:
+        - 'or_file_011CNha8iCJcU1wXNR6q4V8w'
+      items:
+        minLength: 1
+        type: 'string'
+      maxItems: 20
+      type: 'array'
     ContainerFileListResponse:
       properties:
         data:
@@ -6648,6 +6661,46 @@ components:
         - 'last_id'
         - 'has_more'
       type: 'object'
+    ContainerNetworkPolicy:
+      anyOf:
+        - properties:
+            type:
+              description: 'No outbound internet access.'
+              enum:
+                - 'disabled'
+              type: 'string'
+          required:
+            - 'type'
+          type: 'object'
+        - properties:
+            allowed_domains:
+              description: 'Hostnames the container may reach over ports 80/443 (max 50). Entries are lowercase hostnames or glob patterns where * matches any run of characters (e.g. *.example.com). An exact hostname does not cover its subdomains — use a glob or list each hostname. pip needs both pypi.org and files.pythonhosted.org (or *.pythonhosted.org).'
+              example:
+                - 'pypi.org'
+                - 'files.pythonhosted.org'
+              items:
+                maxLength: 253
+                minLength: 1
+                pattern: '^[a-z0-9*]([a-z0-9*-]{0,61}[a-z0-9*])?(\.[a-z0-9*]([a-z0-9*-]{0,61}[a-z0-9*])?)*$'
+                type: 'string'
+              maxItems: 50
+              minItems: 1
+              type: 'array'
+            type:
+              description: 'Outbound access restricted to the listed domains.'
+              enum:
+                - 'allowlist'
+              type: 'string'
+          required:
+            - 'type'
+            - 'allowed_domains'
+          type: 'object'
+      description: 'Network egress policy for the container. "disabled" blocks all outbound internet; "allowlist" permits only hosts matching the listed hostnames or * glob patterns (ports 80/443, DNS via Cloudflare resolvers). The policy is fixed when a container starts: sending a different policy to a warm container fails the request with a 409. Omitted: defaults to "disabled" (no outbound internet). For unrestricted egress, use an allowlist of ["*"].'
+      example:
+        allowed_domains:
+          - 'pypi.org'
+          - 'files.pythonhosted.org'
+        type: 'allowlist'
     ContainerReferenceEnvironment:
       description: 'Reference to a container by its canonical id — a previously returned container_id or a fresh name to create a persistent container.'
       example:
@@ -6661,6 +6714,10 @@ components:
           minLength: 1
           pattern: '^[\w-]+$'
           type: 'string'
+        file_ids:
+          $ref: '#/components/schemas/ContainerFileIds'
+        network_policy:
+          $ref: '#/components/schemas/ContainerNetworkPolicy'
         type:
           enum:
             - 'container_reference'
@@ -22748,7 +22805,7 @@ components:
       example: 'direct'
       type: 'string'
     SandboxSleepAfterSeconds:
-      description: 'How long (in seconds) the container stays warm after its last command before sleeping, freeing its capacity slot. Idle-based: each command renews the timer. Defaults to 900 (15 minutes); capped at 2592000 (30 days).'
+      description: 'How long (in seconds) the container stays warm after its last command before sleeping, freeing its capacity slot. Idle-based: each command renews the timer. Defaults to 900 (15 minutes); capped at 14400 (4 hours).'
       example: 900
       type: 'integer'
     ScimGroup:
@@ -29334,6 +29391,127 @@ paths:
                 $ref: '#/components/schemas/ServiceUnavailableResponse'
           description: 'Service Unavailable - Service temporarily unavailable'
       summary: 'Download container file content'
+      tags:
+        - 'Containers'
+      x-hidden: true
+  /containers/{container_id}/files/{file_id}/promote:
+    post:
+      description: 'Copies a file from the container''s sandbox prefix into the workspace''s durable document storage, so it outlives the container. Returns the new document in the Files API shape, with a durable file id in the documents namespace. The copy counts against the workspace''s storage quota exactly like an upload.'
+      operationId: 'promoteContainerFile'
+      parameters:
+        - description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
+          in: 'path'
+          name: 'container_id'
+          required: true
+          schema:
+            description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
+            example: 'sess_abc123'
+            type: 'string'
+        - description: 'Container file id (`cfile_` + base64url of the file path).'
+          in: 'path'
+          name: 'file_id'
+          required: true
+          schema:
+            description: 'Container file id (`cfile_` + base64url of the file path).'
+            example: 'cfile_b3V0L3JlcG9ydC5jc3Y'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                _shape: 'openrouter'
+                created_at: '2026-08-23T00:00:00Z'
+                downloadable: false
+                filename: 'out/report.csv'
+                id: 'or_file_011CNha8iCJcU1wXNR6q4V8w'
+                mime_type: 'text/csv'
+                size_bytes: 123
+                type: 'file'
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+          description: 'The promoted file, as a workspace document.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '413':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 413
+                  message: 'Request payload too large'
+              schema:
+                $ref: '#/components/schemas/PayloadTooLargeResponse'
+          description: 'Payload Too Large - Request payload exceeds size limits'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
+      summary: 'Promote a container file into workspace documents'
       tags:
         - 'Containers'
       x-hidden: true

@@ -127,6 +127,25 @@ If you don't see the Endpoint, ensure that you have selected the correct AWS reg
 It may take several minutes for the Endpoint to change to status `InService`.
 Once the Endpoint status has changed to `InService`, you can monitor the Amazon CloudWatch Logs for the Endpoint to ensure normal operation of the Deepgram services.
 
+## Inference AMI Versions
+
+A SageMaker Endpoint Configuration can pin an **inference AMI version** — the SageMaker-managed host image supplying the NVIDIA driver and container runtime your instances boot with. It is independent of the Deepgram container: it determines which driver the container runs against. If you do not set it, SageMaker selects a default for your instance type, which on older GPU families is an older driver.
+
+| AMI version                              | NVIDIA driver | CUDA |
+| ---------------------------------------- | ------------- | ---- |
+| `al2-ami-sagemaker-inference-gpu-2`      | 535           | 12.2 |
+| `al2-ami-sagemaker-inference-gpu-2-1`    | 535           | 12.2 |
+| `al2-ami-sagemaker-inference-gpu-3-1`    | 550           | 12.4 |
+| `al2023-ami-sagemaker-inference-gpu-4-1` | 580           | 13.0 |
+
+Deepgram recommends the latest available version, `al2023-ami-sagemaker-inference-gpu-4-1`, which provides the NVIDIA 580 driver. Deepgram containers select the correct CUDA compatibility layer at startup based on the host driver they detect, so a newer host driver requires no change to your deployment.
+
+Support for older driver versions may be removed in the latest Deepgram Model Package. Pin an up-to-date inference AMI version rather than relying on the SageMaker default for your instance type.
+
+For the full list of AMI versions and their driver and CUDA versions, see [`InferenceAmiVersion`](https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_ProductionVariant.html#sagemaker-Type-ProductionVariant-InferenceAmiVersion) in the SageMaker API reference. For the driver each instance family runs by default, see the [SageMaker GPU driver table](https://docs.aws.amazon.com/sagemaker/latest/dg/inference-gpu-drivers.html#inference-gpu-drivers-versions).
+
+The SageMaker AI console does not expose the inference AMI version when you create an Endpoint Configuration. To pin it, create the Endpoint Configuration with the AWS CLI or API — set `InferenceAmiVersion` on the production variant — or with [Terraform](/docs/terraform-deploy-sagemaker#inference-ami-versions).
+
 ## Inference
 
 Once your endpoint is deployed and in service, you invoke it to transcribe audio. The endpoint supports three invocation modes, depending on which endpoint type you deployed and how you need the response returned.
@@ -306,7 +325,7 @@ If you experience any issues using Deepgram services running on the Amazon SageM
 * Ensure that your application's AWS IAM User or IAM Role has permission to call the `InvokeEndpointWithBidirectionalStream` SageMaker AI action.
 * Ensure your application is targeting the correct AWS account and region, where your SageMaker Endpoint exists.
 * Ensure the Deepgram product you've deployed (eg. streaming Speech-to-Text), from the AWS Marketplace, corresponds to the Deepgram API you're calling.
-* There is a known compatibility issue using pre-Blackwell NVIDIA GPUs with the latest [SageMaker-provided AMI](https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_ProductionVariant.html) named `al2023-ami-sagemaker-inference-gpu-4-1` which includes the NVIDIA 580 driver version. When creating your SageMaker Endpoint Configuration resource, using a g4dn, g5, g6, or g6e instance family, please be sure that you are using one of the AMIs before this version. You can also reference [this AWS supported configurations table](https://docs.aws.amazon.com/sagemaker/latest/dg/inference-gpu-drivers.html#inference-gpu-drivers-versions).
+* Deepgram containers may fail to start on the older NVIDIA driver that SageMaker selects by default for older instance families. The console does not expose the inference AMI version, so create the Endpoint Configuration with the AWS CLI or API (`InferenceAmiVersion` on the production variant) or with [Terraform](/docs/terraform-deploy-sagemaker#inference-ami-versions) to pin an up-to-date version. See [Inference AMI Versions](#inference-ami-versions) for the available versions and Deepgram's recommendation.
 * If you have received a SageMaker private offer for a management account of an AWS organization, you may use [AWS License Manager](https://aws.amazon.com/blogs/awsmarketplace/manage-your-aws-marketplace-license-entitlements-in-aws-license-manager/) to grant usage of the SageMaker private offer to member accounts within your AWS organization as a Marketplace license entitlement after accepting the offer in the payer account. If you choose not to centrally manage license entitlements with AWS License Manager, you will need to accept the private offer in each linked account individually after you have accepted the offer in the payer account to be able to launch a SageMaker Endpoint with private pricing in the linked account.
 * Only one offer (public or private) can be subscribed to for each SageMaker product listing at any one time. If you already have a subscription for a listing and try to subscribe to a different offer for it (for example, subscribing to a new private offer when you previously subscribed to the public offer), the **Accept offer** button is greyed out and an *Existing subscription detected* warning ("You already have a subscription for this product.") may appear at the top of the page. To switch offers, cancel the existing subscription first:
   1. In the warning message, click **View Subscription** to open the **Manage subscriptions** page of the AWS Marketplace console.

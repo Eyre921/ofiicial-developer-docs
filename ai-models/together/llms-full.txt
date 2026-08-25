@@ -2696,6 +2696,7 @@ Dedicated model inference (DMI) bills based on the hardware your deployments run
 
 * **Billed by the minute:** A deployment bills for as long as it runs, not per token or per request. The model you serve affects cost only through the hardware it needs (a larger model requires more or bigger GPUs), not through how many tokens or requests you push through it.
 * **Per replica:** Each running replica bills independently. A deployment running three replicas bills three times the single-replica rate.
+* **Only ready replicas:** A replica bills only while it's ready and able to serve traffic. Time spent provisioning or [cold-starting](/docs/dedicated-endpoints/concepts#cold-starts) isn't billed, and neither is a replica that isn't ready, such as while a deployment is [`DEGRADED`](/docs/dedicated-endpoints/manage#deployment-states).
 * **Stops when scaled down:** A replica stops billing as soon as it scales down. A deployment scaled to zero replicas, or stopped, costs nothing.
 
 Because cost tracks running replicas, you keep your cost down by running only as many replicas as you need for your workload, and by stopping a deployment or setting its [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds) to zero when you don't need it. Endpoints run until you stop them; there is no automatic idle shutdown at launch. See [Configure autoscaling](/docs/dedicated-endpoints/scaling) for details.
@@ -2716,7 +2717,7 @@ Hardware and GPU count are set by the [config](/docs/dedicated-endpoints/configs
 
 ## How scaling affects cost
 
-Billing is proportional to the number of running replicas across all deployments in your project. For a given deployment, you control how much it costs with its [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds), and by stopping it when you don't need it:
+Billing is proportional to the number of ready replicas across all deployments in your project, which you can track as `status.readyReplicas` when you [poll deployment status](/docs/dedicated-endpoints/manage#poll-deployment-status). For a given deployment, you control how much it costs with its [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds), and by stopping it when you don't need it:
 
 * **`minReplicas`:** This sets the floor for a deployment's cost. These replicas will run and bill continuously, so set it to the lowest count that meets your latency target.
 * **`maxReplicas`:** This sets the ceiling for a deployment's cost. The deployment never bills for more than this many replicas, so set it to a high enough count to handle your peak traffic.
@@ -4594,7 +4595,7 @@ The evaluations service keeps its own allowlist of serverless models, separate f
 | Qwen3.5-397B-A17B                  | `Qwen/Qwen3.5-397B-A17B`                  |
 | Qwen3.5 9B FP8                     | `Qwen/Qwen3.5-9B`                         |
 | Qwen3.6 Plus                       | `Qwen/Qwen3.6-Plus`                       |
-| Cogito v2.1 671B                   | `deepcogito/cogito-v2-1-671b`             |
+| cogito-v2-1-671b                   | `deepcogito/cogito-v2-1-671b`             |
 | DeepSeek-R1                        | `deepseek-ai/DeepSeek-R1`                 |
 | DeepSeek-V3.1                      | `deepseek-ai/DeepSeek-V3.1`               |
 | Deepseek V4 Pro                    | `deepseek-ai/DeepSeek-V4-Pro`             |
@@ -4624,7 +4625,7 @@ model_config = {
 
 ### Vision-capable models
 
-To evaluate image inputs, use a serverless model that accepts images, such as the Qwen VL family. The evaluated model, and the judge if it should also see the image, must be vision-capable. Browse the [serverless models](/docs/serverless/models) catalog to find models that support vision, and see [the evaluations page](/docs/ai-evaluations#prepare-a-dataset) for how to add images to a dataset.
+To evaluate image inputs, use a serverless model that accepts images, such as the Qwen VL family. The evaluated model, and the judge if it should also see the image, must be vision-capable. Browse the [serverless models](/docs/serverless/models) catalog to find models that support vision, and see [the evaluations page](/docs/ai-evaluations#datasets-and-templates) for how to add images to a dataset.
 
 ## Dedicated models
 
@@ -8215,7 +8216,7 @@ For the full permission matrix, see [Roles & Permissions](/docs/roles-permission
 
 ### Adding Users to a Cluster Project
 
-For step-by-step instructions on adding and removing project members, see [Managing Project Members](/docs/projects#managing-project-members).
+For step-by-step instructions on adding and removing project members, see [Managing project collaborators](/docs/projects#managing-project-collaborators).
 
 <Info>
   **Quick version:** Go to **Settings > Collaborators**, find the project that contains your cluster, click **View Project**, then **Add collaborator**. If you don't see Collaborators yet, use the **GPU Cluster Projects** tab instead (this tab is being replaced by the unified Collaborators page).
@@ -8225,7 +8226,7 @@ New members are added with the **editor** role by default, unless they are an or
 
 ### Removing Users
 
-See [Removing Members](/docs/projects#removing-members) for the full steps.
+See [Removing collaborators](/docs/projects#removing-collaborators) for the full steps.
 
 <Warning>
   Removing a user revokes their access to all clusters and volumes in the project, including SSH permissions and Kubernetes Dashboard access. This takes effect within minutes.
@@ -8458,7 +8459,7 @@ We use these requests as input for our demand planning, and our team will reach 
 
 ## What's Next?
 
-* [Manage cluster access](/docs/projects#managing-project-members)
+* [Manage cluster access](/docs/projects#managing-project-collaborators)
 * [Understand roles and permissions](/docs/roles-permissions)
 * [Understand billing and pricing](/docs/gpu-clusters-billing)
 * [Explore API and automation options](/docs/gpu-clusters-api)
@@ -10410,7 +10411,7 @@ Source: https://docs.together.ai/docs/inference/chat/reasoning
 
 Use reasoning models that think step-by-step before answering.
 
-Reasoning models are trained to think step-by-step before responding with an answer. Given an input prompt, they first produce a chain of thought, visible as tokens in the `reasoning` output field, and then output a final answer in the `content` field.
+Reasoning models are trained to think step-by-step before responding with an answer. Given an input prompt, they first produce a chain of thought, visible as tokens in a dedicated output field (`reasoning` or `reasoning_content`, depending on the model), and then output a final answer in the `content` field.
 
 ## Supported models
 
@@ -10426,20 +10427,19 @@ The following models support reasoning on [serverless inference](/docs/serverles
 | :------------------------- | :---------------------------------- | :--------------------- | :------------- |
 | MiniMax M3                 | `MiniMaxAI/MiniMax-M3`              | Hybrid (on by default) | 512K           |
 | DeepSeek-V4-Pro            | `deepseek-ai/DeepSeek-V4-Pro`       | Hybrid (on by default) | 512K           |
-| GLM-5                      | `zai-org/GLM-5`                     | Hybrid (on by default) | 200K           |
-| Kimi K2.6                  | `moonshotai/Kimi-K2.6`              | Hybrid (on by default) | 262K           |
+| GLM-5.2                    | `zai-org/GLM-5.2`                   | Hybrid (on by default) | 512K           |
+| Kimi K3                    | `moonshotai/Kimi-K3`                | Hybrid (on by default) | 1M             |
 | Qwen3.6 Plus               | `Qwen/Qwen3.6-Plus`                 | Hybrid (on by default) | 1M             |
 | Qwen3.5 9B                 | `Qwen/Qwen3.5-9B`                   | Hybrid (on by default) | 262K           |
-| Cogito v2.1 671B           | `deepcogito/cogito-v2-1-671b`       | Hybrid (on by default) | 164K           |
 | Nemotron 3 Ultra 550B A55B | `nvidia/nemotron-3-ultra-550b-a55b` | Hybrid (on by default) | 512K           |
 | GPT-OSS 120B               | `openai/gpt-oss-120b`               | Adjustable effort      | 128K           |
 | GPT-OSS 20B                | `openai/gpt-oss-20b`                | Adjustable effort      | 128K           |
 
-Additional reasoning models, including DeepSeek-R1 and its distillations, Qwen QwQ-32B, and DeepSeek V3.1 (hybrid), are available for [dedicated model inference](/docs/dedicated-endpoints/models).
+Additional reasoning models, including Kimi K2.6, GLM-5, Cogito v2.1 671B, DeepSeek-R1 and its distillations, Qwen QwQ-32B, and DeepSeek V3.1 (hybrid), are available for [dedicated model inference](/docs/dedicated-endpoints/models).
 
 ## Quickstart
 
-Most reasoning models return a separate `reasoning` field alongside `content` in the response. Reasoning models produce longer outputs, so streaming is recommended:
+Reasoning models return the chain of thought in a separate field alongside `content` in the response. The field name varies by model (see [Handle reasoning tokens](#handle-reasoning-tokens)). Reasoning models produce longer outputs, so streaming is recommended:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -10448,7 +10448,7 @@ Most reasoning models return a separate `reasoning` field alongside `content` in
   client = Together()
 
   stream = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="deepseek-ai/DeepSeek-V4-Pro",
       messages=[
           {
               "role": "user",
@@ -10478,7 +10478,7 @@ Most reasoning models return a separate `reasoning` field alongside `content` in
   const together = new Together();
 
   const stream = await together.chat.completions.stream({
-    model: "moonshotai/Kimi-K2.6",
+    model: "deepseek-ai/DeepSeek-V4-Pro",
     messages: [
       { role: "user", content: "Which number is bigger, 9.11 or 9.9?" },
     ],
@@ -10502,7 +10502,7 @@ Most reasoning models return a separate `reasoning` field alongside `content` in
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-          "model": "moonshotai/Kimi-K2.6",
+          "model": "deepseek-ai/DeepSeek-V4-Pro",
           "messages": [
             {"role": "user", "content": "Which number is bigger, 9.11 or 9.9?"}
           ],
@@ -10543,7 +10543,7 @@ Hybrid models let you toggle reasoning on or off using the `reasoning` parameter
 
   # Enable reasoning
   response = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="deepseek-ai/DeepSeek-V4-Pro",
       messages=[
           {
               "role": "user",
@@ -10572,7 +10572,7 @@ Hybrid models let you toggle reasoning on or off using the `reasoning` parameter
   const together = new Together();
 
   const stream = await together.chat.completions.stream({
-    model: "moonshotai/Kimi-K2.6",
+    model: "deepseek-ai/DeepSeek-V4-Pro",
     messages: [
       { role: "user", content: "Prove that the square root of 2 is irrational." },
     ],
@@ -10592,7 +10592,7 @@ Hybrid models let you toggle reasoning on or off using the `reasoning` parameter
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-          "model": "moonshotai/Kimi-K2.6",
+          "model": "deepseek-ai/DeepSeek-V4-Pro",
           "messages": [
             {"role": "user", "content": "Prove that the square root of 2 is irrational."}
           ],
@@ -10622,7 +10622,7 @@ response = client.chat.completions.create(
 ```
 
 <Warning>
-  GLM-5 has thinking enabled by default. Pass `reasoning={"enabled": False}` to disable it for simple tasks where reasoning overhead isn't needed.
+  GLM-5.2 has thinking enabled by default. Pass `reasoning={"enabled": False}` to disable it for simple tasks where reasoning overhead isn't needed.
 </Warning>
 
 For the list of hybrid models, see [Supported models](#supported-models).
@@ -10734,7 +10734,7 @@ Ask the model to keep its thinking concise:
 
 ```python theme={null}
 response = client.chat.completions.create(
-    model="moonshotai/Kimi-K2.6",
+    model="deepseek-ai/DeepSeek-V4-Pro",
     messages=[
         {
             "role": "user",
@@ -10749,7 +10749,7 @@ You can also suggest an approximate budget for the reasoning process:
 
 ```python theme={null}
 response = client.chat.completions.create(
-    model="moonshotai/Kimi-K2.6",
+    model="deepseek-ai/DeepSeek-V4-Pro",
     messages=[
         {
             "role": "user",
@@ -10766,7 +10766,7 @@ response = client.chat.completions.create(
 
 ## Thinking modes
 
-GLM-5 supports advanced thinking modes that control how reasoning integrates with tool calling and multi-turn conversations.
+GLM-5.2 supports advanced thinking modes that control how reasoning integrates with tool calling and multi-turn conversations.
 
 ### Interleaved thinking
 
@@ -10795,7 +10795,7 @@ tools = [
 ]
 
 response = client.chat.completions.create(
-    model="zai-org/GLM-5",
+    model="zai-org/GLM-5.2",
     messages=[
         {"role": "user", "content": "What's the weather in Paris and Tokyo?"}
     ],
@@ -10820,7 +10820,7 @@ Enable preserved thinking by setting `clear_thinking` to `false`:
 
 ```python theme={null}
 response = client.chat.completions.create(
-    model="zai-org/GLM-5",
+    model="zai-org/GLM-5.2",
     messages=messages,
     tools=tools,
     stream=True,
@@ -10830,21 +10830,21 @@ response = client.chat.completions.create(
 )
 ```
 
-When using preserved thinking, include the unmodified `reasoning` from previous turns back in the conversation:
+When using preserved thinking, include the unmodified `reasoning_content` from previous turns back in the conversation:
 
 ```python theme={null}
 messages.append(
     {
         "role": "assistant",
         "content": content,
-        "reasoning": reasoning,  # Return reasoning content faithfully
+        "reasoning_content": reasoning_content,  # Return reasoning content faithfully
         "tool_calls": tool_calls,
     }
 )
 ```
 
 <Warning>
-  When using preserved thinking, all consecutive `reasoning` blocks must exactly match the original sequence generated by the model. Don't reorder or edit these blocks. Otherwise, performance may degrade and cache hit rates will drop.
+  When using preserved thinking, all consecutive `reasoning_content` blocks must exactly match the original sequence generated by the model. Don't reorder or edit these blocks. Otherwise, performance may degrade and cache hit rates will drop.
 </Warning>
 
 ### Turn-level thinking
@@ -10857,9 +10857,9 @@ For a complete tool-calling example with GLM-5.2 thinking modes, see the [GLM-5.
 
 There are two patterns for accessing reasoning tokens, depending on the model.
 
-### Separate `reasoning` field
+### Separate reasoning field
 
-Most models (Kimi K2.6, GLM-5, DeepSeek-V4-Pro, GPT-OSS) return reasoning in a dedicated `reasoning` field on the response message or streaming delta:
+Some models (DeepSeek-V4-Pro, Nemotron 3 Ultra, GPT-OSS) return reasoning in a dedicated `reasoning` field on the response message or streaming delta. Others (Kimi K3, GLM-5.2, MiniMax M3) use a `reasoning_content` field the same way:
 
 ```python theme={null}
 from together import Together
@@ -10867,7 +10867,7 @@ from together import Together
 client = Together()
 
 response = client.chat.completions.create(
-    model="moonshotai/Kimi-K2.6",
+    model="deepseek-ai/DeepSeek-V4-Pro",
     messages=[
         {
             "role": "user",
@@ -10881,7 +10881,7 @@ print("Answer:", response.choices[0].message.content)
 ```
 
 <Note>
-  Use the `reasoning` field for both input and output. The model returns its chain of thought in `reasoning` (or `delta.reasoning` when streaming), and you pass it back under the same `reasoning` key when you send a prior assistant turn to the API for [preserved thinking](#preserved-thinking) or multi-turn tool calling. The older `reasoning_content` key is still accepted on input for backward compatibility.
+  Use the same field for input and output. The model returns its chain of thought in `reasoning` or `reasoning_content` (also on the streaming `delta`), and you pass it back under the same key when you send a prior assistant turn to the API for [preserved thinking](#preserved-thinking) or multi-turn tool calling.
 </Note>
 
 ### `<think>` tags in content
@@ -10915,7 +10915,7 @@ answer = re.sub(r"<think>.*?</think>", "", content, flags=re.DOTALL).strip()
 
 Reasoning models can return JSON that conforms to a schema, the same way non-reasoning models do. The model still produces its chain of thought in the `reasoning` field, then writes the structured answer to `content`.
 
-Example: have `Kimi K2.6` solve a math problem and return the steps as typed JSON.
+Example: have DeepSeek-V4-Pro solve a math problem and return the steps as typed JSON.
 
 ```python Python theme={null}
 import json
@@ -10936,7 +10936,7 @@ class MathReasoning(BaseModel):
 
 
 completion = client.chat.completions.create(
-    model="moonshotai/Kimi-K2.6",
+    model="deepseek-ai/DeepSeek-V4-Pro",
     messages=[
         {
             "role": "system",
@@ -10987,7 +10987,7 @@ Prompt reasoning models differently than standard models:
 
 | Tip                                         | Details                                                                                                                                                             |
 | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Use the right temperature**               | DeepSeek-R1: 0.6. Kimi K2.6 (thinking) / GLM-5: 1.0. GPT-OSS: 1.0. Kimi K2.6 (instant): 0.6.                                                                        |
+| **Use the right temperature**               | DeepSeek-R1: 0.6. DeepSeek-V4-Pro / GLM-5.2 / Kimi K3 / GPT-OSS: 1.0.                                                                                               |
 | **System prompts vary by model**            | DeepSeek-R1: omit system prompts entirely. Kimi models: use `"You are Kimi, an AI assistant created by Moonshot AI."` GPT-OSS: use the `developer` role message.    |
 | **Don't add chain-of-thought instructions** | These models already reason step-by-step. Telling them to "think step by step" is unnecessary and can hurt performance.                                             |
 | **Avoid few-shot examples**                 | Few-shot prompting can degrade performance. Describe the task and desired output format instead.                                                                    |
@@ -11013,7 +11013,7 @@ Reasoning tokens can vary from a few hundred for simple problems to tens of thou
 * **Use `max_tokens`**: Set a token limit to cap total output. This reduces costs but may truncate reasoning on complex problems, find the right balance for your use case.
 * **Toggle reasoning on hybrid models**: Use `reasoning={"enabled": False}` for simple queries and only enable it when the task benefits from deeper analysis.
 * **Use reasoning effort levels**: On GPT-OSS, use `reasoning_effort="low"` for routine tasks and `"high"` for critical decisions.
-* **Use turn-level thinking**: On GLM-5, disable thinking for simple turns and enable it only for complex ones within the same session.
+* **Use turn-level thinking**: On GLM-5.2, disable thinking for simple turns and enable it only for complex ones within the same session.
 * **Prompt for shorter reasoning**: Include instructions like "Be succinct in your thinking" to reduce reasoning token usage on simpler problems. See [Controlling reasoning depth via prompting](#controlling-reasoning-depth-via-prompting).
 * **Stream responses**: Since reasoning models produce longer outputs, streaming with `stream=True` provides a better user experience by showing partial results as they arrive.
 
@@ -12154,7 +12154,7 @@ Here's an example of passing the result of a tool call from one completion into 
 
   # 2. Prompt the model with tools defined
   response = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=messages,
       tools=tools,
   )
@@ -12195,7 +12195,7 @@ Here's an example of passing the result of a tool call from one completion into 
 
       # 5. The model should be able to give a response with the function results!
       function_enriched_response = client.chat.completions.create(
-          model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+          model="Qwen/Qwen3.5-9B",
           messages=messages,
       )
       print(
@@ -12287,7 +12287,7 @@ Here's an example of passing the result of a tool call from one completion into 
   ];
 
   const response = await together.chat.completions.create({
-    model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model: "Qwen/Qwen3.5-9B",
     messages,
     tools,
   });
@@ -12313,7 +12313,7 @@ Here's an example of passing the result of a tool call from one completion into 
     }
 
     const functionEnrichedResponse = await together.chat.completions.create({
-      model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model: "Qwen/Qwen3.5-9B",
       messages,
       tools,
     });
@@ -12742,7 +12742,7 @@ Multi-turn function calling maintains context across multiple conversation turns
     messages.push({ role: "user", content: userInput });
 
     const response = await together.chat.completions.create({
-      model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model: "Qwen/Qwen3.5-9B",
       messages,
       tools,
     });
@@ -12778,7 +12778,7 @@ Multi-turn function calling maintains context across multiple conversation turns
       }
 
       const finalResponse = await together.chat.completions.create({
-        model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+        model: "Qwen/Qwen3.5-9B",
         messages,
       });
 
@@ -13080,7 +13080,7 @@ In parallel function calling, the same function is called multiple times simulta
   client = Together()
 
   response = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=[
           {
               "role": "system",
@@ -13129,7 +13129,7 @@ In parallel function calling, the same function is called multiple times simulta
   const together = new Together();
 
   const response = await together.chat.completions.create({
-    model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model: "Qwen/Qwen3.5-9B",
     messages: [
       {
         role: "system",
@@ -13175,7 +13175,7 @@ In parallel function calling, the same function is called multiple times simulta
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "Qwen/Qwen2.5-7B-Instruct-Turbo",
+         "model": "Qwen/Qwen3.5-9B",
          "messages": [
            {
              "role": "system",
@@ -13305,7 +13305,7 @@ This pattern combines parallel and multiple function calling: multiple different
   ]
 
   response = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=[
           {
               "role": "user",
@@ -13374,7 +13374,7 @@ This pattern combines parallel and multiple function calling: multiple different
   ];
 
   const response = await together.chat.completions.create({
-    model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model: "Qwen/Qwen3.5-9B",
     messages: [
       {
         role: "user",
@@ -13393,7 +13393,7 @@ This pattern combines parallel and multiple function calling: multiple different
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "Qwen/Qwen2.5-7B-Instruct-Turbo",
+         "model": "Qwen/Qwen3.5-9B",
          "messages": [
            {
              "role": "user",
@@ -13537,7 +13537,7 @@ Make this function available to the LLM by passing its description to the `tools
   client = Together()
 
   response = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=[
           {
               "role": "system",
@@ -13586,7 +13586,7 @@ Make this function available to the LLM by passing its description to the `tools
   const together = new Together();
 
   const response = await together.chat.completions.create({
-    model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model: "Qwen/Qwen3.5-9B",
     messages: [
       {
         role: "system",
@@ -13631,7 +13631,7 @@ Make this function available to the LLM by passing its description to the `tools
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "Qwen/Qwen2.5-7B-Instruct-Turbo",
+         "model": "Qwen/Qwen3.5-9B",
          "messages": [
            {
              "role": "system",
@@ -13905,7 +13905,7 @@ The example below provides two tools to the model. The model responds with one t
   ]
 
   response = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=[
           {
               "role": "user",
@@ -13975,7 +13975,7 @@ The example below provides two tools to the model. The model responds with one t
   ];
 
   const response = await together.chat.completions.create({
-    model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model: "Qwen/Qwen3.5-9B",
     messages: [
       {
         role: "user",
@@ -13993,7 +13993,7 @@ The example below provides two tools to the model. The model responds with one t
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "Qwen/Qwen2.5-7B-Instruct-Turbo",
+         "model": "Qwen/Qwen3.5-9B",
          "messages": [
            {
              "role": "user",
@@ -14378,7 +14378,7 @@ Match the problem you're solving to the parameter most likely to help.
 
 * **Image doesn't match the prompt:** Make the prompt more specific, add a `negative_prompt` for what to exclude, or raise `guidance_scale` toward `8`-`10`.
 * **Poor image quality:** Raise `steps` to `30`-`40`, add quality modifiers to the prompt ("highly detailed", "8k", "professional"), or use a `negative_prompt` like "blurry, low quality, distorted".
-* **Generation is too slow:** Lower `steps` (FLUX Schnell looks good at `4`) or generate fewer images per call by lowering `n`.
+* **Generation is too slow:** Lower `steps` or generate fewer images per call by lowering `n`.
 * **Need the same image every run (evals, regression tests):** Set `seed` to a fixed integer.
 * **Need multiple variations of one prompt:** Increase `n` to up to `4`, or sweep different `seed` values.
 * **Wrong dimensions or aspect ratio:** Set `width` and `height` explicitly. Keep dimensions to multiples of `8`.
@@ -14426,28 +14426,28 @@ Typical default: `1024` x `1024`.
   # Square: social media posts, profile pictures
   response_square = client.images.generate(
       prompt="A peaceful zen garden with a stone path",
-      model="black-forest-labs/FLUX.1-schnell",
+      model="black-forest-labs/FLUX.2-dev",
       width=1024,
       height=1024,
-      steps=4,
+      steps=20,
   )
 
   # Landscape: banners, desktop wallpapers
   response_landscape = client.images.generate(
       prompt="A peaceful zen garden with a stone path",
-      model="black-forest-labs/FLUX.1-schnell",
+      model="black-forest-labs/FLUX.2-dev",
       width=1344,
       height=768,
-      steps=4,
+      steps=20,
   )
 
   # Portrait: mobile wallpapers, posters
   response_portrait = client.images.generate(
       prompt="A peaceful zen garden with a stone path",
-      model="black-forest-labs/FLUX.1-schnell",
+      model="black-forest-labs/FLUX.2-dev",
       width=768,
       height=1344,
-      steps=4,
+      steps=20,
   )
   ```
 
@@ -14455,28 +14455,28 @@ Typical default: `1024` x `1024`.
   // Square: social media posts, profile pictures
   const response_square = await together.images.generate({
     prompt: "A peaceful zen garden with a stone path",
-    model: "black-forest-labs/FLUX.1-schnell",
+    model: "black-forest-labs/FLUX.2-dev",
     width: 1024,
     height: 1024,
-    steps: 4,
+    steps: 20,
   });
 
   // Landscape: banners, desktop wallpapers
   const response_landscape = await together.images.generate({
     prompt: "A peaceful zen garden with a stone path",
-    model: "black-forest-labs/FLUX.1-schnell",
+    model: "black-forest-labs/FLUX.2-dev",
     width: 1344,
     height: 768,
-    steps: 4,
+    steps: 20,
   });
 
   // Portrait: mobile wallpapers, posters
   const response_portrait = await together.images.generate({
     prompt: "A peaceful zen garden with a stone path",
-    model: "black-forest-labs/FLUX.1-schnell",
+    model: "black-forest-labs/FLUX.2-dev",
     width: 768,
     height: 1344,
-    steps: 4,
+    steps: 20,
   });
   ```
 
@@ -14486,11 +14486,11 @@ Typical default: `1024` x `1024`.
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "black-forest-labs/FLUX.1-schnell",
+         "model": "black-forest-labs/FLUX.2-dev",
          "prompt": "A peaceful zen garden with a stone path",
          "width": 1024,
          "height": 1024,
-         "steps": 4
+         "steps": 20
        }'
 
   # Landscape: banners, desktop wallpapers
@@ -14498,11 +14498,11 @@ Typical default: `1024` x `1024`.
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "black-forest-labs/FLUX.1-schnell",
+         "model": "black-forest-labs/FLUX.2-dev",
          "prompt": "A peaceful zen garden with a stone path",
          "width": 1344,
          "height": 768,
-         "steps": 4
+         "steps": 20
        }'
 
   # Portrait: mobile wallpapers, posters
@@ -14510,11 +14510,11 @@ Typical default: `1024` x `1024`.
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "black-forest-labs/FLUX.1-schnell",
+         "model": "black-forest-labs/FLUX.2-dev",
          "prompt": "A peaceful zen garden with a stone path",
          "width": 768,
          "height": 1344,
-         "steps": 4
+         "steps": 20
        }'
   ```
 </CodeGroup>
@@ -14527,7 +14527,7 @@ Typical default: `1024` x `1024`.
 
 The number of diffusion steps. More steps generally improve quality at a near-linear cost in latency. Past a model-specific point, additional steps stop helping.
 
-Lower it (`1`-`4`) for fast iteration on FLUX Schnell. Raise it (`30`-`40`) for production-quality output on Pro and Dev models.
+Lower it for fast iteration. Raise it (`30`-`40`) for production-quality output.
 
 Typical default: model-specific (often `20`).
 
@@ -14546,7 +14546,7 @@ Typical default: model-specific (often `20`).
       start = time.time()
       response = client.images.generate(
           prompt=prompt,
-          model="black-forest-labs/FLUX.1-schnell",
+          model="black-forest-labs/FLUX.2-dev",
           steps=steps,
           seed=42,
       )
@@ -14566,7 +14566,7 @@ Typical default: model-specific (often `20`).
     const start = Date.now();
     const response = await together.images.generate({
       prompt,
-      model: "black-forest-labs/FLUX.1-schnell",
+      model: "black-forest-labs/FLUX.2-dev",
       steps,
       seed: 42,
     });
@@ -14580,7 +14580,7 @@ Typical default: model-specific (often `20`).
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "black-forest-labs/FLUX.1-schnell",
+         "model": "black-forest-labs/FLUX.2-dev",
          "prompt": "A majestic mountain landscape",
          "steps": 6,
          "seed": 42
@@ -14633,9 +14633,9 @@ Typical default: `"url"`.
   client = Together()
 
   response = client.images.generate(
-      model="black-forest-labs/FLUX.1-schnell",
+      model="black-forest-labs/FLUX.2-dev",
       prompt="a cat in outer space",
-      steps=4,
+      steps=20,
       response_format="base64",
   )
 
@@ -14652,9 +14652,9 @@ Typical default: `"url"`.
   const client = new Together();
 
   const response = await client.images.generate({
-    model: "black-forest-labs/FLUX.1-schnell",
+    model: "black-forest-labs/FLUX.2-dev",
     prompt: "A cat in outer space",
-    steps: 4,
+    steps: 20,
     response_format: "base64",
   });
 
@@ -14668,9 +14668,9 @@ Typical default: `"url"`.
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "black-forest-labs/FLUX.1-schnell",
+         "model": "black-forest-labs/FLUX.2-dev",
          "prompt": "A cat in outer space",
-         "steps": 4,
+         "steps": 20,
          "response_format": "base64"
        }'
   ```
@@ -14691,7 +14691,7 @@ When `response_format` is `"base64"`, the response includes a `b64_json` field w
       }
     }
   ],
-  "model": "black-forest-labs/FLUX.1-schnell",
+  "model": "black-forest-labs/FLUX.2-dev",
   "object": "list"
 }
 ```
@@ -14718,8 +14718,8 @@ Typical default: `false`.
 
   response = client.images.generate(
       prompt="a flying cat",
-      model="black-forest-labs/FLUX.1-schnell",
-      steps=4,
+      model="black-forest-labs/FLUX.2-dev",
+      steps=20,
       disable_safety_checker=True,
   )
 
@@ -14734,8 +14734,8 @@ Typical default: `false`.
   async function main() {
     const response = await together.images.generate({
       prompt: "a flying cat",
-      model: "black-forest-labs/FLUX.1-schnell",
-      steps: 4,
+      model: "black-forest-labs/FLUX.2-dev",
+      steps: 20,
       disable_safety_checker: true,
     });
 
@@ -14750,9 +14750,9 @@ Typical default: `false`.
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "black-forest-labs/FLUX.1-schnell",
+         "model": "black-forest-labs/FLUX.2-dev",
          "prompt": "a flying cat",
-         "steps": 4,
+         "steps": 20,
          "disable_safety_checker": true
        }'
   ```
@@ -15056,7 +15056,7 @@ Together model IDs are namespaced (`openai/gpt-oss-20b`, `meta-llama/Llama-4-Mav
   * Some non-reasoning models (for example `meta-llama/Llama-3.3-70B-Instruct-Turbo`) return `cached_tokens` flat at the top level of `usage`, with no `*_details` objects.
 
   A client configured for only one shape will return `0` for all others (with no error message). Fall back across both locations, for example `(usage.prompt_tokens_details or {}).get("cached_tokens") or usage.get("cached_tokens", 0)`.
-* Reasoning models return the chain of thought in a `reasoning` field on the assistant message (not OpenAI's nested `reasoning` object). Pass it back under the same `reasoning` key when you send a prior turn to the API for preserved thinking or multi-turn tool calling; the older `reasoning_content` key is still accepted on input for backward compatibility. See [Reasoning](/docs/inference/chat/reasoning#handle-reasoning-tokens) for details.
+* Reasoning models return the chain of thought in a `reasoning` or `reasoning_content` field on the assistant message (not OpenAI's nested `reasoning` object). The field name depends on the model. Pass it back under the same key when you send a prior turn to the API for preserved thinking or multi-turn tool calling. See [Reasoning](/docs/inference/chat/reasoning#handle-reasoning-tokens) for details.
 * `id` and `system_fingerprint` are present but use Together's formats. Don't parse them as OpenAI IDs.
 * `images.generate` returns `url` or `b64_json` per the `response_format` param, matching OpenAI. Some image models also return Together-specific metadata fields (for example `seed`).
 
@@ -15108,7 +15108,7 @@ Serverless, provisioned throughput, and dedicated model inference all use the sa
 
   # Serverless model request
   response = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="moonshotai/Kimi-K3",
       messages=[{"role": "user", "content": "Hello!"}],
   )
 
@@ -15125,7 +15125,7 @@ Serverless, provisioned throughput, and dedicated model inference all use the sa
 
   // Serverless model request
   let response = await client.chat.completions.create({
-      model: "moonshotai/Kimi-K2.6",
+      model: "moonshotai/Kimi-K3",
       messages: [{ role: "user", content: "Hello!" }],
   });
 
@@ -15142,7 +15142,7 @@ Serverless, provisioned throughput, and dedicated model inference all use the sa
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-            "model": "moonshotai/Kimi-K2.6",
+            "model": "moonshotai/Kimi-K3",
             "messages": [{"role": "user", "content": "Hello!"}]
           }'
 
@@ -15517,7 +15517,7 @@ For RAG patterns, see [RAG integrations](/docs/inference/embeddings/rag), the [L
   )
 
   stream = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=[
           {
               "role": "user",
@@ -15544,7 +15544,7 @@ For RAG patterns, see [RAG integrations](/docs/inference/embeddings/rag), the [L
   });
 
   const stream = await client.chat.completions.create({
-    model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model: "Qwen/Qwen3.5-9B",
     messages: [
       { role: "user", content: "What are some fun things to do in New York?" },
     ],
@@ -15562,7 +15562,7 @@ For RAG patterns, see [RAG integrations](/docs/inference/embeddings/rag), the [L
     -H "Helicone-Auth: Bearer $HELICONE_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
-      "model": "Qwen/Qwen2.5-7B-Instruct-Turbo",
+      "model": "Qwen/Qwen3.5-9B",
       "messages": [
         {"role": "user", "content": "What are some fun things to do in New York?"}
       ],
@@ -18828,7 +18828,7 @@ Vision language models (VLMs) can also use [function calling](/docs/inference/fu
   ]
 
   response = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="moonshotai/Kimi-K3",
       reasoning={"enabled": False},
       messages=[
           {
@@ -18889,7 +18889,7 @@ Vision language models (VLMs) can also use [function calling](/docs/inference/fu
 
   (async () => {
     const response = await client.chat.completions.create({
-      model: "moonshotai/Kimi-K2.6",
+      model: "moonshotai/Kimi-K3",
       reasoning: { enabled: false },
       messages: [
         {
@@ -18922,7 +18922,7 @@ Vision language models (VLMs) can also use [function calling](/docs/inference/fu
     -H "Authorization: Bearer $TOGETHER_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
-    "model": "moonshotai/Kimi-K2.6",
+    "model": "moonshotai/Kimi-K3",
     "reasoning": {"enabled": false},
     "messages": [
       {
@@ -19017,7 +19017,7 @@ To query a vision model with a local image:
   base64_image = encode_image(imagePath)
 
   stream = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="moonshotai/Kimi-K3",
       messages=[
           {
               "role": "user",
@@ -19057,7 +19057,7 @@ To query a vision model with a local image:
     const imageUrl = await fs.readFile(imagePath, { encoding: "base64" });
 
     const stream = await together.chat.completions.create({
-      model: "moonshotai/Kimi-K2.6",
+      model: "moonshotai/Kimi-K3",
       stream: true,
       messages: [
         {
@@ -19089,7 +19089,7 @@ To query a vision model with a local image:
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "moonshotai/Kimi-K2.6",
+         "model": "moonshotai/Kimi-K3",
          "messages": [
            {
              "role": "user",
@@ -19159,7 +19159,7 @@ For text-to-video and image-to-video *generation* (separate from video understan
 
   # Multi-modal message with multiple images
   response = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="moonshotai/Kimi-K3",
       messages=[
           {
               "role": "user",
@@ -19190,7 +19190,7 @@ For text-to-video and image-to-video *generation* (separate from video understan
 
   async function main() {
     const response = await together.chat.completions.create({
-      model: "moonshotai/Kimi-K2.6",
+      model: "moonshotai/Kimi-K3",
       messages: [
         {
           role: "user",
@@ -19224,7 +19224,7 @@ For text-to-video and image-to-video *generation* (separate from video understan
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "moonshotai/Kimi-K2.6",
+         "model": "moonshotai/Kimi-K3",
          "messages": [
            {
              "role": "user",
@@ -19298,7 +19298,7 @@ Pass a `messages` array where the user content is a list mixing `text` and `imag
   imageUrl = "https://napkinsdev.s3.us-east-1.amazonaws.com/next-s3-uploads/d96a3145-472d-423a-8b79-bca3ad7978dd/trello-board.png"
 
   stream = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="moonshotai/Kimi-K3",
       max_tokens=2048,
       messages=[
           {
@@ -19312,7 +19312,7 @@ Pass a `messages` array where the user content is a list mixing `text` and `imag
       stream=True,
   )
 
-  # Kimi K2.6 is reasoning-default. Reasoning tokens stream first, then content.
+  # Kimi K3 is reasoning-default. Reasoning tokens stream first, then content.
   for chunk in stream:
       if not chunk.choices:
           continue
@@ -19339,7 +19339,7 @@ Pass a `messages` array where the user content is a list mixing `text` and `imag
 
   async function main() {
     const stream = await together.chat.completions.create({
-      model: "moonshotai/Kimi-K2.6",
+      model: "moonshotai/Kimi-K3",
       temperature: 0.2,
       stream: true,
       max_tokens: 2048,
@@ -19373,7 +19373,7 @@ Pass a `messages` array where the user content is a list mixing `text` and `imag
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "moonshotai/Kimi-K2.6",
+         "model": "moonshotai/Kimi-K3",
          "max_tokens": 2048,
          "messages": [
            {
@@ -19533,7 +19533,7 @@ For example, you could extract a project name and a column count from a screensh
               ],
           }
       ],
-      model="moonshotai/Kimi-K2.6",
+      model="moonshotai/Kimi-K3",
       reasoning={"enabled": False},
       response_format={
           "type": "json_schema",
@@ -19571,7 +19571,7 @@ For example, you could extract a project name and a column count from a screensh
         ],
       },
     ],
-    model: "moonshotai/Kimi-K2.6",
+    model: "moonshotai/Kimi-K3",
     reasoning: { enabled: false },
     response_format: {
       type: "json_schema",
@@ -25417,7 +25417,7 @@ Build Tiers (Build Tier 1–5), Scale, and Enterprise tier labels have been reti
 
 ### Checking your current rate limits
 
-Every serverless inference API request returns response headers with the latest rate limits for the model you called, along with current usage and reset timing. See [Fetching latest serverless rate limits](/docs/serverless/rate-limits#fetching-latest-serverless-rate-limits) for details.
+Every serverless inference API request returns response headers with the latest rate limits for the model you called, along with current usage and reset timing. See [Inspect your current rate limit](/docs/serverless/rate-limits#inspect-your-current-rate-limit) for details.
 
 Plan workloads against the latest limits reported in response headers rather than fixed thresholds.
 
@@ -25702,7 +25702,7 @@ client = Together(api_key=TOGETHER_API_KEY)
 # Generate a story based on the top 10 most similar movies
 
 response = client.chat.completions.create(
-    model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model="Qwen/Qwen3.5-9B",
     messages=[
         {
             "role": "system",
@@ -26017,7 +26017,7 @@ def JSON_llm(user_prompt: str, schema, system_prompt: str = None):
       "Best model choice for code generation tasks.",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo":
       "Best model choice for story-telling, role-playing and fantasy tasks.",
-    "moonshotai/Kimi-K2.6":
+    "moonshotai/Kimi-K3":
       "Best model for reasoning, planning and multi-step tasks",
   };
 
@@ -26094,7 +26094,7 @@ prompt_list = [
 model_routes = {
     "moonshotai/Kimi-K2.7-Code": "Best model choice for code generation tasks.",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo": "Best model choice for story-telling, role-playing and fantasy tasks.",
-    "moonshotai/Kimi-K2.6": "Best model for reasoning, planning and multi-step tasks",
+    "moonshotai/Kimi-K3": "Best model for reasoning, planning and multi-step tasks",
 }
 
 for i, prompt in enumerate(prompt_list):
@@ -30917,7 +30917,7 @@ Now let's see if the model can use the new `read_file` tool to discover the secr
   tools = [read_file_schema]
 
   response = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=messages,
       tools=tools,
       tool_choice="auto",
@@ -30977,7 +30977,7 @@ Now we need to run the function that the model has asked for and feed the respon
               )
       # re-call the model now with the response of the tool!
       function_enriched_response = client.chat.completions.create(
-          model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+          model="Qwen/Qwen3.5-9B",
           messages=messages,
       )
       print(
@@ -31172,7 +31172,7 @@ Now we can add all three of these tools into the simple looping chat function we
           messages_history.append({"role": "user", "content": user_input})
 
           response = client.chat.completions.create(
-              model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+              model="Qwen/Qwen3.5-9B",
               messages=messages_history,
               tools=tools,
           )
@@ -31227,7 +31227,7 @@ Now we can add all three of these tools into the simple looping chat function we
                       )
 
                   function_enriched_response = client.chat.completions.create(
-                      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+                      model="Qwen/Qwen3.5-9B",
                       messages=messages_history,
                   )
 
@@ -31385,7 +31385,7 @@ TOGETHER_API_KEY=your_together_api_key
 PORT=3001
 PERSONA=kira
 STT_MODEL=openai/whisper-large-v3
-LLM_MODEL=Qwen/Qwen2.5-7B-Instruct-Turbo
+LLM_MODEL=Qwen/Qwen3.5-9B
 TTS_MODEL=hexgrad/Kokoro-82M
 TTS_VOICE=af_heart
 ```
@@ -32857,7 +32857,7 @@ Create `media-stream.ts`. This is the per-call state machine. It handles:
         persona: process.env.PERSONA || "kira",
         sttModel: process.env.STT_MODEL || "openai/whisper-large-v3",
         llmModel:
-          process.env.LLM_MODEL || "Qwen/Qwen2.5-7B-Instruct-Turbo",
+          process.env.LLM_MODEL || "Qwen/Qwen3.5-9B",
         ttsModel: process.env.TTS_MODEL || "hexgrad/Kokoro-82M",
         ttsVoice: process.env.TTS_VOICE || "af_heart",
       };
@@ -34864,7 +34864,7 @@ Resources belong to a project. Everyone with access to that project can see and 
 Together uses different terminology at each level:
 
 * **Organization members** are users who belong to your organization. They are [invited via email](https://api.together.ai/settings/organization/~current/members) or provisioned through SSO. Each member is assigned an admin or developer role at the organization level.
-* **Project collaborators** are users who have been granted access to [a specific project](https://api.together.ai/settings/projects/~current/collaborators). Collaborators can be organization members or [external collaborators](/docs/roles-permissions#external-collaborators) who participate in a project without belonging to the parent organization.
+* **Project collaborators** are users who have been granted access to [a specific project](https://api.together.ai/settings/projects/~current/collaborators). Collaborators can be organization members or [external collaborators](/docs/roles-permissions#external-collaborators-beta) who participate in a project without belonging to the parent organization.
 
 Each collaborator is assigned an admin or editor role at the project level. For a detailed breakdown of what each role can do, see [Roles & Permissions](/docs/roles-permissions).
 
@@ -35514,6 +35514,10 @@ However, for complex problems requiring strategic thinking, multi-step reasoning
 Source: https://docs.together.ai/docs/kimi-k2.6-quickstart
 
 Get the most out of Moonshot AI's Kimi K2.6 multimodal model for vision, reasoning, and agentic tool use.
+
+<Tip>
+  Kimi K2.6 is no longer available on serverless inference. Deploy it on a [dedicated endpoint](https://api.together.ai/models/moonshotai/Kimi-K2.6), or use [Kimi K3](/docs/kimi-k3-quickstart) (`moonshotai/Kimi-K3`) on serverless.
+</Tip>
 
 Kimi K2.6 is an open-source, multimodal agentic model from Moonshot AI. It accepts both text and image inputs and integrates visual and language understanding with strong agentic capabilities.
 
@@ -37145,10 +37149,10 @@ user_prompt = "What are some fun things to do in SF?"
 reference_models = [
     "zai-org/GLM-5.2",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-    "moonshotai/Kimi-K2.6",
+    "moonshotai/Kimi-K3",
     "MiniMaxAI/MiniMax-M3",
 ]
-aggregator_model = "moonshotai/Kimi-K2.6"
+aggregator_model = "moonshotai/Kimi-K3"
 aggreagator_system_prompt = """You have been provided with a set of responses from various open-source models to the latest user query. Your task is to synthesize these responses into a single, high-quality response. It is crucial to critically evaluate the information provided in these responses, recognizing that some of it may be biased or incorrect. Your response should not simply replicate the given answers but should offer a refined, accurate, and comprehensive reply to the instruction. Ensure your response is well-structured, coherent, and adheres to the highest standards of accuracy and reliability.
 
 Responses from models:"""
@@ -37213,10 +37217,10 @@ user_prompt = "What are 3 fun things to do in SF?"
 reference_models = [
     "zai-org/GLM-5.2",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-    "moonshotai/Kimi-K2.6",
+    "moonshotai/Kimi-K3",
     "MiniMaxAI/MiniMax-M3",
 ]
-aggregator_model = "moonshotai/Kimi-K2.6"
+aggregator_model = "moonshotai/Kimi-K3"
 aggreagator_system_prompt = """You have been provided with a set of responses from various open-source models to the latest user query. Your task is to synthesize these responses into a single, high-quality response. It is crucial to critically evaluate the information provided in these responses, recognizing that some of it may be biased or incorrect. Your response should not simply replicate the given answers but should offer a refined, accurate, and comprehensive reply to the instruction. Ensure your response is well-structured, coherent, and adheres to the highest standards of accuracy and reliability.
 
 Responses from models:"""
@@ -38782,9 +38786,9 @@ Building a personal website normally requires a lot of manual data entry, plus s
 Self.so uses two models, each chosen to perform a specific job:
 
 * [**Llama Guard 4 12B**](https://api.together.ai/models/meta-llama/Llama-Guard-4-12B): Content safety classification.
-* [**Kimi K2.6**](https://api.together.ai/models/moonshotai/Kimi-K2.6): Structured data extraction.
+* [**Kimi K3**](https://api.together.ai/models/moonshotai/Kimi-K3): Structured data extraction.
 
-Llama Guard is purpose-built for safety classification, and Kimi K2.6 follows schema instructions reliably for structured output generation. See [recommended models](/docs/inference/recommended-models) for our current picks.
+Llama Guard is purpose-built for safety classification, and Kimi K3 follows schema instructions reliably for structured output generation. See [recommended models](/docs/inference/recommended-models) for our current picks.
 
 ## Data flow
 
@@ -38871,7 +38875,7 @@ export const isFileContentBad = async (fileContent: string) => {
 
 ## Generate structured data
 
-The core of Self.so is turning unstructured resume text into structured JSON. The `generateResumeObject` function in [`lib/server/ai/generateResumeObject.ts`](https://github.com/nutlope/self.so/blob/main/lib/server/ai/generateResumeObject.ts) uses Kimi K2.6 with [structured outputs](/docs/inference/chat/structured-outputs) so the response always matches the schema the site renderer expects:
+The core of Self.so is turning unstructured resume text into structured JSON. The `generateResumeObject` function in [`lib/server/ai/generateResumeObject.ts`](https://github.com/nutlope/self.so/blob/main/lib/server/ai/generateResumeObject.ts) uses Kimi K3 with [structured outputs](/docs/inference/chat/structured-outputs) so the response always matches the schema the site renderer expects:
 
 ```typescript theme={null}
 import { generateText, Output } from "ai";
@@ -38885,7 +38889,7 @@ const togetherai = createTogetherAI({
 
 export const generateResumeObject = async (resumeText: string) => {
   const { output } = await generateText({
-    model: togetherai("moonshotai/Kimi-K2.6"),
+    model: togetherai("moonshotai/Kimi-K3"),
     maxRetries: 1,
     timeout: 15_000,
     maxOutputTokens: 4096,
@@ -38911,7 +38915,7 @@ export const generateResumeObject = async (resumeText: string) => {
 
 Two details in this call are worth calling out:
 
-* Kimi K2.6 is a hybrid reasoning model with reasoning on by default. Passing `reasoning: { enabled: false }` through `providerOptions` keeps extraction fast, because the schema does the work that reasoning tokens would otherwise pay for.
+* Kimi K3 is a hybrid reasoning model with reasoning on by default. Passing `reasoning: { enabled: false }` through `providerOptions` keeps extraction fast, because the schema does the work that reasoning tokens would otherwise pay for.
 * `Output.object` accepts the Zod schema directly and validates the result against it.
 
 ### Define the schema with Zod
@@ -38971,7 +38975,7 @@ The full server-side pipeline runs when a user uploads a resume:
 1. **Upload:** The PDF is uploaded to S3.
 2. **Extraction:** `pdfjs-dist` converts the PDF to plain text.
 3. **Safety check:** Llama Guard validates the content.
-4. **Generation:** Kimi K2.6 extracts the text into the `ResumeDataSchema` shape.
+4. **Generation:** Kimi K3 extracts the text into the `ResumeDataSchema` shape.
 5. **Storage:** The structured data is stored in Upstash Redis.
 6. **Rendering:** The site renders from the structured data.
 
@@ -39117,7 +39121,7 @@ You can manage project collaborators from [**Settings > Project > Collaborators*
 New collaborators are added with the **editor** role by default, unless they are an organization admin (who are admins for every project by default). An admin can change their role after they have been added.
 
 <Info>
-  The user must already belong to your [organization](/docs/organizations), unless they are being added as an [external collaborator](/docs/roles-permissions#external-collaborators).
+  The user must already belong to your [organization](/docs/organizations), unless they are being added as an [external collaborator](/docs/roles-permissions#external-collaborators-beta).
 </Info>
 
 ### Removing collaborators
@@ -39140,7 +39144,7 @@ New collaborators are added with the **editor** role by default, unless they are
 
 To add users from outside your organization as collaborators, enable **Allow external collaborators** on the project's [**Settings > Project**](https://api.together.ai/settings/projects/~current) page.
 
-Once enabled, you can add external collaborators the same way as any other collaborator. See [External collaborators](/docs/roles-permissions#external-collaborators) to learn more about their permissions.
+Once enabled, you can add external collaborators the same way as any other collaborator. See [External collaborators](/docs/roles-permissions#external-collaborators-beta) to learn more about their permissions.
 
 ## Project API keys
 
@@ -39153,7 +39157,7 @@ For details on creating, managing, and rotating API keys, see [API Keys & Authen
 Costs in the projects list and in cost analytics may be inaccurate for any project running [legacy v1 dedicated endpoints](/docs/dedicated-endpoints/migrate-from-v1).
 
 <Warning>
-  If you have external collaborators using unsupported resources, usage may be billed to their organization instead of yours. If your external collaborators are internal company employees, consider migrating them into your organization using [SSO](/docs/sso) or [organization invites](/docs/organizations#inviting-members). [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) for help with migration.
+  If you have external collaborators using unsupported resources, usage may be billed to their organization instead of yours. If your external collaborators are internal company employees, consider migrating them into your organization using [SSO](/docs/sso) or [organization invites](/docs/organizations#invitation-based-oauth). [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) for help with migration.
 </Warning>
 
 ## Common project structures
@@ -39531,7 +39535,7 @@ embeddings = [data.embedding for data in response.data]
 
 ```python theme={null}
 response = client.images.generate(
-    prompt="a flying cat", model="black-forest-labs/FLUX.1-schnell", steps=4
+    prompt="a flying cat", model="black-forest-labs/FLUX.2-dev", steps=20
 )
 
 print(response.data[0].url)
@@ -41716,7 +41720,7 @@ print(completion.choices[0].message)
 
   image = client.text_to_image(
       "Bob Marley in the style of a painting by Johannes Vermeer",
-      model="black-forest-labs/FLUX.1-schnell",  # Replace with your desired model
+      model="black-forest-labs/FLUX.2-dev",  # Replace with your desired model
   )
 
   # `image` is a PIL.Image object
@@ -41732,7 +41736,7 @@ print(completion.choices[0].message)
 
   // Generate a chat completion
   const generatedImage = await client.textToImage({
-      model: "black-forest-labs/FLUX.1-schnell",  // Replace with your desired model
+      model: "black-forest-labs/FLUX.2-dev",  // Replace with your desired model
       inputs: "Bob Marley in the style of a painting by Johannes Vermeer",
       provider: "together",  // Replace with together's provider name
       max_tokens: 500
@@ -44461,7 +44465,7 @@ const togetherai = createTogetherAI({
 });
 
 const { images } = await generateImage({
-  model: togetherai.image('black-forest-labs/FLUX.1-schnell'),
+  model: togetherai.image('black-forest-labs/FLUX.2-dev'),
   prompt: 'A delighted resplendent quetzal mid flight amidst raindrops',
 });
 
@@ -44479,7 +44483,7 @@ const togetherai = createTogetherAI({
 });
 
 const { images } = await generateImage({
-  model: togetherai.image('black-forest-labs/FLUX.1-schnell'),
+  model: togetherai.image('black-forest-labs/FLUX.2-dev'),
   prompt: 'A delighted resplendent quetzal mid flight amidst raindrops',
   size: '512x512',
   // Optional additional provider-specific request parameters
@@ -44495,7 +44499,7 @@ Together AI image models support various image dimensions that vary by model. Co
 
 Available Models:
 
-* `black-forest-labs/FLUX.1-schnell`
+* `black-forest-labs/FLUX.2-dev`
 * `black-forest-labs/FLUX.1.1-pro`
 * `black-forest-labs/FLUX.1-kontext-pro`
 * `black-forest-labs/FLUX.1-kontext-max`
@@ -47741,6 +47745,28 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="August 24, 2026">
+  ## Fine-tuning quality improvements
+
+  Training quality has improved for fine-tuning on the following models:
+
+  * `Qwen/Qwen3.5-0.8B`.
+  * `Qwen/Qwen3.5-2B`.
+  * `Qwen/Qwen3.5-4B`.
+  * `Qwen/Qwen3.5-9B`.
+  * `Qwen/Qwen3.5-27B`.
+  * `Qwen/Qwen3.5-35B-A3B`.
+  * `Qwen/Qwen3.5-35B-A3B-Base`.
+  * `Qwen/Qwen3.5-122B-A10B`.
+  * `Qwen/Qwen3.5-397B-A17B`.
+  * `Qwen/Qwen3.6-27B`.
+  * `Qwen/Qwen3.6-35B-A3B`.
+  * `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16`.
+  * `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`.
+
+  Other models are unchanged. No actions or setting changes are required to get the improvement. To pick it up on a model you've already tuned, start a new job with the same data and settings. A job you run after this release will not reproduce the loss curve of an earlier run on the same data and settings.
+</Update>
+
 <Update label="August 21, 2026">
   ## Model deprecations
 
@@ -49979,19 +50005,19 @@ Source: https://docs.together.ai/docs/error-codes
 
 An overview on error status codes, causes, and quick fix solutions.
 
-| Code                       | Cause                                                                                                                                 | Solution                                                                                                                                                                                                                                                                                      |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 400 - Invalid Request      | Misconfigured request                                                                                                                 | Ensure your request is a [Valid JSON](/docs/inference-rest#create-your-json-formatted-object) and your [API Key](https://api.together.ai/settings/projects/~current/api-keys) is correct. Also ensure you're using the right prompt format - which is different for Mistral and LLaMA models. |
-| 401 - Authentication Error | Missing or Invalid API Key                                                                                                            | Ensure you are using the correct [API Key](https://api.together.ai/settings/projects/~current/api-keys) and [supplying it correctly](/reference/chat-completions)                                                                                                                             |
-| 402 - Payment Required     | The account associated with the API key has reached its maximum allowed monthly spending limit.                                       | Adjust your [billing settings](https://api.together.ai/settings/organization/~current/billing) or make a payment to resume service.                                                                                                                                                           |
-| 403 - Bad Request          | Input token count + `max_tokens` parameter must be less than the [context](/docs/inference-models) length of the model being queried. | Set `max_tokens` to a lower number. If querying a chat model, you may set `max_tokens` to `null` and let the model decide when to stop generation.                                                                                                                                            |
-| 404 - Not Found            | Invalid Endpoint URL or model name                                                                                                    | Check your request is being made to the correct endpoint (see the [API reference](/reference/chat-completions) page for details) and that the [model being queried is available](/docs/inference-models)                                                                                      |
-| 429 - Rate limit           | Too many requests sent in a short period of time                                                                                      | Throttle the rate at which requests are sent to Together's servers (see the [rate limits](/docs/serverless/rate-limits))                                                                                                                                                                      |
-| 500 - Server Error         | Unknown server error                                                                                                                  | This error is caused by a server-side issue. Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                          |
-| 503 - Engine Overloaded    | Servers are seeing high amounts of traffic                                                                                            | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                                                       |
-| 504 - Timeout              | The request did not complete in time                                                                                                  | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                                                       |
-| 524 - Cloudflare Timeout   | The connection timed out at the network edge                                                                                          | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                                                       |
-| 529 - Server Error         | Unknown server error                                                                                                                  | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                                                       |
+| Code                       | Cause                                                                                                                                 | Solution                                                                                                                                                                                                                                                           |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 400 - Invalid Request      | Misconfigured request                                                                                                                 | Ensure your request is a [Valid JSON](/reference/chat-completions) and your [API Key](https://api.together.ai/settings/projects/~current/api-keys) is correct. Also ensure you're using the right prompt format - which is different for Mistral and LLaMA models. |
+| 401 - Authentication Error | Missing or Invalid API Key                                                                                                            | Ensure you are using the correct [API Key](https://api.together.ai/settings/projects/~current/api-keys) and [supplying it correctly](/reference/chat-completions)                                                                                                  |
+| 402 - Payment Required     | The account associated with the API key has reached its maximum allowed monthly spending limit.                                       | Adjust your [billing settings](https://api.together.ai/settings/organization/~current/billing) or make a payment to resume service.                                                                                                                                |
+| 403 - Bad Request          | Input token count + `max_tokens` parameter must be less than the [context](/docs/inference-models) length of the model being queried. | Set `max_tokens` to a lower number. If querying a chat model, you may set `max_tokens` to `null` and let the model decide when to stop generation.                                                                                                                 |
+| 404 - Not Found            | Invalid Endpoint URL or model name                                                                                                    | Check your request is being made to the correct endpoint (see the [API reference](/reference/chat-completions) page for details) and that the [model being queried is available](/docs/inference-models)                                                           |
+| 429 - Rate limit           | Too many requests sent in a short period of time                                                                                      | Throttle the rate at which requests are sent to Together's servers (see the [rate limits](/docs/serverless/rate-limits))                                                                                                                                           |
+| 500 - Server Error         | Unknown server error                                                                                                                  | This error is caused by a server-side issue. Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                               |
+| 503 - Engine Overloaded    | Servers are seeing high amounts of traffic                                                                                            | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                            |
+| 504 - Timeout              | The request did not complete in time                                                                                                  | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                            |
+| 524 - Cloudflare Timeout   | The connection timed out at the network edge                                                                                          | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                            |
+| 529 - Server Error         | Unknown server error                                                                                                                  | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                            |
 
 If you are seeing other error codes or the solutions do not work, [contact support](https://www.together.ai/contact) for help.
 
@@ -51873,7 +51899,7 @@ Other hardware is available on request. [Contact sales](https://www.together.ai/
 
 #### `gpu_count`
 
-The number of GPUs to allocate per replica. For multi-GPU inference with tensor parallelism, set this higher and use `use_torchrun=True` in your Sprocket. See [Multi-GPU / Distributed Inference](/reference/dci-reference-sprocket#multi-gpu--distributed-inference).
+The number of GPUs to allocate per replica. For multi-GPU inference with tensor parallelism, set this higher and use `use_torchrun=True` in your Sprocket. See [Multi-GPU / distributed inference](/docs/deployments-sprocket#multi-gpu--distributed-inference).
 
 ```toml theme={null}
 [tool.jig.deploy]

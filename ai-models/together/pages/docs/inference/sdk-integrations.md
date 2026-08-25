@@ -146,7 +146,7 @@ For RAG patterns, see [RAG integrations](/docs/inference/embeddings/rag), the [L
   )
 
   stream = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=[
           {
               "role": "user",
@@ -173,7 +173,7 @@ For RAG patterns, see [RAG integrations](/docs/inference/embeddings/rag), the [L
   });
 
   const stream = await client.chat.completions.create({
-    model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model: "Qwen/Qwen3.5-9B",
     messages: [
       { role: "user", content: "What are some fun things to do in New York?" },
     ],
@@ -191,7 +191,7 @@ For RAG patterns, see [RAG integrations](/docs/inference/embeddings/rag), the [L
     -H "Helicone-Auth: Bearer $HELICONE_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
-      "model": "Qwen/Qwen2.5-7B-Instruct-Turbo",
+      "model": "Qwen/Qwen3.5-9B",
       "messages": [
         {"role": "user", "content": "What are some fun things to do in New York?"}
       ],

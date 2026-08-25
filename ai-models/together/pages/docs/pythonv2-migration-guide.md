@@ -282,7 +282,7 @@ embeddings = [data.embedding for data in response.data]
 
 ```python theme={null}
 response = client.images.generate(
-    prompt="a flying cat", model="black-forest-labs/FLUX.1-schnell", steps=4
+    prompt="a flying cat", model="black-forest-labs/FLUX.2-dev", steps=20
 )
 
 print(response.data[0].url)

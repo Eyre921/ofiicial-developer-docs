@@ -20,7 +20,7 @@ In parallel function calling, the same function is called multiple times simulta
   client = Together()
 
   response = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=[
           {
               "role": "system",
@@ -69,7 +69,7 @@ In parallel function calling, the same function is called multiple times simulta
   const together = new Together();
 
   const response = await together.chat.completions.create({
-    model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model: "Qwen/Qwen3.5-9B",
     messages: [
       {
         role: "system",
@@ -115,7 +115,7 @@ In parallel function calling, the same function is called multiple times simulta
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "Qwen/Qwen2.5-7B-Instruct-Turbo",
+         "model": "Qwen/Qwen3.5-9B",
          "messages": [
            {
              "role": "system",
@@ -245,7 +245,7 @@ This pattern combines parallel and multiple function calling: multiple different
   ]
 
   response = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=[
           {
               "role": "user",
@@ -314,7 +314,7 @@ This pattern combines parallel and multiple function calling: multiple different
   ];
 
   const response = await together.chat.completions.create({
-    model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model: "Qwen/Qwen3.5-9B",
     messages: [
       {
         role: "user",
@@ -333,7 +333,7 @@ This pattern combines parallel and multiple function calling: multiple different
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "Qwen/Qwen2.5-7B-Instruct-Turbo",
+         "model": "Qwen/Qwen3.5-9B",
          "messages": [
            {
              "role": "user",

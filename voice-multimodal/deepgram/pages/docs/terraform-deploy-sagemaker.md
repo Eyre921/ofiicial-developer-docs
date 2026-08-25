@@ -19,6 +19,7 @@ Before running Terraform, you must subscribe to a Deepgram product on the AWS Ma
 ## Prerequisites
 
 * [Terraform](https://developer.hashicorp.com/terraform/install) 1.5 or later
+* The [Terraform AWS provider](https://registry.terraform.io/providers/hashicorp/aws/latest) 5.56 or later, which is the first release supporting `inference_ami_version`
 * AWS credentials configured for the target account (via environment variables, shared credentials file, or an IAM role)
 * An active AWS Marketplace subscription to a [Deepgram SageMaker product](https://aws.amazon.com/marketplace/search/results?searchTerms=deepgram\&CREATOR=6efa21f9-9a33-4cae-ba44-756436fa71dd\&FULFILLMENT_OPTION_TYPE=SAGEMAKER_MODEL\&filters=CREATOR%2CFULFILLMENT_OPTION_TYPE). You can subscribe through the console or, if you provision infrastructure as code, [via the Marketplace API](#subscribe-to-a-deepgram-product-via-the-marketplace-api).
 * The **Model Package ARN** for the subscribed product. See [Find the Model Package ARN](#find-the-model-package-arn) for how to locate it in the AWS Marketplace **Manage subscriptions** console.
@@ -202,6 +203,23 @@ variable "instance_type" {
   default     = "ml.g5.2xlarge"
 }
 
+variable "inference_ami_version" {
+  description = "SageMaker-managed host AMI (NVIDIA driver + container runtime) for the production variant. Defaults to the latest available version. Set to \"\" to use the SageMaker default for your instance type."
+  type        = string
+  default     = "al2023-ami-sagemaker-inference-gpu-4-1"
+
+  validation {
+    condition = contains([
+      "",
+      "al2-ami-sagemaker-inference-gpu-2",
+      "al2-ami-sagemaker-inference-gpu-2-1",
+      "al2-ami-sagemaker-inference-gpu-3-1",
+      "al2023-ami-sagemaker-inference-gpu-4-1",
+    ], var.inference_ami_version)
+    error_message = "inference_ami_version must be a supported GPU AMI version, or \"\" to use the SageMaker default."
+  }
+}
+
 variable "initial_instance_count" {
   description = "Number of instances to launch at endpoint creation."
   type        = number
@@ -291,7 +309,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.0"
+      version = ">= 5.56" # inference_ami_version requires provider >= 5.56.0
     }
   }
 }
@@ -397,6 +415,7 @@ resource "aws_sagemaker_endpoint_configuration" "deepgram" {
     model_name             = aws_sagemaker_model.deepgram.name
     initial_instance_count = var.initial_instance_count
     instance_type          = var.instance_type
+    inference_ami_version  = var.inference_ami_version != "" ? var.inference_ami_version : null
   }
 
   dynamic "async_inference_config" {
@@ -562,11 +581,12 @@ output "async_s3_output_path" {
 Create a `terraform.tfvars` file with your specific values. Replace the `model_package_arn` with the ARN from your AWS Marketplace subscription.
 
 ```hcl title="terraform.tfvars"
-aws_region        = "us-east-1"
-model_package_arn = "arn:aws:sagemaker:us-east-1:123456789012:model-package/deepgram-stt-nova-3/1"
-model_name        = "deepgram-streaming-stt"
-endpoint_name     = "my-deepgram-stt"
-instance_type     = "ml.g5.2xlarge"
+aws_region            = "us-east-1"
+model_package_arn     = "arn:aws:sagemaker:us-east-1:123456789012:model-package/deepgram-stt-nova-3/1"
+model_name            = "deepgram-streaming-stt"
+endpoint_name         = "my-deepgram-stt"
+instance_type         = "ml.g5.2xlarge"
+inference_ami_version = "al2023-ami-sagemaker-inference-gpu-4-1"
 
 # Optional: Deepgram configuration overrides
 deepgram_engine_env = {
@@ -646,6 +666,29 @@ Choose an instance type based on the Deepgram product you are deploying. GPU-acc
 | Text-to-Speech (Aura)         | `ml.g5.12xlarge`          | 4 NVIDIA A10G GPUs (TTS requires 2+ GPUs) |
 
 For a full list of compatible instances, see the [Deployment Environments](/docs/self-hosted-deployment-environments) hardware specifications.
+
+The host driver your instances boot with is set separately — see [Inference AMI versions](#inference-ami-versions).
+
+### Inference AMI versions
+
+A SageMaker Endpoint Configuration can pin an **inference AMI version** — the SageMaker-managed host image supplying the NVIDIA driver and container runtime your instances boot with. It is independent of the Deepgram container: it determines which driver the container runs against. If you do not set it, SageMaker selects a default for your instance type, which on older GPU families is an older driver.
+
+| AMI version                              | NVIDIA driver | CUDA |
+| ---------------------------------------- | ------------- | ---- |
+| `al2-ami-sagemaker-inference-gpu-2`      | 535           | 12.2 |
+| `al2-ami-sagemaker-inference-gpu-2-1`    | 535           | 12.2 |
+| `al2-ami-sagemaker-inference-gpu-3-1`    | 550           | 12.4 |
+| `al2023-ami-sagemaker-inference-gpu-4-1` | 580           | 13.0 |
+
+Deepgram recommends the latest available version, `al2023-ami-sagemaker-inference-gpu-4-1`, which provides the NVIDIA 580 driver. Deepgram containers select the correct CUDA compatibility layer at startup based on the host driver they detect, so a newer host driver requires no change to your deployment.
+
+Support for older driver versions may be removed in the latest Deepgram Model Package. Pin an up-to-date inference AMI version rather than relying on the SageMaker default for your instance type.
+
+For the full list of AMI versions and their driver and CUDA versions, see [`InferenceAmiVersion`](https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_ProductionVariant.html#sagemaker-Type-ProductionVariant-InferenceAmiVersion) in the SageMaker API reference. For the driver each instance family runs by default, see the [SageMaker GPU driver table](https://docs.aws.amazon.com/sagemaker/latest/dg/inference-gpu-drivers.html#inference-gpu-drivers-versions).
+
+Set it through the `inference_ami_version` variable. Set it to an empty string to use the SageMaker default for your instance type instead.
+
+Changing `inference_ami_version` on an existing deployment replaces the endpoint configuration and updates the endpoint. Expect a rolling instance replacement, not an in-place driver upgrade.
 
 ### Environment variable overrides
 

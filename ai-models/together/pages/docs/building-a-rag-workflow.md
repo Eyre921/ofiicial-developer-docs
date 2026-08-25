@@ -239,7 +239,7 @@ client = Together(api_key=TOGETHER_API_KEY)
 # Generate a story based on the top 10 most similar movies
 
 response = client.chat.completions.create(
-    model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model="Qwen/Qwen3.5-9B",
     messages=[
         {
             "role": "system",

@@ -10067,7 +10067,7 @@ To configure Neon MCP and agent skills across supported tools from the command l
 npx neon@latest init
 ```
 
-That flow can set up OAuth, API keys, MCP configuration, and project-level skills where applicable. See the [`neon init` reference](https://neon.com/docs/cli/init) for details.
+That flow can set up OAuth, API keys, MCP configuration, and project-level skills where applicable. See the [`neon init` reference](https://neon.com/docs/cli/init) for details. To install just the Neon MCP server for Codex, run [`npx neon@latest mcp --agent codex`](https://neon.com/docs/cli/mcp).
 
 ## Use skills outside the Codex plugin
 
@@ -10278,7 +10278,7 @@ If you want Neon to configure AI tooling automatically, run:
 npx neon@latest init
 ```
 
-This configures MCP and installs Neon agent skills for supported editors.
+This configures MCP and installs Neon agent skills for supported editors. To install just the Neon MCP server for Cursor, run [`npx neon@latest mcp --agent cursor`](https://neon.com/docs/cli/mcp).
 
 ## Learn more
 
@@ -11257,11 +11257,11 @@ Be sure to test different index tuning parameter settings to find the right bala
 
 --- [Document source](https://neon.com/docs/ai/connect-mcp-clients-to-neon.md) ---
 
-> Summary: Connection guide for wiring MCP clients (Cursor, Claude Code, VS Code with GitHub Copilot, ChatGPT, Cline, Windsurf, Zed, Claude Desktop, and more via the add-mcp CLI) to the Neon MCP Server so AI assistants can query and manage Lakebase Postgres databases on Neon using natural language. Use this page when you need per-client setup instructions for `npx neon@latest init`, OAuth, or API key authentication against `https://mcp.neon.tech/mcp`. Also covers troubleshooting OAuth errors (invalid redirect URI, stale ~/.mcp-auth cache).
+> Summary: Connect MCP clients (Cursor, Claude Code, VS Code, ChatGPT, and more) to the Neon MCP Server so AI assistants can query and manage your Lakebase Postgres databases on Neon in natural language. Covers per-client setup, OAuth and API key auth, and OAuth troubleshooting.
 
 # Connect MCP clients to Neon
 
-Learn how to connect MCP clients such as Cursor, Claude Code, VS Code, ChatGPT, and other tools to your Lakebase Postgres database on Neon.
+Connect MCP clients like Cursor, Claude Code, VS Code, and ChatGPT to your Lakebase Postgres database on Neon.
 
 Connect MCP clients to the Neon MCP Server to interact with your Lakebase Postgres databases in natural language.
 
@@ -11281,13 +11281,21 @@ npx neon@latest init
 
 **Note:** Each run of `npx neon@latest init` creates a new Neon API key. If you run it multiple times, review your [API keys](https://console.neon.tech/app/settings/api-keys) and revoke any you no longer need.
 
-If you only want the MCP server and nothing else, use:
+If you only want the MCP server and nothing else, run [`neon mcp`](https://neon.com/docs/cli/mcp):
+
+```bash
+neon mcp
+```
+
+It prompts for config location, agents, and auth, then writes the config. Pass `-y` to run non-interactively, or `--oauth` to skip minting a key. See the [`neon mcp` reference](https://neon.com/docs/cli/mcp) for all flags and supported agents.
+
+To use the lower-level `add-mcp` tool directly instead:
 
 ```bash
 npx add-mcp https://mcp.neon.tech/mcp
 ```
 
-This adds the MCP config to your editor's configuration files. Add `-g` for global (user-level) setup instead of project-level. Restart your editor (or enable the MCP server in your editor's settings); when you use the connection, an OAuth window will open to authorize. For API key authentication, add `--header "Authorization: Bearer $NEON_API_KEY"`. For more options, see the [add-mcp repository](https://github.com/neondatabase/add-mcp).
+This writes the MCP config to your editor. Add `-g` for global (user-level) instead of project-level, then restart your editor. On first use, an OAuth window opens to authorize; for API key auth, add `--header "Authorization: Bearer $NEON_API_KEY"`. See the [add-mcp repository](https://github.com/neondatabase/add-mcp) for more.
 
 ## Supported agents (add-mcp)
 
@@ -12405,7 +12413,7 @@ Hackable, fully-featured, pre-built [starter apps](https://github.com/neondataba
 
 --- [Document source](https://neon.com/docs/ai/neon-mcp-server.md) ---
 
-> Summary: The Neon MCP Server implements the Model Context Protocol (MCP), letting AI assistants interact with your Neon projects on your behalf. Set up with `npx neon@latest init` or use the config generator. Supports OAuth and API key auth.
+> Summary: The Neon MCP Server implements the Model Context Protocol (MCP), letting AI assistants interact with your Neon projects on your behalf. Set up with `npx neon@latest mcp` or use the config generator. Supports OAuth and API key auth.
 
 # Neon MCP Server overview
 
@@ -12417,6 +12425,26 @@ The Neon MCP Server implements the Model Context Protocol (MCP), letting AI assi
 
 The Neon MCP Server grants broad database management capabilities. **Always review and authorize actions requested by the LLM before execution.** Restrict access to trusted users only. See [MCP security guidance](https://neon.com/docs/ai/neon-mcp-server#mcp-security-guidance).
 
+## Quick setup
+
+Install the Neon MCP server into your coding agents with [`neon mcp`](https://neon.com/docs/cli/mcp):
+
+```bash
+npx neon@latest mcp
+```
+
+It prompts for where to write the config, which agents to install into, and how to authenticate, then writes it for you.
+
+To set up the MCP server together with agent skills and editor tooling, run [`neon init`](https://neon.com/docs/cli/init):
+
+```bash
+npx neon@latest init
+```
+
+## Config generator
+
+Use the generator to build an MCP config for your editor and auth method, including the `Authorization` header for API key or remote agent setups.
+
 ## Claude connector
 
 The Neon MCP server is an official Claude connector, so you don't need a custom connector URL. To add it in [Claude.ai](https://claude.ai) or Claude Desktop:
@@ -12426,19 +12454,7 @@ The Neon MCP server is an official Claude connector, so you don't need a custom 
 3. Click **Browse connectors** (top-right of that page), find **Neon**, and add it.
 4. Authorize access to your Neon account.
 
-For other clients, use Quick setup or the config generator below.
-
-## Quick setup
-
-```bash
-npx neon@latest init
-```
-
-Runs `neon init` via npx to configure MCP and other integrations for your editor. If you only want the MCP server, use the config generator below.
-
-## Config generator
-
-Use the generator to build an MCP config for your editor and auth method, including the `Authorization` header for API key or remote agent setups.
+For other clients, use Quick setup or the config generator above.
 
 ## Access control
 
@@ -20198,6 +20214,12 @@ Query branch logs.
 | `neon logs fields`               | List the log fields whose values can be discovered on a branch |
 | `neon logs query`                | Query log records on a branch                                  |
 
+### mcp
+
+Install the Neon MCP server into coding agents.
+
+Usage: `neon mcp [options]`
+
 ### me
 
 Show current user.
@@ -22699,7 +22721,7 @@ Use `--agent` (alias `-a`) to run `init` in agent/JSON mode, designed for when a
 
 ## Coding assistant support
 
-`init` is backed by the `neon-init` package bundled with `neon`. Besides Cursor, VS Code, and Claude Code, the interactive flow can configure any client that [add-mcp supports](https://neon.com/docs/ai/connect-mcp-clients-to-neon#supported-agents-add-mcp). To register only the Neon MCP server in a client config (no `init`, no agent skills, no extension install), run `npx add-mcp https://mcp.neon.tech/mcp`. See [Connect MCP clients to Neon](https://neon.com/docs/ai/connect-mcp-clients-to-neon).
+`init` is backed by the `neon-init` package bundled with `neon`. Besides Cursor, VS Code, and Claude Code, the interactive flow can configure any client that [add-mcp supports](https://neon.com/docs/ai/connect-mcp-clients-to-neon#supported-agents-add-mcp). To register only the Neon MCP server in a client config (no `init`, no agent skills, no extension install), run [`neon mcp`](https://neon.com/docs/cli/mcp), or `npx add-mcp https://mcp.neon.tech/mcp` for the lower-level tool directly. See [Connect MCP clients to Neon](https://neon.com/docs/ai/connect-mcp-clients-to-neon).
 
 ## What gets created
 
@@ -23600,6 +23622,129 @@ curl "https://console.neon.tech/telemetry/v1/projects/$PROJECT_ID/branches/$BRAN
 The stream label is `entity_type` (not `--source`), so a LogQL selector reads `{entity_type="function"}`. This is a read-only subset, not a push endpoint or a complete Loki deployment. A Loki client that builds its own paths may need a different root: a Grafana data source, for example, appends `/loki/api/v1` to whatever URL it is given. Confirm the data-source URL against this base rather than pasting it verbatim.
 
 Like the CLI, this API reads logs only on branches in **AWS US East (Ohio) (`aws-us-east-2`)**, the only region where branch logs are available during the beta period. A branch in any other region returns `404`.
+
+--- [Document source](https://neon.com/docs/cli/mcp.md) ---
+
+> Summary: The Neon CLI `mcp` command installs the [Neon MCP Server](/docs/ai/neon-mcp-server) into your coding agents by writing their MCP config for you. Run it with no flags for an interactive walkthrough, or pass flags to skip the prompts and script the install. It handles the server URL, authentication, and which tools each agent gets.
+
+# Neon CLI command: mcp
+
+Install the Neon MCP Server into your coding agents
+
+The `mcp` command installs the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server) into your coding agents by writing their MCP config for you. It points each agent at the hosted server (`https://mcp.neon.tech/mcp`), sets up authentication, and can narrow which tools the agent sees.
+
+Run `neon mcp` with no flags for an interactive walkthrough: it asks whether to write global or project-level config, which detected agents to install into, and whether to authenticate with a minted API key or OAuth, then shows you what it will do before writing anything. Pass flags to skip the prompts and run it non-interactively, which is what you want in scripts or a headless environment.
+
+**mcp vs init:**
+
+[`neon init`](https://neon.com/docs/cli/init) is the broader onboarding command: it sets up the MCP Server along with agent skills and editor config. Use `mcp` when you only want to install the Neon MCP Server into your agents.
+
+## Usage
+
+```bash
+neon mcp [options]
+```
+
+## Options
+
+| Option                      | Description                                                                                                                                                                        | Type    | Default | Required |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a`             | Coding agent to install into (repeatable). Skips the agent picker                                                                                                                  | array   | —       |    No    |
+| `--category`                | MCP tool category (repeatable or comma-separated). Default: all                                                                                                                    | array   | —       |    No    |
+| `--oauth`                   | Write the server URL only. The agent prompts for Neon sign-in on first use. No CLI login, no API key minted. Skips the auth question                                               | boolean | `false` |    No    |
+| `--project`                 | Write project-level MCP config. Skips the config-location question. Does not change the minted key                                                                                 | boolean | `false` |    No    |
+| `--project-id`              | Pin MCP tools to one Neon project (?projectId=). Does not change the minted key. Interactive asks only for a linked project-folder install                                         | string  | —       |    No    |
+| `--read-only`, `--readonly` | Restrict MCP tools to read-only (?readonly=true). Not prompted. Does not change the minted key                                                                                     | boolean | `false` |    No    |
+| `--yes`, `-y`               | Skip prompts. Defaults to global config, every detected agent and a minted account-wide API key. --project, --oauth, --agent, --read-only, --project-id and --category still apply | boolean | `false` |    No    |
+
+### Authentication
+
+By default, `mcp` mints a new Neon API key and writes it into each agent's config. Minting requires you to already be signed in, so run [`neon auth`](https://neon.com/docs/cli/auth) first or pass `--api-key`. If you aren't authenticated, the command stops and tells you to sign in, pass `--api-key`, or use `--oauth`.
+
+**Warning: Minted keys are account-wide**
+
+A minted API key reaches everything your account can access, in every organization. The command prints the key's id when it mints one. Revoke it with [`neon api-keys revoke <id>`](https://neon.com/docs/cli/api-keys).
+
+To install without minting a key, pass `--oauth`. This writes the server URL only, and the agent prompts you to sign in to Neon on first use. When `mcp` finds a Neon API key already configured for an agent, it reuses that key instead of minting a new one.
+
+### Choosing agents
+
+Without `--agent`, the interactive command detects installed agents and lets you pick from them. In non-interactive mode, `-y` installs into every detected agent. Pass `--agent <name>` (repeatable) to name agents explicitly and skip the picker.
+
+The supported agents are `antigravity`, `cline`, `cline-cli`, `claude-code`, `codex`, `cursor`, `gemini-cli`, `goose`, `github-copilot-cli`, `grok-build`, `mcporter`, `opencode`, `vscode`, `windsurf`, and `zed`. A few names also accept aliases (`claude` for `claude-code`, `copilot` for `vscode`, `gemini` for `gemini-cli`). Passing an unknown agent stops the command and prints the current supported list. A supported agent that can't take the chosen config (for example, one with no project-level config file when you pass `--project`) is reported and skipped.
+
+### Scoping the tools
+
+By default the server exposes every MCP tool. Use these flags to narrow what an agent can do:
+
+- `--read-only` hides the write tools by adding `?readonly=true` to the server URL.
+- `--category <name>` limits tools to one or more categories (repeatable, or comma-separated). Categories are `projects`, `branches`, `schema`, `querying`, `neon_auth`, `data_api`, `observability`, and `docs`.
+- `--project-id <id>` pins the tools to a single Neon project with `?projectId=`.
+
+These flags shape the server URL only. They don't change the scope of a minted API key.
+
+### Global vs project config
+
+By default `mcp` writes global (per-user) agent config. Pass `--project` to write project-level config in the current directory instead, so the setup travels with the repository. If a project-level config file is tracked by git, the command refuses to write an API key into it. Use `--oauth` in that case, or untrack the file first.
+
+## Examples
+
+Run the interactive install. It walks you through config location, agents, and authentication, then asks you to confirm:
+
+```bash
+neon mcp
+```
+
+Install non-interactively into every detected agent, using global config and a freshly minted API key. You need to be signed in already for the mint to succeed:
+
+```bash
+neon mcp -y
+```
+
+Install without minting a key. Each agent prompts you to sign in to Neon on first use:
+
+```bash
+neon mcp --oauth
+```
+
+Install into specific agents only:
+
+```bash
+neon mcp --agent cursor --agent claude-code
+```
+
+Write project-level config that travels with the repository. Here, `--oauth` skips minting a key and `--agent` names the target directly, so the command runs without prompts:
+
+```bash
+neon mcp --oauth --project --agent cursor
+```
+
+```text
+INFO: Wrote /home/user/my-app/.cursor/mcp.json
+INFO: URL: https://mcp.neon.tech/mcp
+MCP
+Agent   Status
+cursor  installed
+INFO: The agent will prompt for Neon sign-in on first use.
+```
+
+Give the agent read-only access:
+
+```bash
+neon mcp --read-only
+```
+
+Limit the agent to schema and querying tools:
+
+```bash
+neon mcp --category querying --category schema
+```
+
+Pin the MCP tools to a single project:
+
+```bash
+neon mcp --project-id cold-grass-40154007
+```
 
 --- [Document source](https://neon.com/docs/cli/me.md) ---
 
@@ -61675,6 +61820,8 @@ npx neon@latest init
 **Note:** `neon init` installs or updates the Neon CLI and sets up your editor tooling: authentication, agent skills, and optionally the MCP server. It doesn't create a Neon project, though; your agent does that when you ask it to get started.
 
 The wizard asks which editor to configure, then signs you in, creates an API key, installs [agent skills](https://neon.com/docs/ai/agent-skills), optionally configures the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server), and (for Cursor and VS Code) installs the [Neon Local Connect extension](https://marketplace.visualstudio.com/items?itemName=databricks.neon-local-connect). Run it from your project root so the skills land in the right place. For details and manual setup, see the [`neon init` reference](https://neon.com/docs/cli/init).
+
+If you only want the MCP server, without the skills or extension, run [`npx neon@latest mcp`](https://neon.com/docs/cli/mcp) instead.
 
 ## Tell your agent
 

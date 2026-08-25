@@ -80,7 +80,7 @@ Here's an example of passing the result of a tool call from one completion into 
 
   # 2. Prompt the model with tools defined
   response = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=messages,
       tools=tools,
   )
@@ -121,7 +121,7 @@ Here's an example of passing the result of a tool call from one completion into 
 
       # 5. The model should be able to give a response with the function results!
       function_enriched_response = client.chat.completions.create(
-          model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+          model="Qwen/Qwen3.5-9B",
           messages=messages,
       )
       print(
@@ -213,7 +213,7 @@ Here's an example of passing the result of a tool call from one completion into 
   ];
 
   const response = await together.chat.completions.create({
-    model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model: "Qwen/Qwen3.5-9B",
     messages,
     tools,
   });
@@ -239,7 +239,7 @@ Here's an example of passing the result of a tool call from one completion into 
     }
 
     const functionEnrichedResponse = await together.chat.completions.create({
-      model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model: "Qwen/Qwen3.5-9B",
       messages,
       tools,
     });
@@ -668,7 +668,7 @@ Multi-turn function calling maintains context across multiple conversation turns
     messages.push({ role: "user", content: userInput });
 
     const response = await together.chat.completions.create({
-      model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model: "Qwen/Qwen3.5-9B",
       messages,
       tools,
     });
@@ -704,7 +704,7 @@ Multi-turn function calling maintains context across multiple conversation turns
       }
 
       const finalResponse = await together.chat.completions.create({
-        model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+        model: "Qwen/Qwen3.5-9B",
         messages,
       });
 

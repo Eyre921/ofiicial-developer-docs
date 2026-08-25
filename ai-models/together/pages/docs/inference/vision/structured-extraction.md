@@ -41,7 +41,7 @@ For example, you could extract a project name and a column count from a screensh
               ],
           }
       ],
-      model="moonshotai/Kimi-K2.6",
+      model="moonshotai/Kimi-K3",
       reasoning={"enabled": False},
       response_format={
           "type": "json_schema",
@@ -79,7 +79,7 @@ For example, you could extract a project name and a column count from a screensh
         ],
       },
     ],
-    model: "moonshotai/Kimi-K2.6",
+    model: "moonshotai/Kimi-K3",
     reasoning: { enabled: false },
     response_format: {
       type: "json_schema",

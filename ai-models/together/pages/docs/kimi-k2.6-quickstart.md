@@ -6,6 +6,10 @@ path: docs/kimi-k2.6-quickstart
 
 Get the most out of Moonshot AI's Kimi K2.6 multimodal model for vision, reasoning, and agentic tool use.
 
+<Tip>
+  Kimi K2.6 is no longer available on serverless inference. Deploy it on a [dedicated endpoint](https://api.together.ai/models/moonshotai/Kimi-K2.6), or use [Kimi K3](/docs/kimi-k3-quickstart) (`moonshotai/Kimi-K3`) on serverless.
+</Tip>
+
 Kimi K2.6 is an open-source, multimodal agentic model from Moonshot AI. It accepts both text and image inputs and integrates visual and language understanding with strong agentic capabilities.
 
 K2.6 supports both instant and thinking modes and excels at multi-turn function calling with images interleaved between tool calls.

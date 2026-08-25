@@ -146,7 +146,7 @@ Together model IDs are namespaced (`openai/gpt-oss-20b`, `meta-llama/Llama-4-Mav
   * Some non-reasoning models (for example `meta-llama/Llama-3.3-70B-Instruct-Turbo`) return `cached_tokens` flat at the top level of `usage`, with no `*_details` objects.
 
   A client configured for only one shape will return `0` for all others (with no error message). Fall back across both locations, for example `(usage.prompt_tokens_details or {}).get("cached_tokens") or usage.get("cached_tokens", 0)`.
-* Reasoning models return the chain of thought in a `reasoning` field on the assistant message (not OpenAI's nested `reasoning` object). Pass it back under the same `reasoning` key when you send a prior turn to the API for preserved thinking or multi-turn tool calling; the older `reasoning_content` key is still accepted on input for backward compatibility. See [Reasoning](/docs/inference/chat/reasoning#handle-reasoning-tokens) for details.
+* Reasoning models return the chain of thought in a `reasoning` or `reasoning_content` field on the assistant message (not OpenAI's nested `reasoning` object). The field name depends on the model. Pass it back under the same key when you send a prior turn to the API for preserved thinking or multi-turn tool calling. See [Reasoning](/docs/inference/chat/reasoning#handle-reasoning-tokens) for details.
 * `id` and `system_fingerprint` are present but use Together's formats. Don't parse them as OpenAI IDs.
 * `images.generate` returns `url` or `b64_json` per the `response_format` param, matching OpenAI. Some image models also return Together-specific metadata fields (for example `seed`).
 

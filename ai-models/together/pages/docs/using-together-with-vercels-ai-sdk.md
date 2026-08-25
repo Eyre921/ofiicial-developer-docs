@@ -179,7 +179,7 @@ const togetherai = createTogetherAI({
 });
 
 const { images } = await generateImage({
-  model: togetherai.image('black-forest-labs/FLUX.1-schnell'),
+  model: togetherai.image('black-forest-labs/FLUX.2-dev'),
   prompt: 'A delighted resplendent quetzal mid flight amidst raindrops',
 });
 
@@ -197,7 +197,7 @@ const togetherai = createTogetherAI({
 });
 
 const { images } = await generateImage({
-  model: togetherai.image('black-forest-labs/FLUX.1-schnell'),
+  model: togetherai.image('black-forest-labs/FLUX.2-dev'),
   prompt: 'A delighted resplendent quetzal mid flight amidst raindrops',
   size: '512x512',
   // Optional additional provider-specific request parameters
@@ -213,7 +213,7 @@ Together AI image models support various image dimensions that vary by model. Co
 
 Available Models:
 
-* `black-forest-labs/FLUX.1-schnell`
+* `black-forest-labs/FLUX.2-dev`
 * `black-forest-labs/FLUX.1.1-pro`
 * `black-forest-labs/FLUX.1-kontext-pro`
 * `black-forest-labs/FLUX.1-kontext-max`

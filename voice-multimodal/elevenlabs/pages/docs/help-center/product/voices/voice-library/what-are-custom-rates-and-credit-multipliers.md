@@ -14,10 +14,10 @@ When you use a voice with a custom rate to generate audio, this will have a cred
 
 If a voice has a credit multiplier in place, this will be displayed as a tag in the Voice Library:
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/35970940876689" alt="" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d86ddc91232731c1ef5de097ac38d4201e993e08b40164a7831bacbac7eec32e/assets/images/help-center/product/voices/voice-library/what-are-custom-rates-and-credit-multipliers.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260825T103310Z&X-Amz-Expires=604800&X-Amz-Signature=f50f76016ea6ee5dc403bb42dbc80acea0e24c37624955eac3af7f7786af5bc1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
 
 In Speech Synthesis, you will see a notification that the voice has a credit multiplier in place:<br />
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/30603895331089" alt="" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e9e67cad1e6482fee0cf9f08bb492f5a26ab29a54cb9e2be8985ec657a6a13b3/assets/images/help-center/product/voices/voice-library/what-are-custom-rates-and-credit-multipliers-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260825T103310Z&X-Amz-Expires=604800&X-Amz-Signature=dd51d9215125e829cde95c01bcc1f69f0778fe844b78bdce956526514a2757d0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
 
 The credit multiplier that applies for generating audio is based on the custom rate chosen by the voice owner as well as the subscription plan of the user of the voice.

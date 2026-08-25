@@ -1208,6 +1208,23 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "minimum": 0,
                 "maximum": 2359,
                 "description": "HHMM UTC clock time; the minute component must be 00-59"
+              },
+              "utc_days": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "monday",
+                    "tuesday",
+                    "wednesday",
+                    "thursday",
+                    "friday",
+                    "saturday",
+                    "sunday"
+                  ]
+                },
+                "description": "UTC weekdays the entry applies on; absent means every day"
               }
             },
             "required": [
@@ -1224,7 +1241,7 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "utc_start"
               ]
             },
-            "description": "Time-window qualifiers: utc_start and utc_end must be declared together and must differ; the window is half-open [utc_start, utc_end) and may wrap midnight."
+            "description": "Time-window qualifiers: utc_start and utc_end must be declared together and must differ; the window is half-open [utc_start, utc_end) and may wrap midnight. utc_days scopes the entry to specific UTC weekdays: with a window it scopes the window, without one it covers the listed whole UTC days."
           },
           {
             "type": "object",
@@ -1277,6 +1294,23 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "minimum": 0,
                 "maximum": 2359,
                 "description": "HHMM UTC clock time; the minute component must be 00-59"
+              },
+              "utc_days": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "monday",
+                    "tuesday",
+                    "wednesday",
+                    "thursday",
+                    "friday",
+                    "saturday",
+                    "sunday"
+                  ]
+                },
+                "description": "UTC weekdays the entry applies on; absent means every day"
               }
             },
             "required": [
@@ -1293,7 +1327,7 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "utc_start"
               ]
             },
-            "description": "Time-window qualifiers: utc_start and utc_end must be declared together and must differ; the window is half-open [utc_start, utc_end) and may wrap midnight."
+            "description": "Time-window qualifiers: utc_start and utc_end must be declared together and must differ; the window is half-open [utc_start, utc_end) and may wrap midnight. utc_days scopes the entry to specific UTC weekdays: with a window it scopes the window, without one it covers the listed whole UTC days."
           },
           {
             "type": "object",
@@ -1346,6 +1380,23 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "minimum": 0,
                 "maximum": 2359,
                 "description": "HHMM UTC clock time; the minute component must be 00-59"
+              },
+              "utc_days": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "monday",
+                    "tuesday",
+                    "wednesday",
+                    "thursday",
+                    "friday",
+                    "saturday",
+                    "sunday"
+                  ]
+                },
+                "description": "UTC weekdays the entry applies on; absent means every day"
               }
             },
             "required": [
@@ -1362,7 +1413,7 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "utc_start"
               ]
             },
-            "description": "Time-window qualifiers: utc_start and utc_end must be declared together and must differ; the window is half-open [utc_start, utc_end) and may wrap midnight."
+            "description": "Time-window qualifiers: utc_start and utc_end must be declared together and must differ; the window is half-open [utc_start, utc_end) and may wrap midnight. utc_days scopes the entry to specific UTC weekdays: with a window it scopes the window, without one it covers the listed whole UTC days."
           }
         ]
       },
@@ -1406,6 +1457,23 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "minimum": 0,
             "maximum": 2359,
             "description": "HHMM UTC clock time; the minute component must be 00-59"
+          },
+          "utc_days": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday"
+              ]
+            },
+            "description": "UTC weekdays the entry applies on; absent means every day"
           }
         },
         "required": [
@@ -1422,7 +1490,7 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "utc_start"
           ]
         },
-        "description": "Time-window qualifiers: utc_start and utc_end must be declared together and must differ; the window is half-open [utc_start, utc_end) and may wrap midnight."
+        "description": "Time-window qualifiers: utc_start and utc_end must be declared together and must differ; the window is half-open [utc_start, utc_end) and may wrap midnight. utc_days scopes the entry to specific UTC weekdays: with a window it scopes the window, without one it covers the listed whole UTC days."
       },
       "RequestPricingEntry": {
         "oneOf": [

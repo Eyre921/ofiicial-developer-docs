@@ -208,7 +208,7 @@ Now let's see if the model can use the new `read_file` tool to discover the secr
   tools = [read_file_schema]
 
   response = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=messages,
       tools=tools,
       tool_choice="auto",
@@ -268,7 +268,7 @@ Now we need to run the function that the model has asked for and feed the respon
               )
       # re-call the model now with the response of the tool!
       function_enriched_response = client.chat.completions.create(
-          model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+          model="Qwen/Qwen3.5-9B",
           messages=messages,
       )
       print(
@@ -463,7 +463,7 @@ Now we can add all three of these tools into the simple looping chat function we
           messages_history.append({"role": "user", "content": user_input})
 
           response = client.chat.completions.create(
-              model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+              model="Qwen/Qwen3.5-9B",
               messages=messages_history,
               tools=tools,
           )
@@ -518,7 +518,7 @@ Now we can add all three of these tools into the simple looping chat function we
                       )
 
                   function_enriched_response = client.chat.completions.create(
-                      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+                      model="Qwen/Qwen3.5-9B",
                       messages=messages_history,
                   )
 

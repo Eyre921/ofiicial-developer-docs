@@ -23,7 +23,7 @@ Pass a `messages` array where the user content is a list mixing `text` and `imag
   imageUrl = "https://napkinsdev.s3.us-east-1.amazonaws.com/next-s3-uploads/d96a3145-472d-423a-8b79-bca3ad7978dd/trello-board.png"
 
   stream = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="moonshotai/Kimi-K3",
       max_tokens=2048,
       messages=[
           {
@@ -37,7 +37,7 @@ Pass a `messages` array where the user content is a list mixing `text` and `imag
       stream=True,
   )
 
-  # Kimi K2.6 is reasoning-default. Reasoning tokens stream first, then content.
+  # Kimi K3 is reasoning-default. Reasoning tokens stream first, then content.
   for chunk in stream:
       if not chunk.choices:
           continue
@@ -64,7 +64,7 @@ Pass a `messages` array where the user content is a list mixing `text` and `imag
 
   async function main() {
     const stream = await together.chat.completions.create({
-      model: "moonshotai/Kimi-K2.6",
+      model: "moonshotai/Kimi-K3",
       temperature: 0.2,
       stream: true,
       max_tokens: 2048,
@@ -98,7 +98,7 @@ Pass a `messages` array where the user content is a list mixing `text` and `imag
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "moonshotai/Kimi-K2.6",
+         "model": "moonshotai/Kimi-K3",
          "max_tokens": 2048,
          "messages": [
            {

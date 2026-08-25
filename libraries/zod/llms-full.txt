@@ -2016,6 +2016,15 @@ intKeys.parse({
 });
 ```
 
+A value schema that can stand in for an absent key — `.default()`, `.prefault()`, `.optional()` — makes that key optional on the input side, the same as it does inside `z.object()`:
+
+```ts
+const Person = z.record(z.enum(["id", "name"]), z.string().default(""));
+
+type Input = z.input<typeof Person>; // { id?: string; name?: string }
+type Output = z.output<typeof Person>; // { id: string; name: string }
+```
+
 ### `z.partialRecord`
 
 <Callout>
@@ -2832,7 +2841,9 @@ z.input(Event).parse({ name: "launch", at: "2024-01-01T00:00:00Z" }); // ✅
 z.output(Event).parse({ name: "launch", at: new Date() });            // ✅
 ```
 
-Only codecs have two real sides; `z.output()` on a one-way [transform](#transforms) returns the transform, which validates nothing.
+Only codecs have two real sides. `z.output()` on a one-way [transform](#transforms) returns the transform, which validates nothing; `z.input()` on a `z.preprocess()` returns the schema the preprocessor feeds.
+
+A wrapper's stored value survives only on the side it belongs to, so with a codec underneath, `z.input()` drops a `.default()` or `.catch()` and `z.output()` drops a `.prefault()`.
 
 ## Transforms
 

@@ -10,6 +10,7 @@ Dedicated model inference (DMI) bills based on the hardware your deployments run
 
 * **Billed by the minute:** A deployment bills for as long as it runs, not per token or per request. The model you serve affects cost only through the hardware it needs (a larger model requires more or bigger GPUs), not through how many tokens or requests you push through it.
 * **Per replica:** Each running replica bills independently. A deployment running three replicas bills three times the single-replica rate.
+* **Only ready replicas:** A replica bills only while it's ready and able to serve traffic. Time spent provisioning or [cold-starting](/docs/dedicated-endpoints/concepts#cold-starts) isn't billed, and neither is a replica that isn't ready, such as while a deployment is [`DEGRADED`](/docs/dedicated-endpoints/manage#deployment-states).
 * **Stops when scaled down:** A replica stops billing as soon as it scales down. A deployment scaled to zero replicas, or stopped, costs nothing.
 
 Because cost tracks running replicas, you keep your cost down by running only as many replicas as you need for your workload, and by stopping a deployment or setting its [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds) to zero when you don't need it. Endpoints run until you stop them; there is no automatic idle shutdown at launch. See [Configure autoscaling](/docs/dedicated-endpoints/scaling) for details.
@@ -30,7 +31,7 @@ Hardware and GPU count are set by the [config](/docs/dedicated-endpoints/configs
 
 ## How scaling affects cost
 
-Billing is proportional to the number of running replicas across all deployments in your project. For a given deployment, you control how much it costs with its [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds), and by stopping it when you don't need it:
+Billing is proportional to the number of ready replicas across all deployments in your project, which you can track as `status.readyReplicas` when you [poll deployment status](/docs/dedicated-endpoints/manage#poll-deployment-status). For a given deployment, you control how much it costs with its [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds), and by stopping it when you don't need it:
 
 * **`minReplicas`:** This sets the floor for a deployment's cost. These replicas will run and bill continuously, so set it to the lowest count that meets your latency target.
 * **`maxReplicas`:** This sets the ceiling for a deployment's cost. The deployment never bills for more than this many replicas, so set it to a high enough count to handle your peak traffic.

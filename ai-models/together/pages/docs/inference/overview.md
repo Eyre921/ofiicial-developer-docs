@@ -38,7 +38,7 @@ Serverless, provisioned throughput, and dedicated model inference all use the sa
 
   # Serverless model request
   response = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="moonshotai/Kimi-K3",
       messages=[{"role": "user", "content": "Hello!"}],
   )
 
@@ -55,7 +55,7 @@ Serverless, provisioned throughput, and dedicated model inference all use the sa
 
   // Serverless model request
   let response = await client.chat.completions.create({
-      model: "moonshotai/Kimi-K2.6",
+      model: "moonshotai/Kimi-K3",
       messages: [{ role: "user", content: "Hello!" }],
   });
 
@@ -72,7 +72,7 @@ Serverless, provisioned throughput, and dedicated model inference all use the sa
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-            "model": "moonshotai/Kimi-K2.6",
+            "model": "moonshotai/Kimi-K3",
             "messages": [{"role": "user", "content": "Hello!"}]
           }'
 

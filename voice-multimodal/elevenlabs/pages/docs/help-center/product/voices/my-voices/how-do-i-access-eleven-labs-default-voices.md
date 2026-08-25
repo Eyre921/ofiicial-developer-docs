@@ -12,7 +12,7 @@ Our Default voices are being replaced with new voices that you will be able to u
 
 If your account has access to Default voices, they will be available to select from the voice selection menu. They do not need to be added to My Voices. You can use the Type: <strong>Default</strong> filter in [My Voices](https://elevenlabs.io/app/voice-lab) to view all Default Voices.
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/46458681484433" alt="" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3820ea620f00142a64b1ca58de599dee9c7fabad93a4dce4184f10ca1801103d/assets/images/help-center/product/voices/my-voices/how-do-i-access-elevenlabs-default-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260825T104502Z&X-Amz-Expires=604800&X-Amz-Signature=a3fdcd94e4e3ece1a73a521df698ba5d8fd48d51d41f2785b8b7faacd679d364&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
 
 Default voices will appear at the end of the voice selection menu. You can also search for a specific voice by typing the name in the search box.
 

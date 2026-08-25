@@ -53,10 +53,10 @@ user_prompt = "What are some fun things to do in SF?"
 reference_models = [
     "zai-org/GLM-5.2",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-    "moonshotai/Kimi-K2.6",
+    "moonshotai/Kimi-K3",
     "MiniMaxAI/MiniMax-M3",
 ]
-aggregator_model = "moonshotai/Kimi-K2.6"
+aggregator_model = "moonshotai/Kimi-K3"
 aggreagator_system_prompt = """You have been provided with a set of responses from various open-source models to the latest user query. Your task is to synthesize these responses into a single, high-quality response. It is crucial to critically evaluate the information provided in these responses, recognizing that some of it may be biased or incorrect. Your response should not simply replicate the given answers but should offer a refined, accurate, and comprehensive reply to the instruction. Ensure your response is well-structured, coherent, and adheres to the highest standards of accuracy and reliability.
 
 Responses from models:"""
@@ -121,10 +121,10 @@ user_prompt = "What are 3 fun things to do in SF?"
 reference_models = [
     "zai-org/GLM-5.2",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-    "moonshotai/Kimi-K2.6",
+    "moonshotai/Kimi-K3",
     "MiniMaxAI/MiniMax-M3",
 ]
-aggregator_model = "moonshotai/Kimi-K2.6"
+aggregator_model = "moonshotai/Kimi-K3"
 aggreagator_system_prompt = """You have been provided with a set of responses from various open-source models to the latest user query. Your task is to synthesize these responses into a single, high-quality response. It is crucial to critically evaluate the information provided in these responses, recognizing that some of it may be biased or incorrect. Your response should not simply replicate the given answers but should offer a refined, accurate, and comprehensive reply to the instruction. Ensure your response is well-structured, coherent, and adheres to the highest standards of accuracy and reliability.
 
 Responses from models:"""

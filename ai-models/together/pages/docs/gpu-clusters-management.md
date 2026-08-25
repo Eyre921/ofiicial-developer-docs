@@ -415,7 +415,7 @@ For the full permission matrix, see [Roles & Permissions](/docs/roles-permission
 
 ### Adding Users to a Cluster Project
 
-For step-by-step instructions on adding and removing project members, see [Managing Project Members](/docs/projects#managing-project-members).
+For step-by-step instructions on adding and removing project members, see [Managing project collaborators](/docs/projects#managing-project-collaborators).
 
 <Info>
   **Quick version:** Go to **Settings > Collaborators**, find the project that contains your cluster, click **View Project**, then **Add collaborator**. If you don't see Collaborators yet, use the **GPU Cluster Projects** tab instead (this tab is being replaced by the unified Collaborators page).
@@ -425,7 +425,7 @@ New members are added with the **editor** role by default, unless they are an or
 
 ### Removing Users
 
-See [Removing Members](/docs/projects#removing-members) for the full steps.
+See [Removing collaborators](/docs/projects#removing-collaborators) for the full steps.
 
 <Warning>
   Removing a user revokes their access to all clusters and volumes in the project, including SSH permissions and Kubernetes Dashboard access. This takes effect within minutes.
@@ -658,7 +658,7 @@ We use these requests as input for our demand planning, and our team will reach 
 
 ## What's Next?
 
-* [Manage cluster access](/docs/projects#managing-project-members)
+* [Manage cluster access](/docs/projects#managing-project-collaborators)
 * [Understand roles and permissions](/docs/roles-permissions)
 * [Understand billing and pricing](/docs/gpu-clusters-billing)
 * [Explore API and automation options](/docs/gpu-clusters-api)

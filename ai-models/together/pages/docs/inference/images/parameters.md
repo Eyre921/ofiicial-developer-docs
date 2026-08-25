@@ -20,7 +20,7 @@ Match the problem you're solving to the parameter most likely to help.
 
 * **Image doesn't match the prompt:** Make the prompt more specific, add a `negative_prompt` for what to exclude, or raise `guidance_scale` toward `8`-`10`.
 * **Poor image quality:** Raise `steps` to `30`-`40`, add quality modifiers to the prompt ("highly detailed", "8k", "professional"), or use a `negative_prompt` like "blurry, low quality, distorted".
-* **Generation is too slow:** Lower `steps` (FLUX Schnell looks good at `4`) or generate fewer images per call by lowering `n`.
+* **Generation is too slow:** Lower `steps` or generate fewer images per call by lowering `n`.
 * **Need the same image every run (evals, regression tests):** Set `seed` to a fixed integer.
 * **Need multiple variations of one prompt:** Increase `n` to up to `4`, or sweep different `seed` values.
 * **Wrong dimensions or aspect ratio:** Set `width` and `height` explicitly. Keep dimensions to multiples of `8`.
@@ -68,28 +68,28 @@ Typical default: `1024` x `1024`.
   # Square: social media posts, profile pictures
   response_square = client.images.generate(
       prompt="A peaceful zen garden with a stone path",
-      model="black-forest-labs/FLUX.1-schnell",
+      model="black-forest-labs/FLUX.2-dev",
       width=1024,
       height=1024,
-      steps=4,
+      steps=20,
   )
 
   # Landscape: banners, desktop wallpapers
   response_landscape = client.images.generate(
       prompt="A peaceful zen garden with a stone path",
-      model="black-forest-labs/FLUX.1-schnell",
+      model="black-forest-labs/FLUX.2-dev",
       width=1344,
       height=768,
-      steps=4,
+      steps=20,
   )
 
   # Portrait: mobile wallpapers, posters
   response_portrait = client.images.generate(
       prompt="A peaceful zen garden with a stone path",
-      model="black-forest-labs/FLUX.1-schnell",
+      model="black-forest-labs/FLUX.2-dev",
       width=768,
       height=1344,
-      steps=4,
+      steps=20,
   )
   ```
 
@@ -97,28 +97,28 @@ Typical default: `1024` x `1024`.
   // Square: social media posts, profile pictures
   const response_square = await together.images.generate({
     prompt: "A peaceful zen garden with a stone path",
-    model: "black-forest-labs/FLUX.1-schnell",
+    model: "black-forest-labs/FLUX.2-dev",
     width: 1024,
     height: 1024,
-    steps: 4,
+    steps: 20,
   });
 
   // Landscape: banners, desktop wallpapers
   const response_landscape = await together.images.generate({
     prompt: "A peaceful zen garden with a stone path",
-    model: "black-forest-labs/FLUX.1-schnell",
+    model: "black-forest-labs/FLUX.2-dev",
     width: 1344,
     height: 768,
-    steps: 4,
+    steps: 20,
   });
 
   // Portrait: mobile wallpapers, posters
   const response_portrait = await together.images.generate({
     prompt: "A peaceful zen garden with a stone path",
-    model: "black-forest-labs/FLUX.1-schnell",
+    model: "black-forest-labs/FLUX.2-dev",
     width: 768,
     height: 1344,
-    steps: 4,
+    steps: 20,
   });
   ```
 
@@ -128,11 +128,11 @@ Typical default: `1024` x `1024`.
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "black-forest-labs/FLUX.1-schnell",
+         "model": "black-forest-labs/FLUX.2-dev",
          "prompt": "A peaceful zen garden with a stone path",
          "width": 1024,
          "height": 1024,
-         "steps": 4
+         "steps": 20
        }'
 
   # Landscape: banners, desktop wallpapers
@@ -140,11 +140,11 @@ Typical default: `1024` x `1024`.
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "black-forest-labs/FLUX.1-schnell",
+         "model": "black-forest-labs/FLUX.2-dev",
          "prompt": "A peaceful zen garden with a stone path",
          "width": 1344,
          "height": 768,
-         "steps": 4
+         "steps": 20
        }'
 
   # Portrait: mobile wallpapers, posters
@@ -152,11 +152,11 @@ Typical default: `1024` x `1024`.
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "black-forest-labs/FLUX.1-schnell",
+         "model": "black-forest-labs/FLUX.2-dev",
          "prompt": "A peaceful zen garden with a stone path",
          "width": 768,
          "height": 1344,
-         "steps": 4
+         "steps": 20
        }'
   ```
 </CodeGroup>
@@ -169,7 +169,7 @@ Typical default: `1024` x `1024`.
 
 The number of diffusion steps. More steps generally improve quality at a near-linear cost in latency. Past a model-specific point, additional steps stop helping.
 
-Lower it (`1`-`4`) for fast iteration on FLUX Schnell. Raise it (`30`-`40`) for production-quality output on Pro and Dev models.
+Lower it for fast iteration. Raise it (`30`-`40`) for production-quality output.
 
 Typical default: model-specific (often `20`).
 
@@ -188,7 +188,7 @@ Typical default: model-specific (often `20`).
       start = time.time()
       response = client.images.generate(
           prompt=prompt,
-          model="black-forest-labs/FLUX.1-schnell",
+          model="black-forest-labs/FLUX.2-dev",
           steps=steps,
           seed=42,
       )
@@ -208,7 +208,7 @@ Typical default: model-specific (often `20`).
     const start = Date.now();
     const response = await together.images.generate({
       prompt,
-      model: "black-forest-labs/FLUX.1-schnell",
+      model: "black-forest-labs/FLUX.2-dev",
       steps,
       seed: 42,
     });
@@ -222,7 +222,7 @@ Typical default: model-specific (often `20`).
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "black-forest-labs/FLUX.1-schnell",
+         "model": "black-forest-labs/FLUX.2-dev",
          "prompt": "A majestic mountain landscape",
          "steps": 6,
          "seed": 42
@@ -275,9 +275,9 @@ Typical default: `"url"`.
   client = Together()
 
   response = client.images.generate(
-      model="black-forest-labs/FLUX.1-schnell",
+      model="black-forest-labs/FLUX.2-dev",
       prompt="a cat in outer space",
-      steps=4,
+      steps=20,
       response_format="base64",
   )
 
@@ -294,9 +294,9 @@ Typical default: `"url"`.
   const client = new Together();
 
   const response = await client.images.generate({
-    model: "black-forest-labs/FLUX.1-schnell",
+    model: "black-forest-labs/FLUX.2-dev",
     prompt: "A cat in outer space",
-    steps: 4,
+    steps: 20,
     response_format: "base64",
   });
 
@@ -310,9 +310,9 @@ Typical default: `"url"`.
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "black-forest-labs/FLUX.1-schnell",
+         "model": "black-forest-labs/FLUX.2-dev",
          "prompt": "A cat in outer space",
-         "steps": 4,
+         "steps": 20,
          "response_format": "base64"
        }'
   ```
@@ -333,7 +333,7 @@ When `response_format` is `"base64"`, the response includes a `b64_json` field w
       }
     }
   ],
-  "model": "black-forest-labs/FLUX.1-schnell",
+  "model": "black-forest-labs/FLUX.2-dev",
   "object": "list"
 }
 ```
@@ -360,8 +360,8 @@ Typical default: `false`.
 
   response = client.images.generate(
       prompt="a flying cat",
-      model="black-forest-labs/FLUX.1-schnell",
-      steps=4,
+      model="black-forest-labs/FLUX.2-dev",
+      steps=20,
       disable_safety_checker=True,
   )
 
@@ -376,8 +376,8 @@ Typical default: `false`.
   async function main() {
     const response = await together.images.generate({
       prompt: "a flying cat",
-      model: "black-forest-labs/FLUX.1-schnell",
-      steps: 4,
+      model: "black-forest-labs/FLUX.2-dev",
+      steps: 20,
       disable_safety_checker: true,
     });
 
@@ -392,9 +392,9 @@ Typical default: `false`.
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "black-forest-labs/FLUX.1-schnell",
+         "model": "black-forest-labs/FLUX.2-dev",
          "prompt": "a flying cat",
-         "steps": 4,
+         "steps": 20,
          "disable_safety_checker": true
        }'
   ```

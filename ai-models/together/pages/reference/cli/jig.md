@@ -417,7 +417,7 @@ Other hardware is available on request. [Contact sales](https://www.together.ai/
 
 #### `gpu_count`
 
-The number of GPUs to allocate per replica. For multi-GPU inference with tensor parallelism, set this higher and use `use_torchrun=True` in your Sprocket. See [Multi-GPU / Distributed Inference](/reference/dci-reference-sprocket#multi-gpu--distributed-inference).
+The number of GPUs to allocate per replica. For multi-GPU inference with tensor parallelism, set this higher and use `use_torchrun=True` in your Sprocket. See [Multi-GPU / distributed inference](/docs/deployments-sprocket#multi-gpu--distributed-inference).
 
 ```toml theme={null}
 [tool.jig.deploy]

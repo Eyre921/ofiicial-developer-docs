@@ -142,7 +142,7 @@ print(completion.choices[0].message)
 
   image = client.text_to_image(
       "Bob Marley in the style of a painting by Johannes Vermeer",
-      model="black-forest-labs/FLUX.1-schnell",  # Replace with your desired model
+      model="black-forest-labs/FLUX.2-dev",  # Replace with your desired model
   )
 
   # `image` is a PIL.Image object
@@ -158,7 +158,7 @@ print(completion.choices[0].message)
 
   // Generate a chat completion
   const generatedImage = await client.textToImage({
-      model: "black-forest-labs/FLUX.1-schnell",  // Replace with your desired model
+      model: "black-forest-labs/FLUX.2-dev",  // Replace with your desired model
       inputs: "Bob Marley in the style of a painting by Johannes Vermeer",
       provider: "together",  // Replace with together's provider name
       max_tokens: 500

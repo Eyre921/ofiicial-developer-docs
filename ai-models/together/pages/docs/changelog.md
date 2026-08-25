@@ -4,6 +4,28 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="August 24, 2026">
+  ## Fine-tuning quality improvements
+
+  Training quality has improved for fine-tuning on the following models:
+
+  * `Qwen/Qwen3.5-0.8B`.
+  * `Qwen/Qwen3.5-2B`.
+  * `Qwen/Qwen3.5-4B`.
+  * `Qwen/Qwen3.5-9B`.
+  * `Qwen/Qwen3.5-27B`.
+  * `Qwen/Qwen3.5-35B-A3B`.
+  * `Qwen/Qwen3.5-35B-A3B-Base`.
+  * `Qwen/Qwen3.5-122B-A10B`.
+  * `Qwen/Qwen3.5-397B-A17B`.
+  * `Qwen/Qwen3.6-27B`.
+  * `Qwen/Qwen3.6-35B-A3B`.
+  * `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16`.
+  * `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`.
+
+  Other models are unchanged. No actions or setting changes are required to get the improvement. To pick it up on a model you've already tuned, start a new job with the same data and settings. A job you run after this release will not reproduce the loss curve of an earlier run on the same data and settings.
+</Update>
+
 <Update label="August 21, 2026">
   ## Model deprecations
 

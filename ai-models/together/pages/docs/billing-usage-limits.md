@@ -14,7 +14,7 @@ Build Tiers (Build Tier 1–5), Scale, and Enterprise tier labels have been reti
 
 ### Checking your current rate limits
 
-Every serverless inference API request returns response headers with the latest rate limits for the model you called, along with current usage and reset timing. See [Fetching latest serverless rate limits](/docs/serverless/rate-limits#fetching-latest-serverless-rate-limits) for details.
+Every serverless inference API request returns response headers with the latest rate limits for the model you called, along with current usage and reset timing. See [Inspect your current rate limit](/docs/serverless/rate-limits#inspect-your-current-rate-limit) for details.
 
 Plan workloads against the latest limits reported in response headers rather than fixed thresholds.
 

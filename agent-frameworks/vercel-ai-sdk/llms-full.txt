@@ -27810,6 +27810,13 @@ tags: ['getting-started', 'reasoning']
 
 # Get started with DeepSeek R1
 
+<Note>
+  DeepSeek retired the `deepseek-reasoner` API alias on July 24, 2026. Direct
+  DeepSeek API examples in this historical guide are preserved for reference and
+  no longer run against the current service. For current DeepSeek reasoning
+  workloads, use `deepseek-v4-pro`.
+</Note>
+
 With the [release of DeepSeek R1](https://api-docs.deepseek.com/news/news250528), there has never been a better time to start building AI applications, particularly those that require complex reasoning capabilities.
 
 The [AI SDK](/) is a powerful TypeScript toolkit for building AI applications with large language models (LLMs) like DeepSeek R1 alongside popular frameworks like React, Next.js, Vue, Svelte, Node.js, and more.
@@ -28048,6 +28055,13 @@ tags: ['getting-started', 'agents']
 ---
 
 # Get started with DeepSeek V3.2
+
+<Note>
+  DeepSeek retired the `deepseek-chat` and `deepseek-reasoner` API aliases on
+  July 24, 2026. The examples in this historical V3.2 guide are preserved for
+  reference and no longer run against the current service. For current
+  applications, use `deepseek-v4-flash` or `deepseek-v4-pro`.
+</Note>
 
 With the [release of DeepSeek V3.2](https://api-docs.deepseek.com/news/news251201), there has never been a better time to start building AI applications that require advanced reasoning and agentic capabilities.
 
@@ -54831,7 +54845,7 @@ import { deepseek } from '@ai-sdk/deepseek';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: deepseek('deepseek-chat'),
+  model: deepseek('deepseek-v4-flash'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -54839,39 +54853,55 @@ const { text } = await generateText({
 You can also use the `.chat()` or `.languageModel()` factory methods:
 
 ```ts
-const model = deepseek.chat('deepseek-chat');
+const model = deepseek.chat('deepseek-v4-flash');
 // or
-const model = deepseek.languageModel('deepseek-chat');
+const model = deepseek.languageModel('deepseek-v4-flash');
 ```
 
 DeepSeek language models can be used in the `streamText` function
 (see [AI SDK Core](/docs/ai-sdk-core)).
 
+DeepSeek retired the `deepseek-chat` and `deepseek-reasoner` aliases on July 24,
+2026. Use `deepseek-v4-flash` or `deepseek-v4-pro` for the current API. Custom
+and legacy model IDs remain accepted as strings for compatibility with custom
+endpoints.
+
 The following optional provider options are available for DeepSeek models:
+
+- `userId` _string_
+
+  Optional. An opaque end-user identifier that DeepSeek uses for content-safety
+  tracing, KV-cache isolation, and scheduling isolation. The value must match
+  `^[a-zA-Z0-9_-]+$` and contain at most 512 characters. Do not include names,
+  email addresses, or other private user information.
 
 - `thinking` _object_
 
-  Optional. Controls thinking mode (chain-of-thought reasoning). You can enable thinking mode either by using the `deepseek-reasoner` model or by setting this option.
-  - `type`: `'adaptive' | 'enabled' | 'disabled'` - Enable, disable, or let the model decide (`adaptive`) when to think. See [DeepSeek's thinking mode docs](https://api-docs.deepseek.com/guides/thinking_mode).
+  Optional. Controls thinking mode (chain-of-thought reasoning). You can enable thinking mode either by using the `deepseek-v4-pro` model or by setting this option.
+  - `type`: `'enabled' | 'disabled'` - Enable or disable thinking mode. See [DeepSeek's thinking mode docs](https://api-docs.deepseek.com/guides/thinking_mode).
 
-- `reasoningEffort` _'low' | 'medium' | 'high' | 'xhigh' | 'max'_
+- `reasoningEffort` _'low' | 'high' | 'max'_
 
-  Optional. Controls thinking strength for DeepSeek V4 reasoning models. Per
-  DeepSeek's docs, `low` and `medium` are mapped to `high`, and `xhigh` is
-  mapped to `max` server-side for compatibility with other providers. When
-  using the top-level `reasoning` setting, `minimal` is sent as `low`, and
-  `low`, `medium`, `high`, and `xhigh` pass through to DeepSeek's native
-  effort values. Ignored when thinking is explicitly disabled.
+  Optional. Controls thinking strength for DeepSeek V4 reasoning models.
+  `medium` is sent as `high`, and `xhigh` is sent as `max`. A compatibility
+  warning is returned whenever the requested value is mapped.
+
+For backwards compatibility, legacy provider options supplied at runtime are
+also mapped to documented values: `thinking.type: 'adaptive'` becomes
+`'enabled'`, `reasoningEffort: 'medium'` becomes `'high'`, and
+`reasoningEffort: 'xhigh'` becomes `'max'`. Each mapping returns a compatibility
+warning so callers can migrate to a canonical value.
 
 ```ts highlight="7-12"
 import { deepseek, type DeepSeekChatOptions } from '@ai-sdk/deepseek';
 import { generateText } from 'ai';
 
 const { text, reasoning } = await generateText({
-  model: deepseek('deepseek-chat'),
+  model: deepseek('deepseek-v4-flash'),
   prompt: 'How many "r"s are in the word "strawberry"?',
   providerOptions: {
     deepseek: {
+      userId: 'tenant_123-user',
       thinking: { type: 'enabled' },
       reasoningEffort: 'high',
     } satisfies DeepSeekChatOptions,
@@ -54881,14 +54911,14 @@ const { text, reasoning } = await generateText({
 
 ### Reasoning
 
-DeepSeek has reasoning support for the `deepseek-reasoner` model. The reasoning is exposed through streaming:
+DeepSeek has reasoning support for the `deepseek-v4-pro` model. The reasoning is exposed through streaming:
 
 ```ts
 import { deepseek } from '@ai-sdk/deepseek';
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: deepseek('deepseek-reasoner'),
+  model: deepseek('deepseek-v4-pro'),
   prompt: 'How many "r"s are in the word "strawberry"?',
 });
 
@@ -54906,39 +54936,111 @@ for await (const part of result.fullStream) {
 See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details
 on how to integrate reasoning into your chatbot.
 
-### Cache Token Usage
+### Chat Prefix Completion
 
-DeepSeek provides context caching on disk technology that can significantly reduce token costs for repeated content. You can access the cache hit/miss metrics through the `providerMetadata` property in the response:
+DeepSeek's beta [chat prefix completion](https://api-docs.deepseek.com/guides/chat_prefix_completion/)
+continues the content of a final assistant message. Create a provider with a
+beta base URL and set `prefix: true` in that assistant message's provider
+options:
+
+```ts highlight="8,20-26"
+import {
+  createDeepSeek,
+  type DeepSeekAssistantMessageProviderOptions,
+} from '@ai-sdk/deepseek';
+import { generateText } from 'ai';
+
+const deepSeek = createDeepSeek({
+  baseURL: 'https://api.deepseek.com/beta',
+});
+
+const { text } = await generateText({
+  model: deepSeek('deepseek-v4-flash'),
+  messages: [
+    {
+      role: 'user',
+      content: 'Write a short sentence about the color of the sky.',
+    },
+    {
+      role: 'assistant',
+      content: 'The sky is',
+      providerOptions: {
+        deepseek: {
+          prefix: true,
+        } satisfies DeepSeekAssistantMessageProviderOptions,
+      },
+    },
+  ],
+});
+```
+
+The prefixed message must be an assistant message and the final message in the
+prompt. The configured `baseURL` must end in `/beta`, including when using a
+proxy. Invalid placement or a non-beta base URL causes the request to fail
+before it is sent.
+
+<Note>
+  Chat prefix completion is a DeepSeek beta feature and its behavior may change.
+</Note>
+
+### Provider Metadata
+
+DeepSeek exposes the response system fingerprint and context cache usage through
+the `providerMetadata` property:
 
 ```ts
 import { deepseek } from '@ai-sdk/deepseek';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: deepseek('deepseek-chat'),
+  model: deepseek('deepseek-v4-flash'),
   prompt: 'Your prompt here',
 });
 
 console.log(result.providerMetadata);
-// Example output: { deepseek: { promptCacheHitTokens: 1856, promptCacheMissTokens: 5 } }
+// Example output:
+// {
+//   deepseek: {
+//     systemFingerprint: 'fp_eaab8d114b_prod0820_fp8_kvcache',
+//     promptCacheHitTokens: 1856,
+//     promptCacheMissTokens: 5,
+//   },
+// }
 ```
 
-The metrics include:
+The metadata includes:
 
+- `systemFingerprint`: The backend configuration fingerprint for the response
 - `promptCacheHitTokens`: Number of input tokens that were cached
 - `promptCacheMissTokens`: Number of input tokens that were not cached
+
+For streamed responses, the latest non-null fingerprint from the response
+chunks is returned.
 
 <Note>
   For more details about DeepSeek's caching system, see the [DeepSeek caching
   documentation](https://api-docs.deepseek.com/guides/kv_cache#checking-cache-hit-status).
 </Note>
 
+### Chat Response Metadata
+
+DeepSeek preserves provider-specific response fields in
+`providerMetadata.deepseek` for generated and streamed responses:
+
+- `responseObject`: `chat.completion` or `chat.completion.chunk`
+- `choiceIndex`: the selected response choice index
+- `messageRole`: the response message role, when supplied
+- `toolCallTypes`: the tool-call type for each returned call
+
+These fields remain in provider metadata because they are specific to
+DeepSeek's Chat Completions response rather than shared AI SDK result fields.
 ## Model Capabilities
 
-| Model               | Text Generation     | Object Generation   | Image Input         | Tool Usage          | Tool Streaming      |
-| ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `deepseek-chat`     | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `deepseek-reasoner` | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                          | Text Generation     | Object Generation   | Image Input         | Tool Usage          | Tool Streaming      |
+| ------------------------------ | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `deepseek-v4-flash`                | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `deepseek-v4-pro`            | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `deepseek-v4-flash-vision-exp` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 
 <Note>
   Please see the [DeepSeek
@@ -63034,6 +63136,13 @@ tags: ['getting-started', 'reasoning']
 
 # Get started with DeepSeek R1
 
+<Note>
+  DeepSeek retired the `deepseek-reasoner` API alias on July 24, 2026. Direct
+  DeepSeek API examples in this historical guide are preserved for reference and
+  no longer run against the current service. For current DeepSeek reasoning
+  workloads, use `deepseek-v4-pro`.
+</Note>
+
 With the [release of DeepSeek R1](https://api-docs.deepseek.com/news/news250528), there has never been a better time to start building AI applications, particularly those that require complex reasoning capabilities.
 
 The [AI SDK](/) is a powerful TypeScript toolkit for building AI applications with large language models (LLMs) like DeepSeek R1 alongside popular frameworks like React, Next.js, Vue, Svelte, Node.js, and more.
@@ -63272,6 +63381,13 @@ tags: ['getting-started', 'agents']
 ---
 
 # Get started with DeepSeek V3.2
+
+<Note>
+  DeepSeek retired the `deepseek-chat` and `deepseek-reasoner` API aliases on
+  July 24, 2026. The examples in this historical V3.2 guide are preserved for
+  reference and no longer run against the current service. For current
+  applications, use `deepseek-v4-flash` or `deepseek-v4-pro`.
+</Note>
 
 With the [release of DeepSeek V3.2](https://api-docs.deepseek.com/news/news251201), there has never been a better time to start building AI applications that require advanced reasoning and agentic capabilities.
 
@@ -80494,7 +80610,7 @@ import { generateText, tool } from "ai";
 import { z } from "zod";
 
 const { text } = await generateText({
-  model: "xai/grok-4.5",
+  model: "xai/grok-4.6",
   prompt: "What is the weather like in San Francisco?",
   tools: {
     getWeather: tool({
@@ -80729,6 +80845,112 @@ This initial Gateway integration supports Exa's plain Search modes and
 token-efficient content controls. Deep synthesis modes and generated summaries
 are intentionally not exposed yet because they have separate pricing from
 standard Search.
+
+#### Tako Search
+
+The Tako Search tool enables models to search the web and Tako's curated knowledge graph in a single call using [Tako's Search API](https://docs.tako.com/documentation/integrating-tako/search/overview). This tool is executed by the AI Gateway and returns token-efficient web excerpts, plus knowledge-graph results that carry structured data, premium source attribution, and an embed-ready visualization.
+
+```ts
+import { gateway, generateText } from 'ai';
+
+const result = await generateText({
+  model: 'openai/gpt-5.4-nano',
+  prompt: 'How has Nvidia quarterly revenue changed over the last two years?',
+  tools: {
+    tako_search: gateway.tools.takoSearch(),
+  },
+});
+
+console.log(result.text);
+console.log('Tool calls:', JSON.stringify(result.toolCalls, null, 2));
+console.log('Tool results:', JSON.stringify(result.toolResults, null, 2));
+```
+
+Configure the search with effort, source selection, and localization defaults. These defaults override values the model includes in a tool call:
+
+```ts
+import { gateway, generateText } from 'ai';
+
+const result = await generateText({
+  model: 'openai/gpt-5.4-nano',
+  prompt: 'AMD vs. Nvidia headcount since 2013',
+  tools: {
+    tako_search: gateway.tools.takoSearch({
+      effort: 'fast',
+      sources: {
+        data: {
+          contentFormat: 'json_compact',
+          includeContents: true,
+          maxRows: 100,
+        },
+        web: {
+          count: 3,
+        },
+      },
+      countryCode: 'US',
+      locale: 'en-US',
+    }),
+  },
+});
+
+console.log(result.text);
+```
+
+The Tako Search tool supports these optional configuration options:
+
+- **effort** _'fast' | 'instant' | 'deep'_ - Search effort. `'fast'` is the balanced default, `'instant'` favors cached low-latency results, and `'deep'` broadens retrieval with reranking at higher cost and latency.
+- **sources** _object_ - Omit to search both curated Tako data and the live web. When set, only source keys present are searched.
+- **sources.web** _object_ - Configure web results:
+  - **count** _number_ - Maximum web results, 1-20.
+  - **category** _'finance' | 'news' | 'sports'_ - Restrict web results to one category.
+  - **includeDomains** / **excludeDomains** _string[]_ - Only return, or drop, results from these bare domains. Up to 20 each.
+  - **publishedAfter** / **publishedBefore** _string_ - Keep results published on or after, or on or before, this `YYYY-MM-DD` date.
+  - **snippetMaxChars** _number_ - Character cap on each result's text excerpt. Defaults to 4,000; maximum 20,000.
+  - **highlights** _boolean_ - Return query-relevant passages as each result's snippet instead of the opening text of the page. The snippet can hold multiple passages joined by `' ... '`, and a page with no highlight returns `snippet: null`. Defaults to `true` in the AI Gateway.
+  - **includeContents** _boolean_ - Inline each page's extracted full text in `content`. **articleContentMaxChars** caps it, defaulting to 30,000 characters (maximum 1,000,000).
+- **sources.data** _object_ - Configure data results:
+  - **count** _number_ - Maximum data results, 1-20. Defaults to 5.
+  - **includeContents** _boolean_ - Inline each card's underlying rows in `content.dataset` as typed, unit-labeled columns.
+  - **contentFormat** _'json_compact' | 'json_records' | 'csv' | 'card_json'_ - Serialization for inlined card data. Defaults to `'json_compact'`.
+  - **maxRows** _number_ - Row cap for inlined card data. Omit to use your account's default inline cap (20 rows on the standard plan); maximum 2,000.
+  - **nodeIds** _string[]_ - Data Graph node IDs to prioritize. Up to 20.
+  - **strict** _boolean_ - Only return cards matching `nodeIds`. Requires at least one `nodeIds` value.
+- **location** _object_ - End-user `{ latitude, longitude }` coordinates for localized results.
+- **countryCode** _string_ - ISO 3166-1 alpha-2 country code, such as `'US'`.
+- **locale** _string_ - BCP-47 locale, such as `'en-US'`.
+- **timezone** _string_ - IANA timezone, such as `'America/New_York'`.
+- **outputSettings** _object_ - Card rendering controls. `forceRefresh` is available only with `'instant'` effort.
+- **includeRelated** _number_ - Number of related search suggestions to include (1-20).
+
+For precise entity matching, quote a phrase in the query and optionally append a label: `"Tesla":PRODUCT price`. Tako treats the quoted phrase as one entity before searching.
+
+The tool works with both `generateText` and `streamText`:
+
+```ts
+import { gateway, streamText } from 'ai';
+
+const result = streamText({
+  model: 'openai/gpt-5.4-nano',
+  prompt: 'What is the latest US inflation rate?',
+  tools: {
+    tako_search: gateway.tools.takoSearch(),
+  },
+});
+
+for await (const part of result.stream) {
+  switch (part.type) {
+    case 'text-delta':
+      process.stdout.write(part.text);
+      break;
+    case 'tool-call':
+      console.log('\nTool call:', JSON.stringify(part, null, 2));
+      break;
+    case 'tool-result':
+      console.log('\nTool result:', JSON.stringify(part, null, 2));
+      break;
+  }
+}
+```
 
 #### Parallel Search
 
@@ -81486,7 +81708,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai.responses('grok-4.5'),
+  model: xai.responses('grok-4.6'),
   messages: [
     {
       role: 'user',
@@ -81507,7 +81729,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.5'),
+  model: xai('grok-4.6'),
   messages: [
     {
       role: 'user',
@@ -81544,7 +81766,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text, sources } = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'What are the latest developments in AI?',
   tools: {
     web_search: xai.tools.webSearch({
@@ -81582,7 +81804,7 @@ The X search tool enables searching X (Twitter) for posts, with filtering by han
 
 ```ts
 const { text, sources } = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'What are people saying about AI on X this week?',
   tools: {
     x_search: xai.tools.xSearch({
@@ -81628,7 +81850,7 @@ The code execution tool enables the model to write and execute Python code for c
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt:
     'Calculate the compound interest for $10,000 at 5% annually for 10 years',
   tools: {
@@ -81643,7 +81865,7 @@ The view image tool enables the model to view and analyze images:
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'Describe what you see in the image',
   tools: {
     view_image: xai.tools.viewImage(),
@@ -81657,7 +81879,7 @@ The view X video tool enables the model to view and analyze videos from X (Twitt
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'Summarize the content of this X video',
   tools: {
     view_x_video: xai.tools.viewXVideo(),
@@ -81671,7 +81893,7 @@ The MCP server tool enables the model to connect to remote [Model Context Protoc
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'Use the weather tool to check conditions in San Francisco',
   tools: {
     weather_server: xai.tools.mcpServer({
@@ -81719,7 +81941,7 @@ import { xai, type XaiLanguageModelResponsesOptions } from '@ai-sdk/xai';
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: xai.responses('grok-4.20-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'What documents do you have access to?',
   tools: {
     file_search: xai.tools.fileSearch({
@@ -81766,7 +81988,7 @@ import { xai } from '@ai-sdk/xai';
 import { streamText } from 'ai';
 
 const { fullStream } = streamText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'Research AI safety developments and calculate risk metrics',
   tools: {
     web_search: xai.tools.webSearch(),
@@ -101022,7 +101244,7 @@ import { deepseek } from '@ai-sdk/deepseek';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: deepseek('deepseek-chat'),
+  model: deepseek('deepseek-v4-flash'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -101030,39 +101252,73 @@ const { text } = await generateText({
 You can also use the `.chat()` or `.languageModel()` factory methods:
 
 ```ts
-const model = deepseek.chat('deepseek-chat');
+const model = deepseek.chat('deepseek-v4-flash');
 // or
-const model = deepseek.languageModel('deepseek-chat');
+const model = deepseek.languageModel('deepseek-v4-flash');
 ```
 
 DeepSeek language models can be used in the `streamText` function
 (see [AI SDK Core](/docs/ai-sdk-core)).
 
+DeepSeek retired the `deepseek-chat` and `deepseek-reasoner` aliases on July 24,
+2026. Use `deepseek-v4-flash` or `deepseek-v4-pro` for the current API. Custom
+and legacy model IDs remain accepted as strings for compatibility with custom
+endpoints.
+
 The following optional provider options are available for DeepSeek models:
+
+- `logprobs` _boolean_
+
+  Optional. Returns log probabilities for generated content and reasoning
+  tokens in `providerMetadata.deepseek.logprobs`.
+
+- `topLogprobs` _number_
+
+  Optional. Returns the specified number of most likely tokens at each token
+  position. Accepts values from `0` through `20` and automatically enables
+  `logprobs`.
+
+- `userId` _string_
+
+  Optional. An opaque end-user identifier that DeepSeek uses for content-safety
+  tracing, KV-cache isolation, and scheduling isolation. The value must match
+  `^[a-zA-Z0-9_-]+$` and contain at most 512 characters. Do not include names,
+  email addresses, or other private user information.
 
 - `thinking` _object_
 
-  Optional. Controls thinking mode (chain-of-thought reasoning). You can enable thinking mode either by using the `deepseek-reasoner` model or by setting this option.
-  - `type`: `'adaptive' | 'enabled' | 'disabled'` - Enable, disable, or let the model decide (`adaptive`) when to think. See [DeepSeek's thinking mode docs](https://api-docs.deepseek.com/guides/thinking_mode).
+  Optional. Controls thinking mode (chain-of-thought reasoning) for DeepSeek V4 models.
+  - `type`: `'enabled' | 'disabled'` - Enable or disable thinking mode. See [DeepSeek's thinking mode docs](https://api-docs.deepseek.com/guides/thinking_mode).
 
-- `reasoningEffort` _'low' | 'medium' | 'high' | 'xhigh' | 'max'_
+- `reasoningEffort` _'low' | 'high' | 'max'_
 
-  Optional. Controls thinking strength for DeepSeek V4 reasoning models. Per
-  DeepSeek's docs, `low` and `medium` are mapped to `high`, and `xhigh` is
-  mapped to `max` server-side for compatibility with other providers. When
-  using the top-level `reasoning` setting, `minimal` is sent as `low`, and
-  `low`, `medium`, `high`, and `xhigh` pass through to DeepSeek's native
-  effort values. Ignored when thinking is explicitly disabled.
+  Optional. Controls thinking strength for DeepSeek V4 reasoning models.
+  `medium` is sent as `high`, and `xhigh` is sent as `max`. A compatibility
+  warning is returned whenever the requested value is mapped.
 
-```ts highlight="7-12"
+For backwards compatibility, legacy provider options supplied at runtime are
+also mapped to documented values: `thinking.type: 'adaptive'` becomes
+`'enabled'`, `reasoningEffort: 'medium'` becomes `'high'`, and
+`reasoningEffort: 'xhigh'` becomes `'max'`. Each mapping returns a compatibility
+warning so callers can migrate to a canonical value.
+
+DeepSeek has deprecated the top-level `frequencyPenalty` and `presencePenalty`
+settings. The provider omits these settings and returns a deprecation warning
+when they are used. `temperature` and `topP` have no effect while thinking is
+enabled, including the default thinking mode for DeepSeek V4 models, so the
+provider omits them with an unsupported warning. Explicitly set
+`thinking.type` to `'disabled'` to use `temperature` and `topP`.
+
+```ts highlight="7-13"
 import { deepseek, type DeepSeekLanguageModelOptions } from '@ai-sdk/deepseek';
 import { generateText } from 'ai';
 
 const { text, reasoning } = await generateText({
-  model: deepseek('deepseek-chat'),
+  model: deepseek('deepseek-v4-flash'),
   prompt: 'How many "r"s are in the word "strawberry"?',
   providerOptions: {
     deepseek: {
+      userId: 'tenant_123-user',
       thinking: { type: 'enabled' },
       reasoningEffort: 'high',
     } satisfies DeepSeekLanguageModelOptions,
@@ -101070,16 +101326,106 @@ const { text, reasoning } = await generateText({
 });
 ```
 
+### Message Names
+
+DeepSeek supports optional participant names on system, user, and assistant
+messages. Set `providerOptions.deepseek.name` on each message that should
+include a name:
+
+```ts
+import {
+  deepSeek,
+  type DeepSeekMessageProviderOptions,
+} from '@ai-sdk/deepseek';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: deepSeek('deepseek-chat'),
+  instructions: {
+    role: 'system',
+    content: 'Help the customer plan a short trip.',
+    providerOptions: {
+      deepseek: {
+        name: 'travel_planner',
+      } satisfies DeepSeekMessageProviderOptions,
+    },
+  },
+  messages: [
+    {
+      role: 'user',
+      content: 'I want to visit Lisbon for a weekend.',
+      providerOptions: {
+        deepseek: {
+          name: 'customer',
+        } satisfies DeepSeekMessageProviderOptions,
+      },
+    },
+    {
+      role: 'assistant',
+      content: 'What kinds of activities do you enjoy?',
+      providerOptions: {
+        deepseek: {
+          name: 'travel_planner',
+        } satisfies DeepSeekMessageProviderOptions,
+      },
+    },
+    {
+      role: 'user',
+      content: 'Food, architecture, and walking.',
+      providerOptions: {
+        deepseek: {
+          name: 'customer',
+        } satisfies DeepSeekMessageProviderOptions,
+      },
+    },
+  ],
+});
+```
+
+The same message option works with `streamText`:
+
+```ts
+import {
+  deepSeek,
+  type DeepSeekMessageProviderOptions,
+} from '@ai-sdk/deepseek';
+import { streamText } from 'ai';
+
+const result = streamText({
+  model: deepSeek('deepseek-chat'),
+  messages: [
+    {
+      role: 'user',
+      content: 'Suggest a name for my neighborhood book club.',
+      providerOptions: {
+        deepseek: {
+          name: 'organizer',
+        } satisfies DeepSeekMessageProviderOptions,
+      },
+    },
+  ],
+});
+
+for await (const textPart of result.textStream) {
+  process.stdout.write(textPart);
+}
+```
+
+Names are omitted when the option is not set. The `name` value must be a
+string. DeepSeek does not support names on tool messages, so the provider
+ignores that placement and returns an unsupported-feature warning. Avoid
+including unnecessary personal or identifying information in message names.
+
 ### Reasoning
 
-DeepSeek has reasoning support for the `deepseek-reasoner` model. The reasoning is exposed through streaming:
+DeepSeek V4 models support reasoning. The reasoning is exposed through streaming:
 
 ```ts
 import { deepseek } from '@ai-sdk/deepseek';
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: deepseek('deepseek-reasoner'),
+  model: deepseek('deepseek-v4-pro'),
   prompt: 'How many "r"s are in the word "strawberry"?',
 });
 
@@ -101097,39 +101443,187 @@ for await (const part of result.fullStream) {
 See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details
 on how to integrate reasoning into your chatbot.
 
-### Cache Token Usage
+### Chat Prefix Completion
 
-DeepSeek provides context caching on disk technology that can significantly reduce token costs for repeated content. You can access the cache hit/miss metrics through the `providerMetadata` property in the response:
+DeepSeek's beta [chat prefix completion](https://api-docs.deepseek.com/guides/chat_prefix_completion/)
+continues the content of a final assistant message. Create a provider with a
+beta base URL and set `prefix: true` in that assistant message's provider
+options:
+
+```ts highlight="8,20-26"
+import {
+  createDeepSeek,
+  type DeepSeekAssistantMessageProviderOptions,
+} from '@ai-sdk/deepseek';
+import { generateText } from 'ai';
+
+const deepSeek = createDeepSeek({
+  baseURL: 'https://api.deepseek.com/beta',
+});
+
+const { text } = await generateText({
+  model: deepSeek('deepseek-v4-flash'),
+  messages: [
+    {
+      role: 'user',
+      content: 'Write a short sentence about the color of the sky.',
+    },
+    {
+      role: 'assistant',
+      content: 'The sky is',
+      providerOptions: {
+        deepseek: {
+          prefix: true,
+        } satisfies DeepSeekAssistantMessageProviderOptions,
+      },
+    },
+  ],
+});
+```
+
+The prefixed message must be an assistant message and the final message in the
+prompt. The configured `baseURL` must end in `/beta`, including when using a
+proxy. Invalid placement or a non-beta base URL causes the request to fail
+before it is sent.
+
+<Note>
+  Chat prefix completion is a DeepSeek beta feature and its behavior may change.
+</Note>
+
+### Strict Tool Calls
+
+DeepSeek's strict tool-call mode is a beta feature. Create the provider with a
+beta base URL and set `strict: true` on every function tool in the request:
+
+```ts highlight="5,14"
+import { createDeepSeek } from '@ai-sdk/deepseek';
+import { generateText, tool } from 'ai';
+import { z } from 'zod';
+
+const deepSeek = createDeepSeek({
+  baseURL: 'https://api.deepseek.com/beta',
+});
+
+const result = await generateText({
+  model: deepSeek('deepseek-chat'),
+  prompt: 'What is the weather in San Francisco?',
+  tools: {
+    weather: tool({
+      description: 'Get the weather for a location.',
+      inputSchema: z.object({ location: z.string() }),
+      strict: true,
+      execute: async ({ location }) => ({ location, temperature: 18 }),
+    }),
+  },
+});
+```
+
+Strict tools fail locally when the base URL does not end in `/beta`. When any
+function tool is strict, every function tool in the same request must set
+`strict: true`.
+
+### Provider Metadata
+
+DeepSeek exposes the response system fingerprint and context cache usage through
+the `providerMetadata` property:
 
 ```ts
 import { deepseek } from '@ai-sdk/deepseek';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: deepseek('deepseek-chat'),
+  model: deepseek('deepseek-v4-flash'),
   prompt: 'Your prompt here',
 });
 
 console.log(result.providerMetadata);
-// Example output: { deepseek: { promptCacheHitTokens: 1856, promptCacheMissTokens: 5 } }
+// Example output:
+// {
+//   deepseek: {
+//     systemFingerprint: 'fp_eaab8d114b_prod0820_fp8_kvcache',
+//     promptCacheHitTokens: 1856,
+//     promptCacheMissTokens: 5,
+//   },
+// }
 ```
 
-The metrics include:
+The metadata includes:
 
+- `systemFingerprint`: The backend configuration fingerprint for the response
 - `promptCacheHitTokens`: Number of input tokens that were cached
 - `promptCacheMissTokens`: Number of input tokens that were not cached
+
+For streamed responses, the latest non-null fingerprint from the response
+chunks is returned.
 
 <Note>
   For more details about DeepSeek's caching system, see the [DeepSeek caching
   documentation](https://api-docs.deepseek.com/guides/kv_cache#checking-cache-hit-status).
 </Note>
 
+### Chat Response Metadata
+
+DeepSeek preserves provider-specific response fields in
+`providerMetadata.deepseek` for generated and streamed responses:
+
+- `responseObject`: `chat.completion` or `chat.completion.chunk`
+- `choiceIndex`: the selected response choice index
+- `messageRole`: the response message role, when supplied
+- `toolCallTypes`: the tool-call type for each returned call
+
+These fields remain in provider metadata because they are specific to
+DeepSeek's Chat Completions response rather than shared AI SDK result fields.
+
+### Vision File Parts
+
+For inline images or image URLs, use file-part provider options to select the
+image processing detail. DeepSeek supports `low`, `high`, `original`, and
+`auto`:
+
+```ts highlight="2,13-17"
+import {
+  deepseek,
+  type DeepSeekFilePartProviderOptions,
+} from '@ai-sdk/deepseek';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: deepseek('deepseek-v4-flash-vision-exp'),
+  messages: [
+    {
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Describe this image.' },
+        {
+          type: 'file',
+          data: new URL('https://example.com/image.webp'),
+          mediaType: 'image/webp',
+          providerOptions: {
+            deepseek: {
+              imageDetail: 'low',
+            } satisfies DeepSeekFilePartProviderOptions,
+          },
+        },
+      ],
+    },
+  ],
+});
+```
+
+Set `fileData: true` on an inline image file part to use DeepSeek's
+`file_data` content-part representation. This preserves the file part's
+`filename`. `fileData` cannot be used with image URLs or `imageDetail`.
+
+DeepSeek accepts JPEG, PNG, GIF, and WebP image inputs. HTTP image URLs can be
+at most 8,192 characters.
+
 ## Model Capabilities
 
-| Model               | Text Generation     | Object Generation   | Image Input         | Tool Usage          | Tool Streaming      |
-| ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `deepseek-chat`     | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `deepseek-reasoner` | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                          | Text Generation     | Object Generation   | Image Input         | Tool Usage          | Tool Streaming      |
+| ------------------------------ | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `deepseek-v4-flash`            | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `deepseek-v4-pro`              | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `deepseek-v4-flash-vision-exp` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 
 <Note>
   Please see the [DeepSeek
@@ -102361,7 +102855,7 @@ const model = cerebras.chat('llama-3.3-70b');
 
 ### Reasoning Models
 
-Cerebras offers several reasoning models including `gpt-oss-120b`, `qwen-3-32b`, and `zai-glm-4.7` that generate intermediate thinking tokens before their final response. The reasoning output is streamed through the standard AI SDK reasoning parts.
+Cerebras offers several reasoning models including `gpt-oss-120b` and `qwen-3-32b` that generate intermediate thinking tokens before their final response. The reasoning output is streamed through the standard AI SDK reasoning parts.
 
 For `gpt-oss-120b`, you can control the reasoning depth using the `reasoningEffort` provider option:
 
@@ -102417,7 +102911,6 @@ The following optional provider options are available for Cerebras language mode
 | `qwen-3-235b-a22b-instruct-2507` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
 | `qwen-3-235b-a22b-thinking-2507` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
 | `zai-glm-4.6`                    | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `zai-glm-4.7`                    | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 
 <Note>
   The models `qwen-3-32b` and `llama-3.3-70b` are scheduled for deprecation on
@@ -111893,6 +112386,13 @@ tags: ['getting-started', 'reasoning']
 
 # Get started with DeepSeek R1
 
+<Note>
+  DeepSeek retired the `deepseek-reasoner` API alias on July 24, 2026. Direct
+  DeepSeek API examples in this historical guide are preserved for reference and
+  no longer run against the current service. For current DeepSeek reasoning
+  workloads, use `deepseek-v4-pro`.
+</Note>
+
 With the [release of DeepSeek R1](https://api-docs.deepseek.com/news/news250528), there has never been a better time to start building AI applications, particularly those that require complex reasoning capabilities.
 
 The [AI SDK](/) is a powerful TypeScript toolkit for building AI applications with large language models (LLMs) like DeepSeek R1 alongside popular frameworks like React, Next.js, Vue, Svelte, Node.js, and more.
@@ -112140,6 +112640,13 @@ tags: ['getting-started', 'agents']
 ---
 
 # Get started with DeepSeek V3.2
+
+<Note>
+  DeepSeek retired the `deepseek-chat` and `deepseek-reasoner` API aliases on
+  July 24, 2026. The examples in this historical V3.2 guide are preserved for
+  reference and no longer run against the current service. For current
+  applications, use `deepseek-v4-flash` or `deepseek-v4-pro`.
+</Note>
 
 With the [release of DeepSeek V3.2](https://api-docs.deepseek.com/news/news251201), there has never been a better time to start building AI applications that require advanced reasoning and agentic capabilities.
 
@@ -123095,13 +123602,12 @@ for (const file of result.files) {
 | [DeepInfra](/providers/ai-sdk-providers/deepinfra#image-models)                 | `stabilityai/sdxl-turbo`                                     | 1:1, 16:9, 1:9, 3:2, 2:3, 4:5, 5:4, 9:16, 9:21                                                                                                                      |
 | [Replicate](/providers/ai-sdk-providers/replicate)                              | `black-forest-labs/flux-schnell`                             | 1:1, 2:3, 3:2, 4:5, 5:4, 16:9, 9:16, 9:21, 21:9                                                                                                                     |
 | [Replicate](/providers/ai-sdk-providers/replicate)                              | `recraft-ai/recraft-v3`                                      | 1024x1024, 1365x1024, 1024x1365, 1536x1024, 1024x1536, 1820x1024, 1024x1820, 1024x2048, 2048x1024, 1434x1024, 1024x1434, 1024x1280, 1280x1024, 1024x1707, 1707x1024 |
-| [Google](/providers/ai-sdk-providers/google#image-models)                       | `imagen-4.0-generate-001`                                    | 1:1, 3:4, 4:3, 9:16, 16:9                                                                                                                                           |
-| [Google](/providers/ai-sdk-providers/google#image-models)                       | `imagen-4.0-fast-generate-001`                               | 1:1, 3:4, 4:3, 9:16, 16:9                                                                                                                                           |
-| [Google](/providers/ai-sdk-providers/google#image-models)                       | `imagen-4.0-ultra-generate-001`                              | 1:1, 3:4, 4:3, 9:16, 16:9                                                                                                                                           |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#image-models)         | `imagen-4.0-generate-001`                                    | 1:1, 3:4, 4:3, 9:16, 16:9                                                                                                                                           |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#image-models)         | `imagen-4.0-fast-generate-001`                               | 1:1, 3:4, 4:3, 9:16, 16:9                                                                                                                                           |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#image-models)         | `imagen-4.0-ultra-generate-001`                              | 1:1, 3:4, 4:3, 9:16, 16:9                                                                                                                                           |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#image-models)         | `imagen-3.0-fast-generate-001`                               | 1:1, 3:4, 4:3, 9:16, 16:9                                                                                                                                           |
+| [Google](/providers/ai-sdk-providers/google#image-models)                       | `gemini-2.5-flash-image`                                     | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9                                                                                                                 |
+| [Google](/providers/ai-sdk-providers/google#image-models)                       | `gemini-3-pro-image-preview`                                 | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9                                                                                                                 |
+| [Google](/providers/ai-sdk-providers/google#image-models)                       | `gemini-3.1-flash-image-preview`                             | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9                                                                                                                 |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#image-models)         | `gemini-2.5-flash-image`                                     | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9                                                                                                                 |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#image-models)         | `gemini-3-pro-image-preview`                                 | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9                                                                                                                 |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#image-models)         | `gemini-3.1-flash-image-preview`                             | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9                                                                                                                 |
 | [Fireworks](/providers/ai-sdk-providers/fireworks#image-models)                 | `accounts/fireworks/models/flux-1-dev-fp8`                   | 1:1, 2:3, 3:2, 4:5, 5:4, 16:9, 9:16, 9:21, 21:9                                                                                                                     |
 | [Fireworks](/providers/ai-sdk-providers/fireworks#image-models)                 | `accounts/fireworks/models/flux-1-schnell-fp8`               | 1:1, 2:3, 3:2, 4:5, 5:4, 16:9, 9:16, 9:21, 21:9                                                                                                                     |
 | [Fireworks](/providers/ai-sdk-providers/fireworks#image-models)                 | `accounts/fireworks/models/playground-v2-5-1024px-aesthetic` | 640x1536, 768x1344, 832x1216, 896x1152, 1024x1024, 1152x896, 1216x832, 1344x768, 1536x640                                                                           |
@@ -126828,10 +127334,9 @@ For `embed` and `embedMany`, the integration records spans with `CLIENT` kind:
   - `gen_ai.provider.name`: the provider
   - `gen_ai.request.model`: the requested model ID
 
-  Attributes set on finish:
-  - `gen_ai.usage.input_tokens`: the number of tokens used
-
-- **`embeddings {modelId}`** (inner span, `embedMany` only): one span per provider batch call, nested under the root span.
+- **`embeddings {modelId}`** (inner span): one span per provider request,
+  nested under the root span. `embed` creates one inner span. `embedMany`
+  creates one inner span per provider batch call.
 
   Initial attributes:
   - `gen_ai.operation.name`: `"embeddings"`
@@ -126840,6 +127345,9 @@ For `embed` and `embedMany`, the integration records spans with `CLIENT` kind:
 
   Attributes set on finish:
   - `gen_ai.usage.input_tokens`: the number of tokens used
+
+Usage is recorded only on inner provider-request spans. For `embedMany`, sum
+the usage from the inner spans to get the total usage for the operation.
 
 #### rerank
 
@@ -129551,7 +130059,9 @@ The AI SDK includes the following harness adapters:
 - [Claude Code](/providers/ai-sdk-harnesses/claude-code) (`@ai-sdk/harness-claude-code`)
 - [Cline](/providers/ai-sdk-harnesses/cline) (`@ai-sdk/harness-cline`)
 - [Codex](/providers/ai-sdk-harnesses/codex) (`@ai-sdk/harness-codex`)
+- [Cursor](/providers/ai-sdk-harnesses/cursor) (`@ai-sdk/harness-cursor`)
 - [Deep Agents](/providers/ai-sdk-harnesses/deepagents) (`@ai-sdk/harness-deepagents`)
+- [fx](/providers/ai-sdk-harnesses/fx) (`@ai-sdk/harness-fx`)
 - [Grok Build](/providers/ai-sdk-harnesses/grok-build) (`@ai-sdk/harness-grok-build`)
 - [OpenCode](/providers/ai-sdk-harnesses/opencode) (`@ai-sdk/harness-opencode`)
 - [Pi](/providers/ai-sdk-harnesses/pi) (`@ai-sdk/harness-pi`)
@@ -129569,14 +130079,12 @@ The AI SDK includes the following harness adapters:
 | [Claude Code](/providers/ai-sdk-harnesses/claude-code) | Sandbox bridge   | <Check />    | <Check />     | <Check />         | <Check />              | <Check />                    |
 | [Cline](/providers/ai-sdk-harnesses/cline)             | Host process     | <Check />    | <Check />     | <Check />         | <Check />              | <Check />                    |
 | [Codex](/providers/ai-sdk-harnesses/codex)             | Sandbox bridge   | <Check />    | <Check />     | <Check />         | <Cross />              | <Cross />                    |
+| [Cursor](/providers/ai-sdk-harnesses/cursor)           | Sandbox via ACP  | <Check />    | <Check />     | <Cross />         | <Check />              | <Cross />                    |
 | [Deep Agents](/providers/ai-sdk-harnesses/deepagents)  | Sandbox bridge   | <Check />    | <Check />     | <Check />         | <Check />              | <Check /> via auto-rejection |
+| [fx](/providers/ai-sdk-harnesses/fx)                   | Sandbox via ACP  | <Check />    | <Check />     | <Cross />         | <Check />              | <Cross />                    |
 | [Grok Build](/providers/ai-sdk-harnesses/grok-build)   | Sandbox via ACP  | <Check />    | <Check />     | <Check />         | <Check />              | <Cross />                    |
 | [OpenCode](/providers/ai-sdk-harnesses/opencode)       | Sandbox bridge   | <Check />    | <Check />     | <Check />         | <Check />              | <Check /> via auto-rejection |
 | [Pi](/providers/ai-sdk-harnesses/pi)                   | Host process     | <Check />    | <Check />     | <Cross />         | <Check />              | <Check />                    |
-
-Generic ACP profiles do not support structured output unless they configure an
-implementation-specific prompt metadata mapping; Grok Build includes the
-required mapping, while Codex ACP does not expose one.
 
 ---
 title: Workflow Utilities
@@ -138511,6 +139019,194 @@ const { text } = await generateText({
 
 AI Gateway language models can also be used in the `streamText` function and support structured data generation with [`Output`](/docs/reference/ai-sdk-core/output) (see [AI SDK Core](/docs/ai-sdk-core)).
 
+## Text Batches
+
+<Note type="warning">
+  Text batch support is experimental and the API may change in patch releases.
+</Note>
+
+AI Gateway supports durable text batches through `experimental_startTextBatch`, `experimental_getBatchStatus`, and `experimental_getBatchResults`. See the [AI Gateway batch processing guide](https://vercel.com/docs/ai-gateway/models-and-providers/batch-processing) for supported models, limits, and the complete lifecycle.
+
+Pass a publicly reachable HTTPS `webhookUrl` when starting a batch to receive a terminal notification instead of polling. AI Gateway sends `batch.completed`, `batch.failed`, or `batch.cancelled`. The event contains terminal status information but not batch results. Completion webhooks are an AI Gateway capability; direct Anthropic and OpenAI batch providers return an unsupported warning when this option is provided.
+
+```ts filename="start-batch.ts"
+import { randomUUID } from 'node:crypto';
+import {
+  experimental_startTextBatch as startTextBatch,
+  type Experimental_TextBatchReference as TextBatchReference,
+  type GatewayProviderMetadata,
+} from 'ai';
+
+// The receiver uses this token to look up the expected batch and signing
+// secret before trusting anything in the webhook body.
+const token = randomUUID();
+const model = 'anthropic/claude-haiku-4.5' as const;
+
+// Reserve the token before starting so an early delivery finds a retryable
+// pending record rather than an unknown callback.
+await reserveBatchWebhook(token);
+
+const batch = await startTextBatch({
+  model,
+  requests: [
+    { id: 'france', prompt: 'What is the capital of France?' },
+    { id: 'germany', prompt: 'What is the capital of Germany?' },
+  ],
+  providerOptions: {
+    gateway: { idempotencyKey: token },
+  },
+  webhookUrl: `https://example.com/api/batch-webhook?token=${token}`,
+});
+
+const gatewayMetadata = batch.providerMetadata?.gateway as
+  | GatewayProviderMetadata
+  | undefined;
+const signingSecret = gatewayMetadata?.asyncJob?.webhookSigningSecret;
+
+if (typeof signingSecret !== 'string') {
+  throw new Error('AI Gateway did not return a webhook signing secret.');
+}
+
+// Keep sensitive provider metadata out of the receiver queue and logs.
+const batchReference = {
+  version: batch.version,
+  type: batch.type,
+  id: batch.id,
+  provider: batch.provider,
+  modelId: batch.modelId,
+} satisfies TextBatchReference;
+
+await completeBatchWebhookReservation(token, {
+  batch: batchReference,
+  model,
+  signingSecret,
+});
+```
+
+The signing secret is returned only in the start response. Reserve the callback token before submitting the batch, then persist the secret, model, and minimal `batch` reference before the process exits. The stable `providerOptions.gateway.idempotencyKey` makes retrying an ambiguous start safe. Reuse the reserved token when retrying; do not generate a new one. Delete the reservation after a definitive start failure. While the reservation is still pending, the receiver should return a retryable response so an early delivery is sent again after setup completes.
+
+The receiver must verify the `x-ai-gateway-signature` header against a bounded raw request body before trusting the event:
+
+```ts filename="app/api/batch-webhook/route.ts"
+import { createHmac, timingSafeEqual } from 'node:crypto';
+
+const MAX_AGE_SECONDS = 5 * 60;
+const MAX_BODY_BYTES = 64 * 1024;
+
+export async function POST(request: Request) {
+  const token = new URL(request.url).searchParams.get('token');
+  if (token == null) return new Response(null, { status: 401 });
+
+  const record = await loadBatchWebhook(token);
+  if (record == null) return new Response(null, { status: 401 });
+  if (record.state !== 'ready') return new Response(null, { status: 503 });
+
+  const declaredLength = request.headers.get('content-length');
+  if (declaredLength != null && Number(declaredLength) > MAX_BODY_BYTES) {
+    return new Response(null, { status: 413 });
+  }
+
+  const rawBody = await readBodyWithLimit(request, MAX_BODY_BYTES);
+  if (rawBody == null) return new Response(null, { status: 413 });
+
+  const signature = request.headers.get('x-ai-gateway-signature');
+  if (
+    signature == null ||
+    !verifySignature({
+      header: signature,
+      rawBody,
+      secret: record.signingSecret,
+    })
+  ) {
+    return new Response(null, { status: 401 });
+  }
+
+  let event: { data?: { jobId?: string; status?: string } };
+  try {
+    event = JSON.parse(rawBody);
+  } catch {
+    return new Response(null, { status: 400 });
+  }
+
+  const jobId = event.data?.jobId;
+  const status = event.data?.status;
+  if (
+    jobId !== record.batch.id ||
+    (status !== 'cancelled' && status !== 'completed' && status !== 'failed')
+  ) {
+    return new Response(null, { status: 401 });
+  }
+
+  // The header is not signed, so require it to match the signed event body.
+  const deliveryId = `${jobId}-${status}`;
+  if (request.headers.get('x-ai-gateway-idempotency-key') !== deliveryId) {
+    return new Response(null, { status: 401 });
+  }
+
+  await enqueueBatchResultFetch({
+    batch: record.batch,
+    deliveryId,
+    model: record.model,
+  });
+
+  return new Response(null, { status: 204 });
+}
+
+async function readBodyWithLimit(request: Request, maxBytes: number) {
+  if (request.body == null) return '';
+
+  const reader = request.body.getReader();
+  const decoder = new TextDecoder();
+  let body = '';
+  let size = 0;
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) return body + decoder.decode();
+
+      size += value.byteLength;
+      if (size > maxBytes) {
+        await reader.cancel();
+        return undefined;
+      }
+
+      body += decoder.decode(value, { stream: true });
+    }
+  } finally {
+    reader.releaseLock();
+  }
+}
+
+function verifySignature({
+  header,
+  rawBody,
+  secret,
+}: {
+  header: string;
+  rawBody: string;
+  secret: string;
+}) {
+  const timestamp = header.match(/(?:^|,)t=(\d+)/)?.[1];
+  const digest = header.match(/(?:^|,)v1=([0-9a-f]{64})(?:,|$)/)?.[1];
+  if (timestamp == null || digest == null) return false;
+
+  const expected = createHmac('sha256', secret)
+    .update(`${timestamp}.${rawBody}`, 'utf8')
+    .digest('hex');
+  const provided = Buffer.from(digest, 'hex');
+  const computed = Buffer.from(expected, 'hex');
+  if (provided.length !== computed.length) return false;
+  if (!timingSafeEqual(provided, computed)) return false;
+
+  return Math.abs(Date.now() / 1000 - Number(timestamp)) <= MAX_AGE_SECONDS;
+}
+```
+
+The signature header has the form `t=<unix seconds>,v1=<hex digest>`, where `v1` is the HMAC-SHA256 digest of `"<t>.<raw body>"`. Verify a size-limited raw request body rather than a re-serialized object, use a timing-safe comparison, reject stale timestamps, and reject events whose `data.jobId` does not match the persisted `batch.id`.
+
+AI Gateway expects a 2xx response within 10 seconds and retries failed deliveries. It does not follow redirects, so the callback endpoint itself must return the 2xx response. Retries carry the same `x-ai-gateway-idempotency-key` value (`<jobId>-<status>`), which receivers can use for deduplication. After verification, pass the persisted model and `batch` reference to `experimental_getBatchStatus` and `experimental_getBatchResults`. Delivery is best-effort, so periodically reconcile persisted batches by status as a fallback for a notification that exhausts its retries.
+
 ## Reranking Models
 
 You can create reranking models using the `rerankingModel` method on the provider instance:
@@ -139068,6 +139764,112 @@ This initial Gateway integration supports Exa's plain Search modes and
 token-efficient content controls. Deep synthesis modes and generated summaries
 are intentionally not exposed yet because they have separate pricing from
 standard Search.
+
+#### Tako Search
+
+The Tako Search tool enables models to search the web and Tako's curated knowledge graph in a single call using [Tako's Search API](https://docs.tako.com/documentation/integrating-tako/search/overview). This tool is executed by the AI Gateway and returns token-efficient web excerpts, plus knowledge-graph results that carry structured data, premium source attribution, and an embed-ready visualization.
+
+```ts
+import { gateway, generateText } from 'ai';
+
+const result = await generateText({
+  model: 'openai/gpt-5.4-nano',
+  prompt: 'How has Nvidia quarterly revenue changed over the last two years?',
+  tools: {
+    tako_search: gateway.tools.takoSearch(),
+  },
+});
+
+console.log(result.text);
+console.log('Tool calls:', JSON.stringify(result.toolCalls, null, 2));
+console.log('Tool results:', JSON.stringify(result.toolResults, null, 2));
+```
+
+Configure the search with effort, source selection, and localization defaults. These defaults override values the model includes in a tool call:
+
+```ts
+import { gateway, generateText } from 'ai';
+
+const result = await generateText({
+  model: 'openai/gpt-5.4-nano',
+  prompt: 'AMD vs. Nvidia headcount since 2013',
+  tools: {
+    tako_search: gateway.tools.takoSearch({
+      effort: 'fast',
+      sources: {
+        data: {
+          contentFormat: 'json_compact',
+          includeContents: true,
+          maxRows: 100,
+        },
+        web: {
+          count: 3,
+        },
+      },
+      countryCode: 'US',
+      locale: 'en-US',
+    }),
+  },
+});
+
+console.log(result.text);
+```
+
+The Tako Search tool supports these optional configuration options:
+
+- **effort** _'fast' | 'instant' | 'deep'_ - Search effort. `'fast'` is the balanced default, `'instant'` favors cached low-latency results, and `'deep'` broadens retrieval with reranking at higher cost and latency.
+- **sources** _object_ - Omit to search both curated Tako data and the live web. When set, only source keys present are searched.
+- **sources.web** _object_ - Configure web results:
+  - **count** _number_ - Maximum web results, 1-20.
+  - **category** _'finance' | 'news' | 'sports'_ - Restrict web results to one category.
+  - **includeDomains** / **excludeDomains** _string[]_ - Only return, or drop, results from these bare domains. Up to 20 each.
+  - **publishedAfter** / **publishedBefore** _string_ - Keep results published on or after, or on or before, this `YYYY-MM-DD` date.
+  - **snippetMaxChars** _number_ - Character cap on each result's text excerpt. Defaults to 4,000; maximum 20,000.
+  - **highlights** _boolean_ - Return query-relevant passages as each result's snippet instead of the opening text of the page. The snippet can hold multiple passages joined by `' ... '`, and a page with no highlight returns `snippet: null`. Defaults to `true` in the AI Gateway.
+  - **includeContents** _boolean_ - Inline each page's extracted full text in `content`. **articleContentMaxChars** caps it, defaulting to 30,000 characters (maximum 1,000,000).
+- **sources.data** _object_ - Configure data results:
+  - **count** _number_ - Maximum data results, 1-20. Defaults to 5.
+  - **includeContents** _boolean_ - Inline each card's underlying rows in `content.dataset` as typed, unit-labeled columns.
+  - **contentFormat** _'json_compact' | 'json_records' | 'csv' | 'card_json'_ - Serialization for inlined card data. Defaults to `'json_compact'`.
+  - **maxRows** _number_ - Row cap for inlined card data. Omit to use your account's default inline cap (20 rows on the standard plan); maximum 2,000.
+  - **nodeIds** _string[]_ - Data Graph node IDs to prioritize. Up to 20.
+  - **strict** _boolean_ - Only return cards matching `nodeIds`. Requires at least one `nodeIds` value.
+- **location** _object_ - End-user `{ latitude, longitude }` coordinates for localized results.
+- **countryCode** _string_ - ISO 3166-1 alpha-2 country code, such as `'US'`.
+- **locale** _string_ - BCP-47 locale, such as `'en-US'`.
+- **timezone** _string_ - IANA timezone, such as `'America/New_York'`.
+- **outputSettings** _object_ - Card rendering controls. `forceRefresh` is available only with `'instant'` effort.
+- **includeRelated** _number_ - Number of related search suggestions to include (1-20).
+
+For precise entity matching, quote a phrase in the query and optionally append a label: `"Tesla":PRODUCT price`. Tako treats the quoted phrase as one entity before searching.
+
+The tool works with both `generateText` and `streamText`:
+
+```ts
+import { gateway, streamText } from 'ai';
+
+const result = streamText({
+  model: 'openai/gpt-5.4-nano',
+  prompt: 'What is the latest US inflation rate?',
+  tools: {
+    tako_search: gateway.tools.takoSearch(),
+  },
+});
+
+for await (const part of result.stream) {
+  switch (part.type) {
+    case 'text-delta':
+      process.stdout.write(part.text);
+      break;
+    case 'tool-call':
+      console.log('\nTool call:', JSON.stringify(part, null, 2));
+      break;
+    case 'tool-result':
+      console.log('\nTool result:', JSON.stringify(part, null, 2));
+      break;
+  }
+}
+```
 
 #### Parallel Search
 
@@ -149419,7 +150221,7 @@ import { groq, type GroqLanguageModelChatOptions } from '@ai-sdk/groq';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: groq('qwen/qwen3-32b'),
+  model: groq('qwen/qwen3.6-27b'),
   providerOptions: {
     groq: {
       reasoningFormat: 'parsed',
@@ -149444,7 +150246,7 @@ The following optional provider options are available for Groq language models:
 - **reasoningEffort** _'low' | 'medium' | 'high' | 'none' | 'default'_
 
   Controls the level of effort the model will put into reasoning.
-  - `qwen/qwen3-32b`
+  - `qwen/qwen3.6-27b`
     - Supported values:
       - `none`: Disable reasoning. The model will not use any reasoning tokens.
       - `default`: Enable reasoning.
@@ -149454,7 +150256,7 @@ The following optional provider options are available for Groq language models:
       - `medium`: Use a medium level of reasoning effort.
       - `high`: Use a high level of reasoning effort.
 
-  Defaults to `default` for `qwen/qwen3-32b.`
+  Defaults to `default` for `qwen/qwen3.6-27b`.
 
 - **structuredOutputs** _boolean_
 
@@ -149637,7 +150439,7 @@ const { text } = await generateText({
 | `meta-llama/llama-prompt-guard-2-22m`           | <Cross />   | <Check />         | <Cross />  | <Cross />      |
 | `meta-llama/llama-prompt-guard-2-86m`           | <Cross />   | <Check />         | <Cross />  | <Cross />      |
 | `moonshotai/kimi-k2-instruct-0905`              | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `qwen/qwen3-32b`                                | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `qwen/qwen3.6-27b`                              | <Cross />   | <Check />         | <Check />  | <Check />      |
 | `llama-guard-3-8b`                              | <Cross />   | <Check />         | <Check />  | <Check />      |
 | `llama3-70b-8192`                               | <Cross />   | <Check />         | <Check />  | <Check />      |
 | `llama3-8b-8192`                                | <Cross />   | <Check />         | <Check />  | <Check />      |
@@ -150969,23 +151771,29 @@ You can use the following optional settings to customize the Deepgram provider i
 You can create models that call the [Deepgram text-to-speech API](https://developers.deepgram.com/docs/text-to-speech)
 using the `.speech()` factory method.
 
-The first argument is the model id, which includes the voice. Deepgram embeds the voice directly in the model ID (e.g., `aura-2-helena-en`).
-
-```ts
-const model = deepgram.speech('aura-2-helena-en');
-```
-
-You can use the model with the `generateSpeech` function:
+The first argument is the voice family ID: `aura-2` (current generation) or
+`aura` (Aura-1). The voice and language are selected with the
+`generateSpeech` `voice` and `language` options — the provider composes the
+upstream Deepgram model ID as `<family>-<voice>-<language>` (language
+defaults to `en`):
 
 ```ts
 import { generateSpeech } from 'ai';
 import { deepgram } from '@ai-sdk/deepgram';
 
 const result = await generateSpeech({
-  model: deepgram.speech('aura-2-helena-en'),
+  model: deepgram.speech('aura-2'),
+  voice: 'thalia',
+  language: 'en',
   text: 'Hello, world!',
 });
 ```
+
+<Note>
+  Full voice model IDs (e.g. `deepgram.speech('aura-2-helena-en')`) still pass
+  through, but the family ID + `voice`/`language` form above is the recommended
+  path — it matches voice selection in the other speech providers.
+</Note>
 
 You can also pass additional provider-specific options using the `providerOptions` argument:
 
@@ -150994,7 +151802,8 @@ import { generateSpeech } from 'ai';
 import { deepgram, type DeepgramSpeechModelOptions } from '@ai-sdk/deepgram';
 
 const result = await generateSpeech({
-  model: deepgram.speech('aura-2-helena-en'),
+  model: deepgram.speech('aura-2'),
+  voice: 'helena',
   text: 'Hello, world!',
   providerOptions: {
     deepgram: {
@@ -151054,19 +151863,26 @@ The following provider options are available:
   Label your requests for identification during usage reporting.
   Optional.
 
+Speech results include Deepgram response details in
+`providerMetadata.deepgram`: `modelName` (the resolved upstream model),
+`modelUuid`, `additionalModelUuids`, `charCount` (the billed character
+count), `breaksApplied`, `pronunciationsApplied`,
+`pronunciationWarnings` (when present), and `requestId`.
+
+The `generateSpeech` `speed` option is passed through to Deepgram's `speed`
+parameter. Deepgram accepts speeds in the 0.7–1.5 range and rejects
+out-of-range values with a 400 error; speed is not supported for all
+languages. `instructions` is not supported and is ignored with a warning.
+
 ### Model Capabilities
 
-| Model                                                            |
-| ---------------------------------------------------------------- |
-| `aura-2-asteria-en`                                              |
-| `aura-2-thalia-en`                                               |
-| `aura-2-helena-en`                                               |
-| `aura-2-orpheus-en`                                              |
-| `aura-2-zeus-en`                                                 |
-| `aura-asteria-en`                                                |
-| `aura-luna-en`                                                   |
-| `aura-stella-en`                                                 |
-| [+ more voices](https://developers.deepgram.com/docs/tts-models) |
+| Family   | Voices (selected via the `voice` option)                                    |
+| -------- | --------------------------------------------------------------------------- |
+| `aura-2` | 41 English, 17 Spanish, 9 Dutch, 7 German, 10 Italian, 5 Japanese, 2 French |
+| `aura`   | 12 English (Aura-1)                                                         |
+
+See the [full voice list](https://developers.deepgram.com/docs/tts-models)
+for all voice names and accents.
 
 ## Transcription Models
 
@@ -151153,7 +151969,8 @@ The following provider options are available:
 - **diarize** _boolean_
 
   Whether to identify different speakers in the transcription.
-  Defaults to `true`.
+  Defaults to `false`. Note that Deepgram bills speaker diarization as a
+  per-minute add-on.
   Optional.
 
 - **utterances** _boolean_
@@ -151169,6 +151986,31 @@ The following provider options are available:
 - **fillerWords** _boolean_
 
   Whether to include filler words (um, uh, etc.) in the transcription.
+  Optional.
+
+- **paragraphs** _boolean_
+
+  Whether to format the transcription into paragraphs.
+  Optional.
+
+- **intents** _boolean_
+
+  Whether to detect intents in the transcription.
+  Optional.
+
+- **sentiment** _boolean_
+
+  Whether to analyze sentiment in the transcription.
+  Optional.
+
+- **keyterm** _string_
+
+  Key term to improve recognition accuracy for.
+  Optional.
+
+- **replace** _string_
+
+  String to replace redacted content with.
   Optional.
 
 ### Model Capabilities
@@ -153156,6 +153998,65 @@ The following Zod features are known to not work with Google:
   available provider model ID as a string if needed.
 </Note>
 
+### Text Batches
+
+<Note type="warning">
+  Text batch APIs are experimental and may change in future releases.
+</Note>
+
+The Google provider supports the [Gemini Batch API](https://ai.google.dev/gemini-api/docs/batch-api) for text generation.
+
+```ts
+import { google } from '@ai-sdk/google';
+import {
+  experimental_getBatchResults as getBatchResults,
+  experimental_getBatchStatus as getBatchStatus,
+  experimental_startTextBatch as startTextBatch,
+} from 'ai';
+
+const model = google('gemini-3.6-flash');
+
+const batch = await startTextBatch({
+  model,
+  requests: [
+    { id: 'france', prompt: 'What is the capital of France?' },
+    { id: 'germany', prompt: 'What is the capital of Germany?' },
+  ],
+});
+
+// Persist `batch` and check its status later, or poll for status updates.
+const { status } = await getBatchStatus({ model, batch });
+
+if (status !== 'pending') {
+  for await (const item of getBatchResults({ model, batch })) {
+    if (item.status === 'succeeded') {
+      console.log(item.id, item.text);
+    } else {
+      console.error(item.id, item.error);
+    }
+  }
+}
+```
+
+Starting a batch returns a serializable reference that can be persisted and used to retrieve the batch results later, or poll for status updates.
+
+You can pass a `webhookUrl` to receive a notification when the batch reaches a terminal state:
+
+```ts
+const batch = await startTextBatch({
+  model,
+  requests: [
+    { id: 'france', prompt: 'What is the capital of France?' },
+    { id: 'germany', prompt: 'What is the capital of Germany?' },
+  ],
+  webhookUrl: 'https://example.com/api/google-batch-webhook',
+});
+```
+
+Google sends a thin event to the webhook URL. After receiving and verifying the event, use the persisted batch reference with `getBatchStatus` or `getBatchResults`. Your application is responsible for handling the webhook and [verifying Google's dynamic webhook signature](https://ai.google.dev/gemini-api/docs/webhooks#verify_dynamic_signatures_jwks).
+
+When the serialized batch creation body is under 20 MB, the provider sends the requests inline. At 20 MB or more, it uploads a JSONL input file through the Gemini Files API.
+
 ## Realtime Models
 
 <Note type="warning">Realtime is an experimental feature.</Note>
@@ -153994,61 +154895,8 @@ The following optional provider options are available for Google embedding model
 You can create image models that call the Google Generative AI API using the `.image()` factory method.
 For more on image generation with the AI SDK see [generateImage()](/docs/reference/ai-sdk-core/generate-image).
 
-The Google provider supports two types of image models:
-
-- **Imagen models**: Dedicated image generation models using the `:predict` API
-- **Gemini image models**: Multimodal language models with image output capabilities using the `:generateContent` API
-
-### Imagen Models
-
-[Imagen](https://ai.google.dev/gemini-api/docs/imagen) models are dedicated image generation models.
-
-```ts
-import { google } from '@ai-sdk/google';
-import { generateImage } from 'ai';
-
-const { image } = await generateImage({
-  model: google.image('imagen-4.0-generate-001'),
-  prompt: 'A futuristic cityscape at sunset',
-  aspectRatio: '16:9',
-});
-```
-
-Further configuration can be done using Google provider options. You can validate the provider options using the `GoogleImageModelOptions` type.
-
-```ts
-import { google } from '@ai-sdk/google';
-import { GoogleImageModelOptions } from '@ai-sdk/google';
-import { generateImage } from 'ai';
-
-const { image } = await generateImage({
-  model: google.image('imagen-4.0-generate-001'),
-  providerOptions: {
-    google: {
-      personGeneration: 'dont_allow',
-    } satisfies GoogleImageModelOptions,
-  },
-  // ...
-});
-```
-
-The following provider options are available for Imagen models:
-
-- **personGeneration** `allow_adult` | `allow_all` | `dont_allow`
-  Whether to allow person generation. Defaults to `allow_adult`.
-
-<Note>
-  Imagen models do not support the `size` parameter. Use the `aspectRatio`
-  parameter instead.
-</Note>
-
-#### Imagen Model Capabilities
-
-| Model                           | Aspect Ratios             |
-| ------------------------------- | ------------------------- |
-| `imagen-4.0-generate-001`       | 1:1, 3:4, 4:3, 9:16, 16:9 |
-| `imagen-4.0-ultra-generate-001` | 1:1, 3:4, 4:3, 9:16, 16:9 |
-| `imagen-4.0-fast-generate-001`  | 1:1, 3:4, 4:3, 9:16, 16:9 |
+The `.image()` factory supports Gemini multimodal language models with image
+output capabilities through the `:generateContent` API.
 
 ### Gemini Image Models
 
@@ -154115,7 +154963,7 @@ const { image } = await generateImage({
 Gemini image models support [Google Search grounding](#google-search) through `providerOptions.google.googleSearch`. The value matches the args of `google.tools.googleSearch(...)`; pass `{}` to enable with defaults, or `{ searchTypes: { imageSearch: {} } }` to ground on reference photos.
 
 ```ts
-import { google } from '@ai-sdk/google';
+import { google, type GoogleImageModelOptions } from '@ai-sdk/google';
 import { generateImage } from 'ai';
 
 const result = await generateImage({
@@ -154125,7 +154973,7 @@ const result = await generateImage({
   providerOptions: {
     google: {
       googleSearch: { searchTypes: { imageSearch: {} } },
-    },
+    } satisfies GoogleImageModelOptions,
   },
 });
 
@@ -155370,198 +156218,10 @@ The following optional provider options are available for Google Vertex AI embed
 
 ### Image Models
 
-You can create image models using the `.image()` factory method. The Google Vertex provider supports both [Imagen](https://cloud.google.com/vertex-ai/generative-ai/docs/image/overview) and [Gemini image models](https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-5-flash-image). For more on image generation with the AI SDK see [generateImage()](/docs/reference/ai-sdk-core/generate-image).
-
-#### Imagen Models
-
-[Imagen models](https://cloud.google.com/vertex-ai/generative-ai/docs/image/generate-images) generate images using the Imagen on Vertex AI API.
-
-```ts
-import { googleVertex } from '@ai-sdk/google-vertex';
-import { generateImage } from 'ai';
-
-const { image } = await generateImage({
-  model: googleVertex.image('imagen-4.0-generate-001'),
-  prompt: 'A futuristic cityscape at sunset',
-  aspectRatio: '16:9',
-});
-```
-
-Further configuration can be done using Google Vertex provider options. You can validate the provider options using the `GoogleVertexImageModelOptions` type.
-
-```ts
-import { googleVertex } from '@ai-sdk/google-vertex';
-import { GoogleVertexImageModelOptions } from '@ai-sdk/google-vertex';
-import { generateImage } from 'ai';
-
-const { image } = await generateImage({
-  model: googleVertex.image('imagen-4.0-generate-001'),
-  providerOptions: {
-    vertex: {
-      negativePrompt: 'pixelated, blurry, low-quality',
-    } satisfies GoogleVertexImageModelOptions,
-  },
-  // ...
-});
-```
-
-The following provider options are available:
-
-- **negativePrompt** _string_
-  A description of what to discourage in the generated images.
-
-- **personGeneration** `allow_adult` | `allow_all` | `dont_allow`
-  Whether to allow person generation. Defaults to `allow_adult`.
-
-- **safetySetting** `block_low_and_above` | `block_medium_and_above` | `block_only_high` | `block_none`
-  Whether to block unsafe content. Defaults to `block_medium_and_above`.
-
-- **addWatermark** _boolean_
-  Whether to add an invisible watermark to the generated images. Defaults to `true`.
-
-- **storageUri** _string_
-  Cloud Storage URI to store the generated images.
-
-<Note>
-  Imagen models do not support the `size` parameter. Use the `aspectRatio`
-  parameter instead.
-</Note>
-
-Additional information about the images can be retrieved using Google Vertex meta data.
-
-```ts
-import { googleVertex } from '@ai-sdk/google-vertex';
-import { GoogleVertexImageModelOptions } from '@ai-sdk/google-vertex';
-import { generateImage } from 'ai';
-
-const { image, providerMetadata } = await generateImage({
-  model: googleVertex.image('imagen-4.0-generate-001'),
-  prompt: 'A futuristic cityscape at sunset',
-  aspectRatio: '16:9',
-});
-
-console.log(
-  `Revised prompt: ${providerMetadata.vertex.images[0].revisedPrompt}`,
-);
-```
-
-##### Image Editing
-
-Google Vertex Imagen models support image editing through inpainting, outpainting, and other edit modes. Pass input images via `prompt.images` and optionally a mask via `prompt.mask`.
-
-<Note>
-  Image editing is supported by `imagen-3.0-capability-001`. The
-  `imagen-4.0-generate-001` model does not currently support editing operations.
-</Note>
-
-###### Inpainting (Insert Objects)
-
-Insert or replace objects in specific areas using a mask:
-
-```ts
-import {
-  googleVertex,
-  GoogleVertexImageModelOptions,
-} from '@ai-sdk/google-vertex';
-import { generateImage } from 'ai';
-import fs from 'fs';
-
-const image = fs.readFileSync('./input-image.png');
-const mask = fs.readFileSync('./mask.png'); // White = edit area
-
-const { images } = await generateImage({
-  model: googleVertex.image('imagen-3.0-capability-001'),
-  prompt: {
-    text: 'A sunlit indoor lounge area with a pool containing a flamingo',
-    images: [image],
-    mask,
-  },
-  providerOptions: {
-    vertex: {
-      edit: {
-        baseSteps: 50,
-        mode: 'EDIT_MODE_INPAINT_INSERTION',
-        maskMode: 'MASK_MODE_USER_PROVIDED',
-        maskDilation: 0.01,
-      },
-    } satisfies GoogleVertexImageModelOptions,
-  },
-});
-```
-
-###### Outpainting (Extend Image)
-
-Extend an image beyond its original boundaries:
-
-```ts
-import {
-  googleVertex,
-  GoogleVertexImageModelOptions,
-} from '@ai-sdk/google-vertex';
-import { generateImage } from 'ai';
-import fs from 'fs';
-
-const image = fs.readFileSync('./input-image.png');
-const mask = fs.readFileSync('./outpaint-mask.png'); // White = extend area
-
-const { images } = await generateImage({
-  model: googleVertex.image('imagen-3.0-capability-001'),
-  prompt: {
-    text: 'Extend the scene with more of the forest background',
-    images: [image],
-    mask,
-  },
-  providerOptions: {
-    vertex: {
-      edit: {
-        baseSteps: 50,
-        mode: 'EDIT_MODE_OUTPAINT',
-        maskMode: 'MASK_MODE_USER_PROVIDED',
-      },
-    } satisfies GoogleVertexImageModelOptions,
-  },
-});
-```
-
-###### Edit Provider Options
-
-The following options are available under `providerOptions.vertex.edit`:
-
-- **mode** - The edit mode to use:
-  - `EDIT_MODE_INPAINT_INSERTION` - Insert objects into masked areas
-  - `EDIT_MODE_INPAINT_REMOVAL` - Remove objects from masked areas
-  - `EDIT_MODE_OUTPAINT` - Extend image beyond boundaries
-  - `EDIT_MODE_CONTROLLED_EDITING` - Controlled editing
-  - `EDIT_MODE_PRODUCT_IMAGE` - Product image editing
-  - `EDIT_MODE_BGSWAP` - Background swap
-
-- **baseSteps** _number_ - Number of sampling steps (35-75). Higher values = better quality but slower.
-
-- **maskMode** - How to interpret the mask:
-  - `MASK_MODE_USER_PROVIDED` - Use the provided mask directly
-  - `MASK_MODE_DEFAULT` - Default mask mode
-  - `MASK_MODE_DETECTION_BOX` - Mask from detected bounding boxes
-  - `MASK_MODE_CLOTHING_AREA` - Mask from clothing segmentation
-  - `MASK_MODE_PARSED_PERSON` - Mask from person parsing
-
-- **maskDilation** _number_ - Percentage (0-1) to grow the mask. Recommended: 0.01.
-
-<Note>
-  Input images must be provided as `Buffer`, `ArrayBuffer`, `Uint8Array`, or
-  base64-encoded strings. URL-based images are not supported for Google Vertex
-  image editing.
-</Note>
-
-##### Imagen Model Capabilities
-
-| Model                           | Aspect Ratios             |
-| ------------------------------- | ------------------------- |
-| `imagen-3.0-generate-001`       | 1:1, 3:4, 4:3, 9:16, 16:9 |
-| `imagen-3.0-generate-002`       | 1:1, 3:4, 4:3, 9:16, 16:9 |
-| `imagen-3.0-fast-generate-001`  | 1:1, 3:4, 4:3, 9:16, 16:9 |
-| `imagen-4.0-generate-001`       | 1:1, 3:4, 4:3, 9:16, 16:9 |
-| `imagen-4.0-fast-generate-001`  | 1:1, 3:4, 4:3, 9:16, 16:9 |
-| `imagen-4.0-ultra-generate-001` | 1:1, 3:4, 4:3, 9:16, 16:9 |
+You can create Gemini image models using the `.image()` factory method. These
+models provide image output through the language model `:generateContent` API.
+For more on image generation with the AI SDK see
+[generateImage()](/docs/reference/ai-sdk-core/generate-image).
 
 #### Gemini Image Models
 
@@ -155596,20 +156256,11 @@ const { image } = await generateImage({
 });
 ```
 
-You can also use URLs (including `gs://` Cloud Storage URIs) for input images:
-
-```ts
-import { googleVertex } from '@ai-sdk/google-vertex';
-import { generateImage } from 'ai';
-
-const { image } = await generateImage({
-  model: googleVertex.image('gemini-2.5-flash-image'),
-  prompt: {
-    text: 'Add a small wizard hat to this cat',
-    images: ['https://example.com/cat.png'],
-  },
-});
-```
+<Note>
+  Input images must be provided as `Buffer`, `ArrayBuffer`, `Uint8Array`, or
+  base64-encoded strings. URL inputs, including HTTP and `gs://` URLs, are not
+  supported by `generateImage()` with Google Vertex image models.
+</Note>
 
 <Note>
   Gemini image models do not support the `size` or `n` parameters. Use
@@ -155634,8 +156285,8 @@ const { image } = await generateImage({
 <Note>
   `gemini-3-pro-image-preview` supports additional features including up to 14
   reference images for editing (6 objects, 5 humans), resolution options (1K,
-  2K, 4K via `providerOptions.vertex.imageConfig.imageSize`), and Google Search
-  grounding.
+  2K, 4K via `providerOptions.vertex.imageConfig.imageSize`). Use the
+  `GoogleVertexImageModelOptions` type to validate Gemini provider options.
 </Note>
 
 ### Video Models
@@ -160019,7 +160670,7 @@ import { deepSeek } from '@ai-sdk/deepseek';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: deepSeek('deepseek-chat'),
+  model: deepSeek('deepseek-v4-flash'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -160027,31 +160678,64 @@ const { text } = await generateText({
 You can also use the `.chat()` or `.languageModel()` factory methods:
 
 ```ts
-const model = deepSeek.chat('deepseek-chat');
+const model = deepSeek.chat('deepseek-v4-flash');
 // or
-const model = deepSeek.languageModel('deepseek-chat');
+const model = deepSeek.languageModel('deepseek-v4-flash');
 ```
 
 DeepSeek language models can be used in the `streamText` function
 (see [AI SDK Core](/docs/ai-sdk-core)).
 
+DeepSeek retired the `deepseek-chat` and `deepseek-reasoner` aliases on July 24, 2026. Use `deepseek-v4-flash` or `deepseek-v4-pro` for the current API. Custom
+and legacy model IDs remain accepted as strings for compatibility with custom
+endpoints.
+
 The following optional provider options are available for DeepSeek models:
+
+- `logprobs` _boolean_
+
+  Optional. Returns log probabilities for generated content and reasoning
+  tokens in `providerMetadata.deepseek.logprobs`.
+
+- `topLogprobs` _number_
+
+  Optional. Returns the specified number of most likely tokens at each token
+  position. Accepts values from `0` through `20` and automatically enables
+  `logprobs`.
+
+- `userId` _string_
+
+  Optional. An opaque end-user identifier that DeepSeek uses for content-safety
+  tracing, KV-cache isolation, and scheduling isolation. The value must match
+  `^[a-zA-Z0-9_-]+$` and contain at most 512 characters. Do not include names,
+  email addresses, or other private user information.
 
 - `thinking` _object_
 
-  Optional. Controls thinking mode (chain-of-thought reasoning). You can enable thinking mode either by using the `deepseek-reasoner` model or by setting this option.
-  - `type`: `'adaptive' | 'enabled' | 'disabled'` - Enable, disable, or let the model decide (`adaptive`) when to think. See [DeepSeek's thinking mode docs](https://api-docs.deepseek.com/guides/thinking_mode).
+  Optional. Controls thinking mode (chain-of-thought reasoning) for DeepSeek V4 models.
+  - `type`: `'enabled' | 'disabled'` - Enable or disable thinking mode. See [DeepSeek's thinking mode docs](https://api-docs.deepseek.com/guides/thinking_mode).
 
-- `reasoningEffort` _'low' | 'medium' | 'high' | 'xhigh' | 'max'_
+- `reasoningEffort` _'low' | 'high' | 'max'_
 
-  Optional. Controls thinking strength for DeepSeek V4 reasoning models. Per
-  DeepSeek's docs, `low` and `medium` are mapped to `high`, and `xhigh` is
-  mapped to `max` server-side for compatibility with other providers. When
-  using the top-level `reasoning` setting, `minimal` is sent as `low`, and
-  `low`, `medium`, `high`, and `xhigh` pass through to DeepSeek's native
-  effort values.
+  Optional. Controls thinking strength for DeepSeek V4 reasoning models. When
+  using the top-level `reasoning` setting, `minimal` is sent as `low`,
+  `medium` is sent as `high`, and `xhigh` is sent as `max`. A compatibility
+  warning is returned whenever the requested value is mapped.
 
-```ts highlight="7-12"
+For backwards compatibility, legacy provider options supplied at runtime are
+also mapped to documented values: `thinking.type: 'adaptive'` becomes
+`'enabled'`, `reasoningEffort: 'medium'` becomes `'high'`, and
+`reasoningEffort: 'xhigh'` becomes `'max'`. Each mapping returns a compatibility
+warning so callers can migrate to a canonical value.
+
+DeepSeek has deprecated the top-level `frequencyPenalty` and `presencePenalty`
+settings. The provider omits these settings and returns a deprecation warning
+when they are used. `temperature` and `topP` have no effect while thinking is
+enabled, including the default thinking mode for DeepSeek V4 models, so the
+provider omits them with an unsupported warning. Explicitly set
+`thinking.type` to `'disabled'` to use `temperature` and `topP`.
+
+```ts highlight="7-15"
 import {
   deepSeek,
   type DeepSeekLanguageModelChatOptions,
@@ -160059,10 +160743,11 @@ import {
 import { generateText } from 'ai';
 
 const { text, reasoning } = await generateText({
-  model: deepSeek('deepseek-chat'),
+  model: deepSeek('deepseek-v4-flash'),
   prompt: 'How many "r"s are in the word "strawberry"?',
   providerOptions: {
     deepseek: {
+      userId: 'tenant_123-user',
       thinking: { type: 'enabled' },
       reasoningEffort: 'high',
     } satisfies DeepSeekLanguageModelChatOptions,
@@ -160070,16 +160755,106 @@ const { text, reasoning } = await generateText({
 });
 ```
 
+### Message Names
+
+DeepSeek supports optional participant names on system, user, and assistant
+messages. Set `providerOptions.deepseek.name` on each message that should
+include a name:
+
+```ts
+import {
+  deepSeek,
+  type DeepSeekMessageProviderOptions,
+} from '@ai-sdk/deepseek';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: deepSeek('deepseek-chat'),
+  instructions: {
+    role: 'system',
+    content: 'Help the customer plan a short trip.',
+    providerOptions: {
+      deepseek: {
+        name: 'travel_planner',
+      } satisfies DeepSeekMessageProviderOptions,
+    },
+  },
+  messages: [
+    {
+      role: 'user',
+      content: 'I want to visit Lisbon for a weekend.',
+      providerOptions: {
+        deepseek: {
+          name: 'customer',
+        } satisfies DeepSeekMessageProviderOptions,
+      },
+    },
+    {
+      role: 'assistant',
+      content: 'What kinds of activities do you enjoy?',
+      providerOptions: {
+        deepseek: {
+          name: 'travel_planner',
+        } satisfies DeepSeekMessageProviderOptions,
+      },
+    },
+    {
+      role: 'user',
+      content: 'Food, architecture, and walking.',
+      providerOptions: {
+        deepseek: {
+          name: 'customer',
+        } satisfies DeepSeekMessageProviderOptions,
+      },
+    },
+  ],
+});
+```
+
+The same message option works with `streamText`:
+
+```ts
+import {
+  deepSeek,
+  type DeepSeekMessageProviderOptions,
+} from '@ai-sdk/deepseek';
+import { streamText } from 'ai';
+
+const result = streamText({
+  model: deepSeek('deepseek-chat'),
+  messages: [
+    {
+      role: 'user',
+      content: 'Suggest a name for my neighborhood book club.',
+      providerOptions: {
+        deepseek: {
+          name: 'organizer',
+        } satisfies DeepSeekMessageProviderOptions,
+      },
+    },
+  ],
+});
+
+for await (const textPart of result.textStream) {
+  process.stdout.write(textPart);
+}
+```
+
+Names are omitted when the option is not set. The `name` value must be a
+string. DeepSeek does not support names on tool messages, so the provider
+ignores that placement and returns an unsupported-feature warning. Avoid
+including unnecessary personal or identifying information in message names.
+
 ### Reasoning
 
-DeepSeek has reasoning support for the `deepseek-reasoner` model. The reasoning is exposed through streaming:
+DeepSeek V4 models support reasoning. The reasoning is exposed through streaming:
 
 ```ts
 import { deepSeek } from '@ai-sdk/deepseek';
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: deepSeek('deepseek-reasoner'),
+  model: deepSeek('deepseek-v4-pro'),
   prompt: 'How many "r"s are in the word "strawberry"?',
 });
 
@@ -160097,39 +160872,239 @@ for await (const part of result.stream) {
 See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details
 on how to integrate reasoning into your chatbot.
 
-### Cache Token Usage
+### Chat Prefix Completion
 
-DeepSeek provides context caching on disk technology that can significantly reduce token costs for repeated content. You can access the cache hit/miss metrics through the `providerMetadata` property in the response:
+DeepSeek's beta [chat prefix completion](https://api-docs.deepseek.com/guides/chat_prefix_completion/)
+continues the content of a final assistant message. Create a provider with a
+beta base URL and set `prefix: true` in that assistant message's provider
+options:
+
+```ts highlight="8,20-26"
+import {
+  createDeepSeek,
+  type DeepSeekAssistantMessageProviderOptions,
+} from '@ai-sdk/deepseek';
+import { generateText } from 'ai';
+
+const deepSeek = createDeepSeek({
+  baseURL: 'https://api.deepseek.com/beta',
+});
+
+const { text } = await generateText({
+  model: deepSeek('deepseek-v4-flash'),
+  messages: [
+    {
+      role: 'user',
+      content: 'Write a short sentence about the color of the sky.',
+    },
+    {
+      role: 'assistant',
+      content: 'The sky is',
+      providerOptions: {
+        deepseek: {
+          prefix: true,
+        } satisfies DeepSeekAssistantMessageProviderOptions,
+      },
+    },
+  ],
+});
+```
+
+The prefixed message must be an assistant message and the final message in the
+prompt. The configured `baseURL` must end in `/beta`, including when using a
+proxy. Invalid placement or a non-beta base URL causes the request to fail
+before it is sent.
+
+<Note>
+  Chat prefix completion is a DeepSeek beta feature and its behavior may change.
+</Note>
+
+### Strict Tool Calls
+
+DeepSeek's strict tool-call mode is a beta feature. Create the provider with a
+beta base URL and set `strict: true` on every function tool in the request:
+
+```ts highlight="5,14"
+import { createDeepSeek } from '@ai-sdk/deepseek';
+import { generateText, tool } from 'ai';
+import { z } from 'zod';
+
+const deepSeek = createDeepSeek({
+  baseURL: 'https://api.deepseek.com/beta',
+});
+
+const result = await generateText({
+  model: deepSeek('deepseek-chat'),
+  prompt: 'What is the weather in San Francisco?',
+  tools: {
+    weather: tool({
+      description: 'Get the weather for a location.',
+      inputSchema: z.object({ location: z.string() }),
+      strict: true,
+      execute: async ({ location }) => ({ location, temperature: 18 }),
+    }),
+  },
+});
+```
+
+Strict tools fail locally when the base URL does not end in `/beta`. When any
+function tool is strict, every function tool in the same request must set
+`strict: true`.
+
+### Provider Metadata
+
+DeepSeek exposes the response system fingerprint and context cache usage through
+the `providerMetadata` property:
 
 ```ts
 import { deepSeek } from '@ai-sdk/deepseek';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: deepSeek('deepseek-chat'),
+  model: deepSeek('deepseek-v4-flash'),
   prompt: 'Your prompt here',
 });
 
 console.log(result.providerMetadata);
-// Example output: { deepseek: { promptCacheHitTokens: 1856, promptCacheMissTokens: 5 } }
+// Example output:
+// {
+//   deepseek: {
+//     systemFingerprint: 'fp_eaab8d114b_prod0820_fp8_kvcache',
+//     promptCacheHitTokens: 1856,
+//     promptCacheMissTokens: 5,
+//   },
+// }
 ```
 
-The metrics include:
+The metadata includes:
 
+- `systemFingerprint`: The backend configuration fingerprint for the response
 - `promptCacheHitTokens`: Number of input tokens that were cached
 - `promptCacheMissTokens`: Number of input tokens that were not cached
+
+For streamed responses, the latest non-null fingerprint from the response
+chunks is returned.
 
 <Note>
   For more details about DeepSeek's caching system, see the [DeepSeek caching
   documentation](https://api-docs.deepseek.com/guides/kv_cache#checking-cache-hit-status).
 </Note>
 
+### Chat Response Metadata
+
+DeepSeek preserves provider-specific response fields in
+`providerMetadata.deepseek` for generated and streamed responses:
+
+- `responseObject`: `chat.completion` or `chat.completion.chunk`
+- `choiceIndex`: the selected response choice index
+- `messageRole`: the response message role, when supplied
+- `toolCallTypes`: the tool-call type for each returned call
+
+These fields remain in provider metadata because they are specific to
+DeepSeek's Chat Completions response rather than shared AI SDK result fields.
+
+### File Uploads
+
+For inline images or image URLs, use file-part provider options to select the
+image processing detail. DeepSeek supports `low`, `high`, `original`, and
+`auto`:
+
+```ts highlight="2,13-17"
+import {
+  deepSeek,
+  type DeepSeekFilePartProviderOptions,
+} from '@ai-sdk/deepseek';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: deepSeek('deepseek-v4-flash-vision-exp'),
+  messages: [
+    {
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Describe this image.' },
+        {
+          type: 'file',
+          data: new URL('https://example.com/image.webp'),
+          mediaType: 'image/webp',
+          providerOptions: {
+            deepseek: {
+              imageDetail: 'low',
+            } satisfies DeepSeekFilePartProviderOptions,
+          },
+        },
+      ],
+    },
+  ],
+});
+```
+
+Set `fileData: true` on an inline image file part to use DeepSeek's
+`file_data` content-part representation. This preserves the file part's
+`filename`. `fileData` cannot be used with image URLs or `imageDetail`.
+
+DeepSeek accepts JPEG, PNG, GIF, and WebP image inputs. HTTP image URLs can be
+at most 8,192 characters.
+
+You can upload images using the [DeepSeek Files API](https://api-docs.deepseek.com/guides/files_api) and pass the returned provider reference to `deepseek-v4-flash-vision-exp`. This avoids sending the image bytes again in each request.
+
+```ts
+import { deepSeek, type DeepSeekFilesOptions } from '@ai-sdk/deepseek';
+import { generateText, uploadFile } from 'ai';
+import { readFile } from 'node:fs/promises';
+
+const { providerReference, mediaType } = await uploadFile({
+  api: deepSeek.files(),
+  data: await readFile('./image.png'),
+  filename: 'image.png',
+  providerOptions: {
+    deepseek: {
+      expiresAfter: 3600,
+    } satisfies DeepSeekFilesOptions,
+  },
+});
+
+const { text } = await generateText({
+  model: deepSeek('deepseek-v4-flash-vision-exp'),
+  messages: [
+    {
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Describe this image.' },
+        {
+          type: 'file',
+          mediaType: mediaType ?? 'image/png',
+          data: providerReference,
+        },
+      ],
+    },
+  ],
+});
+```
+
+The optional `expiresAfter` setting specifies the lifetime in seconds. DeepSeek accepts values from 3,600 seconds (one hour) through 2,592,000 seconds (30 days). Files are permanent when no expiration is specified.
+
+The provider requires a valid file ID in successful upload responses. It also
+validates returned `object` and `purpose` discriminators and numeric metadata.
+Other response metadata remains optional for compatibility with incomplete
+responses; omitted values are not included in `providerMetadata`, and an
+omitted response filename falls back to the filename supplied to `uploadFile`.
+
+DeepSeek file uploads support JPEG (`.jpg` and `.jpeg`), PNG, GIF, and WebP
+images. Each file can be at most 64 MiB, and filenames can contain at most 512
+characters. The AI SDK validates these constraints before sending the upload
+request. The `image/jpg` media type alias is accepted, and a supported filename
+extension is used as a fallback when the media type is generic (for example,
+`application/octet-stream`). Recognizable non-image content is rejected even
+when its declared media type or filename indicates a supported image format.
+
 ## Model Capabilities
 
-| Model               | Text Generation | Object Generation | Image Input | Tool Usage | Tool Streaming |
-| ------------------- | --------------- | ----------------- | ----------- | ---------- | -------------- |
-| `deepseek-chat`     | <Check />       | <Check />         | <Cross />   | <Check />  | <Check />      |
-| `deepseek-reasoner` | <Check />       | <Check />         | <Cross />   | <Check />  | <Check />      |
+| Model                          | Text Generation | Object Generation | Image Input | Tool Usage | Tool Streaming |
+| ------------------------------ | --------------- | ----------------- | ----------- | ---------- | -------------- |
+| `deepseek-v4-flash`            | <Check />       | <Check />         | <Cross />   | <Check />  | <Check />      |
+| `deepseek-v4-pro`              | <Check />       | <Check />         | <Cross />   | <Check />  | <Check />      |
+| `deepseek-v4-flash-vision-exp` | <Check />       | <Check />         | <Check />   | <Check />  | <Check />      |
 
 <Note>
   Please see the [DeepSeek
@@ -161327,7 +162302,7 @@ const model = cerebras.chat('gpt-oss-120b');
 
 ### Reasoning Models
 
-Cerebras offers reasoning models including `gpt-oss-120b`, `zai-glm-4.7`, and `gemma-4-31b` that generate intermediate thinking tokens before their final response. The reasoning output is streamed through the standard AI SDK reasoning parts.
+Cerebras offers reasoning models including `gpt-oss-120b` and `gemma-4-31b` that generate intermediate thinking tokens before their final response. The reasoning output is streamed through the standard AI SDK reasoning parts.
 
 For `gpt-oss-120b`, you can control the reasoning depth using the `reasoningEffort` provider option:
 
@@ -161360,9 +162335,41 @@ See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details on 
 
 The following optional provider options are available for Cerebras language models:
 
-- **reasoningEffort** _'low' | 'medium' | 'high'_
+- **parallelToolCalls** _boolean_
 
-  Controls the depth of reasoning for GPT-OSS models. Defaults to `'medium'`.
+  Whether to enable parallel function calling during tool use. Defaults to `true`.
+
+- **logprobs** _boolean_
+
+  Whether to return log probabilities for generated tokens. Defaults to `false`.
+
+- **topLogprobs** _number_
+
+  Number of most likely tokens to return at each token position. Accepts values from `0` through `20`. Requires `logprobs` to be `true`.
+
+- **logitBias** _Record&lt;string, number&gt;_
+
+  Maps token IDs to bias values from `-100` through `100`.
+
+- **serviceTier** _'auto' | 'default' | 'flex' | 'priority'_
+
+  Controls request priority. Availability depends on your account and endpoint.
+
+- **reasoningEffort** _'none' | 'low' | 'medium' | 'high'_
+
+  Controls the amount of reasoning performed by supported models. Supported values and defaults depend on the model.
+
+- **reasoningFormat** _'none' | 'parsed' | 'text_parsed' | 'raw' | 'hidden'_
+
+  Controls how reasoning content appears in the response. Format support depends on the model.
+
+- **prediction** _&#123; type: 'content'; content: string | Array&lt;&#123; type: 'text'; text: string &#125;&gt; &#125;_
+
+  Supplies predicted output that can accelerate requests where most of the response is already known.
+
+- **promptCacheKey** _string_
+
+  Routes related requests to the same prompt cache. The value can contain up to 1024 characters and requires account-level enablement.
 
 - **user** _string_
 
@@ -161372,12 +162379,33 @@ The following optional provider options are available for Cerebras language mode
 
   Whether to use strict JSON schema validation. When `true`, the model uses constrained decoding to guarantee schema compliance. Defaults to `true`.
 
+For example:
+
+```ts
+import {
+  cerebras,
+  type CerebrasLanguageModelChatOptions,
+} from '@ai-sdk/cerebras';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: cerebras('gpt-oss-120b'),
+  prompt: 'Explain why the sky is blue.',
+  providerOptions: {
+    cerebras: {
+      reasoningEffort: 'low',
+      reasoningFormat: 'parsed',
+      promptCacheKey: 'conversation-123',
+    } satisfies CerebrasLanguageModelChatOptions,
+  },
+});
+```
+
 ## Model Capabilities
 
 | Model          | Image Input | Object Generation | Tool Usage | Tool Streaming | Reasoning |
 | -------------- | ----------- | ----------------- | ---------- | -------------- | --------- |
 | `gpt-oss-120b` | <Cross />   | <Check />         | <Check />  | <Check />      | <Check /> |
-| `zai-glm-4.7`  | <Cross />   | <Check />         | <Check />  | <Check />      | <Check /> |
 | `gemma-4-31b`  | <Check />   | <Check />         | <Check />  | <Check />      | <Check /> |
 
 ---
@@ -163982,6 +165010,14 @@ const harness = createClaudeCode({
 Settings:
 
 - `auth`: authentication mode: `auto`, `direct`, or `ai-gateway`.
+- `credentialForwarding`: optional synchronous or asynchronous callback that
+  customizes each credential immediately before the harness adapter forwards it
+  into a sandbox process. It receives the credential value that would otherwise
+  be forwarded (either the real credential or a masked value) and the
+  environment variable name used to expose it. This callback only controls the
+  value forwarded into the sandbox process. It does not restrict which
+  credentials the harness adapter can discover, read, or otherwise access in
+  the host process.
 - `mcpServers`: MCP server definitions keyed by server name.
 - `model`: Anthropic model id passed to the underlying Claude Code runtime.
 - `maxTurns`: maximum internal turns before yielding.
@@ -164162,6 +165198,14 @@ const harness = createCodex({
 Settings:
 
 - `auth`: authentication mode: `auto`, `direct`, or `ai-gateway`.
+- `credentialForwarding`: optional synchronous or asynchronous callback that
+  customizes each credential immediately before the harness adapter forwards it
+  into a sandbox process. It receives the credential value that would otherwise
+  be forwarded (either the real credential or a masked value) and the
+  environment variable name used to expose it. This callback only controls the
+  value forwarded into the sandbox process. It does not restrict which
+  credentials the harness adapter can discover, read, or otherwise access in
+  the host process.
 - `codexConfig`: additional native Codex configuration. Values pass through as
   provided, so use the snake_case keys from Codex's `config.toml` reference.
   The adapter's managed values take precedence over conflicting entries.
@@ -164528,6 +165572,14 @@ const harness = createOpenCode({
 Settings:
 
 - `auth`: authentication mode: `auto`, `anthropic`, `openai`, or `ai-gateway`.
+- `credentialForwarding`: optional synchronous or asynchronous callback that
+  customizes each credential immediately before the harness adapter forwards it
+  into a sandbox process. It receives the credential value that would otherwise
+  be forwarded (either the real credential or a masked value) and the
+  environment variable name used to expose it. This callback only controls the
+  value forwarded into the sandbox process. It does not restrict which
+  credentials the harness adapter can discover, read, or otherwise access in
+  the host process.
 - `mcpServers`: MCP server definitions keyed by server name.
 - `model`: OpenCode model id. Provider-prefixed values such as
   `anthropic/claude-sonnet-4-6` are passed through to OpenCode.
@@ -164715,6 +165767,14 @@ const harness = createDeepAgents({
 Settings:
 
 - `auth`: authentication mode: `auto`, `anthropic`, or `ai-gateway`.
+- `credentialForwarding`: optional synchronous or asynchronous callback that
+  customizes each credential immediately before the harness adapter forwards it
+  into a sandbox process. It receives the credential value that would otherwise
+  be forwarded (either the real credential or a masked value) and the
+  environment variable name used to expose it. This callback only controls the
+  value forwarded into the sandbox process. It does not restrict which
+  credentials the harness adapter can discover, read, or otherwise access in
+  the host process.
 - `mcpServers`: MCP server definitions keyed by server name.
 - `model`: model id passed to the Deep Agents (LangChain) runtime. Through AI
   Gateway, use the `creator/model` slug (e.g. `anthropic/claude-sonnet-4-6`,
@@ -164833,10 +165893,9 @@ harness compatible with ACP version 1. The generic adapter owns the bridge, ACP
 client, host-tool relay, event translation, approvals, and lifecycle behavior;
 the inline profile describes how to install and configure one ACP runtime.
 
-All you need in addition to the ACP harness adapter is an NPM package that provides
-an ACP compatible implementation, e.g. `@agentclientprotocol/claude-agent-acp` or
-`@agentclientprotocol/codex-acp`. You can then configure the ACP harness adapter
-with a few lines of code.
+All you need in addition to the ACP harness adapter is an ACP-compatible
+implementation that can be installed from NPM or with a trusted Bash command.
+You can then configure the ACP harness adapter with a few lines of code.
 
 <Note>
   Harness packages are **experimental**. Expect breaking changes between
@@ -164885,8 +165944,10 @@ try {
 - `harnessId`: stable kebab-case identity for this profile.
 - `version`: ACP protocol version. It defaults to and currently supports only
   `'v1'`.
-- `source`: where the ACP package comes from, as a simple or locked NPM source.
-- `executable`: the package bin name to launch.
+- `source`: how to acquire the ACP implementation, as a simple NPM package,
+  locked NPM installation, or trusted Bash install command.
+- `executable`: the bare command name to launch from the acquired
+  implementation.
 - `args`: optional arguments passed to the executable.
 - `forwardEnv`: non-credential host environment variable names to forward into
   the sandbox.
@@ -164895,6 +165956,14 @@ try {
 - `credentialBrokering`: function that receives the effective runtime
   environment and returns additive outbound request transformations containing
   the real credential values.
+- `credentialForwarding`: optional synchronous or asynchronous callback that
+  customizes each credential immediately before the harness adapter forwards it
+  into a sandbox process. It receives the credential value that would otherwise
+  be forwarded (either the real credential or a masked value) and the
+  environment variable name used to expose it. This callback only controls the
+  value forwarded into the sandbox process. It does not restrict which
+  credentials the harness adapter can discover, read, or otherwise access in
+  the host process.
 - `env`: persistent environment values written at bootstrap.
 - `builtinTools`: optional native tool definitions for static typing and exact
   name matching.
@@ -164965,7 +166034,7 @@ mapping throws `HarnessCapabilityUnsupportedError` instead of assuming that an
 arbitrary ACP implementation understands the schema; Codex ACP is unsupported,
 while the Grok Build harness includes its verified mapping.
 
-### Package source
+### Implementation source
 
 A simple NPM source installs a single package by name:
 
@@ -164992,11 +166061,45 @@ const source = {
   type: 'npm-locked',
   packageJson: packageJsonContents,
   pnpmLockYaml: pnpmLockYamlContents,
+  pnpmWorkspaceYaml: pnpmWorkspaceYamlContents,
 } as const;
 ```
 
 A locked source installs the supplied files with
-`pnpm install --frozen-lockfile`.
+`pnpm install --frozen-lockfile`. `pnpmWorkspaceYaml` is optional; provide it
+when the locked installation needs workspace-level pnpm configuration, such as
+an exact-version `allowBuilds` policy for a required dependency build script.
+
+The manifest, lockfile, and optional workspace configuration are persisted
+bootstrap artifacts and participate in lifecycle identity. Do not include
+credentials in these strings.
+
+An install command source runs a trusted Bash command inside the harness's
+deterministic bootstrap directory:
+
+```ts
+const cursorSource = {
+  type: 'install-command',
+  command: 'curl https://cursor.com/install -fsS | bash',
+} as const;
+
+const fxSource = {
+  type: 'install-command',
+  command: 'curl -fsSL https://fx.sh/setup.sh | bash',
+} as const;
+```
+
+The command runs with `set -euo pipefail`, with its working directory set to
+`.harness-bootstrap/<harnessId>/implementation` and `HOME` set to the `home`
+directory immediately below it. All persistent installation files must remain
+below that `HOME`. The command must install `executable` into
+`$HOME/.local/bin`; the adapter launches that deterministic path without a
+shell and does not fall back to a command already present in the sandbox.
+
+Install commands do not provide automatic version pinning. A successful
+bootstrap remains cached, and the exact command participates in bootstrap and
+lifecycle identity. Treat the command as executable configuration and do not
+embed credentials in it because bootstrap recipes are persisted.
 
 ## Authentication
 
@@ -165078,9 +166181,9 @@ are never inferred. Host-tool approval remains independent.
 
 ## Complete ACP Harness Implementations
 
-These profiles support direct authentication through the runtime-specific
-environment variables shown below and AI Gateway authentication through
-`AI_GATEWAY_API_KEY` or `VERCEL_OIDC_TOKEN`.
+Unless noted otherwise, these profiles support direct authentication through
+the runtime-specific environment variables shown below and AI Gateway
+authentication through `AI_GATEWAY_API_KEY` or `VERCEL_OIDC_TOKEN`.
 
 ### Claude Code ACP
 
@@ -165252,6 +166355,54 @@ Without Gateway credentials, this profile uses direct `CODEX_API_KEY` or
 `OPENAI_API_KEY` authentication. Gateway `env` values are added to the
 ACP process only when Gateway is selected, so direct runtime configuration
 remains unchanged.
+
+### Cursor ACP
+
+Cursor exposes ACP through `agent acp` and installs its CLI with a Bash
+installer rather than an NPM package:
+
+```ts
+import { createACP } from '@ai-sdk/harness-acp';
+
+export const cursorACPHarness = createACP({
+  harnessId: 'cursor-acp',
+  source: {
+    type: 'install-command',
+    command: 'curl https://cursor.com/install -fsS | bash',
+  },
+  executable: 'agent',
+  args: ['--disable-auto-update', 'acp'],
+  credentialEnv: ['CURSOR_API_KEY'],
+  credentialBrokering: ({ env }) => {
+    if (!env.CURSOR_API_KEY) return [];
+    return [
+      {
+        match: {
+          host: 'api2.cursor.sh',
+          path: { exact: '/auth/exchange_user_api_key' },
+          method: ['POST'],
+        },
+        transform: {
+          headers: {
+            Authorization: `Bearer ${env.CURSOR_API_KEY}`,
+          },
+        },
+      },
+    ];
+  },
+});
+```
+
+The update flag prevents the cached installation from changing itself at
+runtime. Credential brokering is limited to Cursor's initial API-key exchange,
+so subsequent requests keep the short-lived Cursor access token returned by
+that exchange.
+
+Cursor supports AI Gateway. Configure Cursor's OpenAI API key with an AI
+Gateway credential and set **Override OpenAI Base URL** to
+`https://ai-gateway.vercel.sh/cursor/v1`. The regular Cursor CLI continues to
+authenticate to Cursor with `CURSOR_API_KEY`; that login is separate from the
+model provider and routing configured in the Cursor account.
 
 ### Grok Build ACP
 
@@ -165426,6 +166577,14 @@ Settings:
 - `auth`: selects `auto`, `direct`, or `ai-gateway` authentication. The default
   is `auto`, which selects AI Gateway when Gateway credentials are present and
   direct xAI authentication otherwise.
+- `credentialForwarding`: optional synchronous or asynchronous callback that
+  customizes each credential immediately before the harness adapter forwards it
+  into a sandbox process. It receives the credential value that would otherwise
+  be forwarded (either the real credential or a masked value) and the
+  environment variable name used to expose it. This callback only controls the
+  value forwarded into the sandbox process. It does not restrict which
+  credentials the harness adapter can discover, read, or otherwise access in
+  the host process.
 - `model`: Grok model id selected through ACP. When omitted, Grok Build chooses
   its own default model.
 - `mcpServers`: MCP server definitions keyed by server name.
@@ -165722,6 +166881,369 @@ runtime and throws `HarnessCapabilityUnsupportedError`.
 - [Harness adapters](/docs/ai-sdk-harnesses/harness-adapters)
 
 ---
+title: Cursor
+description: Learn how to use the Cursor harness adapter.
+---
+
+# Cursor Harness
+
+The Cursor harness adapter connects `HarnessAgent` to
+[Cursor CLI](https://cursor.com/cli) through the Agent Client Protocol (ACP).
+The adapter delegates ACP sessions, streaming, tools, and lifecycle management
+to `@ai-sdk/harness-acp`.
+
+<Note>
+  Harness packages are **experimental**. Expect breaking changes between
+  releases as this early API gets further refined.
+</Note>
+
+## Setup
+
+<InstallPackages packages="@ai-sdk/harness @ai-sdk/harness-cursor @ai-sdk/sandbox-vercel" />
+
+Create a Cursor user API key and set `CURSOR_API_KEY`. The key authenticates
+Cursor CLI in the sandbox regardless of how Cursor authenticates to the model
+provider.
+
+The adapter installs Cursor CLI inside the sandbox with the official Cursor
+install command when the first session starts.
+
+## Import
+
+```ts
+import { createCursor, cursor } from '@ai-sdk/harness-cursor';
+```
+
+`cursor` is equivalent to `createCursor()` with its default configuration.
+
+## Basic Usage
+
+```ts
+import { HarnessAgent } from '@ai-sdk/harness/agent';
+import { cursor } from '@ai-sdk/harness-cursor';
+import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+
+const agent = new HarnessAgent({
+  harness: cursor,
+  sandbox: createVercelSandbox({
+    runtime: 'node24',
+    ports: [4000],
+  }),
+});
+
+const session = await agent.createSession();
+
+try {
+  const result = await agent.generate({
+    session,
+    prompt: 'Inspect this project and summarize its purpose.',
+  });
+  console.log(result.text);
+} finally {
+  await session.destroy();
+}
+```
+
+To use this agent with Vercel Sandbox, provide `VERCEL_OIDC_TOKEN` and
+`CURSOR_API_KEY` in the host environment.
+
+## Adapter Settings
+
+Use `createCursor()` to configure the runtime:
+
+```ts
+const harness = createCursor({
+  auth: 'ai-gateway',
+  model: 'cursor-model-id',
+  port: 4001,
+  startupTimeoutMs: 180_000,
+});
+```
+
+Settings:
+
+- `auth`: accepts the shared ACP modes `auto`, `direct`, or `ai-gateway`. This
+  cannot change Cursor's provider authentication route. Explicit `direct` and
+  `ai-gateway` values emit a configuration reminder; `auto` does not because it
+  does not declare an expected route.
+- `credentialForwarding`: optional synchronous or asynchronous callback that
+  customizes each credential immediately before the harness adapter forwards it
+  into a sandbox process. It receives the credential value that would otherwise
+  be forwarded (either the real credential or a masked value) and the
+  environment variable name used to expose it. This callback only controls the
+  value forwarded into the sandbox process. It does not restrict which
+  credentials the harness adapter can discover, read, or otherwise access in
+  the host process.
+- `model`: Cursor model id selected through ACP. When omitted, Cursor chooses
+  its own default model.
+- `mcpServers`: MCP server definitions keyed by server name.
+- `port`: ACP bridge port override.
+- `startupTimeoutMs`: maximum time to wait for the ACP bridge to start.
+- `mintBridgeToken`: synchronous function that receives the sandbox id and
+  returns the ACP bridge authentication token. By default, the adapter generates
+  a random 32-byte token. Custom implementations must return a suitably secret
+  token.
+
+The adapter fixes the install command and ACP launch command. These
+implementation details cannot be overridden through `createCursor()`.
+
+## Authentication
+
+Cursor has two independent authentication layers:
+
+1. `CURSOR_API_KEY` authenticates Cursor CLI to the Cursor account. The harness
+   requires this key for every `auth` mode.
+2. Cursor's account settings determine how Cursor authenticates to the model
+   provider. The harness cannot read or change this setting.
+
+For direct routing, configure the model provider in Cursor. For AI Gateway,
+configure Cursor's OpenAI API key with an AI Gateway API key and set
+**Override OpenAI Base URL** to
+`https://ai-gateway.vercel.sh/cursor/v1` in Cursor settings. Cursor resolves that
+credential from its account configuration; the harness does not use
+`AI_GATEWAY_API_KEY` or `VERCEL_OIDC_TOKEN` for model-provider authentication.
+
+Explicit `direct` and `ai-gateway` values emit a warning that the selected route
+must be configured in Cursor. `auto` is accepted without a warning:
+
+```ts
+const automaticHarness = createCursor({ auth: 'auto' });
+const directHarness = createCursor({ auth: 'direct' });
+const gatewayHarness = createCursor({ auth: 'ai-gateway' });
+```
+
+## Sandbox
+
+Cursor runs inside the sandbox through `@ai-sdk/harness-acp`. It requires a
+network sandbox with at least one exposed port, such as
+`@ai-sdk/sandbox-vercel`:
+
+```ts
+const sandbox = createVercelSandbox({
+  runtime: 'node24',
+  ports: [4000],
+});
+```
+
+The first session requires network egress to run Cursor's official installer.
+
+## Built-in Tools
+
+The adapter maps Cursor's terminal, glob, and grep tools to the common `bash`,
+`glob`, and `grep` tools. It also exposes Cursor's remaining built-ins under
+stable names, including `read`, `edit`, `ls`, `semanticSearch`, `webSearch`,
+`task`, and the Cursor planning, MCP, browser, and environment tools.
+
+Cursor host-tool calls use ACP MCP transport. The adapter recognizes Cursor's
+MCP payload and correlates the call with the host-side tool execution.
+
+## Known Limitations
+
+- Cursor's model-provider authentication route must be configured in Cursor.
+  The `auth` adapter setting cannot switch it programmatically.
+- ACP v1 does not expose model-step boundaries or per-step usage. The adapter
+  infers boundaries and reports unknown per-step usage when Cursor does not
+  provide totals.
+- ACP v1 has no portable manual compaction or mid-turn steering API.
+- ACP v1 has no portable built-in tool filtering API. Filtering host tools is
+  supported, but filtering Cursor built-ins throws an unsupported-capability
+  error.
+- Cursor ACP does not expose a structured-output metadata mapping, so schema-backed
+  structured output is unsupported.
+
+## Related
+
+- [HarnessAgent](/docs/ai-sdk-harnesses/harness-agent)
+- [Harness tools](/docs/ai-sdk-harnesses/tools)
+- [Harness adapters](/docs/ai-sdk-harnesses/harness-adapters)
+- [Agent Client Protocol](/providers/ai-sdk-harnesses/acp)
+
+---
+title: fx
+description: Learn how to use the fx harness adapter.
+---
+
+# fx Harness
+
+The fx harness adapter connects `HarnessAgent` to [fx](https://fx.sh) through
+the Agent Client Protocol (ACP). The adapter delegates installation, sessions,
+streaming, tools, and lifecycle management to `@ai-sdk/harness-acp`.
+
+<Note>
+  Harness packages are **experimental**. Expect breaking changes between
+  releases as this early API gets further refined.
+</Note>
+
+## Setup
+
+<InstallPackages packages="@ai-sdk/harness @ai-sdk/harness-fx @ai-sdk/sandbox-vercel" />
+
+The ACP harness runs the [canonical fx installer](https://fx.sh/docs/getting-started/installation)
+inside the sandbox when the first session starts. The installer tracks the
+latest fx release and installs the executable into the ACP implementation's
+private home directory.
+
+## Import
+
+```ts
+import { createFx, fx } from '@ai-sdk/harness-fx';
+```
+
+`fx` is equivalent to `createFx()` with its default configuration.
+
+## Basic Usage
+
+```ts
+import { HarnessAgent } from '@ai-sdk/harness/agent';
+import { fx } from '@ai-sdk/harness-fx';
+import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+
+const agent = new HarnessAgent({
+  harness: fx,
+  sandbox: createVercelSandbox({
+    runtime: 'node24',
+    ports: [4000],
+  }),
+});
+
+const session = await agent.createSession();
+
+let exitCode = 0;
+try {
+  const result = await agent.stream({
+    session,
+    prompt: 'Check the test failures and fix the production code.',
+  });
+
+  for await (const part of result.stream) {
+    if (part.type === 'text-delta') {
+      process.stdout.write(part.text);
+    }
+  }
+} catch (err) {
+  exitCode = 1;
+  console.error(err);
+} finally {
+  await session.destroy();
+  process.exit(exitCode);
+}
+```
+
+## Adapter Settings
+
+Use `createFx()` to configure the runtime:
+
+```ts
+const harness = createFx({
+  auth: 'ai-gateway',
+  model: 'openai/gpt-5.4',
+  port: 4001,
+  startupTimeoutMs: 180_000,
+});
+```
+
+Settings:
+
+- `auth`: selects `auto`, `direct`, or `ai-gateway` authentication. fx always
+  sends model requests through Vercel AI Gateway, so `direct` and `ai-gateway`
+  differ only in how the harness passes the Gateway credential into the
+  sandbox.
+- `credentialForwarding`: optional synchronous or asynchronous callback that
+  customizes each credential immediately before the harness adapter forwards it
+  into a sandbox process. It receives the credential value that would otherwise
+  be forwarded (either the real credential or a masked value) and the
+  environment variable name used to expose it. This callback only controls the
+  value forwarded into the sandbox process. It does not restrict which
+  credentials the harness adapter can discover, read, or otherwise access in
+  the host process.
+- `model`: AI Gateway model id selected through ACP. When omitted, fx chooses
+  its own default model.
+- `mcpServers`: MCP server definitions keyed by server name. fx ACP sessions
+  use only the servers supplied by the ACP client.
+- `port`: ACP bridge port override.
+- `portEndpoint`: host endpoint for the ACP bridge when the sandbox session
+  cannot expose ports directly.
+- `startupTimeoutMs`: maximum time to wait for the ACP bridge to start.
+- `mintBridgeToken`: synchronous function that receives the sandbox id and
+  returns the ACP bridge authentication token. By default, the adapter generates
+  a random 32-byte token.
+
+The adapter fixes the installation source, executable, launch command, and ACP
+version. These implementation details cannot be overridden through
+`createFx()`.
+
+## Authentication
+
+fx uses [Vercel AI Gateway authentication](https://fx.sh/docs/getting-started/authentication).
+Set one of these environment variables:
+
+- `VERCEL_OIDC_TOKEN`
+- `AI_GATEWAY_API_KEY`
+
+fx prefers `VERCEL_OIDC_TOKEN` when both are available. The adapter brokers the
+selected credential only to `ai-gateway.vercel.sh` when the sandbox supports
+request transformations. Other sandboxes retain direct credential forwarding.
+
+Both authentication configurations reach AI Gateway:
+
+```ts
+const directHarness = createFx({ auth: 'direct' });
+const gatewayHarness = createFx({ auth: 'ai-gateway' });
+```
+
+## Sandbox
+
+fx runs inside the sandbox through `@ai-sdk/harness-acp`. It requires a network
+sandbox with at least one exposed port:
+
+```ts
+const sandbox = createVercelSandbox({
+  runtime: 'node24',
+  ports: [4000],
+});
+```
+
+The first session requires network egress to download fx. Subsequent model and
+web requests also require network access.
+
+## Built-in Tools
+
+The adapter maps `glob_files`, `grep_files`, and `web_search` to the common
+`glob`, `grep`, and `webSearch` harness tool names.
+
+Other tools remain available under their native fx names, including
+`list_files`, `read_file`, `write_file`, `edit_file`, file mutation and metadata
+tools, `terminal`, `semantic_search`, `web_fetch`, skill tools, subagents, MCP
+discovery tools, `ask_user_question`, `vision`, and `read_tool_result`.
+
+The adapter maps `allow-reads` and `allow-edits` to fx's `ask` ACP mode.
+`allow-all` maps to fx's `code` ACP mode. The `allow-edits` mapping is
+conservative because fx does not provide a mode that allows file edits while
+still requiring approval for terminal commands. fx may resolve safe operations
+or apply its own permission policy without sending an ACP permission request.
+
+## Known Limitations
+
+- fx's ACP v1 tool updates omit the programmatic tool name and raw input except
+  when requesting permission. Native tools still execute, but ordinary native
+  tool events cannot always be associated with a typed built-in tool name.
+- ACP v1 does not expose model-step boundaries or per-step usage. The adapter
+  infers boundaries and reports unknown per-step usage when fx does not provide
+  totals.
+- ACP v1 has no portable manual compaction or mid-turn steering API.
+- ACP v1 has no portable built-in tool filtering API. Filtering host tools is
+  supported, but filtering fx built-ins throws an unsupported-capability error.
+- fx ACP does not expose a structured-output metadata mapping, so schema-backed
+  structured output is unsupported.
+
+## Related
+
+- [HarnessAgent](/docs/ai-sdk-harnesses/harness-agent)
+- [Harness tools](/docs/ai-sdk-harnesses/tools)
+- [Harness adapters](/docs/ai-sdk-harnesses/harness-adapters)
+- [Agent Client Protocol](/providers/ai-sdk-harnesses/acp)
+
+---
 title: AI SDK Harnesses
 description: Learn how to use AI SDK harness adapters.
 ---
@@ -165748,6 +167270,16 @@ and response primitives.
       title: 'Codex',
       description: 'Use Codex through the AI SDK harness abstraction.',
       href: '/providers/ai-sdk-harnesses/codex',
+    },
+    {
+      title: 'Cursor',
+      description: 'Use Cursor through the AI SDK harness abstraction.',
+      href: '/providers/ai-sdk-harnesses/cursor',
+    },
+    {
+      title: 'fx',
+      description: 'Use fx through the AI SDK harness abstraction.',
+      href: '/providers/ai-sdk-harnesses/fx',
     },
     {
       title: 'Grok Build',
@@ -166424,6 +167956,12 @@ You can use the following optional settings to customize the provider instance:
 
   Set to true if the provider supports structured outputs. Only relevant for `provider()`, `provider.chatModel()`, and `provider.languageModel()`.
 
+- **supportedUrls** _() =&gt; Record&lt;string, RegExp[]&gt;_
+
+  Defines URLs that chat models can access directly, grouped by media type.
+  Matching URLs are passed to the provider instead of being downloaded by the
+  AI SDK.
+
 - **transformRequestBody** _(args: Record&lt;string, any&gt;) =&gt; Record&lt;string, any&gt;_
 
   Optional function to transform the request body before sending it to the API.
@@ -166480,6 +168018,78 @@ const { text } = await generateText({
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
+
+### Video Inputs
+
+OpenAI-compatible providers that accept the non-standard `video_url` content
+part can receive video file parts. Inline bytes and base64-encoded data are sent
+as data URLs:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { generateText } from 'ai';
+import fs from 'node:fs';
+
+const provider = createOpenAICompatible({
+  name: 'providerName',
+  apiKey: process.env.PROVIDER_API_KEY,
+  baseURL: 'https://api.provider.com/v1',
+});
+
+const { text } = await generateText({
+  model: provider('video-capable-model'),
+  messages: [
+    {
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Describe the main action in this video.' },
+        {
+          type: 'file',
+          mediaType: 'video/mp4',
+          data: fs.readFileSync('./video.mp4'),
+        },
+      ],
+    },
+  ],
+});
+```
+
+To pass a hosted video URL through without downloading it first, configure
+`supportedUrls` for the provider:
+
+```ts
+const provider = createOpenAICompatible({
+  name: 'providerName',
+  apiKey: process.env.PROVIDER_API_KEY,
+  baseURL: 'https://api.provider.com/v1',
+  supportedUrls: () => ({
+    'video/*': [/^https:\/\/cdn\.example\.com\//],
+  }),
+});
+
+const { text } = await generateText({
+  model: provider('video-capable-model'),
+  messages: [
+    {
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Summarize this video.' },
+        {
+          type: 'file',
+          mediaType: 'video/mp4',
+          data: new URL('https://cdn.example.com/video.mp4'),
+        },
+      ],
+    },
+  ],
+});
+```
+
+`video_url` is an OpenAI-compatible provider extension, not an official OpenAI
+Chat Completions content type. Video support, accepted formats, size and
+duration limits, and support for public or data URLs depend on the provider and
+model. Prefer hosted URLs when supported to avoid embedding large videos in
+request bodies.
 
 ### Including model ids for auto-completion
 

@@ -40,6 +40,10 @@ Adjust how quickly or slowly your agent speaks, with values ranging from 0.7x to
 Context-aware emotional delivery powered by Eleven v3 Conversational and an improved turn-taking
 system.
 
+#### [Audio environment](/docs/eleven-agents/customization/voice/audio-environment)
+
+Add a looping background sound and apply a phone-style filter to outbound agent audio.
+
 #### [Language-specific voices](/docs/eleven-agents/customization/voice/customization/language)
 
 Configure different voices for each supported language to ensure natural pronunciation.

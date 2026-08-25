@@ -37,7 +37,7 @@ Make this function available to the LLM by passing its description to the `tools
   client = Together()
 
   response = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=[
           {
               "role": "system",
@@ -86,7 +86,7 @@ Make this function available to the LLM by passing its description to the `tools
   const together = new Together();
 
   const response = await together.chat.completions.create({
-    model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model: "Qwen/Qwen3.5-9B",
     messages: [
       {
         role: "system",
@@ -131,7 +131,7 @@ Make this function available to the LLM by passing its description to the `tools
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "Qwen/Qwen2.5-7B-Instruct-Turbo",
+         "model": "Qwen/Qwen3.5-9B",
          "messages": [
            {
              "role": "system",
@@ -405,7 +405,7 @@ The example below provides two tools to the model. The model responds with one t
   ]
 
   response = client.chat.completions.create(
-      model="Qwen/Qwen2.5-7B-Instruct-Turbo",
+      model="Qwen/Qwen3.5-9B",
       messages=[
           {
               "role": "user",
@@ -475,7 +475,7 @@ The example below provides two tools to the model. The model responds with one t
   ];
 
   const response = await together.chat.completions.create({
-    model: "Qwen/Qwen2.5-7B-Instruct-Turbo",
+    model: "Qwen/Qwen3.5-9B",
     messages: [
       {
         role: "user",
@@ -493,7 +493,7 @@ The example below provides two tools to the model. The model responds with one t
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "Qwen/Qwen2.5-7B-Instruct-Turbo",
+         "model": "Qwen/Qwen3.5-9B",
          "messages": [
            {
              "role": "user",

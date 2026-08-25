@@ -32,7 +32,7 @@ To query a vision model with a local image:
   base64_image = encode_image(imagePath)
 
   stream = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="moonshotai/Kimi-K3",
       messages=[
           {
               "role": "user",
@@ -72,7 +72,7 @@ To query a vision model with a local image:
     const imageUrl = await fs.readFile(imagePath, { encoding: "base64" });
 
     const stream = await together.chat.completions.create({
-      model: "moonshotai/Kimi-K2.6",
+      model: "moonshotai/Kimi-K3",
       stream: true,
       messages: [
         {
@@ -104,7 +104,7 @@ To query a vision model with a local image:
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "moonshotai/Kimi-K2.6",
+         "model": "moonshotai/Kimi-K3",
          "messages": [
            {
              "role": "user",
@@ -174,7 +174,7 @@ For text-to-video and image-to-video *generation* (separate from video understan
 
   # Multi-modal message with multiple images
   response = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="moonshotai/Kimi-K3",
       messages=[
           {
               "role": "user",
@@ -205,7 +205,7 @@ For text-to-video and image-to-video *generation* (separate from video understan
 
   async function main() {
     const response = await together.chat.completions.create({
-      model: "moonshotai/Kimi-K2.6",
+      model: "moonshotai/Kimi-K3",
       messages: [
         {
           role: "user",
@@ -239,7 +239,7 @@ For text-to-video and image-to-video *generation* (separate from video understan
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-         "model": "moonshotai/Kimi-K2.6",
+         "model": "moonshotai/Kimi-K3",
          "messages": [
            {
              "role": "user",

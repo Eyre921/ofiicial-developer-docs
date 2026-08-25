@@ -78,7 +78,7 @@ You can manage project collaborators from [**Settings > Project > Collaborators*
 New collaborators are added with the **editor** role by default, unless they are an organization admin (who are admins for every project by default). An admin can change their role after they have been added.
 
 <Info>
-  The user must already belong to your [organization](/docs/organizations), unless they are being added as an [external collaborator](/docs/roles-permissions#external-collaborators).
+  The user must already belong to your [organization](/docs/organizations), unless they are being added as an [external collaborator](/docs/roles-permissions#external-collaborators-beta).
 </Info>
 
 ### Removing collaborators
@@ -101,7 +101,7 @@ New collaborators are added with the **editor** role by default, unless they are
 
 To add users from outside your organization as collaborators, enable **Allow external collaborators** on the project's [**Settings > Project**](https://api.together.ai/settings/projects/~current) page.
 
-Once enabled, you can add external collaborators the same way as any other collaborator. See [External collaborators](/docs/roles-permissions#external-collaborators) to learn more about their permissions.
+Once enabled, you can add external collaborators the same way as any other collaborator. See [External collaborators](/docs/roles-permissions#external-collaborators-beta) to learn more about their permissions.
 
 ## Project API keys
 
@@ -114,7 +114,7 @@ For details on creating, managing, and rotating API keys, see [API Keys & Authen
 Costs in the projects list and in cost analytics may be inaccurate for any project running [legacy v1 dedicated endpoints](/docs/dedicated-endpoints/migrate-from-v1).
 
 <Warning>
-  If you have external collaborators using unsupported resources, usage may be billed to their organization instead of yours. If your external collaborators are internal company employees, consider migrating them into your organization using [SSO](/docs/sso) or [organization invites](/docs/organizations#inviting-members). [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) for help with migration.
+  If you have external collaborators using unsupported resources, usage may be billed to their organization instead of yours. If your external collaborators are internal company employees, consider migrating them into your organization using [SSO](/docs/sso) or [organization invites](/docs/organizations#invitation-based-oauth). [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) for help with migration.
 </Warning>
 
 ## Common project structures

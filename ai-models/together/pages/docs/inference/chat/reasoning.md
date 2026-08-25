@@ -6,7 +6,7 @@ path: docs/inference/chat/reasoning
 
 Use reasoning models that think step-by-step before answering.
 
-Reasoning models are trained to think step-by-step before responding with an answer. Given an input prompt, they first produce a chain of thought, visible as tokens in the `reasoning` output field, and then output a final answer in the `content` field.
+Reasoning models are trained to think step-by-step before responding with an answer. Given an input prompt, they first produce a chain of thought, visible as tokens in a dedicated output field (`reasoning` or `reasoning_content`, depending on the model), and then output a final answer in the `content` field.
 
 ## Supported models
 
@@ -22,20 +22,19 @@ The following models support reasoning on [serverless inference](/docs/serverles
 | :------------------------- | :---------------------------------- | :--------------------- | :------------- |
 | MiniMax M3                 | `MiniMaxAI/MiniMax-M3`              | Hybrid (on by default) | 512K           |
 | DeepSeek-V4-Pro            | `deepseek-ai/DeepSeek-V4-Pro`       | Hybrid (on by default) | 512K           |
-| GLM-5                      | `zai-org/GLM-5`                     | Hybrid (on by default) | 200K           |
-| Kimi K2.6                  | `moonshotai/Kimi-K2.6`              | Hybrid (on by default) | 262K           |
+| GLM-5.2                    | `zai-org/GLM-5.2`                   | Hybrid (on by default) | 512K           |
+| Kimi K3                    | `moonshotai/Kimi-K3`                | Hybrid (on by default) | 1M             |
 | Qwen3.6 Plus               | `Qwen/Qwen3.6-Plus`                 | Hybrid (on by default) | 1M             |
 | Qwen3.5 9B                 | `Qwen/Qwen3.5-9B`                   | Hybrid (on by default) | 262K           |
-| Cogito v2.1 671B           | `deepcogito/cogito-v2-1-671b`       | Hybrid (on by default) | 164K           |
 | Nemotron 3 Ultra 550B A55B | `nvidia/nemotron-3-ultra-550b-a55b` | Hybrid (on by default) | 512K           |
 | GPT-OSS 120B               | `openai/gpt-oss-120b`               | Adjustable effort      | 128K           |
 | GPT-OSS 20B                | `openai/gpt-oss-20b`                | Adjustable effort      | 128K           |
 
-Additional reasoning models, including DeepSeek-R1 and its distillations, Qwen QwQ-32B, and DeepSeek V3.1 (hybrid), are available for [dedicated model inference](/docs/dedicated-endpoints/models).
+Additional reasoning models, including Kimi K2.6, GLM-5, Cogito v2.1 671B, DeepSeek-R1 and its distillations, Qwen QwQ-32B, and DeepSeek V3.1 (hybrid), are available for [dedicated model inference](/docs/dedicated-endpoints/models).
 
 ## Quickstart
 
-Most reasoning models return a separate `reasoning` field alongside `content` in the response. Reasoning models produce longer outputs, so streaming is recommended:
+Reasoning models return the chain of thought in a separate field alongside `content` in the response. The field name varies by model (see [Handle reasoning tokens](#handle-reasoning-tokens)). Reasoning models produce longer outputs, so streaming is recommended:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -44,7 +43,7 @@ Most reasoning models return a separate `reasoning` field alongside `content` in
   client = Together()
 
   stream = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="deepseek-ai/DeepSeek-V4-Pro",
       messages=[
           {
               "role": "user",
@@ -74,7 +73,7 @@ Most reasoning models return a separate `reasoning` field alongside `content` in
   const together = new Together();
 
   const stream = await together.chat.completions.stream({
-    model: "moonshotai/Kimi-K2.6",
+    model: "deepseek-ai/DeepSeek-V4-Pro",
     messages: [
       { role: "user", content: "Which number is bigger, 9.11 or 9.9?" },
     ],
@@ -98,7 +97,7 @@ Most reasoning models return a separate `reasoning` field alongside `content` in
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-          "model": "moonshotai/Kimi-K2.6",
+          "model": "deepseek-ai/DeepSeek-V4-Pro",
           "messages": [
             {"role": "user", "content": "Which number is bigger, 9.11 or 9.9?"}
           ],
@@ -139,7 +138,7 @@ Hybrid models let you toggle reasoning on or off using the `reasoning` parameter
 
   # Enable reasoning
   response = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
+      model="deepseek-ai/DeepSeek-V4-Pro",
       messages=[
           {
               "role": "user",
@@ -168,7 +167,7 @@ Hybrid models let you toggle reasoning on or off using the `reasoning` parameter
   const together = new Together();
 
   const stream = await together.chat.completions.stream({
-    model: "moonshotai/Kimi-K2.6",
+    model: "deepseek-ai/DeepSeek-V4-Pro",
     messages: [
       { role: "user", content: "Prove that the square root of 2 is irrational." },
     ],
@@ -188,7 +187,7 @@ Hybrid models let you toggle reasoning on or off using the `reasoning` parameter
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-          "model": "moonshotai/Kimi-K2.6",
+          "model": "deepseek-ai/DeepSeek-V4-Pro",
           "messages": [
             {"role": "user", "content": "Prove that the square root of 2 is irrational."}
           ],
@@ -218,7 +217,7 @@ response = client.chat.completions.create(
 ```
 
 <Warning>
-  GLM-5 has thinking enabled by default. Pass `reasoning={"enabled": False}` to disable it for simple tasks where reasoning overhead isn't needed.
+  GLM-5.2 has thinking enabled by default. Pass `reasoning={"enabled": False}` to disable it for simple tasks where reasoning overhead isn't needed.
 </Warning>
 
 For the list of hybrid models, see [Supported models](#supported-models).
@@ -330,7 +329,7 @@ Ask the model to keep its thinking concise:
 
 ```python theme={null}
 response = client.chat.completions.create(
-    model="moonshotai/Kimi-K2.6",
+    model="deepseek-ai/DeepSeek-V4-Pro",
     messages=[
         {
             "role": "user",
@@ -345,7 +344,7 @@ You can also suggest an approximate budget for the reasoning process:
 
 ```python theme={null}
 response = client.chat.completions.create(
-    model="moonshotai/Kimi-K2.6",
+    model="deepseek-ai/DeepSeek-V4-Pro",
     messages=[
         {
             "role": "user",
@@ -362,7 +361,7 @@ response = client.chat.completions.create(
 
 ## Thinking modes
 
-GLM-5 supports advanced thinking modes that control how reasoning integrates with tool calling and multi-turn conversations.
+GLM-5.2 supports advanced thinking modes that control how reasoning integrates with tool calling and multi-turn conversations.
 
 ### Interleaved thinking
 
@@ -391,7 +390,7 @@ tools = [
 ]
 
 response = client.chat.completions.create(
-    model="zai-org/GLM-5",
+    model="zai-org/GLM-5.2",
     messages=[
         {"role": "user", "content": "What's the weather in Paris and Tokyo?"}
     ],
@@ -416,7 +415,7 @@ Enable preserved thinking by setting `clear_thinking` to `false`:
 
 ```python theme={null}
 response = client.chat.completions.create(
-    model="zai-org/GLM-5",
+    model="zai-org/GLM-5.2",
     messages=messages,
     tools=tools,
     stream=True,
@@ -426,21 +425,21 @@ response = client.chat.completions.create(
 )
 ```
 
-When using preserved thinking, include the unmodified `reasoning` from previous turns back in the conversation:
+When using preserved thinking, include the unmodified `reasoning_content` from previous turns back in the conversation:
 
 ```python theme={null}
 messages.append(
     {
         "role": "assistant",
         "content": content,
-        "reasoning": reasoning,  # Return reasoning content faithfully
+        "reasoning_content": reasoning_content,  # Return reasoning content faithfully
         "tool_calls": tool_calls,
     }
 )
 ```
 
 <Warning>
-  When using preserved thinking, all consecutive `reasoning` blocks must exactly match the original sequence generated by the model. Don't reorder or edit these blocks. Otherwise, performance may degrade and cache hit rates will drop.
+  When using preserved thinking, all consecutive `reasoning_content` blocks must exactly match the original sequence generated by the model. Don't reorder or edit these blocks. Otherwise, performance may degrade and cache hit rates will drop.
 </Warning>
 
 ### Turn-level thinking
@@ -453,9 +452,9 @@ For a complete tool-calling example with GLM-5.2 thinking modes, see the [GLM-5.
 
 There are two patterns for accessing reasoning tokens, depending on the model.
 
-### Separate `reasoning` field
+### Separate reasoning field
 
-Most models (Kimi K2.6, GLM-5, DeepSeek-V4-Pro, GPT-OSS) return reasoning in a dedicated `reasoning` field on the response message or streaming delta:
+Some models (DeepSeek-V4-Pro, Nemotron 3 Ultra, GPT-OSS) return reasoning in a dedicated `reasoning` field on the response message or streaming delta. Others (Kimi K3, GLM-5.2, MiniMax M3) use a `reasoning_content` field the same way:
 
 ```python theme={null}
 from together import Together
@@ -463,7 +462,7 @@ from together import Together
 client = Together()
 
 response = client.chat.completions.create(
-    model="moonshotai/Kimi-K2.6",
+    model="deepseek-ai/DeepSeek-V4-Pro",
     messages=[
         {
             "role": "user",
@@ -477,7 +476,7 @@ print("Answer:", response.choices[0].message.content)
 ```
 
 <Note>
-  Use the `reasoning` field for both input and output. The model returns its chain of thought in `reasoning` (or `delta.reasoning` when streaming), and you pass it back under the same `reasoning` key when you send a prior assistant turn to the API for [preserved thinking](#preserved-thinking) or multi-turn tool calling. The older `reasoning_content` key is still accepted on input for backward compatibility.
+  Use the same field for input and output. The model returns its chain of thought in `reasoning` or `reasoning_content` (also on the streaming `delta`), and you pass it back under the same key when you send a prior assistant turn to the API for [preserved thinking](#preserved-thinking) or multi-turn tool calling.
 </Note>
 
 ### `<think>` tags in content
@@ -511,7 +510,7 @@ answer = re.sub(r"<think>.*?</think>", "", content, flags=re.DOTALL).strip()
 
 Reasoning models can return JSON that conforms to a schema, the same way non-reasoning models do. The model still produces its chain of thought in the `reasoning` field, then writes the structured answer to `content`.
 
-Example: have `Kimi K2.6` solve a math problem and return the steps as typed JSON.
+Example: have DeepSeek-V4-Pro solve a math problem and return the steps as typed JSON.
 
 ```python Python theme={null}
 import json
@@ -532,7 +531,7 @@ class MathReasoning(BaseModel):
 
 
 completion = client.chat.completions.create(
-    model="moonshotai/Kimi-K2.6",
+    model="deepseek-ai/DeepSeek-V4-Pro",
     messages=[
         {
             "role": "system",
@@ -583,7 +582,7 @@ Prompt reasoning models differently than standard models:
 
 | Tip                                         | Details                                                                                                                                                             |
 | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Use the right temperature**               | DeepSeek-R1: 0.6. Kimi K2.6 (thinking) / GLM-5: 1.0. GPT-OSS: 1.0. Kimi K2.6 (instant): 0.6.                                                                        |
+| **Use the right temperature**               | DeepSeek-R1: 0.6. DeepSeek-V4-Pro / GLM-5.2 / Kimi K3 / GPT-OSS: 1.0.                                                                                               |
 | **System prompts vary by model**            | DeepSeek-R1: omit system prompts entirely. Kimi models: use `"You are Kimi, an AI assistant created by Moonshot AI."` GPT-OSS: use the `developer` role message.    |
 | **Don't add chain-of-thought instructions** | These models already reason step-by-step. Telling them to "think step by step" is unnecessary and can hurt performance.                                             |
 | **Avoid few-shot examples**                 | Few-shot prompting can degrade performance. Describe the task and desired output format instead.                                                                    |
@@ -609,6 +608,6 @@ Reasoning tokens can vary from a few hundred for simple problems to tens of thou
 * **Use `max_tokens`**: Set a token limit to cap total output. This reduces costs but may truncate reasoning on complex problems, find the right balance for your use case.
 * **Toggle reasoning on hybrid models**: Use `reasoning={"enabled": False}` for simple queries and only enable it when the task benefits from deeper analysis.
 * **Use reasoning effort levels**: On GPT-OSS, use `reasoning_effort="low"` for routine tasks and `"high"` for critical decisions.
-* **Use turn-level thinking**: On GLM-5, disable thinking for simple turns and enable it only for complex ones within the same session.
+* **Use turn-level thinking**: On GLM-5.2, disable thinking for simple turns and enable it only for complex ones within the same session.
 * **Prompt for shorter reasoning**: Include instructions like "Be succinct in your thinking" to reduce reasoning token usage on simpler problems. See [Controlling reasoning depth via prompting](#controlling-reasoning-depth-via-prompting).
 * **Stream responses**: Since reasoning models produce longer outputs, streaming with `stream=True` provides a better user experience by showing partial results as they arrive.

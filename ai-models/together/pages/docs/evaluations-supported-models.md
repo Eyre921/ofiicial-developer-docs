@@ -24,7 +24,7 @@ The evaluations service keeps its own allowlist of serverless models, separate f
 | Qwen3.5-397B-A17B                  | `Qwen/Qwen3.5-397B-A17B`                  |
 | Qwen3.5 9B FP8                     | `Qwen/Qwen3.5-9B`                         |
 | Qwen3.6 Plus                       | `Qwen/Qwen3.6-Plus`                       |
-| Cogito v2.1 671B                   | `deepcogito/cogito-v2-1-671b`             |
+| cogito-v2-1-671b                   | `deepcogito/cogito-v2-1-671b`             |
 | DeepSeek-R1                        | `deepseek-ai/DeepSeek-R1`                 |
 | DeepSeek-V3.1                      | `deepseek-ai/DeepSeek-V3.1`               |
 | Deepseek V4 Pro                    | `deepseek-ai/DeepSeek-V4-Pro`             |
@@ -54,7 +54,7 @@ model_config = {
 
 ### Vision-capable models
 
-To evaluate image inputs, use a serverless model that accepts images, such as the Qwen VL family. The evaluated model, and the judge if it should also see the image, must be vision-capable. Browse the [serverless models](/docs/serverless/models) catalog to find models that support vision, and see [the evaluations page](/docs/ai-evaluations#prepare-a-dataset) for how to add images to a dataset.
+To evaluate image inputs, use a serverless model that accepts images, such as the Qwen VL family. The evaluated model, and the judge if it should also see the image, must be vision-capable. Browse the [serverless models](/docs/serverless/models) catalog to find models that support vision, and see [the evaluations page](/docs/ai-evaluations#datasets-and-templates) for how to add images to a dataset.
 
 ## Dedicated models
 
