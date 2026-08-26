@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/hash/hscan
 path: docs/redis/commands/hash/hscan
 ---
 
+> Incrementally iterate hash fields.
+
 Use `HSCAN` to iterate the fields of a hash in batches instead of reading it all at once.
 
-Each call takes a cursor and returns the next cursor together with a batch of field and value pairs. Start at cursor `0` and keep calling with the cursor from the previous reply until the server returns `0`, which ends the iteration. Because each call does a bounded amount of work, this avoids the long single reply that [`HGETALL`](/docs/redis/commands/hash/hgetall) produces on a large hash.
+Each call takes a cursor and returns the next cursor together with a batch of field and value pairs. Start at cursor `0` and keep calling with the cursor from the previous reply until the server returns `0`, which ends the iteration. Because each call does a bounded amount of work, this avoids the long single reply that [`HGETALL`](/redis/commands/hash/hgetall) produces on a large hash.
 
 `MATCH` filters field names with a glob-style pattern, `COUNT` hints at how much work each call should do, and `NOVALUES` returns field names only, which is noticeably cheaper when values are large and you do not need them. Filtering is applied after a batch has been read, so a call can return nothing while the cursor is still non-zero: only a cursor of `0` means the iteration is over. Fields present for the whole iteration are returned at least once, and fields added or removed while it runs may or may not appear.
 
@@ -28,8 +30,8 @@ HSCAN <key> <cursor> [MATCH <pattern>] [COUNT <count>] [NOVALUES]
 
 ## Important points
 
-* This operation can inspect a large part of the database. Prefer cursor-based scans where possible and avoid unbounded use on hot paths.
-* The cursor is opaque. Start with `0` and continue until the server returns cursor `0`; a single iteration may return no elements.
+- This operation can inspect a large part of the database. Prefer cursor-based scans where possible and avoid unbounded use on hot paths.
+- The cursor is opaque. Start with `0` and continue until the server returns cursor `0`; a single iteration may return no elements.
 
 ## Response
 

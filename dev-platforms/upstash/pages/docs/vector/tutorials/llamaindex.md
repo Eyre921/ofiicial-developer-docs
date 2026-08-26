@@ -40,7 +40,7 @@ from dotenv import load_dotenv
 load_dotenv()
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
-# Setup the Upstash vector store
+# Setup the Upstash vector store 
 upstash_vector_store = UpstashVectorStore(
     url=os.environ["UPSTASH_VECTOR_REST_URL"],
     token=os.environ["UPSTASH_VECTOR_REST_TOKEN"],
@@ -84,13 +84,13 @@ Shifting towards plant-based diets, which emphasize the consumption of vegetable
 
 ### Notes
 
-* Namespaces can be used to separate different types of documents. You can specify a namespace when creating the `UpstashVectorStore` instance:
+- Namespaces can be used to separate different types of documents. You can specify a namespace when creating the `UpstashVectorStore` instance:
 ```
 vector_store = UpstashVectorStore(
-    url=your_upstash_url,
-    token=your_upstash_token,
+    url=your_upstash_url, 
+    token=your_upstash_token, 
     namespace=your_namespace,
     )
 ```
 
-* To learn more about LlamaIndex and its integration with Upstash Vector, you can visit the [LlamaIndex documentation](https://docs.llamaindex.ai/en/latest).
+- To learn more about LlamaIndex and its integration with Upstash Vector, you can visit the [LlamaIndex documentation](https://docs.llamaindex.ai/en/latest).

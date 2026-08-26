@@ -4,12 +4,12 @@ source: https://upstash.com/docs/agent-resources/skills
 path: docs/agent-resources/skills
 ---
 
-Upstash Skills are packaged instructions and resources that extend your agent's capabilities across every Upstash SDK: Redis, QStash, Workflow, Vector, Search, Ratelimit, and [Upstash Box](/docs/box/overall/quickstart).
+Upstash Skills are packaged instructions and resources that extend your agent's capabilities across every Upstash SDK: Redis, QStash, Workflow, Vector, Search, Ratelimit, and [Upstash Box](/box/overall/quickstart).
 
 Find the GitHub repository [here](https://github.com/upstash/skills).
 
 <Note>
-  The `upstash` skill also includes the [`@upstash/cli`](/docs/agent-resources/cli) reference, so one install is all your agent needs.
+  The `upstash` skill also includes the [`@upstash/cli`](/agent-resources/cli) reference, so one install is all your agent needs.
 </Note>
 
 # Available skills
@@ -19,7 +19,7 @@ Find the GitHub repository [here](https://github.com/upstash/skills).
 | [upstash](https://github.com/upstash/skills/tree/main/skills/upstash) | Combined skill covering all Upstash SDKs and the `upstash` CLI. |
 | [upstash-box-js](https://github.com/upstash/skills/tree/main/skills/upstash-box-js) | Sandboxed cloud containers with AI agents, shell, filesystem, and git. |
 | [upstash-box-py](https://github.com/upstash/skills/tree/main/skills/upstash-box-py) | The same sandboxed cloud containers, from the Python SDK. |
-| [upstash-cli](https://github.com/upstash/skills/tree/main/skills/upstash-cli) | Drive the Upstash Developer API from the terminal with the [`upstash` CLI](/docs/agent-resources/cli). |
+| [upstash-cli](https://github.com/upstash/skills/tree/main/skills/upstash-cli) | Drive the Upstash Developer API from the terminal with the [`upstash` CLI](/agent-resources/cli). |
 | [upstash-qstash-js](https://github.com/upstash/skills/tree/main/skills/upstash-qstash-js) | Serverless messaging and scheduling via HTTP endpoints. |
 | [upstash-ratelimit-js](https://github.com/upstash/skills/tree/main/skills/upstash-ratelimit-js) | Rate limiting with the Redis Rate Limit TypeScript SDK. |
 | [upstash-redis-js](https://github.com/upstash/skills/tree/main/skills/upstash-redis-js) | Serverless Redis for caching, sessions, leaderboards, full-text search. |
@@ -104,7 +104,7 @@ Add `--global` (`-g`) to make the skills available in every project instead of j
     npx skills add upstash/skills --agent opencode
     ```
 
-    OpenCode exposes the installed skills to the agent through its native `skill` tool, so only the sub-skill relevant to the task is loaded. For live access to your account, also add the [MCP server](/docs/agent-resources/mcp).
+    OpenCode exposes the installed skills to the agent through its native `skill` tool, so only the sub-skill relevant to the task is loaded. For live access to your account, also add the [MCP server](/agent-resources/mcp).
   </Accordion>
 
   <Accordion title="Zed">
@@ -118,7 +118,7 @@ Add `--global` (`-g`) to make the skills available in every project instead of j
     npx skills add upstash/skills --agent zed
     ```
 
-    The skills show up in Zed's Agent Panel, and the agent can load them on its own or via `/upstash`. Zed's extension marketplace has no channel for skills, so the CLI is the only way to install them; the Zed extension covers the [MCP server](/docs/agent-resources/mcp) instead.
+    The skills show up in Zed's Agent Panel, and the agent can load them on its own or via `/upstash`. Zed's extension marketplace has no channel for skills, so the CLI is the only way to install them; the Zed extension covers the [MCP server](/agent-resources/mcp) instead.
   </Accordion>
 
   <Accordion title="Context7 CLI">
@@ -128,7 +128,7 @@ Add `--global` (`-g`) to make the skills available in every project instead of j
   </Accordion>
 
   <Accordion title="DeepSeek Harness">
-    Installs the skills **and** the [MCP server](/docs/agent-resources/mcp) in one step. Requires `pnpm` on your `PATH`.
+    Installs the skills **and** the [MCP server](/agent-resources/mcp) in one step. Requires `pnpm` on your `PATH`.
 
     ```bash
     # Install into a profile (`web` is the one `dsh web` boots)
@@ -148,4 +148,4 @@ Add `--global` (`-g`) to make the skills available in every project instead of j
 
 # Managing resources
 
-The combined `upstash` skill includes the full `@upstash/cli` command reference, so your agent can create databases, publish QStash messages, query Vector indexes, and more straight from the shell. See the [CLI page](/docs/agent-resources/cli) for credentials and command details.
+The combined `upstash` skill includes the full `@upstash/cli` command reference, so your agent can create databases, publish QStash messages, query Vector indexes, and more straight from the shell. See the [CLI page](/agent-resources/cli) for credentials and command details.

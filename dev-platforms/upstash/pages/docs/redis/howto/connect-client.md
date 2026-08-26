@@ -21,7 +21,9 @@ will skip it here.
 After completing the [getting started](../overall/getstarted) guide, you will
 see the database page as below:
 
-  <img />
+<Frame>
+  <img src="/img/getting_started/database.png" />
+</Frame>
 
 The connection details required for Redis clients are displayed here: **Endpoint**,
 **Port**, and **Token** (which is also the password of the database). You can also
@@ -60,7 +62,7 @@ const redis = new Redis({
 })();
 ```
 
-See the [Connect with @upstash/redis page](/docs/redis/howto/connect-with-upstash-redis) for more information.
+See the [Connect with @upstash/redis page](/redis/howto/connect-with-upstash-redis) for more information.
 
 ## Node.js
 

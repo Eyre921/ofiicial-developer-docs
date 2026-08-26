@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/server/acl-users
 path: docs/redis/commands/server/acl-users
 ---
 
+> List all the registered usernames.
+
 Use `ACL USERS` to list the usernames of every user currently configured on the database, including `default`.
 
-This returns only the names, with no rules or permissions attached. Use [`ACL GETUSER`](/docs/redis/commands/server/acl-getuser) on a specific username to inspect what it can do, or [`ACL LIST`](/docs/redis/commands/server/acl-list) to get every user's full rule set in one call.
+This returns only the names, with no rules or permissions attached. Use [`ACL GETUSER`](/redis/commands/server/acl-getuser) on a specific username to inspect what it can do, or [`ACL LIST`](/redis/commands/server/acl-list) to get every user's full rule set in one call.
 
 ## Syntax
 

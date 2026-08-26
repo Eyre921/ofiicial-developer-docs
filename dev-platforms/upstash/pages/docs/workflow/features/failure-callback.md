@@ -8,7 +8,9 @@ When you define a workflow endpoint, you can attach a failure function to the wo
 
 This feature ensures that you can perform cleanup operations, logging, alerting, or any other custom error handling logic before the failed workflow run is moved to the Dead Letter Queue (DLQ).
 
-  <img />
+<Frame caption="Failure function is executed automatically when worklow run fails">
+  <img src="/img/workflow/failure_function.png" />
+</Frame>
 
 The failure function automatically receives the workflow run context and the reason for the failure, so you can decide how to handle it.
 
@@ -51,7 +53,7 @@ Think of the failure function as an individual `context.run` step. It executes o
     If you use a custom authorization method to secure your workflow endpoint, add authorization to the `failureFunction` too.
     Otherwise, anyone could invoke your failure function with a request.
 
-    Read more here: [securing your workflow endpoint](/docs/workflow/howto/security).
+    Read more here: [securing your workflow endpoint](/workflow/howto/security).
 </Info>
 
 ## Parameters

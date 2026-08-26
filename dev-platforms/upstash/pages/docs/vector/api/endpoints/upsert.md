@@ -4,6 +4,10 @@ source: https://upstash.com/docs/vector/api/endpoints/upsert
 path: docs/vector/api/endpoints/upsert
 ---
 
+> Upserts (inserts or updates) the vector.
+
+`POST https://{endpoint}/upsert/{namespace}`
+
 <Tip>
   The vector will be upserted into the default namespace by default.
   You can use a different namespace by specifying it in the request path.
@@ -60,41 +64,3 @@ For hybrid indexes both of `vector` and `sparseVector` must be present.
 <ResponseField name="result" type="string">
   `"Success"` string.
 </ResponseField>
-
-<RequestExample>
-
-```sh curl
-curl $UPSTASH_VECTOR_REST_URL/upsert \
-  -X POST \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '[
-    { "id": "id-0", "vector": [0.1, 0.2], "metadata": { "link": "upstash.com" } },
-    { "id": "id-1", "vector": [0.2, 0.3] }
-  ]'
-```
-
-```sh curl (Namespace)
-curl $UPSTASH_VECTOR_REST_URL/upsert/ns \
-  -X POST \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '{ "id": "id-2", "vector": [0.1, 0.2], "metadata": { "link": "upstash.com" } }'
-```
-
-</RequestExample>
-
-<ResponseExample>
-
-```json 200 OK
-{
-    "result": "Success"
-}
-```
-
-```json 422 Unprocessable Entity
-{
-    "error": "Invalid vector dimension: 2, expected: 256",
-    "status": 422
-}
-```
-
-</ResponseExample>

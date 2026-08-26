@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 380 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 379 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -62,7 +62,6 @@
 - `docs/build-a-voice-agent-python` — [Build a Voice Agent with Python](pages/docs/build-a-voice-agent-python.md) · [原文](https://developers.deepgram.com/docs/build-a-voice-agent-python.md)
 - `docs/build-voice-agent-with-livekit-and-deepgram` — [Build a Voice Agent with LiveKit and Deepgram](pages/docs/build-voice-agent-with-livekit-and-deepgram.md) · [原文](https://developers.deepgram.com/docs/build-voice-agent-with-livekit-and-deepgram.md)
 - `docs/build-voice-agent-with-pipecat-and-deepgram` — [Build a Voice Agent with Pipecat and Deepgram](pages/docs/build-voice-agent-with-pipecat-and-deepgram.md) · [原文](https://developers.deepgram.com/docs/build-voice-agent-with-pipecat-and-deepgram.md)
-- `docs/build-voice-agent-with-twilio-deepgram-openai` — [Build a Real-Time Phone Voice Agent with Twilio and the Deepgram Voice Agent API](pages/docs/build-voice-agent-with-twilio-deepgram-openai.md) · [原文](https://developers.deepgram.com/docs/build-voice-agent-with-twilio-deepgram-openai.md)
 - `docs/calculate-talk-time-analytics` — [Calculate Talk Time Analytics](pages/docs/calculate-talk-time-analytics.md) · [原文](https://developers.deepgram.com/docs/calculate-talk-time-analytics.md)
 - `docs/callback` — [STT Callback](pages/docs/callback.md) · [原文](https://developers.deepgram.com/docs/callback.md)
 - `docs/certificates-endpoint` — [Certificate Status](pages/docs/certificates-endpoint.md) · [原文](https://developers.deepgram.com/docs/certificates-endpoint.md)

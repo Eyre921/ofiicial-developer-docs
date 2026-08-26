@@ -16,10 +16,12 @@ You can import data into your Upstash Redis database from two sources: an existi
 
 To begin importing data:
 
-* Go to the [Redis database list page](https://console.upstash.com/redis) in the Upstash console
-* Click on the `Import...` button
+- Go to the [Redis database list page](https://console.upstash.com/redis) in the Upstash console
+- Click on the `Import...` button
 
-  <img width="800" />
+<Frame>
+  <img src="/img/backuprestore/import-button.png" width="800" />
+</Frame>
 
 You'll see a dialog with two import options:
 
@@ -27,24 +29,28 @@ You'll see a dialog with two import options:
 
 Import data from a backup of any existing database in your account or team:
 
-* Select `From Backup` as the source
-* Choose the source database (the database from which the backup was created)
-* Select the backup you want to import from
-* Select the target database (the database you want to import into)
-* Click `Start Import`
+- Select `From Backup` as the source
+- Choose the source database (the database from which the backup was created)
+- Select the backup you want to import from
+- Select the target database (the database you want to import into)
+- Click `Start Import`
 
-  <img width="700" />
+<Frame>
+  <img src="/img/backuprestore/import-from-backup.png" width="700" />
+</Frame>
 
 ### Option 2: Import from RDB File
 
 Import data from an external Redis database by uploading an RDB file:
 
-* Select `From RDB File` as the source
-* Click `Upload RDB File` and select your RDB file
-* Select the target database (the database you want to import into)
-* Click `Start Import`
+- Select `From RDB File` as the source
+- Click `Upload RDB File` and select your RDB file
+- Select the target database (the database you want to import into)
+- Click `Start Import`
 
-  <img width="700" />
+<Frame>
+  <img src="/img/backuprestore/import-from-rdb.png" width="700" />
+</Frame>
 
 <Info>
   If you're importing from an external Redis database (from another provider or on-premise), you'll need to export it as an RDB file first.
@@ -58,11 +64,13 @@ You'll be able to export your Upstash Redis database as an RDB file for backup o
 
 To export your database:
 
-* Go to the database details page and navigate to the `Backups` tab
-* Click on the `Backup & Export` button
-* Choose `Export`
+- Go to the database details page and navigate to the `Backups` tab
+- Click on the `Backup & Export` button
+- Choose `Export`
 
-  <img width="800" />
+<Frame>
+  <img src="/img/backuprestore/export-button.png" width="800" />
+</Frame>
 
 Your database will be exported as an RDB file. Once you start the export, you'll see the export progress in the backups table.
 
@@ -70,8 +78,8 @@ Your database will be exported as an RDB file. Once you start the export, you'll
 
 Once the export completes, you'll see a `Download` button in the backups table:
 
-* Find your export in the backups table
-* Click the `Download` button to download the RDB file
+- Find your export in the backups table
+- Click the `Download` button to download the RDB file
 
 <Info>
   Not all Redis data structures are included in RDB exports. Notably, Redis Functions data will not be available in the export.

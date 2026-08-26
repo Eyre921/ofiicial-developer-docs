@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/search/search-describe
 path: docs/redis/commands/search/search-describe
 ---
 
+> Return metadata about a search index.
+
 Use `SEARCH.DESCRIBE` to return metadata about a search index.
 
 The reply reports how the index is defined, the key type and prefixes it covers, and the fields in its schema with their types and options, along with its current state such as the number of indexed documents. It is the way to confirm what an index actually indexes before writing queries against it, and to check whether a schema change was applied.
 
-See [Describing an Index](/docs/redis/search/index-management#describing-an-index) for the feature guide.
+See [Describing an Index](/redis/search/index-management#describing-an-index) for the feature guide.
 
 The command accepts an index name or alias. When an alias is used, the response describes its target and reports the target's index name.
 

@@ -162,7 +162,7 @@ Projects created with `netlify create` follow your team's [project visibility](/
 
 ## Continuous deployment
 
-With [continuous deployment](/deploy/create-deploys#deploy-with-git), Netlify will automatically deploy new versions of your site when you push commits to your connected Git repository. This also facilitates features like [Deploy Previews](/deploy/deploy-types/deploy-previews), branch deploys, and [split testing](/manage/monitoring/split-testing/). (Some of these features must be enabled in the Netlify UI.)
+With [continuous deployment](/deploy/create-deploys#deploy-with-git), Netlify will automatically deploy new versions of your site when you push commits to your connected Git repository. This also facilitates features like [Deploy Previews](/deploy/deploy-types/deploy-previews) and branch deploys. (Some of these features must be enabled in the Netlify UI.)
 
 ### Tip
 

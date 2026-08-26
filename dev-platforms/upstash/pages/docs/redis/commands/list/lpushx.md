@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/list/lpushx
 path: docs/redis/commands/list/lpushx
 ---
 
+> Push to head if list exists.
+
 Use `LPUSHX` to add elements to the head of a list only when the list already exists.
 
-Nothing happens and the reply is `0` when the key does not exist, and no key is created. This is the difference from [`LPUSH`](/docs/redis/commands/list/lpush), and it is what you want when a list should only be fed while a consumer is holding it open, so that stale producers do not resurrect a queue that was already drained and deleted.
+Nothing happens and the reply is `0` when the key does not exist, and no key is created. This is the difference from [`LPUSH`](/redis/commands/list/lpush), and it is what you want when a list should only be fed while a consumer is holding it open, so that stale producers do not resurrect a queue that was already drained and deleted.
 
 ## Syntax
 

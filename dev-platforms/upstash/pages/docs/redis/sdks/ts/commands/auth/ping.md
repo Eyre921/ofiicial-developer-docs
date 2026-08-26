@@ -1,0 +1,24 @@
+---
+title: "PING"
+source: https://upstash.com/docs/redis/sdks/ts/commands/auth/ping
+path: docs/redis/sdks/ts/commands/auth/ping
+---
+
+> Send a ping to the server and get a response if the server is alive.
+
+## Arguments
+
+No arguments
+
+## Response
+
+<ResponseField type="string" required>
+  `PONG`
+</ResponseField>
+
+<RequestExample>
+```ts Example
+const response = await redis.ping();
+console.log(response); // "PONG"
+```
+</RequestExample>

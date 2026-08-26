@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/server/overview
 path: docs/redis/commands/server/overview
 ---
 
+> Commands for inspecting and managing the Redis server.
+
 <CardGroup cols={2}>
 <Card title="ACL CAT" href="/redis/commands/server/acl-cat">List command categories</Card>
 <Card title="ACL DELUSER" href="/redis/commands/server/acl-deluser">Delete one or more ACL users</Card>

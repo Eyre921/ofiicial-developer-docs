@@ -4,5 +4,6 @@ source: https://upstash.com/docs/devops/developer-api/vector/set_index_plan
 path: docs/devops/developer-api/vector/set_index_plan
 ---
 
-/devops/developer-api/openapi.yml post /vector/index/{id}/setplan
-This endpoint is used to change the plan of an index.
+> This endpoint is used to change the plan of an index.
+
+`POST /vector/index/{id}/setplan`

@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/pub-sub/subscribe
 path: docs/redis/commands/pub-sub/subscribe
 ---
 
+> Subscribe to channels.
+
 Use `SUBSCRIBE` to subscribe the current connection to one or more channels.
 
 The server confirms each channel with its own reply carrying the running number of subscriptions this connection holds, and from then on messages published to those channels arrive on the connection as they are sent.
@@ -24,8 +26,8 @@ SUBSCRIBE <channel> [<channel> ...]
 
 ## Important points
 
-* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
-* Subscription commands require a dedicated TCP connection. In RESP3, subscription events use push replies.
+- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+- Subscription commands require a dedicated TCP connection. In RESP3, subscription events use push replies.
 
 ## Response
 

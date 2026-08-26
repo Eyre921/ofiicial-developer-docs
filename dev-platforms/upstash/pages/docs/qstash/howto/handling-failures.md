@@ -10,10 +10,10 @@ In such cases, QStash offers a few options to handle these failures.
 ## Failure Callbacks
 
 When publishing a message, you can provide a failure callback that will be called if the message fails to be published.
-You can read more about callbacks [here](/docs/qstash/features/callbacks).
+You can read more about callbacks [here](/qstash/features/callbacks).
 
-With the failure callback, you can add custom logic such as logging the failure or sending an alert to the team.
-Once you handle the failure, you can [delete it from the dead letter queue](/docs/qstash/api-reference/dlq/delete-a-dlq-message).
+With the failure callback, you can add custom logic such as logging the failure or sending an alert to the team. 
+Once you handle the failure, you can [delete it from the dead letter queue](/qstash/api-reference/dlq/delete-a-dlq-message).
 
 <CodeGroup>
 ```bash cURL
@@ -53,9 +53,11 @@ client.message.publish_json(
 ## Dead Letter Queue
 
 If you don't want to handle the failure immediately, you can use the dead letter queue (DLQ) to store the failed messages.
-You can read more about the dead letter queue [here](/docs/qstash/features/dlq).
+You can read more about the dead letter queue [here](/qstash/features/dlq).
 
 Failed messages are automatically moved to the dead letter queue upon failure, and can be retried from the console or
-via the [REST API](/docs/qstash/api-reference/dlq/retry-a-dlq-message).
+via the [REST API](/qstash/api-reference/dlq/retry-a-dlq-message).
 
-  <img alt="DLQ from console" />
+<Frame>
+  <img src="/img/qstash/dlq-console.png" alt="DLQ from console" />
+</Frame>

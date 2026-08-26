@@ -135165,6 +135165,7 @@ results = index.query(
 - [Realtime Egress FAQ](https://supabase.com/docs/guides/troubleshooting/realtime-egress-faq)
 - [Realtime: Handling Silent Disconnections in Background Applications](https://supabase.com/docs/guides/troubleshooting/realtime-handling-silent-disconnections-in-backgrounded-applications-592794)
 - [Understanding and Monitoring Realtime Heartbeats](https://supabase.com/docs/guides/troubleshooting/realtime-heartbeat-messages)
+- [Realtime: Postgres Changes Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-postgres-changes-troubleshooting)
 - [Realtime: Project suspended for exceeding quotas](https://supabase.com/docs/guides/troubleshooting/realtime-project-suspended-for-exceeding-quotas)
 - [Fixing the TooManyChannels Error](https://supabase.com/docs/guides/troubleshooting/realtime-too-many-channels-error)
 - [Realtime: WarnSendingBroadcastMessage when broadcasting from the database](https://supabase.com/docs/guides/troubleshooting/realtime-warn-sending-broadcast-message)
@@ -143541,6 +143542,228 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
 
 export default supabase
 ```
+
+
+---
+
+# Realtime: Postgres Changes Troubleshooting
+
+A Realtime subscription connects, a row changes in the database, and nothing arrives on the client. No error, no event — silence. This is one of the more common issues developers run into with Supabase Realtime, and the cause is almost always one of a handful of things.
+
+The order below reflects how often each one turns out to be the actual problem. Check RLS early, even if the subscription code looks fine — it's the single biggest source of "silently missing" events, by a wide margin.
+
+For a broader index of Realtime-specific issues, see the [Troubleshooting](https://supabase.com/docs/guides/troubleshooting) directory.
+
+## Step 1: Is the table in the Realtime publication?
+
+Realtime doesn't watch every table by default. Each one has to be added to a publication called `supabase_realtime`. If it isn't, Realtime has no visibility into that table at all — no matter how the client subscription is set up.
+
+```sql
+select * from pg_publication_tables where pubname = 'supabase_realtime';
+```
+
+If the table's missing from the results:
+
+```sql
+alter publication supabase_realtime add table your_table;
+```
+
+Or toggle it on from **Database → Replication** in the dashboard.
+
+This gets overlooked on a table created recently — creating the table and enabling Realtime on it are two separate steps:
+
+```sql
+alter publication supabase_realtime add table messages;
+```
+
+## Step 2: Is RLS quietly blocking the row?
+
+This is the most common cause, and it's the one that wastes the most time, because nothing errors. The event doesn't show up.
+
+Realtime enforces RLS the same way a normal query would — as the subscribing client's role. `SUBSCRIBED` only means the WebSocket connected. It says nothing about whether that client is allowed to see the data.
+
+Test it directly with either options:
+
+Using the same credentials the client uses, try to select the row that changed:
+
+```js
+const { data, error } = await supabase.from('messages').select('*').eq('id', theRowIdThatChanged)
+
+console.log({ data, error })
+```
+
+Or on the dashboard, open Table Editor, and try to view the row as the subscribing user's role.
+
+Empty `data`? That's the answer. The policy is blocking this row for this user, and Realtime is doing exactly what it's supposed to.
+
+A fix might look like:
+
+```sql
+create policy "Users can view messages in their rooms"
+on messages for select
+using (
+  exists (
+    select 1 from room_members
+    where room_members.room_id = messages.room_id
+    and room_members.user_id = auth.uid()
+  )
+);
+```
+
+One trap specific to `UPDATE` events: RLS generally has to allow both the old and new row state. If a policy only permits `status = 'active'`, and an update flips the status to `archived`, the event can fail to deliver — the row was visible a second ago, but the new state no longer passes the check.
+
+See [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) for the underlying model, and [why a select can return an empty data array](./why-is-my-select-returning-an-empty-data-array-and-i-have-data-in-the-table-xvOPgx), which is directly relevant to the test above.
+
+## Step 3: Missing fields in `payload.old`?
+
+If events are arriving but `payload.old` is mostly empty or `null`, that's a replica identity problem, not a delivery problem.
+
+By default, Postgres only sends the primary key in the "old row" for `UPDATE` and `DELETE`. If your code compares old vs. new values, that's not enough:
+
+```sql
+alter table messages replica identity full;
+```
+
+If the table has Row Level Security enabled, `replica identity full` isn't enough by itself: the `old` record still contains only the primary key. There's no way around this while RLS is on — don't rely on other `payload.old` fields for a policy-protected table.
+
+A typical case: a `status` column moves from `pending` to `completed`, and the client checks
+
+```js
+if (payload.old.status !== payload.new.status) {
+  notifyUser()
+}
+```
+
+Without `replica identity full` (or with RLS enabled), `payload.old.status` is `undefined`, and `undefined !== 'completed'` is `true` — so the check fires `notifyUser()` on every update, not just the ones where status actually changed.
+
+## Step 4: Check the subscription code itself
+
+Once publication and RLS are ruled out, look at the subscription config. Table name, schema, filter syntax — small mismatches here are common.
+
+- Table name matches exactly, including case
+- Schema is correct (`public`, unless you're using a custom one)
+- Filter syntax is right: `room_id=eq.abc123`, not `room_id = abc123`
+
+```js
+const channel = supabase
+  .channel('room-messages')
+  .on(
+    'postgres_changes',
+    {
+      event: 'UPDATE',
+      schema: 'public',
+      table: 'messages',
+      filter: `room_id=eq.${roomId}`,
+    },
+    (payload) => {
+      console.log('Got an update:', payload.new)
+    }
+  )
+  .subscribe((status) => {
+    console.log('Subscription status:', status)
+  })
+```
+
+Log the status callback. Don't assume `.subscribe()` worked.
+
+- `SUBSCRIBED` — connected
+- `CHANNEL_ERROR` — check the error payload
+- `CLOSED` — channel got shut down
+- `TIMED_OUT` — connection issue; see [Realtime connections giving `TIMED_OUT` errors](./realtime-connections-timed_out-status)
+
+A channel stuck at `CHANNEL_ERROR` is a different problem than one that connects fine but never fires. Figure out which one you're dealing with before going further.
+
+## Step 5: Stale or duplicate subscriptions
+
+This one is almost always a React/Next.js problem.
+
+A component re-renders, `roomId` changes, and the old channel doesn't get cleaned up. Now you've got two subscriptions running, or one listening against a stale parameter. It doesn't always look broken — sometimes it looks like duplicate events, or events for the wrong room.
+
+```js
+useEffect(() => {
+  const channel = supabase
+    .channel(`room:${roomId}`)
+    .on(
+      'postgres_changes',
+      { event: 'UPDATE', schema: 'public', table: 'messages', filter: `room_id=eq.${roomId}` },
+      (payload) => console.log(payload.new)
+    )
+    .subscribe()
+
+  return () => {
+    supabase.removeChannel(channel)
+  }
+}, [roomId])
+```
+
+That cleanup line is the part people skip. Without it, the old channel keeps running against the previous `roomId` in the background, and nothing in the UI tells you it's happening. See [Next.js 13/14 stale data when changing RLS or table data](./nextjs-1314-stale-data-when-changing-rls-or-table-data-85b8oQ) for an adjacent version of the same bug.
+
+## Step 6: Writing right after `SUBSCRIBED`
+
+There's a confirmed timing gap between the client reporting `SUBSCRIBED` and the backend's replication listener being ready to stream. A write made in that gap can get missed.
+
+This shows up most in automated tests, where subscribe and write happen back-to-back:
+
+```js
+// Risky — writing immediately after subscribing
+const channel = supabase.channel('test-channel').on(/* ... */).subscribe()
+await supabase.from('messages').insert({ text: 'hello' })
+```
+
+The reliable fix isn't a fixed delay — it's waiting for the backend to confirm the `postgres_changes` extension is listening, via the `system` message it emits:
+
+```js
+supabase
+  .channel('room1')
+  .on('system', '*', (payload) => {
+    if (payload.extension === 'postgres_changes' && payload.status === 'ok') {
+      console.log('changes are ready', payload) // safe to write now
+    }
+  })
+  .on('postgres_changes', { event: '*', schema: '*' }, (payload) => {
+    console.log('Change received!', payload)
+  })
+  .subscribe()
+```
+
+No need to `await` anything here — react to the message inside the handler (e.g. set a flag) before triggering the write. This `system` message isn't formally documented yet.
+
+If you can't wire this up right now, a short fixed delay after `SUBSCRIBED` is a weaker fallback:
+
+```js
+channel.subscribe(async (status) => {
+  if (status === 'SUBSCRIBED') {
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await supabase.from('messages').insert({ text: 'hello' })
+  }
+})
+```
+
+## Step 7: Is Realtime enabled?
+
+Sometimes the answer is straightforward. Check:
+
+- **Project Settings → Realtime** — enabled at the project level?
+- **Database → Replication** — toggle on for this specific table?
+
+Check this again after a project's been paused and restarted — the replication slot can need to reconnect. If the project's under heavier load than usual, also check the Realtime "Concurrent Peak Connections" quota — hitting that limit can look a lot like a broken subscription.
+
+## Step 8: Read the Realtime logs
+
+Still stuck? **Logs → Realtime** in the dashboard. Look for connection drops, replication errors, rate limiting.
+
+For more detail than the default logs give you, see [Debug Realtime with Logger and Log Levels](./realtime-debugging-with-logger). If the connection seems to drop intermittently rather than failing outright, check [Realtime: Handling Silent Disconnections in Background Applications](./realtime-handling-silent-disconnections-in-backgrounded-applications-592794) and [Understanding and Monitoring Realtime Heartbeats](./realtime-heartbeat-messages).
+
+One thing to design around regardless: Realtime doesn't guarantee every message gets delivered. Network blips and reconnects can drop an event here and there. If a missed update matters, treat the Realtime event as a signal to re-fetch state — not as the only source of truth. Then a dropped event is an inconvenience, not a bug.
+
+## Still nothing?
+
+Rule out the network layer:
+
+- Corporate firewall or proxy blocking WebSocket connections
+- Outdated `supabase-js` version — check recent release notes
+
+Hopefully this guide is helpful to you in resolving these types of issues.
 
 
 ---
@@ -169811,6 +170034,29 @@ if (error) {
 const { data } = await ctx.supabase.rpc('get_my_items')
 ```
 
+## fromSupabaseUrl
+
+Points `authorizationServer` at a Supabase project's Auth issuer.
+
+Use this off Supabase Edge Functions, where the app's own origin is unrelated
+to the Supabase project's, so the issuer cannot be derived from the request.
+
+### Examples
+
+#### Example 1
+
+```ts
+import { withOAuthProtectedResource, fromSupabaseUrl } from '@supabase/server'
+
+withOAuthProtectedResource(
+  {
+    resourceServer: (req) => new URL(req.url).origin + '/api/mcp',
+    authorizationServer: fromSupabaseUrl('https://abc123.supabase.co'),
+  },
+  handler,
+)
+```
+
 ## ident
 
 Quote a Postgres identifier — a table, column, or role name — for safe
@@ -169871,15 +170117,23 @@ Pass `resourceMetadataUrl` to override for custom setups.
 
 ## withOAuthProtectedResource
 
-Wraps a request handler with OAuth 2.1 Protected Resource behavior (RFC 9728)
-for Supabase Edge Functions.
+Wraps a request handler with OAuth 2.1 Protected Resource behavior (RFC 9728).
 
-- Serves OAuth Protected Resource Metadata at `GET /{fn}/oauth-protected-resource`
+- Serves OAuth Protected Resource Metadata at `GET {resource}/oauth-protected-resource`
   (with permissive CORS, including the `OPTIONS` preflight, so browser-based clients can read it)
 - Enriches a `401` from the inner handler with `WWW-Authenticate: Bearer resource_metadata="..."`,
   unless the handler already set a `WWW-Authenticate` header (its value wins)
 - Passes any other path through to the inner handler unchanged (composition,
   not routing, decides what happens to it)
+
+The metadata route is matched on the path *suffix*, so **any** `GET` or
+`OPTIONS` ending in `/oauth-protected-resource` is answered here and never
+reaches the inner handler, at any depth. Other methods pass through.
+
+Zero-config on Supabase Edge Functions. Elsewhere
+OAuthProtectedResourceConfig.resourceServer is required and
+OAuthProtectedResourceConfig.authorizationServer falls back to
+`SUPABASE_URL`; each throws an `EnvError` when it cannot be resolved.
 
 Contributes `ctx.oauthProtectedResource` (the resolved metadata URL) to the
 downstream context. Nested under `withSupabase`, the key is typed on the
@@ -169888,7 +170142,7 @@ handler's `ctx` when the outermost call is anchored with
 
 ### Examples
 
-#### Example 1
+#### Supabase Edge Functions — zero config
 
 ```ts
 import { withOAuthProtectedResource, withSupabase } from '@supabase/server'
@@ -169901,6 +170155,34 @@ Deno.serve(
       return Response.json(data)
     }),
   ),
+)
+```
+
+#### Any other backend
+
+```ts
+import { withOAuthProtectedResource, fromSupabaseUrl } from '@supabase/server'
+
+export default {
+  fetch: withOAuthProtectedResource(
+    {
+      resourceServer: (req) => new URL(req.url).origin + '/api/mcp',
+      authorizationServer: fromSupabaseUrl('https://abc123.supabase.co'),
+    },
+    handler,
+  ),
+}
+```
+
+#### A non-Supabase authorization server
+
+```ts
+withOAuthProtectedResource(
+  {
+    resourceServer: 'https://api.example.com/mcp',
+    authorizationServer: 'https://example.clerk.accounts.dev',
+  },
+  handler,
 )
 ```
 
@@ -170330,6 +170612,10 @@ throw Errors[MissingPublishableKeyError]('mobile')
 
 No credential matched any allowed auth mode.
 
+## MissingAuthorizationServerError
+
+`withOAuthProtectedResource` has no `authorizationServer` and cannot derive one.
+
 ## MissingDefaultPublishableKeyError
 
 No default publishable key found.
@@ -170341,6 +170627,10 @@ No default secret key found.
 ## MissingPublishableKeyError
 
 Named publishable key not found in `SUPABASE_PUBLISHABLE_KEYS`.
+
+## MissingResourceServerError
+
+`withOAuthProtectedResource` has no `resourceServer` and cannot derive one.
 
 ## MissingSecretKeyError
 
@@ -170450,6 +170740,14 @@ Standard JWT claims as defined by RFC 7519, extended with Supabase-specific fiel
 
 This is the raw JWT payload — use UserClaims for a normalized, camelCase view.
 
+## OAuthProtectedResourceConfig
+
+Configuration for withOAuthProtectedResource.
+
+Both options accept a fixed string or a function of the request. Both default
+to values derived from the request as it arrives through the Supabase Edge
+Functions proxy, so no configuration is needed there.
+
 ## ResourceMetadataOptions
 
 Options for resourceMetadataResponse.
@@ -170472,6 +170770,10 @@ but can be passed explicitly via the `env` option.
 ## UnauthorizedResponseOptions
 
 Options for unauthorizedResponse.
+
+## UrlOption
+
+A configured URL: either a fixed value, or derived per request.
 
 ## UserClaims
 
@@ -171887,7 +172189,7 @@ Note: SQL must be written in **ClickHouse SQL dialect**.
 ### Parameters
 
 - `ref` (string, required): Project ref
-- `sql` (string, optional): Custom SQL query to execute on the logs. See [querying logs](https://supabase.com/docs/guides/telemetry/logs?queryGroups=product\&product=postgres\&queryGroups=source\&source=edge_logs#querying-with-the-logs-explorer) for more details.
+- `sql` (string, optional): Custom SQL query to execute on the logs. See [querying logs](https://supabase.com/docs/guides/monitoring-and-debugging/logs#querying-with-the-logs-explorer) for more details.
 - `iso_timestamp_start` (string, optional)
 - `iso_timestamp_end` (string, optional)
 
@@ -171901,12 +172203,12 @@ Either the `iso_timestamp_start` and `iso_timestamp_end` parameters must be prov
 If both are not provided, only the last 1 minute of logs will be queried.
 The timestamp range must be no more than 24 hours and is rounded to the nearest minute. If the range is more than 24 hours, a validation error will be thrown.
 
-Note: Unless the `sql` parameter is provided, only edge\_logs will be queried. See the [log query docs](https://supabase.com/docs/guides/telemetry/logs?queryGroups=product\&product=postgres\&queryGroups=source\&source=edge_logs#querying-with-the-logs-explorer:~:text=logs%20from%20the-,Sources,-drop%2Ddown%3A) for all available sources.
+Note: Unless the `sql` parameter is provided, only edge\_logs will be queried. See the [log query docs](https://supabase.com/docs/guides/monitoring-and-debugging/logs#logs-explorer) for all available sources.
 
 ### Parameters
 
 - `ref` (string, required): Project ref
-- `sql` (string, optional): Custom SQL query to execute on the logs. See [querying logs](https://supabase.com/docs/guides/telemetry/logs?queryGroups=product\&product=postgres\&queryGroups=source\&source=edge_logs#querying-with-the-logs-explorer) for more details.
+- `sql` (string, optional): Custom SQL query to execute on the logs. See [querying logs](https://supabase.com/docs/guides/monitoring-and-debugging/logs#querying-with-the-logs-explorer) for more details.
 - `iso_timestamp_start` (string, optional)
 - `iso_timestamp_end` (string, optional)
 
@@ -172919,6 +173221,140 @@ Initiates the OAuth authorization flow for the specified provider. After success
 
 `POST /v1/oauth/revoke`
 
+## Organization webhooks
+
+## Get delivery
+
+`GET /v2/organizations/{slug}/webhooks/deliveries/{id}`
+
+Get details of a specific delivery attempt.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+- `id` (string, required): Identifier of a delivery (UUID v7).
+
+## Retry delivery
+
+`POST /v2/organizations/{slug}/webhooks/deliveries/{id}/retry`
+
+Retry delivering the same event again.
+
+Automatic retries are not applicable to manual retries - if the delivery fails, there won't be any automatic retries attempted.
+
+This endpoint is heavy rate-limited to allow for 10 request within 60 seconds.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+- `id` (string, required): Identifier of a delivery (UUID v7).
+
+## Delete all endpoints
+
+`DELETE /v2/organizations/{slug}/webhooks/endpoints`
+
+Delete all endpoints including all events and deliveries.
+
+Any in-flight webhooks will result in a no-op.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+
+## List endpoints
+
+`GET /v2/organizations/{slug}/webhooks/endpoints`
+
+List all Webhook endpoints based on a project's ref or an organization's slug.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+- `page[offset]` (string, optional): Offset for offset-based pagination.
+
+Offset should be dividable by `page[limit]` without a reminder (`offset % limit === 0`), otherwise it will cause weird behavior when used on a frontend.
+
+- `page[limit]` (string, optional): Up to how many records to return.
+
+## Delete endpoint
+
+`DELETE /v2/organizations/{slug}/webhooks/endpoints/{id}`
+
+Delete the endpoint including all events and deliveries
+
+Any in-flight webhooks will result in a no-op.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+- `id` (string, required): Identifier of an endpoint (UUID v7).
+
+## List deliveries
+
+`GET /v2/organizations/{slug}/webhooks/endpoints/{id}/deliveries`
+
+List all deliveries for a specific endpoint in descending order (newest first).
+
+Deliveries which has expired are no longer available and will not be listed.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+- `id` (string, required): Identifier of an endpoint (UUID v7).
+- `page[before]` (string, optional): Cursor in cursor-based pagination to return up to `page[size]` records before (exclusive) the entry specified by this query param.
+- `page[after]` (string, optional): Cursor in cursor-based pagination to return up to `page[size]` records after (exclusive) the entry specified by this query param.
+- `page[size]` (string, optional): Up to how many records to return.
+
+## Get endpoint
+
+`GET /v2/organizations/{slug}/webhooks/endpoints/{id}`
+
+Get details of a specific endpoint.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+- `id` (string, required): Identifier of an endpoint (UUID v7).
+
+## Update endpoint
+
+`PATCH /v2/organizations/{slug}/webhooks/endpoints/{id}`
+
+Update endpoint's configuration.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+- `id` (string, required): Identifier of an endpoint (UUID v7).
+
+## Send test event
+
+`POST /v2/organizations/{slug}/webhooks/endpoints/{id}/test`
+
+Ingests and schedules a test webhook event to be published out this endpoints.
+
+Which event type to use can be specified in the request body, otherwise
+it will use any matching type the endpoint is listening for.
+
+The event will contain `is_test: true` in it's payload.
+
+This endpoint is heavy rate-limited to allow for 10 request within 60 seconds.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+- `id` (string, required): Identifier of an endpoint (UUID v7).
+
+## Create endpoint
+
+`POST /v2/organizations/{slug}/webhooks/endpoints`
+
+Create new endpoint configuration to subscribe to specific webhook events.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+
 ## Organizations
 
 ## Assign or change an organization member role
@@ -173050,6 +173486,140 @@ Bulk delete member invitations for an organization by email address.
 ## Gets the user's profile
 
 `GET /v1/profile`
+
+## Project webhooks
+
+## Get delivery
+
+`GET /v2/projects/{ref}/webhooks/deliveries/{id}`
+
+Get details of a specific delivery attempt.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `id` (string, required): Identifier of a delivery (UUID v7).
+
+## Retry delivery
+
+`POST /v2/projects/{ref}/webhooks/deliveries/{id}/retry`
+
+Retry delivering the same event again.
+
+Automatic retries are not applicable to manual retries - if the delivery fails, there won't be any automatic retries attempted.
+
+This endpoint is heavy rate-limited to allow for 10 request within 60 seconds.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `id` (string, required): Identifier of a delivery (UUID v7).
+
+## Delete all endpoints
+
+`DELETE /v2/projects/{ref}/webhooks/endpoints`
+
+Delete all endpoints including all events and deliveries.
+
+Any in-flight webhooks will result in a no-op.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+
+## List endpoints
+
+`GET /v2/projects/{ref}/webhooks/endpoints`
+
+List all Webhook endpoints based on a project's ref or an organization's slug.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `page[offset]` (string, optional): Offset for offset-based pagination.
+
+Offset should be dividable by `page[limit]` without a reminder (`offset % limit === 0`), otherwise it will cause weird behavior when used on a frontend.
+
+- `page[limit]` (string, optional): Up to how many records to return.
+
+## Delete endpoint
+
+`DELETE /v2/projects/{ref}/webhooks/endpoints/{id}`
+
+Delete the endpoint including all events and deliveries
+
+Any in-flight webhooks will result in a no-op.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `id` (string, required): Identifier of an endpoint (UUID v7).
+
+## List deliveries
+
+`GET /v2/projects/{ref}/webhooks/endpoints/{id}/deliveries`
+
+List all deliveries for a specific endpoint in descending order (newest first).
+
+Deliveries which has expired are no longer available and will not be listed.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `id` (string, required): Identifier of an endpoint (UUID v7).
+- `page[before]` (string, optional): Cursor in cursor-based pagination to return up to `page[size]` records before (exclusive) the entry specified by this query param.
+- `page[after]` (string, optional): Cursor in cursor-based pagination to return up to `page[size]` records after (exclusive) the entry specified by this query param.
+- `page[size]` (string, optional): Up to how many records to return.
+
+## Get endpoint
+
+`GET /v2/projects/{ref}/webhooks/endpoints/{id}`
+
+Get details of a specific endpoint.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `id` (string, required): Identifier of an endpoint (UUID v7).
+
+## Update endpoint
+
+`PATCH /v2/projects/{ref}/webhooks/endpoints/{id}`
+
+Update endpoint's configuration.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `id` (string, required): Identifier of an endpoint (UUID v7).
+
+## Send test event
+
+`POST /v2/projects/{ref}/webhooks/endpoints/{id}/test`
+
+Ingests and schedules a test webhook event to be published out this endpoints.
+
+Which event type to use can be specified in the request body, otherwise
+it will use any matching type the endpoint is listening for.
+
+The event will contain `is_test: true` in it's payload.
+
+This endpoint is heavy rate-limited to allow for 10 request within 60 seconds.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `id` (string, required): Identifier of an endpoint (UUID v7).
+
+## Create endpoint
+
+`POST /v2/projects/{ref}/webhooks/endpoints`
+
+Create new endpoint configuration to subscribe to specific webhook events.
+
+### Parameters
+
+- `ref` (string, required): Project ref
 
 ## Projects
 
@@ -173187,6 +173757,16 @@ The following values are supported: `ACTIVE_HEALTHY`, `INACTIVE`.
 ## Gets a specific project that belongs to the authenticated user
 
 `GET /v1/projects/{ref}`
+
+### Parameters
+
+- `ref` (string, required): Project ref
+
+## \[Alpha] Get a project's service configuration
+
+`GET /v2/projects/{ref}/config`
+
+Returns the project's database, pooler, Auth, Data API, Realtime and Storage configuration — the same configuration a branch inherits from its base project. Each is the effective config, so a setting the project has never overridden is reported at its platform default rather than as null. Auth secrets are returned as an HMAC of their value. `storage` is read live from the storage service; the rest come from this platform's own records.
 
 ### Parameters
 
@@ -173528,6 +174108,62 @@ Falsy values: `false`, `0`, `no`, `off`, `n`, `disabled`
 ## Updates project's storage config
 
 `PATCH /v1/projects/{ref}/config/storage`
+
+### Parameters
+
+- `ref` (string, required): Project ref
+
+## Workers
+
+## \[Alpha] Mint a presigned slot for a build-context upload
+
+`POST /v2/projects/{ref}/workers/{name}/uploads`
+
+PUT the `.tar.gz` build context to the returned `url` before `expires_at`, then deploy with the upload id as `context_upload_id`. The bytes go straight to storage — no management API request carries them.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `name` (string, required)
+
+## \[Alpha] Delete a worker
+
+`DELETE /v2/projects/{ref}/workers/{name}`
+
+Tombstones the worker. Its instances and image are torn down asynchronously.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `name` (string, required)
+
+## \[Alpha] Deploy a worker
+
+`POST /v2/projects/{ref}/workers/{name}/deploy`
+
+Creates the worker if it does not exist, building from a context staged through the uploads endpoint. The build runs asynchronously: this answers 202 and the worker reaches `build_state` `active` or `failed` later.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `name` (string, required)
+
+## \[Alpha] Retrieve a worker
+
+`GET /v2/projects/{ref}/workers/{name}`
+
+Returns a worker along with its instance tally. Poll this after a deploy until `build_state` leaves `building`.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `name` (string, required)
+
+## \[Alpha] List all workers
+
+`GET /v2/projects/{ref}/workers`
+
+Returns all workers you've previously deployed to the specified project.
 
 ### Parameters
 

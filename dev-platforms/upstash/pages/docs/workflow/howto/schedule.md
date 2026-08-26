@@ -14,13 +14,17 @@ For example, let's suppose that you have a workflow that creates a backup of som
 
 To run this endpoint on a schedule, navigate to `Schedules` in your QStash dashboard and click `Create Schedule`:
 
-  <img />
+<Frame>
+  <img src="/img/qstash-workflow/create_schedule.png" />
+</Frame>
 
 Enter your live endpoint URL, add a CRON expression to define the interval at which your endpoint is called (i.e. every day, every 15 minutes, ...) and click `Schedule`:
 
-  <img />
+<Frame>
+  <img src="/img/qstash-workflow/schedule_workflow.png" />
+</Frame>
 
-Your workflow will now run repeatedly at the interval you have defined. For more details on CRON expressions, see our [QStash scheduling documentation](/docs/qstash/features/schedules).
+Your workflow will now run repeatedly at the interval you have defined. For more details on CRON expressions, see our [QStash scheduling documentation](/qstash/features/schedules).
 
 ## Programmatically Schedule
 
@@ -63,6 +67,7 @@ from datetime import datetime, timedelta
 app = FastAPI()
 
 client = AsyncQStash("<QSTACK_TOKEN>")
+
 
 @app.post("/api/sign-up")
 async def sign_up(request: Request):

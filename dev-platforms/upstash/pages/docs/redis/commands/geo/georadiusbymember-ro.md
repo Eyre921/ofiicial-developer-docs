@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/geo/georadiusbymember-ro
 path: docs/redis/commands/geo/georadiusbymember-ro
 ---
 
+> Find members within a radius of another member.
+
 <Warning>
-  Prefer [`GEOSEARCH`](/docs/redis/commands/geo/geosearch) with `FROMMEMBER` and `BYRADIUS` in new code: `GEOSEARCH <key> FROMMEMBER <member> BYRADIUS <radius> (m | km | ft | mi)`.
+  Prefer [`GEOSEARCH`](/redis/commands/geo/geosearch) with `FROMMEMBER` and `BYRADIUS` in new code: `GEOSEARCH <key> FROMMEMBER <member> BYRADIUS <radius> (m | km | ft | mi)`.
 </Warning>
 
-Use `GEORADIUSBYMEMBER_RO` to find members within a radius of another member. It is the read-only form of [`GEORADIUSBYMEMBER`](/docs/redis/commands/geo/georadiusbymember).
+Use `GEORADIUSBYMEMBER_RO` to find members within a radius of another member. It is the read-only form of [`GEORADIUSBYMEMBER`](/redis/commands/geo/georadiusbymember).
 
 The center is the stored position of the given member, which always appears among the matches at distance zero. The command accepts the same `WITHCOORD`, `WITHDIST`, `WITHHASH`, `COUNT`, and sorting options but has no `STORE` or `STOREDIST` clause, so it can be served on replicas and used from read-only scripts.
 

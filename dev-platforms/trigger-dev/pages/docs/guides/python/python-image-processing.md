@@ -542,7 +542,7 @@ Deploy the task to production using the CLI command `npx trigger.dev@latest depl
 
 ## Learn more about using Python with Trigger.dev
 
-<Card title="Python build extension" icon="code" href="/config/extensions/pythonExtension">
+<Card title="Python build extension" icon="code" href="/docs/config/extensions/pythonExtension">
   Learn how to use our built-in Python build extension to install dependencies and run your Python
   code.
 </Card>

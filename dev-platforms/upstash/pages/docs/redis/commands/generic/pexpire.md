@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/generic/pexpire
 path: docs/redis/commands/generic/pexpire
 ---
 
+> Set a key's TTL in milliseconds.
+
 Use `PEXPIRE` to give a key a lifetime in milliseconds, after which the key is deleted automatically.
 
-It is the millisecond form of [`EXPIRE`](/docs/redis/commands/generic/expire) and behaves identically otherwise: replacing the value with [`SET`](/docs/redis/commands/string/set) clears the expiration, while in-place updates keep it, and a negative lifetime deletes the key immediately. The sub-second precision matters for short-lived keys such as locks and rate limit windows.
+It is the millisecond form of [`EXPIRE`](/redis/commands/generic/expire) and behaves identically otherwise: replacing the value with [`SET`](/redis/commands/string/set) clears the expiration, while in-place updates keep it, and a negative lifetime deletes the key immediately. The sub-second precision matters for short-lived keys such as locks and rate limit windows.
 
 The optional condition decides when the new expiration is applied: `NX` only when the key has none, `XX` only when it already has one, `GT` only when the new expiration is later than the current one, and `LT` only when it is earlier.
 
@@ -26,8 +28,8 @@ PEXPIRE <key> <milliseconds> [NX | XX | GT | LT]
 
 ## Important points
 
-* `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
-* A key with no expiration counts as an infinite one, so `GT` never sets an expiration on such a key and `LT` always does.
+- `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
+- A key with no expiration counts as an infinite one, so `GT` never sets an expiration on such a key and `LT` always does.
 
 ## Response
 

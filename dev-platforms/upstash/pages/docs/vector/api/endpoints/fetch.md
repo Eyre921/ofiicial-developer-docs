@@ -4,6 +4,10 @@ source: https://upstash.com/docs/vector/api/endpoints/fetch
 path: docs/vector/api/endpoints/fetch
 ---
 
+> Fetches the vectors with the provided ids.
+
+`GET https://{endpoint}/fetch/{namespace}`
+
 You can fetch vector values or metadata of one or more by providing
 their vector ids or id prefix.
 
@@ -76,39 +80,3 @@ their vector ids or id prefix.
     </ResponseField>
   </Expandable>
 </ResponseField>
-
-<RequestExample>
-
-```sh curl
-curl $UPSTASH_VECTOR_REST_URL/fetch \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '{ "ids": ["id-0"], "includeMetadata": true }'
-```
-
-```sh curl (Namespace)
-curl $UPSTASH_VECTOR_REST_URL/fetch/ns \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '{ "ids": ["id-0", "id-1"], "includeMetadata": true }'
-```
-
-</RequestExample>
-
-<ResponseExample>
-
-```json 200 OK
-{
-    "result": [
-        {
-            "id": "id-0",
-            "metadata": {
-                "link": "upstash.com"
-            }
-        },
-        {
-            "id": "id-1"
-        }
-    ]
-}
-```
-
-</ResponseExample>

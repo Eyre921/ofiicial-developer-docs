@@ -138,11 +138,11 @@ Now that you have your webhook handler set up, you can trigger the 'Hello World'
 ### Walk-through guides from development to deployment
 
 <CardGroup>
-  <Card title="Next.js - setup guide" icon="N" href="/guides/frameworks/nextjs">
+  <Card title="Next.js - setup guide" icon="N" href="/docs/guides/frameworks/nextjs">
     Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
   </Card>
 
-  <Card title="Next.js - triggering tasks using webhooks" icon="N" href="/guides/frameworks/nextjs-webhooks">
+  <Card title="Next.js - triggering tasks using webhooks" icon="N" href="/docs/guides/frameworks/nextjs-webhooks">
     Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
   </Card>
 </CardGroup>
@@ -150,19 +150,19 @@ Now that you have your webhook handler set up, you can trigger the 'Hello World'
 ### Task examples
 
 <CardGroup>
-  <Card title="Fal.ai with Realtime in Next.js" href="/guides/examples/fal-ai-realtime">
+  <Card title="Fal.ai with Realtime in Next.js" href="/docs/guides/examples/fal-ai-realtime">
     Generate an image from a prompt using Fal.ai and Trigger.dev Realtime.
   </Card>
 
-  <Card title="Generate a cartoon using Fal.ai in Next.js" href="/guides/examples/fal-ai-image-to-cartoon">
+  <Card title="Generate a cartoon using Fal.ai in Next.js" href="/docs/guides/examples/fal-ai-image-to-cartoon">
     Convert an image to a cartoon using Fal.ai.
   </Card>
 
-  <Card title="Vercel sync environment variables" icon="code" href="/guides/examples/vercel-sync-env-vars">
+  <Card title="Vercel sync environment variables" icon="code" href="/docs/guides/examples/vercel-sync-env-vars">
     Learn how to automatically sync environment variables from your Vercel projects to Trigger.dev.
   </Card>
 
-  <Card title="Vercel AI SDK" icon="code" href="/guides/examples/vercel-ai-sdk">
+  <Card title="Vercel AI SDK" icon="code" href="/docs/guides/examples/vercel-ai-sdk">
     Learn how to use the Vercel AI SDK, which is a simple way to use AI models from different
     providers, including OpenAI, Anthropic, Amazon Bedrock, Groq, Perplexity etc.
   </Card>

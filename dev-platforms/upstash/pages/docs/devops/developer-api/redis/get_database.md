@@ -4,5 +4,6 @@ source: https://upstash.com/docs/devops/developer-api/redis/get_database
 path: docs/devops/developer-api/redis/get_database
 ---
 
-/devops/developer-api/openapi.yml get /redis/database/{id}
-This endpoint gets details of a database.
+> This endpoint gets details of a database.
+
+`GET /redis/database/{id}`

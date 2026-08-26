@@ -97,13 +97,13 @@ client.message.publish_json(
 Content based deduplication creates a unique deduplication ID for the message
 based on the following fields:
 
-* **Destination**: The URL Group or endpoint you are publishing the message to.
+- **Destination**: The URL Group or endpoint you are publishing the message to.
 
-* **Body**: The body of the message.
+- **Body**: The body of the message.
 
-* **Header**: This includes the `Content-Type` header and all headers, that you
+- **Header**: This includes the `Content-Type` header and all headers, that you
   forwarded with the `Upstash-Forward-` prefix. See
-  [custom HTTP headers section](/docs/qstash/howto/publishing#sending-custom-http-headers).
+  [custom HTTP headers section](/qstash/howto/publishing#sending-custom-http-headers).
 
 <Info>
 The deduplication window is 10 minutes. After that, messages with the same ID or content can be sent again.

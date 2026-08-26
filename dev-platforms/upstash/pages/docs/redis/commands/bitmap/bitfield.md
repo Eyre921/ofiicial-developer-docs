@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/bitmap/bitfield
 path: docs/redis/commands/bitmap/bitfield
 ---
 
+> Perform arbitrary bitfield operations.
+
 Use `BITFIELD` to treat a string as an array of packed integers and run several operations on it in a single atomic call.
 
 Every operation names an encoding and a bit offset. The encoding is `u<bits>` for unsigned integers (up to 63 bits) or `i<bits>` for signed integers (up to 64 bits). The offset is counted in bits from the start of the value or, when prefixed with `#`, in units of the encoding width, so `#2` with `u8` addresses the third 8-bit field. The string grows automatically with zero bits when an operation addresses an offset past its current end.

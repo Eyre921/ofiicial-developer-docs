@@ -4,7 +4,7 @@ source: https://upstash.com/docs/common/concepts/access-anywhere
 path: docs/common/concepts/access-anywhere
 ---
 
-Upstash has integrated REST APIs into all its products to facilitate access from various runtime environments. This integration is particularly beneficial for edge runtimes like Cloudflare Workers and Vercel Edge, which do not permit TCP connections, and for serverless functions such as AWS Lambda, which are stateless and do not retain connection information between invocations.
+Upstash has integrated REST APIs into all its products to facilitate access from various runtime environments. This integration is particularly beneficial for edge runtimes like Cloudflare Workers and Vercel Edge, which do not permit TCP connections, and for serverless functions such as AWS Lambda, which are stateless and do not retain connection information between invocations. 
 
 ### Rationale
 The absence of TCP connection support in edge runtimes and the stateless nature of serverless functions necessitate a different approach for persistent connections typically used in traditional server setups. The stateless REST API provided by Upstash addresses this gap, enabling consistent and reliable communication with data stores from these platforms.
@@ -12,15 +12,15 @@ The absence of TCP connection support in edge runtimes and the stateless nature 
 ### REST API Design
 The REST APIs for Upstash services are thoughtfully designed to align closely with the conventions of each product. This ensures that users who are already familiar with these services will find the interactions intuitive and familiar. Our API endpoints are self-explanatory, following standard REST practices to guarantee ease of use and seamless integration.
 
-<img />
+<img src="/img/access-anywhere/restclient.png" />
 
 ### SDKs for Popular Languages
 To enhance the developer experience, Upstash is developing SDKs in various popular programming languages. These SDKs simplify the process of integrating Upstash services with your applications by providing straightforward methods and functions that abstract the underlying REST API calls.
 
 ### Resources
-[Redis REST API Docs](/docs/redis/features/restapi)
+[Redis REST API Docs](/redis/features/restapi)
 
-[QStash REST API Docs](/docs/qstash/api/authentication)
+[QStash REST API Docs](/qstash/api/authentication)
 
 [Redis SDK - Typescript](https://github.com/upstash/upstash-redis)
 

@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/connection/ping
 path: docs/redis/commands/connection/ping
 ---
 
+> Ping the server.
+
 Use `PING` to check that the connection and the server are alive.
 
 Without arguments the server replies `PONG`. With a message it echoes that message back instead, which lets a client match a reply to the exact request that produced it. `PING` is the standard health check for a connection pool, both to test a connection before handing it out and to keep an otherwise idle connection from being closed by intermediate proxies. It also works while the connection is subscribed to channels, where it doubles as a keepalive.
@@ -22,8 +24,8 @@ PING [<message>]
 
 ## Important points
 
-* Without arguments the reply is `PONG`; with a message, the message is echoed back as a bulk string.
-* While the connection is subscribed under RESP2, `PING` replies with a two-element array holding `pong` and the message instead.
+- Without arguments the reply is `PONG`; with a message, the message is echoed back as a bulk string.
+- While the connection is subscribed under RESP2, `PING` replies with a two-element array holding `pong` and the message instead.
 
 ## Response
 

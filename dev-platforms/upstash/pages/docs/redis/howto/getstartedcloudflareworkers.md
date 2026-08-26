@@ -14,11 +14,11 @@ See
 
 ### Why Upstash?
 
-* Cloudflare Workers does not allow TCP connections. Upstash provides REST API
+- Cloudflare Workers does not allow TCP connections. Upstash provides REST API
   on top of the Redis database.
-* Upstash is a serverless offering with per-request pricing which fits for edge
+- Upstash is a serverless offering with per-request pricing which fits for edge
   and serverless functions.
-* Upstash Global database provides low latency all over the world.
+- Upstash Global database provides low latency all over the world.
 
 ### Step-1: Create Redis Database
 

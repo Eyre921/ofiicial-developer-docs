@@ -4,8 +4,10 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zrangebylex
 path: docs/redis/commands/sorted-set/zrangebylex
 ---
 
+> Get members by lex range.
+
 <Warning>
-  Prefer [`ZRANGE`](/docs/redis/commands/sorted-set/zrange) with `BYLEX` in new code: `ZRANGE <key> <min> <max> BYLEX [LIMIT <offset> <count>]`.
+  Prefer [`ZRANGE`](/redis/commands/sorted-set/zrange) with `BYLEX` in new code: `ZRANGE <key> <min> <max> BYLEX [LIMIT <offset> <count>]`. 
 </Warning>
 
 Use `ZRANGEBYLEX` to list the members of a sorted set that fall in a lexicographic range.

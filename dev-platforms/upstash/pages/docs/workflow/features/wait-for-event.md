@@ -17,9 +17,9 @@ Each waiter has a timeout duration to wait for the event and then fires automati
 
 <Note>
    Wait for Event timeouts have limits based on your pricing plan:
-  * **Free**: Maximum timeout of 7 days
-  * **Pay-as-you-go**: Maximum timeout of 1 year
-  * **Fixed pricing**: Custom timeouts (no limit)
+  - **Free**: Maximum timeout of 7 days
+  - **Pay-as-you-go**: Maximum timeout of 1 year  
+  - **Fixed pricing**: Custom timeouts (no limit)
 </Note>
 
 ## Race Condition Between Wait and Notify
@@ -32,7 +32,7 @@ In this scenario, the notification will be sent but no workflow will be waiting 
 There are three ways to handle race conditions:
 
 1. **Use lookback with `workflowRunId`** (Recommended for targeted notifications)
-2. **Use [Webhooks](/docs/workflow/features/webhooks)** (Recommended for general use)
+2. **Use [Webhooks](/workflow/features/webhooks)** (Recommended for general use)
 3. **Check and retry** (Manual approach)
 
 #### Option 1: Lookback with workflowRunId
@@ -62,7 +62,7 @@ await client.notify({
 
 #### Option 2: Use Webhooks
 
-[Webhooks](/docs/workflow/features/webhooks) have built-in lookback and are safer against timing issues for general event handling.
+[Webhooks](/workflow/features/webhooks) have built-in lookback and are safer against timing issues for general event handling.
 
 #### Option 3: Check and Retry
 

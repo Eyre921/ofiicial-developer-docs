@@ -8,12 +8,12 @@ path: docs/vector/sdks/py/example_calls/info
 
 The `info` method provides statistical information about the index, returning the following fields:
 
-* `vector_count`: The total number of vectors in the index.
-* `pending_vector_count`: The number of vectors that are currently pending (not yet fully processed).
-* `index_size`: The size of the index in bytes.
-* `dimension`: How many dimensions the index has
-* `similarity_function`: Similarity function chosen for the index
-* `namespaces`: Map of namespace names of the index to their statistics.
+- `vector_count`: The total number of vectors in the index.
+- `pending_vector_count`: The number of vectors that are currently pending (not yet fully processed).
+- `index_size`: The size of the index in bytes.
+- `dimension`: How many dimensions the index has 
+- `similarity_function`: Similarity function chosen for the index
+- `namespaces`: Map of namespace names of the index to their statistics.
 
 ## Info Example
 

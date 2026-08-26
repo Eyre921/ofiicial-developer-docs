@@ -4,13 +4,15 @@ source: https://upstash.com/docs/redis/commands/search/search-aggregate
 path: docs/redis/commands/search/search-aggregate
 ---
 
+> Compute analytics over matching documents.
+
 Use `SEARCH.AGGREGATE` to compute metrics and buckets over matching documents.
 
-The command takes two JSON arguments. The first is a filter, in the same language as [`SEARCH.QUERY`](/docs/redis/commands/search/search-query), which selects the documents to aggregate; pass `'{}'` to cover the whole index. The second describes the aggregations to compute, as named entries such as `{"avg_price": {"$avg": {"field": "price"}}}`.
+The command takes two JSON arguments. The first is a filter, in the same language as [`SEARCH.QUERY`](/redis/commands/search/search-query), which selects the documents to aggregate; pass `'{}'` to cover the whole index. The second describes the aggregations to compute, as named entries such as `{"avg_price": {"$avg": {"field": "price"}}}`.
 
 Metric operators like `$avg`, `$sum`, `$min`, `$max`, `$stats`, and `$cardinality` reduce the selected documents to a single number, while bucket operators like `$terms`, `$range`, `$histogram`, and `$dateHistogram` group them and report a count per bucket. Bucket operators accept nested `$aggs`, so you can compute a metric inside each bucket, for example the average price per category, and several aggregations can be requested in one call since they all run over the same selected document set.
 
-See [Aggregations](/docs/redis/search/aggregations) for the full operator reference and examples.
+See [Aggregations](/redis/search/aggregations) for the full operator reference and examples.
 
 ## Syntax
 
@@ -18,7 +20,7 @@ See [Aggregations](/docs/redis/search/aggregations) for the full operator refere
 SEARCH.AGGREGATE <name> '<json_filter>' '<json_aggregations>'
 ```
 
-`<json_filter>` is an [Upstash JSON filter](/docs/redis/search/querying). The command accepts an index name or alias. See [Aggregations](/docs/redis/search/aggregations) for the aggregation object and supported operators.
+`<json_filter>` is an [Upstash JSON filter](/redis/search/querying). The command accepts an index name or alias. See [Aggregations](/redis/search/aggregations) for the aggregation object and supported operators.
 
 ## Response
 

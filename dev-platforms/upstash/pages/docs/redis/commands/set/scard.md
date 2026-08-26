@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/set/scard
 path: docs/redis/commands/set/scard
 ---
 
+> Get set cardinality.
+
 Use `SCARD` to get the number of members in a set.
 
-The reply is `0` when the key does not exist. The size is maintained by Redis rather than counted on demand, so the command is cheap on sets of any size, which makes it the right way to check how large a set has become before reading it with [`SMEMBERS`](/docs/redis/commands/set/smembers).
+The reply is `0` when the key does not exist. The size is maintained by Redis rather than counted on demand, so the command is cheap on sets of any size, which makes it the right way to check how large a set has become before reading it with [`SMEMBERS`](/redis/commands/set/smembers).
 
 ## Syntax
 

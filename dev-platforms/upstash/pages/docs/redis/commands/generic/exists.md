@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/generic/exists
 path: docs/redis/commands/generic/exists
 ---
 
+> Check if keys exist.
+
 Use `EXISTS` to check whether one or more keys exist.
 
 The reply is the number of the given keys that exist, so with a single key it is simply `1` or `0`. A key listed several times is counted each time it is present, which means `EXISTS k k` returns `2` when `k` exists. Checking existence never transfers the value, so it stays cheap even for large values.

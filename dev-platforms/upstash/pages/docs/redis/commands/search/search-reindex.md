@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/search/search-reindex
 path: docs/redis/commands/search/search-reindex
 ---
 
+> Rebuild a search index from the current matching data.
+
 Use `SEARCH.REINDEX` to rebuild an existing index from the current Redis keys that match its data type and prefixes. It is especially useful after creating an index with `SKIPINITIALSCAN`.
 
-See [Index Management](/docs/redis/search/index-management) for the feature guide to creating and managing indexes.
+See [Index Management](/redis/search/index-management) for the feature guide to creating and managing indexes.
 
 `SEARCH.REINDEX` accepts an index name or alias. The index definition is preserved while its searchable contents are replaced with a fresh scan.
 

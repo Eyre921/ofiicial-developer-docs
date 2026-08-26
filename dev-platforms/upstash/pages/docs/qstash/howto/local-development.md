@@ -57,13 +57,13 @@ On startup the SDK prints the dev server URL and a link to the Upstash Console:
 
 When dev mode is active, the SDK will:
 
-* Download the latest `qstash` binary on first use, cached in your OS cache directory:
-  * macOS: `~/Library/Caches/upstash/qstash-dev`
-  * Linux: `~/.cache/upstash/qstash-dev`
-  * Windows: `%LOCALAPPDATA%\upstash\qstash-dev`
-* Spawn the server on port `8080` (override with `QSTASH_DEV_PORT`).
-* Confirm the server is running on the configured port and skip spawning if it is.
-* Override the `baseUrl`, `token`, and signing keys you provide and use the dev server's instead.
+- Download the latest `qstash` binary on first use, cached in your OS cache directory:
+  - macOS: `~/Library/Caches/upstash/qstash-dev`
+  - Linux: `~/.cache/upstash/qstash-dev`
+  - Windows: `%LOCALAPPDATA%\upstash\qstash-dev`
+- Spawn the server on port `8080` (override with `QSTASH_DEV_PORT`).
+- Confirm the server is running on the configured port and skip spawning if it is.
+- Override the `baseUrl`, `token`, and signing keys you provide and use the dev server's instead.
 
 <Warning>
 Dev mode is automatically a no-op when `NODE_ENV=production` and in browser/edge runtimes.
@@ -100,7 +100,7 @@ npx @upstash/qstash-cli dev -port=8081 -log-port=9000
 
 Once you start the local server, you can go to the QStash tab on Upstash Console and enable local mode, which will allow you to publish requests and monitor messages with the local server.
 
-<img />
+<img src="/img/qstash/local-mode-qstash.png" />
 
 ### Docker
 
@@ -146,8 +146,8 @@ Usage of dev:
 
 Running `qstash dev` starts two components:
 
-* **QStash server** — the main API server, defaults to port `8080`. Use `-port` or `QSTASH_DEV_PORT` to change it.
-* **Log server** — serves logs and is used by the Upstash Console and Logs API. Defaults to `port + 1` (i.e., `8081` when using the default port). Use `-log-port` or `QSTASH_DEV_LOG_PORT` to change it.
+- **QStash server** — the main API server, defaults to port `8080`. Use `-port` or `QSTASH_DEV_PORT` to change it.
+- **Log server** — serves logs and is used by the Upstash Console and Logs API. Defaults to `port + 1` (i.e., `8081` when using the default port). Use `-log-port` or `QSTASH_DEV_LOG_PORT` to change it.
 
 ```
 # Start with custom ports for both components
@@ -156,7 +156,7 @@ $ ./qstash dev -port=8080 -log-port=9000
 
 ## Test users
 
-There are predefined test users available. You can configure the quota type of users using the `-quota` option, with available options being `payg` and `pro`.
+There are predefined test users available. You can configure the quota type of users using the `-quota` option, with available options being `payg` and `pro`. 
 These quotas don't affect performance but allow you to simulate different server limits based on the subscription tier.
 
 After starting the development server using any of the methods above, it will display the necessary environment variables.
@@ -196,5 +196,5 @@ QSTASH_NEXT_SIGNING_KEY="sig_7GFR4YaDshFcqsxWRZpRB161jguD"
 
 ## License
 
-The QStash development server is licensed under the [Development Server License](/docs/qstash/misc/license), which restricts its use to development and testing purposes only.
+The QStash development server is licensed under the [Development Server License](/qstash/misc/license), which restricts its use to development and testing purposes only.
 It is not permitted to use it in production environments. Please refer to the full license text for details.

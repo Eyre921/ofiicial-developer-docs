@@ -4,15 +4,17 @@ source: https://upstash.com/docs/redis/commands/list/rpoplpush
 path: docs/redis/commands/list/rpoplpush
 ---
 
+> Pop from tail and push to head.
+
 <Warning>
-  Prefer [`LMOVE`](/docs/redis/commands/list/lmove) with `RIGHT` and `LEFT` in new code: `LMOVE <source> <destination> RIGHT LEFT`.
+  Prefer [`LMOVE`](/redis/commands/list/lmove) with `RIGHT` and `LEFT` in new code: `LMOVE <source> <destination> RIGHT LEFT`. 
 </Warning>
 
 Use `RPOPLPUSH` to atomically move an element from the tail of one list to the head of another, returning the element.
 
 If the source is empty nothing happens and the reply is null. Source and destination may be the same key, which rotates the list: the tail element becomes the new head, so repeated calls cycle through a list of items forever, a handy pattern for round-robin scheduling.
 
-[`LMOVE`](/docs/redis/commands/list/lmove) does the same thing but lets you choose both ends, and [`BRPOPLPUSH`](/docs/redis/commands/list/brpoplpush) is the blocking form.
+[`LMOVE`](/redis/commands/list/lmove) does the same thing but lets you choose both ends, and [`BRPOPLPUSH`](/redis/commands/list/brpoplpush) is the blocking form.
 
 ## Syntax
 

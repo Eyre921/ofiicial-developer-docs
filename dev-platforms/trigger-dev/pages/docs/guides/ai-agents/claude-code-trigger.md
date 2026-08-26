@@ -170,11 +170,11 @@ allowedTools: [
 ## Example projects using the Claude Agent SDK
 
 <CardGroup>
-  <Card title="Claude changelog generator" icon="scroll" href="/guides/example-projects/claude-changelog-generator">
+  <Card title="Claude changelog generator" icon="scroll" href="/docs/guides/example-projects/claude-changelog-generator">
     Generate changelogs from git commits using custom MCP tools.
   </Card>
 
-  <Card title="Claude GitHub wiki agent" icon="book" href="/guides/example-projects/claude-github-wiki">
+  <Card title="Claude GitHub wiki agent" icon="book" href="/docs/guides/example-projects/claude-github-wiki">
     Analyze repositories and answer questions with real-time streaming.
   </Card>
 </CardGroup>

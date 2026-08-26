@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/json/json-nummultby
 path: docs/redis/commands/json/json-nummultby
 ---
 
+> Multiply JSON number.
+
 Use `JSON.NUMMULTBY` to multiply the numeric values a path selects by a number.
 
-The multiplier may be a fraction to scale values down, and the update is atomic. The reply is the new value of each match, and a match that is not a number returns an error. It is the multiplicative counterpart of [`JSON.NUMINCRBY`](/docs/redis/commands/json/json-numincrby), useful for applying percentage changes such as a discount to every price in a document.
+The multiplier may be a fraction to scale values down, and the update is atomic. The reply is the new value of each match, and a match that is not a number returns an error. It is the multiplicative counterpart of [`JSON.NUMINCRBY`](/redis/commands/json/json-numincrby), useful for applying percentage changes such as a discount to every price in a document.
 
 ## Syntax
 
@@ -24,8 +26,8 @@ JSON.NUMMULTBY <key> <path> <value>
 
 ## Important points
 
-* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

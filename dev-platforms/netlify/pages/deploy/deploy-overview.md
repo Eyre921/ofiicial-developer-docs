@@ -485,7 +485,6 @@ Preview Server URLs require a Netlify login to preview.
 - [Create deploys](/deploy/create-deploys)
 - [Manage deploys](/deploy/manage-deploys/manage-deploys-overview)
 - [Deploy Previews](/deploy/deploy-types/deploy-previews)
-- [Split Testing](/manage/monitoring/split-testing/)
 - [Deploy notifications](/deploy/deploy-notifications)
 - [Post processing](/build/post-processing/overview/)
 - [Compiled build and deploy resources - start here!](https://answers.netlify.com/t/support-guide-compiled-build-and-deploy-resources-start-here/50679)

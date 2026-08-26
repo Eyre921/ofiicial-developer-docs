@@ -12,13 +12,13 @@ Both use the same `@trigger.dev/react-hooks` package and the same authentication
 
 ## Run updates vs Streaming
 
-|                         | Run updates                                              | Streaming                                                     |
-| ----------------------- | -------------------------------------------------------- | ------------------------------------------------------------- |
-| **What you get**        | Run state: status, metadata, tags                        | Continuous data you define (AI tokens, file chunks, progress) |
-| **When it fires**       | On state changes                                         | While the task runs, as data is produced                      |
-| **Use case**            | Progress bars, status badges, dashboards                 | AI chat output, live logs, file processing                    |
-| **React hook**          | [`useRealtimeRun`](/docs/realtime/react-hooks/subscribe)      | [`useRealtimeStream`](/docs/realtime/react-hooks/streams)          |
-| **Setup in task code?** | No, automatic                                            | Yes, using `streams.define()`                                 |
+|                         | Run updates                                                   | Streaming                                                     |
+| ----------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
+| **What you get**        | Run state: status, metadata, tags                             | Continuous data you define (AI tokens, file chunks, progress) |
+| **When it fires**       | On state changes                                              | While the task runs, as data is produced                      |
+| **Use case**            | Progress bars, status badges, dashboards                      | AI chat output, live logs, file processing                    |
+| **React hook**          | [`useRealtimeRun`](/docs/realtime/react-hooks/subscribe)      | [`useRealtimeStream`](/docs/realtime/react-hooks/streams)     |
+| **Setup in task code?** | No, automatic                                                 | Yes, using `streams.define()`                                 |
 | **Infrastructure**      | [Electric SQL](/docs/realtime/how-it-works) (PostgreSQL sync) | Streams transport                                             |
 
 You can use both at the same time. Subscribe to a run's status (to show a progress bar) while also streaming AI output (to display tokens as they arrive).

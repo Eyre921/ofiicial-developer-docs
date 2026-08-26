@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1293 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1294 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -570,6 +570,7 @@
 - `docs/eleven-agents/customization/integrations/calcom` — [Cal.com](pages/docs/eleven-agents/customization/integrations/calcom.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/calcom.md)
 - `docs/eleven-agents/customization/integrations/calendly` — [Calendly](pages/docs/eleven-agents/customization/integrations/calendly.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/calendly.md)
 - `docs/eleven-agents/customization/integrations/cursor` — [Cursor](pages/docs/eleven-agents/customization/integrations/cursor.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/cursor.md)
+- `docs/eleven-agents/customization/integrations/custom_channel` — [Custom Channel](pages/docs/eleven-agents/customization/integrations/custom_channel.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/custom_channel.md)
 - `docs/eleven-agents/customization/integrations/exa` — [Exa](pages/docs/eleven-agents/customization/integrations/exa.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/exa.md)
 - `docs/eleven-agents/customization/integrations/freshdesk` — [Freshdesk](pages/docs/eleven-agents/customization/integrations/freshdesk.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/freshdesk.md)
 - `docs/eleven-agents/customization/integrations/genesys` — [Genesys](pages/docs/eleven-agents/customization/integrations/genesys.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/genesys.md)

@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/functions/function-flush
 path: docs/redis/commands/functions/function-flush
 ---
 
+> Delete all libraries.
+
 Use `FUNCTION FLUSH` to remove every function library from the database.
 
 This wipes all registered libraries and functions at once and cannot be undone, so it belongs in test setup and provisioning tooling rather than application code. `ASYNC` reclaims the memory in the background and `SYNC` reclaims it before the reply is sent.

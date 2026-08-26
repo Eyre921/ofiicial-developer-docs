@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/geo/geopos
 path: docs/redis/commands/geo/geopos
 ---
 
+> Get coordinates of members.
+
 Use `GEOPOS` to get the longitude and latitude of members of a geospatial index.
 
-The reply holds one entry per requested member, in the order requested, each an array with longitude first and latitude second, and null for members that are not in the index. Positions are decoded from the stored geohash, so they are very close to but not bit-for-bit identical with the coordinates originally passed to [`GEOADD`](/docs/redis/commands/geo/geoadd).
+The reply holds one entry per requested member, in the order requested, each an array with longitude first and latitude second, and null for members that are not in the index. Positions are decoded from the stored geohash, so they are very close to but not bit-for-bit identical with the coordinates originally passed to [`GEOADD`](/redis/commands/geo/geoadd).
 
 ## Syntax
 

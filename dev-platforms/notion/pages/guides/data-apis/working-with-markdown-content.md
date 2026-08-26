@@ -319,7 +319,7 @@ Use `update_content` to make targeted edits with an array of search-and-replace 
   ```
 </CodeGroup>
 
-Each `old_str` must match exactly one location in the page. If it matches multiple locations, a `validation_error` is returned — set `replace_all_matches: true` on that operation to replace all occurrences.
+Each `old_str` must be a non-empty string that matches exactly one location in the page. If it matches multiple locations, a `validation_error` is returned — set `replace_all_matches: true` on that operation to replace all occurrences.
 
 ### Replacing all page content
 
@@ -521,6 +521,7 @@ All variants return the full page content as markdown after the update:
 | `validation_error`    | The `content_range` or `after` selection does not match any content in the page, or an `old_str` in `update_content` is not found.          |
 | `validation_error`    | Both `insert_content.after` and `insert_content.position` are provided. Use only one insertion target.                                      |
 | `validation_error`    | An `old_str` in `update_content` matches multiple locations and `replace_all_matches` is not `true`.                                        |
+| `validation_error`    | An `old_str` in `update_content` is an empty string.                                                                                        |
 | `validation_error`    | The operation would delete child pages or databases and `allow_deleting_content` is not `true`. The error message lists the affected items. |
 | `validation_error`    | The provided ID is a database or non-page block (use the appropriate API for those record types).                                           |
 | `validation_error`    | The target page is a synced page (`external_object_instance_page`). Synced pages cannot be updated.                                         |

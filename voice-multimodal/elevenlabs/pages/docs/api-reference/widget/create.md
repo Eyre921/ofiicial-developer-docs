@@ -48,7 +48,7 @@ Successful Response
 
 ```json
 {
-  "avatar_file": "<file: string>"
+  "avatar_file": "<file: agent_avatar.png>"
 }
 ```
 
@@ -56,8 +56,8 @@ Successful Response
 
 ```json
 {
-  "agent_id": "string",
-  "avatar_url": "string"
+  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+  "avatar_url": "https://cdn.elevenlabs.io/avatars/agent_3701k3ttaq12ewp8b7qv5rfyszkz.png"
 }
 ```
 
@@ -100,7 +100,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/avatar"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"agent_avatar.png\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -128,7 +128,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"agent_avatar.png\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -140,7 +140,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_id/avatar")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"agent_avatar.png\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -154,7 +154,7 @@ $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents
   'multipart' => [
     [
         'name' => 'avatar_file',
-        'filename' => 'string',
+        'filename' => 'agent_avatar.png',
         'contents' => null
     ]
   ]
@@ -168,7 +168,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/avatar");
 var request = new RestRequest(Method.POST);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"agent_avatar.png\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -179,7 +179,7 @@ let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000
 let parameters = [
   [
     "name": "avatar_file",
-    "fileName": "string"
+    "fileName": "agent_avatar.png"
   ]
 ]
 

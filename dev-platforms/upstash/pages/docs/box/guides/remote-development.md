@@ -8,15 +8,15 @@ Upstash Box supports full remote development workflows. By forwarding ports over
 
 This guide uses Next.js as an example, but the same approach works for any dev server; Vite, Django, Rails, Express, and so on.
 
-***
+---
 
 ## 1. Create a Box
 
-Create a box with default settings. See the [quickstart](/docs/box/overall/quickstart) if you haven't created one before.
+Create a box with default settings. See the [quickstart](/box/overall/quickstart) if you haven't created one before.
 
-<img />
+<img src="/img/box-development/create-box.png" />
 
-***
+---
 
 ## 2. Connect via SSH with Port Forwarding
 
@@ -28,11 +28,11 @@ The `box-id` is the name of your box (e.g. `right-flamingo-14486`).
 ssh -L 3000:127.0.0.1:3000 <box-id>@us-east-1.box.upstash.com
 ```
 
-Use your [Box API key](/docs/box/overall/quickstart#1-get-your-api-key) as the password when prompted.
+Use your [Box API key](/box/overall/quickstart#1-get-your-api-key) as the password when prompted.
 
-<img />
+<img src="/img/box-development/ssh-connection.png" />
 
-***
+---
 
 ## 3. Start Your Dev Server
 
@@ -52,11 +52,11 @@ http://localhost:3000
 
 You can edit files inside the box and see changes live, just as you would in a local development environment.
 
-***
+---
 
 ## 4. Share with a Public URL (Optional)
 
-If you want to share your app with others, you can expose a port with a public URL from the [Upstash Console](https://console.upstash.com). See the [Public URLs](/docs/box/overall/preview) guide for details.
+If you want to share your app with others, you can expose a port with a public URL from the [Upstash Console](https://console.upstash.com). See the [Public URLs](/box/overall/preview) guide for details.
 
 Your app will be accessible at:
 
@@ -64,4 +64,4 @@ Your app will be accessible at:
 https://<box-id>-3000.preview.box.upstash.com
 ```
 
-<img />
+<img src="/img/box-development/public-url.png" />

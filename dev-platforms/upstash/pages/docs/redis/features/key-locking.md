@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/features/key-locking
 path: docs/redis/features/key-locking
 ---
 
+> Key-based locks for concurrent command execution
+
 Upstash Redis databases use locks to keep commands isolated while allowing
 independent keys to be processed in parallel. The engine automatically locks
 the keys used by the command. Commands that operate on different keys can run
@@ -14,14 +16,14 @@ Redis commands to use it.
 
 ## How It Works
 
-* Single-key commands (for example `GET`, `SET`, `INCR`, `HSET`) acquire a
+- Single-key commands (for example `GET`, `SET`, `INCR`, `HSET`) acquire a
   lock on just that key.
-* Multi-key commands acquire locks on every key they reference, in a
+- Multi-key commands acquire locks on every key they reference, in a
   deterministic order to avoid deadlocks.
-* Read-only commands (for example `GET`, `HGET`, `LRANGE`) take a shared read
+- Read-only commands (for example `GET`, `HGET`, `LRANGE`) take a shared read
   lock, so multiple readers on the same key run concurrently. Read
   locks block writers on that key until they complete.
-* Commands that need a database-wide operation, such as `FLUSHDB` and
+- Commands that need a database-wide operation, such as `FLUSHDB` and
   `FLUSHALL`, take the global lock and can reduce concurrency while they run.
 
 ## Transactions
@@ -50,15 +52,15 @@ the global lock. This includes commands such as `FLUSHDB` and `FLUSHALL`.
 Lua scripts queued inside a transaction always execute under the global lock,
 even if the script declares [`allow-key-locking`](#lua-scripts). If you want
 script-level key locking, run the script directly with
-[`EVAL`](/docs/redis/commands/scripting/eval) /
-[`EVALSHA`](/docs/redis/commands/scripting/evalsha) outside of a transaction.
+[`EVAL`](/redis/commands/scripting/eval) /
+[`EVALSHA`](/redis/commands/scripting/evalsha) outside of a transaction.
 
 ## Lua Scripts
 
-Lua scripts ([`EVAL`](/docs/redis/commands/scripting/eval),
-[`EVALSHA`](/docs/redis/commands/scripting/evalsha),
-[`EVAL_RO`](/docs/redis/commands/scripting/eval-ro),
-[`EVALSHA_RO`](/docs/redis/commands/scripting/evalsha-ro)) default to the global
+Lua scripts ([`EVAL`](/redis/commands/scripting/eval),
+[`EVALSHA`](/redis/commands/scripting/evalsha),
+[`EVAL_RO`](/redis/commands/scripting/eval-ro),
+[`EVALSHA_RO`](/redis/commands/scripting/evalsha-ro)) default to the global
 lock because the engine cannot know in advance which keys the script will use.
 To opt into key-based locking, add the `allow-key-locking` flag to the script's
 shebang line:
@@ -77,7 +79,7 @@ keys can run in parallel.
 
 ### Rules for `allow-key-locking`
 
-* **Every key passed to `redis.call` must appear in `KEYS`.** You may compute
+- **Every key passed to `redis.call` must appear in `KEYS`.** You may compute
   the key value inside the script (for example by concatenating parts of
   `ARGV`), but the final string must exactly match one of the entries declared
   in the `KEYS` array. Otherwise the engine rejects the command:
@@ -92,7 +94,7 @@ keys can run in parallel.
   key can force a disk read while the lock is held. See
   [Dynamic Keys and Latency](#dynamic-keys-and-latency).
 
-* **Database-wide writes are not allowed.** Commands that require database-wide
+- **Database-wide writes are not allowed.** Commands that require database-wide
   exclusive access, such as `FLUSHDB` and `FLUSHALL`, cannot be called from a
   script with `allow-key-locking`. Run those scripts without the flag so the
   engine can use the global lock.
@@ -138,11 +140,11 @@ concurrently, each holding a lock only on its own `user:<id>:quota` key.
 
 ## Redis Functions
 
-Redis functions ([`FCALL`](/docs/redis/commands/functions/fcall),
-[`FCALL_RO`](/docs/redis/commands/functions/fcall-ro)) also default to the global
+Redis functions ([`FCALL`](/redis/commands/functions/fcall),
+[`FCALL_RO`](/redis/commands/functions/fcall-ro)) also default to the global
 lock. For functions, `allow-key-locking` is set on each registered function,
 not on the library shebang, and takes effect when the library is loaded with
-[`FUNCTION LOAD`](/docs/redis/commands/functions/function-load):
+[`FUNCTION LOAD`](/redis/commands/functions/function-load):
 
 ```lua
 #!lua name=locks
@@ -189,7 +191,7 @@ With the flag set, a key that was not declared is rejected outright. Without it
 the call still succeeds, but it can be slow, and the slowdown is not limited to
 the caller.
 
-Upstash keeps data [in memory and on disk](/docs/redis/features/durability), and an
+Upstash keeps data [in memory and on disk](/redis/features/durability), and an
 entry that has been idle long enough to be evicted from memory is read back from
 disk on the next access. Declared keys are loaded before the script body starts
 running, and the engine releases the lock while it waits for that read, so other

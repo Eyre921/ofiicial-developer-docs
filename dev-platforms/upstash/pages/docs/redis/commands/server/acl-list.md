@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/server/acl-list
 path: docs/redis/commands/server/acl-list
 ---
 
+> Show users details in config file format.
+
 Use `ACL LIST` to see every configured user together with their full rule set, formatted the same way a Redis ACL config file would describe them.
 
-Each entry is a single string starting with `user <username>`, followed by its on/off flag, passwords, key patterns, channel patterns, and command permissions. This is the quickest way to audit every user's effective permissions at once; to inspect a single user as structured fields instead, use [`ACL GETUSER`](/docs/redis/commands/server/acl-getuser).
+Each entry is a single string starting with `user <username>`, followed by its on/off flag, passwords, key patterns, channel patterns, and command permissions. This is the quickest way to audit every user's effective permissions at once; to inspect a single user as structured fields instead, use [`ACL GETUSER`](/redis/commands/server/acl-getuser).
 
 ## Syntax
 

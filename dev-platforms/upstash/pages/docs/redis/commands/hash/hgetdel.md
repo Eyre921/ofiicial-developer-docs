@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/hash/hgetdel
 path: docs/redis/commands/hash/hgetdel
 ---
 
+> Get and delete hash fields.
+
 Use `HGETDEL` to read hash fields and delete them in the same atomic step.
 
-The reply holds the previous value of each requested field, in the order requested, with null for fields that were not present. Reading and removing together removes the race that an [`HGET`](/docs/redis/commands/hash/hget) followed by an [`HDEL`](/docs/redis/commands/hash/hdel) would leave open, which makes the command a good fit for one-shot values such as one-time codes, claim tickets, or queued items keyed by name: exactly one caller gets the value.
+The reply holds the previous value of each requested field, in the order requested, with null for fields that were not present. Reading and removing together removes the race that an [`HGET`](/redis/commands/hash/hget) followed by an [`HDEL`](/redis/commands/hash/hdel) would leave open, which makes the command a good fit for one-shot values such as one-time codes, claim tickets, or queued items keyed by name: exactly one caller gets the value.
 
 `FIELDS <numfields>` introduces the field list and the count must match. The key is deleted when its last field is removed.
 

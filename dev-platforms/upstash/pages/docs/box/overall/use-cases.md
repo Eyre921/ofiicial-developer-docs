@@ -6,13 +6,15 @@ path: docs/box/overall/use-cases
 
 The idea behind Upstash Box is simple: **give AI its own computer**. Your agent gets a full, isolated cloud environment it can control. Run commands, write files, or execute code independent of any user device. Freeze a box anytime, and continue days or even weeks later with perfect resumability.
 
-***
+---
 
 ## 1. Agent Servers
 
 A very powerful pattern is the **Agent Server**: a long-running, per-tenant agent that persists its state across sessions. Unlike ephemeral sandboxes that lose everything on shutdown, an Agent Server keeps its history, context, and learned preferences intact forever.
 
-  <img />
+<Frame>
+  <img src="/img/box/agent-server.png" />
+</Frame>
 
 Each user gets a dedicated Box running its own agent. The agent observes every request and response in a non-blocking way. It builds up a personalized understanding of what that user needs. Over time, it contributes back to a shared **Knowledge Base**, so insights from one tenant can improve results for everyone.
 
@@ -22,7 +24,9 @@ Because boxes are serverless, idle tenants only cost a very low storage rate. Wh
 
 Box's async SDK lets you spin up multiple boxes in parallel, each running a specialized agent with a distinct role. Once every agent finishes, a final box can synthesize their outputs into a single result.
 
-  <img />
+<Frame>
+  <img src="/img/box/review-infrastructure.png" />
+</Frame>
 
 A practical example is an automated **PR review pipeline**. When a pull request is opened, you fan out to three boxes. One for security review, one for code quality, and one for architecture. Then you collect their findings in a fourth box that summarizes everything and posts a comment on GitHub.
 
@@ -94,7 +98,9 @@ Because each box is isolated, the agents cannot interfere with each other. You g
 
 Box makes it easy to run parallel test scenarios at scale. Spin up N boxes, each running a different model against the same inputs, and compare the results side by side.
 
-  <img />
+<Frame>
+  <img src="/img/box/model-comparison.png" />
+</Frame>
 
 For example, at Context7 we use Box to benchmark LLMs for context extraction over documentation. We spin up boxes in parallel, each running a different model against the same documentation files and prompts. We then evaluate hallucination percentage, accuracy score, and context quality to find the best model:
 

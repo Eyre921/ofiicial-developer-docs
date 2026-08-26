@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/set/overview
 path: docs/redis/commands/set/overview
 ---
 
+> Commands for storing and manipulating unordered collections of unique members.
+
 <CardGroup cols={2}>
 <Card title="SADD" href="/redis/commands/set/sadd">Add members to a set</Card>
 <Card title="SCARD" href="/redis/commands/set/scard">Get set cardinality</Card>

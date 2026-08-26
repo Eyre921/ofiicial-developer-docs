@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/transactions/unwatch
 path: docs/redis/commands/transactions/unwatch
 ---
 
-Use `UNWATCH` to forget all the keys watched with [`WATCH`](/docs/redis/commands/transactions/watch) on this connection.
+> Unwatch all keys.
 
-Afterwards the next [`EXEC`](/docs/redis/commands/transactions/exec) is no longer conditional on those keys. It is the way to abandon an optimistic locking attempt when, after reading the watched data, you decide not to run a transaction at all, so a later unrelated transaction is not aborted by a change to keys you no longer care about. [`EXEC`](/docs/redis/commands/transactions/exec) and [`DISCARD`](/docs/redis/commands/transactions/discard) clear watches on their own.
+Use `UNWATCH` to forget all the keys watched with [`WATCH`](/redis/commands/transactions/watch) on this connection.
+
+Afterwards the next [`EXEC`](/redis/commands/transactions/exec) is no longer conditional on those keys. It is the way to abandon an optimistic locking attempt when, after reading the watched data, you decide not to run a transaction at all, so a later unrelated transaction is not aborted by a change to keys you no longer care about. [`EXEC`](/redis/commands/transactions/exec) and [`DISCARD`](/redis/commands/transactions/discard) clear watches on their own.
 
 The raw command is TCP-only. Over HTTP, use the transaction or pipeline API of an Upstash SDK instead of sending this command directly.
 
@@ -22,7 +24,7 @@ This command takes no arguments.
 
 ## Important points
 
-* The raw command is TCP-only. For HTTP, use an Upstash SDK transaction API rather than sending this command directly.
+- The raw command is TCP-only. For HTTP, use an Upstash SDK transaction API rather than sending this command directly.
 
 ## Response
 

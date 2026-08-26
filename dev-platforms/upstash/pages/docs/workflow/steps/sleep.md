@@ -20,7 +20,7 @@ This ensures no compute resources are consumed during the sleep period.
 <ParamField body="duration" type="number|string">
     The duration to pause workflow execution.
 
-    * **Human-readable string format:**
+    - **Human-readable string format:**
 
     | Input   | Duration    |
     |---------|-------------|
@@ -33,7 +33,7 @@ This ensures no compute resources are consumed during the sleep period.
     | `"1mo"` | 1 month     |
     | `"1y"`  | 1 year      |
 
-    * **Numeric format (seconds):**
+    - **Numeric format (seconds):**
 
     | Input   | Duration      |
     |---------|---------------|
@@ -75,6 +75,7 @@ from onboarding_utils import sign_in, send_email
 
 app = FastAPI()
 serve = Serve(app)
+
 
 @serve.post("/api/onboarding")
 async def onboarding(context: AsyncWorkflowContext[User]) -> None:

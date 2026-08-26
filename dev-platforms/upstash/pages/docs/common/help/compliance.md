@@ -6,11 +6,11 @@ path: docs/common/help/compliance
 
 ## Upstash Legal & Security Documents
 
-* [Upstash Terms of Service](https://upstash.com/static/trust/terms.pdf)
-* [Upstash Privacy Policy](https://upstash.com/static/trust/privacy.pdf)
-* [Upstash Data Processing Agreement](https://upstash.com/static/trust/dpa.pdf)
-* [Upstash Technical and Organizational Security Measures](https://upstash.com/static/trust/security-measures.pdf)
-* [Upstash Subcontractors](https://upstash.com/static/trust/subprocessors.pdf)
+- [Upstash Terms of Service](https://upstash.com/static/trust/terms.pdf)
+- [Upstash Privacy Policy](https://upstash.com/static/trust/privacy.pdf)
+- [Upstash Data Processing Agreement](https://upstash.com/static/trust/dpa.pdf)
+- [Upstash Technical and Organizational Security Measures](https://upstash.com/static/trust/security-measures.pdf)
+- [Upstash Subcontractors](https://upstash.com/static/trust/subprocessors.pdf)
 
 ## Is Upstash SOC2 Compliant?
 

@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/hyperloglog/pfmerge
 path: docs/redis/commands/hyperloglog/pfmerge
 ---
 
+> Merge multiple HyperLogLogs.
+
 Use `PFMERGE` to merge several HyperLogLogs into a single one.
 
 The destination ends up representing the union of the source structures and of whatever it already held, so merging the same sources again changes nothing and new data can be folded in as it arrives. The destination is created if it does not exist.

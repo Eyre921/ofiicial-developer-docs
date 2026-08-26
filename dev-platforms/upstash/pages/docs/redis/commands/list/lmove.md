@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/list/lmove
 path: docs/redis/commands/list/lmove
 ---
 
+> Move element between lists.
+
 Use `LMOVE` to atomically take an element from one end of a list and push it onto one end of another list, returning the element.
 
 The two directions are chosen independently: `LEFT RIGHT` takes from the head of the source and appends to the tail of the destination, which preserves order when transferring between queues, while `LEFT LEFT` behaves like moving between stacks. If the source is empty nothing happens and the reply is null. Source and destination may be the same key, in which case the list is rotated.
 
-Because the element is never outside a list, `LMOVE` is the building block for reliable queues: a worker moves an item into a processing list, does the work, and removes it from there, so a crash leaves the item recoverable instead of lost. It replaces the deprecated [`RPOPLPUSH`](/docs/redis/commands/list/rpoplpush), and [`BLMOVE`](/docs/redis/commands/list/blmove) is the blocking form.
+Because the element is never outside a list, `LMOVE` is the building block for reliable queues: a worker moves an item into a processing list, does the work, and removes it from there, so a crash leaves the item recoverable instead of lost. It replaces the deprecated [`RPOPLPUSH`](/redis/commands/list/rpoplpush), and [`BLMOVE`](/redis/commands/list/blmove) is the blocking form.
 
 ## Syntax
 

@@ -6,7 +6,7 @@ path: docs/box/overall/schedules
 
 Create recurring tasks that run on a cron schedule inside a box. You can schedule shell commands or agent prompts. Available on both `box.schedule` and `ephemeralBox.schedule`.
 
-***
+---
 
 ## API
 
@@ -48,7 +48,7 @@ print(schedule.id)
 | `webhookHeaders` | No | Headers to include in the webhook request |
 | `folder` | No | Working directory. Defaults to `box.cwd`; relative paths resolved against it |
 
-***
+---
 
 ### Schedule an agent prompt
 
@@ -91,7 +91,7 @@ print(schedule.id)
 | `webhookUrl` | No | URL to notify when the scheduled run completes |
 | `webhookHeaders` | No | Headers to include in the webhook request |
 
-***
+---
 
 ### List schedules
 
@@ -114,7 +114,7 @@ for s in schedules:
 ```
 </CodeGroup>
 
-***
+---
 
 ### Get a schedule
 
@@ -138,7 +138,7 @@ print(schedule.cron)
 ```
 </CodeGroup>
 
-***
+---
 
 ### Pause a schedule
 
@@ -154,7 +154,7 @@ box.schedule.pause("schedule_abc123")
 ```
 </CodeGroup>
 
-***
+---
 
 ### Resume a schedule
 
@@ -170,7 +170,7 @@ box.schedule.resume("schedule_abc123")
 ```
 </CodeGroup>
 
-***
+---
 
 ### Delete a schedule
 
@@ -186,7 +186,7 @@ box.schedule.delete("schedule_abc123")
 ```
 </CodeGroup>
 
-***
+---
 
 ## Schedule response
 
@@ -243,7 +243,7 @@ schedule.updated_at      # int
 ```
 </CodeGroup>
 
-***
+---
 
 ## Cron syntax
 
@@ -267,7 +267,7 @@ Schedules use standard 5-field cron expressions (UTC):
 | `0 9 * * 1-5` | Weekdays at 9:00 AM |
 | `*/5 * * * *` | Every 5 minutes |
 
-***
+---
 
 ## Examples
 

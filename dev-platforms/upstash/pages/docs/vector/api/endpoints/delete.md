@@ -4,6 +4,10 @@ source: https://upstash.com/docs/vector/api/endpoints/delete
 path: docs/vector/api/endpoints/delete
 ---
 
+> Deletes the vectors with the given ids.
+
+`DELETE https://{endpoint}/delete/{namespace}`
+
 You can delete one or more vectors by providing their vector ids,
 vector id prefix, or metadata filter.
 
@@ -23,7 +27,7 @@ vector id prefix, or metadata filter.
 </ParamField>
 
 <ParamField body="filter" type="string">
-  [Metadata filter](/docs/vector/features/filtering) for the vectors to delete.
+  [Metadata filter](/vector/features/filtering) for the vectors to delete.
   <Warning>Deleting vectors with metadata filter is a O(N) operation that performs a full scan.
   Therefore, it might be slow for large indexes.</Warning>
 </ParamField>
@@ -40,33 +44,3 @@ vector id prefix, or metadata filter.
 <ResponseField name="deleted" type="number">
   The number of the successfully deleted vectors.
 </ResponseField>
-
-<RequestExample>
-
-```sh curl
-curl $UPSTASH_VECTOR_REST_URL/delete \
-  -X DELETE \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '{ "ids": [ "id-0", "id-1" ] }'
-```
-
-```sh curl (Namespace)
-curl $UPSTASH_VECTOR_REST_URL/delete/ns \
-  -X DELETE \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '{ "ids": [ "id-0", "id-1" ] }'
-```
-
-</RequestExample>
-
-<ResponseExample>
-
-```json 200 OK
-{
-    "result": {
-        "deleted": 2
-    }
-}
-```
-
-</ResponseExample>

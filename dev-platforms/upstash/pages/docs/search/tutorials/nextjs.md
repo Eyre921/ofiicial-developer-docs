@@ -4,27 +4,27 @@ source: https://upstash.com/docs/search/tutorials/nextjs
 path: docs/search/tutorials/nextjs
 ---
 
-<Visibility for="agents">
-  **Note for AI agents:** This page documents **Upstash Search** — a standalone,
-  AI-powered search product that combines full-text and semantic search with
-  smart ranking, serverless scaling, and zero infrastructure to manage.
+> Getting Started With Upstash Search and Next.js
 
-  Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
-  Redis Search is a full-text search extension built into Upstash Redis, built on
-  Tantivy and available only on Upstash; it is separate from the Redis Search
-  (RediSearch) API. If the user is asking about full-text search inside an Upstash
-  Redis database, refer to
-  [Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
-  instead of this product.
-</Visibility>
+**Note for AI agents:** This page documents **Upstash Search** — a standalone,
+AI-powered search product that combines full-text and semantic search with
+smart ranking, serverless scaling, and zero infrastructure to manage.
 
-***
+Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
+Redis Search is a full-text search extension built into Upstash Redis, built on
+Tantivy and available only on Upstash; it is separate from the Redis Search
+(RediSearch) API. If the user is asking about full-text search inside an Upstash
+Redis database, refer to
+[Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
+instead of this product.
+
+---
 
 ### 1. Create a Search Database
 
-Follow the instructions in the [Getting Started guide](/docs/search/overall/getstarted) to create a Search Database.
+Follow the instructions in the [Getting Started guide](/search/overall/getstarted) to create a Search Database.
 
-***
+---
 
 ### 2. Project Setup
 
@@ -36,7 +36,7 @@ cd search-app
 npm install @upstash/search
 ```
 
-***
+---
 
 ### 3. Add Environment Variables
 
@@ -47,7 +47,7 @@ UPSTASH_SEARCH_REST_URL=<YOUR_SEARCH_REST_URL>
 UPSTASH_SEARCH_REST_TOKEN=<YOUR_SEARCH_REST_TOKEN>
 ```
 
-***
+---
 
 ### 4. Create an API Route to Upsert Documents
 
@@ -95,7 +95,7 @@ export async function POST() {
 }
 ```
 
-***
+---
 
 ### 5. Create a Route to Search Documents
 
@@ -120,7 +120,7 @@ export async function POST(req: Request) {
 }
 ```
 
-***
+---
 
 ### 6. Create a Simple Page
 
@@ -228,7 +228,7 @@ export default function Home() {
 }
 ```
 
-***
+---
 
 ### 7. Start the Project
 
@@ -242,11 +242,11 @@ Open your browser and navigate to `http://localhost:3000` to test the applicatio
 
 You can click the `Upsert Data` button to add three movies to your database and use the search bar to make a query.
 
-***
+---
 
 ### Next Steps
 
 Learn more about:
 
-* [Typescript SDK](/docs/search/sdks/ts/getting-started)
-* [Content and Metadata fields](/docs/search/features/content-and-metadata)
+- [Typescript SDK](/search/sdks/ts/getting-started)
+- [Content and Metadata fields](/search/features/content-and-metadata)

@@ -9252,7 +9252,7 @@ AI Gateway pricing isn't finalized. Here's what to expect once it moves out of b
 
 - **Paid plans only.** AI Gateway will be available on Neon's Launch and Scale plans. There's no difference in AI Gateway pricing or model access between the two plans.
 - **No markup.** Neon charges the same per-token rate as the model provider. Published provider prices are passed on to users with no additional markup.
-- **Free for now.** Inference remains free through the end of the beta. Billing starts when AI Gateway reaches GA.
+- **Free during beta.** Inference remains free through the end of the beta. Billing begins when AI Gateway reaches GA.
 
 We'll publish exact per-model rates on the [Neon pricing page](https://neon.com/pricing) and update this page before billing begins.
 
@@ -13170,11 +13170,36 @@ Without adding your production domain, OAuth sign-in and verification links will
 
 ## Add a domain
 
+**Console**
+
 1. Go to **Console → Auth → Configuration → Domains**
 2. Enter your domain with protocol: `https://myapp.com`
 3. Click **Add domain**
 
 Repeat for each domain where your app runs.
+
+**CLI**
+
+Add a domain with [`neon neon-auth domain add`](https://neon.com/docs/cli/neon-auth#domain-add):
+
+```bash
+neon neon-auth domain add https://myapp.com
+```
+
+Use `neon neon-auth domain list` and `neon neon-auth domain delete` to view and remove entries.
+
+**API**
+
+Send a `POST` request to the [add trusted domain](https://neon.com/docs/reference/api/auth/add-branch-neon-auth-trusted-domain) endpoint. Replace `{project_id}` and `{branch_id}` with your project and branch IDs.
+
+```bash
+curl -X POST 'https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id}/auth/domains' \
+  -H 'Authorization: Bearer $NEON_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{"domain": "https://myapp.com", "auth_provider": "better_auth"}'
+```
+
+Use [`GET`](https://neon.com/docs/reference/api/auth/list-branch-neon-auth-trusted-domains) on the same path to list domains, and [`DELETE`](https://neon.com/docs/reference/api/auth/delete-branch-neon-auth-trusted-domain) to remove them. See [Manage Managed Better Auth via the API](https://neon.com/docs/auth/guides/manage-auth-api#related-auth-endpoints) for the full set of auth endpoints.
 
 **Note:** Include the protocol (`https://`) and omit trailing slashes. For example: `https://myapp.com` not `https://myapp.com/`
 
@@ -13438,9 +13463,33 @@ Managed Better Auth supports two verification methods:
 
 ## Enable email verification
 
+**Console**
+
 In your project's **Settings** → **Auth** page, enable **Sign-up with Email** and **Verify at Sign-up**. Choose your verification method.
 
 ![Email verification settings in Neon Console](https://neon.com/docs/auth/email-verification-settings.png)
+
+**CLI**
+
+Enable email and password authentication with verification required using [`neon neon-auth config email-password update`](https://neon.com/docs/cli/neon-auth#config-email-password-update):
+
+```bash
+neon neon-auth config email-password update --enabled --require-email-verification
+```
+
+**API**
+
+Update the configuration with the [Update email and password configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-email-and-password-config) endpoint. Replace `{project_id}` and `{branch_id}` with your project and branch IDs:
+
+```bash
+curl -X PATCH 'https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id}/auth/email_and_password' \
+  -H 'Authorization: Bearer $NEON_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "enabled": true,
+  "require_email_verification": true
+}'
+```
 
 ## Verification links
 
@@ -13799,7 +13848,7 @@ Enable, configure, and disable Managed Better Auth using the Neon API
 
 The **Managed Better Auth** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
 
-You can manage Managed Better Auth programmatically using the [Neon API](https://neon.com/docs/reference/api). You can also enable and configure Managed Better Auth from an AI editor using the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server#supported-actions-tools) (`provision_neon_auth`, `configure_neon_auth`, `get_neon_auth_config`). See [Set up with your AI editor](https://neon.com/docs/auth/overview#set-up-with-your-ai-editor).
+You can manage Managed Better Auth programmatically using the [Neon API](https://neon.com/docs/reference/api), or from the terminal with the [Neon CLI](https://neon.com/docs/cli/neon-auth) (`neon neon-auth`), which wraps these same operations. You can also enable and configure Managed Better Auth from an AI editor using the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server#supported-actions-tools) (`provision_neon_auth`, `configure_neon_auth`, `get_neon_auth_config`). See [Set up with your AI editor](https://neon.com/docs/auth/overview#set-up-with-your-ai-editor).
 
 **Note:** Managed Better Auth operates at the **branch level**. Each branch can have its own independent auth configuration, which means preview and development branches can have separate auth state from your production branch.
 
@@ -14072,7 +14121,7 @@ Managed Better Auth is built on [Better Auth](https://www.better-auth.com/), whi
 
 Managed Better Auth is a **managed** Better Auth service. You **don't install or configure Better Auth plugins directly** - instead, Managed Better Auth exposes a supported subset of plugins through the Neon SDK.
 
-For plugins that have Console settings (for example [Organization](https://neon.com/docs/auth/guides/plugins/organization)), open **Auth** > **Plugins** (beta) in the Neon Console, or use the Neon API. Additional plugin options may still arrive over time; see the [Managed Better Auth roadmap](https://neon.com/docs/auth/roadmap).
+For plugins that have Console settings (for example [Organization](https://neon.com/docs/auth/guides/plugins/organization)), open **Auth** > **Plugins** (beta) in the Neon Console, or use the Neon API. From the terminal, [`neon neon-auth config organization update`](https://neon.com/docs/cli/neon-auth#config-organization-update) configures the Organization plugin, and [`neon neon-auth plugins list`](https://neon.com/docs/cli/neon-auth#plugins-list) shows the current plugin configurations. Additional plugin options may still arrive over time; see the [Managed Better Auth roadmap](https://neon.com/docs/auth/roadmap).
 
 The following Better Auth plugins are currently supported in Managed Better Auth:
 
@@ -16155,11 +16204,36 @@ Before testing production OAuth, add every origin you pass as **`callbackURL`** 
 
 ### 3. Create OAuth apps and paste credentials into Neon
 
-1. Create OAuth apps with your providers:
-   - [Google OAuth setup](https://developers.google.com/identity/protocols/oauth2/web-server) (see [Google OAuth branding](https://neon.com/docs/auth/guides/setup-oauth#google-oauth-branding) below before going live)
-   - [GitHub OAuth setup](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app)
-   - [Vercel OAuth setup](https://vercel.com/docs/sign-in-with-vercel/manage-from-dashboard#create-an-app)
-2. In the Neon Console, open your **project**, select the **branch**, open **Auth**, then enter the **Client ID** and **Client Secret** for each provider.
+Create OAuth apps with your providers:
+
+- [Google OAuth setup](https://developers.google.com/identity/protocols/oauth2/web-server) (see [Google OAuth branding](https://neon.com/docs/auth/guides/setup-oauth#google-oauth-branding) below before going live)
+- [GitHub OAuth setup](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app)
+- [Vercel OAuth setup](https://vercel.com/docs/sign-in-with-vercel/manage-from-dashboard#create-an-app)
+
+Then give the **Client ID** and **Client Secret** to Managed Better Auth for that branch:
+
+**Console**
+
+In the Neon Console, open your **project**, select the **branch**, open **Auth**, then enter the **Client ID** and **Client Secret** for each provider.
+
+**CLI**
+
+Add a provider with [`neon neon-auth oauth-provider add`](https://neon.com/docs/cli/neon-auth#oauth-provider-add):
+
+```bash
+neon neon-auth oauth-provider add --provider-id google --oauth-client-id <client-id> --oauth-client-secret <client-secret>
+```
+
+**API**
+
+Send a `POST` request to the [add OAuth provider](https://neon.com/docs/reference/api/auth/add-branch-neon-auth-oauth-provider) endpoint. Replace `{project_id}` and `{branch_id}` with your project and branch IDs.
+
+```bash
+curl -X POST 'https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id}/auth/oauth_providers' \
+  -H 'Authorization: Bearer $NEON_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{"id": "google", "client_id": "<client-id>", "client_secret": "<client-secret>"}'
+```
 
 Managed Better Auth will use your configured credentials for that branch.
 
@@ -16346,7 +16420,7 @@ When you subscribe to `send.otp` or `send.magic_link`, Managed Better Auth skips
 
 ## Configure webhooks
 
-Configure webhooks per project and branch using the Neon API. Your webhook URL must use HTTPS protocol. See the API reference for [Get webhook configuration](https://neon.com/docs/reference/api/auth/get-neon-auth-webhook-config) and [Update webhook configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-webhook-config).
+Configure webhooks per project and branch using the Neon Console, CLI, or API. Your webhook URL must use HTTPS protocol. See the API reference for [Get webhook configuration](https://neon.com/docs/reference/api/auth/get-neon-auth-webhook-config) and [Update webhook configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-webhook-config).
 
 ```bash
 PUT /projects/{project_id}/branches/{branch_id}/auth/webhooks
@@ -16380,6 +16454,18 @@ Webhook endpoints that point at private networks, localhost, cloud metadata serv
 
 ### Set or update configuration
 
+**Console**
+
+In the Neon Console, go to **Auth → Configuration → Webhooks** to enable webhook delivery, set the **Webhook URL** (an HTTPS endpoint; see [Webhook URL requirements](https://neon.com/docs/auth/guides/webhooks#webhook-url-requirements)), choose which events to send, and set the per-attempt timeout in seconds (1-10, default 5). Save to apply.
+
+**CLI**
+
+```bash
+neon neon-auth config webhook update --enabled --url https://your-app.com/webhooks/neon-auth --enabled-events user.created --timeout 5
+```
+
+**API**
+
 ```bash
 curl -X PUT "https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id}/auth/webhooks" \
   -H "Content-Type: application/json" \
@@ -16393,6 +16479,18 @@ curl -X PUT "https://console.neon.tech/api/v2/projects/{project_id}/branches/{br
 ```
 
 ### Get current configuration
+
+**Console**
+
+View the current webhook configuration under **Auth → Configuration → Webhooks** in the Neon Console.
+
+**CLI**
+
+```bash
+neon neon-auth config webhook get
+```
+
+**API**
 
 ```bash
 curl "https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id}/auth/webhooks" \
@@ -17577,7 +17675,7 @@ As Managed Better Auth evolves, more Better Auth integrations and features will 
 
 ## Basic usage
 
-Enable Auth in the Neon Console or [with your AI editor](https://neon.com/docs/auth/overview#set-up-with-your-ai-editor), then add authentication to your app.
+Enable Auth in the Neon Console, from the terminal with [`neon neon-auth enable`](https://neon.com/docs/cli/neon-auth#enable), or [with your AI editor](https://neon.com/docs/auth/overview#set-up-with-your-ai-editor), then add authentication to your app.
 
 **For Next.js (server-side):**
 
@@ -17703,6 +17801,8 @@ A custom SMTP provider uses your sender address but still sends Neon's default e
 
 ### Configure custom SMTP
 
+**Console**
+
 In your project's **Settings** → **Auth** page, configure your email provider:
 
 1. Select **Custom SMTP provider**
@@ -17714,6 +17814,25 @@ In your project's **Settings** → **Auth** page, configure your email provider:
    - **Sender email**: Email address to send from
    - **Sender name**: Display name for sent emails
 3. Click **Save**
+
+**CLI**
+
+Configure a standard SMTP provider with [`neon neon-auth config email-provider update`](https://neon.com/docs/cli/neon-auth#config-email-provider-update):
+
+```bash
+neon neon-auth config email-provider update --type standard --host smtp.example.com --port 587 --username example_username --password AbC123dEf --sender-email noreply@example.com --sender-name "Example App"
+```
+
+**API**
+
+Update the provider with the [Update email provider configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-email-provider) endpoint. Replace `{project_id}` and `{branch_id}` with your project and branch IDs:
+
+```bash
+curl -X PATCH 'https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id}/auth/email_provider' \
+  -H 'Authorization: Bearer $NEON_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{"type": "standard", "host": "smtp.example.com", "port": 587, "username": "example_username", "password": "AbC123dEf", "sender_email": "noreply@example.com", "sender_name": "Example App"}'
+```
 
 ### Email provider requirements
 
@@ -20057,7 +20176,7 @@ npm i -g neon
 
 Use Neon CLI with Claude Code, Cursor, Codex, and other AI development tools.
 
-**Note:** Every command supports `--output json` for machine-readable results, and setting the `NEON_API_KEY` environment variable authenticates non-interactively. For AI agents, [`neon link --agent`](https://neon.com/docs/cli/link) emits a JSON state-machine response with a discriminated `status` field describing the next step, instead of prompting.
+**Note:** Every command supports `--output json` for machine-readable results, and setting the `NEON_API_KEY` environment variable authenticates non-interactively. Agents bind a directory to a project with [`neon link`](https://neon.com/docs/cli/link)'s non-interactive flags, the same ones used for CI and scripts.
 
 ## Commands reference
 
@@ -20133,13 +20252,13 @@ Usage: `neon checkout [id|name] [options]`
 
 Create and claim temporary Neon projects.
 
-| Subcommand          | Description                                                                       |
-| ------------------- | --------------------------------------------------------------------------------- |
-| `neon claim accept` | Create a claim code and open the URL where a human signs in and takes the project |
-| `neon claim create` | Create a temporary Neon project without an account                                |
-| `neon claim delete` | Permanently delete the linked unclaimed project                                   |
-| `neon claim list`   | List claimable projects saved on this machine                                     |
-| `neon claim status` | Show the linked claimable project's lifecycle and claim status                    |
+| Subcommand                       | Description                                                                                          |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `neon claim accept [project-id]` | Create a claim code and open the URL where a human signs in and takes the project                    |
+| `neon claim create`              | Create a temporary Neon project without an account                                                   |
+| `neon claim delete [project-id]` | Permanently delete an unclaimed project, or drop a local record that can no longer reach the service |
+| `neon claim list`                | List claimable projects saved on this machine                                                        |
+| `neon claim status [project-id]` | Show a claimable project's lifecycle and claim status                                                |
 
 ### config
 
@@ -20808,7 +20927,7 @@ Pass `--keyring` to store the credential in your operating system's keyring inst
 
 --- [Document source](https://neon.com/docs/cli/bootstrap.md) ---
 
-> Summary: Covers the usage of the `bootstrap` command in the Neon CLI to scaffold a new application from a Neon starter template, including the interactive template picker, the `--default` quick start, post-scaffold setup steps (dependency install, git init, project linking), and the `--agent` JSON output mode for AI agents.
+> Summary: Covers the usage of the `bootstrap` command in the Neon CLI to scaffold a new application from a Neon starter template, including the interactive template picker, the `--default` quick start, and post-scaffold setup steps (dependency install, git init, project linking).
 
 # Neon CLI command: bootstrap
 
@@ -20828,16 +20947,15 @@ The directory argument is optional. Use `.` to scaffold into the current directo
 
 | Option                               | Description                                                                                                                                                                                    | Type    | Default | Required |
 | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--agent`                            | Emit a JSON state-machine response designed for AI agents instead of prompting. The output is a single JSON object with a discriminated `status` field describing the next step.               | boolean | `false` |    No    |
 | `--default`, `-y`                    | Quick start: scaffold the default template (or --template) and run the usual setup (install dependencies, git init) without prompting. Linking is left to you since it needs a project choice. | boolean | `false` |    No    |
 | `--force`                            | Scaffold into the target directory even if it is not empty (colliding files are overwritten).                                                                                                  | boolean | `false` |    No    |
 | `--git`                              | Initialize a git repository after scaffolding. In interactive mode this is offered as a prompt; use --no-git to skip without being asked.                                                      | boolean | `true`  |    No    |
 | `--install`                          | Install dependencies after scaffolding. In interactive mode this is offered as a prompt; use --no-install to skip without being asked.                                                         | boolean | `true`  |    No    |
 | `--link`                             | Run `neon link` in the scaffolded directory after installing. In interactive mode this is offered as a prompt; use --no-link to skip without being asked.                                      | boolean | `true`  |    No    |
-| `--list-templates`, `--list`, `--ls` | List available templates and exit.                                                                                                                                                             | boolean | `false` |    No    |
+| `--list-templates`, `--list`, `--ls` | List available templates and exit. --output json and --output yaml print a machine-readable catalog.                                                                                           | boolean | `false` |    No    |
 | `--template`                         | Template to use (skips the interactive picker). Run with --list-templates to see available templates.                                                                                          | string  | —       |    No    |
 
-Run with `--list-templates` to see the available templates, and pass one with `--template` to skip the interactive picker.
+Run with `--list-templates` to see the available templates (add `--output json` for a machine-readable catalog), and pass one with `--template` to skip the interactive picker.
 
 The post-scaffold steps (`--install`, `--git`, `--link`) all default to on. In interactive mode, bootstrap asks about each one; use the negated form (`--no-install`, `--no-git`, `--no-link`) to skip a step without being asked. With `--link`, bootstrap runs [`neon link`](https://neon.com/docs/cli/link) in the scaffolded directory after installing.
 
@@ -20863,12 +20981,21 @@ Quick start: scaffold the default template and run setup without prompting:
 neon bootstrap my-app --default
 ```
 
-## Agent mode
-
-Pass `--agent` to skip the prompts and emit a JSON state-machine response designed for AI agents. The output is a single JSON object with a discriminated `status` field describing the next step.
+List the template catalog as JSON, for scripting or driving `bootstrap` from an agent. Each entry's `id` is what you pass to `--template`:
 
 ```bash
-neon bootstrap my-app --template hono --agent
+neon bootstrap --list-templates --output json
+```
+
+The command prints an array of template objects, each shaped like:
+
+```json
+{
+  "id": "hono",
+  "title": "REST API",
+  "description": "A Hono REST API on Neon Functions, backed by Lakebase Postgres via Drizzle.",
+  "services": ["Postgres", "Functions"]
+}
 ```
 
 --- [Document source](https://neon.com/docs/cli/branches.md) ---
@@ -21810,10 +21937,10 @@ After create, regular Neon CLI commands use the saved assertion. Explicit Neon a
 
 ## neon claim status
 
-Shows the linked claimable project's lifecycle and claim status.
+Shows a claimable project's lifecycle and claim status. Pass a project ID from `neon claim list`, or omit it to use the project linked in the current directory.
 
 ```bash
-neon claim status [options]
+neon claim status [project-id] [options]
 ```
 
 ```bash
@@ -21825,7 +21952,7 @@ neon claim status
 Creates a claim code and opens the URL where a human signs in and takes the project. `--open` is on by default. `--no-open` prints the URL.
 
 ```bash
-neon claim accept [options]
+neon claim accept [project-id] [options]
 ```
 
 | Option   | Description                            | Type    | Default | Required |
@@ -21852,10 +21979,10 @@ neon claim list
 
 ## neon claim delete
 
-Permanently deletes the linked unclaimed project. Pass `--yes` to skip the confirmation prompt.
+Permanently deletes an unclaimed project, or drops a local record that can no longer reach the service. Pass a project ID from `neon claim list`, or omit it to use the linked project. Pass `--yes` to skip the confirmation prompt.
 
 ```bash
-neon claim delete [options]
+neon claim delete [project-id] [options]
 ```
 
 | Option        | Description                  | Type    | Default | Required |
@@ -23541,7 +23668,7 @@ neon ip-allow reset 192.0.2.1 --project-id cold-grass-40154007
 
 --- [Document source](https://neon.com/docs/cli/link.md) ---
 
-> Summary: Covers the usage of the `link` command in the Neon CLI to bind the current directory to a Neon project, including interactive, non-interactive, and agent-oriented workflows.
+> Summary: Covers the usage of the `link` command in the Neon CLI to bind the current directory to a Neon project, including interactive and non-interactive workflows for CI, scripts, and AI agents.
 
 # Neon CLI command: link
 
@@ -23565,7 +23692,6 @@ neon link [options]
 
 | Option                    | Description                                                                                                                                                                                                                                                   | Type    | Default | Required |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--agent`                 | Emit a JSON state-machine response designed for AI agents instead of prompting. The output is a single JSON object with a discriminated `status` field describing the next step.                                                                              | boolean | `false` |    No    |
 | `--branch`, `--branch-id` | Branch name or ID to pin in the context (resolved to its ID before writing). Without it, link only resolves the org and project — pin a branch with `neon checkout <branch>` (link never guesses a default).                                                  | string  | —       |    No    |
 | `--checks`                | Verify the org/project/branch exist (and resolve the org from the project) before writing. On by default; use --no-checks to write the context offline with no API calls — it then requires --org-id and --project-id (--branch optional) and skips env pull. | boolean | `true`  |    No    |
 | `--clear`                 | Remove the org/project/branch context (writes an empty context file) instead of linking.                                                                                                                                                                      | boolean | `false` |    No    |
@@ -23601,7 +23727,7 @@ Linked .neon:
 
 ## Non-interactive mode
 
-Use flags or a `--params` JSON blob for scripts and CI:
+Use flags or a `--params` JSON blob for scripts, CI, and AI agents:
 
 ```bash
 # Link to an existing project
@@ -23616,39 +23742,7 @@ neon link --params '{"orgId":"org-abc123","projectName":"my-app","regionId":"aws
 
 Flags take precedence over fields in `--params`.
 
-## Agent mode
-
-Use `--agent` for a JSON state machine designed for AI coding assistants. Each invocation returns a single JSON object with a `status` discriminator describing the next step, the available options, and the exact follow-up command to run.
-
-```bash
-neon link --agent
-```
-
-Example response when an organization must be selected:
-
-```json
-{
-  "status": "needs_org",
-  "instruction": "Ask the user which of these 2 organizations they want to link the current directory to. After they pick one, re-run the next_command_template with the chosen --org-id value.",
-  "options": [
-    { "id": "org-abc123", "name": "Personal Org" },
-    { "id": "org-team", "name": "Team Org" }
-  ],
-  "next_command_template": "neon link --agent --org-id <org_id>"
-}
-```
-
-When linking completes, the response includes `status: "linked"` with the context file path and project details.
-
-Any unexpected failure in `--agent` mode is reported as JSON to stdout with exit code 1:
-
-```json
-{
-  "status": "error",
-  "code": "CLIENT_ERROR",
-  "message": "user has no access to projects"
-}
-```
+Agents find the IDs with `neon orgs list --output json` and `neon projects list --org-id <org-id> --output json`, then link with `--project-id` (or create a project with `--org-id`, `--project-name`, and `--region-id`).
 
 ## The `.neon` context file
 
@@ -23673,7 +23767,6 @@ The first time a `.neon` file is created, the CLI adds `.neon` to `.gitignore` i
 Organization-scoped API keys (those created at the organization level rather than the user level) cannot list user organizations or call the regions endpoint. `link` handles this transparently:
 
 - If the API key is org-scoped and at least one project already exists in the org, the CLI auto-detects the `org_id` from the first project.
-- If the API key is org-scoped and no projects exist yet, `--agent` returns a `needs_org` response with `options: []` and an instruction to find the org ID in the Neon Console. Interactive mode prints an error pointing to `--org-id`.
 - When the regions endpoint is not allowed, `link` falls back to a built-in static region list.
 
 --- [Document source](https://neon.com/docs/cli/logs.md) ---
@@ -23725,7 +23818,7 @@ neon logs query [options]
 
 Bound the window with `--since` (a duration like `30m` or `1h`, ending at `--end-time` or now) or with an explicit `--start-time`/`--end-time` pair. `--since` and `--start-time` are mutually exclusive, and the maximum window is 7 days.
 
-The structured content filters (`--source`, `--service-name`, `--scope-name`, `--minimum-severity`, `--severity-text`, `--body-contains`, and `--trace-id`) combine with each other. Passing `--logql` replaces all of them with a raw [LogQL](https://grafana.com/docs/loki/latest/query/) expression (stream selectors and line filters only); the window, `--limit`, `--sort-order`, and `--cursor` still apply.
+The structured content filters (`--source`, `--service-name`, `--scope-name`, `--severity-text`, `--body-contains`, and `--trace-id`) combine with each other. Passing `--logql` replaces all of them with a raw [LogQL](https://grafana.com/docs/loki/latest/query/) expression (stream selectors and line filters only); the window, `--limit`, `--sort-order`, and `--cursor` still apply.
 
 `--source` accepts `function`, `storage`, and `pg_endpoint`. Only `function` and `storage` return records today; `pg_endpoint` (Postgres compute) is accepted but comes back empty until Postgres logs ship.
 
@@ -23738,7 +23831,7 @@ neon logs query --since 30m
 Filter function errors on a specific branch:
 
 ```bash
-neon logs query --branch main --source function --minimum-severity error
+neon logs query --branch main --source function --severity-text ERROR
 ```
 
 Use a raw LogQL selection instead of the structured filters:
@@ -23833,15 +23926,15 @@ neon mcp [options]
 
 ## Options
 
-| Option                      | Description                                                                                                                                                                        | Type    | Default | Required |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--agent`, `-a`             | Coding agent to install into (repeatable). Skips the agent picker                                                                                                                  | array   | —       |    No    |
-| `--category`                | MCP tool category (repeatable or comma-separated). Default: all                                                                                                                    | array   | —       |    No    |
-| `--oauth`                   | Write the server URL only. The agent prompts for Neon sign-in on first use. No CLI login, no API key minted. Skips the auth question                                               | boolean | `false` |    No    |
-| `--project`                 | Write project-level MCP config. Skips the config-location question. A linked project-folder install may still pin a project and scope a newly minted key                           | boolean | `false` |    No    |
-| `--project-id`              | Pin MCP tools to one Neon project (?projectId=). A newly minted API key is limited to that project. A linked project-folder install asks the same when you pick API-key auth       | string  | —       |    No    |
-| `--read-only`, `--readonly` | Restrict MCP tools to read-only (?readonly=true). Not prompted. Does not change the minted key                                                                                     | boolean | `false` |    No    |
-| `--yes`, `-y`               | Skip prompts. Defaults to global config, every detected agent and a minted account-wide API key. --project, --oauth, --agent, --read-only, --project-id and --category still apply | boolean | `false` |    No    |
+| Option                      | Description                                                                                                                                                                  | Type    | Default | Required |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a`             | Coding agent to install into (repeatable). Skips the agent picker. Values listed below                                                                                       | array   | —       |    No    |
+| `--category`                | MCP tool category (repeatable or comma-separated). Default: all. Values listed below                                                                                         | array   | —       |    No    |
+| `--oauth`                   | Write the server URL only. The agent prompts for Neon sign-in on first use. No CLI login, no API key minted. Skips the auth question                                         | boolean | `false` |    No    |
+| `--project`                 | Write project-level MCP config. Skips the config-location question. A linked project-folder install may still pin a project and scope a newly minted key                     | boolean | `false` |    No    |
+| `--project-id`              | Pin MCP tools to one Neon project (?projectId=). A newly minted API key is limited to that project. A linked project-folder install asks the same when you pick API-key auth | string  | —       |    No    |
+| `--read-only`, `--readonly` | Restrict MCP tools to read-only (?readonly=true). Not prompted. Does not change the minted key                                                                               | boolean | `false` |    No    |
+| `--yes`, `-y`               | Skip prompts. Defaults listed below. --project, --oauth, --agent, --read-only, --project-id and --category still apply                                                       | boolean | `false` |    No    |
 
 ### Authentication
 
@@ -23881,7 +23974,7 @@ Run the interactive install. It walks you through config location, agents, and a
 neon mcp
 ```
 
-Install non-interactively into every detected agent, using global config and a freshly minted API key. You need to be signed in already for the mint to succeed:
+Install non-interactively into every detected agent, using global config. It reuses an API key already configured for an agent, or mints a new one (you must be signed in to mint):
 
 ```bash
 neon mcp -y
@@ -24777,11 +24870,11 @@ neon plugins [options]
 
 ## Options
 
-| Option          | Description                                                       | Type    | Default | Required |
-| --------------- | ----------------------------------------------------------------- | ------- | ------- | :------: |
-| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker | array   | —       |    No    |
-| `--global`      | Install user-level. Default is project                            | boolean | `false` |    No    |
-| `--yes`, `-y`   | Skip prompts                                                      | boolean | `false` |    No    |
+| Option          | Description                                                                            | Type    | Default | Required |
+| --------------- | -------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker. Values listed below | array   | —       |    No    |
+| `--global`      | Install user-level. Default is project                                                 | boolean | `false` |    No    |
+| `--yes`, `-y`   | Skip prompts                                                                           | boolean | `false` |    No    |
 
 ### Choosing agents
 
@@ -25931,12 +26024,12 @@ Subcommands: [update](https://neon.com/docs/cli/skills#update)
 neon skills [command] [options]
 ```
 
-| Option          | Description                                                          | Type    | Default | Required |
-| --------------- | -------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker    | array   | —       |    No    |
-| `--global`      | Install user-level skills (skills CLI -g). Default is this directory | boolean | `false` |    No    |
-| `--skill`, `-s` | Skill to install (repeatable). Skips the skill picker                | array   | —       |    No    |
-| `--yes`, `-y`   | Skip prompts                                                         | boolean | `false` |    No    |
+| Option          | Description                                                                            | Type    | Default | Required |
+| --------------- | -------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker. Values listed below | array   | —       |    No    |
+| `--global`      | Install user-level skills (skills CLI -g). Default is this directory                   | boolean | `false` |    No    |
+| `--skill`, `-s` | Skill to install (repeatable). Skips the skill picker. Values listed below             | array   | —       |    No    |
+| `--yes`, `-y`   | Skip prompts                                                                           | boolean | `false` |    No    |
 
 ### Choosing agents
 
@@ -26014,12 +26107,12 @@ Updates every skill installed in the current directory to its latest version, or
 neon skills update [options]
 ```
 
-| Option          | Description                                                         | Type    | Default | Required |
-| --------------- | ------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--global`      | Update user-level skills (skills CLI -g). Default is this directory | boolean | `false` |    No    |
-| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker   | array   | —       |    No    |
-| `--skill`, `-s` | Skill to install (repeatable). Skips the skill picker               | array   | —       |    No    |
-| `--yes`, `-y`   | Skip prompts                                                        | boolean | `false` |    No    |
+| Option          | Description                                                                            | Type    | Default | Required |
+| --------------- | -------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--global`      | Update user-level skills (skills CLI -g). Default is this directory                    | boolean | `false` |    No    |
+| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker. Values listed below | array   | —       |    No    |
+| `--skill`, `-s` | Skill to install (repeatable). Skips the skill picker. Values listed below             | array   | —       |    No    |
+| `--yes`, `-y`   | Skip prompts                                                                           | boolean | `false` |    No    |
 
 Update skills in the current directory without prompting:
 
@@ -30535,6 +30628,12 @@ attachDatabasePool(pool, {
 
 For details on filtering by level or service name, searching log bodies, live tail, downloading logs, and the 3-day retention window, see [Monitor logs](https://neon.com/docs/introduction/monitor-logs).
 
+You can also read function logs from the terminal with [`neon logs query`](https://neon.com/docs/cli/logs), scoped with `--source function`:
+
+```bash
+neon logs query --source function --since 1h
+```
+
 --- [Document source](https://neon.com/docs/compute/functions/overview.md) ---
 
 > Summary: Neon Functions are long-running serverless functions you deploy onto a Neon branch. Host an API, AI agent, real-time server, or webhook handler that runs next to your Postgres data, with DATABASE_URL injected automatically.
@@ -30553,7 +30652,7 @@ What makes Neon Functions different from lambda-style serverless?
 
 Functions run on Neon's own compute platform, the same infrastructure that runs your Postgres, so they sit in the same region as your data.
 
-> Functions are in beta and available only in **AWS US East (Ohio) (`aws-us-east-2`)**, so create your project there to use them. Functions are free to use during beta, subject to usage limits, on any plan.
+> Functions are in beta and available only in **AWS US East (Ohio) (`aws-us-east-2`)**, so create your project there to use them. Functions are free to use during beta, subject to [usage limits](https://neon.com/docs/compute/functions/reference/runtime-limits), on any plan. See [plans and pricing](https://neon.com/docs/introduction/plans#functions) for the rates that apply when billing begins.
 
 **Important: JavaScript and TypeScript only**
 
@@ -34830,7 +34929,7 @@ This guide walks you through enabling the Data API, creating a table with RLS, a
 
 **Tip: Enable programmatically**
 
-You can also enable the Data API using the [Neon API](https://neon.com/docs/data-api/manage#manage-via-the-neon-api) or the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server#supported-actions-tools) (`provision_neon_data_api` tool).
+You can also enable the Data API from the terminal with [`neon data-api create`](https://neon.com/docs/cli/data-api#create), using the [Neon API](https://neon.com/docs/data-api/manage#manage-via-the-neon-api), or with the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server#supported-actions-tools) (`provision_neon_data_api` tool).
 
 ### 1. Navigate to the Data API page
 
@@ -111782,6 +111881,16 @@ If no logs match the current filters, the empty state offers a **Widen time rang
 
 **Download** saves the log lines currently loaded in the view, exactly as filtered, to a plain-text `.log` file, newest first. Downloading doesn't re-run the query against the full retention window: it's a snapshot of what's on screen, so narrow your search, levels, and time range first if you want a smaller or more targeted file.
 
+## Query logs from the CLI
+
+The same branch logs are available from the terminal with [`neon logs query`](https://neon.com/docs/cli/logs), so you can filter and script against them without opening the Console:
+
+```bash
+neon logs query --since 30m
+```
+
+Combine filters like `--source`, `--service-name`, and `--severity-text`, or pass a raw `--logql` expression.
+
 ## Retention
 
 Logs are retained for **3 days**. Once a log line falls outside that window, it's no longer queryable in the Console.
@@ -112622,33 +112731,33 @@ Compare Neon's **Free**, **Launch**, and **Scale** plans.
 
 For AI agent platforms that provision thousands of databases, Neon offers an **Agent Plan** with unlimited projects, Launch-rate compute, and credits for **your** free tier. Agent limits differ from Scale. [Learn more](https://neon.com/docs/introduction/agent-plan)
 
-| Plan feature                                                                                  | **Free**                                   | **Launch**                                 | **Scale**                                                                                                         |
-| --------------------------------------------------------------------------------------------- | ------------------------------------------ | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| [Price](https://neon.com/docs/introduction/plans#price)                                       | $0/month                                   | Pay for what you use                       | Pay for what you use                                                                                              |
-| [Who it's for](https://neon.com/docs/introduction/plans#who-its-for)                          | Prototypes, side projects, and small teams | Startups and growing teams                 | Production-grade workloads and larger companies                                                                   |
-| [Organization members](https://neon.com/docs/introduction/plans#organization-members)         | Unlimited                                  | Unlimited                                  | Unlimited                                                                                                         |
-| [Projects](https://neon.com/docs/introduction/plans#projects)                                 | 100                                        | 100                                        | 1,000 (can be increased on request)                                                                               |
-| [Branches](https://neon.com/docs/introduction/plans#branches)                                 | 10/project                                 | 10/project                                 | 25/project                                                                                                        |
-| [Extra branches](https://neon.com/docs/introduction/plans#extra-branches)                     | —                                          | $1.50/branch-month (prorated hourly)       | $1.50/branch-month (prorated hourly)                                                                              |
-| [Compute](https://neon.com/docs/introduction/plans#compute)                                   | 100 CU-hours/project                       | $0.106/CU-hour                             | $0.222/CU-hour                                                                                                    |
-| [Autoscaling](https://neon.com/docs/introduction/plans#autoscaling)                           | Up to 2 CU (8 GB RAM)                      | Up to 16 CU (64 GB RAM)                    | Up to 16 CU autoscaling, or fixed sizes up to 56 CU (224 GB RAM)                                                  |
-| [Scale to zero](https://neon.com/docs/introduction/plans#scale-to-zero)                       | After 5 min                                | After 5 min, can be disabled               | Configurable (1 minute to always on)                                                                              |
-| [Storage](https://neon.com/docs/introduction/plans#storage)                                   | 0.5 GB/project                             | $0.35/GB-month                             | $0.35/GB-month                                                                                                    |
-| [Public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer)   | 5 GB included                              | 500 GB per project included, then $0.10/GB | 500 GB per project included, then $0.10/GB                                                                        |
-| [Monitoring](https://neon.com/docs/introduction/plans#monitoring)                             | 1 day                                      | 3 days                                     | 14 days                                                                                                           |
-| [Metrics/logs export](https://neon.com/docs/introduction/plans#metricslogs-export)            | —                                          | —                                          | ✅                                                                                                                 |
-| [Spending notifications](https://neon.com/docs/introduction/plans#spending-notifications)     | —                                          | ✅                                          | ✅                                                                                                                 |
-| [Instant restore](https://neon.com/docs/introduction/plans#instant-restore)                   | —                                          | $0.20/GB-month                             | $0.20/GB-month                                                                                                    |
-| [History window](https://neon.com/docs/introduction/plans#history-window)                     | 6 hours, up to 1 GB-month                  | Up to 7 days                               | Up to 30 days                                                                                                     |
-| [Snapshots](https://neon.com/docs/introduction/plans#snapshots)                               | 1 manual snapshot                          | 100 manual snapshots                       | 100 manual snapshots                                                                                              |
-| [Auth](https://neon.com/docs/introduction/plans#auth) (Beta)                                  | Up to 60k MAU                              | Up to 1M MAU                               | Up to 1M MAU                                                                                                      |
-| [Object Storage](https://neon.com/docs/introduction/plans#object-storage) (Beta)              | No charge during beta, usage limits apply  | No charge during beta, usage limits apply  | No charge during beta, usage limits apply                                                                         |
-| [Functions](https://neon.com/docs/introduction/plans#functions) (Beta)                        | No charge during beta, usage limits apply  | No charge during beta, usage limits apply  | No charge during beta, usage limits apply                                                                         |
-| [AI Gateway](https://neon.com/docs/introduction/plans#ai-gateway) (Beta)                      | —                                          | Free during beta                           | Free during beta                                                                                                  |
-| [Private network transfer](https://neon.com/docs/introduction/plans#private-network-transfer) | —                                          | —                                          | $0.01/GB                                                                                                          |
-| [Compliance and security](https://neon.com/docs/introduction/plans#compliance-and-security)   | —                                          | Protected branches                         | SOC 2, ISO, GDPR, [HIPAA](https://neon.com/docs/security/hipaa), Protected branches, IP Allow, Private Networking |
-| [Uptime SLA](https://neon.com/docs/introduction/plans#uptime-sla)                             | —                                          | —                                          | ✅                                                                                                                 |
-| [Support](https://neon.com/docs/introduction/plans#support)                                   | Community                                  | Billing support                            | Standard (additional options for higher-volume customers)                                                         |
+| Plan feature                                                                                  | **Free**                                                                            | **Launch**                                                                          | **Scale**                                                                                                         |
+| --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| [Price](https://neon.com/docs/introduction/plans#price)                                       | $0/month                                                                            | Pay for what you use                                                                | Pay for what you use                                                                                              |
+| [Who it's for](https://neon.com/docs/introduction/plans#who-its-for)                          | Prototypes, side projects, and small teams                                          | Startups and growing teams                                                          | Production-grade workloads and larger companies                                                                   |
+| [Organization members](https://neon.com/docs/introduction/plans#organization-members)         | Unlimited                                                                           | Unlimited                                                                           | Unlimited                                                                                                         |
+| [Projects](https://neon.com/docs/introduction/plans#projects)                                 | 100                                                                                 | 100                                                                                 | 1,000 (can be increased on request)                                                                               |
+| [Branches](https://neon.com/docs/introduction/plans#branches)                                 | 10/project                                                                          | 10/project                                                                          | 25/project                                                                                                        |
+| [Extra branches](https://neon.com/docs/introduction/plans#extra-branches)                     | —                                                                                   | $1.50/branch-month (prorated hourly)                                                | $1.50/branch-month (prorated hourly)                                                                              |
+| [Compute](https://neon.com/docs/introduction/plans#compute)                                   | 100 CU-hours/project                                                                | $0.106/CU-hour                                                                      | $0.222/CU-hour                                                                                                    |
+| [Autoscaling](https://neon.com/docs/introduction/plans#autoscaling)                           | Up to 2 CU (8 GB RAM)                                                               | Up to 16 CU (64 GB RAM)                                                             | Up to 16 CU autoscaling, or fixed sizes up to 56 CU (224 GB RAM)                                                  |
+| [Scale to zero](https://neon.com/docs/introduction/plans#scale-to-zero)                       | After 5 min                                                                         | After 5 min, can be disabled                                                        | Configurable (1 minute to always on)                                                                              |
+| [Storage](https://neon.com/docs/introduction/plans#storage)                                   | 0.5 GB/project                                                                      | $0.35/GB-month                                                                      | $0.35/GB-month                                                                                                    |
+| [Public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer)   | 5 GB included                                                                       | 500 GB per project included, then $0.10/GB                                          | 500 GB per project included, then $0.10/GB                                                                        |
+| [Monitoring](https://neon.com/docs/introduction/plans#monitoring)                             | 1 day                                                                               | 3 days                                                                              | 14 days                                                                                                           |
+| [Metrics/logs export](https://neon.com/docs/introduction/plans#metricslogs-export)            | —                                                                                   | —                                                                                   | ✅                                                                                                                 |
+| [Spending notifications](https://neon.com/docs/introduction/plans#spending-notifications)     | —                                                                                   | ✅                                                                                   | ✅                                                                                                                 |
+| [Instant restore](https://neon.com/docs/introduction/plans#instant-restore)                   | —                                                                                   | $0.20/GB-month                                                                      | $0.20/GB-month                                                                                                    |
+| [History window](https://neon.com/docs/introduction/plans#history-window)                     | 6 hours, up to 1 GB-month                                                           | Up to 7 days                                                                        | Up to 30 days                                                                                                     |
+| [Snapshots](https://neon.com/docs/introduction/plans#snapshots)                               | 1 manual snapshot                                                                   | 100 manual snapshots                                                                | 100 manual snapshots                                                                                              |
+| [Auth](https://neon.com/docs/introduction/plans#auth) (Beta)                                  | Up to 60k MAU                                                                       | Up to 1M MAU                                                                        | Up to 1M MAU                                                                                                      |
+| [Object Storage](https://neon.com/docs/introduction/plans#object-storage) (Beta)              | Free during beta ([rates](https://neon.com/docs/introduction/plans#object-storage)) | Free during beta ([rates](https://neon.com/docs/introduction/plans#object-storage)) | Free during beta ([rates](https://neon.com/docs/introduction/plans#object-storage))                               |
+| [Functions](https://neon.com/docs/introduction/plans#functions) (Beta)                        | Free during beta ([rates](https://neon.com/docs/introduction/plans#functions))      | Free during beta ([rates](https://neon.com/docs/introduction/plans#functions))      | Free during beta ([rates](https://neon.com/docs/introduction/plans#functions))                                    |
+| [AI Gateway](https://neon.com/docs/introduction/plans#ai-gateway) (Beta)                      | —                                                                                   | Free during beta                                                                    | Free during beta                                                                                                  |
+| [Private network transfer](https://neon.com/docs/introduction/plans#private-network-transfer) | —                                                                                   | —                                                                                   | $0.01/GB                                                                                                          |
+| [Compliance and security](https://neon.com/docs/introduction/plans#compliance-and-security)   | —                                                                                   | Protected branches                                                                  | SOC 2, ISO, GDPR, [HIPAA](https://neon.com/docs/security/hipaa), Protected branches, IP Allow, Private Networking |
+| [Uptime SLA](https://neon.com/docs/introduction/plans#uptime-sla)                             | —                                                                                   | —                                                                                   | ✅                                                                                                                 |
+| [Support](https://neon.com/docs/introduction/plans#support)                                   | Community                                                                           | Billing support                                                                     | Standard (additional options for higher-volume customers)                                                         |
 
 ## Plan features
 
@@ -112830,6 +112939,8 @@ Allowances per plan:
 - **Launch**: 500 GB per project per month, then $0.10/GB
 - **Scale**: 500 GB per project per month, then $0.10/GB
 
+> On the **Free** plan, the 5 GB allowance is a single account-wide pool shared across all products, including Postgres, [Object Storage](https://neon.com/docs/introduction/plans#object-storage), and [Functions](https://neon.com/docs/introduction/plans#functions). On paid plans, the 500 GB allowance is per project and also shared across products.
+
 ### Monitoring
 
 View metrics such as RAM, CPU, connections, and database size in the **Monitoring** dashboard in the Neon Console.
@@ -112915,7 +113026,12 @@ See [Managed Better Auth](https://neon.com/docs/auth/overview) for more informat
 
 Neon Object Storage is S3-compatible object storage that branches with your Neon project. It's available on all plans, including Free, during the beta.
 
-There's no charge for Object Storage during the beta, but usage limits apply.
+There's no charge for Object Storage during the beta, but [usage limits](https://neon.com/docs/storage/overview#limits) apply. When billing begins, the following rates apply on all plans:
+
+- **Storage**: $0.023/GB-month. Only stored volume is metered; there's no per-operation charge.
+- **Egress**: Data transferred out counts toward your [public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer) allowance, which is shared across all products, and is billed at the same rate once you exceed it.
+
+On the **Free** plan, you get 5 GB of Object Storage, measured across your whole account rather than per project.
 
 See [Neon Object Storage](https://neon.com/docs/storage/overview) for more information.
 
@@ -112923,7 +113039,26 @@ See [Neon Object Storage](https://neon.com/docs/storage/overview) for more infor
 
 Neon Functions are serverless Node.js compute you deploy onto a Neon branch, so your backend code runs next to your database. They're available on all plans, including Free, during the beta.
 
-There's no charge for Functions during the beta, but usage limits apply.
+You're billed for compute only while a request is being processed. Billing starts when a request triggers the function and continues until processing finishes, either by returning a response or by completing any background [`waitUntil`](https://neon.com/docs/compute/functions/reference/runtime-limits#timeouts) work it started. You aren't billed between requests.
+
+Compute is measured in **Capacity-Hours**. During the beta, functions run at a fixed size, so one hour of function runtime equals one Capacity-Hour. That runtime is billed at two rates, and a single request usually incurs both:
+
+- **Active compute**: billed while your code is actively using the CPU.
+- **Waiting compute**: billed at a lower rate when your code isn't using much CPU, typically while it waits on the network, a timer, or other I/O.
+
+**Invocations** are counted separately: each time your function is called counts as one invocation, regardless of how long it runs. Billed per million.
+
+There's no charge for Functions during the beta, but [usage limits](https://neon.com/docs/compute/functions/reference/runtime-limits) apply. When billing begins, the following rates apply:
+
+| Metric          | **Launch**           | **Scale**           |
+| --------------- | -------------------- | ------------------- |
+| Active compute  | $0.10/Capacity-Hour  | $0.12/Capacity-Hour |
+| Waiting compute | $0.025/Capacity-Hour | $0.03/Capacity-Hour |
+| Invocations     | $0.60/M              | $0.60/M             |
+
+On the **Free** plan, you get 10 active Capacity-Hours, 400 waiting Capacity-Hours, and 1 million invocations per month.
+
+When billing begins, egress (data a function sends out) will count toward your [public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer) allowance, which is shared across all products.
 
 See [Neon Functions](https://neon.com/docs/compute/functions/overview) for what's included and current limitations.
 
@@ -112933,7 +113068,7 @@ Neon AI Gateway provides access to foundation models from Anthropic, OpenAI, Goo
 
 Inference is free during the beta. When billing begins, prices will match each provider's published list prices, with no additional markup.
 
-See [AI Gateway models](https://neon.com/docs/ai-gateway/models#pricing) for details.
+See [AI Gateway pricing](https://neon.com/docs/ai-gateway/overview#pricing) for details.
 
 ### Private network transfer
 
@@ -113192,21 +113327,25 @@ You can instantly create read replicas for any branch in your Neon project and c
 
 You can create read replicas using the Neon Console, [Neon CLI](https://neon.com/docs/cli), or [Neon API](https://neon.com/docs/reference/api), providing the flexibility required to integrate read replicas into your workflow or CI/CD processes.
 
-From the Neon Console, it's a simple **Add Read Replica** action on a branch.
-
 **Note:** You can add read replicas to a branch as needed to accommodate your workload. The Free plan is limited to a maximum of 3 read replica computes per project.
+
+**Console**
+
+From the Neon Console, it's a simple **Add Read Replica** action on a branch.
 
 ![Create a read replica](https://neon.com/docs/introduction/create_read_replica.png)
 
-From the CLI or API:
-
 **CLI**
 
+Add a read-only compute to a branch with [`neon branches add-compute`](https://neon.com/docs/cli/branches#add-compute):
+
 ```bash
-neon branches add-compute mybranch --type read_only
+neon branches add-compute br-young-fire-15282225 --type read_only
 ```
 
 **API**
+
+Create a read-only compute with the [Create compute](https://neon.com/docs/reference/api/endpoints/create-project-endpoint) endpoint:
 
 ```bash
 curl --request POST \
@@ -115161,6 +115300,16 @@ Refer to the [Neon API Reference](https://neon.com/docs/reference/api) for other
 
 Navigate to **Account settings** > **API keys** to view your personal API keys, or your organization's **Settings** > **API keys** to view organization API keys.
 
+**CLI**
+
+List your account keys with [`neon api-keys list`](https://neon.com/docs/cli/api-keys#list). It shows key metadata, never the keys themselves:
+
+```bash
+neon api-keys list
+```
+
+Organization keys aren't visible to your account, so pass `--org-id` to list them.
+
 **API**
 
 For personal API keys:
@@ -115198,6 +115347,16 @@ You should revoke API keys that are no longer needed or if you suspect a key may
 In the Neon Console, navigate to **Account settings** > **API keys** and click **Revoke** next to the key you want to revoke. The key will be immediately revoked. Any request that uses this key will now fail.
 
 ![Revoking an API key in the Neon Console](https://neon.com/docs/manage/revoke_api_key.png)
+
+**CLI**
+
+Revoke a key with [`neon api-keys revoke`](https://neon.com/docs/cli/api-keys#revoke), passing the numeric key ID (not the name). The action is immediate and permanent, so confirm the ID with `neon api-keys list` first:
+
+```bash
+neon api-keys revoke 177630
+```
+
+Organization and project-scoped keys need admin permissions and `--org-id`.
 
 **API**
 
@@ -115908,6 +116067,8 @@ If you do specify a custom branch name when creating or renaming a branch, it mu
 
 ## Create a branch
 
+**Console**
+
 To create a branch:
 
 1. In the Neon Console, select a project.
@@ -115932,256 +116093,17 @@ You are presented with the connection details for your new branch and directed t
 
 When creating a new branch, the branch will have the same Postgres roles and passwords as the parent branch. If you want your branch created with new role passwords, you can enable [branch protection](https://neon.com/docs/guides/protected-branches).
 
-## View branches
+**CLI**
 
-To view the branches in a Neon project:
+Create a branch with [`neon branches create`](https://neon.com/docs/cli/branches#create). By default it branches from your project's default branch; pass `--name` to name it:
 
-1. In the Neon Console, select a project.
-
-2. Select **Branches** under **Project** to view all current branches in the project.
-
-   ![all branches](https://neon.com/docs/manage/branches_all_list.png)
-
-   Branch details in this table view include:
-
-   - **Branch**: The branch name, which is a generated name if no name was specified when created.
-   - **Parent**: Indicates the parent from which this branch was created, helping you track your branch hierarchy.
-   - **Compute hours**: Number of hours the branch's compute was active so far in the current billing period.
-   - **Primary compute**: Shows the current compute size and status for the branch's compute.
-   - **Data size**: Indicates the logical data size of the branch, helping you monitor your plan's storage limit. Data size does not include history.
-   - **Created by**: The account or integration that created the branch.
-   - **Last active**: Shows when the branch's compute was last active.
-
-3. Select a branch from the table to view details about the branch.
-
-   Branch details shown on the branch page may include:
-
-   - **Archive status**: This only appears if the branch was archived. For more, see [Branch archiving](https://neon.com/docs/guides/branch-archiving).
-   - **ID**: The branch ID. Branch IDs have a `br-` prefix.
-   - **Created on**: The date and time the branch was created.
-   - **Compute hours**: The compute hours used by the default branch in the current billing period.
-   - **Data size**: The logical data size of the branch. Data size does not include history.
-   - **Parent branch**: The branch from which this branch was created (only applicable to child branches).
-
-   The branch details page also includes details about the **Computes**, **Roles**, **Databases**, and **Child branches** that belong to the branch. All of these objects are associated with a particular branch. For information about these objects, see:
-
-   - [Manage computes](https://neon.com/docs/manage/computes#view-a-compute).
-   - [Manage roles](https://neon.com/docs/manage/roles)
-   - [Manage databases](https://neon.com/docs/manage/databases)
-   - [View branches](https://neon.com/docs/manage/branches#view-branches)
-
-## Branch archiving
-
-On the Free plan, Neon automatically archives inactive branches to cost-efficient archive storage after a defined threshold. For more, see [Branch archiving](https://neon.com/docs/guides/branch-archiving).
-
-**Note:** For branches with predictable lifespans, you can set an expiration date when creating branches to automatically delete them at a specified time. This offers an alternative to archiving for temporary development and testing environments, ensuring cleanup happens exactly when needed.
-
-## Rename a branch
-
-Neon permits renaming a branch, including your project's default branch. To rename a branch:
-
-1. In the Neon Console, select a project.
-2. Select **Branches** under **Project** to view the branches for the project.
-3. Select a branch from the table.
-4. On the branch overview page, click the **More** drop-down menu and select **Rename**.
-5. Specify a new name for the branch and click **Save**.
-
-## Set a branch as default
-
-Each Neon project is created with a default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console), but you can designate any branch as your project's default branch. When creating a new branch without specifying the parent, a new branch is created from your project's default branch. Default branch is automatically selected in the UI when creating the new branch, and it's used in the [create branch API call](https://neon.com/docs/reference/api/branches/create-project-branch). The [Neon-Managed Vercel integration](https://neon.com/docs/guides/neon-managed-vercel-integration) also creates preview deployment branches from your project's default branch.
-
-For more information, see [Default branch](https://neon.com/docs/manage/branches#default-branch).
-
-To set a branch as the default branch:
-
-1. In the Neon Console, select a project.
-2. Select **Branches** under **Project** to view the branches for the project.
-3. Select a branch from the table.
-4. On the branch overview page, click the **More** drop-down menu and select **Set as default**.
-5. In the **Set as default** confirmation dialog, click **Set as default** to confirm your selection.
-
-## Set a branch as protected
-
-This feature is available on all Neon's paid plans, which supports up to five protected branches.
-
-To set a branch as protected:
-
-1. In the Neon Console, select a project.
-2. Select **Branches** under **Project** to view the branches for the project.
-3. Select a branch from the table.
-4. On the branch overview page, click the **More** drop-down menu and select **Set as protected**.
-5. In the **Set as protected** confirmation dialog, click **Set as protected** to confirm your selection.
-
-For details and configuration instructions, refer to our [Protected branches guide](https://neon.com/docs/guides/protected-branches).
-
-## Set a branch expiration
-
-To set or update a branch's expiration (auto-deletion TTL):
-
-1. In the Neon Console, select a project.
-2. Select **Branches** under **Project** to view the branches for the project.
-3. Select a branch from the table.
-4. On the branch overview page, click the **Actions** drop-down menu and select **Edit expiration**.
-5. Set a new expiration date and time, or toggle off "Automatically delete branch after" to remove expiration.
-6. Click **Save**.
-
-For details and configuration instructions, refer to our [Branch expiration guide](https://neon.com/docs/guides/branch-expiration).
-
-## Connect to a branch
-
-Connecting to a database in a branch requires connecting via a compute associated with the branch. The following steps describe how to connect using `psql` and a connection string obtained from the Neon Console.
-
-**Tip:** You can also query the databases in a branch from the Neon SQL Editor. For instructions, see [Query with Neon's SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor).
-
-1. In the Neon Console, select a project.
-2. Find the connection string for your database by clicking the **Connect** button on your **Project Dashboard**. Select the branch, the database, and the role you want to connect with.
-   ![Connection details modal](https://neon.com/docs/connect/connection_details.png)
-3. Copy the connection string. A connection string includes your role name, the compute hostname, and database name.
-4. Connect with `psql` as shown below.
-
-   ```bash
-   psql postgresql://[user]:[password]@[neon_hostname]/[dbname]
-   ```
-
-   **Tip:** A compute hostname starts with an `ep-` prefix. You can also find a compute hostname on the **Branches** page in the Neon Console. See [View branches](https://neon.com/docs/manage/branches#view-branches).
-
-   If you want to connect from an application, the **Connect to your database modal**, accessed by clicking **Connect** on the project **Dashboard**, and the [Frameworks](https://neon.com/docs/get-started/frameworks) and [Languages](https://neon.com/docs/get-started/languages) sections in the documentation provide various connection examples.
-
-## Reset a branch from parent
-
-You can use Neon's **Reset from parent** feature to instantly update a branch with the latest schema and data from its parent. This feature can be an integral part of your CI/CD automation.
-
-You can use the Neon Console, CLI, or API. For details, see [Reset from parent](https://neon.com/docs/guides/reset-from-parent).
-
-## Restore a branch to its own or another branch's history
-
-There are several restore operations available using Neon's instant restore feature:
-
-- Restore a branch to its own history
-- Restore a branch to the head of another branch
-- Restore a branch to the history of another branch
-
-You can use the Neon Console, CLI, or API. For more details, see [Instant restore](https://neon.com/docs/guides/branch-restore).
-
-## Delete a branch
-
-Deleting a branch is a permanent action. Deleting a branch also deletes the databases and roles that belong to the branch as well as the compute associated with the branch. You cannot delete a branch that has child branches. The child branches must be deleted first.
-
-To delete a branch:
-
-1. In the Neon Console, select a project.
-2. Select **Branches** under **Project**.
-3. Select a branch from the table.
-4. On the branch overview page, click the **More** drop-down menu and select **Delete**.
-5. On the confirmation dialog, click **Delete**.
-
-**Tip:** For temporary branches, consider setting an expiration date when creating them to automate cleanup and reduce manual deletion overhead.
-
-## Check the data size
-
-You can check the logical data size for the databases on a branch by viewing the **Data size** value on the **Branches** page or page in the Neon Console. Alternatively, you can run the following query on your branch from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or any SQL client connected to your database:
-
-```sql
-SELECT pg_size_pretty(sum(pg_database_size(datname)))
-FROM pg_database;
+```bash
+neon branches create --name mybranch
 ```
 
-The query value may differ slightly from the **Data size** reported in the Neon Console.
+**API**
 
-Data size is your logical data size.
-
-**Note:** Paid plans support a logical data size of up to **16 TB per branch**. When a branch reaches this limit, write performance drops, but you can still drop or delete data to reclaim space. To increase this limit, [request a storage increase in the feedback form in console](https://console.neon.tech/app/settings?modal=feedback\&modalparams=%22Storage%20limit%20increase%22).
-
-## Branch types
-
-Neon has different branch types with different characteristics.
-
-### Root branch
-
-A root branch is a branch without a parent branch. Each Neon project starts with a root branch (named `production` in the Console, `main` via API/CLI), which cannot be deleted and is set as the [default branch](https://neon.com/docs/manage/branches#default-branch) for the project.
-
-Neon also supports two other types of root branches that have no parent but _can_ be deleted:
-
-- [Backup branches](https://neon.com/docs/manage/branches#backup-branch), created by instant restore operations on other root branches.
-- [Schema-only branches](https://neon.com/docs/manage/branches#schema-only-branch).
-
-The number of root branches allowed in a project depends on your Neon plan.
-
-| Plan   | Root branch allowance per project |
-| :----- | :-------------------------------- |
-| Free   | 3                                 |
-| Launch | 5                                 |
-| Scale  | 25                                |
-
-### Default branch
-
-Each Neon project has a default branch. In the Neon Console, your default branch is identified by a `DEFAULT` tag. You can designate any branch as the default branch for your project.
-
-When creating a new branch without specifying the parent, a new branch is created from your project's default branch. The [Neon-Managed Vercel integration](https://neon.com/docs/guides/neon-managed-vercel-integration) also creates preview deployment branches from your project's default branch.
-
-### Non-default branch
-
-Any branch not designated as the default branch is considered a non-default branch. You can rename or delete non-default branches.
-
-### Protected branch
-
-Neon's protected branches feature implements a series of protections:
-
-- Protected branches cannot be deleted.
-- Protected branches cannot be [reset](https://neon.com/docs/manage/branches#reset-a-branch-from-parent).
-- Projects with protected branches cannot be deleted.
-- Computes associated with a protected branch cannot be deleted.
-- New passwords are automatically generated for Postgres roles on branches created from protected branches. [See below](https://neon.com/docs/manage/branches#new-passwords-generated-for-postgres-roles-on-child-branches).
-- With additional configuration steps, you can apply IP Allow restrictions to protected branches only. See [below](https://neon.com/docs/manage/branches#how-to-apply-ip-restrictions-to-protected-branches).
-- Protected branches are not [archived](https://neon.com/docs/guides/branch-archiving) due to inactivity.
-
-Typically, a protected status is given to a branch or branches that hold production data or sensitive data. The protected branch feature is only supported on Neon's paid plans. See [Set a branch as protected](https://neon.com/docs/manage/branches#set-a-branch-as-protected).
-
-### Schema-only branch
-
-A branch that replicates only the database schema from a source branch, without copying any of the actual data. This feature is particularly valuable when working with sensitive information. Rather than creating branches that include confidential data, you can duplicate just the database structure and then populate it with your own data.
-
-Schema-only branches are [root branches](https://neon.com/docs/manage/branches#root-branch), meaning they have no parent. As a root branch, each schema-only branch starts an independent line of data in a Neon project.
-
-See [Schema-only branches](https://neon.com/docs/guides/branching-schema-only).
-
-### Backup branch
-
-A branch created by an [instant restore](https://neon.com/docs/manage/branches#branch-restore) operation. When you restore a branch from a particular point in time, the current branch is saved as a backup branch. Performing a restore operation on a root branch, creates a backup branch without a parent branch (a root branch). See [Instant restore](https://neon.com/docs/guides/branch-restore).
-
-### Branch with expiration
-
-A branch with an expiration timestamp is automatically deleted when the expiration time is reached. Any branch can have an expiration timestamp added or removed at any time. Use it for temporary development and testing environments.
-
-## Branching with the Neon CLI
-
-The Neon CLI supports creating and managing branches. For instructions, see [Neon CLI commands — branches](https://neon.com/docs/cli/branches). For a Neon CLI branching guide, see [Branching with the Neon CLI](https://neon.com/docs/cli/branches).
-
-## Branching with the Neon API
-
-Branch actions performed in the Neon Console can also be performed using the Neon API. The following examples demonstrate how to create, view, and delete branches using the Neon API. For other branch-related API methods, refer to the [Neon API Reference](https://neon.com/docs/reference/api).
-
-**Note:** The API examples that follow may not show all of the user-configurable request body attributes that are available to you. To view all of the attributes for a particular method, refer to the method's request body schema in the [Neon API Reference](https://neon.com/docs/reference/api).
-
-The `jq` option specified in each example is an optional third-party tool that formats the `JSON` response, making it easier to read. For information about this utility, see [jq](https://stedolan.github.io/jq/).
-
-### Prerequisites
-
-A Neon API request requires an API key. For information about obtaining an API key, see [Create an API key](https://neon.com/docs/manage/api-keys#create-an-api-key). In the examples shown below, `$NEON_API_KEY` is specified in place of an actual API key, which you must provide when making a Neon API request.
-
-**Note:** To learn more about the types of API keys you can create — personal, organization, or project-scoped — see [Manage API Keys](https://neon.com/docs/manage/api-keys).
-
-### Create a branch with the API
-
-The following Neon API method creates a branch. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/branches/create-project-branch).
-
-```http
-POST /projects/{project_id}/branches
-```
-
-The API method appears as follows when specified in a cURL command. The `endpoints` attribute creates a compute, which is required to connect to the branch. A branch can be created with or without a compute. The `branch` attribute specifies the parent branch.
-
-**Note:** This method does not require a request body. Without a request body, the method creates a branch from the project's default branch, and a compute is not created.
+Create a branch with the [Create branch](https://neon.com/docs/reference/api/branches/create-project-branch) endpoint. The `branch` attribute specifies the parent; the `endpoints` attribute creates a compute, which is required to connect:
 
 ```bash
 curl 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches' \
@@ -116197,13 +116119,8 @@ curl 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches' \
   "branch": {
     "parent_id": "br-wispy-dew-591433"
   }
-}' | jq
+}'
 ```
-
-- The `project_id` for a Neon project is found on the **Settings** page in the Neon Console, or you can find it by listing the projects for your Neon account using the Neon API.
-- The `parent_id` can be obtained by listing the branches for your project. See [List branches](https://neon.com/docs/manage/branches#list-branches-with-the-api). The `<parent_id>` is the `id` of the branch you are branching from. A branch `id` has a `br-` prefix. You can branch from your Neon project's default branch or a previously created branch.
-
-The response body includes information about the branch, the branch's compute, and the `create_branch` and `start_compute` operations that were initiated.
 
 <details>
 
@@ -116325,25 +116242,73 @@ For attribute definitions, find the [Create branch](https://neon.com/docs/refere
 
 </details>
 
-### List branches with the API
+## View branches
 
-The following Neon API method lists branches for the specified project. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/branches/list-project-branches).
+**Console**
 
-```http
-GET /projects/{project_id}/branches
+To view the branches in a Neon project:
+
+1. In the Neon Console, select a project.
+
+2. Select **Branches** under **Project** to view all current branches in the project.
+
+   ![all branches](https://neon.com/docs/manage/branches_all_list.png)
+
+   Branch details in this table view include:
+
+   - **Branch**: The branch name, which is a generated name if no name was specified when created.
+   - **Parent**: Indicates the parent from which this branch was created, helping you track your branch hierarchy.
+   - **Compute hours**: Number of hours the branch's compute was active so far in the current billing period.
+   - **Primary compute**: Shows the current compute size and status for the branch's compute.
+   - **Data size**: Indicates the logical data size of the branch, helping you monitor your plan's storage limit. Data size does not include history.
+   - **Created by**: The account or integration that created the branch.
+   - **Last active**: Shows when the branch's compute was last active.
+
+3. Select a branch from the table to view details about the branch.
+
+   Branch details shown on the branch page may include:
+
+   - **Archive status**: This only appears if the branch was archived. For more, see [Branch archiving](https://neon.com/docs/guides/branch-archiving).
+   - **ID**: The branch ID. Branch IDs have a `br-` prefix.
+   - **Created on**: The date and time the branch was created.
+   - **Compute hours**: The compute hours used by the default branch in the current billing period.
+   - **Data size**: The logical data size of the branch. Data size does not include history.
+   - **Parent branch**: The branch from which this branch was created (only applicable to child branches).
+
+   The branch details page also includes details about the **Computes**, **Roles**, **Databases**, and **Child branches** that belong to the branch. All of these objects are associated with a particular branch. For information about these objects, see:
+
+   - [Manage computes](https://neon.com/docs/manage/computes#view-a-compute).
+   - [Manage roles](https://neon.com/docs/manage/roles)
+   - [Manage databases](https://neon.com/docs/manage/databases)
+   - [View branches](https://neon.com/docs/manage/branches#view-branches)
+
+**CLI**
+
+List the branches in a project with [`neon branches list`](https://neon.com/docs/cli/branches#list):
+
+```bash
+neon branches list --project-id dry-heart-13671059
 ```
 
-The API method appears as follows when specified in a cURL command:
+```text filename="Output"
+┌────────────────────────────┬────────────────────────┬──────────────────────┬──────────────────────┐
+│ Id                         │ Name                   │ Created At           │ Updated At           │
+├────────────────────────────┼────────────────────────┼──────────────────────┼──────────────────────┤
+│ br-morning-meadow-afu2s1jl │ main [default]         │ 2025-08-04T07:07:55Z │ 2025-08-04T07:13:11Z │
+├────────────────────────────┼────────────────────────┼──────────────────────┼──────────────────────┤
+│ br-curly-wave-af4i4oeu     │ br-curly-wave-af4i4oeu │ 2025-08-04T07:13:09Z │ 2025-08-04T07:18:15Z │
+└────────────────────────────┴────────────────────────┴──────────────────────┴──────────────────────┘
+```
+
+**API**
+
+List the branches in a project with the [List branches](https://neon.com/docs/reference/api/branches/list-project-branches) endpoint:
 
 ```bash
 curl 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches' \
   -H 'accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY" | jq
+  -H "Authorization: Bearer $NEON_API_KEY"
 ```
-
-The `project_id` for a Neon project is found on the **Settings** page in the Neon Console, or you can find it by listing the projects for your Neon account using the Neon API.
-
-The response body lists the project's default branch and any child branches. The name of the default branch in this example is `main`.
 
 <details>
 
@@ -116415,27 +116380,241 @@ For attribute definitions, find the [List branches](https://neon.com/docs/refere
 
 </details>
 
-### Delete a branch with the API
+## Branch archiving
 
-The following Neon API method deletes the specified branch. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/branches/delete-project-branch).
+On the Free plan, Neon automatically archives inactive branches to cost-efficient archive storage after a defined threshold. For more, see [Branch archiving](https://neon.com/docs/guides/branch-archiving).
 
-```http
-DELETE /projects/{project_id}/branches/{branch_id}
+**Note:** For branches with predictable lifespans, you can set an expiration date when creating branches to automatically delete them at a specified time. This offers an alternative to archiving for temporary development and testing environments, ensuring cleanup happens exactly when needed.
+
+## Rename a branch
+
+Neon permits renaming a branch, including your project's default branch.
+
+**Console**
+
+To rename a branch:
+
+1. In the Neon Console, select a project.
+2. Select **Branches** under **Project** to view the branches for the project.
+3. Select a branch from the table.
+4. On the branch overview page, click the **More** drop-down menu and select **Rename**.
+5. Specify a new name for the branch and click **Save**.
+
+**CLI**
+
+Rename a branch with [`neon branches rename`](https://neon.com/docs/cli/branches#rename), passing the current name or ID and the new name:
+
+```bash
+neon branches rename br-rough-sky-158193 teambranch
 ```
 
-The API method appears as follows when specified in a cURL command:
+**API**
+
+Rename a branch with the [Update branch](https://neon.com/docs/reference/api/branches/update-project-branch) endpoint:
+
+```bash
+curl -X 'PATCH' \
+  'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-rough-sky-158193' \
+  -H 'accept: application/json' \
+  -H "Authorization: Bearer $NEON_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{"branch": {"name": "teambranch"}}'
+```
+
+## Set a branch as default
+
+Each Neon project is created with a default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console), but you can designate any branch as your project's default branch. When creating a new branch without specifying the parent, a new branch is created from your project's default branch. Default branch is automatically selected in the UI when creating the new branch, and it's used in the [create branch API call](https://neon.com/docs/reference/api/branches/create-project-branch). The [Neon-Managed Vercel integration](https://neon.com/docs/guides/neon-managed-vercel-integration) also creates preview deployment branches from your project's default branch.
+
+For more information, see [Default branch](https://neon.com/docs/manage/branches#default-branch).
+
+**Console**
+
+To set a branch as the default branch:
+
+1. In the Neon Console, select a project.
+2. Select **Branches** under **Project** to view the branches for the project.
+3. Select a branch from the table.
+4. On the branch overview page, click the **More** drop-down menu and select **Set as default**.
+5. In the **Set as default** confirmation dialog, click **Set as default** to confirm your selection.
+
+**CLI**
+
+Set the default branch with [`neon branches set-default`](https://neon.com/docs/cli/branches#set-default):
+
+```bash
+neon branches set-default br-curly-wave-af4i4oeu
+```
+
+**API**
+
+Set the default branch with the [Set default branch](https://neon.com/docs/reference/api/branches/set-default-project-branch) endpoint:
+
+```bash
+curl -X POST 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-curly-wave-af4i4oeu/set_as_default' \
+  -H 'Accept: application/json' \
+  -H "Authorization: Bearer $NEON_API_KEY"
+```
+
+## Set a branch as protected
+
+This feature is available on all Neon's paid plans, which supports up to five protected branches.
+
+**Console**
+
+To set a branch as protected:
+
+1. In the Neon Console, select a project.
+2. Select **Branches** under **Project** to view the branches for the project.
+3. Select a branch from the table.
+4. On the branch overview page, click the **More** drop-down menu and select **Set as protected**.
+5. In the **Set as protected** confirmation dialog, click **Set as protected** to confirm your selection.
+
+**CLI**
+
+No dedicated command sets protection, so use the [`neon api`](https://neon.com/docs/cli/api) passthrough, which sends the request with your CLI credentials:
+
+```bash
+neon api /projects/dry-heart-13671059/branches/br-curly-wave-af4i4oeu -X PATCH -F branch.protected=true
+```
+
+**API**
+
+Mark a branch as protected with the [Update branch](https://neon.com/docs/reference/api/branches/update-project-branch) endpoint:
+
+```bash
+curl -X PATCH 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-curly-wave-af4i4oeu' \
+  -H 'Accept: application/json' \
+  -H "Authorization: Bearer $NEON_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{"branch": {"protected": true}}'
+```
+
+For details and configuration instructions, refer to our [Protected branches guide](https://neon.com/docs/guides/protected-branches).
+
+## Set a branch expiration
+
+To set or update a branch's expiration (auto-deletion TTL):
+
+**Console**
+
+1. In the Neon Console, select a project.
+2. Select **Branches** under **Project** to view the branches for the project.
+3. Select a branch from the table.
+4. On the branch overview page, click the **Actions** drop-down menu and select **Edit expiration**.
+5. Set a new expiration date and time, or toggle off "Automatically delete branch after" to remove expiration.
+6. Click **Save**.
+
+**CLI**
+
+Set an expiration with [`neon branches set-expiration`](https://neon.com/docs/cli/branches#set-expiration). Omit `--expires-at` to remove it:
+
+```bash
+neon branches set-expiration br-curly-wave-af4i4oeu --expires-at 2025-08-15T18:00:00Z
+```
+
+**API**
+
+Set an expiration with the [Update branch](https://neon.com/docs/reference/api/branches/update-project-branch) endpoint:
+
+```bash
+curl -X PATCH 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-curly-wave-af4i4oeu' \
+  -H 'Accept: application/json' \
+  -H "Authorization: Bearer $NEON_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{"branch": {"expires_at": "2025-08-15T18:00:00Z"}}'
+```
+
+For details and configuration instructions, refer to our [Branch expiration guide](https://neon.com/docs/guides/branch-expiration).
+
+## Connect to a branch
+
+You connect to a branch through a compute associated with it, using a Postgres connection string that carries your role, the compute hostname (it starts with `ep-`), and the database name. Get the string from the Console, CLI, or API, then connect with any Postgres client. To run queries without a client, use the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor).
+
+**Console**
+
+On the **Project Dashboard**, click **Connect**, then select the branch, database, and role. Copy the connection string.
+
+![Connection details modal](https://neon.com/docs/connect/connection_details.png)
+
+**CLI**
+
+Connect directly with [`neon psql`](https://neon.com/docs/cli/psql):
+
+```bash
+neon psql br-curly-wave-af4i4oeu
+```
+
+Or print the connection string to use elsewhere with [`neon connection-string`](https://neon.com/docs/cli/connection-string) (add `--pooled` or `--prisma` as needed):
+
+```bash
+neon connection-string br-curly-wave-af4i4oeu --database-name neondb --role-name alex
+```
+
+**API**
+
+Retrieve the connection string with the [Get connection URI](https://neon.com/docs/reference/api/projects/get-connection-uri) endpoint (`database_name` and `role_name` are required):
+
+```bash
+curl 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/connection_uri?branch_id=br-curly-wave-af4i4oeu&database_name=neondb&role_name=alex' \
+  -H "Authorization: Bearer $NEON_API_KEY"
+```
+
+Then connect with any client, for example `psql`:
+
+```bash
+psql postgresql://[user]:[password]@[neon_hostname]/[dbname]
+```
+
+For application connection examples, see [Frameworks](https://neon.com/docs/get-started/frameworks) and [Languages](https://neon.com/docs/get-started/languages).
+
+## Reset a branch from parent
+
+You can use Neon's **Reset from parent** feature to instantly update a branch with the latest schema and data from its parent. This feature can be an integral part of your CI/CD automation.
+
+You can use the Neon Console, CLI, or API. For details, see [Reset from parent](https://neon.com/docs/guides/reset-from-parent).
+
+## Restore a branch to its own or another branch's history
+
+There are several restore operations available using Neon's instant restore feature:
+
+- Restore a branch to its own history
+- Restore a branch to the head of another branch
+- Restore a branch to the history of another branch
+
+You can use the Neon Console, CLI, or API. For more details, see [Instant restore](https://neon.com/docs/guides/branch-restore).
+
+## Delete a branch
+
+Deleting a branch is a permanent action. Deleting a branch also deletes the databases and roles that belong to the branch as well as the compute associated with the branch. You cannot delete a branch that has child branches. The child branches must be deleted first.
+
+**Console**
+
+To delete a branch:
+
+1. In the Neon Console, select a project.
+2. Select **Branches** under **Project**.
+3. Select a branch from the table.
+4. On the branch overview page, click the **More** drop-down menu and select **Delete**.
+5. On the confirmation dialog, click **Delete**.
+
+**CLI**
+
+Delete a branch with [`neon branches delete`](https://neon.com/docs/cli/branches#delete), passing the branch name or ID:
+
+```bash
+neon branches delete br-curly-wave-af4i4oeu
+```
+
+**API**
+
+Delete a branch with the [Delete branch](https://neon.com/docs/reference/api/branches/delete-project-branch) endpoint:
 
 ```bash
 curl -X 'DELETE' \
   'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-curly-wave-af4i4oeu' \
   -H 'accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY" | jq
+  -H "Authorization: Bearer $NEON_API_KEY"
 ```
-
-- The `project_id` for a Neon project is found on the **Settings** page in the Neon Console, or you can find it by listing the projects for your Neon account using the Neon API.
-- The `branch_id` can be found by listing the branches for your project. The `<branch_id>` is the `id` of a branch. A branch `id` has a `br-` prefix. See [List branches](https://neon.com/docs/manage/branches#list-branches-with-the-api).
-
-The response body shows information about the branch being deleted and the `suspend_compute` and `delete_timeline` operations that were initiated.
 
 <details>
 
@@ -116503,7 +116682,103 @@ For attribute definitions, find the [Delete branches](https://neon.com/docs/refe
 
 </details>
 
-You can verify that a branch is deleted by listing the branches for your project. See [List branches](https://neon.com/docs/manage/branches#list-branches-with-the-api). The deleted branch should no longer be listed.
+**Tip:** For temporary branches, consider setting an expiration date when creating them to automate cleanup and reduce manual deletion overhead.
+
+## Check the data size
+
+You can check the logical data size for the databases on a branch by viewing the **Data size** value on the **Branches** page or page in the Neon Console. Alternatively, you can run the following query on your branch from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or any SQL client connected to your database:
+
+```sql
+SELECT pg_size_pretty(sum(pg_database_size(datname)))
+FROM pg_database;
+```
+
+The query value may differ slightly from the **Data size** reported in the Neon Console.
+
+Data size is your logical data size.
+
+**Note:** Paid plans support a logical data size of up to **16 TB per branch**. When a branch reaches this limit, write performance drops, but you can still drop or delete data to reclaim space. To increase this limit, [request a storage increase in the feedback form in console](https://console.neon.tech/app/settings?modal=feedback\&modalparams=%22Storage%20limit%20increase%22).
+
+## Branch types
+
+Neon has different branch types with different characteristics.
+
+### Root branch
+
+A root branch is a branch without a parent branch. Each Neon project starts with a root branch (named `production` in the Console, `main` via API/CLI), which cannot be deleted and is set as the [default branch](https://neon.com/docs/manage/branches#default-branch) for the project.
+
+Neon also supports two other types of root branches that have no parent but _can_ be deleted:
+
+- [Backup branches](https://neon.com/docs/manage/branches#backup-branch), created by instant restore operations on other root branches.
+- [Schema-only branches](https://neon.com/docs/manage/branches#schema-only-branch).
+
+The number of root branches allowed in a project depends on your Neon plan.
+
+| Plan   | Root branch allowance per project |
+| :----- | :-------------------------------- |
+| Free   | 3                                 |
+| Launch | 5                                 |
+| Scale  | 25                                |
+
+### Default branch
+
+Each Neon project has a default branch. In the Neon Console, your default branch is identified by a `DEFAULT` tag. You can designate any branch as the default branch for your project.
+
+When creating a new branch without specifying the parent, a new branch is created from your project's default branch. The [Neon-Managed Vercel integration](https://neon.com/docs/guides/neon-managed-vercel-integration) also creates preview deployment branches from your project's default branch.
+
+### Non-default branch
+
+Any branch not designated as the default branch is considered a non-default branch. You can rename or delete non-default branches.
+
+### Protected branch
+
+Neon's protected branches feature implements a series of protections:
+
+- Protected branches cannot be deleted.
+- Protected branches cannot be [reset](https://neon.com/docs/manage/branches#reset-a-branch-from-parent).
+- Projects with protected branches cannot be deleted.
+- Computes associated with a protected branch cannot be deleted.
+- New passwords are automatically generated for Postgres roles on branches created from protected branches. [Learn more](https://neon.com/docs/guides/protected-branches#new-passwords-generated-for-postgres-roles-on-child-branches).
+- With additional configuration steps, you can apply IP Allow restrictions to protected branches only. See [How to apply IP restrictions to protected branches](https://neon.com/docs/guides/protected-branches#how-to-apply-ip-restrictions-to-protected-branches).
+- Protected branches are not [archived](https://neon.com/docs/guides/branch-archiving) due to inactivity.
+
+Typically, a protected status is given to a branch or branches that hold production data or sensitive data. The protected branch feature is only supported on Neon's paid plans. See [Set a branch as protected](https://neon.com/docs/manage/branches#set-a-branch-as-protected).
+
+### Schema-only branch
+
+A branch that replicates only the database schema from a source branch, without copying any of the actual data. This feature is particularly valuable when working with sensitive information. Rather than creating branches that include confidential data, you can duplicate just the database structure and then populate it with your own data.
+
+Schema-only branches are [root branches](https://neon.com/docs/manage/branches#root-branch), meaning they have no parent. As a root branch, each schema-only branch starts an independent line of data in a Neon project.
+
+See [Schema-only branches](https://neon.com/docs/guides/branching-schema-only).
+
+### Backup branch
+
+A branch created by an [instant restore](https://neon.com/docs/introduction/branch-restore) operation. When you restore a branch from a particular point in time, the current branch is saved as a backup branch. Performing a restore operation on a root branch, creates a backup branch without a parent branch (a root branch). See [Instant restore](https://neon.com/docs/guides/branch-restore).
+
+### Branch with expiration
+
+A branch with an expiration timestamp is automatically deleted when the expiration time is reached. Any branch can have an expiration timestamp added or removed at any time. Use it for temporary development and testing environments.
+
+## Branching with the Neon CLI
+
+The Neon CLI supports creating and managing branches. See [Neon CLI commands — branches](https://neon.com/docs/cli/branches).
+
+## Branching with the Neon API
+
+Branch actions performed in the Neon Console can also be performed using the [Neon API](https://neon.com/docs/reference/api). Each operation above includes an example in its **API** tab; see the [Neon API Reference](https://neon.com/docs/reference/api) for complete request and response schemas. A request requires an API key: see [Create an API key](https://neon.com/docs/manage/api-keys#create-an-api-key), where `$NEON_API_KEY` stands in for your key.
+
+### Create a branch with the API
+
+See [Create a branch](https://neon.com/docs/manage/branches#create-a-branch) for the Console, CLI, and API options.
+
+### List branches with the API
+
+See [View branches](https://neon.com/docs/manage/branches#view-branches) for the Console, CLI, and API options.
+
+### Delete a branch with the API
+
+See [Delete a branch](https://neon.com/docs/manage/branches#delete-a-branch) for the Console, CLI, and API options.
 
 --- [Document source](https://neon.com/docs/manage/computes.md) ---
 
@@ -116532,7 +116807,11 @@ Your Neon plan determines the resources available to a compute. The Neon Free pl
 
 ## View a compute
 
-A compute is associated with a branch. To view a compute, in the Neon Console select your branch from the **BRANCH** selector, then select **Postgres database** > **Computes**. If the branch has a compute, it is shown on the **Computes** tab of the branch overview.
+A compute is associated with a branch.
+
+**Console**
+
+In the Neon Console, select your branch from the **BRANCH** selector, then select **Postgres database** > **Computes**. If the branch has a compute, it is shown on the **Computes** tab of the branch overview.
 
 Compute details shown on the **Computes** tab include:
 
@@ -116544,22 +116823,213 @@ Compute details shown on the **Computes** tab include:
 
 **Edit**, **Monitor**, and **Connect** actions for a compute can be accessed from the **Computes** tab.
 
+**CLI**
+
+The CLI has no separate compute object; a branch's compute state (`current_state`, `compute_time_seconds`) is shown by [`neon branches list`](https://neon.com/docs/cli/branches#list):
+
+```bash
+neon branches list --output json
+```
+
+<details>
+
+<summary>Show output</summary>
+
+```json
+[
+  {
+    "id": "br-dry-glitter-a1rh0x6q",
+    "project_id": "autumn-lake-30024670",
+    "name": "br-dry-glitter-a1rh0x6q",
+    "current_state": "ready",
+    "logical_size": 29515776,
+    "creation_source": "console",
+    "default": true,
+    "cpu_used_sec": 78,
+    "compute_time_seconds": 78,
+    "active_time_seconds": 312,
+    "written_data_bytes": 107816,
+    "data_transfer_bytes": 0,
+    "created_at": "2023-07-09T17:01:34Z",
+    "updated_at": "2023-07-09T17:15:13Z"
+  }
+]
+```
+
+</details>
+
+Or list the project's computes directly through the [`neon api`](https://neon.com/docs/cli/api) passthrough:
+
+```bash
+neon api /projects/autumn-lake-30024670/endpoints
+```
+
+**API**
+
+List the computes for a project with the [List computes](https://neon.com/docs/reference/api/endpoints/list-project-endpoints) endpoint:
+
+```bash
+curl -X 'GET' \
+  'https://console.neon.tech/api/v2/projects/autumn-lake-30024670/endpoints' \
+  -H 'accept: application/json' \
+  -H "Authorization: Bearer $NEON_API_KEY"
+```
+
+<details>
+
+<summary>Response body</summary>
+
+For attribute definitions, find the [List computes](https://neon.com/docs/reference/api/endpoints/list-project-endpoints) endpoint in the [Neon API Reference](https://neon.com/docs/reference/api). Definitions are provided in the **Responses** section.
+
+```json
+{
+  "endpoints": [
+    {
+      "host": "ep-misty-morning-a1pfa4ez.ap-southeast-1.aws.neon.tech",
+      "id": "ep-misty-morning-a1pfa4ez",
+      "project_id": "autumn-lake-30024670",
+      "branch_id": "br-dry-glitter-a1rh0x6q",
+      "autoscaling_limit_min_cu": 1,
+      "autoscaling_limit_max_cu": 2,
+      "region_id": "aws-ap-southeast-1",
+      "type": "read_write",
+      "current_state": "idle",
+      "settings": {},
+      "pooler_enabled": false,
+      "pooler_mode": "transaction",
+      "disabled": false,
+      "passwordless_access": true,
+      "last_active": "2025-08-03T17:40:20Z",
+      "creation_source": "console",
+      "created_at": "2025-08-03T17:40:19Z",
+      "updated_at": "2025-08-03T17:45:24Z",
+      "suspended_at": "2025-08-03T17:45:24Z",
+      "proxy_host": "ap-southeast-1.aws.neon.tech",
+      "suspend_timeout_seconds": 0,
+      "provisioner": "k8s-neonvm"
+    },
+    {
+      "host": "ep-autumn-frost-a1wlmval.ap-southeast-1.aws.neon.tech",
+      "id": "ep-autumn-frost-a1wlmval",
+      "project_id": "autumn-lake-30024670",
+      "branch_id": "br-dark-bar-a11jneqm",
+      "autoscaling_limit_min_cu": 1,
+      "autoscaling_limit_max_cu": 2,
+      "region_id": "aws-ap-southeast-1",
+      "type": "read_write",
+      "current_state": "idle",
+      "settings": {},
+      "pooler_enabled": false,
+      "pooler_mode": "transaction",
+      "disabled": false,
+      "passwordless_access": true,
+      "last_active": "2025-08-03T17:34:40Z",
+      "creation_source": "console",
+      "created_at": "2025-08-03T11:27:50Z",
+      "updated_at": "2025-08-03T17:41:11Z",
+      "suspended_at": "2025-08-03T17:41:11Z",
+      "proxy_host": "ap-southeast-1.aws.neon.tech",
+      "suspend_timeout_seconds": 0,
+      "provisioner": "k8s-neonvm"
+    }
+  ]
+}
+```
+
+</details>
+
 ## Create a compute
 
 You can only create a single primary read-write compute for a branch that does not have a compute, but a branch can have multiple read replica computes.
 
-To create an endpoint:
+**Console**
 
 1. In the Neon Console, select your branch from the **BRANCH** selector.
 2. Under **Postgres database**, select **Computes**.
 3. Click **Add a compute** or **Add Read Replica** if you already have a primary read-write compute.
 4. On the **Add new compute** drawer or **Add read replica** drawer, specify your compute settings, and click **Add**. Selecting the **Read replica** compute type creates a [read replica](https://neon.com/docs/introduction/read-replicas).
 
+**CLI**
+
+Add a compute to a branch with [`neon branches add-compute`](https://neon.com/docs/cli/branches#add-compute), passing `--type read_write` for the branch's primary compute. Add `--cu` to set a fixed size or an autoscaling range:
+
+```bash
+neon branches add-compute br-dry-glitter-a1rh0x6q --type read_write
+```
+
+**API**
+
+Create a compute with the [Create compute](https://neon.com/docs/reference/api/endpoints/create-project-endpoint) endpoint. The branch you specify cannot already have a read-write compute:
+
+```bash
+curl -X 'POST' \
+  'https://console.neon.tech/api/v2/projects/autumn-lake-30024670/endpoints' \
+  -H 'accept: application/json' \
+  -H "Authorization: Bearer $NEON_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "endpoint": {
+    "branch_id": "br-dry-glitter-a1rh0x6q",
+    "type": "read_write"
+  }
+}'
+```
+
+<details>
+
+<summary>Response body</summary>
+
+For attribute definitions, find the [Create compute](https://neon.com/docs/reference/api/endpoints/create-project-endpoint) endpoint in the [Neon API Reference](https://neon.com/docs/reference/api). Definitions are provided in the **Responses** section.
+
+```json
+{
+  "endpoint": {
+    "host": "ep-misty-morning-a1pfa4ez.ap-southeast-1.aws.neon.tech",
+    "id": "ep-misty-morning-a1pfa4ez",
+    "project_id": "autumn-lake-30024670",
+    "branch_id": "br-dry-glitter-a1rh0x6q",
+    "autoscaling_limit_min_cu": 1,
+    "autoscaling_limit_max_cu": 2,
+    "region_id": "aws-ap-southeast-1",
+    "type": "read_write",
+    "current_state": "init",
+    "pending_state": "active",
+    "settings": {},
+    "pooler_enabled": false,
+    "pooler_mode": "transaction",
+    "disabled": false,
+    "passwordless_access": true,
+    "creation_source": "console",
+    "created_at": "2025-08-03T17:40:19Z",
+    "updated_at": "2025-08-03T17:40:19Z",
+    "proxy_host": "ap-southeast-1.aws.neon.tech",
+    "suspend_timeout_seconds": 0,
+    "provisioner": "k8s-neonvm"
+  },
+  "operations": [
+    {
+      "id": "d6ef3cc2-663b-440a-88e7-ea6a59ea2c6a",
+      "project_id": "autumn-lake-30024670",
+      "branch_id": "br-dry-glitter-a1rh0x6q",
+      "endpoint_id": "ep-misty-morning-a1pfa4ez",
+      "action": "start_compute",
+      "status": "running",
+      "failures_count": 0,
+      "created_at": "2025-08-03T17:40:19Z",
+      "updated_at": "2025-08-03T17:40:19Z",
+      "total_duration_ms": 0
+    }
+  ]
+}
+```
+
+</details>
+
 ## Edit a compute
 
 You can edit a compute to change the [compute size](https://neon.com/docs/manage/computes#compute-size-and-autoscaling-configuration) or [scale to zero](https://neon.com/docs/manage/computes#scale-to-zero-configuration) configuration.
 
-To edit a compute:
+**Console**
 
 1. In the Neon Console, select your branch from the **BRANCH** selector.
 
@@ -116570,6 +117040,70 @@ To edit a compute:
    The **Edit** drawer opens, letting you modify settings such as compute size, the autoscaling configuration, and your scale to zero setting.
 
 4. Once you've made your changes, click **Save**. All changes take immediate effect.
+
+**CLI**
+
+No dedicated command edits a compute, so reach for the [`neon api`](https://neon.com/docs/cli/api) passthrough, which sends the request with your CLI credentials. For example, change the autoscaling range:
+
+```bash
+neon api /projects/autumn-lake-30024670/endpoints/ep-misty-morning-a1pfa4ez -X PATCH -F endpoint.autoscaling_limit_min_cu=0.5 -F endpoint.autoscaling_limit_max_cu=3
+```
+
+**API**
+
+Update a compute with the [Update compute](https://neon.com/docs/reference/api/endpoints/update-project-endpoint) endpoint. For example, change the autoscaling range:
+
+```bash
+curl -X 'PATCH' \
+  'https://console.neon.tech/api/v2/projects/autumn-lake-30024670/endpoints/ep-misty-morning-a1pfa4ez' \
+  -H 'accept: application/json' \
+  -H "Authorization: Bearer $NEON_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "endpoint": {
+    "autoscaling_limit_min_cu": 0.5,
+    "autoscaling_limit_max_cu": 3
+  }
+}'
+```
+
+<details>
+
+<summary>Response body</summary>
+
+For attribute definitions, find the [Update compute](https://neon.com/docs/reference/api/endpoints/update-project-endpoint) endpoint in the [Neon API Reference](https://neon.com/docs/reference/api). Definitions are provided in the **Responses** section.
+
+```json
+{
+  "endpoint": {
+    "host": "ep-misty-morning-a1pfa4ez.ap-southeast-1.aws.neon.tech",
+    "id": "ep-misty-morning-a1pfa4ez",
+    "project_id": "autumn-lake-30024670",
+    "branch_id": "br-dry-glitter-a1rh0x6q",
+    "autoscaling_limit_min_cu": 0.5,
+    "autoscaling_limit_max_cu": 3,
+    "region_id": "aws-ap-southeast-1",
+    "type": "read_write",
+    "current_state": "idle",
+    "settings": {},
+    "pooler_enabled": false,
+    "pooler_mode": "transaction",
+    "disabled": false,
+    "passwordless_access": true,
+    "last_active": "2025-08-03T17:40:20Z",
+    "creation_source": "console",
+    "created_at": "2025-08-03T17:40:19Z",
+    "updated_at": "2025-08-03T17:49:01Z",
+    "suspended_at": "2025-08-03T17:45:24Z",
+    "proxy_host": "ap-southeast-1.aws.neon.tech",
+    "suspend_timeout_seconds": 0,
+    "provisioner": "k8s-neonvm"
+  },
+  "operations": []
+}
+```
+
+</details>
 
 For information about selecting an appropriate compute size or autoscaling configuration, see [How to size your compute](https://neon.com/docs/manage/computes#how-to-size-your-compute).
 
@@ -116733,273 +117267,57 @@ Restarting ensures your compute is running with the latest configurations and im
 
 **Important:** Restarting a compute interrupts any connections currently using the compute. To avoid prolonged interruptions resulting from compute restarts, we recommend configuring your clients and applications to reconnect automatically in case of a dropped connection.
 
-You can restart a compute using these methods:
+**Console**
 
-- Use the **Restart compute** option in the Neon console. Select your branch from the **BRANCH** selector, then select **Postgres database** > **Computes** and choose **Restart compute** from the compute's menu.
-  ![Restart a compute in the console](https://neon.com/docs/manage/restart_compute.png)
+Use the **Restart compute** option in the Neon Console. Select your branch from the **BRANCH** selector, then select **Postgres database** > **Computes** and choose **Restart compute** from the compute's menu.
 
-- Issue a [Restart compute endpoint](https://neon.com/docs/reference/api/endpoints/restart-project-endpoint) call using the Neon API. You can do this directly from the Neon API Reference using the **Try It!** feature or via the command line with a cURL command similar to the one shown below. You'll need your [project ID](https://neon.com/docs/reference/glossary#project-id), compute [endpoint ID](https://neon.com/docs/reference/glossary#endpoint-id), and an [API key](https://neon.com/docs/manage/api-keys#create-an-api-key).
+![Restart a compute in the console](https://neon.com/docs/manage/restart_compute.png)
 
-  ```bash
-  curl --request POST \
-     --url https://console.neon.tech/api/v2/projects/cool-forest-86753099/endpoints/ep-calm-flower-a5b75h79/restart \
-     --header 'accept: application/json' \
-     --header 'authorization: Bearer $NEON_API_KEY'
-  ```
+You can also restart a compute by letting it suspend: stop activity (stop running queries) and wait for the compute to suspend due to inactivity, which happens after 5 minutes by default. Watch the compute's **Status** field on the **Branches** page until it reports `Idle`. The compute restarts the next time it's accessed, and the status changes to `Active`.
 
-  **Note:** The [Restart compute endpoint](https://neon.com/docs/reference/api/endpoints/restart-project-endpoint) API only works on an active compute. If you're compute is idle, you can wake it up with a query or the [Start compute endpoint](https://neon.com/docs/reference/api/endpoints/start-project-endpoint) API.
+**CLI**
 
-- Stop activity on your compute (stop running queries) and wait for your compute to suspend due to inactivity. By default, Neon suspends a compute after 5 minutes of inactivity. You can watch the status of your compute on the **Branches** page in the Neon Console. Select your branch and monitor your compute's **Status** field. Wait for it to report an `Idle` status. The compute will restart the next time it's accessed, and the status will change to `Active`.
+Restart the compute through the [`neon api`](https://neon.com/docs/cli/api) passthrough:
+
+```bash
+neon api /projects/autumn-lake-30024670/endpoints/ep-misty-morning-a1pfa4ez/restart -X POST
+```
+
+**API**
+
+Issue a [Restart compute endpoint](https://neon.com/docs/reference/api/endpoints/restart-project-endpoint) call. You'll need your [project ID](https://neon.com/docs/reference/glossary#project-id), compute [endpoint ID](https://neon.com/docs/reference/glossary#endpoint-id), and an [API key](https://neon.com/docs/manage/api-keys#create-an-api-key):
+
+```bash
+curl --request POST \
+   --url https://console.neon.tech/api/v2/projects/autumn-lake-30024670/endpoints/ep-misty-morning-a1pfa4ez/restart \
+   --header 'accept: application/json' \
+   --header 'authorization: Bearer $NEON_API_KEY'
+```
+
+**Note:** The [Restart compute endpoint](https://neon.com/docs/reference/api/endpoints/restart-project-endpoint) API only works on an active compute. If your compute is idle, you can wake it up with a query or the [Start compute endpoint](https://neon.com/docs/reference/api/endpoints/start-project-endpoint) API.
 
 ## Delete a compute
 
 A branch can have a single read-write compute and multiple read replica computes. You can delete any of these computes from a branch. However, be aware that a compute is required to connect to a branch and access its data. If you delete a compute and add it back later, the new compute will have different connection details.
 
-To delete a compute:
+**Console**
 
 1. In the Neon Console, select your branch from the **BRANCH** selector.
 2. Under **Postgres database**, select **Computes**.
 3. Click **Edit** for the compute you want to delete.
 4. At the bottom of the **Edit compute** drawer, click **Delete compute**.
 
-## Manage computes with the Neon API
+**CLI**
 
-Compute actions performed in the Neon Console can also be performed using the [Neon API](https://neon.com/docs/reference/api). The following examples demonstrate how to create, view, update, and delete computes using the Neon API. For other compute-related API methods, refer to the [Neon API Reference](https://neon.com/docs/reference/api).
-
-**Note:** The API examples that follow may not show all of the user-configurable request body attributes that are available to you. To view all attributes for a particular method, refer to method's request body schema in the [Neon API Reference](https://neon.com/docs/reference/api).
-
-The `jq` option specified in each example is an optional third-party tool that formats the `JSON` response, making it easier to read. For information about this utility, see [jq](https://stedolan.github.io/jq/).
-
-### Prerequisites
-
-A Neon API request requires an API key. For information about obtaining an API key, see [Create an API key](https://neon.com/docs/manage/api-keys#create-an-api-key). In the cURL examples below, `$NEON_API_KEY` is specified in place of an actual API key, which you must provide when making a Neon API request.
-
-**Note:** To learn more about the types of API keys you can create — personal, organization, or project-scoped — see [Manage API Keys](https://neon.com/docs/manage/api-keys).
-
-### Create a compute with the API
-
-The following Neon API method creates a compute.
-
-```http
-POST /projects/{project_id}/endpoints
-```
-
-The API method appears as follows when specified in a cURL command. The branch you specify cannot have an existing compute. A compute must be associated with a branch. Neon supports read-write and read replica compute. A branch can have a single primary read-write compute but supports multiple read replica computes.
+Delete the compute through the [`neon api`](https://neon.com/docs/cli/api) passthrough:
 
 ```bash
-curl -X 'POST' \
-  'https://console.neon.tech/api/v2/projects/autumn-lake-30024670/endpoints' \
-  -H 'accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "endpoint": {
-    "branch_id": "br-dry-glitter-a1rh0x6q",
-    "type": "read_write"
-  }
-}'
+neon api /projects/autumn-lake-30024670/endpoints/ep-misty-morning-a1pfa4ez -X DELETE
 ```
 
-<details>
+**API**
 
-<summary>Response body</summary>
-
-For attribute definitions, find the [Create compute](https://neon.com/docs/reference/api/endpoints/create-project-endpoint) endpoint in the [Neon API Reference](https://neon.com/docs/reference/api). Definitions are provided in the **Responses** section.
-
-```json
-{
-  "endpoint": {
-    "host": "ep-misty-morning-a1pfa4ez.ap-southeast-1.aws.neon.tech",
-    "id": "ep-misty-morning-a1pfa4ez",
-    "project_id": "autumn-lake-30024670",
-    "branch_id": "br-dry-glitter-a1rh0x6q",
-    "autoscaling_limit_min_cu": 1,
-    "autoscaling_limit_max_cu": 2,
-    "region_id": "aws-ap-southeast-1",
-    "type": "read_write",
-    "current_state": "init",
-    "pending_state": "active",
-    "settings": {},
-    "pooler_enabled": false,
-    "pooler_mode": "transaction",
-    "disabled": false,
-    "passwordless_access": true,
-    "creation_source": "console",
-    "created_at": "2025-08-03T17:40:19Z",
-    "updated_at": "2025-08-03T17:40:19Z",
-    "proxy_host": "ap-southeast-1.aws.neon.tech",
-    "suspend_timeout_seconds": 0,
-    "provisioner": "k8s-neonvm"
-  },
-  "operations": [
-    {
-      "id": "d6ef3cc2-663b-440a-88e7-ea6a59ea2c6a",
-      "project_id": "autumn-lake-30024670",
-      "branch_id": "br-dry-glitter-a1rh0x6q",
-      "endpoint_id": "ep-misty-morning-a1pfa4ez",
-      "action": "start_compute",
-      "status": "running",
-      "failures_count": 0,
-      "created_at": "2025-08-03T17:40:19Z",
-      "updated_at": "2025-08-03T17:40:19Z",
-      "total_duration_ms": 0
-    }
-  ]
-}
-```
-
-</details>
-
-### List computes with the API
-
-The following Neon API method lists computes for the specified project. A compute belongs to a Neon project. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/endpoints/list-project-endpoints).
-
-```http
-GET /projects/{project_id}/endpoints
-```
-
-The API method appears as follows when specified in a cURL command:
-
-```bash
-curl -X 'GET' \
-  'https://console.neon.tech/api/v2/projects/autumn-lake-30024670/endpoints' \
-  -H 'accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY"
-```
-
-<details>
-
-<summary>Response body</summary>
-
-For attribute definitions, find the [List computes](https://neon.com/docs/reference/api/endpoints/list-project-endpoints) endpoint in the [Neon API Reference](https://neon.com/docs/reference/api). Definitions are provided in the **Responses** section.
-
-```json
-{
-  "endpoints": [
-    {
-      "host": "ep-misty-morning-a1pfa4ez.ap-southeast-1.aws.neon.tech",
-      "id": "ep-misty-morning-a1pfa4ez",
-      "project_id": "autumn-lake-30024670",
-      "branch_id": "br-dry-glitter-a1rh0x6q",
-      "autoscaling_limit_min_cu": 1,
-      "autoscaling_limit_max_cu": 2,
-      "region_id": "aws-ap-southeast-1",
-      "type": "read_write",
-      "current_state": "idle",
-      "settings": {},
-      "pooler_enabled": false,
-      "pooler_mode": "transaction",
-      "disabled": false,
-      "passwordless_access": true,
-      "last_active": "2025-08-03T17:40:20Z",
-      "creation_source": "console",
-      "created_at": "2025-08-03T17:40:19Z",
-      "updated_at": "2025-08-03T17:45:24Z",
-      "suspended_at": "2025-08-03T17:45:24Z",
-      "proxy_host": "ap-southeast-1.aws.neon.tech",
-      "suspend_timeout_seconds": 0,
-      "provisioner": "k8s-neonvm"
-    },
-    {
-      "host": "ep-autumn-frost-a1wlmval.ap-southeast-1.aws.neon.tech",
-      "id": "ep-autumn-frost-a1wlmval",
-      "project_id": "autumn-lake-30024670",
-      "branch_id": "br-dark-bar-a11jneqm",
-      "autoscaling_limit_min_cu": 1,
-      "autoscaling_limit_max_cu": 2,
-      "region_id": "aws-ap-southeast-1",
-      "type": "read_write",
-      "current_state": "idle",
-      "settings": {},
-      "pooler_enabled": false,
-      "pooler_mode": "transaction",
-      "disabled": false,
-      "passwordless_access": true,
-      "last_active": "2025-08-03T17:34:40Z",
-      "creation_source": "console",
-      "created_at": "2025-08-03T11:27:50Z",
-      "updated_at": "2025-08-03T17:41:11Z",
-      "suspended_at": "2025-08-03T17:41:11Z",
-      "proxy_host": "ap-southeast-1.aws.neon.tech",
-      "suspend_timeout_seconds": 0,
-      "provisioner": "k8s-neonvm"
-    }
-  ]
-}
-```
-
-</details>
-
-### Update a compute with the API
-
-The following Neon API method updates the specified compute. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/endpoints/update-project-endpoint).
-
-```http
-PATCH /projects/{project_id}/endpoints/{endpoint_id}
-```
-
-The API method appears as follows when specified in a cURL command. The example reassigns the compute to another branch by changing the `branch_id`. The branch that you specify cannot have an existing compute. A compute must be associated with a branch, and a branch can have only one primary read-write compute. Multiple read-replica computes are allowed.
-
-```bash
-curl -X 'PATCH' \
-  'https://console.neon.tech/api/v2/projects/autumn-lake-30024670/endpoints/ep-misty-morning-a1pfa4ez' \
-  -H 'accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "endpoint": {
-    "branch_id": "br-raspy-pine-a1hspnzv"
-  }
-}'
-```
-
-<details>
-
-<summary>Response body</summary>
-
-For attribute definitions, find the [Update compute](https://neon.com/docs/reference/api/endpoints/update-project-endpoint) endpoint in the [Neon API Reference](https://neon.com/docs/reference/api). Definitions are provided in the **Responses** section.
-
-```json
-{
-  "endpoint": {
-    "host": "ep-misty-morning-a1pfa4ez.ap-southeast-1.aws.neon.tech",
-    "id": "ep-misty-morning-a1pfa4ez",
-    "project_id": "autumn-lake-30024670",
-    "branch_id": "br-raspy-pine-a1hspnzv",
-    "autoscaling_limit_min_cu": 1,
-    "autoscaling_limit_max_cu": 2,
-    "region_id": "aws-ap-southeast-1",
-    "type": "read_write",
-    "current_state": "idle",
-    "settings": {},
-    "pooler_enabled": false,
-    "pooler_mode": "transaction",
-    "disabled": false,
-    "passwordless_access": true,
-    "last_active": "2025-08-03T17:40:20Z",
-    "creation_source": "console",
-    "created_at": "2025-08-03T17:40:19Z",
-    "updated_at": "2025-08-03T17:49:01Z",
-    "suspended_at": "2025-08-03T17:45:24Z",
-    "proxy_host": "ap-southeast-1.aws.neon.tech",
-    "suspend_timeout_seconds": 0,
-    "provisioner": "k8s-neonvm"
-  },
-  "operations": []
-}
-```
-
-</details>
-
-### Delete a compute with the API
-
-The following Neon API method deletes the specified compute. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/endpoints/delete-project-endpoint).
-
-```http
-DELETE /projects/{project_id}/endpoints/{endpoint_id}
-```
-
-The API method appears as follows when specified in a cURL command.
+Delete a compute with the [Delete compute](https://neon.com/docs/reference/api/endpoints/delete-project-endpoint) endpoint:
 
 ```bash
 curl -X 'DELETE' \
@@ -117020,9 +117338,9 @@ For attribute definitions, find the [Delete compute](https://neon.com/docs/refer
     "host": "ep-misty-morning-a1pfa4ez.ap-southeast-1.aws.neon.tech",
     "id": "ep-misty-morning-a1pfa4ez",
     "project_id": "autumn-lake-30024670",
-    "branch_id": "br-raspy-pine-a1hspnzv",
-    "autoscaling_limit_min_cu": 1,
-    "autoscaling_limit_max_cu": 2,
+    "branch_id": "br-dry-glitter-a1rh0x6q",
+    "autoscaling_limit_min_cu": 0.5,
+    "autoscaling_limit_max_cu": 3,
     "region_id": "aws-ap-southeast-1",
     "type": "read_write",
     "current_state": "idle",
@@ -117441,22 +117759,13 @@ All databases in Neon are created with a `public` schema. SQL objects are create
 
 Databases belong to a branch. If you create a child branch, databases from the parent branch are copied to the child branch. For example, if database `mydb` exists in the parent branch, it will be copied to the child branch. The only time this does not occur is when you create a branch that includes data up to a particular point in time. If a database was created in the parent branch after that point in time, it is not duplicated in the child branch.
 
-Neon supports creating and managing databases from the following interfaces:
-
-- [Neon Console](https://neon.com/docs/manage/databases#manage-databases-in-the-neon-console)
-- [Neon CLI](https://neon.com/docs/manage/databases#manage-databases-with-the-neon-cli)
-- [Neon API](https://neon.com/docs/manage/databases#manage-databases-with-the-neon-api)
-- [SQL](https://neon.com/docs/manage/databases#manage-databases-with-sql)
-
-## Manage databases in the Neon Console
-
-This section describes how to create, view, and delete databases in the Neon Console.
+Neon supports creating and managing databases from the Neon Console, CLI, and API, and directly with [SQL](https://neon.com/docs/manage/databases#manage-databases-with-sql).
 
 The role that creates a database is automatically made the owner of that database. The `neon_superuser` role is also granted all privileges on databases created in the Neon Console. For information about this role, see [The neon_superuser role](https://neon.com/docs/manage/roles#the-neonsuperuser-role).
 
-### Create a database
+## Create a database
 
-To create a database:
+**Console**
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
@@ -117466,63 +117775,17 @@ To create a database:
 6. Enter a database name, and select a database owner.
 7. Click **Create**.
 
-**Note:** Some names are not permitted. See [Reserved database names](https://neon.com/docs/manage/databases#reserved-database-names).
+**CLI**
 
-### View databases
+Create a database with [`neon databases create`](https://neon.com/docs/cli/databases#create). If you omit `--branch`, the CLI uses the project's default branch:
 
-To view databases:
-
-1. Navigate to the [Neon Console](https://console.neon.tech).
-2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
-4. Under **Postgres database**, select **Databases**.
-
-### Delete a database
-
-Deleting a database is a permanent action. All database objects belonging to the database such as schemas, tables, and roles are also deleted.
-
-To delete a database:
-
-1. Navigate to the [Neon Console](https://console.neon.tech).
-2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
-4. Under **Postgres database**, select **Databases**.
-5. For the database you want to delete, click the delete icon.
-6. In the confirmation dialog, click **Delete**.
-
-## Manage databases with the Neon CLI
-
-The Neon CLI supports creating and deleting databases with `neon databases create --name <database_name>` and `neon databases delete <database_name>`. If you omit `--branch`, the CLI uses the project's default branch. For full instructions and options, see [Neon CLI commands — databases](https://neon.com/docs/cli/databases).
-
-## Manage databases with the Neon API
-
-Database actions performed in the Neon Console can also be also performed using the Neon API. The following examples demonstrate how to create, view, update, and delete databases using the Neon API. For other database-related methods, refer to the [Neon API Reference](https://neon.com/docs/reference/api).
-
-In Neon, a database belongs to a branch, which means that when you create a database, it is created in a branch. Database-related requests are therefore performed using branch API methods.
-
-**Note:** The API examples that follow may not show all user-configurable request body attributes that are available to you. To view all  attributes for a particular method, refer to the method's request body schema in the [Neon API Reference](https://neon.com/docs/reference/api).
-
-The `jq` option specified in each example is an optional third-party tool that formats the `JSON` response, making it easier to read. For information about this utility, see [jq](https://stedolan.github.io/jq/).
-
-### Prerequisites
-
-A Neon API request requires an API key. For information about obtaining an API key, see [Create an API key](https://neon.com/docs/manage/api-keys#create-an-api-key). In the cURL examples below, `$NEON_API_KEY` is specified in place of an actual API key, which you must provide when making a Neon API request.
-
-**Note:** To learn more about the types of API keys you can create — personal, organization, or project-scoped — see [Manage API Keys](https://neon.com/docs/manage/api-keys).
-
-### Create a database with the API
-
-The following Neon API method creates a database. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/branches/create-project-branch-database).
-
-The role specified by `owner_name` is the owner of that database.
-
-```http
-POST /projects/{project_id}/branches/{branch_id}/databases
+```bash
+neon databases create --name mydb --owner-name casey
 ```
 
-**Note:** Some names are not permitted for databases. See [Reserved database names](https://neon.com/docs/manage/databases#reserved-database-names).
+**API**
 
-The API method appears as follows when specified in a cURL command. The `project_id` and `branch_id` are required parameters, and a database `name` and `owner` are required attributes.
+Create a database with the [Create database](https://neon.com/docs/reference/api/branches/create-project-branch-database) endpoint. A database `name` and `owner_name` are required:
 
 ```bash
 curl 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-morning-meadow-afu2s1jl/databases' \
@@ -117534,7 +117797,7 @@ curl 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-m
     "name": "mydb",
     "owner_name": "casey"
   }
-}' | jq
+}'
 ```
 
 <details>
@@ -117572,20 +117835,43 @@ For attribute definitions, find the [Create database](https://neon.com/docs/refe
 
 </details>
 
-### List databases with the API
+**Note:** Some names are not permitted. See [Reserved database names](https://neon.com/docs/manage/databases#reserved-database-names).
 
-The following Neon API method lists databases for the specified branch. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/branches/list-project-branch-databases).
+## View databases
 
-```http
-GET /projects/{project_id}/branches/{branch_id}/databases
-```
+**Console**
 
-The API method appears as follows when specified in a cURL command. The `project_id` and `branch_id` are required parameters.
+1. Navigate to the [Neon Console](https://console.neon.tech).
+2. Select a project.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Databases**.
+
+**CLI**
+
+List databases with [`neon databases list`](https://neon.com/docs/cli/databases#list). If you omit `--branch`, the CLI uses the project's default branch:
 
 ```bash
-curl 'https://console.neon.tech/api/v2/projects/hidden-cell-763301/branches/br-blue-tooth-671580/databases' \
+neon databases list
+```
+
+```text filename="Output"
+┌────────┬────────────┬──────────────────────┐
+│ Name   │ Owner Name │ Created At           │
+├────────┼────────────┼──────────────────────┤
+│ neondb │ casey      │ 2023-06-19T18:27:19Z │
+├────────┼────────────┼──────────────────────┤
+│ mydb   │ casey      │ 2023-06-19T18:27:19Z │
+└────────┴────────────┴──────────────────────┘
+```
+
+**API**
+
+List databases for a branch with the [List databases](https://neon.com/docs/reference/api/branches/list-project-branch-databases) endpoint:
+
+```bash
+curl 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-morning-meadow-afu2s1jl/databases' \
   -H 'Accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY" | jq
+  -H "Authorization: Bearer $NEON_API_KEY"
 ```
 
 <details>
@@ -117599,7 +117885,7 @@ For attribute definitions, find the [List databases](https://neon.com/docs/refer
   "databases": [
     {
       "id": 1139149,
-      "branch_id": "br-blue-tooth-671580",
+      "branch_id": "br-morning-meadow-afu2s1jl",
       "name": "neondb",
       "owner_name": "casey",
       "created_at": "2023-01-04T18:38:23Z",
@@ -117607,7 +117893,7 @@ For attribute definitions, find the [List databases](https://neon.com/docs/refer
     },
     {
       "id": 1140822,
-      "branch_id": "br-blue-tooth-671580",
+      "branch_id": "br-morning-meadow-afu2s1jl",
       "name": "mydb",
       "owner_name": "casey",
       "created_at": "2023-01-04T21:17:17Z",
@@ -117619,15 +117905,9 @@ For attribute definitions, find the [List databases](https://neon.com/docs/refer
 
 </details>
 
-### Update a database with the API
+## Update a database
 
-The following Neon API method updates the specified database. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/branches/update-project-branch-database).
-
-```http
-PATCH /projects/{project_id}/branches/{branch_id}/databases/{database_name}
-```
-
-The API method appears as follows when specified in a cURL command. The `project_id` and `branch_id` are required parameters. This example updates the database `name` value to `database1`.
+Rename a database with the [Update database](https://neon.com/docs/reference/api/branches/update-project-branch-database) endpoint, or with [SQL](https://neon.com/docs/manage/databases#rename-a-database-with-sql). This example renames `mydb` to `database1`:
 
 ```bash
 curl -X PATCH 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-morning-meadow-afu2s1jl/databases/mydb' \
@@ -117638,7 +117918,7 @@ curl -X PATCH 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/bran
   "database": {
     "name": "database1"
   }
-}' | jq
+}'
 ```
 
 <details>
@@ -117676,21 +117956,36 @@ For attribute definitions, find the [Update database](https://neon.com/docs/refe
 
 </details>
 
-### Delete a database with the API
+## Delete a database
 
-The following Neon API method deletes the specified database. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/branches/delete-project-branch-database).
+Deleting a database is a permanent action. All database objects belonging to the database such as schemas, tables, and roles are also deleted.
 
-```http
-DELETE /projects/{project_id}/branches/{branch_id}/databases/{database_name}
+**Console**
+
+1. Navigate to the [Neon Console](https://console.neon.tech).
+2. Select a project.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Databases**.
+5. For the database you want to delete, click the delete icon.
+6. In the confirmation dialog, click **Delete**.
+
+**CLI**
+
+Delete a database with [`neon databases delete`](https://neon.com/docs/cli/databases#delete):
+
+```bash
+neon databases delete database1
 ```
 
-The API method appears as follows when specified in a cURL command. The `project_id`, `branch_id`, and `database_name` are required parameters.
+**API**
+
+Delete a database with the [Delete database](https://neon.com/docs/reference/api/branches/delete-project-branch-database) endpoint:
 
 ```bash
 curl -X 'DELETE' \
   'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-morning-meadow-afu2s1jl/databases/database1' \
   -H 'Accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY" | jq
+  -H "Authorization: Bearer $NEON_API_KEY"
 ```
 
 <details>
@@ -117761,7 +118056,7 @@ WHERE datname = 'old_db_name'
   AND pid <> pg_backend_pid();
 ```
 
-The rename is instant, and data, schemas, tables, roles, and grants are unaffected. The database name is part of every connection string for the database, so update any application, script, or stored secret that references the old name. You can also rename a database with the [Neon API](https://neon.com/docs/manage/databases#update-a-database-with-the-api).
+The rename is instant, and data, schemas, tables, roles, and grants are unaffected. The database name is part of every connection string for the database, so update any application, script, or stored secret that references the old name. You can also rename a database with the [Neon API](https://neon.com/docs/manage/databases#update-a-database).
 
 ### Delete a database with SQL
 
@@ -117771,7 +118066,7 @@ To delete a database, use `DROP DATABASE`. As with renaming, connect to a differ
 DROP DATABASE old_db_name;
 ```
 
-Deletion is permanent. All schemas, tables, indexes, and other objects in the database are dropped along with it. You can also delete a database from the [Neon Console](https://neon.com/docs/manage/databases#delete-a-database), the [Neon CLI](https://neon.com/docs/manage/databases#manage-databases-with-the-neon-cli), or the [Neon API](https://neon.com/docs/manage/databases#delete-a-database-with-the-api).
+Deletion is permanent. All schemas, tables, indexes, and other objects in the database are dropped along with it. You can also delete a database from the [Neon Console, CLI, or API](https://neon.com/docs/manage/databases#delete-a-database).
 
 ## Transfer database table ownership between roles
 
@@ -119917,6 +120212,14 @@ Logical replication lets you replicate data changes from Neon to external data s
 3. Select **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
+**CLI**
+
+Use [`neon projects update`](https://neon.com/docs/cli/projects#update) with the `--enable-logical-replication` flag. Because this can't be undone, add `--yes` to skip the confirmation prompt. Replace `$PROJECT_ID` with your project ID.
+
+```bash
+neon projects update $PROJECT_ID --enable-logical-replication --yes
+```
+
 **API**
 
 Use the [Update project](https://neon.com/docs/reference/api/projects/update-project) endpoint to enable logical replication programmatically. Replace `$PROJECT_ID` with your project ID.
@@ -120560,10 +120863,8 @@ In Neon, roles belong to a branch, which could be your production branch or a ch
 
 Neon supports creating and managing roles from the following interfaces:
 
-- [Neon Console](https://neon.com/docs/manage/roles#manage-roles-in-the-neon-console)
-- [Neon CLI](https://neon.com/docs/manage/roles#manage-roles-with-the-neon-cli)
-- [Neon API](https://neon.com/docs/manage/roles#manage-roles-with-the-neon-api)
-- [SQL](https://neon.com/docs/manage/roles#manage-roles-with-sql)
+- [Manage roles](https://neon.com/docs/manage/roles#manage-roles) using the Neon Console, CLI, or API
+- [Manage roles with SQL](https://neon.com/docs/manage/roles#manage-roles-with-sql)
 
 ## The neon_superuser role
 
@@ -120588,13 +120889,13 @@ You can think of roles with `neon_superuser` privileges as administrator roles. 
 
 **Note:** Creating a database with the `neon_superuser` role, altering a database to have owner `neon_superuser`, and altering the `neon_superuser role` itself are _not_ permitted. This `NOLOGIN` role is not intended to be used directly or modified.
 
-## Manage roles in the Neon Console
+## Manage roles
 
-This section describes how to create, view, and delete roles in the Neon Console. All roles created in the Neon Console are granted membership in the [neon_superuser](https://neon.com/docs/manage/roles#the-neonsuperuser-role) role.
+You can create, list, delete, and reset passwords for roles using the Neon Console, CLI, or API. Roles created through any of these interfaces are granted membership in the [neon_superuser](https://neon.com/docs/manage/roles#the-neonsuperuser-role) role. To create roles with limited privileges, use [SQL](https://neon.com/docs/manage/roles#manage-roles-with-sql).
 
 ### Create a role
 
-To create a role:
+**Console**
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
@@ -120604,79 +120905,17 @@ To create a role:
 6. In the role creation modal, specify a role name. The branch is pre-selected.
 7. Click **Create**. The role is created and you are provided with the password for the role.
 
-**Note:** Role names cannot exceed 63 characters, and some names are not permitted. See [Reserved role names](https://neon.com/docs/manage/roles#reserved-role-names).
+**CLI**
 
-### Delete a role
+Create a role with [`neon roles create`](https://neon.com/docs/cli/roles#create). Pass `--no-login` to create a `NOLOGIN` role:
 
-Deleting a role is a permanent action that cannot be undone, and you cannot delete a role that owns a database. The database must be deleted before deleting the role that owns the database.
-
-To delete a role:
-
-1. Navigate to the [Neon Console](https://console.neon.tech).
-2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
-4. Under **Postgres database**, select **Roles**.
-5. Select **Delete role** from the role menu.
-6. On the confirmation modal, click **Delete**.
-
-### Reset a password
-
-To reset a role's password:
-
-1. Navigate to the [Neon Console](https://console.neon.tech).
-2. Select a project.
-3. In the sidebar, select your branch from the **BRANCH** selector.
-4. Under **Postgres database**, select **Roles**.
-5. Select **Reset password** from the role menu.
-6. On the **Reset password** modal, click **Reset**. A reset password modal is displayed with your new password.
-
-**Note:**
-
-Resetting a password in the Neon Console resets the password to a generated value. To set your own password value, you can reset the password using the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or an SQL client like [psql](https://neon.com/docs/connect/query-with-psql-editor) with the following syntax:
-
-```sql
-ALTER USER user_name WITH PASSWORD 'new_password';
+```bash
+neon roles create --name alex
 ```
 
-For password requirements, see [Manage roles with SQL](https://neon.com/docs/manage/roles#manage-roles-with-sql).
+**API**
 
-A password reset takes effect immediately. The old password stops working on the next connection, so copy the new connection string from the **Connect** modal and update it wherever it is stored (deployment environment variables, secret managers, and `.env` files). Resets are branch-scoped, so reset the role on each branch where it is used.
-
-Resetting a password is also how you rotate the credential behind a connection string. To rotate after a leak or as routine security practice, see [Rotate credentials](https://neon.com/docs/security/security-overview#rotate-credentials).
-
-## Manage roles with the Neon CLI
-
-The Neon CLI supports creating and deleting roles. For instructions, see [Neon CLI commands — roles](https://neon.com/docs/cli/roles). Roles created with the Neon CLI are granted membership in the [neon_superuser](https://neon.com/docs/manage/roles#the-neonsuperuser-role) role.
-
-## Manage roles with the Neon API
-
-Role actions performed in the Neon Console can also be performed using Neon API role methods. The following examples demonstrate how to create, view, reset passwords for, and delete roles using the Neon API. For other role-related methods, refer to the [Neon API Reference](https://neon.com/docs/reference/api).
-
-Roles created with the Neon API are granted membership in the [neon_superuser](https://neon.com/docs/manage/roles#the-neonsuperuser-role) role.
-
-In Neon, roles belong to branches, which means that when you create a role, it is created in a branch. Role-related requests are therefore performed using branch API methods.
-
-**Note:** The API examples that follow may not show all user-configurable request body attributes that are available to you. To view all  attributes for a particular method, refer to method's request body schema in the [Neon API Reference](https://neon.com/docs/reference/api).
-
-The `jq` option specified in each example is an optional third-party tool that formats the `JSON` response, making it easier to read. For information about this utility, see [jq](https://stedolan.github.io/jq/).
-
-### Prerequisites
-
-A Neon API request requires an API key. For information about obtaining an API key, see [Create an API key](https://neon.com/docs/manage/api-keys#create-an-api-key). In the cURL examples shown below, `$NEON_API_KEY` is specified in place of an actual API key, which you must provide when making a Neon API request.
-
-**Note:** To learn more about the types of API keys you can create — personal, organization, or project-scoped — see [Manage API Keys](https://neon.com/docs/manage/api-keys).
-
-### Create a role with the API
-
-The following Neon API method creates a role. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/branches/create-project-branch-role).
-
-```http
-POST /projects/{project_id}/branches/{branch_id}/roles
-```
-
-**Note:** Role names cannot exceed 63 characters, and some role names are not permitted. See [Reserved role names](https://neon.com/docs/manage/roles#reserved-role-names).
-
-The API method appears as follows when specified in a cURL command. The `project_id` and `branch_id` are required parameters, and the role `name` is a required attribute. The length of a role name is limited to 63 bytes.
+Create a role with the [Create role](https://neon.com/docs/reference/api/branches/create-project-branch-role) endpoint. The role `name` is required and limited to 63 bytes:
 
 ```bash
 curl 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-morning-meadow-afu2s1jl/roles' \
@@ -120725,18 +120964,38 @@ For attribute definitions, find the [Create role](https://neon.com/docs/referenc
 
 </details>
 
-### List roles with the API
+**Note:** Role names cannot exceed 63 characters, and some names are not permitted. See [Reserved role names](https://neon.com/docs/manage/roles#reserved-role-names).
 
-The following Neon API method lists roles for the specified branch. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/branches/list-project-branch-roles).
+### List roles
 
-```http
-GET /projects/{project_id}/branches/{branch_id}/roles
-```
+**Console**
 
-The API method appears as follows when specified in a cURL command. The `project_id` and `branch_id` are required parameters.
+In the Neon Console, select your branch from the **BRANCH** selector, then under **Postgres database** select **Roles** to see the roles on the branch.
+
+**CLI**
+
+List the roles on a branch with [`neon roles list`](https://neon.com/docs/cli/roles#list):
 
 ```bash
-curl 'https://console.neon.tech/api/v2/projects/hidden-cell-763301/branches/br-blue-tooth-671580/roles' \
+neon roles list
+```
+
+```text filename="Output"
+┌────────┬──────────────────────┐
+│ Name   │ Created At           │
+├────────┼──────────────────────┤
+│ daniel │ 2023-06-19T18:27:19Z │
+├────────┼──────────────────────┤
+│ alex   │ 2023-07-13T06:42:55Z │
+└────────┴──────────────────────┘
+```
+
+**API**
+
+List roles with the [List roles](https://neon.com/docs/reference/api/branches/list-project-branch-roles) endpoint:
+
+```bash
+curl 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-morning-meadow-afu2s1jl/roles' \
   -H 'Accept: application/json' \
   -H "Authorization: Bearer $NEON_API_KEY" | jq
 ```
@@ -120751,14 +121010,14 @@ For attribute definitions, find the [List roles](https://neon.com/docs/reference
 {
   "roles": [
     {
-      "branch_id": "br-blue-tooth-671580",
+      "branch_id": "br-morning-meadow-afu2s1jl",
       "name": "daniel",
       "protected": false,
       "created_at": "2023-07-09T17:01:34Z",
       "updated_at": "2023-07-09T17:01:34Z"
     },
     {
-      "branch_id": "br-blue-tooth-671580",
+      "branch_id": "br-morning-meadow-afu2s1jl",
       "name": "alex",
       "protected": false,
       "created_at": "2023-07-13T06:42:55Z",
@@ -120770,15 +121029,88 @@ For attribute definitions, find the [List roles](https://neon.com/docs/reference
 
 </details>
 
-### Reset a password with the API
+### Delete a role
 
-The following Neon API method resets the password for the specified role. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/branches/reset-project-branch-role-password).
+Deleting a role is a permanent action that cannot be undone, and you cannot delete a role that owns a database. The database must be deleted before deleting the role that owns the database.
 
-```http
-POST /projects/{project_id}/branches/{branch_id}/roles/{role_name}/reset_password
+**Console**
+
+1. Navigate to the [Neon Console](https://console.neon.tech).
+2. Select a project.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Select **Delete role** from the role menu.
+6. On the confirmation modal, click **Delete**.
+
+**CLI**
+
+Delete a role with [`neon roles delete`](https://neon.com/docs/cli/roles#delete), passing the role name:
+
+```bash
+neon roles delete alex
 ```
 
-The API method appears as follows when specified in a cURL command. The `project_id`, `branch_id`, and `role_name` are required parameters.
+**API**
+
+Delete a role with the [Delete role](https://neon.com/docs/reference/api/branches/delete-project-branch-role) endpoint:
+
+```bash
+curl -X 'DELETE' \
+  'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-morning-meadow-afu2s1jl/roles/alex' \
+  -H 'Accept: application/json' \
+  -H "Authorization: Bearer $NEON_API_KEY" | jq
+```
+
+<details>
+
+<summary>Response body</summary>
+
+For attribute definitions, find the [Delete role](https://neon.com/docs/reference/api/branches/delete-project-branch-role) endpoint in the [Neon API Reference](https://neon.com/docs/reference/api). Definitions are provided in the **Responses** section.
+
+```json
+{
+  "role": {
+    "branch_id": "br-morning-meadow-afu2s1jl",
+    "name": "alex",
+    "protected": false,
+    "created_at": "2025-08-04T07:47:05Z",
+    "updated_at": "2025-08-04T07:51:10Z"
+  },
+  "operations": [
+    {
+      "id": "722b9f9b-c50e-424c-845e-78b38151b82f",
+      "project_id": "dry-heart-13671059",
+      "branch_id": "br-morning-meadow-afu2s1jl",
+      "endpoint_id": "ep-holy-heart-afbmgcfx",
+      "action": "apply_config",
+      "status": "running",
+      "failures_count": 0,
+      "created_at": "2025-08-04T07:53:22Z",
+      "updated_at": "2025-08-04T07:53:22Z",
+      "total_duration_ms": 0
+    }
+  ]
+}
+```
+
+</details>
+
+### Reset a password
+
+You can reset a role's password from the Neon Console or API. There's no CLI command for this operation. Resetting in the Console sets a generated password; to set your own value, use [SQL](https://neon.com/docs/manage/roles#manage-roles-with-sql).
+
+**Console**
+
+1. Navigate to the [Neon Console](https://console.neon.tech).
+2. Select a project.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Select **Reset password** from the role menu.
+6. On the **Reset password** modal, click **Reset**. A reset password modal is displayed with your new password.
+
+**API**
+
+Reset a role's password with the [Reset role password](https://neon.com/docs/reference/api/branches/reset-project-branch-role-password) endpoint:
 
 ```bash
 curl -X 'POST' \
@@ -120822,56 +121154,19 @@ For attribute definitions, find the [Reset role password](https://neon.com/docs/
 
 </details>
 
-### Delete a role with the API
+**Note:**
 
-The following Neon API method deletes the specified role. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/branches/delete-project-branch-role).
+Resetting a password in the Neon Console resets the password to a generated value. To set your own password value, you can reset the password using the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or an SQL client like [psql](https://neon.com/docs/connect/query-with-psql-editor) with the following syntax:
 
-```http
-DELETE /projects/{project_id}/branches/{branch_id}/roles/{role_name}
+```sql
+ALTER USER user_name WITH PASSWORD 'new_password';
 ```
 
-The API method appears as follows when specified in a cURL command. The `project_id`, `branch_id`, and `role_name` are required parameters.
+For password requirements, see [Manage roles with SQL](https://neon.com/docs/manage/roles#manage-roles-with-sql).
 
-```bash
-curl -X 'DELETE' \
-  'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-morning-meadow-afu2s1jl/roles/alex' \
-  -H 'Accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY" | jq
-```
+A password reset takes effect immediately. The old password stops working on the next connection, so copy the new connection string from the **Connect** modal and update it wherever it is stored (deployment environment variables, secret managers, and `.env` files). Resets are branch-scoped, so reset the role on each branch where it is used.
 
-<details>
-
-<summary>Response body</summary>
-
-For attribute definitions, find the [Delete role](https://neon.com/docs/reference/api/branches/delete-project-branch-role) endpoint in the [Neon API Reference](https://neon.com/docs/reference/api). Definitions are provided in the **Responses** section.
-
-```json
-{
-  "role": {
-    "branch_id": "br-morning-meadow-afu2s1jl",
-    "name": "alex",
-    "protected": false,
-    "created_at": "2025-08-04T07:47:05Z",
-    "updated_at": "2025-08-04T07:51:10Z"
-  },
-  "operations": [
-    {
-      "id": "722b9f9b-c50e-424c-845e-78b38151b82f",
-      "project_id": "dry-heart-13671059",
-      "branch_id": "br-morning-meadow-afu2s1jl",
-      "endpoint_id": "ep-holy-heart-afbmgcfx",
-      "action": "apply_config",
-      "status": "running",
-      "failures_count": 0,
-      "created_at": "2025-08-04T07:53:22Z",
-      "updated_at": "2025-08-04T07:53:22Z",
-      "total_duration_ms": 0
-    }
-  ]
-}
-```
-
-</details>
+Resetting a password is also how you rotate the credential behind a connection string. To rotate after a leak or as routine security practice, see [Rotate credentials](https://neon.com/docs/security/security-overview#rotate-credentials).
 
 ## Manage roles with SQL
 
@@ -121806,6 +122101,21 @@ Once a new minor version is available on Neon, it is applied the next time your 
 Neon only supports the latest minor release for each major Postgres version. For example, when 16.4 is the latest minor release of Postgres version 16, it is no longer possible run a Neon compute with version 16.3.
 
 Neon does not support skipping minor releases or downgrading to a previous minor release.
+
+#### Recent minor version rollouts
+
+The table below shows when recent Postgres releases became available on Neon.
+
+| Postgres release date | Versions in the release          | First available on Neon | Time to availability |
+| --------------------- | -------------------------------- | ----------------------- | -------------------- |
+| 2026-08-13            | 18.6, 17.11, 16.15, 15.19, 14.24 | 2026-08-18              | 5 days               |
+| 2026-05-14            | 18.4, 17.10, 16.14, 15.18, 14.23 | 2026-05-19              | 5 days               |
+| 2026-02-12            | 18.2, 17.8, 16.12, 15.16, 14.21  | 2026-02-13              | 1 day                |
+| 2025-11-13            | 18.1, 17.7, 16.11, 15.15, 14.20  | 2025-12-03              | 20 days              |
+
+The **First available on Neon** date marks when a release first became available to run, not the point at which every compute is running it; each compute picks it up on the next restart, as described above.
+
+As of August 2026, Neon runs the latest community minor release for every supported major version: 18.6, 17.11, 16.15, 15.19, and 14.24. For the current version list, see [Compatibility](https://neon.com/docs/reference/compatibility).
 
 #### Manual actions after minor release upgrades
 
@@ -123679,7 +123989,7 @@ These constraints apply when building automation with the Neon API:
 
 CLI, claim, and HTTP reference
 
-If an agent needs a Neon account and the user is not around, it provisions a project now. A human claims it later if they want to keep it. The agent receives credentials scoped to one project, builds with standard Postgres tools, and hands over a claim link. Unclaimed projects expire in 72 hours and are capped at 100 MB storage and 1 GB transfer.
+If an agent needs a Neon account and the user is not around, it provisions a project now. A human claims it later if they want to keep it. The agent receives credentials scoped to one project, builds with standard Postgres tools, and hands over a claim link. Unclaimed projects expire in 72 hours (`project.expires_at`) and are capped at 100 MB storage and 1 GB transfer. Claim codes expire in 15 minutes (`expires_in`). Those are two clocks.
 
 Start in the browser at [neon.com/claimable-neon](https://neon.com/claimable-neon), or give an agent [`auth.md`](https://neon.com/auth.md).
 
@@ -123851,16 +124161,18 @@ Only requested and granted services appear under `services`.
 
 ## Capabilities
 
-| Capability          | Available before claim | Environment variable          |
-| ------------------- | ---------------------- | ----------------------------- |
-| Postgres            | Yes                    | `DATABASE_URL`                |
-| Data API            | When requested         | `NEON_DATA_API_URL`           |
-| Managed Better Auth | When requested         | `NEON_AUTH_BASE_URL`          |
-| Functions           | No                     | Requires claiming the project |
-| Object Storage      | No                     | Requires claiming the project |
-| AI Gateway          | No                     | Requires claiming the project |
+| Capability          | Available before claim                      | Environment variable          |
+| ------------------- | ------------------------------------------- | ----------------------------- |
+| Postgres            | Yes                                         | `DATABASE_URL`                |
+| Data API            | When requested, or later with `neon deploy` | `NEON_DATA_API_URL`           |
+| Managed Better Auth | When requested, or later with `neon deploy` | `NEON_AUTH_BASE_URL`          |
+| Functions           | No                                          | Requires claiming the project |
+| Object Storage      | No                                          | Requires claiming the project |
+| AI Gateway          | No                                          | Requires claiming the project |
 
 Registration records those as `{ granted: false, reason: "requires_claim" }`. A later protected operation returns `capability_requires_claim`. Preserve the denied capability and give the human a claim link; do not retry or drop it.
+
+After create, add Auth or the Data API with `neon.ts` and `neon deploy` on the unclaimed project. After claim, the same config talks to Neon directly.
 
 ## Use the Neon CLI
 
@@ -123917,13 +124229,17 @@ curl --request POST \
 }
 ```
 
-Open `verification_uri_complete` and sign in to Neon. Opening the URL does not freeze access. Continuing to Neon starts the transfer: it revokes the project key, access tokens, and database password before the console transfer URL is shown. Auth and the Data API stay enabled and transfer with the project. Choose the destination organization. The project then moves through these states:
+`expires_in` is 900 seconds (15 minutes) today. If the unused code expires, POST `/claim` again. Each POST cancels the previous unused code and returns a new one. Re-issue only while `project.expires_at` is still in the future.
+
+Open `verification_uri_complete` and sign in to Neon. Opening the URL does not freeze access. Continuing to Neon starts a transfer with a new 15-minute window: it revokes the project key, access tokens, and database password before the console transfer URL is shown. Auth and the Data API stay enabled and transfer with the project if they were enabled. If that transfer window expires before you accept, POST `/claim` again. The project key and database password stay revoked.
+
+Choose the destination organization. The project then moves through these states:
 
 1. `pending`: the claim code exists, but the transfer has not completed.
 2. `accepted`: the project has left the unclaimed-project organization.
 3. `reconciled`: the identity assertion is revoked and the ceremony is finished.
 
-Continuing to Neon revokes existing access tokens. Re-exchange the identity assertion, then poll claim status at the server-provided `interval`. The new token is only good for that poll until `reconciled`.
+Continuing to Neon revokes existing access tokens. Re-exchange the identity assertion, then poll claim status at the server-provided `interval`. The new token has no project scopes. It authorizes that poll, and a replacement claim code if the transfer window expires.
 
 ```bash
 curl --request POST https://claimable.neon.tech/v1/oauth2/token \
@@ -123936,7 +124252,31 @@ curl https://claimable.neon.tech/v1/projects/quiet-fog-12345678/claim \
   --header "Authorization: Bearer $ACCESS_TOKEN"
 ```
 
-Only `reconciled` means the assertion is dead. Use credentials from the destination Neon organization after that. Fetch a new `DATABASE_URL` there; Auth and the Data API keep working.
+Only `reconciled` means the assertion is dead. Use credentials from the destination Neon organization after that. Fetch a new `DATABASE_URL` there; Auth and the Data API keep working if they were enabled.
+
+Add Auth or the Data API with `neon.ts` and `neon deploy` before or after claim. Data API with the default auth provider requires Auth. An external JWKS is only accepted after claim:
+
+```typescript filename="neon.ts"
+import { defineConfig } from '@neon/config/v1';
+
+export default defineConfig({
+  auth: true,
+  dataApi: true,
+});
+```
+
+```bash
+neon deploy
+```
+
+`neon checkout` does not apply this to an existing branch. `neon deploy` (alias of `neon config apply`) does.
+
+```typescript
+dataApi: {
+  authProvider: 'external',
+  jwksUrl: 'https://example.com/.well-known/jwks.json',
+}
+```
 
 ## Errors
 
@@ -123958,18 +124298,18 @@ Use `error.code` for control flow and show `error.message` to the user. Retry on
 
 Common codes include:
 
-| Code                        | Meaning                                                      |
-| --------------------------- | ------------------------------------------------------------ |
-| `invalid_request`           | The request body or parameter is invalid                     |
-| `invalid_grant`             | The identity assertion cannot be exchanged. Discard it       |
-| `unauthorized`              | No credential was presented, or it did not verify            |
-| `token_expired`             | The access token expired. Re-exchange the identity assertion |
-| `scope_insufficient`        | The access token does not permit the operation               |
-| `capability_requires_claim` | The requested service or operation requires human ownership  |
-| `claim_in_progress`         | Only claim-status polling remains available                  |
-| `project_claimed`           | The project transferred. Discard the identity assertion      |
-| `project_expired`           | The unclaimed window closed. Discard the identity assertion  |
-| `upstream_error`            | A Neon API or service dependency failed                      |
+| Code                        | Meaning                                                                          |
+| --------------------------- | -------------------------------------------------------------------------------- |
+| `invalid_request`           | The request body or parameter is invalid                                         |
+| `invalid_grant`             | The identity assertion cannot be exchanged. Discard it                           |
+| `unauthorized`              | No credential was presented, or it did not verify                                |
+| `token_expired`             | The access token expired. Re-exchange the identity assertion                     |
+| `scope_insufficient`        | The access token does not permit the operation                                   |
+| `capability_requires_claim` | The requested service or operation requires human ownership                      |
+| `claim_in_progress`         | The transfer window is still live. Poll status; mint a new code after it expires |
+| `project_claimed`           | The project transferred. Discard the identity assertion                          |
+| `project_expired`           | The unclaimed window closed. Discard the identity assertion                      |
+| `upstream_error`            | A Neon API or service dependency failed                                          |
 
 ## Resources
 
@@ -129032,7 +129372,7 @@ If a credential is exposed, for example through a leaked `.env` file, a compromi
 4. Tighten your [IP allowlist](https://neon.com/docs/security/security-overview#ip-allowlist-support) to limit which addresses can connect.
 5. Audit your roles and remove any you do not recognize.
 
-Neon has no single command to rotate everything at once. To rotate many roles, list every project, branch, and role, then loop the [reset-password API](https://neon.com/docs/manage/roles#reset-a-password-with-the-api).
+Neon has no single command to rotate everything at once. To rotate many roles, list every project, branch, and role, then loop the [reset-password API](https://neon.com/docs/manage/roles#reset-a-password).
 
 ### Rotate without downtime
 
@@ -130438,6 +130778,12 @@ Most of what shows up here is routine S3 traffic. A few entries look worse than 
 
 For details on filtering by level or service name, searching log bodies, live tail, downloading logs, and the 3-day retention window, see [Monitor logs](https://neon.com/docs/introduction/monitor-logs).
 
+You can also read storage logs from the terminal with [`neon logs query`](https://neon.com/docs/cli/logs), scoped with `--source storage`:
+
+```bash
+neon logs query --source storage --since 1h
+```
+
 --- [Document source](https://neon.com/docs/storage/objects.md) ---
 
 > Summary: Work with objects in Neon Object Storage using the Files SDK, any S3-compatible SDK, or the AWS CLI. Supports single-part and multipart uploads, range requests, batch deletes, and presigned URLs for browser-side access.
@@ -130917,7 +131263,7 @@ S3-compatible object storage that branches with your database
 
 Neon Object Storage is S3-compatible object storage built into the Neon backend for apps and agents. Every branch gets its own isolated storage namespace. Use any AWS S3-compatible SDK or tool. Point it at your branch endpoint and authenticate with your Neon credential. No separate storage account or cloud credentials required.
 
-> During the beta, object storage is available in the **AWS us-east-2** region only.
+> During the beta, object storage is available in the **AWS us-east-2** region only and is free to use, subject to usage limits. See [plans and pricing](https://neon.com/docs/introduction/plans#object-storage) for storage and egress rates.
 
 - **Branches with your database.** Each branch has its own view of storage. Test file uploads and deletions in preview branches without touching production data.
 - **Standard S3 SDKs.** The AWS SDK for JavaScript, boto3, the AWS CLI, the [Files SDK](https://files-sdk.dev), and any other S3-compatible tool works out of the box.
@@ -130947,6 +131293,17 @@ neon bootstrap --template files-sdk
 ```bash
 neon bootstrap --template ai-sdk
 ```
+
+## Limits
+
+During the beta, the following usage limits apply:
+
+- **Region**: object storage is available in AWS us-east-2 only.
+- **Free storage**: the Free plan includes 5 GB, measured across your whole account rather than per project. See [plans and pricing](https://neon.com/docs/introduction/plans#object-storage) for storage and egress rates.
+- **Object size**: objects can be up to 5 GiB, whether uploaded in a single request or with [multipart upload](https://neon.com/docs/storage/objects#multipart-upload). [Contact support](https://neon.com/docs/introduction/support) if you need to store larger objects.
+- **Rate limiting**: requests may be throttled during heavy use, returning a `503 SlowDown` response. Back off and retry. See [Connection and performance errors](https://neon.com/docs/storage/troubleshooting#connection-and-performance-errors).
+
+For S3 API and feature limitations (as opposed to usage limits), see [Known limitations](https://neon.com/docs/storage/s3-compatibility#known-limitations).
 
 --- [Document source](https://neon.com/docs/storage/s3-compatibility.md) ---
 

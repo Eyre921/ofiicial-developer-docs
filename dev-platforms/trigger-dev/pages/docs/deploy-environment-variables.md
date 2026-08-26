@@ -92,8 +92,8 @@ You can use our SDK to get and manipulate environment variables. You can also ea
 
 We have a complete set of SDK functions (and REST API) you can use to directly manipulate environment variables.
 
-| Function                                           | Description                                                 |
-| -------------------------------------------------- | ----------------------------------------------------------- |
+| Function                                                | Description                                                 |
+| ------------------------------------------------------- | ----------------------------------------------------------- |
 | [envvars.list()](/docs/management/envvars/list)         | List all environment variables                              |
 | [envvars.upload()](/docs/management/envvars/import)     | Upload multiple env vars. You can override existing values. |
 | [envvars.create()](/docs/management/envvars/create)     | Create a new environment variable                           |

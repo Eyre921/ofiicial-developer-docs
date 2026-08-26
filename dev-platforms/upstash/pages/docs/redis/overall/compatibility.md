@@ -15,6 +15,6 @@ Upstash supports Redis client protocol up to version `8.2`. We are also graduall
 </Card>
 
 SDK command references may cover a smaller set of typed helpers.
-For example, see the [TypeScript SDK command reference](/docs/redis/sdks/ts/commands/overview) for the commands documented in `@upstash/redis`.
+For example, see the [TypeScript SDK command reference](/redis/sdks/ts/commands/overview) for the commands documented in `@upstash/redis`.
 
 Most unsupported items are on our roadmap. If you need a feature that we do not support, email [support@upstash.com](mailto:support@upstash.com) so we can let you know when we plan to support it.

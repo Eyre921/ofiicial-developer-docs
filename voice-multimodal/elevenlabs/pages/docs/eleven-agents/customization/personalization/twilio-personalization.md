@@ -12,9 +12,11 @@ path: docs/eleven-agents/customization/personalization/twilio-personalization
 
 When receiving inbound Twilio calls, you can dynamically fetch conversation initiation data through a webhook. This allows you to customize your agent's behavior based on caller information and other contextual data.
 
+For when the webhook fires and the request shape, see [Conversation initiation webhooks](/docs/eleven-agents/customization/personalization#conversation-initiation-webhooks).
+
 ## How it works
 
-1. When a Twilio call is received, ElevenAgents will make a webhook call to your specified endpoint, passing call information (`caller_id`, `agent_id`, `called_number`, `call_sid`) as arguments
+1. When a Twilio call is received, ElevenAgents will make a webhook call to your specified endpoint, passing call information (`caller_id`, `agent_id`, `called_number`, `call_sid`, `conversation_id`) as arguments
 2. Your webhook returns conversation initiation client data, including dynamic variables and overrides (an example is shown below)
 3. This data is used to initiate the conversation
 
@@ -32,28 +34,29 @@ seamless experience where:
 In the [settings page](https://elevenlabs.io/app/agents/settings) of ElevenAgents, configure the webhook URL and add any
 secrets needed for authentication.
 
-![Enable webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/53e98b709e5751bfb6cf6758372a8105c5408b20191523c7e91c2a7625d8b603/assets/images/conversational-ai/convai-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T052428Z&X-Amz-Expires=604800&X-Amz-Signature=154d6e94c8e5caef6b5b420e8cd572756f66c2db6067568646fff0e228821970&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/53e98b709e5751bfb6cf6758372a8105c5408b20191523c7e91c2a7625d8b603/assets/images/conversational-ai/convai-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T180423Z&X-Amz-Expires=604800&X-Amz-Signature=36f045ff87c58fb78ed25b06f2cf84dc829c47421422dedae898f67c9c6b1d85&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Click on the webhook to modify which secrets are sent in the headers.
 
-![Add secrets to headers](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/416d30e6906cd209de92820bfc146ac9478fbb6ce61c8fbbc24d62cad54d9f05/assets/images/conversational-ai/convai-initiation-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T052428Z&X-Amz-Expires=604800&X-Amz-Signature=80f48159f2a5bb6b561ab4814efd58f83b2aa8bb037a35521ffc8d7f3fbd3605&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add secrets to headers](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/416d30e6906cd209de92820bfc146ac9478fbb6ce61c8fbbc24d62cad54d9f05/assets/images/conversational-ai/convai-initiation-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T180423Z&X-Amz-Expires=604800&X-Amz-Signature=4b1b93fb191371729325a1f229a9d9796d65e94abbf130b579c5498910228adc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Enable fetching conversation initiation data
 
 In the "Security" tab of the [agent's page](https://elevenlabs.io/app/agents/agents/), enable fetching conversation initiation data for inbound Twilio calls, and define fields that can be overridden.
 
-![Enable webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6024b7f7541b8f856514b56ebf391cd6ee24206fd89c07327de1b01d81795c20/assets/images/conversational-ai/enable-twilio-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T052428Z&X-Amz-Expires=604800&X-Amz-Signature=e1fe9003a19fcf138cfe4198a24a728bdb66c5654db43466ea83dd21b334d386&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6024b7f7541b8f856514b56ebf391cd6ee24206fd89c07327de1b01d81795c20/assets/images/conversational-ai/enable-twilio-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T180423Z&X-Amz-Expires=604800&X-Amz-Signature=296bd487cf232e9eb7b9c51107488ca0722fd6594abdc87d162ae3ffeab77a06&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Implement the webhook endpoint to receive Twilio data
 
 The webhook will receive a POST request with the following parameters:
 
-| Parameter       | Type   | Description                            |
-| --------------- | ------ | -------------------------------------- |
-| `caller_id`     | string | The phone number of the caller         |
-| `agent_id`      | string | The ID of the agent receiving the call |
-| `called_number` | string | The Twilio number that was called      |
-| `call_sid`      | string | Unique identifier for the Twilio call  |
+| Parameter         | Type   | Description                            |
+| ----------------- | ------ | -------------------------------------- |
+| `caller_id`       | string | The phone number of the caller         |
+| `agent_id`        | string | The ID of the agent receiving the call |
+| `called_number`   | string | The Twilio number that was called      |
+| `call_sid`        | string | Unique identifier for the Twilio call  |
+| `conversation_id` | string | ElevenLabs conversation identifier     |
 
 #### Return conversation initiation client data
 
@@ -73,7 +76,7 @@ An example response could be:
     "agent": {
       "prompt": {
         "prompt": "The customer's bank account balance is $100. They are based in San Francisco.",
-        "llm": "gpt-4o"
+        "llm": "gpt-5.6-luna"
       },
       "first_message": "Hi, how can I help you today?",
       "language": "en"
@@ -88,7 +91,7 @@ An example response could be:
   "dynamic_variables": {
     "customer_name": "John Doe",
     "account_status": "premium",
-    "last_interaction": "2024-01-15"
+    "last_interaction": "2026-01-15"
   },
   "branch_id": "agtbrch_xxxx",
   "environment": "production"

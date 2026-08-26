@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/scripting/evalsha-ro
 path: docs/redis/commands/scripting/evalsha-ro
 ---
 
+> Run a cached script that does not write.
+
 Use `EVALSHA_RO` to run a script cached by its SHA1 digest. The script may not write to the database.
 
-It is the read-only form of [`EVALSHA`](/docs/redis/commands/scripting/evalsha): any write command called from the script fails, which lets the server run it on replicas. As with `EVALSHA`, a digest that is not in the cache produces a `NOSCRIPT` error, and the caller is expected to fall back to [`EVAL_RO`](/docs/redis/commands/scripting/eval-ro) with the script body.
+It is the read-only form of [`EVALSHA`](/redis/commands/scripting/evalsha): any write command called from the script fails, which lets the server run it on replicas. As with `EVALSHA`, a digest that is not in the cache produces a `NOSCRIPT` error, and the caller is expected to fall back to [`EVAL_RO`](/redis/commands/scripting/eval-ro) with the script body.
 
-Read-only scripts take the global lock like any other script unless the cached body's shebang sets the `allow-key-locking` flag, for example `#!lua flags=no-writes,allow-key-locking`. With the flag, the call takes shared read locks on the keys passed in `KEYS`. See [Key-Based Locking](/docs/redis/features/key-locking).
+Read-only scripts take the global lock like any other script unless the cached body's shebang sets the `allow-key-locking` flag, for example `#!lua flags=no-writes,allow-key-locking`. With the flag, the call takes shared read locks on the keys passed in `KEYS`. See [Key-Based Locking](/redis/features/key-locking).
 
 ## Syntax
 
@@ -27,9 +29,9 @@ EVALSHA_RO <sha1> <numkeys> [<key> [<key> ...]] [<arg> [<arg> ...]]
 
 ## Important points
 
-* `numkeys` must equal the number of key arguments that immediately follow it; remaining arguments are available to the script or function as ordinary arguments.
-* A read-only script still takes the global lock unless the cached body's shebang sets the `allow-key-locking` flag. See [Key-Based Locking](/docs/redis/features/key-locking).
-* Pass every key the script reads through `KEYS` whether or not `allow-key-locking` is set. A key built inside the script is read from disk under the lock when it is not in memory, and it is rejected outright when the flag is set. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
+- `numkeys` must equal the number of key arguments that immediately follow it; remaining arguments are available to the script or function as ordinary arguments.
+- A read-only script still takes the global lock unless the cached body's shebang sets the `allow-key-locking` flag. See [Key-Based Locking](/redis/features/key-locking).
+- Pass every key the script reads through `KEYS` whether or not `allow-key-locking` is set. A key built inside the script is read from disk under the lock when it is not in memory, and it is rejected outright when the flag is set. See [Dynamic Keys and Latency](/redis/features/key-locking#dynamic-keys-and-latency).
 
 ## Response
 

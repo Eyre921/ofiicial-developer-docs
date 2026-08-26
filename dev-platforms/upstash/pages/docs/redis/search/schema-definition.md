@@ -31,9 +31,9 @@ In the TypeScript SDK, `s.number()` defaults to `F64`. You can specify `s.number
 ### FAST Fields
 
 The `FAST` flag creates a columnar store for a field, enabling:
-* **Sorting** with `ORDERBY` in queries
-* **Score functions** with `SCOREFUNC FIELDVALUE`
-* **Metric aggregations** (`$avg`, `$sum`, `$min`, `$max`, `$count`, etc.)
+- **Sorting** with `ORDERBY` in queries
+- **Score functions** with `SCOREFUNC FIELDVALUE`
+- **Metric aggregations** (`$avg`, `$sum`, `$min`, `$max`, `$count`, etc.)
 
 In the TypeScript SDK, numeric (`F64`), boolean, and date fields are FAST **by default**. You can
 disable it with `.fast(false)`. In Redis CLI, you must explicitly add the `FAST` keyword after the
@@ -46,7 +46,7 @@ SEARCH.CREATE products ON JSON PREFIX 1 product: SCHEMA name TEXT price F64 FAST
 
 If you attempt to use `ORDERBY`, `SCOREFUNC`, or metric aggregations on a non-FAST field, you will get an error.
 
-***
+---
 
 ### Basic Usage
 
@@ -95,7 +95,7 @@ const schema = s.object({
 
 We need the schema when creating or querying an index:
 
-For the complete index creation syntax, see [`SEARCH.CREATE`](/docs/redis/commands/search/search-create).
+For the complete index creation syntax, see [`SEARCH.CREATE`](/redis/commands/search/search-create).
 
 ```ts
 import { Redis, s } from "@upstash/redis"
@@ -118,7 +118,7 @@ const products = await redis.search.createIndex({
 })
 ```
 
-***
+---
 
 ## Tokenization & Stemming
 
@@ -138,11 +138,11 @@ This is great for natural language because searching for "world" will match "hel
 
 **When to disable tokenization** with `.noTokenize()`:
 
-* Email addresses (`user@example.com`)
-* URLs (`https://example.com/page`)
-* Product codes and SKUs (`SKU-12345-BLK`)
-* UUIDs (`550e8400-e29b-41d4-a716-446655440000`)
-* Category slugs (`electronics/phones/android`)
+- Email addresses (`user@example.com`)
+- URLs (`https://example.com/page`)
+- Product codes and SKUs (`SKU-12345-BLK`)
+- UUIDs (`550e8400-e29b-41d4-a716-446655440000`)
+- Category slugs (`electronics/phones/android`)
 
 ```ts
 const schema = s.object({
@@ -152,7 +152,7 @@ const schema = s.object({
 })
 ```
 
-***
+---
 
 ### Stemming
 
@@ -168,10 +168,10 @@ This way, a user searching for "running shoes" will also find "run shoes" and "r
 
 **When to disable stemming** with `.noStem()`:
 
-* Brand names (`Nike` shouldn't match `Nik`)
-* Proper nouns and names (`Johnson` shouldn't become `John`)
-* Technical terms (`React` shouldn't match `Reac`)
-* When using regex patterns (stemmed text won't match your expected patterns)
+- Brand names (`Nike` shouldn't match `Nik`)
+- Proper nouns and names (`Johnson` shouldn't become `John`)
+- Technical terms (`React` shouldn't match `Reac`)
+- When using regex patterns (stemmed text won't match your expected patterns)
 
 ```ts
 const schema = s.object({
@@ -181,7 +181,7 @@ const schema = s.object({
 })
 ```
 
-***
+---
 
 ## Keyword Fields
 
@@ -217,18 +217,18 @@ SEARCH.CREATE idx ON JSON PREFIX 1 prefix: SCHEMA tag KEYWORD
 
 **When to use KEYWORD instead of TEXT:**
 
-* When you need range operators (`$gt`, `$gte`, `$lt`, `$lte`) on string values
-* When the entire string should be treated as a single unit (no word splitting)
-* For tags, labels, status codes, or any string that should match exactly
+- When you need range operators (`$gt`, `$gte`, `$lt`, `$lte`) on string values
+- When the entire string should be treated as a single unit (no word splitting)
+- For tags, labels, status codes, or any string that should match exactly
 
-***
+---
 
 ## Facet Fields
 
 The `FACET` field type is for hierarchical path-based faceted search. Values must be `/`-delimited paths starting with `/`.
 
 FACET fields only support `$eq` and `$in` operators.
-They are primarily used with the [`$facet` aggregation](/docs/redis/search/aggregation-operators/bucket-aggregations/facet)
+They are primarily used with the [`$facet` aggregation](/redis/search/aggregation-operators/bucket-aggregations/facet)
 to build category trees and faceted navigation.
 
 <Tabs>
@@ -293,7 +293,7 @@ SEARCH.QUERY products '{"category": {"$in": ["/category/books", "/category/elect
 
 </Tabs>
 
-***
+---
 
 ## Aliased Fields
 
@@ -356,28 +356,28 @@ SEARCH.CREATE products ON JSON PREFIX 1 product: SCHEMA description TEXT descrip
 
 Common use cases for aliased fields:
 
-* **Same field with different settings**: Index a text field both with and without stemming. Use the stemmed version for general searches and the non-stemmed version for exact matching or regex queries.
-* **Shorter query paths**: Create concise aliases for deeply nested fields like `metadata.author.displayName` to simplify queries.
+- **Same field with different settings**: Index a text field both with and without stemming. Use the stemmed version for general searches and the non-stemmed version for exact matching or regex queries.
+- **Shorter query paths**: Create concise aliases for deeply nested fields like `metadata.author.displayName` to simplify queries.
 
 <Note>
 When using aliased fields:
-* Use the **alias name** in queries and highlighting (e.g., `descriptionExact`, `authorName`)
-* Use the **actual field name** when selecting fields to return (e.g., `description`, `metadata.author.displayName`)
+- Use the **alias name** in queries and highlighting (e.g., `descriptionExact`, `authorName`)
+- Use the **actual field name** when selecting fields to return (e.g., `description`, `metadata.author.displayName`)
 
 This is because aliasing happens at the index level and does not modify the underlying documents.
 
 </Note>
 
-***
+---
 
 ## Non-Indexed Fields
 
 Documents don't need to match the schema exactly:
 
-* **Extra fields**: Fields in your document that aren't defined in the schema are simply ignored. They won't be indexed or searchable.
-* **Missing fields**: If a document is missing a field defined in the schema, that document won't appear in search results that filter on the missing field.
+- **Extra fields**: Fields in your document that aren't defined in the schema are simply ignored. They won't be indexed or searchable.
+- **Missing fields**: If a document is missing a field defined in the schema, that document won't appear in search results that filter on the missing field.
 
-***
+---
 
 ## Schema Examples
 

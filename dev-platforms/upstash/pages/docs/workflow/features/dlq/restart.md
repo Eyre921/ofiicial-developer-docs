@@ -9,11 +9,13 @@ All previous step results are discarded, and the workflow executes from scratch 
 
 This approach is ideal when:
 
-* Previous step results are no longer relevant.
-* The failure was caused by corrupted or inconsistent state.
-* You need a completely fresh execution with updated or clean data.
+- Previous step results are no longer relevant.
+- The failure was caused by corrupted or inconsistent state.
+- You need a completely fresh execution with updated or clean data.
 
-  <img />
+<Frame caption="Restart a workflow run from DLQ">
+  <img src="/img/workflow/restart.png" />
+</Frame>
 
 You can perform this action programmatically as well:
 

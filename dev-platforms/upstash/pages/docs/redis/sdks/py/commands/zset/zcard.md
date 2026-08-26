@@ -1,0 +1,27 @@
+---
+title: "ZCARD"
+source: https://upstash.com/docs/redis/sdks/py/commands/zset/zcard
+path: docs/redis/sdks/py/commands/zset/zcard
+---
+
+> Returns the number of elements in the sorted set stored at key.
+
+## Arguments 
+
+<ParamField body="key" type="str" required>
+  The key to get.
+</ParamField>
+
+## Response
+
+<ResponseField type="int" required>
+    The number of elements in the sorted set.
+</ResponseField>
+
+<RequestExample>
+```py Example
+redis.zadd("myset", {"one": 1, "two": 2, "three": 3})
+
+assert redis.zcard("myset") == 3
+```
+</RequestExample>

@@ -4,5 +4,6 @@ source: https://upstash.com/docs/workflow/api-reference/flow-control/get-global-
 path: docs/workflow/api-reference/flow-control/get-global-parallelism
 ---
 
-/workflow/openapi.yaml get /v2/globalParallelism
-Returns the current global parallelism usage across all flow control keys
+> Returns the current global parallelism usage across all flow control keys
+
+`GET /v2/globalParallelism`

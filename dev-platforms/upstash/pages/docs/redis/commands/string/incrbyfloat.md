@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/string/incrbyfloat
 path: docs/redis/commands/string/incrbyfloat
 ---
 
+> Increment float by amount.
+
 Use `INCRBYFLOAT` to add a floating point number to the value stored at a key and get the result.
 
 The stored value and the increment are parsed as double precision floats, and a missing key counts as `0`. A negative increment subtracts, and there is no separate decrement command. A value that is not a valid number returns an error.
 
-The reply is the new value as a string, which client libraries usually decode into a native number. The result is stored in that same textual form, so repeated increments accumulate the usual binary floating point rounding error: for money and other exact quantities, count in integer units with [`INCRBY`](/docs/redis/commands/string/incrby) instead.
+The reply is the new value as a string, which client libraries usually decode into a native number. The result is stored in that same textual form, so repeated increments accumulate the usual binary floating point rounding error: for money and other exact quantities, count in integer units with [`INCRBY`](/redis/commands/string/incrby) instead.
 
 ## Syntax
 
@@ -25,7 +27,7 @@ INCRBYFLOAT <key> <increment>
 
 ## Important points
 
-* The value is always returned as a bulk string, in both RESP2 and RESP3. Client libraries commonly decode it to a language number.
+- The value is always returned as a bulk string, in both RESP2 and RESP3. Client libraries commonly decode it to a language number.
 
 ## Response
 

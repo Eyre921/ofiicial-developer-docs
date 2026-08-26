@@ -10,9 +10,9 @@ This approach is useful for handling failures on separate infrastructure.
 <Tip>You can use either `failureFunction` or `failureUrl`, but not both. These options are mutually exclusive.</Tip>
 
 For most users, **Failure Function** is the better choice because:
-* It runs alongside your workflow and has access to the same context and dependencies
-* Failure function requests are automatically retried on failure as well.
-* You can manually retry failure function if it fails via DLQ.
+- It runs alongside your workflow and has access to the same context and dependencies
+- Failure function requests are automatically retried on failure as well.
+- You can manually retry failure function if it fails via DLQ.
 
 If you think this advanced option fits your need, you can configure it by passing `failureUrl` configuration.
 

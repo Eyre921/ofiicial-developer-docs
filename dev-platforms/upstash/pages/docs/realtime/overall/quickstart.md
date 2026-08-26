@@ -6,23 +6,25 @@ path: docs/realtime/overall/quickstart
 
 Upstash Realtime is the easiest way to add realtime features to any Next.js project.
 
+<Frame>
   <img
     src="https://raw.githubusercontent.com/upstash/realtime/refs/heads/main/public/thumbnail.png"
     alt="Upstash Realtime"
   />
+</Frame>
 
 ## Why Upstash Realtime?
 
-* 🧨 Clean APIs & first-class TypeScript support
-* ⚡ Extremely fast, zero dependencies, 2.6kB gzipped
-* 💻 Deploy anywhere: Vercel, Netlify, etc.
-* 💎 100% type-safe with zod 4 or zod mini
-* ⏱️ Built-in message histories
-* 🔌 Automatic connection management w/ delivery guarantee
-* 🔋 Built-in middleware and authentication helpers
-* 📶 100% HTTP-based: Redis streams & SSE
+- 🧨 Clean APIs & first-class TypeScript support
+- ⚡ Extremely fast, zero dependencies, 2.6kB gzipped
+- 💻 Deploy anywhere: Vercel, Netlify, etc.
+- 💎 100% type-safe with zod 4 or zod mini
+- ⏱️ Built-in message histories
+- 🔌 Automatic connection management w/ delivery guarantee
+- 🔋 Built-in middleware and authentication helpers
+- 📶 100% HTTP-based: Redis streams & SSE
 
-***
+---
 
 ## Quickstart
 
@@ -51,7 +53,9 @@ bun install @upstash/realtime @upstash/redis zod
 
 Upstash Realtime is powered by Redis Streams. Grab your credentials from the [Upstash Console](https://console.upstash.com).
 
-  <img width="100%" />
+<Frame>
+  <img src="/img/getting_started/database.png" width="100%" />
+</Frame>
 
 Add them to your environment variables:
 
@@ -183,7 +187,9 @@ That's it! Your app is now listening for realtime events with full type safety. 
 
 For debugging or monitoring purposes, you can use Realtime Dashboard in console.
 
-  <img />
+<Frame>
+  <img src="/img/realtime/dashboard.png" />
+</Frame>
 
 ## Next Steps
 

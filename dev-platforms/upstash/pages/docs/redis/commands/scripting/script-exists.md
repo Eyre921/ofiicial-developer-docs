@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/scripting/script-exists
 path: docs/redis/commands/scripting/script-exists
 ---
 
+> Check if scripts exist in cache.
+
 Use `SCRIPT EXISTS` to check which of the given SHA1 digests are present in the script cache.
 
-The reply holds one `1` or `0` per digest, in the order they were given. Client libraries use it to find out, in a single call, which of their scripts still need to be loaded before they can be invoked with [`EVALSHA`](/docs/redis/commands/scripting/evalsha), instead of discovering the gap through a `NOSCRIPT` error at call time.
+The reply holds one `1` or `0` per digest, in the order they were given. Client libraries use it to find out, in a single call, which of their scripts still need to be loaded before they can be invoked with [`EVALSHA`](/redis/commands/scripting/evalsha), instead of discovering the gap through a `NOSCRIPT` error at call time.
 
 ## Syntax
 

@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/hash/hexpire
 path: docs/redis/commands/hash/hexpire
 ---
 
+> Set field TTL in seconds.
+
 Use `HEXPIRE` to give individual hash fields a lifetime in seconds, after which those fields are removed from the hash.
 
 Expiration here is per field, not per key: the hash itself stays alive as long as it still has fields, and the key is deleted automatically when the last surviving field expires. This makes it possible to keep short-lived and long-lived data in one hash, for example a user record whose verification code expires while the rest of the record stays.
 
-`FIELDS <numfields>` introduces the list of fields and the count must match the number of names that follow. The optional condition works as it does on [`EXPIRE`](/docs/redis/commands/generic/expire): `NX` only when the field has no expiration, `XX` only when it already has one, `GT` only when the new expiration is later than the current one, and `LT` only when it is earlier.
+`FIELDS <numfields>` introduces the list of fields and the count must match the number of names that follow. The optional condition works as it does on [`EXPIRE`](/redis/commands/generic/expire): `NX` only when the field has no expiration, `XX` only when it already has one, `GT` only when the new expiration is later than the current one, and `LT` only when it is earlier.
 
 The reply holds one status code per field, in order: `1` when the expiration was set, `0` when the condition prevented it, `2` when the field was deleted immediately because the given lifetime was zero or negative, and `-2` when the field does not exist.
 
@@ -31,8 +33,8 @@ HEXPIRE <key> <seconds>
 
 ## Important points
 
-* `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
-* A field with no expiration counts as an infinite one, so `GT` never sets an expiration on such a field and `LT` always does.
+- `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
+- A field with no expiration counts as an infinite one, so `GT` never sets an expiration on such a field and `LT` always does.
 
 ## Response
 

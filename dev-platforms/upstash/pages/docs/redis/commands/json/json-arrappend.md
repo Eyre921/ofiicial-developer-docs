@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/json/json-arrappend
 path: docs/redis/commands/json/json-arrappend
 ---
 
+> Append values to JSON array.
+
 Use `JSON.ARRAPPEND` to append one or more values to the end of the arrays a path selects.
 
 Values are JSON text and each one is appended as a single element, so appending an array adds a nested array rather than merging its items. The reply is the new length of each array the path matched, with null for matches that are not arrays.
@@ -24,8 +26,8 @@ JSON.ARRAPPEND <key> <path> <value> [value ...]
 
 ## Important points
 
-* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

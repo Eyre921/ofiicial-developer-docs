@@ -626,11 +626,11 @@ Whereas this does not work:
 The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your React components. Show progress bars, stream AI responses, or display run status in real time.
 
 <CardGroup>
-  <Card title="React hooks" icon="react" href="/realtime/react-hooks/overview">
+  <Card title="React hooks" icon="react" href="/docs/realtime/react-hooks/overview">
     Hooks for subscribing to runs, streaming data, and triggering tasks from the frontend.
   </Card>
 
-  <Card title="Streams" icon="wave-pulse" href="/tasks/streams">
+  <Card title="Streams" icon="wave-pulse" href="/docs/tasks/streams">
     Pipe continuous data (like AI completions) from your tasks to the client while they run.
   </Card>
 </CardGroup>
@@ -640,11 +640,11 @@ The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your
 ### Walk-through guides from development to deployment
 
 <CardGroup>
-  <Card title="Next.js - setup guide" icon="N" href="/guides/frameworks/nextjs">
+  <Card title="Next.js - setup guide" icon="N" href="/docs/guides/frameworks/nextjs">
     Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
   </Card>
 
-  <Card title="Next.js - triggering tasks using webhooks" icon="N" href="/guides/frameworks/nextjs-webhooks">
+  <Card title="Next.js - triggering tasks using webhooks" icon="N" href="/docs/guides/frameworks/nextjs-webhooks">
     Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
   </Card>
 </CardGroup>
@@ -652,19 +652,19 @@ The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your
 ### Task examples
 
 <CardGroup>
-  <Card title="Fal.ai with Realtime in Next.js" href="/guides/examples/fal-ai-realtime">
+  <Card title="Fal.ai with Realtime in Next.js" href="/docs/guides/examples/fal-ai-realtime">
     Generate an image from a prompt using Fal.ai and Trigger.dev Realtime.
   </Card>
 
-  <Card title="Generate a cartoon using Fal.ai in Next.js" href="/guides/examples/fal-ai-image-to-cartoon">
+  <Card title="Generate a cartoon using Fal.ai in Next.js" href="/docs/guides/examples/fal-ai-image-to-cartoon">
     Convert an image to a cartoon using Fal.ai.
   </Card>
 
-  <Card title="Vercel sync environment variables" icon="code" href="/guides/examples/vercel-sync-env-vars">
+  <Card title="Vercel sync environment variables" icon="code" href="/docs/guides/examples/vercel-sync-env-vars">
     Learn how to automatically sync environment variables from your Vercel projects to Trigger.dev.
   </Card>
 
-  <Card title="Vercel AI SDK" icon="code" href="/guides/examples/vercel-ai-sdk">
+  <Card title="Vercel AI SDK" icon="code" href="/docs/guides/examples/vercel-ai-sdk">
     Learn how to use the Vercel AI SDK, which is a simple way to use AI models from different
     providers, including OpenAI, Anthropic, Amazon Bedrock, Groq, Perplexity etc.
   </Card>
@@ -673,19 +673,19 @@ The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your
 ## Useful next steps
 
 <CardGroup>
-  <Card title="Tasks overview" icon="diagram-subtask" href="/tasks/overview">
+  <Card title="Tasks overview" icon="diagram-subtask" href="/docs/tasks/overview">
     Learn what tasks are and their options
   </Card>
 
-  <Card title="Writing tasks" icon="pen-nib" href="/writing-tasks-introduction">
+  <Card title="Writing tasks" icon="pen-nib" href="/docs/writing-tasks-introduction">
     Learn how to write your own tasks
   </Card>
 
-  <Card title="Deploy using the CLI" icon="terminal" href="/cli-deploy-commands">
+  <Card title="Deploy using the CLI" icon="terminal" href="/docs/cli-deploy-commands">
     Learn how to deploy your task manually using the CLI
   </Card>
 
-  <Card title="Deploy using GitHub actions" icon="github" href="/github-actions">
+  <Card title="Deploy using GitHub actions" icon="github" href="/docs/github-actions">
     Learn how to deploy your task using GitHub actions
   </Card>
 </CardGroup>

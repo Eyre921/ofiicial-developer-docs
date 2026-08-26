@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/generic/expireat
 path: docs/redis/commands/generic/expireat
 ---
 
+> Set expiry as Unix timestamp.
+
 Use `EXPIREAT` to schedule a key for automatic deletion at a fixed point in time, given as a Unix timestamp in seconds.
 
-It behaves exactly like [`EXPIRE`](/docs/redis/commands/generic/expire) except that the deadline is absolute rather than relative, which is what you want when several keys must expire at the same moment, such as the end of an hour or of a billing period. Computing the deadline once and reusing it also avoids the drift that repeated relative expirations introduce. A timestamp in the past deletes the key right away.
+It behaves exactly like [`EXPIRE`](/redis/commands/generic/expire) except that the deadline is absolute rather than relative, which is what you want when several keys must expire at the same moment, such as the end of an hour or of a billing period. Computing the deadline once and reusing it also avoids the drift that repeated relative expirations introduce. A timestamp in the past deletes the key right away.
 
 The optional condition works as it does for `EXPIRE`: `NX` only when the key has no expiration, `XX` only when it already has one, `GT` only when the new deadline is later than the current one, and `LT` only when it is earlier.
 
@@ -26,8 +28,8 @@ EXPIREAT <key> <unix-time-seconds> [NX | XX | GT | LT]
 
 ## Important points
 
-* `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
-* A key with no expiration counts as an infinite one, so `GT` never sets an expiration on such a key and `LT` always does.
+- `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
+- A key with no expiration counts as an infinite one, so `GT` never sets an expiration on such a key and `LT` always does.
 
 ## Response
 

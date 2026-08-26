@@ -4,8 +4,10 @@ source: https://upstash.com/docs/redis/commands/geo/georadius
 path: docs/redis/commands/geo/georadius
 ---
 
+> Find members within a radius of a point.
+
 <Warning>
-  Prefer [`GEOSEARCH`](/docs/redis/commands/geo/geosearch) with `FROMLONLAT` and `BYRADIUS` in new code: `GEOSEARCH <key> FROMLONLAT <longitude> <latitude> BYRADIUS <radius> (m | km | ft | mi)`. In place of `STORE` and `STOREDIST`, use [`GEOSEARCHSTORE`](/docs/redis/commands/geo/geosearchstore) with the same query.
+  Prefer [`GEOSEARCH`](/redis/commands/geo/geosearch) with `FROMLONLAT` and `BYRADIUS` in new code: `GEOSEARCH <key> FROMLONLAT <longitude> <latitude> BYRADIUS <radius> (m | km | ft | mi)`. In place of `STORE` and `STOREDIST`, use [`GEOSEARCHSTORE`](/redis/commands/geo/geosearchstore) with the same query.
 </Warning>
 
 Use `GEORADIUS` to find the members of a geospatial index that lie within a given radius of a longitude and latitude point.
@@ -14,7 +16,7 @@ By default only member names are returned. `WITHDIST` adds each member's distanc
 
 `STORE` writes the matching members into a sorted set scored by geohash, so the result stays usable as a geospatial index, while `STOREDIST` scores them by their distance from the center, which makes the result easy to page through by proximity.
 
-[`GEOSEARCH`](/docs/redis/commands/geo/geosearch) and [`GEOSEARCHSTORE`](/docs/redis/commands/geo/geosearchstore) do the same work and additionally support rectangular areas. Use [`GEORADIUS_RO`](/docs/redis/commands/geo/georadius-ro) if you want a form that cannot write.
+[`GEOSEARCH`](/redis/commands/geo/geosearch) and [`GEOSEARCHSTORE`](/redis/commands/geo/geosearchstore) do the same work and additionally support rectangular areas. Use [`GEORADIUS_RO`](/redis/commands/geo/georadius-ro) if you want a form that cannot write.
 
 ## Syntax
 

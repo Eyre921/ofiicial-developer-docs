@@ -13,9 +13,9 @@ Fuzzy matching uses Levenshtein distance (also called edit distance) to measure 
 The distance is the minimum number of single-character edits needed to transform one word into another.
 These edits include:
 
-* **Insertions:** Adding a character ("headphone" → "headphones")
-* **Deletions:** Removing a character ("headphones" → "headphone")
-* **Substitutions:** Replacing a character ("headphones" → "headphonez")
+- **Insertions:** Adding a character ("headphone" → "headphones")
+- **Deletions:** Removing a character ("headphones" → "headphone")
+- **Substitutions:** Replacing a character ("headphones" → "headphonez")
 
 For example, the Levenshtein distance between "headphons" and "headphones" is 1 (one insertion needed).
 
@@ -38,8 +38,8 @@ By default, a transposition counts as 1 edit.
 Setting `transpositionCostOne: false` counts transpositions as two edits (one deletion + one insertion) instead.
 
 For example, searching for "haedphone" to find "headphone":
-* With `transpositionCostOne: true`: Distance is 1 (swap counts as 1)
-* Without `transpositionCostOne`: Distance is 2 (swap "ae" → "ea" costs 2)
+- With `transpositionCostOne: true`: Distance is 1 (swap counts as 1)
+- Without `transpositionCostOne`: Distance is 2 (swap "ae" → "ea" costs 2)
 
 This is useful when users commonly transpose characters while typing quickly.
 
@@ -50,9 +50,9 @@ variation of the search term. This combines the typo tolerance of fuzzy matching
 matching for incomplete words.
 
 For example, searching for "headpho" with `prefix: true`:
-* Matches "headphones" (prefix match)
-* Matches "headphone" (prefix match)
-* Matches "haedphones" with `transpositionCostOne: true` (fuzzy prefix, handles typo + incomplete word)
+- Matches "headphones" (prefix match)
+- Matches "headphone" (prefix match)
+- Matches "haedphones" with `transpositionCostOne: true` (fuzzy prefix, handles typo + incomplete word)
 
 This is particularly useful for search-as-you-type autocomplete where users may have typos
 in partially typed words.

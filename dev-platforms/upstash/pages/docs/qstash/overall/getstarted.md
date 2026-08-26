@@ -10,20 +10,22 @@ QStash is a **serverless messaging and scheduling solution**. It fits easily int
 
 Instead of calling an endpoint directly, QStash acts as a middleman between you and an API to guarantee delivery, perform automatic retries on failure, and more.
 
-  <img />
+<Frame>
+  <img src="/img/qstash/qstash-benefits.png" />
+</Frame>
 
 <Tip href="/workflow/getstarted" >
 
-We have a new SDK called [Upstash Workflow](/docs/workflow/getstarted).
+We have a new SDK called [Upstash Workflow](/workflow/getstarted).
 
 **Upstash Workflow SDK** is **QStash** simplified for your complex applications
 
-* Skip the details of preparing a complex dependent endpoints.
-* Focus on the essential parts.
-* Enjoy automatic retries and delivery guarantees.
-* Avoid platform-specific timeouts.
+- Skip the details of preparing a complex dependent endpoints.
+- Focus on the essential parts.
+- Enjoy automatic retries and delivery guarantees.
+- Avoid platform-specific timeouts.
 
-Check out [Upstash Workflow Getting Started](/docs/workflow/getstarted) for more.
+Check out [Upstash Workflow Getting Started](/workflow/getstarted) for more.
 </Tip>
 
 ## Quick Start
@@ -63,10 +65,12 @@ For example, you can use this URL to test your messages: [https://firstqstashmes
 ### Get your QStash Token
 
 Go to the [QStash tab in the Upstash Console](https://console.upstash.com/qstash),
-pick the region you want to use (see [Select a Region](/docs/qstash/howto/multi-region)),
+pick the region you want to use (see [Select a Region](/qstash/howto/multi-region)),
 and copy the `QSTASH_TOKEN` from the **Quickstart** section.
 
-  <img />
+<Frame>
+  <img src="/img/qstash/console-quickstart-env.jpg" />
+</Frame>
 
 ### Publish a message
 
@@ -75,7 +79,7 @@ transmitted in the http request body. We do not impose any restrictions other
 than a size limit of 1 MB (which can be customized at your request).
 
 In addition to the request body itself, you can also send HTTP headers. Learn
-more about this in the [message publishing section](/docs/qstash/howto/publishing).
+more about this in the [message publishing section](/qstash/howto/publishing).
 
 <CodeGroup>
 ```bash cURL
@@ -103,16 +107,20 @@ have to make these requests manually.
 
 You should receive a response with a unique message ID.
 
-  <img />
+<Frame>
+  <img src="/img/qstash/reqcatcher.png" />
+</Frame>
 
 ### Check Message Status
 
 Head over to [Upstash Console](https://console.upstash.com/qstash) and go to the
 `Logs` tab where you can see your message activities.
 
-  <img />
+<Frame>
+  <img src="/img/qstash/log.png" />
+</Frame>
 
-Learn more about different states [here](/docs/qstash/howto/debug-logs).
+Learn more about different states [here](/qstash/howto/debug-logs).
 
 ## Features and Use Cases
 

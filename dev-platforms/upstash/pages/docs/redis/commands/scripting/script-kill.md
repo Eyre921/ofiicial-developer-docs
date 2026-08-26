@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/scripting/script-kill
 path: docs/redis/commands/scripting/script-kill
 ---
 
+> Stop a running read-only script.
+
 Use `SCRIPT KILL` to stop a running read-only script.
 
-Only a script that has not yet written anything can be killed: stopping one halfway through its writes would leave the dataset in a state that no atomic execution could produce, so Redis refuses and the server has to be restarted instead. This is the main reason to keep scripts short and to use [`EVAL_RO`](/docs/redis/commands/scripting/eval-ro) wherever a script only reads.
+Only a script that has not yet written anything can be killed: stopping one halfway through its writes would leave the dataset in a state that no atomic execution could produce, so Redis refuses and the server has to be restarted instead. This is the main reason to keep scripts short and to use [`EVAL_RO`](/redis/commands/scripting/eval-ro) wherever a script only reads.
 
 The current Upstash deployment recognizes the command but has no interruptible running-script state to act on, so it replies with a `NOTBUSY` error.
 
@@ -22,8 +24,8 @@ This command takes no arguments.
 
 ## Important points
 
-* The current deployment recognizes this command but reports `NOTBUSY` because it does not expose an interruptible running-script state.
-* As with Redis, a script that has already performed writes must not be killed because doing so would violate atomicity.
+- The current deployment recognizes this command but reports `NOTBUSY` because it does not expose an interruptible running-script state.
+- As with Redis, a script that has already performed writes must not be killed because doing so would violate atomicity.
 
 ## Response
 

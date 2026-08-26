@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/set/sunionstore
 path: docs/redis/commands/set/sunionstore
 ---
 
+> Store set union.
+
 Use `SUNIONSTORE` to compute the union of sets and store it in another key.
 
 The destination is overwritten if it exists and deleted when the union is empty, and the reply is the number of members stored. Materializing the union is the usual way to build a combined audience once and then intersect or difference it with other sets, instead of recomputing it on every query.

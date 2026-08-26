@@ -54020,6 +54020,166 @@ const { embedding } = await embed({
 | `mistral-embed` | 1024               |
 
 ---
+title: Z.AI
+description: Learn how to use Z.AI's GLM models with the AI SDK.
+---
+
+# Z.AI Provider
+
+The [Z.AI](https://z.ai/) provider gives you access to GLM language and vision models through the Z.AI API.
+
+API keys can be created in the [Z.AI API key console](https://z.ai/manage-apikey/apikey-list).
+
+## Setup
+
+The Z.AI provider is available through the `@ai-sdk/zai` package. Install it with:
+
+<InstallPackages packages="@ai-sdk/zai" />
+
+Set the `ZAI_API_KEY` environment variable:
+
+```bash
+ZAI_API_KEY=your-api-key
+```
+
+## Provider Instance
+
+Import the default provider instance `zai` from `@ai-sdk/zai`:
+
+```ts
+import { zai } from '@ai-sdk/zai';
+```
+
+For custom configuration, use `createZai`:
+
+```ts
+import { createZai } from '@ai-sdk/zai';
+
+const zai = createZai({
+  apiKey: process.env.ZAI_API_KEY,
+  baseURL: 'https://api.z.ai/api/paas/v4',
+});
+```
+
+The provider accepts these optional settings:
+
+- **apiKey** _string_
+
+  API key sent in the `Authorization` header. It defaults to the `ZAI_API_KEY` environment variable.
+
+- **baseURL** _string_
+
+  URL prefix for API requests. It defaults to `https://api.z.ai/api/paas/v4`.
+
+- **headers** _Record&lt;string, string&gt;_
+
+  Additional request headers.
+
+- **fetch** _FetchFunction_
+
+  Custom fetch implementation, for example to intercept requests in middleware.
+
+## Language Models
+
+Create a language model by passing its model id to the provider:
+
+```ts
+import { zai } from '@ai-sdk/zai';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: zai('glm-5.3'),
+  prompt: 'Explain quantum entanglement in simple terms.',
+});
+```
+
+Current model families include GLM 5, GLM 4.7, GLM 4.6, GLM 4.5, and the GLM vision models. Model availability changes over time; see the [Z.AI model documentation](https://docs.z.ai/guides/llm) for the current catalog.
+
+The provider supports:
+
+- text generation and streaming
+- reasoning output and reasoning history
+- function calling, including incremental tool-call streaming
+- JSON object output
+- URL-based image and video inputs on compatible vision models
+
+## Provider Options
+
+Z.AI-specific options can be passed through `providerOptions.zai`:
+
+```ts
+import { zai } from '@ai-sdk/zai';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: zai('glm-5.3'),
+  prompt: 'Compare two approaches to implementing a rate limiter.',
+  providerOptions: {
+    zai: {
+      thinking: { type: 'enabled', clearThinking: true },
+      reasoningEffort: 'high',
+      requestId: 'request-123456',
+      userId: 'user-123456',
+    },
+  },
+});
+```
+
+The following options are available:
+
+- **doSample** _boolean_
+
+  Enables sampling. When disabled, `temperature` and `topP` do not take effect.
+
+- **thinking** _object_
+
+  Controls thinking with `type: 'enabled' | 'disabled'`. Set `clearThinking` to `false` to retain reasoning from previous assistant messages.
+
+- **reasoningEffort** _'none' | 'minimal' | 'low' | 'medium' | 'high' | 'xhigh' | 'max'_
+
+  Controls reasoning effort on supported models.
+
+- **toolStream** _boolean_
+
+  Enables incremental function-call argument streaming on supported models.
+
+- **requestId** _string_
+
+  A caller-provided request id between 6 and 64 characters.
+
+- **userId** _string_
+
+  A non-sensitive end-user id between 6 and 128 characters.
+
+## Streaming Tool Calls
+
+Enable `toolStream` when you want supported GLM models to stream function-call arguments incrementally:
+
+```ts
+import { zai } from '@ai-sdk/zai';
+import { streamText, tool } from 'ai';
+import { z } from 'zod';
+
+const result = streamText({
+  model: zai('glm-5.3'),
+  prompt: 'What is the weather in San Francisco?',
+  tools: {
+    weather: tool({
+      description: 'Get the weather for a city',
+      inputSchema: z.object({ city: z.string() }),
+    }),
+  },
+  providerOptions: {
+    zai: { toolStream: true },
+  },
+});
+
+for await (const part of result.fullStream) {
+  console.log(part);
+}
+```
+
+---
 title: Together.ai
 description: Learn how to use Together.ai's models with the AI SDK.
 ---
@@ -54868,6 +55028,17 @@ endpoints.
 
 The following optional provider options are available for DeepSeek models:
 
+- `logprobs` _boolean_
+
+  Optional. Returns log probabilities for generated content and reasoning
+  tokens in `providerMetadata.deepseek.logprobs`.
+
+- `topLogprobs` _number_
+
+  Optional. Returns the specified number of most likely tokens at each token
+  position. Accepts values from `0` through `20` and automatically enables
+  `logprobs`.
+
 - `userId` _string_
 
   Optional. An opaque end-user identifier that DeepSeek uses for content-safety
@@ -54892,7 +55063,14 @@ also mapped to documented values: `thinking.type: 'adaptive'` becomes
 `reasoningEffort: 'xhigh'` becomes `'max'`. Each mapping returns a compatibility
 warning so callers can migrate to a canonical value.
 
-```ts highlight="7-12"
+DeepSeek has deprecated the top-level `frequencyPenalty` and `presencePenalty`
+settings. The provider omits these settings and returns a deprecation warning
+when they are used. `temperature` and `topP` have no effect while thinking is
+enabled, including the default thinking mode for DeepSeek V4 models, so the
+provider omits them with an unsupported warning. Explicitly set
+`thinking.type` to `'disabled'` to use `temperature` and `topP`.
+
+```ts highlight="7-13"
 import { deepseek, type DeepSeekChatOptions } from '@ai-sdk/deepseek';
 import { generateText } from 'ai';
 
@@ -54908,6 +55086,96 @@ const { text, reasoning } = await generateText({
   },
 });
 ```
+
+### Message Names
+
+DeepSeek supports optional participant names on system, user, and assistant
+messages. Set `providerOptions.deepseek.name` on each message that should
+include a name:
+
+```ts
+import {
+  deepSeek,
+  type DeepSeekMessageProviderOptions,
+} from '@ai-sdk/deepseek';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: deepSeek('deepseek-chat'),
+  instructions: {
+    role: 'system',
+    content: 'Help the customer plan a short trip.',
+    providerOptions: {
+      deepseek: {
+        name: 'travel_planner',
+      } satisfies DeepSeekMessageProviderOptions,
+    },
+  },
+  messages: [
+    {
+      role: 'user',
+      content: 'I want to visit Lisbon for a weekend.',
+      providerOptions: {
+        deepseek: {
+          name: 'customer',
+        } satisfies DeepSeekMessageProviderOptions,
+      },
+    },
+    {
+      role: 'assistant',
+      content: 'What kinds of activities do you enjoy?',
+      providerOptions: {
+        deepseek: {
+          name: 'travel_planner',
+        } satisfies DeepSeekMessageProviderOptions,
+      },
+    },
+    {
+      role: 'user',
+      content: 'Food, architecture, and walking.',
+      providerOptions: {
+        deepseek: {
+          name: 'customer',
+        } satisfies DeepSeekMessageProviderOptions,
+      },
+    },
+  ],
+});
+```
+
+The same message option works with `streamText`:
+
+```ts
+import {
+  deepSeek,
+  type DeepSeekMessageProviderOptions,
+} from '@ai-sdk/deepseek';
+import { streamText } from 'ai';
+
+const result = streamText({
+  model: deepSeek('deepseek-chat'),
+  messages: [
+    {
+      role: 'user',
+      content: 'Suggest a name for my neighborhood book club.',
+      providerOptions: {
+        deepseek: {
+          name: 'organizer',
+        } satisfies DeepSeekMessageProviderOptions,
+      },
+    },
+  ],
+});
+
+for await (const textPart of result.textStream) {
+  process.stdout.write(textPart);
+}
+```
+
+Names are omitted when the option is not set. The `name` value must be a
+string. DeepSeek does not support names on tool messages, so the provider
+ignores that placement and returns an unsupported-feature warning. Avoid
+including unnecessary personal or identifying information in message names.
 
 ### Reasoning
 
@@ -55034,6 +55302,50 @@ DeepSeek preserves provider-specific response fields in
 
 These fields remain in provider metadata because they are specific to
 DeepSeek's Chat Completions response rather than shared AI SDK result fields.
+
+### Vision File Parts
+
+For inline images or image URLs, use file-part provider options to select the
+image processing detail. DeepSeek supports `low`, `high`, `original`, and
+`auto`:
+
+```ts highlight="2,13-17"
+import {
+  deepseek,
+  type DeepSeekFilePartProviderOptions,
+} from '@ai-sdk/deepseek';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: deepseek('deepseek-v4-flash-vision-exp'),
+  messages: [
+    {
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Describe this image.' },
+        {
+          type: 'file',
+          data: new URL('https://example.com/image.webp'),
+          mediaType: 'image/webp',
+          providerOptions: {
+            deepseek: {
+              imageDetail: 'low',
+            } satisfies DeepSeekFilePartProviderOptions,
+          },
+        },
+      ],
+    },
+  ],
+});
+```
+
+Set `fileData: true` on an inline image file part to use DeepSeek's
+`file_data` content-part representation. This preserves the file part's
+`filename`. `fileData` cannot be used with image URLs or `imageDetail`.
+
+DeepSeek accepts JPEG, PNG, GIF, and WebP image inputs. HTTP image URLs can be
+at most 8,192 characters.
+
 ## Model Capabilities
 
 | Model                          | Text Generation     | Object Generation   | Image Input         | Tool Usage          | Tool Streaming      |
@@ -55058,7 +55370,7 @@ description: Learn how to use Moonshot AI models with the AI SDK.
 
 The [Moonshot AI](https://www.moonshot.ai) provider offers access to powerful language models through the Moonshot API, including the Kimi series of models with reasoning capabilities.
 
-API keys can be obtained from the [Moonshot Platform](https://platform.moonshot.ai).
+API keys can be obtained from the [Kimi API Platform](https://platform.kimi.ai/console/api-keys).
 
 ## Setup
 
@@ -55142,10 +55454,190 @@ const model = moonshotai.languageModel('kimi-k3');
 Moonshot AI language models can be used in the `streamText` function
 (see [AI SDK Core](/docs/ai-sdk-core)).
 
+Moonshot V1 models support the standard `temperature`, `topP`,
+`presencePenalty`, and `frequencyPenalty` settings. Kimi models use fixed
+sampling parameters; the provider omits those settings for Kimi requests and
+returns an unsupported-setting warning when they are supplied.
+
+Kimi K3 supports `toolChoice: 'required'`. Kimi K2.6 and the Kimi K2.7 Code
+models reject that setting, so the provider omits it and returns an
+unsupported-setting warning for those model IDs. Other tool choice modes are
+passed through unchanged.
+
+### Log Probabilities
+
+Moonshot V1 models can return token log probabilities through provider
+options. Set `logprobs` to `true`, or set `topLogprobs` to automatically enable
+log probabilities and request up to 20 alternatives per token:
+
+```ts
+import { moonshotai, type MoonshotAIProviderOptions } from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: moonshotai('moonshot-v1-8k'),
+  prompt: 'Reply with one word that means happy.',
+  providerOptions: {
+    moonshotai: {
+      topLogprobs: 3,
+    } satisfies MoonshotAIProviderOptions,
+  },
+});
+
+console.log(result.providerMetadata?.moonshotai.logprobs);
+```
+
+The complete `content` logprob objects are available in Moonshot provider
+metadata for both generated and streamed responses.
+
+### Structured Outputs
+
+Native structured outputs are enabled for Kimi K models and the official
+Moonshot V1 text, auto, and vision models.
+
+The provider normalizes schemas to Moonshot's supported JSON Schema subset and
+enables strict schema validation by default.
+
+For unknown custom model IDs, object generation falls back to JSON mode instead
+of schema-constrained decoding.
+
+For best reliability, include your schema requirements in the prompt in
+addition to passing the schema to `generateObject`.
+
+### Message Names
+
+Moonshot AI supports optional participant names on system, user, and assistant
+messages. Set `providerOptions.moonshotai.name` on each message that should
+include a name:
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAIMessageProviderOptions,
+} from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: moonshotai('kimi-k3'),
+  messages: [
+    {
+      role: 'user',
+      content: 'Suggest a name for my neighborhood book club.',
+      providerOptions: {
+        moonshotai: {
+          name: 'organizer',
+        } satisfies MoonshotAIMessageProviderOptions,
+      },
+    },
+  ],
+});
+```
+
+The same option works with `streamText`. Names are omitted when unset. The
+provider ignores a name on a tool message and returns a warning. Avoid including
+unnecessary personal or identifying information in message names.
+
+### Partial Mode
+
+Moonshot AI [Partial Mode](https://platform.moonshot.ai/docs/api/partial)
+continues a prefix supplied as the final assistant message. Set
+`providerOptions.moonshotai.partial` to `true` on that message:
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAIAssistantMessageProviderOptions,
+} from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: moonshotai('kimi-k3'),
+  messages: [
+    {
+      role: 'user',
+      content: 'Complete this sentence about the night sky.',
+    },
+    {
+      role: 'assistant',
+      content: 'The stars above the city',
+      providerOptions: {
+        moonshotai: {
+          partial: true,
+        } satisfies MoonshotAIAssistantMessageProviderOptions,
+      },
+    },
+  ],
+});
+```
+
+The partial assistant message must be the final prompt message. Partial Mode
+cannot be combined with JSON object response format; JSON schema response format
+is supported.
+
+### Kimi K3 Dynamic Tool Loading
+
+Kimi K3 can load complete function tool definitions at arbitrary positions in
+a conversation. Add `tools` to the Moonshot provider options of an empty system
+message. The provider sends `{ role: 'system', tools: [...] }` without a
+`content` field and normalizes each input schema to Moonshot Flavored JSON
+Schema.
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAISystemMessageProviderOptions,
+} from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: moonshotai('kimi-k3'),
+  allowSystemInMessages: true,
+  messages: [
+    { role: 'user', content: 'Help me prepare for a trip.' },
+    { role: 'assistant', content: 'I can help with that.' },
+    {
+      role: 'system',
+      content: '',
+      providerOptions: {
+        moonshotai: {
+          tools: [
+            {
+              type: 'function',
+              name: 'get_weather',
+              description: 'Get the current weather for a city',
+              inputSchema: {
+                type: 'object',
+                properties: { city: { type: 'string' } },
+                required: ['city'],
+                additionalProperties: false,
+              },
+              strict: true,
+            },
+          ],
+        } satisfies MoonshotAISystemMessageProviderOptions,
+      },
+    },
+    { role: 'user', content: 'What is the weather in San Francisco?' },
+  ],
+});
+```
+
+Each entry must include its complete function definition. Top-level tools and
+dynamically loaded tools can be used in the same request. Known unsupported
+official models omit the dynamic message and return a warning; custom model IDs
+retain it for forward compatibility.
+
+<Note>
+  Keep dynamic system messages in trusted server-side state. Tool names,
+  descriptions, and schemas are sent to Moonshot and consume context. Dynamic
+  declarations are request-local, so retain earlier declarations in later
+  requests while those tools should remain available.
+</Note>
+
 ### Reasoning Models
 
-Kimi K3 always reasons. It currently supports only the `max` reasoning effort,
-which you can configure through provider options:
+Kimi K3 always reasons and supports `low`, `high`, and `max` reasoning effort.
+The default is `max`. You can configure the effort through provider options:
 
 ```ts
 import { moonshotai, type MoonshotAIProviderOptions } from '@ai-sdk/moonshotai';
@@ -55155,7 +55647,7 @@ const { text, reasoningText } = await generateText({
   model: moonshotai('kimi-k3'),
   providerOptions: {
     moonshotai: {
-      reasoningEffort: 'max',
+      reasoningEffort: 'high',
     } satisfies MoonshotAIProviderOptions,
   },
   prompt: 'How many "r"s are in the word "strawberry"?',
@@ -55165,73 +55657,185 @@ console.log(reasoningText);
 console.log(text);
 ```
 
-Moonshot AI offers thinking models like `kimi-k2-thinking` that generate intermediate reasoning tokens before their final response. The reasoning output is streamed through the standard AI SDK reasoning parts.
+Kimi K2.5 and K2.6 can enable or disable thinking. Kimi K2.7 always has
+thinking and preserved reasoning enabled. Keep reasoning history in multi-turn
+Kimi K2.7 conversations. The reasoning output is exposed through the standard
+AI SDK reasoning parts.
 
 ```ts
 import { moonshotai, type MoonshotAIProviderOptions } from '@ai-sdk/moonshotai';
-import { generateText } from 'ai';
+import { streamText } from 'ai';
 
-const { text, reasoningText } = await generateText({
-  model: moonshotai('kimi-k2-thinking'),
+const result = streamText({
+  model: moonshotai('kimi-k2.7-code'),
   providerOptions: {
     moonshotai: {
-      thinking: { type: 'enabled', budgetTokens: 2048 },
-      reasoningHistory: 'interleaved',
+      thinking: { type: 'enabled' },
+      reasoningHistory: 'preserved',
     } satisfies MoonshotAIProviderOptions,
   },
   prompt: 'How many "r"s are in the word "strawberry"?',
 });
 
-console.log(reasoningText);
-console.log(text);
+for await (const part of result.fullStream) {
+  if (part.type === 'reasoning-delta') {
+    process.stdout.write(part.text);
+  } else if (part.type === 'text-delta') {
+    process.stdout.write(part.text);
+  }
+}
 ```
 
 See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details on how to integrate reasoning into your chatbot.
+
+### Predicted Outputs
+
+You can provide static predicted content when much of the expected response is
+already known. Moonshot AI can use the prediction to accelerate the response
+while still generating any changed content:
+
+```ts
+import { moonshotai, type MoonshotAIProviderOptions } from '@ai-sdk/moonshotai';
+import { streamText } from 'ai';
+
+const source = `export function greet(name: string) {
+  return \`Hello, \${name}!\`;
+}`;
+
+const result = streamText({
+  model: moonshotai('kimi-k3'),
+  messages: [
+    {
+      role: 'user',
+      content:
+        'Change the function to say "Welcome" instead of "Hello". Respond only with the updated code.',
+    },
+    { role: 'user', content: source },
+  ],
+  providerOptions: {
+    moonshotai: {
+      prediction: {
+        type: 'content',
+        content: source,
+      },
+    } satisfies MoonshotAIProviderOptions,
+  },
+});
+
+for await (const textPart of result.textStream) {
+  process.stdout.write(textPart);
+}
+```
+
+The `content` can also be an array of text parts:
+
+```ts
+prediction: {
+  type: 'content',
+  content: [
+    { type: 'text', text: 'First known section' },
+    { type: 'text', text: 'Second known section' },
+  ],
+}
+```
+
+<Note>
+  Predicted content is sent to Moonshot AI as part of the request. Avoid
+  including sensitive or proprietary text unless you intend to share it with the
+  provider.
+</Note>
 
 ### Provider Options
 
 The following optional provider options are available for Moonshot AI language models:
 
-- **reasoningEffort** _'max'_
+- **strictJsonSchema** _boolean_
 
-  Reasoning effort for Kimi K3. Currently, only `'max'` is supported.
+  Whether to use strict JSON schema validation for structured outputs. Defaults
+  to `true`.
+
+- **logprobs** _boolean_
+
+  Whether to return log probabilities for generated tokens.
+
+- **topLogprobs** _number_
+
+  Number of most likely tokens to return at each token position, from 0 to 20.
+  Setting this option automatically enables `logprobs`.
+
+- **reasoningEffort** _'low' | 'high' | 'max'_
+
+  Reasoning effort for Kimi K3. Defaults to `'max'`.
+
+- **prediction** _&#123; type: 'content'; content: string | Array&lt;&#123; type: 'text'; text: string &#125;&gt; &#125;_
+
+  Supplies static predicted output that can accelerate requests where most of
+  the response is already known.
 
 - **thinking** _object_
 
-  Configuration for thinking/reasoning models like Kimi K2 Thinking.
+  Configuration for Kimi K2.5 and K2.6. Kimi K2.7 accepts only `enabled`
+  because its thinking cannot be disabled. Kimi K3 does not accept this field.
   - **type** _'enabled' | 'disabled'_
 
-    Whether to enable thinking mode
+    Whether to enable thinking mode. For Kimi K2.7 Code, only `'enabled'` is
+    accepted.
 
   - **budgetTokens** _number_
 
-    Maximum number of tokens for thinking (minimum 1024)
+    Deprecated. Moonshot Chat Completions does not support thinking budgets.
+    The provider omits this value and returns a warning. It remains accepted
+    for backwards compatibility.
 
 - **reasoningHistory** _'disabled' | 'interleaved' | 'preserved'_
 
-  Controls how reasoning history is handled in multi-turn conversations:
-  - `'disabled'`: Remove reasoning from history
-  - `'interleaved'`: Include reasoning between tool calls within a single turn
-  - `'preserved'`: Keep all reasoning in history
+  Controls preserved reasoning behavior in multi-turn conversations:
+  - `'disabled'` and `'interleaved'` are retained for compatibility. They do
+    not change the request, so the model's server-default behavior applies.
+  - `'preserved'` maps to `thinking.keep: 'all'` for Kimi K2.6. Kimi K2.7 and
+    K3 preserve reasoning by default.
+
+### Chat Response Metadata
+
+Moonshot AI preserves provider-specific response fields in
+`providerMetadata.moonshotai` for generated and streamed responses:
+
+- `responseObject`: `chat.completion` or `chat.completion.chunk`
+- `choiceIndex`: the selected response choice index
+- `messageRole`: the response message role, when supplied
+- `toolCallTypes`: the tool-call type for each returned call
+
+These fields remain in provider metadata because they are specific to
+Moonshot AI's Chat Completions response rather than shared AI SDK result
+fields.
 
 ## Model Capabilities
 
-| Model                    | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ------------------------ | ------------------- | ------------------- | ------------------- | ------------------- |
-| `moonshot-v1-8k`         | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `moonshot-v1-32k`        | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `moonshot-v1-128k`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2`                | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2.5`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k3`                | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2-thinking`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2-thinking-turbo` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2-turbo`          | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+The Moonshot V1 series and Kimi K2.5 are unavailable to newly registered users
+and are scheduled for full platform sunset on August 31, 2026. They remain
+listed because they are still part of the Chat Completions API model surface,
+but new applications should use Kimi K3, Kimi K2.7 Code, or Kimi K2.6.
+
+| Model                             | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
+| --------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `moonshot-v1-auto`                | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-8k`                  | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-32k`                 | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-128k`                | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-8k-vision-preview`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-32k-vision-preview`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-128k-vision-preview` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2.5`                       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2.6`                       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2.7-code`                  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2.7-code-highspeed`        | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k3`                         | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 
 <Note>
-  Please see the [Moonshot AI docs](https://platform.moonshot.ai/docs/intro) for
-  a full list of available models. You can also pass any available provider
-  model ID as a string if needed.
+  See the [Kimi model list](https://platform.kimi.ai/docs/models) and [model
+  parameter reference](https://platform.kimi.ai/docs/api/models-overview) for
+  current availability and model-specific constraints. You can also pass custom
+  or retired provider model IDs as strings when needed.
 </Note>
 
 ---
@@ -80910,9 +81514,9 @@ The Tako Search tool supports these optional configuration options:
   - **includeContents** _boolean_ - Inline each page's extracted full text in `content`. **articleContentMaxChars** caps it, defaulting to 30,000 characters (maximum 1,000,000).
 - **sources.data** _object_ - Configure data results:
   - **count** _number_ - Maximum data results, 1-20. Defaults to 5.
-  - **includeContents** _boolean_ - Inline each card's underlying rows in `content.dataset` as typed, unit-labeled columns.
+  - **includeContents** _boolean_ - Inline each card's underlying rows in `content.dataset` as typed, unit-labeled columns. This adds a data surcharge based on the row count and dataset source. To estimate cost, first search with `includeContents: false` and inspect `cards.content.export_pricing`. Because this applies to every returned card, use `count` and `maxRows` to control cost.
   - **contentFormat** _'json_compact' | 'json_records' | 'csv' | 'card_json'_ - Serialization for inlined card data. Defaults to `'json_compact'`.
-  - **maxRows** _number_ - Row cap for inlined card data. Omit to use your account's default inline cap (20 rows on the standard plan); maximum 2,000.
+  - **maxRows** _number_ - Row cap per result. Omit to use the allowance in `cards.content.export_pricing`. A data surcharge applies per 1,000 exported rows; lower values reduce cost.
   - **nodeIds** _string[]_ - Data Graph node IDs to prioritize. Up to 20.
   - **strict** _boolean_ - Only return cards matching `nodeIds`. Requires at least one `nodeIds` value.
 - **location** _object_ - End-user `{ latitude, longitude }` coordinates for localized results.
@@ -99721,6 +100325,166 @@ const { embedding } = await embed({
 | `mistral-embed` | 1024               |
 
 ---
+title: Z.AI
+description: Learn how to use Z.AI's GLM models with the AI SDK.
+---
+
+# Z.AI Provider
+
+The [Z.AI](https://z.ai/) provider gives you access to GLM language and vision models through the Z.AI API.
+
+API keys can be created in the [Z.AI API key console](https://z.ai/manage-apikey/apikey-list).
+
+## Setup
+
+The Z.AI provider is available through the `@ai-sdk/zai` package. Install it with:
+
+<InstallPackages packages="@ai-sdk/zai" />
+
+Set the `ZAI_API_KEY` environment variable:
+
+```bash
+ZAI_API_KEY=your-api-key
+```
+
+## Provider Instance
+
+Import the default provider instance `zai` from `@ai-sdk/zai`:
+
+```ts
+import { zai } from '@ai-sdk/zai';
+```
+
+For custom configuration, use `createZai`:
+
+```ts
+import { createZai } from '@ai-sdk/zai';
+
+const zai = createZai({
+  apiKey: process.env.ZAI_API_KEY,
+  baseURL: 'https://api.z.ai/api/paas/v4',
+});
+```
+
+The provider accepts these optional settings:
+
+- **apiKey** _string_
+
+  API key sent in the `Authorization` header. It defaults to the `ZAI_API_KEY` environment variable.
+
+- **baseURL** _string_
+
+  URL prefix for API requests. It defaults to `https://api.z.ai/api/paas/v4`.
+
+- **headers** _Record&lt;string, string&gt;_
+
+  Additional request headers.
+
+- **fetch** _FetchFunction_
+
+  Custom fetch implementation, for example to intercept requests in middleware.
+
+## Language Models
+
+Create a language model by passing its model id to the provider:
+
+```ts
+import { zai } from '@ai-sdk/zai';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: zai('glm-5.3'),
+  prompt: 'Explain quantum entanglement in simple terms.',
+});
+```
+
+Current model families include GLM 5, GLM 4.7, GLM 4.6, GLM 4.5, and the GLM vision models. Model availability changes over time; see the [Z.AI model documentation](https://docs.z.ai/guides/llm) for the current catalog.
+
+The provider supports:
+
+- text generation and streaming
+- reasoning output and reasoning history
+- function calling, including incremental tool-call streaming
+- JSON object output
+- URL-based image and video inputs on compatible vision models
+
+## Provider Options
+
+Z.AI-specific options can be passed through `providerOptions.zai`:
+
+```ts
+import { zai } from '@ai-sdk/zai';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: zai('glm-5.3'),
+  prompt: 'Compare two approaches to implementing a rate limiter.',
+  providerOptions: {
+    zai: {
+      thinking: { type: 'enabled', clearThinking: true },
+      reasoningEffort: 'high',
+      requestId: 'request-123456',
+      userId: 'user-123456',
+    },
+  },
+});
+```
+
+The following options are available:
+
+- **doSample** _boolean_
+
+  Enables sampling. When disabled, `temperature` and `topP` do not take effect.
+
+- **thinking** _object_
+
+  Controls thinking with `type: 'enabled' | 'disabled'`. Set `clearThinking` to `false` to retain reasoning from previous assistant messages.
+
+- **reasoningEffort** _'none' | 'minimal' | 'low' | 'medium' | 'high' | 'xhigh' | 'max'_
+
+  Controls reasoning effort on supported models.
+
+- **toolStream** _boolean_
+
+  Enables incremental function-call argument streaming on supported models.
+
+- **requestId** _string_
+
+  A caller-provided request id between 6 and 64 characters.
+
+- **userId** _string_
+
+  A non-sensitive end-user id between 6 and 128 characters.
+
+## Streaming Tool Calls
+
+Enable `toolStream` when you want supported GLM models to stream function-call arguments incrementally:
+
+```ts
+import { zai } from '@ai-sdk/zai';
+import { streamText, tool } from 'ai';
+import { z } from 'zod';
+
+const result = streamText({
+  model: zai('glm-5.3'),
+  prompt: 'What is the weather in San Francisco?',
+  tools: {
+    weather: tool({
+      description: 'Get the weather for a city',
+      inputSchema: z.object({ city: z.string() }),
+    }),
+  },
+  providerOptions: {
+    zai: { toolStream: true },
+  },
+});
+
+for await (const part of result.fullStream) {
+  console.log(part);
+}
+```
+
+---
 title: Together.ai
 description: Learn how to use Together.ai's models with the AI SDK.
 ---
@@ -101641,7 +102405,7 @@ description: Learn how to use Moonshot AI models with the AI SDK.
 
 The [Moonshot AI](https://www.moonshot.ai) provider offers access to powerful language models through the Moonshot API, including the Kimi series of models with reasoning capabilities.
 
-API keys can be obtained from the [Moonshot Platform](https://platform.moonshot.ai).
+API keys can be obtained from the [Kimi API Platform](https://platform.kimi.ai/console/api-keys).
 
 ## Setup
 
@@ -101725,18 +102489,176 @@ const model = moonshotai.languageModel('kimi-k3');
 Moonshot AI language models can be used in the `streamText` function
 (see [AI SDK Core](/docs/ai-sdk-core)).
 
+Moonshot V1 models support the standard `temperature`, `topP`,
+`presencePenalty`, and `frequencyPenalty` settings. Kimi models use fixed
+sampling parameters; the provider omits those settings for Kimi requests and
+returns an unsupported-setting warning when they are supplied.
+
+Kimi K3 supports `toolChoice: 'required'`. Kimi K2.6 and the Kimi K2.7 Code
+models reject that setting, so the provider omits it and returns an unsupported
+warning for those model IDs. Other tool choice modes are passed through
+unchanged.
+
 #### Structured Outputs
 
-Native structured outputs are enabled for Moonshot models whose model ID starts with `kimi-`.
+Native structured outputs are enabled for Kimi K models and the official
+Moonshot V1 text, auto, and vision models.
 
-For other Moonshot models, object generation falls back to JSON mode instead of schema-constrained decoding.
+The provider normalizes schemas to Moonshot's supported JSON Schema subset and
+enables strict schema validation by default.
+
+For unknown custom model IDs, object generation falls back to JSON mode instead
+of schema-constrained decoding.
 
 For best reliability, it is strongly recommended to include your schema requirements in your prompt in addition to passing the schema through `Output`.
 
+### Message Names
+
+Moonshot AI supports optional participant names on system, user, and assistant
+messages. Set `providerOptions.moonshotai.name` on each message that should
+include a name:
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAIMessageProviderOptions,
+} from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: moonshotai('kimi-k3'),
+  messages: [
+    {
+      role: 'user',
+      content: 'Suggest a name for my neighborhood book club.',
+      providerOptions: {
+        moonshotai: {
+          name: 'organizer',
+        } satisfies MoonshotAIMessageProviderOptions,
+      },
+    },
+  ],
+});
+```
+
+The same option works with `streamText`. Names are omitted when unset. The
+provider ignores a name on a tool message and returns an unsupported warning.
+Avoid including unnecessary personal or identifying information in message
+names.
+
+### Partial Mode
+
+Moonshot AI's [Partial Mode](https://platform.moonshot.ai/docs/api/partial)
+continues the content of a final assistant message. Set `partial: true` in that
+assistant message's provider options:
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAIAssistantMessageProviderOptions,
+} from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+
+const prefix = 'The sky is';
+
+const { text } = await generateText({
+  model: moonshotai('kimi-k3'),
+  messages: [
+    {
+      role: 'user',
+      content: 'Write one short sentence about the color of the sky.',
+    },
+    {
+      role: 'assistant',
+      content: prefix,
+      providerOptions: {
+        moonshotai: {
+          partial: true,
+        } satisfies MoonshotAIAssistantMessageProviderOptions,
+      },
+    },
+  ],
+});
+
+const completeResponse = prefix + text;
+```
+
+The partial message must be the final assistant message in the prompt. Moonshot
+returns only the continuation, so concatenate the prefix and generated text
+when you need the complete response.
+
+<Note>
+  Partial Mode cannot be combined with Moonshot's `json_object` response format.
+  The provider rejects that combination before sending the request. A supported
+  `json_schema` response remains available, but structured-output parsing
+  validates only the returned continuation.
+</Note>
+
+### Kimi K3 Dynamic Tool Loading
+
+Kimi K3 can load complete function tool definitions at arbitrary positions in
+a conversation. Add `tools` to the Moonshot provider options of an empty system
+message. The provider sends `{ role: 'system', tools: [...] }` without a
+`content` field and applies the same Moonshot Flavored JSON Schema normalization
+used for top-level tools.
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAISystemMessageProviderOptions,
+} from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: moonshotai('kimi-k3'),
+  allowSystemInMessages: true,
+  messages: [
+    { role: 'user', content: 'Help me prepare for a trip.' },
+    { role: 'assistant', content: 'I can help with that.' },
+    {
+      role: 'system',
+      content: '',
+      providerOptions: {
+        moonshotai: {
+          tools: [
+            {
+              type: 'function',
+              name: 'get_weather',
+              description: 'Get the current weather for a city',
+              inputSchema: {
+                type: 'object',
+                properties: { city: { type: 'string' } },
+                required: ['city'],
+                additionalProperties: false,
+              },
+              strict: true,
+            },
+          ],
+        } satisfies MoonshotAISystemMessageProviderOptions,
+      },
+    },
+    { role: 'user', content: 'What is the weather in San Francisco?' },
+  ],
+});
+```
+
+Each entry must include its complete function definition. Top-level tools and
+dynamically loaded tools can be used in the same request. Known unsupported
+official models omit the dynamic message and return an unsupported warning;
+custom model IDs retain it for forward compatibility.
+
+<Note>
+  Keep dynamic system messages in trusted server-side state. Tool names,
+  descriptions, and schemas are sent to Moonshot and consume context. Dynamic
+  declarations are request-local, so retain earlier declarations in later
+  requests while those tools should remain available. Appending messages also
+  preserves prompt-cache prefixes better than rewriting earlier declarations.
+</Note>
+
 ### Reasoning Models
 
-Kimi K3 always reasons. It currently supports only the `max` reasoning effort,
-which you can configure through provider options:
+Kimi K3 always reasons and supports `low`, `high`, and `max` reasoning effort.
+The default is `max`. You can configure the effort through provider options:
 
 ```ts
 import {
@@ -101749,7 +102671,7 @@ const { text, reasoningText } = await generateText({
   model: moonshotai('kimi-k3'),
   providerOptions: {
     moonshotai: {
-      reasoningEffort: 'max',
+      reasoningEffort: 'high',
     } satisfies MoonshotAILanguageModelOptions,
   },
   prompt: 'How many "r"s are in the word "strawberry"?',
@@ -101759,7 +102681,46 @@ console.log(reasoningText);
 console.log(text);
 ```
 
-Moonshot AI offers thinking models like `kimi-k2-thinking` that generate intermediate reasoning tokens before their final response. The reasoning output is streamed through the standard AI SDK reasoning parts.
+Kimi K2.5 and K2.6 can enable or disable thinking. Kimi K2.7 always has
+thinking and preserved reasoning enabled. Keep reasoning history in multi-turn
+Kimi K2.7 conversations. The reasoning output is exposed through the standard
+AI SDK reasoning parts.
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAILanguageModelOptions,
+} from '@ai-sdk/moonshotai';
+import { streamText } from 'ai';
+
+const result = streamText({
+  model: moonshotai('kimi-k2.7-code'),
+  providerOptions: {
+    moonshotai: {
+      thinking: { type: 'enabled' },
+      reasoningHistory: 'preserved',
+    } satisfies MoonshotAILanguageModelOptions,
+  },
+  prompt: 'How many "r"s are in the word "strawberry"?',
+});
+
+for await (const part of result.fullStream) {
+  if (part.type === 'reasoning-delta') {
+    process.stdout.write(part.text);
+  } else if (part.type === 'text-delta') {
+    process.stdout.write(part.text);
+  }
+}
+```
+
+See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details on how to integrate reasoning into your chatbot.
+
+### Log Probabilities
+
+Moonshot AI can return token log probabilities for Chat Completions. Set
+`logprobs` to request token probabilities, or set `topLogprobs` to request the
+most likely alternatives at each token position. Setting `topLogprobs`
+automatically enables `logprobs`.
 
 ```ts
 import {
@@ -101768,22 +102729,36 @@ import {
 } from '@ai-sdk/moonshotai';
 import { generateText } from 'ai';
 
-const { text, reasoningText } = await generateText({
-  model: moonshotai('kimi-k2-thinking'),
+const result = await generateText({
+  model: moonshotai('moonshot-v1-8k'),
+  prompt: 'Reply with one word that means happy.',
   providerOptions: {
     moonshotai: {
-      thinking: { type: 'enabled', budgetTokens: 2048 },
-      reasoningHistory: 'interleaved',
+      topLogprobs: 3,
     } satisfies MoonshotAILanguageModelOptions,
   },
-  prompt: 'How many "r"s are in the word "strawberry"?',
 });
 
-console.log(reasoningText);
-console.log(text);
+console.log(result.text);
+console.log(result.providerMetadata?.moonshotai?.logprobs);
 ```
 
-See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details on how to integrate reasoning into your chatbot.
+For `generateText`, log probabilities are available at
+`providerMetadata.moonshotai.logprobs`. For `streamText`, the accumulated log
+probabilities are included in the final finish part under the same metadata
+path.
+
+Moonshot documents the request options and OpenAI Chat Completions
+compatibility, but does not separately specify the log probability response
+schema. The provider therefore preserves the OpenAI-compatible `content`
+entries, including each token's `logprob`, nullable `bytes`, and
+`top_logprobs`.
+
+<Note>
+  Token probabilities and alternatives can significantly increase response size.
+  Request them only when needed, and avoid forwarding or persistently logging
+  provider metadata unless your application requires it.
+</Note>
 
 ### Video Input
 
@@ -101825,59 +102800,172 @@ You can also pass a URL. Since Moonshot AI does not fetch external URLs, the AI 
 ```
 
 <Note>
+  Supported image media types are `image/jpeg`, `image/png`, `image/gif`,
+  `image/webp`, `image/bmp`, `image/heic`, and `image/heif`. Supported video
+  media types are `video/mp4`, `video/mpeg`, `video/mov`, `video/avi`,
+  `video/x-flv`, `video/mpg`, `video/webm`, `video/wmv`, and `video/3gpp`. Other
+  image and video media types are rejected before a request is sent.
+</Note>
+
+<Note>
   Moonshot AI recommends videos up to 1080p. For larger videos, or videos you
   reuse across many requests, upload them with the [Moonshot Files
-  API](https://platform.moonshot.ai/docs/api/files) instead. Audio and PDF
-  inputs are not supported by Moonshot AI chat completions.
+  API](https://platform.kimi.ai/docs/api/files) instead. Audio and PDF inputs
+  are not supported by Moonshot AI chat completions.
+</Note>
+
+### Predicted Outputs
+
+You can provide static predicted content when much of the expected response is
+already known. Moonshot AI can use the prediction to accelerate the response
+while still generating any changed content:
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAILanguageModelOptions,
+} from '@ai-sdk/moonshotai';
+import { streamText } from 'ai';
+
+const source = `export function greet(name: string) {
+  return \`Hello, \${name}!\`;
+}`;
+
+const result = streamText({
+  model: moonshotai('kimi-k3'),
+  messages: [
+    {
+      role: 'user',
+      content:
+        'Change the function to say "Welcome" instead of "Hello". Respond only with the updated code.',
+    },
+    { role: 'user', content: source },
+  ],
+  providerOptions: {
+    moonshotai: {
+      prediction: {
+        type: 'content',
+        content: source,
+      },
+    } satisfies MoonshotAILanguageModelOptions,
+  },
+});
+
+for await (const textPart of result.textStream) {
+  process.stdout.write(textPart);
+}
+```
+
+The `content` can also be an array of text parts:
+
+```ts
+prediction: {
+  type: 'content',
+  content: [
+    { type: 'text', text: 'First known section' },
+    { type: 'text', text: 'Second known section' },
+  ],
+}
+```
+
+<Note>
+  Predicted content is sent to Moonshot AI as part of the request. Avoid
+  including sensitive or proprietary text unless you intend to share it with the
+  provider.
 </Note>
 
 ### Provider Options
 
 The following optional provider options are available for Moonshot AI language models:
 
-- **reasoningEffort** _'max'_
+- **strictJsonSchema** _boolean_
 
-  Reasoning effort for Kimi K3. Currently, only `'max'` is supported.
+  Whether to use strict JSON schema validation for structured outputs. Defaults
+  to `true`.
+
+- **logprobs** _boolean_
+
+  Whether to return log probabilities for generated tokens. Results are
+  available in `providerMetadata.moonshotai.logprobs`.
+
+- **topLogprobs** _number_
+
+  Number of most likely tokens to return at each token position. Accepts
+  integer values from `0` through `20` and automatically enables `logprobs`.
+
+- **reasoningEffort** _'low' | 'high' | 'max'_
+
+  Reasoning effort for Kimi K3. Defaults to `'max'`. You can also use the
+  generic `reasoning` setting.
+
+- **prediction** _&#123; type: 'content'; content: string | Array&lt;&#123; type: 'text'; text: string &#125;&gt; &#125;_
+
+  Supplies static predicted output that can accelerate requests where most of
+  the response is already known.
 
 - **thinking** _object_
 
-  Configuration for thinking/reasoning models like Kimi K2 Thinking.
+  Configuration for Kimi K2.5 and K2.6. Kimi K2.7 accepts only `enabled`
+  because its thinking cannot be disabled. Kimi K3 does not accept this field.
   - **type** _'enabled' | 'disabled'_
 
-    Whether to enable thinking mode
+    Whether to enable thinking mode. For Kimi K2.7 Code, only `'enabled'` is
+    accepted.
 
   - **budgetTokens** _number_
 
-    Maximum number of tokens for thinking (minimum 1024)
+    Deprecated. Moonshot Chat Completions does not support thinking budgets.
+    The provider omits this value and returns a warning. It remains accepted
+    for backwards compatibility.
 
 - **reasoningHistory** _'disabled' | 'interleaved' | 'preserved'_
 
-  Controls how reasoning history is handled in multi-turn conversations:
-  - `'disabled'`: Remove reasoning from history
-  - `'interleaved'`: Include reasoning between tool calls within a single turn
-  - `'preserved'`: Keep all reasoning in history. Mapped to Moonshot's
-    `thinking.keep: 'all'` request field.
+  Controls preserved reasoning behavior in multi-turn conversations:
+  - `'disabled'` and `'interleaved'` are retained for compatibility. They do
+    not change the request, so the model's server-default behavior applies.
+  - `'preserved'` maps to `thinking.keep: 'all'` for Kimi K2.6. Kimi K2.7 and
+    K3 preserve reasoning by default.
+
+### Chat Response Metadata
+
+Moonshot AI preserves provider-specific response fields in
+`providerMetadata.moonshotai` for generated and streamed responses:
+
+- `responseObject`: `chat.completion` or `chat.completion.chunk`
+- `choiceIndex`: the selected response choice index
+- `messageRole`: the response message role, when supplied
+- `toolCallTypes`: the tool-call type for each returned call
+
+These fields remain in provider metadata because they are specific to
+Moonshot's Chat Completions response rather than shared AI SDK result fields.
 
 ## Model Capabilities
 
-| Model                    | Image Input         | Video Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ------------------------ | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `moonshot-v1-8k`         | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `moonshot-v1-32k`        | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `moonshot-v1-128k`       | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2`                | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2.5`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2-thinking`       | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2-thinking-turbo` | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2-turbo`          | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2.6`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2.7-code`         | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k3`                | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+The Moonshot V1 series and Kimi K2.5 are unavailable to newly registered users
+and are scheduled for full platform sunset on August 31, 2026. They remain
+listed because they are still part of the Chat Completions API model surface,
+but new applications should use Kimi K3, Kimi K2.7 Code, or Kimi K2.6.
+
+| Model                             | Image Input         | Video Input         | Object Generation   | Tool Usage          | Tool Streaming      |
+| --------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `moonshot-v1-auto`                | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-8k`                  | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-32k`                 | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-128k`                | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-8k-vision-preview`   | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-32k-vision-preview`  | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-128k-vision-preview` | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2.5`                       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2.6`                       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2.7-code`                  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2.7-code-highspeed`        | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k3`                         | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 
 <Note>
-  Please see the [Moonshot AI docs](https://platform.moonshot.ai/docs/intro) for
-  a full list of available models. You can also pass any available provider
-  model ID as a string if needed.
+  See the [Kimi model list](https://platform.kimi.ai/docs/models) and [model
+  parameter reference](https://platform.kimi.ai/docs/api/models-overview) for
+  current availability and model-specific constraints. You can also pass custom
+  or retired provider model IDs as strings when needed.
 </Note>
 
 ---
@@ -115969,7 +117057,7 @@ const result = await generateText({
 
 ## Writing the Rego policy
 
-The policy emits a decision object. `reason` is optional and is surfaced back to the model (for `deny`) or to the human approver (for `requires-approval`).
+The policy emits a decision object. `reason` is optional and is surfaced back to the model (for `deny`) or to the human approver (for `requires-approval`). A manual approval request exposes it as `reason` in core results and as `approval.requestReason` in UI messages.
 
 ```rego
 package agent.call
@@ -116894,6 +117982,9 @@ export default function Chat() {
       if (part.state === 'approval-requested' && !part.approval.isAutomatic) {
         return (
           <div key={part.toolCallId}>
+            {part.approval.requestReason && (
+              <p>{part.approval.requestReason}</p>
+            )}
             <button
               onClick={() =>
                 addToolApprovalResponse({
@@ -116923,6 +118014,9 @@ export default function Chat() {
 ```
 
 Only call `addToolApprovalResponse` for manual approvals. Automatic approvals and denials already include approval state in the stream.
+When a manual approval status includes a reason, it is available as
+`part.approval.requestReason`. A reason supplied with
+`addToolApprovalResponse` is stored separately as `part.approval.reason`.
 
 ## Security Considerations
 
@@ -119513,14 +120607,15 @@ string or as an object with a `type` field:
 - `'denied'`: record an automatic denial by emitting approval request/response parts in the output, then surface a denied tool output
 - `'user-approval'`: emit an approval request and wait for an explicit response
 
-For automatic approvals and denials, you can also return an object to include a
-reason:
+Object statuses can also include a reason. For automatic approvals and denials,
+the reason is emitted on the approval response. For manual approval, the reason
+is emitted on the approval request so it can be shown to the approver:
 
 ```ts
 toolApproval: {
   runCommand: {
-    type: 'denied',
-    reason: 'blocked by policy',
+    type: 'user-approval',
+    reason: 'filesystem changes require operator review',
   },
 }
 ```
@@ -119610,6 +120705,7 @@ for (const part of result.content) {
   if (part.type === 'tool-approval-request' && !part.isAutomatic) {
     console.log(part.approvalId); // Unique ID for this approval request
     console.log(part.toolCall); // Contains toolName, input, etc.
+    console.log(part.reason); // Why this tool call requires approval
   }
 }
 ```
@@ -126530,7 +127626,7 @@ It is recommended to also add a try-catch block for errors that
 happen outside of the streaming.
 
 ```ts highlight="14-22"
-import { streamText } from 'ai';
+import { StreamProviderError, streamText } from 'ai';
 __PROVIDER_IMPORT__;
 
 try {
@@ -126545,7 +127641,15 @@ try {
 
       case 'error': {
         const error = part.error;
-        // handle error
+
+        if (StreamProviderError.isInstance(error)) {
+          console.error(error.message, {
+            type: error.type,
+            code: error.code,
+            statusCode: error.statusCode,
+            isRetryable: error.isRetryable,
+          });
+        }
         break;
       }
 
@@ -126565,6 +127669,13 @@ try {
   // handle error
 }
 ```
+
+Well-formed provider error events that arrive after streaming starts are
+normalized into [`StreamProviderError`](/docs/reference/ai-sdk-errors/ai-stream-provider-error)
+instances. The same instance is supplied to callbacks such as `onError` and to
+the `error` part in the full stream. The SDK does not automatically restart a
+partially consumed stream; use `isRetryable` to implement application-managed
+retries and decide how to handle any partial output.
 
 ## Handling stream aborts
 
@@ -133810,6 +134921,9 @@ export default function Chat() {
                   return (
                     <div key={part.toolCallId}>
                       <p>Get weather for {part.input.city}?</p>
+                      {part.approval.requestReason && (
+                        <p>{part.approval.requestReason}</p>
+                      )}
                       <button
                         onClick={() =>
                           addToolApprovalResponse({
@@ -133875,6 +134989,9 @@ decisions already arrive in the UI stream as `approval-requested` and
 `approval-responded` states, and denied executions continue to `output-denied`.
 If you return a `reason` from an automatic approval or denial, it is available
 as `part.approval.reason`.
+For manual approval requests, the reason for requiring approval is available as
+`part.approval.requestReason`. It remains separate from an optional response
+reason supplied to `addToolApprovalResponse`.
 
 ### Securing Approvals for Sensitive Tools
 
@@ -137513,6 +138630,164 @@ them to `UIMessageChunk` objects. Negative start indexes require a durable
 stream whose stored objects are already `UIMessageChunk` objects.
 
 ---
+title: generateVideo
+description: API Reference for durable video generation in workflows.
+---
+
+# `generateVideo()`
+
+Generates videos durably inside a workflow. The helper starts an asynchronous
+video generation job with a Workflow webhook URL, suspends the workflow until
+the provider sends a terminal notification, and then retrieves the completed
+result with one status request.
+
+Unlike [`experimental_generateVideo`](/docs/reference/ai-sdk-core/generate-video)
+from `ai`, this helper does not download provider-hosted videos. URL results
+remain URLs so your workflow can decide whether to persist, copy, or process
+them in another step without serializing the video bytes through workflow step
+boundaries.
+
+```ts
+import { experimental_generateVideo as generateVideo } from '@ai-sdk/workflow/video';
+
+export async function videoWorkflow(prompt: string) {
+  'use workflow';
+
+  // The workflow suspends while the video renders, consuming no compute.
+  const result = await generateVideo({
+    model: 'klingai/kling-v3.0-t2v',
+    prompt,
+  });
+
+  return result.videos;
+}
+```
+
+The selected model must support asynchronous start and status operations and
+provider webhooks. The helper must be called from a Workflow SDK workflow.
+
+## Import
+
+<Snippet
+  text={`import { experimental_generateVideo as generateVideo } from "@ai-sdk/workflow/video"`}
+  prompt={false}
+/>
+
+## Parameters
+
+The helper accepts the same parameters as `experimental_startVideo` from `ai`,
+except `webhookUrl` and `abortSignal`. It creates and manages the webhook URL.
+
+<PropertiesTable
+  content={[
+    {
+      name: 'model',
+      type: 'VideoModel',
+      isRequired: true,
+      description:
+        'The asynchronous video model to use. A string compatible with Vercel AI Gateway or a serializable provider model.',
+    },
+    {
+      name: 'prompt',
+      type: 'string | GenerateVideoPrompt',
+      isRequired: true,
+      description: 'The prompt or image prompt used to generate the video.',
+    },
+    {
+      name: 'n',
+      type: 'number',
+      isOptional: true,
+      description: 'Number of videos to generate. Default: 1.',
+    },
+    {
+      name: 'aspectRatio',
+      type: '`${number}:${number}` | "adaptive"',
+      isOptional: true,
+      description: 'Aspect ratio of the generated videos.',
+    },
+    {
+      name: 'resolution',
+      type: '`${number}x${number}`',
+      isOptional: true,
+      description: 'Resolution of the generated videos.',
+    },
+    {
+      name: 'duration',
+      type: 'number',
+      isOptional: true,
+      description: 'Duration of each generated video in seconds.',
+    },
+    {
+      name: 'maxVideosPerCall',
+      type: 'number',
+      isOptional: true,
+      description: 'Maximum number of videos that may be started in one call.',
+    },
+    {
+      name: 'fps',
+      type: 'number',
+      isOptional: true,
+      description: 'Frames per second for the generated videos.',
+    },
+    {
+      name: 'seed',
+      type: 'number',
+      isOptional: true,
+      description: 'Seed used for deterministic generation when supported.',
+    },
+    {
+      name: 'frameImages',
+      type: 'Array<{ image: DataContent; frameType: VideoModelV4FrameType }>',
+      isOptional: true,
+      description: 'Role-tagged first and last frame images.',
+    },
+    {
+      name: 'inputReferences',
+      type: 'Array<DataContent | { data: DataContent; mediaType?: string }>',
+      isOptional: true,
+      description: 'Reference images or videos for the generation.',
+    },
+    {
+      name: 'generateAudio',
+      type: 'boolean',
+      isOptional: true,
+      description: 'Whether to generate audio with the video.',
+    },
+    {
+      name: 'providerOptions',
+      type: 'ProviderOptions',
+      isOptional: true,
+      description: 'Additional provider-specific options.',
+    },
+    {
+      name: 'headers',
+      type: 'Record<string, string>',
+      isOptional: true,
+      description: 'Additional HTTP headers for start and status requests.',
+    },
+    {
+      name: 'maxRetries',
+      type: 'number',
+      isOptional: true,
+      description:
+        'Maximum number of AI SDK retries for each start and status request. Default: 2.',
+    },
+  ]}
+/>
+
+## Returns
+
+Returns the completed status result from the provider. `videos` contains raw
+provider video data discriminated by `type`:
+
+- `url`: A provider-hosted URL and media type
+- `base64`: Base64-encoded video data and media type
+- `binary`: A `Uint8Array` and media type
+
+Hosted URLs can expire. Handle any video you need to retain in a separate
+workflow step.
+
+---
 title: AI SDK Workflow
 description: Reference documentation for @ai-sdk/workflow
 collapsed: true
@@ -137535,6 +138810,12 @@ collapsed: true
       description:
         'Chat transport with automatic stream reconnection for workflow-based apps.',
       href: '/docs/reference/ai-sdk-workflow/workflow-chat-transport',
+    },
+    {
+      title: 'generateVideo',
+      description:
+        'Generate videos durably with provider webhooks and no implicit downloads.',
+      href: '/docs/reference/ai-sdk-workflow/generate-video',
     },
   ]}
 />
@@ -138360,6 +139641,59 @@ if (RetryError.isInstance(error)) {
 ```
 
 ---
+title: AI_StreamProviderError
+description: Learn how to handle AI_StreamProviderError
+---
+
+# AI_StreamProviderError
+
+This error represents a well-formed error event reported by a provider after a
+model response stream has started. The AI SDK exposes it in streaming error
+parts and callbacks such as the `streamText` `onError` callback.
+
+## Properties
+
+- `message`: The provider error message
+- `type`: The provider-defined error type (optional)
+- `code`: The provider-defined error code as a string or number (optional)
+- `statusCode`: The HTTP-equivalent status code when supplied by or inferable from provider metadata (optional)
+- `isRetryable`: Whether retrying the model call may succeed
+- `data`: The original provider error payload (optional)
+- `cause`: The underlying error that caused the failure (optional)
+
+`isRetryable` is a retry classification, not an automatic retry. A stream may
+already contain partial output, so applications should decide whether to
+discard, replace, or preserve that output before starting another model call.
+
+## Checking for this Error
+
+Use `StreamProviderError.isInstance` so identification also works when multiple
+AI SDK versions are present:
+
+```typescript
+import { StreamProviderError, streamText } from 'ai';
+
+const result = streamText({
+  model: __MODEL__,
+  prompt: 'Write a vegetarian lasagna recipe for 4 people.',
+  onError: ({ error }) => {
+    if (StreamProviderError.isInstance(error) && error.isRetryable) {
+      // Schedule an application-managed retry.
+    }
+  },
+});
+```
+
+Providers may not include enough metadata to determine a status code. In that
+case, `statusCode` is `undefined`, and retryability is classified
+conservatively. Provider-specific status and retry mappings are supplied by the
+provider adapter rather than inferred from arbitrary provider error type or code
+substrings. Provider `type` and `code` values are preserved independently, even
+when a numeric code is also used to determine `statusCode`. Errors that are
+already `Error` instances and malformed or unknown provider values are
+preserved unchanged.
+
+---
 title: AI_TooManyEmbeddingValuesForCallError
 description: Learn how to fix AI_TooManyEmbeddingValuesForCallError
 ---
@@ -139018,6 +140352,12 @@ const { text } = await generateText({
 ```
 
 AI Gateway language models can also be used in the `streamText` function and support structured data generation with [`Output`](/docs/reference/ai-sdk-core/output) (see [AI SDK Core](/docs/ai-sdk-core)).
+
+When an upstream provider reports a well-formed error after streaming has
+started, AI SDK Core exposes it as a
+[`StreamProviderError`](/docs/reference/ai-sdk-errors/ai-stream-provider-error).
+Use its `type`, `code`, `statusCode`, and `isRetryable` metadata to classify
+the failure without inspecting the Gateway's serialized error payload.
 
 ## Text Batches
 
@@ -139829,9 +141169,9 @@ The Tako Search tool supports these optional configuration options:
   - **includeContents** _boolean_ - Inline each page's extracted full text in `content`. **articleContentMaxChars** caps it, defaulting to 30,000 characters (maximum 1,000,000).
 - **sources.data** _object_ - Configure data results:
   - **count** _number_ - Maximum data results, 1-20. Defaults to 5.
-  - **includeContents** _boolean_ - Inline each card's underlying rows in `content.dataset` as typed, unit-labeled columns.
+  - **includeContents** _boolean_ - Inline each card's underlying rows in `content.dataset` as typed, unit-labeled columns. This adds a data surcharge based on the row count and dataset source. To estimate cost, first search with `includeContents: false` and inspect `cards.content.export_pricing`. Because this applies to every returned card, use `count` and `maxRows` to control cost.
   - **contentFormat** _'json_compact' | 'json_records' | 'csv' | 'card_json'_ - Serialization for inlined card data. Defaults to `'json_compact'`.
-  - **maxRows** _number_ - Row cap for inlined card data. Omit to use your account's default inline cap (20 rows on the standard plan); maximum 2,000.
+  - **maxRows** _number_ - Row cap per result. Omit to use the allowance in `cards.content.export_pricing`. A data surcharge applies per 1,000 exported rows; lower values reduce cost.
   - **nodeIds** _string[]_ - Data Graph node IDs to prioritize. Up to 20.
   - **strict** _boolean_ - Only return cards matching `nodeIds`. Requires at least one `nodeIds` value.
 - **location** _object_ - End-user `{ latitude, longitude }` coordinates for localized results.
@@ -141027,6 +142367,66 @@ The following provider options are available:
 <Note>
   The Responses API only supports server-side tools. You cannot mix server-side
   tools with client-side function tools in the same request.
+</Note>
+
+## Text Batches
+
+<Note type="warning">
+  Text batch support is experimental and the API may change in patch releases.
+</Note>
+
+The xAI provider supports asynchronous text generation through the
+[Batch API](https://docs.x.ai/developers/advanced-api-usage/batch-api). Use the
+experimental text batch APIs to start a batch, poll its status, and stream its
+results:
+
+```ts
+import { xai } from '@ai-sdk/xai';
+import {
+  experimental_getBatchResults as getBatchResults,
+  experimental_getBatchStatus as getBatchStatus,
+  experimental_startTextBatch as startTextBatch,
+} from 'ai';
+import { setTimeout } from 'node:timers/promises';
+
+const model = xai('grok-4.3');
+
+const batch = await startTextBatch({
+  model,
+  requests: [
+    { id: 'capital-france', prompt: 'What is the capital of France?' },
+    { id: 'capital-germany', prompt: 'What is the capital of Germany?' },
+  ],
+});
+
+let status = batch.status;
+while (status === 'pending') {
+  await setTimeout(60_000);
+  ({ status } = await getBatchStatus({ model, batch }));
+}
+
+for await (const item of getBatchResults({ model, batch })) {
+  if (item.status === 'succeeded') {
+    console.log(item.id, item.text);
+  } else {
+    console.error(item.id, item.error);
+  }
+}
+```
+
+`startTextBatch` returns a serializable batch reference. Persist this reference
+to check the batch status or retrieve its results from another process. Results
+can arrive in a different order from the input requests, so match each result by
+its `id`.
+
+Text batches are available through `xai(modelId)` and
+`xai.responses(modelId)`. The legacy `xai.chat(modelId)` models do not expose
+the batch APIs.
+
+<Note>
+  The xAI Batch API does not support per-batch webhooks. When you provide a
+  `webhookUrl`, the provider returns an unsupported warning and starts the batch
+  without a webhook.
 </Note>
 
 ## Model Capabilities
@@ -143832,40 +145232,60 @@ The metadata includes the following fields:
 ### Text Batches
 
 <Note type="warning">
-  Text batch APIs are experimental and may change in future releases.
+  Text batch support is experimental and the API may change in patch releases.
 </Note>
 
-The OpenAI provider supports the [Batch API](https://developers.openai.com/api/docs/guides/batch) for text generation.
+The OpenAI provider supports asynchronous text generation through the
+[Batch API](https://developers.openai.com/api/docs/guides/batch). Use the
+experimental text batch APIs to start a batch, poll its status, and stream its
+results:
 
 ```ts
 import { openai } from '@ai-sdk/openai';
 import {
-  experimental_startTextBatch as startTextBatch,
   experimental_getBatchResults as getBatchResults,
   experimental_getBatchStatus as getBatchStatus,
+  experimental_startTextBatch as startTextBatch,
 } from 'ai';
+import { setTimeout } from 'node:timers/promises';
 
 const model = openai('gpt-4.1-nano');
 
 const batch = await startTextBatch({
   model,
   requests: [
-    { id: 'france', prompt: 'What is the capital of France?' },
-    { id: 'germany', prompt: 'What is the capital of Germany?' },
+    { id: 'capital-france', prompt: 'What is the capital of France?' },
+    { id: 'capital-germany', prompt: 'What is the capital of Germany?' },
   ],
 });
 
-// Persist `batch` and check its status later, or poll for status updates.
-const { status } = await getBatchStatus({ model, batch });
+let status = batch.status;
+while (status === 'pending') {
+  await setTimeout(60_000);
+  ({ status } = await getBatchStatus({ model, batch }));
+}
 
-if (status !== 'pending') {
-  for await (const result of getBatchResults({ model, batch })) {
-    console.log(result);
+for await (const item of getBatchResults({ model, batch })) {
+  if (item.status === 'succeeded') {
+    console.log(item.id, item.text);
+  } else {
+    console.error(item.id, item.error);
   }
 }
 ```
 
-Starting a batch returns a serializable reference that can be persisted and used to retrieve the batch results later, or poll for status updates.
+`startTextBatch` returns a serializable batch reference. Persist this reference
+to check the batch status or retrieve its results from another process. Results
+can arrive in a different order from the input requests, so match each result by
+its `id`.
+
+#### Webhooks
+
+<Note>
+  The OpenAI Batch API does not support per-batch webhooks. When you provide a
+  `webhookUrl`, the provider returns an unsupported warning and starts the batch
+  without a webhook.
+</Note>
 
 ### Chat Models
 
@@ -146341,12 +147761,6 @@ Anthropic language models support asynchronous text generation through the
 Use the experimental text batch APIs to start a batch, poll its status, and
 stream its results:
 
-<Note>
-  Anthropic Message Batches do not support the `speed` option. Explicit
-  `anthropicBeta` values must be configured when starting the batch rather than
-  on an individual request.
-</Note>
-
 ```ts
 import { anthropic } from '@ai-sdk/anthropic';
 import {
@@ -146361,8 +147775,8 @@ const model = anthropic('claude-haiku-4-5');
 const batch = await startTextBatch({
   model,
   requests: [
-    { id: 'first', prompt: 'What is the capital of France?' },
-    { id: 'second', prompt: 'What is the capital of Germany?' },
+    { id: 'capital-france', prompt: 'What is the capital of France?' },
+    { id: 'capital-germany', prompt: 'What is the capital of Germany?' },
   ],
 });
 
@@ -146380,6 +147794,21 @@ for await (const item of getBatchResults({ model, batch })) {
   }
 }
 ```
+
+`startTextBatch` returns a serializable batch reference. Persist this reference
+to check the batch status or retrieve its results from another process. Results
+can arrive in a different order from the input requests, so match each result by
+its `id`.
+
+#### Batch Limitations
+
+<Note>
+  Anthropic Message Batches do not support the `speed` option or completion
+  webhooks. Explicit `anthropicBeta` values must be configured when starting the
+  batch rather than on an individual request. When you provide a `webhookUrl`,
+  the provider returns an unsupported warning and starts the batch without a
+  webhook.
+</Note>
 
 ### Structured Outputs and Tool Input Streaming
 
@@ -148637,6 +150066,83 @@ if (result.providerMetadata?.bedrock.trace) {
 ```
 
 See the [Amazon Bedrock Guardrails documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html) for more information.
+
+#### Guard Content
+
+You can mark individual text or image parts as guard content using `providerOptions` on the part itself. This wraps the part in a [`guardContent`](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_GuardrailConverseContentBlock.html) block, which tells Bedrock Guardrails to evaluate that content specifically.
+
+For text parts, you can also specify `guardContentQualifiers` to indicate how the content should be treated by the guardrail (e.g. as a grounding source, a query, or guard content):
+
+```ts
+const result = await generateText({
+  model: bedrock('anthropic.claude-3-sonnet-20240229-v1:0'),
+  providerOptions: {
+    bedrock: {
+      guardrailConfig: {
+        guardrailIdentifier: '1abcd2ef34gh',
+        guardrailVersion: '1',
+      },
+    },
+  },
+  messages: [
+    {
+      role: 'user',
+      content: [
+        {
+          type: 'text',
+          text: 'London is the capital of UK. Tokyo is the capital of Japan.',
+          providerOptions: {
+            bedrock: {
+              guardContent: true,
+              guardContentQualifiers: ['grounding_source'],
+            },
+          },
+        },
+        {
+          type: 'text',
+          text: 'Some additional background information.',
+        },
+        {
+          type: 'text',
+          text: 'What is the capital of Japan?',
+          providerOptions: {
+            bedrock: {
+              guardContent: true,
+              guardContentQualifiers: ['query'],
+            },
+          },
+        },
+      ],
+    },
+  ],
+});
+```
+
+Image parts can also be marked as guard content:
+
+```ts
+{
+  type: 'file',
+  data: {
+    type: 'data',
+    data: imageBase64,
+  },
+  mediaType: 'image/png',
+  providerOptions: {
+    bedrock: {
+      guardContent: true,
+    },
+  },
+}
+```
+
+The available `guardContentQualifiers` are:
+
+- `'grounding_source'` — content used as a grounding source for the guardrail
+- `'query'` — content treated as a query to evaluate
+- `'guard_content'` — content to be evaluated by the guardrail
+
+See the [Amazon Bedrock Guardrails with Converse API documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-use-converse-api.html) for more information.
 
 ### Citations
 
@@ -154001,10 +155507,13 @@ The following Zod features are known to not work with Google:
 ### Text Batches
 
 <Note type="warning">
-  Text batch APIs are experimental and may change in future releases.
+  Text batch support is experimental and the API may change in patch releases.
 </Note>
 
-The Google provider supports the [Gemini Batch API](https://ai.google.dev/gemini-api/docs/batch-api) for text generation.
+The Google provider supports asynchronous text generation through the
+[Gemini Batch API](https://ai.google.dev/gemini-api/docs/batch-api). Use the
+experimental text batch APIs to start a batch, poll its status, and stream its
+results:
 
 ```ts
 import { google } from '@ai-sdk/google';
@@ -154013,32 +155522,39 @@ import {
   experimental_getBatchStatus as getBatchStatus,
   experimental_startTextBatch as startTextBatch,
 } from 'ai';
+import { setTimeout } from 'node:timers/promises';
 
 const model = google('gemini-3.6-flash');
 
 const batch = await startTextBatch({
   model,
   requests: [
-    { id: 'france', prompt: 'What is the capital of France?' },
-    { id: 'germany', prompt: 'What is the capital of Germany?' },
+    { id: 'capital-france', prompt: 'What is the capital of France?' },
+    { id: 'capital-germany', prompt: 'What is the capital of Germany?' },
   ],
 });
 
-// Persist `batch` and check its status later, or poll for status updates.
-const { status } = await getBatchStatus({ model, batch });
+let status = batch.status;
+while (status === 'pending') {
+  await setTimeout(60_000);
+  ({ status } = await getBatchStatus({ model, batch }));
+}
 
-if (status !== 'pending') {
-  for await (const item of getBatchResults({ model, batch })) {
-    if (item.status === 'succeeded') {
-      console.log(item.id, item.text);
-    } else {
-      console.error(item.id, item.error);
-    }
+for await (const item of getBatchResults({ model, batch })) {
+  if (item.status === 'succeeded') {
+    console.log(item.id, item.text);
+  } else {
+    console.error(item.id, item.error);
   }
 }
 ```
 
-Starting a batch returns a serializable reference that can be persisted and used to retrieve the batch results later, or poll for status updates.
+`startTextBatch` returns a serializable batch reference. Persist this reference
+to check the batch status or retrieve its results from another process. Results
+can arrive in a different order from the input requests, so match each result by
+its `id`.
+
+#### Webhooks
 
 You can pass a `webhookUrl` to receive a notification when the batch reaches a terminal state:
 
@@ -154046,14 +155562,16 @@ You can pass a `webhookUrl` to receive a notification when the batch reaches a t
 const batch = await startTextBatch({
   model,
   requests: [
-    { id: 'france', prompt: 'What is the capital of France?' },
-    { id: 'germany', prompt: 'What is the capital of Germany?' },
+    { id: 'capital-france', prompt: 'What is the capital of France?' },
+    { id: 'capital-germany', prompt: 'What is the capital of Germany?' },
   ],
   webhookUrl: 'https://example.com/api/google-batch-webhook',
 });
 ```
 
 Google sends a thin event to the webhook URL. After receiving and verifying the event, use the persisted batch reference with `getBatchStatus` or `getBatchResults`. Your application is responsible for handling the webhook and [verifying Google's dynamic webhook signature](https://ai.google.dev/gemini-api/docs/webhooks#verify_dynamic_signatures_jwks).
+
+#### Large Batches
 
 When the serialized batch creation body is under 20 MB, the provider sends the requests inline. At 20 MB or more, it uploads a JSONL input file through the Gemini Files API.
 
@@ -158751,6 +160269,43 @@ The following optional provider options are available for Mistral models:
 
   Defaults to `true`.
 
+- **promptCacheKey** _string_
+
+  A stable identifier used to improve cache affinity for requests that share a prompt prefix.
+
+### Prompt Cache Affinity
+
+[Mistral prompt caching](https://docs.mistral.ai/studio/conversations/advanced/prompt-caching)
+reuses shared prompt prefixes. Set `promptCacheKey` to a stable workflow,
+session, or conversation identifier to improve cache affinity. The provider
+sends it as Mistral's `prompt_cache_key` request field:
+
+```ts
+import { mistral, type MistralLanguageModelChatOptions } from '@ai-sdk/mistral';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: mistral('mistral-medium-3.5'),
+  system: 'Classify each support request as account, billing, or technical.',
+  prompt: 'The dashboard shows an error when I open an invoice.',
+  providerOptions: {
+    mistral: {
+      promptCacheKey: 'support-classification-workflow-v1',
+    } satisfies MistralLanguageModelChatOptions,
+  },
+});
+
+console.log(result.usage.inputTokenDetails.cacheReadTokens);
+```
+
+Use the same key for requests with the same stable prefix. Multi-step
+`generateText` and `streamText` calls reuse their provider options for every
+step, so a single key applies across the complete tool loop. Prompt cache
+affinity is best-effort and does not guarantee a cache hit.
+
+Treat cache keys as opaque identifiers. Do not include API keys, secrets, email
+addresses, or other sensitive personal data.
+
 ### Document OCR
 
 Mistral chat models support document OCR for PDF files.
@@ -159170,6 +160725,166 @@ models:
 | Model           | Default Dimensions |
 | --------------- | ------------------ |
 | `mistral-embed` | 1024               |
+
+---
+title: Z.AI
+description: Learn how to use Z.AI's GLM models with the AI SDK.
+---
+
+# Z.AI Provider
+
+The [Z.AI](https://z.ai/) provider gives you access to GLM language and vision models through the Z.AI API.
+
+API keys can be created in the [Z.AI API key console](https://z.ai/manage-apikey/apikey-list).
+
+## Setup
+
+The Z.AI provider is available through the `@ai-sdk/zai` package. Install it with:
+
+<InstallPackages packages="@ai-sdk/zai" />
+
+Set the `ZAI_API_KEY` environment variable:
+
+```bash
+ZAI_API_KEY=your-api-key
+```
+
+## Provider Instance
+
+Import the default provider instance `zai` from `@ai-sdk/zai`:
+
+```ts
+import { zai } from '@ai-sdk/zai';
+```
+
+For custom configuration, use `createZai`:
+
+```ts
+import { createZai } from '@ai-sdk/zai';
+
+const zai = createZai({
+  apiKey: process.env.ZAI_API_KEY,
+  baseURL: 'https://api.z.ai/api/paas/v4',
+});
+```
+
+The provider accepts these optional settings:
+
+- **apiKey** _string_
+
+  API key sent in the `Authorization` header. It defaults to the `ZAI_API_KEY` environment variable.
+
+- **baseURL** _string_
+
+  URL prefix for API requests. It defaults to `https://api.z.ai/api/paas/v4`.
+
+- **headers** _Record&lt;string, string&gt;_
+
+  Additional request headers.
+
+- **fetch** _FetchFunction_
+
+  Custom fetch implementation, for example to intercept requests in middleware.
+
+## Language Models
+
+Create a language model by passing its model id to the provider:
+
+```ts
+import { zai } from '@ai-sdk/zai';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: zai('glm-5.3'),
+  prompt: 'Explain quantum entanglement in simple terms.',
+});
+```
+
+Current model families include GLM 5, GLM 4.7, GLM 4.6, GLM 4.5, and the GLM vision models. Model availability changes over time; see the [Z.AI model documentation](https://docs.z.ai/guides/llm) for the current catalog.
+
+The provider supports:
+
+- text generation and streaming
+- reasoning output and reasoning history
+- function calling, including incremental tool-call streaming
+- JSON object output
+- URL-based image and video inputs on compatible vision models
+
+## Provider Options
+
+Z.AI-specific options can be passed through `providerOptions.zai`:
+
+```ts
+import { zai } from '@ai-sdk/zai';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: zai('glm-5.3'),
+  prompt: 'Compare two approaches to implementing a rate limiter.',
+  providerOptions: {
+    zai: {
+      thinking: { type: 'enabled', clearThinking: true },
+      reasoningEffort: 'high',
+      requestId: 'request-123456',
+      userId: 'user-123456',
+    },
+  },
+});
+```
+
+The following options are available:
+
+- **doSample** _boolean_
+
+  Enables sampling. When disabled, `temperature` and `topP` do not take effect.
+
+- **thinking** _object_
+
+  Controls thinking with `type: 'enabled' | 'disabled'`. Set `clearThinking` to `false` to retain reasoning from previous assistant messages.
+
+- **reasoningEffort** _'none' | 'minimal' | 'low' | 'medium' | 'high' | 'xhigh' | 'max'_
+
+  Controls reasoning effort on supported models.
+
+- **toolStream** _boolean_
+
+  Enables incremental function-call argument streaming on supported models.
+
+- **requestId** _string_
+
+  A caller-provided request id between 6 and 64 characters.
+
+- **userId** _string_
+
+  A non-sensitive end-user id between 6 and 128 characters.
+
+## Streaming Tool Calls
+
+Enable `toolStream` when you want supported GLM models to stream function-call arguments incrementally:
+
+```ts
+import { zai } from '@ai-sdk/zai';
+import { streamText, tool } from 'ai';
+import { z } from 'zod';
+
+const result = streamText({
+  model: zai('glm-5.3'),
+  prompt: 'What is the weather in San Francisco?',
+  tools: {
+    weather: tool({
+      description: 'Get the weather for a city',
+      inputSchema: z.object({ city: z.string() }),
+    }),
+  },
+  providerOptions: {
+    zai: { toolStream: true },
+  },
+});
+
+for await (const part of result.fullStream) {
+  console.log(part);
+}
+```
 
 ---
 title: Together.ai
@@ -161122,7 +162837,7 @@ description: Learn how to use Moonshot AI models with the AI SDK.
 
 The [Moonshot AI](https://www.moonshot.ai) provider offers access to powerful language models through the Moonshot API, including the Kimi series of models with reasoning capabilities.
 
-API keys can be obtained from the [Moonshot Platform](https://platform.moonshot.ai).
+API keys can be obtained from the [Kimi API Platform](https://platform.kimi.ai/console/api-keys).
 
 ## Setup
 
@@ -161193,18 +162908,177 @@ const model = moonshotai.languageModel('kimi-k3');
 Moonshot AI language models can be used in the `streamText` function
 (see [AI SDK Core](/docs/ai-sdk-core)).
 
+Moonshot V1 models support the standard `temperature`, `topP`,
+`presencePenalty`, and `frequencyPenalty` settings. Kimi models use fixed
+sampling parameters; the provider omits those settings for Kimi requests and
+returns an unsupported-setting warning when they are supplied.
+
+Kimi K3 supports `toolChoice: 'required'`. Kimi K2.6 and the Kimi K2.7 Code
+models reject that setting, so the provider omits it and returns an unsupported
+warning for those model IDs. Other tool choice modes are passed through
+unchanged.
+
 #### Structured Outputs
 
-Native structured outputs are enabled for Moonshot models whose model ID starts with `kimi-`.
+Native structured outputs are enabled for Kimi K models and the official
+Moonshot V1 text, auto, and vision models.
 
-For other Moonshot models, object generation falls back to JSON mode instead of schema-constrained decoding.
+The provider normalizes schemas to Moonshot's supported JSON Schema subset and
+enables strict schema validation by default.
+
+For unknown custom model IDs, object generation falls back to JSON mode instead
+of schema-constrained decoding.
 
 For best reliability, it is strongly recommended to include your schema requirements in your prompt in addition to passing the schema through `Output`.
 
+### Message Names
+
+Moonshot AI supports optional participant names on system, user, and assistant
+messages. Set `providerOptions.moonshotai.name` on each message that should
+include a name:
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAIMessageProviderOptions,
+} from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: moonshotai('kimi-k3'),
+  messages: [
+    {
+      role: 'user',
+      content: 'Suggest a name for my neighborhood book club.',
+      providerOptions: {
+        moonshotai: {
+          name: 'organizer',
+        } satisfies MoonshotAIMessageProviderOptions,
+      },
+    },
+  ],
+});
+```
+
+The same option works with `streamText`. Names are omitted when unset. The
+provider ignores a name on a tool message and returns an unsupported warning.
+Avoid including unnecessary personal or identifying information in message
+names.
+
+### Partial Mode
+
+Moonshot AI's [Partial Mode](https://platform.moonshot.ai/docs/api/partial)
+continues the content of a final assistant message. Set `partial: true` in that
+assistant message's provider options:
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAIAssistantMessageProviderOptions,
+} from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+
+const prefix = 'The sky is';
+
+const { text } = await generateText({
+  model: moonshotai('kimi-k3'),
+  messages: [
+    {
+      role: 'user',
+      content: 'Write one short sentence about the color of the sky.',
+    },
+    {
+      role: 'assistant',
+      content: prefix,
+      providerOptions: {
+        moonshotai: {
+          partial: true,
+        } satisfies MoonshotAIAssistantMessageProviderOptions,
+      },
+    },
+  ],
+});
+
+const completeResponse = prefix + text;
+```
+
+The partial message must be the final assistant message in the prompt. Moonshot
+returns only the continuation, so concatenate the prefix and generated text
+when you need the complete response.
+
+<Note>
+  Partial Mode cannot be combined with Moonshot's `json_object` response format.
+  The provider rejects that combination before sending the request. A supported
+  `json_schema` response remains available, but structured-output parsing
+  validates only the returned continuation.
+</Note>
+
+### Kimi K3 Dynamic Tool Loading
+
+Kimi K3 can load complete function tool definitions at arbitrary positions in
+a conversation. Add `tools` to the Moonshot provider options of an empty system
+message. The provider sends `{ role: 'system', tools: [...] }` without a
+`content` field and applies the same Moonshot Flavored JSON Schema normalization
+used for top-level tools.
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAISystemMessageProviderOptions,
+} from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: moonshotai('kimi-k3'),
+  allowSystemInMessages: true,
+  messages: [
+    { role: 'user', content: 'Help me prepare for a trip.' },
+    { role: 'assistant', content: 'I can help with that.' },
+    {
+      role: 'system',
+      content: '',
+      providerOptions: {
+        moonshotai: {
+          tools: [
+            {
+              type: 'function',
+              name: 'get_weather',
+              description: 'Get the current weather for a city',
+              inputSchema: {
+                type: 'object',
+                properties: { city: { type: 'string' } },
+                required: ['city'],
+                additionalProperties: false,
+              },
+              strict: true,
+            },
+          ],
+        } satisfies MoonshotAISystemMessageProviderOptions,
+      },
+    },
+    { role: 'user', content: 'What is the weather in San Francisco?' },
+  ],
+});
+```
+
+Each entry must include its complete function definition. Top-level tools and
+dynamically loaded tools can be used in the same request. Known unsupported
+official models omit the dynamic message and return an unsupported warning;
+custom model IDs retain it for forward compatibility.
+
+<Note>
+  Keep dynamic system messages in trusted server-side state. Tool names,
+  descriptions, and schemas are sent to Moonshot and consume context. Dynamic
+  declarations are request-local, so retain earlier declarations in later
+  requests while those tools should remain available. Appending messages also
+  preserves prompt-cache prefixes better than rewriting earlier declarations.
+</Note>
+
 ### Reasoning Models
 
-Kimi K3 always reasons. It currently supports only the `max` reasoning effort,
-which you can configure through provider options:
+Kimi K3 always reasons and supports `low`, `high`, and `max` reasoning effort.
+The default is `max`. You can configure the effort through provider options or
+the generic `reasoning` setting:
 
 ```ts
 import {
@@ -161217,7 +163091,7 @@ const { text, reasoningText } = await generateText({
   model: moonshotai('kimi-k3'),
   providerOptions: {
     moonshotai: {
-      reasoningEffort: 'max',
+      reasoningEffort: 'high',
     } satisfies MoonshotAILanguageModelOptions,
   },
   prompt: 'How many "r"s are in the word "strawberry"?',
@@ -161227,7 +163101,46 @@ console.log(reasoningText);
 console.log(text);
 ```
 
-Moonshot AI offers thinking models like `kimi-k2-thinking` that generate intermediate reasoning tokens before their final response. The reasoning output is streamed through the standard AI SDK reasoning parts.
+Kimi K2.5 and K2.6 can enable or disable thinking. Kimi K2.7 always has
+thinking and preserved reasoning enabled. Keep reasoning history in multi-turn
+Kimi K2.7 conversations. The reasoning output is exposed through the standard
+AI SDK reasoning parts.
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAILanguageModelOptions,
+} from '@ai-sdk/moonshotai';
+import { streamText } from 'ai';
+
+const result = streamText({
+  model: moonshotai('kimi-k2.7-code'),
+  providerOptions: {
+    moonshotai: {
+      thinking: { type: 'enabled' },
+      reasoningHistory: 'preserved',
+    } satisfies MoonshotAILanguageModelOptions,
+  },
+  prompt: 'How many "r"s are in the word "strawberry"?',
+});
+
+for await (const part of result.fullStream) {
+  if (part.type === 'reasoning-delta') {
+    process.stdout.write(part.text);
+  } else if (part.type === 'text-delta') {
+    process.stdout.write(part.text);
+  }
+}
+```
+
+See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details on how to integrate reasoning into your chatbot.
+
+### Log Probabilities
+
+Moonshot AI can return token log probabilities for Chat Completions. Set
+`logprobs` to request token probabilities, or set `topLogprobs` to request the
+most likely alternatives at each token position. Setting `topLogprobs`
+automatically enables `logprobs`.
 
 ```ts
 import {
@@ -161236,22 +163149,36 @@ import {
 } from '@ai-sdk/moonshotai';
 import { generateText } from 'ai';
 
-const { text, reasoningText } = await generateText({
-  model: moonshotai('kimi-k2-thinking'),
+const result = await generateText({
+  model: moonshotai('moonshot-v1-8k'),
+  prompt: 'Reply with one word that means happy.',
   providerOptions: {
     moonshotai: {
-      thinking: { type: 'enabled', budgetTokens: 2048 },
-      reasoningHistory: 'interleaved',
+      topLogprobs: 3,
     } satisfies MoonshotAILanguageModelOptions,
   },
-  prompt: 'How many "r"s are in the word "strawberry"?',
 });
 
-console.log(reasoningText);
-console.log(text);
+console.log(result.text);
+console.log(result.providerMetadata?.moonshotai?.logprobs);
 ```
 
-See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details on how to integrate reasoning into your chatbot.
+For `generateText`, log probabilities are available at
+`providerMetadata.moonshotai.logprobs`. For `streamText`, the accumulated log
+probabilities are included in the final finish part under the same metadata
+path.
+
+Moonshot documents the request options and OpenAI Chat Completions
+compatibility, but does not separately specify the log probability response
+schema. The provider therefore preserves the OpenAI-compatible `content`
+entries, including each token's `logprob`, nullable `bytes`, and
+`top_logprobs`.
+
+<Note>
+  Token probabilities and alternatives can significantly increase response size.
+  Request them only when needed, and avoid forwarding or persistently logging
+  provider metadata unless your application requires it.
+</Note>
 
 ### Video Input
 
@@ -161293,59 +163220,204 @@ You can also pass a URL. Since Moonshot AI does not fetch external URLs, the AI 
 ```
 
 <Note>
+  Supported image media types are `image/jpeg`, `image/png`, `image/gif`,
+  `image/webp`, `image/bmp`, `image/heic`, and `image/heif`. Supported video
+  media types are `video/mp4`, `video/mpeg`, `video/mov`, `video/avi`,
+  `video/x-flv`, `video/mpg`, `video/webm`, `video/wmv`, and `video/3gpp`. Other
+  image and video media types are rejected before a request is sent.
+</Note>
+
+<Note>
   Moonshot AI recommends videos up to 1080p. For larger videos, or videos you
   reuse across many requests, upload them with the [Moonshot Files
-  API](https://platform.moonshot.ai/docs/api/files) instead. Audio and PDF
-  inputs are not supported by Moonshot AI chat completions.
+  API](https://platform.kimi.ai/docs/api/files) instead. Audio and PDF inputs
+  are not supported by Moonshot AI chat completions.
+</Note>
+
+### File References and Text Files
+
+Images and videos uploaded through the Moonshot Files API can be passed as
+provider references. Prefix the uploaded file ID with `ms://` and use an image
+or video media type:
+
+```ts
+{
+  type: 'file',
+  data: {
+    type: 'reference',
+    reference: {
+      moonshotai: 'ms://file-id',
+    },
+  },
+  mediaType: 'image/png',
+}
+```
+
+Inline text file data is sent as a native text content part:
+
+```ts
+{
+  type: 'file',
+  data: {
+    type: 'text',
+    text: 'Document contents',
+  },
+  mediaType: 'text/plain',
+}
+```
+
+### Predicted Outputs
+
+You can provide static predicted content when much of the expected response is
+already known. Moonshot AI can use the prediction to accelerate the response
+while still generating any changed content:
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAILanguageModelOptions,
+} from '@ai-sdk/moonshotai';
+import { streamText } from 'ai';
+
+const source = `export function greet(name: string) {
+  return \`Hello, \${name}!\`;
+}`;
+
+const result = streamText({
+  model: moonshotai('kimi-k3'),
+  messages: [
+    {
+      role: 'user',
+      content:
+        'Change the function to say "Welcome" instead of "Hello". Respond only with the updated code.',
+    },
+    { role: 'user', content: source },
+  ],
+  providerOptions: {
+    moonshotai: {
+      prediction: {
+        type: 'content',
+        content: source,
+      },
+    } satisfies MoonshotAILanguageModelOptions,
+  },
+});
+
+for await (const textPart of result.textStream) {
+  process.stdout.write(textPart);
+}
+```
+
+The `content` can also be an array of text parts:
+
+```ts
+prediction: {
+  type: 'content',
+  content: [
+    { type: 'text', text: 'First known section' },
+    { type: 'text', text: 'Second known section' },
+  ],
+}
+```
+
+<Note>
+  Predicted content is sent to Moonshot AI as part of the request. Avoid
+  including sensitive or proprietary text unless you intend to share it with the
+  provider.
 </Note>
 
 ### Provider Options
 
 The following optional provider options are available for Moonshot AI language models:
 
-- **reasoningEffort** _'max'_
+- **strictJsonSchema** _boolean_
 
-  Reasoning effort for Kimi K3. Currently, only `'max'` is supported.
+  Whether to use strict JSON schema validation for structured outputs. Defaults
+  to `true`.
+
+- **logprobs** _boolean_
+
+  Whether to return log probabilities for generated tokens. Results are
+  available in `providerMetadata.moonshotai.logprobs`.
+
+- **topLogprobs** _number_
+
+  Number of most likely tokens to return at each token position. Accepts
+  integer values from `0` through `20` and automatically enables `logprobs`.
+
+- **reasoningEffort** _'low' | 'high' | 'max'_
+
+  Reasoning effort for Kimi K3. Defaults to `'max'`. You can also use the
+  generic `reasoning` setting.
+
+- **prediction** _&#123; type: 'content'; content: string | Array&lt;&#123; type: 'text'; text: string &#125;&gt; &#125;_
+
+  Supplies static predicted output that can accelerate requests where most of
+  the response is already known.
 
 - **thinking** _object_
 
-  Configuration for thinking/reasoning models like Kimi K2 Thinking.
+  Configuration for Kimi K2.5 and K2.6. Kimi K2.7 accepts only `enabled`
+  because its thinking cannot be disabled. Kimi K3 does not accept this field.
   - **type** _'enabled' | 'disabled'_
 
-    Whether to enable thinking mode
+    Whether to enable thinking mode. For Kimi K2.7 Code, only `'enabled'` is
+    accepted.
 
   - **budgetTokens** _number_
 
-    Maximum number of tokens for thinking (minimum 1024)
+    Deprecated. Moonshot Chat Completions does not support thinking budgets.
+    The provider omits this value and returns a warning. It remains accepted
+    for backwards compatibility.
 
 - **reasoningHistory** _'disabled' | 'interleaved' | 'preserved'_
 
-  Controls how reasoning history is handled in multi-turn conversations:
-  - `'disabled'`: Remove reasoning from history
-  - `'interleaved'`: Include reasoning between tool calls within a single turn
-  - `'preserved'`: Keep all reasoning in history. Mapped to Moonshot's
-    `thinking.keep: 'all'` request field.
+  Controls preserved reasoning behavior in multi-turn conversations:
+  - `'disabled'` and `'interleaved'` are retained for compatibility. They do
+    not change the request, so the model's server-default behavior applies.
+  - `'preserved'` maps to `thinking.keep: 'all'` for Kimi K2.6. Kimi K2.7 and
+    K3 preserve reasoning by default.
+
+### Chat Response Metadata
+
+Moonshot AI preserves provider-specific response fields in
+`providerMetadata.moonshotai` for generated and streamed responses:
+
+- `responseObject`: `chat.completion` or `chat.completion.chunk`
+- `choiceIndex`: the selected response choice index
+- `messageRole`: the response message role, when supplied
+- `toolCallTypes`: the tool-call type for each returned call
+
+These fields remain in provider metadata because they are specific to
+Moonshot's Chat Completions response rather than shared AI SDK result fields.
 
 ## Model Capabilities
 
-| Model                    | Image Input | Video Input | Object Generation | Tool Usage | Tool Streaming |
-| ------------------------ | ----------- | ----------- | ----------------- | ---------- | -------------- |
-| `moonshot-v1-8k`         | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `moonshot-v1-32k`        | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `moonshot-v1-128k`       | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k2`                | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k2.5`              | <Check />   | <Check />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k2-thinking`       | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k2-thinking-turbo` | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k2-turbo`          | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k2.6`              | <Check />   | <Check />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k2.7-code`         | <Check />   | <Check />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k3`                | <Check />   | <Check />   | <Check />         | <Check />  | <Check />      |
+The Moonshot V1 series and Kimi K2.5 are unavailable to newly registered users
+and are scheduled for full platform sunset on August 31, 2026. They remain
+listed because they are still part of the Chat Completions API model surface,
+but new applications should use Kimi K3, Kimi K2.7 Code, or Kimi K2.6.
+
+| Model                             | Image Input | Video Input | Object Generation | Tool Usage | Tool Streaming |
+| --------------------------------- | ----------- | ----------- | ----------------- | ---------- | -------------- |
+| `moonshot-v1-auto`                | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `moonshot-v1-8k`                  | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `moonshot-v1-32k`                 | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `moonshot-v1-128k`                | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `moonshot-v1-8k-vision-preview`   | <Check />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `moonshot-v1-32k-vision-preview`  | <Check />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `moonshot-v1-128k-vision-preview` | <Check />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2.5`                       | <Check />   | <Check />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2.6`                       | <Check />   | <Check />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2.7-code`                  | <Check />   | <Check />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2.7-code-highspeed`        | <Check />   | <Check />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k3`                         | <Check />   | <Check />   | <Check />         | <Check />  | <Check />      |
 
 <Note>
-  Please see the [Moonshot AI docs](https://platform.moonshot.ai/docs/intro) for
-  a full list of available models. You can also pass any available provider
-  model ID as a string if needed.
+  See the [Kimi model list](https://platform.kimi.ai/docs/models) and [model
+  parameter reference](https://platform.kimi.ai/docs/api/models-overview) for
+  current availability and model-specific constraints. You can also pass custom
+  or retired provider model IDs as strings when needed.
 </Note>
 
 ---
@@ -165953,9 +168025,11 @@ try {
   the sandbox.
 - `credentialEnv`: host credential environment variable names. Configure this
   together with `credentialBrokering`.
-- `credentialBrokering`: function that receives the effective runtime
-  environment and returns additive outbound request transformations containing
-  the real credential values.
+- `credentialBrokering`: function that receives the effective host runtime
+  environment as `env` and the environment forwarded to the sandbox as
+  `sandboxEnv`, then returns additive outbound request transformations. Use the
+  credential from `sandboxEnv` in exact request header matches and the real
+  credential from `env` in transformed request headers.
 - `credentialForwarding`: optional synchronous or asynchronous callback that
   customizes each credential immediately before the harness adapter forwards it
   into a sandbox process. It receives the credential value that would otherwise
@@ -165980,6 +168054,9 @@ try {
     unavailable. This requires `providerAuthentication` configuration.
 - `providerAuthentication`: declarative runtime-specific Gateway environment.
 - `modelId`: a known implementation model identifier for Harness metadata.
+- `skillsDirectory`: native skills directory relative to the implementation's
+  effective `$HOME`. It defaults to `.agents/skills`; override it for runtimes
+  that use a different location.
 - `instructionMapping`: optional mapping from `HarnessAgent` instructions to
   an implementation's native system or developer prompt. Use `session-meta`
   for a path below the ACP session request's `_meta` field, or
@@ -166119,10 +168196,11 @@ For direct authentication, configure `credentialEnv` with the host environment
 variable names that the underlying ACP implementation reads, and use
 `credentialBrokering` to map their values to outbound request headers. When the
 network sandbox supports additive request transformations, the ACP process sees
-only same-name placeholders and the real values are injected after requests
-leave the sandbox. Sandboxes without that capability retain the legacy behavior
-of forwarding the real values. Use `forwardEnv` only for non-credential runtime
-configuration.
+the values from `sandboxEnv`, which are ephemeral placeholders by default. The
+real values are injected after requests leave the sandbox, and only when the
+request contains the exact expected value. Sandboxes without that capability
+retain the legacy behavior of forwarding the real values. Use `forwardEnv` only
+for non-credential runtime configuration.
 
 ### Gateway environment
 
@@ -166154,9 +168232,10 @@ By default, the adapter uses the first exposed port. Set `port` on `createACP`
 to select another exposed port. If neither is available, session startup throws
 `HarnessCapabilityUnsupportedError` with instructions to configure one.
 
-Bridge packages, ACP installations, state, replay logs, and projected skills
-live in adapter-owned directories outside the session project. The session
-workspace starts empty.
+Bridge packages, ACP installations, and replay state live in adapter-owned
+directories outside the session project. Skills are written to the configured
+native directory below the implementation's `$HOME`. The session workspace
+starts empty.
 
 ## Tools and Approvals
 
@@ -166205,25 +168284,37 @@ export const claudeCodeACPHarness = createACP({
     packageVersion: '0.61.0',
   },
   executable: 'claude-agent-acp',
+  skillsDirectory: '.claude/skills',
   credentialEnv: ['ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN'],
-  credentialBrokering: ({ env }) => {
+  credentialBrokering: ({ env, sandboxEnv }) => {
     const apiKey = env.ANTHROPIC_API_KEY;
     const authToken = env.ANTHROPIC_AUTH_TOKEN;
+    const sandboxApiKey = sandboxEnv?.ANTHROPIC_API_KEY;
+    const sandboxAuthToken = sandboxEnv?.ANTHROPIC_AUTH_TOKEN;
     if (!apiKey && !authToken) return [];
 
-    const headers: Record<string, string> = {};
-    if (apiKey) {
-      headers['x-api-key'] = apiKey;
+    const transformations = [];
+    if (apiKey && sandboxApiKey) {
+      transformations.push(
+        createCredentialRequestTransformation({
+          matchUrl: env.ANTHROPIC_BASE_URL ?? 'https://api.anthropic.com',
+          matchHeaders: { 'x-api-key': sandboxApiKey },
+          transformHeaders: { 'x-api-key': apiKey },
+        }),
+      );
     }
-    if (authToken) {
-      headers.Authorization = `Bearer ${authToken}`;
+    if (authToken && sandboxAuthToken) {
+      transformations.push(
+        createCredentialRequestTransformation({
+          matchUrl: env.ANTHROPIC_BASE_URL ?? 'https://api.anthropic.com',
+          matchHeaders: {
+            Authorization: `Bearer ${sandboxAuthToken}`,
+          },
+          transformHeaders: { Authorization: `Bearer ${authToken}` },
+        }),
+      );
     }
-    return [
-      createCredentialRequestTransformation({
-        baseUrl: env.ANTHROPIC_BASE_URL ?? 'https://api.anthropic.com',
-        headers,
-      }),
-    ];
+    return transformations;
   },
   env: {
     IS_SANDBOX: '1',
@@ -166279,9 +168370,13 @@ export const codexACPHarness = createACP({
   executable: 'codex-acp',
   forwardEnv: ['CODEX_CONFIG'],
   credentialEnv: ['CODEX_API_KEY', 'OPENAI_API_KEY'],
-  credentialBrokering: ({ env }) => {
-    const credential = env.CODEX_API_KEY ?? env.OPENAI_API_KEY;
-    if (!credential) return [];
+  credentialBrokering: ({ env, sandboxEnv }) => {
+    const environmentVariableName = env.CODEX_API_KEY
+      ? 'CODEX_API_KEY'
+      : 'OPENAI_API_KEY';
+    const credential = env[environmentVariableName];
+    const sandboxCredential = sandboxEnv?.[environmentVariableName];
+    if (!credential || !sandboxCredential) return [];
     const config =
       env.CODEX_CONFIG == null
         ? undefined
@@ -166294,8 +168389,11 @@ export const codexACPHarness = createACP({
       'https://api.openai.com/v1';
     return [
       createCredentialRequestTransformation({
-        baseUrl,
-        headers: { Authorization: `Bearer ${credential}` },
+        matchUrl: baseUrl,
+        matchHeaders: {
+          Authorization: `Bearer ${sandboxCredential}`,
+        },
+        transformHeaders: { Authorization: `Bearer ${credential}` },
       }),
     ];
   },
@@ -166373,14 +168471,20 @@ export const cursorACPHarness = createACP({
   executable: 'agent',
   args: ['--disable-auto-update', 'acp'],
   credentialEnv: ['CURSOR_API_KEY'],
-  credentialBrokering: ({ env }) => {
-    if (!env.CURSOR_API_KEY) return [];
+  credentialBrokering: ({ env, sandboxEnv }) => {
+    if (!env.CURSOR_API_KEY || !sandboxEnv?.CURSOR_API_KEY) return [];
     return [
       {
         match: {
           host: 'api2.cursor.sh',
           path: { exact: '/auth/exchange_user_api_key' },
           method: ['POST'],
+          headers: [
+            {
+              key: { exact: 'Authorization' },
+              value: { exact: `Bearer ${sandboxEnv.CURSOR_API_KEY}` },
+            },
+          ],
         },
         transform: {
           headers: {
@@ -166427,12 +168531,17 @@ export const grokBuildACPHarness = createACP({
   executable: 'grok',
   args: ['agent', 'stdio'],
   credentialEnv: ['XAI_API_KEY'],
-  credentialBrokering: ({ env }) => {
-    if (!env.XAI_API_KEY) return [];
+  credentialBrokering: ({ env, sandboxEnv }) => {
+    if (!env.XAI_API_KEY || !sandboxEnv?.XAI_API_KEY) return [];
     return [
       createCredentialRequestTransformation({
-        baseUrl: env.GROK_XAI_API_BASE_URL ?? 'https://api.x.ai/v1',
-        headers: { Authorization: `Bearer ${env.XAI_API_KEY}` },
+        matchUrl: env.GROK_XAI_API_BASE_URL ?? 'https://api.x.ai/v1',
+        matchHeaders: {
+          Authorization: `Bearer ${sandboxEnv.XAI_API_KEY}`,
+        },
+        transformHeaders: {
+          Authorization: `Bearer ${env.XAI_API_KEY}`,
+        },
       }),
     ];
   },

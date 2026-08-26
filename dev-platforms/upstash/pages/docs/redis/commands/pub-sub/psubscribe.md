@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/pub-sub/psubscribe
 path: docs/redis/commands/pub-sub/psubscribe
 ---
 
+> Subscribe to pattern channels.
+
 Use `PSUBSCRIBE` to subscribe the current connection to channels by glob-style pattern.
 
 A pattern such as `news.*` matches every channel that starts with `news.`, including channels created after the subscription, which is what makes patterns useful for topic hierarchies. `?` matches a single character and `[...]` a character class.
 
-Pattern subscriptions are tracked separately from the exact-channel subscriptions made with [`SUBSCRIBE`](/docs/redis/commands/pub-sub/subscribe), and a message that matches several of a connection's patterns is delivered once per matching pattern, so overlapping patterns produce duplicates. Cancel a pattern with [`PUNSUBSCRIBE`](/docs/redis/commands/pub-sub/punsubscribe), passing exactly the same pattern string.
+Pattern subscriptions are tracked separately from the exact-channel subscriptions made with [`SUBSCRIBE`](/redis/commands/pub-sub/subscribe), and a message that matches several of a connection's patterns is delivered once per matching pattern, so overlapping patterns produce duplicates. Cancel a pattern with [`PUNSUBSCRIBE`](/redis/commands/pub-sub/punsubscribe), passing exactly the same pattern string.
 
 ## Syntax
 
@@ -24,8 +26,8 @@ PSUBSCRIBE <pattern> [<pattern> ...]
 
 ## Important points
 
-* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
-* Subscription commands require a dedicated TCP connection. In RESP3, subscription events use push replies.
+- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+- Subscription commands require a dedicated TCP connection. In RESP3, subscription events use push replies.
 
 ## Response
 

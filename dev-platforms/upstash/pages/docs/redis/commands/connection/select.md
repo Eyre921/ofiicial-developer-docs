@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/connection/select
 path: docs/redis/commands/connection/select
 ---
 
+> Select the database by index.
+
 Use `SELECT` to switch the connection to another database index.
 
 Upstash exposes a single logical database, so `0` is the only valid index and anything else returns an error. The command is accepted so that clients and frameworks that issue `SELECT 0` while setting up a connection keep working unchanged. To separate concerns inside one database, use key prefixes instead of numbered databases.
@@ -22,7 +24,7 @@ SELECT 0
 
 ## Important points
 
-* Upstash exposes a single logical database. Any index other than `0` returns an error.
+- Upstash exposes a single logical database. Any index other than `0` returns an error.
 
 ## Response
 

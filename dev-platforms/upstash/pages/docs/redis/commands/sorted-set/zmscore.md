@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zmscore
 path: docs/redis/commands/sorted-set/zmscore
 ---
 
+> Get scores of multiple members.
+
 Use `ZMSCORE` to get the scores of several members of a sorted set in one call.
 
-The reply holds one score per member, in the order requested, with null for members that are not in the set, so it lines up with your input list. A missing key yields all nulls rather than an error. It replaces a series of [`ZSCORE`](/docs/redis/commands/sorted-set/zscore) round trips when you need to read a batch of scores, such as the current rating of every item on a page.
+The reply holds one score per member, in the order requested, with null for members that are not in the set, so it lines up with your input list. A missing key yields all nulls rather than an error. It replaces a series of [`ZSCORE`](/redis/commands/sorted-set/zscore) round trips when you need to read a batch of scores, such as the current rating of every item on a page.
 
 ## Syntax
 
@@ -23,7 +25,7 @@ ZMSCORE <key> <member> [<member> ...]
 
 ## Important points
 
-* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

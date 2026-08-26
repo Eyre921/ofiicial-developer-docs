@@ -8,8 +8,8 @@ path: docs/redis/search/aggregation-operators/metric-aggregations/count
 
 ### How It Works
 
-* By default, only documents that have the field are counted.
-* If `missing` is set, documents without the field also contribute to result.
+- By default, only documents that have the field are counted.
+- If `missing` is set, documents without the field also contribute to result.
 
 ### Compatibility
 

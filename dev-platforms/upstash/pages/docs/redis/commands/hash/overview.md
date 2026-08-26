@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/hash/overview
 path: docs/redis/commands/hash/overview
 ---
 
+> Commands for storing and manipulating field-value collections.
+
 <CardGroup cols={2}>
 <Card title="HDEL" href="/redis/commands/hash/hdel">Delete one or more hash fields</Card>
 <Card title="HEXISTS" href="/redis/commands/hash/hexists">Check if a hash field exists</Card>

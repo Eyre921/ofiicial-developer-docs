@@ -324,37 +324,37 @@ The `runtime: "edge"` configuration in the API route allows for better performan
 The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your React components. Show progress bars, stream AI responses, or display run status in real time.
 
 <CardGroup>
-  <Card title="React hooks" icon="react" href="/realtime/react-hooks/overview">
+  <Card title="React hooks" icon="react" href="/docs/realtime/react-hooks/overview">
     Hooks for subscribing to runs, streaming data, and triggering tasks from the frontend.
   </Card>
 
-  <Card title="Streams" icon="wave-pulse" href="/tasks/streams">
+  <Card title="Streams" icon="wave-pulse" href="/docs/tasks/streams">
     Pipe continuous data (like AI completions) from your tasks to the client while they run.
   </Card>
 </CardGroup>
 
 ## Additional resources for Remix
 
-<Card title="Remix - triggering tasks using webhooks" icon="R" href="/guides/frameworks/remix-webhooks">
+<Card title="Remix - triggering tasks using webhooks" icon="R" href="/docs/guides/frameworks/remix-webhooks">
   How to create a webhook handler in a Remix app, and trigger a task from it.
 </Card>
 
 ## Useful next steps
 
 <CardGroup>
-  <Card title="Tasks overview" icon="diagram-subtask" href="/tasks/overview">
+  <Card title="Tasks overview" icon="diagram-subtask" href="/docs/tasks/overview">
     Learn what tasks are and their options
   </Card>
 
-  <Card title="Writing tasks" icon="pen-nib" href="/writing-tasks-introduction">
+  <Card title="Writing tasks" icon="pen-nib" href="/docs/writing-tasks-introduction">
     Learn how to write your own tasks
   </Card>
 
-  <Card title="Deploy using the CLI" icon="terminal" href="/cli-deploy-commands">
+  <Card title="Deploy using the CLI" icon="terminal" href="/docs/cli-deploy-commands">
     Learn how to deploy your task manually using the CLI
   </Card>
 
-  <Card title="Deploy using GitHub actions" icon="github" href="/github-actions">
+  <Card title="Deploy using GitHub actions" icon="github" href="/docs/github-actions">
     Learn how to deploy your task using GitHub actions
   </Card>
 </CardGroup>

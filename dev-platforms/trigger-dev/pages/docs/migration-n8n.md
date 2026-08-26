@@ -12,26 +12,26 @@ Your task code runs on Trigger.dev's managed infrastructure, so there are no ser
 
 ## Concept map
 
-| n8n                                               | Trigger.dev                                                                                                        |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| n8n                                               | Trigger.dev                                                                                                             |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | Workflow                                          | [task](/docs/tasks/overview) plus its config (queue, retry, onFailure)                                                  |
 | Schedule Trigger                                  | [schedules.task](/docs/tasks/scheduled)                                                                                 |
 | Webhook node                                      | Route handler + [task.trigger()](/docs/triggering)                                                                      |
-| Node                                              | A step or library call inside `run()`                                                                              |
+| Node                                              | A step or library call inside `run()`                                                                                   |
 | Execute Sub-workflow node (wait for completion)   | [tasks.triggerAndWait()](/docs/triggering#yourtask-triggerandwait)                                                      |
 | Execute Sub-workflow node (execute in background) | [tasks.trigger()](/docs/triggering)                                                                                     |
 | Loop over N items → Execute Sub-workflow → Merge  | [tasks.batchTriggerAndWait()](/docs/tasks#yourtask-batchtriggerandwait)                                                 |
-| Loop Over Items (Split in Batches)                | `for` loop or `.map()`                                                                                             |
-| IF / Switch node                                  | `if` / `switch` statements                                                                                         |
-| Wait node (time interval or specific time)        | [wait.for()](/docs/wait-for) or [wait.until()](/docs/wait-until)                                                             |
+| Loop Over Items (Split in Batches)                | `for` loop or `.map()`                                                                                                  |
+| IF / Switch node                                  | `if` / `switch` statements                                                                                              |
+| Wait node (time interval or specific time)        | [wait.for()](/docs/wait-for) or [wait.until()](/docs/wait-until)                                                        |
 | Error Trigger node / Error Workflow               | [onFailure](/docs/tasks/overview#onfailure-function) hook (both collapse into one concept in Trigger.dev)               |
-| Continue On Fail                                  | `try/catch` around an individual step                                                                              |
-| Stop And Error                                    | `throw new Error(...)`                                                                                             |
-| Code node                                         | A function or step within `run()`                                                                                  |
+| Continue On Fail                                  | `try/catch` around an individual step                                                                                   |
+| Stop And Error                                    | `throw new Error(...)`                                                                                                  |
+| Code node                                         | A function or step within `run()`                                                                                       |
 | Credentials                                       | [Environment variable secret](/docs/deploy-environment-variables)                                                       |
-| Execution                                         | Run (visible in the dashboard with full logs)                                                                      |
+| Execution                                         | Run (visible in the dashboard with full logs)                                                                           |
 | Retry on Fail (per-node setting)                  | [retry.maxAttempts](/docs/tasks/overview#retry) (retries the whole `run()`, not a single step)                          |
-| AI Agent node                                     | Any AI SDK called inside `run()` (Vercel AI SDK, Claude SDK, OpenAI SDK, etc.)                                     |
+| AI Agent node                                     | Any AI SDK called inside `run()` (Vercel AI SDK, Claude SDK, OpenAI SDK, etc.)                                          |
 | Respond to Webhook node                           | Route handler + [task.triggerAndWait()](/docs/triggering#yourtask-triggerandwait) returning the result as HTTP response |
 
 ***

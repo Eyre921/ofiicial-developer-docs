@@ -7,8 +7,8 @@ path: docs/workflow/features/invoke/servemany
 Normally, workflows are created with `serve()`, which exposes each workflow as its own HTTP endpoint.
 If workflows were invoked only by their full URL, it would mean:
 
-* You'd have to provide the URL explicitly like a trigger request
-* You'd lose type safety for request and response payloads
+- You'd have to provide the URL explicitly like a trigger request
+- You'd lose type safety for request and response payloads
 
 To avoid these issues, Upstash Workflow lets you define workflows as objects and expose them under the same parent path.
 This way, you can invoke a workflow simply by passing the object to `context.invoke`, with full type safety and no URLs required.

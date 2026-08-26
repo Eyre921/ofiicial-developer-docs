@@ -63,12 +63,12 @@ Successful Response
 
 ```json
 {
-  "id": "string",
+  "id": "21m00Tcm4TlvDq8ikWAM",
   "model": "e5_mistral_7b_instruct",
-  "status": "new",
-  "progress_percentage": 1.1,
+  "status": "processing",
+  "progress_percentage": 45.7,
   "document_model_index_usage": {
-    "used_bytes": 1
+    "used_bytes": 1048576
   }
 }
 ```

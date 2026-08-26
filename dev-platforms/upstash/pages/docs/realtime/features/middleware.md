@@ -38,8 +38,8 @@ The middleware function receives:
 </ParamField>
 
 <ResponseField name="return">
-  * Return `undefined` or nothing to allow the connection
-  * Return a `Response` object to block the connection with a custom error
+  - Return `undefined` or nothing to allow the connection
+  - Return a `Response` object to block the connection with a custom error
 </ResponseField>
 
 ## Authentication Patterns

@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/search/search-aliasdel
 path: docs/redis/commands/search/search-aliasdel
 ---
 
+> Delete a search index alias.
+
 Use `SEARCH.ALIASDEL` to remove a search index alias.
 
 Only the alias is removed: the index it pointed to, and the documents indexed in it, are untouched and remain reachable under their real name. Queries that still use the alias fail once it is gone.
 
-See [Deleting an Alias](/docs/redis/search/aliases#deleting-an-alias) for the feature guide.
+See [Deleting an Alias](/redis/search/aliases#deleting-an-alias) for the feature guide.
 
 ## Syntax
 

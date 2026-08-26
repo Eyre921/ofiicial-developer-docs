@@ -67,30 +67,38 @@ Successful Response
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
   "dubs": [
     {
-      "dubbing_id": "string",
-      "name": "string",
-      "status": "preparing",
-      "source_language": "string",
+      "dubbing_id": "3f8a9b2c-7d4e-4f1a-9b2e-5c6d7e8f9a0b",
+      "name": "Marketing Video Localization",
+      "status": "dubbed",
+      "source_language": "en",
       "target_languages": [
-        "string"
+        "es",
+        "fr",
+        "de"
       ],
       "created_at": "2024-01-15T09:30:00Z",
-      "editable": false,
+      "editable": true,
       "media_metadata": {
-        "content_type": "string",
-        "duration": 1.1
+        "content_type": "video/mp4",
+        "duration": 125.7
       },
-      "error": "string"
+      "error": null
     }
   ],
-  "next_cursor": "string",
-  "has_more": true
+  "next_cursor": "eyJwYWdlIjoxfQ==",
+  "has_more": false
 }
 ```
 
@@ -121,6 +129,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -129,7 +138,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/dubbing"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -152,6 +165,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -162,6 +177,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/dubbing")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -171,7 +188,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/dubbing');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/dubbing', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -181,16 +203,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/dubbing");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/dubbing")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

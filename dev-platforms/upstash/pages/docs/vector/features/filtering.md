@@ -10,15 +10,15 @@ Queries with metadata filters only return vectors which have metadata matching w
 
 Upstash Vector allows you to filter keys which have the following value types:
 
-* string
-* number
-* boolean
-* object
-* array
+- string
+- number
+- boolean
+- object
+- array
 
-Filtering is implemented as a combination of in and post-filtering. Every query is assigned a filtering budget,
-determining the number of candidate vectors that can be compared against the filter during query execution. If this
-budget is exceeded, the system fallbacks into post-filtering. Therefore, with highly selective filters, fewer
+Filtering is implemented as a combination of in and post-filtering. Every query is assigned a filtering budget, 
+determining the number of candidate vectors that can be compared against the filter during query execution. If this 
+budget is exceeded, the system fallbacks into post-filtering. Therefore, with highly selective filters, fewer 
 than `topK` vectors may be returned.
 
 ## Filter Syntax
@@ -229,13 +229,13 @@ It is a case sensitive operator.
 
 The glob operator supports the following wildcards:
 
-* `*` matches zero or more characters.
-* `?` matches exactly one character.
-* `[]` matches one character from the list
-    * `[abc]` matches either `a`, `b`, or `c`.
-    * `[a-z]` matches one of the range of characters from `a` to `z`.
-    * `[^abc]` matches any one character other than `a`, `b`, or `c`.
-    * `[^a-z]` matches any one character other than `a` to `z`.
+- `*` matches zero or more characters.
+- `?` matches exactly one character.
+- `[]` matches one character from the list
+    - `[abc]` matches either `a`, `b`, or `c`.
+    - `[a-z]` matches one of the range of characters from `a` to `z`.
+    - `[^abc]` matches any one character other than `a`, `b`, or `c`.
+    - `[^a-z]` matches any one character other than `a` to `z`.
 
 For example, the filter below would only match with city names whose second character is `s` or `z`,
 and ends with anything other than `m` to `z`.
@@ -386,9 +386,9 @@ economy.major_industries[#-1] = 'Finance'
 
 ### Miscellaneous
 
-* Identifiers (the left side of the operators) should be of the form `[a-zA-Z_][a-zA-Z_0-9.[\]#-]*`. In simpler terms, they should
+- Identifiers (the left side of the operators) should be of the form `[a-zA-Z_][a-zA-Z_0-9.[\]#-]*`. In simpler terms, they should
 start with characters from the English alphabet or `_`, and can continue with same characters plus numbers and other accessors
 like `.`, `[0]`, or `[#-1]`.
-* The string literals (strings in the right side of the operators) can be either single or double quoted.
-* Boolean literals are represented as `1` or `0`.
-* The operators, boolean operators, and boolean literals are case insensitive.
+- The string literals (strings in the right side of the operators) can be either single or double quoted.
+- Boolean literals are represented as `1` or `0`.
+- The operators, boolean operators, and boolean literals are case insensitive.

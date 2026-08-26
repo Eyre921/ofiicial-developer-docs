@@ -9,12 +9,12 @@ In this guide, we use Upstash Box to run [Playwright](https://playwright.dev) ag
 <Note>
   Boxes also ship a managed, pre-installed browser. Create one with `browser:
   true` and drive Chromium through the SDK, or [connect Playwright over
-  CDP](/docs/box/overall/browser/connect) with no install step. This guide shows
+  CDP](/box/overall/browser/connect) with no install step. This guide shows
   the manual route, where the box's agent installs and controls Playwright
-  itself. See [Browser](/docs/box/overall/browser/overview) for the built-in one.
+  itself. See [Browser](/box/overall/browser/overview) for the built-in one.
 </Note>
 
-***
+---
 
 ## 1. Installation
 
@@ -28,7 +28,7 @@ Set your environment variables:
 UPSTASH_BOX_API_KEY=box_xxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-***
+---
 
 ## 2. Provision a box and install Playwright
 
@@ -60,7 +60,7 @@ if (setup.status !== "completed") {
 console.log("Chromium and its system dependencies are ready.")
 ```
 
-***
+---
 
 ## 3. Let the agent write and run the scraper
 
@@ -84,7 +84,7 @@ console.log(run.result)
 
 The agent has shell, filesystem, and the installed Playwright package available, so it can iterate — adjusting selectors, adding waits for dynamic content, retrying on failure — until the scrape actually produces data.
 
-***
+---
 
 ## 4. Pull the results back
 
@@ -101,13 +101,13 @@ await box.delete()
 
 You now have structured data extracted from a dynamic, JavaScript-rendered page — without managing a single Chromium binary yourself.
 
-***
+---
 
 ## 5. Skip the setup on every run with snapshots
 
 `npx playwright install chromium --with-deps` takes real time to stream and unpack OS-level packages. Paying that cost on every scrape request would be painful in production.
 
-[Snapshot](/docs/box/overall/snapshots) the box once Chromium and its dependencies are installed, and restore from that snapshot whenever you need a ready-to-go scraping environment:
+[Snapshot](/box/overall/snapshots) the box once Chromium and its dependencies are installed, and restore from that snapshot whenever you need a ready-to-go scraping environment:
 
 ```typescript title="scripts/prepare-snapshot.ts"
 const snapshot = await box.snapshot({ name: "playwright-ready" })

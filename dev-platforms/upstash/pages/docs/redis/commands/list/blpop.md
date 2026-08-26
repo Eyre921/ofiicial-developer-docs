@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/list/blpop
 path: docs/redis/commands/list/blpop
 ---
 
+> Pop from the head of a list, blocking until an element arrives.
+
 Use `BLPOP` to pop an element from the head of the first non-empty list, blocking until one has an element or the timeout expires.
 
-It is the blocking form of [`LPOP`](/docs/redis/commands/list/lpop) and it accepts several keys, which are checked in the order given, so earlier keys act as higher priority queues. The reply names the key the element came from together with the element itself, which matters when you are waiting on more than one queue.
+It is the blocking form of [`LPOP`](/redis/commands/list/lpop) and it accepts several keys, which are checked in the order given, so earlier keys act as higher priority queues. The reply names the key the element came from together with the element itself, which matters when you are waiting on more than one queue.
 
 The timeout is in seconds, may be fractional, and `0` waits indefinitely; when it expires the reply is null. Blocking lets a worker wait for work without polling, which cuts both latency and wasted commands. When several clients are blocked on the same key they are served in the order they started waiting.
 
@@ -25,7 +27,7 @@ BLPOP <key> [<key> ...] <timeout>
 
 ## Important points
 
-* A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
+- A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
 
 ## Response
 

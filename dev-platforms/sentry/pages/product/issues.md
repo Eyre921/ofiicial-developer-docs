@@ -56,6 +56,8 @@ From the **Issues** page, you can begin to triage. The page is organized into ta
 
 Learn more about triaging issues and their different states in [Issue States and Triage](https://docs.sentry.io/product/issues/states-triage.md).
 
+If your organization has Seer, the [**Inbox**](https://docs.sentry.io/product/issues/inbox.md) offers a different way to triage: it groups the issues assigned to you by how close they are to being fixed, so you can start with the ones that need the least work to finish.
+
 ## [How to Sort Issues](https://docs.sentry.io/product/issues.md#how-to-sort-issues)
 
 Change how issues are sorted in the issues stream by selecting from the sort dropdown:
@@ -77,6 +79,10 @@ Change how issues are sorted in the issues stream by selecting from the sort dro
 * **Users**: Issues are sorted by number of users affected.
 
 ## [Learn More](https://docs.sentry.io/product/issues.md#learn-more)
+
+* #### [Issues Inbox](https://docs.sentry.io/product/issues/inbox.md)
+
+  Learn how to use Sentry's Inbox to work through issues that are closest to being fixed, and are assigned to you or your teams.
 
 * #### [Issue Views](https://docs.sentry.io/product/issues/issue-views.md)
 
@@ -116,6 +122,7 @@ Change how issues are sorted in the issues stream by selecting from the sort dro
 
 ## Pages in this section
 
+- [Issues Inbox](https://docs.sentry.io/product/issues/inbox.md)
 - [Issue Views](https://docs.sentry.io/product/issues/issue-views.md)
 - [Issue Details](https://docs.sentry.io/product/issues/issue-details.md)
 - [Issue Monitors and Alerts](https://docs.sentry.io/product/issues/monitors-and-alerts.md)

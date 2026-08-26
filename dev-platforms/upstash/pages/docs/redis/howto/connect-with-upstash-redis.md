@@ -6,20 +6,20 @@ path: docs/redis/howto/connect-with-upstash-redis
 
 [@upstash/redis](https://github.com/upstash/redis-js)
 is an HTTP/REST based Redis client built on top of
-[Upstash REST API](/docs/redis/features/restapi). For more information,
-refer to the documentation of Upstash redis client ([TypeScript](/docs/redis/sdks/ts/overview) & [Python](/docs/redis/sdks/py/overview)).
+[Upstash REST API](/redis/features/restapi). For more information,
+refer to the documentation of Upstash redis client ([TypeScript](/redis/sdks/ts/overview) & [Python](/redis/sdks/py/overview)).
 
 It is the only connectionless (HTTP based) Redis client and designed for:
 
-* Serverless functions (AWS Lambda)
-* Cloudflare Workers (see
+- Serverless functions (AWS Lambda)
+- Cloudflare Workers (see
   [the example](https://github.com/upstash/redis-js/tree/main/examples/cloudflare-workers-with-typescript))
-* Fastly Compute@Edge (see
+- Fastly Compute@Edge (see
   [the example](https://github.com/upstash/upstash-redis/tree/master/examples/fastly))
-* Next.js (see [the quickstart](/docs/redis/quickstarts/nextjs-app-router)), Jamstack
-* Client side web/mobile applications
-* WebAssembly
-* and other environments where HTTP is preferred over TCP.
+- Next.js (see [the quickstart](/redis/quickstarts/nextjs-app-router)), Jamstack
+- Client side web/mobile applications
+- WebAssembly
+- and other environments where HTTP is preferred over TCP.
 
 See
 [the list of APIs](https://upstash.com/docs/redis/features/restapi#rest-redis-api-compatibility)
@@ -54,7 +54,7 @@ console.log(data);
 <Tip>
   You can find values to set as `UPSTASH_REDIS_REST_URL` and`UPSTASH_REDIS_REST_TOKEN`
   on the details tab of your database on [Upstash Console](https://console.upstash.com/redis).
-  See [Connect Client page](/docs/redis/howto/connect-client#database) for more information.
+  See [Connect Client page](/redis/howto/connect-client#database) for more information.
 </Tip>
 
 If you define `UPSTASH_REDIS_REST_URL` and`UPSTASH_REDIS_REST_TOKEN` environment

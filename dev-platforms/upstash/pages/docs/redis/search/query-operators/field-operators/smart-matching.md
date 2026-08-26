@@ -7,8 +7,8 @@ path: docs/redis/search/query-operators/field-operators/smart-matching
 When you provide a value directly to a field (without explicit operators like `$phrase` or `$fuzzy`),
 the search engine applies smart matching. The behavior depends on the field type:
 
-* **Numeric, boolean, and date fields**: Smart matching performs an exact equality check.
-* **Text fields**: Smart matching applies intelligent matching strategies to find the most relevant results, as described below.
+- **Numeric, boolean, and date fields**: Smart matching performs an exact equality check.
+- **Text fields**: Smart matching applies intelligent matching strategies to find the most relevant results, as described below.
 
 ### Text Field Matching
 
@@ -31,9 +31,9 @@ For single-word searches, the engine runs multiple matching strategies and combi
 ```
 
 This query returns results in roughly this order:
-* "**tabletop**" (exact match)
-* "**tabeltop**" (fuzzy match, 1 edit away)
-* "**tabeltopping**" (fuzzy prefix match, incomplete word with typos matches full term)
+- "**tabletop**" (exact match)
+- "**tabeltop**" (fuzzy match, 1 edit away)
+- "**tabeltopping**" (fuzzy prefix match, incomplete word with typos matches full term)
 
 ### Multi-Word Values
 
@@ -63,9 +63,9 @@ their scores to surface the most relevant results:
 ```
 
 This query returns results in roughly this order:
-* "Premium **wireless headphones** with noise cancellation" (phrase match with fuzzy prefix on last word)
-* "**Headphones** with **wireless** connectivity" (all terms present, different order)
-* "**Wireles headphone** with long battery" (fuzzy match for typos)
+- "Premium **wireless headphones** with noise cancellation" (phrase match with fuzzy prefix on last word)
+- "**Headphones** with **wireless** connectivity" (all terms present, different order)
+- "**Wireles headphone** with long battery" (fuzzy match for typos)
 
 ### Double-Quoted Phrases
 
@@ -78,9 +78,9 @@ The words must appear adjacent and in the exact order specified.
 
 This matches only documents containing "noise cancelling" as an exact phrase.
 It will NOT match:
-* "noise and cancelling" (words not adjacent)
-* "cancelling noise" (wrong order)
-* "noise-cancelling" (hyphenated, tokenized differently)
+- "noise and cancelling" (words not adjacent)
+- "cancelling noise" (wrong order)
+- "noise-cancelling" (hyphenated, tokenized differently)
 
 This is useful when you need precise matching without the fuzzy tolerance of smart matching.
 
@@ -140,6 +140,6 @@ SEARCH.QUERY products '{"$and": [{"name": {"$smart": "wireless headphones", "$bo
 
 Smart matching works well for general search scenarios, but consider using explicit operators when you need:
 
-* **Typo tolerance only**: Use [`$fuzzy`](./fuzzy) with specific distance settings
-* **Phrase with gaps**: Use [`$phrase`](./phrase) with the `slop` parameter
-* **Pattern matching**: Use [`$regex`](./regex) for regular expression patterns
+- **Typo tolerance only**: Use [`$fuzzy`](./fuzzy) with specific distance settings
+- **Phrase with gaps**: Use [`$phrase`](./phrase) with the `slop` parameter
+- **Pattern matching**: Use [`$regex`](./regex) for regular expression patterns

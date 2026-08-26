@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/generic/ttl
 path: docs/redis/commands/generic/ttl
 ---
 
+> Get TTL in seconds.
+
 Use `TTL` to read how much longer a key will live, in seconds.
 
-The reply is `-1` when the key exists but has no expiration and `-2` when the key does not exist, so these two are never confused with a real remaining lifetime. Values are rounded to whole seconds; use [`PTTL`](/docs/redis/commands/generic/pttl) for millisecond precision and [`EXPIRETIME`](/docs/redis/commands/generic/expiretime) when you want the absolute deadline rather than the time left.
+The reply is `-1` when the key exists but has no expiration and `-2` when the key does not exist, so these two are never confused with a real remaining lifetime. Values are rounded to whole seconds; use [`PTTL`](/redis/commands/generic/pttl) for millisecond precision and [`EXPIRETIME`](/redis/commands/generic/expiretime) when you want the absolute deadline rather than the time left.
 
 ## Syntax
 
@@ -22,7 +24,7 @@ TTL <key>
 
 ## Important points
 
-* Negative integer replies are sentinel values, not durations or timestamps; see the response description for missing or persistent data.
+- Negative integer replies are sentinel values, not durations or timestamps; see the response description for missing or persistent data.
 
 ## Response
 

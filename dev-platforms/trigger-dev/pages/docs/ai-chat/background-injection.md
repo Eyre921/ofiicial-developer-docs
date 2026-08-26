@@ -187,12 +187,12 @@ export const myChat = chat.agent({
 ## How it differs from pending messages
 
 |                         | `chat.inject()`                                     | [Pending messages](/docs/ai-chat/pending-messages) |
-| ----------------------- | --------------------------------------------------- | --------------------------------------------- |
-| **Source**              | Backend task code                                   | Frontend user input                           |
-| **Triggered by**        | Your code (e.g. `onTurnComplete` + `chat.defer()`)  | User sending a message during streaming       |
-| **Injection point**     | Start of next turn, or next `prepareStep` boundary  | Next `prepareStep` boundary only              |
-| **Message role**        | Any (`system`, `user`, `assistant`)                 | Typically `user`                              |
-| **Frontend visibility** | Not visible unless you write custom `data-*` chunks | Visible via `usePendingMessages` hook         |
+| ----------------------- | --------------------------------------------------- | -------------------------------------------------- |
+| **Source**              | Backend task code                                   | Frontend user input                                |
+| **Triggered by**        | Your code (e.g. `onTurnComplete` + `chat.defer()`)  | User sending a message during streaming            |
+| **Injection point**     | Start of next turn, or next `prepareStep` boundary  | Next `prepareStep` boundary only                   |
+| **Message role**        | Any (`system`, `user`, `assistant`)                 | Typically `user`                                   |
+| **Frontend visibility** | Not visible unless you write custom `data-*` chunks | Visible via `usePendingMessages` hook              |
 
 ## API reference
 

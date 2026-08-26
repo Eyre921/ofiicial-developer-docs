@@ -4,15 +4,17 @@ source: https://upstash.com/docs/redis/commands/string/setex
 path: docs/redis/commands/string/setex
 ---
 
+> Set value with expiration.
+
 <Warning>
-  Prefer [`SET`](/docs/redis/commands/string/set) with the `EX` argument in new code: `SET <key> <value> EX <seconds>`.
+  Prefer [`SET`](/redis/commands/string/set) with the `EX` argument in new code: `SET <key> <value> EX <seconds>`. 
 </Warning>
 
 Use `SETEX` to set a value together with a lifetime in seconds.
 
 The value and the expiration are applied atomically, so the key never exists without an expiration; writing the value and expiring it in two commands leaves a window in which a failure makes the key permanent. A lifetime of zero or less returns an error.
 
-Use [`PSETEX`](/docs/redis/commands/string/psetex) for millisecond precision. [`SET`](/docs/redis/commands/string/set) with `EX` or `PX` does the same thing and additionally supports conditions and reading the previous value.
+Use [`PSETEX`](/redis/commands/string/psetex) for millisecond precision. [`SET`](/redis/commands/string/set) with `EX` or `PX` does the same thing and additionally supports conditions and reading the previous value.
 
 ## Syntax
 

@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/streams/xdelex
 path: docs/redis/commands/streams/xdelex
 ---
 
+> Delete entries with reference control.
+
 Use `XDELEX` to delete entries from a stream with control over what happens to consumer group references.
 
 `IDS <numids>` introduces the list of IDs and the count must match. The policy decides how consumer groups are affected: `KEEPREF`, the default, deletes the entries but leaves them in the pending entries lists of the groups that had received them, `DELREF` removes those references as well, and `ACKED` only deletes entries that every group has read and acknowledged, leaving the others in place.
 
-That last policy is what makes the command useful as a safe cleanup step: it removes exactly the entries nobody still owes work on. The reply holds one status code per requested ID. Where [`XDEL`](/docs/redis/commands/streams/xdel) always behaves like `KEEPREF`, `XDELEX` is its explicit form.
+That last policy is what makes the command useful as a safe cleanup step: it removes exactly the entries nobody still owes work on. The reply holds one status code per requested ID. Where [`XDEL`](/redis/commands/streams/xdel) always behaves like `KEEPREF`, `XDELEX` is its explicit form.
 
 ## Syntax
 

@@ -6,7 +6,7 @@ path: docs/box/guides/langchain-deep-agents
 
 In this guide we'll give a [LangChain Deep Agent](https://docs.langchain.com/oss/python/deepagents/overview) a real computer to work in. The [`langchain-upstash-box`](https://pypi.org/project/langchain-upstash-box/) package wraps an Upstash Box (a secure, isolated cloud container with a full Linux shell, filesystem, git, and a runtime) as a Deep Agents [sandbox backend](https://docs.langchain.com/oss/python/deepagents/backends). The agent's shell and file tools then run inside the box instead of on your machine.
 
-***
+---
 
 ## 1. Installation
 
@@ -28,7 +28,7 @@ Get a Box API key from the [Upstash Console](https://console.upstash.com/box) an
 export UPSTASH_BOX_API_KEY="box_xxxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
-***
+---
 
 ## 2. Create a sandbox backend
 
@@ -61,7 +61,7 @@ If you already have a box, wrap it by id instead of creating a new one:
 sandbox = UpstashBoxSandbox(box_id="current-wasp-05510")
 ```
 
-***
+---
 
 ## 3. Use with a Deep Agent
 
@@ -95,7 +95,7 @@ sandbox.delete()
 The `model="anthropic:..."` shorthand requires `langchain-anthropic` (install with `pip install "langchain[anthropic]"`) and an `ANTHROPIC_API_KEY` environment variable. Any LangChain chat model works here.
 </Note>
 
-***
+---
 
 ## 4. Cleanup
 
@@ -108,4 +108,4 @@ sandbox = UpstashBoxSandbox.create(runtime="python", timeout=600)
 result = sandbox.execute("sleep 5 && echo done", timeout=30)
 ```
 
-To see everything else a box can do, like snapshots, git, previews, and schedules, check the [Box quickstart](/docs/box/overall/quickstart).
+To see everything else a box can do, like snapshots, git, previews, and schedules, check the [Box quickstart](/box/overall/quickstart).

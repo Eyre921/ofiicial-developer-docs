@@ -1,0 +1,29 @@
+---
+title: "SINTER"
+source: https://upstash.com/docs/redis/sdks/ts/commands/set/sinter
+path: docs/redis/sdks/ts/commands/set/sinter
+---
+
+> Return the intersection between sets
+
+## Arguments
+
+<ParamField body="keys" type="...string[]" required>
+  The keys of the sets to perform the intersection operation on.
+</ParamField>
+
+## Response
+
+<ResponseField type="TValue[]" required>
+  The members of the resulting set.
+</ResponseField>
+
+<RequestExample>
+```ts Example 
+await redis.sadd("set1", "a", "b", "c"); 
+await redis.sadd("set2", "c", "d", "e"); 
+const intersection =  await redis.sinter("set1", "set2");
+console.log(intersection); // ["c"]
+```
+
+</RequestExample>

@@ -276,19 +276,19 @@ With a dataset like [NYC Taxi](https://clickhouse.com/docs/getting-started/examp
 ## Learn more
 
 <CardGroup>
-  <Card title="AI chat overview" icon="message-bot" href="/ai-chat/overview">
+  <Card title="AI chat overview" icon="message-bot" href="/docs/ai-chat/overview">
     How chat agents, sessions, and the turn loop work.
   </Card>
 
-  <Card title="Frontend" icon="browser" href="/ai-chat/frontend">
+  <Card title="Frontend" icon="browser" href="/docs/ai-chat/frontend">
     The chat transport, session tokens, and reconnection.
   </Card>
 
-  <Card title="AI Prompts" icon="file-lines" href="/ai/prompts">
+  <Card title="AI Prompts" icon="file-lines" href="/docs/ai/prompts">
     Versioned prompts with dashboard overrides and generation tracking.
   </Card>
 
-  <Card title="Tools" icon="wrench" href="/ai-chat/tools">
+  <Card title="Tools" icon="wrench" href="/docs/ai-chat/tools">
     Declaring tools on your agent and how they persist across turns.
   </Card>
 </CardGroup>

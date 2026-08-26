@@ -39,8 +39,8 @@ You can call `context.waitForWebhook` with the same `webhook` object multiple ti
 The response varies depending on whether the webhook was called before the timeout:
 
 <ResponseField name="timeout" type="boolean">
-    * `false` if the webhook was called successfully
-    * `true` if execution resumed because the timeout elapsed
+    - `false` if the webhook was called successfully
+    - `true` if execution resumed because the timeout elapsed
 </ResponseField>
 
 <ResponseField name="request" type="Request | undefined">
@@ -77,4 +77,4 @@ export const { POST } = serve(async (context) => {
 });
 ```
 
-For more complete examples and use cases, see [the page on webhooks](/docs/workflow/features/webhooks).
+For more complete examples and use cases, see [the page on webhooks](/workflow/features/webhooks).

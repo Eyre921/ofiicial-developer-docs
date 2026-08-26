@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/set/sdiff
 path: docs/redis/commands/set/sdiff
 ---
 
+> Get set difference.
+
 Use `SDIFF` to get the members of the first set that are not present in any of the other sets.
 
-Keys that do not exist count as empty sets, so a missing first key yields an empty result. The difference is computed on the fly and nothing is stored; use [`SDIFFSTORE`](/docs/redis/commands/set/sdiffstore) to keep the result.
+Keys that do not exist count as empty sets, so a missing first key yields an empty result. The difference is computed on the fly and nothing is stored; use [`SDIFFSTORE`](/redis/commands/set/sdiffstore) to keep the result.
 
 It answers questions of the form "who is in A but not in B", such as users who signed up but never converted. The cost grows with the size of the sets involved, so on large sets prefer storing the result and reusing it.
 

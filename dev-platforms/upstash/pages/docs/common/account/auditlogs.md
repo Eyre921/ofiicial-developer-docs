@@ -9,7 +9,9 @@ your databases and Upstash account. You can see the list of all activities on a
 single page. You can access your audit logs under `Account > Audit Logs` in your
 console:
 
-  <img />
+<Frame>
+  <img src="/img/auditlogs/audit.png" />
+</Frame>
 
 Here the `Source` column shows if the action has been called by the console or via
 an API key. The `Entity` column gives you the name of the resource that has been

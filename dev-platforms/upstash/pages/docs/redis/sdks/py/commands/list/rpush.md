@@ -1,0 +1,33 @@
+---
+title: "RPUSH"
+source: https://upstash.com/docs/redis/sdks/py/commands/list/rpush
+path: docs/redis/sdks/py/commands/list/rpush
+---
+
+> Push an element at the end of the list.
+
+## Arguments
+
+<ParamField body="key" type="str" required>
+  The key of the list.
+</ParamField>
+
+<ParamField body="elements" type="*List[str]" required>
+  One or more elements to push at the end of the list.
+</ParamField>
+
+## Response
+
+<ResponseField type="int" required>
+  The length of the list after the push operation.
+</ResponseField>
+
+<RequestExample>
+```py Example 
+assert redis.rpush("mylist", "one", "two", "three") == 3
+
+assert lrange("mylist", 0, -1) == ["one", "two", "three"]
+ ```
+
+
+</RequestExample>

@@ -99,7 +99,7 @@ For each machine running an STT Engine container, we recommend a machine with th
 
 ##### Text-to-Speech (TTS) Engine
 
-These specifications describe Aura and Aura-2. Flux TTS runs on a single GPU rather than two, supports fewer GPU models, and allocates up to 60 GB of system RAM while it loads. Flux TTS is an Early Access feature in self-hosted deployments. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its requirements.
+These specifications describe Aura and Aura-2. Flux TTS runs on a single GPU rather than two, supports fewer GPU models, and allocates up to 60 GB of system RAM while it loads. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its requirements.
 
 Aura and Aura-2 require exactly two dedicated GPUs per TTS Engine container. This is a requirement on device count, not on total GPU memory or compute: a single larger GPU does not substitute for two, and one Engine will not schedule work across more than two. Additional GPUs on a machine let you run additional Engine instances.
 

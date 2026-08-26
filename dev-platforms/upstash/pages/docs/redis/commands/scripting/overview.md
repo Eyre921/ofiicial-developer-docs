@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/scripting/overview
 path: docs/redis/commands/scripting/overview
 ---
 
+> Commands for loading and executing Lua scripts.
+
 <CardGroup cols={2}>
 <Card title="EVAL" href="/redis/commands/scripting/eval">Execute a Lua script</Card>
 <Card title="EVAL_RO" href="/redis/commands/scripting/eval-ro">Execute read-only Lua script</Card>

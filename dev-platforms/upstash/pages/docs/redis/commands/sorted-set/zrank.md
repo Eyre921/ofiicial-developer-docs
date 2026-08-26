@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zrank
 path: docs/redis/commands/sorted-set/zrank
 ---
 
+> Get member's rank.
+
 Use `ZRANK` to get the position of a member in a sorted set, counting from the lowest score.
 
 The rank is zero-based, so the lowest scoring member has rank `0`, and members with equal scores are ordered lexicographically. `WITHSCORE` returns the score alongside the rank. The reply is null when the member or the key does not exist.
 
-This is how a leaderboard reports "you are number N": increment scores with [`ZINCRBY`](/docs/redis/commands/sorted-set/zincrby) and read the position back here, using [`ZREVRANK`](/docs/redis/commands/sorted-set/zrevrank) when rank `0` should be the highest score instead.
+This is how a leaderboard reports "you are number N": increment scores with [`ZINCRBY`](/redis/commands/sorted-set/zincrby) and read the position back here, using [`ZREVRANK`](/redis/commands/sorted-set/zrevrank) when rank `0` should be the highest score instead.
 
 ## Syntax
 
@@ -26,7 +28,7 @@ ZRANK <key> <member> [WITHSCORE]
 
 ## Important points
 
-* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

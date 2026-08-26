@@ -120,8 +120,13 @@
 - [Call analysis](https://docs.vapi.ai/assistants/call-analysis.md): Summarize and evaluate calls automatically
 - [Call recording, logging and transcribing](https://docs.vapi.ai/assistants/call-recording.md): Learn how to configure artifact plans to record calls, generate transcripts, and store logs for analysis
 - [Retrieve call artifacts](https://docs.vapi.ai/assistants/retrieve-call-artifacts.md): How to download call recordings and logs from Vapi's private storage using your Private API Key and short-lived, authenticated redirect URLs.
-- [Outbound campaigns quickstart](https://docs.vapi.ai/outbound-campaigns/quickstart.md): Build a simple personalized outbound campaign that conducts post-service feedback and follow-up calls to improve customer experience
-- [Outbound campaigns overview](https://docs.vapi.ai/outbound-campaigns/overview.md): Learn how to efficiently schedule calls, manage recipients, analyze performance metrics, and review detailed call logs and transcripts with Vapi's Outbound Call Campaigns
+- [Campaigns overview](https://docs.vapi.ai/outbound-campaigns/overview.md): Learn how outbound campaigns place calls, personalize conversations, control concurrency, and track results for each contact in the Vapi Dashboard.
+- [Campaigns quickstart](https://docs.vapi.ai/outbound-campaigns/quickstart.md): Create an outbound campaign in the Vapi Dashboard or with the API, add contacts with dynamic variables, choose a calling window, and monitor each contact's result.
+- [Build a personalized appointment campaign](https://docs.vapi.ai/outbound-campaigns/build-personalized-appointment-campaign.md): Build a personalized appointment campaign with contact variables, voicemail handling, scheduling, concurrency, and campaign webhooks.
+- [Campaign contact data](https://docs.vapi.ai/outbound-campaigns/contact-data.md): Format campaign CSV files, understand contact limits, add contacts manually, and pass dynamic variables to an assistant or squad.
+- [Campaign scheduling and lifecycle](https://docs.vapi.ai/outbound-campaigns/scheduling-and-lifecycle.md): Schedule campaign calls, set concurrency, understand read-only campaign behavior, and cancel, archive, or duplicate campaigns.
+- [Campaign voicemail and call screening](https://docs.vapi.ai/outbound-campaigns/voicemail-and-call-screening.md): Configure campaign assistants and squads to handle voicemail and automated phone-screening services without premature timeouts.
+- [Campaign webhooks](https://docs.vapi.ai/outbound-campaigns/webhooks.md): Configure campaign pre-dial webhooks and server messages, including request, response, and campaign event payload examples.
 - [Chat quickstart](https://docs.vapi.ai/chat/quickstart.md): Create a text chat with a Vapi assistant, send messages through the Chat API, continue conversations, pass variables, and integrate with TypeScript apps.
 - [Streaming chat](https://docs.vapi.ai/chat/streaming.md): Build a streaming Vapi chat integration with server-sent events, display tokens as they arrive, and maintain context across real-time app conversations.
 - [Non-streaming chat](https://docs.vapi.ai/chat/non-streaming.md): Build a non-streaming Vapi chat integration that returns complete responses, maintains conversation context, and supports reliable request-response workflows.
@@ -168,6 +173,7 @@
 - [Voice Testing](https://docs.vapi.ai/test/voice-testing.md): Automated voice call testing for AI voice agents
 - [Frequently Asked Questions](https://docs.vapi.ai/faq.md): Frequently asked questions about Vapi.
 - [Manage pay-as-you-go billing and credits](https://docs.vapi.ai/billing/manage-billing-and-credits.md): Manage pay-as-you-go billing in the Vapi Dashboard: add a payment method, buy credits, configure auto reload, and download PDF statements and invoices.
+- [Purchase call concurrency](https://docs.vapi.ai/billing/purchase-call-concurrency.md): Purchase call concurrency from Billing & Add-Ons to increase the number of simultaneous calls available to your Vapi organization.
 - [Core Models](https://docs.vapi.ai/quickstart.md): Learn about the three core components to Vapi's voice AI pipeline.
 - [Integrations](https://docs.vapi.ai/providers/integrations.md): Integrations let you connect your own provider accounts to Vapi. Learn what an integration is, when you need one, and how to add provider credentials in the dashboard.
 - [Transcribers (Speech-to-text)](https://docs.vapi.ai/providers/transcriber/overview.md): Reference of every speech-to-text provider Vapi supports, including provider IDs and where to configure each one.

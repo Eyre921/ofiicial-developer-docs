@@ -53,8 +53,8 @@ The frontend side is one hook — `useTriggerChatTransport` connects `useChat` t
 
 ## Where each part is covered
 
-| Part                                                  | Page                                        |
-| ----------------------------------------------------- | ------------------------------------------- |
+| Part                                                  | Page                                             |
+| ----------------------------------------------------- | ------------------------------------------------ |
 | `chat.agent()` options, the turn loop, piping         | [Backend](/docs/ai-chat/backend)                 |
 | Hooks around each turn (`onTurnComplete`, hydration)  | [Lifecycle hooks](/docs/ai-chat/lifecycle-hooks) |
 | Declaring tools, typed payloads, `toModelOutput`      | [Tools](/docs/ai-chat/tools)                     |

@@ -195,10 +195,10 @@ Unlike `TriggerClient` instances (which stay isolated unless you opt in), `auth.
 
 [Sessions](/docs/ai-chat/sessions) are addressed by a session-scoped public access token — a short-lived JWT you mint in your backend and pass to frontend or server-side clients. The token carries one or both of two scopes, each pinned to a session by its friendly ID (`session_…`) or your `externalId`:
 
-| Scope                 | Grants                                                                                                                               |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Scope                 | Grants                                                                                                                                    |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `read:sessions:{id}`  | Retrieve the session, list its runs, and subscribe to and drain both its `.in` and `.out` [channels](/docs/management/sessions/channels). |
-| `write:sessions:{id}` | Append to the session's `.in` channel, and create runs on the session (including the create call itself).                            |
+| `write:sessions:{id}` | Append to the session's `.in` channel, and create runs on the session (including the create call itself).                                 |
 
 Two boundaries follow from the table, and both are enforced server-side:
 

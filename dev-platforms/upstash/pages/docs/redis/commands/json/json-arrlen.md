@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/json/json-arrlen
 path: docs/redis/commands/json/json-arrlen
 ---
 
+> Get JSON array length.
+
 Use `JSON.ARRLEN` to get the number of elements in the arrays a path selects.
 
 Without a path the root value is used. The reply is one length per match, with null for matches that are not arrays, so it doubles as a cheap way to check that a branch of the document really is an array before working on it.
@@ -23,8 +25,8 @@ JSON.ARRLEN <key> [path]
 
 ## Important points
 
-* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

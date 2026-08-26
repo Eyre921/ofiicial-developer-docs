@@ -74,15 +74,19 @@ Here the list of regions currently supported:
 
 </Tabs>
 
-  <img width="520" />
+<Frame>
+  <img src="/img/globaldb/regionselect.png" width="520" />
+</Frame>
 
 In our internal tests, we see the following latencies (99th percentile):
 
-* Read latency from the same region &lt;1ms
-* Write latency from the same region &lt;5ms
-* Read/write latency from the same continent &lt;50ms
+- Read latency from the same region &lt;1ms
+- Write latency from the same region &lt;5ms
+- Read/write latency from the same continent &lt;50ms
 
-  <img width="1000" />
+<Frame>
+  <img src="/img/globaldb/map2.png" width="1000" />
+</Frame>
 
 ### Architecture
 
@@ -106,18 +110,18 @@ short period of time.
 
 ### Use Cases
 
-* **Edge functions:** Edge computing (Cloudflare workers, Fastly Compute) is
+- **Edge functions:** Edge computing (Cloudflare workers, Fastly Compute) is
   becoming a popular way of building globally fast applications. But there are
   limited data solutions accessible from edge functions. Upstash Global Database
   is accessible from Edge functions with the REST API. Low latency from all edge
   locations makes it a perfect solution for Edge functions
 
-* Multi region serverless architectures: You can run your AWS Lambda function in
+- Multi region serverless architectures: You can run your AWS Lambda function in
   multiple regions to lower global latency. Vercel/Netlify functions can be run
   in different regions. Upstash Global database provides low latency data
   wherever your serverless functions are.
 
-* Web/mobile use cases where you need low latency globally. Thanks to the read
+- Web/mobile use cases where you need low latency globally. Thanks to the read
   only REST API, you can access Redis from your web/mobile application directly.
   In such a case, Global Database will help to lower the latency as you can
   expect the clients from anywhere.

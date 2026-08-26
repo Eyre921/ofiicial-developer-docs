@@ -6,7 +6,7 @@ path: docs/box/guides/ai-sdk-code-interpreter
 
 In this guide we'll add a **code interpreter** tool to a Vercel AI SDK chat app. When a user asks a question that needs computation — math, data analysis, statistics — the model writes code and sends it to a fresh `EphemeralBox` to run. The sandbox is isolated, disposable, and auto-expires when the session ends.
 
-***
+---
 
 ## 1. Installation
 
@@ -21,7 +21,7 @@ UPSTASH_BOX_API_KEY=box_xxxxxxxxxxxxxxxxxxxxxxxx
 ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxxxxxx
 ```
 
-***
+---
 
 ## 2. Create the API route
 
@@ -82,7 +82,7 @@ export async function POST(req: Request) {
 `ttl: 120` means the box auto-deletes after 2 minutes even if the `finally` block is skipped. For longer-running scripts, increase this value.
 </Note>
 
-***
+---
 
 ## 3. Add a simple UI
 
@@ -172,7 +172,7 @@ export default function Page() {
 }
 ```
 
-***
+---
 
 ## 4. Try it
 

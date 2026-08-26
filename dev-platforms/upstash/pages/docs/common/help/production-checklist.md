@@ -11,12 +11,12 @@ This checklist provides essential recommendations for securing and optimizing yo
 ### Enable Prod Pack
 Prod Pack provides enterprise-grade security and monitoring features:
 
-* 99.99% uptime SLA
-* SOC-2 Type 2 report available
-* Encryption at Rest
-* Advanced monitoring (Prometheus, Datadog)
-* Multi-Zone High Availability
-* High availability for read regions
+- 99.99% uptime SLA
+- SOC-2 Type 2 report available
+- Encryption at Rest
+- Advanced monitoring (Prometheus, Datadog)
+- Multi-Zone High Availability
+- High availability for read regions
 
 <Note>
   Prod Pack is available as a $200/month add-on per database for all paid plans except Free tier.
@@ -25,9 +25,9 @@ Prod Pack provides enterprise-grade security and monitoring features:
 ### Enable Credential Protection
 Protect your database credentials (Prod Pack feature):
 
-* Credentials are never stored in Upstash infrastructure
-* Credentials are displayed only once during enablement
-* Console features requiring database access are disabled
+- Credentials are never stored in Upstash infrastructure
+- Credentials are displayed only once during enablement
+- Console features requiring database access are disabled
 
 <Warning>
   Disabling this feature will permanently revoke current credentials and generate new ones.
@@ -36,33 +36,33 @@ Protect your database credentials (Prod Pack feature):
 ### Configure IP Allowlist
 Restrict database access to specific IP addresses:
 
-* Available on all plans except Free tier
-* Supports IPv4 addresses and CIDR blocks
-* Multiple IP ranges can be configured
+- Available on all plans except Free tier
+- Supports IPv4 addresses and CIDR blocks
+- Multiple IP ranges can be configured
 
 ### Implement Redis ACL
 Use Redis Access Control Lists to restrict user access:
 
-* Available on all paid plans
-* Create users with minimal required permissions
-* Available for both TCP connections and REST API
-* Use `ACL RESTTOKEN` command to generate REST tokens
+- Available on all paid plans
+- Create users with minimal required permissions
+- Available for both TCP connections and REST API
+- Use `ACL RESTTOKEN` command to generate REST tokens
 
 ### Enable Multi-Factor Authentication
 Enable MFA on your Upstash account for enhanced security:
 
-* Use your existing authentication provider (Google, GitHub, Amazon)
-* Consider using a dedicated email/password account for production
-* Force MFA for all team members to ensure consistent security
-* Regularly review account access and team member permissions
+- Use your existing authentication provider (Google, GitHub, Amazon)
+- Consider using a dedicated email/password account for production
+- Force MFA for all team members to ensure consistent security
+- Regularly review account access and team member permissions
 
 ### Secure Credential Management
 Follow these best practices:
 
-* Never hardcode credentials in your application code
-* Use environment variables or secret management systems
-* Reset passwords immediately if credentials are compromised
-* Use Read-Only tokens for public-facing applications
+- Never hardcode credentials in your application code
+- Use environment variables or secret management systems
+- Reset passwords immediately if credentials are compromised
+- Use Read-Only tokens for public-facing applications
 
 ## Network Security
 
@@ -72,72 +72,72 @@ TLS is always enabled on Upstash Redis databases.
 ### VPC Peering (Enterprise)
 Connect databases to your VPCs using private IP:
 
-* Database becomes inaccessible from public networks
-* Minimizes data transfer costs
-* Available for Enterprise customers
+- Database becomes inaccessible from public networks
+- Minimizes data transfer costs
+- Available for Enterprise customers
 
 ## Monitoring & Observability
 
 ### Enable Advanced Monitoring
 Prod Pack includes comprehensive monitoring:
 
-* Prometheus integration
-* Datadog integration
-* Extended console metrics (up to one month)
+- Prometheus integration
+- Datadog integration
+- Extended console metrics (up to one month)
 
 ## High Availability & Backup
 
 ### Enable Daily Backups
 Configure automated daily backups for data protection:
 
-* Available on all paid plans
-* Backup retention up to 3 days with Prod Pack
-* Hourly backups with customizable retention (Enterprise)
+- Available on all paid plans
+- Backup retention up to 3 days with Prod Pack
+- Hourly backups with customizable retention (Enterprise)
 
 ### Global Replication
 For global applications, consider using Global Database:
 
-* Distribute data across multiple regions
-* Minimize latency for users worldwide
-* Enhanced disaster recovery capabilities
+- Distribute data across multiple regions
+- Minimize latency for users worldwide
+- Enhanced disaster recovery capabilities
 
 ## Compliance & Governance
 
 ### SOC-2 Compliance
 Prod Pack and Enterprise plans include SOC-2 Type 2 compliance:
 
-* Request SOC-2 report from [trust.upstash.com](https://trust.upstash.com/)
-* Available for production workloads
+- Request SOC-2 report from [trust.upstash.com](https://trust.upstash.com/)
+- Available for production workloads
 
 ### Enterprise Features
 For enterprise customers:
 
-* HIPAA compliance available
-* SAML SSO integration
-* Access logs available
-* Custom resource allocation
+- HIPAA compliance available
+- SAML SSO integration
+- Access logs available
+- Custom resource allocation
 
 ## Pre-Production Checklist
 
 Before going live, ensure you have:
 
-* [ ] Prod Pack enabled (recommended)
-* [ ] Credential Protection enabled
-* [ ] IP Allowlist configured
-* [ ] MFA enabled on your account
-* [ ] Daily backups enabled
-* [ ] Monitoring and alerts configured
-* [ ] Environment variables secured
-* [ ] Error handling tested
+- [ ] Prod Pack enabled (recommended)
+- [ ] Credential Protection enabled
+- [ ] IP Allowlist configured
+- [ ] MFA enabled on your account
+- [ ] Daily backups enabled
+- [ ] Monitoring and alerts configured
+- [ ] Environment variables secured
+- [ ] Error handling tested
 
 ## Additional Resources
 
-* [Security Features](/docs/redis/features/security)
-* [Prod Pack & Enterprise](/docs/redis/overall/enterprise)
-* [Backup & Restore](/docs/redis/features/backup)
-* [Global Database](/docs/redis/features/globaldatabase)
-* [Monitoring & Metrics](/docs/redis/howto/metrics-and-charts)
-* [Compliance Information](/docs/common/help/compliance)
-* [Professional Support](/docs/common/help/prosupport)
+- [Security Features](/redis/features/security)
+- [Prod Pack & Enterprise](/redis/overall/enterprise)
+- [Backup & Restore](/redis/features/backup)
+- [Global Database](/redis/features/globaldatabase)
+- [Monitoring & Metrics](/redis/howto/metrics-and-charts)
+- [Compliance Information](/common/help/compliance)
+- [Professional Support](/common/help/prosupport)
 
 For additional assistance with production deployment, contact our support team at [support@upstash.com](mailto:support@upstash.com).

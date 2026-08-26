@@ -37,14 +37,13 @@ Per-model pricing for headline models. Fast variants appear as adjacent rows. In
 | [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                                  | \$0.95 / \$0.16 / \$4.00  | \$1.50 / \$0.22 / \$6.00      |
 | [Kimi K2.6 Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                             | \$2.00 / \$0.30 / \$8.00  | —                             |
 | [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)                                      | \$1.74 / \$0.145 / \$3.48 | \$2.61 / \$0.218 / \$5.22     |
+| [DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)                          | \$1.32 / \$0.044 / \$3.96 | \$1.65 / \$0.055 / \$4.95     |
 | [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)                      | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 |
 | [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                      | \$1.40 / \$0.14 / \$4.40  | \$1.75 / \$0.18 / \$5.50      |
 | [GLM 5.2 Fast](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                 | \$2.10 / \$0.21 / \$6.60  | —                             |
 | [GLM 5.2 Fast US](https://app.fireworks.ai/models/fireworks/glm-5p2)                                              | \$2.10 / \$0.21 / \$6.60  | —                             |
-| [GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)                                                      | \$1.40 / \$0.26 / \$4.40  | \$2.10 / \$0.39 / \$6.60      |
-| [GLM 5.1 Fast](https://app.fireworks.ai/models/fireworks/glm-5p1)                                                 | \$2.80 / \$0.52 / \$8.80  | —                             |
 | [Qwen 3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)                                           | \$0.40 / \$0.08 / \$1.60  | —                             |
-| [Qwen 3.8 Max](https://app.fireworks.ai/models/fireworks/qwen3p8-max)                                             | \$2.00 / \$0.25 / \$6.00  | —                             |
+| [Qwen 3.8 Max](https://app.fireworks.ai/models/fireworks/qwen3p8-max)                                             | \$2.00 / \$0.25 / \$6.00  | \$3.00 / \$0.375 / \$9.00     |
 | [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)                                                | \$0.30 / \$0.06 / \$1.20  | \$0.45 / \$0.09 / \$1.80      |
 | [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)                                            | \$0.30 / \$0.06 / \$1.20  | \$0.45 / \$0.09 / \$1.80      |
 | [OpenAI GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)                                     | \$0.15 / \$0.015 / \$0.60 | \$0.18 / \$0.018 / \$0.72     |

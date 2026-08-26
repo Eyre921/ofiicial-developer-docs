@@ -8,7 +8,7 @@ Enabling Credential Protection ensures your database credentials are never store
 
 <Note>
   Credential Protection is a [Production
-  Pack](/docs/redis/overall/enterprise#prod-pack-features)
+  Pack](/redis/overall/enterprise#prod-pack-features)
   feature.
 </Note>
 
@@ -16,20 +16,24 @@ Enabling Credential Protection ensures your database credentials are never store
 
 When enabled:
 
-* Redis database credentials are no longer stored in Upstash infrastructure
-* Credentials are displayed only once during enablement - save them immediately
-* Console features requiring database access are disabled (CLI, Data Browser, Monitor, ACL)
+- Redis database credentials are no longer stored in Upstash infrastructure
+- Credentials are displayed only once during enablement - save them immediately
+- Console features requiring database access are disabled (CLI, Data Browser, Monitor, ACL)
 
 ## Managing Credential Protection
 
 1. Go to database details page → Configuration section
 2. Toggle **Protect Credentials** switch:
 
-  <img />
+<Frame>
+  <img src="/img/credential-protection/activate-protect-credentials.png" />
+</Frame>
 
 3. Save the credentials shown in the modal:
 
-  <img />
+<Frame>
+  <img src="/img/credential-protection/save-credentials.png" />
+</Frame>
 
 <Warning>
   Disabling this feature will permanently revoke current credentials and
@@ -41,4 +45,6 @@ When enabled:
 **Reset Credentials**: This function remains available and, when credential protection is enabled, will generate new protected credentials.
 Navigate to the settings tab of your database and click **Reset Credentials**. You will be prompted to save the new credentials.
 
-  <img />
+<Frame>
+  <img src="/img/credential-protection/reset-credentials.png" />
+</Frame>

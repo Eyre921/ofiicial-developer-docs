@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/hash/hgetall
 path: docs/redis/commands/hash/hgetall
 ---
 
+> Get all fields and values.
+
 Use `HGETALL` to read every field and value of a hash in one call.
 
 The reply pairs each field with its value. RESP2 flattens it into a single alternating array while RESP3 returns a map, and client libraries normally decode either form into a native dictionary. A missing key returns an empty result rather than an error.
 
-The whole hash is transferred, so on hashes with many fields prefer [`HMGET`](/docs/redis/commands/hash/hmget) when you know which fields you need, or [`HSCAN`](/docs/redis/commands/hash/hscan) to walk the hash in batches.
+The whole hash is transferred, so on hashes with many fields prefer [`HMGET`](/redis/commands/hash/hmget) when you know which fields you need, or [`HSCAN`](/redis/commands/hash/hscan) to walk the hash in batches.
 
 ## Syntax
 
@@ -24,7 +26,7 @@ HGETALL <key>
 
 ## Important points
 
-* Pair-based results may be flattened into one alternating array in RESP2 while RESP3 preserves nested pairs or a map.
+- Pair-based results may be flattened into one alternating array in RESP2 while RESP3 preserves nested pairs or a map.
 
 ## Response
 

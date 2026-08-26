@@ -4,8 +4,12 @@ source: https://upstash.com/docs/vector/api/endpoints/query-data
 path: docs/vector/api/endpoints/query-data
 ---
 
+> Queries the approximate nearest neighbors of a raw text data after embedding it.
+
+`POST https://{endpoint}/query-data/{namespace}`
+
 <Warning>
-  To use this endpoint, the index must be created with an [embedding model](/docs/vector/features/embeddingmodels).
+  To use this endpoint, the index must be created with an [embedding model](/vector/features/embeddingmodels).
 </Warning>
 
 <Tip>
@@ -41,7 +45,7 @@ of fields below.
   while upserting.
 </ParamField>
 <ParamField body="filter" type="string" default="">
-  [Metadata filter](/docs/vector/features/filtering) to apply.
+  [Metadata filter](/vector/features/filtering) to apply.
 </ParamField>
 <ParamField body="weightingStrategy" type="string">
   For sparse vectors of sparse and hybrid indexes, specifies what kind of
@@ -126,67 +130,3 @@ objects below is returned, one for each query item.
     </ResponseField>
   </Expandable>
 </ResponseField>
-
-<RequestExample>
-
-```sh curl
-curl $UPSTASH_VECTOR_REST_URL/query-data \
-  -X POST \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '{ "data": "What is Upstash?", "topK": 2, "includeMetadata": true }'
-```
-
-```sh curl (Namespace)
-curl $UPSTASH_VECTOR_REST_URL/query-data/ns \
-  -X POST \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '{ "data": "What is Upstash?", "topK": 2, "includeMetadata": true }'
-```
-
-```sh curl (Batch Query)
-curl $UPSTASH_VECTOR_REST_URL/query-data \
-  -X POST \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '[
-        {
-          "data": "What is Upstash?",
-          "topK": 2,
-          "includeMetadata": true
-        },
-        {
-          "data": "What is Upstash Vector?",
-          "topK": 3
-        }
-      ]'
-```
-
-</RequestExample>
-
-<ResponseExample>
-
-```json 200 OK
-{
-    "result": [
-        {
-            "id": "id-0",
-            "score": 1.0,
-            "metadata": {
-                "link": "upstash.com"
-            }
-        },
-        {
-            "id": "id-1",
-            "score": 0.99996454
-        }
-    ]
-}
-```
-
-```json 422 Unprocessable Entity
-{
-    "error": "Embedding data for this index is not allowed. The index must be created with an embedding model to use it.",
-    "status": 422
-}
-```
-
-</ResponseExample>

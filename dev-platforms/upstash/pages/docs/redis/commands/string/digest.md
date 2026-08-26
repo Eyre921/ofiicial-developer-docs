@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/string/digest
 path: docs/redis/commands/string/digest
 ---
 
+> Get the digest of a string value.
+
 Use `DIGEST` to get the digest of a string value.
 
 The reply is a 16-character lowercase hexadecimal XXH3 digest of the stored bytes, null when the key does not exist, and an error when the value is not a string. It is a fast non-cryptographic hash, meant for change detection rather than for security.
 
-Comparing digests lets a client tell whether a large value has changed without transferring it, for instance to decide whether a cached copy is still current. The same digest can be passed to the conditional forms of [`SET`](/docs/redis/commands/string/set) (`IFDEQ`, `IFDNE`) and [`DELEX`](/docs/redis/commands/string/delex), which turns it into a compact compare-and-set token for large values. `DIGEST` is an Upstash extension.
+Comparing digests lets a client tell whether a large value has changed without transferring it, for instance to decide whether a cached copy is still current. The same digest can be passed to the conditional forms of [`SET`](/redis/commands/string/set) (`IFDEQ`, `IFDNE`) and [`DELEX`](/redis/commands/string/delex), which turns it into a compact compare-and-set token for large values. `DIGEST` is an Upstash extension.
 
 ## Syntax
 
@@ -24,8 +26,8 @@ DIGEST <key>
 
 ## Important points
 
-* The reply is a 16-character lowercase hexadecimal XXH3 digest of the stored string bytes.
-* A missing key returns null. A key containing a non-string value returns `WRONGTYPE`.
+- The reply is a 16-character lowercase hexadecimal XXH3 digest of the stored string bytes.
+- A missing key returns null. A key containing a non-string value returns `WRONGTYPE`.
 
 ## Response
 

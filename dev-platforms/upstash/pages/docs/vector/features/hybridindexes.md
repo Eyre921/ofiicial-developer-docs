@@ -661,11 +661,11 @@ Normalized Score = -------------------------
 
 Where:
 
-* `s` is the score.
-* `μ` is the mean of the scores.
-* `σ` is the standard deviation.
-* `(μ − 3 * σ)` represents the minimum value (lower tail of the distribution).
-* `(μ + 3 * σ)` represents the maximum value (upper tail of the distribution).
+- `s` is the score.
+- `μ` is the mean of the scores.
+- `σ` is the standard deviation.
+- `(μ − 3 * σ)` represents the minimum value (lower tail of the distribution).
+- `(μ + 3 * σ)` represents the maximum value (upper tail of the distribution).
 
 This formula scales each score to fit between 0 and 1 based on the range defined by
 the distribution's tails.

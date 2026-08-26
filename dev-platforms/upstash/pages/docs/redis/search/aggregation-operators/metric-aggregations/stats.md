@@ -8,11 +8,11 @@ path: docs/redis/search/aggregation-operators/metric-aggregations/stats
 
 For the selected field, it computes:
 
-* `count`
-* `sum`
-* `min`
-* `max`
-* `avg`
+- `count`
+- `sum`
+- `min`
+- `max`
+- `avg`
 
 This is equivalent to running `$count`, `$sum`, `$min`, `$max`, and `$avg` together, but returned as a single object.
 

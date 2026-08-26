@@ -14,7 +14,7 @@ RYW consistency solves this by returning a **sync token** after each request, wh
 
 So, the sync token acts as a checkpoint, ensuring that any read operations following a write reflect the most recent changes, even if they are served by a read replica.
 
-Management of the sync token is handled automatically by the official [Typescript (version 1.34.0 and later)](/docs/redis/sdks/ts/overview) and [Python (version 1.2.0 and later)](/docs/redis/sdks/py/overview) SDKs of Upstash. When you initialize a Redis client with these SDKs, the writes made by that client will be respected during subsequent reads from the same client.
+Management of the sync token is handled automatically by the official [Typescript (version 1.34.0 and later)](/redis/sdks/ts/overview) and [Python (version 1.2.0 and later)](/redis/sdks/py/overview) SDKs of Upstash. When you initialize a Redis client with these SDKs, the writes made by that client will be respected during subsequent reads from the same client.
 
 For REST users, you can achieve similar behavior by using the `upstash-sync-token` header. Each time you make a request, save the value of the `upstash-sync-token` header from the response and pass it in the `upstash-sync-token` header of your next request. This ensures that subsequent reads reflect the writes.
 
@@ -46,7 +46,7 @@ const randomKey = await writeRequest();
 await readRequest(randomKey);
 ```
 
-As explained above, in rare cases, one of your [read replicas](/docs/redis/features/globaldatabase#primary-region-and-read-regions) can serve the `read` request before it receives the `write` update from the primary replica. To avoid this, if you are using `@upstash/redis` version 1.34.1 or later, you can pass the `readYourWritesSyncToken` from the first client to the second:
+As explained above, in rare cases, one of your [read replicas](/redis/features/globaldatabase#primary-region-and-read-regions) can serve the `read` request before it receives the `write` update from the primary replica. To avoid this, if you are using `@upstash/redis` version 1.34.1 or later, you can pass the `readYourWritesSyncToken` from the first client to the second:
 
 ```ts
 export const writeRequest = async () => {

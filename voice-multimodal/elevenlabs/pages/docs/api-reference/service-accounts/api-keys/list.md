@@ -53,29 +53,39 @@ Successful Response
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
   "api-keys": [
     {
-      "name": "string",
-      "hint": "string",
-      "key_id": "string",
-      "service_account_user_id": "string",
-      "hashed_xi_api_key": "string",
-      "created_at_unix": 1,
+      "name": "Primary Service Account Key",
+      "hint": "Used for production environment",
+      "key_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "service_account_user_id": "svcacct-9876543210",
+      "hashed_xi_api_key": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "created_at_unix": 1685600000,
       "is_disabled": false,
       "permissions": [
-        "text_to_speech"
+        "text_to_speech",
+        "models_read",
+        "voices_read",
+        "workspace_read"
       ],
-      "disable_reason": "trial_ended",
-      "character_limit": 1,
-      "character_count": 1,
+      "disable_reason": null,
+      "character_limit": 1000000,
+      "character_count": 250000,
       "allowed_ips": [
-        "string"
+        "192.168.1.100",
+        "10.0.0.5"
       ],
-      "third_party_disable_allowed": true
+      "third_party_disable_allowed": false
     }
   ]
 }
@@ -110,6 +120,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -118,7 +129,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -141,6 +156,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -151,6 +168,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -160,7 +179,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -170,16 +194,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

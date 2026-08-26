@@ -9,11 +9,11 @@ path: docs/readme
 Click on `Use this template` to copy the Mintlify starter kit. The starter kit
 contains examples including
 
-* Guide pages
-* Navigation
-* Customizations
-* API Reference pages
-* Use of popular components
+- Guide pages
+- Navigation
+- Customizations
+- API Reference pages 
+- Use of popular components
 
 ### 👩‍💻 Development
 
@@ -40,6 +40,6 @@ docs.
 
 #### Troubleshooting
 
-* Mintlify dev isn't running - Run `mintlify install` it'll re-install
+- Mintlify dev isn't running - Run `mintlify install` it'll re-install
   dependencies.
-* Page loads as a 404 - Make sure you are running in a folder with `docs.json`
+- Page loads as a 404 - Make sure you are running in a folder with `docs.json`

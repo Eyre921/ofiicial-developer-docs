@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/hash/hsetnx
 path: docs/redis/commands/hash/hsetnx
 ---
 
+> Set field only if it doesn't exist.
+
 Use `HSETNX` to set a hash field only when it does not already exist.
 
 The reply is `1` when the field was created and `0` when it was already present and left untouched. The check and the write happen atomically, so of several clients racing to fill the same field exactly one succeeds, which makes the command a way to claim a slot inside a hash without overwriting whatever a concurrent writer put there.

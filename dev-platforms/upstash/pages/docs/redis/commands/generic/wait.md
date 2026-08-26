@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/generic/wait
 path: docs/redis/commands/generic/wait
 ---
 
+> Wait for replica acknowledgements.
+
 Use `WAIT` to block until preceding writes have been acknowledged by a number of replicas, or until a timeout expires.
 
 The reply is the number of replicas that acknowledged, which can be lower than `<numreplicas>` when the timeout is reached, so callers must check it instead of assuming success. A timeout of `0` waits indefinitely.
@@ -27,8 +29,8 @@ WAIT <numreplicas> <timeout>
 
 ## Important points
 
-* This deployment waits for writes enqueued before `WAIT` begins, including writes from other connections. That is broader than the per-connection wording used by Redis clients.
-* The reply can be lower than `numreplicas` when the timeout expires. This improves observed replication durability but does not make Redis a strongly consistent store.
+- This deployment waits for writes enqueued before `WAIT` begins, including writes from other connections. That is broader than the per-connection wording used by Redis clients.
+- The reply can be lower than `numreplicas` when the timeout expires. This improves observed replication durability but does not make Redis a strongly consistent store.
 
 ## Response
 

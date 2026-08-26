@@ -14,7 +14,7 @@ You can find the Github Repository [here](https://github.com/upstash/cli).
 npm i -g @upstash/cli
 ```
 
-For agents, install the [Upstash Skill](/docs/agent-resources/skills) instead. It bundles Upstash docs with the `upstash` CLI so your agent can implement and debug against your resources without filling up its context window:
+For agents, install the [Upstash Skill](/agent-resources/skills) instead. It bundles Upstash docs with the `upstash` CLI so your agent can implement and debug against your resources without filling up its context window:
 
 ```bash
 npx skills add upstash/skills

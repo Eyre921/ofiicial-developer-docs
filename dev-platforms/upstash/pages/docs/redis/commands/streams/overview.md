@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/streams/overview
 path: docs/redis/commands/streams/overview
 ---
 
+> Commands for append-only logs, consumer groups, and message processing.
+
 <CardGroup cols={2}>
 <Card title="XACK" href="/redis/commands/streams/xack">Acknowledge stream messages</Card>
 <Card title="XACKDEL" href="/redis/commands/streams/xackdel">Acknowledge and delete messages</Card>

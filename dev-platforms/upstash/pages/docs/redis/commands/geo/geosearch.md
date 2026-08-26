@@ -4,13 +4,15 @@ source: https://upstash.com/docs/redis/commands/geo/geosearch
 path: docs/redis/commands/geo/geosearch
 ---
 
+> Search for members in an area.
+
 Use `GEOSEARCH` to find the members of a geospatial index that fall inside a circle or a rectangle.
 
 The center is either an existing member of the index (`FROMMEMBER`) or an explicit coordinate pair (`FROMLONLAT`). The area is either a circle of a given radius (`BYRADIUS`) or an axis-aligned box of a given width and height centered on that point (`BYBOX`), which is the shape to use when you are covering a map viewport rather than a "within N km" question.
 
 By default only member names come back. `WITHDIST` adds the distance from the center in the unit of the query, `WITHCOORD` the member's coordinates, and `WITHHASH` its raw geohash score. `ASC` and `DESC` sort by distance, and `COUNT` caps the number of results; adding `ANY` lets the server return as soon as it has enough matches, which is faster but no longer gives you the nearest ones.
 
-`GEOSEARCH` replaces the deprecated `GEORADIUS` and `GEORADIUSBYMEMBER` commands and is the command to use for new code. Use [`GEOSEARCHSTORE`](/docs/redis/commands/geo/geosearchstore) when the result should be stored instead of returned.
+`GEOSEARCH` replaces the deprecated `GEORADIUS` and `GEORADIUSBYMEMBER` commands and is the command to use for new code. Use [`GEOSEARCHSTORE`](/redis/commands/geo/geosearchstore) when the result should be stored instead of returned.
 
 ## Syntax
 

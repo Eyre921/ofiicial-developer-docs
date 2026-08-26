@@ -4,15 +4,17 @@ source: https://upstash.com/docs/redis/commands/list/brpoplpush
 path: docs/redis/commands/list/brpoplpush
 ---
 
+> Pop from a list's tail and push it to another, blocking until an element arrives.
+
 <Warning>
-  Prefer [`BLMOVE`](/docs/redis/commands/list/blmove) with `RIGHT` and `LEFT` in new code: `BLMOVE <source> <destination> RIGHT LEFT <timeout>`.
+  Prefer [`BLMOVE`](/redis/commands/list/blmove) with `RIGHT` and `LEFT` in new code: `BLMOVE <source> <destination> RIGHT LEFT <timeout>`. 
 </Warning>
 
 Use `BRPOPLPUSH` to pop an element from the tail of one list and push it to the head of another, blocking until the source has an element or the timeout expires.
 
-It is the blocking form of [`RPOPLPUSH`](/docs/redis/commands/list/rpoplpush). The timeout is in seconds, may be fractional, and `0` waits indefinitely; when it expires the reply is null. Since the element moves atomically into the destination, a worker that crashes after taking an item leaves it visible in the processing list, where it can be recovered.
+It is the blocking form of [`RPOPLPUSH`](/redis/commands/list/rpoplpush). The timeout is in seconds, may be fractional, and `0` waits indefinitely; when it expires the reply is null. Since the element moves atomically into the destination, a worker that crashes after taking an item leaves it visible in the processing list, where it can be recovered.
 
-[`BLMOVE`](/docs/redis/commands/list/blmove) does the same thing and additionally lets you choose which end of each list to use.
+[`BLMOVE`](/redis/commands/list/blmove) does the same thing and additionally lets you choose which end of each list to use.
 
 ## Syntax
 
@@ -30,7 +32,7 @@ BRPOPLPUSH <source> <destination> <timeout>
 
 ## Important points
 
-* A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
+- A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
 
 ## Response
 

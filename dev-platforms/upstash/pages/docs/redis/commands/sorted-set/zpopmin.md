@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zpopmin
 path: docs/redis/commands/sorted-set/zpopmin
 ---
 
+> Pop members with lowest scores.
+
 Use `ZPOPMIN` to remove and return the members with the lowest scores in a sorted set.
 
 Without a count one member is returned with its score, and with a count up to that many are removed, ordered from the lowest score up. The key is deleted once the last member is popped.
 
-With a timestamp or a priority number as the score, this is how a sorted set becomes a scheduler or a priority queue: the next item due is always the minimum, and popping it atomically means only one worker can pick it up. [`BZPOPMIN`](/docs/redis/commands/sorted-set/bzpopmin) is the blocking form.
+With a timestamp or a priority number as the score, this is how a sorted set becomes a scheduler or a priority queue: the next item due is always the minimum, and popping it atomically means only one worker can pick it up. [`BZPOPMIN`](/redis/commands/sorted-set/bzpopmin) is the blocking form.
 
 ## Syntax
 
@@ -25,7 +27,7 @@ ZPOPMIN <key> [<count>]
 
 ## Important points
 
-* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

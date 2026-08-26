@@ -1,10 +1,10 @@
 ---
-title: "Feature availability"
+title: "Pinecone Marketplace feature availability"
 source: https://docs.pinecone.io/marketplace-release-notes/feature-availability
 path: marketplace-release-notes/feature-availability
 ---
 
-Pinecone feature availability across public preview, general availability, and limited availability releases, with links to release notes.
+Availability of Pinecone Marketplace features across public preview, limited availability, and general availability release stages.
 
 This page defines the different availability phases of a feature in Pinecone.
 

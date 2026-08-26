@@ -6,7 +6,7 @@ path: docs/workflow/steps/notify
 
 `context.notify()` notifies workflows that are waiting for a specific event, passing along an optional payload.
 
-It is typically used in combination with [`context.waitForEvent`](/docs/workflow/basics/context#context-waitforevent).
+It is typically used in combination with [`context.waitForEvent`](/workflow/basics/context#context-waitforevent).
 
 ## Arguments
 
@@ -51,28 +51,7 @@ It is typically used in combination with [`context.waitForEvent`](/docs/workflow
             Unix timestamp (in milliseconds) representing when the workflow was created.
         </ResponseField>
 
-        <ResponseField name="Waiter" type="object">
-  <Expandable>
-   	<ResponseField name="url" type="string" required>
-      URL to call upon notify
-    </ResponseField>
-   	<ResponseField name="deadline" type="number" required>
-      Unix timestamp for when the wait will time out
-    </ResponseField>
-   	<ResponseField name="headers" type="Record<string, string[]>" required>
-      Headers sent in case of notify
-    </ResponseField>
-   	<ResponseField name="timeoutUrl" type="string">
-      URL to call upon timeout
-    </ResponseField>
-   	<ResponseField name="timeoutBody" type="unknown">
-      Body used in timeout request
-    </ResponseField>
-   	<ResponseField name="timeoutHeaders" type="Record<string, string[]>">
-      Headers sent in case of time out
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+        <Snippet file="qstash/waiter.mdx" />
     </Expandable>
 
 </ResponseField>

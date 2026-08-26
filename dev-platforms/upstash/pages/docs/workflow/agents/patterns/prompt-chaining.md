@@ -4,7 +4,7 @@ source: https://upstash.com/docs/workflow/agents/patterns/prompt-chaining
 path: docs/workflow/agents/patterns/prompt-chaining
 ---
 
-<img />
+<img src="/img/workflow/agents/diagram/prompt-chain-diagram.png" />
 
 This workflow involves chaining multiple LLM calls, where the output of one agent becomes the input for the next agent.
 
@@ -62,6 +62,7 @@ export const { POST } = serve(async (context) => {
     agent: agent2,
     prompt: `Describe the work of: ${firstOutput.text}`
   }).run();
+  
 
   const { text } = await agents.task({
     agent: agent3,
@@ -72,12 +73,12 @@ export const { POST } = serve(async (context) => {
 });
 ```
 
-<img />
+<img src="/img/workflow/agents/logs/logs-chain.png" />
 
 In response to the prompt, our agents generate this response:
 
 ```
-Albert Einstein was a German physicist known for his theory of relativity and the famous equation E=mc^2. He made significant contributions to quantum mechanics and was awarded the Nobel Prize in Physics in 1921.
+Albert Einstein was a German physicist known for his theory of relativity and the famous equation E=mc^2. He made significant contributions to quantum mechanics and was awarded the Nobel Prize in Physics in 1921. 
 
 Isaac Newton, an English polymath, was a key figure in the Scientific Revolution and the Enlightenment. He is famous for his laws of motion and universal gravitation, as outlined in his book "PhilosophiÃ¦ Naturalis Principia Mathematica."
 

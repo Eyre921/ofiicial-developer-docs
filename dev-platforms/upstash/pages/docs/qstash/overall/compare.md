@@ -11,14 +11,14 @@ In this section, we will compare QStash with alternative solutions.
 BullMQ is a message queue for NodeJS based on Redis. BullMQ is open source
 project, you can run BullMQ yourself.
 
-* Using BullMQ in serverless environments is problematic due to stateless nature
+- Using BullMQ in serverless environments is problematic due to stateless nature
   of serverless. QStash is designed for serverless environments.
 
-* With BullMQ, you need to run a stateful application to consume messages.
+- With BullMQ, you need to run a stateful application to consume messages.
   QStash calls the API endpoints, so you do not need your application to consume
   messages continuously.
 
-* You need to run and maintain BullMQ and Redis yourself. QStash is completely
+- You need to run and maintain BullMQ and Redis yourself. QStash is completely
   serverless, you maintain nothing and pay for just what you use.
 
 ### Zeplo

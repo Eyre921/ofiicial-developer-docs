@@ -6,25 +6,25 @@ path: docs/redis/sdks/ts/overview
 
 [@upstash/redis](https://github.com/upstash/redis-js)
 is an HTTP/REST based Redis client built on top of
-[Upstash REST API](/docs/redis/features/restapi).
+[Upstash REST API](/redis/features/restapi).
 
-[![Tests]()](https://github.com/upstash/redis-js/actions/workflows/tests.yaml)
-![npm (scoped)]()
-![npm bundle size]()
+[![Tests](https://github.com/upstash/redis-js/actions/workflows/tests.yaml/badge.svg)](https://github.com/upstash/redis-js/actions/workflows/tests.yaml)
+![npm (scoped)](https://img.shields.io/npm/v/@upstash/redis)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/@upstash/redis)
 
 It is the only connectionless (HTTP based) Redis client and designed for:
 
-* Serverless functions (AWS Lambda)
-* Cloudflare Workers (see
+- Serverless functions (AWS Lambda)
+- Cloudflare Workers (see
   [the example](https://github.com/upstash/redis-js/tree/main/examples/cloudflare-workers))
-* Fastly Compute@Edge (see
+- Fastly Compute@Edge (see
   [the example](https://github.com/upstash/redis-js/tree/main/examples/fastly))
-* Next.js (see [the quickstart](/docs/redis/quickstarts/nextjs-app-router)), Jamstack
-* Client side web/mobile applications
-* WebAssembly
-* and other environments where HTTP is preferred over TCP.
+- Next.js (see [the quickstart](/redis/quickstarts/nextjs-app-router)), Jamstack
+- Client side web/mobile applications
+- WebAssembly
+- and other environments where HTTP is preferred over TCP.
 
 See
-[the list of APIs](/docs/redis/features/restapi#rest-redis-api-compatibility)
+[the list of APIs](/redis/features/restapi#rest-redis-api-compatibility)
 supported by the Upstash REST API. For typed `@upstash/redis` command helpers,
-see the [TypeScript SDK command reference](/docs/redis/sdks/ts/commands/overview).
+see the [TypeScript SDK command reference](/redis/sdks/ts/commands/overview).

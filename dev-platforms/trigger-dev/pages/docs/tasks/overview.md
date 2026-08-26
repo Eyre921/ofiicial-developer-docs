@@ -690,11 +690,11 @@ export const taskWithCleanup = task({
 ## Next steps
 
 <CardGroup>
-  <Card title="Triggering" icon="bolt" href="/triggering">
+  <Card title="Triggering" icon="bolt" href="/docs/triggering">
     Learn how to trigger your tasks from your code.
   </Card>
 
-  <Card title="Writing tasks" icon="wand-magic-sparkles" href="/writing-tasks-introduction">
+  <Card title="Writing tasks" icon="wand-magic-sparkles" href="/docs/writing-tasks-introduction">
     Tasks are the core of Trigger.dev. Learn how to write them.
   </Card>
 </CardGroup>

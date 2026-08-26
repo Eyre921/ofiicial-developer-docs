@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/server/acl-gentoken
 path: docs/redis/commands/server/acl-gentoken
 ---
 
+> Generate a REST token that can be used as a SETUSER password.
+
 Use `ACL GENTOKEN` to create the credential you need before you can give an ACL user a password.
 
-[`ACL SETUSER`](/docs/redis/commands/server/acl-setuser) does not accept arbitrary passwords with `>password`: the value must come from `GENTOKEN`. Call it with just a username to have a strong password generated for you, or supply your own password to wrap instead. Either way, the reply is a token string that does two things at once: pass it to `SETUSER` as `>token` to set the user's password, and later use it directly as `UPSTASH_REDIS_REST_TOKEN`, or exchange it (or the password it wraps) for a fresh one with [`ACL RESTTOKEN`](/docs/redis/commands/server/acl-resttoken). `GENTOKEN` is an Upstash extension.
+[`ACL SETUSER`](/redis/commands/server/acl-setuser) does not accept arbitrary passwords with `>password`: the value must come from `GENTOKEN`. Call it with just a username to have a strong password generated for you, or supply your own password to wrap instead. Either way, the reply is a token string that does two things at once: pass it to `SETUSER` as `>token` to set the user's password, and later use it directly as `UPSTASH_REDIS_REST_TOKEN`, or exchange it (or the password it wraps) for a fresh one with [`ACL RESTTOKEN`](/redis/commands/server/acl-resttoken). `GENTOKEN` is an Upstash extension.
 
 ## Syntax
 
@@ -23,8 +25,8 @@ ACL GENTOKEN <username> [password]
 
 ## Important points
 
-* A supplied `password` is checked for minimum entropy and rejected if too weak.
-* This only generates a token; it does not create or modify the user. Pass the result to `ACL SETUSER <username> >token` to actually set it as the user's password.
+- A supplied `password` is checked for minimum entropy and rejected if too weak.
+- This only generates a token; it does not create or modify the user. Pass the result to `ACL SETUSER <username> >token` to actually set it as the user's password.
 
 ## Response
 

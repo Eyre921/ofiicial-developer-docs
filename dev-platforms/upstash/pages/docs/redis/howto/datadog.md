@@ -23,17 +23,17 @@ Upstash Datadog Integration only covers Pro databases or those included in the E
 1. Once logged in, navigate to the "Integrations" page in Datadog.
 2. Search for "Upstash" in the integrations list and click on it.
 
-![integration-tab.png]()
+![integration-tab.png](/img/datadog/integration-tab.png)
 
 Let’s click on the "Install" button to add Upstash to your Datadog account.
 
-![installation.png]()
+![installation.png](/img/datadog/installation.png)
 
 ## **Step 3: Connect Accounts**
 
 After installing Upstash, click on the "Connect Accounts" button and Datadog will redirect you to the Upstash site for account integration.
 
-![connect-acc.png]()
+![connect-acc.png](/img/datadog/connect-acc.png)
 
 ## **Step 4: Select Account to Integrate**
 
@@ -44,11 +44,11 @@ Upstash Datadog Integration allows you to integrate personal and team based acco
 
 **Caveats;**
 
-* This integration can only be executed only one time.If you would like to extend list of the team in integration please re-establish the integration from scratch.
+- This integration can only be executed only one time.If you would like to extend list of the team in integration please re-establish the integration from scratch.
 
-![personal.png]()
+![personal.png](/img/datadog/personal.png)
 
-![team.png]()
+![team.png](/img/datadog/team.png)
 
 ## **Step 5: Wait for Metrics Availability**
 
@@ -56,7 +56,7 @@ Once you've selected your Datadog account, Upstash will begin the integration pr
 
 And here we go, metrics will be available in Upstash Overview Dashboard !
 
-![upstash-dashboard.png]()
+![upstash-dashboard.png](/img/datadog/upstash-dashboard.png)
 
 ## **Step 6: Datadog Integration Removal Process**
 

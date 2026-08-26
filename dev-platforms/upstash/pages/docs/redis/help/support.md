@@ -21,4 +21,4 @@ Follow us at [X](https://x.com/upstash).
 
 ## Professional Support
 
-Get [Professional Support](/docs/common/help/prosupport) from the Upstash team.
+Get [Professional Support](/common/help/prosupport) from the Upstash team.

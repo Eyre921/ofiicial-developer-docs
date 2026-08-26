@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/json/json-strlen
 path: docs/redis/commands/json/json-strlen
 ---
 
+> Get JSON string length.
+
 Use `JSON.STRLEN` to get the length of the string values a path selects.
 
 Without a path the root value is used. The reply holds one length per match, with null for matches that are not strings, so it is also a quick way to check that a field is a string. The value itself is not transferred, which makes it cheap even for long strings.
@@ -23,8 +25,8 @@ JSON.STRLEN <key> [path]
 
 ## Important points
 
-* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

@@ -19,14 +19,14 @@ than the set limit, the request is rejected.
 
 ### Pros
 
-* Very cheap in terms of data size and computation
-* Newer requests are not starved due to a high burst in the past
-* Supports [dynamic limits](/docs/redis/sdks/ratelimit-ts/features#dynamic-limits)
+- Very cheap in terms of data size and computation
+- Newer requests are not starved due to a high burst in the past
+- Supports [dynamic limits](/redis/sdks/ratelimit-ts/features#dynamic-limits)
 
 ### Cons
 
-* Can cause high bursts at the window boundaries to leak through
-* Causes request stampedes if many users are trying to access your server,
+- Can cause high bursts at the window boundaries to leak through
+- Causes request stampedes if many users are trying to access your server,
   whenever a new window begins
 
 ### Usage
@@ -80,13 +80,13 @@ return rate < limit // True means we should allow the request
 
 ### Pros
 
-* Solves the issue near boundary from fixed window.
-* Supports [dynamic limits](/docs/redis/sdks/ratelimit-ts/features#dynamic-limits)
+- Solves the issue near boundary from fixed window.
+- Supports [dynamic limits](/redis/sdks/ratelimit-ts/features#dynamic-limits)
 
 ### Cons
 
-* More expensive in terms of storage and computation
-* Is only an approximation, because it assumes a uniform request flow in the
+- More expensive in terms of storage and computation
+- Is only an approximation, because it assumes a uniform request flow in the
   previous window, but this is fine in most cases
 
 ### Usage
@@ -105,7 +105,7 @@ Create a new ratelimiter, that allows 10 requests per 10 seconds.
   <Tab title="Multi Regional">
     **Warning:** Using sliding window algorithm with the multiregion setup results in large number of
     commands in Redis and long request processing times. If you want to keep the number of commands
-    low, we recommend using the [fixed window algorithm in multi region setup](/docs/redis/sdks/ratelimit-ts/algorithms#fixed-window).
+    low, we recommend using the [fixed window algorithm in multi region setup](/redis/sdks/ratelimit-ts/algorithms#fixed-window).
 
     ```ts
     const ratelimit = new MultiRegionRatelimit({
@@ -125,7 +125,7 @@ Create a new ratelimiter, that allows 10 requests per 10 seconds.
 </Tabs>
 
 <Tip>
-  `reset` field in the [`limit`](/docs/redis/sdks/ratelimit-ts/methods#limit) and [`getRemaining`](/docs/redis/sdks/ratelimit-ts/methods#getremaining) methods of sliding window do not
+  `reset` field in the [`limit`](/redis/sdks/ratelimit-ts/methods#limit) and [`getRemaining`](/redis/sdks/ratelimit-ts/methods#getremaining) methods of sliding window do not
   provide an exact reset time. Instead, the reset time is the start time of
   the next window.
 </Tip>
@@ -138,15 +138,15 @@ bucket and if there is no token to take, the request is rejected.
 
 ### Pros
 
-* Bursts of requests are smoothed out and you can process them at a constant
+- Bursts of requests are smoothed out and you can process them at a constant
   rate.
-* Allows to set a higher initial burst limit by setting `maxTokens` higher than
+- Allows to set a higher initial burst limit by setting `maxTokens` higher than
   `refillRate`
-* Supports [dynamic limits](/docs/redis/sdks/ratelimit-ts/features#dynamic-limits)
+- Supports [dynamic limits](/redis/sdks/ratelimit-ts/features#dynamic-limits)
 
 ### Cons
 
-* Expensive in terms of computation
+- Expensive in terms of computation
 
 ### Usage
 

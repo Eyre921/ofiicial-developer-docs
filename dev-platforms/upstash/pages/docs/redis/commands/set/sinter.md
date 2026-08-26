@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/set/sinter
 path: docs/redis/commands/set/sinter
 ---
 
+> Get set intersection.
+
 Use `SINTER` to get the members present in every one of the given sets.
 
-A key that does not exist counts as an empty set, which makes the whole intersection empty. The result is computed on each call and not stored; use [`SINTERSTORE`](/docs/redis/commands/set/sinterstore) to keep it, or [`SINTERCARD`](/docs/redis/commands/set/sintercard) when only the number of common members matters.
+A key that does not exist counts as an empty set, which makes the whole intersection empty. The result is computed on each call and not stored; use [`SINTERSTORE`](/redis/commands/set/sinterstore) to keep it, or [`SINTERCARD`](/redis/commands/set/sintercard) when only the number of common members matters.
 
 Intersections express "and" queries over sets, such as the users who are in both a campaign audience and a paying-customer set.
 

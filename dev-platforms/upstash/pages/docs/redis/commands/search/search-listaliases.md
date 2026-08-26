@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/search/search-listaliases
 path: docs/redis/commands/search/search-listaliases
 ---
 
+> List search index aliases.
+
 Use `SEARCH.LISTALIASES` to return all aliases and the indexes they point to.
 
 The reply pairs each alias with its target index name, which is how you check what an alias currently resolves to before or after swapping it. Aliases whose target no longer exists are still listed, since an alias may point at a name that has not been created yet.
 
-See [Listing Aliases](/docs/redis/search/aliases#listing-aliases) for the feature guide.
+See [Listing Aliases](/redis/search/aliases#listing-aliases) for the feature guide.
 
 ## Syntax
 
@@ -18,7 +20,7 @@ SEARCH.LISTALIASES
 
 ## Response
 
-Returns an unordered array of `[alias, index_name]` pairs, or an empty array if no aliases exist. The response can include aliases whose target index no longer exists. To list every index in the database, use [`SEARCH.LISTINDEXES`](/docs/redis/commands/search/search-listindexes).
+Returns an unordered array of `[alias, index_name]` pairs, or an empty array if no aliases exist. The response can include aliases whose target index no longer exists. To list every index in the database, use [`SEARCH.LISTINDEXES`](/redis/commands/search/search-listindexes).
 
 The SDKs below decode the pairs into an object or dictionary that maps each alias to its index name.
 

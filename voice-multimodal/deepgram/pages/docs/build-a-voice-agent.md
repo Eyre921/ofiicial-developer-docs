@@ -44,14 +44,14 @@ Once you understand the basics, you can explore more advanced configurations:
 
 Check out these repositories for more complex voice agent implementations:
 
-| Use case           | Runtime / Language           | Repo                                                                                                    |
-| :----------------- | :--------------------------- | :------------------------------------------------------------------------------------------------------ |
-| Basic demo         | Node, TypeScript, JavaScript | [Deepgram Voice Agent Demo](https://github.com/deepgram-devs/deepgram-voice-agent-demo)                 |
-| Medical assistant  | Node, TypeScript, JavaScript | [Medical Assistant Demo](https://github.com/deepgram-devs/voice-agent-medical-assistant-demo)           |
-| Twilio integration | Python                       | [Twilio Voice Agent Demo](/docs/twilio-and-deepgram-voice-agent)                                        |
-| Text input demo    | Node, TypeScript, JavaScript | [Conversational AI Demo](https://github.com/deepgram-devs/deepgram-ai-agent-demo)                       |
-| Azure OpenAI       | Python                       | [Voice Agent with OpenAI Azure](https://github.com/deepgram-devs/voice-agent-azure-open-ai-services)    |
-| Function calling   | Python / Flask               | [Flask Agent Function Calling Demo](https://github.com/deepgram-devs/flask-agent-function-calling-demo) |
+| Use case           | Runtime / Language           | Repo                                                                                                                       |
+| :----------------- | :--------------------------- | :------------------------------------------------------------------------------------------------------------------------- |
+| Basic demo         | Node, TypeScript, JavaScript | [Deepgram Voice Agent Demo](https://github.com/deepgram-devs/deepgram-voice-agent-demo)                                    |
+| Medical assistant  | Node, TypeScript, JavaScript | [Medical Assistant Demo](https://github.com/deepgram-devs/voice-agent-medical-assistant-demo)                              |
+| Twilio integration | Python                       | [Twilio Voice Agent](https://github.com/deepgram-devs/twilio-voice-agent) ([guide](/docs/twilio-and-deepgram-voice-agent)) |
+| Text input demo    | Node, TypeScript, JavaScript | [Conversational AI Demo](https://github.com/deepgram-devs/deepgram-ai-agent-demo)                                          |
+| Azure OpenAI       | Python                       | [Voice Agent with OpenAI Azure](https://github.com/deepgram-devs/voice-agent-azure-open-ai-services)                       |
+| Function calling   | Python / Flask               | [Flask Agent Function Calling Demo](https://github.com/deepgram-devs/flask-agent-function-calling-demo)                    |
 
 ## Rate limits
 

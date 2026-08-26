@@ -127,7 +127,7 @@ When a subscription combines a fixed rate with usage-based billing, metered usag
 
 Using multiple products with a subscription results in a single invoice and payment, meaning all the prices for those products must use the same currency.
 
-You’re also limited to 20 subscription items in a single subscription.
+A subscription with flexible billing mode supports up to 100 subscription items, while a subscription with classic billing mode supports up to 20 subscription items.
 
 To handle multiple products in a subscription that might have different billing periods, you can create a [mixed interval subscription](https://docs.stripe.com/billing/subscriptions/mixed-interval.md).
 

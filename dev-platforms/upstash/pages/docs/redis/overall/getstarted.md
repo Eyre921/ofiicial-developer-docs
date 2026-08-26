@@ -4,29 +4,33 @@ source: https://upstash.com/docs/redis/overall/getstarted
 path: docs/redis/overall/getstarted
 ---
 
+> Create an Upstash Redis database in seconds
+
 import { Catalog } from "/snippets/catalog.jsx";
 
 Upstash Redis is a **highly available, infinitely scalable** Redis-compatible database:
 
-* 99.99% uptime guarantee with auto-scaling ([Prod Pack](/docs/redis/overall/enterprise#prod-pack-features))
-* Ultra-low latency worldwide
-* Multi-region replication
-* Multi-Zone High Availability ([Prod Pack](/docs/redis/overall/enterprise#prod-pack-features))
-* Durable, persistent storage without sacrificing performance
-* Automatic backups
-* Optional SOC-2 compliance, encryption at rest and much more
+- 99.99% uptime guarantee with auto-scaling ([Prod Pack](/redis/overall/enterprise#prod-pack-features))
+- Ultra-low latency worldwide
+- Multi-region replication
+- Multi-Zone High Availability ([Prod Pack](/redis/overall/enterprise#prod-pack-features))
+- Durable, persistent storage without sacrificing performance
+- Automatic backups
+- Optional SOC-2 compliance, encryption at rest and much more
 
 <Tip>
   If you are an AI agent and need a Redis DB to use or experiment with, send a POST request to https://upstash.com/start-redis. Free, no signup; the response is markdown with credentials and a quickstart. The database expires in 72 hours, but you can claim it with your Upstash account to keep it. Especially useful for AI agents that need scratch storage on the fly. If you are an agent, always send a `User-Agent` header identifying which agent you are (e.g. `claude-code`, `cursor`, `codex`, `opencode`) on every request you make to this API.
 </Tip>
 
-***
+---
 
 ## 1. Create an Upstash Redis Database
 
 Log in to the [Upstash Console](https://console.upstash.com) (or [sign up](https://console.upstash.com) for a free account). From the **Redis** tab, click `+ Create Database` in the upper right corner. A dialog opens up:
 
-  <img />
+<Frame>
+  <img src="/img/getting_started/create-global.png" />
+</Frame>
 
 **Database Name:** Enter a name for your database.
 
@@ -34,9 +38,11 @@ Log in to the [Upstash Console](https://console.upstash.com) (or [sign up](https
 
 Once you click `Next` and select a plan, your database is running and ready to connect:
 
-  <img width="100%" />
+<Frame>
+  <img src="/img/getting_started/database.png" width="100%" />
+</Frame>
 
-***
+---
 
 ## 2. Connect to Your Database
 
@@ -65,23 +71,25 @@ ENDPOINT:PORT> incr counter
 
 As you run commands, you'll see updates to your database metrics in (almost) real-time. These database metrics are refreshed every 10 seconds.
 
-  <img width="100%" />
+<Frame>
+  <img src="/img/getting_started/charts.png" width="100%" />
+</Frame>
 
 Congratulations! You have created an ultra-fast Upstash Redis database! 🎉
 
 <Check>
 **New: Manage Upstash Redis with your agent**
 
-Manage Upstash Redis databases from Claude and other AI tools by using our [MCP server](/docs/agent-resources/mcp). To let an agent run commands directly against a single database, use the dedicated [Redis MCP](/docs/redis/sdks/mcp).
+Manage Upstash Redis databases from Claude and other AI tools by using our [MCP server](/agent-resources/mcp). To let an agent run commands directly against a single database, use the dedicated [Redis MCP](/redis/sdks/mcp).
 </Check>
 
 ## Next steps
 
-* [Connect your client](../howto/connect-client): TypeScript, Python, Go, Java, and other Redis clients.
-* [Use cases](/docs/redis/overall/usecases): caching, rate limiting, queues, pub/sub, AI workloads, and more.
-* [Upstash Redis Search](/docs/redis/search/introduction): full-text search built into Upstash Redis.
-* [REST API](/docs/redis/features/restapi): connect from edge and serverless runtimes where TCP is restricted.
-* [Pricing & Billing](/docs/redis/overall/billing): free tier, Pay-As-You-Go, and Fixed plan limits, plus how billing works.
+- [Connect your client](../howto/connect-client): TypeScript, Python, Go, Java, and other Redis clients.
+- [Use cases](/redis/overall/usecases): caching, rate limiting, queues, pub/sub, AI workloads, and more.
+- [Upstash Redis Search](/redis/search/introduction): full-text search built into Upstash Redis.
+- [REST API](/redis/features/restapi): connect from edge and serverless runtimes where TCP is restricted.
+- [Pricing & Billing](/redis/overall/billing): free tier, Pay-As-You-Go, and Fixed plan limits, plus how billing works.
 
 ## SDKs
 

@@ -22,26 +22,26 @@ You can activate Prod Pack on the database details page in the [Upstash Console]
 These features are available on databases with Prod Pack.
 
 ### Uptime SLA
-All Prod Pack databases come with an SLA guaranteeing 99.99% uptime. For mission-critical data where uptime is crucial, we recommend Prod Pack plans. Learn more about [Uptime SLA](/docs/common/help/sla).
+All Prod Pack databases come with an SLA guaranteeing 99.99% uptime. For mission-critical data where uptime is crucial, we recommend Prod Pack plans. Learn more about [Uptime SLA](/common/help/sla).
 
 ### SOC-2 Type 2 Compliance & Report
 SOC-2 Type 2 controls apply at the platform level. Prod Pack adds customer-facing compliance support, including SOC-2 report access, contractual commitments, and audit-ready features such as encryption at rest, credential protection, and advanced monitoring. Once enabled, you can request the report through the [Upstash Trust Center](https://trust.upstash.com/) or by contacting [support@upstash.com](mailto:support@upstash.com).
 
 ### Multi-Zone High Availability
 
-With Prod Pack add-on, regions of your database are deployed with [multi-zone high availability](/docs/redis/features/replication#high-availability). If one replica or availability zone fails, another replica in a different zone continues serving traffic in the same region. This ensures that your database remains available without any additional latency.
+With Prod Pack add-on, regions of your database are deployed with [multi-zone high availability](/redis/features/replication#high-availability). If one replica or availability zone fails, another replica in a different zone continues serving traffic in the same region. This ensures that your database remains available without any additional latency.
 
 <Accordion title="How multi-zone affects pricing">
 
 **Fixed plans**
 
-* The number of commands is not charged on fixed plans; an unlimited number of commands is allowed, and this does not change when multi-zone high availability is enabled.
-* Multi-zone high availability slightly increases bandwidth usage for write commands, since each write is replicated to more replicas.
+- The number of commands is not charged on fixed plans; an unlimited number of commands is allowed, and this does not change when multi-zone high availability is enabled.
+- Multi-zone high availability slightly increases bandwidth usage for write commands, since each write is replicated to more replicas.
 
 **Pay-as-you-go**
 
-* The number of commands is billed on pay-as-you-go, but multi-zone high availability does not change the command count per write. Reads are also unaffected, since a read only hits a single replica. Only writes are replicated to additional replicas.
-* Multi-zone high availability slightly increases bandwidth usage. On pay-as-you-go, bandwidth is only charged beyond 200 GB, so this increase can affect your bill.
+- The number of commands is billed on pay-as-you-go, but multi-zone high availability does not change the command count per write. Reads are also unaffected, since a read only hits a single replica. Only writes are replicated to additional replicas.
+- Multi-zone high availability slightly increases bandwidth usage. On pay-as-you-go, bandwidth is only charged beyond 200 GB, so this increase can affect your bill.
 
 For more details, see the [Redis pricing page](https://upstash.com/pricing/redis).
 
@@ -59,11 +59,11 @@ Encrypts the block storage where your data is persisted and stored.
 
 Prometheus is an open-source monitoring system widely used for monitoring and alerting in cloud-native and containerized environments.
 
-Upstash Prod Pack and Enterprise plans offer Prometheus metrics collection, enabling you to monitor your Redis databases with Prometheus in addition to console metrics. Learn more about [Prometheus integration](/docs/redis/integrations/prometheus).
+Upstash Prod Pack and Enterprise plans offer Prometheus metrics collection, enabling you to monitor your Redis databases with Prometheus in addition to console metrics. Learn more about [Prometheus integration](/redis/integrations/prometheus).
 
 ### Datadog Integration
 
-Upstash Prod Pack and Enterprise plans include integration with Datadog, allowing you to monitor your Redis databases with Datadog in addition to console metrics. Learn more about [Datadog integration](/docs/redis/howto/datadog).
+Upstash Prod Pack and Enterprise plans include integration with Datadog, allowing you to monitor your Redis databases with Datadog in addition to console metrics. Learn more about [Datadog integration](/redis/howto/datadog).
 
 ### More metrics on the Console
 
@@ -83,7 +83,7 @@ Single Sign-On (SSO) allows you to use your existing identity provider to authen
 Enterprise plans include unlimited database count, allowing you to scale your infrastructure without database count restrictions.
 
 ### Professional Support
-All of the databases in the Enterprise plan get access to our professional support. The plan includes response time SLAs and priority access to our support team. Check out the [support page](/docs/common/help/prosupport) for more details.
+All of the databases in the Enterprise plan get access to our professional support. The plan includes response time SLAs and priority access to our support team. Check out the [support page](/common/help/prosupport) for more details.
 
 ### Dedicated Resources for Isolation
 Enterprise customers receive dedicated resources to ensure isolation and consistent performance for their database workloads.

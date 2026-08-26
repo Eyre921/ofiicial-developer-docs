@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/bzpopmax
 path: docs/redis/commands/sorted-set/bzpopmax
 ---
 
+> Pop the highest-scoring member, blocking until one arrives.
+
 Use `BZPOPMAX` to pop the highest-scoring member from the first non-empty sorted set, blocking until one has a member or the timeout expires.
 
-It is the blocking form of [`ZPOPMAX`](/docs/redis/commands/sorted-set/zpopmax) and accepts several keys, which are checked in the order given. The reply names the key the member came from together with the member and its score.
+It is the blocking form of [`ZPOPMAX`](/redis/commands/sorted-set/zpopmax) and accepts several keys, which are checked in the order given. The reply names the key the member came from together with the member and its score.
 
 The timeout is in seconds, may be fractional, and `0` waits indefinitely; when it expires the reply is null. With the score used as a priority, this turns a sorted set into a priority queue whose consumers wait for work instead of polling, and clients blocked on the same key are served in the order they started waiting.
 
@@ -25,7 +27,7 @@ BZPOPMAX <key> [<key> ...] <timeout>
 
 ## Important points
 
-* A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
+- A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
 
 ## Response
 

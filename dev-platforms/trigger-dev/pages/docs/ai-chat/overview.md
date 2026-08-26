@@ -67,27 +67,27 @@ Three primitives, related but distinct:
 ## Next steps
 
 <CardGroup>
-  <Card title="Quick Start" icon="rocket" href="/ai-chat/quick-start">
+  <Card title="Quick Start" icon="rocket" href="/docs/ai-chat/quick-start">
     Get a working chat in three steps — agent, token, frontend.
   </Card>
 
-  <Card title="How it works" icon="diagram-project" href="/ai-chat/how-it-works">
+  <Card title="How it works" icon="diagram-project" href="/docs/ai-chat/how-it-works">
     Sessions, the turn loop, durable streams, and what survives a refresh.
   </Card>
 
-  <Card title="Backend" icon="server" href="/ai-chat/backend">
+  <Card title="Backend" icon="server" href="/docs/ai-chat/backend">
     `chat.agent` options, lifecycle hooks, and the raw-task primitives.
   </Card>
 
-  <Card title="Tools" icon="wrench" href="/ai-chat/tools">
+  <Card title="Tools" icon="wrench" href="/docs/ai-chat/tools">
     Declare tools so `toModelOutput` survives across turns, typed in `run()`.
   </Card>
 
-  <Card title="Patterns" icon="puzzle-piece" href="/ai-chat/patterns/sub-agents">
+  <Card title="Patterns" icon="puzzle-piece" href="/docs/ai-chat/patterns/sub-agents">
     HITL approvals, branching, sub-agents, OOM/crash recovery.
   </Card>
 
-  <Card title="Database connections" icon="database" href="/database-connections">
+  <Card title="Database connections" icon="database" href="/docs/database-connections">
     Size and release connection pools so agents don't exhaust your database.
   </Card>
 </CardGroup>

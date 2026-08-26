@@ -8,7 +8,7 @@ An `EphemeralBox` gives you exactly two capabilities: **code execution** and **f
 
 We'll build a file editor with [TanStack AI](https://tanstack.com/ai). The user uploads a file and asks for a change. The model writes the code to do it. A single tool then **spins up a Box, uploads the file, runs that code, downloads the result, and tears the Box down**. The model's code and its dependencies never touch your server. They run inside an isolated sandbox that exists only for the length of the call.
 
-***
+---
 
 ## 1. Installation
 
@@ -23,7 +23,7 @@ UPSTASH_BOX_API_KEY=box_xxxxxxxxxxxxxxxxxxxxxxxx
 ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxxxxxx
 ```
 
-***
+---
 
 ## 2. The API route
 
@@ -140,7 +140,7 @@ The file tools (`files.write`, `files.list`, and `files.read`) are rooted at **`
 
 Because the model writes the code and we find the output with `files.list`, nothing here is image-specific. Ask for "convert this CSV to JSON" and the model uses pandas to write `out/data.json`, and the tool reads it back the same way. To support more formats, add their libraries to the `pip install` line, or bake them into a snapshot.
 
-***
+---
 
 ## 3. The UI
 
@@ -252,7 +252,7 @@ export default function Page() {
 }
 ```
 
-***
+---
 
 ## 4. Try it
 
@@ -269,7 +269,7 @@ The `editFile` tool runs it, finds `out/photo.png` via `files.list`, reads it ba
 
 Swap the input and the prompt, and the same path carries the feature end to end:
 
-* **CSV to JSON:** ask *"convert this to JSON"* and the model uses pandas to write `out/data.json`, which the UI shows as a download link.
-* **Uppercase the headings in a Markdown file, resize an image, or extract a page from a PDF.** Anything the model can express in Python with the installed libraries works.
+- **CSV to JSON:** ask *"convert this to JSON"* and the model uses pandas to write `out/data.json`, which the UI shows as a download link.
+- **Uppercase the headings in a Markdown file, resize an image, or extract a page from a PDF.** Anything the model can express in Python with the installed libraries works.
 
 Through all of this, the untrusted model-generated code and its dependencies stayed inside an isolated `EphemeralBox` that was created for the call and deleted the moment it returned. The whole editor is just two `EphemeralBox` capabilities wired into one tool: `exec`, plus the file operations `write`, `list`, and `read`.

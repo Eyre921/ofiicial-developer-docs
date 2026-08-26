@@ -14,7 +14,7 @@ pip install qstash
 
 ## Get QStash token
 
-Follow the instructions [here](/docs/qstash/overall/getstarted) to get your QStash token and signing keys.
+Follow the instructions [here](/qstash/overall/getstarted) to get your QStash token and signing keys.
 
 ## Usage
 
@@ -34,9 +34,11 @@ import asyncio
 
 from qstash import AsyncQStash
 
+
 async def main():
     client = AsyncQStash("<QSTASH_TOKEN>")
     await client.message.publish_json(...)
+
 
 asyncio.run(main())
 ```

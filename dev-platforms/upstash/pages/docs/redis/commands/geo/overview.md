@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/geo/overview
 path: docs/redis/commands/geo/overview
 ---
 
+> Commands for storing and querying geospatial data.
+
 <CardGroup cols={2}>
 <Card title="GEOADD" href="/redis/commands/geo/geoadd">Add geospatial items</Card>
 <Card title="GEODIST" href="/redis/commands/geo/geodist">Get distance between two members</Card>

@@ -1,0 +1,25 @@
+---
+title: "TTL"
+source: https://upstash.com/docs/redis/sdks/ts/commands/generic/ttl
+path: docs/redis/sdks/ts/commands/generic/ttl
+---
+
+> Return the expiration in seconds of a key.
+
+## Arguments
+
+<ParamField body="key" type="string" required>
+  The key 
+</ParamField>
+
+## Response
+
+<ResponseField type="integer" required>
+  The number of seconds until this expires, negative if the key does not exist or does not have an expiration set.
+</ResponseField>
+
+<RequestExample>
+```ts Example
+const seconds = await redis.ttl(key);
+```
+</RequestExample>

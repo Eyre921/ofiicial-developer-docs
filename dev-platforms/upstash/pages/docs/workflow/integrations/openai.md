@@ -6,15 +6,15 @@ path: docs/workflow/integrations/openai
 
 ### Calling OpenAI
 
-The standard way to call a third-party endpoint in your workflow is by using [`context.call`](/docs/workflow/basics/context#context-call).
+The standard way to call a third-party endpoint in your workflow is by using [`context.call`](/workflow/basics/context#context-call).
 
 However, if you need to call the OpenAI endpoint for text generation ([`/v1/chat/completions`](https://platform.openai.com/docs/api-reference/chat)), you can leverage the type-safe method `context.api.openai.call` method:
 
 <Note>
   `context.api.openai.call` is not yet available in
   [workflow-py](https://github.com/upstash/workflow-py). You can use `context.call` instead to work with OpenAI. See our
-  [Roadmap](/docs/workflow/roadmap) for feature parity plans and
-  [Changelog](/docs/workflow/changelog) for updates.
+  [Roadmap](/workflow/roadmap) for feature parity plans and
+  [Changelog](/workflow/changelog) for updates.
 </Note>
 
 ```typescript OpenAI

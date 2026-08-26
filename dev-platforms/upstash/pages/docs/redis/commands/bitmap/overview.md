@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/bitmap/overview
 path: docs/redis/commands/bitmap/overview
 ---
 
+> Commands for manipulating individual bits and bit fields in string values.
+
 <CardGroup cols={2}>
 <Card title="BITCOUNT" href="/redis/commands/bitmap/bitcount">Count set bits in a string</Card>
 <Card title="BITFIELD" href="/redis/commands/bitmap/bitfield">Perform arbitrary bitfield operations</Card>

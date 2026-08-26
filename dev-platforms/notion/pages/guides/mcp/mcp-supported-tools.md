@@ -110,6 +110,10 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Update a Notion page's properties, content, icon, or cover. Supports applying [database templates](/guides/data-apis/creating-pages-from-templates) to existing pages. Icon and cover can be set alongside any update command.
 
+    <Note>
+      The `update_content` command applies content-changing search-and-replace operations as a batch. If any such operation's `old_str` doesn't match content on the page, the call returns a validation error naming the unmatched value and the page is left unchanged. An operation whose `old_str` and `new_str` are identical is ignored without checking for a match. Each `old_str` must be a non-empty string that matches exactly one location, unless `replace_all_matches: true` is set for that operation.
+    </Note>
+
     **Example prompts:**
 
     * "Change the status of this task from 'In Progress' to 'Complete'"

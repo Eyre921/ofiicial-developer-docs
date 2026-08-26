@@ -4,6 +4,10 @@ source: https://upstash.com/docs/vector/api/endpoints/reset
 path: docs/vector/api/endpoints/reset
 ---
 
+> Resets one or all namespaces of an index to its initial state by deleting all the vectors.
+
+`DELETE https://{endpoint}/reset/{namespace}`
+
 The namespace will be completely empty after `/reset` is called, but will not be deleted.
 
 <Tip>
@@ -33,35 +37,3 @@ This request doesn't require any additional data.
 <ResponseField name="result" type="string">
   `"Success"` string.
 </ResponseField>
-
-<RequestExample>
-
-```sh curl
-curl $UPSTASH_VECTOR_REST_URL/reset \
-  -X DELETE \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN"
-```
-
-```sh curl (Namespace)
-curl $UPSTASH_VECTOR_REST_URL/reset/ns \
-  -X DELETE \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN"
-```
-
-```sh curl (All Namespaces)
-curl $UPSTASH_VECTOR_REST_URL/reset?all \
-  -X DELETE \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN"
-```
-
-</RequestExample>
-
-<ResponseExample>
-
-```json 200 OK
-{
-    "result": "Success"
-}
-```
-
-</ResponseExample>

@@ -167,11 +167,11 @@ Set the time window with the query's [period filter](/docs/observability/query#t
 ## Next steps
 
 <CardGroup>
-  <Card title="Prompts" icon="message-lines" href="/ai/prompts">
+  <Card title="Prompts" icon="message-lines" href="/docs/ai/prompts">
     Version prompts as code and link generations to the exact prompt version that produced them.
   </Card>
 
-  <Card title="Query (TRQL)" icon="magnifying-glass-chart" href="/observability/query">
+  <Card title="Query (TRQL)" icon="magnifying-glass-chart" href="/docs/observability/query">
     Write custom queries against your runs, metrics, and LLM usage.
   </Card>
 </CardGroup>

@@ -10,17 +10,17 @@ Upstash is a serverless database service compatible with Redis® API.
 
 ## What is a Serverless Database?
 
-* You do not have to manage and provision servers.
-* You do not deal with configuring or maintaining any server.
-* You just use the service and pay what you use. If you are not using it, you should not be paying.
+- You do not have to manage and provision servers.
+- You do not deal with configuring or maintaining any server.
+- You just use the service and pay what you use. If you are not using it, you should not be paying.
 
 ## What are the use cases?
 
-Upstash works for all the common usecases for Redis®. You can use Upstash in your serverless stack. In addition, you can use Upstash as storage (or caching) for your serverless functions. See [Use Cases](/docs/redis/overall/usecases) for more.
+Upstash works for all the common usecases for Redis®. You can use Upstash in your serverless stack. In addition, you can use Upstash as storage (or caching) for your serverless functions. See [Use Cases](/redis/overall/usecases) for more.
 
 ## Do you support all Redis® API?
 
-Most of them. See [Redis® API Compatibility](/docs/redis/overall/compatibility) for the list of supported commands.
+Most of them. See [Redis® API Compatibility](/redis/overall/compatibility) for the list of supported commands.
 
 ## Can I use any Redis client?
 
@@ -40,11 +40,11 @@ No. Your client can be anywhere but the clients in AWS regions will give you bet
 
 ## How do you compare Upstash with ElastiCache?
 
-Upstash is serverless. With ElastiCache, you pay even you do not use the database. See [Compare](/docs/redis/overall/compare) for more info.
+Upstash is serverless. With ElastiCache, you pay even you do not use the database. See [Compare](/redis/overall/compare) for more info.
 
 ## How do you compare Upstash with Redis Labs or Compose.io?
 
-Upstash is serverless. With Redis Labs or Compose.io, you always pay a lot when your data size is big but your traffic is low. In Upstash, the pricing is based on per request. See [Compare](/docs/redis/overall/compare) for more info.
+Upstash is serverless. With Redis Labs or Compose.io, you always pay a lot when your data size is big but your traffic is low. In Upstash, the pricing is based on per request. See [Compare](/redis/overall/compare) for more info.
 
 ## Do you persist data?
 
@@ -77,7 +77,7 @@ Upstash storage layer is multi tiered. We keep your data in both memory and bloc
 
 ## Will my data be safe?
 
-Upstash is a GDPR compliant company. We do not share any user data with third parties. See our [Legal Documents](/docs/common/help/legal) for more information.
+Upstash is a GDPR compliant company. We do not share any user data with third parties. See our [Legal Documents](/common/help/legal) for more information.
 
 ## What happens if my database is not used?
 

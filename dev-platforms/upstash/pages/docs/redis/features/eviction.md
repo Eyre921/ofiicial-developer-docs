@@ -13,14 +13,18 @@ for new data to be stored. Enabling eviction is particularly useful when the
 cache is intended to store frequently changing or temporary data, allowing the
 cache to adapt to evolving data needs while maintaining optimal performance.
 
-* You can enable eviction by checking **Eviction** checkbox while creating a new
+- You can enable eviction by checking **Eviction** checkbox while creating a new
   database:
 
-    <img />
+  <Frame>
+    <img src="/img/eviction/create-database.png" />
+  </Frame>
 
-* Or for an existing database by clicking **Enable** in Configuration/Eviction
+- Or for an existing database by clicking **Enable** in Configuration/Eviction
   box in the database details page:
-    <img />
+  <Frame>
+    <img src="/img/eviction/configuration.png" />
+  </Frame>
 
 Upstash currently uses a single eviction algorithm, called
 **optimistic-volatile**, which is a combination of _volatile-random_ and

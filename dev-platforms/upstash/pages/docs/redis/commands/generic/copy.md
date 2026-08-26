@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/generic/copy
 path: docs/redis/commands/generic/copy
 ---
 
+> Copy a key to another key.
+
 Use `COPY` to copy the value stored at one key to another key.
 
 The destination gets an independent deep copy of the value, so later changes to either key do not affect the other, and the source key's remaining time to live is copied along with it. Any type can be copied.

@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/search/command-reference
 path: docs/redis/search/command-reference
 ---
 
+> Browse the commands supported by Upstash Redis Search.
+
 <Note>
   Upstash Redis Search uses `SEARCH.*` commands. They are separate from and incompatible with the `FT.*` commands in the open-source RediSearch module.
 </Note>

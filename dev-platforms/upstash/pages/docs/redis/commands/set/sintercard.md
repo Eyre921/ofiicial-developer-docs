@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/set/sintercard
 path: docs/redis/commands/set/sintercard
 ---
 
+> Get intersection cardinality.
+
 Use `SINTERCARD` to get the number of members that the given sets have in common, without building the intersection.
 
 `<numkeys>` states how many keys follow. `LIMIT` stops counting once that many common members have been found and returns the limit, which turns an expensive full intersection into a cheap "do these sets share at least N members" test. `LIMIT 0` means no limit.
 
-Since nothing is transferred beyond the count, this is much lighter than running [`SINTER`](/docs/redis/commands/set/sinter) and measuring the reply.
+Since nothing is transferred beyond the count, this is much lighter than running [`SINTER`](/redis/commands/set/sinter) and measuring the reply.
 
 ## Syntax
 
@@ -26,7 +28,7 @@ SINTERCARD <numkeys> <key> [<key> ...] [LIMIT <limit>]
 
 ## Important points
 
-* `numkeys` must equal the number of key arguments that immediately follow it.
+- `numkeys` must equal the number of key arguments that immediately follow it.
 
 ## Response
 

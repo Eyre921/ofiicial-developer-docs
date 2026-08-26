@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/hash/hlen
 path: docs/redis/commands/hash/hlen
 ---
 
+> Get number of fields in a hash.
+
 Use `HLEN` to get the number of fields in a hash.
 
 The reply is `0` when the key does not exist. The count is kept by Redis rather than computed, so it is cheap whatever the size of the hash, which makes it the right way to check how big a hash has grown before deciding to read or iterate it.

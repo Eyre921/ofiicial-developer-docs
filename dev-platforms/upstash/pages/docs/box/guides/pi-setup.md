@@ -10,13 +10,13 @@ This guide walks you through using [Pi](https://pi.dev) with the [`@upstash/box-
   This is the inverse of running Pi *inside* a box as a [custom harness](https://github.com/upstash/box/blob/main/packages/sdk/examples/custom-pi-agent.ts). Here, Pi runs locally and only its tools execute remotely.
 </Note>
 
-***
+---
 
 ## 1. Get your API key
 
-Go to the [Upstash Console](https://console.upstash.com) and create a Box API key. See the [quickstart](/docs/box/overall/quickstart#1-get-your-api-key) for details.
+Go to the [Upstash Console](https://console.upstash.com) and create a Box API key. See the [quickstart](/box/overall/quickstart#1-get-your-api-key) for details.
 
-***
+---
 
 ## 2. Install Pi and the extension
 
@@ -29,7 +29,7 @@ pi install npm:@upstash/box-pi
   To update the extension later, run `pi update`. `pi install` won't refresh an existing install.
 </Note>
 
-***
+---
 
 ## 3. Set the API key
 
@@ -41,7 +41,7 @@ export UPSTASH_BOX_API_KEY="box_xxxxxxxxxxxxxxxxxxxxxxxx"
 
 If no key is set, Pi prompts you for one once per session.
 
-***
+---
 
 ## 4. Run Pi with `--box`
 
@@ -70,7 +70,7 @@ A footer badge in Pi shows that tool calls are running remotely. Everything else
 | `--runtime <name>` | Box runtime image: `node`, `python`, `golang`, `ruby`, `rust` (append `-alpine` for the musl variant) |
 | `--size <name>`    | Box size: `small` (default), `medium`, or `large`               |
 
-***
+---
 
 ## 5. Sync work to GitHub
 
@@ -90,7 +90,7 @@ Manage the branch with slash commands inside Pi:
   Outside a github.com repo (or without `gh` authenticated), push is disabled. The box still has a local git repo, so the agent can commit, but nothing leaves the box.
 </Note>
 
-***
+---
 
 ## 6. Preview a running server
 
@@ -100,23 +100,23 @@ When the agent starts a server in the box, ask it for a preview link. The `previ
 https://<box-name>-8080.preview.box.upstash.com
 ```
 
-The login is printed alongside the URL, and your browser prompts for it. Preview URLs are created fresh on every call, so ask again after a box resumes from idle. See [Preview URLs](/docs/box/overall/preview) for how these work.
+The login is printed alongside the URL, and your browser prompts for it. Preview URLs are created fresh on every call, so ask again after a box resumes from idle. See [Preview URLs](/box/overall/preview) for how these work.
 
-***
+---
 
 ## 7. Session lifecycle
 
 Each Pi session gets one box, and the box follows the session:
 
-* **Resume a session**, and its box is reattached, with your files and environment exactly where you left them.
-* **Idle sessions** pause the box automatically with the filesystem preserved; the next tool call transparently restarts it. Nothing to configure.
-* **Delete a session** from Pi's resume menu, and its box is deleted too. A box lives as long as its session.
+- **Resume a session**, and its box is reattached, with your files and environment exactly where you left them.
+- **Idle sessions** pause the box automatically with the filesystem preserved; the next tool call transparently restarts it. Nothing to configure.
+- **Delete a session** from Pi's resume menu, and its box is deleted too. A box lives as long as its session.
 
-***
+---
 
 ## Troubleshooting
 
-* **The box is empty.** The box clones from GitHub; it never uploads local files. Make sure the repo exists on github.com and your checkout has an `origin` remote, then start a new session. Run `/sandbox` to see what was cloned.
-* **Local changes missing in the box?** Commit and push first. The box clones the branch from GitHub, not your working tree.
-* **Duplicate flag or tool errors** mean two copies of the extension are loaded. Run `pi list` and `pi uninstall` one of them.
-* **Pushes not appearing on GitHub?** Branch sync needs `gh auth login` and a github.com remote.
+- **The box is empty.** The box clones from GitHub; it never uploads local files. Make sure the repo exists on github.com and your checkout has an `origin` remote, then start a new session. Run `/sandbox` to see what was cloned.
+- **Local changes missing in the box?** Commit and push first. The box clones the branch from GitHub, not your working tree.
+- **Duplicate flag or tool errors** mean two copies of the extension are loaded. Run `pi list` and `pi uninstall` one of them.
+- **Pushes not appearing on GitHub?** Branch sync needs `gh auth login` and a github.com remote.

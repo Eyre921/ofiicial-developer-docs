@@ -26,9 +26,9 @@ Consistency** (`Read-Your-Writes`, `Monotonic-Reads`, `Monotonic-Writes` and
 `Writes-Follow-Reads` guarantees) for a single Redis connection. (A TCP
 connection forms a session between client and server).
 
-Checkout [Read Your Writes](/docs/redis/howto/readyourwrites) for more details on how to achieve RYW consistency.
+Checkout [Read Your Writes](/redis/howto/readyourwrites) for more details on how to achieve RYW consistency.
 
-Checkout [Replication](/docs/redis/features/replication) for more details on Replication mechanism.
+Checkout [Replication](/redis/features/replication) for more details on Replication mechanism.
 
 <Note>
   Previously, Upstash supported `Strong Consistency` mode for the single region

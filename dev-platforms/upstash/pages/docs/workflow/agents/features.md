@@ -1,5 +1,5 @@
 ---
-title: "Features"
+title: "workflow/agents/features"
 source: https://upstash.com/docs/workflow/agents/features
 path: docs/workflow/agents/features
 ---
@@ -7,8 +7,8 @@ path: docs/workflow/agents/features
 On this page, we explain the features of the Workflow Agents API in more detail.
 
 Prerequisites:
-* Setup your first Agent endpoint by following [the Getting Started page](/docs/workflow/agents/getting-started).
-* Install the following packages to define tools:
+- Setup your first Agent endpoint by following [the Getting Started page](/workflow/agents/getting-started).
+- Install the following packages to define tools:
 
 ```bash
 npm i ai mathjs zod @agentic/ai-sdk @agentic/weather @langchain/core @langchain/community
@@ -85,8 +85,8 @@ Same parameter is available in `agents.AISDKModel` as the `agentCallParams` para
 
 Next, we will define the tools that our agents will use. The **Agents API** is compatible with both **AI SDK** and **LangChain** tools. This means you can either:
 
-* Use existing tools that are compatible with these SDKs.
-* Define your own custom tools that are compatible with these SDKs.
+- Use existing tools that are compatible with these SDKs.
+- Define your own custom tools that are compatible with these SDKs. 
 
 This flexibility allows you to tailor the tools to your specific needs while leveraging the power of these frameworks.
 
@@ -158,7 +158,7 @@ const wikiTool = new WikipediaQueryRun({
 
 For available toolkits, you can explore the [LangChain Toolkits](https://js.langchain.com/v0.1/docs/modules/agents/tools/toolkits/) or other AI SDK-compatible toolkits like [Agentic](https://agentic.so/sdks/ai-sdk).
 
-By default, the Workflow SDK will wrap the execute/invoke methods of the tools you pass with [`context.run`](/docs/workflow/basics/context#context-run) to run them as a Workflow step. This means, you can't use steps like context.call, context.notify etc in execute/invoke right away. If you want to define steps in invoke/execute, you can use the `executeAsStep` option:
+By default, the Workflow SDK will wrap the execute/invoke methods of the tools you pass with [`context.run`](/workflow/basics/context#context-run) to run them as a Workflow step. This means, you can't use steps like context.call, context.notify etc in execute/invoke right away. If you want to define steps in invoke/execute, you can use the `executeAsStep` option:
 
 ```ts {12}
 import { WorkflowTool } from '@upstash/workflow'
@@ -211,11 +211,11 @@ export const { POST } = serve(async (context) => {
 
 The parameters for defining an agent are as follows:
 
-* **`model`**: The LLM model that the agent will use.
-* **`name`**: The name of the agent. This name will be used when naming the [context.call steps](/docs/workflow/basics/context#context-call) for this agent. `context.call` is used when calling the LLM provider (such as OpenAI).
-* **`maxSteps`**: The maximum number of times this agent can call the LLM provider (e.g., OpenAI).
-* **`tools`**: The list of tools available to the agent for completing tasks.
-* **`background`**: A description of the agent, which is used as a system prompt to provide context for the agent's behavior.
+- **`model`**: The LLM model that the agent will use.
+- **`name`**: The name of the agent. This name will be used when naming the [context.call steps](/workflow/basics/context#context-call) for this agent. `context.call` is used when calling the LLM provider (such as OpenAI).
+- **`maxSteps`**: The maximum number of times this agent can call the LLM provider (e.g., OpenAI).
+- **`tools`**: The list of tools available to the agent for completing tasks.
+- **`background`**: A description of the agent, which is used as a system prompt to provide context for the agent's behavior.
 
 ## Tasks
 
@@ -224,7 +224,7 @@ Now that we have agents defined, the only thing left is to assign tasks to them.
 There are two ways to create a task:
 
 1. **Single Agent Task**: The task is assigned to a single agent, which will complete it using the tools available to it.
-
+   
 2. **Multiple Agent Task**: A **manager agent** is used to decide which agents will be involved and in what order. The manager agent makes this decision based on the task prompt, the agents' backgrounds, and the tools available to them.
 
 ### Single Agent
@@ -280,7 +280,7 @@ Here are summaries of 5 topics in advanced physics:
 
 Here is the logs on Upstash Console:
 
-<img />
+<img src="/img/workflow/agents/logs/logs-single.png" />
 
 In the logs, you can see that the **academic agent** was called. It decided to invoke **wikiTool** five times in parallel. Once the tool requests were completed, the agent summarized the results from the individual calls in one final response and returned the outcome.
 
@@ -370,6 +370,6 @@ The sum of their populations is approximately 18.16 million.
 
 Here are the logs on Upstash Console:
 
-<img />
+<img src="/img/workflow/agents/logs/logs-multi.png" />
 
 The logs show that the `Manager LLM` first called the `academic` agent. The `academic` agent used the `wikiTool` three times, each with a different Japanese city, and summarized the results. Next, the `Manager LLM` called the `mathematician` agent, which used its `calculate` tool to compute the total population of the three cities and returned the result to the `Manager LLM`. With information about the cities and their total population, the `Manager LLM` generated the final response.

@@ -4,5 +4,6 @@ source: https://upstash.com/docs/devops/developer-api/redis/backup/restore_backu
 path: docs/devops/developer-api/redis/backup/restore_backup
 ---
 
-/devops/developer-api/openapi.yml post /redis/restore-backup/{id}
-This endpoint restores data from an existing backup.
+> This endpoint restores data from an existing backup.
+
+`POST /redis/restore-backup/{id}`

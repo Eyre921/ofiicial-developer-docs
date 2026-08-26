@@ -28,4 +28,4 @@ You can delete entries individually, in bulk by IDs, or by using filters such as
     ```
 </CodeGroup>
 
-For the full API reference, see [client.dlq.delete](/docs/workflow/basics/client/dlq/delete).
+For the full API reference, see [client.dlq.delete](/workflow/basics/client/dlq/delete).

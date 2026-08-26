@@ -6,7 +6,7 @@ path: docs/box/overall/files
 
 Every box has its own isolated filesystem. Upload, write, read, list, and download files inside the box.
 
-***
+---
 
 ## API
 
@@ -32,7 +32,7 @@ box.files.upload([
 
 You can upload multiple files in a single call. All uploads run in parallel.
 
-***
+---
 
 ### Write files
 
@@ -54,7 +54,7 @@ box.files.write(
 ```
 </CodeGroup>
 
-***
+---
 
 ### Read files
 
@@ -74,7 +74,7 @@ print(json.loads(content))
 ```
 </CodeGroup>
 
-***
+---
 
 ### Read part of a file
 
@@ -98,7 +98,7 @@ chunk = box.files.read("train.csv", offset=4096, length=1024)
 ```
 </CodeGroup>
 
-***
+---
 
 ### Inspect a path
 
@@ -136,7 +136,7 @@ target = box.files.stat("latest", follow=True)
 ```
 </CodeGroup>
 
-***
+---
 
 ### Create directories
 
@@ -152,7 +152,7 @@ box.files.mkdir("output/reports", parents=True)
 ```
 </CodeGroup>
 
-***
+---
 
 ### Move and rename
 
@@ -168,7 +168,7 @@ box.files.rename("draft.md", "final.md")
 ```
 </CodeGroup>
 
-***
+---
 
 ### Delete files
 
@@ -186,7 +186,7 @@ box.files.remove("build", recursive=True)
 ```
 </CodeGroup>
 
-***
+---
 
 ### List files
 
@@ -214,7 +214,7 @@ print(files)
 ```
 </CodeGroup>
 
-***
+---
 
 ### Download files
 
@@ -232,7 +232,7 @@ box.files.download(folder="/work/output")
 ```
 </CodeGroup>
 
-***
+---
 
 ## Examples
 

@@ -9,15 +9,15 @@ path: docs/vector/sdks/py/example_calls/delete
 The `delete` method allows you to remove vectors from the index based on their identifiers.
 The command accepts the following parameters:
 
-* `ids`: A list of identifiers of vectors to be deleted.
-* `prefix`: A string prefix to match vector IDs. All vectors with IDs that start with this prefix will be deleted.
-* `filter`: A metadata filter to match vectors to be deleted.
+- `ids`: A list of identifiers of vectors to be deleted.
+- `prefix`: A string prefix to match vector IDs. All vectors with IDs that start with this prefix will be deleted.
+- `filter`: A metadata filter to match vectors to be deleted.
 
 <Note>Only one of `ids`, `prefix`, or `filter` can be provided.</Note>
 
 It returns the following field in response:
 
-* `deleted`: An integer indicating how many vectors were deleted with the command.
+- `deleted`: An integer indicating how many vectors were deleted with the command.
 
 ## Delete Example
 
@@ -51,7 +51,7 @@ index.delete("id-4", namespace="ns")
 
 ## Delete with metadata filter
 
-This will delete all vectors with metadata that matches the provided filter. For more information, see [Metadata Filtering](/docs/vector/features/filtering).
+This will delete all vectors with metadata that matches the provided filter. For more information, see [Metadata Filtering](/vector/features/filtering).
 
 ```python
 index.delete(filter="age > 30")

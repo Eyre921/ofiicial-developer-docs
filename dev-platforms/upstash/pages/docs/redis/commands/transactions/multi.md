@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/transactions/multi
 path: docs/redis/commands/transactions/multi
 ---
 
+> Start a transaction.
+
 Use `MULTI` to start a transaction.
 
-Commands sent afterwards are not executed but queued, each answered with `QUEUED`, until [`EXEC`](/docs/redis/commands/transactions/exec) runs them all in order with nothing else in between, or [`DISCARD`](/docs/redis/commands/transactions/discard) throws them away.
+Commands sent afterwards are not executed but queued, each answered with `QUEUED`, until [`EXEC`](/redis/commands/transactions/exec) runs them all in order with nothing else in between, or [`DISCARD`](/redis/commands/transactions/discard) throws them away.
 
-A Redis transaction is atomic in the sense that no other client sees a partial result, but it is not a rollback mechanism: a command that fails at queue time, such as one with a syntax error, aborts the whole transaction, while a command that fails at execution time, such as one applied to the wrong type, leaves the commands around it applied. Combine it with [`WATCH`](/docs/redis/commands/transactions/watch) when the transaction depends on values you read beforehand.
+A Redis transaction is atomic in the sense that no other client sees a partial result, but it is not a rollback mechanism: a command that fails at queue time, such as one with a syntax error, aborts the whole transaction, while a command that fails at execution time, such as one applied to the wrong type, leaves the commands around it applied. Combine it with [`WATCH`](/redis/commands/transactions/watch) when the transaction depends on values you read beforehand.
 
 The raw command is TCP-only. Over HTTP, use the transaction or pipeline API of an Upstash SDK instead of sending this command directly.
 
@@ -24,7 +26,7 @@ This command takes no arguments.
 
 ## Important points
 
-* The raw command is TCP-only. For HTTP, use an Upstash SDK transaction API rather than sending this command directly.
+- The raw command is TCP-only. For HTTP, use an Upstash SDK transaction API rather than sending this command directly.
 
 ## Response
 

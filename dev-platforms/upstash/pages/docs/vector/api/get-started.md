@@ -4,7 +4,7 @@ source: https://upstash.com/docs/vector/api/get-started
 path: docs/vector/api/get-started
 ---
 
-If you do not have a vector database already, follow [these steps](/docs/vector/overall/getstarted) to create one.
+If you do not have a vector database already, follow [these steps](/vector/overall/getstarted) to create one.
 
 In the database details section of the Upstash Console, scroll down to `Connect` section and select the `cURL` tab. You can simply copy the curl expression and run on your terminal.
 
@@ -44,4 +44,4 @@ Example:
 | `401 Unauthorized`       | When authentication fails; auth token is missing or invalid.                                        |
 | `405 Method Not Allowed` | When an unsupported HTTP method is used. Only `HEAD`, `GET`, `POST`, and `PUT` methods are allowed. |
 
-***
+---

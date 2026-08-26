@@ -1,0 +1,37 @@
+---
+title: "LMOVE"
+source: https://upstash.com/docs/redis/sdks/ts/commands/list/lmove
+path: docs/redis/sdks/ts/commands/list/lmove
+---
+
+> Move an element from one list to another.
+
+## Arguments
+
+<ParamField body="source" type="string" required>
+  The key of the source list.
+</ParamField>
+
+<ParamField body="destination" type="string" required>
+  The key of the destination list.
+</ParamField>
+
+<ParamField body="from" type='"left" | "right"' required>
+  The side of the source list from which the element was popped.
+</ParamField>
+
+<ParamField body="to" type='"left" | "right"' required>
+  The side of the destination list to which the element was pushed.
+</ParamField>
+
+## Response
+<ResponseField type="TValue" required>
+  The element that was moved.
+</ResponseField>
+
+<RequestExample>
+```ts Example
+ await redis.rpush("source", "a", "b", "c"); 
+ const element = await redis.move("source", "destination", "left", "left");  
+```
+</RequestExample>

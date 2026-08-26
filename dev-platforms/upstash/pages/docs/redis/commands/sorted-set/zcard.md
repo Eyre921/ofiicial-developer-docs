@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zcard
 path: docs/redis/commands/sorted-set/zcard
 ---
 
+> Get sorted set cardinality.
+
 Use `ZCARD` to get the number of members in a sorted set.
 
-The reply is `0` when the key does not exist. The size is maintained by Redis, so the command is cheap whatever the size of the set. Use [`ZCOUNT`](/docs/redis/commands/sorted-set/zcount) when you need the number of members within a score range rather than the total.
+The reply is `0` when the key does not exist. The size is maintained by Redis, so the command is cheap whatever the size of the set. Use [`ZCOUNT`](/redis/commands/sorted-set/zcount) when you need the number of members within a score range rather than the total.
 
 ## Syntax
 

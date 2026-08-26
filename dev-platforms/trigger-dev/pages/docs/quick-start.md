@@ -142,19 +142,19 @@ See [Triggering](/docs/triggering) for the full guide, or jump straight to frame
 ## Next steps
 
 <CardGroup>
-  <Card title="Building with AI" icon="brain" href="/building-with-ai">
+  <Card title="Building with AI" icon="brain" href="/docs/building-with-ai">
     Build Trigger.dev projects using AI coding assistants
   </Card>
 
-  <Card title="How to trigger your tasks" icon="bolt" href="/triggering">
+  <Card title="How to trigger your tasks" icon="bolt" href="/docs/triggering">
     Trigger tasks from your backend code
   </Card>
 
-  <Card title="Writing tasks" icon="wand-magic-sparkles" href="/tasks/overview">
+  <Card title="Writing tasks" icon="wand-magic-sparkles" href="/docs/tasks/overview">
     Task options, lifecycle hooks, retries, and queues
   </Card>
 
-  <Card title="Guides and example projects" icon="books" href="/guides/introduction">
+  <Card title="Guides and example projects" icon="books" href="/docs/guides/introduction">
     Framework guides and working example repos
   </Card>
 </CardGroup>

@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/search/search-count
 path: docs/redis/commands/search/search-count
 ---
 
+> Count documents matching a query.
+
 Use `SEARCH.COUNT` to count documents matching a query without retrieving them.
 
-The filter is the same JSON object that [`SEARCH.QUERY`](/docs/redis/commands/search/search-query) takes, but only the number of matching documents is computed and returned, so nothing depends on the size of the result and no `LIMIT` gets in the way of the total. That makes it the right command for result counters, pagination totals, and cheap existence checks over a filter.
+The filter is the same JSON object that [`SEARCH.QUERY`](/redis/commands/search/search-query) takes, but only the number of matching documents is computed and returned, so nothing depends on the size of the result and no `LIMIT` gets in the way of the total. That makes it the right command for result counters, pagination totals, and cheap existence checks over a filter.
 
-See [Counting](/docs/redis/search/counting) for feature examples and common use cases.
+See [Counting](/redis/search/counting) for feature examples and common use cases.
 
 ## Syntax
 
@@ -16,7 +18,7 @@ See [Counting](/docs/redis/search/counting) for feature examples and common use 
 SEARCH.COUNT <name> '<json_filter>'
 ```
 
-`<json_filter>` is an [Upstash JSON filter](/docs/redis/search/querying). The command accepts an index name or alias.
+`<json_filter>` is an [Upstash JSON filter](/redis/search/querying). The command accepts an index name or alias.
 
 ## Response
 

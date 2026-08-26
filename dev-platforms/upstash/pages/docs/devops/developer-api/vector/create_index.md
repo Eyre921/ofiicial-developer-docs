@@ -4,5 +4,6 @@ source: https://upstash.com/docs/devops/developer-api/vector/create_index
 path: docs/devops/developer-api/vector/create_index
 ---
 
-/devops/developer-api/openapi.yml post /vector/index
-This endpoint creates an index.
+> This endpoint creates an index.
+
+`POST /vector/index`

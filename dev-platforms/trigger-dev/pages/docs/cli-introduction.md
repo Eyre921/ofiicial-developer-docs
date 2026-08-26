@@ -18,8 +18,8 @@ The Trigger.dev CLI has a number of options and commands to help you develop loc
 
 ## Commands
 
-| Command                                      | Description                                                        |
-| :------------------------------------------- | :----------------------------------------------------------------- |
+| Command                                           | Description                                                        |
+| :------------------------------------------------ | :----------------------------------------------------------------- |
 | [login](/docs/cli-login-commands)                 | Login with Trigger.dev so you can perform authenticated actions.   |
 | [init](/docs/cli-init-commands)                   | Initialize your existing project for development with Trigger.dev. |
 | [dev](/docs/cli-dev-commands)                     | Run your Trigger.dev tasks locally.                                |

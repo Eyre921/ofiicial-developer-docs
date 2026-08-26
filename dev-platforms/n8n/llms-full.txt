@@ -1,15 +1,17 @@
 # n8n Docs
 
-n8n is a fair-code licensed workflow automation tool that combines AI capabilities with business process automation.
+Get set up on n8n, build your first workflow, and find inspiration for what to automate.
 
-<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-cover data-type="image">Cover image</th></tr></thead><tbody><tr><td><i class="fa-server">:server:</i> <strong>Get set up on n8n</strong></td><td><ul><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/ziS002yiEqmQSjXZALLO">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/ziS002yiEqmQSjXZALLO</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/v0g3kb2fsMoDP6jwGXeu">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/v0g3kb2fsMoDP6jwGXeu</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/UG58o6rsrfmn5LPW3DE4">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/UG58o6rsrfmn5LPW3DE4</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/o0tyrSRLdqerPqm6bDW8">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/o0tyrSRLdqerPqm6bDW8</a></li></ul></td><td></td><td><a href="/files/cew5tUoowk0ECeg4Sn7Q">/files/cew5tUoowk0ECeg4Sn7Q</a></td></tr><tr><td><i class="fa-draw-square">:draw-square:</i> <strong>Build your first automation</strong></td><td><a data-mention href="/pages/zUKRppskKg9LhFTtXLPj">/pages/zUKRppskKg9LhFTtXLPj</a></td><td></td><td><a href="/files/jsSOd2oDuEAGpUNhiGlY">/files/jsSOd2oDuEAGpUNhiGlY</a></td></tr><tr><td><i class="fa-stamp">:stamp:</i> <strong>Get inspiration for what to automate</strong></td><td><ul><li><a href="https://n8n.io/workflows/1750-creating-an-api-endpoint/">Creating an API endpoint</a></li><li><a href="https://n8n.io/workflows/1954-ai-agent-chat/">AI agent chat</a></li><li><a href="https://n8n.io/workflows/1951-scrape-and-summarize-webpages-with-ai/">Scrape and summarize webpages with AI</a></li><li><a href="https://n8n.io/workflows/1747-joining-different-datasets/">Joining different datasets</a></li></ul></td><td></td><td><a href="/files/qnZMSRNOlw7AxMBtjXwi">/files/qnZMSRNOlw7AxMBtjXwi</a></td></tr><tr><td><i class="fa-lightbulb-gear">:lightbulb-gear:</i> <strong>Understand key concepts</strong></td><td><ul><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/bJVqnsoYoKeTVGzLQgy2">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/bJVqnsoYoKeTVGzLQgy2</a></li><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/1hqzhYpLBsjFvbo8HxAU">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/1hqzhYpLBsjFvbo8HxAU</a></li><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/eTf5Lc65AFb3sSVXviVc">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/eTf5Lc65AFb3sSVXviVc</a></li></ul></td><td></td><td><a href="/files/VkcOOhTRPQBjR6UUdVEy">/files/VkcOOhTRPQBjR6UUdVEy</a></td></tr><tr><td><strong>Anthropic</strong> <strong>Claude Desktop</strong></td><td><a href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/UOJtqNvrsXpvCGg9r3LR#connecting-claude-desktop-to-n8n-mcp-server">Connecting Claude Desktop to n8n MCP server</a></td><td></td><td><a href="/files/xmdd04HkxvE0QDJ5HV8G">/files/xmdd04HkxvE0QDJ5HV8G</a></td></tr><tr><td><strong>Anthropic</strong> <strong>Claude Code</strong></td><td><pre data-overflow="wrap"><code>claude mcp add --transport http n8n-mcp https:///mcp-server/http
-</code></pre></td><td><a href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/UOJtqNvrsXpvCGg9r3LR#connecting-claude-code-to-n8n-mcp-server">Connecting Claude Code to n8n MCP server</a></td><td><a href="/files/dd7B4dyNfwmfOPJTNbQS">/files/dd7B4dyNfwmfOPJTNbQS</a></td></tr><tr><td><strong>Open AI Codex</strong></td><td><pre data-overflow="wrap"><code>codex mcp add n8n-mcp --url https:///mcp-server/http
+n8n is a fair-code licensed workflow automation tool that combines AI features with business process automation.
+
+<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-cover data-type="image">Cover image</th></tr></thead><tbody><tr><td><i class="fa-server">:server:</i> <strong>Get set up on n8n</strong></td><td><ul><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/ziS002yiEqmQSjXZALLO">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/ziS002yiEqmQSjXZALLO</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/v0g3kb2fsMoDP6jwGXeu">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/v0g3kb2fsMoDP6jwGXeu</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/UG58o6rsrfmn5LPW3DE4">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/UG58o6rsrfmn5LPW3DE4</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/o0tyrSRLdqerPqm6bDW8">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/o0tyrSRLdqerPqm6bDW8</a></li></ul></td><td></td><td><a href="/files/cew5tUoowk0ECeg4Sn7Q">/files/cew5tUoowk0ECeg4Sn7Q</a></td></tr><tr><td><i class="fa-draw-square">:draw-square:</i> <strong>Build your first workflow</strong></td><td><a data-mention href="/pages/zUKRppskKg9LhFTtXLPj">/pages/zUKRppskKg9LhFTtXLPj</a></td><td></td><td><a href="/files/jsSOd2oDuEAGpUNhiGlY">/files/jsSOd2oDuEAGpUNhiGlY</a></td></tr><tr><td><i class="fa-stamp">:stamp:</i> <strong>Get inspiration for what to automate</strong></td><td><ul><li><a href="https://n8n.io/workflows/1750-creating-an-api-endpoint/">Creating an API endpoint</a></li><li><a href="https://n8n.io/workflows/1954-ai-agent-chat/">AI agent chat</a></li><li><a href="https://n8n.io/workflows/1951-scrape-and-summarize-webpages-with-ai/">Scrape and summarize web pages with AI</a></li><li><a href="https://n8n.io/workflows/1747-joining-different-datasets/">Joining different datasets</a></li></ul></td><td></td><td><a href="/files/qnZMSRNOlw7AxMBtjXwi">/files/qnZMSRNOlw7AxMBtjXwi</a></td></tr><tr><td><i class="fa-lightbulb-gear">:lightbulb-gear:</i> <strong>Understand key concepts</strong></td><td><ul><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/bJVqnsoYoKeTVGzLQgy2">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/bJVqnsoYoKeTVGzLQgy2</a></li><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/1hqzhYpLBsjFvbo8HxAU">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/1hqzhYpLBsjFvbo8HxAU</a></li><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/eTf5Lc65AFb3sSVXviVc">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/eTf5Lc65AFb3sSVXviVc</a></li></ul></td><td></td><td><a href="/files/VkcOOhTRPQBjR6UUdVEy">/files/VkcOOhTRPQBjR6UUdVEy</a></td></tr><tr><td><strong>Anthropic</strong> <strong>Claude Desktop</strong></td><td><a href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/UOJtqNvrsXpvCGg9r3LR#connecting-claude-desktop-to-n8n-mcp-server">Connecting Claude Desktop to n8n MCP server</a></td><td></td><td><a href="/files/xmdd04HkxvE0QDJ5HV8G">/files/xmdd04HkxvE0QDJ5HV8G</a></td></tr><tr><td><strong>Anthropic</strong> <strong>Claude Code</strong></td><td><pre data-overflow="wrap"><code>claude mcp add --transport http n8n-mcp https:///mcp-server/http
+</code></pre></td><td><a href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/UOJtqNvrsXpvCGg9r3LR#connecting-claude-code-to-n8n-mcp-server">Connecting Claude Code to n8n MCP server</a></td><td><a href="/files/dd7B4dyNfwmfOPJTNbQS">/files/dd7B4dyNfwmfOPJTNbQS</a></td></tr><tr><td><strong>OpenAI</strong> <strong>Codex CLI</strong></td><td><pre data-overflow="wrap"><code>codex mcp add n8n-mcp --url https:///mcp-server/http
 </code></pre></td><td><a href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/UOJtqNvrsXpvCGg9r3LR#connecting-codex-cli-to-n8n-mcp-server">Connecting Codex CLI to n8n MCP server</a></td><td><a href="/files/Ct6O3FmZIzVLSJLgogne">/files/Ct6O3FmZIzVLSJLgogne</a></td></tr></tbody></table>
 
 
 # Choose how to use n8n
 
-Choose between our n8n Cloud service, or self-hosting options. Learn more about licenses and n8n payment plans.
+Choose between n8n Cloud and self-hosting, and learn about licenses and plans.
 
 n8n offers two primary deployment options: **n8n Cloud** (fully-managed) and **Self-hosted** (deploy on your own infrastructure). Choosing involves two decisions:
 
@@ -34,7 +36,7 @@ Use this guide to choose a deployment option:
 
 | Your situation                                               | Recommended option                  | Reason                                                |
 | ------------------------------------------------------------ | ----------------------------------- | ----------------------------------------------------- |
-| Want to start quickly                                        | **n8n Cloud**                       | No installation needed                                |
+| Want to start right away                                     | **n8n Cloud**                       | No installation needed                                |
 | Don't have technical expertise                               | **n8n Cloud**                       | Fully managed, no setup or maintenance required       |
 | Need production-ready deployment                             | **Both options work**               | Both n8n Cloud and self-hosted support production use |
 | Don't want to manage infrastructure                          | **n8n Cloud**                       | n8n handles hosting, updates, and scaling             |
@@ -91,9 +93,9 @@ Every plan runs on the same underlying product with different features, usage li
 
 For how to start a trial and upgrade, see [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial). For what each plan includes, see the [pricing page](https://n8n.io/pricing/).
 
-### Pick a plan/edition for self-hosted n8n <a href="#if-you-chose-self-hosted-pick-an-edition" id="if-you-chose-self-hosted-pick-an-edition"></a>
+### Pick a plan or edition for self-hosted n8n <a href="#if-you-chose-self-hosted-pick-an-edition" id="if-you-chose-self-hosted-pick-an-edition"></a>
 
-Every self-hosted installation runs on the same underlying product. You can stick with the basic Community edition for free, indefinitely. Alternatively, register to unlock extra features for free, or subscribe to a paid plan to get a license key that unlocks the features for that plan.
+Every self-hosted installation runs on the same underlying product. You can stick with the free Community edition indefinitely, or register for free to unlock extra features. For paid features, subscribe to a plan to get a license key that unlocks them.
 
 | Edition / Plan           | Cost                                                     | Designed for                                                                                         |
 | ------------------------ | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
@@ -149,7 +151,7 @@ This guide will show you how to construct a workflow[^1] in n8n, explaining key 
 
 ![The completed workflow: Schedule Trigger connected to NASA, then an If node branching into two PostBin nodes](/files/gBT9GfmMngz4IgkX77tZ)
 
-This quickstart uses [n8n Cloud](/deploy/use-n8n-cloud), which is recommended for new users. A free trial is available - if you haven't already done so, [sign up](https://app.n8n.cloud/register) for an account now.
+This quickstart uses [n8n Cloud](/deploy/use-n8n-cloud), which is recommended for new users. A free trial is available. If you haven't already, [sign up](https://app.n8n.cloud/register) for an account now.
 
 ## Step one: Create a new workflow <a href="#step-one-create-a-new-workflow" id="step-one-create-a-new-workflow"></a>
 
@@ -165,7 +167,7 @@ n8n provides two ways to start a workflow:
 * Manually, by selecting **Execute Workflow**.
 * Automatically, using a trigger node as the first node. The trigger node runs the workflow in response to an external event, or based on your settings.
 
-For this tutorial, we'll use the [Schedule trigger](/integrations/builtin/core-nodes/n8n-nodes-base.scheduletrigger). This allows you to run the workflow on a schedule:
+This tutorial uses the [Schedule trigger](/integrations/builtin/core-nodes/n8n-nodes-base.scheduletrigger), which lets you run the workflow on a schedule:
 
 1. Select **Add first step**.
 2. Search for **Schedule**. n8n shows a list of nodes that match the search.
@@ -173,17 +175,17 @@ For this tutorial, we'll use the [Schedule trigger](/integrations/builtin/core-n
 4. For **Trigger Interval**, select **Weeks**.
 5. For **Weeks Between Triggers**, enter `1`.
 6. Enter a time and day. For this example, select **Monday** in **Trigger on Weekdays**, select **9am** in **Trigger at Hour**, and enter `0` in **Trigger at Minute**.
-7. Close the node details view to return to the canvas.
+7. Close the **node details view** to return to the canvas.
 
 ## Step three: Add the NASA node and set up credentials <a href="#step-three-add-the-nasa-node-and-set-up-credentials" id="step-three-add-the-nasa-node-and-set-up-credentials"></a>
 
-The [NASA node](/integrations/builtin/app-nodes/n8n-nodes-base.nasa) interacts with NASA's [public APIs](https://api.nasa.gov/) to fetch useful data. We will use the real-time data from the API to find solar events.
+The [NASA node](/integrations/builtin/app-nodes/n8n-nodes-base.nasa) interacts with NASA's [public APIs](https://api.nasa.gov/) to fetch useful data. This tutorial uses the real-time data from the API to find solar events.
 
 <details>
 
 <summary>Credentials</summary>
 
-Credentials are private pieces of information issued by apps and services to authenticate you as a user and allow you to connect and share information between the app or service and the n8n node. The type of information required varies depending on the app/service concerned. You should be careful about sharing or revealing the credentials outside of n8n.
+Credentials are private pieces of information issued by apps and services to authenticate you as a user and allow you to connect and share information between the app or service and the n8n node. The required information varies by app or service. You should be careful about sharing or revealing the credentials outside of n8n.
 
 </details>
 
@@ -218,7 +220,7 @@ Credentials are private pieces of information issued by apps and services to aut
 
 ## Step four: Add logic with the If node <a href="#step-four-add-logic-with-the-if-node" id="step-four-add-logic-with-the-if-node"></a>
 
-n8n supports complex logic in workflows. In this tutorial we will use the [If node](/integrations/builtin/core-nodes/n8n-nodes-base.if) to create two branches that each generate a report from the NASA data. Solar flares have five possible classifications; we will add logic that sends a report with the lower classifications to one output, and the higher classifications to another.
+n8n supports complex logic in workflows. This tutorial uses the [If node](/integrations/builtin/core-nodes/n8n-nodes-base.if) to create two branches that each generate a report from the NASA data. Solar flares have five possible classifications. The If node sends a report with the lower classifications to one output, and the higher classifications to another.
 
 Add the If node:
 
@@ -245,10 +247,10 @@ The last step of the workflow is to send the two reports about solar flares. For
 3. Select **PostBin**.
 4. Select **Send a request**. n8n adds the node to the canvas and opens it.
 5. Go to [Postbin](https://www.toptal.com/developers/postbin/) and select **Create Bin**. Leave the tab open so you can come back to it when testing the workflow.
-6. Copy the bin ID. It looks similar to `1651063625300-2016451240051`.
+6. Copy the bin ID. It looks like `1651063625300-2016451240051`.
 7. In n8n, paste your Postbin ID into **Bin ID**.
 8. Now, configure the data to send to Postbin. Next to **Bin Content**, select the **Expression** tab (you will need to mouse-over the **Bin Content** for the tab to appear), then select the expand button <img src="/files/ApDq4wHH4ROV2DiCRMAb" alt="Add node icon" data-size="line"> to open the full expressions editor.
-9. You can now click and drag the correct field from the If Node output into the expressions editor to automatically create a reference for this label. In this case the input we want is 'classType'.
+9. You can now click and drag the correct field from the If node output into the expressions editor to automatically create a reference for this label. In this case, the field you want is `classType`.
 10. Once dropped into the expressions editor it will transform into this reference: `{{$json["classType"]}}`. Add a message to it, so that the full expression is:
 
     ```js
@@ -315,7 +317,7 @@ All courses include:
 * Badges and certificates upon completion (70% passing grade)
 * Practice APIs (no external accounts needed for most courses)
 
-For a complete list of courses, see [n8n Academy courses](https://learn.n8n.io/courses).
+For a complete list of courses, see [n8n Academy courses](https://learn.n8n.io/courses). To start building right away instead, see [Build your first workflow](/build-your-first-workflow).
 
 
 # Key concept glossary
@@ -348,7 +350,7 @@ Hallucination in AI is when an LLM (large language model) mistakenly perceives p
 
 **AI reranking**
 
-Reranking is a technique that refines the order of a list of candidate documents to improve the relevance of search results. Retrieval-Augmented Generation (RAG) and other applications use reranking to prioritize the most relevant information for generation or downstream tasks.
+Reranking is a technique that refines the order of a list of candidate documents to improve the relevance of search results. Retrieval-Augmented Generation (RAG) and other applications use reranking to surface the most relevant information for generation or downstream tasks.
 
 **AI memory**
 
@@ -376,7 +378,7 @@ The canvas is the main interface for building workflows in n8n's editor UI. You 
 
 **cluster node (n8n)**
 
-In n8n, cluster nodes are groups of nodes that work together to provide functionality in a workflow. They consist of a root node and one or more sub nodes that extend the node's functionality.
+In n8n, cluster nodes are groups of nodes that work together to provide functionality in a workflow. They consist of a root node and one or more sub-nodes that extend the node's functionality.
 
 **credential (n8n)**
 
@@ -388,7 +390,7 @@ Data pinning allows you to temporarily freeze the output data of a node during w
 
 **edition (n8n)**
 
-When you self-host n8n, the edition is the variant of the software you run: Community, registered Community, Business, or Enterprise. All editions share the same underlying product. The free Community edition runs without a license key. When you subscribe to a paid Business or Enterprise plan, you get a license key that unlocks the features for that plan. See also [plan](#plan-n8n) and [license](#license-n8n).
+When you self-host n8n, the edition is the variant of the software you run: Community, Registered Community, Business, or Enterprise. All editions share the same underlying product. The free Community edition runs without a license key. When you subscribe to a paid Business or Enterprise plan, you get a license key that unlocks the features for that plan. See also [plan](#plan-n8n) and [license](#license-n8n).
 
 **editor (n8n)**
 
@@ -418,7 +420,7 @@ Large language models, or LLMs, are AI machine learning models designed to excel
 
 **license (n8n)**
 
-License has two senses in n8n. First, it's the legal terms the n8n source code is distributed under. Second, it's the license key that unlocks the features for a paid plan. When you self-host and subscribe to a paid Business or Enterprise plan, you add the license key to your instance to activate it. See also [entitlement](#entitlement-n8n) and [plan](#plan-n8n).
+License has two senses in n8n. First, it's the legal terms n8n uses to distribute its source code. Second, it's the license key that unlocks the features for a paid plan. When you self-host and subscribe to a paid Business or Enterprise plan, you add the license key to your instance to activate it. See also [entitlement](#entitlement-n8n) and [plan](#plan-n8n).
 
 **node (n8n)**
 
@@ -434,11 +436,11 @@ n8n projects allow you to separate workflows, variables, and credentials into se
 
 **root node (n8n)**
 
-Each n8n cluster node contains a single root nodes that defines the main functionality of the cluster. One or more sub nodes attach to the root node to extend its functionality.
+Each n8n cluster node contains a single root node that defines the main functionality of the cluster. One or more sub-nodes attach to the root node to extend its functionality.
 
-**sub node (n8n)**
+**sub-node (n8n)**
 
-n8n cluster nodes consist of one or more sub nodes connected to a root node. Sub nodes extend the functionality of the root node, providing access to specific services or resources or offering specific types of dedicated processing, like calculator functionality, for example.
+n8n cluster nodes consist of one or more sub-nodes connected to a root node. Sub-nodes extend the functionality of the root node, providing access to specific services or resources or offering specific types of dedicated processing, like calculator functionality, for example.
 
 **template (n8n)**
 
@@ -1017,6 +1019,10 @@ You don't need to know Docker to use this guide; just have it installed and runn
 The one-line setup command requires the `docker compose` v2 plugin specifically (not the older standalone `docker-compose` binary), and checks that the Docker daemon is running. If you're using Podman, Colima, or other Docker-compatible engines, install the `docker` CLI with the compose plugin and point `DOCKER_HOST` at their socket.
 {% endhint %}
 
+Watch a video guide covering this setup, from installing Docker to [turning on AI Assistant](#optional-turn-on-the-ai-assistant):
+
+{% embed url="<https://www.youtube.com/embed/t5RBVTby9EU>" %}
+
 ## Run the command
 
 Open a terminal and run:
@@ -1269,7 +1275,7 @@ services:
     # Internal-only: n8n reaches it by service name. Never publish its port.
 
   n8n:
-    image: docker.io/n8nio/n8n
+    image: n8nio/n8n
     depends_on:
       sandbox-api:
         condition: service_healthy
@@ -1644,7 +1650,7 @@ docker run -it --rm \
  -e N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true \
  -e N8N_RUNNERS_ENABLED=true \
  -v n8n_data:/home/node/.n8n \
- docker.n8n.io/n8nio/n8n
+ n8nio/n8n
 ```
 
 This command creates a volume to store persistent data, downloads the required n8n image, and starts the container with the following settings:
@@ -1695,7 +1701,7 @@ docker run -it --rm \
  -e DB_POSTGRESDB_SCHEMA=<POSTGRES_SCHEMA> \
  -e DB_POSTGRESDB_PASSWORD=<POSTGRES_PASSWORD> \
  -v n8n_data:/home/node/.n8n \
- docker.n8n.io/n8nio/n8n
+ n8nio/n8n
 ```
 
 You can find a complete `docker-compose` file for PostgreSQL in the [n8n hosting repository](https://github.com/n8n-io/n8n-hosting/tree/main/docker-compose/withPostgres).
@@ -1710,13 +1716,13 @@ You can also use the command line to pull the latest, or a specific version:
 
 ```shell
 # Pull latest (stable) version <a href="#pull-latest-stable-version" id="pull-latest-stable-version"></a>
-docker pull docker.n8n.io/n8nio/n8n
+docker pull n8nio/n8n
 
 # Pull specific version <a href="#pull-specific-version" id="pull-specific-version"></a>
-docker pull docker.n8n.io/n8nio/n8n:1.81.0
+docker pull n8nio/n8n:1.81.0
 
 # Pull next (unstable) version <a href="#pull-next-unstable-version" id="pull-next-unstable-version"></a>
-docker pull docker.n8n.io/n8nio/n8n:next
+docker pull n8nio/n8n:next
 ```
 
 After pulling the updated image, stop your n8n container and start it again. You can also use the command line. Replace `<container_id>` in the commands below with the container ID you find in the first command:
@@ -1732,7 +1738,7 @@ docker stop <container_id>
 docker rm <container_id>
 
 # Start the container <a href="#start-the-container" id="start-the-container"></a>
-docker run --name=<container_name> [options] -d docker.n8n.io/n8nio/n8n
+docker run --name=<container_name> [options] -d n8nio/n8n
 ```
 
 #### Updating Docker Compose <a href="#updating-docker-compose" id="updating-docker-compose"></a>
@@ -1985,10 +1991,6 @@ The Docker Compose file uses the environment variables set in the `.env` file, s
 ```shell
 nano docker-compose.yml
 ```
-
-{% hint style="info" %}
-This repository currently pulls the n8n image via \`docker.n8n.io/n8nio/n8n\`, which can hit rate limits. n8n recommends \`docker.io/n8nio/n8n\` instead. If you hit pull issues, try changing the \`image:\` line to \`docker.io/n8nio/n8n\`.
-{% endhint %}
 
 ## Configure Caddy <a href="#configure-caddy" id="configure-caddy"></a>
 
@@ -2433,10 +2435,6 @@ The Docker Compose file uses the environment variables set in the `.env` file, s
 ```shell
 nano docker-compose.yml
 ```
-
-{% hint style="info" %}
-This repository currently pulls the n8n image via \`docker.n8n.io/n8nio/n8n\`, which can hit rate limits. n8n recommends \`docker.io/n8nio/n8n\` instead. If you hit pull issues, try changing the \`image:\` line to \`docker.io/n8nio/n8n\`.
-{% endhint %}
 
 ## Configure Caddy <a href="#configure-caddy" id="configure-caddy"></a>
 
@@ -4731,7 +4729,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   n8n:
-    image: docker.n8n.io/n8nio/n8n
+    image: n8nio/n8n
     restart: always
     ports:
       - "127.0.0.1:5678:5678"
@@ -4901,7 +4899,7 @@ docker run -it --rm \
  --name n8n \
  -p 5678:5678 \
  -e N8N_TEMPLATES_ENABLED="false" \
- docker.n8n.io/n8nio/n8n
+ n8nio/n8n
 ```
 
 ## Docker Compose file <a href="#docker-compose-file" id="docker-compose-file"></a>
@@ -5507,10 +5505,10 @@ This page lists the environment variables configuration options for managing nod
 
 ## Compression node settings <a href="#compression-node-settings" id="compression-node-settings"></a>
 
-| Variable                                           | Type   | Default      | Description                                                        |
-| -------------------------------------------------- | ------ | ------------ | ------------------------------------------------------------------ |
-| `N8N_COMPRESSION_NODE_MAX_DECOMPRESSED_SIZE_BYTES` | Number | `2147483648` | Maximum total decompressed output size in bytes. Default is 2 GiB. |
-| `N8N_COMPRESSION_NODE_MAX_ZIP_ENTRIES`             | Number | `5000`       | Maximum number of entries allowed in a ZIP archive.                |
+| Variable                                           | Type   | Default     | Description                                                          |
+| -------------------------------------------------- | ------ | ----------- | -------------------------------------------------------------------- |
+| `N8N_COMPRESSION_NODE_MAX_DECOMPRESSED_SIZE_BYTES` | Number | `268435456` | Maximum total decompressed output size in bytes. Default is 256 MiB. |
+| `N8N_COMPRESSION_NODE_MAX_ZIP_ENTRIES`             | Number | `1000`      | Maximum number of entries allowed in a ZIP archive.                  |
 
 ## Manage installed community packages <a href="#manage-installed-community-packages" id="manage-installed-community-packages"></a>
 
@@ -6154,7 +6152,7 @@ docker run -it --rm \
  --name n8n \
  -p 5678:5678 \
  -v ./pki:/opt/custom-certificates \
- docker.n8n.io/n8nio/n8n
+ n8nio/n8n
 ```
 
 ### Docker Compose <a href="#docker-compose" id="docker-compose"></a>
@@ -6168,7 +6166,7 @@ services:
         container_name: n8n
         ports:
             - 5678:5678
-        image: docker.n8n.io/n8nio/n8n
+        image: n8nio/n8n
 ```
 
 You should also give the right permissions to the imported certs. You can do this once the container is running (assuming n8n as the container name):
@@ -6451,7 +6449,7 @@ Mount the credentials file as a read-only volume and set the environment variabl
 ```yaml
 services:
   n8n:
-    image: docker.n8n.io/n8nio/n8n:latest
+    image: n8nio/n8n:latest
     container_name: n8n
     restart: always
     ports:
@@ -6518,7 +6516,7 @@ stringData:
 spec:
   containers:
     - name: n8n
-      image: docker.n8n.io/n8nio/n8n:latest
+      image: n8nio/n8n:latest
       env:
         - name: CREDENTIALS_OVERWRITE_DATA_FILE
           value: /run/secrets/credentials-overwrite.json
@@ -6643,7 +6641,7 @@ spec:
       serviceAccountName: n8n-sa
       containers:
         - name: n8n
-          image: docker.n8n.io/n8nio/n8n:latest
+          image: n8nio/n8n:latest
           env:
             - name: CREDENTIALS_OVERWRITE_DATA_FILE
               value: /run/secrets/credentials-overwrite.json
@@ -6792,7 +6790,7 @@ spec:
       serviceAccountName: n8n-sa
       containers:
         - name: n8n
-          image: docker.n8n.io/n8nio/n8n:latest
+          image: n8nio/n8n:latest
           env:
             - name: CREDENTIALS_OVERWRITE_DATA_FILE
               value: /run/secrets/credentials-overwrite.json
@@ -6922,7 +6920,7 @@ spec:
       serviceAccountName: n8n-sa
       containers:
         - name: n8n
-          image: docker.n8n.io/n8nio/n8n:latest
+          image: n8nio/n8n:latest
           env:
             - name: CREDENTIALS_OVERWRITE_DATA_FILE
               value: /run/secrets/credentials-overwrite.json
@@ -9120,13 +9118,13 @@ Make sure you have:
 
 ## Pick your setup
 
-| Setup                                                                                              | Use this if...                                                                               | Sandbox hosted by  | Best for                      |
-| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------ | ----------------------------- |
-| [1. Already running the sandbox](#1-already-running-the-sandbox-recommended-for-local-development) | You installed with the one-line setup command or the Docker Compose guide.                   | You (already done) | Local development and testing |
-| [2. Self-host the sandbox manually](#2-self-host-the-sandbox-manually-advanced)                    | You're running n8n some other way and want to self-host the sandbox rather than use Daytona. | You                | Local development and testing |
-| [3. Daytona (managed sandbox)](#3-daytona-managed-sandbox-recommended-for-production)              | You're deploying to production, or don't want to run sandbox containers yourself.            | Daytona            | Production                    |
+| Setup                                                                                                    | Use this if...                                                                               | Sandbox hosted by  | Best for                      |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------ | ----------------------------- |
+| [1. Already running the sandbox](#setup-1-already-running-the-sandbox-recommended-for-local-development) | You installed with the one-line setup command or the Docker Compose guide.                   | You (already done) | Local development and testing |
+| [2. Self-host the sandbox manually](#setup-2-self-host-the-sandbox-manually-advanced)                    | You're running n8n some other way and want to self-host the sandbox rather than use Daytona. | You                | Local development and testing |
+| [3. Daytona (managed sandbox)](#setup-3-daytona-managed-sandbox-recommended-for-production)              | You're deploying to production, or don't want to run sandbox containers yourself.            | Daytona            | Production                    |
 
-### 1. Already running the sandbox (recommended for local development)
+### Setup 1: Already running the sandbox (recommended for local development)
 
 If you installed n8n with the [one-line setup command](/deploy/host-n8n/install-options/one-line-setup) or built it by hand with the [Docker Compose guide](/deploy/host-n8n/install-options/install-using-docker-compose), the sandbox and search, via bundled SearXNG, are already running. All that's left is a model key.
 
@@ -9146,12 +9144,14 @@ The quickest way: open the editor, go to the instance's AI settings, and add you
 
 `N8N_INSTANCE_AI_MODEL` defaults to `anthropic/claude-opus-4-8`. Set it explicitly only if you want a different model (see [Choose a model provider](#choose-a-model-provider)).
 
-### 2. Self-host the sandbox manually (advanced)
+Prefer to watch? This [video guide](https://go.n8n.io/RZZWq1) covers the setup end to end, from the one-line install to selecting a provider and model in the editor.
+
+### Setup 2: Self-host the sandbox manually (advanced)
 
 Use this if you're configuring n8n outside of the one-line setup command or Docker Compose guide, and you want to run the sandbox yourself rather than hand it to Daytona.
 
 {% hint style="warning" %}
-This means hosting two extra containers yourself: the sandbox API and a privileged Docker-in-Docker runner, plus mutual TLS between them. Like setup 1, this uses `n8n-sandbox`, which is best suited to local development and testing. For production, use [Daytona](#3-daytona-managed-sandbox-recommended-for-production) instead.
+This means hosting two extra containers yourself: the sandbox API and a privileged Docker-in-Docker runner, plus mutual TLS between them. Like setup 1, this uses `n8n-sandbox`, which is best suited to local development and testing. For production, use [Daytona](#setup-3-daytona-managed-sandbox-recommended-for-production) instead.
 {% endhint %}
 
 **What you need:**
@@ -9194,7 +9194,7 @@ Expected response: `{"status":"ok"}`
 * The runner pulls its sandbox image on first use. For air-gapped setups, preload that image into the runner's inner Docker.
 * Hostnames matter. The certificates are issued for `sandbox-api` and `sandbox-runner-<n>`, so keep those service names or regenerate certificates with matching SANs.
 
-### 3. Daytona (managed sandbox, recommended for production)
+### Setup 3: Daytona (managed sandbox, recommended for production)
 
 Daytona creates sandboxes on demand instead of you hosting the containers yourself. It's the sandbox provider n8n recommends for production use.
 
@@ -9240,7 +9240,7 @@ Daytona creates sandboxes on demand instead of you hosting the containers yourse
    ```yaml
    services:
      n8n:
-       image: docker.io/n8nio/n8n
+       image: n8nio/n8n
        environment:
          N8N_ENABLED_MODULES: instance-ai
          N8N_INSTANCE_AI_MODEL: anthropic/claude-opus-4-8

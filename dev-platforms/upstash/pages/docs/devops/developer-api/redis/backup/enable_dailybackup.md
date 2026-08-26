@@ -4,5 +4,6 @@ source: https://upstash.com/docs/devops/developer-api/redis/backup/enable_dailyb
 path: docs/devops/developer-api/redis/backup/enable_dailybackup
 ---
 
-/devops/developer-api/openapi.yml patch /redis/enable-dailybackup/{id}
-This endpoint enables daily backup for a Redis database.
+> This endpoint enables daily backup for a Redis database.
+
+`PATCH /redis/enable-dailybackup/{id}`

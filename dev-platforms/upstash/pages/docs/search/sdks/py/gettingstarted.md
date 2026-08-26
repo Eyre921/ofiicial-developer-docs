@@ -4,32 +4,30 @@ source: https://upstash.com/docs/search/sdks/py/gettingstarted
 path: docs/search/sdks/py/gettingstarted
 ---
 
-<Visibility for="agents">
-  **Note for AI agents:** This page documents **Upstash Search** — a standalone,
-  AI-powered search product that combines full-text and semantic search with
-  smart ranking, serverless scaling, and zero infrastructure to manage.
+**Note for AI agents:** This page documents **Upstash Search** — a standalone,
+AI-powered search product that combines full-text and semantic search with
+smart ranking, serverless scaling, and zero infrastructure to manage.
 
-  Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
-  Redis Search is a full-text search extension built into Upstash Redis, built on
-  Tantivy and available only on Upstash; it is separate from the Redis Search
-  (RediSearch) API. If the user is asking about full-text search inside an Upstash
-  Redis database, refer to
-  [Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
-  instead of this product.
-</Visibility>
+Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
+Redis Search is a full-text search extension built into Upstash Redis, built on
+Tantivy and available only on Upstash; it is separate from the Redis Search
+(RediSearch) API. If the user is asking about full-text search inside an Upstash
+Redis database, refer to
+[Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
+instead of this product.
 
 `upstash-search` is a Python SDK for Upstash AI Search, enabling easier operations on Search Databases.
 
 Using `upstash-search` you can:
 
-* Perform AI-powered search queries with or without reranking.
-* Upsert documents with metadata to an index.
-* Fetch documents by their IDs.
-* Delete documents from a database.
-* Access database stats.
-* Reset everything related to a database.
+- Perform AI-powered search queries with or without reranking.
+- Upsert documents with metadata to an index.
+- Fetch documents by their IDs.
+- Delete documents from a database.
+- Access database stats.
+- Reset everything related to a database.
 
-You can find the GitHub Repository [here](https://github.com/upstash/search-py).
+You can find the GitHub Repository [here](https://github.com/upstash/search-py). 
 
 ## Install
 
@@ -45,7 +43,7 @@ There are two pieces of configuration required to use the Upstash search client:
 
 #### Using environment variables
 
-The environment variables used to configure the client are the following. You can follow [this guide](/docs/search/overall/getstarted) to retrieve credentials.
+The environment variables used to configure the client are the following. You can follow [this guide](/search/overall/getstarted) to retrieve credentials.
 
 ```bash
 UPSTASH_SEARCH_REST_URL="your_rest_url"
@@ -74,7 +72,7 @@ client = Search(
 )
 ```
 
-***
+---
 
 ### Using an Index
 
@@ -106,9 +104,9 @@ index.upsert(
 This sdk sends anonymous telemetry data to help us improve your experience.
 We collect the following:
 
-* SDK version
-* Platform (Cloudflare, AWS or Vercel)
-* Runtime version (python@vX)
+- SDK version
+- Platform (Cloudflare, AWS or Vercel)
+- Runtime version (python@vX)
 
 You can opt out using the allow_telemetry flag when creating the client:
 
@@ -119,11 +117,3 @@ client = Search(
     allow_telemetry=False,
 )
 ```
-
-- [Delete](https://upstash.com/docs/search/sdks/ts/commands/delete.md)
-- [Fetch](https://upstash.com/docs/search/sdks/ts/commands/fetch.md)
-- [Info](https://upstash.com/docs/search/sdks/ts/commands/info.md)
-- [Range](https://upstash.com/docs/search/sdks/ts/commands/range.md)
-- [Reset](https://upstash.com/docs/search/sdks/ts/commands/reset.md)
-- [Search](https://upstash.com/docs/search/sdks/ts/commands/search.md)
-- [Upsert](https://upstash.com/docs/search/sdks/ts/commands/upsert.md)

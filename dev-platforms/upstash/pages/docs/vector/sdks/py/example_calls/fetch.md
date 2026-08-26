@@ -8,16 +8,16 @@ path: docs/vector/sdks/py/example_calls/fetch
 
 The `fetch` method allows you to retrieve vectors from the index based on their identifiers. It takes the following input parameters:
 
-* `ids`: A string or a list of strings representing the identifiers of the vectors to be fetched.
-* `prefix`: A string prefix to match vector IDs. All vectors with IDs that start with this prefix will be retrieved.
-* `include_vectors`: A boolean flag indicating whether to include vectors in the fetch results.
-* `include_metadata`: A boolean flag indicating whether to include metadata in the fetch results.
-* `include_data`: A boolean flag indicating whether to include data in the fetch results.
-* `namespace`: The namespace to use. When not specified, the default namespace is used.
+- `ids`: A string or a list of strings representing the identifiers of the vectors to be fetched.
+- `prefix`: A string prefix to match vector IDs. All vectors with IDs that start with this prefix will be retrieved.
+- `include_vectors`: A boolean flag indicating whether to include vectors in the fetch results.
+- `include_metadata`: A boolean flag indicating whether to include metadata in the fetch results.
+- `include_data`: A boolean flag indicating whether to include data in the fetch results.
+- `namespace`: The namespace to use. When not specified, the default namespace is used.
 
 As a response, following field is returned:
 
-* `vectors`: A list containing information for each fetched vector, including `id`, `vector`, `sparse_vector`, `metadata`, and `data`.
+- `vectors`: A list containing information for each fetched vector, including `id`, `vector`, `sparse_vector`, `metadata`, and `data`.
 
 ## Fetch Example
 

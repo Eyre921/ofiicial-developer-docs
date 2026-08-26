@@ -4,13 +4,15 @@ source: https://upstash.com/docs/redis/commands/streams/xreadgroup
 path: docs/redis/commands/streams/xreadgroup
 ---
 
+> Read as consumer group.
+
 Use `XREADGROUP` to read entries from a stream as a member of a consumer group, so that each entry goes to one consumer and Redis keeps track of what has not been acknowledged.
 
 After `STREAMS`, all keys come first and then one ID per key. The special ID `>` delivers entries that have never been delivered to the group and records them as pending for this consumer. Any other ID re-reads that consumer's own pending entries instead, starting after the given ID, which is how a consumer resumes after a restart: read from `0` first to finish old work, then switch to `>`.
 
 The consumer is created on first use. `COUNT` limits the batch size and `BLOCK <milliseconds>` waits for new entries rather than returning empty, with `0` waiting indefinitely. `NOACK` skips the pending entries list entirely, trading the delivery guarantee for speed.
 
-Entries stay pending until acknowledged with [`XACK`](/docs/redis/commands/streams/xack). That is what makes recovery possible: work left behind by a crashed consumer is visible in [`XPENDING`](/docs/redis/commands/streams/xpending) and can be taken over with [`XAUTOCLAIM`](/docs/redis/commands/streams/xautoclaim).
+Entries stay pending until acknowledged with [`XACK`](/redis/commands/streams/xack). That is what makes recovery possible: work left behind by a crashed consumer is visible in [`XPENDING`](/redis/commands/streams/xpending) and can be taken over with [`XAUTOCLAIM`](/redis/commands/streams/xautoclaim).
 
 ## Syntax
 
@@ -34,8 +36,8 @@ XREADGROUP GROUP <group> <consumer>
 
 ## Important points
 
-* A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
-* After `STREAMS`, provide all keys first and then exactly one ID for each key, in the same order.
+- A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
+- After `STREAMS`, provide all keys first and then exactly one ID for each key, in the same order.
 
 ## Response
 

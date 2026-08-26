@@ -10,7 +10,9 @@ When interacting with the QStash API, you will need an authorization token. To
 get your token, go to the [QStash tab in the Console](https://console.upstash.com/qstash),
 pick a region, and copy the `QSTASH_TOKEN` from the **Quickstart** section.
 
-  <img />
+<Frame>
+  <img src="/img/qstash/console-quickstart-env.jpg" />
+</Frame>
 
 Send this token along with every request made to `QStash` inside the
 `Authorization` header like this:
@@ -95,4 +97,4 @@ encoding as specified in
 
 #### Verifying the signature
 
-See [how to verify the signature](/docs/qstash/howto/signature).
+See [how to verify the signature](/qstash/howto/signature).

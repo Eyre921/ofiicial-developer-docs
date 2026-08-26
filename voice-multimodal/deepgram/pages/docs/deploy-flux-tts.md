@@ -10,10 +10,6 @@ path: docs/deploy-flux-tts
 
 # Deploying Flux TTS
 
-Flux TTS is an Early Access feature in self-hosted deployments, released in [self-hosted release 260812](/changelog). Its configuration surface and its voice set may both change before general availability. Contact your Deepgram Account Representative before you size or deploy Flux TTS in a production self-hosted environment.
-
-Flux TTS is generally available in Deepgram's hosted API.
-
 ## Requirements
 
 Please familiarize yourself with these general requirements before attempting to deploy Flux TTS to your self-hosted Deepgram instances.

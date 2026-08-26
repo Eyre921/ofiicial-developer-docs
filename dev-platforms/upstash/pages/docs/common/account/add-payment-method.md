@@ -12,11 +12,15 @@ Upstash does not require a credit card for Free databases. For paid databases, y
 4. Click `Add Your Card`.
 5. Enter your name and card information in the form that appears:
 
-  <img />
+<Frame>
+  <img src="/img/addpaymentmethod/ccform.png" />
+</Frame>
 
 You can save multiple cards and pick one as the default. Payments are charged from the default card.
 
-  <img />
+<Frame>
+  <img src="/img/addpaymentmethod/cardlist.png" />
+</Frame>
 
 ## Payment Security
 

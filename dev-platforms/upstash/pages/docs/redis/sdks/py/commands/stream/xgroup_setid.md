@@ -1,0 +1,41 @@
+---
+title: "XGROUP SETID"
+source: https://upstash.com/docs/redis/sdks/py/commands/stream/xgroup_setid
+path: docs/redis/sdks/py/commands/stream/xgroup_setid
+---
+
+> Set the last delivered ID for a consumer group.
+
+## Arguments
+
+<ParamField body="key" type="str" required>
+  The key of the stream.
+</ParamField>
+
+<ParamField body="group" type="str" required>
+  The consumer group name.
+</ParamField>
+
+<ParamField body="id" type="str" required>
+  The stream entry ID to set as the last delivered ID. Use '$' for the last entry.
+</ParamField>
+
+<ParamField body="entries_read" type="int">
+  Set the number of entries read by the group.
+</ParamField>
+
+## Response
+
+<ResponseField type="bool">
+  Returns "OK" if the ID was set successfully.
+</ResponseField>
+
+<RequestExample>
+```py Set to beginning
+result = redis.xgroup_setid("mystream", "mygroup", "0-0")
+```
+
+```py Set to end with entries count
+result = redis.xgroup_setid("mystream", "mygroup", "$", entries_read=10)
+```
+</RequestExample>

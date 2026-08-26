@@ -10,335 +10,280 @@ path: docs/twilio-and-deepgram-voice-agent
 
 # Twilio and Deepgram Voice Agent
 
-Deepgram Voice Agent can integrate with the [Twilio streaming API](https://www.twilio.com/docs/voice/twiml/stream) to enable dynamic interactions between callers and voice agents or bots. This guide will walk you through how to setup a Twilio phone number that can interact with [Deepgram's Voice Agent API](/reference/voice-agent/voice-agent), allowing callers to engage with a voice agent in real-time.
+This guide walks through a complete, real-time phone agent: a caller dials a Twilio number, speaks naturally, and holds a conversation with an AI that can be interrupted mid-sentence, the way people talk to each other.
 
-## Before you Begin
+The architecture is small. Twilio streams the call audio to your server, and your server bridges that audio to the **Deepgram Voice Agent API**, a single WebSocket that runs the entire conversation: speech-to-text, the language model, text-to-speech, and turn-taking. By the end you have a working agent you can call from any phone, plus a clear view of how little code stands between the caller and a fully managed voice pipeline. That includes **barge-in**, the ability to talk over the agent and have it stop instantly.
 
-Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+## How the agent works
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+A voice agent runs a tight loop: audio in, understanding, a reply, speech out, fast enough to feel like a conversation. The Voice Agent API owns that loop. Your server only moves audio between two sockets and reacts to one control signal, as the diagram shows.
 
-## Prerequisites
+```mermaid
+flowchart LR
+    Caller(["📞 Caller"])
+    Twilio["Twilio"]
+    Server["FastAPI bridge"]
+    Agent["Deepgram Voice Agent<br />Flux STT · LLM · Flux TTS · turn-taking"]
 
-For the complete code used in this guide, please [check out this repository](https://github.com/deepgram-devs/sts-twilio).
+    Caller -->|PSTN| Twilio
+    Twilio -->|"caller audio (mulaw 8k)"| Server
+    Server -->|"send_media"| Agent
+    Agent -->|"agent audio (bytes)"| Server
+    Server -->|"media frames"| Twilio
+    Twilio -->|PSTN| Caller
 
-You will need:
+    Agent -.->|"UserStartedSpeaking → clear Twilio's buffer"| Server
+```
 
-* A [free Twilio account](https://www.twilio.com/try-twilio) with a Twilio phone number.
-* [ngrok](https://ngrok.com/) to let Twilio access a local server OR your own hosted server.
-* Understanding of Python and using Python virtual environments.
+The implementation is a single bridge running per call. It forwards the caller's audio into the agent with `send_media`, forwards the agent's audio back to Twilio as media frames, and listens for one event, `UserStartedSpeaking`, that tells it the caller has interrupted. Everything that would otherwise be a separate moving part lives inside Deepgram.
 
-## TwiML Bin Setup
+## Which Twilio and Deepgram integration do you need?
 
-First, you will need to set up a `TwiML Bin`. You can refer to the docs on how to do that in the [Twilio Console](https://www.twilio.com/docs/serverless/twiml-bins).
+This guide builds the **full conversational agent** on the unified Voice Agent API. If you only need one half of the pipeline, two focused guides cover those cases:
 
-```xml XML
-<?xml version="1.0" encoding="UTF-8"?>
+| You want to…                                                | Use                                                      | TwiML               |
+| ----------------------------------------------------------- | -------------------------------------------------------- | ------------------- |
+| Hold a two-way conversation (STT + LLM + TTS in one socket) | **This guide** — Voice Agent API                         | `<Connect><Stream>` |
+| Transcribe a call in real time, nothing spoken back         | [Twilio and Deepgram STT](/docs/twilio-and-deepgram-stt) | `<Start><Stream>`   |
+| Play generated speech into a call, no listening             | [Twilio and Deepgram TTS](/docs/twilio-and-deepgram-tts) | `<Connect><Stream>` |
 
+Most phone-agent projects want this guide — the Voice Agent API handles listening, thinking, and speaking together, so you don't wire STT and TTS by hand.
+
+## Before you begin
+
+You need the following accounts, keys, and tools.
+
+* A **Twilio** account with a voice-capable phone number.
+* A **Deepgram** API key. [Sign up free](https://console.deepgram.com/signup) and you start with credits, no card required. This single key covers the whole agent.
+* **Python 3.10 or later.**
+* A tunneling tool to expose your local server to Twilio. This guide uses [ngrok](https://ngrok.com/download).
+
+You don't need a separate LLM provider key. The Voice Agent can use OpenAI, Anthropic, or another provider as its language model, but Deepgram manages that connection and bills it through your Deepgram account, whichever provider you select.
+
+Install ngrok and authenticate it once with the token from your ngrok dashboard.
+
+```bash
+# macOS
+brew install ngrok
+ngrok config add-authtoken <YOUR_NGROK_AUTHTOKEN>
+```
+
+ngrok suits development and testing, not production. Each restart issues a new URL, so reserve a static domain or deploy behind your own hostname once the agent works. See the [ngrok documentation](https://ngrok.com/docs/getting-started/) for details.
+
+## Step 1: Set up the project
+
+Clone the companion repository, [deepgram-devs/twilio-voice-agent](https://github.com/deepgram-devs/twilio-voice-agent), which holds the complete `app.py`, `requirements.txt`, and `.env.example` referenced throughout this guide.
+
+```bash
+git clone https://github.com/deepgram-devs/twilio-voice-agent.git
+cd twilio-voice-agent
+```
+
+With the code in place, install the dependencies and set up configuration. The dependency list is short, because Deepgram does the heavy lifting.
+
+```bash
+pip install -r requirements.txt        # fastapi, uvicorn, deepgram-sdk, python-dotenv
+cp .env.example .env                   # then fill in your Deepgram key + public host
+```
+
+The `.env` file holds just two values your application reads on startup.
+
+```bash
+DEEPGRAM_API_KEY=...
+PUBLIC_HOSTNAME=your-host.ngrok-free.app   # the public host Twilio reaches, no scheme
+```
+
+Speech-to-text, the language model, and text-to-speech all run inside the Voice Agent, which your application reaches through the official Deepgram Python SDK (`deepgram-sdk`).
+
+**Verify:** running `python -c "import app"` with the two environment variables set imports cleanly.
+
+## Step 2: Serve TwiML to open a bidirectional media stream
+
+When a call connects, Twilio asks your webhook what to do. You answer with TwiML, Twilio's XML instruction set. The critical instruction is `<Connect><Stream>`, which opens a *bidirectional* WebSocket: you receive the caller's audio and send the agent's audio back over the same socket.
+
+```python
+@app.post("/twiml")
+async def twiml(request: Request) -> Response:
+    xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Say language="en">"This call may be monitored or recorded."</Say>
-    <Connect>
-        <Stream url="wss://a127-75-172-116-97.ngrok-free.app/twilio" />
-    </Connect>
+  <Connect>
+    <Stream url="wss://{PUBLIC_HOSTNAME}/media" />
+  </Connect>
+</Response>"""
+    return Response(content=xml, media_type="application/xml")
+```
+
+The bidirectional stream makes barge-in possible. Its one-way sibling, `<Start><Stream>`, cannot carry the agent's voice and therefore cannot support interruption. With a two-way channel open, the next step bridges it to Deepgram.
+
+**Verify:** `curl -X POST https://YOUR_HOST/twiml` returns the XML above with your `wss://` URL.
+
+### Alternative: serve the TwiML from a TwiML Bin
+
+If you would rather not host the webhook, paste the same XML into a [TwiML Bin](https://www.twilio.com/docs/serverless/twiml-bins) in the Twilio Console and point your phone number at the bin instead of at `/twiml`. Your application then serves only the `/media` WebSocket.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Say language="en">This call may be monitored or recorded.</Say>
+  <Connect>
+    <Stream url="wss://your-host.ngrok-free.app/media" />
+  </Connect>
 </Response>
 ```
 
-* You should replace the url with wherever you decide to deploy the server we are about to create and ensure`/twilio` is at the end of the url.
-* In the `TwiML Bin` example above, ngrok is used to expose the server running locally.
-* Be sure to use the ngrok URL provided as your WSS endpoint: In your `Twilio Bin` configuration you will need to replace `http://` with `wss://`.
+Write the `wss://` scheme, not `https://`, and keep the `/media` path. A bin holds a static URL, so update it whenever your tunnel hostname changes — the webhook in Step 7 reads `PUBLIC_HOSTNAME` from `.env` and needs no console edit.
 
-### Using ngrok
+## Step 3: Bridge the Twilio media stream to the Voice Agent
 
-ngrok is recommended for quick development and testing but shouldn't be used for production instances. To use ngrok see their [documentation](https://ngrok.com/docs/getting-started/).
+The `/media` WebSocket carries the whole call. Open one Deepgram Voice Agent connection for the call, start a task that relays the agent's output back to Twilio, then forward Twilio's events into the agent.
 
-Be sure to set the port correctly to `5000` to align with the server code provided by running this command when you start the ngrok server.
+```python
+@app.websocket("/media")
+async def media(twilio_ws: WebSocket) -> None:
+    await twilio_ws.accept()
+    stream_sid_box: dict = {}
 
-```
-ngrok http 5000
-```
-
-If you restart your ngrok server, your URL will change, which will require you to update your `TwiML Bin`.
-
-### Connecting a Twilio phone number
-
-Your `TwiML Bin` must then be connected to one of your Twilio phone numbers so that it gets executed whenever someone calls that number. If you need to set up a new phone number and connect it to your `TwiML Bin`, refer to the [Twilio Docs](https://www.twilio.com/docs/serverless/twiml-bins/getting-started#wire-your-twiml-bin-up-to-an-incoming-phone-call).
-
-In your `TwiML Bin` The `<Connect>` verb is required for bi-directional communication, i.e. in order to send audio from the Deepgram Agent to Twilio, you must use this verb.
-
-## Building the Server
-
-Copy the server code from the [repository](https://github.com/deepgram-devs/sts-twilio/blob/main/server.py) as we will use this in the steps below and save this code locally as with a file name of `server.py`.
-
-At this point you'll want to start up a virtual environment for Python. Please refer to documentation for how to do that based on your personal Python preferences.
-
-Depending on your situation you may also need to install specific packages used in this code. You can install the packages you need manually or use the `requirements.txt` file.
-
-```python Python
-pip install -r requirements.txt
+    async with dg_client.agent.v1.connect() as agent:
+        relay_task = asyncio.create_task(agent_to_twilio(twilio_ws, agent, stream_sid_box))
+        async for raw in twilio_ws.iter_text():
+            msg = json.loads(raw)
+            event = msg.get("event")
+            if event == "start":
+                stream_sid_box["sid"] = msg["start"]["streamSid"]
+                await agent.send_settings(AGENT_SETTINGS)        # configure + start the conversation
+            elif event == "media":
+                await agent.send_media(base64.b64decode(msg["media"]["payload"]))
+            elif event == "stop":
+                break
+        relay_task.cancel()
 ```
 
-You can set your Deepgram API key for the `sts_connect` function to run the server by running the following command in your terminal:
+On `start`, capture `streamSid` (every message you send back to Twilio must reference it) and send the agent its settings, which kicks off the conversation. On `media`, decode the caller's audio and forward the raw mulaw bytes straight into the agent with `send_media`. The agent now needs to know how to behave, and the settings define exactly that.
 
-```bash Bash
-export DEEPGRAM_API_KEY="your_deepgram_api_key"
+For EU data processing, connect to `api.eu.deepgram.com` instead of the default host. See [Regional Endpoints](/reference/regional-endpoints) for details.
+
+## Step 4: Configure the agent
+
+A single `Settings` message tells the Voice Agent everything: the audio format, which models to use for listening and speaking, the language model and its instructions, and a greeting. Requesting mulaw at 8 kHz for both input and output means the audio matches Twilio exactly, with no resampling anywhere.
+
+```python
+AGENT_SETTINGS = AgentV1Settings.model_validate({
+    "type": "Settings",
+    "audio": {
+        "input":  {"encoding": "mulaw", "sample_rate": 8000},
+        "output": {"encoding": "mulaw", "sample_rate": 8000, "container": "none"},
+    },
+    "agent": {
+        "language": "en",
+        "listen": {"provider": {"type": "deepgram", "version": "v2", "model": "flux-general-en"}},
+        "think":  {"provider": {"type": "open_ai", "model": "gpt-4o-mini"}, "prompt": PROMPT},
+        "speak":  {"provider": {"type": "deepgram", "version": "v2", "model": "flux-alexis-en"}},
+        "greeting": "Hi! Thanks for calling. How can I help you today?",
+    },
+})
 ```
 
-If your `TwiML Bin` is setup correctly, you can now navigate to the correct file location in your terminal and run the server with the following command:
+The `listen` provider is [**Flux**](/docs/flux/feature-overview), Deepgram's speech-to-text model built for conversational audio. Flux runs on the `/v2/listen` endpoint, so the provider pins `"version": "v2"`; drop that field and the agent falls back to the v1 (Nova) endpoint, where `flux-general-en` is not a valid model. Flux adds model-integrated end-of-turn detection tuned for voice agents, with Nova-3-level accuracy. Twilio's mulaw 8 kHz audio needs no change — the agent resamples it for Flux internally.
 
-```shell Shell
-python server.py
+The `speak` provider is **Flux TTS**, Deepgram's streaming text-to-speech model, so both ends of the pipeline are Flux. Flux voices are named `flux-{voice}-en` and run on the `/v2/speak` endpoint, so this provider pins `"version": "v2"` as well; drop it and the agent falls back to v1 (Aura), where `flux-alexis-en` is not a valid voice.
+
+The `think` provider is OpenAI's `gpt-4o-mini`, and a focused `prompt` keeps replies short and speakable: one or two sentences, no markdown — exactly what a phone call needs. Note the missing API key in the `think` block — Deepgram manages the LLM connection on your behalf. Once you send these settings, the agent's replies start flowing back as audio.
+
+For the full list of encodings, sample rates, and containers the agent accepts, see [Voice Agent media inputs and outputs](/docs/voice-agent-media-inputs-outputs), and [Settings](/docs/voice-agent-settings) for every configurable field.
+
+### Choosing the language model
+
+The `think` provider accepts multiple LLM providers, so you can swap the agent's model without touching the rest of the pipeline — speech-to-text, text-to-speech, and turn-taking all keep working unchanged. Deepgram manages the connection to whichever provider you select and bills it through your Deepgram account, so you don't add a separate provider key to the settings.
+
+| Provider            | `provider.type` | Example `model`   |
+| ------------------- | --------------- | ----------------- |
+| OpenAI (used above) | `open_ai`       | `gpt-4o-mini`     |
+| Anthropic           | `anthropic`     | `claude-sonnet-5` |
+
+Switching providers is a two-field change inside `think.provider`. To run Anthropic's Claude Sonnet 5 instead of OpenAI:
+
+```python
+"think": {"provider": {"type": "anthropic", "model": "claude-sonnet-5"}, "prompt": PROMPT},
 ```
 
-OR
+An optional `temperature` on the provider tunes how deterministic the replies are. See [Voice Agent LLM models](/docs/voice-agent-llm-models) for the full list of supported providers and models.
 
-```shell Shell
-python3 server.py
+**Verify:** on a connected call, the agent speaks the greeting, and `ConversationText` events print to the console.
+
+## Step 5: Relay the agent's audio back to Twilio
+
+The Voice Agent streams its responses back in two forms over the one connection: output audio arrives as raw `bytes`, and everything else (transcripts, status, interruption signals) arrives as typed event objects. A single receive loop handles both.
+
+```python
+async def agent_to_twilio(twilio_ws, agent, stream_sid_box):
+    while True:
+        message = await agent.recv()
+        sid = stream_sid_box.get("sid")
+
+        if isinstance(message, bytes):                       # agent output audio
+            await twilio_ws.send_text(json.dumps({
+                "event": "media", "streamSid": sid,
+                "media": {"payload": base64.b64encode(message).decode()},
+            }))
+        elif isinstance(message, AgentV1UserStartedSpeaking): # barge-in (Step 6)
+            ...
+        elif isinstance(message, AgentV1ConversationText):
+            print(f"[{message.role}] {message.content}")
 ```
 
-## Make a test call
+Because the audio is already mulaw 8 kHz, each chunk drops straight into a Twilio `media` frame with no conversion. Driving the loop with `agent.recv()` keeps the audio and the control events in order on a single task, which matters for the interruption handling that comes next.
 
-You can now start making calls to the phone number your `TwiML Bin` is using. Without any further code modifications, you should hear the agent's Flux TTS voice say simply: "Hello, how are you today?"
+## Step 6: Handle barge-in
 
-## Code Tour
+Barge-in turns a scripted bot into a conversational agent, and the Voice Agent does the hard part for you. When the caller starts talking over the agent, Deepgram detects it, stops the agent's turn, and sends a `UserStartedSpeaking` event. Your one responsibility is to flush the audio Twilio still has buffered.
 
-Let's dive into the code used in the [server.py](https://github.com/deepgram-devs/sts-twilio/blob/main/server.py) file.
-
-First, we have some `import` statements:
-
-```python Python
-import asyncio
-import base64
-import json
-import sys
-import websockets
-import ssl
+```python
+elif isinstance(message, AgentV1UserStartedSpeaking):
+    await twilio_ws.send_text(json.dumps({"event": "clear", "streamSid": sid}))
 ```
 
-* We are using `asyncio` and `websockets` to build an asynchronous websocket server.
-* We will use `base64` to handle encoding the agent's TTS audio to pass data to Twilio.
-* We will use `json` to deal with parsing text messages from Twilio .
-* We will use `sys` to provides access to some variables and functions used or maintained by the Python interpreter.
-* We will use `ssl`(optional) to create secure encrypted connections between client and server.
+The `clear` message discards whatever Twilio has queued but not yet played, so the agent falls silent the instant the caller speaks. Deepgram has already stopped generating on its side; the `clear` closes the gap on Twilio's side. That single relayed signal is the whole of barge-in here — far less work than wiring it by hand. That leaves one thing to do: place a real call.
 
----
+## Step 7: Run and test the agent
 
-The next block of code `sts_connect`defines a function that establishes a WebSocket connection to Deepgram's agent service.
+Start the application and open a tunnel so Twilio can reach it.
 
-For EU data processing, replace `agent.deepgram.com` with `api.eu.deepgram.com`. See [Regional Endpoints](/reference/regional-endpoints) for details.
-
-```python Python
-def sts_connect():
-  # you can run export DEEPGRAM_API_KEY="your key" in your terminal to set your API key.
-  api_key = os.getenv('DEEPGRAM_API_KEY')
-  if not api_key:
-      raise ValueError("DEEPGRAM_API_KEY environment variable is not set")
-
-  sts_ws = websockets.connect(
-      "wss://agent.deepgram.com/v1/agent/converse",
-      subprotocols=["token", api_key]
-  )
-  return sts_ws
+```bash
+python app.py                   # or: uvicorn app:app --port 5050 --reload
+ngrok http 127.0.0.1:5050       # in another terminal; copy the forwarding host into .env PUBLIC_HOSTNAME
 ```
 
-Let's break it down:
+Use port 5050 (not 5000) to avoid the macOS AirPlay Receiver, which squats on port 5000 and returns 403. Use the `127.0.0.1:` form so ngrok forwards over IPv4 to uvicorn (plain `localhost` can resolve to IPv6 and miss the server).
 
-**Connection Setup:**
+Next, connect the phone number to your webhook. In the [Twilio Console](https://console.twilio.com), open **Phone Numbers → Manage → Active numbers → \[your number] → Voice Configuration**, set **A call comes in** to a **Webhook** pointing at `https://YOUR_HOST/twiml` with method **HTTP POST**, and save.
 
-* Creates a secure WebSocket connection to `wss://agent.deepgram.com/v1/agent/converse`
-* Includes authentication via subprotocols
+Now place the call and confirm the agent end to end.
 
-**Authentication Method:**
+1. Call the number and listen for the greeting.
+2. Ask a question and confirm you hear a spoken reply.
+3. Talk over the agent mid-sentence and confirm the audio cuts off, then responds to your new turn.
+4. Watch the console for `[call] started` and the `[assistant]` / `[user]` conversation lines.
 
-* Uses Deepgram's token-based authentication
-* Requires replacing "YOUR\_DEEPGRAM\_API\_KEY" with an actual Deepgram API key
+A successful interruption test confirms the bridge and the Voice Agent are working together.
 
----
+## Go further with Deepgram
 
-The next block of code, `twilio_handler` does several things:
+Once the core agent runs, several enhancements build on the Voice Agent API.
 
-In this first code block, we set up an asynchronous function to handle WebSocket messages from Twilio. We define additional asynchronous functions to manage messages received from Twilio, messages sent to Deepgram, and responses from Deepgram. To facilitate data sharing between tasks, we use two queues: one for audio from Twilio and another for Twilio's stream SID (*a unique identifier*).
+* **Give the agent tools.** Define functions in the settings and handle `FunctionCallRequest` events to let the agent look things up or take actions mid-conversation.
+* **Choose a different voice or model.** Swap the `speak` model for another [Flux voice](/docs/flux-tts/voices), or change the `think` provider and model, for example to Anthropic's `claude-sonnet-5`. See [Choosing the language model](#choosing-the-language-model) in Step 4.
+* **Inject messages mid-call.** Use the agent's inject and update messages to steer the conversation or update the prompt while the call is live.
+* **Reserve a static ngrok domain** so your `PUBLIC_HOSTNAME` and Twilio webhook stay constant across restarts.
+* **Bridge without the SDK.** If you cannot add the Deepgram SDK, [deepgram-devs/sts-twilio](https://github.com/deepgram-devs/sts-twilio) implements the same bridge against the raw `websockets` library, connecting directly to `wss://agent.deepgram.com/v1/agent/converse`.
 
-```python Python
-async def twilio_handler(twilio_ws):
-    audio_queue = asyncio.Queue()
-    streamsid_queue = asyncio.Queue()
-```
+## Resources
 
-Also included in `twilio_handler` is the [Setting Configuration](/docs/voice-agent-settings) for our Agent. The most important thing to note here is the audio format we are using `8000 Hz`, raw, un-containerized `mulaw`. This is the format Twilio will be sending, and the format we will need to send back to Twilio including some base64 encoding/decoding.
-
-To learn more about supported media inputs and outputs for the Voice Agent [review the documentation.](/docs/voice-agent-media-inputs-outputs)
-
-```python Python
- async with sts_connect() as sts_ws:
-      config_message = {
-          "type": "Settings",
-          "audio": {
-              "input": {
-                  "encoding": "mulaw",
-                  "sample_rate": 8000,
-              },
-              "output": {
-                  "encoding": "mulaw",
-                  "sample_rate": 8000,
-                  "container": "none",
-              },
-          },
-          "agent": {
-              "language": "en",
-              "listen": {
-                  "provider": {
-                      "type": "deepgram",
-                      "model": "nova-3",
-                      "keyterms": ["hello", "goodbye"]
-                  }
-              },
-              "think": {
-                  "provider": {
-                      "type": "open_ai",
-                      "model": "gpt-4o-mini",
-                      "temperature": 0.7
-                  },
-                  "prompt": "You are a helpful AI assistant focused on customer service."
-              },
-              "speak": {
-                  "provider": {
-                      "type": "deepgram",
-                      "version": "v2",
-                      "model": "flux-kit-en"
-                  }
-              },
-              "greeting": "Hello! How can I help you today?"
-          }
-      }
-```
-
-The next block of code is `sts_sender`. This function waits for audio from Twilio (*via the audio queue)* and continuously reads audio chunks from the queue forwarding the chunks to the Deepgram Voice Agent API.
-
-```python Python
-async def sts_sender(sts_ws):
-            print("sts_sender started")
-            while True:
-                chunk = await audio_queue.get()
-                await sts_ws.send(chunk)
-```
-
-Next is `sts_receiver` which waits until it has received a stream SID from Twilio, and then loops over messages received from the Deepgram Voice Agent API. If we receive a text message, we check to ensure that the user has started speaking. If they have, we treat this as barge-in and have Twilio clear the agent audio on the call using the stream SID.
-
-Other audio messages should be binary messages containing the text-to-speech (TTS) output of the Deepgram Voice Agen API. We pack all of this up into valid Twilio messages *(using the stream SID again),* and send them to Twilio to be played back on the phone for the caller to here.
-
-For more information about streaming audio to Twilio, see the following [Documentation.](https://www.twilio.com/docs/voice/twiml/stream#websocket-messages---to-twilio)
-
-```python Python
-async def sts_receiver(sts_ws):
-            print("sts_receiver started")
-            # we will wait until the twilio ws connection figures out the streamsid
-            streamsid = await streamsid_queue.get()
-            # for each sts result received, forward it on to the call
-            async for message in sts_ws:
-                if type(message) is str:
-                    print(message)
-                    # handle barge-in
-                    decoded = json.loads(message)
-                    if decoded['type'] == 'UserStartedSpeaking':
-                        clear_message = {
-                            "event": "clear",
-                            "streamSid": streamsid
-                        }
-                        await twilio_ws.send(json.dumps(clear_message))
-
-                    continue
-
-                print(type(message))
-                raw_mulaw = message
-
-                # construct a Twilio media message with the raw mulaw (see https://www.twilio.com/docs/voice/twiml/stream#websocket-messages---to-twilio)
-                media_message = {
-                    "event": "media",
-                    "streamSid": streamsid,
-                    "media": {"payload": base64.b64encode(raw_mulaw).decode("ascii")},
-                }
-
-                # send the TTS audio to the attached phonecall
-                await twilio_ws.send(json.dumps(media_message))
-```
-
-The next block of code is `twilio_reciever`and loops over messages Twilio is sending our server. If we receive a "start" message, we can extract the stream SID, and send it to our other async task which needs it. If we receive a "media" message, we decode the audio from it, append it to a running buffer, and send it to the async task which forwards it to Deepgram when it's of a reasonable size.
-
-Be aware there can be throughput issues when sending lots of tiny chunks, so that's why we are doing this buffering approach.
-
-```python Python
-  async def twilio_receiver(twilio_ws):
-            print("twilio_receiver started")
-            # twilio sends audio data as 160 byte messages containing 20ms of audio each
-            # we will buffer 20 twilio messages corresponding to 0.4 seconds of audio to improve throughput performance
-            BUFFER_SIZE = 20 * 160
-
-            inbuffer = bytearray(b"")
-            async for message in twilio_ws:
-                try:
-                    data = json.loads(message)
-                    if data["event"] == "start":
-                        print("got our streamsid")
-                        start = data["start"]
-                        streamsid = start["streamSid"]
-                        streamsid_queue.put_nowait(streamsid)
-                    if data["event"] == "connected":
-                        continue
-                    if data["event"] == "media":
-                        media = data["media"]
-                        chunk = base64.b64decode(media["payload"])
-                        if media["track"] == "inbound":
-                            inbuffer.extend(chunk)
-                    if data["event"] == "stop":
-                        break
-
-                    # check if our buffer is ready to send to our audio_queue (and, thus, then to sts)
-                    while len(inbuffer) >= BUFFER_SIZE:
-                        chunk = inbuffer[:BUFFER_SIZE]
-                        audio_queue.put_nowait(chunk)
-                        inbuffer = inbuffer[BUFFER_SIZE:]
-                except:
-                    break
-```
-
-The next block of code runs the asynchronous tasks defined in `twilio_reciever`.
-
-```
-await asyncio.wait(
-            [
-                asyncio.ensure_future(sts_sender(sts_ws)),
-                asyncio.ensure_future(sts_receiver(sts_ws)),
-                asyncio.ensure_future(twilio_receiver(twilio_ws)),
-            ]
-        )
-
-        await twilio_ws.close()
-```
-
-Finally the last block of code sets up and runs the server, making sure all incoming websocket connections get handled by `twilio_handler`.
-
-```python Python
-async def router(websocket, path):
-    print(f"Incoming connection on path: {path}")
-    if path == "/twilio":
-        print("Starting Twilio handler")
-        await twilio_handler(websocket)
-
-def main():
-    # use this if using ssl
-    # ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-    # ssl_context.load_cert_chain('cert.pem', 'key.pem')
-    # server = websockets.serve(router, '0.0.0.0', 443, ssl=ssl_context)
-
-    # use this if not using ssl
-    server = websockets.serve(router, "localhost", 5000)
-    print("Server starting on ws://localhost:5000")
-
-    asyncio.get_event_loop().run_until_complete(server)
-    asyncio.get_event_loop().run_forever()
-
-if __name__ == "__main__":
-    sys.exit(main() or 0)
-```
-
----
+* [Deepgram Voice Agent API](/docs/voice-agent)
+* [Voice Agent API reference](/reference/voice-agent/voice-agent)
+* [Deepgram Flux (conversational STT)](/docs/flux/feature-overview)
+* [Voice Agent STT models](/docs/voice-agent-stt-models)
+* [Voice Agent LLM models](/docs/voice-agent-llm-models)
+* [Flux TTS voices](/docs/flux-tts/voices)
+* [Twilio and Deepgram STT](/docs/twilio-and-deepgram-stt) — the listening half on its own
+* [Twilio Media Streams](https://www.twilio.com/docs/voice/media-streams)
+* [Twilio `<Connect><Stream>` TwiML](https://www.twilio.com/docs/voice/twiml/stream)

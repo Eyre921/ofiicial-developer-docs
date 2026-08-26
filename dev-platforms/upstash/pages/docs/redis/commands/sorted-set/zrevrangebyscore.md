@@ -4,8 +4,10 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zrevrangebyscore
 path: docs/redis/commands/sorted-set/zrevrangebyscore
 ---
 
+> List members in a score range, highest score first.
+
 <Warning>
-  Prefer [`ZRANGE`](/docs/redis/commands/sorted-set/zrange) with `BYSCORE` and `REV` in new code: `ZRANGE <key> <max> <min> BYSCORE REV [LIMIT <offset> <count>] [WITHSCORES]`.
+  Prefer [`ZRANGE`](/redis/commands/sorted-set/zrange) with `BYSCORE` and `REV` in new code: `ZRANGE <key> <max> <min> BYSCORE REV [LIMIT <offset> <count>] [WITHSCORES]`. 
 </Warning>
 
 Use `ZREVRANGEBYSCORE` to list the members in a score range, ordered from the highest score down.
@@ -30,7 +32,7 @@ ZREVRANGEBYSCORE <key> <max> <min> [WITHSCORES] [LIMIT <offset> <count>]
 
 ## Important points
 
-* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

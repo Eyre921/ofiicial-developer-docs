@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/pub-sub/overview
 path: docs/redis/commands/pub-sub/overview
 ---
 
+> Commands for publishing messages and managing channel subscriptions.
+
 <CardGroup cols={2}>
 <Card title="PSUBSCRIBE" href="/redis/commands/pub-sub/psubscribe">Subscribe to pattern channels</Card>
 <Card title="PUBLISH" href="/redis/commands/pub-sub/publish">Publish message to channel</Card>

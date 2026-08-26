@@ -4,8 +4,8 @@ source: https://upstash.com/docs/qstash/howto/local-tunnel
 path: docs/qstash/howto/local-tunnel
 ---
 
-QStash requires a publicly available API to send messages to.
-The recommended approach is to run a [development server](/docs/qstash/howto/local-development) locally and use it for development purposes.
+QStash requires a publicly available API to send messages to. 
+The recommended approach is to run a [development server](/qstash/howto/local-development) locally and use it for development purposes. 
 
 Alternatively, you can set up a local tunnel to expose your API, enabling QStash to send requests directly to your application during development.
 
@@ -21,10 +21,10 @@ npx localtunnel --port 3000
 ```
 replacing `3000` with the port your application is running on.
 
-This will give you a public URL like `https://good-months-leave.loca.lt` which can be used
+This will give you a public URL like `https://good-months-leave.loca.lt` which can be used 
 as your QStash URL.
 
-If you run into issues, you may need to set the `Upstash-Forward-bypass-tunnel-reminder` header to
+If you run into issues, you may need to set the `Upstash-Forward-bypass-tunnel-reminder` header to 
 any value to bypass the reminder message.
 
 ## ngrok
@@ -50,6 +50,8 @@ Choose the port where your application is running. Here I'm forwarding to port
 
 ```bash
 $ ngrok http 3000
+
+
 
 Session Status                online
 Account                       Andreas Thomas (Plan: Free)

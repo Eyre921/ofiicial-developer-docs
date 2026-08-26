@@ -11,4 +11,4 @@ in the console.
 
 Note: The Developer API is only available to native Upstash accounts. Accounts created via third-party platforms like Vercel or Fly.io are not supported.
 
-See [DevOps](/docs/devops) for details.
+See [DevOps](/devops) for details.

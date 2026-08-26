@@ -4,5 +4,6 @@ source: https://upstash.com/docs/devops/developer-api/account/list_audit_logs
 path: docs/devops/developer-api/account/list_audit_logs
 ---
 
-/devops/developer-api/openapi.yml get /auditlogs
-This endpoint lists all audit logs of user.
+> This endpoint lists all audit logs of user.
+
+`GET /auditlogs`

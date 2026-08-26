@@ -4,13 +4,15 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zrange
 path: docs/redis/commands/sorted-set/zrange
 ---
 
+> Get members by index, score, or lex range.
+
 Use `ZRANGE` to read a range of members from a sorted set.
 
 By default `<start>` and `<stop>` are zero-based indexes into the ordering, inclusive, and may be negative to count from the end, so `0 -1` returns everything and `0 9` the ten lowest scoring members.
 
 The option that follows changes what those two arguments mean. `BYSCORE` reads them as score bounds, inclusive unless prefixed with `(` and accepting `-inf` and `+inf`. `BYLEX` reads them as member bounds written `[member`, `(member`, `-`, or `+`, which is only meaningful when all members share the same score. `REV` reverses the order, and with `BYSCORE` or `BYLEX` it also means the bounds are given from the higher one to the lower one. `LIMIT <offset> <count>` pages through the result and requires `BYSCORE` or `BYLEX`. `WITHSCORES` includes each member's score.
 
-`ZRANGE` covers everything `ZRANGEBYSCORE`, `ZRANGEBYLEX`, `ZREVRANGE`, and their variants do, and it is the command Redis recommends for new code. Use [`ZRANGESTORE`](/docs/redis/commands/sorted-set/zrangestore) to store the result instead of returning it.
+`ZRANGE` covers everything `ZRANGEBYSCORE`, `ZRANGEBYLEX`, `ZREVRANGE`, and their variants do, and it is the command Redis recommends for new code. Use [`ZRANGESTORE`](/redis/commands/sorted-set/zrangestore) to store the result instead of returning it.
 
 ## Syntax
 
@@ -36,8 +38,8 @@ ZRANGE <key> <start> <stop>
 
 ## Important points
 
-* Pair-based results may be flattened into one alternating array in RESP2 while RESP3 preserves nested pairs or a map.
-* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+- Pair-based results may be flattened into one alternating array in RESP2 while RESP3 preserves nested pairs or a map.
+- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

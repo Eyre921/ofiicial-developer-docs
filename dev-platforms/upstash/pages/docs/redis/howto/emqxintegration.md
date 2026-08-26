@@ -22,13 +22,13 @@ and humidity data to EMQX Cloud using MQTT and channel it into Upstash for Redis
 
 3. Click **Create** to have your serverless Redis Database ready.
 
-![upstash]()
+![upstash](https://raw.githubusercontent.com/emqx/cloud-docs/master/en_US/rule_engine/_assets/upstash_redis_01.png)
 
 ### Database Details
 
 Access the database console for the necessary information for further steps.
 
-![upstash]()
+![upstash](https://raw.githubusercontent.com/emqx/cloud-docs/master/en_US/rule_engine/_assets/upstash_redis_02.png)
 
 The above steps, conclude the initial setup for Upstash.
 
@@ -40,27 +40,27 @@ The above steps, conclude the initial setup for Upstash.
 
 2. Select **NAT Gateway** at the bottom and click **Subscribe Now**.
 
-![NAT]()
+![NAT](https://raw.githubusercontent.com/emqx/cloud-docs/master/en_US/rule_engine/_assets/public_nat.png)
 
 ### Configuring Data Integration
 
 1. In the EMQX Cloud console, choose **Data Integrations** and select **Upstash for Redis**.
 
-   ![create resource]()
+   ![create resource](https://raw.githubusercontent.com/emqx/cloud-docs/master/en_US/rule_engine/_assets/upstash_redis_03.png)
 
 2. Input **Endpoints** info from the Redis detail page into the **Redis Server** field, including the port. Enter the
    password in **Password** and click **Test** to ensure connectivity.
-   ![create resource]()
+   ![create resource](https://raw.githubusercontent.com/emqx/cloud-docs/master/en_US/rule_engine/_assets/upstash_redis_04.png)
 
 3. Click **New** to add a Redis resource. A new Upstash for Redis will appear under **Configured Resources**.
 
 4. Formulate a new SQL rule in the **SQL** field. This rule will read from `temp_hum/emqx` and append client_id, topic,
    timestamp.
 
-    * `up_timestamp`: Message report time
-    * `client_id`: Publishing client's ID
-    * `temp`: Temperature data
-    * `Hum`: Humidity data
+    - `up_timestamp`: Message report time
+    - `client_id`: Publishing client's ID
+    - `temp`: Temperature data
+    - `Hum`: Humidity data
 
 ```sql
 SELECT
@@ -72,11 +72,11 @@ FROM
 "temp_hum/emqx"
 ```
 
-![rule sql]()
+![rule sql](https://raw.githubusercontent.com/emqx/cloud-docs/master/en_US/rule_engine/_assets/kafka_create_sql.png)
 
 5. Execute an SQL test with payload, topic, client info. Successful results confirm the rule's effectiveness.
 
-   ![rule sql]()
+   ![rule sql](https://raw.githubusercontent.com/emqx/cloud-docs/master/en_US/rule_engine/_assets/kafka_create_sql_test.png)
 
 6. Proceed to **Next** to link an action. The rule will store the timestamp, client ID, temperature, and humidity in
    Redis. Click **Confirm**.
@@ -85,7 +85,7 @@ FROM
    HMSET ${client_id} ${up_timestamp} ${temp}
    ```
 
-   ![rule sql]()
+   ![rule sql](https://raw.githubusercontent.com/emqx/cloud-docs/master/en_US/rule_engine/_assets/upstash_redis_05.png)
 
 7. Post-binding, click **View Details** for the rule SQL and bound actions.
 
@@ -96,8 +96,8 @@ FROM
 
 1. Simulate temperature and humidity data with [MQTTX](https://mqttx.app/). Add connection address and client
    authentication for the EMQX Dashboard.
-   ![MQTTX]()
+   ![MQTTX](https://raw.githubusercontent.com/emqx/cloud-docs/master/en_US/rule_engine/_assets/upstash_kafka_06.png)
 
 2. In Upstash Console, under Data Browser, select a client entry to review messages.
 
-   ![monitor]()
+   ![monitor](https://raw.githubusercontent.com/emqx/cloud-docs/master/en_US/rule_engine/_assets/upstash_redis_07.png)

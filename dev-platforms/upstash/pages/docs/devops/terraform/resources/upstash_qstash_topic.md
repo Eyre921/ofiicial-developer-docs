@@ -4,6 +4,8 @@ source: https://upstash.com/docs/devops/terraform/resources/upstash_qstash_topic
 path: docs/devops/terraform/resources/upstash_qstash_topic
 ---
 
+> Create and manage QStash topics
+
 <RequestExample>
 
 ```hcl example.tf

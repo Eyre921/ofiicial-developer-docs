@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/server/acl-save
 path: docs/redis/commands/server/acl-save
 ---
 
+> Push ACL definitions to replica nodes.
+
 Use `ACL SAVE` to make sure this node's ACL users and rules have been propagated to its replicas.
 
-Standard Redis writes `ACL SAVE` to an `aclfile` on disk. This deployment has no such file: instead, `ACL SAVE` pushes the current primary's in-memory ACL definitions out to its replicas. Changes made with [`ACL SETUSER`](/docs/redis/commands/server/acl-setuser) and [`ACL DELUSER`](/docs/redis/commands/server/acl-deluser) are already propagated automatically, so `SAVE` is rarely needed in normal operation.
+Standard Redis writes `ACL SAVE` to an `aclfile` on disk. This deployment has no such file: instead, `ACL SAVE` pushes the current primary's in-memory ACL definitions out to its replicas. Changes made with [`ACL SETUSER`](/redis/commands/server/acl-setuser) and [`ACL DELUSER`](/redis/commands/server/acl-deluser) are already propagated automatically, so `SAVE` is rarely needed in normal operation.
 
 ## Syntax
 
@@ -20,7 +22,7 @@ This command takes no arguments.
 
 ## Important points
 
-* There is no ACL file to save to; this pushes the primary's ACL state to its replicas instead.
+- There is no ACL file to save to; this pushes the primary's ACL state to its replicas instead.
 
 ## Response
 

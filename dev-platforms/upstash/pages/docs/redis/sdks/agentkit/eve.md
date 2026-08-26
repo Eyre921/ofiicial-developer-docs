@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/sdks/agentkit/eve
 path: docs/redis/sdks/agentkit/eve
 ---
 
+> Add long-term memory, searchable chat history, RAG, rate limiting, tool caching, and sandboxes to Vercel's Eve agent framework with Upstash Redis — no separate vector database.
+
 [Upstash AgentKit](https://github.com/upstash/agentkit) builds AI agents on Upstash Redis: memory,
 conversation history, caching, and RAG, with no separate vector database. The semantic features run on
-[Upstash Redis Search](/docs/redis/search/introduction) and its `$smart` fuzzy operator.
+[Upstash Redis Search](/redis/search/introduction) and its `$smart` fuzzy operator.
 
 Two packages bring AgentKit to **Eve, the Vercel agent framework**. They work together in one agent:
 
@@ -76,10 +78,10 @@ export default agentkit({
 ```
 
 <Accordion title="Tools, options, and the userId tenant boundary">
-  * `agentkit__recall_memory` — searches the user's memories; called with no `query` it returns all of them.
-  * `agentkit__save_memory` — stores one durable fact about the user.
-  * `memory.topK` — max memories a recall returns.
-  * `memory.minScore` — relevance floor. Scores are unbounded BM25 values, not `[0,1]`.
+  - `agentkit__recall_memory` — searches the user's memories; called with no `query` it returns all of them.
+  - `agentkit__save_memory` — stores one durable fact about the user.
+  - `memory.topK` — max memories a recall returns.
+  - `memory.minScore` — relevance floor. Scores are unbounded BM25 values, not `[0,1]`.
 
   `userId` is the only tenant boundary. It defaults to Eve's verified session auth
   (`auth.current?.principalId`, then `auth.initiator?.principalId`, then the session id), so
@@ -109,10 +111,10 @@ import agentkit from "@upstash/agentkit-eve-extension";
 export default agentkit({ chatHistory: true });
 ```
 
-* `agentkit__search_chat_history` runs a `$smart` (typo-tolerant) search over what was said and returns
+- `agentkit__search_chat_history` runs a `$smart` (typo-tolerant) search over what was said and returns
   the matching chats as summaries: `sessionId`, `title`, `updatedAt`, `messageCount`, `score`. The
   current conversation is excluded, since it's already in context.
-* `agentkit__read_chat_history` reads one of those chats back by `sessionId`, newest messages last.
+- `agentkit__read_chat_history` reads one of those chats back by `sessionId`, newest messages last.
 
 Both tools take `userId` from the session, so the model cannot widen a lookup past the current user's
 own transcripts.
@@ -154,10 +156,10 @@ chat and its index entry.
 <Accordion title="Options and storage">
   Pass an object in place of `true` to tune storage:
 
-  * `chatHistory.prefix` — base key prefix (default `agentkit:chat`).
-  * `chatHistory.indexName` — [Redis Search](/docs/redis/search/introduction) index name (defaults to the
+  - `chatHistory.prefix` — base key prefix (default `agentkit:chat`).
+  - `chatHistory.indexName` — [Redis Search](/redis/search/introduction) index name (defaults to the
     identifier-safe `prefix`).
-  * `chatHistory.ttlSeconds` — per-chat TTL. Omit for no expiry.
+  - `chatHistory.ttlSeconds` — per-chat TTL. Omit for no expiry.
 
   Each session is one JSON document at `agentkit:chat:<userId>:<sessionId>`, holding the raw transcript
   plus `$smart`-indexed user and model text. A search returns summaries, and a read is capped at 50
@@ -171,7 +173,7 @@ chat and its index entry.
 
 ### How to add RAG to Vercel Eve
 
-Point the extension at an [Upstash Redis Search](/docs/redis/search/introduction) index and the model gets
+Point the extension at an [Upstash Redis Search](/redis/search/introduction) index and the model gets
 `search`, `search_aggregate`, and `search_count` tools over it. You build the schema with `s` from
 `@upstash/redis`, so your mount file imports it. Add the package to your app:
 
@@ -193,10 +195,10 @@ export default agentkit({
 ```
 
 <Accordion title="Options and how the tools are described to the model">
-  * **`search.schema`** _(required)_ — built with `s` from `@upstash/redis`.
-  * `search.indexName` — defaults to `"agentkit:search"`; ties all three tools to one index.
-  * `search.prefix` — key prefix for indexed JSON docs (defaults to `"<indexName>:"`).
-  * `search.defaultLimit` — default page size for `search` (10).
+  - **`search.schema`** _(required)_ — built with `s` from `@upstash/redis`.
+  - `search.indexName` — defaults to `"agentkit:search"`; ties all three tools to one index.
+  - `search.prefix` — key prefix for indexed JSON docs (defaults to `"<indexName>:"`).
+  - `search.defaultLimit` — default page size for `search` (10).
 
   Tool descriptions are generated from your schema (field names, types, and the filter operators that
   apply to each), so the model learns the index without any prompt text from you. You write the
@@ -294,13 +296,13 @@ export default eveChannel({
 
 <AccordionGroup>
   <Accordion title="Options and the required identifier">
-    * **`limiter`** _(required)_ — e.g. `Ratelimit.slidingWindow(20, "1 m")` or `fixedWindow(...)`.
-    * **`identifier`** _(required)_ — a string, or `(request) => string`. There's no implicit `"global"`:
+    - **`limiter`** _(required)_ — e.g. `Ratelimit.slidingWindow(20, "1 m")` or `fixedWindow(...)`.
+    - **`identifier`** _(required)_ — a string, or `(request) => string`. There's no implicit `"global"`:
       one shared bucket lets a single abusive caller exhaust the window for everyone, so derive it per
       request (an auth user id, an API key, or `x-forwarded-for` for per-IP).
-    * `prefix` — base key prefix; keys are `<prefix>:<identifier>` (default `agentkit:rateLimit`).
-    * `message` — 403 body when over the limit.
-    * `redis` — defaults to `Redis.fromEnv()`.
+    - `prefix` — base key prefix; keys are `<prefix>:<identifier>` (default `agentkit:rateLimit`).
+    - `message` — 403 body when over the limit.
+    - `redis` — defaults to `Redis.fromEnv()`.
 
     It's a gate: under the limit it returns `null` to fall through to the next `AuthFn`; over it throws
     a 403.
@@ -425,11 +427,11 @@ export default defineCachedTool({
 ```
 
 <Accordion title="Options">
-  * `description` / `inputSchema` / `execute` — the usual `defineTool` fields; `execute`'s result is memoized.
-  * **`toolName`** _(required)_ — the tool segment of the cache key.
-  * **`userId`** _(required)_ — a string, or `(input, ctx) => string`; scopes the cache per user.
-  * `ttlSeconds` — per-result TTL (default: no expiry).
-  * `redis` — defaults to `Redis.fromEnv()`.
+  - `description` / `inputSchema` / `execute` — the usual `defineTool` fields; `execute`'s result is memoized.
+  - **`toolName`** _(required)_ — the tool segment of the cache key.
+  - **`userId`** _(required)_ — a string, or `(input, ctx) => string`; scopes the cache per user.
+  - `ttlSeconds` — per-result TTL (default: no expiry).
+  - `redis` — defaults to `Redis.fromEnv()`.
 
   Keys are `agentkit:toolCache:<userId>:<toolName>:<hash>`.
 </Accordion>
@@ -460,7 +462,7 @@ export default defineMemorySaveTool({
 ```
 
 RAG is `defineSearchTools`, the counterpart to the
-[AI SDK adapter's](/docs/redis/sdks/agentkit/ai-sdk#how-to-add-rag-with-the-ai-sdk) `createSearchTools`:
+[AI SDK adapter's](/redis/sdks/agentkit/ai-sdk#how-to-add-rag-with-the-ai-sdk) `createSearchTools`:
 
 ```ts
 // agent/tools/search_books.ts
@@ -493,9 +495,9 @@ export default defineSearchTools({
 Eve's runtime snapshots each tool/channel/hook file and resolves only **package** imports from it. It
 does **not** include shared `agent/`-source modules such as an `agent/lib/redis.ts`. So inside `agent/`:
 
-* Import only from packages, never from other `agent/` files.
-* Lean on the defaults. `redis` falls back to `Redis.fromEnv()` in every helper, so you almost never pass it.
-* Repeat config (schema, names) in each file instead of sharing a module.
+- Import only from packages, never from other `agent/` files.
+- Lean on the defaults. `redis` falls back to `Redis.fromEnv()` in every helper, so you almost never pass it.
+- Repeat config (schema, names) in each file instead of sharing a module.
 
 Shared app code, like a seeder a page calls, belongs in your project `lib/` and is imported by the app,
 not by `agent/` files. Extensions are exempt from all of this. The extension package ships as one
@@ -505,10 +507,10 @@ compiled unit, which is why its whole configuration fits in a single mount file.
 
 Two complete `eve` apps live in the AgentKit repo:
 
-* [`examples/eve-extension-demo`](https://github.com/upstash/agentkit/tree/main/examples/eve-extension-demo)
+- [`examples/eve-extension-demo`](https://github.com/upstash/agentkit/tree/main/examples/eve-extension-demo)
   is a minimal agent whose whole configuration is one extension mount, with memory, chat history, and
   book search turned on.
-* [`examples/eve-demo`](https://github.com/upstash/agentkit/tree/main/examples/eve-demo) uses the
+- [`examples/eve-demo`](https://github.com/upstash/agentkit/tree/main/examples/eve-demo) uses the
   file-by-file package (memory, search, cached tools, a rate-limit gate, and an Upstash Box sandbox),
   with a chat UI that renders tool calls inline.
 

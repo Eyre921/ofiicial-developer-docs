@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/sdks/agentkit/ai-sdk
 path: docs/redis/sdks/agentkit/ai-sdk
 ---
 
+> Add long-term memory, RAG, and chat history to the Vercel AI SDK with Upstash Redis — drop-in tools for generateText and streamText, no separate vector database.
+
 [Upstash AgentKit](https://github.com/upstash/agentkit) builds AI agents on Upstash Redis: memory,
 conversation history, caching, and RAG, with no separate vector database. The semantic features run on
-[Upstash Redis Search](/docs/redis/search/introduction) and its `$smart` fuzzy operator.
+[Upstash Redis Search](/redis/search/introduction) and its `$smart` fuzzy operator.
 
 `@upstash/agentkit-ai-sdk` is the [Vercel AI SDK](https://ai-sdk.dev) adapter — drop-ins for
 `generateText` / `streamText`. `redis` defaults to `Redis.fromEnv()`, so you import only from this
@@ -109,11 +111,11 @@ await generateText({ model, tools, stopWhen: stepCountIs(5), prompt: "What do yo
 ```
 
 <Accordion title="Options and the userId tenant boundary">
-  * **`userId`** _(required)_ — a string, or `(input, options) => string`.
-  * `redis` — defaults to `Redis.fromEnv()`.
-  * `topK` — max memories `recall` returns.
-  * `minScore` — BM25 relevance floor.
-  * `recallToolName` / `saveToolName` — override the tool names.
+  - **`userId`** _(required)_ — a string, or `(input, options) => string`.
+  - `redis` — defaults to `Redis.fromEnv()`.
+  - `topK` — max memories `recall` returns.
+  - `minScore` — BM25 relevance floor.
+  - `recallToolName` / `saveToolName` — override the tool names.
 
   `userId` is the only tenant boundary (required, non-empty, no `:`). Derive it from a **verified
   server-side auth source** (Clerk, Auth.js/NextAuth, Supabase Auth, Auth0, …) — never a
@@ -137,18 +139,18 @@ await generateText({ model, tools, stopWhen: stepCountIs(5), prompt: "How many u
 ```
 
 <Accordion title="Options">
-  * **`schema`** _(required)_ — built with `s` from `@upstash/redis`.
-  * `redis` — defaults to `Redis.fromEnv()`.
-  * `indexName` — defaults to `"agentkit:search"`.
-  * `prefix` — key prefix for indexed JSON docs (defaults to `"<indexName>:"`).
-  * `defaultLimit` — default page size for `search` (10).
+  - **`schema`** _(required)_ — built with `s` from `@upstash/redis`.
+  - `redis` — defaults to `Redis.fromEnv()`.
+  - `indexName` — defaults to `"agentkit:search"`.
+  - `prefix` — key prefix for indexed JSON docs (defaults to `"<indexName>:"`).
+  - `defaultLimit` — default page size for `search` (10).
 
   The index is created (and `waitIndexing`-ed) reactively on first use — no setup step.
 </Accordion>
 
 ## How to add rate limiting with the AI SDK
 
-A configured [Upstash Ratelimit](/docs/redis/sdks/ratelimit-ts/overview). Call `.limit(identifier)` before
+A configured [Upstash Ratelimit](/redis/sdks/ratelimit-ts/overview). Call `.limit(identifier)` before
 the model and short-circuit when over the limit.
 
 ```ts
@@ -161,9 +163,9 @@ if (!success) throw new Error("rate limited"); // or return a 429 from your rout
 ```
 
 <Accordion title="Options">
-  * **`limiter`** _(required)_ — e.g. `Ratelimit.slidingWindow(20, "1 m")` or `fixedWindow(...)`.
-  * `redis` — defaults to `Redis.fromEnv()`.
-  * `prefix` — base key prefix; keys are `<prefix>:<identifier>` (default `agentkit:rateLimit`).
+  - **`limiter`** _(required)_ — e.g. `Ratelimit.slidingWindow(20, "1 m")` or `fixedWindow(...)`.
+  - `redis` — defaults to `Redis.fromEnv()`.
+  - `prefix` — base key prefix; keys are `<prefix>:<identifier>` (default `agentkit:rateLimit`).
 
   There's no model wrapper. Pass a per-user `identifier` to `.limit()` to throttle per user.
 </Accordion>
@@ -195,9 +197,9 @@ await generateText({ model, tools, prompt: "What's the weather in Paris?" });
 <Accordion title="Options">
   Pass tools built with the AI SDK's `tool()` (so each keeps full input/output inference). Second arg:
 
-  * **`userId`** _(required)_ — a string, or `(input, options) => string`; scopes every entry to this user.
-  * `redis` — defaults to `Redis.fromEnv()`.
-  * `ttlSeconds` — default per-result TTL for every tool.
+  - **`userId`** _(required)_ — a string, or `(input, options) => string`; scopes every entry to this user.
+  - `redis` — defaults to `Redis.fromEnv()`.
+  - `ttlSeconds` — default per-result TTL for every tool.
 
   Cache keys are `agentkit:toolCache:<userId>:<toolName>:<hash-of-input>` — the `toolName` is the map
   key, so you never pass a name yourself.

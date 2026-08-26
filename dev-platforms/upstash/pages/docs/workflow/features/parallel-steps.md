@@ -30,7 +30,9 @@ The results of the parallel steps are available as usual once awaited.
 
 The dashboard visualizes parallel execution as shown below:
 
-  <img />
+<Frame caption="The workflow executes three steps in parallel">
+  <img src="/img/workflow/parallel_steps.png" />
+</Frame>
 
 You can also await different step types together. For example, you can run a `context.call()` and a `context.run()` in parallel.
 

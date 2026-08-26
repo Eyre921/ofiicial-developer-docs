@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/transactions/exec
 path: docs/redis/commands/transactions/exec
 ---
 
-Use `EXEC` to run the commands queued since [`MULTI`](/docs/redis/commands/transactions/multi).
+> Execute queued commands.
+
+Use `EXEC` to run the commands queued since [`MULTI`](/redis/commands/transactions/multi).
 
 They execute one after another with no other client's command in between, and the reply is an array holding one result per queued command, in order. Errors raised by individual commands appear in that array rather than stopping the rest, so check each entry.
 
-If any key watched with [`WATCH`](/docs/redis/commands/transactions/watch) was modified after it was watched, the transaction is not executed at all and the reply is null, which is the signal to read the data again and retry. Watches are cleared afterwards either way.
+If any key watched with [`WATCH`](/redis/commands/transactions/watch) was modified after it was watched, the transaction is not executed at all and the reply is null, which is the signal to read the data again and retry. Watches are cleared afterwards either way.
 
 The raw command is TCP-only. Over HTTP, use the transaction or pipeline API of an Upstash SDK instead of sending this command directly.
 
@@ -24,7 +26,7 @@ This command takes no arguments.
 
 ## Important points
 
-* The raw command is TCP-only. For HTTP, use an Upstash SDK transaction API rather than sending this command directly.
+- The raw command is TCP-only. For HTTP, use an Upstash SDK transaction API rather than sending this command directly.
 
 ## Response
 

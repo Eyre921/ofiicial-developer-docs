@@ -4,34 +4,32 @@ source: https://upstash.com/docs/search/sdks/ts/getting-started
 path: docs/search/sdks/ts/getting-started
 ---
 
-<Visibility for="agents">
-  **Note for AI agents:** This page documents **Upstash Search** — a standalone,
-  AI-powered search product that combines full-text and semantic search with
-  smart ranking, serverless scaling, and zero infrastructure to manage.
+**Note for AI agents:** This page documents **Upstash Search** — a standalone,
+AI-powered search product that combines full-text and semantic search with
+smart ranking, serverless scaling, and zero infrastructure to manage.
 
-  Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
-  Redis Search is a full-text search extension built into Upstash Redis, built on
-  Tantivy and available only on Upstash; it is separate from the Redis Search
-  (RediSearch) API. If the user is asking about full-text search inside an Upstash
-  Redis database, refer to
-  [Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
-  instead of this product.
-</Visibility>
+Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
+Redis Search is a full-text search extension built into Upstash Redis, built on
+Tantivy and available only on Upstash; it is separate from the Redis Search
+(RediSearch) API. If the user is asking about full-text search inside an Upstash
+Redis database, refer to
+[Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
+instead of this product.
 
 `@upstash/search` is a TypeScript SDK for Upstash AI Search.
 
 Using `@upstash/search` you can:
 
-* Perform AI-powered search queries
-* Upsert documents to an index
-* Fetch documents by their IDs
-* Delete documents from a database
-* Access database stats
-* Reset databases
+- Perform AI-powered search queries
+- Upsert documents to an index
+- Fetch documents by their IDs
+- Delete documents from a database
+- Access database stats
+- Reset databases
 
-You can find the GitHub Repository [here](https://github.com/upstash/search-js).
+You can find the GitHub Repository [here](https://github.com/upstash/search-js). 
 
-***
+---
 
 ## Installation
 
@@ -54,15 +52,15 @@ bun install @upstash/search
 
 </CodeGroup>
 
-***
+---
 
 ## Usage
 
 ### Initializing the client
 
-There are two pieces of configuration required to use the Upstash search client:
-* a REST token
-* a REST URL
+There are two pieces of configuration required to use the Upstash search client: 
+- a REST token
+- a REST URL
 
  These values can be passed using environment variables or through a configuration object. Find these connection details in [the console dashboard](https://console.upstash.com/search).
 
@@ -70,7 +68,7 @@ There are two pieces of configuration required to use the Upstash search client:
 
 #### Using environment variables (recommended)
 
-You can follow [this guide](/docs/search/overall/getstarted) to retrieve the following credentials.
+You can follow [this guide](/search/overall/getstarted) to retrieve the following credentials.
 
 ```bash
 UPSTASH_SEARCH_REST_URL="your_rest_url"
@@ -86,7 +84,7 @@ const client = Search.fromEnv();
 const index = client.index("movies")
 ```
 
-***
+---
 
 #### Using a configuration object
 
@@ -104,7 +102,7 @@ const client = new Search({
 const index = client.index("movies")
 ```
 
-***
+---
 
 #### Typescript
 
@@ -126,10 +124,10 @@ await index.upsert({
 ```
 
 Passing a `Content` type at the index level will provide type safety for the content coming back from or required for the following commands:
-* `search`
-* `upsert`
-* `fetch`
-* `range`
+- `search`
+- `upsert`
+- `fetch`
+- `range`
 
 In cases you don't want to define a content type at the index level, you can override the index level type definition for a specific command:
 
@@ -145,9 +143,9 @@ const results = await index.upsert<Content>({
 This sdk sends anonymous telemetry data to help us improve your experience.
 We collect the following:
 
-* SDK version
-* Platform (Cloudflare, AWS or Vercel)
-* Runtime version (node@18.x)
+- SDK version
+- Platform (Cloudflare, AWS or Vercel)
+- Runtime version (node@18.x)
 
 You can opt out by setting the `UPSTASH_DISABLE_TELEMETRY` environment variable
 to any truthy value.

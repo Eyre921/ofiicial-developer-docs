@@ -6,7 +6,7 @@ path: docs/box/overall/preview
 
 Expose ports from a box with public URLs. Each public URL maps to a specific port and can optionally require authentication.
 
-***
+---
 
 ## Quickstart
 
@@ -100,7 +100,7 @@ print(public_url.password)  # -> "f0f145f0..."
 ```
 </CodeGroup>
 
-***
+---
 
 ## API
 
@@ -198,7 +198,7 @@ print(public_url.password)  # -> "f0f145f0..."
 ```
 </CodeGroup>
 
-***
+---
 
 ### List Public URLs
 
@@ -226,7 +226,7 @@ print(result["public_urls"])
 ```
 </CodeGroup>
 
-***
+---
 
 ### Delete Public URL
 
@@ -242,7 +242,7 @@ box.delete_public_url(3000)
 ```
 </CodeGroup>
 
-***
+---
 
 ## Behavior
 
@@ -275,8 +275,8 @@ public_url2 = box.get_public_url(3000, bearer_token=True)
 ### Public URL Lifecycle
 
 Public URLs expire automatically when:
-* The box is paused
-* The box is deleted
+- The box is paused
+- The box is deleted
 
 ### Auto-Resume
 
@@ -298,7 +298,7 @@ public_url = box.get_public_url(3000)
 ```
 </CodeGroup>
 
-***
+---
 
 ## Examples
 

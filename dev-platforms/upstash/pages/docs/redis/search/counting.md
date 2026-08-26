@@ -4,7 +4,7 @@ source: https://upstash.com/docs/redis/search/counting
 path: docs/redis/search/counting
 ---
 
-The [`SEARCH.COUNT`](/docs/redis/commands/search/search-count) command returns the number of documents matching a query without retrieving them.
+The [`SEARCH.COUNT`](/redis/commands/search/search-count) command returns the number of documents matching a query without retrieving them.
 
 You can use `SEARCH.COUNT` for analytics, pagination UI (showing "X results found"),
 or validating queries before retrieving results.

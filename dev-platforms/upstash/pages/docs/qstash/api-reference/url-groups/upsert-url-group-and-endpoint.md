@@ -4,5 +4,8 @@ source: https://upstash.com/docs/qstash/api-reference/url-groups/upsert-url-grou
 path: docs/qstash/api-reference/url-groups/upsert-url-group-and-endpoint
 ---
 
-/qstash/openapi.yaml post /v2/topics/{urlGroupName}/endpoints
-Add an endpoint to a URL Group
+> Add an endpoint to a URL Group
+
+`POST /v2/topics/{urlGroupName}/endpoints`
+
+Add one or multiple endpoints to a URL Group. If the URL Group does not exist, it will be created.

@@ -4,7 +4,7 @@ source: https://upstash.com/docs/workflow/howto/realtime/human-in-the-loop
 path: docs/workflow/howto/realtime/human-in-the-loop
 ---
 
-Some workflows require human approval or input before proceeding. When combined with [**Upstash Realtime**](/docs/realtime/overall/quickstart), you can create interactive workflows that pause for user input and provide real-time feedback to your frontend during the entire process.
+Some workflows require human approval or input before proceeding. When combined with [**Upstash Realtime**](/realtime/overall/quickstart), you can create interactive workflows that pause for user input and provide real-time feedback to your frontend during the entire process.
 
 This guide shows you how to implement a human-in-the-loop workflow pattern with real-time updates using Upstash Workflow and Upstash Realtime.
 
@@ -13,21 +13,21 @@ This guide shows you how to implement a human-in-the-loop workflow pattern with 
 In a human-in-the-loop workflow:
 
 1. The workflow executes initial steps and emits progress events
-2. The workflow pauses at a specific point using [`context.waitForEvent()`](/docs/workflow/features/wait-for-event)
+2. The workflow pauses at a specific point using [`context.waitForEvent()`](/workflow/features/wait-for-event)
 3. A "waiting for input" event is emitted to notify the frontend
 4. The user makes a decision in the frontend (approve/reject)
-5. The frontend calls an API to notify the workflow using [`client.notify()`](/docs/workflow/basics/client/notify)
+5. The frontend calls an API to notify the workflow using [`client.notify()`](/workflow/basics/client/notify)
 6. The workflow resumes with the user's decision
 7. An "input resolved" event is emitted so the frontend can update its UI
 8. The workflow continues and completes based on the decision
 
 ## Prerequisites
 
-* An Upstash account with:
-  * A QStash project for workflows
-  * A Redis database for Realtime
-* Next.js application set up
-* Completed the [basic real-time workflow setup](./basic)
+- An Upstash account with:
+  - A QStash project for workflows
+  - A Redis database for Realtime
+- Next.js application set up
+- Completed the [basic real-time workflow setup](./basic)
 
 ## Event Types
 
@@ -54,8 +54,8 @@ const schema = {
 
 The new event types are:
 
-* **`waitingForInput`**: Emitted when the workflow pauses and needs user input
-* **`inputResolved`**: Emitted when the user provides input, so the frontend knows to clear the waiting state
+- **`waitingForInput`**: Emitted when the workflow pauses and needs user input
+- **`inputResolved`**: Emitted when the user provides input, so the frontend knows to clear the waiting state
 
 ## Create the Realtime Middleware
 
@@ -105,11 +105,11 @@ export const realtimeMiddleware = new WorkflowMiddleware({
 
 **Key points:**
 
-* The middleware handles all realtime event emissions automatically
-* `beforeExecution`: Detects wait-for-event steps by checking the stepName and emits `workflow.waitingForInput`
-* `afterExecution`: Emits `workflow.inputResolved` for wait steps and `workflow.stepFinish` for all steps
-* `runCompleted`: Emits `workflow.runFinish` when the workflow finishes
-* All emission logic is centralized in the middleware, keeping workflow code clean
+- The middleware handles all realtime event emissions automatically
+- `beforeExecution`: Detects wait-for-event steps by checking the stepName and emits `workflow.waitingForInput`
+- `afterExecution`: Emits `workflow.inputResolved` for wait steps and `workflow.stepFinish` for all steps
+- `runCompleted`: Emits `workflow.runFinish` when the workflow finishes
+- All emission logic is centralized in the middleware, keeping workflow code clean
 
 ## Building the Workflow
 
@@ -234,7 +234,7 @@ await workflowClient.notify({
 });
 ```
 
-Learn more in the [notify documentation](/docs/workflow/basics/client/notify).
+Learn more in the [notify documentation](/workflow/basics/client/notify).
 </Note>
 
 ## Building the Frontend
@@ -355,10 +355,10 @@ export function useWorkflowWithRealtime() {
 
 **Key additions:**
 
-* **`waitingState`**: Tracks when the workflow is waiting for input
-* **`continueWorkflow`**: Function to submit user decisions back to the workflow
-* **Multiple events subscription**: Uses `events` array to subscribe to multiple event types
-* **Input resolved handling**: Clears the waiting state when the workflow receives the user's input
+- **`waitingState`**: Tracks when the workflow is waiting for input
+- **`continueWorkflow`**: Function to submit user decisions back to the workflow
+- **Multiple events subscription**: Uses `events` array to subscribe to multiple event types
+- **Input resolved handling**: Clears the waiting state when the workflow receives the user's input
 
 ### 2. Use the Hook with Approval UI
 
@@ -440,9 +440,9 @@ export default function WorkflowPage() {
 
 ## Benefits
 
-* **Real-time feedback**: Users see exactly when their approval is needed
-* **No polling**: Instant updates via Server-Sent Events
-* **Timeout handling**: Workflows don't hang indefinitely waiting for input
+- **Real-time feedback**: Users see exactly when their approval is needed
+- **No polling**: Instant updates via Server-Sent Events
+- **Timeout handling**: Workflows don't hang indefinitely waiting for input
 
 ## Full Example
 
@@ -450,7 +450,7 @@ For a complete working example with all steps, error handling, and full UI compo
 
 ## Next Steps
 
-* Review the [basic real-time workflow pattern](./basic)
-* Learn about [workflow event handling](/docs/workflow/features/wait-for-event)
-* Explore [Realtime features](/docs/realtime/overall/quickstart)
-* Check out [workflow failure handling](/docs/workflow/features/failure-callback)
+- Review the [basic real-time workflow pattern](./basic)
+- Learn about [workflow event handling](/workflow/features/wait-for-event)
+- Explore [Realtime features](/realtime/overall/quickstart)
+- Check out [workflow failure handling](/workflow/features/failure-callback)

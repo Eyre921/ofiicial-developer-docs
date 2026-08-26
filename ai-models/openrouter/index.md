@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 391 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 404 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -44,6 +44,10 @@
 - `docs/api/api-reference/byok/update-a-byok-provider-credential` — [Update a BYOK provider credential](pages/docs/api/api-reference/byok/update-a-byok-provider-credential.md) · [原文](https://openrouter.ai/docs/api/api-reference/byok/update-a-byok-provider-credential.md)
 - `docs/api/api-reference/chat/create-a-chat-completion` — [Create a chat completion](pages/docs/api/api-reference/chat/create-a-chat-completion.md) · [原文](https://openrouter.ai/docs/api/api-reference/chat/create-a-chat-completion.md)
 - `docs/api/api-reference/classifications/task-classification-market-share` — [Task classification market share](pages/docs/api/api-reference/classifications/task-classification-market-share.md) · [原文](https://openrouter.ai/docs/api/api-reference/classifications/task-classification-market-share.md)
+- `docs/api/api-reference/containers/download-container-file-content` — [Download container file content](pages/docs/api/api-reference/containers/download-container-file-content.md) · [原文](https://openrouter.ai/docs/api/api-reference/containers/download-container-file-content.md)
+- `docs/api/api-reference/containers/list-container-files` — [List container files](pages/docs/api/api-reference/containers/list-container-files.md) · [原文](https://openrouter.ai/docs/api/api-reference/containers/list-container-files.md)
+- `docs/api/api-reference/containers/promote-a-container-file-into-workspace-documents` — [Promote a container file into workspace documents](pages/docs/api/api-reference/containers/promote-a-container-file-into-workspace-documents.md) · [原文](https://openrouter.ai/docs/api/api-reference/containers/promote-a-container-file-into-workspace-documents.md)
+- `docs/api/api-reference/containers/retrieve-a-container-file` — [Retrieve a container file](pages/docs/api/api-reference/containers/retrieve-a-container-file.md) · [原文](https://openrouter.ai/docs/api/api-reference/containers/retrieve-a-container-file.md)
 - `docs/api/api-reference/credits/deprecated-coinbase-commerce-charge-endpoint` — [Deprecated Coinbase Commerce charge endpoint](pages/docs/api/api-reference/credits/deprecated-coinbase-commerce-charge-endpoint.md) · [原文](https://openrouter.ai/docs/api/api-reference/credits/deprecated-coinbase-commerce-charge-endpoint.md)
 - `docs/api/api-reference/credits/get-remaining-credits` — [Get remaining credits](pages/docs/api/api-reference/credits/get-remaining-credits.md) · [原文](https://openrouter.ai/docs/api/api-reference/credits/get-remaining-credits.md)
 - `docs/api/api-reference/datasets/cost-per-session-by-harness-and-model` — [Cost per session by harness and model](pages/docs/api/api-reference/datasets/cost-per-session-by-harness-and-model.md) · [原文](https://openrouter.ai/docs/api/api-reference/datasets/cost-per-session-by-harness-and-model.md)
@@ -53,6 +57,11 @@
 - `docs/api/api-reference/embeddings/submit-an-embedding-request` — [Submit an embedding request](pages/docs/api/api-reference/embeddings/submit-an-embedding-request.md) · [原文](https://openrouter.ai/docs/api/api-reference/embeddings/submit-an-embedding-request.md)
 - `docs/api/api-reference/endpoints/list-all-endpoints-for-a-model` — [List all endpoints for a model](pages/docs/api/api-reference/endpoints/list-all-endpoints-for-a-model.md) · [原文](https://openrouter.ai/docs/api/api-reference/endpoints/list-all-endpoints-for-a-model.md)
 - `docs/api/api-reference/endpoints/preview-the-impact-of-zdr-on-the-available-endpoints` — [Preview the impact of ZDR on the available endpoints](pages/docs/api/api-reference/endpoints/preview-the-impact-of-zdr-on-the-available-endpoints.md) · [原文](https://openrouter.ai/docs/api/api-reference/endpoints/preview-the-impact-of-zdr-on-the-available-endpoints.md)
+- `docs/api/api-reference/files/delete-a-file` — [Delete a file](pages/docs/api/api-reference/files/delete-a-file.md) · [原文](https://openrouter.ai/docs/api/api-reference/files/delete-a-file.md)
+- `docs/api/api-reference/files/download-file-content` — [Download file content](pages/docs/api/api-reference/files/download-file-content.md) · [原文](https://openrouter.ai/docs/api/api-reference/files/download-file-content.md)
+- `docs/api/api-reference/files/get-file-metadata` — [Get file metadata](pages/docs/api/api-reference/files/get-file-metadata.md) · [原文](https://openrouter.ai/docs/api/api-reference/files/get-file-metadata.md)
+- `docs/api/api-reference/files/list-files` — [List files](pages/docs/api/api-reference/files/list-files.md) · [原文](https://openrouter.ai/docs/api/api-reference/files/list-files.md)
+- `docs/api/api-reference/files/upload-a-file` — [Upload a file](pages/docs/api/api-reference/files/upload-a-file.md) · [原文](https://openrouter.ai/docs/api/api-reference/files/upload-a-file.md)
 - `docs/api/api-reference/generations/get-request---usage-metadata-for-a-generation` — [Get request & usage metadata for a generation](pages/docs/api/api-reference/generations/get-request---usage-metadata-for-a-generation.md) · [原文](https://openrouter.ai/docs/api/api-reference/generations/get-request-&-usage-metadata-for-a-generation.md)
 - `docs/api/api-reference/generations/get-stored-prompt-completion-and-error-content-for-a-generation` — [Get stored prompt, completion, and error content for a generation](pages/docs/api/api-reference/generations/get-stored-prompt-completion-and-error-content-for-a-generation.md) · [原文](https://openrouter.ai/docs/api/api-reference/generations/get-stored-prompt-completion-and-error-content-for-a-generation.md)
 - `docs/api/api-reference/generations/submit-feedback-for-a-generation` — [Submit feedback for a generation](pages/docs/api/api-reference/generations/submit-feedback-for-a-generation.md) · [原文](https://openrouter.ai/docs/api/api-reference/generations/submit-feedback-for-a-generation.md)
@@ -318,10 +327,12 @@
 - `docs/guides/features/broadcast/weave` — [W&B Weave](pages/docs/guides/features/broadcast/weave.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/weave.md)
 - `docs/guides/features/broadcast/webhook` — [Webhook](pages/docs/guides/features/broadcast/webhook.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/webhook.md)
 - `docs/guides/features/classifiers` — [Custom Classifiers](pages/docs/guides/features/classifiers.md) · [原文](https://openrouter.ai/docs/guides/features/classifiers.md)
+- `docs/guides/features/files-api` — [Files API](pages/docs/guides/features/files-api.md) · [原文](https://openrouter.ai/docs/guides/features/files-api.md)
 - `docs/guides/features/guardrails` — [Guardrails](pages/docs/guides/features/guardrails.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails.md)
 - `docs/guides/features/guardrails` — [guardrails](pages/docs/guides/features/guardrails-2.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails.md)
 - `docs/guides/features/guardrails/prompt-injection` — [Prompt Injection Detection](pages/docs/guides/features/guardrails/prompt-injection.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails/prompt-injection.md)
 - `docs/guides/features/guardrails/prompt-injection/allowlist` — [Allowlist](pages/docs/guides/features/guardrails/prompt-injection/allowlist.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails/prompt-injection/allowlist.md)
+- `docs/guides/features/guardrails/secret-formats` — [Detected Secret Formats](pages/docs/guides/features/guardrails/secret-formats.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails/secret-formats.md)
 - `docs/guides/features/guardrails/sensitive-info` — [Sensitive Info Guardrail](pages/docs/guides/features/guardrails/sensitive-info.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails/sensitive-info.md)
 - `docs/guides/features/input-output-logging` — [Input & Output Logging](pages/docs/guides/features/input-output-logging.md) · [原文](https://openrouter.ai/docs/guides/features/input-output-logging.md)
 - `docs/guides/features/message-transforms` — [Message Transforms](pages/docs/guides/features/message-transforms.md) · [原文](https://openrouter.ai/docs/guides/features/message-transforms.md)
@@ -336,6 +347,8 @@
 - `docs/guides/features/server-tools` — [Server Tools](pages/docs/guides/features/server-tools.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools.md)
 - `docs/guides/features/server-tools/advisor` — [Advisor](pages/docs/guides/features/server-tools/advisor.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/advisor.md)
 - `docs/guides/features/server-tools/apply-patch` — [Apply Patch](pages/docs/guides/features/server-tools/apply-patch.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/apply-patch.md)
+- `docs/guides/features/server-tools/bash` — [Bash](pages/docs/guides/features/server-tools/bash.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/bash.md)
+- `docs/guides/features/server-tools/containers` — [Containers](pages/docs/guides/features/server-tools/containers.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/containers.md)
 - `docs/guides/features/server-tools/datetime` — [Datetime](pages/docs/guides/features/server-tools/datetime.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/datetime.md)
 - `docs/guides/features/server-tools/fusion` — [Fusion](pages/docs/guides/features/server-tools/fusion.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/fusion.md)
 - `docs/guides/features/server-tools/image-generation` — [Image Generation](pages/docs/guides/features/server-tools/image-generation.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/image-generation.md)

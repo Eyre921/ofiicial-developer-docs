@@ -14,6 +14,6 @@ with the old token will be rejected.
 To reset your token, simply click on the "Reset token" button at the bottom in
 the [QStash UI](https://console.upstash.com/qstash) and confirm the dialog.
 
-![]()
+![](/img/qstash/reset_token.png)
 
 Afterwards you should immediately update your token in all your applications.

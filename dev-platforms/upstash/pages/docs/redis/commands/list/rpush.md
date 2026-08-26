@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/list/rpush
 path: docs/redis/commands/list/rpush
 ---
 
+> Push to list tail.
+
 Use `RPUSH` to add one or more elements to the tail of a list, creating the list when the key does not exist.
 
 Elements are appended in the order given, so `RPUSH key a b c` leaves the list as `a`, `b`, `c`. The reply is the length of the list after the push, and a key holding another type returns an error.
 
-Appending with `RPUSH` and consuming from the head with [`LPOP`](/docs/redis/commands/list/lpop) is the standard first-in, first-out queue, and it is the form most job queues use because the natural reading order with [`LRANGE`](/docs/redis/commands/list/lrange) then matches the order of insertion.
+Appending with `RPUSH` and consuming from the head with [`LPOP`](/redis/commands/list/lpop) is the standard first-in, first-out queue, and it is the form most job queues use because the natural reading order with [`LRANGE`](/redis/commands/list/lrange) then matches the order of insertion.
 
 ## Syntax
 

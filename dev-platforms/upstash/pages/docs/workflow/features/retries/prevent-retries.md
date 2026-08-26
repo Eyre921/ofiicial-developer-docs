@@ -14,8 +14,8 @@ Upstash Workflow provides several mechanisms to terminate workflow execution gra
 `WorkflowNonRetryableError` lets you explicitly fail a workflow without entering the retry cycle.
 
 When thrown, the workflow run is marked as failed, which:
-* Triggers the failure function (if defined)
-* Sends the workflow run to the DLQ
+- Triggers the failure function (if defined)
+- Sends the workflow run to the DLQ
 
 ```ts TypeScript highlight={7}
 export const { POST } = serve<{ topic: string }>(async (context) => {
@@ -34,8 +34,8 @@ export const { POST } = serve<{ topic: string }>(async (context) => {
 You can cancel a workflow run explicitly from inside the workflow.
 
 When canceled, the run is labeled as canceled instead of failed. This means:
-* The failure handler will **NOT** be triggered
-* The workflow will **NOT** be sent to the DLQ
+- The failure handler will **NOT** be triggered
+- The workflow will **NOT** be sent to the DLQ
 
 <CodeGroup>
 ```typescript highlight={10-11} TypeScript

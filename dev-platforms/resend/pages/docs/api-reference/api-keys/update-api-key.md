@@ -45,7 +45,7 @@ Update an existing API key.
   resend.api_key = "re_xxxxxxxxx"
 
   params: resend.ApiKeys.UpdateParams = {
-    "api_key_id": "b6d24b8e-af0b-4c3c-be0c-359bbd97381e",
+    "id": "b6d24b8e-af0b-4c3c-be0c-359bbd97381e",
     "name": "Production",
   }
 

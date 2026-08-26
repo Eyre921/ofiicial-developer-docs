@@ -4,15 +4,17 @@ source: https://upstash.com/docs/redis/commands/string/psetex
 path: docs/redis/commands/string/psetex
 ---
 
+> Set value with ms expiration.
+
 <Warning>
-  Prefer [`SET`](/docs/redis/commands/string/set) with the `PX` argument in new code: `SET <key> <value> PX <milliseconds>`.
+  Prefer [`SET`](/redis/commands/string/set) with the `PX` argument in new code: `SET <key> <value> PX <milliseconds>`. 
 </Warning>
 
 Use `PSETEX` to set a value together with a lifetime in milliseconds.
 
 The value and the expiration are applied in the same atomic step, so the key never exists without its expiration, which is the point of the command: setting the value and then expiring it separately leaves a window where a crash makes the key permanent. A lifetime of zero or less returns an error.
 
-It is the millisecond form of [`SETEX`](/docs/redis/commands/string/setex), and [`SET`](/docs/redis/commands/string/set) with the `PX` option is the more flexible way to write the same thing.
+It is the millisecond form of [`SETEX`](/redis/commands/string/setex), and [`SET`](/redis/commands/string/set) with the `PX` option is the more flexible way to write the same thing.
 
 ## Syntax
 

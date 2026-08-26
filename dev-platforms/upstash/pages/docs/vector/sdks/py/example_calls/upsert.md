@@ -5,7 +5,7 @@ path: docs/vector/sdks/py/example_calls/upsert
 ---
 
 ## Methods
-The `upsert` method enables you to insert or update vectors in the index.
+The `upsert` method enables you to insert or update vectors in the index. 
 You can perform upsert operations in three ways: using a vector object, a tuple, or a dictionary.
 
 ### Upsert Via Vector Object

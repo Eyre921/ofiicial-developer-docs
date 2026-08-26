@@ -49,19 +49,25 @@ Successful Response
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
   "items": [
     {
-      "business_account_id": "string",
-      "phone_number_id": "string",
-      "business_account_name": "string",
-      "phone_number_name": "string",
-      "phone_number": "string",
-      "assigned_agent_name": "string",
-      "assigned_agent_id": "string",
+      "business_account_id": "1789632547896321",
+      "phone_number_id": "5432167890123456",
+      "business_account_name": "Acme Corp Support",
+      "phone_number_name": "Acme Support Line",
+      "phone_number": "+14155552671",
+      "assigned_agent_name": "Jane Doe",
+      "assigned_agent_id": "agent_987654321",
       "enable_messaging": true,
       "enable_audio_message_response": true,
       "enable_typing_indicator": true,
@@ -98,6 +104,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -106,7 +113,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/whatsapp-accounts"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -129,6 +140,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -139,6 +152,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/whatsapp-accounts")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -148,7 +163,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/whatsapp-accounts');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/whatsapp-accounts', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -158,16 +178,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/whatsapp-accounts");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/whatsapp-accounts")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

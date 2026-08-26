@@ -13,15 +13,17 @@ This ensures that no workflow execution is lost and provides multiple options fo
 When a workflow step fails and exhausts all configured retries, Upstash Workflow automatically moves the failed run to the DLQ.
 This happens automatically without any additional configuration required.
 
-  <img />
+<Frame caption="Failed workflow runs are automatically moved to the Dead Letter Queue">
+  <img src="/img/workflow/dlq.png" />
+</Frame>
 
 The DLQ serves as a safety net, preserving failed workflow runs with their complete execution context.
 
 <Note>
    Dead Letter Queue entries have retention period based on your pricing plan:
-  * **Free**: 3 days
-  * **Pay-as-you-go**: 1 week
-  * **Fixed pricing**: Up to 3 months
+  - **Free**: 3 days
+  - **Pay-as-you-go**: 1 week
+  - **Fixed pricing**: Up to 3 months
 
   After the retention duration expires, DLQ items are automatically removed and cannot be recovered.
 </Note>
@@ -30,9 +32,9 @@ The DLQ serves as a safety net, preserving failed workflow runs with their compl
 
 Once a workflow run is in the DLQ, you can take the following actions:
 
-* **[Restart](/docs/workflow/features/dlq/restart)** – trigger the workflow from the beginning.
-* **[Resume](/docs/workflow/features/dlq/resume)** – continue the workflow from the point of failure.
-* **[Re-run Failure Function](/docs/workflow/features/dlq/callback)** – execute the workflow's failure handling logic again.
-* **[Delete](/docs/workflow/features/dlq/delete)** – remove the DLQ entry if no action is required.
+- **[Restart](/workflow/features/dlq/restart)** – trigger the workflow from the beginning.
+- **[Resume](/workflow/features/dlq/resume)** – continue the workflow from the point of failure.
+- **[Re-run Failure Function](/workflow/features/dlq/callback)** – execute the workflow's failure handling logic again.
+- **[Delete](/workflow/features/dlq/delete)** – remove the DLQ entry if no action is required.
 
 You can apply these actions in bulk to multiple DLQ entries. Check the individual action pages for more details.

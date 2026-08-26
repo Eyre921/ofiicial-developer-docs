@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/json/json-set
 path: docs/redis/commands/json/json-set
 ---
 
+> Set JSON value.
+
 Use `JSON.SET` to set a JSON value at a path inside a document, creating the key when it does not exist.
 
 The value is JSON text; the Upstash SDK helpers serialize native objects for you. With the root path (`$`) the whole document is replaced, which is also how a new document is created. For a nested path the parent must already exist: the command adds one missing child to an existing object or appends to an existing array, but it does not create intermediate levels along the way.
@@ -27,8 +29,8 @@ JSON.SET <key> <path> <value> [NX | XX]
 
 ## Important points
 
-* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

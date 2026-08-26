@@ -4,14 +4,16 @@ source: https://upstash.com/docs/redis/commands/search/overview
 path: docs/redis/commands/search/overview
 ---
 
+> Commands for creating, querying, and managing Upstash Redis Search indexes.
+
 <Note>
   Upstash Redis Search uses `SEARCH.*` commands. They are separate from and incompatible with the `FT.*` commands in the open-source RediSearch module.
 </Note>
 
-For Search commands, use the Upstash [`@upstash/redis`](/docs/redis/sdks/ts/overview) or [`upstash-redis`](/docs/redis/sdks/py/overview) SDK,
-or the redis-js wrappers [`@upstash/search-redis`](/docs/redis/search/adapters/node-redis) for node-redis and [`@upstash/search-ioredis`](/docs/redis/search/adapters/ioredis) for ioredis.
+For Search commands, use the Upstash [`@upstash/redis`](/redis/sdks/ts/overview) or [`upstash-redis`](/redis/sdks/py/overview) SDK,
+or the redis-js wrappers [`@upstash/search-redis`](/redis/search/adapters/node-redis) for node-redis and [`@upstash/search-ioredis`](/redis/search/adapters/ioredis) for ioredis.
 
-For feature guides and tutorials, start with the [Upstash Redis Search introduction](/docs/redis/search/introduction).
+For feature guides and tutorials, start with the [Upstash Redis Search introduction](/redis/search/introduction).
 
 <CardGroup cols={2}>
 <Card title="SEARCH.CREATE" href="/redis/commands/search/search-create">Create a search index</Card>

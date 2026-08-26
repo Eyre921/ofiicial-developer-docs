@@ -8,14 +8,14 @@ path: docs/vector/sdks/php/getting-started
 
 Using `upstash/vector` you can:
 
-* Upsert a vector with metadata to an index.
-* Fetching the vectors with specified IDs.
-* Querying a vector over pre-defined embeddings.
-* Remove vectors from an index.
-* Access index stats.
-* Reset everything related to an index.
+- Upsert a vector with metadata to an index.
+- Fetching the vectors with specified IDs.
+- Querying a vector over pre-defined embeddings.
+- Remove vectors from an index.
+- Access index stats.
+- Reset everything related to an index.
 
-You can find the Github Repository [here](https://github.com/upstash/vector-php).
+You can find the Github Repository [here](https://github.com/upstash/vector-php). 
 
 ## Install
 
@@ -38,7 +38,7 @@ There are two pieces of configuration required to use the Upstash vector client:
 
 #### Using environment variables
 
-The environment variables used to configure the client are the following. You can follow [this guide](/docs/vector/overall/getstarted) to retrieve credentials.
+The environment variables used to configure the client are the following. You can follow [this guide](/vector/overall/getstarted) to retrieve credentials.
 
 ```bash
 UPSTASH_VECTOR_REST_URL="your_rest_url"

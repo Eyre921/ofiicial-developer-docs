@@ -4,6 +4,8 @@ source: https://upstash.com/docs/devops/terraform/resources/upstash_qstash_endpo
 path: docs/devops/terraform/resources/upstash_qstash_endpoint
 ---
 
+> Create and manage QStash endpoints.
+
 <RequestExample>
 
 ```hcl example.tf

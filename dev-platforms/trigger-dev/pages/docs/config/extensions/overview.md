@@ -48,8 +48,8 @@ export default defineConfig({
 
 Trigger.dev provides a set of built-in extensions that you can use to customize how your project is built and deployed. These extensions are available out of the box and can be configured in your `trigger.config.ts` file.
 
-| Extension                                                                 | Description                                                                    |
-| :------------------------------------------------------------------------ | :----------------------------------------------------------------------------- |
+| Extension                                                                      | Description                                                                    |
+| :----------------------------------------------------------------------------- | :----------------------------------------------------------------------------- |
 | [prismaExtension](/docs/config/extensions/prismaExtension)                     | Using prisma in your Trigger.dev tasks                                         |
 | [pythonExtension](/docs/config/extensions/pythonExtension)                     | Execute Python scripts in your project                                         |
 | [puppeteer](/docs/config/extensions/puppeteer)                                 | Use Puppeteer in your Trigger.dev tasks                                        |

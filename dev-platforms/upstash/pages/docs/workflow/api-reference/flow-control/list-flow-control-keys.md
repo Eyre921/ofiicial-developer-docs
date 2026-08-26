@@ -4,5 +4,6 @@ source: https://upstash.com/docs/workflow/api-reference/flow-control/list-flow-c
 path: docs/workflow/api-reference/flow-control/list-flow-control-keys
 ---
 
-/workflow/openapi.yaml get /v2/flowControl
-List all Flow Control keys
+> List all Flow Control keys
+
+`GET /v2/flowControl`

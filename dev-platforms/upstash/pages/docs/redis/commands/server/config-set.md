@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/server/config-set
 path: docs/redis/commands/server/config-set
 ---
 
+> Change runtime configuration.
+
 Use `CONFIG SET` to change runtime configuration parameters without restarting.
 
 This deployment permits changes only to `notify-keyspace-events`, which selects the keyspace and keyevent notifications the server publishes: the value is a set of flag characters, such as `KEA` for everything, or `Kg$` for generic and string keyspace events. Any other parameter returns an error.
@@ -25,9 +27,9 @@ CONFIG SET <parameter> <value> [parameter value ...]
 
 ## Important points
 
-* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
-* This deployment permits changes only to `notify-keyspace-events`; any other parameter returns an error.
-* Parameter/value pairs are processed from left to right. If a later pair is invalid, an earlier valid change may already have taken effect.
+- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+- This deployment permits changes only to `notify-keyspace-events`; any other parameter returns an error.
+- Parameter/value pairs are processed from left to right. If a later pair is invalid, an earlier valid change may already have taken effect.
 
 ## Response
 

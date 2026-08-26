@@ -4,6 +4,8 @@ source: https://upstash.com/docs/common/concepts/serverless
 path: docs/common/concepts/serverless
 ---
 
+> What do we mean by serverless?
+
 Upstash is a modern serverless data platform. But what do we mean by serverless?
 
 ## No Server Management
@@ -16,7 +18,7 @@ As traffic or demand increases, Upstash automatically scales the required resour
 
 ## Granular Billing
 
-We charge based on the actual usage of resources rather than pre-allocated capacity. This can lead to more cost-effective solutions, as users only pay for what they consume. [Read more](/docs/common/concepts/scale-to-zero)
+We charge based on the actual usage of resources rather than pre-allocated capacity. This can lead to more cost-effective solutions, as users only pay for what they consume. [Read more](/common/concepts/scale-to-zero)
 
 ## Stateless Functions
 

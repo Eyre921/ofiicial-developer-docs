@@ -5,19 +5,19 @@ path: docs/qstash/features/queues
 ---
 
 The queue concept in QStash allows ordered delivery (FIFO).
-See the [API doc](/docs/qstash/api-reference/queues/list-queues) for the full list of related Rest APIs.
+See the [API doc](/qstash/api-reference/queues/list-queues) for the full list of related Rest APIs.
 Here we list common use cases for Queue and how to use them.
 
 ## Ordered Delivery
 
-With Queues, the ordered delivery is guaranteed by default.
+With Queues, the ordered delivery is guaranteed by default. 
 This means:
 
-* Your messages will be queued without blocking the REST API and sent one by one in FIFO order. Queued means [CREATED](/docs/qstash/howto/debug-logs) event will be logged.
-* The next message will wait for retries of the current one if it can not be delivered because your endpoint returns non-2xx code.
-  In other words, the next message will be [ACTIVE](/docs/qstash/howto/debug-logs) only after the last message is either [DELIVERED](/docs/qstash/howto/debug-logs) or
-  [FAILED](/docs/qstash/howto/debug-logs).
-* Next message will wait for [callbacks](/docs/qstash/features/callbacks#what-is-a-callback) or [failure callbacks](/docs/qstash/features/callbacks#what-is-a-failure-callback) to finish.
+- Your messages will be queued without blocking the REST API and sent one by one in FIFO order. Queued means [CREATED](/qstash/howto/debug-logs) event will be logged.
+- The next message will wait for retries of the current one if it can not be delivered because your endpoint returns non-2xx code. 
+  In other words, the next message will be [ACTIVE](/qstash/howto/debug-logs) only after the last message is either [DELIVERED](/qstash/howto/debug-logs) or 
+  [FAILED](/qstash/howto/debug-logs). 
+- Next message will wait for [callbacks](/qstash/features/callbacks#what-is-a-callback) or [failure callbacks](/qstash/features/callbacks#what-is-a-failure-callback) to finish.
 
 <CodeGroup>
 
@@ -59,16 +59,16 @@ client.message.enqueue_json(
 ## Controlled Parallelism
 
 <Warning>
-For the parallelism limit, we introduced an easier and less limited API with publish.
-Please check the [Flow Control](/docs/qstash/features/flowcontrol) page for the detailed information.
+For the parallelism limit, we introduced an easier and less limited API with publish. 
+Please check the [Flow Control](/qstash/features/flowcontrol) page for the detailed information.
 
 Setting parallelism with queues will be deprecated at some point.
 </Warning>
 
-To ensure that your endpoint is not overwhelmed and also you want more than one-by-one delivery for better throughput,
-you can achieve controlled parallelism with queues.
+To ensure that your endpoint is not overwhelmed and also you want more than one-by-one delivery for better throughput, 
+you can achieve controlled parallelism with queues. 
 
-By default, queues have parallelism 1.
+By default, queues have parallelism 1. 
 Depending on your [plan](https://upstash.com/pricing/qstash), you can configure the parallelism of your queues as follows:
 
 <CodeGroup>
@@ -78,7 +78,7 @@ curl -XPOST https://qstash.upstash.io/v2/queues/ \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
-    "queueName": "my-queue",
+    "queueName": "my-queue", 
     "parallelism": 5,
   }'
 ```
@@ -104,12 +104,12 @@ client.queue.upsert("my-queue", parallelism=5)
 
 </CodeGroup>
 
-After that, you can use the `enqueue` path to send your messages.
+After that, you can use the `enqueue` path to send your messages. 
 
 <CodeGroup>
 
 ```bash cURL
-curl -XPOST -H 'Authorization: Bearer XXX' \
+curl -XPOST -H 'Authorization: Bearer XXX' \ 
             -H "Content-type: application/json" \
   'https://qstash.upstash.io/v2/enqueue/my-queue/https://example.com' -d '{"message":"Hello, World!"}'
 ```

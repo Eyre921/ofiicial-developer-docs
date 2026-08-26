@@ -21,7 +21,7 @@ Upstash Workflow lets you write **durable, reliable and performant serverless fu
 
 ## Quickstarts
 
-Upstash Workflow supports Next.js, Cloudflare Workers and [many other frameworks](/docs/workflow/quickstarts/platforms) in TypeScript and Python.
+Upstash Workflow supports Next.js, Cloudflare Workers and [many other frameworks](/workflow/quickstarts/platforms) in TypeScript and Python.
 
 <CardGroup cols={2}>
   <Card
@@ -101,7 +101,7 @@ Upstash Workflow supports Next.js, Cloudflare Workers and [many other frameworks
     icon="gauge"
     href="/workflow/features/flow-control"
   >
-    Prevent overwhelming your app or external services by configuring rate per second or parallelism limits.
+    Prevent overwhelming your app or external services by configuring rate per second or parallelism limits. 
   </Card>
   <Card
     title="Observability"
@@ -180,14 +180,16 @@ Each of the steps are executed by a separate request to your application, by pre
 
 In case of an error, a failed step is retried individually without needing to re-run any previous steps. Instead of the entire business logic, _each step_ can take up your serverless function execution duration, and many more benefits.
 
-  <img />
+<Frame>
+  <img src="/img/qstash-workflow/workflow-concept.png" />
+</Frame>
 
 ## Support
 
 Need help or have questions? We're here to support you:
 
-* Join our Discord community to ask questions and share feedback
-* Open a ticket through the Intercom chatbox in the dashboard for any issue
+- Join our Discord community to ask questions and share feedback
+- Open a ticket through the Intercom chatbox in the dashboard for any issue
 
 ## SDKs
 

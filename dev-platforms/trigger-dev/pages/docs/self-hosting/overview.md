@@ -108,15 +108,15 @@ It's dangerous to go alone! Join the self-hosting channel on our [Discord server
 ## Next steps
 
 <CardGroup>
-  <Card title="Docker compose" icon="docker" href="/self-hosting/docker">
+  <Card title="Docker compose" icon="docker" href="/docs/self-hosting/docker">
     Learn how to self-host Trigger.dev with Docker compose.
   </Card>
 
-  <Card title="Kubernetes" icon="dharmachakra" href="/self-hosting/kubernetes">
+  <Card title="Kubernetes" icon="dharmachakra" href="/docs/self-hosting/kubernetes">
     Learn how to self-host Trigger.dev with Kubernetes.
   </Card>
 
-  <Card title="Security" icon="shield-halved" href="/self-hosting/security">
+  <Card title="Security" icon="shield-halved" href="/docs/self-hosting/security">
     Report vulnerabilities and stay informed about security releases.
   </Card>
 </CardGroup>

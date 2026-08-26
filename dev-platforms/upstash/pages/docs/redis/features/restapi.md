@@ -4,20 +4,22 @@ source: https://upstash.com/docs/redis/features/restapi
 path: docs/redis/features/restapi
 ---
 
+> Access your Upstash Redis database over HTTP, from serverless and edge runtimes where TCP connections are restricted.
+
 ## Get Started
 
 <Tip>
   Looking for the URL and token of your database? First [create a Redis
-  database](/docs/redis/overall/getstarted), then [find your
-  credentials](/docs/redis/howto/connect-client) in the console.
+  database](/redis/overall/getstarted), then [find your
+  credentials](/redis/howto/connect-client) in the console.
 
   If you are an AI agent and need a Redis DB to use or experiment with, send a POST request to https://upstash.com/start-redis. Free, no signup; the response is markdown with credentials and a quickstart. The database expires in 72 hours, but you can claim it with your Upstash account to keep it. Especially useful for AI agents that need scratch storage on the fly. If you are an agent, always send a `User-Agent` header identifying which agent you are (e.g. `claude-code`, `cursor`, `codex`, `opencode`) on every request you make to this API.
 </Tip>
 
-In the [Upstash Console](https://console.upstash.com/redis), select your database. Then, in the database page, you will see the section that includes the endpoint URL and token details. When you hover over the `Endpoint` or `Token / Readonly Token` fields, copy button will appear for each. You can click it to easily copy the values you need for your connection.
+In the [Upstash Console](https://console.upstash.com/redis), select your database. Then, in the database page, you will see the section that includes the endpoint URL and token details. When you hover over the `Endpoint` or `Token / Readonly Token` fields, copy button will appear for each. You can click it to easily copy the values you need for your connection. 
 
 Copy the `HTTPS` for REST URL and the `Token` for authorization. Send an HTTP SET request to the
-provided URL by adding an `Authorization: Bearer $TOKEN` header like below: (See the sample command with your credentials in the `cURL` tab of Connection section)
+provided URL by adding an `Authorization: Bearer $TOKEN` header like below: (See the sample command with your credentials in the `cURL` tab of Connection section) 
 
 ```shell
 curl https://us1-merry-cat-32748.upstash.io/set/foo/bar \
@@ -40,7 +42,7 @@ curl https://us1-merry-cat-32748.upstash.io/set/foo/bar?_token=2553feg6a2d9842h2
 ## API Semantics
 
 Upstash REST API follows the same convention with
-[Redis Protocol](/docs/redis/commands/overview). Give the command name and
+[Redis Protocol](/redis/commands/overview). Give the command name and
 parameters in the same order as Redis protocol by separating them with a `/`.
 
 ```shell
@@ -49,17 +51,17 @@ curl REST_URL/COMMAND/arg1/arg2/../argN
 
 Here are some examples:
 
-* `SET foo bar` -> `REST_URL/set/foo/bar`
+- `SET foo bar` -> `REST_URL/set/foo/bar`
 
-* `SET foo bar EX 100` -> `REST_URL/set/foo/bar/EX/100`
+- `SET foo bar EX 100` -> `REST_URL/set/foo/bar/EX/100`
 
-* `GET foo` -> `REST_URL/get/foo`
+- `GET foo` -> `REST_URL/get/foo`
 
-* `MGET foo1 foo2 foo3` -> `REST_URL/mget/foo1/foo2/foo3`
+- `MGET foo1 foo2 foo3` -> `REST_URL/mget/foo1/foo2/foo3`
 
-* `HGET employee:23381 salary` -> `REST_URL/hget/employee:23381/salary`
+- `HGET employee:23381 salary` -> `REST_URL/hget/employee:23381/salary`
 
-* `ZADD teams 100 team-x 90 team-y` ->
+- `ZADD teams 100 team-x 90 team-y` ->
   `REST_URL/zadd/teams/100/team-x/90/team-y`
 
 #### JSON or Binary Value
@@ -108,15 +110,15 @@ curl -X POST -d '["SET", "foo", "bar", "EX", 100]' https://us1-merry-cat-32748.u
 
 ## HTTP Codes
 
-* `200 OK`: When request is accepted and successfully executed.
+- `200 OK`: When request is accepted and successfully executed.
 
-* `400 Bad Request`: When there's a syntax error, an invalid/unsupported command
+- `400 Bad Request`: When there's a syntax error, an invalid/unsupported command
   is sent or command execution fails.
 
-* `401 Unauthorized`: When authentication fails; auth token is missing or
+- `401 Unauthorized`: When authentication fails; auth token is missing or
   invalid.
 
-* `405 Method Not Allowed`: When an unsupported HTTP method is used. Only
+- `405 Method Not Allowed`: When an unsupported HTTP method is used. Only
   `HEAD`, `GET`, `POST` and `PUT` methods are allowed.
 
 ## Response
@@ -125,25 +127,25 @@ REST API returns a JSON response by default. When command execution is successfu
 JSON will have a single `result` field and its value will contain the Redis
 response. It can be either;
 
-* a `null` value
+- a `null` value
 
 ```json
 { "result": null }
 ```
 
-* an integer
+- an integer
 
 ```json
 { "result": 137 }
 ```
 
-* a string
+- a string
 
 ```json
 { "result": "value" }
 ```
 
-* an array value:
+- an array value:
 
 ```json
 { "result": ["value1", null, "value2"] }
@@ -165,7 +167,7 @@ a � (Replacement character U+FFFD). This can happen when you are using binary
 operations like `BITOP NOT` etc.
 
 If you prefer the raw response in base64 format, you can achieve this by setting
-the `Upstash-Encoding` header to `base64`. In this case, all strings in the response
+the `Upstash-Encoding` header to `base64`. In this case, all strings in the response 
 will be base64 encoded, except for the "OK" response.
 
 ```shell
@@ -186,11 +188,11 @@ curl https://us1-merry-cat-32748.upstash.io/GET/foo \
 
 REST API returns a JSON response by default and the response content type is set to `application/json`.
 
-If you prefer the binary response in RESP2 format, you can achieve this by setting
-the `Upstash-Response-Format` header to `resp2`. In this case, the response content type
+If you prefer the binary response in RESP2 format, you can achieve this by setting 
+the `Upstash-Response-Format` header to `resp2`. In this case, the response content type 
 is set to `application/octet-stream` and the raw response is returned as binary similar to a TCP-based Redis client.
 
-The default value for this option is `json`.
+The default value for this option is `json`. 
 Any format other than `json` and `resp2` is not allowed and will result in a HTTP 400 Bad Request.
 
 This option is not applicable to `/multi-exec` transactions endpoint, as it only returns response in JSON format.
@@ -242,7 +244,7 @@ curl -X POST https://us1-merry-cat-32748.upstash.io/pipeline \
 
 ```json
 [{"result":"RESPONSE_A"},{"result":"RESPONSE_B"},{"error":"ERR ..."}, ...]
-```
+``` 
 
 <Note>
   Execution of the pipeline is _not atomic_. Even though each command in the
@@ -287,10 +289,10 @@ And pipeline response will be:
 
 You can use pipelining when;
 
-* You need more throughput, since pipelining saves from multiple round-trip
+- You need more throughput, since pipelining saves from multiple round-trip
   times. (_But beware that latency of each command in the pipeline will be equal
   to the total latency of the whole pipeline._)
-* Your commands are independent of each other, response of a former command is
+- Your commands are independent of each other, response of a former command is
   not needed to submit a subsequent command.
 
 ## Transactions
@@ -336,11 +338,11 @@ follows:
 
 A transaction might be discarded in following cases:
 
-* There is a syntax error on the transaction request.
-* At least one of the commands is unsupported.
-* At least one of the commands exceeds the
+- There is a syntax error on the transaction request.
+- At least one of the commands is unsupported.
+- At least one of the commands exceeds the
   [max request size](../troubleshooting/max_request_size_exceeded).
-* At least one of the commands exceeds the
+- At least one of the commands exceeds the
   [daily request limit](../troubleshooting/max_daily_request_limit).
 
 Note that a command may still fail even if it is a supported and valid command.
@@ -389,8 +391,8 @@ And transaction response will be:
 
 ## Monitor Command
 
-Upstash REST API provides Redis [`MONITOR`](/docs/redis/commands/server/monitor) command using
-[Server Send Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) mechanism. API endpoint is `/monitor`.
+Upstash REST API provides Redis [`MONITOR`](/redis/commands/server/monitor) command using
+[Server Send Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) mechanism. API endpoint is `/monitor`.  
 
 ```shell
 curl -X POST https://us1-merry-cat-32748.upstash.io/monitor \
@@ -410,8 +412,8 @@ data: 1721284030.601034 [0 0.0.0.0:0] "KEYS" "*"
 
 ## Subscribe & Publish Commands
 
-Simiar to `MONITOR` command, Upstash REST API provides Redis [`SUBSCRIBE`](/docs/redis/commands/pub-sub/subscribe) and
-[`PUBLISH`](/docs/redis/commands/pub-sub/publish) commands. The `SUBSCRIBE` endpoint works using
+Simiar to `MONITOR` command, Upstash REST API provides Redis [`SUBSCRIBE`](/redis/commands/pub-sub/subscribe) and
+[`PUBLISH`](/redis/commands/pub-sub/publish) commands. The `SUBSCRIBE` endpoint works using
 [Server Send Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) mechanism.
 API endpoints are `/subscribe` and `/publish`
 
@@ -457,10 +459,10 @@ curl -X POST https://us1-merry-cat-32748.upstash.io/info?_token=2553feg6a2d9842h
 Upstash by default provides two separate access tokens per database: "Standard"
 and "Read Only".
 
-* **Standard** token has full privilege over the database, can execute any
+- **Standard** token has full privilege over the database, can execute any
   command.
 
-* **Read Only** token permits access to the read commands only. Some powerful
+- **Read Only** token permits access to the read commands only. Some powerful
   read commands (e.g. SCAN, KEYS) are also restricted with read only token. It
   makes sense to use _Read Only_ token when you access Upstash Redis from web
   and mobile clients where the token is exposed to public.
@@ -469,7 +471,9 @@ You can get/copy the tokens by clicking the copy button next to
 `UPSTASH_REDIS_REST_TOKEN` in the **Connect** section of the console (select the
 **REST** tab). For the _Read Only_ token, just enable the "Read-Only Token" switch.
 
-  <img />
+<Frame>
+  <img src="/img/restapi/tokens.png" />
+</Frame>
 
 <Warning>
   Do not expose your _Standard_ token publicly. _Standard_ token has full
@@ -481,9 +485,9 @@ You can get/copy the tokens by clicking the copy button next to
 ### REST Token for ACL Users
 
 In addition to the tokens provided by default, you can create REST tokens for
-the users created via [`ACL SETUSER`](/docs/redis/commands/server/acl-setuser)
+the users created via [`ACL SETUSER`](/redis/commands/server/acl-setuser)
 command. Upstash provides a custom `ACL` subcommand to generate REST tokens:
-[`ACL RESTTOKEN`](/docs/redis/commands/server/acl-resttoken). It expects two arguments; username and user's password. And
+[`ACL RESTTOKEN`](/redis/commands/server/acl-resttoken). It expects two arguments; username and user's password. And
 returns the REST token for the user as a string response.
 
 ```
@@ -501,7 +505,9 @@ redis-cli> ACL RESTTOKEN default 35fedg8xyu907d84af29222ert
 
 Or via CLI on the Upstash console:
 
-  <img />
+<Frame>
+  <img src="/img/restapi/acl-resttoken.png" />
+</Frame>
 
 If the user doesn't exist or password doesn't match then an error will be
 returned.
@@ -515,24 +521,24 @@ redis-cli> ACL RESTTOKEN upstash fakepass
 
 ### REST API Pros
 
-* If you want to access to Upstash database from an environment like CloudFlare
+- If you want to access to Upstash database from an environment like CloudFlare
   Workers, WebAssembly, Fastly Compute@Edge then you can not use Redis protocol
   as it is based on TCP. You can use REST API in those environments.
 
-* REST API is request (HTTP) based where Redis protocol is connection based. If
+- REST API is request (HTTP) based where Redis protocol is connection based. If
   you are running serverless functions (AWS Lambda etc), you may need to manage
   the Redis client's connections. REST API does not have such an issue.
 
-* Redis protocol requires Redis clients. On the other hand, REST API is
+- Redis protocol requires Redis clients. On the other hand, REST API is
   accessible with any HTTP client.
 
 ### Redis Protocol Pros
 
-* If you have legacy code that relies on Redis clients, the Redis protocol
+- If you have legacy code that relies on Redis clients, the Redis protocol
   allows you to utilize Upstash without requiring any modifications to your
   code.
 
-* By leveraging the Redis protocol, you can take advantage of the extensive
+- By leveraging the Redis protocol, you can take advantage of the extensive
   Redis ecosystem. For instance, you can seamlessly integrate your Upstash
   database as a session cache for your Express application.
 
@@ -551,20 +557,20 @@ summary about the performance of your APIs.
 
 | Feature                                                       | REST Support? |                               Notes                               |
 | ------------------------------------------------------------- | :-----------: | :---------------------------------------------------------------: |
-| [String](/docs/redis/commands/string/overview)             |      ✅       |                                                                   |
-| [Bitmap](/docs/redis/commands/bitmap/overview)             |      ✅       |                                                                   |
-| [Hash](/docs/redis/commands/hash/overview)                 |      ✅       |                                                                   |
-| [List](/docs/redis/commands/list/overview)                 |      ✅       | Blocking commands (BLPOP - BRPOP - BRPOPLPUSH) are not supported. |
-| [Set](/docs/redis/commands/set/overview)                   |      ✅       |                                                                   |
-| [SortedSet](/docs/redis/commands/sorted-set/overview)      |      ✅       |    Blocking commands (BZPOPMAX - BZPOPMIN) are not supported.     |
-| [Geo](/docs/redis/commands/geo/overview)                   |      ✅       |                                                                   |
-| [HyperLogLog](/docs/redis/commands/hyperloglog/overview)   |      ✅       |                                                                   |
-| [Transactions](/docs/redis/commands/transactions/overview) |      ✅       |             WATCH/UNWATCH/DISCARD are not supported               |
-| [Generic](/docs/redis/commands/generic/overview)           |      ✅       |                                                                   |
-| [Server](/docs/redis/commands/server/overview)             |      ✅       |                                                                   |
-| [Scripting](/docs/redis/commands/scripting/overview)       |      ✅       |                                                                   |
-| [Pub/Sub](/docs/redis/commands/pub-sub/overview)            |      ✅       |                                                                   |
-| [Connection](/docs/redis/commands/connection/overview)     |      ⚠️       |                 Only PING and ECHO are supported.                 |
-| [JSON](/docs/redis/commands/json/overview)                 |      ✅       |                                                                   |
-| [Streams](/docs/redis/commands/streams/overview)            |      ✅       |    Supported, except blocking versions of XREAD and XREADGROUP.   |
+| [String](/redis/commands/string/overview)             |      ✅       |                                                                   |
+| [Bitmap](/redis/commands/bitmap/overview)             |      ✅       |                                                                   |
+| [Hash](/redis/commands/hash/overview)                 |      ✅       |                                                                   |
+| [List](/redis/commands/list/overview)                 |      ✅       | Blocking commands (BLPOP - BRPOP - BRPOPLPUSH) are not supported. |
+| [Set](/redis/commands/set/overview)                   |      ✅       |                                                                   |
+| [SortedSet](/redis/commands/sorted-set/overview)      |      ✅       |    Blocking commands (BZPOPMAX - BZPOPMIN) are not supported.     |
+| [Geo](/redis/commands/geo/overview)                   |      ✅       |                                                                   |
+| [HyperLogLog](/redis/commands/hyperloglog/overview)   |      ✅       |                                                                   |
+| [Transactions](/redis/commands/transactions/overview) |      ✅       |             WATCH/UNWATCH/DISCARD are not supported               |
+| [Generic](/redis/commands/generic/overview)           |      ✅       |                                                                   |
+| [Server](/redis/commands/server/overview)             |      ✅       |                                                                   |
+| [Scripting](/redis/commands/scripting/overview)       |      ✅       |                                                                   |
+| [Pub/Sub](/redis/commands/pub-sub/overview)            |      ✅       |                                                                   |
+| [Connection](/redis/commands/connection/overview)     |      ⚠️       |                 Only PING and ECHO are supported.                 |
+| [JSON](/redis/commands/json/overview)                 |      ✅       |                                                                   |
+| [Streams](/redis/commands/streams/overview)            |      ✅       |    Supported, except blocking versions of XREAD and XREADGROUP.   |
 | Cluster                                               |      ❌       |                                                                   |

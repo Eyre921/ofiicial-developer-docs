@@ -35,19 +35,19 @@ box = Box.create(
 </CodeGroup>
 
 <Warning>
-Environment variables are visible to all code running inside the box. If you run untrusted code, those secrets can be read by the untrusted code. For sensitive credentials, use [Attach Headers](/docs/box/overall/attach-headers) instead.
+Environment variables are visible to all code running inside the box. If you run untrusted code, those secrets can be read by the untrusted code. For sensitive credentials, use [Attach Headers](/box/overall/attach-headers) instead.
 </Warning>
 
 ## Attach Headers
 
-For injecting secret HTTP headers into outbound HTTPS requests without exposing them inside the container, see [Attach Headers](/docs/box/overall/attach-headers).
+For injecting secret HTTP headers into outbound HTTPS requests without exposing them inside the container, see [Attach Headers](/box/overall/attach-headers).
 
 ## Browser URLs
 
-Boxes created with [`browser: true`](/docs/box/overall/browser/overview) can hand out two kinds of URLs that carry their access token in the URL itself, so they work without an API key:
+Boxes created with [`browser: true`](/box/overall/browser/overview) can hand out two kinds of URLs that carry their access token in the URL itself, so they work without an API key:
 
-* [Live view](/docs/box/overall/browser/live-view) URLs are **view-only**. Frames stream out and no input goes in, but anyone with the URL can watch the tab.
-* [CDP](/docs/box/overall/browser/connect) URLs give **full control** of the browser to anyone holding them.
+- [Live view](/box/overall/browser/live-view) URLs are **view-only**. Frames stream out and no input goes in, but anyone with the URL can watch the tab.
+- [CDP](/box/overall/browser/connect) URLs give **full control** of the browser to anyone holding them.
 
 Treat both as secrets and share them only where that level of access is intended. Recording playlist URLs are not tokenized. Fetching them requires your Box API key, like any other API call.
 

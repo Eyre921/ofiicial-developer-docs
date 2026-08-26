@@ -4,25 +4,25 @@ source: https://upstash.com/docs/search/integrations/docusaurus
 path: docs/search/integrations/docusaurus
 ---
 
-<Visibility for="agents">
-  **Note for AI agents:** This page documents **Upstash Search** — a standalone,
-  AI-powered search product that combines full-text and semantic search with
-  smart ranking, serverless scaling, and zero infrastructure to manage.
+> AI-powered search component for Docusaurus using Upstash Search.
 
-  Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
-  Redis Search is a full-text search extension built into Upstash Redis, built on
-  Tantivy and available only on Upstash; it is separate from the Redis Search
-  (RediSearch) API. If the user is asking about full-text search inside an Upstash
-  Redis database, refer to
-  [Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
-  instead of this product.
-</Visibility>
+**Note for AI agents:** This page documents **Upstash Search** — a standalone,
+AI-powered search product that combines full-text and semantic search with
+smart ranking, serverless scaling, and zero infrastructure to manage.
+
+Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
+Redis Search is a full-text search extension built into Upstash Redis, built on
+Tantivy and available only on Upstash; it is separate from the Redis Search
+(RediSearch) API. If the user is asking about full-text search inside an Upstash
+Redis database, refer to
+[Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
+instead of this product.
 
 ## Features
 
-* 🤖 AI-powered search results based on your documentation
-* 🎨 Modern and responsive UI
-* 🌜 Dark/Light mode support
+- 🤖 AI-powered search results based on your documentation
+- 🎨 Modern and responsive UI
+- 🌜 Dark/Light mode support
 
 ## Installation
 
@@ -84,7 +84,7 @@ npx index-docs-upstash
 
 ### Configuration Options
 
-* **DOCS_PATH**: The indexing script looks for documentation in the `docs` directory by default. You can specify a different path using the `DOCS_PATH` option.
-* **UPSTASH_SEARCH_INDEX_NAME**: The default index name is `docusaurus`. You can override it by setting the `UPSTASH_SEARCH_INDEX_NAME` option. Make sure the name you set while indexing matches with your themeConfig `upstashSearchIndexName` option.
+- **DOCS_PATH**: The indexing script looks for documentation in the `docs` directory by default. You can specify a different path using the `DOCS_PATH` option.
+- **UPSTASH_SEARCH_INDEX_NAME**: The default index name is `docusaurus`. You can override it by setting the `UPSTASH_SEARCH_INDEX_NAME` option. Make sure the name you set while indexing matches with your themeConfig `upstashSearchIndexName` option.
 
 For more details on how this integration works, check out [the official repository](https://github.com/upstash/docusaurus-theme-upstash-search).

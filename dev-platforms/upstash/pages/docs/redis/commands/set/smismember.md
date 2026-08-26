@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/set/smismember
 path: docs/redis/commands/set/smismember
 ---
 
+> Check membership of several values.
+
 Use `SMISMEMBER` to check several values for membership in a set in one call.
 
-The reply holds one `1` or `0` per value, in the order given, so it lines up with your input list. A missing key yields all zeros rather than an error. It replaces a series of [`SISMEMBER`](/docs/redis/commands/set/sismember) round trips, which matters when checking a batch of ids against a blocklist or an entitlement set.
+The reply holds one `1` or `0` per value, in the order given, so it lines up with your input list. A missing key yields all zeros rather than an error. It replaces a series of [`SISMEMBER`](/redis/commands/set/sismember) round trips, which matters when checking a batch of ids against a blocklist or an entitlement set.
 
 ## Syntax
 

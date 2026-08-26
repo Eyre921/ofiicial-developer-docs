@@ -4,6 +4,10 @@ source: https://upstash.com/docs/vector/api/endpoints/range
 path: docs/vector/api/endpoints/range
 ---
 
+> Ranges over vectors starting(inclusive) from a cursor until the end of the vectors in the or given limit.
+
+`GET https://{endpoint}/range/{namespace}`
+
 <Tip>
   By default vectors from the default namespace will be iterated.
   You can use a different namespace by specifying it in the request path.
@@ -76,42 +80,3 @@ path: docs/vector/api/endpoints/range
     </ResponseField>
   </Expandable>
 </ResponseField>
-
-<RequestExample>
-
-```sh curl
-curl $UPSTASH_VECTOR_REST_URL/range \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '{ "cursor": "0", "limit": 2, "includeMetadata": true }'
-```
-
-```sh curl (Namespace)
-curl $UPSTASH_VECTOR_REST_URL/range/ns \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '{ "cursor": "0", "limit": 2, "includeMetadata": true }'
-```
-
-</RequestExample>
-
-<ResponseExample>
-
-```json 200 OK
-{
-    "result": {
-        "nextCursor": "2",
-        "vectors": [
-            {
-                "id": "id-0",
-                "metadata": {
-                    "link": "upstash.com"
-                }
-            },
-            {
-                "id": "id-1"
-            }
-        ]
-    }
-}
-```
-
-</ResponseExample>

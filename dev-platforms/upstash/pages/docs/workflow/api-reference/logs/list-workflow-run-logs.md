@@ -4,4 +4,4 @@ source: https://upstash.com/docs/workflow/api-reference/logs/list-workflow-run-l
 path: docs/workflow/api-reference/logs/list-workflow-run-logs
 ---
 
-/workflow/openapi.yaml get /v2/workflows/logs
+`GET /v2/workflows/logs`

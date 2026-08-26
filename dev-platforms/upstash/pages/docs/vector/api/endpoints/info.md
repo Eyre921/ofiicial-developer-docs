@@ -4,6 +4,10 @@ source: https://upstash.com/docs/vector/api/endpoints/info
 path: docs/vector/api/endpoints/info
 ---
 
+> Returns some information about the index.
+
+`GET https://{endpoint}/info`
+
 Info will be updated eventually, so it might take some time to see the effect of changes in this endpoint.
 
 ## Request
@@ -66,52 +70,8 @@ This request doesn't require any additional data.
       The number of vectors in the namespace, that are ready to use.
     </ResponseField>
     <ResponseField name="pendingVectorCount" type="number" required>
-      The number of vectors in the namespace, that are still processing
+      The number of vectors in the namespace, that are still processing 
       and not ready to use.
     </ResponseField>
   </Expandable>
 </ResponseField>
-
-<RequestExample>
-
-```sh curl
-curl $UPSTASH_VECTOR_REST_URL/info \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN"
-```
-
-</RequestExample>
-
-<ResponseExample>
-
-```json 200 OK
-{
-  "result": {
-    "vectorCount": 7,
-    "pendingVectorCount": 0,
-    "indexSize": 43501,
-    "dimension": 1024,
-    "similarityFunction": "COSINE",
-    "indexType": "HYBRID",
-    "denseIndex": {
-      "dimension": 1024,
-      "similarityFunction": "COSINE",
-      "embeddingModel": "BGE_M3"
-    },
-    "sparseIndex": {
-      "embeddingModel": "BM25"
-    },
-    "namespaces": {
-      "": {
-        "vectorCount": 6,
-        "pendingVectorCount": 0
-      },
-      "ns": {
-        "vectorCount": 1,
-        "pendingVectorCount": 0
-      }
-    }
-  }
-}
-```
-
-</ResponseExample>

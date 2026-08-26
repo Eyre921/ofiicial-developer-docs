@@ -244,15 +244,15 @@ These follow the [llms.txt standard](https://llmstxt.org) and can be fed directl
 ## Next steps
 
 <CardGroup>
-  <Card title="MCP Server" icon="sparkles" href="/mcp-introduction">
+  <Card title="MCP Server" icon="sparkles" href="/docs/mcp-introduction">
     Install and configure the MCP Server for live project interaction.
   </Card>
 
-  <Card title="Skills" icon="wand-magic-sparkles" href="/skills">
+  <Card title="Skills" icon="wand-magic-sparkles" href="/docs/skills">
     Install Trigger.dev agent skills into any AI coding assistant.
   </Card>
 
-  <Card title="Writing tasks" icon="code" href="/tasks/overview">
+  <Card title="Writing tasks" icon="code" href="/docs/tasks/overview">
     Learn the task patterns your AI assistant will follow.
   </Card>
 </CardGroup>

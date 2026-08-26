@@ -53,16 +53,16 @@ The plugin uses a strategy array to define the rate limits per route. Each strat
   The path to apply the rate limit. You can use wildcards to match multiple
   routes. For example, `*` matches all routes. <br />
   Some examples: <br />
-  * `path: "/api/restaurants/:id"` <br />
-  * `path: "/api/restaurants"` <br />
+  - `path: "/api/restaurants/:id"` <br />
+  - `path: "/api/restaurants"` <br />
 </ParamField>
 
 <ParamField path="identifierSource" type="string" required>
   The source to identifiy the user. Requests with the same identifier will be
   rate limited under the same limit. <br />
   Available sources are: <br />
-  * `ip`: The IP address of the user. <br />
-  * `header`: The value of a header key. You should pass the source in the `header.<HEADER_KEY>` format. <br />
+  - `ip`: The IP address of the user. <br />
+  - `header`: The value of a header key. You should pass the source in the `header.<HEADER_KEY>` format. <br />
   For example, `header.Authorization` will use the value of the `Authorization`
 </ParamField>
 
@@ -77,11 +77,11 @@ The plugin uses a strategy array to define the rate limits per route. Each strat
 
   <Card>
 	  <ParamField path="algorithm" type="'fixed-window' | 'sliding-window' | 'token-bucket'" required>
-		The rate limit algorithm to use. For more information related to algorithms, see docs [**here**](/docs/redis/sdks/ratelimit-ts/algorithms). <br />
-		* `fixed-window`: The fixed-window algorithm divides time into fixed intervals. Each interval has a set limit of allowed requests. When a new interval starts, the count resets. <br />
-		* `sliding-window`:
+		The rate limit algorithm to use. For more information related to algorithms, see docs [**here**](/redis/sdks/ratelimit-ts/algorithms). <br />
+		- `fixed-window`: The fixed-window algorithm divides time into fixed intervals. Each interval has a set limit of allowed requests. When a new interval starts, the count resets. <br />
+		- `sliding-window`: 
 The sliding-window algorithm uses a rolling time frame. It considers requests from the past X time units, continuously moving forward. This provides a smoother distribution of requests over time. <br />
-		* `token-bucket`: The token-bucket algorithm uses a bucket that fills with tokens at a steady rate. Each request consumes a token. If the bucket is empty, requests are denied. This allows for bursts of traffic while maintaining a long-term rate limit.<br />
+		- `token-bucket`: The token-bucket algorithm uses a bucket that fills with tokens at a steady rate. Each request consumes a token. If the bucket is empty, requests are denied. This allows for bursts of traffic while maintaining a long-term rate limit.<br />
 	  </ParamField>
 	  <ParamField path="tokens" type="number" required>
 	  	The number of tokens allowed in the time window. <br />
@@ -89,10 +89,10 @@ The sliding-window algorithm uses a rolling time frame. It considers requests fr
 	  <ParamField path="window" type="string" required>
 	  	The time window for the rate limit. Available units are `"ms" | "s" | "m" | "h" | "d"` <br />
 	  	For example, `20s` means 20 seconds.
-	  </ParamField>
+	  </ParamField>	
 	  <ParamField path="refillRate" type="number">
 	  	The rate at which the bucket refills. **This property is only used for the token-bucket algorithm.** <br />
-	  </ParamField>
+	  </ParamField>		
   </Card>
 </ParamField>
 

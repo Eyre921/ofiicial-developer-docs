@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/list/lset
 path: docs/redis/commands/list/lset
 ---
 
+> Set element at index.
+
 Use `LSET` to overwrite the element at a given position in a list.
 
-Indexes are zero-based from the head and negative indexes count from the tail. The command returns an error when the key does not exist or the index is out of range, since it never grows the list; use [`LPUSH`](/docs/redis/commands/list/lpush) or [`RPUSH`](/docs/redis/commands/list/rpush) to add elements. Locate the position first with [`LPOS`](/docs/redis/commands/list/lpos) when you know the value but not the index.
+Indexes are zero-based from the head and negative indexes count from the tail. The command returns an error when the key does not exist or the index is out of range, since it never grows the list; use [`LPUSH`](/redis/commands/list/lpush) or [`RPUSH`](/redis/commands/list/rpush) to add elements. Locate the position first with [`LPOS`](/redis/commands/list/lpos) when you know the value but not the index.
 
 ## Syntax
 

@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/string/getrange
 path: docs/redis/commands/string/getrange
 ---
 
+> Get substring of string.
+
 Use `GETRANGE` to read part of the string stored at a key.
 
 `<start>` and `<end>` are zero-based byte offsets, both inclusive, and may be negative to count from the end, so `GETRANGE key 0 -1` returns the whole value. Offsets outside the string are clamped rather than treated as errors, and a missing key returns an empty string.
@@ -26,7 +28,7 @@ GETRANGE <key> <start> <end>
 
 ## Important points
 
-* `SUBSTR` is accepted as a deprecated alias with the same arguments and reply. New code should use `GETRANGE`.
+- `SUBSTR` is accepted as a deprecated alias with the same arguments and reply. New code should use `GETRANGE`.
 
 ## Response
 

@@ -4,6 +4,8 @@ source: https://upstash.com/docs/devops/developer-api/authentication
 path: docs/devops/developer-api/authentication
 ---
 
+> Authentication for the Upstash Developer API
+
 The Upstash API requires API keys to authenticate requests. You can view and
 manage API keys at the Upstash Console.
 

@@ -20,9 +20,9 @@ This ensures no compute resources are consumed while sleeping.
 <ParamField body="datetime" type="Date|number|string">
     The target time when the workflow should resume.
     Accepted formats:
-    * A **number**: Unix timestamp in seconds
-    * A **Date object**
-    * A **string** that can be parsed by `new Date(string)` in JavaScript
+    - A **number**: Unix timestamp in seconds
+    - A **Date object**
+    - A **string** that can be parsed by `new Date(string)` in JavaScript
 </ParamField>
 
 ## Usage
@@ -62,6 +62,7 @@ from onboarding_utils import sign_in, send_email
 
 app = FastAPI()
 serve = Serve(app)
+
 
 @serve.post("/api/onboarding")
 async def onboarding(context: AsyncWorkflowContext[User]) -> None:

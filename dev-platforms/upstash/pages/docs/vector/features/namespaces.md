@@ -17,7 +17,7 @@ If no namespace is specified, the operations will use the default namespace, whi
 
 ## Using a Namespace
 
-Namespaces are created implicitly when an upsert operation is performed, so there is no specific endpoint for creating a namespace.
+Namespaces are created implicitly when an upsert operation is performed, so there is no specific endpoint for creating a namespace. 
 
 For example, the code snippet below will create the namespace `ns` if it does not already exist, upsert and query the vector only on that namespace.
 

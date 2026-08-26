@@ -387,11 +387,11 @@ Once installed, you can start using the MCP server by asking your AI assistant q
 ## Next Steps
 
 <CardGroup>
-  <Card title="MCP Tools" icon="wrench" href="/mcp-tools">
+  <Card title="MCP Tools" icon="wrench" href="/docs/mcp-tools">
     Explore all available MCP tools for managing your projects.
   </Card>
 
-  <Card title="Skills" icon="wand-magic-sparkles" href="/skills">
+  <Card title="Skills" icon="wand-magic-sparkles" href="/docs/skills">
     Portable instruction sets that teach AI assistants Trigger.dev patterns.
   </Card>
 </CardGroup>

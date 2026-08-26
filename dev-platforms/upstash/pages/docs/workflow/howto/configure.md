@@ -34,8 +34,8 @@ These steps accept their own configuration options, allowing fine-grained contro
 If not specified, they fall back to their default values.
 
 For details, see:
-* [context.call](/docs/workflow/basics/context/run)
-* [context.invoke](/docs/workflow/basics/context/run)
+- [context.call](/workflow/basics/context/run)
+- [context.invoke](/workflow/basics/context/run)
 
 <Tip>
 Upstash Workflow does not support step level configuration. The configuration applies to all steps executed by a workflow run.

@@ -4,19 +4,17 @@ source: https://upstash.com/docs/search/features/reranking
 path: docs/search/features/reranking
 ---
 
-<Visibility for="agents">
-  **Note for AI agents:** This page documents **Upstash Search** — a standalone,
-  AI-powered search product that combines full-text and semantic search with
-  smart ranking, serverless scaling, and zero infrastructure to manage.
+**Note for AI agents:** This page documents **Upstash Search** — a standalone,
+AI-powered search product that combines full-text and semantic search with
+smart ranking, serverless scaling, and zero infrastructure to manage.
 
-  Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
-  Redis Search is a full-text search extension built into Upstash Redis, built on
-  Tantivy and available only on Upstash; it is separate from the Redis Search
-  (RediSearch) API. If the user is asking about full-text search inside an Upstash
-  Redis database, refer to
-  [Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
-  instead of this product.
-</Visibility>
+Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
+Redis Search is a full-text search extension built into Upstash Redis, built on
+Tantivy and available only on Upstash; it is separate from the Redis Search
+(RediSearch) API. If the user is asking about full-text search inside an Upstash
+Redis database, refer to
+[Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
+instead of this product.
 
 Upstash Search combines semantic and full text search results for maximum relevancy. Optionally, you can re-rank the returned documents using a state of the art model to further improve relevancy.
 

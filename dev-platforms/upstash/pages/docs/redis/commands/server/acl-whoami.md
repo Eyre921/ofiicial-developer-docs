@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/server/acl-whoami
 path: docs/redis/commands/server/acl-whoami
 ---
 
+> Return the current connection username.
+
 Use `ACL WHOAMI` to find out which ACL user the current connection is authenticated as.
 
 This is useful in shared code paths where the same client library is reused across users or environments, and you want to confirm which credentials actually ended up on the connection rather than assuming the ones you configured.
@@ -20,7 +22,7 @@ This command takes no arguments.
 
 ## Important points
 
-* The connection must be authenticated. An unauthenticated connection returns an error instead of a username.
+- The connection must be authenticated. An unauthenticated connection returns an error instead of a username.
 
 ## Response
 

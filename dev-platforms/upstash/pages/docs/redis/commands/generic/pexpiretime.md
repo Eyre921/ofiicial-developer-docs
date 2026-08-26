@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/generic/pexpiretime
 path: docs/redis/commands/generic/pexpiretime
 ---
 
+> Get expiry as Unix ms timestamp.
+
 Use `PEXPIRETIME` to read the absolute time at which a key will expire, as a Unix timestamp in milliseconds.
 
-The reply is `-1` when the key exists but has no expiration and `-2` when the key does not exist. It is the millisecond form of [`EXPIRETIME`](/docs/redis/commands/generic/expiretime), and it reports a deadline rather than a remaining lifetime, which makes it the value to compare against a clock when you need to know exactly when something is due.
+The reply is `-1` when the key exists but has no expiration and `-2` when the key does not exist. It is the millisecond form of [`EXPIRETIME`](/redis/commands/generic/expiretime), and it reports a deadline rather than a remaining lifetime, which makes it the value to compare against a clock when you need to know exactly when something is due.
 
 ## Syntax
 
@@ -22,7 +24,7 @@ PEXPIRETIME <key>
 
 ## Important points
 
-* Negative integer replies are sentinel values, not durations or timestamps; see the response description for missing or persistent data.
+- Negative integer replies are sentinel values, not durations or timestamps; see the response description for missing or persistent data.
 
 ## Response
 

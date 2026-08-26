@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/json/json-clear
 path: docs/redis/commands/json/json-clear
 ---
 
+> Clear JSON values.
+
 Use `JSON.CLEAR` to empty the values a path selects without removing them from the document.
 
 Objects lose all their keys, arrays lose all their elements, and numbers are reset to `0`. Values of other types, such as strings and booleans, are left as they are. The reply is the number of values that were cleared.
 
-The difference from [`JSON.DEL`](/docs/redis/commands/json/json-del) is that the selected keys and slots stay in the document as empty containers, so the shape of the document is preserved and consumers that expect a field to exist keep working.
+The difference from [`JSON.DEL`](/redis/commands/json/json-del) is that the selected keys and slots stay in the document as empty containers, so the shape of the document is preserved and consumers that expect a field to exist keep working.
 
 ## Syntax
 
@@ -25,8 +27,8 @@ JSON.CLEAR <key> [path]
 
 ## Important points
 
-* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

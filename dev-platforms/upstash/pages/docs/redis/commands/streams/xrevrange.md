@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/streams/xrevrange
 path: docs/redis/commands/streams/xrevrange
 ---
 
+> Get range in reverse order.
+
 Use `XREVRANGE` to read the entries of a stream within a range of IDs, from the newest to the oldest.
 
-It is [`XRANGE`](/docs/redis/commands/streams/xrange) in reverse, and the bounds are given in reverse too: `<end>` comes before `<start>`, so `XREVRANGE key + -` walks the whole stream backwards. Incomplete IDs are completed the same way, `(` makes a bound exclusive, and `COUNT` limits the number of entries.
+It is [`XRANGE`](/redis/commands/streams/xrange) in reverse, and the bounds are given in reverse too: `<end>` comes before `<start>`, so `XREVRANGE key + -` walks the whole stream backwards. Incomplete IDs are completed the same way, `(` makes a bound exclusive, and `COUNT` limits the number of entries.
 
 `XREVRANGE key + - COUNT 1` is the idiomatic way to read the most recent entry of a stream.
 

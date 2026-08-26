@@ -44,6 +44,6 @@ Every bucket operator takes an object with a `field` property and operator-speci
 
 ### Behavior Notes
 
-* Bucket operators can contain nested `$aggs` for per-bucket metrics.
-* `$terms`, `$range`, `$histogram`, and `$dateHistogram` support nested `$aggs`.
-* `$facet` does not support nested `$aggs` and cannot be used as a sub-aggregation.
+- Bucket operators can contain nested `$aggs` for per-bucket metrics.
+- `$terms`, `$range`, `$histogram`, and `$dateHistogram` support nested `$aggs`.
+- `$facet` does not support nested `$aggs` and cannot be used as a sub-aggregation.

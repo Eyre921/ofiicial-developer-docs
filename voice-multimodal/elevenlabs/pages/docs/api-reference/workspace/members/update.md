@@ -48,7 +48,7 @@ Successful Response
 
 ```json
 {
-  "email": "string"
+  "email": "jane.doe@example.com"
 }
 ```
 
@@ -68,7 +68,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.workspace.members.update({
-        email: "string",
+        email: "jane.doe@example.com",
     });
 }
 main();
@@ -81,7 +81,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.workspace.members.update(
-    email="string",
+    email="jane.doe@example.com",
 )
 
 ```
@@ -100,7 +100,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/workspace/members"
 
-	payload := strings.NewReader("{\n  \"email\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"email\": \"jane.doe@example.com\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -128,7 +128,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"email\": \"string\"\n}"
+request.body = "{\n  \"email\": \"jane.doe@example.com\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -140,7 +140,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/workspace/members")
   .header("Content-Type", "application/json")
-  .body("{\n  \"email\": \"string\"\n}")
+  .body("{\n  \"email\": \"jane.doe@example.com\"\n}")
   .asString();
 ```
 
@@ -152,7 +152,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/workspace/members', [
   'body' => '{
-  "email": "string"
+  "email": "jane.doe@example.com"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -168,7 +168,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/workspace/members");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"email\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"email\": \"jane.doe@example.com\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -176,7 +176,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["email": "string"] as [String : Any]
+let parameters = ["email": "jane.doe@example.com"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

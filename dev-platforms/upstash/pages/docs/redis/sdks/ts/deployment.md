@@ -40,7 +40,7 @@ import { Redis } from "@upstash/redis/with-fetch";
 
 </Info>
 
-* [Code example](https://github.com/upstash/upstash-redis/blob/main/examples/nodejs)
+- [Code example](https://github.com/upstash/upstash-redis/blob/main/examples/nodejs)
 
 ## Cloudflare Workers
 
@@ -58,10 +58,12 @@ const redis = new Redis({
   token: <UPSTASH_REDIS_REST_TOKEN>,
 })
 
+
 // or load directly from global env
 
 // service worker
 const redis = Redis.fromEnv()
+
 
 // module worker
 export default {
@@ -72,10 +74,10 @@ export default {
 }
 ```
 
-* [Code example](https://github.com/upstash/upstash-redis/tree/main/examples/cloudflare-workers)
-* [Code example typescript](https://github.com/upstash/upstash-redis/tree/main/examples/cloudflare-workers-with-typescript)
-* [Code example Wrangler 1](https://github.com/upstash/upstash-redis/tree/main/examples/cloudflare-workers-with-wrangler-1)
-* [Documentation](https://docs.upstash.com/redis/tutorials/cloudflare_workers_with_redis)
+- [Code example](https://github.com/upstash/upstash-redis/tree/main/examples/cloudflare-workers)
+- [Code example typescript](https://github.com/upstash/upstash-redis/tree/main/examples/cloudflare-workers-with-typescript)
+- [Code example Wrangler 1](https://github.com/upstash/upstash-redis/tree/main/examples/cloudflare-workers-with-wrangler-1)
+- [Documentation](https://docs.upstash.com/redis/tutorials/cloudflare_workers_with_redis)
 
 ## Fastly
 
@@ -95,8 +97,8 @@ const redis = new Redis({
 })
 ```
 
-* [Code example](https://github.com/upstash/upstash-redis/tree/main/examples/fastly)
-* [Documentation](https://blog.upstash.com/fastly-compute-edge-with-redis)
+- [Code example](https://github.com/upstash/upstash-redis/tree/main/examples/fastly)
+- [Documentation](https://blog.upstash.com/fastly-compute-edge-with-redis)
 
 ## Deno
 

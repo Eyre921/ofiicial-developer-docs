@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/connection/client-getname
 path: docs/redis/commands/connection/client-getname
 ---
 
-Use `CLIENT GETNAME` to read the name assigned to the current connection with [`CLIENT SETNAME`](/docs/redis/commands/connection/client-setname).
+> Get the current connection name.
 
-Connections start without a name and the reply is null until one is set. The name belongs to a single connection and is lost when it closes; it exists to make connections recognizable in [`CLIENT LIST`](/docs/redis/commands/connection/client-list) output when you are debugging which part of an application is doing what.
+Use `CLIENT GETNAME` to read the name assigned to the current connection with [`CLIENT SETNAME`](/redis/commands/connection/client-setname).
+
+Connections start without a name and the reply is null until one is set. The name belongs to a single connection and is lost when it closes; it exists to make connections recognizable in [`CLIENT LIST`](/redis/commands/connection/client-list) output when you are debugging which part of an application is doing what.
 
 ## Syntax
 
@@ -20,8 +22,8 @@ This command takes no arguments.
 
 ## Important points
 
-* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
-* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
 
 ## Response
 

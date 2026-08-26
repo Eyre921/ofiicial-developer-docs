@@ -30,7 +30,7 @@ Forms > Usage and configuration > Usage
 * **Submissions**: This counts the total number of verified [form submissions](/manage/forms/submissions) across all forms on your site during this billing period.
 * **File uploads**: This tracks the total storage size of all [files uploaded](/manage/forms/submissions#file-uploads) through verified form submissions to your site during the current billing period.
 
-For legacy plans, forms pricing is metered on a per-site basis and scales with usage. [placeholder to legacy pricing plans]
+For legacy plans, forms pricing is metered on a per-site basis and scales with usage. [Form submission limits per plan are available here](/manage/accounts-and-billing/billing/billing-for-legacy-plans/legacy-pricing-plans/#legacy-pricing-plan-details).
 For paid plans, [Forms pricing](https://www.netlify.com/pricing/) is metered on a per-site basis and scales with usage. When usage reaches a level limit, the site will automatically upgrade to the next level or package. Free tier accounts are also metered based on usage and [have a limit](/manage/accounts-and-billing/billing/billing-for-legacy-plans/billing-faq-for-legacy-plans#free-tier-limits).
 
 ### Change levels

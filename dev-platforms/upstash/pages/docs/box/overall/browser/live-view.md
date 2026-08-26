@@ -33,11 +33,11 @@ The URL is self-contained. Authentication is a token embedded in the URL itself,
 ></iframe>
 ```
 
-A common pattern is to render the live view next to your own [`act`/`observe`/`extract`](/docs/box/overall/browser/ai-actions) loop, so users can watch the browser respond in real time.
+A common pattern is to render the live view next to your own [`act`/`observe`/`extract`](/box/overall/browser/ai-actions) loop, so users can watch the browser respond in real time.
 
 ## View-only
 
-The live view streams frames out only. Viewers cannot click, type, or otherwise interact with the page. To drive the browser, use the SDK or [connect over CDP](/docs/box/overall/browser/connect).
+The live view streams frames out only. Viewers cannot click, type, or otherwise interact with the page. To drive the browser, use the SDK or [connect over CDP](/box/overall/browser/connect).
 
 If you need an interactive viewer inside your own product, you can build one over CDP by streaming screencast frames out and sending input events back. This is how the console's browser tab works.
 
@@ -47,4 +47,4 @@ If you need an interactive viewer inside your own product, you can build one ove
   should see the session.
 </Warning>
 
-For an interactive version of the same view, open the **Browser** tab on your box's page in the [Upstash Console](https://console.upstash.com). If you want a replayable video instead of a live stream, see [Recordings](/docs/box/overall/browser/recordings).
+For an interactive version of the same view, open the **Browser** tab on your box's page in the [Upstash Console](https://console.upstash.com). If you want a replayable video instead of a live stream, see [Recordings](/box/overall/browser/recordings).

@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/json/json-debug
 path: docs/redis/commands/json/json-debug
 ---
 
+> Inspect JSON memory usage.
+
 Use `JSON.DEBUG` to inspect internal details of stored JSON values.
 
 `JSON.DEBUG MEMORY` reports the approximate number of bytes used by the value a key and optional path select, which is how you find out which documents, or which branches of a document, are responsible for memory growth. The figure includes internal overhead and is an estimate meant for comparison rather than exact accounting. `JSON.DEBUG HELP` lists the supported forms.
@@ -28,8 +30,8 @@ JSON.DEBUG HELP
 
 ## Important points
 
-* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

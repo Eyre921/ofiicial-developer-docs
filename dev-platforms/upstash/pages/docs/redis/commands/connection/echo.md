@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/connection/echo
 path: docs/redis/commands/connection/echo
 ---
 
+> Echo the given string.
+
 Use `ECHO` to have the server send the given message back unchanged.
 
-The command performs no work beyond the round trip, which makes it a simple way to verify that a connection is alive and that values survive the client library's encoding and decoding. For plain liveness checks [`PING`](/docs/redis/commands/connection/ping) is the more common choice.
+The command performs no work beyond the round trip, which makes it a simple way to verify that a connection is alive and that values survive the client library's encoding and decoding. For plain liveness checks [`PING`](/redis/commands/connection/ping) is the more common choice.
 
 ## Syntax
 

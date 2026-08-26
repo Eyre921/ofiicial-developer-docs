@@ -4,10 +4,10 @@ source: https://upstash.com/docs/qstash/features/flowcontrol
 path: docs/qstash/features/flowcontrol
 ---
 
-Flow Control enables you to limit the number of messages sent to your endpoint via delaying the delivery.
+Flow Control enables you to limit the number of messages sent to your endpoint via delaying the delivery. 
 
-* [Rate](#rate-and-period-parameters): You can specify a maximum number of calls that can be made to your endpoint within a certain time period.
-* [Parallelism](#parallelism-limit): You can set a limit on the number of concurrent calls to your endpoint.
+- [Rate](#rate-and-period-parameters): You can specify a maximum number of calls that can be made to your endpoint within a certain time period. 
+- [Parallelism](#parallelism-limit): You can set a limit on the number of concurrent calls to your endpoint. 
 
 You can use either of these limits or combine them to have more control over the flow of messages to your endpoint.
 
@@ -24,7 +24,7 @@ If any of the limits is exceeded, additional messages will be added to waitlist 
   </Step>
   <Step title="Decide Limits">
     Decide which limits you want to apply. You can choose to apply only rate limit, only parallelism limit, or both.
-
+    
     For instance, if you want to limit the number of calls to 10 per minute, you can set the rate to 10 and the period to 1 minute. If you want to limit the number of concurrent calls to 5, you can set the parallelism limit to 5.
   </Step>
   <Step title="Send a Message">
@@ -44,7 +44,7 @@ If any of the limits is exceeded, additional messages will be added to waitlist 
                 -H "Content-type: application/json" \
                 -H "Upstash-Flow-Control-Key:USER_GIVEN_KEY"  \
                 -H "Upstash-Flow-Control-Value:parallelism=5,rate=10,period=1m" \
-                'https://qstash.upstash.io/v2/publish/https://example.com' \
+                'https://qstash.upstash.io/v2/publish/https://example.com' \ 
                 -d '{"message":"Hello, World!"}'
     ```
     </CodeGroup>
@@ -80,7 +80,7 @@ curl -XPOST -H 'Authorization: Bearer XXX' \
 ## Parallelism Limit
 
 The parallelism limit is the number of calls that can be active at the same time.
-Active means that the call is made to your endpoint and the response is not received yet.
+Active means that the call is made to your endpoint and the response is not received yet. 
 
 You can set the parallelism limit to 10 calls active at the same time as follows:
 
@@ -100,13 +100,13 @@ curl -XPOST -H 'Authorization: Bearer XXX' \
             -H "Content-type: application/json" \
             -H "Upstash-Flow-Control-Key:USER_GIVEN_KEY"  \
             -H "Upstash-Flow-Control-Value:parallelism=10" \
-           'https://qstash.upstash.io/v2/publish/https://example.com' \
+           'https://qstash.upstash.io/v2/publish/https://example.com' \ 
             -d '{"message":"Hello, World!"}'
 ```
 </CodeGroup>
 
 You can also use the Rest API to get information how many messages waiting for parallelism limit.
-See the [API documentation](/docs/qstash/api-reference/flow-control/get-flow-control-key) for more details.
+See the [API documentation](/qstash/api-reference/flow-control/get-flow-control-key) for more details.
 
 ## Rate, Parallelism, and Period Together
 
@@ -394,9 +394,11 @@ curl -X GET https://qstash.upstash.io/v2/globalParallelism \
 
 You can monitor wait list size of your flow control key's from the console `FlowControl` tab. The console also allows you to pin, unpin, and reset rate for flow control keys directly.
 
-  <img />
+<Frame>
+  <img src="/img/qstash/flowcontrol.png" />
+</Frame>
 
 Also you can get the same info using the REST API.
-* [List All Flow Control Keys](/docs/qstash/api-reference/flow-control/list-flow-control-keys).
-* [Single Flow Control Key](/docs/qstash/api-reference/flow-control/get-flow-control-key).
-* [Global Parallelism](/docs/qstash/api-reference/flow-control/get-global-parallelism).
+- [List All Flow Control Keys](/qstash/api-reference/flow-control/list-flow-control-keys).
+- [Single Flow Control Key](/qstash/api-reference/flow-control/get-flow-control-key).
+- [Global Parallelism](/qstash/api-reference/flow-control/get-global-parallelism).

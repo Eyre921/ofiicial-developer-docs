@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/search/adapters/ioredis
 path: docs/redis/search/adapters/ioredis
 ---
 
+> Use Redis Search with ioredis via the @upstash/search-ioredis adapter
+
 If you're already using **ioredis** in your project, you can use Redis Search without switching to the `@upstash/redis` client. The `@upstash/search-ioredis` package wraps your existing ioredis instance and exposes the full Redis Search API.
 
 ### Installation

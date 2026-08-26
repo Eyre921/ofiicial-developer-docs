@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/functions/function-stats
 path: docs/redis/commands/functions/function-stats
 ---
 
+> Get function execution stats.
+
 Use `FUNCTION STATS` to read the current state of the function engine.
 
-The reply reports the function that is running right now, if any, together with how long it has been running and the command that started it, plus per-engine counts of loaded libraries and functions. It is the usual way to check whether a long-running function is in progress before deciding to call [`FUNCTION KILL`](/docs/redis/commands/functions/function-kill).
+The reply reports the function that is running right now, if any, together with how long it has been running and the command that started it, plus per-engine counts of loaded libraries and functions. It is the usual way to check whether a long-running function is in progress before deciding to call [`FUNCTION KILL`](/redis/commands/functions/function-kill).
 
 ## Syntax
 

@@ -7,7 +7,9 @@ path: docs/qstash/howto/publishing
 Publishing a message is as easy as sending a HTTP request to the `/publish`
 endpoint. All you need is a valid url of your destination.
 
-  <img width="688" />
+<Frame caption="Send a message via the Upstash Console">
+  <img src="/img/qstash/publish.png" width="688" />
+</Frame>
 
 <Info>
 Destination URLs must always include the protocol (`http://` or `https://`)
@@ -89,7 +91,7 @@ By default, the multiple messages published to QStash are sent to your API in pa
 ## Publish to URL Group
 
 URL Groups allow you to publish a single message to more than one API endpoints. To
-learn more about URL Groups, check [URL Groups section](/docs/qstash/features/url-groups).
+learn more about URL Groups, check [URL Groups section](/qstash/features/url-groups).
 
 Publishing to a URL Group is very similar to publishing to a single destination. All
 you need to do is replace the `URL` in the `/publish` endpoint with the URL Group

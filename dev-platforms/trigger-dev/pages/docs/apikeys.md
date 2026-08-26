@@ -182,11 +182,11 @@ Keep your instance and SDK current before creating keys. Calling a public-token 
 ## Next steps
 
 <CardGroup>
-  <Card title="Trigger tasks" icon="bolt" href="/triggering">
+  <Card title="Trigger tasks" icon="bolt" href="/docs/triggering">
     Trigger tasks from your backend with an environment API key.
   </Card>
 
-  <Card title="Realtime authentication" icon="key" href="/realtime/auth">
+  <Card title="Realtime authentication" icon="key" href="/docs/realtime/auth">
     Create scoped public tokens for frontend and realtime access.
   </Card>
 </CardGroup>

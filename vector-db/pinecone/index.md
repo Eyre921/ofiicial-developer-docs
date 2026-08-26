@@ -66,10 +66,10 @@
 
 ## assistant-release-notes
 
-- `assistant-release-notes/2024` — [2024 releases](pages/assistant-release-notes/2024.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2024)
-- `assistant-release-notes/2025` — [2025 releases](pages/assistant-release-notes/2025.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2025)
-- `assistant-release-notes/2026` — [2026 releases](pages/assistant-release-notes/2026.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2026)
-- `assistant-release-notes/feature-availability` — [Feature availability](pages/assistant-release-notes/feature-availability.md) · [原文](https://docs.pinecone.io/assistant-release-notes/feature-availability)
+- `assistant-release-notes/2024` — [Pinecone Assistant 2024 release notes](pages/assistant-release-notes/2024.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2024)
+- `assistant-release-notes/2025` — [Pinecone Assistant 2025 release notes](pages/assistant-release-notes/2025.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2025)
+- `assistant-release-notes/2026` — [Pinecone Assistant 2026 release notes](pages/assistant-release-notes/2026.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2026)
+- `assistant-release-notes/feature-availability` — [Pinecone Assistant feature availability](pages/assistant-release-notes/feature-availability.md) · [原文](https://docs.pinecone.io/assistant-release-notes/feature-availability)
 
 ## examples
 
@@ -301,8 +301,8 @@
 
 ## marketplace-release-notes
 
-- `marketplace-release-notes/2026` — [2026 releases](pages/marketplace-release-notes/2026.md) · [原文](https://docs.pinecone.io/marketplace-release-notes/2026)
-- `marketplace-release-notes/feature-availability` — [Feature availability](pages/marketplace-release-notes/feature-availability.md) · [原文](https://docs.pinecone.io/marketplace-release-notes/feature-availability)
+- `marketplace-release-notes/2026` — [Pinecone Marketplace 2026 release notes](pages/marketplace-release-notes/2026.md) · [原文](https://docs.pinecone.io/marketplace-release-notes/2026)
+- `marketplace-release-notes/feature-availability` — [Pinecone Marketplace feature availability](pages/marketplace-release-notes/feature-availability.md) · [原文](https://docs.pinecone.io/marketplace-release-notes/feature-availability)
 
 ## models
 
@@ -310,8 +310,8 @@
 
 ## nexus-release-notes
 
-- `nexus-release-notes/2026` — [2026 releases](pages/nexus-release-notes/2026.md) · [原文](https://docs.pinecone.io/nexus-release-notes/2026)
-- `nexus-release-notes/feature-availability` — [Feature availability](pages/nexus-release-notes/feature-availability.md) · [原文](https://docs.pinecone.io/nexus-release-notes/feature-availability)
+- `nexus-release-notes/2026` — [Pinecone Nexus 2026 release notes](pages/nexus-release-notes/2026.md) · [原文](https://docs.pinecone.io/nexus-release-notes/2026)
+- `nexus-release-notes/feature-availability` — [Pinecone Nexus feature availability](pages/nexus-release-notes/feature-availability.md) · [原文](https://docs.pinecone.io/nexus-release-notes/feature-availability)
 
 ## reference
 

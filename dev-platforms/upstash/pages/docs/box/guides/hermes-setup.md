@@ -6,23 +6,23 @@ path: docs/box/guides/hermes-setup
 
 This guide walks you through setting up [Hermes](https://github.com/NousResearch/hermes-agent) inside an Upstash Box.
 
-***
+---
 
 ## 1. Create a Box
 
-Create a keep-alive box with the **Medium** size. See the [quickstart](/docs/box/overall/quickstart) if you haven't created one before.
+Create a keep-alive box with the **Medium** size. See the [quickstart](/box/overall/quickstart) if you haven't created one before.
 
 <Note>
   Hermes is resource-intensive, so we recommend starting with a Medium box to ensure a smooth installation.
 </Note>
 
-<img />
+<img src="/img/hermes-setup/box-create.png" />
 
-***
+---
 
 ## 2. Connect via SSH
 
-Once the box is running, connect to it via SSH from your terminal. Use your [Box API key](/docs/box/overall/quickstart#1-get-your-api-key) as the password when prompted.
+Once the box is running, connect to it via SSH from your terminal. Use your [Box API key](/box/overall/quickstart#1-get-your-api-key) as the password when prompted.
 
 The `box-id` is the name of your box (e.g. `right-flamingo-14486`).
 
@@ -30,9 +30,9 @@ The `box-id` is the name of your box (e.g. `right-flamingo-14486`).
 ssh <box-id>@us-east-1.box.upstash.com
 ```
 
-<img />
+<img src="/img/hermes-setup/ssh-connection.png" />
 
-***
+---
 
 ## 3. Install Hermes
 
@@ -46,13 +46,13 @@ Follow the CLI prompts to complete the setup.
 
 Congratulations! You have successfully set up Hermes on your Upstash Box.
 
-***
+---
 
 ## 4. Set Init Script for Auto-Restart
 
 To ensure Hermes restarts automatically if the box crashes, set the startup command as an init script from the Upstash Console.
 
-<img />
+<img src="/img/hermes-setup/init-script.png" />
 
 The init script to use:
 

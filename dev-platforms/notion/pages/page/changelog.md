@@ -4,6 +4,14 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="August 25, 2026">
+  ### Atomic batched content updates in Notion MCP
+
+  `notion-update-page` calls that use the `update_content` command now apply every content-changing replacement in the batch or none of them. Previously, when one `old_str` matched no page content and another one in the same call did, the matching replacements were saved and the call returned success — so a batch that removed content in one operation and reinserted it in another could drop that content. These calls now return a [`validation_error`](/reference/errors) naming the `old_str` that wasn't found, and the page is left unchanged. Operations whose `old_str` and `new_str` are identical are ignored without checking for a match. See [Supported tools](/guides/mcp/mcp-supported-tools) for the tool's matching rules.
+
+  `old_str` must also be a non-empty string. Empty values were previously ignored, which silently skipped the replacement; they now fail validation on both `notion-update-page` and [Update a page's content as markdown](/reference/update-page-markdown).
+</Update>
+
 <Update label="August 20, 2026">
   ### Notion Agent APIs in public beta
 

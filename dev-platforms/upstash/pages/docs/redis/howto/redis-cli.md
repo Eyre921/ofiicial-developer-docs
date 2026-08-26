@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/howto/redis-cli
 path: docs/redis/howto/redis-cli
 ---
 
+> Connect to your Upstash Redis database with redis-cli. Learn how to install it, connect over TLS, run commands, and when to use TCP versus HTTP.
+
 `redis-cli` is the command line interface that ships with the official Redis
 distribution. Because Upstash speaks the native Redis protocol over TCP, you can
 use `redis-cli` to connect to your Upstash database and run any Redis command
@@ -11,7 +13,7 @@ directly from your terminal.
 
 Upstash exposes your database over **both TCP and HTTP**. `redis-cli` and other
 traditional clients use the TCP (RESP) protocol, while the HTTP/REST API and
-[@upstash/redis](/docs/redis/howto/connect-with-upstash-redis) SDK are built for
+[@upstash/redis](/redis/howto/connect-with-upstash-redis) SDK are built for
 serverless environments. This page covers the TCP path with `redis-cli`.
 
 ## Install redis-cli
@@ -67,15 +69,15 @@ double `s`, which signals TLS):
 Upstash serves the same database over two protocols, so you can pick whichever
 fits your environment:
 
-* **TCP (RESP)** — Use `redis-cli` and standard Redis clients such as `ioredis`,
+- **TCP (RESP)** — Use `redis-cli` and standard Redis clients such as `ioredis`,
   `redis-py`, or `jedis`. This is the right choice for local development,
   scripting, and long-running servers.
-* **HTTP/REST** — Use the [@upstash/redis](/docs/redis/howto/connect-with-upstash-redis)
-  SDK or the [REST API](/docs/redis/features/restapi). This is the right choice for
+- **HTTP/REST** — Use the [@upstash/redis](/redis/howto/connect-with-upstash-redis)
+  SDK or the [REST API](/redis/features/restapi). This is the right choice for
   serverless platforms like Vercel and Cloudflare Workers, where TCP-based
   clients can run into connection limits.
 
 <Info>
   For connecting via the official SDKs and other language clients, see
-  [Connect Your Client](/docs/redis/howto/connect-client).
+  [Connect Your Client](/redis/howto/connect-client).
 </Info>

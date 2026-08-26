@@ -6,7 +6,7 @@ path: docs/box/guides/crabbox-setup
 
 [Crabbox](https://crabbox.sh) is a CLI tool that runs commands inside a remote box from your local machine. This guide shows how to use it with Upstash Box to run your test suite in a clean cloud environment without touching your local setup.
 
-***
+---
 
 ## 1. Install Crabbox
 
@@ -14,7 +14,7 @@ path: docs/box/guides/crabbox-setup
 brew install openclaw/tap/crabbox
 ```
 
-***
+---
 
 ## 2. Get Your API Key
 
@@ -24,7 +24,7 @@ Go to the [Upstash Console](https://console.upstash.com) and create a Box API ke
 export UPSTASH_BOX_API_KEY=your_api_key_here
 ```
 
-***
+---
 
 ## 3. Warm Up a Box
 
@@ -43,7 +43,7 @@ You can customize the box to match your project's needs:
 | `--upstash-box-workdir` | Working directory inside the box | Any path (default: `/workspace/home/crabbox`) |
 | `--upstash-box-keep-alive` | Keep the box up and running at all times | `true` / `false` |
 
-***
+---
 
 ## 4. Run Your Tests
 
@@ -63,6 +63,6 @@ crabbox run --provider upstash-box --env-from-profile .env -- npm test
 crabbox run --provider upstash-box --env-from-profile .env -- bun test
 ```
 
-***
+---
 
 For the full list of commands and options, see the [Upstash Box provider reference](https://crabbox.sh/providers/upstash-box.html).

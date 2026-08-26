@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/pub-sub/pubsub
 path: docs/redis/commands/pub-sub/pubsub
 ---
 
+> Inspect pub/sub state.
+
 Use `PUBSUB` to inspect the state of the pub/sub system without subscribing to anything.
 
 `CHANNELS` lists the channels that currently have at least one subscriber, optionally filtered by a glob-style pattern. `NUMSUB` reports the subscriber count for each channel you name, and `NUMPAT` reports how many distinct patterns are subscribed to across all clients.
 
-Only exact-channel subscriptions are counted by `CHANNELS` and `NUMSUB`: a client subscribed with [`PSUBSCRIBE`](/docs/redis/commands/pub-sub/psubscribe) will receive matching messages but does not make a channel appear as active. Use these forms for monitoring and debugging, for instance to confirm that a consumer is really attached before publishing.
+Only exact-channel subscriptions are counted by `CHANNELS` and `NUMSUB`: a client subscribed with [`PSUBSCRIBE`](/redis/commands/pub-sub/psubscribe) will receive matching messages but does not make a channel appear as active. Use these forms for monitoring and debugging, for instance to confirm that a consumer is really attached before publishing.
 
 ## Syntax
 

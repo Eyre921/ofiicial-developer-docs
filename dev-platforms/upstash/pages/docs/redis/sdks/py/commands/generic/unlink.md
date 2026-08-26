@@ -1,0 +1,25 @@
+---
+title: "UNLINK"
+source: https://upstash.com/docs/redis/sdks/py/commands/generic/unlink
+path: docs/redis/sdks/py/commands/generic/unlink
+---
+
+> Removes the specified keys. A key is ignored if it does not exist.
+
+## Arguments
+
+<ParamField body="keys" type="*List[str]" required>
+  One or more keys to unlink.
+</ParamField>
+
+## Response
+
+<ResponseField type="int" required>
+  The number of keys that were unlinked.
+</ResponseField>
+
+<RequestExample>
+```py Basic
+assert redis.unlink("key1", "key2", "key3") == 3
+```
+</RequestExample>

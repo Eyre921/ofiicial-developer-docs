@@ -1,0 +1,33 @@
+---
+title: "JSON.MERGE"
+source: https://upstash.com/docs/redis/sdks/ts/commands/json/merge
+path: docs/redis/sdks/ts/commands/json/merge
+---
+
+> Merges the JSON value at path in key with the provided value.
+
+## Arguments
+
+<ParamField body="key" type="str" required>
+    The key of the json entry.
+</ParamField>
+
+<ParamField body="path" type="str" required>
+    The path of the value to set.
+</ParamField>
+
+<ParamField body="value" type="string | number | Record<string, unknown> | Array<unknown>" required>
+    The value to merge with.
+</ParamField>
+
+## Response
+
+<ResponseField type="string" required>
+    Returns "OK" if the merge was successful.
+</ResponseField>
+
+<RequestExample>
+```ts Example
+await redis.json.merge("key", "$.path.to.value", {"new": "value"})
+```
+</RequestExample>

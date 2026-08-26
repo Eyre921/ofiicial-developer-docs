@@ -8,7 +8,7 @@ Every box has a full Linux shell and runs on Debian by default.
 
 You can access that shell either through the SDK or directly over SSH.
 
-***
+---
 
 ## SSH
 
@@ -30,7 +30,7 @@ ssh current-wasp-05510@us-east-1.box.upstash.com
   You can also copy this command from the **SSH** button on the box details page in the Upstash Console.
 </Tip>
 
-***
+---
 
 ## API
 
@@ -66,7 +66,7 @@ box.exec.command("sudo apt-get install <package>")
 ```
 </CodeGroup>
 
-***
+---
 
 ### Run a code snippet
 
@@ -92,7 +92,7 @@ print(run.exit_code)  # 0
 ```
 </CodeGroup>
 
-***
+---
 
 ### Check exit status
 
@@ -112,7 +112,7 @@ print(run.status)  # "failed"
 ```
 </CodeGroup>
 
-***
+---
 
 ### Chain commands
 
@@ -132,11 +132,11 @@ print(run.result)
 ```
 </CodeGroup>
 
-***
+---
 
 ### Hold a command open
 
-`exec.command` runs a command to completion. When you need to write to stdin, drive an interactive program through a terminal, or signal a process while it runs, start a [live session](/docs/box/overall/live-sessions) instead.
+`exec.command` runs a command to completion. When you need to write to stdin, drive an interactive program through a terminal, or signal a process while it runs, start a [live session](/box/overall/live-sessions) instead.
 
 <CodeGroup>
 ```typescript box.ts
@@ -156,7 +156,7 @@ session.wait(30)
 ```
 </CodeGroup>
 
-***
+---
 
 ### Cancel a long-running command
 
@@ -178,7 +178,7 @@ print(run.status)  # "cancelled"
 ```
 </CodeGroup>
 
-***
+---
 
 ### Retrieve logs
 
@@ -208,7 +208,7 @@ print(logs)
 ```
 </CodeGroup>
 
-***
+---
 
 ## Examples
 

@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/string/getdel
 path: docs/redis/commands/string/getdel
 ---
 
+> Get value and delete key.
+
 Use `GETDEL` to read the value of a key and delete the key in the same atomic step.
 
-The reply is the value, or null when the key does not exist, and an error when the value is not a string. Because nothing can run between the read and the delete, exactly one caller can obtain the value, which is what makes it right for one-shot data such as a one-time token, a password reset code, or a handoff between two processes. It replaces the [`GET`](/docs/redis/commands/string/get) plus [`DEL`](/docs/redis/commands/generic/del) pair and its race.
+The reply is the value, or null when the key does not exist, and an error when the value is not a string. Because nothing can run between the read and the delete, exactly one caller can obtain the value, which is what makes it right for one-shot data such as a one-time token, a password reset code, or a handoff between two processes. It replaces the [`GET`](/redis/commands/string/get) plus [`DEL`](/redis/commands/generic/del) pair and its race.
 
 ## Syntax
 

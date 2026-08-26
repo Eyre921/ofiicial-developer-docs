@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/list/blmove
 path: docs/redis/commands/list/blmove
 ---
 
+> Move an element between lists, blocking until one arrives.
+
 Use `BLMOVE` to move an element from one list to another, blocking until the source has an element or the timeout expires.
 
-It is the blocking form of [`LMOVE`](/docs/redis/commands/list/lmove): when the source list is not empty it behaves identically and returns immediately, and when it is empty the connection waits instead of returning null. The timeout is given in seconds, may be fractional, and `0` waits indefinitely. If several clients are waiting on the same key, the one that has been waiting longest is served first.
+It is the blocking form of [`LMOVE`](/redis/commands/list/lmove): when the source list is not empty it behaves identically and returns immediately, and when it is empty the connection waits instead of returning null. The timeout is given in seconds, may be fractional, and `0` waits indefinitely. If several clients are waiting on the same key, the one that has been waiting longest is served first.
 
 Because the element is never outside a list, this is the standard way to build a reliable queue: a worker blocks until work appears, atomically moves it to a processing list, and deletes it from there when done, so an interrupted job can be recovered instead of lost.
 
@@ -28,7 +30,7 @@ BLMOVE <source> <destination> (LEFT | RIGHT) (LEFT | RIGHT) <timeout>
 
 ## Important points
 
-* A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
+- A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
 
 ## Response
 

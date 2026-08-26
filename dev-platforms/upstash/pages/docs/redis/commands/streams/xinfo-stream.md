@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/streams/xinfo-stream
 path: docs/redis/commands/streams/xinfo-stream
 ---
 
+> Get stream info.
+
 Use `XINFO STREAM` to get information about a stream.
 
 The default reply summarizes the stream: how many entries it holds, the last generated ID, the number of consumer groups, and the first and last entries. `FULL` returns the detailed form instead, walking the entries along with every group, consumer, and pending entry, with `COUNT` limiting how many items each part of that reply contains (`COUNT 0` means no limit).

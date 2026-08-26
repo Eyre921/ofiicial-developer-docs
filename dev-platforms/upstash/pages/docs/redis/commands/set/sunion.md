@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/set/sunion
 path: docs/redis/commands/set/sunion
 ---
 
+> Get set union.
+
 Use `SUNION` to get every member that appears in at least one of the given sets.
 
-Duplicates across the sources collapse, since the result is itself a set, and keys that do not exist count as empty sets. The union is computed on each call and nothing is stored; use [`SUNIONSTORE`](/docs/redis/commands/set/sunionstore) to keep the result. It answers "or" questions over sets, such as everyone reachable through any of several audiences.
+Duplicates across the sources collapse, since the result is itself a set, and keys that do not exist count as empty sets. The union is computed on each call and nothing is stored; use [`SUNIONSTORE`](/redis/commands/set/sunionstore) to keep the result. It answers "or" questions over sets, such as everyone reachable through any of several audiences.
 
 ## Syntax
 

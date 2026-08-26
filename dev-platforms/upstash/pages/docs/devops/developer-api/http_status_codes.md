@@ -4,6 +4,8 @@ source: https://upstash.com/docs/devops/developer-api/http_status_codes
 path: docs/devops/developer-api/http_status_codes
 ---
 
+> The Upstash API uses the following HTTP Status codes:
+
 | Code | Description               |                                                                                 |
 | ---- | ------------------------- | ------------------------------------------------------------------------------- |
 | 200  | **OK**                    | Indicates that a request completed successfully and the response contains data. |

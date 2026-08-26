@@ -67,7 +67,7 @@ Successful Response
 
 ```json
 {
-  "voice_description": "Make the voice have a higher pitch."
+  "voice_description": "Make the voice have a higher pitch and a cheerful tone."
 }
 ```
 
@@ -77,14 +77,14 @@ Successful Response
 {
   "previews": [
     {
-      "audio_base_64": "string",
-      "generated_voice_id": "string",
-      "media_type": "string",
-      "duration_secs": 1.1,
-      "language": "string"
+      "audio_base_64": "UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=",
+      "generated_voice_id": "remix_7f3a2b9c8d4e5f6a7b8c9d0e",
+      "media_type": "audio/mpeg",
+      "duration_secs": 12.5,
+      "language": "en-US"
     }
   ],
-  "text": "string"
+  "text": "Make the voice have a higher pitch and a cheerful tone."
 }
 ```
 
@@ -96,7 +96,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.textToVoice.remix("voice_id", {
-        voiceDescription: "Make the voice have a higher pitch.",
+        voiceDescription: "Make the voice have a higher pitch and a cheerful tone.",
     });
 }
 main();
@@ -110,7 +110,7 @@ client = ElevenLabs()
 
 client.text_to_voice.remix(
     voice_id="voice_id",
-    voice_description="Make the voice have a higher pitch.",
+    voice_description="Make the voice have a higher pitch and a cheerful tone.",
 )
 
 ```
@@ -129,7 +129,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/text-to-voice/voice_id/remix"
 
-	payload := strings.NewReader("{\n  \"voice_description\": \"Make the voice have a higher pitch.\"\n}")
+	payload := strings.NewReader("{\n  \"voice_description\": \"Make the voice have a higher pitch and a cheerful tone.\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -157,7 +157,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"voice_description\": \"Make the voice have a higher pitch.\"\n}"
+request.body = "{\n  \"voice_description\": \"Make the voice have a higher pitch and a cheerful tone.\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -169,7 +169,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/text-to-voice/voice_id/remix")
   .header("Content-Type", "application/json")
-  .body("{\n  \"voice_description\": \"Make the voice have a higher pitch.\"\n}")
+  .body("{\n  \"voice_description\": \"Make the voice have a higher pitch and a cheerful tone.\"\n}")
   .asString();
 ```
 
@@ -181,7 +181,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/text-to-voice/voice_id/remix', [
   'body' => '{
-  "voice_description": "Make the voice have a higher pitch."
+  "voice_description": "Make the voice have a higher pitch and a cheerful tone."
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -197,7 +197,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/text-to-voice/voice_id/remix");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"voice_description\": \"Make the voice have a higher pitch.\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"voice_description\": \"Make the voice have a higher pitch and a cheerful tone.\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -205,7 +205,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["voice_description": "Make the voice have a higher pitch."] as [String : Any]
+let parameters = ["voice_description": "Make the voice have a higher pitch and a cheerful tone."] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

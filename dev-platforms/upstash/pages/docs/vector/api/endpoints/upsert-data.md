@@ -4,12 +4,16 @@ source: https://upstash.com/docs/vector/api/endpoints/upsert-data
 path: docs/vector/api/endpoints/upsert-data
 ---
 
+> Upserts (inserts or updates) the raw text data after embedding it.
+
+`POST https://{endpoint}/upsert-data/{namespace}`
+
 <Warning>
-  To use this endpoint, the index must be created with an [embedding model](/docs/vector/features/embeddingmodels).
+  To use this endpoint, the index must be created with an [embedding model](/vector/features/embeddingmodels).
 </Warning>
 
 <Tip>
-  Vector embedding of the raw text data will be upserted into the
+  Vector embedding of the raw text data will be upserted into the 
   default namespace by default.
   You can use a different namespace by specifying it in the request path.
 </Tip>
@@ -47,41 +51,3 @@ You can either upsert a single data, or multiple data in an array.
 <ResponseField name="result" type="string">
   `"Success"` string.
 </ResponseField>
-
-<RequestExample>
-
-```sh curl
-curl $UPSTASH_VECTOR_REST_URL/upsert-data \
-  -X POST \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '[
-    { "id": "id-0", "data": "Upstash is a serverless data platform.", "metadata": { "link": "upstash.com" } },
-    { "id": "id-1", "data": "Upstash Vector is a serverless vector database." }
-  ]'
-```
-
-```sh curl (Namespace)
-curl $UPSTASH_VECTOR_REST_URL/upsert-data/ns \
-  -X POST \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '{ "id": "id-2", "data": "Upstash is a serverless data platform.", "metadata": { "link": "upstash.com" } }'
-```
-
-</RequestExample>
-
-<ResponseExample>
-
-```json 200 OK
-{
-    "result": "Success"
-}
-```
-
-```json 422 Unprocessable Entity
-{
-    "error": "Embedding data for this index is not allowed. The index must be created with an embedding model to use it.",
-    "status": 422
-}
-```
-
-</ResponseExample>

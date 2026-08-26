@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/generic/pttl
 path: docs/redis/commands/generic/pttl
 ---
 
+> Get TTL in milliseconds.
+
 Use `PTTL` to read how much longer a key will live, in milliseconds.
 
-The reply is `-1` when the key exists but has no expiration and `-2` when the key does not exist, so a missing key and a permanent one are easy to tell apart. It is the millisecond form of [`TTL`](/docs/redis/commands/generic/ttl), and the extra precision matters for short-lived keys such as locks, where rounding to whole seconds hides most of the remaining lifetime.
+The reply is `-1` when the key exists but has no expiration and `-2` when the key does not exist, so a missing key and a permanent one are easy to tell apart. It is the millisecond form of [`TTL`](/redis/commands/generic/ttl), and the extra precision matters for short-lived keys such as locks, where rounding to whole seconds hides most of the remaining lifetime.
 
 ## Syntax
 
@@ -22,7 +24,7 @@ PTTL <key>
 
 ## Important points
 
-* Negative integer replies are sentinel values, not durations or timestamps; see the response description for missing or persistent data.
+- Negative integer replies are sentinel values, not durations or timestamps; see the response description for missing or persistent data.
 
 ## Response
 

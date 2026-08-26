@@ -53,8 +53,8 @@ Learn more about [generating and managing tokens in our authentication guide](/d
 
 ## Available hooks
 
-| Hook category     | What it does                                                 | Guide                                          |
-| ----------------- | ------------------------------------------------------------ | ---------------------------------------------- |
+| Hook category     | What it does                                                 | Guide                                               |
+| ----------------- | ------------------------------------------------------------ | --------------------------------------------------- |
 | **Trigger hooks** | Trigger tasks from the browser                               | [Triggering](/docs/realtime/react-hooks/triggering) |
 | **Run updates**   | Subscribe to run status, metadata, and tags                  | [Run updates](/docs/realtime/react-hooks/subscribe) |
 | **Streaming**     | Consume AI output, file chunks, or any continuous data       | [Streaming](/docs/realtime/react-hooks/streams)     |

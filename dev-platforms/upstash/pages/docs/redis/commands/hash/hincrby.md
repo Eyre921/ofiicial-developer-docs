@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/hash/hincrby
 path: docs/redis/commands/hash/hincrby
 ---
 
+> Increment integer value of a field.
+
 Use `HINCRBY` to add an integer to the number stored in a hash field and get the result.
 
 A missing field, or a missing key, is treated as `0`, so the first call creates the hash and the field. The increment may be negative to count down. The stored value must be the string form of a 64-bit signed integer; anything else returns an error, as does an operation that would overflow the range.

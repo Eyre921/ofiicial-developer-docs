@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zlexcount
 path: docs/redis/commands/sorted-set/zlexcount
 ---
 
+> Count members in lex range.
+
 Use `ZLEXCOUNT` to count the members of a sorted set that fall in a lexicographic range.
 
 Bounds are written as `[member` for inclusive and `(member` for exclusive, with `-` and `+` standing for the lowest and highest possible members, so `ZLEXCOUNT key [a (c` counts members from `a` up to but not including `c`.
 
-Lexicographic ordering only holds when every member of the set has the same score, which is the trick behind using a sorted set as a sorted index of strings; with mixed scores the result is not meaningful. Use [`ZRANGEBYLEX`](/docs/redis/commands/sorted-set/zrangebylex) or [`ZRANGE`](/docs/redis/commands/sorted-set/zrange) with `BYLEX` to retrieve the members themselves.
+Lexicographic ordering only holds when every member of the set has the same score, which is the trick behind using a sorted set as a sorted index of strings; with mixed scores the result is not meaningful. Use [`ZRANGEBYLEX`](/redis/commands/sorted-set/zrangebylex) or [`ZRANGE`](/redis/commands/sorted-set/zrange) with `BYLEX` to retrieve the members themselves.
 
 ## Syntax
 

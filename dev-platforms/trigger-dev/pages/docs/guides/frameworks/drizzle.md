@@ -209,19 +209,19 @@ page"
 ## Useful next steps
 
 <CardGroup>
-  <Card title="Tasks overview" icon="diagram-subtask" href="/tasks/overview">
+  <Card title="Tasks overview" icon="diagram-subtask" href="/docs/tasks/overview">
     Learn what tasks are and their options
   </Card>
 
-  <Card title="Writing tasks" icon="pen-nib" href="/writing-tasks-introduction">
+  <Card title="Writing tasks" icon="pen-nib" href="/docs/writing-tasks-introduction">
     Learn how to write your own tasks
   </Card>
 
-  <Card title="Deploy using the CLI" icon="terminal" href="/cli-deploy-commands">
+  <Card title="Deploy using the CLI" icon="terminal" href="/docs/cli-deploy-commands">
     Learn how to deploy your task manually using the CLI
   </Card>
 
-  <Card title="Deploy using GitHub actions" icon="github" href="/github-actions">
+  <Card title="Deploy using GitHub actions" icon="github" href="/docs/github-actions">
     Learn how to deploy your task using GitHub actions
   </Card>
 </CardGroup>

@@ -4,6 +4,10 @@ source: https://upstash.com/docs/vector/api/endpoints/resumable-query/start-with
 path: docs/vector/api/endpoints/resumable-query/start-with-vector
 ---
 
+> Perform queries that can be resumed to fetch additional results.
+
+`POST https://{endpoint}/resumable-query/{namespace}`
+
 <Tip>
   Resumable queries allow you to fetch results in batches, which is useful for
   large result sets or when you want to implement pagination.
@@ -38,7 +42,7 @@ path: docs/vector/api/endpoints/resumable-query/start-with-vector
 </ParamField>
 
 <ParamField body="filter" type="string" default="">
-  [Metadata filter](/docs/vector/features/filtering) to apply.
+  [Metadata filter](/vector/features/filtering) to apply.
 </ParamField>
 
 <ParamField body="maxIdle" type="number">
@@ -108,54 +112,3 @@ path: docs/vector/api/endpoints/resumable-query/start-with-vector
     </ResponseField>
   </Expandable>
 </ResponseField>
-
-<RequestExample>
-
-```sh curl
-curl $UPSTASH_VECTOR_REST_URL/resumable-query \
-  -X POST \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '{
-    "vector": [0.1, 0.2],
-    "topK": 2,
-    "includeMetadata": true,
-    "maxIdle": 3600
-  }'
-```
-
-```sh curl (Namespace)
-curl $UPSTASH_VECTOR_REST_URL/resumable-query/ns \
-  -X POST \
-  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
-  -d '{
-    "vector": [0.1, 0.2],
-    "topK": 2,
-    "includeMetadata": true,
-    "maxIdle": 3600
-  }'
-```
-
-</RequestExample>
-
-<ResponseExample>
-
-```json 200 OK
-{
-  "uuid": "550e8400-e29b-41d4-a716-446655440000",
-  "scores": [
-    {
-      "id": "id-0",
-      "score": 1.0,
-      "metadata": {
-        "link": "upstash.com"
-      }
-    },
-    {
-      "id": "id-1",
-      "score": 0.99996454
-    }
-  ]
-}
-```
-
-</ResponseExample>

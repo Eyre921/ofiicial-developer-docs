@@ -1,0 +1,30 @@
+---
+title: "JSON.GET"
+source: https://upstash.com/docs/redis/sdks/py/commands/json/get
+path: docs/redis/sdks/py/commands/json/get
+---
+
+> Get a single value from a JSON document.
+
+## Arguments
+
+<ParamField body="key" type="str" required>
+  The key of the json entry.
+</ParamField>
+
+<ParamField body="paths" type="*List[str]" required>
+  One or more paths to retrieve from the JSON document. `$` is the root.
+</ParamField>
+
+## Response
+
+<ResponseField type="List[TValue | null]" required>
+  The value at the specified path or `null` if the path does not exist.
+</ResponseField>
+
+<RequestExample>
+```py Example
+value = redis.json.get("key", "$.path.to.somewhere")
+```
+
+</RequestExample>

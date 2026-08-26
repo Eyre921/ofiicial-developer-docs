@@ -13,12 +13,12 @@ scalability.
 Replication makes your database resilient to failures because even one of the
 replicas is not available, your database continues to work.
 
-There are two types of replicas in Upstash Redis: primary replicas and read replicas. Primary replicas handle both reads and writes, while read replicas are used only for reads.
+There are two types of replicas in Upstash Redis: primary replicas and read replicas. Primary replicas handle both reads and writes, while read replicas are used only for reads. 
 
 In all subscription plans, primary replicas are highly available with multiple replicas to ensure that even if one fails, your database continues to function.
 
 If a read replica fails, your database remains operational, and you can still read from the primary replicas, though with higher latency.
-When [Prod Pack](/docs/redis/overall/enterprise#prod-pack-features) is enabled, replicas (including read replicas) are deployed across multiple availability zones. This gives regions multi-zone high availability: if one replica or zone fails, another replica in a different zone continues serving commands in the same region without any additional latency.
+When [Prod Pack](/redis/overall/enterprise#prod-pack-features) is enabled, replicas (including read replicas) are deployed across multiple availability zones. This gives regions multi-zone high availability: if one replica or zone fails, another replica in a different zone continues serving commands in the same region without any additional latency.
 
 ### Better Scalability
 
@@ -50,4 +50,4 @@ continued availability of the cluster. This mechanism ensures that any potential
 unavailability caused by leader failure is minimized, and the cluster can
 quickly recover and resume processing requests.
 
-Checkout [Read Your Writes](/docs/redis/howto/readyourwrites) for more details on how to achieve RYW consistency.
+Checkout [Read Your Writes](/redis/howto/readyourwrites) for more details on how to achieve RYW consistency.

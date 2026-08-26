@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/string/incrby
 path: docs/redis/commands/string/incrby
 ---
 
+> Increment integer by amount.
+
 Use `INCRBY` to add an integer to the value stored at a key and get the result.
 
-A missing key counts as `0`, the value must be the string form of a 64-bit signed integer, and an operation that would leave that range returns an error. A negative amount subtracts, which makes it interchangeable with [`DECRBY`](/docs/redis/commands/string/decrby).
+A missing key counts as `0`, the value must be the string form of a 64-bit signed integer, and an operation that would leave that range returns an error. A negative amount subtracts, which makes it interchangeable with [`DECRBY`](/redis/commands/string/decrby).
 
-Like [`INCR`](/docs/redis/commands/string/incr), the update is atomic, so it is safe for counters that several clients update at once, such as adding a batch size to a running total.
+Like [`INCR`](/redis/commands/string/incr), the update is atomic, so it is safe for counters that several clients update at once, such as adding a batch size to a running total.
 
 ## Syntax
 

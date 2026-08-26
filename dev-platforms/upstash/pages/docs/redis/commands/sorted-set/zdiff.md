@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zdiff
 path: docs/redis/commands/sorted-set/zdiff
 ---
 
+> Get sorted set difference.
+
 Use `ZDIFF` to get the members of the first sorted set that do not appear in any of the others.
 
 `<numkeys>` states how many keys follow. Scores come from the first set and are returned only when `WITHSCORES` is given, and the result keeps the ordering of that set. Keys that do not exist count as empty.
 
-The result is computed on each call and not stored; use [`ZDIFFSTORE`](/docs/redis/commands/sorted-set/zdiffstore) to keep it. This is how you exclude one group from a ranking, for example dropping already-seen items from a scored feed.
+The result is computed on each call and not stored; use [`ZDIFFSTORE`](/redis/commands/sorted-set/zdiffstore) to keep it. This is how you exclude one group from a ranking, for example dropping already-seen items from a scored feed.
 
 ## Syntax
 
@@ -26,9 +28,9 @@ ZDIFF <numkeys> <key> [<key> ...] [WITHSCORES]
 
 ## Important points
 
-* `numkeys` must equal the number of key arguments that immediately follow it.
-* Pair-based results may be flattened into one alternating array in RESP2 while RESP3 preserves nested pairs or a map.
-* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+- `numkeys` must equal the number of key arguments that immediately follow it.
+- Pair-based results may be flattened into one alternating array in RESP2 while RESP3 preserves nested pairs or a map.
+- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

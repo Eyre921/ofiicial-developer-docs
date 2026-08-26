@@ -10,15 +10,15 @@ When you create a search index, Upstash Redis builds an optimized lookup structu
 
 You define an index once by specifying:
 
-* A **name** to identify the index
-* A **prefix** pattern to determine which keys to track (e.g., `user:`)
-* A **schema** describing which fields to index and their types
+- A **name** to identify the index
+- A **prefix** pattern to determine which keys to track (e.g., `user:`)
+- A **schema** describing which fields to index and their types
 
-***
+---
 
 ### Creating an Index
 
-The [`SEARCH.CREATE`](/docs/redis/commands/search/search-create) command creates an index identified by a name, which must be a unique key in Redis. Each index works with a single key type (JSON, hash, or string).
+The [`SEARCH.CREATE`](/redis/commands/search/search-create) command creates an index identified by a name, which must be a unique key in Redis. Each index works with a single key type (JSON, hash, or string).
 
 <Tabs>
 
@@ -74,12 +74,12 @@ SEARCH.CREATE users on JSON PREFIX 1 user: SCHEMA name TEXT email TEXT age u64
 
 **We only create an index once**, for example inside of a script we run once. We do not recommend creating an index at runtime, for example inside of a serverless function.
 
-* For **JSON** indices, an index field can be specified for fields on various nested levels.
+- For **JSON** indices, an index field can be specified for fields on various nested levels.
 
-* For **hash** indices, an index field can be specified for fields. As hash fields cannot have
+- For **hash** indices, an index field can be specified for fields. As hash fields cannot have
   nesting on their own, for this kind of indices, only top-level schema fields can be used.
 
-* For **string** indices, indexed keys must be valid JSON strings. A field on any nesting level
+- For **string** indices, indexed keys must be valid JSON strings. A field on any nesting level
   can be indexed, similar to JSON indices.
 
 <Tabs>
@@ -142,9 +142,9 @@ SEARCH.CREATE comments ON STRING PREFIX 1 comment: SCHEMA user.name TEXT user.em
 It is possible to define an index for more than one prefix. However, there are some rules concerning the usage of
 multiple prefixes:
 
-* Prefixes must not contain duplicates.
-* No prefix should cover another prefix (e.g., `user:` and `user:admin:` are not allowed together).
-* Multiple distinct prefixes are allowed (e.g., `article:` and `blog:` are valid together).
+- Prefixes must not contain duplicates.
+- No prefix should cover another prefix (e.g., `user:` and `user:admin:` are not allowed together).
+- Multiple distinct prefixes are allowed (e.g., `article:` and `blog:` are valid together).
 
 <Tabs>
 
@@ -195,7 +195,7 @@ SEARCH.CREATE comments ON STRING PREFIX 1 comment: SCHEMA user.name TEXT user.em
 
 By default, when an index is created, all existing keys matching the specified type and prefixes are scanned and indexed.
 Use `SKIPINITIALSCAN` to defer indexing, which is useful for large datasets where you want to start fresh or handle
-existing data differently. Run [`SEARCH.REINDEX`](/docs/redis/commands/search/search-reindex) later to rebuild the index from
+existing data differently. Run [`SEARCH.REINDEX`](/redis/commands/search/search-reindex) later to rebuild the index from
 the current matching keys.
 
 <Tabs>
@@ -245,24 +245,24 @@ When not specified, language defaults to `english`.
 
 Currently, the following languages are supported:
 
-* `english`
-* `arabic`
-* `danish`
-* `dutch`
-* `finnish`
-* `french`
-* `german`
-* `greek`
-* `hungarian`
-* `italian`
-* `norwegian`
-* `portuguese`
-* `romanian`
-* `russian`
-* `spanish`
-* `swedish`
-* `tamil`
-* `turkish`
+- `english`
+- `arabic`
+- `danish`
+- `dutch`
+- `finnish`
+- `french`
+- `german`
+- `greek`
+- `hungarian`
+- `italian`
+- `norwegian`
+- `portuguese`
+- `romanian`
+- `russian`
+- `spanish`
+- `swedish`
+- `tamil`
+- `turkish`
 
 <Tabs>
 
@@ -408,22 +408,22 @@ results = users.query(filter={"name": "John"})
 </Tabs>
 
 This method is different from `redis.search.createIndex()` which:
-* Creates a new index if it doesn't exist
-* Makes a Redis call to create the index
-* Returns an error if the index already exists (unless `EXISTOK` is used)
+- Creates a new index if it doesn't exist
+- Makes a Redis call to create the index
+- Returns an error if the index already exists (unless `EXISTOK` is used)
 
 Use `redis.search.index()` when:
-* The index already exists
-* You want to avoid unnecessary Redis calls
-* You're querying or managing an existing index
+- The index already exists
+- You want to avoid unnecessary Redis calls
+- You're querying or managing an existing index
 
 Use `redis.search.createIndex()` when:
-* You need to create a new index
-* You're setting up your application for the first time
+- You need to create a new index
+- You're setting up your application for the first time
 
 ### Describing an Index
 
-The [`SEARCH.DESCRIBE`](/docs/redis/commands/search/search-describe) command returns detailed information about an index, or `null` if the index doesn't exist.
+The [`SEARCH.DESCRIBE`](/redis/commands/search/search-describe) command returns detailed information about an index, or `null` if the index doesn't exist.
 
 <Tabs>
 
@@ -463,7 +463,7 @@ On response, the following information is returned:
 
 ### Listing Indexes
 
-[`SEARCH.LISTINDEXES`](/docs/redis/commands/search/search-listindexes) lists all search indexes in the database, reporting each index's `name` and backing `type` (`HASH` or `JSON`). Optionally filter names with `MATCH` and paginate with `LIMIT` and `OFFSET`.
+[`SEARCH.LISTINDEXES`](/redis/commands/search/search-listindexes) lists all search indexes in the database, reporting each index's `name` and backing `type` (`HASH` or `JSON`). Optionally filter names with `MATCH` and paginate with `LIMIT` and `OFFSET`.
 
 <Tabs>
 
@@ -480,7 +480,7 @@ SEARCH.LISTINDEXES MATCH 'product*' LIMIT 10 OFFSET 0
 
 ### Dropping an Index
 
-The [`SEARCH.DROP`](/docs/redis/commands/search/search-drop) command removes an index and stops tracking associated keys.
+The [`SEARCH.DROP`](/redis/commands/search/search-drop) command removes an index and stops tracking associated keys.
 
 Returns `1` if the index was dropped, or `0` if the index was not found.
 
@@ -513,10 +513,10 @@ Note that, dropping an index only removes the search index. The underlying Redis
 ### Waiting for Indexing
 
 For adequate performance, index updates are batched and committed periodically. This means recent writes may not
-immediately appear in search results. Use [`SEARCH.WAITINDEXING`](/docs/redis/commands/search/search-waitindexing) when you need to ensure queries reflect recent changes.
+immediately appear in search results. Use [`SEARCH.WAITINDEXING`](/redis/commands/search/search-waitindexing) when you need to ensure queries reflect recent changes.
 
 The `SEARCH.WAITINDEXING` command blocks until all pending index updates are processed and visible to queries.
-For examples of changing, deleting, and expiring indexed documents, see [Document Updates](/docs/redis/search/document-updates).
+For examples of changing, deleting, and expiring indexed documents, see [Document Updates](/redis/search/document-updates).
 
 We recommend **not to** call this command each time you perform a write operation on the index. For optimal indexing and
 query performance, batch updates are necessary. This command is primarily useful in tests and CI pipelines

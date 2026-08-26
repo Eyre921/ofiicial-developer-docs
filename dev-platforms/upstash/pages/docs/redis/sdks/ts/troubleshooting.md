@@ -62,9 +62,9 @@ const redis = new Redis({
 This should no longer be necessary, but if you are still experiencing issues
 with this, please let us know:
 
-* [Discord](https://discord.gg/w9SenAtbme)
-* [X](https://x.com/upstash)
-* [GitHub](https://github.com/upstash/upstash-redis/issues/new)
+- [Discord](https://discord.gg/w9SenAtbme)
+- [X](https://x.com/upstash)
+- [GitHub](https://github.com/upstash/upstash-redis/issues/new)
 
 ## Large numbers are returned as string
 

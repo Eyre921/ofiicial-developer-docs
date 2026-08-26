@@ -4,5 +4,6 @@ source: https://upstash.com/docs/workflow/api-reference/signing-keys/get-signing
 path: docs/workflow/api-reference/signing-keys/get-signing-keys
 ---
 
-/workflow/openapi.yaml get /v2/keys
-Retrieve your current and next signing keys
+> Retrieve your current and next signing keys
+
+`GET /v2/keys`

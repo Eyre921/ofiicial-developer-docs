@@ -256,16 +256,16 @@ This only works for boxes created with `agent.harness: Agent.Custom`.
 
 Ready-to-run examples for popular open-source agents:
 
-* [Pi](https://github.com/upstash/box/blob/main/packages/sdk/examples/custom-pi-agent.ts) — multi-provider coding agent
-* [Gemini](https://github.com/upstash/box/blob/main/packages/sdk/examples/custom-gemini-agent.ts) — Google Gemini via `@google/genai`
-* [Aider](https://github.com/upstash/box/blob/main/packages/sdk/examples/custom-aider-agent.ts) — git-aware code editor
-* [Goose](https://github.com/upstash/box/blob/main/packages/sdk/examples/custom-goose-agent.ts) — autonomous coding agent
-* [CrewAI](https://github.com/upstash/box/blob/main/packages/python-sdk/examples/custom_crewai_agent.py) — multi-agent orchestration framework
-* [Pydantic AI](https://github.com/upstash/box/blob/main/packages/python-sdk/examples/custom_pydantic_ai_agent.py) — type-safe agent framework
+- [Pi](https://github.com/upstash/box/blob/main/packages/sdk/examples/custom-pi-agent.ts) — multi-provider coding agent
+- [Gemini](https://github.com/upstash/box/blob/main/packages/sdk/examples/custom-gemini-agent.ts) — Google Gemini via `@google/genai`
+- [Aider](https://github.com/upstash/box/blob/main/packages/sdk/examples/custom-aider-agent.ts) — git-aware code editor
+- [Goose](https://github.com/upstash/box/blob/main/packages/sdk/examples/custom-goose-agent.ts) — autonomous coding agent
+- [CrewAI](https://github.com/upstash/box/blob/main/packages/python-sdk/examples/custom_crewai_agent.py) — multi-agent orchestration framework
+- [Pydantic AI](https://github.com/upstash/box/blob/main/packages/python-sdk/examples/custom_pydantic_ai_agent.py) — type-safe agent framework
 
 ## Notes
 
-* Custom agents do not use managed provider keys.
-* Pass secrets through `env` on `Box.create()` or configure them inside the box.
-* The command must be a binary name from `PATH` or an absolute path under `/workspace/home/` or `/home/boxuser/`.
-* The command runs as `boxuser` inside the existing box sandbox.
+- Custom agents do not use managed provider keys.
+- Pass secrets through `env` on `Box.create()` or configure them inside the box.
+- The command must be a binary name from `PATH` or an absolute path under `/workspace/home/` or `/home/boxuser/`.
+- The command runs as `boxuser` inside the existing box sandbox.

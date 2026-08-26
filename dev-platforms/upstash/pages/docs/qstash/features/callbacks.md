@@ -12,17 +12,17 @@ limited. QStash provides a way to go around this problem by using callbacks.
 
 A callback allows you to call a long running function without having to wait for
 its response. Instead of waiting for the request to finish, you can add a
-callback url to your published message and we will call your callback URL with the response.
+callback url to your published message and we will call your callback URL with the response. 
 
 <Note>
-Note that the callback might be called multiple times for each retry until the endpoint
-returns success(status code 2XX) or retries are exhausted. You can assert that retries
+Note that the callback might be called multiple times for each retry until the endpoint 
+returns success(status code 2XX) or retries are exhausted. You can assert that retries 
 are exhausted via `callbackBody.retried == callbackBody.maxRteries`. See the complete
-callback body json below.
+callback body json below. 
 </Note>
 
-<img className="block h-32 dark:hidden" />
-<img className="hidden h-40 dark:block" />
+<img className="block h-32 dark:hidden" src="/img/qstash/callbacks.png" />
+<img className="hidden h-40 dark:block" src="/img/qstash/callback_dark.png" />
 
 1. You publish a message to QStash using the `/v2/publish` endpoint
 2. QStash will enqueue the message and deliver it to the destination
@@ -125,14 +125,14 @@ your `Max Message Size` in the
 
 Make sure you verify the authenticity of the callback request made to your API
 by
-[verifying the signature](/docs/qstash/features/security/#request-signing-optional).
+[verifying the signature](/qstash/features/security/#request-signing-optional).
 
 # What is a Failure-Callback?
 
 Failure callbacks are similar to callbacks but they are called only when all the retries are exhausted and still
 the message can not be delivered to the given endpoint.
 
-This is designed to be an serverless alternative to [List messages to DLQ](/docs/qstash/api-reference/dlq/list-dlq-messages).
+This is designed to be an serverless alternative to [List messages to DLQ](/qstash/api-reference/dlq/list-dlq-messages).
 
 You can add a failure callback URL in the `Upstash-Failure-Callback` header when publishing a
 message. The value must be a valid URL.
@@ -202,17 +202,17 @@ You can also use a callback and failureCallback together!
 
 Publishes/enqueues for callbacks can also be configured with the same HTTP headers that are used to configure direct publishes/enqueues.
 
-<Tip> You can refer to headers that are used to configure `publishes` [here](/docs/qstash/api-reference/messages/publish-a-message) and for `enqueues`
-[here](/docs/qstash/api-reference/messages/enqueue-a-message) </Tip>
+<Tip> You can refer to headers that are used to configure `publishes` [here](/qstash/api-reference/messages/publish-a-message) and for `enqueues` 
+[here](/qstash/api-reference/messages/enqueue-a-message) </Tip>
 
 Instead of the `Upstash` prefix for headers, the `Upstash-Callback`/`Upstash-Failure-Callback` prefix can be used to configure callbacks as follows:
 
 ```
-Upstash-Callback-Timeout
+Upstash-Callback-Timeout 
 Upstash-Callback-Retries
-Upstash-Callback-Delay
-Upstash-Callback-Method
-Upstash-Failure-Callback-Timeout
+Upstash-Callback-Delay 
+Upstash-Callback-Method 
+Upstash-Failure-Callback-Timeout 
 Upstash-Failure-Callback-Retries
 Upstash-Failure-Callback-Delay
 Upstash-Failure-Callback-Method
@@ -220,6 +220,6 @@ Upstash-Failure-Callback-Method
 
 You can also forward headers to your callback endpoints as follows:
 ```
-Upstash-Callback-Forward-MyCustomHeader
-Upstash-Failure-Callback-Forward-MyCustomHeader
+Upstash-Callback-Forward-MyCustomHeader 
+Upstash-Failure-Callback-Forward-MyCustomHeader  
 ```

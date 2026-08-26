@@ -12,22 +12,22 @@ You notice an increasing command count for your Redis database in the Upstash Co
 
 The Upstash Console interacts with your Redis database to provide its functionality, which can result in an increased command count. This behavior is normal and expected. Here's a breakdown of why this occurs:
 
-1. **Data Browser functionality:**
+1. **Data Browser functionality:** 
    The Data Browser tab sends various commands to list and display your keys, including:
-   * SCAN: To iterate through the keyspace
-   * GET: To retrieve values for keys
-   * TTL: To check the time-to-live for keys
+   - SCAN: To iterate through the keyspace
+   - GET: To retrieve values for keys
+   - TTL: To check the time-to-live for keys
 
-2. **Rate Limiting check:**
+2. **Rate Limiting check:** 
    The Console checks if your database is being used for Rate Limiting. This involves sending EXISTS commands for rate limiting-related keys.
 
-3. **Other Console features:**
+3. **Other Console features:** 
    Additional features in the Console may send commands to your database to retrieve or display information.
 
 ### Verification
 
 You can use the Monitor tab in the Upstash Console to observe which commands are being sent by the Console itself. This can help you distinguish between Console-generated commands and those from your application or other clients.
-Also, Usage tab contains 'Top Commands Usage' graph which shows the exact command history.
+Also, Usage tab contains 'Top Commands Usage' graph which shows the exact command history. 
 
 ### Conclusion
 

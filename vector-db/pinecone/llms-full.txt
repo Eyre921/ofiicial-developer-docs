@@ -8017,7 +8017,7 @@ Additionally, requests with the following filters will **not** match because the
 # Migrate from pgvector
 Source: https://docs.pinecone.io/guides/index-data/migrate-from-pgvector
 
-Migrate pgvector records to Pinecone Database, validate search results, synchronize changes, and cut over application traffic.
+Migrate vector data from pgvector to Pinecone Database, validate search results, synchronize incremental changes, and cut over application traffic.
 
 This guide shows you how to migrate a vector-search workload from pgvector to Pinecone Database while keeping PostgreSQL available as the source of truth until cutover. It's based on the [pgvector-migration tool](https://github.com/pinecone-field/pgvector-migration), which provides a step-by-step migration manual, a runnable notebook, and a synchronization script that supports backfills, incremental synchronization, and reconciliation.
 
@@ -94515,10 +94515,10 @@ https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-
 
 
 
-# 2024 releases
+# Pinecone Assistant 2024 release notes
 Source: https://docs.pinecone.io/assistant-release-notes/2024
 
-Pinecone release notes for 2024: new features, improvements, and API changes.
+Release notes for 2024 from the Pinecone Assistant docs, covering assistant API launches, new features, improvements, and API changes.
 
 These release notes cover all Pinecone products. Use the filters to narrow the list.
 
@@ -95193,10 +95193,10 @@ These release notes cover all Pinecone products. Use the filters to narrow the l
 </Update>
 
 
-# 2025 releases
+# Pinecone Assistant 2025 release notes
 Source: https://docs.pinecone.io/assistant-release-notes/2025
 
-Pinecone release notes for 2025: new features, improvements, and API changes.
+Release notes for 2025 from the Pinecone Assistant docs, including chat and context API updates, new features, and platform improvements.
 
 These release notes cover all Pinecone products. Use the filters to narrow the list.
 
@@ -95880,10 +95880,10 @@ These release notes cover all Pinecone products. Use the filters to narrow the l
 </Update>
 
 
-# 2026 releases
+# Pinecone Assistant 2026 release notes
 Source: https://docs.pinecone.io/assistant-release-notes/2026
 
-Pinecone release notes for 2026: new features, improvements, and API changes.
+Release notes for 2026 from the Pinecone Assistant docs, including feature launches, API changes, and updates across the Pinecone platform.
 
 These release notes cover all Pinecone products. Use the filters to narrow the list.
 
@@ -96200,10 +96200,10 @@ These release notes cover all Pinecone products. Use the filters to narrow the l
 </Update>
 
 
-# Feature availability
+# Pinecone Assistant feature availability
 Source: https://docs.pinecone.io/assistant-release-notes/feature-availability
 
-Pinecone feature availability across public preview, general availability, and limited availability releases, with links to release notes.
+Availability stages for Pinecone Assistant features: public preview, limited availability, and general availability, with release note links.
 
 This page defines the different availability phases of a feature in Pinecone.
 
@@ -97744,10 +97744,10 @@ window, customers can still get store credit, but not a direct refund.
 The full response also carries `citations` and `usage`. See [Authentication](/reference/api/nexus/authentication) to set `NEXUS_BASE_URL` and `NEXUS_TOKEN`, or the [Nexus API](/reference/api/nexus/introduction) for the full surface. You can also connect an [MCP server](/guides/nexus/mcp-server) for Claude Desktop and other MCP clients.
 
 
-# 2026 releases
+# Pinecone Nexus 2026 release notes
 Source: https://docs.pinecone.io/nexus-release-notes/2026
 
-Pinecone release notes for 2026: new features, improvements, and API changes.
+Release notes for 2026 from the Pinecone Nexus docs, covering the Nexus general availability launch and updates across the Pinecone platform.
 
 These release notes cover all Pinecone products. Use the filters to narrow the list.
 
@@ -98064,10 +98064,10 @@ These release notes cover all Pinecone products. Use the filters to narrow the l
 </Update>
 
 
-# Feature availability
+# Pinecone Nexus feature availability
 Source: https://docs.pinecone.io/nexus-release-notes/feature-availability
 
-Pinecone feature availability across public preview, general availability, and limited availability releases, with links to release notes.
+Pinecone Nexus feature availability, explaining public preview, limited availability, and general availability stages with release links.
 
 This page defines the different availability phases of a feature in Pinecone.
 
@@ -99200,10 +99200,10 @@ If publish fails, fix the underlying issue and republish. The previous active ve
 Editing an active deployment creates a new building version automatically. Publish the building version when you are ready. Each publish is preserved in the version history; see [Manage versions and rollback](/guides/marketplace/manage-versions-and-rollback).
 
 
-# 2026 releases
+# Pinecone Marketplace 2026 release notes
 Source: https://docs.pinecone.io/marketplace-release-notes/2026
 
-Pinecone release notes for 2026: new features, improvements, and API changes.
+Release notes for 2026 from the Pinecone Marketplace docs, covering feature launches, billing updates, and changes across Pinecone products.
 
 These release notes cover all Pinecone products. Use the filters to narrow the list.
 
@@ -99520,10 +99520,10 @@ These release notes cover all Pinecone products. Use the filters to narrow the l
 </Update>
 
 
-# Feature availability
+# Pinecone Marketplace feature availability
 Source: https://docs.pinecone.io/marketplace-release-notes/feature-availability
 
-Pinecone feature availability across public preview, general availability, and limited availability releases, with links to release notes.
+Availability of Pinecone Marketplace features across public preview, limited availability, and general availability release stages.
 
 This page defines the different availability phases of a feature in Pinecone.
 

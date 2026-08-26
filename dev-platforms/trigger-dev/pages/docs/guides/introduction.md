@@ -9,23 +9,23 @@ A growing list of guides and examples to get the most out of Trigger.dev.
 ## Frameworks
 
 <CardGroup>
-  <Card title="Bun" href="/guides/frameworks/bun" />
+  <Card title="Bun" href="/docs/guides/frameworks/bun" />
 
-  <Card title="Next.js" href="/guides/frameworks/nextjs" />
+  <Card title="Next.js" href="/docs/guides/frameworks/nextjs" />
 
-  <Card title="Node.js" href="/guides/frameworks/nodejs" />
+  <Card title="Node.js" href="/docs/guides/frameworks/nodejs" />
 
-  <Card title="Remix" href="/guides/frameworks/remix" />
+  <Card title="Remix" href="/docs/guides/frameworks/remix" />
 
-  <Card title="SvelteKit" href="/guides/community/sveltekit" />
+  <Card title="SvelteKit" href="/docs/guides/community/sveltekit" />
 </CardGroup>
 
 ## Guides
 
 Get set up fast using our detailed walk-through guides.
 
-| Guide                                                                                      | Description                                                            |
-| :----------------------------------------------------------------------------------------- | :--------------------------------------------------------------------- |
+| Guide                                                                                           | Description                                                            |
+| :---------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------- |
 | [AI Agent: Chat agent](/docs/guides/ai-agents/chat-agent)                                       | Build a durable, multi-turn chat agent with `chat.agent()`             |
 | [AI Agent: Content moderation](/docs/guides/ai-agents/respond-and-check-content)                | Parallel check content while responding to customers                   |
 | [AI Agent: Generate and translate copy](/docs/guides/ai-agents/generate-translate-copy)         | Chain prompts to generate and translate content                        |
@@ -50,19 +50,19 @@ Get set up fast using our detailed walk-through guides.
 ## Featured use cases
 
 <CardGroup>
-  <Card title="Data processing & ETL workflows" icon="database" href="/guides/use-cases/data-processing-etl">
+  <Card title="Data processing & ETL workflows" icon="database" href="/docs/guides/use-cases/data-processing-etl">
     Build complex data pipelines that process large datasets without timeouts.
   </Card>
 
-  <Card title="Media processing workflows" icon="film" href="/guides/use-cases/media-processing">
+  <Card title="Media processing workflows" icon="film" href="/docs/guides/use-cases/media-processing">
     Batch process videos, images, audio, and documents with no execution time limits.
   </Card>
 
-  <Card title="AI media generation workflows" icon="wand-magic-sparkles" href="/guides/use-cases/media-generation">
+  <Card title="AI media generation workflows" icon="wand-magic-sparkles" href="/docs/guides/use-cases/media-generation">
     Generate images, videos, audio, documents and other media using AI models.
   </Card>
 
-  <Card title="Marketing workflows" icon="bullhorn" href="/guides/use-cases/marketing">
+  <Card title="Marketing workflows" icon="bullhorn" href="/docs/guides/use-cases/marketing">
     Build drip campaigns, create marketing content, and orchestrate multi-channel campaigns.
   </Card>
 </CardGroup>
@@ -71,8 +71,8 @@ Get set up fast using our detailed walk-through guides.
 
 Example projects are full projects with example repos you can fork and use. These are a great way of learning how to use Trigger.dev in your projects.
 
-| Example project                                                                                                 | Description                                                                                                                               | Framework | GitHub                                                                                                         |
-| :-------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :-------- | :------------------------------------------------------------------------------------------------------------- |
+| Example project                                                                                                      | Description                                                                                                                               | Framework | GitHub                                                                                                         |
+| :------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :-------- | :------------------------------------------------------------------------------------------------------------- |
 | [Anchor Browser web scraper](/docs/guides/example-projects/anchor-browser-web-scraper)                               | Monitor a website and find the cheapest tickets for a show.                                                                               | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/anchor-browser-web-scraper)                |
 | [Batch LLM Evaluator](/docs/guides/example-projects/batch-llm-evaluator)                                             | Evaluate multiple LLM models and stream the results to the frontend.                                                                      | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/batch-llm-evaluator)                       |
 | [Claude changelog generator](/docs/guides/example-projects/claude-changelog-generator)                               | Automatically generate professional changelogs from git commits using Claude.                                                             | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/changelog-generator)                       |
@@ -97,8 +97,8 @@ Example projects are full projects with example repos you can fork and use. Thes
 
 Task code you can copy and paste to use in your project. They can all be extended and customized to fit your needs.
 
-| Example task                                                                  | Description                                                                                                                                          |
-| :---------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Example task                                                                       | Description                                                                                                                                          |
+| :--------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [DALL·E 3 image generation](/docs/guides/examples/dall-e3-generate-image)          | Use OpenAI's GPT-4o and DALL·E 3 to generate an image and text.                                                                                      |
 | [Deepgram audio transcription](/docs/guides/examples/deepgram-transcribe-audio)    | Transcribe audio using Deepgram's speech recognition API.                                                                                            |
 | [Fal.ai image to cartoon](/docs/guides/examples/fal-ai-image-to-cartoon)           | Convert an image to a cartoon using Fal.ai, and upload the result to Cloudflare R2.                                                                  |

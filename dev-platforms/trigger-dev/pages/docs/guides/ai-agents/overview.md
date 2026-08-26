@@ -9,42 +9,42 @@ Real world AI agent example tasks using Trigger.dev
 ## Example projects using AI agents
 
 <CardGroup>
-  <Card icon="scroll" title="Claude changelog generator" href="/guides/example-projects/claude-changelog-generator">
+  <Card icon="scroll" title="Claude changelog generator" href="/docs/guides/example-projects/claude-changelog-generator">
     Automatically generate professional changelogs from git commits using Claude.
   </Card>
 
-  <Card icon="book" title="Claude GitHub wiki agent" href="/guides/example-projects/claude-github-wiki">
+  <Card icon="book" title="Claude GitHub wiki agent" href="/docs/guides/example-projects/claude-github-wiki">
     Generate and maintain GitHub wiki documentation with Claude-powered analysis.
   </Card>
 
-  <Card icon="chart-column" title="ClickHouse chat agent" href="/guides/example-projects/clickhouse-chat-agent">
+  <Card icon="chart-column" title="ClickHouse chat agent" href="/docs/guides/example-projects/clickhouse-chat-agent">
     Build a chat agent that answers questions about your ClickHouse data with charts, tables and maps
     using `chat.agent()` and generative UI.
   </Card>
 
-  <Card icon="hand" title="Human-in-the-loop workflow" href="/guides/example-projects/human-in-the-loop-workflow">
+  <Card icon="hand" title="Human-in-the-loop workflow" href="/docs/guides/example-projects/human-in-the-loop-workflow">
     Create audio summaries of newspaper articles using a human-in-the-loop workflow built with
     ReactFlow and Trigger.dev waitpoint tokens.
   </Card>
 
-  <Card title="Mastra agents with memory" icon="database" href="/guides/example-projects/mastra-agents-with-memory">
+  <Card title="Mastra agents with memory" icon="database" href="/docs/guides/example-projects/mastra-agents-with-memory">
     Use Mastra to create a weather agent that can collect live weather data and generate clothing
     recommendations.
   </Card>
 
-  <Card title="OpenAI Agent Python SDK guardrails" icon="snake" href="/guides/example-projects/openai-agent-sdk-guardrails">
+  <Card title="OpenAI Agent Python SDK guardrails" icon="snake" href="/docs/guides/example-projects/openai-agent-sdk-guardrails">
     Use the OpenAI Agent SDK to create a guardrails system for your AI agents.
   </Card>
 
-  <Card title="OpenAI Agent TypeScript SDK playground" icon="rocket" href="/guides/example-projects/openai-agents-sdk-typescript-playground">
+  <Card title="OpenAI Agent TypeScript SDK playground" icon="rocket" href="/docs/guides/example-projects/openai-agents-sdk-typescript-playground">
     A playground containing 7 AI agents using the OpenAI Agent SDK for TypeScript with Trigger.dev.
   </Card>
 
-  <Card title="Vercel AI SDK deep research agent" icon="triangle" href="/guides/example-projects/vercel-ai-sdk-deep-research">
+  <Card title="Vercel AI SDK deep research agent" icon="triangle" href="/docs/guides/example-projects/vercel-ai-sdk-deep-research">
     Use the Vercel AI SDK to generate comprehensive PDF reports using a deep research agent.
   </Card>
 
-  <Card title="Smart Spreadsheet" icon="table" href="/guides/example-projects/smart-spreadsheet">
+  <Card title="Smart Spreadsheet" icon="table" href="/docs/guides/example-projects/smart-spreadsheet">
     Enrich company data using Exa search and Claude with real-time streaming results.
   </Card>
 </CardGroup>
@@ -54,7 +54,7 @@ Real world AI agent example tasks using Trigger.dev
 Build a durable, multi-turn chat agent with [`chat.agent()`](/docs/ai-chat/overview). A durable session per conversation, with streaming and resumability handled for you.
 
 <CardGroup>
-  <Card title="Chat agent" icon="message-bot" href="/guides/ai-agents/chat-agent">
+  <Card title="Chat agent" icon="message-bot" href="/docs/guides/ai-agents/chat-agent">
     Create a durable, multi-turn chat agent with `chat.agent()`, then add tools to it.
   </Card>
 </CardGroup>
@@ -64,23 +64,23 @@ Build a durable, multi-turn chat agent with [`chat.agent()`](/docs/ai-chat/overv
 These guides will show you how to set up different types of AI agent workflows with Trigger.dev. The examples take inspiration from Anthropic's blog post on [building effective agents](https://www.anthropic.com/research/building-effective-agents).
 
 <CardGroup>
-  <Card title="Prompt chaining" href="/guides/ai-agents/generate-translate-copy">
+  <Card title="Prompt chaining" href="/docs/guides/ai-agents/generate-translate-copy">
     Chain prompts together to generate and translate marketing copy automatically
   </Card>
 
-  <Card title="Routing" href="/guides/ai-agents/route-question">
+  <Card title="Routing" href="/docs/guides/ai-agents/route-question">
     Send questions to different AI models based on complexity analysis
   </Card>
 
-  <Card title="Parallelization" href="/guides/ai-agents/respond-and-check-content">
+  <Card title="Parallelization" href="/docs/guides/ai-agents/respond-and-check-content">
     Simultaneously check for inappropriate content while responding to customer inquiries
   </Card>
 
-  <Card title="Orchestrator" href="/guides/ai-agents/verify-news-article">
+  <Card title="Orchestrator" href="/docs/guides/ai-agents/verify-news-article">
     Coordinate multiple AI workers to verify news article accuracy
   </Card>
 
-  <Card title="Evaluator-optimizer" href="/guides/ai-agents/translate-and-refine">
+  <Card title="Evaluator-optimizer" href="/docs/guides/ai-agents/translate-and-refine">
     Translate text and automatically improve quality through feedback loops
   </Card>
 </CardGroup>

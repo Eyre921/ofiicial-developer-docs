@@ -24,10 +24,10 @@ The `slop` parameter allows flexibility in phrase matching by permitting other w
 The slop value represents the maximum number of position moves allowed to match the phrase.
 
 For example, with `slop: 2`:
-* "wireless headphones" matches (0 moves needed)
-* "wireless bluetooth headphones" matches (1 move: "headphones" shifted 1 position)
-* "wireless bluetooth overhead headphones" matches (2 moves)
-* "wireless bluetooth noise-cancelling headphones" does NOT match (requires 3 moves)
+- "wireless headphones" matches (0 moves needed)
+- "wireless bluetooth headphones" matches (1 move: "headphones" shifted 1 position)
+- "wireless bluetooth overhead headphones" matches (2 moves)
+- "wireless bluetooth noise-cancelling headphones" does NOT match (requires 3 moves)
 
 A slop of 0 requires exact adjacency (the default behavior).
 

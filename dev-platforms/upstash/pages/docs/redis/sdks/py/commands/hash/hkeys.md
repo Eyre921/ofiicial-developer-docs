@@ -1,0 +1,30 @@
+---
+title: "HKEYS"
+source: https://upstash.com/docs/redis/sdks/py/commands/hash/hkeys
+path: docs/redis/sdks/py/commands/hash/hkeys
+---
+
+> Return all field names in the hash stored at key.
+
+## Arguments
+
+<ParamField body="key" type="str" required>
+  The key of the hash.
+</ParamField>
+
+## Response
+
+<ResponseField type="List[str]" required>
+  The field names of the hash
+</ResponseField>
+
+<RequestExample>
+```py Example
+redis.hset("myhash", values={
+    "field1": "Hello",
+    "field2": "World"
+})
+
+assert redis.hkeys("myhash") == ["field1", "field2"]
+```
+</RequestExample>

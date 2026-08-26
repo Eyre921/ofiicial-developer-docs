@@ -9,10 +9,12 @@ This token has access to your logs, messages, schedules, and other resources, bu
 
 You can get your read-only token from the dashboard by clicking "Read-only token" in the Quickstart section:
 
-  <img />
+<Frame>
+  <img src="/img/qstash/readonly-token.png" />
+</Frame>
 
 <Info>
 Note that a read-only token can still access sensitive data such as logs and messages.
 
-If you want to share your token without exposing sensitive data, you can use the ["Redact Fields"](/docs/qstash/howto/redact-fields) feature to hide sensitive data from the logs and resources.
+If you want to share your token without exposing sensitive data, you can use the ["Redact Fields"](/qstash/howto/redact-fields) feature to hide sensitive data from the logs and resources.
 </Info>

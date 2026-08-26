@@ -115,9 +115,9 @@ Go to the [Phone Numbers section](https://elevenlabs.io/app/agents/phone-numbers
 
 Click on "Import a phone number from SIP trunk" button to open the configuration dialog.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4c5f0192265d72a601768a6fa6ce6e11ebd8e115dc58e3b28460f5d0cdb7cabe/assets/images/conversational-ai/sip-trunk-select.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T052438Z&X-Amz-Expires=604800&X-Amz-Signature=e2f6b93fb5847b3e7aee54a44660824e12ae370df85e243d8edee382e9abd66c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Select SIP trunk option" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4c5f0192265d72a601768a6fa6ce6e11ebd8e115dc58e3b28460f5d0cdb7cabe/assets/images/conversational-ai/sip-trunk-select.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T175857Z&X-Amz-Expires=604800&X-Amz-Signature=3ebdd65c7a1fa8df3fb22aa97c4aaefa006319c60988f8c96587f0c108566dac&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Select SIP trunk option" />
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1f50bf163dee6de654322e84960d9e2f8c126a08aed6e90eba35692789ba2088/assets/images/conversational-ai/sip-trunk.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T052438Z&X-Amz-Expires=604800&X-Amz-Signature=a14aeb3834b9c48f28c3b55612bd4e3ceac7986447ecc84066b43476cd4514e4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="SIP trunk configuration dialog" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1f50bf163dee6de654322e84960d9e2f8c126a08aed6e90eba35692789ba2088/assets/images/conversational-ai/sip-trunk.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T175857Z&X-Amz-Expires=604800&X-Amz-Signature=cd6403c3f6d3ce2ce2d69f6e4c59715850ea9783c96e9f71f546111ba1a0aa80&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="SIP trunk configuration dialog" />
 
 #### Enter basic configuration
 
@@ -126,7 +126,7 @@ Complete the basic configuration with the following information:
 * **Label**: A descriptive name for the phone number
 * **Phone Number**: The E.164 formatted phone number to connect (e.g., +15551234567)
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6ea0abfdeeafd24d8e4c480b935eacd25d63896a980b156a1420f362afa22650/assets/images/conversational-ai/sip-trunk-inbound.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T052438Z&X-Amz-Expires=604800&X-Amz-Signature=969bf8bb4c5642e5737d16bb9963be5dda379eda37af4550c2982a7ac884460d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="SIP trunk basic configuration" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6ea0abfdeeafd24d8e4c480b935eacd25d63896a980b156a1420f362afa22650/assets/images/conversational-ai/sip-trunk-inbound.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T175857Z&X-Amz-Expires=604800&X-Amz-Signature=3860898bae360665ba704c8deb9902cf0e8d2d2892fd526b4c5586afa16421a8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="SIP trunk basic configuration" />
 
 #### Configure transport and encryption
 
@@ -141,9 +141,9 @@ Configure the transport protocol and media encryption settings for enhanced secu
   * **Allowed**: Permits encrypted media streams
   * **Required**: Enforces encrypted media streams
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bcb8c57349ba49644015853c1ff375e67700c27385034aec2eaf6f4df6fb1385/assets/images/conversational-ai/siptrunktls.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T052438Z&X-Amz-Expires=604800&X-Amz-Signature=c094936dfd6a6a6b75c9edf5889ef7e9d44c147e15e95758062515db2ec3a724&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Select TLS or TCP transport" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bcb8c57349ba49644015853c1ff375e67700c27385034aec2eaf6f4df6fb1385/assets/images/conversational-ai/siptrunktls.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T175857Z&X-Amz-Expires=604800&X-Amz-Signature=8328cc676e84241d0b0e228d62e9244ef00ecba3378b25eb169456994c3d27d7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Select TLS or TCP transport" />
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b8ab8b378bebe2c72ad3ea4fa84829a8d65a595558c95e2f464b47015d98be92/assets/images/conversational-ai/siptrunkmediaencryption.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T052438Z&X-Amz-Expires=604800&X-Amz-Signature=f6848df7caedec063d243b049e459dcbe3337661b089ea6fe53a3d26ac07d11c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Select media encryption setting" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b8ab8b378bebe2c72ad3ea4fa84829a8d65a595558c95e2f464b47015d98be92/assets/images/conversational-ai/siptrunkmediaencryption.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T175857Z&X-Amz-Expires=604800&X-Amz-Signature=95d0d53adc2407eb54af6559e3cd5e6154caf3f1fb04bffeba4ae888cb92b6f6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Select media encryption setting" />
 
 **Security Best Practice**: Use TLS transport with Required media encryption for maximum security. This ensures both signaling and media are encrypted end-to-end.
 
@@ -161,7 +161,7 @@ Configure where ElevenLabs should send calls for your phone number:
   * **Allowed**: Permits encrypted media streams
   * **Required**: Enforces encrypted media streams
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e544448d70847d436ce6071e384f4edd406d9048d4b8bb9d62e76862e55f2571/assets/images/conversational-ai/sip-outbound.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T052438Z&X-Amz-Expires=604800&X-Amz-Signature=1222138b05d57baa55414445ce2dc30649f48c7dac3e9de410221e9114430549&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="SIP trunk outbound configuration" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e544448d70847d436ce6071e384f4edd406d9048d4b8bb9d62e76862e55f2571/assets/images/conversational-ai/sip-outbound.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T175857Z&X-Amz-Expires=604800&X-Amz-Signature=7ee42ae68639363735323e62d8f4c5df7356645a096f6f0e2a5fbb6ba868690e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="SIP trunk outbound configuration" />
 
 **Security Best Practice**: Use TLS transport with Required media encryption for maximum security. This ensures both signaling and media are encrypted end-to-end.
 
@@ -220,7 +220,7 @@ This fallback ensures compatibility with Twilio's Elastic SIP Trunking without r
 
 ### Processing Flow
 
-Once the relevant metadata is received through any of the supported headers, the `caller_id` and/or `call_id` are available in the [pre-call webhook](/docs/eleven-agents/customization/personalization/twilio-personalization#how-it-works) and as [system dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables#system-dynamic-variables).
+Once the relevant metadata is received through any of the supported headers, the `caller_id` and/or `call_id` are available in the [conversation initiation webhook](/docs/eleven-agents/customization/personalization#conversation-initiation-webhooks) and as [system dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables#system-dynamic-variables).
 
 ### Inbound custom headers as dynamic variables
 

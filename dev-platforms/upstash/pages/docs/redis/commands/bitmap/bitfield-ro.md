@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/bitmap/bitfield-ro
 path: docs/redis/commands/bitmap/bitfield-ro
 ---
 
+> Read bitfield values.
+
 Use `BITFIELD_RO` to read one or more bitfield values without modifying the key.
 
-It is the read-only form of [`BITFIELD`](/docs/redis/commands/bitmap/bitfield) and accepts `GET` operations only, so it is safe to run on replicas and from read-only scripts. Each `GET` names an encoding, `u<bits>` for unsigned or `i<bits>` for signed integers, and a bit offset that can be written as `#<n>` to address the n-th field of that width. The reply holds one integer per `GET`, and any part of a field that lies past the end of the stored string reads as zero.
+It is the read-only form of [`BITFIELD`](/redis/commands/bitmap/bitfield) and accepts `GET` operations only, so it is safe to run on replicas and from read-only scripts. Each `GET` names an encoding, `u<bits>` for unsigned or `i<bits>` for signed integers, and a bit offset that can be written as `#<n>` to address the n-th field of that width. The reply holds one integer per `GET`, and any part of a field that lies past the end of the stored string reads as zero.
 
 ## Syntax
 

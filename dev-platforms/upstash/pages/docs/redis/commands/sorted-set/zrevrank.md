@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zrevrank
 path: docs/redis/commands/sorted-set/zrevrank
 ---
 
+> Get member's reverse rank.
+
 Use `ZREVRANK` to get the position of a member in a sorted set, counting from the highest score.
 
-The rank is zero-based, so the top scoring member has rank `0`, which is the number a leaderboard usually wants to display. `WITHSCORE` returns the score alongside the rank, and the reply is null when the member or the key does not exist. Use [`ZRANK`](/docs/redis/commands/sorted-set/zrank) to count from the lowest score instead.
+The rank is zero-based, so the top scoring member has rank `0`, which is the number a leaderboard usually wants to display. `WITHSCORE` returns the score alongside the rank, and the reply is null when the member or the key does not exist. Use [`ZRANK`](/redis/commands/sorted-set/zrank) to count from the lowest score instead.
 
 ## Syntax
 
@@ -24,7 +26,7 @@ ZREVRANK <key> <member> [WITHSCORE]
 
 ## Important points
 
-* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

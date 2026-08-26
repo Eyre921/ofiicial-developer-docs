@@ -73,7 +73,7 @@ In addition to the variables you choose to declare, Netlify has a number of pre-
 ### Git metadata
 
 - **`REPOSITORY_URL`:** URL for the [linked Git repository]( /build/git-workflows/repo-permissions-linking).
-- **`BRANCH`:** reference to check out after fetching changes from the Git repository. Can be useful for [split testing](/manage/monitoring/split-testing/#expose-branch-information-in-your-site).
+- **`BRANCH`:** reference to check out after fetching changes from the Git repository.
 - **`HEAD`:** name of the head branch received from a Git provider.
 - **`COMMIT_REF`:** reference ID (also known as "SHA" or "hash") of the commit we're building.
 - **`CACHED_COMMIT_REF`:** reference ID (also known as "SHA" or "hash") of the last commit that we built before the current build. When a build runs without cache, `CACHED_COMMIT_REF` will be the same as the `COMMIT_REF`.

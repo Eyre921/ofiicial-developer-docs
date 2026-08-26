@@ -63,4 +63,4 @@ const { status, body } = await context.api.resend.call("Call Resend", {
 
 We'll continue adding more integrations over time. If you'd like to see a specific integration, feel free to contribute to the SDK or contact us with your suggestion.
 
-For detailed guides on usage and configuration, see the [Integrations section](/docs/workflow/integrations/openai).
+For detailed guides on usage and configuration, see the [Integrations section](/workflow/integrations/openai).

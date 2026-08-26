@@ -1,0 +1,29 @@
+---
+title: "GETDEL"
+source: https://upstash.com/docs/redis/sdks/py/commands/string/getdel
+path: docs/redis/sdks/py/commands/string/getdel
+---
+
+> Return the value of the specified key and delete the key.
+
+## Arguments 
+
+<ParamField body="key" type="str" required>
+  The key to get.
+</ParamField>
+
+## Response
+
+<ResponseField  required>
+  The response is the value stored at the key or `None` if the key doesn't exist.
+</ResponseField>
+
+<RequestExample>
+```py Example
+redis.set("key", "value")
+
+assert redis.getdel("key") == "value"
+
+assert redis.get("key") == None
+```
+</RequestExample>

@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/list/llen
 path: docs/redis/commands/list/llen
 ---
 
+> Get list length.
+
 Use `LLEN` to get the number of elements in a list.
 
 The reply is `0` when the key does not exist. The length is maintained by Redis rather than computed on demand, so the command is cheap whatever the size of the list, which makes it the usual way to monitor a queue's backlog.

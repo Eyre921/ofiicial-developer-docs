@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/transactions/overview
 path: docs/redis/commands/transactions/overview
 ---
 
+> Commands for grouping operations into atomic transactions.
+
 <CardGroup cols={2}>
 <Card title="DISCARD" href="/redis/commands/transactions/discard">Discard queued commands</Card>
 <Card title="EXEC" href="/redis/commands/transactions/exec">Execute queued commands</Card>

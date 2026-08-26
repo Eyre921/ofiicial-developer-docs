@@ -1,0 +1,27 @@
+---
+title: "SMEMBERS"
+source: https://upstash.com/docs/redis/sdks/py/commands/set/smembers
+path: docs/redis/sdks/py/commands/set/smembers
+---
+
+> Return all the members of a set
+
+## Arguments
+
+<ParamField body="key" type="str" required>
+  The key of the set.
+</ParamField>
+
+## Response
+
+<ResponseField type="set[str]" required>
+  The members of the set.
+</ResponseField>
+
+<RequestExample>
+```py Example 
+redis.sadd("set", "a", "b", "c"); 
+assert redis.smembers("set") == {"a", "b", "c"}
+```
+
+</RequestExample>

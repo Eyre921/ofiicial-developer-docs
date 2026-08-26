@@ -4,8 +4,7 @@ source: https://upstash.com/docs/workflow/api-reference/dlq/bulk-resume-workflow
 path: docs/workflow/api-reference/dlq/bulk-resume-workflows-from-dlq
 ---
 
-/workflow/openapi.yaml post /v2/workflows/dlq/resume
-When a workflow run fails, it's automatically moved to the DLQ (Dead Letter Queue) where it can be analyzed and resumed. 
+> When a workflow run fails, it's automatically moved to the DLQ (Dead Letter Queue) where it can be analyzed and resumed. 
   The resume feature allows you to continue a failed workflow run from exactly where it failed, without re-executing successfully completed steps.
 
   This is particularly useful for long-running workflows where you don't want to lose progress from successful steps when a single step fails.
@@ -19,3 +18,12 @@ When a workflow run fails, it's automatically moved to the DLQ (Dead Letter Queu
 
     For more details, check out [Handle workflow route code changes](/docs/workflow/howto/changes) page.
   </Note>
+
+
+`POST /v2/workflows/dlq/resume`
+
+<Info>
+  For multi-value filters, a workflow run matches if its value equals any of the given values (OR logic), and multiple filters are combined with AND logic. 
+  
+  Multiple values can be passed either by repeating the query parameter (`label=label_1&label=label_2`) or as a single comma-separated value (`label=label_1,label_2`).
+</Info>

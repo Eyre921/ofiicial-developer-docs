@@ -4,13 +4,15 @@ source: https://upstash.com/docs/redis/commands/search/search-query
 path: docs/redis/commands/search/search-query
 ---
 
+> Search documents with a JSON filter.
+
 Use `SEARCH.QUERY` to search for documents matching a JSON filter.
 
 The filter is a JSON object naming index fields and the values to match, so `'{"name": "headphones", "inStock": true}'` combines conditions with an implicit AND. Text fields are matched with the analysis configured in the schema while other types are matched exactly, and operators such as `$fuzzy`, `$prefix`, `$range`, `$or`, and `$mustNot` cover the cases where plain field matching is not enough. Querying an index that does not exist returns null.
 
 Results come back ordered by relevance score by default. `ORDERBY` sorts by a `FAST` field instead, `LIMIT` and `OFFSET` page through the matches, `SELECT` and `NOCONTENT` cut the payload down to the fields you need, `HIGHLIGHT` wraps the matched terms in tags for display, and `SCOREFUNC` blends numeric fields such as popularity or recency into the relevance score.
 
-See [Querying and filtering](/docs/redis/search/querying) for the full filter syntax and worked examples, and [`SEARCH.COUNT`](/docs/redis/commands/search/search-count) when you only need the number of matches.
+See [Querying and filtering](/redis/search/querying) for the full filter syntax and worked examples, and [`SEARCH.COUNT`](/redis/commands/search/search-count) when you only need the number of matches.
 
 ## Syntax
 
@@ -47,15 +49,15 @@ SEARCH.QUERY <name> '<query>'
   `NOCONTENT` cannot be combined with `SELECT` or `HIGHLIGHT`. `SCOREFUNC` cannot be combined with `ORDERBY`. Inside `MULTI` or `EVAL`, the command requires `NOCONTENT`.
 </Warning>
 
-See [Querying and filtering](/docs/redis/search/querying) for the JSON filter operators and detailed query examples.
+See [Querying and filtering](/redis/search/querying) for the JSON filter operators and detailed query examples.
 
 ## Response
 
 Returns an array of `[key, score, content]` results, or `null` if the index does not exist:
 
-* `key` is the Redis key of the matching document.
-* `score` is the floating-point relevance score.
-* `content` is an array of field-value pairs. JSON indexes return `[["$", "<json_string>"]]`; hash indexes return `[["field", "value"], ...]`.
+- `key` is the Redis key of the matching document.
+- `score` is the floating-point relevance score.
+- `content` is an array of field-value pairs. JSON indexes return `[["$", "<json_string>"]]`; hash indexes return `[["field", "value"], ...]`.
 
 When `NOCONTENT` is used, each result is `[key, score]`. When `SELECT` is used, only fields that exist in the document appear in the content.
 

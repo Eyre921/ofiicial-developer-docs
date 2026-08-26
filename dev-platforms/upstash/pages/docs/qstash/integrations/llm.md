@@ -4,7 +4,7 @@ source: https://upstash.com/docs/qstash/integrations/llm
 path: docs/qstash/integrations/llm
 ---
 
-QStash has built-in support for calling LLM APIs. This allows you to take advantage of QStash features such as retries, callbacks, and batching while using LLM APIs.
+QStash has built-in support for calling LLM APIs. This allows you to take advantage of QStash features such as retries, callbacks, and batching while using LLM APIs. 
 
 QStash is especially useful for LLM processing because LLM response times are often highly variable. When accessing LLM APIs from serverless runtimes, invocation timeouts are a common issue. QStash offers an HTTP timeout of 2 hours, which is sufficient for most LLM use cases. By using callbacks and the workflows, you can easily manage the asynchronous nature of LLM APIs.
 

@@ -18,17 +18,17 @@ Upstash features.
 
 ## Use cases for SRH:
 
-* For usage in your CI pipelines, creating Upstash databases is tedious, or you
+- For usage in your CI pipelines, creating Upstash databases is tedious, or you
   have lots of parallel runs.
-  * See [Using in GitHub Actions](#in-github-actions) on how to quickly get SRH
+  - See [Using in GitHub Actions](#in-github-actions) on how to quickly get SRH
     setup for this context.
-* For usage inside of Kubernetes, or any network whereby the Redis server is not
+- For usage inside of Kubernetes, or any network whereby the Redis server is not
   exposed to the internet.
-  * See [Using in Docker Compose](#via-docker-compose) for the various setup
+  - See [Using in Docker Compose](#via-docker-compose) for the various setup
     options directly using the Docker Container.
-* For local development environments, where you have a local Redis server
+- For local development environments, where you have a local Redis server
   running, or require offline access.
-  * See [Using the Docker Command](#via-docker-command), or
+  - See [Using the Docker Command](#via-docker-command), or
     [Using Docker Compose](#via-docker-compose).
 
 ## Setting up SRH

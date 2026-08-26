@@ -6,19 +6,19 @@ path: docs/box/guides/openclaw-setup
 
 This guide walks you through setting up [OpenClaw](https://docs.openclaw.ai) inside an Upstash Box.
 
-***
+---
 
 ## 1. Create a Box
 
-Create a keep-alive box with default settings. See the [quickstart](/docs/box/overall/quickstart) if you haven't created one before.
+Create a keep-alive box with default settings. See the [quickstart](/box/overall/quickstart) if you haven't created one before.
 
-<img />
+<img src="/img/openclaw-setup/create-box.png" />
 
-***
+---
 
 ## 2. Connect via SSH
 
-Once the box is running, connect to it via SSH from your terminal. The `-L` flag forwards the OpenClaw dashboard port to your local machine. Use your [Box API key](/docs/box/overall/quickstart#1-get-your-api-key) as the password when prompted.
+Once the box is running, connect to it via SSH from your terminal. The `-L` flag forwards the OpenClaw dashboard port to your local machine. Use your [Box API key](/box/overall/quickstart#1-get-your-api-key) as the password when prompted.
 
 ```bash
 ssh -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -L 18789:127.0.0.1:18789 <box-id>@us-east-1.box.upstash.com
@@ -26,7 +26,7 @@ ssh -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -L 18789:127.0.0.1:18789 
 
 The `box-id` is the name of your box (e.g. `right-flamingo-14486`).
 
-***
+---
 
 ## 3. Install OpenClaw
 
@@ -36,7 +36,7 @@ Install the OpenClaw CLI globally inside the box.
 sudo npm install -g openclaw
 ```
 
-***
+---
 
 ## 4. Run Onboarding
 
@@ -48,9 +48,9 @@ openclaw onboard --install-daemon
 
 Follow the prompts to complete your setup. Once onboarding is complete, copy the dashboard URL with its token — you will need it in step 6.
 
-<img />
+<img src="/img/openclaw-setup/control-ui.png" />
 
-***
+---
 
 ## 5. Start the Gateway
 
@@ -61,7 +61,7 @@ openclaw config set gateway.bind lan
 nohup openclaw gateway > gateway.log 2>&1 &
 ```
 
-***
+---
 
 ## 6. Open the Dashboard
 
@@ -73,15 +73,15 @@ http://127.0.0.1:18789/#token=<your-token>
 
 Congratulations! You have successfully set up OpenClaw on your Upstash Box. Your AI gateway is now running and accessible through the secure SSH tunnel.
 
-<img />
+<img src="/img/openclaw-setup/dashboard.png" />
 
-***
+---
 
 ## 7. Set Init Script for Auto-Restart
 
 To ensure the gateway restarts automatically if the box crashes, set the startup command as an init script from the Upstash Console.
 
-<img />
+<img src="/img/openclaw-setup/init-script.png" />
 
 The init script to use:
 
@@ -91,7 +91,7 @@ nohup openclaw gateway > gateway.log 2>&1 &
 
 This command runs automatically whenever the box starts, so your gateway is always available without manual intervention.
 
-***
+---
 
 ## Troubleshooting
 

@@ -49,6 +49,7 @@ updated = index.update(
 print(updated)
 ```
 
+
 Also, you can specify a namespace to operate on. When no namespace
 is provided, the default namespace will be used.
 

@@ -14,7 +14,7 @@ To get started, you can install Flowise locally using npm. Run:
 npm install -g flowise
 ```
 Start Flowise:
-
+    
 ```bash
 npx flowise start
 ```
@@ -23,7 +23,7 @@ Open: http://localhost:3000
 
 You also need to set up Upstash services:
 1. Create a **Vector Index** in the [Upstash Console](https://console.upstash.com/vector). To learn more about index creation, you can check out [this page](https://docs.upstash.com/vector/overall/getstarted).
-2. Create a **Redis Database** in the [Upstash Console](https://console.upstash.com/redis). To learn more about Redis database creation, you can check out [this page](/docs/redis/overall/getstarted).
+2. Create a **Redis Database** in the [Upstash Console](https://console.upstash.com/redis). To learn more about Redis database creation, you can check out [this page](/redis/overall/getstarted).
 
 ## Nodes Overview
 
@@ -33,25 +33,33 @@ Flowise supports multiple Upstash integrations. Below are the nodes and their fu
 
 Use the **Upstash Vector** node to perform semantic search and store document embeddings. Connect the node to document loaders and embedding components for indexing and querying.
 
-    <img width="400" />
+<Frame>
+    <img width="400" src="/img/vector/integrations/flowise/vector-node.png" />
+</Frame>
 
 ### 2. Upstash Redis Cache Node
 
 The **Upstash Redis Cache** node caches LLM responses in a serverless Redis database.
 
-    <img width="400" />
+<Frame>
+    <img width="400" src="/img/vector/integrations/flowise/cache-node.png" />
+</Frame>
 
 ### 3. Upstash Redis-Backed Chat Memory Node
 
 The **Upstash Redis-Backed Chat Memory** node summarizes conversations and stores the memory in Redis. This enables persistent, context-aware interactions across multiple sessions.
 
-    <img width="400" />
+<Frame>
+    <img width="400" src="/img/vector/integrations/flowise/chat-memory-node.png" />
+</Frame>
 
 ## Example Flow
 
 Below is an example flow using Upstash Vector:
 
-    <img />
+<Frame caption="You can use a document loader to upload documents and connect it to the Upstash Vector node for indexing.">
+    <img src="/img/vector/integrations/flowise/flow.png" />
+</Frame>
 
 ## Learn More
 

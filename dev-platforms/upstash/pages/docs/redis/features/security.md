@@ -22,7 +22,7 @@ improves operational safety, so that clients or users accessing Redis are not
 allowed to damage the data or the configuration due to errors or mistakes. Check
 [Redis ACL documentation](https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/). If you
 are using the REST API, you can still benefit from ACLs as explained
-[here](/docs/redis/features/restapi#rest-token-for-acl-users)
+[here](/redis/features/restapi#rest-token-for-acl-users)
 
 ACL is available on all paid databases.
 
@@ -37,7 +37,7 @@ password using Upstash console.
 ## Encryption at Rest
 
 Encryption at Rest encrypts the block storage where your data is persisted and
-stored. It is available with [Prod Pack](/docs/redis/overall/enterprise#prod-pack-features) add-on.
+stored. It is available with [Prod Pack](/redis/overall/enterprise#prod-pack-features) add-on.
 
 ## Application Level Encryption
 

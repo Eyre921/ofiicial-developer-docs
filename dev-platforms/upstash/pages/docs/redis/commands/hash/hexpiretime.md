@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/hash/hexpiretime
 path: docs/redis/commands/hash/hexpiretime
 ---
 
+> Get field expiry as timestamp.
+
 Use `HEXPIRETIME` to read the absolute expiration time of hash fields, as Unix timestamps in seconds.
 
-The reply holds one value per requested field, in order: the timestamp when the field expires, `-1` when the field exists but has no expiration, and `-2` when the field or the key does not exist. Use [`HTTL`](/docs/redis/commands/hash/httl) when you want the remaining lifetime instead of the deadline, and [`HPEXPIRETIME`](/docs/redis/commands/hash/hpexpiretime) for millisecond precision.
+The reply holds one value per requested field, in order: the timestamp when the field expires, `-1` when the field exists but has no expiration, and `-2` when the field or the key does not exist. Use [`HTTL`](/redis/commands/hash/httl) when you want the remaining lifetime instead of the deadline, and [`HPEXPIRETIME`](/redis/commands/hash/hpexpiretime) for millisecond precision.
 
 ## Syntax
 
@@ -23,7 +25,7 @@ HEXPIRETIME <key> FIELDS <numfields> <field> [<field> ...]
 
 ## Important points
 
-* Negative integer replies are sentinel values, not durations or timestamps; see the response description for missing or persistent data.
+- Negative integer replies are sentinel values, not durations or timestamps; see the response description for missing or persistent data.
 
 ## Response
 

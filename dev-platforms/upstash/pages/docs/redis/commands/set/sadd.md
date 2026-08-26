@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/set/sadd
 path: docs/redis/commands/set/sadd
 ---
 
+> Add members to a set.
+
 Use `SADD` to add one or more members to a set, creating it when the key does not exist.
 
 A set holds unique, unordered members, so adding a member that is already there changes nothing, and the reply counts only the members that were actually new. That count is what makes the command a cheap deduplicator: a reply of `1` means this caller was the first to see the value, which is enough to decide whether to process an event or ignore it as a repeat.

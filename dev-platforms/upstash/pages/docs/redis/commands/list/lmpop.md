@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/list/lmpop
 path: docs/redis/commands/list/lmpop
 ---
 
+> Pop from the first non-empty list.
+
 Use `LMPOP` to pop elements from the first of several lists that is not empty.
 
 `<numkeys>` states how many keys follow, `LEFT` or `RIGHT` chooses the end to pop from, and `COUNT` sets how many elements to take, defaulting to one. Keys are examined in the order given and only the first non-empty one is touched, which is exactly what a priority queue needs: list the high priority queue first and it is drained before the others are looked at.
 
-The reply names the key that was popped from together with the elements, so a caller working with several queues knows where the work came from. When every key is empty the reply is null; use [`BLMPOP`](/docs/redis/commands/list/blmpop) to wait instead.
+The reply names the key that was popped from together with the elements, so a caller working with several queues knows where the work came from. When every key is empty the reply is null; use [`BLMPOP`](/redis/commands/list/blmpop) to wait instead.
 
 ## Syntax
 

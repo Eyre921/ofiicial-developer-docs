@@ -4,7 +4,7 @@ source: https://upstash.com/docs/workflow/agents/patterns/orchestrator-workers
 path: docs/workflow/agents/patterns/orchestrator-workers
 ---
 
-<img />
+<img src="/img/workflow/agents/diagram/orchestrator-diagram.png" />
 
 This workflow uses an orchestrator to direct multiple worker agents to handle different subtasks, then synthesizes their outputs.
 
@@ -60,9 +60,9 @@ export const { POST } = serve(async (context) => {
 });
 ```
 
-If you wish to manually use the model results instead of utilizing a [manager LLM](/docs/workflow/agents/overview#multi-agents) as we did in this example, see the [parallelization example](/docs/workflow/agents/patterns/parallelization)
+If you wish to manually use the model results instead of utilizing a [manager LLM](/workflow/agents/overview#multi-agents) as we did in this example, see the [parallelization example](/workflow/agents/patterns/parallelization)
 
-<img />
+<img src="/img/workflow/agents/logs/logs-manager.png" />
 
 In response to the prompt, the agents create the following response:
 
@@ -73,7 +73,7 @@ In response to the prompt, the agents create the following response:
 A: Quantum mechanics is a fundamental theory in physics that describes the behavior of nature at the atomic and subatomic levels. It serves as the foundation for all quantum physics, including quantum chemistry, quantum field theory, quantum technology, and quantum information science.
 
 **Q: What are some key principles of quantum mechanics?**
-A:
+A: 
 1. **Wave-Particle Duality**: Particles exhibit both wave-like and particle-like properties.
 2. **Uncertainty Principle**: Certain pairs of physical properties, like position and momentum, cannot be simultaneously measured with arbitrary precision.
 3. **Quantum Superposition**: A quantum system can exist in multiple states at once until it is measured.

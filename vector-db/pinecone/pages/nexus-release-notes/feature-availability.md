@@ -1,10 +1,10 @@
 ---
-title: "Feature availability"
+title: "Pinecone Nexus feature availability"
 source: https://docs.pinecone.io/nexus-release-notes/feature-availability
 path: nexus-release-notes/feature-availability
 ---
 
-Pinecone feature availability across public preview, general availability, and limited availability releases, with links to release notes.
+Pinecone Nexus feature availability, explaining public preview, limited availability, and general availability stages with release links.
 
 This page defines the different availability phases of a feature in Pinecone.
 

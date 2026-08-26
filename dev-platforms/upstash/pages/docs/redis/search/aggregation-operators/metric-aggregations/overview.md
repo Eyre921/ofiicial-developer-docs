@@ -35,7 +35,7 @@ The `field` value must be a string pointing to a FAST field in your schema.
 
 ### Behavior Notes
 
-* Metric operators require a `field`.
-* The field must be `FAST` in your schema.
-* Metric operators do not support nested `$aggs`.
-* For many metric operators, `missing` lets you provide a fallback value for documents where the field does not exist.
+- Metric operators require a `field`.
+- The field must be `FAST` in your schema.
+- Metric operators do not support nested `$aggs`.
+- For many metric operators, `missing` lets you provide a fallback value for documents where the field does not exist.

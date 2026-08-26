@@ -73,6 +73,7 @@ If `allow_async` is omitted or `false`, this endpoint keeps its existing synchro
 | `validation_error` | Both `insert_content.after` and `insert_content.position` are provided. Use only one insertion target.                             |
 | `validation_error` | The operation would delete child pages or databases and `allow_deleting_content` is not `true`.                                    |
 | `validation_error` | An `old_str` in `update_content` matches multiple locations and `replace_all_matches` is not `true`.                               |
+| `validation_error` | An `old_str` in `update_content` is an empty string.                                                                               |
 | `validation_error` | The provided ID is a database or non-page block.                                                                                   |
 | `validation_error` | The target page is a synced page. Synced pages cannot be updated.                                                                  |
 | `object_not_found` | The page does not exist or the connection does not have access to it.                                                              |

@@ -14,8 +14,8 @@ In this guide, we'll look at best practices and caveats for using Upstash Workfl
 
 Your workflow endpoint will be called multiple times during a workflow run. Therefore:
 
-* Place your business logic code inside the `context.run` function for each step
-* Code outside `context.run` only serves to connect steps
+- Place your business logic code inside the `context.run` function for each step
+- Code outside `context.run` only serves to connect steps
 
 Example:
 
@@ -136,7 +136,7 @@ async def example(context: AsyncWorkflowContext[str]) -> None:
 
 Because your workflow endpoint is called multiple times, `result` will be unitialized when the endpoint is called again to run `step-2`.
 
-If you are curious about why an endpoint is called multiple times, see [how Workflow works](/docs/workflow/basics/how).
+If you are curious about why an endpoint is called multiple times, see [how Workflow works](/workflow/basics/how).
 
 ## Avoiding Common Pitfalls
 
@@ -144,9 +144,9 @@ If you are curious about why an endpoint is called multiple times, see [how Work
 
 A workflow endpoint should always produce the same results, even if it's called multiple times. Avoid:
 
-* Non-idempotent functions
-* Time-dependent code
-* Randomness
+- Non-idempotent functions
+- Time-dependent code
+- Randomness
 
 Example of what to avoid:
 
@@ -351,10 +351,10 @@ Every workflow must include at least one step execution with `context.run`. If n
 ```typescript ❌ Missing steps - TypeScript
 export const { POST } = serve<string>(async (context) => {
   const input = context.requestPayload
-
+  
   // 👇 Problem: No context.run call
   console.log("Processing input:", input)
-
+  
   // This workflow will fail with "Failed to authenticate Workflow request."
 })
 ```
@@ -362,7 +362,7 @@ export const { POST } = serve<string>(async (context) => {
 ```typescript ✅ Correct - TypeScript
 export const { POST } = serve<string>(async (context) => {
   const input = context.requestPayload
-
+  
   // 👇 At least one step is required
   await context.run("dummy-step", async () => {
     return
@@ -374,10 +374,10 @@ export const { POST } = serve<string>(async (context) => {
 @serve.post("/api/example")
 async def example(context: AsyncWorkflowContext[str]) -> None:
     input = context.request_payload
-
+    
     # 👇 Problem: No context.run call
     print("Processing input:", input)
-
+    
     # This workflow will fail with "Failed to authenticate Workflow request."
 ```
 
@@ -385,11 +385,11 @@ async def example(context: AsyncWorkflowContext[str]) -> None:
 @serve.post("/api/example")
 async def example(context: AsyncWorkflowContext[str]) -> None:
     input = context.request_payload
-
+    
     # 👇 At least one step is required
     async def _dummy_step():
         return
-
+        
     await context.run("dummy-step", _dummy_step)
 ```
 
@@ -399,7 +399,7 @@ Even for the placeholder implementations, you must include one dummy step for th
 
 ### Avoid Promise.any
 
-In workflow-js, you can use [`Promise.all` to run steps in parallel](/docs/workflow/howto/parallel-runs). However, a similar method, [`Promise.any`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any), is not supported for workflow steps.
+In workflow-js, you can use [`Promise.all` to run steps in parallel](/workflow/howto/parallel-runs). However, a similar method, [`Promise.any`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any), is not supported for workflow steps.
 
 While `Promise.all` works seamlessly, `Promise.any` does not currently function with workflow steps. We are exploring the possibility of adding support for `Promise.any` in the future.
 

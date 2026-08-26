@@ -6,12 +6,14 @@ path: docs/workflow/features/flow-control/monitor
 
 You can monitor wait list size of your flow control key's from the console `FlowControl` tab. The console also allows you to pin, unpin, and reset rate for flow control keys directly.
 
-  <img />
+<Frame>
+  <img src="/img/qstash/flowcontrol.png" />
+</Frame>
 
 Also you can get the same info using the REST API.
-* [List All Flow Control Keys](/docs/workflow/api-reference/flow-control/list-flow-control-keys).
-* [Single Flow Control Key](/docs/workflow/api-reference/flow-control/get-flow-control-key).
-* [Global Parallelism](/docs/workflow/api-reference/flow-control/get-global-parallelism).
+- [List All Flow Control Keys](/workflow/api-reference/flow-control/list-flow-control-keys).
+- [Single Flow Control Key](/workflow/api-reference/flow-control/get-flow-control-key).
+- [Global Parallelism](/workflow/api-reference/flow-control/get-global-parallelism).
 
 ## Manage
 
@@ -19,4 +21,4 @@ You can manage flow control keys by pausing/resuming delivery, pinning/unpinning
 
 These operations are available via the SDK, REST API, or directly from the **Flow Control** tab in the [Upstash Console](https://console.upstash.com).
 
-Since Upstash Workflow uses QStash under the hood, flow control management is done through the QStash client. See the [QStash Flow Control Management API](/docs/qstash/features/flowcontrol#management-api) for full details and code examples.
+Since Upstash Workflow uses QStash under the hood, flow control management is done through the QStash client. See the [QStash Flow Control Management API](/qstash/features/flowcontrol#management-api) for full details and code examples.

@@ -61,7 +61,7 @@ Successful Response
 
 ```json
 {
-  "voice_description": "A sassy squeaky mouse"
+  "voice_description": "A sassy squeaky mouse with a playful and energetic tone, perfect for animated characters."
 }
 ```
 
@@ -71,14 +71,14 @@ Successful Response
 {
   "previews": [
     {
-      "audio_base_64": "string",
-      "generated_voice_id": "string",
-      "media_type": "string",
-      "duration_secs": 1.1,
-      "language": "string"
+      "audio_base_64": "UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=",
+      "generated_voice_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
+      "media_type": "audio/mp3",
+      "duration_secs": 12.5,
+      "language": "en-US"
     }
   ],
-  "text": "string"
+  "text": "Every act of kindness, no matter how small, carries value and can make a difference, as no gesture of goodwill is ever wasted."
 }
 ```
 
@@ -90,7 +90,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.textToVoice.createPreviews({
-        voiceDescription: "A sassy squeaky mouse",
+        voiceDescription: "A sassy squeaky mouse with a playful and energetic tone, perfect for animated characters.",
     });
 }
 main();
@@ -103,7 +103,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.text_to_voice.create_previews(
-    voice_description="A sassy squeaky mouse",
+    voice_description="A sassy squeaky mouse with a playful and energetic tone, perfect for animated characters.",
 )
 
 ```
@@ -122,7 +122,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/text-to-voice/create-previews"
 
-	payload := strings.NewReader("{\n  \"voice_description\": \"A sassy squeaky mouse\"\n}")
+	payload := strings.NewReader("{\n  \"voice_description\": \"A sassy squeaky mouse with a playful and energetic tone, perfect for animated characters.\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -150,7 +150,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"voice_description\": \"A sassy squeaky mouse\"\n}"
+request.body = "{\n  \"voice_description\": \"A sassy squeaky mouse with a playful and energetic tone, perfect for animated characters.\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -162,7 +162,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/text-to-voice/create-previews")
   .header("Content-Type", "application/json")
-  .body("{\n  \"voice_description\": \"A sassy squeaky mouse\"\n}")
+  .body("{\n  \"voice_description\": \"A sassy squeaky mouse with a playful and energetic tone, perfect for animated characters.\"\n}")
   .asString();
 ```
 
@@ -174,7 +174,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/text-to-voice/create-previews', [
   'body' => '{
-  "voice_description": "A sassy squeaky mouse"
+  "voice_description": "A sassy squeaky mouse with a playful and energetic tone, perfect for animated characters."
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -190,7 +190,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/text-to-voice/create-previews");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"voice_description\": \"A sassy squeaky mouse\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"voice_description\": \"A sassy squeaky mouse with a playful and energetic tone, perfect for animated characters.\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -198,7 +198,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["voice_description": "A sassy squeaky mouse"] as [String : Any]
+let parameters = ["voice_description": "A sassy squeaky mouse with a playful and energetic tone, perfect for animated characters."] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

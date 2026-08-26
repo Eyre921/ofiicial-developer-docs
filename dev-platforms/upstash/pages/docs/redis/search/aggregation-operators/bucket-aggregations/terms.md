@@ -83,7 +83,7 @@ SEARCH.AGGREGATE products '{}' '{"by_category": {"$terms": {"field": "category",
 }
 ```
 
-* `sumOtherDocCount` is the number of matching documents that fell outside the returned buckets.
+- `sumOtherDocCount` is the number of matching documents that fell outside the returned buckets.
 
 ### Count accuracy
 
@@ -91,4 +91,4 @@ SEARCH.AGGREGATE products '{}' '{"by_category": {"$terms": {"field": "category",
 `$terms` bucket counts are **approximate**. Terms are tallied per index segment and then merged, so a term's `docCount` can be slightly off, especially for terms near the `size` cutoff.
 </Warning>
 
-`docCountErrorUpperBound` reports the maximum possible error on the returned counts (set `showTermDocCountError: true` for per-bucket values), and `sumOtherDocCount` is the number of matching documents not included in the returned buckets. Raising `segmentSize` reduces the error at the cost of more work per query. For an exact count of a specific term, use [`SEARCH.COUNT`](/docs/redis/commands/search/search-count) instead of reading it from a bucket.
+`docCountErrorUpperBound` reports the maximum possible error on the returned counts (set `showTermDocCountError: true` for per-bucket values), and `sumOtherDocCount` is the number of matching documents not included in the returned buckets. Raising `segmentSize` reduces the error at the cost of more work per query. For an exact count of a specific term, use [`SEARCH.COUNT`](/redis/commands/search/search-count) instead of reading it from a bucket.

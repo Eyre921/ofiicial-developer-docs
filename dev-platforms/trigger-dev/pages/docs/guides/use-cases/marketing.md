@@ -13,15 +13,15 @@ Build marketing workflows from email drip sequences to orchestrating full multi-
 ## Featured examples
 
 <CardGroup>
-  <Card title="Email sequences with Resend" icon="book" href="/guides/examples/resend-email-sequence">
+  <Card title="Email sequences with Resend" icon="book" href="/docs/guides/examples/resend-email-sequence">
     Send multi-day email sequences with wait delays between messages.
   </Card>
 
-  <Card title="Product image generator" icon="book" href="/guides/example-projects/product-image-generator">
+  <Card title="Product image generator" icon="book" href="/docs/guides/example-projects/product-image-generator">
     Transform product photos into professional marketing images using Replicate.
   </Card>
 
-  <Card title="Human-in-the-loop workflow" icon="book" href="/guides/example-projects/human-in-the-loop-workflow">
+  <Card title="Human-in-the-loop workflow" icon="book" href="/docs/guides/example-projects/human-in-the-loop-workflow">
     Approve marketing content using a human-in-the-loop workflow.
   </Card>
 </CardGroup>
@@ -127,19 +127,19 @@ Build marketing workflows from email drip sequences to orchestrating full multi-
 ## Featured use cases
 
 <CardGroup>
-  <Card title="Data processing & ETL workflows" icon="database" href="/guides/use-cases/data-processing-etl">
+  <Card title="Data processing & ETL workflows" icon="database" href="/docs/guides/use-cases/data-processing-etl">
     Build complex data pipelines that process large datasets without timeouts.
   </Card>
 
-  <Card title="Media processing workflows" icon="film" href="/guides/use-cases/media-processing">
+  <Card title="Media processing workflows" icon="film" href="/docs/guides/use-cases/media-processing">
     Batch process videos, images, audio, and documents with no execution time limits.
   </Card>
 
-  <Card title="AI media generation workflows" icon="wand-magic-sparkles" href="/guides/use-cases/media-generation">
+  <Card title="AI media generation workflows" icon="wand-magic-sparkles" href="/docs/guides/use-cases/media-generation">
     Generate images, videos, audio, documents and other media using AI models.
   </Card>
 
-  <Card title="Marketing workflows" icon="bullhorn" href="/guides/use-cases/marketing">
+  <Card title="Marketing workflows" icon="bullhorn" href="/docs/guides/use-cases/marketing">
     Build drip campaigns, create marketing content, and orchestrate multi-channel campaigns.
   </Card>
 </CardGroup>

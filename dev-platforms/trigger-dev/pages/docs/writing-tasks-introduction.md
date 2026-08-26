@@ -10,8 +10,8 @@ Before digging deeper into the details of writing tasks, you should read the [fu
 
 ## Writing tasks
 
-| Topic                                        | Description                                                                                         |
-| :------------------------------------------- | :-------------------------------------------------------------------------------------------------- |
+| Topic                                             | Description                                                                                         |
+| :------------------------------------------------ | :-------------------------------------------------------------------------------------------------- |
 | [Logging](/docs/logging)                          | View and send logs and traces from your tasks.                                                      |
 | [Errors & retrying](/docs/errors-retrying)        | How to deal with errors and write reliable tasks.                                                   |
 | [Wait](/docs/wait)                                | Wait for periods of time or for external events to occur before continuing.                         |
@@ -33,22 +33,22 @@ Before digging deeper into the details of writing tasks, you should read the [fu
 ## Our library of examples, guides and projects
 
 <CardGroup>
-  <Card title="Walkthrough guides" icon="book" href="/guides/introduction">
+  <Card title="Walkthrough guides" icon="book" href="/docs/guides/introduction">
     Detailed guides for setting up Trigger.dev with popular frameworks and services, including
     Next.js, Remix, Supabase, Stripe and more.
   </Card>
 
-  <Card title="Example tasks" icon="code" href="/guides/introduction#example-tasks">
+  <Card title="Example tasks" icon="code" href="/docs/guides/introduction#example-tasks">
     Task code you can copy and paste to use in your own projects, including OpenAI, Vercel AI SDK,
     Deepgram, FFmpeg, Puppeteer, Stripe, Supabase and more.
   </Card>
 
-  <Card title="Webhook guides" icon="code" href="/guides/frameworks/webhooks-guides-overview">
+  <Card title="Webhook guides" icon="code" href="/docs/guides/frameworks/webhooks-guides-overview">
     Learn how to trigger tasks from webhooks, including Next.js, Remix, Supabase and Stripe and
     more.
   </Card>
 
-  <Card title="Example projects" icon="GitHub" href="/guides/introduction#example-projects">
+  <Card title="Example projects" icon="GitHub" href="/docs/guides/introduction#example-projects">
     Full-stack projects demonstrating how to use Trigger.dev. Fork them in GitHub as a starting
     point for your own projects.
   </Card>

@@ -4,5 +4,6 @@ source: https://upstash.com/docs/qstash/api-reference/flow-control/get-global-pa
 path: docs/qstash/api-reference/flow-control/get-global-parallelism
 ---
 
-/qstash/openapi.yaml get /v2/globalParallelism
-Returns the current global parallelism usage across all flow control keys
+> Returns the current global parallelism usage across all flow control keys
+
+`GET /v2/globalParallelism`

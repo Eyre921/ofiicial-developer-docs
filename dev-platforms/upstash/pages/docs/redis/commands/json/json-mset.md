@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/json/json-mset
 path: docs/redis/commands/json/json-mset
 ---
 
+> Set values in multiple keys.
+
 Use `JSON.MSET` to set values at paths in several JSON documents in one atomic call.
 
 Each triple gives a key, a path, and a value, and missing keys are created. Either every write is applied or none is, with no other command running in between, which is what makes it the right tool for documents that must stay consistent with each other. The reply is `OK`.
@@ -22,8 +24,8 @@ JSON.MSET <key> <path> <value> [key path value ...]
 
 ## Important points
 
-* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

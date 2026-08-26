@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/overview
 path: docs/redis/commands/overview
 ---
 
+> Browse the Redis commands supported by Upstash, organized by category.
+
 Upstash supports Redis commands over both native Redis TCP and HTTPS REST. Choose a category to browse its supported commands.
 
 <CardGroup cols={2}>

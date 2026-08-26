@@ -1,0 +1,32 @@
+---
+title: "HGET"
+source: https://upstash.com/docs/redis/sdks/py/commands/hash/hget
+path: docs/redis/sdks/py/commands/hash/hget
+---
+
+> Retrieves the value of a hash field.
+
+## Arguments
+
+<ParamField body="key" type="str" required>
+  The key to get.
+</ParamField>
+
+<ParamField body="field" type="str" required>
+ The field to get.
+</ParamField>
+
+## Response
+
+<ResponseField  type="Optional[str]">
+  The value of the field, or `null`, when field is not present in the hash or key does not exist.
+</ResponseField>
+
+<RequestExample>
+```py Example
+redis.hset("myhash", "field1", "Hello")
+
+assert redis.hget("myhash", "field1") == "Hello"
+assert redis.hget("myhash", "field2") is None
+```
+</RequestExample>

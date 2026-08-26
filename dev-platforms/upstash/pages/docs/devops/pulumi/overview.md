@@ -46,8 +46,8 @@ go get github.com/upstash/pulumi-upstash/sdk/go/...
 
 The following configuration points are available for the `upstash` provider:
 
-* `upstash:apiKey` (environment: `UPSTASH_API_KEY`) - the API key for `upstash`. Can be obtained from the [console](https://console.upstash.com).
-* `upstash:email` (environment: `UPSTASH_EMAIL`) - owner email of the resources
+- `upstash:apiKey` (environment: `UPSTASH_API_KEY`) - the API key for `upstash`. Can be obtained from the [console](https://console.upstash.com).
+- `upstash:email` (environment: `UPSTASH_EMAIL`) - owner email of the resources
 
 ## Some Examples
 

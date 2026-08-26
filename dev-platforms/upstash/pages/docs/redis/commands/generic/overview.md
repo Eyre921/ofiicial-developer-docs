@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/generic/overview
 path: docs/redis/commands/generic/overview
 ---
 
+> Commands for managing keys, expiration, serialization, and database-wide key operations.
+
 <CardGroup cols={2}>
 <Card title="COPY" href="/redis/commands/generic/copy">Copy a key to another key</Card>
 <Card title="DEL" href="/redis/commands/generic/del">Delete one or more keys</Card>

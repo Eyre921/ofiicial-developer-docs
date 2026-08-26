@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/json/json-get
 path: docs/redis/commands/json/json-get
 ---
 
+> Get JSON values.
+
 Use `JSON.GET` to read one or more values from a JSON document.
 
 Without a path the whole document is returned. The reply shape depends on the path syntax: a path starting with `$` is a JSONPath and always returns an array with one entry per match, so an empty array means nothing matched, while the legacy dot syntax returns the value itself and reports an error when the path does not exist. Passing several paths returns an object keyed by the path expressions, which is a cheap way to pull a few unrelated branches of a large document in one call.
@@ -32,8 +34,8 @@ JSON.GET <key>
 
 ## Important points
 
-* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

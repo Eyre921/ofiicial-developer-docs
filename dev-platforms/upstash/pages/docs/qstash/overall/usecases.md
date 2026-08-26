@@ -39,7 +39,7 @@ await client.publishJSON({
 ```
 
 If the job itself is longer than a single function invocation allows, use
-[callbacks](/docs/qstash/features/callbacks) so QStash delivers the response to
+[callbacks](/qstash/features/callbacks) so QStash delivers the response to
 another endpoint once it's ready, instead of your caller blocking on it.
 
 <Card
@@ -54,7 +54,7 @@ another endpoint once it's ready, instead of your caller blocking on it.
 
 Anything you would put in a cron job — nightly reports, resetting billing
 cycles, expiring trials, syncing a search index, warming a cache — becomes a
-[schedule](/docs/qstash/features/schedules) that calls your endpoint on a cron
+[schedule](/qstash/features/schedules) that calls your endpoint on a cron
 expression.
 
 ```typescript
@@ -65,7 +65,7 @@ await client.schedules.create({
 ```
 
 Schedules run in UTC by default and support
-[timezones](/docs/qstash/features/schedules#timezones). Unlike platform-native cron
+[timezones](/qstash/features/schedules#timezones). Unlike platform-native cron
 (such as Vercel Cron), schedules are not tied to a deploy, are not limited to
 one per plan tier, and retry on failure.
 
@@ -77,12 +77,12 @@ directions:
 **Receiving webhooks.** Point Stripe, GitHub, Shopify, or Clerk at a QStash
 publish URL instead of your endpoint directly. QStash absorbs the burst, retries
 if your app is down or mid-deploy, and applies whatever delay, timeout, or
-[flow control](/docs/qstash/features/flowcontrol) you configure. The provider gets a
+[flow control](/qstash/features/flowcontrol) you configure. The provider gets a
 fast 2xx even when your processing is slow.
 
 **Sending webhooks.** If you deliver webhooks to your own customers, QStash
 handles the part nobody wants to build: exponential retries, per-customer
-concurrency limits, and a [dead letter queue](/docs/qstash/features/dlq) for
+concurrency limits, and a [dead letter queue](/qstash/features/dlq) for
 endpoints that stay down.
 
 <CardGroup cols={2}>
@@ -104,7 +104,7 @@ One event often needs to reach several places: a purchase should trigger a
 receipt email, a Slack notification, an analytics event, and a warehouse
 webhook.
 
-Publish once to a [URL Group](/docs/qstash/features/url-groups) and QStash creates an
+Publish once to a [URL Group](/qstash/features/url-groups) and QStash creates an
 independent, independently-retried delivery for each subscribed endpoint. Adding
 or removing a consumer is a URL Group change — no redeploy of the producer.
 
@@ -122,7 +122,7 @@ and PagerDuty.
 
 When you call an API with a quota — OpenAI, Resend, Shopify, a partner's
 internal service — the hard part is not calling it, it's not calling it too
-often. [Flow Control](/docs/qstash/features/flowcontrol) lets QStash hold messages
+often. [Flow Control](/qstash/features/flowcontrol) lets QStash hold messages
 back for you, by request rate, by concurrency, or both.
 
 ```typescript
@@ -149,11 +149,11 @@ yourself. Limits apply per key, so the same key can span multiple URLs.
 
 LLM calls are slow, variable, and expensive to retry by hand — a bad match for a
 10-second serverless timeout. QStash gives them a 2-hour HTTP timeout, delivers
-the response to a [callback](/docs/qstash/features/callbacks) endpoint when it's
-done, and can [batch](/docs/qstash/features/batch) many requests in one publish.
+the response to a [callback](/qstash/features/callbacks) endpoint when it's
+done, and can [batch](/qstash/features/batch) many requests in one publish.
 
 There are built-in integrations for [OpenAI-compatible
-providers](/docs/qstash/integrations/llm) and [Anthropic](/docs/qstash/integrations/anthropic),
+providers](/qstash/integrations/llm) and [Anthropic](/qstash/integrations/anthropic),
 so QStash calls the provider for you and you only handle the callback.
 
 Combined with flow control, this is a practical way to run bulk embedding jobs,
@@ -166,7 +166,7 @@ Some work is defined by *when* it should happen: a welcome email 10 minutes
 after signup, a trial-ending reminder 3 days out, an abandoned-cart nudge, a
 retry of a payment tomorrow.
 
-[Delay](/docs/qstash/features/delay) a message by a duration or to an absolute
+[Delay](/qstash/features/delay) a message by a duration or to an absolute
 timestamp, and QStash holds it until then — up to 7 days on the free plan and up
 to a year on pay-as-you-go.
 
@@ -178,7 +178,7 @@ await client.publishJSON({
 });
 ```
 
-With the [Resend integration](/docs/qstash/integrations/resend) you can skip the
+With the [Resend integration](/qstash/integrations/resend) you can skip the
 endpoint entirely and have QStash send the email itself at the scheduled time.
 
 <CardGroup cols={2}>
@@ -204,7 +204,7 @@ Some pipelines break if messages overtake each other — applying a sequence of
 updates to the same record, processing a customer's events in order, or writing
 to a system that can't handle concurrent writes.
 
-[Queues](/docs/qstash/features/queues) deliver messages one at a time in FIFO order.
+[Queues](/qstash/features/queues) deliver messages one at a time in FIFO order.
 The next message only becomes active after the current one is delivered, has
 exhausted its retries, or its callback has finished.
 
@@ -245,9 +245,9 @@ refreshing a cache, and rebuilding a search index.
 
 Beyond individual jobs, QStash works as the messaging layer between your
 services: producers publish, QStash guarantees
-[at-least-once delivery](/docs/qstash/features/at-least-once), and consumers are just
-HTTP endpoints. [Deduplication](/docs/qstash/features/deduplication) keeps retries
-from double-processing, [signature verification](/docs/qstash/features/security)
+[at-least-once delivery](/qstash/features/at-least-once), and consumers are just
+HTTP endpoints. [Deduplication](/qstash/features/deduplication) keeps retries
+from double-processing, [signature verification](/qstash/features/security)
 proves a request came from QStash, and the DLQ holds anything that never
 succeeded.
 
@@ -266,12 +266,12 @@ out of long-running function invocations and let QStash drive short, cheap ones.
 
 If your task has several dependent steps — call an API, wait for a human,
 branch, then call another — chaining QStash messages by hand gets awkward.
-[Upstash Workflow](/docs/workflow/getstarted) is built on QStash and gives you
+[Upstash Workflow](/workflow/getstarted) is built on QStash and gives you
 durable, resumable functions where each step is checkpointed automatically.
 
 <Tip href="/workflow/getstarted">
 Use QStash directly for single messages, schedules, and fan-out. Reach for
-[Upstash Workflow](/docs/workflow/getstarted) when the logic spans multiple dependent
+[Upstash Workflow](/workflow/getstarted) when the logic spans multiple dependent
 steps.
 </Tip>
 
@@ -325,23 +325,3 @@ steps.
 More posts are on the [QStash blog](https://upstash.com/blog/tag/qstash). If
 there's a use case you'd like documented, tell us on
 [Discord](https://upstash.com/discord) or [X](https://x.com/upstash).
-
-- [AWS Lambda (Node)](https://upstash.com/docs/qstash/quickstarts/aws-lambda/nodejs.md)
-- [AWS Lambda (Python)](https://upstash.com/docs/qstash/quickstarts/aws-lambda/python.md)
-- [Cloudflare Workers](https://upstash.com/docs/qstash/quickstarts/cloudflare-workers.md)
-- [Deno Deploy](https://upstash.com/docs/qstash/quickstarts/deno-deploy.md)
-- [Golang](https://upstash.com/docs/qstash/quickstarts/fly-io/go.md)
-- [Python on Vercel](https://upstash.com/docs/qstash/quickstarts/python-vercel.md)
-- [Next.js](https://upstash.com/docs/qstash/quickstarts/vercel-nextjs.md)
-- [Periodic Data Updates](https://upstash.com/docs/qstash/recipes/periodic-data-updates.md)
-- [DLQ](https://upstash.com/docs/qstash/sdks/py/examples/dlq.md)
-- [Events](https://upstash.com/docs/qstash/sdks/py/examples/events.md)
-- [Flow Control](https://upstash.com/docs/qstash/sdks/py/examples/flow-control.md)
-- [Keys](https://upstash.com/docs/qstash/sdks/py/examples/keys.md)
-- [Messages](https://upstash.com/docs/qstash/sdks/py/examples/messages.md)
-- [Overview](https://upstash.com/docs/qstash/sdks/py/examples/overview.md)
-- [Publish](https://upstash.com/docs/qstash/sdks/py/examples/publish.md)
-- [Queues](https://upstash.com/docs/qstash/sdks/py/examples/queues.md)
-- [Receiver](https://upstash.com/docs/qstash/sdks/py/examples/receiver.md)
-- [Schedules](https://upstash.com/docs/qstash/sdks/py/examples/schedules.md)
-- [URL Groups](https://upstash.com/docs/qstash/sdks/py/examples/url-groups.md)

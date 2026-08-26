@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/set/smembers
 path: docs/redis/commands/set/smembers
 ---
 
+> Get all set members.
+
 Use `SMEMBERS` to get every member of a set.
 
-A missing key returns an empty result, and members come back in no particular order, since sets are unordered. The whole set is transferred in one reply, so on large sets prefer [`SSCAN`](/docs/redis/commands/set/sscan), which walks the members in batches, and use [`SISMEMBER`](/docs/redis/commands/set/sismember) when you only want to test membership.
+A missing key returns an empty result, and members come back in no particular order, since sets are unordered. The whole set is transferred in one reply, so on large sets prefer [`SSCAN`](/redis/commands/set/sscan), which walks the members in batches, and use [`SISMEMBER`](/redis/commands/set/sismember) when you only want to test membership.
 
 ## Syntax
 

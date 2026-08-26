@@ -1,6 +1,6 @@
 # agent-frameworks/mcp 文档索引
 
-> 共 145 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 146 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -35,6 +35,7 @@
 - `community/working-groups/sdk` — [SDK Working Group Charter](pages/community/working-groups/sdk.md) · [原文](https://modelcontextprotocol.io/community/working-groups/sdk)
 - `community/working-groups/server-card` — [Server Card Charter](pages/community/working-groups/server-card.md) · [原文](https://modelcontextprotocol.io/community/working-groups/server-card)
 - `community/working-groups/skills-over-mcp` — [Skills Over MCP Charter](pages/community/working-groups/skills-over-mcp.md) · [原文](https://modelcontextprotocol.io/community/working-groups/skills-over-mcp)
+- `community/working-groups/transports` — [Transports Charter](pages/community/working-groups/transports.md) · [原文](https://modelcontextprotocol.io/community/working-groups/transports)
 - `community/working-groups/triggers-events` — [Triggers and Events Charter](pages/community/working-groups/triggers-events.md) · [原文](https://modelcontextprotocol.io/community/working-groups/triggers-events)
 - `community/working-interest-groups` — [Working and Interest Groups](pages/community/working-interest-groups.md) · [原文](https://modelcontextprotocol.io/community/working-interest-groups)
 

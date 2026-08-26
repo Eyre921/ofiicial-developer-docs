@@ -4,11 +4,13 @@ source: https://upstash.com/docs/redis/commands/pub-sub/unsubscribe
 path: docs/redis/commands/pub-sub/unsubscribe
 ---
 
+> Unsubscribe from channels.
+
 Use `UNSUBSCRIBE` to cancel channel subscriptions of the current connection.
 
 With no arguments the connection unsubscribes from every channel it is subscribed to, otherwise only from the ones named. The server sends one confirmation per channel, each carrying the number of subscriptions still active, and the connection leaves subscriber mode once that count reaches zero.
 
-Pattern subscriptions are not affected; cancel those with [`PUNSUBSCRIBE`](/docs/redis/commands/pub-sub/punsubscribe).
+Pattern subscriptions are not affected; cancel those with [`PUNSUBSCRIBE`](/redis/commands/pub-sub/punsubscribe).
 
 ## Syntax
 
@@ -24,8 +26,8 @@ UNSUBSCRIBE [<channel> [<channel> ...]]
 
 ## Important points
 
-* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
-* Subscription commands require a dedicated TCP connection. In RESP3, subscription events use push replies.
+- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+- Subscription commands require a dedicated TCP connection. In RESP3, subscription events use push replies.
 
 ## Response
 

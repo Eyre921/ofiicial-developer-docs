@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/hash/hpttl
 path: docs/redis/commands/hash/hpttl
 ---
 
+> Get field TTL in milliseconds.
+
 Use `HPTTL` to read how much longer hash fields will live, in milliseconds.
 
-The reply holds one value per requested field, in order: the remaining lifetime, `-1` when the field exists but has no expiration, and `-2` when the field or the key does not exist. It is the millisecond form of [`HTTL`](/docs/redis/commands/hash/httl), and the extra precision matters for fields that live for less than a second.
+The reply holds one value per requested field, in order: the remaining lifetime, `-1` when the field exists but has no expiration, and `-2` when the field or the key does not exist. It is the millisecond form of [`HTTL`](/redis/commands/hash/httl), and the extra precision matters for fields that live for less than a second.
 
 ## Syntax
 
@@ -23,7 +25,7 @@ HPTTL <key> FIELDS <numfields> <field> [<field> ...]
 
 ## Important points
 
-* Negative integer replies are sentinel values, not durations or timestamps; see the response description for missing or persistent data.
+- Negative integer replies are sentinel values, not durations or timestamps; see the response description for missing or persistent data.
 
 ## Response
 

@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/string/get
 path: docs/redis/commands/string/get
 ---
 
+> Get string value.
+
 Use `GET` to read the string value stored at a key.
 
-The reply is null when the key does not exist, and an error when the key holds a value of another type, such as a hash or a list. Strings in Redis are binary safe and can hold anything up to 512 MB, so the same command reads back text, JSON, and serialized binary alike. To read and delete in one step use [`GETDEL`](/docs/redis/commands/string/getdel), and to read and refresh the expiration use [`GETEX`](/docs/redis/commands/string/getex).
+The reply is null when the key does not exist, and an error when the key holds a value of another type, such as a hash or a list. Strings in Redis are binary safe and can hold anything up to 512 MB, so the same command reads back text, JSON, and serialized binary alike. To read and delete in one step use [`GETDEL`](/redis/commands/string/getdel), and to read and refresh the expiration use [`GETEX`](/redis/commands/string/getex).
 
 ## Syntax
 

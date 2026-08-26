@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/list/lrem
 path: docs/redis/commands/list/lrem
 ---
 
+> Remove elements by value.
+
 Use `LREM` to remove elements equal to a given value from a list.
 
 The count decides how many occurrences are removed and in which direction: a positive count removes that many starting from the head, a negative count removes that many starting from the tail, and `0` removes every occurrence. The reply is the number of elements actually removed, and the key is deleted when the list becomes empty.

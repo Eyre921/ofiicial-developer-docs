@@ -8,13 +8,13 @@ import { Catalog } from "/snippets/catalog.jsx";
 
 Upstash Redis Search is our first extension beyond the official Redis spec. Using the Rust-based Tantivy under the hood, we provide an extremely fast way to search through Redis data.
 
-<img />
+<Frame><img src="/img/redis-search/redis-search-cover.png" /></Frame>
 
-* **Easy Integration**: Works with JSON, Hashes and Strings out of the box
-* **Auto-Synchronization**: Once you created an index, all write operations are automatically tracked
-* **Intuitive Query Language**: A type-safe JSON-based query syntax with boolean operators, fuzzy matching, phrase queries,
+- **Easy Integration**: Works with JSON, Hashes and Strings out of the box
+- **Auto-Synchronization**: Once you created an index, all write operations are automatically tracked
+- **Intuitive Query Language**: A type-safe JSON-based query syntax with boolean operators, fuzzy matching, phrase queries,
   regex support, and more.
-* **Production-Ready Performance**: Built on Tantivy, a fast full-text search engine library written in Rust
+- **Production-Ready Performance**: Built on Tantivy, a fast full-text search engine library written in Rust
 
 ## Next Steps
 

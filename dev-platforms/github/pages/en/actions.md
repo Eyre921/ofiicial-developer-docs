@@ -12,11 +12,11 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Quickstart for GitHub Actions](/en/actions/get-started/quickstart)
 
-  Try out the core features of GitHub Actions in minutes.
+  <p>Try out the core features of GitHub Actions in minutes.</p>
 
 * [Understanding GitHub Actions](/en/actions/get-started/understand-github-actions)
 
-  Learn the basics of core concepts and essential terminology in GitHub Actions.
+  <p>Learn the basics of core concepts and essential terminology in GitHub Actions.</p>
 
 * [Using GitHub-hosted runners](/en/actions/how-tos/manage-runners/github-hosted-runners/use-github-hosted-runners)
 
@@ -28,11 +28,11 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Events that trigger workflows](/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
 
-  <p>You can configure your workflows to run when specific activity on GitHub happens, at a scheduled time, or when an event outside of GitHub occurs.</p>
+  You can configure your workflows to run when specific activity on GitHub happens, at a scheduled time, or when an event outside of GitHub occurs.
 
 * [Using artifact attestations to establish provenance for builds](/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 
-  Artifact attestations enable you to increase the supply chain security of your builds by establishing where and how your software was built.
+  <p>Artifact attestations enable you to increase the supply chain security of your builds by establishing where and how your software was built.</p>
 
 * [Migrating to GitHub Actions](/en/actions/tutorials/migrate-to-github-actions)
 
@@ -40,11 +40,11 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Reuse workflows](/en/actions/how-tos/reuse-automations/reuse-workflows)
 
-  Learn how to avoid duplication when creating a workflow by reusing existing workflows.
+  <p>Learn how to avoid duplication when creating a workflow by reusing existing workflows.</p>
 
 * [Viewing GitHub Actions metrics](/en/actions/how-tos/administer/view-metrics)
 
-  You can view metrics to monitor where your organization or repositories use GitHub Actions and how they are performing.
+  <p>You can view metrics to monitor where your organization or repositories use GitHub Actions and how they are performing.</p>
 
 ## Links
 

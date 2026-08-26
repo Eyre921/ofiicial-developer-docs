@@ -4,5 +4,10 @@ source: https://upstash.com/docs/qstash/api-reference/schedules/resume-a-schedul
 path: docs/qstash/api-reference/schedules/resume-a-schedule
 ---
 
-/qstash/openapi.yaml post /v2/schedules/{scheduleId}/resume
-Resume a paused Schedule
+> Resume a paused Schedule
+
+`POST /v2/schedules/{scheduleId}/resume`
+
+Resuming a schedule marks the schedule as active. This means the upcoming messages will be delivered and will not be ignored. 
+
+If the schedule is already active, this action has no effect.

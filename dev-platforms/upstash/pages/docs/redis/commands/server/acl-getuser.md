@@ -4,7 +4,9 @@ source: https://upstash.com/docs/redis/commands/server/acl-getuser
 path: docs/redis/commands/server/acl-getuser
 ---
 
-Use `ACL GETUSER` to inspect the resulting permissions of a single ACL user, broken out into structured fields instead of the raw rule string that [`ACL LIST`](/docs/redis/commands/server/acl-list) returns.
+> Get the user's details.
+
+Use `ACL GETUSER` to inspect the resulting permissions of a single ACL user, broken out into structured fields instead of the raw rule string that [`ACL LIST`](/redis/commands/server/acl-list) returns.
 
 The reply describes the user's on/off and other flags, its passwords, the commands it can call as a single space-separated permission string, the key patterns it can access, and the channel patterns it can publish to or subscribe on. A username that does not exist returns a null reply rather than an error, which makes this command a convenient way to check whether a user exists before creating or modifying it.
 
@@ -22,8 +24,8 @@ ACL GETUSER <username>
 
 ## Important points
 
-* Returns null when the given username does not exist, instead of an error.
-* The reply has five fields: `flags`, `passwords`, `commands`, `keys`, and `channels`. Standard Redis 7+ also returns a `selectors` field; this deployment does not support selectors, so client libraries that expect one will simply receive an empty or undefined value for it.
+- Returns null when the given username does not exist, instead of an error.
+- The reply has five fields: `flags`, `passwords`, `commands`, `keys`, and `channels`. Standard Redis 7+ also returns a `selectors` field; this deployment does not support selectors, so client libraries that expect one will simply receive an empty or undefined value for it.
 
 ## Response
 

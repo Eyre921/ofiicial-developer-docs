@@ -10,8 +10,8 @@ You can sign up for <a href="https://console.upstash.com" target="_blank">Upstas
 
 We do not access your information other than:
 
-* Your email
-* Your name
-* Your profile picture and we never share your information with third parties.
+- Your email
+- Your name
+- Your profile picture and we never share your information with third parties.
 
 </Note>

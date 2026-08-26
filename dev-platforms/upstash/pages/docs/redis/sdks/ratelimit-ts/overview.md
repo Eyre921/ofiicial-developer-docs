@@ -6,25 +6,25 @@ path: docs/redis/sdks/ratelimit-ts/overview
 
 # Upstash Rate Limit
 
-[![npm (scoped)]()](https://www.npmjs.com/package/@upstash/ratelimit)
+[![npm (scoped)](https://img.shields.io/npm/v/@upstash/ratelimit)](https://www.npmjs.com/package/@upstash/ratelimit)
 
 It is the only connectionless (HTTP based) rate limiting library and designed
 for:
 
-* Serverless functions (AWS Lambda, Vercel ...)
-* Cloudflare Workers
-* Vercel Edge
-* Fastly Compute@Edge
-* Next.js, Jamstack ...
-* Client side web/mobile applications
-* WebAssembly
-* and other environments where HTTP is preferred over TCP.
+- Serverless functions (AWS Lambda, Vercel ...)
+- Cloudflare Workers
+- Vercel Edge
+- Fastly Compute@Edge
+- Next.js, Jamstack ...
+- Client side web/mobile applications
+- WebAssembly
+- and other environments where HTTP is preferred over TCP.
 
 ## Quick Links:
 
-* [Github Repository](https://github.com/upstash/ratelimit)
-* [Getting Started](/docs/redis/sdks/ratelimit-ts/gettingstarted)
-* [Costs](/docs/redis/sdks/ratelimit-ts/costs)
+- [Github Repository](https://github.com/upstash/ratelimit)
+- [Getting Started](/redis/sdks/ratelimit-ts/gettingstarted)
+- [Costs](/redis/sdks/ratelimit-ts/costs)
 
 ## Features
 
@@ -92,7 +92,7 @@ for:
   </Card>
 </CardGroup>
 
-For more information about the features, see the [Features tab](/docs/redis/sdks/ratelimit-ts/features).
+For more information about the features, see the [Features tab](/redis/sdks/ratelimit-ts/features).
 
 ## Examples
 

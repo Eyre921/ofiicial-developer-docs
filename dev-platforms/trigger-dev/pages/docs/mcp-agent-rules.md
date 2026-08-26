@@ -28,19 +28,19 @@ The old task and realtime guidance now lives in the `trigger-authoring-tasks` an
 ## Next steps
 
 <CardGroup>
-  <Card title="Skills" icon="wand-magic-sparkles" href="/skills">
+  <Card title="Skills" icon="wand-magic-sparkles" href="/docs/skills">
     Install Trigger.dev agent skills into your AI coding assistant.
   </Card>
 
-  <Card title="MCP Server" icon="sparkles" href="/mcp-introduction">
+  <Card title="MCP Server" icon="sparkles" href="/docs/mcp-introduction">
     Give your AI assistant direct access to Trigger.dev tools and APIs.
   </Card>
 
-  <Card title="Building with AI" icon="layer-group" href="/building-with-ai">
+  <Card title="Building with AI" icon="layer-group" href="/docs/building-with-ai">
     See how skills and the MCP server compare.
   </Card>
 
-  <Card title="Writing tasks" icon="code" href="/tasks/overview">
+  <Card title="Writing tasks" icon="code" href="/docs/tasks/overview">
     Learn the task patterns that skills teach your AI assistant.
   </Card>
 </CardGroup>

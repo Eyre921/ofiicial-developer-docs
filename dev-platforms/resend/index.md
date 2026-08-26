@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 354 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 355 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -96,6 +96,7 @@
 - `docs/api-reference/segments/get-segment-metrics` — [Retrieve Metrics](pages/docs/api-reference/segments/get-segment-metrics.md) · [原文](https://resend.com/docs/api-reference/segments/get-segment-metrics)
 - `docs/api-reference/segments/list-segment-contacts` — [List Segment Contacts](pages/docs/api-reference/segments/list-segment-contacts.md) · [原文](https://resend.com/docs/api-reference/segments/list-segment-contacts)
 - `docs/api-reference/segments/list-segments` — [List Segments](pages/docs/api-reference/segments/list-segments.md) · [原文](https://resend.com/docs/api-reference/segments/list-segments)
+- `docs/api-reference/segments/update-segment` — [Update Segment](pages/docs/api-reference/segments/update-segment.md) · [原文](https://resend.com/docs/api-reference/segments/update-segment)
 - `docs/api-reference/suppressions/add-batch-suppressions` — [Add Batch Suppressions](pages/docs/api-reference/suppressions/add-batch-suppressions.md) · [原文](https://resend.com/docs/api-reference/suppressions/add-batch-suppressions)
 - `docs/api-reference/suppressions/add-suppression` — [Add Suppression](pages/docs/api-reference/suppressions/add-suppression.md) · [原文](https://resend.com/docs/api-reference/suppressions/add-suppression)
 - `docs/api-reference/suppressions/get-suppression` — [Retrieve Suppression](pages/docs/api-reference/suppressions/get-suppression.md) · [原文](https://resend.com/docs/api-reference/suppressions/get-suppression)

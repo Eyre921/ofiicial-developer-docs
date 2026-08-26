@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/json/json-arrinsert
 path: docs/redis/commands/json/json-arrinsert
 ---
 
+> Insert values into JSON array.
+
 Use `JSON.ARRINSERT` to insert one or more values into the arrays a path selects, before a given index.
 
 Elements at and after that index shift to the right, keeping the rest of the array in order. A negative index counts from the end of the array and an index equal to the array's length appends, while an index outside the array returns an error. The reply is the new length of each array the path matched.
@@ -25,8 +27,8 @@ JSON.ARRINSERT <key> <path> <index> <value> [value ...]
 
 ## Important points
 
-* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

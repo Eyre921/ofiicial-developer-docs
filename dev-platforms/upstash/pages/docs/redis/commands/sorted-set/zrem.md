@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zrem
 path: docs/redis/commands/sorted-set/zrem
 ---
 
+> Remove members.
+
 Use `ZREM` to remove one or more members from a sorted set.
 
-The reply counts only the members that were actually present, so removing something already gone is not an error. The key is deleted when its last member is removed. To remove members by score, rank, or member range instead of by name, use [`ZREMRANGEBYSCORE`](/docs/redis/commands/sorted-set/zremrangebyscore), [`ZREMRANGEBYRANK`](/docs/redis/commands/sorted-set/zremrangebyrank), or [`ZREMRANGEBYLEX`](/docs/redis/commands/sorted-set/zremrangebylex).
+The reply counts only the members that were actually present, so removing something already gone is not an error. The key is deleted when its last member is removed. To remove members by score, rank, or member range instead of by name, use [`ZREMRANGEBYSCORE`](/redis/commands/sorted-set/zremrangebyscore), [`ZREMRANGEBYRANK`](/redis/commands/sorted-set/zremrangebyrank), or [`ZREMRANGEBYLEX`](/redis/commands/sorted-set/zremrangebylex).
 
 ## Syntax
 

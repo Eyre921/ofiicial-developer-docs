@@ -6,15 +6,15 @@ path: docs/vector/overall/whatisvector
 
 Upstash Vector is a **serverless vector database designed for high-performance vector search at scale**. It powers advanced systems in areas such as:
 
-* Natural Language Processing (NLP)
-* Retrieval Augmented Generation (RAG)
-* Recommendation engines
-* Image recognition
-* Clustering or classification
+- Natural Language Processing (NLP)
+- Retrieval Augmented Generation (RAG)
+- Recommendation engines
+- Image recognition
+- Clustering or classification
 
 ... without any infrastructure management.
 
-***
+---
 
 ## What is a Vector Database?
 
@@ -22,22 +22,22 @@ Vector databases are specifically designed to store and efficiently search high-
 
 Their specialization makes vector stores the perfect foundation for similarity-based search. Using specialized approximation algorithms such as Approximate Nearest Neighbor (ANN), they can typically provide much higher indexing and query performance than general-purpose databases or extensions like pgvector.
 
-***
+---
 
 ## Upstash Vector Core Features:
 
-* **High-Performance Queries:** Upstash Vector is powered by DiskANN[1], a highly efficient approximation algorithm that delivers very high recall rates (resulting in better output quality) and ultra-low latency. See [ANN Search Algorithm](../features/algorithm) for more insight into the technology behind our vector database.
+- **High-Performance Queries:** Upstash Vector is powered by DiskANN[1], a highly efficient approximation algorithm that delivers very high recall rates (resulting in better output quality) and ultra-low latency. See [ANN Search Algorithm](../features/algorithm) for more insight into the technology behind our vector database.
 
-* **Batteries Included:** A convenient REST API and SDKs with first-class Python and TypeScript support.
+- **Batteries Included:** A convenient REST API and SDKs with first-class Python and TypeScript support.
 
-* **Serverless Pricing:** Upstash Vector is fully managed and serverless, we take care of the hosting and high availability complexities. You only pay for what you actually use. See our [Vector Pricing Page](https://upstash.com/pricing/vector) for more details.
+- **Serverless Pricing:** Upstash Vector is fully managed and serverless, we take care of the hosting and high availability complexities. You only pay for what you actually use. See our [Vector Pricing Page](https://upstash.com/pricing/vector) for more details.
 
-* **Multiple Similarity Functions:** We natively support similarity functions such as Euclidean distance, cosine similarity, and dot product.
+- **Multiple Similarity Functions:** We natively support similarity functions such as Euclidean distance, cosine similarity, and dot product.
   See [Vector Similarity](../features/similarityfunctions) for more details.
 
-* **Metadata Support:** Attach metadata to vectors to store additional information or context. When querying an index, you can then include a metadata filter to limit the search to records that match a filter expression. See [Metadata Documentation](../features/metadata) for more details.
+- **Metadata Support:** Attach metadata to vectors to store additional information or context. When querying an index, you can then include a metadata filter to limit the search to records that match a filter expression. See [Metadata Documentation](../features/metadata) for more details.
 
-***
+---
 
 ### References
 

@@ -7,8 +7,8 @@ path: docs/workflow/steps
 A workflow's **context** is an object provided by the route function.
 
 The context object provides:
-* **Workflow APIs** – functions for defining workflow steps.
-* **Workflow Run Properties** – request payload, request headers, and other metadata.
+- **Workflow APIs** – functions for defining workflow steps.
+- **Workflow Run Properties** – request payload, request headers, and other metadata.
 
 <CodeGroup>
     ```typescript api/workflow/route.ts highlight={4-5}
@@ -69,7 +69,7 @@ The context object provides:
 </ParamField>
 
 <ParamField path="labels" type="string[]">
-  The labels attached to the current workflow run, if set in [client.trigger](/docs/workflow/basics/client/trigger).
+  The labels attached to the current workflow run, if set in [client.trigger](/workflow/basics/client/trigger).
   Defaults to an empty array when no label was set.
 </ParamField>
 
@@ -82,14 +82,14 @@ The context object provides:
 
 You can use the functions exposed by context object to define workflow steps.
 
-* [context.run](/docs/workflow/basics/context/run)
-* [context.sleep](/docs/workflow/basics/context/sleep)
-* [context.sleepUntil](/docs/workflow/basics/context/sleepUntil)
-* [context.waitForEvent](/docs/workflow/basics/context/waitForEvent)
-* [context.createWebhook](/docs/workflow/basics/context/createWebhook)
-* [context.waitForWebhook](/docs/workflow/basics/context/waitForWebhook)
-* [context.notify](/docs/workflow/basics/context/notify)
-* [context.invoke](/docs/workflow/basics/context/invoke)
-* [context.call](/docs/workflow/basics/context/call)
-* [context.cancel](/docs/workflow/basics/context/cancel)
-* [context.api](/docs/workflow/basics/context/api)
+- [context.run](/workflow/basics/context/run)
+- [context.sleep](/workflow/basics/context/sleep)
+- [context.sleepUntil](/workflow/basics/context/sleepUntil)
+- [context.waitForEvent](/workflow/basics/context/waitForEvent)
+- [context.createWebhook](/workflow/basics/context/createWebhook)
+- [context.waitForWebhook](/workflow/basics/context/waitForWebhook)
+- [context.notify](/workflow/basics/context/notify)
+- [context.invoke](/workflow/basics/context/invoke)
+- [context.call](/workflow/basics/context/call)
+- [context.cancel](/workflow/basics/context/cancel)
+- [context.api](/workflow/basics/context/api)

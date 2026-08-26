@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/server/flushall
 path: docs/redis/commands/server/flushall
 ---
 
+> Delete all keys in all databases.
+
 Use `FLUSHALL` to delete every key in every database.
 
-Upstash exposes a single logical database, so `FLUSHALL` and [`FLUSHDB`](/docs/redis/commands/server/flushdb) have the same effect here. `ASYNC` frees the memory in a background thread, which returns faster on large datasets, while `SYNC` frees it before replying.
+Upstash exposes a single logical database, so `FLUSHALL` and [`FLUSHDB`](/redis/commands/server/flushdb) have the same effect here. `ASYNC` frees the memory in a background thread, which returns faster on large datasets, while `SYNC` frees it before replying.
 
 The deletion is immediate and irreversible: there is no confirmation step and nothing to undo. Keep it out of application code, run it only against disposable databases, and require an explicit operator action wherever tooling exposes it.
 
@@ -24,9 +26,9 @@ FLUSHALL [ASYNC | SYNC]
 
 ## Important points
 
-* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
-* This operation can inspect a large part of the database. Prefer cursor-based scans where possible and avoid unbounded use on hot paths.
-* This deletes the database contents. Test against a disposable database and require an explicit operator action in production tooling.
+- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+- This operation can inspect a large part of the database. Prefer cursor-based scans where possible and avoid unbounded use on hot paths.
+- This deletes the database contents. Test against a disposable database and require an explicit operator action in production tooling.
 
 ## Response
 

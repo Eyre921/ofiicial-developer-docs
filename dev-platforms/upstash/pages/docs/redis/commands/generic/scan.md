@@ -4,13 +4,15 @@ source: https://upstash.com/docs/redis/commands/generic/scan
 path: docs/redis/commands/generic/scan
 ---
 
+> Incrementally iterate keys.
+
 Use `SCAN` to walk through the keys of the database incrementally, a batch at a time.
 
-Each call takes a cursor and returns the next cursor together with a batch of keys. Start with cursor `0` and keep calling with the cursor from the previous reply until the server returns `0` again, which marks the end of the iteration. Because the work is split over many short calls, `SCAN` never blocks the server the way [`KEYS`](/docs/redis/commands/generic/keys) can on a large keyspace.
+Each call takes a cursor and returns the next cursor together with a batch of keys. Start with cursor `0` and keep calling with the cursor from the previous reply until the server returns `0` again, which marks the end of the iteration. Because the work is split over many short calls, `SCAN` never blocks the server the way [`KEYS`](/redis/commands/generic/keys) can on a large keyspace.
 
 `MATCH` filters the returned keys with a glob-style pattern, `COUNT` hints at how much work each call should do (a hint about effort, not a page size, so batches vary in length), and `TYPE` limits the reply to keys of one type. Filtering is applied after a batch has been read, so a call can legitimately return no keys at all while the cursor is still non-zero: only the cursor tells you when the iteration is over.
 
-The guarantee is that every key present for the whole iteration is returned at least once. Keys added or removed while the scan runs may or may not show up, and a key can be returned more than once, so make the processing of each key idempotent. [`HSCAN`](/docs/redis/commands/hash/hscan), [`SSCAN`](/docs/redis/commands/set/sscan), and [`ZSCAN`](/docs/redis/commands/sorted-set/zscan) apply the same mechanism inside a single collection.
+The guarantee is that every key present for the whole iteration is returned at least once. Keys added or removed while the scan runs may or may not show up, and a key can be returned more than once, so make the processing of each key idempotent. [`HSCAN`](/redis/commands/hash/hscan), [`SSCAN`](/redis/commands/set/sscan), and [`ZSCAN`](/redis/commands/sorted-set/zscan) apply the same mechanism inside a single collection.
 
 ## Syntax
 
@@ -29,8 +31,8 @@ SCAN <cursor> [MATCH <pattern>] [COUNT <count>] [TYPE <type>]
 
 ## Important points
 
-* This operation can inspect a large part of the database. Prefer cursor-based scans where possible and avoid unbounded use on hot paths.
-* The cursor is opaque. Start with `0` and continue until the server returns cursor `0`; a single iteration may return no elements.
+- This operation can inspect a large part of the database. Prefer cursor-based scans where possible and avoid unbounded use on hot paths.
+- The cursor is opaque. Start with `0` and continue until the server returns cursor `0`; a single iteration may return no elements.
 
 ## Response
 

@@ -4,18 +4,20 @@ source: https://upstash.com/docs/qstash/api/api-ratelimiting
 path: docs/qstash/api/api-ratelimiting
 ---
 
+> This page documents the rate limiting behavior of our API and explains how to handle different types of rate limit errors.
+
 ## Overview
 
 There is no request per second limit for operational API's as listed below:
 
-* trigger, publish, enqueue, notify, wait, batch
-* Other endpoints (like logs,listing flow-controls, queues, schedules etc) have rps limit. This is a short-term limit **per second** to prevent rapid bursts of requests.
+- trigger, publish, enqueue, notify, wait, batch
+- Other endpoints (like logs,listing flow-controls, queues, schedules etc) have rps limit. This is a short-term limit **per second** to prevent rapid bursts of requests.
 
 **Headers**:
 
-* `Burst-RateLimit-Limit`: Maximum number of requests allowed in the burst window (1 second)
-* `Burst-RateLimit-Remaining`: Remaining number of requests in the burst window (1 second)
-* `Burst-RateLimit-Reset`: Time (in unix timestamp) when the burst limit will reset
+- `Burst-RateLimit-Limit`: Maximum number of requests allowed in the burst window (1 second)
+- `Burst-RateLimit-Remaining`: Remaining number of requests in the burst window (1 second)
+- `Burst-RateLimit-Reset`: Time (in unix timestamp) when the burst limit will reset
 
 ### Example Rate Limit Error Handling
 

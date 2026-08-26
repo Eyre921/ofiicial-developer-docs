@@ -6,15 +6,15 @@ path: docs/qstash/overall/apiexamples
 
 ### Use QStash via:
 
-* cURL
-* [Typescript SDK](https://github.com/upstash/sdk-qstash-ts)
-* [Python SDK](https://github.com/upstash/qstash-python)
+- cURL
+- [Typescript SDK](https://github.com/upstash/sdk-qstash-ts)
+- [Python SDK](https://github.com/upstash/qstash-python)
 
-Below are some examples to get you started. You can also check the [how to](/docs/qstash/howto/publishing) section for more technical details.
+Below are some examples to get you started. You can also check the [how to](/qstash/howto/publishing) section for more technical details.
 
 ### Publish a message to an endpoint
 
-Simple example to [publish](/docs/qstash/howto/publishing) a message to an endpoint.
+Simple example to [publish](/qstash/howto/publishing) a message to an endpoint.
 
 <Tabs>
 <Tab title="cURL">
@@ -57,7 +57,7 @@ client.message.publish_json(
 
 ### Publish a message to a URL Group
 
-The [URL Group](/docs/qstash/features/url-groups) is a way to publish a message to multiple endpoints in a
+The [URL Group](/qstash/features/url-groups) is a way to publish a message to multiple endpoints in a
 fan out pattern.
 
 <Tabs>
@@ -101,7 +101,7 @@ client.message.publish_json(
 
 ### Publish a message with 5 minutes delay
 
-Add a delay to the message to be published. After QStash receives the message,
+Add a delay to the message to be published. After QStash receives the message, 
 it will wait for the specified time (5 minutes in this example) before sending the message to the endpoint.
 
 <Tabs>
@@ -236,14 +236,14 @@ client.schedule.create(
 
 ### Publish messages to a FIFO queue
 
-By default, messges are published concurrently. With a [queue](/docs/qstash/features/queues), you can enqueue messages in FIFO order.
+By default, messges are published concurrently. With a [queue](/qstash/features/queues), you can enqueue messages in FIFO order.
 
 <Tabs>
 <Tab title="cURL">
 ```shell
 curl -XPOST -H 'Authorization: Bearer XXX' \
             -H "Content-type: application/json" \
-            'https://qstash.upstash.io/v2/enqueue/my-queue/https://example.com'
+            'https://qstash.upstash.io/v2/enqueue/my-queue/https://example.com' 
             -d '{"message":"Hello, World!"}'
 ```
 </Tab>
@@ -282,7 +282,7 @@ client.message.enqueue_json(
 </Tab>
 </Tabs>
 
-### Publish messages in a [batch](/docs/qstash/features/batch)
+### Publish messages in a [batch](/qstash/features/batch)
 
 Publish multiple messages in a single request.
 
@@ -343,7 +343,7 @@ client.message.batch_json(
 ### Set max retry count to 3
 
 Configure how many times QStash should retry to send the message to the endpoint before
-sending it to the [dead letter queue](/docs/qstash/features/dlq).
+sending it to the [dead letter queue](/qstash/features/dlq).
 
 <Tabs>
 <Tab title="cURL">
@@ -389,7 +389,7 @@ client.message.publish_json(
 
 ### Set custom retry delay
 
-Configure the delay between retry attempts when message delivery fails. [By default, QStash uses exponential backoff](/docs/qstash/features/retry). You can customize this using mathematical expressions with the special variable `retried` (current retry attempt count starting from 0).
+Configure the delay between retry attempts when message delivery fails. [By default, QStash uses exponential backoff](/qstash/features/retry). You can customize this using mathematical expressions with the special variable `retried` (current retry attempt count starting from 0).
 
 <Tabs>
 <Tab title="cURL">
@@ -437,21 +437,21 @@ client.message.publish_json(
 </Tabs>
 
 **Supported functions for retry delay expressions:**
-* `pow` - Power function
-* `sqrt` - Square root
-* `abs` - Absolute value
-* `exp` - Exponential
-* `floor` - Floor function
-* `ceil` - Ceiling function
-* `round` - Rounding function
-* `min` - Minimum of values
-* `max` - Maximum of values
+- `pow` - Power function
+- `sqrt` - Square root  
+- `abs` - Absolute value
+- `exp` - Exponential
+- `floor` - Floor function
+- `ceil` - Ceiling function  
+- `round` - Rounding function
+- `min` - Minimum of values
+- `max` - Maximum of values
 
 **Examples:**
-* `1000` - Fixed 1 second delay
-* `1000 * (1 + retried)` - Linear backoff: 1s, 2s, 3s, 4s...
-* `pow(2, retried) * 1000` - Exponential backoff: 1s, 2s, 4s, 8s...
-* `max(1000, pow(2, retried) * 100)` - Exponential with minimum 1s delay
+- `1000` - Fixed 1 second delay
+- `1000 * (1 + retried)` - Linear backoff: 1s, 2s, 3s, 4s...
+- `pow(2, retried) * 1000` - Exponential backoff: 1s, 2s, 4s, 8s...
+- `max(1000, pow(2, retried) * 100)` - Exponential with minimum 1s delay
 
 ### Set callback url
 

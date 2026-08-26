@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/server/dbsize
 path: docs/redis/commands/server/dbsize
 ---
 
+> Get number of keys in database.
+
 Use `DBSIZE` to get the number of keys stored in the database.
 
-The count covers keys of every type, and keys whose expiration has passed but that have not been removed yet may still be included, so treat the number as an accurate but momentary figure rather than an exact one. It is the quick way to see how a keyspace is growing, and unlike [`KEYS`](/docs/redis/commands/generic/keys) it does not build a list of key names to do so.
+The count covers keys of every type, and keys whose expiration has passed but that have not been removed yet may still be included, so treat the number as an accurate but momentary figure rather than an exact one. It is the quick way to see how a keyspace is growing, and unlike [`KEYS`](/redis/commands/generic/keys) it does not build a list of key names to do so.
 
 ## Syntax
 
@@ -20,7 +22,7 @@ This command takes no arguments.
 
 ## Important points
 
-* This operation can inspect a large part of the database. Prefer cursor-based scans where possible and avoid unbounded use on hot paths.
+- This operation can inspect a large part of the database. Prefer cursor-based scans where possible and avoid unbounded use on hot paths.
 
 ## Response
 

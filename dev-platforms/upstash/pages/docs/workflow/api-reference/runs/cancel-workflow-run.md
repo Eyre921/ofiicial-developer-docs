@@ -4,5 +4,6 @@ source: https://upstash.com/docs/workflow/api-reference/runs/cancel-workflow-run
 path: docs/workflow/api-reference/runs/cancel-workflow-run
 ---
 
-/workflow/openapi.yaml delete /v2/workflows/runs/{workflowRunId}
-Cancel an ongoing workflow run.
+> Cancel an ongoing workflow run.
+
+`DELETE /v2/workflows/runs/{workflowRunId}`

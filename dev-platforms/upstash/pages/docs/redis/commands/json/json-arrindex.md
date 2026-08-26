@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/json/json-arrindex
 path: docs/redis/commands/json/json-arrindex
 ---
 
+> Find index of value in array.
+
 Use `JSON.ARRINDEX` to find the first position of a value inside the arrays a path selects.
 
 The value is JSON text and is compared for exact equality, so `1` does not match `"1"`. The optional `start` and `stop` bound the search: `start` is inclusive, `stop` is exclusive, both may be negative to count from the end of the array, and `0` for `stop` means "to the end". The reply is the index of the first match or `-1` when the value is not present, with one result per array the path matched.
@@ -26,8 +28,8 @@ JSON.ARRINDEX <key> <path> <value> [start [stop]]
 
 ## Important points
 
-* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

@@ -8,13 +8,13 @@ path: docs/qstash/sdks/ts/overview
 
 Using `@upstash/qstash` you can:
 
-* Publish a message to a URL/URL Group
-* Publish a message with a delay
-* Schedule a message to be published
-* Access logs for the messages that have been published
-* Create, read, update, or delete URL groups.
-* Read or remove messages from the [DLQ](/docs/qstash/features/dlq)
-* Read or cancel messages
-* Verify the signature of a message
+- Publish a message to a URL/URL Group
+- Publish a message with a delay
+- Schedule a message to be published
+- Access logs for the messages that have been published
+- Create, read, update, or delete URL groups.
+- Read or remove messages from the [DLQ](/qstash/features/dlq)
+- Read or cancel messages
+- Verify the signature of a message
 
 You can find the Github Repository [here](https://github.com/upstash/sdk-qstash-ts).

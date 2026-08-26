@@ -4,7 +4,9 @@ source: https://upstash.com/docs/redis/commands/server/acl-cat
 path: docs/redis/commands/server/acl-cat
 ---
 
-Use `ACL CAT` to discover the category names usable in [`ACL SETUSER`](/docs/redis/commands/server/acl-setuser) rules such as `+@read` or `-@dangerous`.
+> List command categories.
+
+Use `ACL CAT` to discover the category names usable in [`ACL SETUSER`](/redis/commands/server/acl-setuser) rules such as `+@read` or `-@dangerous`.
 
 Called without an argument, it returns every category name the server knows, for example `read`, `write`, `keyspace`, `dangerous`, `admin`, `scripting`, and the categories for individual data types such as `string`, `hash`, or `json`. Called with a category name, it instead returns the commands that belong to that category, which is the fastest way to check exactly what a rule like `+@json` grants before applying it to a user.
 
@@ -22,7 +24,7 @@ ACL CAT [category]
 
 ## Important points
 
-* An unknown category name returns an error rather than an empty list.
+- An unknown category name returns an error rather than an empty list.
 
 ## Response
 

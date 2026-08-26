@@ -1,0 +1,28 @@
+---
+title: "JSON.OBJLEN"
+source: https://upstash.com/docs/redis/sdks/py/commands/json/objlen
+path: docs/redis/sdks/py/commands/json/objlen
+---
+
+> Report the number of keys in the JSON object at `path` in `key`.
+
+## Arguments
+
+<ParamField body="key" type="str" required>
+    The key of the json entry.
+</ParamField>
+<ParamField body="path" type="str" required>
+    The path of the object. `$` is the root.
+</ParamField>
+
+## Response
+
+<ResponseField type="List[int]" required>
+  The number of keys in the objects.
+</ResponseField>
+
+<RequestExample>
+```py Example
+lengths = redis.json.objlen("key", "$.path")
+```
+</RequestExample>

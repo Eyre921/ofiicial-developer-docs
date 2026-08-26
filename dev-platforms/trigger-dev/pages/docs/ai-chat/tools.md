@@ -45,11 +45,11 @@ Declaring `tools` on the config does two things you can't get by passing them to
 
 There are three places a tool set shows up. Declare once, reuse:
 
-| Surface                               | What it's for                                                                                                                                                              |
-| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `chat.agent({ tools })`               | Re-applies `toModelOutput` on prior-turn history; hands the set back typed on the `run()` payload.                                                                         |
+| Surface                               | What it's for                                                                                                                                                                        |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `chat.agent({ tools })`               | Re-applies `toModelOutput` on prior-turn history; hands the set back typed on the `run()` payload.                                                                                   |
 | `chat.toStreamTextOptions({ tools })` | Detects which tool calls need [HITL approval](/docs/ai-chat/patterns/human-in-the-loop) (`needsApproval`) and merges any auto-injected [skill](/docs/ai-chat/patterns/skills) tools. |
-| `streamText({ tools })`               | What the model actually calls. `chat.toStreamTextOptions({ tools })` already sets this, so spread it instead of passing `tools` twice.                                     |
+| `streamText({ tools })`               | What the model actually calls. `chat.toStreamTextOptions({ tools })` already sets this, so spread it instead of passing `tools` twice.                                               |
 
 The canonical pattern: declare `tools` on the config, read them back from the `run()` payload, and pass that to `chat.toStreamTextOptions({ tools })`. One declaration flows everywhere.
 

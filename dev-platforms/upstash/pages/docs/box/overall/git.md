@@ -6,7 +6,7 @@ path: docs/box/overall/git
 
 Clone a repository, inspect changes, commit work, push a branch, or open a pull request from inside a box.
 
-***
+---
 
 ## Configure Git Access
 
@@ -14,8 +14,8 @@ If you want to work with private repositories, push changes, or create pull requ
 
 <Note>
   For a fine-grained token, the following permissions are sufficient for basic usage:
-  * **Contents** — Read and write
-  * **Pull requests** — Read and write
+  - **Contents** — Read and write
+  - **Pull requests** — Read and write
 </Note>
 
 ```bash title=".env" {2}
@@ -87,7 +87,7 @@ box = Box.create(
 
 If `userName` or `userEmail` are omitted, the box uses the defaults (`"Upstash Box"` / `"box@upstash.com"`). Omitting `token` is fine for public repositories where push access is not required.
 
-***
+---
 
 ## Quickstart
 
@@ -190,7 +190,7 @@ print(pr.url)
 ```
 </CodeGroup>
 
-***
+---
 
 ## API
 
@@ -223,8 +223,8 @@ box.git.clone(repo="https://github.com/acme/api", branch="develop")
 
 Returns the Git status output for the repository in the current working directory.
 
-* See what files changed
-* See if there are there untracked files
+- See what files changed
+- See if there are there untracked files
 
 <CodeGroup>
 ```tsx box.ts
@@ -240,8 +240,8 @@ status = box.git.status()
 
 Returns the current Git diff as a string.
 
-* Useful to display a patch in your UI
-* Review what an agent changed
+- Useful to display a patch in your UI
+- Review what an agent changed
 
 <CodeGroup>
 ```tsx box.ts
@@ -423,7 +423,7 @@ If the box is in Running or Idle state, the new config is applied immediately in
 
 **Return value:** `{ git_user_name: string; git_user_email: string }`
 
-***
+---
 
 ## Examples
 

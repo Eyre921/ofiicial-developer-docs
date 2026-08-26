@@ -12,6 +12,7 @@ path: docs/changelog/llms.txt
 
 ## Docs
 
+- [August 24, 2026](https://elevenlabs.io/docs/changelog/2026/8/24.md)
 - [August 22, 2026](https://elevenlabs.io/docs/changelog/2026/8/22.md)
 - [August 17, 2026](https://elevenlabs.io/docs/changelog/2026/8/17.md)
 - [August 10, 2026](https://elevenlabs.io/docs/changelog/2026/8/10.md)

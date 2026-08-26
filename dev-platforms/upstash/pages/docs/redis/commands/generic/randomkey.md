@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/generic/randomkey
 path: docs/redis/commands/generic/randomkey
 ---
 
+> Return a random key.
+
 Use `RANDOMKEY` to get the name of a random key from the database without reading its value.
 
-The reply is null when the database is empty. Keys are picked by sampling the keyspace rather than by drawing uniformly from it, and nothing prevents the same key from coming up repeatedly, so treat it as a way to look at a sample of your data while debugging rather than as a way to iterate over it. Use [`SCAN`](/docs/redis/commands/generic/scan) when you need to cover every key.
+The reply is null when the database is empty. Keys are picked by sampling the keyspace rather than by drawing uniformly from it, and nothing prevents the same key from coming up repeatedly, so treat it as a way to look at a sample of your data while debugging rather than as a way to iterate over it. Use [`SCAN`](/redis/commands/generic/scan) when you need to cover every key.
 
 ## Syntax
 

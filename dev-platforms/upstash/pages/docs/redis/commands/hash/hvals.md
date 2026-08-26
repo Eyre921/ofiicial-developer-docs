@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/hash/hvals
 path: docs/redis/commands/hash/hvals
 ---
 
+> Get all values in a hash.
+
 Use `HVALS` to get all the values in a hash, without their field names.
 
-A missing key returns an empty list, and values come back in no particular order. The whole hash is transferred, so on large hashes prefer [`HSCAN`](/docs/redis/commands/hash/hscan) to walk it in batches, or [`HMGET`](/docs/redis/commands/hash/hmget) when you know which fields you need.
+A missing key returns an empty list, and values come back in no particular order. The whole hash is transferred, so on large hashes prefer [`HSCAN`](/redis/commands/hash/hscan) to walk it in batches, or [`HMGET`](/redis/commands/hash/hmget) when you know which fields you need.
 
 ## Syntax
 

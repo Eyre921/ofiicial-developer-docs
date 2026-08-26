@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/string/delex
 path: docs/redis/commands/string/delex
 ---
 
+> Delete a string when a condition matches.
+
 Use `DELEX` to delete a string when a condition matches.
 
-`IFEQ` deletes the key only when its current value equals the given one and `IFNE` only when it differs. `IFDEQ` and `IFDNE` do the same against a digest of the value, as returned by [`DIGEST`](/docs/redis/commands/string/digest), which avoids sending a large value over the wire just to compare it.
+`IFEQ` deletes the key only when its current value equals the given one and `IFNE` only when it differs. `IFDEQ` and `IFDNE` do the same against a digest of the value, as returned by [`DIGEST`](/redis/commands/string/digest), which avoids sending a large value over the wire just to compare it.
 
 The comparison and the delete are one atomic step, which is what makes the command the correct way to release a lock or a claim: delete the key only if it still holds your token, so you never remove a lock that has expired and been taken by someone else. With no condition it simply deletes the key. The conditional forms require a string value, and a key of another type returns an error without being deleted.
 
@@ -26,8 +28,8 @@ DELEX <key> [IFEQ <value> | IFNE <value> | IFDEQ <digest> | IFDNE <digest>]
 
 ## Important points
 
-* Supply at most one condition. With no condition, `DELEX` behaves like deleting a single key.
-* Conditional forms accept string keys only. A non-string value returns an error and is not deleted.
+- Supply at most one condition. With no condition, `DELEX` behaves like deleting a single key.
+- Conditional forms accept string keys only. A non-string value returns an error and is not deleted.
 
 ## Response
 

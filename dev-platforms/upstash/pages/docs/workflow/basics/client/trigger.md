@@ -45,7 +45,7 @@ You can also trigger multiple workflow runs in a single call by passing an array
 <ParamField body="flowControl" type="object" optional>
     An optional flow control configuration to limit concurrency and execution rate of the workflow runs.
 
-    See [Flow Control](/docs/workflow/features/flow-control) for details.
+    See [Flow Control](/workflow/features/flow-control) for details.
 
     <Expandable title="properties">
         <ParamField body="key" type="string">
@@ -83,7 +83,7 @@ You can also trigger multiple workflow runs in a single call by passing an array
   This can be useful for identifying and filtering runs in the dashboard or logs.
 
   Pass an array to attach multiple labels to a single workflow run. The run will
-  then match a [logs](/docs/workflow/basics/client/logs) or DLQ filter for any of its
+  then match a [logs](/workflow/basics/client/logs) or DLQ filter for any of its
   labels (OR semantics).
 </ParamField>
 
@@ -91,7 +91,7 @@ You can also trigger multiple workflow runs in a single call by passing an array
   If set to true, telemetry data collection for this workflow run will be disabled.
   By default, telemetry is enabled to help improve Upstash services.
 
-  See the [`disableTelemetry` parameter in serve options](/docs/workflow/basics/serve/advanced#param-disable-telemetry) for more details.
+  See the [`disableTelemetry` parameter in serve options](/workflow/basics/serve/advanced#param-disable-telemetry) for more details.
 </ParamField>
 
 ## Usage

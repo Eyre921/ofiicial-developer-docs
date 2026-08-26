@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/json/json-objlen
 path: docs/redis/commands/json/json-objlen
 ---
 
+> Get JSON object size.
+
 Use `JSON.OBJLEN` to get the number of fields in the objects a path selects.
 
 Without a path the root value is used. The reply holds one count per match, with null for matches that are not objects. It counts only the object's own fields, not the fields of nested objects.
@@ -23,8 +25,8 @@ JSON.OBJLEN <key> [path]
 
 ## Important points
 
-* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

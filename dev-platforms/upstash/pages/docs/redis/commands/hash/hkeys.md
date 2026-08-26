@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/hash/hkeys
 path: docs/redis/commands/hash/hkeys
 ---
 
+> Get all fields in a hash.
+
 Use `HKEYS` to get the names of all the fields in a hash, without their values.
 
-A missing key returns an empty list. The whole field list is built and transferred in one reply, so on large hashes prefer [`HSCAN`](/docs/redis/commands/hash/hscan) with `NOVALUES`, which walks the field names in batches instead.
+A missing key returns an empty list. The whole field list is built and transferred in one reply, so on large hashes prefer [`HSCAN`](/redis/commands/hash/hscan) with `NOVALUES`, which walks the field names in batches instead.
 
 ## Syntax
 

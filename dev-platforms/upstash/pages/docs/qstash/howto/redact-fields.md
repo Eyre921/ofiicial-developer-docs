@@ -4,6 +4,8 @@ source: https://upstash.com/docs/qstash/howto/redact-fields
 path: docs/qstash/howto/redact-fields
 ---
 
+> How to redact private data in your messages
+
 QStash messages can contain private data that you don't want visible in the Upstash Console, or API responses.
 
 QStash allows you to redact specific fields so they appear as `REDACTED:<SHA256>` in the dashboard and API. The original values are still used when delivering messages to your endpoint. The SHA256 hash lets you verify the two data without revealing the original data.
@@ -63,7 +65,9 @@ curl -XPOST \
 ```
 </CodeGroup>
 
-  <img />
+<Frame caption="Logs of a message with `body` and header[My-Secret-Header] redacted">
+  <img src="/img/qstash/redact-logs.png" />
+</Frame>
 
 Redaction is configured per message, so you can redact different fields for different messages.
 
@@ -119,7 +123,9 @@ curl -XPOST \
 ```
 </CodeGroup>
 
-  <img />
+<Frame caption="Schedule with body and header[My-Secret-Header] redacted">
+  <img src="/img/qstash/redact-schedules.png" />
+</Frame>
 
 <Warning>
 When updating a redacted schedule via the dashboard or API, you must provide the original values for the redacted fields.

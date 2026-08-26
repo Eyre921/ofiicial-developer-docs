@@ -8,9 +8,9 @@ Every Upstash Box is a **durable execution environment** for AI workloads. Each 
 
 Boxes are billed per active CPU time (not idle time), state persists across runs, and you can choose from Node, Python, Go or other runtimes. By default, a box auto-pauses when idle and can be resumed days or even weeks later. If you enable `keepAlive`, the box stays on between sessions for always-available workloads.
 
-Looking for inspiration? Check out the [Use Cases](/docs/box/overall/use-cases) page.
+Looking for inspiration? Check out the [Use Cases](/box/overall/use-cases) page.
 
-***
+---
 
 ## Architecture
 
@@ -20,13 +20,13 @@ Every box is a self-contained environment with five capabilities:
 | -------------- | ------------------------------------------------------------ |
 | **Agent**      | Run a coding agent (Claude Code or Codex)                    |
 | **Git**        | Clone repos, inspect diffs, and open pull requests           |
-| **Shell**      | Execute OS-level commands, or hold one open with [live sessions](/docs/box/overall/live-sessions) |
+| **Shell**      | Execute OS-level commands, or hold one open with [live sessions](/box/overall/live-sessions) |
 | **Filesystem** | Upload, write, read, list, download, and manage files inside the box |
 | **Snapshots**  | Capture box state and restore new boxes from it              |
 
 The agent has full access to the shell, filesystem, and git inside its box. It can install packages, write files, run tests, and interact with the network.
 
-***
+---
 
 ## Runtimes
 
@@ -58,7 +58,7 @@ box = Box.create(runtime="node-alpine")
 ```
 </CodeGroup>
 
-***
+---
 
 ## Agent
 
@@ -66,21 +66,25 @@ Every Upstash Box comes with built-in coding agent harnesses. You don't need to 
 
 We currently support Claude Code and Codex as native agents inside of a box. You choose a model when creating a box.
 
-For more details, see the [Agent](/docs/box/overall/agent) page.
+For more details, see the [Agent](/box/overall/agent) page.
 
-  <img />
+<Frame>
+  <img src="/img/box/agent.png" />
+</Frame>
 
 Each iteration builds on the last. If a test fails, the agent sees the error output and corrects. If a file is missing, it discovers that during the read phase and adapts. The loop continues until the task is complete or the agent determines it cannot make further progress.
 
-You control what goes in (the prompt) and what comes out (raw text or a structured response). The agent handles reasoning and tool selection within its box, using the same [shell](/docs/box/overall/shell), [filesystem](/docs/box/overall/files), and [git](/docs/box/overall/git) available to you through the SDK.
+You control what goes in (the prompt) and what comes out (raw text or a structured response). The agent handles reasoning and tool selection within its box, using the same [shell](/box/overall/shell), [filesystem](/box/overall/files), and [git](/box/overall/git) available to you through the SDK.
 
 A box retains its full state between runs (files, installed packages, git history, etc.). You can send multiple prompts to the same box and the agent picks up exactly where it left off.
 
-***
+---
 
 ## Lifecycle
 
-  <img />
+<Frame>
+  <img src="/img/box/lifecycle.png" />
+</Frame>
 
 ### 1. Created
 
@@ -102,7 +106,7 @@ By default, boxes are billed only on active usage, so a paused box does not incu
 
 Snapshots capture the full workspace state of a box at a point in time. They let you checkpoint a working environment and later create a new box from that exact state.
 
-Learn more in [Snapshots](/docs/box/overall/snapshots).
+Learn more in [Snapshots](/box/overall/snapshots).
 
 ### 5. Deleted
 
@@ -110,13 +114,13 @@ Deleting a box permanently destroys the live box and its current state. This is 
 
 Any existing snapshots taken from the box are not affected by deletion.
 
-***
+---
 
 ## API
 
 Use the main Box APIs to create, reconnect, inspect, pause, snapshot, and delete boxes.
 
-For work inside a box, use the dedicated [Shell](/docs/box/overall/shell), [Filesystem](/docs/box/overall/files), [Git](/docs/box/overall/git), and [Agent](/docs/box/overall/agent) APIs.
+For work inside a box, use the dedicated [Shell](/box/overall/shell), [Filesystem](/box/overall/files), [Git](/box/overall/git), and [Agent](/box/overall/agent) APIs.
 
 ### Create or reconnect a box
 
@@ -264,7 +268,7 @@ restored = Box.from_snapshot(snapshot.id)
 
 This is useful for reusable base environments, checkpoints before risky work, and branching multiple boxes from the same setup state.
 
-For detailed snapshot workflows, see [Snapshots](/docs/box/overall/snapshots).
+For detailed snapshot workflows, see [Snapshots](/box/overall/snapshots).
 
 ### Delete
 
@@ -282,7 +286,7 @@ box.delete()
 
 Deleting a box is irreversible, so snapshot first if you may want to recreate the same environment later.
 
-***
+---
 
 ## Networking
 
@@ -294,15 +298,17 @@ Because boxes run on fast AWS infrastructure, they have single-digit ms to major
 
 ### Network Policy
 
-You can control outbound network access for a box with a network policy. For modes, examples, and SDK usage, see [Network Policy](/docs/box/overall/network-policy).
+You can control outbound network access for a box with a network policy. For modes, examples, and SDK usage, see [Network Policy](/box/overall/network-policy).
 
-***
+---
 
 ## Security & Isolation
 
 Every box runs as its own Docker container with an independent filesystem, process tree, and network stack. Boxes cannot communicate with or observe each other. There is no shared state between them.
 
-  <img />
+<Frame>
+  <img src="/img/box/routing.png" />
+</Frame>
 
 Your app makes SDK calls to the Upstash API gateway, which authenticates the request and routes it to the correct box. Each box has a unique ID, and all communication between your app and the box is encrypted in transit.
 
@@ -314,7 +320,7 @@ Inside a box, the agent, shell, filesystem, and git all share the same isolated 
 | **Processes**  | Process trees are fully isolated. One box cannot signal or inspect another's processes. |
 | **Network**    | Boxes can make outbound requests (HTTP, DNS) but cannot reach other boxes.              |
 
-***
+---
 
 ## Compute & Billing
 
@@ -328,4 +334,4 @@ Boxes are available in three sizes:
 | `medium` | 4 vCPU | 8 GB | 10 GB |
 | `large` | 8 vCPU | 16 GB | 20 GB |
 
-For exact pricing details, see the [pricing page](https://upstash.com/pricing/box). For keep-alive behavior, see [Keep Alive](/docs/box/overall/keep-alive).
+For exact pricing details, see the [pricing page](https://upstash.com/pricing/box). For keep-alive behavior, see [Keep Alive](/box/overall/keep-alive).

@@ -4,9 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zscore
 path: docs/redis/commands/sorted-set/zscore
 ---
 
+> Get member's score.
+
 Use `ZSCORE` to get the score of a member of a sorted set.
 
-The reply is null when the member or the key does not exist, so it doubles as a membership test that also tells you the value. Use [`ZMSCORE`](/docs/redis/commands/sorted-set/zmscore) to read several scores in one call, and [`ZRANK`](/docs/redis/commands/sorted-set/zrank) when you want the member's position rather than its score.
+The reply is null when the member or the key does not exist, so it doubles as a membership test that also tells you the value. Use [`ZMSCORE`](/redis/commands/sorted-set/zmscore) to read several scores in one call, and [`ZRANK`](/redis/commands/sorted-set/zrank) when you want the member's position rather than its score.
 
 ## Syntax
 
@@ -23,7 +25,7 @@ ZSCORE <key> <member>
 
 ## Important points
 
-* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

@@ -7,8 +7,8 @@ path: docs/workflow/howto/security
 To prevent unauthorized access to your workflow endpoint, you can add an authorization layer.
 Upstash Workflow supports two approaches:
 
-* **Built-in request verification** (recommended)
-* **Custom authorization method**
+- **Built-in request verification** (recommended)
+- **Custom authorization method**
 
 ### Built-in request verification (recommended)
 
@@ -33,7 +33,9 @@ QSTASH_NEXT_SIGNING_KEY=xxxxxxxxx
 
 You can find the values in Upstash Workflow dashboard.
 
-  <img />
+<Frame>
+  <img src="/img/qstash-workflow/qstash_signing_keys.png" />
+</Frame>
 
 <Info>
     For edge cases where environment variables cannot be used, you can explicitly create and pass a `Receiver` object to verify request signatures:

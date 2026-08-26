@@ -13,15 +13,15 @@ Build complex data pipelines that process large datasets without timeouts. Handl
 ## Featured examples
 
 <CardGroup>
-  <Card title="Realtime CSV importer" icon="book" href="/guides/example-projects/realtime-csv-importer">
+  <Card title="Realtime CSV importer" icon="book" href="/docs/guides/example-projects/realtime-csv-importer">
     Import CSV files with progress streamed live to frontend.
   </Card>
 
-  <Card title="Web scraper with BrowserBase" icon="book" href="/guides/examples/scrape-hacker-news">
+  <Card title="Web scraper with BrowserBase" icon="book" href="/docs/guides/examples/scrape-hacker-news">
     Scrape websites using BrowserBase and Puppeteer.
   </Card>
 
-  <Card title="Supabase database webhooks" icon="book" href="/guides/frameworks/supabase-edge-functions-database-webhooks">
+  <Card title="Supabase database webhooks" icon="book" href="/docs/guides/frameworks/supabase-edge-functions-database-webhooks">
     Trigger tasks from Supabase database webhooks.
   </Card>
 </CardGroup>
@@ -140,19 +140,19 @@ Build complex data pipelines that process large datasets without timeouts. Handl
 ## Featured use cases
 
 <CardGroup>
-  <Card title="Data processing & ETL workflows" icon="database" href="/guides/use-cases/data-processing-etl">
+  <Card title="Data processing & ETL workflows" icon="database" href="/docs/guides/use-cases/data-processing-etl">
     Build complex data pipelines that process large datasets without timeouts.
   </Card>
 
-  <Card title="Media processing workflows" icon="film" href="/guides/use-cases/media-processing">
+  <Card title="Media processing workflows" icon="film" href="/docs/guides/use-cases/media-processing">
     Batch process videos, images, audio, and documents with no execution time limits.
   </Card>
 
-  <Card title="AI media generation workflows" icon="wand-magic-sparkles" href="/guides/use-cases/media-generation">
+  <Card title="AI media generation workflows" icon="wand-magic-sparkles" href="/docs/guides/use-cases/media-generation">
     Generate images, videos, audio, documents and other media using AI models.
   </Card>
 
-  <Card title="Marketing workflows" icon="bullhorn" href="/guides/use-cases/marketing">
+  <Card title="Marketing workflows" icon="bullhorn" href="/docs/guides/use-cases/marketing">
     Build drip campaigns, create marketing content, and orchestrate multi-channel campaigns.
   </Card>
 </CardGroup>

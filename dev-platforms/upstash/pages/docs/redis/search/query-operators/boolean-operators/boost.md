@@ -10,9 +10,9 @@ Use it to fine-tune how much weight specific conditions have in the overall rele
 By default, all matching conditions contribute equally to a document's relevance score.
 The `$boost` operator multiplies a clause's score contribution by the specified factor:
 
-* **Values greater than 1** increase importance (e.g., `$boost: 5.0` makes the clause 5x more important)
-* **Values between 0 and 1** decrease importance
-* **Negative values** demote matches, pushing them lower in results
+- **Values greater than 1** increase importance (e.g., `$boost: 5.0` makes the clause 5x more important)
+- **Values between 0 and 1** decrease importance
+- **Negative values** demote matches, pushing them lower in results
 
 The most common use case is boosting specific `$should` conditions to prioritize certain matches:
 

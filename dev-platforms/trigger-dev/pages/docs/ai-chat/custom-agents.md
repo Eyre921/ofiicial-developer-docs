@@ -84,12 +84,12 @@ export const myChat = chat.customAgent({
 
 ### ChatSessionOptions
 
-| Option                 | Type                         | Default     | Description                                                                                      |
-| ---------------------- | ---------------------------- | ----------- | ------------------------------------------------------------------------------------------------ |
-| `signal`               | `AbortSignal`                | required    | Run-level cancel signal (from task context)                                                      |
-| `idleTimeoutInSeconds` | `number`                     | `30`        | Seconds to stay idle between turns before suspending                                             |
-| `timeout`              | `string`                     | `"1h"`      | Duration string for suspend timeout                                                              |
-| `maxTurns`             | `number`                     | `100`       | Max turns before ending                                                                          |
+| Option                 | Type                         | Default     | Description                                                                                           |
+| ---------------------- | ---------------------------- | ----------- | ----------------------------------------------------------------------------------------------------- |
+| `signal`               | `AbortSignal`                | required    | Run-level cancel signal (from task context)                                                           |
+| `idleTimeoutInSeconds` | `number`                     | `30`        | Seconds to stay idle between turns before suspending                                                  |
+| `timeout`              | `string`                     | `"1h"`      | Duration string for suspend timeout                                                                   |
+| `maxTurns`             | `number`                     | `100`       | Max turns before ending                                                                               |
 | `compaction`           | `ChatAgentCompactionOptions` | `undefined` | Automatic context [compaction](/docs/ai-chat/compaction) — same options as on `chat.agent()`          |
 | `pendingMessages`      | `PendingMessagesOptions`     | `undefined` | Mid-execution [message injection](/docs/ai-chat/pending-messages) — same options as on `chat.agent()` |
 
@@ -99,19 +99,19 @@ Between turns the run idles on `waitWithIdleTimeout`: after `idleTimeoutInSecond
 
 Each turn yielded by the iterator provides:
 
-| Field               | Type                              | Description                                                                                                                     |
-| ------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `number`            | `number`                          | Turn number (0-indexed)                                                                                                         |
-| `chatId`            | `string`                          | Chat session ID                                                                                                                 |
-| `trigger`           | `string`                          | What triggered this turn                                                                                                        |
-| `clientData`        | `unknown`                         | Client data from the transport                                                                                                  |
-| `messages`          | `ModelMessage[]`                  | Full accumulated model messages — pass to `streamText`                                                                          |
-| `uiMessages`        | `UIMessage[]`                     | Full accumulated UI messages — use for persistence                                                                              |
-| `signal`            | `AbortSignal`                     | Combined stop+cancel signal (fresh each turn)                                                                                   |
-| `stopped`           | `boolean`                         | Whether the user stopped generation this turn                                                                                   |
-| `continuation`      | `boolean`                         | Whether this is a continuation run                                                                                              |
-| `previousTurnUsage` | `LanguageModelUsage \| undefined` | Token usage from the previous turn (undefined on turn 0)                                                                        |
-| `totalUsage`        | `LanguageModelUsage`              | Cumulative token usage across all completed turns                                                                               |
+| Field               | Type                              | Description                                                                                                                          |
+| ------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `number`            | `number`                          | Turn number (0-indexed)                                                                                                              |
+| `chatId`            | `string`                          | Chat session ID                                                                                                                      |
+| `trigger`           | `string`                          | What triggered this turn                                                                                                             |
+| `clientData`        | `unknown`                         | Client data from the transport                                                                                                       |
+| `messages`          | `ModelMessage[]`                  | Full accumulated model messages — pass to `streamText`                                                                               |
+| `uiMessages`        | `UIMessage[]`                     | Full accumulated UI messages — use for persistence                                                                                   |
+| `signal`            | `AbortSignal`                     | Combined stop+cancel signal (fresh each turn)                                                                                        |
+| `stopped`           | `boolean`                         | Whether the user stopped generation this turn                                                                                        |
+| `continuation`      | `boolean`                         | Whether this is a continuation run                                                                                                   |
+| `previousTurnUsage` | `LanguageModelUsage \| undefined` | Token usage from the previous turn (undefined on turn 0)                                                                             |
+| `totalUsage`        | `LanguageModelUsage`              | Cumulative token usage across all completed turns                                                                                    |
 | `handover`          | `{ isFinal: boolean } \| null`    | The [`chat.headStart`](/docs/ai-chat/fast-starts#handover-with-custom-agents) handover for this turn (turn 0 only); `null` otherwise |
 
 | Method                         | Description                                                                                                                                                                                              |
@@ -377,19 +377,19 @@ Things the managed levels do for you that a raw loop has to get right:
 ## Next steps
 
 <CardGroup>
-  <Card title="Backend overview" icon="layer-group" href="/ai-chat/backend">
+  <Card title="Backend overview" icon="layer-group" href="/docs/ai-chat/backend">
     The three abstraction levels compared, and everything chat.agent() adds on top.
   </Card>
 
-  <Card title="Sessions" icon="wave-pulse" href="/ai-chat/sessions">
+  <Card title="Sessions" icon="wave-pulse" href="/docs/ai-chat/sessions">
     The durable stream pair every agent — managed or custom — is built on.
   </Card>
 
-  <Card title="Compaction" icon="compress" href="/ai-chat/compaction">
+  <Card title="Compaction" icon="compress" href="/docs/ai-chat/compaction">
     Automatic context compression — works with createSession and MessageAccumulator.
   </Card>
 
-  <Card title="Client protocol" icon="plug" href="/ai-chat/client-protocol">
+  <Card title="Client protocol" icon="plug" href="/docs/ai-chat/client-protocol">
     The wire format your loop is speaking, chunk by chunk.
   </Card>
 </CardGroup>

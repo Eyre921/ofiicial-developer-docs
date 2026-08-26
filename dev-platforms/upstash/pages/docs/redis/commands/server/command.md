@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/commands/server/command
 path: docs/redis/commands/server/command
 ---
 
+> Get command metadata.
+
 Use `COMMAND` to get metadata about the commands the server supports, such as their arity, flags, and key positions. Client libraries call it during connection setup to discover how to route commands and where their keys are.
 
 The current Upstash deployment accepts the command for client compatibility but returns an empty array rather than exposing the server command table, so clients fall back to their built-in command metadata.
@@ -20,7 +22,7 @@ This command takes no arguments.
 
 ## Important points
 
-* The current Upstash deployment accepts `COMMAND` for client compatibility but returns an empty array; it does not expose the server command table.
+- The current Upstash deployment accepts `COMMAND` for client compatibility but returns an empty array; it does not expose the server command table.
 
 ## Response
 

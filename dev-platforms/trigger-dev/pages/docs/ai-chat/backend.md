@@ -8,15 +8,15 @@ Three approaches to building your chat backend — chat.agent(), session iterato
 
 There are three abstraction levels for a chat backend. All three speak the same wire protocol, so the [frontend transport](/docs/ai-chat/frontend) works unchanged whichever you pick.
 
-| Capability                            | `chat.agent()` | `chat.createSession()`                                                         | Raw primitives |
-| ------------------------------------- | -------------- | ------------------------------------------------------------------------------ | -------------- |
-| Turn loop, stop signals, accumulation | Managed        | Managed                                                                        | You write it   |
-| Lifecycle hooks                       | Yes            | No — inline code per turn                                                      | No             |
+| Capability                            | `chat.agent()` | `chat.createSession()`                                                              | Raw primitives |
+| ------------------------------------- | -------------- | ----------------------------------------------------------------------------------- | -------------- |
+| Turn loop, stop signals, accumulation | Managed        | Managed                                                                             | You write it   |
+| Lifecycle hooks                       | Yes            | No — inline code per turn                                                           | No             |
 | Continuation recovery on new runs     | Automatic      | [Manual seeding](/docs/ai-chat/custom-agents#continuation-runs-and-history-seeding) | Manual seeding |
-| Compaction / steering                 | Built-in       | Built-in                                                                       | Manual         |
-| Head Start, actions, tool approvals   | Yes            | No                                                                             | No             |
-| Custom stream conversion              | No             | Limited                                                                        | Full control   |
-| Agent dashboard visibility            | Yes            | Yes (via `customAgent`)                                                        | Yes            |
+| Compaction / steering                 | Built-in       | Built-in                                                                            | Manual         |
+| Head Start, actions, tool approvals   | Yes            | No                                                                                  | No             |
+| Custom stream conversion              | No             | Limited                                                                             | Full control   |
+| Agent dashboard visibility            | Yes            | Yes (via `customAgent`)                                                             | Yes            |
 
 The raw-primitives column assumes [`chat.customAgent()`](/docs/ai-chat/custom-agents) as the wrapper, which is what makes the task visible to the agent dashboard.
 
@@ -244,12 +244,12 @@ export const myChat = chat.agent({
 
 **Which form to call:**
 
-| Form                                            | Use when                                                                                                                                                                                                                              |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `chat.toStreamTextOptions()`                    | Default. Wires up `prepareStep` (compaction, steering, background injection), the stored prompt's `system` / `model` / `config`, and telemetry metadata.                                                                              |
+| Form                                            | Use when                                                                                                                                                                                                                                   |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `chat.toStreamTextOptions()`                    | Default. Wires up `prepareStep` (compaction, steering, background injection), the stored prompt's `system` / `model` / `config`, and telemetry metadata.                                                                                   |
 | `chat.toStreamTextOptions({ registry })`        | You're using [Prompts](/docs/ai/prompts) with a provider-prefixed model string (e.g. `"anthropic:claude-sonnet-4-5"`). The registry resolves the prefix to a real model instance via `createProviderRegistry({ anthropic, openai, ... })`. |
-| `chat.toStreamTextOptions({ tools })`           | You want HITL tool approvals — pass the same `tools` object you give to `streamText`. The SDK then knows which tool calls need to pause on `needsApproval: true`.                                                                     |
-| `chat.toStreamTextOptions({ registry, tools })` | Both of the above.                                                                                                                                                                                                                    |
+| `chat.toStreamTextOptions({ tools })`           | You want HITL tool approvals — pass the same `tools` object you give to `streamText`. The SDK then knows which tool calls need to pause on `needsApproval: true`.                                                                          |
+| `chat.toStreamTextOptions({ registry, tools })` | Both of the above.                                                                                                                                                                                                                         |
 
 <Tip>
   See [Prompts](/docs/ai/prompts) for the full guide — defining templates, variable schemas, dashboard
@@ -801,16 +801,10 @@ export const manualChat = task({
 
 ***
 
-<a />
-
-<a />
-
-<a />
-
 ## Custom agents
 
 Both lower levels — `chat.createSession()` (managed turn iterator, your turn body) and `chat.customAgent()` with raw primitives (hand-rolled loop, full stream-conversion control) — are covered together on the Custom agents page, including the `ChatTurn` surface, the continuation-seeding pattern, and the hand-rolled-loop checklist:
 
-<Card title="Custom agents" icon="screwdriver-wrench" href="/ai-chat/custom-agents">
+<Card title="Custom agents" icon="screwdriver-wrench" href="/docs/ai-chat/custom-agents">
   Build agents without the managed lifecycle — createSession or raw primitives.
 </Card>

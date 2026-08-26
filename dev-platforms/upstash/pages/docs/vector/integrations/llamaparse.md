@@ -15,8 +15,8 @@ pip install llama-index upstash-vector llama-index-vector-stores-upstash python-
 ## Setup
 
 Create a Vector Index in the [Upstash Console](https://console.upstash.com). Set the index with:
-* **Dimensions**: 1536
-* **Distance Metric**: Cosine
+- **Dimensions**: 1536
+- **Distance Metric**: Cosine
 
 Add the required environment variables to a `.env` file:
 

@@ -7,19 +7,19 @@ path: docs/introduction
 Find all the resources and guides you need to get started
 
 <CardGroup>
-  <Card title="Quick start" href="/quick-start">
+  <Card title="Quick start" href="/docs/quick-start">
     Get started with Trigger.dev and run your first task in 3 minutes
   </Card>
 
-  <Card title="Guides, frameworks & examples" href="/guides/introduction#example-tasks">
+  <Card title="Guides, frameworks & examples" href="/docs/guides/introduction#example-tasks">
     Browse our wide range of guides, frameworks and example projects
   </Card>
 
-  <Card title="Building with AI" href="/building-with-ai">
+  <Card title="Building with AI" href="/docs/building-with-ai">
     Learn how to build Trigger.dev projects using AI coding assistants
   </Card>
 
-  <Card title="Video walkthrough" href="/video-walkthrough">
+  <Card title="Video walkthrough" href="/docs/video-walkthrough">
     Watch an end-to-end demo of Trigger.dev in 10 minutes
   </Card>
 </CardGroup>
@@ -33,19 +33,19 @@ We provide everything you need to build and manage background tasks: a CLI and S
 ## Learn the concepts
 
 <CardGroup>
-  <Card title="Writing tasks" icon="wand-magic-sparkles" href="/tasks/overview">
+  <Card title="Writing tasks" icon="wand-magic-sparkles" href="/docs/tasks/overview">
     Tasks are the core of Trigger.dev. Learn what they are and how to write them.
   </Card>
 
-  <Card title="Triggering tasks" icon="bullseye-pointer" href="/triggering">
+  <Card title="Triggering tasks" icon="bullseye-pointer" href="/docs/triggering">
     Learn how to trigger tasks from your codebase.
   </Card>
 
-  <Card title="Runs" icon="person-running" href="/runs">
+  <Card title="Runs" icon="person-running" href="/docs/runs">
     Runs are the instances of tasks that are executed. Learn how they work.
   </Card>
 
-  <Card title="API keys" icon="key" href="/apikeys">
+  <Card title="API keys" icon="key" href="/docs/apikeys">
     API keys are used to authenticate requests to the Trigger.dev API. Learn how to create and use
     them.
   </Card>
@@ -54,43 +54,43 @@ We provide everything you need to build and manage background tasks: a CLI and S
 ## Explore by feature
 
 <CardGroup>
-  <Card title="Scheduled tasks (cron)" icon="clock" href="/tasks/scheduled">
+  <Card title="Scheduled tasks (cron)" icon="clock" href="/docs/tasks/scheduled">
     Scheduled tasks are a type of task that is scheduled to run at a specific time.
   </Card>
 
-  <Card title="Realtime API" icon="loader" href="/realtime">
+  <Card title="Realtime API" icon="loader" href="/docs/realtime">
     The Realtime API allows you to trigger tasks and get the status of runs.
   </Card>
 
-  <Card title="React hooks" icon="react" href="/realtime/react-hooks">
+  <Card title="React hooks" icon="react" href="/docs/realtime/react-hooks">
     React hooks are a way to show task status in your frontend.
   </Card>
 
-  <Card title="Waits" icon="calendar-clock" href="/wait">
+  <Card title="Waits" icon="calendar-clock" href="/docs/wait">
     Waits are a way to wait for a task to finish before continuing.
   </Card>
 
-  <Card title="Errors and retries" icon="message-exclamation" href="/errors-retrying">
+  <Card title="Errors and retries" icon="message-exclamation" href="/docs/errors-retrying">
     Learn how to handle errors and retries.
   </Card>
 
-  <Card title="Concurrency & Queues" icon="line-height" href="/queue-concurrency">
+  <Card title="Concurrency & Queues" icon="line-height" href="/docs/queue-concurrency">
     Configure what you want to happen when there is more than one run at a time.
   </Card>
 
-  <Card title="Wait for token (human-in-the-loop)" icon="hand" href="/wait-for-token">
+  <Card title="Wait for token (human-in-the-loop)" icon="hand" href="/docs/wait-for-token">
     Pause runs until a token is completed via an approval workflow.
   </Card>
 
-  <Card title="Build extensions" icon="gear" href="/config/extensions/overview">
+  <Card title="Build extensions" icon="gear" href="/docs/config/extensions/overview">
     Customize the build process or the resulting bundle and container image.
   </Card>
 </CardGroup>
 
 ## Explore by build extension
 
-| Extension             | What it does                                                 | Docs                                                                   |
-| :-------------------- | :----------------------------------------------------------- | :--------------------------------------------------------------------- |
+| Extension             | What it does                                                 | Docs                                                                        |
+| :-------------------- | :----------------------------------------------------------- | :-------------------------------------------------------------------------- |
 | prismaExtension       | Use Prisma with Trigger.dev                                  | [prismaExtension docs](/docs/config/extensions/prismaExtension)             |
 | pythonExtension       | Execute Python scripts in Trigger.dev                        | [pythonExtension docs](/docs/config/extensions/pythonExtension)             |
 | playwright            | Use Playwright with Trigger.dev                              | [playwright extension docs](/docs/config/extensions/playwright)             |
@@ -108,35 +108,35 @@ We provide everything you need to build and manage background tasks: a CLI and S
 ## Explore by example
 
 <CardGroup>
-  <Card title="FFmpeg" href="/guides/examples/ffmpeg-video-processing" />
+  <Card title="FFmpeg" href="/docs/guides/examples/ffmpeg-video-processing" />
 
-  <Card title="Fal.ai" href="/guides/examples/fal-ai-image-to-cartoon" />
+  <Card title="Fal.ai" href="/docs/guides/examples/fal-ai-image-to-cartoon" />
 
-  <Card title="Puppeteer" href="/guides/examples/puppeteer" />
+  <Card title="Puppeteer" href="/docs/guides/examples/puppeteer" />
 
-  <Card title="LibreOffice" href="/guides/examples/libreoffice-pdf-conversion" />
+  <Card title="LibreOffice" href="/docs/guides/examples/libreoffice-pdf-conversion" />
 
-  <Card title="OpenAI" href="/guides/examples/open-ai-with-retrying" />
+  <Card title="OpenAI" href="/docs/guides/examples/open-ai-with-retrying" />
 
-  <Card title="Browserbase" href="/guides/examples/scrape-hacker-news" />
+  <Card title="Browserbase" href="/docs/guides/examples/scrape-hacker-news" />
 
-  <Card title="Sentry" href="/guides/examples/sentry-error-tracking" />
+  <Card title="Sentry" href="/docs/guides/examples/sentry-error-tracking" />
 
-  <Card title="Resend" href="/guides/examples/resend-email-sequence" />
+  <Card title="Resend" href="/docs/guides/examples/resend-email-sequence" />
 
-  <Card title="Vercel AI SDK" href="/guides/examples/vercel-ai-sdk" />
+  <Card title="Vercel AI SDK" href="/docs/guides/examples/vercel-ai-sdk" />
 
-  <Card title="Sharp" href="/guides/examples/sharp-image-processing" />
+  <Card title="Sharp" href="/docs/guides/examples/sharp-image-processing" />
 
-  <Card title="Deepgram" href="/guides/examples/deepgram-transcribe-audio" />
+  <Card title="Deepgram" href="/docs/guides/examples/deepgram-transcribe-audio" />
 
-  <Card title="Supabase" href="/guides/examples/supabase-database-operations" />
+  <Card title="Supabase" href="/docs/guides/examples/supabase-database-operations" />
 
-  <Card title="DALL•E" href="/guides/examples/dall-e3-generate-image" />
+  <Card title="DALL•E" href="/docs/guides/examples/dall-e3-generate-image" />
 
-  <Card title="Firecrawl" href="/guides/examples/firecrawl-url-crawl" />
+  <Card title="Firecrawl" href="/docs/guides/examples/firecrawl-url-crawl" />
 
-  <Card title="Lightpanda" href="/guides/examples/lightpanda" />
+  <Card title="Lightpanda" href="/docs/guides/examples/lightpanda" />
 </CardGroup>
 
 ## Getting help
