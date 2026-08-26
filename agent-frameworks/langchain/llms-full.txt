@@ -387,7 +387,7 @@ Each condition group specifies:
 |---------------|----------------------|
 | `project` | `projects:read`, `projects:update`, `projects:delete`, `runs:read`, `runs:share`, `runs:delete`, `projects:increase-trace-tier`, `projects:decrease-trace-tier` |
 | `prompt` | `prompts:read`, `prompts:update`, `prompts:delete`, `prompts:share`, `prompts:tag` |
-| `dataset` | `datasets:read`, `datasets:update`, `datasets:delete`, `datasets:share`, `datasets:download` |
+| `dataset` | `datasets:read`, `datasets:update`, `datasets:delete`, `datasets:share`, `datasets:download`, `datasets:clone` |
 | `deployment` | `deployments:read`, `deployments:update`, `deployments:delete` |
 | `queues` | `annotation-queues:create`, `annotation-queues:delete`, `annotation-queues:read`, `annotation-queues:update` |
 | `mcp_server` | `mcp-servers:read`, `mcp-servers:invoke`, `mcp-servers:update`, `mcp-servers:delete`. See [Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control). |
@@ -395,6 +395,10 @@ Each condition group specifies:
 
 <Note>
 Runs don't have their own tags. Run permissions (`runs:read`, `runs:create`, `runs:share`, `runs:delete`) are evaluated against the parent project's tags.
+</Note>
+
+<Note>
+Cloning copies examples from a source dataset to a target dataset. The `datasets:clone` permission is checked for both datasets: once using the source dataset’s tags, and once using the target dataset’s tags. To clone successfully, a policy must grant `datasets:clone` access to both datasets.
 </Note>
 
 #### Conditions
@@ -6263,10 +6267,11 @@ You can preview alert behavior over a historical time window to understand how m
     ### 1. Configure the Slack notification
 
     1. In the **Notification Settings** section of your alert setup, select **Slack**.
-    2. Click the channel selector. If no Slack workspace is linked yet, click **Connect Slack** and complete the OAuth flow to authorize LangSmith.
-    3. Add the `@LangSmith` app to the channel you want to receive notifications in. The app must be a member of the channel — type `/invite @LangSmith` in the channel to add it.
-    4. Select the workspace and channel from the dropdown. Click the refresh icon if the channel does not appear immediately.
-    5. Click **Save** to save the notification configuration.
+    1. Click the channel selector. If no Slack workspace is linked yet, click **Connect Slack** and complete the OAuth flow to authorize LangSmith.
+    1. Select the workspace and channel from the dropdown. Click the refresh icon if the channel does not appear immediately.
+    1. Click **Save** to save the notification configuration.
+
+    LangSmith automatically joins the public channel you select. To post to a private channel, invite the `@LangSmith` app to that channel in Slack first.
 
     ### 2. Test the integration
 
@@ -8592,7 +8597,7 @@ Run items and thread items support different capabilities:
 | Rubric feedback | Yes | Yes |
 | Reviewer notes | Yes | No |
 | Assertions | Yes | No |
-| Add to Dataset | Yes | No |
+| Add to Dataset | Yes | Yes |
 | Default dataset | Yes | No |
 | Automation rules | Yes | Yes |
 
@@ -8605,7 +8610,7 @@ Run items and thread items support different capabilities:
 
 1. Fill in the **Name** and **Description** of the queue.
 1. Optionally select an **Application**.
-1. Optionally **Select a default dataset** to streamline exporting reviewed runs into a dataset in your LangSmith [workspace](/langsmith/administration-overview#workspaces). Default datasets apply when you use **Add to Dataset** on run items; thread items do not support adding to a dataset.
+1. Optionally **Select a default dataset** to streamline exporting reviewed runs into a dataset in your LangSmith [workspace](/langsmith/administration-overview#workspaces). Default datasets apply when you use **Add to Dataset** on run items; thread items do not support default datasets.
 
 #### Annotation rubric
 
@@ -8748,12 +8753,12 @@ Manually adding runs or threads to an annotation queue does not change trace ret
 1. Review the current item:
 
     - **Run items**: Inspect inputs and outputs in the center pane. Add **Reviewer Notes**, score [**Feedback**](/langsmith/observability-concepts#feedback) criteria, or mark the item as reviewed. To build a dataset, edit the run's input and output to create a corrected reference example and click **Add to Dataset**. Instead of crafting a corrected reference output by hand, you can [write **Assertions**](/langsmith/assertions) directly in the review side panel and save them as the example's expected output.
-    - **Thread items**: The center pane shows the conversation transcript for that thread. Read the transcript and score the same rubric **Feedback** keys. Use **View item** to open the thread in the conversation peek.
+    - **Thread items**: The center pane displays the thread's conversation transcript. Read the transcript and score its rubric **Feedback** criteria. Click **View item** to open the thread in the conversation peek. To add the full conversation to a dataset as one example, click **Add to Dataset**, then select a dataset. To create a dataset from the picker, click **New Dataset**. To learn what a thread example includes, see [Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project).
 
     Click **Delete** to remove the item from the queue for all users, regardless of any current reservations or queue settings.
 
     <Note>
-    Thread items support rubric feedback only. See the [capability table](#single-run-annotation-queues) for what differs between run and thread items.
+    For thread items, you can submit rubric feedback and use **Add to Dataset**. Reviewer notes and assertions are not available. See the [capability table](#single-run-annotation-queues) to compare run and thread item capabilities.
     </Note>
 
     <img
@@ -11774,7 +11779,7 @@ This page describes how to manage billing for your LangSmith organization:
 <Note>
 Before using this guide, note the following:
 
-- If you are interested in the [Enterprise](https://www.langchain.com/pricing) plan, please [contact sales](https://www.langchain.com/contact-sales). This guide is only for our self-serve billing plans.
+- If you are interested in the [Enterprise](https://www.langchain.com/pricing) plan, [contact our sales team](https://www.langchain.com/contact-sales). This guide is only for our self-serve billing plans.
 </Note>
 
 To set up billing for your LangSmith organization, navigate to the [Billing and Usage](https://smith.langchain.com/settings/payments) page under **Settings**. Depending on your organization's settings, there are different setup guides:
@@ -11808,7 +11813,7 @@ Contract usage tracking is available for [**Enterprise plan**](/langsmith/pricin
 For details on viewing your prepaid contract consumption, refer to [Contract usage](/langsmith/view-usage#contract-usage).
 
 <Note>
-For more details on the Enterprise plan, [contact the sales team](https://www.langchain.com/contact-sales).
+For more details on the Enterprise plan, [contact our sales team](https://www.langchain.com/contact-sales).
 </Note>
 
 ## Update your information (Paid plans only)
@@ -11944,7 +11949,7 @@ For current LCU and LSU rates, and to estimate the cost of a deployment, see the
 This usage-based model replaces the previous per-run and uptime pricing. Existing customers remain on their current pricing until October 1, 2026, then move to the new model. Scale to zero is available only for deployments on the new pricing. The inactivity window before a Serverless deployment scales to zero may change as the feature rolls out. For questions about the transition, contact support via [support.langchain.com](https://support.langchain.com).
 </Note>
 
-For high-volume deployment usage, [contact the sales team](https://www.langchain.com/contact-sales) to discuss custom pricing options.
+For high-volume deployment usage, [contact our sales team](https://www.langchain.com/contact-sales) to discuss custom pricing options.
 
 ### Summary
 
@@ -12477,7 +12482,7 @@ See [Available features](/langsmith/byoc#available-features) for the current lis
 </Accordion>
 
 <Accordion title="Can I migrate an existing LangSmith instance to BYOC?">
-Partly. Users, roles, datasets, experiments, prompts, annotation queue configuration, automation rules, and dashboards can be copied over from a Cloud or self-hosted instance. Traces are not migrated today. To plan a migration, [contact the LangChain sales team](https://www.langchain.com/contact-sales).
+Partly. Users, roles, datasets, experiments, prompts, annotation queue configuration, automation rules, and dashboards can be copied over from a Cloud or self-hosted instance. Traces are not migrated today. To plan a migration, [contact our sales team](https://www.langchain.com/contact-sales).
 </Accordion>
 
 ## See also
@@ -12856,7 +12861,7 @@ The table below compares the two deployment models:
 
 You can move to BYOC from an existing self-hosted deployment. Traces are not migrated today, but users, roles, datasets, experiments, prompts, annotation queue configuration, automation rules, and dashboards can be copied over.
 
-To plan a migration, [contact the LangChain sales team](https://www.langchain.com/contact-sales).
+To plan a migration, [contact our sales team](https://www.langchain.com/contact-sales).
 
 ## See also
 
@@ -12879,9 +12884,9 @@ To plan a migration, [contact the LangChain sales team](https://www.langchain.co
 # Bring Your Own Cloud (BYOC)
 Source: https://docs.langchain.com/langsmith/byoc
 
-<Warning>
+<Note>
 BYOC is only available for customers on the [Enterprise plan](https://www.langchain.com/pricing).
-</Warning>
+</Note>
 
 Bring Your Own Cloud (BYOC) lets you deploy LangSmith services and store data in your own cloud environment, while LangChain operates, scales, and upgrades the infrastructure. BYOC suits organizations that require complete sovereignty over their data, but do not want the overhead of provisioning and managing infrastructure.
 
@@ -12889,7 +12894,7 @@ BYOC uses a split responsibility model: the control plane runs in LangChain's cl
 
 ## Get started
 
-To deploy LangSmith BYOC, [contact the LangChain sales team](https://www.langchain.com/contact-sales). After the LangChain team enables BYOC for your organization, follow the [onboarding guide](/langsmith/byoc-onboarding) to create your first data plane.
+To deploy LangSmith BYOC, [contact our sales team](https://www.langchain.com/contact-sales). After the LangChain team enables BYOC for your organization, follow the [onboarding guide](/langsmith/byoc-onboarding) to create your first data plane.
 
 ## Regions and cloud providers
 
@@ -16202,6 +16207,7 @@ Chat helps you gain insight from your traces, conversation threads, and prompts 
 - [Projects](#projects): Browse and filter runs across a project.
 - [Trace pages](#trace-pages): Analyze individual runs and execution traces.
 - [Thread views](#thread-views): Understand conversation threads and user interactions.
+- [Engine](#engine): Investigate detected issues and their linked traces.
 
 **Prompt Engineering:**
 - [Playground](#playground): Edit and optimize prompts.
@@ -16297,6 +16303,17 @@ Under the **Threads** tab, Chat analyzes conversation [threads](/langsmith/obser
 - "What issues is the user experiencing?"
 - "Was the user's problem solved?"
 - "What was the main topic of this thread?"
+
+### Engine
+
+On the [Engine](/langsmith/engine) page, open Chat to investigate detected issues and their linked traces. Chat can help you understand the selected issue, or answer questions across multiple Engine issues. For example:
+
+**Example questions:**
+- "What went wrong?"
+- "Why was this flagged?"
+- "Explain the proposed fix"
+- "What are my most pressing issues?"
+- "How many new issues do I have?"
 
 ## Prompt engineering
 
@@ -25168,11 +25185,143 @@ Returns the updated destination object. Credential values are never returned—o
 1. Keep old credentials active until all in-flight bulk export runs finish (up to the [maximum run duration](/langsmith/data-export-monitor#automatic-retry-behavior)).
 1. Revoke old credentials once no runs are using them.
 
+## Authenticate with an AWS IAM role
+
+AWS IAM role assumption lets GCP-hosted LangSmith SaaS export to S3 without storing static AWS credentials. Configure an AWS role that trusts the LangSmith service accounts for your production region, then provide its ARN when you create or update a destination.
+
+Pass `aws_role_arn` instead of `credentials` to use IAM role assumption.
+
+<Note>
+IAM role assumption is available only on GCP-hosted LangSmith SaaS. It is not available on AWS-hosted SaaS or self-hosted deployments.
+</Note>
+
+### Create the AWS role
+
+Create an AWS IAM role with a trust policy that permits web identity federation from the three subject IDs for your region. Grant the role access to your export bucket. Select your LangSmith region to use the corresponding subject IDs. Each Terraform example uses the minimum required `s3:PutObject` permission:
+
+<CodeGroup>
+
+```hcl US
+resource "aws_iam_role" "langsmith_bulk_export" {
+  name                 = "langsmith-bulk-export"
+  max_session_duration = 43200
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Federated = "accounts.google.com" }
+      Action    = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringEquals = {
+          "accounts.google.com:oaud" = "langsmith-bulk-export"
+          "accounts.google.com:sub" = [
+            "110136955440523778103",
+            "116331607438151298187",
+            "115251468294701876731",
+          ]
+        }
+      }
+    }]
+  })
+
+  inline_policy {
+    name = "langsmith-bulk-export-s3"
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [{
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
+        Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+      }]
+    })
+  }
+}
+```
+
+```hcl EU
+resource "aws_iam_role" "langsmith_bulk_export" {
+  name                 = "langsmith-bulk-export"
+  max_session_duration = 43200
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Federated = "accounts.google.com" }
+      Action    = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringEquals = {
+          "accounts.google.com:oaud" = "langsmith-bulk-export"
+          "accounts.google.com:sub" = [
+            "110207823358662523645",
+            "115689110758588220909",
+            "109691164801275818274",
+          ]
+        }
+      }
+    }]
+  })
+
+  inline_policy {
+    name = "langsmith-bulk-export-s3"
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [{
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
+        Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+      }]
+    })
+  }
+}
+```
+
+```hcl APAC
+resource "aws_iam_role" "langsmith_bulk_export" {
+  name                 = "langsmith-bulk-export"
+  max_session_duration = 43200
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Federated = "accounts.google.com" }
+      Action    = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringEquals = {
+          "accounts.google.com:oaud" = "langsmith-bulk-export"
+          "accounts.google.com:sub" = [
+            "105923862603785245337",
+            "114288557158507552617",
+            "116622461022404604716",
+          ]
+        }
+      }
+    }]
+  })
+
+  inline_policy {
+    name = "langsmith-bulk-export-s3"
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [{
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
+        Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+      }]
+    })
+  }
+}
+```
+
+</CodeGroup>
+
+See [AWS S3 permissions](#aws-s3-permissions) for optional permissions.
+
 ## Switch authentication mode
 
-<Note>**`aws_role_arn` is available only on GCP SaaS deployments.**</Note>
-
-Switch an existing destination between static credentials and AWS IAM role assumption without recreating it. Use `PATCH /api/v1/bulk-exports/destinations/{destination_id}`.
+Switch an existing destination between static credentials and [AWS IAM role assumption](#authenticate-with-an-aws-iam-role) without recreating it. Use `PATCH /api/v1/bulk-exports/destinations/{destination_id}`.
 
 [**Required permission**](/langsmith/organization-workspace-operations#bulk-exports): `bulk-exports:manage`.
 
@@ -29859,7 +30008,7 @@ Sandboxes are not proactively restarted. They start again when a user or API act
 ## Enable Engine
 
 <Info>
-Self-hosted deployments require LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. Engine is licensed separately and meters its own usage in LCUs. [Contact your account team](https://www.langchain.com/contact-sales) to have it added to your order.
+Self-hosted deployments require LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. Engine is licensed separately and meters its own usage in LCUs. [Contact our sales team](https://www.langchain.com/contact-sales) to have it added to your order.
 </Info>
 
 [Engine](/langsmith/engine-overview) watches production traces, clusters recurring failures into issues, diagnoses each issue, and proposes fixes. Engine is disabled by default.
@@ -29915,7 +30064,7 @@ Engine also adds configuration to `platform-backend` and `ingest-queue`, which d
     On GCP, this uses the same host LangSmith already uses for license verification and billing telemetry, so Engine adds a path rather than a new egress destination.
 
     <Note>
-    Engine is available for self-hosted deployments in **AWS US** and **GCP US**. Check [Availability by cloud and region](/langsmith/engine-self-hosted#availability-by-cloud-and-region) and confirm coverage with your account team before planning a rollout.
+    Engine is available for self-hosted deployments in **AWS US** and **GCP US**. Check [Availability by cloud and region](/langsmith/engine-self-hosted#availability-by-cloud-and-region) and confirm coverage with [our sales team](https://www.langchain.com/contact-sales) before planning a rollout.
     </Note>
 
     Add the gateway as a specific allowlist entry rather than opening general egress. To keep AWS traffic on private networking, [connect to LangSmith Intelligence with AWS PrivateLink](/langsmith/engine-self-hosted#connect-with-aws-privatelink). Requests use a short-lived license JWT obtained during LangSmith license verification. Engine's traffic is separate from the billing and operational telemetry described in [Configure egress](/langsmith/self-host-egress), even where it shares a host.
@@ -33235,7 +33384,7 @@ Each issue moves through a closed loop: a recurring issue is detected in your tr
 For each issue, Engine surfaces the contributing traces, proposes a fix, keeps the issue current by attaching new traces that match the same failure pattern, and creates ground truth dataset examples from the production trace inputs.
 
 <CardGroup cols={3}>
-  <Card title="Build: Open a pull request" icon="git-pull-request" href="/langsmith/engine#open-a-pull-request">
+  <Card title="Build: Open a pull request" icon="git-pull-request" href="/langsmith/engine#open-or-view-a-pull-request">
     Apply the proposed fix by opening a pull request in your connected repository. Engine can propose code changes to agents built with Deep Agents, LangChain, and LangGraph.
   </Card>
   <Card title="Test: Generate datasets" icon="database" href="/langsmith/engine#add-offline-examples">
@@ -33382,7 +33531,7 @@ For security questions, contact [trust@langchain.dev](mailto:trust@langchain.dev
 Source: https://docs.langchain.com/langsmith/engine-self-hosted
 
 <Info>
-Self-hosted Engine requires LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. It is not available on earlier chart versions. [Contact your account team](https://www.langchain.com/contact-sales) to have the entitlement added to your order.
+Self-hosted Engine requires LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. It is not available on earlier chart versions. [Contact our sales team](https://www.langchain.com/contact-sales) to have the entitlement added to your order.
 </Info>
 
 LangSmith Engine is an agent within LangSmith that monitors your production traces, clusters them into issues, diagnoses each issue against your source code, proposes a fix as a PR, and identifies ground truth evals to add to your datasets. For a product overview, see [Engine](/langsmith/engine-overview).
@@ -33406,7 +33555,7 @@ Engine is available where LSI is available:
 | AWS | US | Available |
 | GCP | US | Available |
 
-For availability in other regions, contact your account team.
+For availability in other regions, [contact our sales team](https://www.langchain.com/contact-sales).
 
 ## How it works
 
@@ -33999,8 +34148,8 @@ To monitor usage, you can view your organization's monthly LCU spend on the **En
 ### Set up Engine for a tracing project
 
 <Steps>
-  <Step title="Open the Engine tab">
-    In the [LangSmith console](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-engine), navigate to **Tracing** in the UI sidebar, select a project, then click the **Engine** tab in the project navigation.
+  <Step title="Open Engine and select a project">
+    In the [LangSmith console](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-engine), select **Engine** in the UI sidebar. The project selector lists projects that are already configured. To set up a project that is not listed, click **+ Set up another project**, then choose it under **Choose a project to analyze**. The **Engine** tab in a tracing project is also available.
   </Step>
   <Step title="Connect a code repository (optional)">
     Although optional, connecting a code repository is recommended. Engine reads your source code to locate the code path behind a failing trace, ground its proposed fixes in the actual implementation, and open pull requests directly from issues. Under **Connect your agent's code repository**, select a repository in the **GitHub Repository** field. Only repositories the GitHub app can access are shown. Click **Manage app access →** to update permissions. For GitHub App setup and organization approval, see [Connect Engine to GitHub](/langsmith/engine-github). To give Engine additional project context, select a repository in the **Context Hub repository** field. You can update either repository at any time from the [**Engine Settings**](#configure-engine) panel.
@@ -34056,15 +34205,17 @@ Scope determines which traces Engine analyzes to detect issues and build the age
 
 ## Browse and filter issues
 
-Once setup is complete, the **Engine** tab displays a list of automatically detected issues in the left panel. Each entry shows a title, a short description, the number of contributing traces, and how recently the issue was observed. Each issue is tagged with a failure category, such as **Silent tool error** or **Hallucination**. For the full list of categories Engine assigns, with descriptions and detection methods, see [Engine issue categories](/langsmith/engine-issue-categories).
+Once setup is complete, the **Engine** page displays a list of automatically detected issues in the left panel. Each entry shows a title, a short description, the number of contributing traces, and how recently the issue was observed. Each issue is tagged with a failure category, such as **Silent tool error** or **Hallucination**. For the full list of categories Engine assigns, with descriptions and detection methods, see [Engine issue categories](/langsmith/engine-issue-categories).
 
 At the top of the list, you can click:
 
 - **Filter issues** icon to filter by **Priority**, **Status** and **Tags**.
 - **Sort issues** icon to sort by **Severity**, **Last Updated**, and **Created**.
-- **Engine Settings** <Icon icon="settings"/> icon to [configure Engine](#configure-engine).
+- **Configure Engine** to [configure Engine](#configure-engine).
 
 Click any issue to display its details in the right panel.
+
+Open [LangSmith Chat](/langsmith/chat#engine) to ask questions across your issues, for example, which issues need the most attention or how many new issues are open.
 
 If no issues appear after setup completes, Engine found no recurring patterns in the analyzed traces. Try checking back after more traces have been collected.
 
@@ -34072,44 +34223,43 @@ If no issues appear after setup completes, Engine found no recurring patterns in
 
 Click any issue in the list to open its detail panel. At the top, a diagnosis describes the problem and its impact.
 
-The **Linked Traces** section lists the traces that support the diagnosis. Click any trace to open its detail panel. For more information, see [Manage a trace](/langsmith/manage-trace). Click [**Add offline examples**](#add-offline-examples) at the top right of this section to generate custom ground truth [dataset examples](/langsmith/manage-datasets) from the production trace inputs for offline evaluation.
+The **Evidence** section contains traces that support a diagnosis, including a snippet from each trace. From this section, you can:
 
-Engine keeps tracking an issue after it is filed. On later scans, any new trace that matches the issue's failure pattern is added to **Linked Traces** automatically, so the issue reflects how often the failure is still happening without you re-running anything.
+- **View a trace**: Click **View trace** to open an evidence trace. When Engine identifies the child run that caused the issue, it opens that exact run. The trace view includes a **View issue** link back to the Engine issue.
+- **Create offline examples**: Click [**Add offline examples**](#add-offline-examples) to generate custom ground truth [dataset examples](/langsmith/manage-datasets) from the production trace inputs for offline evaluation.
+- **View project evidence**: Click **View all in project** to view the evidence in the tracing project.
+
+For more information, see [Manage a trace](/langsmith/manage-trace).
+
+Engine keeps tracking an issue after it is filed. On later scans, any new trace that matches the issue's failure pattern is added to **Evidence** automatically, so the issue reflects how often the failure is still happening without you re-running anything.
 
 The **Proposed Fix** section describes the issue and suggests how to address it, which may include specific code or prompt changes if a repository is connected.
 
-The **Offline Examples** section proposes dataset examples generated from the production trace inputs that triggered the issue, for use in offline evaluation.
-
 ## Take action on an issue
 
-Each issue has a toolbar for acting on it: fix it, watch it, or close it (resolve or mark as incorrectly flagged), and set its priority.
+Each issue has a toolbar for opening or viewing a pull request, creating a Linear issue, watching the issue, closing it (resolve or mark as incorrectly flagged), and setting its priority.
 
 ### Change priority
 
 Select **Low**, **Medium**, or **High** from the priority dropdown to update an issue's priority. You can optionally provide a reason, which feeds back into Engine to help improve its analysis over time.
 
-### Fix: work through the proposed fix
+### Open or view a pull request
 
-Click **Fix** to start working through the proposed fix. Fixing an issue has two steps, so the fix is both shipped and testable:
+Click **Open PR** to open a GitHub pull request with the proposed code change in your connected repository. Connect a repository first if you haven't. Once a pull request exists, Engine replaces **Open PR** with **View PR #\<number\>**. Click **View PR #\<number\>** to open the pull request in GitHub. Engine reflects the PR's status (open, merged, or closed) throughout the issue. You can also copy the issue's fix context to your clipboard for use with an LLM or coding assistant. Engine can propose code changes to any connected repository, including agents built with [Deep Agents](/oss/python/deepagents/overview), [LangChain](/oss/python/langchain/overview), and [LangGraph](/oss/python/langgraph/overview).
 
-1. [**Apply the code change**](#open-a-pull-request): Open a pull request with the proposed fix.
-2. [**Add offline examples**](#add-offline-examples): Capture the traces that surfaced the issue as evaluation examples.
+### Create a Linear issue
 
-When you are done, you can mark the issue resolved directly from here, a shortcut for [resolving from Close](#close-or-reopen-an-issue). To abandon the fix without resolving the issue, discard it. Discarding also stops watching the issue if it was being watched.
+Before creating Linear issues, configure a Linear connection from **Configure Engine**. Under **Linear**, click **Connect**, select a team, optionally select a project, then click **Save changes**.
 
-<Note>
-Fixing is only available for open issues: [reopen](#close-or-reopen-an-issue) a resolved or incorrectly flagged issue first.
-</Note>
+To create an issue, click **Create in Linear** on an Engine issue. Engine shows **Linear creation pending** while it creates the issue. When creation completes, Engine displays the linked Linear issue identifier in the Engine issue and issue list.
 
-#### Open a pull request
+The Linear issue includes the Engine issue title and description, severity, category, tags, a **View issue in LangSmith** link, and evidence trace IDs. Engine retains the link to the Linear issue. If you close the Linear ticket, Engine closes the corresponding issue. If you cancel the Linear ticket, Engine marks the corresponding issue as incorrectly flagged. Engine also tracks a pull request linked to the Linear ticket on the corresponding Engine issue.
 
-Applying the fix means opening a GitHub pull request with the proposed code change in your connected repository. Connect a repository first if you haven't. Once a pull request exists, Engine links directly to it (with its branch), and reflects the PR's status (open, merged, or closed) throughout the issue. You can also copy the issue's fix context to your clipboard for use with an LLM or coding assistant. Engine closes the loop across the LangChain stack: it can propose code changes to any connected repository, including agents built with [Deep Agents](/oss/python/deepagents/overview), [LangChain](/oss/python/langchain/overview), and [LangGraph](/oss/python/langgraph/overview).
+### Add offline examples
 
-#### Add offline examples
+This step captures the traces that surfaced the issue as ground-truth [dataset examples](/langsmith/manage-datasets), so you can evaluate the fix offline before it reaches production. You can also start this from the **Evidence** section further down the page.
 
-This step captures the traces that surfaced the issue as ground-truth [dataset examples](/langsmith/manage-datasets), so you can evaluate the fix offline before it reaches production. You can also start this from the **Linked Traces** section further down the page.
-
-1. Click **Add offline examples** at the top right of the **Linked Traces** list to open the **Add as offline example** dialog.
+1. Click **Add offline examples** at the top right of the **Evidence** list to open the **Add as offline example** dialog.
 2. Review each trace. The dialog shows the input, the wrong output the agent produced, and the proposed expected output as a custom ground truth example.
 3. Click **Add to Dataset** to add them directly, or click **Edit in annotation queue** to review them first.
 4. In the annotation queue, each example shows the run inputs alongside reference outputs proposed by Engine, structured as named [assertions](/langsmith/assertions) generated from trace analysis. Each assertion is a short claim describing what a correct answer should or shouldn't include. Edit the assertions as needed, add new ones with **+ Add assertion**, then click **Add to Dataset & Continue** to work through each example.
@@ -34152,7 +34302,7 @@ langsmith project issues list --project <project-name>
 
 Engine can notify you when it opens a new issue, links a new trace to an existing issue, or fails to complete a run. Deliver these notifications to a **Slack channel**, an **HTTP webhook endpoint**, or both. Each destination has its own event types and minimum priority level, so you can route urgent issues to a paging webhook while sending every issue to a Slack channel.
 
-Manage notification destinations from the [**Engine Settings**](#configure-engine) panel: open the **Engine** tab for a tracing project, click the **Engine Settings** <Icon icon="settings"/> icon, and under **Notifications** click **+ Add destination**.
+Manage notification destinations from the [**Engine Settings**](#configure-engine) panel: on the **Engine** page, click **Configure Engine**, then under **Notifications** click **+ Add destination**.
 
 ### Notify a Slack channel
 
@@ -34161,7 +34311,7 @@ Manage notification destinations from the [**Engine Settings**](#configure-engin
     Connecting a Slack workspace is an organization-level action you perform once, not per project. Connecting or disconnecting a workspace requires the `organization:manage` permission. In the [LangSmith console](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-engine), open **Settings**, go to your organization's **General** settings, and under **Slack** click **Connect Slack**. Authorize the LangSmith app in Slack. You can connect more than one Slack workspace to an organization.
   </Step>
   <Step title="Add a Slack destination">
-    On the **Engine** tab of a tracing project, click the **Engine Settings** <Icon icon="settings"/> icon, then click **Add destination**. Set the **Deliver to** field to **Slack**, then choose the workspace and channel under **Channel**.
+    On the **Engine** page, click **Configure Engine**, then click **Add destination**. Set the **Deliver to** field to **Slack**, then choose the workspace and channel under **Channel**.
   </Step>
   <Step title="Choose events and priority">
     Under **Notify when**, select which [event types](/langsmith/engine-webhooks#event-types) post a message to the channel. Under **Minimum priority**, choose the lowest [severity](/langsmith/engine-webhooks#severity-filtering) that triggers a notification. Click **Add destination** to save.
@@ -34182,15 +34332,17 @@ To forward Engine events to your own incident-management, paging, or chat toolin
 Engine uses **LangChain-managed inference** exclusively. Bring Your Own Key (BYOK) is not supported; you cannot supply your own provider API keys for Engine.
 </Note>
 
-Within a tracing project, click the **Engine Settings** <Icon icon="settings"/> icon on the **Engine** tab to open the **Edit Engine Settings** panel. From here you can configure:
+On the **Engine** page, click **Configure Engine** to open the **Edit Engine Settings** panel. From here you can configure:
 
 - **Agent overview**: Edit your agent overview document to keep Engine's understanding of your project accurate as your application evolves.
 - **Preferences**: Areas Engine should focus on, prioritize, or ignore. Engine treats these as authoritative and folds them into the agent overview document on the next scan. Select category chips such as **Cost & Tokens**, **Latency**, or **Tool Call Failures**, or click **+ Add something specific** to describe a custom concern. Changes take effect on the next scan.
 - **Engine spend**: View the month-to-date Engine LCU spend for this project. Click **Set limit** to cap monthly spend. New runs pause when the monthly limit is reached.
+- **Analysis level**: Choose **Standard** or **Reduced**. Use **Reduced** to have Engine review fewer traces at a lower cost.
 - **Focus on specific traces**: Narrow Engine's attention to a subset of runs by run name or metadata. Edits save automatically and take effect on the next scan. Scope conditions accept only run name and metadata; you cannot filter by feedback key or score. See [Focus on specific traces](#focus-on-specific-traces).
 - **Notifications**: Click **Add destination** to add a Slack channel or webhook destination that receives a notification when Engine detects a new issue. Set a minimum priority level per destination to control which issues trigger a notification. See [Get notified about new issues](#get-notified-about-new-issues).
 - **Code repository**: Connect or update a GitHub repository so the agent can reference source code when diagnosing issues. Optionally set a **Subfolder** and a **Branch** (defaults to the repository default). For setup, see [Connect Engine to GitHub](/langsmith/engine-github).
 - **Context repository**: Connect a Context Hub repository so Engine can propose fixes to instructions, docs, and linked skills.
+- **Linear**: Connect Linear, then select a team and optional project for new issues. Engine retains durable links to the issues it creates, but does not synchronize later edits from Linear. Deleting all Engine issues does not delete existing Linear tickets. See [Create a Linear issue](#create-a-linear-issue).
 - **Pause**: Engine scans your traces on a dynamic schedule tuned to balance cost and performance. Click **Pause** to stop scanning without deleting the existing issues, or **Resume** to resume scanning.
 - **Delete all issues**: This action cannot be undone. All issues and settings will be permanently removed.
 
@@ -43956,7 +44108,8 @@ LangSmith stores examples in datasets as follows:
 | **inputs**          | object   | A map of inputs for the example.                                                                                  |
 | **outputs**         | object   | A map or set of outputs generated by the run.                                                                     |
 | **dataset\_id**     | UUID     | The dataset the example belongs to                                                                                |
-| **source\_run\_id** | UUID     | If this example was created from a LangSmith [`Run`](/langsmith/run-data-format), the ID of said run |
+| **source\_run\_id** | UUID     | For examples created from a LangSmith [`Run`](/langsmith/run-data-format), the ID of that run |
+| **source\_thread\_id** | string   | For examples created from a [thread](/langsmith/observability-concepts#threads) or from a run in a thread, the ID of that thread |
 | **metadata**        | object   | A map of additional, user or SDK defined information that can be stored on an example.                            |
 
 To learn more about how examples are used in evaluation, read our how-to guide on [evaluating LLM applications](/langsmith/evaluate-llm-application).
@@ -47658,17 +47811,17 @@ Source: https://docs.langchain.com/langsmith/fleet/comparison
 
 - ❌ Not available
 - ⚠️ Partial or limited
-- — Not confirmed from public documentation
+- ❓ Not confirmed from public documentation.
 
 <div className="compact-first-col">
 
 | **Aspect** | **LangSmith Fleet** | **Claude Cowork** | **Amazon Quick** | **Google Workspace Studio** | **Microsoft Copilot** |
 | - | ------------------- | ----------------- | ---------------- | --------------------------- | --------------------- |
 | **Primary use case** | Teams building purpose-built agents to share across an organization, with no-code creation and code export for custom deployments; individuals using a general-purpose chat agent for any task | Individual desktop knowledge work | Enterprise AI with AWS data integration | No-code agents for Google Workspace | Low-code agents for Microsoft 365 |
-| **Model support** | Model-agnostic: any LLM with an OpenAI-compatible or Anthropic-compatible API | Claude only | — | Gemini 3 | Curated OpenAI + Anthropic models; bring-your-own via Azure AI Foundry |
+| **Model support** | Model-agnostic: any LLM with an OpenAI-compatible or Anthropic-compatible API | Claude only | ❓ | Gemini 3 | Curated OpenAI + Anthropic models; bring-your-own via Azure AI Foundry |
 | **Interface** | Web app, Slack app, Teams app, API | Desktop, mobile, Slack, M365 connectors | Web, desktop, browser extensions, Slack, Teams | Web app, Gmail and Chat sidebars | Teams, M365 apps, web, mobile, Windows, Copilot Studio |
 | **Deployment** | Cloud (LangSmith) or self-hosted | Local by default; remote on Anthropic cloud | Cloud (AWS) | Cloud (Google) | Cloud (Microsoft) |
-| **Self-hosting** | ✅ [beta](/langsmith/deploy-self-hosted-full-platform#enable-fleet-insights-and-chat), [contact sales](https://www.langchain.com/contact-sales) for production readiness details | ❌ | ❌ | ❌ | ❌ |
+| **Self-hosting** | ✅ [beta](/langsmith/deploy-self-hosted-full-platform#enable-fleet-insights-and-chat), [contact our sales team](https://www.langchain.com/contact-sales) for production readiness details | ❌ | ❌ | ❌ | ❌ |
 | **Code export** | ✅ [Export to Deep Agents](/langsmith/fleet/code) | ❌ | ❌ | ❌ | ❌ |
 | **Observability** | LangSmith tracing and evaluations at scale | OpenTelemetry to SIEM | CloudTrail + run logs | Activity tab + audit logs | App Insights + Purview |
 | **Platform license** | Proprietary | Proprietary | Proprietary | Proprietary | Proprietary |
@@ -47703,7 +47856,7 @@ Source: https://docs.langchain.com/langsmith/fleet/comparison
 
 **Fleet** provides RBAC, attribute-based access control, and per-agent sharing permissions (Clone, Run, and Edit). Among the platforms compared here, only Fleet documents per-MCP-server attribute-based access control. All platforms offer some form of RBAC, but granularity varies.
 
-**Fleet** manages spending at the workspace level. For enterprise billing options, [contact sales](https://www.langchain.com/contact-sales).
+**Fleet** manages spending at the workspace level. For enterprise billing options, [contact our sales team](https://www.langchain.com/contact-sales).
 
 <div className="compact-first-col">
 
@@ -47764,7 +47917,7 @@ Of the platforms compared here, only Fleet works with any OpenAI- or Anthropic-c
 | Feature | **Fleet** | **Claude Cowork** | **Amazon Quick** | **Google Workspace Studio** | **Microsoft Copilot** |
 | ------- | --------- | ----------------- | ---------------- | --------------------------- | --------------------- |
 | Cloud-hosted | ✅ | ⚠️ | ✅ | ✅ | ✅ |
-| Self-hosted | ✅ [beta](/langsmith/deploy-self-hosted-full-platform#enable-fleet-insights-and-chat), [contact sales](https://www.langchain.com/contact-sales) for production readiness details | ❌ | ❌ | ❌ | ❌ |
+| Self-hosted | ✅ [beta](/langsmith/deploy-self-hosted-full-platform#enable-fleet-insights-and-chat), [contact our sales team](https://www.langchain.com/contact-sales) for production readiness details | ❌ | ❌ | ❌ | ❌ |
 | Custom models | ⚠️ [Enterprise only](/langsmith/fleet/essentials#custom-models) | ❌ | ❌ | ⚠️ | ⚠️ |
 | Call agents from your app | ✅ [API access](/langsmith/fleet/code) | ✅ | ⚠️ | ❌ | ✅ |
 | Export to code | ✅ [Export to Deep Agents](/langsmith/fleet/code) | ❌ | ❌ | ❌ | ❌ |
@@ -47790,7 +47943,7 @@ A ✅ indicates the integration is available; supported actions and depth vary b
 
 </div>
 
-For pricing and SLA information, [contact sales](https://www.langchain.com/contact-sales).
+For pricing and SLA information, [contact our sales team](https://www.langchain.com/contact-sales).
 
 <Note>
     Last updated May 5, 2026. These products evolve quickly. If something has changed, please [file an issue](https://github.com/langchain-ai/docs/issues) to help us keep this page current.
@@ -48003,7 +48156,7 @@ You can also update instructions by prompting the agent directly in the chat. Fo
 Fleet usage is measured in LangChain Compute Units (LCUs). LCU usage is based on the [model](#models) work your agent performs, including the selected tier and the amount of content it processes and generates.
 
 <Note>
-The new [model tiers](#models) and LCU pricing apply to new Fleet usage starting **July 15, 2026**. Organizations already using Fleet before that date keep their current setup and transition to the new model on **October 1, 2026**. If you use a custom model, contact your LangChain account team about your transition.
+The new [model tiers](#models) and LCU pricing apply to new Fleet usage starting **July 15, 2026**. Organizations already using Fleet before that date keep their current setup and transition to the new model on **October 1, 2026**. If you use a custom model, [contact our sales team](https://www.langchain.com/contact-sales) about your transition.
 </Note>
 
 Allowances are shared across your organization and reset monthly:
@@ -48013,7 +48166,7 @@ Allowances are shared across your organization and reset monthly:
 
 Runs vary in cost. A Fleet run can make multiple model calls, and tasks vary in length and complexity. A longer task, a larger amount of context, or a higher tier can consume more LCUs than a short task in the Fast tier.
 
-If your organization has grandfathered Plus seat or trace pricing, those rates do not change when Fleet moves to LCU pricing. Contact your account team to confirm your organization's pricing.
+If your organization has grandfathered Plus seat or trace pricing, those rates do not change when Fleet moves to LCU pricing. [Contact our sales team](https://www.langchain.com/contact-sales) to confirm your organization's pricing.
 
 ## Memory
 
@@ -48037,7 +48190,7 @@ For more information, see [How we built the memory system for Fleet (formerly kn
 Fleet manages models for you. It selects and maintains a strong model for each task, so you get good results without having to choose a provider, configure a model, or supply an API key. Usage is billed in [LangChain Compute Units (LCUs)](#langchain-compute-units-lcus).
 
 <Note>
-The new model tiers and [LCU](#langchain-compute-units-lcus) pricing apply to new Fleet usage starting **July 15, 2026**. Organizations already using Fleet before that date keep their current setup and transition to the new model on **October 1, 2026**. If you use a custom model, contact your LangChain account team about your transition.
+The new model tiers and [LCU](#langchain-compute-units-lcus) pricing apply to new Fleet usage starting **July 15, 2026**. Organizations already using Fleet before that date keep their current setup and transition to the new model on **October 1, 2026**. If you use a custom model, [contact our sales team](https://www.langchain.com/contact-sales) about your transition.
 </Note>
 
 Fleet provides three managed tiers. The model behind each tier may change over time as new models become available, so you can choose based on the work you need done instead of a specific provider or model.
@@ -48050,7 +48203,7 @@ Fleet provides three managed tiers. The model behind each tier may change over t
 
 ### Custom models
 
-Custom models are not available alongside Fast, Pro, and Max in the managed Fleet model picker. LangChain manages model-provider access for the managed tiers, so you do not need your own model-provider API key. If custom models are a requirement for an enterprise deployment, contact your LangChain account team or [reach out to sales](https://www.langchain.com/contact-sales).
+Custom models are not available alongside Fast, Pro, and Max in the managed Fleet model picker. LangChain manages model-provider access for the managed tiers, so you do not need your own model-provider API key. If custom models are a requirement for an enterprise deployment, [contact our sales team](https://www.langchain.com/contact-sales).
 
 ## Self-updates
 
@@ -61440,107 +61593,84 @@ Source: https://docs.langchain.com/langsmith/llm-gateway-fallbacks
 **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
-Model fallbacks retry a request against one or more backup [model configurations](/langsmith/model-configurations) when the primary model returns an error you've flagged as retryable, such as a rate limit or a provider outage. Instead of building retry logic into every agent, define the fallback order once in LangSmith and call it through a single gateway route.
+Model fallbacks retry a request against one or more backup models when the primary model returns a configured error, such as a rate limit or provider outage. Define the fallback order once in LangSmith, then continue using the standard LLM Gateway endpoint and model ID in your application.
 
 ## How it works
 
-A fallback configuration has:
+A fallback chain has:
 
-- **A name**: exposed at the route `https://gateway.smith.langchain.com/routes/{name}`. Clients call this URL instead of a provider-specific path.
-- **One or more fallback chains**: each an ordered list of [model configurations](/langsmith/model-configurations) to try in priority order.
-- **Triggers**: the upstream HTTP status codes that should cause the gateway to move on to the next model in the chain. For example, `429` for rate limits, or `500`, `502`, `503`, `504` for other provider errors.
+- **A primary model**: the provider and model that trigger the chain when a request fails.
+- **One to five fallbacks**: an ordered list of direct provider models or saved [model configurations](/langsmith/model-configurations).
+- **Triggers**: the upstream HTTP status codes that move the request to the next model. For example, use `429` for rate limits, or `500`, `502`, `503`, and `504` for provider errors.
 
 For each request, the gateway:
 
-1. Determines the wire format from the request path, and considers only the chains in that format (see [Wire formats](#wire-formats)).
-1. Picks one of those chains (see [Selecting a chain](#selecting-a-chain)).
-1. Calls the chain's first model configuration.
-1. If the response status matches a configured trigger, discards that response and calls the next model configuration in the chain.
-1. Repeats until a candidate returns a non-trigger response, or the chain is exhausted—in which case the last candidate's response is returned to the caller.
+1. Calls the primary model selected by the request's provider-prefixed model ID.
+1. If the request fails with a configured trigger status or a transport error, loads the matching fallback chain.
+1. Calls each fallback in order until one succeeds, returns a status that does not trigger another fallback, or the chain is exhausted.
+1. Returns the final response in the API format used by the client.
 
-Each configuration in a chain can point to a different provider and model. On both the first attempt and any fallback, the gateway calls the candidate with its configured model name, replacing the value the client sent. The client's model field only selects which chain to use from those matching the path's [wire format](#wire-formats). If no chain matches, the gateway uses the first chain defined for that wire format as the default.
+Fallbacks can use a different provider and API format than the primary model. The gateway translates requests and responses between [supported API formats](/langsmith/llm-gateway-api-formats), so an Anthropic primary can fall back to an OpenAI model without client-side changes.
 
-## Wire formats
+Each attempt is traced and counted against [spend policies](/langsmith/llm-gateway-spend-policies) separately. A request that uses two fallbacks records three model calls: the primary attempt and two fallback attempts.
 
-Each chain is either OpenAI-compatible or Anthropic-compatible, since the gateway forwards the same request body to every candidate in it:
-
-| Chain format | Model configuration provider | Path on `/routes/{name}` |
-| --- | --- | --- |
-| OpenAI-compatible | **OpenAI Compatible Endpoint** | `POST /v1/chat/completions`, `POST /v1/responses` |
-| Anthropic-compatible | **Anthropic** | `POST /v1/messages` |
-
-Only these two provider types can go in a chain. A [model configuration](/langsmith/model-configurations) saved for another provider, such as Azure OpenAI or Bedrock, isn't eligible. To reach a host that speaks the OpenAI API, save it as an **OpenAI Compatible Endpoint** with its base URL.
-
-The path you call selects the format, and the gateway only considers chains in that format. Any other path returns `501 Not Implemented`.
-
-A single fallback configuration can hold chains of both wire formats, so one route can serve both OpenAI-compatible and Anthropic-compatible clients. Mixing formats is optional: a configuration with only OpenAI-compatible chains returns `502` for `/v1/messages` calls, and one with only Anthropic-compatible chains returns `502` for `/v1/chat/completions` calls.
-
-## Create a fallback configuration
+## Create a fallback chain
 
 <Warning>
-Creating and managing fallback configurations requires `organization:manage` permission. For the full permissions breakdown, refer to [access control](/langsmith/llm-gateway-access).
+Creating and managing fallback chains requires `organization:manage` permission. For the full permissions breakdown, see [Access control](/langsmith/llm-gateway-access).
 </Warning>
 
+To create a fallback chain:
+
 1. Go to **Settings → Gateway → LLM Gateway** and select the **Model Fallbacks** tab.
-1. Click **Create configuration**.
-1. Enter a **Configuration name**. This becomes `{name}` in the gateway URL `https://gateway.smith.langchain.com/routes/{name}`.
-1. Select the **Workspace** the configuration belongs to. [Model configurations](/langsmith/model-configurations) are workspace-scoped, so only that workspace's configurations are available to add to a chain. The workspace can't be changed later—delete and recreate the configuration to move it.
-1. Under **Fallback triggers**, review the HTTP status codes that should trigger a fallback. The list comes prepopulated with the transient codes another provider has a chance of serving (such as `429`, `500`, and `503`); add or remove codes as needed.
-1. Under **Model fallback chains**, click **Add chain**, then add two to five model configurations in the order the gateway should try them. A chain's first model fixes its [wire format](#wire-formats); only configurations of that format can follow. The gateway groups chains by format, and the first chain in each group is that format's **default**, which it uses when a request's model does not select another chain.
-1. Click **Create configuration**.
+1. Click **Create fallback chain**.
+1. Select the **Workspace** where the chain applies.
+1. Select the primary provider and model. Requests to this provider-prefixed model ID use the chain when the primary attempt fails.
+1. Under **Fallbacks**, add one to five backup models in the order the gateway should try them. Choose a provider and model directly, select an existing model configuration, or create a custom model configuration.
+1. Under **Configure fallback triggers (advanced)**, review the HTTP status codes that should trigger the next fallback. Add or remove status codes as needed.
+1. Click **Create chain**.
+
+A provider and model can have one fallback chain in each workspace. To change its behavior, edit the existing chain.
 
 ## Make a call
 
-Call the route the same way you'd call a [custom provider](/langsmith/llm-gateway-custom-providers), on the path for the [wire format](#wire-formats) you want:
+Call the standard LLM Gateway endpoint with the primary provider-prefixed model ID. You do not need a route-specific URL or additional request fields:
 
 <CodeGroup>
 
-```bash OpenAI-compatible
-curl https://gateway.smith.langchain.com/routes/my-route/v1/chat/completions \
+```bash Cloud
+curl https://gateway.smith.langchain.com/v1/chat/completions \
     -H "Authorization: Bearer $LANGSMITH_API_KEY" \
     -H "Content-Type: application/json" \
-    -d '{"messages":[{"role":"user","content":"ping"}]}'
+    -d '{"model":"anthropic/claude-sonnet-4-6","messages":[{"role":"user","content":"Hello!"}]}'
 ```
 
-```bash Anthropic-compatible
-curl https://gateway.smith.langchain.com/routes/my-route/v1/messages \
+```bash BYOC
+curl https://<data_plane_host>/gateway/v1/chat/completions \
     -H "Authorization: Bearer $LANGSMITH_API_KEY" \
     -H "Content-Type: application/json" \
-    -d '{"max_tokens":1024,"messages":[{"role":"user","content":"ping"}]}'
+    -d '{"model":"anthropic/claude-sonnet-4-6","messages":[{"role":"user","content":"Hello!"}]}'
 ```
 
 </CodeGroup>
 
-The gateway tries each model configuration in the selected chain, in order, until one responds without a trigger status. Each attempt is traced and counted against [spend policies](/langsmith/llm-gateway-spend-policies) on its own, so a request that falls back records one call per candidate tried.
+The gateway applies the fallback chain configured for `anthropic/claude-sonnet-4-6` in the API key's workspace. If no chain matches, the gateway returns the primary model's response without attempting a fallback.
 
-## Selecting a chain
+## Choose fallback candidates
 
-A configuration can hold more than one fallback chain, which is useful when different model families need different fallback behavior. Among the chains matching the request's [wire format](#wire-formats), the gateway selects one by the request body's `model` field, in this order:
+You can add two types of fallback candidates:
 
-1. If `model` matches a chain's **alias**, that chain is used.
-1. Otherwise, if `model` matches a chain's **primary** (first) model configuration's underlying model name, that chain is used.
-1. If `model` is omitted, or matches neither, the first (default) chain of that format is used.
+- **Direct provider model**: select a supported gateway provider and model. This option uses the workspace's secret for that provider, or Gateway Credits for eligible hosted models.
+- **Model configuration**: select a saved workspace [model configuration](/langsmith/model-configurations). Use this option for a custom OpenAI-compatible or Anthropic endpoint, a custom model name, or configuration-specific parameters.
 
-An alias is optional and set per chain when you create the configuration. It is a caller-facing name, so a client can ask for `"model": "heavy"` without knowing which model backs it.
+Model configurations are workspace-scoped. A fallback chain can only use configurations from its selected workspace.
 
-Each model configuration in a chain can point to a different host, so a chain can fail over across separate deployments of the same model (for example, from a primary endpoint to a backup) with no single host as a point of failure.
+For example, configure `anthropic/claude-sonnet-4-6` as the primary model, `openai/gpt-5.4-mini` as the first fallback, and a saved OpenAI-compatible model configuration as the second fallback. The application continues to request `anthropic/claude-sonnet-4-6`; the gateway selects and translates fallback calls when needed.
 
-For example, a configuration with three chains:
+## See also
 
-| Chain | Format | Models (in priority order) |
-| --- | --- | --- |
-| 1 (default OpenAI-compatible) | OpenAI-compatible | `gpt-5.5` on OpenAI → `gpt-5.5` on Azure OpenAI → `llama-3.3-70b` on a self-hosted endpoint |
-| 2 | OpenAI-compatible | `gpt-4o-mini` on OpenAI → `kimi-k2` on Fireworks |
-| 3 (default Anthropic-compatible) | Anthropic-compatible | `claude-sonnet-4-6` on Anthropic → `claude-haiku-4-5` on Anthropic |
-
-- A `/v1/chat/completions` request with `"model": "gpt-5.5"` uses chain 1, which fails over from OpenAI to Azure OpenAI to the self-hosted endpoint.
-- A `/v1/chat/completions` request with `"model": "gpt-4o-mini"` uses chain 2, which fails over from OpenAI to Fireworks.
-- A `/v1/chat/completions` request with an unrecognized or omitted model uses chain 1, the default for that format.
-- A `/v1/messages` request uses chain 3 whatever its `model` is, because it's the only Anthropic-compatible chain. Chains 1 and 2 are never eligible on that path.
-
-## Next steps
-
-- [Custom model providers](/langsmith/llm-gateway-custom-providers): call the same model configurations directly, one at a time, without a fallback chain.
+- [API formats](/langsmith/llm-gateway-api-formats): review supported request formats and translation behavior.
+- [Custom model providers](/langsmith/llm-gateway-custom-providers): create model configurations for custom OpenAI- or Anthropic-compatible endpoints.
 - [Spend policies](/langsmith/llm-gateway-spend-policies): apply cost limits alongside fallback routing.
 
 ---
@@ -61562,9 +61692,9 @@ Source: https://docs.langchain.com/langsmith/llm-gateway-header-policies
 **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
-A [spend policy](/langsmith/llm-gateway-spend-policies) or [rate limit policy](/langsmith/llm-gateway-rate-limit-policies) can carry a condition on a custom request header, so traffic from a single subject splits into separate limits by header value. Use this to cap each of your own end customers, tenants, or teams without issuing a separate [LangSmith API key](/langsmith/create-account-api-key) for each one.
+A [spend policy](/langsmith/llm-gateway-spend-policies) can separate a default limit by custom request header, so each header value gets an independent limit. Spend and [rate limit policies](/langsmith/llm-gateway-rate-limit-policies) can also match one specific header value. Use these options to cap your own end customers, tenants, or teams without issuing a separate [LangSmith API key](/langsmith/create-account-api-key) for each one.
 
-For example, a policy scoped to a [workspace](/langsmith/administration-overview#workspaces) with the condition `X-Gateway-Customer-Id: acme` limits only the requests from that workspace that carry that header value. Requests from the same workspace carrying `X-Gateway-Customer-Id: globex` count against a different policy.
+For example, a default workspace spend limit separated by `X-Gateway-Customer-Id` gives `acme` and `globex` independent limits within each [workspace](/langsmith/administration-overview#workspaces). An explicit policy with the condition `X-Gateway-Customer-Id: acme` limits only requests that carry that exact value.
 
 ## Matchable headers
 
@@ -61574,20 +61704,48 @@ Header names are normalized before matching: the `X-Gateway-` prefix is stripped
 
 The gateway stamps caller identity itself and ignores client attempts to override it. Headers that resolve to `organization_id`, `workspace_id`, `workspace_handle`, `user_id`, `user_email`, `api_key_id`, `api_key_short`, `auth_mode`, `user_agent`, `applied_policy_ids`, or `applied_policy_names`, and any header whose normalized name starts with `gateway`, are discarded.
 
-## Header condition rules
-
-- **One condition per policy**: A policy accepts a single header key with a single value.
-- **Pairs with one subject scope**: Combine a header condition with an organization, workspace, user, or API key scope. The subject side accepts several values and matches any of them. The header side accepts exactly one value.
-- **Spend caps and rate limits only**: Default policies cannot carry a header condition, so the gateway never creates per-header policies on its own. To limit many header values, create one policy for each.
-- **A missing header matches nothing**: A request that does not carry the header does not match the policy. Pair per-header policies with a broader policy on the subject itself so untagged traffic is still limited.
-- **Every matching policy is enforced**: A request that matches both a plain subject policy and a policy with a header condition counts against both, and either one can block it.
-- **At most 10 conditions**: A policy carries no more than 10 subject conditions in total.
-
-## Add a header condition
+<Warning>
+The gateway trusts the `X-Gateway-*` headers on an incoming request. Set the header in your own backend after you authenticate the end user, and do not distribute the gateway API key to end users. A caller that controls both the key and the header can choose which limit to use.
+</Warning>
 
 <Warning>
 Creating and managing policies requires the `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
 </Warning>
+
+## Separate a default spend limit by header
+
+A default spend limit applies the same cap to every member of a subject dimension. Separating it by a header applies that cap independently to every subject and header-value pair, without requiring a policy for each value.
+
+Default spend bucketing follows these rules:
+
+- **One header per default**: Enter the header name only. The request supplies the value that identifies the bucket.
+- **Independent limits**: Each subject and header-value pair receives the configured spend limit.
+- **Fallback limit**: Requests without the configured header share a fallback limit for their subject.
+
+To separate a default spend limit by header:
+
+1. Go to **Settings → Gateway → LLM Gateway** and select **Cost Controls**.
+1. Click **Create spend limit**.
+1. Select **Workspace**, **User**, or **API Key**, then select the option to apply the limit to every subject of that type by default.
+1. Select **Separate limits by custom header**.
+1. Enter the **Header name** without its `X-Gateway-` prefix. For example, enter `Customer-Id` for the `X-Gateway-Customer-Id` request header.
+1. Set the spend limit, then click **Create spend limit**.
+
+The policy table displays the header used to separate the default limit. You can also edit an existing default spend limit to add, change, or remove the header.
+
+Use an explicit policy instead when different header values need different limits.
+
+## Add an explicit header condition
+
+An explicit spend or rate limit policy can match one exact header value. Use an explicit policy to assign different limits to different header values.
+
+Explicit header conditions follow these rules:
+
+- **One condition per policy**: A policy accepts one header name and one value.
+- **One subject scope**: Combine the condition with an organization, workspace, user, or API key scope. The subject side accepts several values and matches any of them.
+- **Missing headers do not match**: A request without the configured header does not match the policy.
+- **Every matching policy is enforced**: A request that matches both a plain subject policy and a policy with a header condition counts against both, and either one can block it.
+- **At most 10 conditions**: A policy carries no more than 10 subject conditions in total.
 
 1. Go to **Settings → Gateway → LLM Gateway**.
 1. Click **Create policy**.
@@ -61599,11 +61757,7 @@ You cannot edit the header condition in the UI after the policy is created. To c
 
 ## Cap spend per end customer
 
-A reseller or multi-tenant application usually calls the gateway from its own backend, using one workspace-scoped API key on behalf of many end customers. Header conditions give each of those end customers a separate cap under that single key.
-
-<Warning>
-The gateway trusts the `X-Gateway-*` headers on an incoming request. Set the header in your own backend after you authenticate the end user, and do not distribute the gateway API key to end users. A caller that controls both the key and the header can choose which cap to spend against.
-</Warning>
+A reseller or multi-tenant application usually calls the gateway from its own backend, using one workspace-scoped API key on behalf of many end customers. Use an explicit header condition when each customer needs a different cap. If every customer uses the same cap, [separate one default spend limit by header](#separate-a-default-spend-limit-by-header) instead.
 
 ### Step 1. Send a customer header on every call
 
@@ -62337,16 +62491,17 @@ You can apply multiple time windows to the same scope. For example, a workspace 
 Creating and managing policies requires `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
 </Warning>
 
-1. Go to **Settings → Gateway → LLM Gateway**.
-1. Click **Create policy**.
+1. Go to **Settings → Gateway → LLM Gateway** and select **Cost Controls**.
+1. Click **Create spend limit**.
 1. Select the scope (organization, workspace, API key, or user).
+1. (Optional) To apply the same default limit independently to every custom header value, apply the limit to every subject of the selected type by default, select **Separate limits by custom header**, and enter the header name.
 1. Set the time window (monthly, weekly, daily, or hourly).
 1. Set the spend cap in USD.
-1. Save.
+1. Click **Create spend limit**.
 
 Policies take effect immediately. The gateway evaluates them on every incoming request with sub-second enforcement latency.
 
-A spend policy can also carry a condition on a custom request header, so traffic from a single subject splits into separate caps by header value. Use this to cap each of your own end customers under one API key. For more information, see [Per-customer policies](/langsmith/llm-gateway-header-policies).
+A spend policy can also use a custom request header to give each of your own end customers an independent cap under one API key. For more information, see [Per-customer policies](/langsmith/llm-gateway-header-policies).
 
 ## View spend
 
@@ -66034,7 +66189,7 @@ A common pattern for constructing datasets is to convert notable traces from you
 A technique to build datasets is to filter the most interesting traces, such as traces that were tagged with poor user feedback, and add them to a dataset. For tips on how to filter traces, refer to the [Filter traces](/langsmith/filter-traces-in-application) guide.
 </Check>
 
-There are two ways to add data manually from a tracing project to datasets. Navigate to **Tracing Projects** and select a project.
+There are three ways to add data manually from a tracing project to datasets. Navigate to **Tracing Projects** and select a project.
 
 1. Multi-select runs from the runs table. On the **Runs** tab, multi-select runs. At the bottom of the page, click <Icon icon="database" /> **Add to Dataset**.
 1. On the **Runs** tab, select a run from the table. On the individual run details page, select  **Add to** -> **Dataset** in the top right corner.
@@ -66043,9 +66198,20 @@ There are two ways to add data manually from a tracing project to datasets. Navi
 
     You can then optionally edit the run before adding it to the dataset.
 
+1. Multi-select threads from the threads table. On the **Threads** tab, multi-select threads. At the bottom of the page, click <Icon icon="database" /> **Add to Dataset**. You can add at most **100** threads in a single action.
+
+    To send the threads to a new dataset instead, click **New Dataset** in the dataset picker. This pane creates the dataset from scratch only and does not offer the schema editor.
+
+Adding threads to a dataset differs from adding runs:
+
+- **One example per thread**: Each thread's full conversation is saved as one example. When you add runs from a thread, each run becomes a separate example.
+- **No reference output**: Thread examples include the conversation as input only. They do not include a reference output.
+
 ### Automatically from a tracing project
 
-You can use [run rules](/langsmith/rules) to add traces automatically to a dataset based on certain conditions. For example, you could add all traces that are [tagged](/langsmith/observability-concepts#tags) with a specific use case or have a [low feedback score](/langsmith/observability-concepts#feedback).
+Use [automation rules](/langsmith/rules) to add traces to a dataset automatically when they meet specified conditions. For example, add traces that are [tagged](/langsmith/observability-concepts#tags) for a specific use case or have a [low feedback score](/langsmith/observability-concepts#feedback).
+
+A rule's [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) controls what it adds. A rule with the **Runs** item type adds one example for each matching trace. A rule with the **Threads** item type waits for conversations to go idle, then adds one example for each matching thread.
 
 ### From examples in an annotation queue
 
@@ -66053,16 +66219,16 @@ You can use [run rules](/langsmith/rules) to add traces automatically to a datas
 If you rely on subject matter experts to build meaningful datasets, use [annotation queues](/langsmith/annotation-queues) to provide a streamlined view for reviewers. Human reviewers can optionally modify the inputs/outputs/reference outputs from a trace before it is added to the dataset.
 </Check>
 
-You can optionally configure annotation queues with a default dataset, though you can add runs to any dataset by using the dataset switcher on the bottom of the screen. Once you select the right dataset, click **Add to Dataset** or hit the hot key `D` to add the run to it.
+You can set a default dataset for run items in an annotation queue. Thread items do not support default datasets. To add a run or thread to a different dataset, use the dataset switcher. After selecting a dataset, click **Add to Dataset** or press `D`. A run item adds the run, and a thread item adds the full conversation as one example.
 
-Any modifications you make to the run in your annotation queue will carry over to the dataset, and all metadata associated with the run will also be copied.
+Changes you make to a run in an annotation queue, including its metadata, are copied to the dataset. You cannot edit thread items. They are added as they were traced.
 
 <Note>
-**Add to Dataset** is available for **run** queue items only. [Thread](/langsmith/observability-concepts#threads) items in an annotation queue support rubric feedback, but not dataset export.
+Default datasets are not available for thread items.
 </Note>
 
 <Tip>
-You can also set up rules to add runs that meet specific criteria to an annotation queue using [automation rules](/langsmith/rules).
+Use [automation rules](/langsmith/rules) to add runs or threads that meet specific criteria to an annotation queue.
 </Tip>
 
 ### From the Playground
@@ -70517,10 +70683,14 @@ The non-anonymized run will look like this in LangSmith: ![Non-anonymized run](/
 ### Amazon Comprehend
 
 <Info>
-The implementation below provides a general example of how to anonymize sensitive information in messages exchanged between a user and an LLM. It is not exhaustive and does not account for all cases. Test any implementation thoroughly before using it in production.
+The implementation below provides a general example of how to anonymize sensitive information using Amazon Comprehend. It is not exhaustive and does not account for all run shapes or content types. Test any implementation thoroughly before using it in production.
 </Info>
 
-Comprehend is a natural language processing service that can detect personally identifiable information. The implementation below uses Comprehend to anonymize inputs and outputs before they are sent to LangSmith. For up to date information, please refer to Comprehend's [official documentation](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_DetectPiiEntities.html).
+Comprehend is a natural language processing service that can detect personally identifiable information. The implementation below uses Comprehend's [`DetectPiiEntities`](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_DetectPiiEntities.html) API to anonymize inputs and outputs before they are sent to LangSmith.
+
+<Warning>
+Amazon Comprehend does **not** provide a batch PII endpoint. `detect_pii_entities` processes one document per call, and `batch_detect_entities` detects generic entities (people, places, organizations) — it is not a PII-specific API. To process many documents, either call `detect_pii_entities` in a loop (shown below) or use the asynchronous [`start_pii_entities_detection_job`](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_StartPiiEntitiesDetectionJob.html) on documents in S3.
+</Warning>
 
 To use Comprehend, install [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html):
 
@@ -70548,113 +70718,110 @@ uv add openai
 
 You will need to set up credentials in AWS and authenticate using the AWS CLI. Follow the [AWS Comprehend setup instructions](https://docs.aws.amazon.com/comprehend/latest/dg/setting-up.html).
 
+The example below walks the entire input/output payload recursively and runs every string through Comprehend. Walking the payload (rather than only inspecting `data["messages"]` or `data["choices"][0]["message"]`) ensures PII is scrubbed across spans of all shapes — not just chat-completion-shaped runs.
+
 ```python
 import openai
 import boto3
 from langsmith import Client
 from langsmith.wrappers import wrap_openai
 
-comprehend = boto3.client('comprehend', region_name='us-east-1')
+comprehend = boto3.client("comprehend", region_name="us-east-1")
 
-def redact_pii_entities(text, entities):
-    """
-    Redact PII entities in the text based on the detected entities.
-    Args:
-        text (str): The original text containing PII.
-        entities (list): A list of detected PII entities.
-    Returns:
-        str: The text with PII entities redacted.
-    """
-    sorted_entities = sorted(entities, key=lambda x: x['BeginOffset'], reverse=True)
-    redacted_text = text
-    for entity in sorted_entities:
-        begin = entity['BeginOffset']
-        end = entity['EndOffset']
-        entity_type = entity['Type']
-        # Define the redaction placeholder based on entity type
-        placeholder = f"[{entity_type}]"
-        # Replace the PII in the text with the placeholder
-        redacted_text = redacted_text[:begin] + placeholder + redacted_text[end:]
-    return redacted_text
+# Skip strings shorter than this — Comprehend rarely finds PII in them
+# and skipping reduces API calls significantly.
+MIN_LENGTH_FOR_DETECTION = 3
+# Comprehend's per-call text limit is 100 KB of UTF-8.
+MAX_BYTES_PER_CALL = 100_000
 
-def detect_pii(text):
-    """
-    Detect PII entities in the given text using AWS Comprehend.
-    Args:
-        text (str): The text to analyze.
-    Returns:
-        list: A list of detected PII entities.
-    """
+def redact_pii_entities(text: str, entities: list) -> str:
+    """Replace each detected entity with `[TYPE]`, working back-to-front to preserve offsets."""
+    for entity in sorted(entities, key=lambda e: e["BeginOffset"], reverse=True):
+        begin, end = entity["BeginOffset"], entity["EndOffset"]
+        text = text[:begin] + f"[{entity['Type']}]" + text[end:]
+    return text
+
+def detect_and_redact(text: str) -> str:
+    """Detect PII in `text` with Comprehend and return the redacted version."""
+    if not text or len(text) < MIN_LENGTH_FOR_DETECTION:
+        return text
+    if len(text.encode("utf-8")) > MAX_BYTES_PER_CALL:
+        # Skip oversized strings — chunk them yourself if you need to redact them.
+        return text
     try:
-        response = comprehend.detect_pii_entities(
-            Text=text,
-            LanguageCode='en',
-        )
-        entities = response.get('Entities', [])
-        return entities
+        response = comprehend.detect_pii_entities(Text=text, LanguageCode="en")
     except Exception as e:
-        print(f"Error detecting PII: {e}")
-        return []
+        print(f"Comprehend error: {e}")
+        return text
+    entities = response.get("Entities", [])
+    return redact_pii_entities(text, entities) if entities else text
 
-def comprehend_anonymize(data):
+def comprehend_anonymize(data, depth: int = 10):
     """
-    Anonymize sensitive information sent by the user or returned by the model.
-    Args:
-        data (any): The input data to be anonymized.
-    Returns:
-        any: The anonymized data.
+    Recursively walk a payload and redact PII in every string we find.
+    This works on arbitrary run shapes — chat messages, tool inputs/outputs,
+    retrieval results, custom run types, etc.
     """
-    message_list = (
-        data.get('messages') or [data.get('choices', [{}])[0].get('message')]
-    )
-    if not message_list or not all(isinstance(msg, dict) and msg for msg in message_list):
+    if depth == 0:
         return data
-
-    for message in message_list:
-        content = message.get('content', '')
-        if not content.strip():
-            print("Empty content detected. Skipping anonymization.")
-            continue
-
-        entities = detect_pii(content)
-        if entities:
-            anonymized_text = redact_pii_entities(content, entities)
-            message['content'] = anonymized_text
-        else:
-            print("No PII detected. Content remains unchanged.")
-
+    if isinstance(data, dict):
+        return {k: comprehend_anonymize(v, depth - 1) for k, v in data.items()}
+    if isinstance(data, list):
+        return [comprehend_anonymize(item, depth - 1) for item in data]
+    if isinstance(data, str):
+        return detect_and_redact(data)
     return data
 
 openai_client = wrap_openai(openai.Client())
 
 # initialize the langsmith Client with the anonymization functions
 langsmith_client = Client(
-  hide_inputs=comprehend_anonymize, hide_outputs=comprehend_anonymize
+    hide_inputs=comprehend_anonymize, hide_outputs=comprehend_anonymize
 )
 
 # The trace produced will have its metadata present, but the inputs and outputs will be anonymized
 response_with_anonymization = openai_client.chat.completions.create(
-  model="gpt-5.4-mini",
-  messages=[
-      {"role": "system", "content": "You are a helpful assistant."},
-      {"role": "user", "content": "My name is Slim Shady, call me at 313-666-7440 or email me at real.slim.shady@gmail.com"},
-  ],
-  langsmith_extra={"client": langsmith_client},
+    model="gpt-5.4-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "My name is Slim Shady, call me at 313-666-7440 or email me at real.slim.shady@gmail.com"},
+    ],
+    langsmith_extra={"client": langsmith_client},
 )
 
 # The trace produced will not have anonymized inputs and outputs
 response_without_anonymization = openai_client.chat.completions.create(
-  model="gpt-5.4-mini",
-  messages=[
-      {"role": "system", "content": "You are a helpful assistant."},
-      {"role": "user", "content": "My name is Slim Shady, call me at 313-666-7440 or email me at real.slim.shady@gmail.com"},
-  ],
+    model="gpt-5.4-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "My name is Slim Shady, call me at 313-666-7440 or email me at real.slim.shady@gmail.com"},
+    ],
 )
 ```
+
+<Note>
+Because `comprehend_anonymize` issues one Comprehend API call per string it encounters, it can become rate-limit-bound on high-throughput traces. For higher throughput, use the [batch processing approach below](#batch-processing-for-high-throughput-masking), or pre-filter with [`contains_pii_entities`](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_ContainsPiiEntities.html) and only call `detect_pii_entities` when PII is present.
+</Note>
 
 The anonymized run will look like this in LangSmith: ![Anonymized run](/langsmith/images/aws-comprehend-anonymized.png)
 
 The non-anonymized run will look like this in LangSmith: ![Non-anonymized run](/langsmith/images/aws-comprehend-not-anonymized.png)
+
+#### Using `create_anonymizer` with Comprehend
+
+If you prefer LangSmith's built-in [`create_anonymizer`](#rule-based-masking-of-inputs-and-outputs) helper (which already handles the recursive walk and integrates cleanly with `langchain` agent middleware), you can pass a Comprehend-backed callable to it instead of writing the walk yourself:
+
+```python
+from langsmith import Client
+from langsmith.anonymizer import create_anonymizer
+
+def comprehend_replacer(value: str, path: list) -> str:
+    return detect_and_redact(value)
+
+client = Client(anonymizer=create_anonymizer(comprehend_replacer))
+```
+
+This gives you the same redaction behavior as `comprehend_anonymize` above with less boilerplate, and is the recommended approach when you also use `create_anonymizer` elsewhere in your stack.
 
 ### Batch processing for high-throughput masking
 
@@ -70705,7 +70872,11 @@ Each run dict in the batch is either a create operation (with `inputs`, sent whe
 }
 ```
 
-The following example uses Comprehend's [`batch_detect_entities` endpoint](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_BatchDetectEntities.html), which accepts up to 25 texts per call. With the per-run approach (`hide_inputs`) you would make one API call per run. Here, all message texts across the entire buffer are gathered first, then sent to Comprehend in chunks of 25, which results in significantly fewer API calls at high throughput.
+<Warning>
+Amazon Comprehend does **not** have a batch PII endpoint. `batch_detect_entities` detects generic entities (people, places, organizations), not PII, and is not a drop-in replacement for `detect_pii_entities`. The batch optimization below comes from deduplicating identical strings across runs and from amortizing per-run buffering overhead — not from a single bulk API call. If you need true bulk PII detection, run the asynchronous [`start_pii_entities_detection_job`](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_StartPiiEntitiesDetectionJob.html) over documents in S3 outside of the tracing path.
+</Warning>
+
+The following example collects every string across the entire buffer, deduplicates them, and calls Comprehend's [`detect_pii_entities`](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_DetectPiiEntities.html) endpoint once per unique string. For traffic that repeats common prompts, system messages, or tool inputs, this can drastically reduce the number of Comprehend calls compared to a per-run approach. The example walks the full payload recursively so it works for any run shape — chat messages, tool inputs/outputs, retriever spans, etc.
 
 ```python
 import boto3
@@ -70713,44 +70884,53 @@ from langsmith import Client, traceable
 
 comprehend = boto3.client("comprehend", region_name="us-east-1")
 
+MIN_LENGTH_FOR_DETECTION = 3
+MAX_BYTES_PER_CALL = 100_000
+
 def redact_entities(text: str, entities: list) -> str:
     for entity in sorted(entities, key=lambda e: e["BeginOffset"], reverse=True):
         placeholder = f"[{entity['Type']}]"
         text = text[:entity["BeginOffset"]] + placeholder + text[entity["EndOffset"]:]
     return text
 
+def detect_and_redact(text: str) -> str:
+    if len(text) < MIN_LENGTH_FOR_DETECTION:
+        return text
+    if len(text.encode("utf-8")) > MAX_BYTES_PER_CALL:
+        return text
+    try:
+        response = comprehend.detect_pii_entities(Text=text, LanguageCode="en")
+    except Exception as e:
+        print(f"Comprehend error: {e}")
+        return text
+    entities = response.get("Entities", [])
+    return redact_entities(text, entities) if entities else text
+
+def _redact_in_place(data, cache: dict, depth: int = 10):
+    """Recursively redact every string in `data`, using `cache` to dedupe API calls."""
+    if depth == 0:
+        return data
+    if isinstance(data, dict):
+        return {k: _redact_in_place(v, cache, depth - 1) for k, v in data.items()}
+    if isinstance(data, list):
+        return [_redact_in_place(item, cache, depth - 1) for item in data]
+    if isinstance(data, str):
+        if data not in cache:
+            cache[data] = detect_and_redact(data)
+        return cache[data]
+    return data
+
 def comprehend_anonymize_batch(runs: list[dict]) -> list[dict]:
-    # Collect all message texts and remember where they came from.
+    # One shared cache per buffer flush. Identical strings (e.g. the same
+    # system prompt repeated across runs) only hit Comprehend once.
     # Note: the same run ID may appear twice — once as a create (with inputs)
     # and once as an update (with outputs).
-    locations = []  # (run_idx, field, msg_idx)
-    texts = []
-    for run_idx, run in enumerate(runs):
+    cache: dict[str, str] = {}
+    for run in runs:
         for field in ("inputs", "outputs"):
             data = run.get(field)
-            if not isinstance(data, dict):
-                continue
-            for msg_idx, message in enumerate(data.get("messages") or []):
-                content = message.get("content", "")
-                if content.strip():
-                    locations.append((run_idx, field, msg_idx))
-                    texts.append(content)
-
-    # Send all texts to Comprehend in batches of 25 (API limit).
-    # For 1000 ops (~500 runs) with 2 messages each: 40 API calls instead of 1000.
-    redacted_texts = []
-    for i in range(0, len(texts), 25):
-        chunk = texts[i : i + 25]
-        response = comprehend.batch_detect_entities(
-            TextList=chunk, LanguageCode="en"
-        )
-        for text, result in zip(chunk, response["ResultList"]):
-            redacted_texts.append(redact_entities(text, result.get("Entities", [])))
-
-    # Write redacted text back into the run dicts
-    for (run_idx, field, msg_idx), redacted in zip(locations, redacted_texts):
-        runs[run_idx][field]["messages"][msg_idx]["content"] = redacted
-
+            if isinstance(data, (dict, list)):
+                run[field] = _redact_in_place(data, cache)
     return runs
 
 client = Client(
@@ -75665,7 +75845,7 @@ Test datasets with examples for evaluation.
 | Update dataset metadata | ✓ | ✓ | ✗ | `datasets:update` |
 | Delete a dataset | ✓ | ✗ | ✗ | `datasets:delete` |
 | Upload CSV dataset | ✓ | ✓ | ✗ | `datasets:create` |
-| Clone dataset | ✓ | ✓ | ✗ | `datasets:update` |
+| Clone dataset | ✓ | ✓ | ✗ | `datasets:clone` |
 | Get dataset version | ✓ | ✓ | ✓ | `datasets:read` |
 | Get dataset versions | ✓ | ✓ | ✓ | `datasets:read` |
 | Diff dataset versions | ✓ | ✓ | ✓ | `datasets:read` |
@@ -76168,7 +76348,9 @@ Source: https://docs.langchain.com/langsmith/platform-setup
 
         Set up **LangSmith** for [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), and [prompt engineering](/langsmith/prompt-context-hub#prompts). LangSmith offers Cloud, Bring Your Own Cloud (BYOC), and Self-hosted options.
 
+        <Note>
         If you also want to deploy agents in production, you can use [**LangSmith Deployment**](/langsmith/deployment) with Cloud, BYOC, or Self-hosted.
+        </Note>
 
         <CardGroup cols={3}>
 
@@ -76187,7 +76369,7 @@ Source: https://docs.langchain.com/langsmith/platform-setup
           href="/langsmith/byoc"
           icon="cloud-cog"
         >
-        **(Enterprise)** Full control over your data, while LangChain manages the infrastructure.
+        Full control over your data, while LangChain manages the infrastructure.
         </Card>
 
         <Card
@@ -76196,7 +76378,7 @@ Source: https://docs.langchain.com/langsmith/platform-setup
           href="/langsmith/self-hosted"
           icon="server"
         >
-        **(Enterprise)** Full control with observability, evaluation, and prompt engineering in your infrastructure.
+        Full control with observability, evaluation, and prompt engineering in your infrastructure.
         </Card>
 
         </CardGroup>
@@ -85065,12 +85247,13 @@ Thread rules require a tracing project that groups traces into threads. For more
 Selecting **Threads** changes three parts of the rule form:
 
 - **Thread Filters**: The filter builder adds **Trace Count** and **Thread ID** to the available fields. Filter on **Trace Count** to scope a rule to conversations of a given length. The other fields evaluate each trace in the thread rather than the thread as a whole, so a thread matches when any of its traces match. For example, a filter on **Status** selects every thread that contains an errored trace, not only threads whose last trace errored.
-- **Action**: The form offers one action, either **Add to Annotation Queue** or **Trigger Webhooks**. **Add to Dataset** is currently not available.
+- **Action**: The form offers **Add to Annotation Queue**, **Add to Dataset**, or **Trigger Webhooks**.
 - **Apply to Past Runs**: Backfill is not currently offered for thread rules.
 
-The two thread actions behave as follows:
+The three thread actions behave as follows:
 
 - **Add to Annotation Queue**: Adds the thread to the queue as a thread item. Thread items display the conversation transcript and support rubric feedback only. For what differs between run items and thread items, refer to the [annotation queue capability table](/langsmith/annotation-queues#single-run-annotation-queues).
+- **Add to Dataset**: Creates one dataset example for each matching thread. Each example contains the thread's full conversation.
 - **Trigger Webhooks**: Sends a payload whose top-level `threads` array holds every matching thread. For more information, refer to [Read a thread rule payload](/langsmith/webhooks#read-a-thread-rule-payload).
 
 ### Set the thread idle time
@@ -85107,10 +85290,10 @@ In the [UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campa
     The backfill is processed as a background job, so you will not see the results immediately. In order to track progress of the backfill, you can [view logs for your automations](#view-logs-for-your-automations).
     </Note>
 
-1. Select an action to trigger when the rule is applied. Rules whose item type is **Runs** offer all of the following actions. Rules whose item type is **Threads** offer **Add to Annotation Queue** and **Trigger Webhooks** only.
+1. Select the action the rule performs. Rules with the **Runs** item type support every action below. Rules with the **Threads** item type support only **Add to Annotation Queue**, **Add to Dataset**, and **Trigger Webhooks**.
 
-    - **Add to Dataset**: Add the inputs and outputs of the trace to a [dataset](/langsmith/evaluation-concepts#datasets).
     - **Add to Annotation Queue**: Add the matching run or trace to an [annotation queue](/langsmith/annotation-queues) as a run item. A thread rule adds the entire conversation as a thread item instead. To add a thread by hand, refer to [Assign runs and threads](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue).
+    - **Add to Dataset**: A run rule adds the trace's inputs and outputs to a [dataset](/langsmith/evaluation-concepts#datasets). A thread rule creates one example for each matching thread. Each example contains the thread's full conversation.
     - **Trigger Webhooks**: Post the matched items to every [webhook](/langsmith/webhooks) URL configured on the rule.
     - **Extend Data Retention**: Extends the data retention period on matching traces that use base retention [(refer to the data retention docs for more details)](/langsmith/usage-and-billing#data-retention).
 
@@ -88908,7 +89091,9 @@ The service must be running and listening on the specified port before you reque
 
 ### Make requests
 
-The returned `ServiceURL` object has built-in HTTP helpers that handle authentication automatically. Tokens refresh transparently before they expire, so no manual management is needed.
+The returned `ServiceURL` object has built-in HTTP helpers that inject the auth header for you.
+
+Tokens are short-lived (default 10 minutes, max 24 hours) and there is no server-side refresh mechanism. When a token expires, request a new one by calling `sb.service(port=...)` again.
 
 ```python
 svc = sb.service(port=8000)
@@ -91291,7 +91476,7 @@ If you enable [Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine
 Billing telemetry is **required** for self-hosted LangSmith instances that are not running in offline mode. This includes license verification and subscription/usage reporting.
 
 <Info>
-Billing telemetry **cannot be disabled**. If you need to run without any egress, contact your account team about an offline (air-gapped) license.
+Billing telemetry **cannot be disabled**. If you need to run without any egress, [contact our sales team](https://www.langchain.com/contact-sales) about an offline (air-gapped) license.
 </Info>
 
 ### What it does
@@ -91766,7 +91951,7 @@ Offline (air-gapped) Self-hosted cannot run Engine, because it cannot reach Lang
 
 ## Our commitment
 
-The following commitments apply to the billing, operational, and usage telemetry described on this page. LangChain will not store sensitive information in that telemetry or share it with a third party. Log messages are filtered to only include error severity levels, and we do not capture log messages that could contain sensitive application data. Engine's use of LangSmith Intelligence is a separate data flow described in [Engine on Self-hosted](/langsmith/engine-self-hosted). If you have any concerns about the data being sent, disable optional telemetry or contact your account team.
+The following commitments apply to the billing, operational, and usage telemetry described on this page. LangChain will not store sensitive information in that telemetry or share it with a third party. Log messages are filtered to only include error severity levels, and we do not capture log messages that could contain sensitive application data. Engine's use of LangSmith Intelligence is a separate data flow described in [Engine on Self-hosted](/langsmith/engine-self-hosted). If you have any concerns about the data being sent, disable optional telemetry or [contact our sales team](https://www.langchain.com/contact-sales).
 
 ---
 
@@ -95651,7 +95836,7 @@ aws ec2 describe-availability-zones --query 'AvailabilityZones[].ZoneName' --out
 
 Two non-AWS items must be ready before `terraform apply`:
 
-- **LangSmith license key.** [Contact sales](https://www.langchain.com/contact-sales) to request one. The key is stored in AWS SSM Parameter Store by the setup script, not in `tfvars`.
+- **LangSmith license key.** [Contact our sales team](https://www.langchain.com/contact-sales) to request one. The key is stored in AWS SSM Parameter Store by the setup script, not in `tfvars`.
 - **Domain or subdomain** that resolves to the AWS account, plus an ACM certificate covering it (or `letsencrypt` / `none` for the `tls_certificate_source` variable).
 
 ### Cluster sizing reference
@@ -95803,7 +95988,7 @@ The script manages the following SSM parameters:
 | `redis-auth-token` | Auto-generated (`openssl rand -hex 32`) | ElastiCache requires hex |
 | `langsmith-api-key-salt` | Auto-generated (`openssl rand -base64 32`) | Never rotate, breaks all API keys |
 | `langsmith-jwt-secret` | Auto-generated (`openssl rand -base64 32`) | Never rotate, invalidates all sessions |
-| `langsmith-license-key` | Prompt | From your LangChain account team |
+| `langsmith-license-key` | Prompt | From [our sales team](https://www.langchain.com/contact-sales) |
 | `langsmith-admin-password` | Prompt | Must contain a symbol |
 | `deployments-encryption-key` | Auto-generated Fernet key | LangSmith Deployment add-on |
 | `agent-builder-encryption-key` | Auto-generated Fernet key | Agent Builder add-on (reused by Fleet) |
@@ -97396,7 +97581,7 @@ az account set --subscription <your-subscription-id>
 az account show
 ```
 
-You also need a LangSmith license key ([contact sales](https://www.langchain.com/contact-sales)) and either a `dns_label` (Azure subdomain, no DNS setup needed) or a custom `langsmith_domain`.
+You also need a LangSmith license key ([contact our sales team](https://www.langchain.com/contact-sales)) and either a `dns_label` (Azure subdomain, no DNS setup needed) or a custom `langsmith_domain`.
 
 ## Quickstart
 
@@ -99549,7 +99734,7 @@ gcloud config set project <your-project-id>
 gcloud auth application-default login
 ```
 
-You also need a LangSmith license key ([contact sales](https://www.langchain.com/contact-sales)) and a domain or subdomain that resolves to GCP.
+You also need a LangSmith license key ([contact our sales team](https://www.langchain.com/contact-sales)) and a domain or subdomain that resolves to GCP.
 
 ## Quickstart
 
@@ -100932,7 +101117,7 @@ Sourcing `infra/scripts/setup-env.sh` writes these to Google Secret Manager and 
 Source: https://docs.langchain.com/langsmith/self-host-terraform
 
 <Info>
-Self-hosted LangSmith is an add-on to the Enterprise plan designed for LangChain's largest, most security-conscious customers. See [pricing](https://www.langchain.com/pricing) for details, or [contact sales](https://www.langchain.com/contact-sales) to request a license key for trial.
+Self-hosted LangSmith is an add-on to the Enterprise plan designed for LangChain's largest, most security-conscious customers. See [pricing](https://www.langchain.com/pricing) for details, or [contact our sales team](https://www.langchain.com/contact-sales) to request a license key for trial.
 </Info>
 
 LangChain publishes production-ready Terraform modules for [LangSmith self-hosted](/langsmith/self-hosted) at [github.com/langchain-ai/terraform](https://github.com/langchain-ai/terraform). The modules provision the cloud foundation (network, cluster, database, cache, object storage, secrets, DNS) and install the LangSmith Helm chart with sensible defaults.
@@ -100970,7 +101155,7 @@ Install the following tools before running the modules:
 
 You also need:
 
-- A LangSmith license key. [Contact sales](https://www.langchain.com/contact-sales) to request one.
+- A LangSmith license key. [Contact our sales team](https://www.langchain.com/contact-sales) to request one.
 - Permissions in the target cloud account to create VPC or VNet networking, a managed Kubernetes cluster, managed databases, object storage, secrets, and IAM roles.
 - A registered domain (or subdomain) for the LangSmith UI endpoint.
 
@@ -105062,7 +105247,6 @@ Resources for self-hosted deployments can be fully customized. Unlike Cloud, whi
 Source: https://docs.langchain.com/langsmith/self-hosted
 
 <Note>
-**Important**<br></br>
 Self-hosted LangSmith is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
 </Note>
 
@@ -120947,6 +121131,7 @@ On the **Threads** tab of a project, you can save commonly used filters: [Set a 
 - [Filter traces](/langsmith/filter-traces-in-application): filter by thread metadata in the tracing UI.
 - [Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn): evaluate threads rather than individual runs.
 - [Log user feedback using the SDK](/langsmith/attach-user-feedback): attach feedback to runs within a thread.
+- [Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project): add threads to a dataset.
 
 ---
 
@@ -135007,7 +135192,7 @@ For troubleshooting, refer to the [SAML SSO FAQs](/langsmith/faq#saml-sso-faqs).
 ### Prerequisites
 
 <Note>
-SAML SSO is available for organizations on the [Enterprise plan](https://www.langchain.com/pricing-langsmith). Please [contact sales](https://www.langchain.com/contact-sales) to learn more.
+SAML SSO is available for organizations on the [Enterprise plan](https://www.langchain.com/pricing-langsmith). [Contact our sales team](https://www.langchain.com/contact-sales) to learn more.
 </Note>
 
 - Your organization must be on an Enterprise plan.
@@ -135356,7 +135541,7 @@ Looking for a lighter-weight alternative to SCIM that doesn't require IdP admin 
 System for Cross-domain Identity Management (SCIM) is an open standard that allows for the automation of user provisioning. Using SCIM, you can automatically provision and de-provision users in your LangSmith [organization and workspaces](/langsmith/administration-overview), keeping user access synchronized with your organization's identity provider.
 
 <Note>
-SCIM is available for organizations on the [Enterprise plan](https://www.langchain.com/pricing). [Contact sales](https://www.langchain.com/contact-sales) to learn more.
+SCIM is available for organizations on the [Enterprise plan](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) to learn more.
 
 SCIM is available on Helm chart versions 0.10.41 (application version 0.10.108) and later.
 
@@ -135727,7 +135912,7 @@ Other identity providers have not been tested but may function depending on thei
 ### SSO Groups Sync (alternative)
 
 <Note>
-SSO Groups Sync is available for organizations on the [Enterprise plan](/langsmith/pricing-plans) with SAML SSO (cloud) or OIDC (self-hosted) configured. [Contact sales](https://www.langchain.com/contact-sales) to learn more.
+SSO Groups Sync is available for organizations on the [Enterprise plan](/langsmith/pricing-plans) with SAML SSO (cloud) or OIDC (self-hosted) configured. [Contact our sales team](https://www.langchain.com/contact-sales) to learn more.
 </Note>
 
 SSO Groups Sync is a simpler alternative to [SCIM](#set-up-scim-for-your-organization) for organizations that can't or prefer not to configure SCIM group push. Instead of pushing groups from your IdP to LangSmith on a separate sync interval, LangSmith reads group memberships directly from a configurable claim in the SSO token at login time and applies org-level and workspace-level role assignments using the same [naming convention](#group-naming-convention) as SCIM.

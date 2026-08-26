@@ -29,7 +29,7 @@ The evaluations service keeps its own allowlist of serverless models, separate f
 | DeepSeek-V3.1                      | `deepseek-ai/DeepSeek-V3.1`               |
 | Deepseek V4 Pro                    | `deepseek-ai/DeepSeek-V4-Pro`             |
 | rnj-1-instruct                     | `essentialai/rnj-1-instruct`              |
-| Gemma 3N E4B Instruct              | `google/gemma-3n-E4B-it`                  |
+| gemma-3n-E4B-it                    | `google/gemma-3n-E4B-it`                  |
 | Gemma 4 31B-it FP8                 | `google/gemma-4-31B-it`                   |
 | Meta Llama 3.3 70B Instruct Turbo  | `meta-llama/Llama-3.3-70B-Instruct-Turbo` |
 | Kimi-K2.5                          | `moonshotai/Kimi-K2.5`                    |

@@ -20,7 +20,7 @@ To create integrations, retrieve data, and automate your workflows, use the GitH
 
 * [Forming calls with GraphQL](/en/graphql/guides/forming-calls-with-graphql)
 
-  <p>Learn how to authenticate to the GraphQL API, then learn how to create and run queries and mutations.</p>
+  Learn how to authenticate to the GraphQL API, then learn how to create and run queries and mutations.
 
 * [Using pagination in the GraphQL API](/en/graphql/guides/using-pagination-in-the-graphql-api)
 

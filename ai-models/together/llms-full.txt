@@ -4600,7 +4600,7 @@ The evaluations service keeps its own allowlist of serverless models, separate f
 | DeepSeek-V3.1                      | `deepseek-ai/DeepSeek-V3.1`               |
 | Deepseek V4 Pro                    | `deepseek-ai/DeepSeek-V4-Pro`             |
 | rnj-1-instruct                     | `essentialai/rnj-1-instruct`              |
-| Gemma 3N E4B Instruct              | `google/gemma-3n-E4B-it`                  |
+| gemma-3n-E4B-it                    | `google/gemma-3n-E4B-it`                  |
 | Gemma 4 31B-it FP8                 | `google/gemma-4-31B-it`                   |
 | Meta Llama 3.3 70B Instruct Turbo  | `meta-llama/Llama-3.3-70B-Instruct-Turbo` |
 | Kimi-K2.5                          | `moonshotai/Kimi-K2.5`                    |
@@ -5315,6 +5315,7 @@ The following models support function-calling fine-tuning. See [supported models
   | DeepSeek     | DeepSeek V4 Flash                                  | `deepseek-ai/DeepSeek-V4-Flash`                      |
   | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` |
   | NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`      |
+  | Qwen         | Qwen3.8 27B                                        | `Qwen/Qwen3.8-27B`                                   |
   | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             |
   | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             |
   | Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                               |
@@ -5514,6 +5515,10 @@ Together AI supports two fine-tuning implementations:
 LoRA is the default on Together AI, because it trains 0.1% to 1% of the parameters that full fine-tuning would, costs less, and produces a compact adapter rather than a full set of model weights.
 
 Both [supervised fine-tuning](/docs/fine-tuning/supervised) and [preference fine-tuning](/docs/fine-tuning/preference-tuning) support LoRA and full fine-tuning.
+
+<Note>
+  **Serving a LoRA fine-tune:** Fine-tuned adapters are served on [dedicated endpoints](/docs/fine-tuning/deployment), not through the per-token serverless API. Serverless LoRA inference (including Serverless Multi-LoRA) has been discontinued. To serve several adapters on shared hardware, [attach them to a single LoRA-enabled dedicated endpoint](/docs/dedicated-endpoints/v1/lora-adapter).
+</Note>
 
 ## Choose a method
 
@@ -6657,6 +6662,7 @@ The following models support reasoning fine-tuning. See [supported models](/docs
   | DeepSeek     | DeepSeek V4 Flash 0731                             | `deepseek-ai/DeepSeek-V4-Flash-0731`                 |
   | DeepSeek     | DeepSeek V4 Flash                                  | `deepseek-ai/DeepSeek-V4-Flash`                      |
   | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` |
+  | Qwen         | Qwen3.8 27B                                        | `Qwen/Qwen3.8-27B`                                   |
   | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             |
   | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             |
   | Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                               |
@@ -6934,6 +6940,7 @@ The tables below list every model available through the fine-tuning API. Context
 | DeepSeek     | DeepSeek V3.1                                      | `deepseek-ai/DeepSeek-V3.1`                          | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
 | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
 | NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`      | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
+| Qwen         | Qwen3.8 27B                                        | `Qwen/Qwen3.8-27B`                                   | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
 | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
 | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             | 65536         | 32768         | 16              | 16              | 16        | 1          | 64            |
 | Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                               | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
@@ -6966,6 +6973,7 @@ The tables below list every model available through the fine-tuning API. Context
 
 | Organization | Model                                | API ID                                            | Context (SFT) | Context (DPO) | Max batch (SFT) | Max batch (DPO) | Min batch |
 | ------------ | ------------------------------------ | ------------------------------------------------- | ------------- | ------------- | --------------- | --------------- | --------- |
+| Qwen         | Qwen3.8 27B                          | `Qwen/Qwen3.8-27B`                                | 32768         | 16384         | 16              | 16              | 16        |
 | Qwen         | Qwen3.5 27B                          | `Qwen/Qwen3.5-27B`                                | 32768         | 16384         | 16              | 16              | 16        |
 | Qwen         | Qwen3.5 9B                           | `Qwen/Qwen3.5-9B`                                 | 65536         | 49152         | 8               | 8               | 8         |
 | Qwen         | Qwen3.5 4B                           | `Qwen/Qwen3.5-4B`                                 | 131072        | 65536         | 8               | 8               | 8         |
@@ -7007,6 +7015,7 @@ The following models support vision-language fine-tuning. See [supported models]
 <Accordion title="Supported models">
   | Organization | Model                                  | API ID                                              |
   | ------------ | -------------------------------------- | --------------------------------------------------- |
+  | Qwen         | Qwen3.8 27B                            | `Qwen/Qwen3.8-27B`                                  |
   | Qwen         | Qwen3.5 27B                            | `Qwen/Qwen3.5-27B`                                  |
   | Qwen         | Qwen3.5 9B                             | `Qwen/Qwen3.5-9B`                                   |
   | Qwen         | Qwen3.5 4B                             | `Qwen/Qwen3.5-4B`                                   |
@@ -15308,14 +15317,14 @@ Most of the models below are for instant [serverless inference](/docs/serverless
 
 ## Chat & text
 
-| Use case                     | Recommended model | Model string                         | Alternatives                                            | Learn more                                                    |
-| :--------------------------- | :---------------- | :----------------------------------- | :------------------------------------------------------ | :------------------------------------------------------------ |
-| **Chat**                     | Kimi K3           | `moonshotai/Kimi-K3`                 | `Qwen3.8-2.4T-A95B`                                     | [Chat completions](/docs/inference/chat/overview)             |
-| **Reasoning**                | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Pro`                           | [Reasoning](/docs/inference/chat/reasoning)                   |
-| **Coding agents**            | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Flash-0731`, `zai-org/GLM-5.2` | [Build coding agents](/docs/how-to-build-coding-agents)       |
-| **Small and fast**           | Gemma 4 31B IT    | `google/gemma-4-31B-it`              | `openai/gpt-oss-20b`, `Qwen/Qwen3.5-9B`                 | -                                                             |
-| **Mid-size general purpose** | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `MiniMaxAI/MiniMax-M3`                                  | -                                                             |
-| **Function calling**         | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `zai-org/GLM-5.2`                                       | [Function calling](/docs/inference/function-calling/overview) |
+| Use case                     | Recommended model | Model string                         | Alternatives                                                     | Learn more                                                    |
+| :--------------------------- | :---------------- | :----------------------------------- | :--------------------------------------------------------------- | :------------------------------------------------------------ |
+| **Chat**                     | Kimi K3           | `moonshotai/Kimi-K3`                 | `Qwen3.8-2.4T-A95B`                                              | [Chat completions](/docs/inference/chat/overview)             |
+| **Reasoning**                | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Pro`                                    | [Reasoning](/docs/inference/chat/reasoning)                   |
+| **Coding agents**            | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Flash-0731`, `zai-org/GLM-5.2`          | [Build coding agents](/docs/how-to-build-coding-agents)       |
+| **Small and fast**           | Qwen3.8 27B       | `Qwen/Qwen3.8-27B`                   | `google/gemma-4-31B-it`, `openai/gpt-oss-20b`, `Qwen/Qwen3.5-9B` | -                                                             |
+| **Mid-size general purpose** | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `MiniMaxAI/MiniMax-M3`                                           | -                                                             |
+| **Function calling**         | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `zai-org/GLM-5.2`                                                | [Function calling](/docs/inference/function-calling/overview) |
 
 ## Vision
 
@@ -21630,7 +21639,7 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Qwen              | Qwen3.5 9B                   | Qwen/Qwen3.5-9B                         | 262144         | \$0.17                        | -                                    | \$0.25                         | FP8          | Yes              | Yes                |
 | Moonshot          | Kimi K3                      | moonshotai/Kimi-K3                      | 1048576        | \$3.00                        | \$0.30                               | \$15.00                        | -            | Yes              | Yes                |
 | Moonshot          | Kimi K2.7 Code               | moonshotai/Kimi-K2.7-Code               | 262144         | \$0.95                        | \$0.19                               | \$4.00                         | FP4          | Yes              | Yes                |
-| Z.ai              | GLM-5.2                      | zai-org/GLM-5.2                         | 512000         | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
+| Z.ai              | GLM-5.2                      | zai-org/GLM-5.2                         | 1000000        | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
 | OpenAI            | GPT-OSS 120B                 | openai/gpt-oss-120b                     | 128000         | \$0.15                        | -                                    | \$0.60                         | MXFP4        | Yes              | Yes                |
 | OpenAI            | GPT-OSS 20B                  | openai/gpt-oss-20b                      | 128000         | \$0.05                        | -                                    | \$0.20                         | MXFP4        | Yes              | Yes                |
 | DeepSeek          | DeepSeek-V4-Pro              | deepseek-ai/DeepSeek-V4-Pro             | 512000         | \$1.74                        | \$0.20                               | \$3.48                         | FP4          | Yes              | Yes                |
@@ -21638,11 +21647,9 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | DeepSeek          | DeepSeek V4 Pro 0813         | deepseek-ai/DeepSeek-V4-Pro-0813        | 1048576        | \$1.32                        | \$0.13                               | \$3.96                         | NVFP4        | Yes              | Yes                |
 | NVIDIA            | Nemotron 3 Ultra 550B A55B   | nvidia/nemotron-3-ultra-550b-a55b       | 512300         | \$0.60                        | \$0.20                               | \$3.60                         | NVFP4        | Yes              | Yes                |
 | Meta              | Llama 3.3 70B Instruct Turbo | meta-llama/Llama-3.3-70B-Instruct-Turbo | 131072         | \$1.04                        | -                                    | \$1.04                         | FP8          | Yes              | Yes                |
-| Qwen              | Qwen 2.5 7B Instruct Turbo   | Qwen/Qwen2.5-7B-Instruct-Turbo          | 32768          | \$0.30                        | -                                    | \$0.30                         | FP8          | Yes              | Yes                |
 | Google            | Gemma 4 31B Instruct         | google/gemma-4-31B-it                   | 262144         | \$0.39                        | -                                    | \$0.97                         | FP8          | Yes              | Yes                |
 | Pearl AI          | Gemma 4 31B Instruct         | pearl-ai/gemma-4-31b-it                 | 32000          | \$0.28                        | -                                    | \$0.86                         | INT8         | -                | -                  |
 | Qwen              | Qwen3.7 Plus                 | Qwen/Qwen3.7-Plus                       | 1000000        | \$0.32                        | -                                    | \$1.28                         | -            | -                | -                  |
-| Google            | Gemma 3N E4B Instruct        | google/gemma-3n-E4B-it                  | 32768          | \$0.06                        | -                                    | \$0.12                         | -            | -                | -                  |
 | Thinking Machines | Inkling Small                | thinkingmachines/Inkling-Small          | 524288         | \$0.50                        | -                                    | \$1.20                         | -            | -                | -                  |
 | Prism ML          | Ternary Bonsai 27B           | Prism-ML/Ternary-Bonsai-27B             | 262144         | Free                          | -                                    | Free                           | -            | -                | -                  |
 | Meta              | Muse Glimmer 30B             | meta-models/Muse-Glimmer-30B            | 131072         | \$0.35                        | \$0.04                               | \$1.50                         | FP8          | -                | -                  |
@@ -21666,7 +21673,6 @@ Use our [Images](/reference/post-images-generations) endpoint for image models.
 | Google            | Imagen 4.0 Ultra                                 | google/imagen-4.0-ultra                  | \$0.06       | -             |
 | Google            | Flash Image 2.5 (Nano Banana)                    | google/flash-image-2.5                   | \$0.039      | -             |
 | Google            | Gemini 3 Pro Image (Nano Banana Pro)             | google/gemini-3-pro-image                | \$0.134      | -             |
-| Black Forest Labs | Flux.1 \[schnell] (Turbo)                        | black-forest-labs/FLUX.1-schnell         | \$0.0027     | 4             |
 | Black Forest Labs | Flux1.1 \[pro]                                   | black-forest-labs/FLUX.1.1-pro           | \$0.04       | -             |
 | Black Forest Labs | Flux.1 Kontext \[pro]                            | black-forest-labs/FLUX.1-kontext-pro     | \$0.04       | 28            |
 | Black Forest Labs | Flux.1 Kontext \[max]                            | black-forest-labs/FLUX.1-kontext-max     | \$0.08       | 28            |
@@ -21838,9 +21844,7 @@ There are currently no rerank models offered via serverless. Rerank models like 
 
 ## Moderation models
 
-| Organization | Model name        | API model string             | Context length | Input pricing (per 1M tokens) | Output pricing (per 1M tokens) |
-| :----------- | :---------------- | :--------------------------- | :------------- | :---------------------------- | :----------------------------- |
-| Meta         | Llama Guard 4 12B | meta-llama/Llama-Guard-4-12B | 1048576        | \$0.20                        | \$0.20                         |
+There are currently no moderation models offered via serverless.
 
 
 # Overview
@@ -35316,200 +35320,6 @@ Build an agent that iteratively improves responses.
 </Note>
 
 
-# Kimi K2 quickstart
-Source: https://docs.together.ai/docs/kimi-k2-quickstart
-
-How to get the most out of models like Kimi K2.
-
-<Tip>
-  Kimi K2-Instruct-0905 has been deprecated. Use [Kimi K2.6](/docs/kimi-k2.6-quickstart) (`moonshotai/Kimi-K2.6`) in Instruct mode instead.
-</Tip>
-
-Kimi K2 is a state-of-the-art mixture-of-experts (MoE) language model developed by Moonshot AI. It's a 1 trillion total parameter model (32B activated) that is currently the best non-reasoning open source model out there.
-
-It was trained on 15.5 trillion tokens, supports a 256k context window, and excels in agentic tasks, coding, reasoning, and tool use. Even though it's a 1T model, at inference time, the fact that only 32 B parameters are active gives it near‑frontier quality at a fraction of the compute of dense peers.
-
-This quick guide goes over the main use cases for Kimi K2, how to get started with it, when to use it, and prompting tips for getting the most out of this incredible model.
-
-## How to use Kimi K2
-
-Get started with this model in 10 lines of code! The model ID is `moonshotai/Kimi-K2-Instruct-0905` and the pricing is \$1.00 per 1M input tokens and \$3.00 per 1M output tokens.
-
-<CodeGroup>
-  ```python Python theme={null}
-  from together import Together
-
-  client = Together()
-  resp = client.chat.completions.create(
-      model="moonshotai/Kimi-K2-Instruct-0905",
-      messages=[{"role": "user", "content": "Code a hacker news clone"}],
-      stream=True,
-  )
-  for tok in resp:
-      print(tok.choices[0].delta.content, end="", flush=True)
-  ```
-
-  ```typescript TypeScript theme={null}
-  import Together from 'together-ai';
-  const together = new Together();
-
-  const stream = await together.chat.completions.create({
-    model: 'moonshotai/Kimi-K2-Instruct-0905',
-    messages: [{ role: 'user', content: 'Code a hackernews clone' }],
-    stream: true,
-  });
-
-  for await (const chunk of stream) {
-    process.stdout.write(chunk.choices[0]?.delta?.content || '');
-  }
-  ```
-</CodeGroup>
-
-## Use cases
-
-Kimi K2 shines in scenarios requiring autonomous problem-solving – specifically with coding & tool use:
-
-* **Agentic Workflows**: Automate multi-step tasks like booking flights, research, or data analysis using tools/APIs
-* **Coding & Debugging**: Solve software engineering tasks (e.g., SWE-bench), generate patches, or debug code
-* **Research & Report Generation**: Summarize technical documents, analyze trends, or draft reports using long-context capabilities
-* **STEM Problem-Solving**: Tackle advanced math (AIME, MATH), logic puzzles (ZebraLogic), or scientific reasoning
-* **Tool Integration**: Build AI agents that interact with APIs (e.g., weather data, databases).
-
-## Prompting tips
-
-| Tip                                                                                                                       | Rationale                                                                                                                                |
-| ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| **Keep the system prompt simple** - `"You are Kimi, an AI assistant created by Moonshot AI."` is the recommended default. | Matches the prompt used during instruction tuning.                                                                                       |
-| **Temperature ≈ 0.6**                                                                                                     | Calibrated to Kimi-K2-Instruct's RLHF alignment curve. Higher values yield verbosity.                                                    |
-| **Leverage native tool calling**                                                                                          | Pass a JSON schema in `tools=[...]` and set `tool_choice="auto"`. Kimi decides when/what to call.                                        |
-| **Think in goals, not steps**                                                                                             | Because the model is "agentic", give a *high-level objective* ("Analyze this CSV and write a report"), letting it orchestrate sub-tasks. |
-| **Chunk very long contexts**                                                                                              | 256 K is huge, but response speed drops on >100 K inputs. Supply a short executive summary in the final user message to focus the model. |
-
-Much of this information was found in the [Kimi GitHub repo](https://github.com/MoonshotAI/Kimi-K2).
-
-## General Limitations of Kimi K2
-
-The sections above outline various use cases for when to use Kimi K2, but it also has a few situations where it currently isn't the best. The main ones are for latency specific applications like real-time voice agents, it's not the best solution currently due to its speed.
-
-Similarly, if you wanted a quick summary for a long PDF, even though it can handle a good amount of context (256k tokens), its speed is a bit prohibitive if you want to show text quickly to your user as it can get even slower when it is given a lot of context. However, if you're summarizing PDFs async for example or in another scenario where latency isn't a concern, this could be a good model to try.
-
-
-# Kimi K2 Thinking quickstart
-Source: https://docs.together.ai/docs/kimi-k2-thinking-quickstart
-
-How to get the most out of reasoning models like Kimi K2 Thinking.
-
-<Tip>
-  Kimi K2 Thinking has been deprecated. Use [Kimi K2.6](/docs/kimi-k2.6-quickstart) with thinking mode enabled instead for reasoning tasks.
-</Tip>
-
-Kimi K2 Thinking is a state-of-the-art reasoning model developed by Moonshot AI. It's a 1 trillion total parameter model (32B activated) that represents the latest, most capable version of open-source thinking models. Built on the foundation of Kimi K2, it's designed as a thinking agent that reasons step-by-step while dynamically invoking tools.
-
-The model sets a new state-of-the-art on benchmarks like Humanity's Last Exam (HLE), BrowseComp, and others by dramatically scaling multi-step reasoning depth and maintaining stable tool-use across 200–300 sequential calls. Trained on 15.5 trillion tokens with a 256k context window, it excels in complex reasoning tasks, agentic workflows, coding, and tool use.
-
-Unlike standard models, Kimi K2 Thinking outputs both a `reasoning` field (containing its chain-of-thought process) and a `content` field (containing the final answer), allowing you to see how it thinks through problems. This quick guide goes over the main use cases for Kimi K2 Thinking, how to get started with it, when to use it, and prompting tips for getting the most out of this incredible reasoning model.
-
-## How to use Kimi K2 Thinking
-
-Get started with this model in a few lines of code! The model ID is `moonshotai/Kimi-K2-Thinking` and the pricing is \$1.20 per 1M input tokens and \$4.00 per 1M output tokens.
-
-Since this is a reasoning model that produces both reasoning tokens and content tokens, you'll want to handle both fields in the streaming response:
-
-<CodeGroup>
-  ```python Python theme={null}
-  from together import Together
-
-  client = Together()
-  stream = client.chat.completions.create(
-      model="moonshotai/Kimi-K2-Thinking",
-      messages=[
-          {
-              "role": "user",
-              "content": "Which number is bigger, 9.11 or 9.9? Think carefully.",
-          }
-      ],
-      stream=True,
-      max_tokens=500,
-  )
-
-  for chunk in stream:
-      if chunk.choices:
-          delta = chunk.choices[0].delta
-
-          # Show reasoning tokens if present
-          if hasattr(delta, "reasoning") and delta.reasoning:
-              print(delta.reasoning, end="", flush=True)
-
-          # Show content tokens if present
-          if hasattr(delta, "content") and delta.content:
-              print(delta.content, end="", flush=True)
-  ```
-
-  ```typescript TypeScript theme={null}
-  import Together from "together-ai"
-  import type { ChatCompletionChunk } from "together-ai/resources/chat/completions"
-
-  const together = new Together()
-
-  const stream = await together.chat.completions.stream({
-    model: "moonshotai/Kimi-K2-Thinking",
-    messages: [
-      { role: "user", content: "What are some fun things to do in New York?" },
-    ],
-    max_tokens: 500,
-  } as any)
-
-  for await (const chunk of stream) {
-    const delta = chunk.choices[0]?.delta as ChatCompletionChunk.Choice.Delta & {
-      reasoning?: string
-    }
-
-    // Show reasoning tokens if present
-    if (delta?.reasoning) process.stdout.write(delta.reasoning)
-
-    // Show content tokens if present
-    if (delta?.content) process.stdout.write(delta.content)
-  }
-  ```
-</CodeGroup>
-
-## Use cases
-
-Kimi K2 Thinking excels in scenarios requiring deep reasoning, strategic thinking, and complex problem-solving:
-
-* **Complex Reasoning Tasks**: Tackle advanced mathematical problems (AIME25, HMMT25, IMO-AnswerBench), scientific reasoning (GPQA), and logic puzzles that require multi-step analysis
-* **Agentic Search & Research**: Automate research workflows using tools and APIs, with stable performance across 200–300 sequential tool invocations (BrowseComp, Seal-0, FinSearchComp)
-* **Coding with Deep Analysis**: Solve complex software engineering tasks (SWE-bench, Multi-SWE-bench) that require understanding large codebases, generating patches, and debugging intricate issues
-* **Long-Horizon Agentic Workflows**: Build autonomous agents that maintain coherent goal-directed behavior across extended sequences of tool calls, research tasks, and multi-step problem solving
-* **Strategic Planning**: Create detailed plans for complex projects, analyze trade-offs, and orchestrate multi-stage workflows that require reasoning through dependencies and constraints
-* **Document Analysis & Pattern Recognition**: Process and analyze extensive unstructured documents, identify connections across multiple sources, and extract precise information from large volumes of data
-
-## Prompting tips
-
-| Tip                                                                                                                       | Rationale                                                                                                                                               |
-| ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Keep the system prompt simple** - `"You are Kimi, an AI assistant created by Moonshot AI."` is the recommended default. | Matches the prompt used during instruction tuning.                                                                                                      |
-| **Temperature = 1.0**                                                                                                     | The recommended temperature for Kimi-K2-Thinking. It's calibrated for optimal reasoning performance.                                                    |
-| **Leverage native tool calling**                                                                                          | Pass a JSON schema in `tools=[...]` and set `tool_choice="auto"`. Kimi decides when/what to call, maintaining stability across 200-300 calls.           |
-| **Think in goals, not steps**                                                                                             | Because the model is "agentic", give a *high-level objective* ("Analyze this data and write a comprehensive report"), letting it orchestrate sub-tasks. |
-| **Manage context for very long inputs**                                                                                   | 256 K is huge, but response speed drops on >100 K inputs. Supply a short executive summary in the final user message to focus the model.                |
-| **Allow adequate reasoning space**                                                                                        | The model generates both reasoning and content tokens. Ensure your `max_tokens` parameter accommodates both for complex problems.                       |
-
-Much of this information was found in the [Kimi GitHub repo](https://github.com/MoonshotAI/Kimi-K2) and the [Kimi K2 Thinking model card](https://huggingface.co/moonshotai/Kimi-K2-Thinking).
-
-## General limitations of Kimi K2 Thinking
-
-The sections above outline various use cases for when to use Kimi K2 Thinking, but it also has a few situations where it currently isn't the best choice:
-
-* **Latency-sensitive applications**: Due to the reasoning process, this model generates more tokens and takes longer than non-reasoning models. For real-time voice agents or applications requiring instant responses, consider the regular Kimi K2 or other faster models.
-
-* **Simple, direct tasks**: For straightforward tasks that don't require deep reasoning (e.g., simple classification, basic text generation), the regular Kimi K2 or other non-reasoning models will be faster and more cost-effective.
-
-* **Cost-sensitive high-volume use cases**: At \$4.00 per 1M output tokens (vs \$3.00 for regular K2), the additional reasoning tokens can increase costs. If you're processing many simple queries where reasoning isn't needed, consider alternatives.
-
-However, for complex problems requiring strategic thinking, multi-step reasoning, or long-horizon agentic workflows, Kimi K2 Thinking provides exceptional value through its transparent reasoning process and superior problem-solving capabilities.
-
-
 # Kimi K2.6 quickstart
 Source: https://docs.together.ai/docs/kimi-k2.6-quickstart
 
@@ -42495,24 +42305,24 @@ Together is actively rolling out RBAC across more services. Granular permissions
 </CardGroup>
 
 
-# Seedance 2.0 quickstart
-Source: https://docs.together.ai/docs/seedance2.0-quickstart
+# Seedance 2.5 quickstart
+Source: https://docs.together.ai/docs/seedance2.5-quickstart
 
 Generate multi-shot videos with synchronized audio from text, image, video, and audio inputs.
 
-Seedance 2.0 is a unified multimodal audio-video generation model from ByteDance. It accepts text, image, video, and audio inputs in any combination, and produces multi-shot videos up to 15 seconds with dual-channel synchronized audio (dialogue, ambient sound, and effects). Seedance 2.0 also supports physics-aware motion, video extension, and instruction-based editing.
+Seedance 2.5 is a unified multimodal audio-video generation model from ByteDance. It accepts text, image, video, and audio inputs in any combination, and produces multi-shot videos up to 30 seconds with synchronized audio (dialogue, ambient sound, and effects). Compared to Seedance 2.0, it supports longer videos, longer prompts, and far more reference inputs per request.
 
 | Feature                    | Limit                     |
 | -------------------------- | ------------------------- |
-| Reference images           | Up to nine                |
-| Reference videos           | Up to three               |
-| Reference audios           | Up to three               |
+| Reference images           | Up to 30                  |
+| Reference videos           | Up to 10                  |
+| Reference audios           | Up to 10                  |
 | Frame images (first, last) | Up to two                 |
-| Duration                   | 4 to 15 seconds (integer) |
-| Resolutions                | 480p, 720p, 1080p, 4k     |
-| Audio output               | Generated by default      |
+| Duration                   | 4 to 30 seconds (integer) |
+| Resolutions                | 480p, 720p                |
+| Audio output               | Always generated          |
 
-The model API string is `ByteDance/Seedance-2.0`.
+The model API string is `ByteDance/Seedance-2.5`.
 
 ## Text-to-video
 
@@ -42527,9 +42337,8 @@ Generate a video from a text prompt. Video generation is asynchronous: you creat
 
   job = client.videos.create(
       prompt="A small cute cartoon kitten general in golden armor stands on a cliff, commanding an army of mice charging below. Epic ancient war atmosphere, dramatic clouds over snowy mountains.",
-      model="ByteDance/Seedance-2.0",
+      model="ByteDance/Seedance-2.5",
       resolution="720p",
-      ratio="16:9",
       seconds="5",
   )
 
@@ -42557,9 +42366,8 @@ Generate a video from a text prompt. Video generation is asynchronous: you creat
   async function main() {
     const job = await together.videos.create({
       prompt: "A small cute cartoon kitten general in golden armor stands on a cliff, commanding an army of mice charging below. Epic ancient war atmosphere, dramatic clouds over snowy mountains.",
-      model: "ByteDance/Seedance-2.0",
+      model: "ByteDance/Seedance-2.5",
       resolution: "720p",
-      ratio: "16:9",
       seconds: "5",
     });
 
@@ -42589,52 +42397,15 @@ Generate a video from a text prompt. Video generation is asynchronous: you creat
     -H "Authorization: Bearer $TOGETHER_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
-      "model": "ByteDance/Seedance-2.0",
+      "model": "ByteDance/Seedance-2.5",
       "prompt": "A small cute cartoon kitten general in golden armor stands on a cliff, commanding an army of mice charging below. Epic ancient war atmosphere, dramatic clouds over snowy mountains.",
       "resolution": "720p",
-      "ratio": "16:9",
       "seconds": "5"
     }'
   ```
 </CodeGroup>
 
-Seedance 2.0 generates synchronized audio by default. To produce a silent video, set `settings.audio` to `false`.
-
-<CodeGroup>
-  ```python Python theme={null}
-  job = client.videos.create(
-      prompt="A graffiti character comes to life off a concrete wall under an urban railway bridge at night.",
-      model="ByteDance/Seedance-2.0",
-      resolution="720p",
-      seconds="5",
-      extra_body={"settings": {"audio": False}},
-  )
-  ```
-
-  ```typescript TypeScript theme={null}
-  const job = await together.videos.create({
-    prompt: "A graffiti character comes to life off a concrete wall under an urban railway bridge at night.",
-    model: "ByteDance/Seedance-2.0",
-    resolution: "720p",
-    seconds: "5",
-    // @ts-expect-error settings is a passthrough field
-    settings: { audio: false },
-  });
-  ```
-
-  ```bash cURL theme={null}
-  curl -X POST "https://api.together.xyz/v2/videos" \
-    -H "Authorization: Bearer $TOGETHER_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-      "model": "ByteDance/Seedance-2.0",
-      "prompt": "A graffiti character comes to life off a concrete wall under an urban railway bridge at night.",
-      "resolution": "720p",
-      "seconds": "5",
-      "settings": {"audio": false}
-    }'
-  ```
-</CodeGroup>
+Seedance 2.5 always generates synchronized audio. The `settings.audio` toggle that Seedance 2.0 supports for producing silent videos is not honored by Seedance 2.5.
 
 ## Image-to-video
 
@@ -42649,7 +42420,7 @@ Animate a still image by passing it as the first frame through `media.frame_imag
 
   job = client.videos.create(
       prompt="A black cat curiously gazes up at the sky. The camera slowly rises from eye level to a bird's-eye view.",
-      model="ByteDance/Seedance-2.0",
+      model="ByteDance/Seedance-2.5",
       resolution="720p",
       seconds="5",
       media={
@@ -42683,7 +42454,7 @@ Animate a still image by passing it as the first frame through `media.frame_imag
   async function main() {
     const job = await together.videos.create({
       prompt: "A black cat curiously gazes up at the sky. The camera slowly rises from eye level to a bird's-eye view.",
-      model: "ByteDance/Seedance-2.0",
+      model: "ByteDance/Seedance-2.5",
       resolution: "720p",
       seconds: "5",
       media: {
@@ -42721,7 +42492,7 @@ Pass two `frame_images` (one with `frame: "first"`, one with `frame: "last"`) to
   ```python Python theme={null}
   job = client.videos.create(
       prompt="Smooth cinematic transition with natural motion.",
-      model="ByteDance/Seedance-2.0",
+      model="ByteDance/Seedance-2.5",
       resolution="720p",
       seconds="5",
       media={
@@ -42736,7 +42507,7 @@ Pass two `frame_images` (one with `frame: "first"`, one with `frame: "last"`) to
   ```typescript TypeScript theme={null}
   const job = await together.videos.create({
     prompt: "Smooth cinematic transition with natural motion.",
-    model: "ByteDance/Seedance-2.0",
+    model: "ByteDance/Seedance-2.5",
     resolution: "720p",
     seconds: "5",
     media: {
@@ -42755,15 +42526,14 @@ Pass two `frame_images` (one with `frame: "first"`, one with `frame: "last"`) to
 
 ## Reference-guided generation
 
-Generate video featuring specific characters, objects, or scenes by passing reference images, reference videos, or both. Seedance 2.0 maintains identity, style, and composition from the references throughout the generated video. Multiple references combine for multi-character scenes.
+Generate video featuring specific characters, objects, or scenes by passing reference images, reference videos, or both. Seedance 2.5 maintains identity, style, and composition from the references throughout the generated video. Multiple references combine for multi-character scenes.
 
 <CodeGroup>
   ```python Python theme={null}
   job = client.videos.create(
       prompt="A person dances on a neon-lit stage with dynamic camera motion.",
-      model="ByteDance/Seedance-2.0",
-      resolution="1080p",
-      ratio="16:9",
+      model="ByteDance/Seedance-2.5",
+      resolution="720p",
       seconds="6",
       media={
           "reference_images": [
@@ -42780,9 +42550,8 @@ Generate video featuring specific characters, objects, or scenes by passing refe
   ```typescript TypeScript theme={null}
   const job = await together.videos.create({
     prompt: "A person dances on a neon-lit stage with dynamic camera motion.",
-    model: "ByteDance/Seedance-2.0",
-    resolution: "1080p",
-    ratio: "16:9",
+    model: "ByteDance/Seedance-2.5",
+    resolution: "720p",
     seconds: "6",
     media: {
       reference_images: [
@@ -42799,13 +42568,13 @@ Generate video featuring specific characters, objects, or scenes by passing refe
 
 ## Audio-guided generation
 
-Drive video generation with an audio file by passing it through `media.reference_audios`. The model synchronizes the generated video to the audio, which is useful for lip sync, beat-matched motion, and narration-driven scenes. Audio-guided generation requires at least one reference image or reference video to anchor the visual subject.
+Drive video generation with an audio file by passing it through `media.reference_audios`. The model synchronizes the generated video to the audio, which is useful for lip sync, beat-matched motion, and narration-driven scenes. Pair the audio with a reference image or reference video to anchor the visual subject.
 
 <CodeGroup>
   ```python Python theme={null}
   job = client.videos.create(
       prompt="The character raps energetically into a microphone, bobbing with the beat.",
-      model="ByteDance/Seedance-2.0",
+      model="ByteDance/Seedance-2.5",
       resolution="720p",
       seconds="10",
       media={
@@ -42822,7 +42591,7 @@ Drive video generation with an audio file by passing it through `media.reference
   ```typescript TypeScript theme={null}
   const job = await together.videos.create({
     prompt: "The character raps energetically into a microphone, bobbing with the beat.",
-    model: "ByteDance/Seedance-2.0",
+    model: "ByteDance/Seedance-2.5",
     resolution: "720p",
     seconds: "10",
     media: {
@@ -42838,31 +42607,31 @@ Drive video generation with an audio file by passing it through `media.reference
 </CodeGroup>
 
 <Note>
-  If no reference audio is provided, Seedance 2.0 still generates synchronized audio (dialogue, ambient sound, and effects) based on the prompt and visual content.
+  If no reference audio is provided, Seedance 2.5 still generates synchronized audio (dialogue, ambient sound, and effects) based on the prompt and visual content.
 </Note>
 
 ## Parameters
 
-| Parameter        | Type    | Description                                                                                         | Default      |
-| ---------------- | ------- | --------------------------------------------------------------------------------------------------- | ------------ |
-| `prompt`         | string  | Text description of the video to generate (2 to 3,000 characters).                                  | **Required** |
-| `model`          | string  | `ByteDance/Seedance-2.0`.                                                                           | **Required** |
-| `resolution`     | string  | Output resolution tier: `480p`, `720p`, `1080p`, or `4k`. Cannot be combined with `width`/`height`. | `"720p"`     |
-| `ratio`          | string  | Aspect ratio: `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, or `21:9`.                                       | `"16:9"`     |
-| `width`          | integer | Explicit output width in pixels. Must be paired with `height`.                                      | -            |
-| `height`         | integer | Explicit output height in pixels. Must be paired with `width`.                                      | -            |
-| `seconds`        | string  | Video duration in seconds, integer between 4 and 15.                                                | `"5"`        |
-| `settings.audio` | boolean | Whether to generate synchronized audio. Pass via `extra_body` in the Python SDK.                    | `true`       |
-| `media`          | object  | Media inputs for the request (see below).                                                           | -            |
+| Parameter    | Type   | Description                                                         | Default      |
+| ------------ | ------ | ------------------------------------------------------------------- | ------------ |
+| `prompt`     | string | Text description of the video to generate (2 to 10,000 characters). | **Required** |
+| `model`      | string | `ByteDance/Seedance-2.5`.                                           | **Required** |
+| `resolution` | string | Output resolution tier: `480p` or `720p`.                           | `"720p"`     |
+| `seconds`    | string | Video duration in seconds, integer between 4 and 30.                | `"5"`        |
+| `media`      | object | Media inputs for the request (see below).                           | -            |
+
+<Note>
+  Unlike Seedance 2.0, Seedance 2.5 does not support the `ratio`, `width`, and `height` parameters, the `1080p` and `4k` resolution tiers, or disabling audio output. Output is capped at 720p.
+</Note>
 
 ### Media object
 
-The `media` object is the unified way to pass images, videos, and audio into a Seedance 2.0 request.
+The `media` object is the unified way to pass images, videos, and audio into a Seedance 2.5 request.
 
 ```json theme={null}
 {
   "prompt": "...",
-  "model": "ByteDance/Seedance-2.0",
+  "model": "ByteDance/Seedance-2.5",
   "media": {
     "frame_images": [],
     "reference_images": [],
@@ -42875,58 +42644,45 @@ The `media` object is the unified way to pass images, videos, and audio into a S
 | Field              | Type  | Description                                                                                                                                                                                                                              |
 | ------------------ | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `frame_images`     | array | Up to two keyframe images. Each item: `{input_image, frame}` where `frame` is `"first"` or `"last"`. With one item and no `frame`, it's used as the first frame. With two items and no `frame`, they're used as first and last in order. |
-| `reference_images` | array | Up to nine reference images for character, object, or scene consistency. Each item is a URL or base64-encoded image.                                                                                                                     |
-| `reference_videos` | array | Up to three reference videos for motion or composition guidance. Each item: `{video: "url"}`. Each video must be between 2 and 15 seconds long.                                                                                          |
-| `reference_audios` | array | Up to three reference audio files to drive video generation. Each item is a URL. Requires at least one `reference_images` or `reference_videos` entry.                                                                                   |
+| `reference_images` | array | Up to 30 reference images for character, object, or scene consistency. Each item is a URL or base64-encoded image.                                                                                                                       |
+| `reference_videos` | array | Up to 10 reference videos for motion or composition guidance. Each item: `{video: "url"}`.                                                                                                                                               |
+| `reference_audios` | array | Up to 10 reference audio files to drive video generation. Each item is a URL.                                                                                                                                                            |
 
 <Note>
-  Reference videos must be between 2 and 15 seconds long. Files outside this range are rejected with `invalidDuration` (`Media seconds must be in [2, 15] seconds range`). Trim your clip before submitting the job. For example, `ffmpeg -i input.mp4 -t 5 -c copy reference.mp4` produces a 5-second reference clip.
+  Reference videos outside the supported duration range are rejected with `invalidDuration`, and the error message states the allowed range. Trim your clip before submitting the job. For example, `ffmpeg -i input.mp4 -t 5 -c copy reference.mp4` produces a 5-second reference clip.
 </Note>
 
 ### Input compatibility
 
 `frame_images` cannot be combined with any reference input. Use one of the following modes per request:
 
-| Mode             | `frame_images` | `reference_images` | `reference_videos` |                      `reference_audios`                      |
-| ---------------- | :------------: | :----------------: | :----------------: | :----------------------------------------------------------: |
-| Text-to-video    |        -       |          -         |          -         |                               -                              |
-| Image-to-video   |    Up to two   |          -         |          -         |                               -                              |
-| Reference-guided |        -       |     Up to nine     |     Up to three    |                               -                              |
-| Audio-guided     |        -       |     Up to nine     |     Up to three    | Up to three (requires at least one reference image or video) |
-
-### Resolutions and aspect ratios
-
-| Aspect ratio | 480p    | 720p     | 1080p     | 4k        |
-| ------------ | ------- | -------- | --------- | --------- |
-| 16:9         | 864x496 | 1280x720 | 1920x1080 | 3840x2160 |
-| 4:3          | 752x560 | 1112x834 | 1664x1248 | 3326x2494 |
-| 1:1          | 640x640 | 960x960  | 1440x1440 | 2880x2880 |
-| 3:4          | 560x752 | 834x1112 | 1248x1664 | 2496x3328 |
-| 9:16         | 496x864 | 720x1280 | 1080x1920 | 2160x3840 |
-| 21:9         | 992x432 | 1470x630 | 2206x946  | 4398x1886 |
-
-To request dimensions outside this matrix, pass `width` and `height` directly instead of `resolution` and `ratio`.
+| Mode             | `frame_images` | `reference_images` | `reference_videos` | `reference_audios` |
+| ---------------- | :------------: | :----------------: | :----------------: | :----------------: |
+| Text-to-video    |        -       |          -         |          -         |          -         |
+| Image-to-video   |    Up to two   |          -         |          -         |          -         |
+| Reference-guided |        -       |      Up to 30      |      Up to 10      |          -         |
+| Audio-guided     |        -       |      Up to 30      |      Up to 10      |      Up to 10      |
 
 ## Pricing
 
-| Mode                          | 480p                 | 720p                 | 1080p                | 4k                    |
-| ----------------------------- | -------------------- | -------------------- | -------------------- | --------------------- |
-| Text-to-video, image-to-video | \$0.07 / second      | \$0.16 / second      | \$0.40 / second      | \$0.836 / second      |
-| Video-to-video                | from \$0.13 / second | from \$0.28 / second | from \$0.48 / second | from \$1.050 / second |
+| Resolution | Price                 |
+| ---------- | --------------------- |
+| 480p       | \$0.115 / second      |
+| 720p       | from \$0.249 / second |
 
 ## Prompting tips
 
 <Tip>
-  Seedance 2.0 supports both Chinese and English prompts. Detailed prompts with subject, action, style, camera movement, and atmosphere produce the best results.
+  Seedance 2.5 supports both Chinese and English prompts. Detailed prompts with subject, action, style, camera movement, and atmosphere produce the best results.
 </Tip>
 
 Write descriptive prompts. Instead of "a cat walking", try "A small black cat walks gracefully through a sunlit garden, soft bokeh background, gentle breeze rustling the flowers, cinematic slow motion."
 
-For multi-shot scenes, describe the transitions explicitly. Seedance 2.0 follows shot-by-shot instructions like "Shot 1: wide aerial of the city. Shot 2: cut to a close-up of the protagonist's face."
+For multi-shot scenes, describe the transitions explicitly. Seedance 2.5 follows shot-by-shot instructions like "Shot 1: wide aerial of the city. Shot 2: cut to a close-up of the protagonist's face." Camera moves such as pans, dollies, and orbits can be requested directly in the prompt.
 
 ## Next steps
 
-* [Video generation overview](/docs/videos-overview) for the full parameter reference and supported models.
+* [Video generation overview](/docs/inference/videos/overview) for the full parameter reference and supported models.
 * [API reference: create video](/reference/create-videos) for REST API details.
 * [API reference: get video status](/reference/get-videos-id) for polling and status codes.
 
@@ -46618,22 +46374,6 @@ Generate audio from input text
 
 
 
-# Create chat completion
-Source: https://docs.together.ai/reference/chat-completions
-
-openapi.yaml POST /chat/completions
-Generate a model response for a given chat conversation. Supports single queries and multi-turn conversations with system, user, and assistant messages.
-
-
-
-# Create image
-Source: https://docs.together.ai/reference/post-images-generations
-
-openapi.yaml POST /images/generations
-Use an image model to generate an image for a given prompt.
-
-
-
 # Create realtime text-to-speech
 Source: https://docs.together.ai/reference/audio-speech-websocket
 
@@ -46783,6 +46523,22 @@ Source: https://docs.together.ai/reference/audio-transcriptions
 
 openapi.yaml POST /audio/transcriptions
 Transcribes audio into text
+
+
+
+# Create chat completion
+Source: https://docs.together.ai/reference/chat-completions
+
+openapi.yaml POST /chat/completions
+Generate a model response for a given chat conversation. Supports single queries and multi-turn conversations with system, user, and assistant messages.
+
+
+
+# Create image
+Source: https://docs.together.ai/reference/post-images-generations
+
+openapi.yaml POST /images/generations
+Use an image model to generate an image for a given prompt.
 
 
 
@@ -47233,6 +46989,22 @@ Source: https://docs.together.ai/reference/deployments-update
 
 openapi.yaml PATCH /deployments/{id}
 Update an existing deployment configuration
+
+
+
+# Create an A/B experiment
+Source: https://docs.together.ai/reference/dmi/ab-experiments-create
+
+openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/abExperiments
+Creates a managed control/variant split across two to 20 deployments under the same endpoint. Exactly one member is the control, member percentages must add up to 100, and the split applies only to traffic that the endpoint would otherwise send to the control.
+
+
+
+# Get an A/B experiment
+Source: https://docs.together.ai/reference/dmi/ab-experiments-get
+
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
+Retrieves an A/B experiment and its participating deployments, roles, and traffic percentages.
 
 
 
@@ -47745,6 +47517,16 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="August 25, 2026">
+  ## New models available for fine-tuning
+
+  You can now fine-tune the following models:
+
+  * `Qwen/Qwen3.8-27B`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+</Update>
+
 <Update label="August 24, 2026">
   ## Fine-tuning quality improvements
 
@@ -47777,7 +47559,7 @@ Source: https://docs.together.ai/docs/changelog
   See [Deprecations](/docs/deprecations) for migration options.
 </Update>
 
-<Update label="August 18, 2026">
+<Update label="August 20, 2026">
   ## Fully automatic confirmation policy for node auto repair
 
   [Auto node repair](/docs/node-repair#auto-node-repair) can now close the loop end to end. Under the new **Fully automatic** confirmation policy, health checks detect the fault, the system generates a repair recommendation, and auto repair executes it without waiting for approval. Clusters continue to use **Approve before repair** by default.
@@ -47799,19 +47581,17 @@ Source: https://docs.together.ai/docs/changelog
 
   See [Project visibility](/docs/projects#project-visibility).
 
-  ## Multi-project resource scoping
-
-  Clusters, fine-tuned models, endpoints, evaluations, files, and API keys are now fully scoped to projects. The early-access limitations on project isolation no longer apply.
-
-  See [Projects](/docs/projects).
-</Update>
-
-<Update label="August 15, 2026">
   ## New serverless models
 
   The following models are now available on [serverless](/docs/serverless/models):
 
   * `deepseek-ai/DeepSeek-V4-Pro-0813`: 1,048,576 context length, NVFP4 quantization. Pricing: \$1.32 input / \$3.96 output / \$0.13 cached input (per 1M tokens).
+
+  ## Multi-project resource scoping
+
+  Multi-project is now enabled for every organization. Clusters, fine-tuned models, endpoints, evaluations, files, and API keys are fully scoped to projects. The early-access limitations on project isolation no longer apply.
+
+  See [Projects](/docs/projects).
 </Update>
 
 <Update label="August 13, 2026">
@@ -48535,7 +48315,7 @@ Source: https://docs.together.ai/docs/changelog
   * 1080p: \$0.40 (text/image-to-video), from \$0.48 (video-to-video).
   * 4K: \$0.836 (text/image-to-video), from \$1.050 (video-to-video).
 
-  See [Seedance 2.0](/docs/seedance2.0-quickstart) for details.
+  See [Seedance 2.0](/docs/seedance2.5-quickstart) for details.
 </Update>
 
 <Update label="June 24, 2026">
@@ -48778,7 +48558,7 @@ Source: https://docs.together.ai/docs/changelog
 
   ## Seedance 2.0 quickstart
 
-  A quickstart is now available for [Seedance 2.0](/docs/seedance2.0-quickstart), ByteDance's unified multimodal audio-video generation model. The guide covers text-to-video, image-to-video, video extension, and instruction-based editing.
+  A quickstart is now available for [Seedance 2.0](/docs/seedance2.5-quickstart), ByteDance's unified multimodal audio-video generation model. The guide covers text-to-video, image-to-video, video extension, and instruction-based editing.
 </Update>
 
 <Update label="May 22, 2026">
@@ -49425,7 +49205,7 @@ Source: https://docs.together.ai/docs/changelog
 
   You can now run evaluations:
 
-  * Using [Serverless LoRA](/docs/fine-tuning/lora-vs-full) models, including supported LoRA fine-tuned models.
+  * Using serverless LoRA models, including supported LoRA fine-tuned models. (Serverless LoRA inference has since been discontinued. Fine-tuned adapters are served through [dedicated endpoints](/docs/fine-tuning/deployment).)
   * Using [dedicated model inference](/docs/dedicated-endpoints), including fine-tuned models deployed via dedicated endpoints.
 </Update>
 
@@ -49662,8 +49442,12 @@ The table below lists all models removed from serverless inference, most recent 
 
 | Removal date                | Model                                               | Supported by on-demand dedicated endpoints |
 | :-------------------------- | :-------------------------------------------------- | :----------------------------------------- |
+| 2026-08-25                  | `meta-llama/Llama-Guard-4-12B`                      | No                                         |
+| 2026-08-25                  | `google/gemma-3n-E4B-it`                            | No                                         |
 | 2026-08-21                  | `deepcogito/cogito-v2-1-671b`                       | No                                         |
-| 2026-08-04                  | `google/gemma-3n-E4B-it`                            | No                                         |
+| 2026-08-19                  | `black-forest-labs/FLUX.1-schnell`                  | No                                         |
+| 2026-08-19                  | `Qwen/Qwen2.5-7B`                                   | Yes                                        |
+| 2026-08-19                  | `moonshotai/Kimi-K2.6`                              | Yes                                        |
 | 2026-07-10                  | `Qwen/Qwen3-235B-A22B-Instruct-2507-tput`           | Yes                                        |
 | 2026-07-10                  | `meta-llama/Meta-Llama-3-8B-Instruct-Lite`          | No                                         |
 | 2026-07-10                  | `zai-org/GLM-5.1`                                   | Yes                                        |
@@ -52569,27 +52353,11 @@ The `project_slug` is the DNS-friendly project identifier used when constructing
 `user_id` is present when the API key is tied to an authenticated user account. It is omitted for service or organization-default keys.
 
 
-# Create an A/B experiment
-Source: https://docs.together.ai/reference/dmi/ab-experiments-create
-
-openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/abExperiments
-Creates a managed control/variant split across two to 20 deployments under the same endpoint. Exactly one member is the control, member percentages must add up to 100, and the split applies only to traffic that the endpoint would otherwise send to the control.
-
-
-
 # Delete an A/B experiment
 Source: https://docs.together.ai/reference/dmi/ab-experiments-delete
 
 openapi.yaml DELETE /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
 Deletes an A/B experiment and removes its managed traffic split. The deployments themselves are not deleted.
-
-
-
-# Get an A/B experiment
-Source: https://docs.together.ai/reference/dmi/ab-experiments-get
-
-openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
-Retrieves an A/B experiment and its participating deployments, roles, and traffic percentages.
 
 
 

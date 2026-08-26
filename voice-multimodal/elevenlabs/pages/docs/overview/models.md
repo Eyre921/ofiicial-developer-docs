@@ -417,7 +417,8 @@ Since our system cares about concurrency, requests per minute matter less than h
 How endpoint requests are made impacts concurrency limits:
 
 * With HTTP, each request counts individually toward your concurrency limit.
-* With a WebSocket, only the time where our model is generating audio counts towards your concurrency limit, this means a for most of the time an open websocket doesn't count towards your concurrency limit at all.
+* With the Text to Speech WebSocket, only the time where our model is generating audio counts towards your concurrency limit. This means that for most of the time, an open websocket doesn't count towards your concurrency limit at all.
+* The Text to Dialogue WebSockets work differently: each open connection reserves one dialogue session from a separate pool for as long as it stays open, and audio generated over the connection does not count towards your standard concurrency limit. This is designed to be simpler to reason about as one connection is one session, and your dialogue session limits are sized to adjust to this new concurrency methodology. See [Text to Dialogue concurrency](#text-to-dialogue-concurrency).
 
 ### Understanding concurrency limits
 
@@ -429,7 +430,7 @@ As a general rule of thumb, a concurrency limit of 5 can typically support up to
 This is because of the speed it takes for audio to be generated relative to the time it takes for the TTS request to be processed.
 The diagram below is an example of how 4 concurrent calls with different users can be facilitated while only hitting 2 concurrent requests.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260825T195525Z&X-Amz-Expires=604800&X-Amz-Signature=34a14de13aded1b3c2ad47cd123e7d5b7b862ed1e678dadfa04674215ecbaf59&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Concurrency limits" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T052530Z&X-Amz-Expires=604800&X-Amz-Signature=fc300ab498180f54090d66c5fffda2e6e0833bda293153d3696bd7aafd489a75&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Concurrency limits" />
 
 #### Building AI Voice Agents
 
@@ -455,6 +456,19 @@ To increase your concurrency limit & queue priority, [upgrade your subscription
 plan](https://elevenlabs.io/pricing/api).
 
 Enterprise customers can request a higher concurrency limit by contacting their account manager.
+
+### Text to Dialogue concurrency
+
+Text to Dialogue requests are metered in two different ways depending on how you call the API:
+
+* **HTTP endpoints** ([Create dialogue](/docs/api-reference/text-to-dialogue/convert) and [Stream dialogue](/docs/api-reference/text-to-dialogue/stream)) count toward your plan's standard concurrency limit while audio is being generated, like any other Text to Speech request.
+* **WebSocket endpoints** such as the [Text to Dialogue WebSocket](/docs/api-reference/text-to-dialogue/ttd-websocket) are metered as **dialogue sessions**. An open connection holds a dialogue session for as long as it stays open, whether or not audio is currently being generated.
+
+Session-based metering keeps capacity planning simple: one connection is one session, so your usage doesn't fluctuate with generation activity. Because a session is held for the whole connection rather than only while audio is generating, your dialogue session limits are sized to adjust to this new concurrency methodology.
+
+If you open a connection while all of your workspace's dialogue sessions are in use, the new connection is rejected with a `too_many_concurrent_requests` error. To free sessions, close connections you no longer need — a connection also closes automatically after 20 seconds of inactivity unless you send `keep_alive` messages.
+
+To monitor dialogue sessions, open **Developers** at the bottom of the dashboard sidebar, select the **Analytics** tab, and view the **Concurrent requests** metric in the Usage view. Dialogue sessions are reported as their own series, **TTD Websocket Sessions**, separate from your other concurrent requests.
 
 ### Scale testing concurrency limits
 

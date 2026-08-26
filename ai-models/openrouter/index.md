@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 392 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 391 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -327,7 +327,6 @@
 - `docs/guides/features/message-transforms` — [Message Transforms](pages/docs/guides/features/message-transforms.md) · [原文](https://openrouter.ai/docs/guides/features/message-transforms.md)
 - `docs/guides/features/notifications` — [Notifications](pages/docs/guides/features/notifications.md) · [原文](https://openrouter.ai/docs/guides/features/notifications.md)
 - `docs/guides/features/plugins` — [Plugins](pages/docs/guides/features/plugins.md) · [原文](https://openrouter.ai/docs/guides/features/plugins.md)
-- `docs/guides/features/plugins/fusion` — [Fusion](pages/docs/guides/features/plugins/fusion.md) · [原文](https://openrouter.ai/docs/guides/features/plugins/fusion.md)
 - `docs/guides/features/plugins/response-healing` — [Response Healing](pages/docs/guides/features/plugins/response-healing.md) · [原文](https://openrouter.ai/docs/guides/features/plugins/response-healing.md)
 - `docs/guides/features/plugins/web-search` — [Web Search](pages/docs/guides/features/plugins/web-search.md) · [原文](https://openrouter.ai/docs/guides/features/plugins/web-search.md)
 - `docs/guides/features/presets` — [Presets](pages/docs/guides/features/presets.md) · [原文](https://openrouter.ai/docs/guides/features/presets.md)

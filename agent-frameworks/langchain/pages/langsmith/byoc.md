@@ -4,9 +4,9 @@ source: https://docs.langchain.com/langsmith/byoc
 path: langsmith/byoc
 ---
 
-<Warning>
+<Note>
 BYOC is only available for customers on the [Enterprise plan](https://www.langchain.com/pricing).
-</Warning>
+</Note>
 
 Bring Your Own Cloud (BYOC) lets you deploy LangSmith services and store data in your own cloud environment, while LangChain operates, scales, and upgrades the infrastructure. BYOC suits organizations that require complete sovereignty over their data, but do not want the overhead of provisioning and managing infrastructure.
 
@@ -14,7 +14,7 @@ BYOC uses a split responsibility model: the control plane runs in LangChain's cl
 
 ## Get started
 
-To deploy LangSmith BYOC, [contact the LangChain sales team](https://www.langchain.com/contact-sales). After the LangChain team enables BYOC for your organization, follow the [onboarding guide](/langsmith/byoc-onboarding) to create your first data plane.
+To deploy LangSmith BYOC, [contact our sales team](https://www.langchain.com/contact-sales). After the LangChain team enables BYOC for your organization, follow the [onboarding guide](/langsmith/byoc-onboarding) to create your first data plane.
 
 ## Regions and cloud providers
 

@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 338 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 336 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -143,8 +143,6 @@
 - `docs/inference/vision/overview` — [Use image inputs](pages/docs/inference/vision/overview.md) · [原文](https://docs.together.ai/docs/inference/vision/overview)
 - `docs/inference/vision/structured-extraction` — [Structured extraction with vision](pages/docs/inference/vision/structured-extraction.md) · [原文](https://docs.together.ai/docs/inference/vision/structured-extraction)
 - `docs/iterative-workflow` — [Iterative workflow](pages/docs/iterative-workflow.md) · [原文](https://docs.together.ai/docs/iterative-workflow)
-- `docs/kimi-k2-quickstart` — [Kimi K2 quickstart](pages/docs/kimi-k2-quickstart.md) · [原文](https://docs.together.ai/docs/kimi-k2-quickstart)
-- `docs/kimi-k2-thinking-quickstart` — [Kimi K2 Thinking quickstart](pages/docs/kimi-k2-thinking-quickstart.md) · [原文](https://docs.together.ai/docs/kimi-k2-thinking-quickstart)
 - `docs/kimi-k2.6-quickstart` — [Kimi K2.6 quickstart](pages/docs/kimi-k2.6-quickstart.md) · [原文](https://docs.together.ai/docs/kimi-k2.6-quickstart)
 - `docs/kimi-k3-quickstart` — [Kimi K3 quickstart](pages/docs/kimi-k3-quickstart.md) · [原文](https://docs.together.ai/docs/kimi-k3-quickstart)
 - `docs/kueue-on-gpu-clusters` — [Queue GPU jobs with Kueue](pages/docs/kueue-on-gpu-clusters.md) · [原文](https://docs.together.ai/docs/kueue-on-gpu-clusters)
@@ -170,7 +168,7 @@
 - `docs/render-chat-api` — [Build a chat API on Render](pages/docs/render-chat-api.md) · [原文](https://docs.together.ai/docs/render-chat-api)
 - `docs/roles-permissions` — [Roles & permissions (RBAC)](pages/docs/roles-permissions.md) · [原文](https://docs.together.ai/docs/roles-permissions)
 - `docs/run-an-evaluation` — [Run an evaluation](pages/docs/run-an-evaluation.md) · [原文](https://docs.together.ai/docs/run-an-evaluation)
-- `docs/seedance2.0-quickstart` — [Seedance 2.0 quickstart](pages/docs/seedance2.0-quickstart.md) · [原文](https://docs.together.ai/docs/seedance2.0-quickstart)
+- `docs/seedance2.5-quickstart` — [Seedance 2.5 quickstart](pages/docs/seedance2.5-quickstart.md) · [原文](https://docs.together.ai/docs/seedance2.5-quickstart)
 - `docs/sequential-agent-workflow` — [Sequential workflow](pages/docs/sequential-agent-workflow.md) · [原文](https://docs.together.ai/docs/sequential-agent-workflow)
 - `docs/serverless/models` — [Available models](pages/docs/serverless/models.md) · [原文](https://docs.together.ai/docs/serverless/models)
 - `docs/serverless/overview` — [Overview](pages/docs/serverless/overview.md) · [原文](https://docs.together.ai/docs/serverless/overview)

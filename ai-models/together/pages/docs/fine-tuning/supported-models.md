@@ -33,6 +33,7 @@ The tables below list every model available through the fine-tuning API. Context
 | DeepSeek     | DeepSeek V3.1                                      | `deepseek-ai/DeepSeek-V3.1`                          | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
 | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
 | NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`      | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
+| Qwen         | Qwen3.8 27B                                        | `Qwen/Qwen3.8-27B`                                   | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
 | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
 | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             | 65536         | 32768         | 16              | 16              | 16        | 1          | 64            |
 | Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                               | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
@@ -65,6 +66,7 @@ The tables below list every model available through the fine-tuning API. Context
 
 | Organization | Model                                | API ID                                            | Context (SFT) | Context (DPO) | Max batch (SFT) | Max batch (DPO) | Min batch |
 | ------------ | ------------------------------------ | ------------------------------------------------- | ------------- | ------------- | --------------- | --------------- | --------- |
+| Qwen         | Qwen3.8 27B                          | `Qwen/Qwen3.8-27B`                                | 32768         | 16384         | 16              | 16              | 16        |
 | Qwen         | Qwen3.5 27B                          | `Qwen/Qwen3.5-27B`                                | 32768         | 16384         | 16              | 16              | 16        |
 | Qwen         | Qwen3.5 9B                           | `Qwen/Qwen3.5-9B`                                 | 65536         | 49152         | 8               | 8               | 8         |
 | Qwen         | Qwen3.5 4B                           | `Qwen/Qwen3.5-4B`                                 | 131072        | 65536         | 8               | 8               | 8         |

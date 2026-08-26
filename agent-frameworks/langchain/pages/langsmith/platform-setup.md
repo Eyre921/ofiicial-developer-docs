@@ -10,7 +10,9 @@ path: langsmith/platform-setup
 
         Set up **LangSmith** for [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), and [prompt engineering](/langsmith/prompt-context-hub#prompts). LangSmith offers Cloud, Bring Your Own Cloud (BYOC), and Self-hosted options.
 
+        <Note>
         If you also want to deploy agents in production, you can use [**LangSmith Deployment**](/langsmith/deployment) with Cloud, BYOC, or Self-hosted.
+        </Note>
 
         <CardGroup cols={3}>
 
@@ -29,7 +31,7 @@ path: langsmith/platform-setup
           href="/langsmith/byoc"
           icon="cloud-cog"
         >
-        **(Enterprise)** Full control over your data, while LangChain manages the infrastructure.
+        Full control over your data, while LangChain manages the infrastructure.
         </Card>
 
         <Card
@@ -38,7 +40,7 @@ path: langsmith/platform-setup
           href="/langsmith/self-hosted"
           icon="server"
         >
-        **(Enterprise)** Full control with observability, evaluation, and prompt engineering in your infrastructure.
+        Full control with observability, evaluation, and prompt engineering in your infrastructure.
         </Card>
 
         </CardGroup>

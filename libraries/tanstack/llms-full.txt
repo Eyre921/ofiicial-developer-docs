@@ -41,7 +41,7 @@ This file routes agents to the smallest useful TanStack docs source. Fetch the l
 
 - [Libraries JSON](https://tanstack.com/api/data/libraries): Current library metadata including ids, docs URLs, GitHub repositories, framework support, versions, and package names.
 - [NPM Stats](https://tanstack.com/stats/npm): Compare npm package download statistics across TanStack packages and related ecosystem packages.
-- [Notebook authoring guide](https://tanstack.com/notebook/llms.txt): Create shareable client-side TypeScript and JSX modules with the supported runtime, import aliases, and URL protocol.
+- [Builder authoring guide](https://tanstack.com/builder/llms.txt): Create shareable client-side TypeScript and JSX modules with the supported runtime, import aliases, and URL protocol.
 
 ## Optional
 

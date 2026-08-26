@@ -17,6 +17,7 @@ The following models support vision-language fine-tuning. See [supported models]
 <Accordion title="Supported models">
   | Organization | Model                                  | API ID                                              |
   | ------------ | -------------------------------------- | --------------------------------------------------- |
+  | Qwen         | Qwen3.8 27B                            | `Qwen/Qwen3.8-27B`                                  |
   | Qwen         | Qwen3.5 27B                            | `Qwen/Qwen3.5-27B`                                  |
   | Qwen         | Qwen3.5 9B                             | `Qwen/Qwen3.5-9B`                                   |
   | Qwen         | Qwen3.5 4B                             | `Qwen/Qwen3.5-4B`                                   |

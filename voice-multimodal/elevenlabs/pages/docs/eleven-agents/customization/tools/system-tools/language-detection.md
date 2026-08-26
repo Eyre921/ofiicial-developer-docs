@@ -54,22 +54,135 @@ Our language detection tool triggers language switching in two cases, both based
 
 The languages that the agent can switch to must be defined in the `Agent` settings tab.
 
-![Agent languages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/633707d54276febd3baa054c4f41b186225b74f606307a46e8262607befc8381/assets/images/conversational-ai/agent-languages.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260825T201607Z&X-Amz-Expires=604800&X-Amz-Signature=cbcd489d968aff2c54cf6fcda67422d81d1843539fac690f7e32d176433174ff&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Agent languages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/633707d54276febd3baa054c4f41b186225b74f606307a46e8262607befc8381/assets/images/conversational-ai/agent-languages.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T052431Z&X-Amz-Expires=604800&X-Amz-Signature=a0ab90c3a2259c6ed743b8a9930707617ff3df70643591c03a4267ca5c2e3867&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add the language detection tool
 
 Enable language detection by selecting the pre-configured system tool to your agent's tools in the `Agent` tab.
 This is automatically available as an option when selecting `add tool`.
 
-![System tool](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3d17048ab2bc1a0547c49056abb98f624caf866927ff1714af27f898b06ab18f/assets/images/conversational-ai/language-detection-preconfig.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260825T201607Z&X-Amz-Expires=604800&X-Amz-Signature=630958cd48a1b76ac0bf43482276e4a9e866374c09bd1a764222b50a020a1350&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![System tool](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3d17048ab2bc1a0547c49056abb98f624caf866927ff1714af27f898b06ab18f/assets/images/conversational-ai/language-detection-preconfig.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T052431Z&X-Amz-Expires=604800&X-Amz-Signature=14c9b27adcd3f7de69fc55c1ad6fd37a9ba17bf56a59de92929d3828e8841a4b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure tool description
 
 Add a description that specifies when to call the tool
 
-![Description](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3bebc9fe07dba7121bce7793f3793858c710fc8ea1c221347604eb05929271df/assets/images/conversational-ai/language_detection.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260825T201607Z&X-Amz-Expires=604800&X-Amz-Signature=a65a57f846af87249137b72e109a54e9ad73465ca5691e72a7324f583aabb4ed&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Description](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3bebc9fe07dba7121bce7793f3793858c710fc8ea1c221347604eb05929271df/assets/images/conversational-ai/language_detection.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T052431Z&X-Amz-Expires=604800&X-Amz-Signature=36b40df9591cbee18fa06b045128f7c7d4207aa99f10b0c783c648bb1be0dcc2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-### API Implementation
+## Restricting switching to the start of the conversation
+
+In a long conversation, background speech or an unusual accent can occasionally trigger a switch the
+caller did not intend. Enabling `only_at_conversation_start` confines switching to the first two user
+turns.
+
+If the language does not switch during those two turns, language detection is disabled for the rest
+of the conversation: every later attempt fails and the agent keeps speaking the current language. If
+the language does switch within that window, switching stays available for the rest of the
+conversation, so an incorrect detection can still be corrected.
+
+The option is disabled by default.
+
+#### Update via the dashboard
+
+Select the **Detect language** tool in the **Tools** tab and enable **Only at start of conversation**.
+
+#### Update via the CLI
+
+#### Pull the agent configuration
+
+```bash
+elevenlabs agents pull
+```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
+
+Set `only_at_conversation_start` on the language detection tool. Surrounding fields are
+omitted here for brevity.
+
+```json
+{
+  "conversation_config": {
+    "agent": {
+      "prompt": {
+        "built_in_tools": {
+          "language_detection": {
+            "type": "system",
+            "name": "language_detection",
+            "params": {
+              "system_tool_type": "language_detection",
+              "only_at_conversation_start": true
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+#### Push your changes
+
+```bash
+elevenlabs agents push
+```
+
+#### Update via the API
+
+```python
+from elevenlabs import ElevenLabs
+
+elevenlabs = ElevenLabs()
+
+elevenlabs.conversational_ai.agents.update(
+    agent_id="agent_7101k5zvyjhmfg983brhmhkd98n6",
+    conversation_config={
+        "agent": {
+            "prompt": {
+                "built_in_tools": {
+                    "language_detection": {
+                        "type": "system",
+                        "name": "language_detection",
+                        "params": {
+                            "system_tool_type": "language_detection",
+                            "only_at_conversation_start": True,
+                        },
+                    }
+                }
+            }
+        }
+    },
+)
+```
+
+```typescript
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+
+const elevenlabs = new ElevenLabsClient();
+
+await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd98n6", {
+  conversationConfig: {
+    agent: {
+      prompt: {
+        builtInTools: {
+          languageDetection: {
+            type: "system",
+            name: "language_detection",
+            params: {
+              systemToolType: "language_detection",
+              onlyAtConversationStart: true,
+            },
+          },
+        },
+      },
+    },
+  },
+});
+```
+
+When switching is blocked, the tool returns an error to the LLM instructing it to keep speaking
+the current language. The reason is not exposed to the caller.
+
+## API Implementation
 
 When creating an agent via API, you can add the `language detection` tool to your agent configuration. It should be defined as a system tool:
 

@@ -551,6 +551,7 @@ The table below shows a list of events logged on the Activity page.
 | domain-custom-ns-change | Active | Domain custom nameservers were changed. |
 | domain-delegated | Deprecated | A domain was successfully delegated to another personal account or team so it can also be used there. |
 | domain-delete | Active | A domain was removed from a personal account or team. |
+| domain-ech-change | Active | Encrypted Client Hello enrollment was changed for a domain. |
 | domain-move-in | Active | A domain was moved in from another personal account or team to the current personal account or team. |
 | domain-move-out | Active | A domain was moved out from the current personal account or team to another personal account or team. |
 | domain-move-out-request-sent | Active | The request to move a domain from the current personal account or team to another personal account or team was sent. |
@@ -123119,7 +123120,13 @@ Create an Okta OpenID Connect web application, then add its credentials to a Ver
 
 5. Copy the Okta application's client ID and client secret. In **Security** > **API** > **Authorization Servers**, copy the issuer URI for the authorization server that should authenticate visitors.
 
-6. In the Vercel dashboard, create a **Generic OAuth** Connect application. Enter the exact issuer URI and select **Discover**, then enter the Okta client ID and client secret.
+6. In the Vercel dashboard, configure the Connect application:
+   - Create an **OAuth** Connect application.
+   - Select **Your own credentials**.
+   - Enter the exact issuer URI in the **Server URL** field.
+   - Select **Discover** to fill the **Authorization Endpoint** and **Token Endpoint**.
+   - Enter the Okta client ID and client secret.
+   - Select **Create Connector**.
 
 For Okta's default custom authorization server, the issuer URI is similar to:
 
@@ -123135,13 +123142,22 @@ The Connect application that Passport uses requests the `openid` scope. Make the
 
 Create a web application registration in the Microsoft Entra admin center. Add `https://connect.vercel.com/callback` as a web redirect URI, create a client secret, and assign users or groups when your tenant requires user assignment.
 
-In the Vercel dashboard, create a **Generic OAuth** Connect application. Use the tenant-specific issuer URI, such as:
+Use the tenant-specific issuer URI, such as:
 
 ```txt
 https://login.microsoftonline.com/your_tenant_id/v2.0
 ```
 
-Select **Discover**, then enter the Microsoft Entra application client ID and client secret. Use a tenant-specific issuer rather than a multi-tenant endpoint so Passport can validate a stable issuer.
+In the Vercel dashboard, configure the Connect application:
+
+- Create an **OAuth** Connect application.
+- Select **Your own credentials**.
+- Enter that issuer URI in the **Server URL** field.
+- Select **Discover** to fill the **Authorization Endpoint** and **Token Endpoint**.
+- Enter the Microsoft Entra application client ID and client secret.
+- Select **Create Connector**.
+
+Use a tenant-specific issuer rather than a multi-tenant endpoint so Passport can validate a stable issuer.
 
 ## Configure Passport for a project
 
@@ -123154,7 +123170,7 @@ Select **Discover**, then enter the Microsoft Entra application client ID and cl
 - ### Select or create a Connect application
   Select an existing Connect application, or create a new one from the Passport setup flow.
 
-  When you create an application, choose **Generic OAuth** for an OpenID Connect provider. If discovery works, enter your provider's server URL and click **Discover**. If discovery does not work, enter the OAuth endpoints manually.
+  When you create an application, choose **OAuth** for an OpenID Connect provider, then select **Your own credentials** because you bring an existing identity provider application with a client secret. Enter your provider's issuer URI in the **Server URL** field and select **Discover**. If discovery does not work, enter the OAuth endpoints manually.
 
   Your provider must allow this redirect URI:
   ```txt
@@ -144026,6 +144042,8 @@ New sandboxes that don't specify a `region` use the project default. Existing sa
 
 Failover regions let sandbox creation succeed even when the main region is unavailable. When Vercel can't provision capacity in the main region, it tries the failover regions in the order you list them.
 
+A snapshot doesn't need to be available in a failover region for failover to work. Vercel loads it across regions for you, as described in [Regions and snapshots](#regions-and-snapshots).
+
 Teams on the Hobby plan or a [Pro trial](/docs/plans/pro-plan/trials) can set the main region, but can't configure or use failover regions. Requests that include failover regions fail with a `payment_required` error. If your team moves to the Hobby plan, Vercel ignores previously configured failover regions when creating sandboxes.
 
 Pass failover regions when creating a sandbox, or set them as a project default in the same **Sandbox Regions** settings section:
@@ -144041,6 +144059,8 @@ A [snapshot](/docs/sandbox/concepts/snapshots) is stored in the region of the sa
 This applies to [persistent sandboxes](/docs/sandbox/concepts/persistent-sandboxes) too: a persistent sandbox resumes from its latest snapshot, so that snapshot must be available in the sandbox's region.
 
 The same rule applies to [forks](/docs/sandbox/sdk-reference#sandbox.fork). A fork runs in the source sandbox's region unless you pass `region`. If the source has a snapshot, that snapshot must be available in the target region.
+
+> **💡 Note:** Failover is the exception to the snapshot region requirement. When sandbox creation falls back to a [failover region](#failover-regions), Vercel loads the snapshot from the closest region where it's available instead of failing with `snapshot_region_mismatch`. A session that runs in a failover region stores the snapshots it creates in that region.
 
 Snapshots can't be moved between regions. To run an environment in another region, create a new sandbox in that region, run your setup again, and snapshot it there.
 
@@ -144271,7 +144291,7 @@ Pass the snapshot ID when creating a new sandbox:
 
 ## Snapshots and regions
 
-A snapshot is stored in the [region](/docs/sandbox/concepts/regions) of the sandbox it was created from. You can only create or resume a sandbox from a snapshot in a region where that snapshot is available. Creating a sandbox from a snapshot in another region fails with a `snapshot_region_mismatch` error.
+A snapshot is stored in the [region](/docs/sandbox/concepts/regions) of the sandbox it was created from. You can only create or resume a sandbox from a snapshot in a region where that snapshot is available. Creating a sandbox from a snapshot in another region fails with a `snapshot_region_mismatch` error. [Failover](/docs/sandbox/concepts/regions#failover-regions) is the exception. When creation falls back to a failover region, Vercel loads the snapshot from the closest region where it's available.
 
 Snapshots can't be moved between regions. To run an environment in another region, create a new sandbox in that region, run your setup again, and snapshot it there.
 

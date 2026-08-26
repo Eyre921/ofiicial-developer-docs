@@ -208,6 +208,10 @@ Set `new_turn: true` when a speaker finishes a turn so prosody resets cleanly. C
 
 If the server receives **no client message for 20 seconds**, the connection ends. Send `{"keep_alive": true}` to reset the timer without synthesizing audio.
 
+### Concurrency
+
+Each open connection holds one dialogue session for as long as it stays open, drawn from a dedicated pool separate from your plan's standard concurrency limit. Audio generated over the connection does not count toward standard concurrency. See [Text to Dialogue concurrency](/docs/overview/models#text-to-dialogue-concurrency).
+
 ### Alignment
 
 Add `sync_alignment=true` to the query string to receive `alignment` objects (snake\_case timing arrays) on chunks when available. See the [API reference](/docs/api-reference/text-to-dialogue/ttd-websocket).

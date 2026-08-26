@@ -8,7 +8,7 @@ path: payments/stablecoin-payments
 
 Learn about accepting payments in stablecoins.
 
-Stablecoin payments allow you to accept *stablecoins* (A cryptocurrency that's pegged to the value of a fiat currency or other asset in order to limit volatility) from customers around the world. Customers choose their preferred stablecoin currency, crypto wallet, and payment network, while completed payments settle in your Stripe balance in your local currency.
+Stablecoin payments allow you to accept *stablecoins* (A cryptocurrency pegged to a fiat currency or other asset to limit volatility. Stripe supports only USDC for stablecoin balances, although transfers on the Tempo network use USDC.e) from customers around the world. Customers choose their preferred stablecoin currency, crypto wallet, and payment network, while completed payments settle in your Stripe balance in your local currency.
 
 [Try the demo](https://buy.stripe.com/test_28o4ig0SY9Xq8co3cc) [Enable stablecoin payments](https://docs.stripe.com/payments/accept-stablecoin-payments.md)
 

@@ -20,11 +20,11 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Set up Git](/en/get-started/git-basics/set-up-git)
 
-  At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.
+  <p>At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.</p>
 
 * [Hello World](/en/get-started/using-github/hello-world)
 
-  <p>Follow this Hello World exercise to learn GitHub's pull request workflow.</p>
+  Follow this Hello World exercise to learn GitHub's pull request workflow.
 
 * [Getting started with your GitHub account](/en/get-started/onboarding/getting-started-with-your-github-account)
 
@@ -40,7 +40,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Finding ways to contribute to open source on GitHub](/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github)
 
-  <p>You can find ways to contribute to open source projects on GitHub that are relevant to you.</p>
+  You can find ways to contribute to open source projects on GitHub that are relevant to you.
 
 ## Links
 

@@ -20,7 +20,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Quickstart for your personal dashboard](/en/account-and-profile/get-started/personal-dashboard-quickstart)
 
-  <p>Your personal dashboard helps you track issues and pull requests, find your top repositories and teams, stay up-to-date with organizations and repositories you're subscribed to, and explore recommended repositories.</p>
+  Your personal dashboard helps you track issues and pull requests, find your top repositories and teams, stay up-to-date with organizations and repositories you're subscribed to, and explore recommended repositories.
 
 * [Personalize your profile](/en/account-and-profile/tutorials/personalize-your-profile)
 
@@ -28,7 +28,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Using your GitHub profile to enhance your resume](/en/account-and-profile/tutorials/using-your-github-profile-to-enhance-your-resume)
 
-  <p>Demonstrate your skills to hiring managers with your GitHub profile.</p>
+  Demonstrate your skills to hiring managers with your GitHub profile.
 
 * [Setting your commit email address](/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address)
 
@@ -36,7 +36,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Managing your profile README](/en/account-and-profile/how-tos/profile-customization/managing-your-profile-readme)
 
-  <p>You can add a README to your GitHub profile to tell other people about yourself.</p>
+  You can add a README to your GitHub profile to tell other people about yourself.
 
 * [Managing multiple accounts](/en/account-and-profile/how-tos/account-management/managing-multiple-accounts)
 

@@ -15,6 +15,10 @@ LoRA is the default on Together AI, because it trains 0.1% to 1% of the paramete
 
 Both [supervised fine-tuning](/docs/fine-tuning/supervised) and [preference fine-tuning](/docs/fine-tuning/preference-tuning) support LoRA and full fine-tuning.
 
+<Note>
+  **Serving a LoRA fine-tune:** Fine-tuned adapters are served on [dedicated endpoints](/docs/fine-tuning/deployment), not through the per-token serverless API. Serverless LoRA inference (including Serverless Multi-LoRA) has been discontinued. To serve several adapters on shared hardware, [attach them to a single LoRA-enabled dedicated endpoint](/docs/dedicated-endpoints/v1/lora-adapter).
+</Note>
+
 ## Choose a method
 
 Use LoRA when:

@@ -4,6 +4,16 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="August 25, 2026">
+  ## New models available for fine-tuning
+
+  You can now fine-tune the following models:
+
+  * `Qwen/Qwen3.8-27B`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+</Update>
+
 <Update label="August 24, 2026">
   ## Fine-tuning quality improvements
 
@@ -36,7 +46,7 @@ path: docs/changelog
   See [Deprecations](/docs/deprecations) for migration options.
 </Update>
 
-<Update label="August 18, 2026">
+<Update label="August 20, 2026">
   ## Fully automatic confirmation policy for node auto repair
 
   [Auto node repair](/docs/node-repair#auto-node-repair) can now close the loop end to end. Under the new **Fully automatic** confirmation policy, health checks detect the fault, the system generates a repair recommendation, and auto repair executes it without waiting for approval. Clusters continue to use **Approve before repair** by default.
@@ -58,19 +68,17 @@ path: docs/changelog
 
   See [Project visibility](/docs/projects#project-visibility).
 
-  ## Multi-project resource scoping
-
-  Clusters, fine-tuned models, endpoints, evaluations, files, and API keys are now fully scoped to projects. The early-access limitations on project isolation no longer apply.
-
-  See [Projects](/docs/projects).
-</Update>
-
-<Update label="August 15, 2026">
   ## New serverless models
 
   The following models are now available on [serverless](/docs/serverless/models):
 
   * `deepseek-ai/DeepSeek-V4-Pro-0813`: 1,048,576 context length, NVFP4 quantization. Pricing: \$1.32 input / \$3.96 output / \$0.13 cached input (per 1M tokens).
+
+  ## Multi-project resource scoping
+
+  Multi-project is now enabled for every organization. Clusters, fine-tuned models, endpoints, evaluations, files, and API keys are fully scoped to projects. The early-access limitations on project isolation no longer apply.
+
+  See [Projects](/docs/projects).
 </Update>
 
 <Update label="August 13, 2026">
@@ -794,7 +802,7 @@ path: docs/changelog
   * 1080p: \$0.40 (text/image-to-video), from \$0.48 (video-to-video).
   * 4K: \$0.836 (text/image-to-video), from \$1.050 (video-to-video).
 
-  See [Seedance 2.0](/docs/seedance2.0-quickstart) for details.
+  See [Seedance 2.0](/docs/seedance2.5-quickstart) for details.
 </Update>
 
 <Update label="June 24, 2026">
@@ -1037,7 +1045,7 @@ path: docs/changelog
 
   ## Seedance 2.0 quickstart
 
-  A quickstart is now available for [Seedance 2.0](/docs/seedance2.0-quickstart), ByteDance's unified multimodal audio-video generation model. The guide covers text-to-video, image-to-video, video extension, and instruction-based editing.
+  A quickstart is now available for [Seedance 2.0](/docs/seedance2.5-quickstart), ByteDance's unified multimodal audio-video generation model. The guide covers text-to-video, image-to-video, video extension, and instruction-based editing.
 </Update>
 
 <Update label="May 22, 2026">
@@ -1684,7 +1692,7 @@ path: docs/changelog
 
   You can now run evaluations:
 
-  * Using [Serverless LoRA](/docs/fine-tuning/lora-vs-full) models, including supported LoRA fine-tuned models.
+  * Using serverless LoRA models, including supported LoRA fine-tuned models. (Serverless LoRA inference has since been discontinued. Fine-tuned adapters are served through [dedicated endpoints](/docs/fine-tuning/deployment).)
   * Using [dedicated model inference](/docs/dedicated-endpoints), including fine-tuned models deployed via dedicated endpoints.
 </Update>
 
