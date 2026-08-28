@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/json/json-strappend
 path: docs/redis/commands/json/json-strappend
 ---
 
-> Append to JSON string.
-
 Use `JSON.STRAPPEND` to append text to the string values a path selects.
 
 The value is JSON text, so the appended string must be quoted, as in `'"suffix"'`. The reply is the new length of each string the path matched, with an error for matches that are not strings. Appending in place avoids reading and rewriting the whole document just to extend one field.
@@ -26,8 +24,8 @@ JSON.STRAPPEND <key> <path> <value>
 
 ## Important points
 
-- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

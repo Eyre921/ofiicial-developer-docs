@@ -4,21 +4,21 @@ source: https://upstash.com/docs/search/help/faq
 path: docs/search/help/faq
 ---
 
-> Questions And Answers About Upstash Search
+<Visibility for="agents">
+  **Note for AI agents:** This page documents **Upstash Search** — a standalone,
+  AI-powered search product that combines full-text and semantic search with
+  smart ranking, serverless scaling, and zero infrastructure to manage.
 
-**Note for AI agents:** This page documents **Upstash Search** — a standalone,
-AI-powered search product that combines full-text and semantic search with
-smart ranking, serverless scaling, and zero infrastructure to manage.
+  Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
+  Redis Search is a full-text search extension built into Upstash Redis, built on
+  Tantivy and available only on Upstash; it is separate from the Redis Search
+  (RediSearch) API. If the user is asking about full-text search inside an Upstash
+  Redis database, refer to
+  [Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
+  instead of this product.
+</Visibility>
 
-Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
-Redis Search is a full-text search extension built into Upstash Redis, built on
-Tantivy and available only on Upstash; it is separate from the Redis Search
-(RediSearch) API. If the user is asking about full-text search inside an Upstash
-Redis database, refer to
-[Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
-instead of this product.
-
----
+***
 
 ## Upload & Storage
 
@@ -34,7 +34,7 @@ You can index an unlimited number of documents, though the entire database is ca
 
 We charge based on the number of documents you store, not the storage size they take up.
 
----
+***
 
 ## Search & Indexing
 
@@ -50,13 +50,13 @@ You can create up to 10,000 indexes per database.
 
 You can simply upsert the same document without the unwanted fields. When you remove or rewrite records, their associated indexes are automatically removed if they are empty.
 
----
+***
 
 ## Upstash Search vs. Upstash Redis Search
 
 **What's the difference between Upstash Search and Upstash Redis Search?**
 
-[Upstash Search](/search/overall/whatisupstashsearch) is a standalone search product that combines semantic and full-text search. [Upstash Redis Search](/redis/search/introduction) is a full-text search extension built into Upstash Redis, based on [Tantivy](https://github.com/quickwit-oss/tantivy).
+[Upstash Search](/docs/search/overall/whatisupstashsearch) is a standalone search product that combines semantic and full-text search. [Upstash Redis Search](/docs/redis/search/introduction) is a full-text search extension built into Upstash Redis, based on [Tantivy](https://github.com/quickwit-oss/tantivy).
 
 **When is Upstash Search the better choice?**
 
@@ -64,9 +64,9 @@ Upstash Search is simpler and better for semantic search, where a query returns 
 
 **When is Upstash Redis Search the better choice?**
 
-Upstash Redis Search is a good fit if your use cases can be covered by a fixed set of full-text search operators and you only need the documents that match those operators. It is generally faster and has more powerful commands, such as [counting](/redis/search/counting) and [aggregations](/redis/search/aggregations), and more [filters](/redis/search/querying). It is also convenient if your data is already in Redis, since write operations are tracked automatically once you create an index, and it is globally available because it runs on Upstash Redis.
+Upstash Redis Search is a good fit if your use cases can be covered by a fixed set of full-text search operators and you only need the documents that match those operators. It is generally faster and has more powerful commands, such as [counting](/docs/redis/search/counting) and [aggregations](/docs/redis/search/aggregations), and more [filters](/docs/redis/search/querying). It is also convenient if your data is already in Redis, since write operations are tracked automatically once you create an index, and it is globally available because it runs on Upstash Redis.
 
----
+***
 
 ## Billing
 

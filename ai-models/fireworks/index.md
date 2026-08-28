@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 374 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 375 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -294,6 +294,7 @@
 - `serverless/overview` — [Serverless Inference Overview](pages/serverless/overview.md) · [原文](https://docs.fireworks.ai/serverless/overview)
 - `serverless/pricing` — [Serverless Pricing](pages/serverless/pricing.md) · [原文](https://docs.fireworks.ai/serverless/pricing)
 - `serverless/rate-limits` — [Serverless Rate Limits](pages/serverless/rate-limits.md) · [原文](https://docs.fireworks.ai/serverless/rate-limits)
+- `serverless/reserved-throughput` — [Reserved Throughput](pages/serverless/reserved-throughput.md) · [原文](https://docs.fireworks.ai/serverless/reserved-throughput)
 - `serverless/serving-paths` — [Serverless Serving Paths](pages/serverless/serving-paths.md) · [原文](https://docs.fireworks.ai/serverless/serving-paths)
 - `serverless/us-only-serverless` — [US-only Serverless](pages/serverless/us-only-serverless.md) · [原文](https://docs.fireworks.ai/serverless/us-only-serverless)
 

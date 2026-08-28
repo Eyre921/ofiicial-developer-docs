@@ -4,6 +4,5 @@ source: https://upstash.com/docs/devops/developer-api/redis/reset_password
 path: docs/devops/developer-api/redis/reset_password
 ---
 
-> This endpoint updates the password of a database.
-
-`POST /redis/reset-password/{id}`
+/devops/developer-api/openapi.yaml post /redis/reset-password/{id}
+This endpoint updates the password of a database.

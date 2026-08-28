@@ -4,7 +4,7 @@ source: https://upstash.com/docs/workflow/agents/patterns/parallelization
 path: docs/workflow/agents/patterns/parallelization
 ---
 
-<img src="/img/workflow/agents/diagram/parallel-diagram.png" />
+<img />
 
 This workflow calls multiple agents simultaneously to handle tasks, and then aggregates their results.
 
@@ -68,9 +68,9 @@ export const { POST } = serve(async (context) => {
 
 ```
 
-You can also see how the same thing can be achieved using an manager agent in [orchestrator-workers example](/workflow/agents/patterns/orchestrator-workers).
+You can also see how the same thing can be achieved using an manager agent in [orchestrator-workers example](/docs/workflow/agents/patterns/orchestrator-workers).
 
-<img src="/img/workflow/agents/logs/logs-parallel.png" />
+<img />
 
 In response to the prompt, our agents generate this response:
 

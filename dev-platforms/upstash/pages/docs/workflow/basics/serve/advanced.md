@@ -9,7 +9,7 @@ Advanced Options are intended to support edge cases or testing pipelines and are
 <ParamField path="failureFunction" type="string">
     Defines a function that executes if the workflow fails after all retries are exhausted.
 
-    For details, see [failureFunction](/workflow/features/failure-callback).
+    For details, see [failureFunction](/docs/workflow/features/failure-callback).
 
     <CodeGroup>
         ```typescript TypeScript
@@ -55,7 +55,7 @@ Advanced Options are intended to support edge cases or testing pipelines and are
     The `failureUrl` option defines an external endpoint that will be called if the workflow fails after all retries are exhausted.
 
     This option is an advanced alternative to `failureFunction`.
-    For more details, see [Advanced failureUrl Option](/workflow/features/failureFunction/advanced).
+    For more details, see [Advanced failureUrl Option](/docs/workflow/features/failureFunction/advanced).
 
     <CodeGroup>
 
@@ -76,7 +76,7 @@ Advanced Options are intended to support edge cases or testing pipelines and are
     Defines the number of retry attempts if a workflow step fails.
     The default value is 3.
 
-    For details, see [retry configuration](/workflow/features/retries#configuration).
+    For details, see [retry configuration](/docs/workflow/features/retries#configuration).
 
     <CodeGroup>
 
@@ -93,7 +93,7 @@ Advanced Options are intended to support edge cases or testing pipelines and are
     Middlewares allow you to hook into various stages of workflow execution (before/after steps, run start/completion)
     and debug events (errors, warnings, info logs).
 
-    For details and examples, see [Middlewares](/workflow/howto/middlewares).
+    For details and examples, see [Middlewares](/docs/workflow/howto/middlewares).
 
     <CodeGroup>
 
@@ -166,7 +166,7 @@ Advanced Options are intended to support edge cases or testing pipelines and are
     Alternative to `initialPayloadParser`, you can pass a `schema` in the TypeScript SDK.
 
     The schema is used to validate and parse the initial request payload automatically using [Zod](https://zod.dev/).
-    
+
     <CodeGroup>
 
     ```typescript TypeScript
@@ -394,9 +394,9 @@ async def example(context: AsyncWorkflowContext[str]) -> None:
     By default, the Upstash Workflow SDK collects anonymous telemetry data to help improve the service.
     The collected data includes:
 
-    - SDK version
-    - Platform (Vercel, AWS, etc.)
-    - Runtime version (Node.js, Python, etc.)
+    * SDK version
+    * Platform (Vercel, AWS, etc.)
+    * Runtime version (Node.js, Python, etc.)
 
     Set `disableTelemetry` to `true` to opt out of telemetry for this specific workflow endpoint.
 
@@ -419,6 +419,6 @@ async def example(context: AsyncWorkflowContext[str]) -> None:
 
     <Tip>
         You should also
-        set [`disableTelemetry` when triggering workflow runs via `client.trigger()`](/workflow/basics/client/trigger#param-disable-telemetry) to fully disable telemetry
+        set [`disableTelemetry` when triggering workflow runs via `client.trigger()`](/docs/workflow/basics/client/trigger#param-disable-telemetry) to fully disable telemetry
     </Tip>
 </ParamField>

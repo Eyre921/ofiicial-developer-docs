@@ -9,25 +9,24 @@ You can use Sidekiq with Upstash Redis. Sidekiq is a Ruby based queue library wi
 ## Example Application
 
 ```bash
-bundle init 
+bundle init
 bundle add sidekiq
 ```
-
 
 ```python
 require "sidekiq"
 require "sidekiq/api"
- 
+
 connection_url = ENV['UPSTASH_REDIS_LINK']
- 
+
 Sidekiq.configure_client do |config|
     config.redis = {url: connection_url}
 end
- 
+
 Sidekiq.configure_server do |config|
     config.redis = {url: connection_url}
 end
- 
+
 class EmailService
     include Sidekiq::Worker
     def perform(id, type)
@@ -35,10 +34,10 @@ class EmailService
         puts "Emailed to: " +  id + ": " + "'Congrats on " + type + " plan.'"
     end
 end
- 
+
 def updateEmail(id, newType)
     jobFound = false
- 
+
     a = Sidekiq::ScheduledSet.new
     a.each do |job|
         if job.args[0] == id
@@ -46,14 +45,14 @@ def updateEmail(id, newType)
             jobFound = true
         end
     end
- 
+
     if jobFound
         EmailService.perform_async(id, ("starting using our service and upgrading it to " + newType))
     else
         EmailService.perform_async(id, ("upgrading to " + newType))
     end
 end
- 
+
 def sendEmail(id, type)
     case type
     when "free"
@@ -71,7 +70,7 @@ def sendEmail(id, type)
         puts "Only plans are: `free`, `paid` and `enterprise`"
     end
 end
- 
+
 def clearSchedules()
     Sidekiq::ScheduledSet.new.clear
     Sidekiq::Queue.new.clear
@@ -79,4 +78,4 @@ end
 ```
 
 ## Billing Optimization
-Sidekiq accesses Redis regularly, even when there is no queue activity. This can incur extra costs because Upstash charges per request on the Pay-As-You-Go plan. With the introduction of [our Fixed plans](/redis/overall/pricing#all-plans-and-limits), **we recommend switching to a Fixed plan to avoid increased command count and high costs in Sidekiq use cases.**
+Sidekiq accesses Redis regularly, even when there is no queue activity. This can incur extra costs because Upstash charges per request on the Pay-As-You-Go plan. With the introduction of [our Fixed plans](/docs/redis/overall/pricing#all-plans-and-limits), **we recommend switching to a Fixed plan to avoid increased command count and high costs in Sidekiq use cases.**

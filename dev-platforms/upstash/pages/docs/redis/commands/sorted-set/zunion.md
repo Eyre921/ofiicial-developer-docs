@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zunion
 path: docs/redis/commands/sorted-set/zunion
 ---
 
-> Get sorted set union.
-
 Use `ZUNION` to get every member that appears in at least one of the given sorted sets.
 
 `<numkeys>` states how many keys follow. A member present in several inputs gets the sum of its scores by default, which is how scores from different sources are combined; `WEIGHTS` scales each input before that, and `AGGREGATE` replaces the sum with `MIN` or `MAX`. `WITHSCORES` returns the computed scores.
 
-The result is computed on each call and not stored; use [`ZUNIONSTORE`](/redis/commands/sorted-set/zunionstore) to keep it.
+The result is computed on each call and not stored; use [`ZUNIONSTORE`](/docs/redis/commands/sorted-set/zunionstore) to keep it.
 
 ## Syntax
 
@@ -33,8 +31,8 @@ ZUNION <numkeys> <key> [<key> ...]
 
 ## Important points
 
-- `numkeys` must equal the number of key arguments that immediately follow it.
-- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+* `numkeys` must equal the number of key arguments that immediately follow it.
+* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

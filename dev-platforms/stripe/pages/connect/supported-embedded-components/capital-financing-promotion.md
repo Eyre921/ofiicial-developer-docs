@@ -78,7 +78,7 @@ In your [create an Account Session](https://docs.stripe.com/api/account_sessions
 ```curl
 curl https://api.stripe.com/v1/account_sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Version: 2026-07-29.preview; embedded_connect_beta=v2;" \
+  -H "Stripe-Version: 2026-08-26.preview; embedded_connect_beta=v2;" \
   -d "account={{CONNECTEDACCOUNT_ID}}" \
   -d "components[capital_financing_promotion][enabled]=true"
 ```

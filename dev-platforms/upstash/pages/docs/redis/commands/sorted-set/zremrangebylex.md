@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zremrangebylex
 path: docs/redis/commands/sorted-set/zremrangebylex
 ---
 
-> Remove members by lex range.
-
 Use `ZREMRANGEBYLEX` to remove the members of a sorted set that fall in a lexicographic range.
 
 Bounds are written `[member` for inclusive and `(member` for exclusive, with `-` and `+` for the extremes. As with every lexicographic operation, the result is only meaningful when all members share the same score. The reply is the number of members removed, and the key is deleted when it becomes empty.
 
-It is the bulk delete that matches [`ZRANGEBYLEX`](/redis/commands/sorted-set/zrangebylex), useful for dropping a whole prefix from a sorted string index.
+It is the bulk delete that matches [`ZRANGEBYLEX`](/docs/redis/commands/sorted-set/zrangebylex), useful for dropping a whole prefix from a sorted string index.
 
 ## Syntax
 

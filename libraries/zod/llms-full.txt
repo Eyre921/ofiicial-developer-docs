@@ -3573,6 +3573,15 @@ if (!result.success) {
   ```
 </Callout>
 
+When you only need to know whether an input is acceptable, use the top-level `z.isValid()` function. It returns a boolean, never builds an error, and acts as a type guard on the schema's input type.
+
+```ts
+z.isValid(Player, { username: "billie", xp: 100 }); // true
+z.isValid(Player, { username: 42, xp: "100" });     // false
+```
+
+Use `z.isValidAsync()` for schemas with async refinements or transforms. On a [compiled schema](/compile), `z.isValid()` answers directly from the compiled fast path.
+
 ## Inferring types
 
 Zod infers a static type from your schema definitions. You can extract this type with the `z.infer<>` utility and use it however you like.
@@ -4343,7 +4352,21 @@ Two consequences worth knowing:
 
 ## Unsupported schemas
 
-Compilation is sync and forward-only. `z.compile()` throws if the schema can't be fully modeled:
+Compilation is sync and forward-only. A schema the fast path can't fully model is not an error — `z.compile()` hands it back unchanged, still running on the standard parser:
+
+```ts
+const Schema = z.string().refine(async (val) => isAvailable(val));
+
+z.compile(Schema); // returns Schema itself, uncompiled
+```
+
+Pass `strict` to surface the refusal instead. Use it to confirm that a schema on a hot path really did compile:
+
+```ts
+z.compile(Schema, { strict: true }); // throws ZodCompileAsyncError
+```
+
+There are two error classes, and both are thrown only under `strict`:
 
 * **`ZodCompileAsyncError`** — the schema contains an async refinement, transform, or check.
 * **`ZodCompileUnsupportedError`** — the schema uses a construct the fast path can't reproduce exactly:
@@ -4355,9 +4378,9 @@ Compilation is sync and forward-only. `z.compile()` throws if the schema can't b
 
 Inside containers (objects, arrays, tuples, records, intersections), an unsupported *child* doesn't prevent compilation — the child runs on the standard parser while the surrounding structure stays compiled.
 
-`.catch()` with a callback is the exception: it's the one construct that *consumes* issues instead of propagating them, so running only that node on the standard parser would finalize its issues against the wrong error map and still succeed. A schema containing one refuses to compile as a whole.
+`.catch()` with a callback is the exception: it's the one construct that *consumes* issues instead of propagating them, so running only that node on the standard parser would finalize its issues against the wrong error map and still succeed. A schema containing one falls back as a whole.
 
-Under global mode, schemas that fail to compile silently keep using the standard parser. There is no behavioral difference — only the speedup is lost. For this reason, avoid enabling global mode in a library on behalf of your users; leave the choice to the application.
+Global mode behaves identically: a schema it can't compile keeps using the standard parser. Either way the only thing lost is the speedup. Avoid enabling global mode in a library on behalf of your users; leave the choice to the application.
 
 Encode operations (`z.encode()`, codec `"backward"` direction) and async parsing always use the standard parser.
 
@@ -4369,7 +4392,7 @@ Compilation uses `new Function`, which is unavailable in CSP/no-`eval` environme
 z.config({ jitless: true });
 ```
 
-Calling `z.compile()` directly is treated as an explicit opt-in and throws `ZodCompileUnsupportedError` if code generation is unavailable.
+Calling `z.compile()` directly is an explicit opt-in, so it attempts code generation regardless of `jitless`. Where the environment rejects `new Function`, the schema comes back uncompiled like any other refusal.
 
 
 # Ecosystem
@@ -5313,6 +5336,7 @@ z.set(); // ❌
 z.transform(); // ❌
 z.nan(); // ❌
 z.custom(); // ❌
+z.number().multipleOf(0); // ❌ the divisor must be finite and non-zero
 ```
 
 A second argument can be used to customize the conversion logic.
@@ -5480,6 +5504,7 @@ z.set(); // ❌
 z.transform(); // ❌
 z.nan(); // ❌
 z.custom(); // ❌
+z.number().multipleOf(0); // ❌ the divisor must be finite and non-zero
 ```
 
 By default, Zod will throw an error if any of these are encountered.
@@ -5489,11 +5514,14 @@ z.toJSONSchema(z.bigint());
 // => throws Error
 ```
 
-You can change this behavior by setting the `unrepresentable` option to `"any"`. This will convert any unrepresentable types to `{}` (the equivalent of `unknown` in JSON Schema).
+You can change this behavior by setting the `unrepresentable` option to `"any"`. This will convert any unrepresentable type to `{}` (the equivalent of `unknown` in JSON Schema), and drop an unrepresentable check from the schema that carries it.
 
 ```ts
 z.toJSONSchema(z.bigint(), { unrepresentable: "any" });
 // => {}
+
+z.toJSONSchema(z.number().multipleOf(0), { unrepresentable: "any" });
+// => { type: "number" }
 ```
 
 To decide case by case, pass a function instead. It's called for each unrepresentable schema encountered. Return a JSON Schema to use in its place, `"any"`, or `"throw"` (the default when you return nothing).

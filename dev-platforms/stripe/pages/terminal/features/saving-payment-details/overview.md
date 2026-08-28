@@ -59,7 +59,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -d "payment_method"="{{PAYMENT_METHOD_ID}}"
 ```
 
-When charging a saved card or mobile wallet, you can’t use the [confirmPaymentIntent](https://docs.stripe.com/terminal/payments/collect-card-payment.md#confirm-payment) method. Payments with generated cards are online payments and can’t be processed with Terminal SDK methods.
+When charging a saved card or mobile wallet, you can’t use the [confirmPaymentIntent](https://docs.stripe.com/terminal/payments/collect-card-payment.md?process=inspect#confirm-payment) method. Payments with generated cards are online payments and can’t be processed with Terminal SDK methods.
 
 ## Track customer behavior with card fingerprints 
 

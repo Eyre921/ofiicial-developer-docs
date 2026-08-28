@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/functions/fcall
 path: docs/redis/commands/functions/fcall
 ---
 
-> Call a function.
-
-Use `FCALL` to invoke a function from a library loaded with [`FUNCTION LOAD`](/redis/commands/functions/function-load).
+Use `FCALL` to invoke a function from a library loaded with [`FUNCTION LOAD`](/docs/redis/commands/functions/function-load).
 
 `<numkeys>` tells the server how many of the arguments that follow are key names. Those keys reach the function in `KEYS` and every remaining argument in `ARGV`. Passing key names as keys instead of hardcoding them in the function body matters, because Redis uses that list for routing and access checks.
 
-The function runs on the server as a single atomic step, so a sequence of reads and writes that would otherwise need several round trips and a transaction becomes one command. Use [`FCALL_RO`](/redis/commands/functions/fcall-ro) when the function only reads. Functions are the successor to [`EVAL`](/redis/commands/scripting/eval) scripts: they are named, registered once as part of a library, and persisted with the dataset instead of being sent or looked up by digest on every call.
+The function runs on the server as a single atomic step, so a sequence of reads and writes that would otherwise need several round trips and a transaction becomes one command. Use [`FCALL_RO`](/docs/redis/commands/functions/fcall-ro) when the function only reads. Functions are the successor to [`EVAL`](/docs/redis/commands/scripting/eval) scripts: they are named, registered once as part of a library, and persisted with the dataset instead of being sent or looked up by digest on every call.
 
 Upstash runs a function under the global lock by default, since the engine cannot know in advance which keys it will touch. Registering the function with the `allow-key-locking` flag makes the call lock only the keys passed in the key list, so calls that work on disjoint keys run in parallel:
 
@@ -22,16 +20,16 @@ redis.register_function{
 }
 ```
 
-Unlike Lua scripts, where the flag goes on the library shebang, this flag is set per registered function. With it set, every key the function touches must be passed as a key in the `FCALL` call: keys sent as ordinary arguments are not locked, and commands that need database-wide access, such as `FLUSHDB`, are rejected. See [Key-Based Locking](/redis/features/key-locking) for the full rules.
+Unlike Lua scripts, where the flag goes on the library shebang, this flag is set per registered function. With it set, every key the function touches must be passed as a key in the `FCALL` call: keys sent as ordinary arguments are not locked, and commands that need database-wide access, such as `FLUSHDB`, are rejected. See [Key-Based Locking](/docs/redis/features/key-locking) for the full rules.
 
 <Warning>
   Pass every key the function touches in the key list, even when it runs under
   the global lock. Upstash keeps idle entries
-  [on disk](/redis/features/durability): keys given in the key list are loaded
+  [on disk](/docs/redis/features/durability): keys given in the key list are loaded
   before the function starts and the lock is released during that read, but a
   key that the function builds from `ARGV` while it runs is read from disk with
   the lock held, stalling every command waiting on it. See
-  [Dynamic Keys and Latency](/redis/features/key-locking#dynamic-keys-and-latency).
+  [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 </Warning>
 
 ## Syntax
@@ -51,9 +49,9 @@ FCALL <function> <numkeys> [<key> [<key> ...]] [<arg> [<arg> ...]]
 
 ## Important points
 
-- `numkeys` must equal the number of key arguments that immediately follow it; remaining arguments are available to the script or function as ordinary arguments.
-- The function takes the global lock unless it was registered with the `allow-key-locking` flag, in which case only the keys passed in the key list are locked. See [Key-Based Locking](/redis/features/key-locking).
-- Pass every key the function touches in the key list whether or not `allow-key-locking` is set. A key built inside the function is read from disk under the lock when it is not in memory, and it is rejected outright when the flag is set. See [Dynamic Keys and Latency](/redis/features/key-locking#dynamic-keys-and-latency).
+* `numkeys` must equal the number of key arguments that immediately follow it; remaining arguments are available to the script or function as ordinary arguments.
+* The function takes the global lock unless it was registered with the `allow-key-locking` flag, in which case only the keys passed in the key list are locked. See [Key-Based Locking](/docs/redis/features/key-locking).
+* Pass every key the function touches in the key list whether or not `allow-key-locking` is set. A key built inside the function is read from disk under the lock when it is not in memory, and it is rejected outright when the flag is set. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 
 ## Response
 

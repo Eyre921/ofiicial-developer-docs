@@ -4,8 +4,6 @@ source: https://upstash.com/docs/common/help/announcements
 path: docs/common/help/announcements
 ---
 
-> Upstash Announcements!
-
 Removal of GraphQL API and edge caching (Redis) (October 1, 2022) These two
 features have been already deprecated. We are planning to deactivate them
 completely on November 1st. We recommend use of REST API to replace GraphQL API
@@ -99,10 +97,10 @@ Upstash&Vercel integration has been released. Now you are able to integrate
 Upstash to your project easily. We believe Upstash is the perfect database for
 your applications thanks to its:
 
-- Low latency data
-- Per request pricing
-- Durable storage
-- Ease of use
+* Low latency data
+* Per request pricing
+* Durable storage
+* Ease of use
 
 Below are the resources about the integration:
 

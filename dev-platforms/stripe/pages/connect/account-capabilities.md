@@ -43,7 +43,7 @@ Payments using the `transfers` capability include [Destination charges](https://
 
 Stripe supports cross-border transfers on the payments balance between the United States, Canada, United Kingdom, EEA, and Switzerland. In other scenarios, your platform and any connected account must be in the same region. Attempting to transfer funds across unsupported borders or balances returns an error. See [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts.md) for supported funds flows between other regions.
 
-You must only use transfers in combination with the permitted use cases for [charges](https://docs.stripe.com/connect/charges.md), [tops-ups](https://docs.stripe.com/connect/top-ups.md) and [fees](https://docs.stripe.com/connect/account-capabilities.md#collect-fees). We recommend using separate charges and transfers only when you’re responsible for negative balances of your connected accounts.
+You must only use transfers in combination with the permitted use cases for [charges](https://docs.stripe.com/connect/charges.md), [tops-ups](https://docs.stripe.com/connect/top-ups.md) and [fees](https://docs.stripe.com/connect/separate-charges-and-transfers.md#collect-fees). We recommend using separate charges and transfers only when you’re responsible for negative balances of your connected accounts.
 
 ### Card payments
 

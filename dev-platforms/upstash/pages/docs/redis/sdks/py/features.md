@@ -103,9 +103,9 @@ print(result)
 This library sends anonymous telemetry data to help us improve your experience.
 We collect the following:
 
-- SDK version
-- Platform (Vercel, AWS)
-- Python Runtime version
+* SDK version
+* Platform (Vercel, AWS)
+* Python Runtime version
 
 You can opt out by passing `allow_telemetry=False` when initializing the Redis client:
 

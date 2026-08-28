@@ -4,6 +4,5 @@ source: https://upstash.com/docs/devops/developer-api/teams/get_team_members
 path: docs/devops/developer-api/teams/get_team_members
 ---
 
-> This endpoint list all members of a team.
-
-`GET /teams/{team_id}`
+/devops/developer-api/openapi.yaml get /teams/{team_id}
+This endpoint list all members of a team.

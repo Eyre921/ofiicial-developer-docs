@@ -4,7 +4,7 @@ source: https://upstash.com/docs/qstash/howto/delete-schedule
 path: docs/qstash/howto/delete-schedule
 ---
 
-Deleting schedules can be done using the [schedules api](/qstash/api-reference/schedules/delete-a-schedule).
+Deleting schedules can be done using the [schedules api](/docs/qstash/api-reference/schedules/delete-a-schedule).
 
 <CodeGroup>
 ```shell cURL
@@ -35,7 +35,7 @@ only stops the schedule from creating new messages.
 ## Schedule ID
 
 If you don't know the schedule ID, you can get a list of all of your schedules
-from [here](/qstash/api-reference/schedules/list-schedules).
+from [here](/docs/qstash/api-reference/schedules/list-schedules).
 
 <CodeGroup>
 ```shell cURL

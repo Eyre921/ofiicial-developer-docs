@@ -31,7 +31,7 @@ path: api/customer_balance_transactions/object
 - `id` (string)
   Unique identifier for the object.
 
-- `object` (string)
+- `object` (string, value is "customer_balance_transaction")
   String representing the object’s type. Objects of the same type share the same value.
 
 - `amount` (integer)

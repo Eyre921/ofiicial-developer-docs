@@ -4840,9 +4840,9 @@ The base model dictates whether the result can be hosted. If the base model isn'
 
 ## FAQ
 
-**Can I fine-tune a LoRA adapter?**
+**Can I fine-tune a low-rank adapter (LoRA)?**
 
-Yes. The platform merges the adapter with the base during training, producing a full checkpoint rather than a separate adapter.
+Yes. Pass the adapter repo as `from_hf_model` in a [LoRA job](/docs/fine-tuning/lora-vs-full) whose LoRA settings (`lora_r`, `lora_alpha`, `lora_dropout`, and `lora_trainable_modules`) exactly match the adapter's configuration. Training continues the adapter's weights directly on the base model, without merging the adapter first. The job outputs a trained adapter plus merged weights, like any other LoRA job.
 
 **Can I train a model I uploaded for dedicated inference?**
 
@@ -21639,6 +21639,7 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Qwen              | Qwen3.5 9B                   | Qwen/Qwen3.5-9B                         | 262144         | \$0.17                        | -                                    | \$0.25                         | FP8          | Yes              | Yes                |
 | Moonshot          | Kimi K3                      | moonshotai/Kimi-K3                      | 1048576        | \$3.00                        | \$0.30                               | \$15.00                        | -            | Yes              | Yes                |
 | Moonshot          | Kimi K2.7 Code               | moonshotai/Kimi-K2.7-Code               | 262144         | \$0.95                        | \$0.19                               | \$4.00                         | FP4          | Yes              | Yes                |
+| Z.ai              | GLM-5.3 Flash                | zai-org/GLM-5.3-Flash                   | 1000000        | \$0.15                        | \$0.03                               | \$0.50                         | FP8          | Yes              | Yes                |
 | Z.ai              | GLM-5.2                      | zai-org/GLM-5.2                         | 1000000        | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
 | OpenAI            | GPT-OSS 120B                 | openai/gpt-oss-120b                     | 128000         | \$0.15                        | -                                    | \$0.60                         | MXFP4        | Yes              | Yes                |
 | OpenAI            | GPT-OSS 20B                  | openai/gpt-oss-20b                      | 128000         | \$0.05                        | -                                    | \$0.20                         | MXFP4        | Yes              | Yes                |
@@ -47517,6 +47518,25 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="August 26, 2026">
+  ## New serverless models
+
+  The following model is now available on [serverless](/docs/serverless/models):
+
+  * `zai-org/GLM-5.3-Flash`: 1,000,000 context length, FP8 quantization, function calling and structured outputs. Pricing: \$0.15 input / \$0.50 output / \$0.03 cached input (per 1M tokens).
+</Update>
+
+<Update label="August 25, 2026">
+  ## Model deprecations
+
+  The following models have been deprecated and are no longer available on serverless:
+
+  * `google/gemma-3n-E4B-it`.
+  * `meta-llama/Llama-Guard-4-12B`.
+
+  These models are not supported by on-demand dedicated endpoints. See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
 <Update label="August 25, 2026">
   ## New models available for fine-tuning
 
@@ -47572,6 +47592,18 @@ Source: https://docs.together.ai/docs/changelog
   * **Audit trail:** Automatically approved repairs record **Auto-Approved** in the repair's **Reviewed by** field, alongside the alert evidence that triggered them.
 
   See [Confirmation policy](/docs/node-repair#confirmation-policy) for details.
+</Update>
+
+<Update label="August 19, 2026">
+  ## Model deprecations
+
+  The following models have been deprecated and are no longer available on serverless:
+
+  * `black-forest-labs/FLUX.1-schnell`.
+  * `Qwen/Qwen2.5-7B`.
+  * `moonshotai/Kimi-K2.6`.
+
+  See [Deprecations](/docs/deprecations) for migration options.
 </Update>
 
 <Update label="August 17, 2026">
@@ -49442,6 +49474,10 @@ The table below lists all models removed from serverless inference, most recent 
 
 | Removal date                | Model                                               | Supported by on-demand dedicated endpoints |
 | :-------------------------- | :-------------------------------------------------- | :----------------------------------------- |
+| 2026-08-27                  | `nvidia/Nemotron-3-ultra-550b-a55b`                 | Yes                                        |
+| 2026-08-27                  | `pearl-ai/gemma-4-31b-it`                           | No                                         |
+| 2026-08-27                  | `deepseek-ai/DeepSeek-V4-Pro`                       | Yes                                        |
+| 2026-08-27                  | `moonshotai/Kimi-K2.7-Code`                         | Yes                                        |
 | 2026-08-25                  | `meta-llama/Llama-Guard-4-12B`                      | No                                         |
 | 2026-08-25                  | `google/gemma-3n-E4B-it`                            | No                                         |
 | 2026-08-21                  | `deepcogito/cogito-v2-1-671b`                       | No                                         |
@@ -50314,7 +50350,6 @@ The CLI defaults `--min-replicas` and `--max-replicas` to 1, which may differ fr
 | `--max-replicas [number]`                         | Maximum number of replicas. Must be greater than or equal to `--min-replicas`. Defaults to the `--min-replicas` value, or 1 when neither flag is set. `--max-replicas 0` alone also lowers the minimum to `0`.                                                                                                     |
 | `--scale-up-window [string]`                      | How long the scaling metric must stay above target before adding replicas, in seconds (for example `30` or `30s`). Prevents thrashing from brief spikes.                                                                                                                                                           |
 | `--scale-down-window [string]`                    | Cooldown after a scale-down before removing more replicas, in seconds (for example `60` or `60s`). Higher values improve stability.                                                                                                                                                                                |
-| `--scale-to-zero-window [string]`                 | Idle time, in seconds (for example `300` or `300s`), after which the deployment automatically stops and releases all its replicas.                                                                                                                                                                                 |
 | `--scaling-metric [string]`                       | Autoscaling metric to scale on: `inflight_requests`, `gpu_utilization`, `token_utilization`, `cache_hit_rate`, `throughput_per_replica`, `ttft`, `decoding_speed`, or `e2e_latency`. Must be set together with `--scaling-target`. See [Configure autoscaling](/docs/dedicated-endpoints/scaling#scaling-metrics). |
 | `--scaling-target [number]`                       | Target value for `--scaling-metric`. Utilization metrics use `0`–`100`. Other metrics use their native units.                                                                                                                                                                                                      |
 | `--scaling-percentile [p50 \| p90 \| p95 \| p99]` | Optional percentile for the latency metrics (`ttft`, `decoding_speed`, `e2e_latency`). Defaults to `p95`.                                                                                                                                                                                                          |
@@ -50389,7 +50424,6 @@ tg beta endpoints update dep_variant456 --ab-percent 20
 | `--max-replicas [number]`                         | Updated maximum replicas. Must be greater than or equal to `--min-replicas`.                                                                                                                                                                                                                                       |
 | `--scale-up-window [string]`                      | Autoscaling scale-up stabilization window.                                                                                                                                                                                                                                                                         |
 | `--scale-down-window [string]`                    | Autoscaling scale-down stabilization window.                                                                                                                                                                                                                                                                       |
-| `--scale-to-zero-window [string]`                 | Idle time (seconds) after which the deployment automatically stops and releases all its replicas.                                                                                                                                                                                                                  |
 | `--scaling-metric [string]`                       | Autoscaling metric to scale on: `inflight_requests`, `gpu_utilization`, `token_utilization`, `cache_hit_rate`, `throughput_per_replica`, `ttft`, `decoding_speed`, or `e2e_latency`. Must be set together with `--scaling-target`. See [Configure autoscaling](/docs/dedicated-endpoints/scaling#scaling-metrics). |
 | `--scaling-target [number]`                       | Target value for `--scaling-metric`. Utilization metrics use `0`–`100`. Other metrics use their native units.                                                                                                                                                                                                      |
 | `--scaling-percentile [p50 \| p90 \| p95 \| p99]` | Optional percentile for the latency metrics (`ttft`, `decoding_speed`, `e2e_latency`). Defaults to `p95`.                                                                                                                                                                                                          |

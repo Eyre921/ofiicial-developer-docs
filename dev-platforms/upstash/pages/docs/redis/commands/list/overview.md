@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/list/overview
 path: docs/redis/commands/list/overview
 ---
 
-> Commands for storing and manipulating ordered collections.
-
 <CardGroup cols={2}>
 <Card title="BLMOVE" href="/redis/commands/list/blmove">Blocking list move</Card>
 <Card title="BLMPOP" href="/redis/commands/list/blmpop">Blocking pop from multiple lists</Card>

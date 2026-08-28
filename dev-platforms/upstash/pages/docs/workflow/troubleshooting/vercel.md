@@ -19,9 +19,7 @@ Vercel provides a way to bypass this protection by using a bypass secret. To cre
 
 	<Step title="Find related section">
 		Click on **Add Secret** under **Protection Bypass for Automation** section.
-		<Frame>
-  			<img src="/img/workflow/troubleshooting/vercel-deployment-protection.png" />
-		</Frame>
+  			<img />
 	</Step>
 
 	<Step title="Generate a bypass token">Don't forget to save it and store it as an environment variable (e.g., `VERCEL_AUTOMATION_BYPASS_SECRET`).</Step>
@@ -33,7 +31,7 @@ Now that you have a bypass token, you need to pass it as a header in two places 
 
 ### Step 1: Configure QStash Client with Headers
 
-[Configure the QStash client](/workflow/basics/serve/advanced#param-qstash-client) with the bypass header in your workflow serve options. This ensures that all workflow steps, including `context.invoke` calls, will include the bypass header automatically:
+[Configure the QStash client](/docs/workflow/basics/serve/advanced#param-qstash-client) with the bypass header in your workflow serve options. This ensures that all workflow steps, including `context.invoke` calls, will include the bypass header automatically:
 
 ```ts
 import { Client } from '@upstash/qstash'
@@ -53,7 +51,7 @@ export const { POST } = serve<string>(async (context) => {
 
 ### Step 2: Pass Header When Triggering
 
-When [triggering the workflow](/workflow/howto/start) using `curl` or `client.trigger`, you must also pass the bypass secret as a header:
+When [triggering the workflow](/docs/workflow/howto/start) using `curl` or `client.trigger`, you must also pass the bypass secret as a header:
 
 <CodeGroup>
 ```ts client.trigger

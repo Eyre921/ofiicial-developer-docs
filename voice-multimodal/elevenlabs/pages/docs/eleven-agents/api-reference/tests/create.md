@@ -274,7 +274,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
         - `summary` (string, optional)
         - `provider_redact` (boolean, optional, default: false)
       - `source_medium` (enum, optional)
-        - Allowed values: `audio`, `text`, `image`, `file`
+        - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
       - `source_event_id` (integer, optional)
       - `used_static_kb_document_ids` (list of string, optional)
       - `user_identifier` (string, optional)
@@ -430,7 +430,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
           - `summary` (string, optional)
           - `provider_redact` (boolean, optional, default: false)
         - `source_medium` (enum, optional)
-          - Allowed values: `audio`, `text`, `image`, `file`
+          - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
         - `source_event_id` (integer, optional)
         - `used_static_kb_document_ids` (list of string, optional)
         - `user_identifier` (string, optional)
@@ -690,7 +690,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
         - `summary` (string, optional)
         - `provider_redact` (boolean, optional, default: false)
       - `source_medium` (enum, optional)
-        - Allowed values: `audio`, `text`, `image`, `file`
+        - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
       - `source_event_id` (integer, optional)
       - `used_static_kb_document_ids` (list of string, optional)
       - `user_identifier` (string, optional)
@@ -844,7 +844,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
           - `summary` (string, optional)
           - `provider_redact` (boolean, optional, default: false)
         - `source_medium` (enum, optional)
-          - Allowed values: `audio`, `text`, `image`, `file`
+          - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
         - `source_event_id` (integer, optional)
         - `used_static_kb_document_ids` (list of string, optional)
         - `user_identifier` (string, optional)
@@ -1120,7 +1120,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
         - `summary` (string, optional)
         - `provider_redact` (boolean, optional, default: false)
       - `source_medium` (enum, optional)
-        - Allowed values: `audio`, `text`, `image`, `file`
+        - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
       - `source_event_id` (integer, optional)
       - `used_static_kb_document_ids` (list of string, optional)
       - `user_identifier` (string, optional)
@@ -1275,7 +1275,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
           - `summary` (string, optional)
           - `provider_redact` (boolean, optional, default: false)
         - `source_medium` (enum, optional)
-          - Allowed values: `audio`, `text`, `image`, `file`
+          - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
         - `source_event_id` (integer, optional)
         - `used_static_kb_document_ids` (list of string, optional)
         - `user_identifier` (string, optional)

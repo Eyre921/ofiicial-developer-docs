@@ -24,6 +24,10 @@ Tools executed directly on the client-side application (e.g., web browser, mobil
 
 Custom tools that call external APIs through webhooks.
 
+#### [Code Tools](/docs/eleven-agents/customization/tools/code-tools)
+
+Custom JavaScript executed in a sandboxed environment on ElevenLabs' infrastructure.
+
 #### [MCP Tools](/docs/eleven-agents/customization/tools/mcp)
 
 Model Context Protocol servers that provide tools and resources to agents.

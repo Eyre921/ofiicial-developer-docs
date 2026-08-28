@@ -8,6 +8,38 @@ A weekly digest of notable Claude Code features, with code snippets, demos, and 
 
 The weekly dev digest highlights the features most likely to change how you work. Each entry includes runnable code, a short demo, and a link to the full docs. For every bug fix and minor improvement, see the [changelog](/docs/en/changelog).
 
+<Update label="Week 34" description="August 17–21, 2026">
+  **`/design`**: a research preview that brings Claude Design's artboard workflow into the CLI and Claude Code Desktop, built on artifacts, so Claude drafts editable artboards for your UI and implements the one you pick.
+
+  Also this week: the built-in **Concise output style** makes Claude lead with the result and skip preamble; any machine running `claude remote-control` shows up as a **device card** on your phone so you can start a session on it from the Code tab; and **`ANTHROPIC_DEFAULT_MODEL`** sets the model new sessions start on.
+
+  [Read the Week 34 digest →](/docs/en/whats-new/2026-w34)
+</Update>
+
+<Update label="Week 33" description="August 10–14, 2026">
+  **Auto-continue after a usage limit on Desktop**: when you hit your session limit in Claude Code Desktop, check **Auto-continue when limits reset** on the limit card and the app retries the interrupted turn once the limit resets.
+
+  Also this week: **fork mode** is on by default in interactive sessions, so Claude can hand a side task to a subagent that inherits the full conversation; **GitLab** merge request URLs work with `--worktree` and the `claude agents` view, and marketplaces clone bare `gitlab.com` URLs; and typing **`@`** in the prompt mentions another Claude session by name.
+
+  [Read the Week 33 digest →](/docs/en/whats-new/2026-w33)
+</Update>
+
+<Update label="Week 32" description="August 3–7, 2026">
+  **Cross-session messaging**: on macOS and Linux, your Claude Code sessions can now message each other, so Claude passes a finding or a decision from one session to another instead of you re-explaining it.
+
+  Also this week: **self-hosted environments** run Claude Code cloud sessions on infrastructure your organization operates, in public beta on Team and Enterprise plans; **auto mode** becomes the default permission mode for new sessions on Pro, Max, and Team plans starting August 14; and the **VS Code extension** gets Focus view.
+
+  [Read the Week 32 digest →](/docs/en/whats-new/2026-w32)
+</Update>
+
+<Update label="Week 30" description="July 20–24, 2026">
+  **Claude Opus 5**: the new default Opus model in Claude Code, with a 1M-token context window and fast mode at \$10/\$50 per MTok.
+
+  Also this week: **Claude Code Desktop** opens an iOS Simulator pane in public beta so Claude can run your app and tap through it while you watch; the **Claude Security plugin** runs a multi-agent vulnerability scan of your codebase and turns the findings you pick into patches you apply yourself; and **`/code-review`** runs as a background subagent.
+
+  [Read the Week 30 digest →](/docs/en/whats-new/2026-w30)
+</Update>
+
 <Update label="Week 29" description="July 13–17, 2026">
   **Artifacts call your MCP connectors**: a published artifact can pull live data and take actions through each viewer's own MCP connectors when they open the page, and this week also adds public sharing links, editor roles on Team and Enterprise, and artifacts created from Claude Tag sessions.
 

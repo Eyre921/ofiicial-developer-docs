@@ -18,7 +18,7 @@ You can activate Prod Pack in the QStash settings page in the [Upstash Console](
 Below QStash features are enabled with Prod Pack.
 
 ### Uptime SLA
-All Prod Pack accounts come with an SLA guaranteeing 99.99% uptime. For mission-critical messaging where uptime is crucial, we recommend Prod Pack plans. Learn more about [Uptime SLA](/common/help/sla).
+All Prod Pack accounts come with an SLA guaranteeing 99.99% uptime. For mission-critical messaging where uptime is crucial, we recommend Prod Pack plans. Learn more about [Uptime SLA](/docs/common/help/sla).
 
 ### SOC-2 Type 2 Compliance & Report
 Upstash QStash is SOC-2 Type 2 compliant with Prod Pack. Once you enable Prod Pack, you can request access to the report by going to [Upstash Trust Center](https://trust.upstash.com/) or contacting [support@upstash.com](mailto:support@upstash.com).
@@ -30,11 +30,11 @@ Encrypts the storage where your QStash message data is persisted and stored.
 
 Prometheus is an open-source monitoring system widely used for monitoring and alerting in cloud-native and containerized environments.
 
-Upstash Prod Pack and Enterprise plans offer Prometheus metrics collection, enabling you to monitor your QStash messages with Prometheus in addition to console metrics. Learn more about [Prometheus integration](/qstash/integrations/prometheus).
+Upstash Prod Pack and Enterprise plans offer Prometheus metrics collection, enabling you to monitor your QStash messages with Prometheus in addition to console metrics. Learn more about [Prometheus integration](/docs/qstash/integrations/prometheus).
 
 ### Datadog Integration
 
-Upstash Prod Pack and Enterprise plans include integration with Datadog, allowing you to monitor your QStash messages with Datadog in addition to console metrics. Learn more about [Datadog integration](/qstash/integrations/datadog).
+Upstash Prod Pack and Enterprise plans include integration with Datadog, allowing you to monitor your QStash messages with Datadog in addition to console metrics. Learn more about [Datadog integration](/docs/qstash/integrations/datadog).
 
 # Enterprise Features
 
@@ -50,7 +50,7 @@ Enterprise plans include unlimited bandwidth, ensuring no data transfer limits f
 Single Sign-On (SSO) allows you to use your existing identity provider to authenticate users for your Upstash account. This feature is available upon request for Enterprise customers.
 
 ### Professional Support with SLA
-Enterprise plans include access to our professional support with response time SLAs and priority access to our support team. Check out the [support page](/common/help/prosupport) for more details.
+Enterprise plans include access to our professional support with response time SLAs and priority access to our support team. Check out the [support page](/docs/common/help/prosupport) for more details.
 
 ### Dedicated Resources for Isolation
 Enterprise customers receive dedicated resources to ensure isolation and consistent performance for their messaging workloads.

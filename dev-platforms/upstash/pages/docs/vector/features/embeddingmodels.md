@@ -62,15 +62,13 @@ For sparse and hybrid indexes, on the following models can be selected:
 | [BAAI/bge-m3](https://huggingface.co/BAAI/bge-m3) |
 | [BM25](https://en.wikipedia.org/wiki/Okapi_BM25)  |
 
-See [Creating Sparse Vectors](/vector/features/sparseindexes#creating-sparse-vectors) for the details of the above models.
+See [Creating Sparse Vectors](/docs/vector/features/sparseindexes#creating-sparse-vectors) for the details of the above models.
 
 ## Using a Model
 
 To start using embedding models, create the index with a model of your choice.
 
-<Frame style={{ width: '600px' }}>
-  <img src='/img/vector/create_index_with_model.png' />
-</Frame>
+  <img />
 
 Then, you can start upserting and querying raw text data without any extra
 setup.

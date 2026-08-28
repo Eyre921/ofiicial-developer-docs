@@ -4,19 +4,19 @@ source: https://upstash.com/docs/workflow/agents/overview
 path: docs/workflow/agents/overview
 ---
 
-The **Agents API** of Upstash Workflow enables you to:  
-- Execute an individual agent or facilitate collaboration among multiple agents.
-- Integrate any tool compatible with AI SDK or LangChain.  
-- Reliably invoke agents without concerns about timeouts or transient errors.
-- Unlike mainstream agent frameworks, we prioritize debuggability and extensibility.
+The **Agents API** of Upstash Workflow enables you to:
+* Execute an individual agent or facilitate collaboration among multiple agents.
+* Integrate any tool compatible with AI SDK or LangChain.
+* Reliably invoke agents without concerns about timeouts or transient errors.
+* Unlike mainstream agent frameworks, we prioritize debuggability and extensibility.
 
-To get started, you can refer to the [Getting Started page](/workflow/agents/getting-started). For more details about the features, you can refer to [the Features page](/workflow/agents/features).
+To get started, you can refer to the [Getting Started page](/docs/workflow/agents/getting-started). For more details about the features, you can refer to [the Features page](/docs/workflow/agents/features).
 
 <Note>
   This feature is not yet available in
   [workflow-py](https://github.com/upstash/workflow-py). See our
-  [Roadmap](/workflow/roadmap) for feature parity plans and
-  [Changelog](/workflow/changelog) for updates.
+  [Roadmap](/docs/workflow/roadmap) for feature parity plans and
+  [Changelog](/docs/workflow/changelog) for updates.
 </Note>
 
 ## Agent Patterns
@@ -38,4 +38,33 @@ If you're interested, you can also explore our rich examples that showcase how v
   </Card>
 </CardGroup>
 
-<Snippet file="workflow/agent-examples.mdx" />
+## Real World Examples
+
+Practical implementations demonstrating how to use our Agents API in production scenarios. These examples provide ready-to-use templates for common use cases.
+
+<CardGroup cols={2}>
+  <Card
+    title="Browser Automation"
+    icon="globe"
+    href="https://github.com/upstash/workflow-js/blob/main/examples/agents/app/agentic-browser-search/route.ts"
+  >
+    Autonomous web navigation and interaction system for content extraction and
+    form handling.
+  </Card>
+  <Card
+    title="Email Analyzer"
+    icon="envelope"
+    href="https://github.com/upstash/workflow-js/blob/main/examples/agents/app/email-analyzer/route.ts"
+  >
+    Intelligent email processing system for content analysis, classification,
+    and automated responses.
+  </Card>
+  <Card
+    title="Social Media Manager"
+    icon="share-nodes"
+    href="https://github.com/upstash/workflow-js/blob/main/examples/agents-instagram-post-generator"
+  >
+    Multi-platform social media management system for content moderation and
+    engagement automation.
+  </Card>
+</CardGroup>

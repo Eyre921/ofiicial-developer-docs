@@ -4,15 +4,13 @@ source: https://upstash.com/docs/redis/commands/hash/hmset
 path: docs/redis/commands/hash/hmset
 ---
 
-> Set multiple hash fields.
-
 <Warning>
-  Prefer [`HSET`](/redis/commands/hash/hset) with multiple field-value pairs in new code: `HSET <key> <field> <value> [<field> <value> ...]`.
+  Prefer [`HSET`](/docs/redis/commands/hash/hset) with multiple field-value pairs in new code: `HSET <key> <field> <value> [<field> <value> ...]`.
 </Warning>
 
 Use `HMSET` to set several field and value pairs of a hash in one call, creating the key if it does not exist.
 
-Existing fields are overwritten and the reply is always `OK`, so it says nothing about what changed. [`HSET`](/redis/commands/hash/hset) accepts multiple pairs as well and additionally reports how many fields were new, so prefer it in new code.
+Existing fields are overwritten and the reply is always `OK`, so it says nothing about what changed. [`HSET`](/docs/redis/commands/hash/hset) accepts multiple pairs as well and additionally reports how many fields were new, so prefer it in new code.
 
 ## Syntax
 

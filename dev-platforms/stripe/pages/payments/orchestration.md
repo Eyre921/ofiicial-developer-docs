@@ -50,5 +50,5 @@ You can use Orchestration with:
 - [Billing](https://docs.stripe.com/billing.md)
 - [Dashboard payments](https://dashboard.stripe.com/payments)
 
-Orchestration [feature support](https://docs.stripe.com/payments/orchestration/feature-support.md) doesn’t include non-card payments or Link, Capital, Connect, Terminal, Organizations, Radar (for payments routed to third-party processors), or Sigma. If you’re interested in a feature and unsure whether Orchestration supports it, contact your Stripe representative. Orchestration also doesn’t support disputes or settlement-related activity. To manage these activities, access your third-party processor’s dashboard.
+Orchestration [feature support](https://docs.stripe.com/payments/orchestration/feature-support.md) doesn’t include non-card payments or Link, Capital, Connect, Terminal, or Organizations. If you’re interested in a feature and unsure whether Orchestration supports it, contact your Stripe representative. Orchestration also doesn’t support disputes or settlement-related activity. To manage these activities, access your third-party processor’s dashboard.
 

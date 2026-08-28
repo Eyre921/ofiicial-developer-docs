@@ -22,6 +22,9 @@ Pass a `canUseTool` callback in your query options. The callback fires whenever 
 
 <CodeGroup>
   ```python Python theme={null}
+  from claude_agent_sdk import ClaudeAgentOptions
+
+
   async def handle_tool_request(tool_name, input_data, context):
       # Prompt user and return allow or deny
       ...
@@ -46,9 +49,9 @@ The callback fires in two cases:
 2. **Claude asks a question**: Claude calls the `AskUserQuestion` tool. Check if `tool_name == "AskUserQuestion"` to handle it differently. If you specify a `tools` array, include `AskUserQuestion` for this to work. See [Handle clarifying questions](#handle-clarifying-questions) for details.
 
 <Warning>
-  **The callback never fires for auto-approved tools.** Any approval earlier in the [permission evaluation flow](/docs/en/agent-sdk/permissions#how-permissions-are-evaluated), an allow rule or a mode like `acceptEdits` or `bypassPermissions`, resolves the call before `canUseTool` is consulted. If you list a tool bare in `allowed_tools`, a `canUseTool` check for that tool never runs unless an ask rule or `plan` mode routes the call back to a prompt. For logic that must apply to every tool call, use a [`PreToolUse` hook](/docs/en/agent-sdk/hooks), which executes before the rest of the flow and can allow, deny, or modify requests.
+  **The callback never fires for auto-approved tools.** Any approval earlier in the [permission evaluation flow](/docs/en/agent-sdk/permissions#how-permissions-are-evaluated), an allow rule or a mode like `acceptEdits` or `bypassPermissions`, resolves the call before `canUseTool` is consulted. If you list a tool bare in `allowed_tools`, a `canUseTool` check for that tool runs only when the [evaluation flow](/docs/en/agent-sdk/permissions#how-permissions-are-evaluated) routes the call back to a prompt, such as an ask rule or `plan` mode. For logic that must apply to every tool call, use a [`PreToolUse` hook](/docs/en/agent-sdk/hooks), which executes before the rest of the flow and can allow, deny, or modify requests.
 
-  `AskUserQuestion`, MCP tools marked [`requiresUserInteraction`](/docs/en/mcp#require-approval-for-a-specific-tool), and connector tools [your organization set to `ask`](/docs/en/mcp#organization-controls-on-connector-tools) reach the callback even when an allow rule matches. In `dontAsk` mode these calls are denied instead, without invoking the callback.
+  An allow rule doesn't pre-approve the [actions no mode auto-approves](/docs/en/permission-modes#actions-no-mode-auto-approves); see [How permissions are evaluated](/docs/en/agent-sdk/permissions#how-permissions-are-evaluated) for which of them reach the callback and what happens in `dontAsk` and `auto` mode.
 </Warning>
 
 You can also use the [`PermissionRequest` hook](/docs/en/agent-sdk/hooks#available-hooks) to send external notifications (Slack, email, push) when Claude is waiting for approval.
@@ -57,10 +60,10 @@ You can also use the [`PermissionRequest` hook](/docs/en/agent-sdk/hooks#availab
 
 Once you've passed a `canUseTool` callback in your query options, it fires when Claude wants to use a tool that nothing earlier in the permission flow has approved. Your callback receives three arguments:
 
-| Argument                            | Description                                                                                                                                                                                                                                                                                                                           |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `toolName`                          | The name of the tool Claude wants to use (e.g., `"Bash"`, `"Write"`, `"Edit"`)                                                                                                                                                                                                                                                        |
-| `input`                             | The parameters Claude is passing to the tool. Contents vary by tool.                                                                                                                                                                                                                                                                  |
+| Argument                            | Description                                                                                                                                                                                                                                                                                                                                |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `toolName`                          | The name of the tool Claude wants to use (e.g., `"Bash"`, `"Write"`, `"Edit"`)                                                                                                                                                                                                                                                             |
+| `input`                             | The parameters Claude is passing to the tool. Contents vary by tool.                                                                                                                                                                                                                                                                       |
 | `options` (TS) / `context` (Python) | Additional context including optional `suggestions` (proposed `PermissionUpdate` entries to avoid re-prompting) and a cancellation signal. In TypeScript, `signal` is an `AbortSignal`; in Python, the signal field is reserved for future use. See [`ToolPermissionContext`](/docs/en/agent-sdk/python#toolpermissioncontext) for Python. |
 
 The `input` object contains tool-specific parameters. Common examples:
@@ -242,6 +245,8 @@ Beyond allowing or denying, you can modify the tool's input or provide context t
 * **Reject**: block the tool and tell Claude why
 * **Suggest alternative**: block but guide Claude toward what the user wants instead
 * **Redirect entirely**: use [streaming input](/docs/en/agent-sdk/streaming-vs-single-mode) to send Claude a completely new instruction
+
+The `ask_user` and `askUser` helpers in the following snippets stand in for your application's own prompt UI.
 
 <Tabs>
   <Tab title="Approve">

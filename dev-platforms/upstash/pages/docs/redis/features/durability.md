@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/features/durability
 path: docs/redis/features/durability
 ---
 
-> This article explains the persistence provided by Upstash databases.
-
 In Upstash, persistence is always enabled, setting it apart from other Redis
 offerings. Every write operation is consistently stored in both memory and the
 block storage provided by cloud providers, such as AWS's EBS. This dual storage
@@ -19,9 +17,9 @@ during system restarts or failures.
 
 Upstash keeps your data both in memory and disk. This design provides:
 
-- Data safety with persistent storage
-- Low latency with in memory access
-- Price flexibility by using memory only for active data
+* Data safety with persistent storage
+* Low latency with in memory access
+* Price flexibility by using memory only for active data
 
 In Upstash, an entry in memory is evicted if it remains idle, meaning it has not
 been accessed for an extended period. It's important to note that eviction does
@@ -32,9 +30,7 @@ eviction mechanism in Upstash optimizes memory usage by prioritizing frequently
 accessed data while maintaining the ability to retrieve less frequently accessed
 data when needed.
 
-<Frame>
-  <img src="/img/durability/storage.png" width="600" />
-</Frame>
+  <img width="600" />
 
 <Card
   title="Can I use Upstash as a database?"

@@ -4,8 +4,6 @@ source: https://upstash.com/docs/qstash/api/authentication
 path: docs/qstash/api/authentication
 ---
 
-> Authentication for the QStash API
-
 You'll need to authenticate your requests to access any of the endpoints in the
 QStash API. In this guide, we'll look at how authentication works.
 

@@ -36,7 +36,7 @@ You can also customize receipts to include any design and content you want—as 
 
 The Stripe API allows you to fetch necessary fields for compliance-ready receipts.
 
-The following fields become available in the PaymentIntent object as soon as the payment is [confirmed](https://docs.stripe.com/terminal/payments/collect-card-payment.md#confirm-payment).
+The following fields become available in the PaymentIntent object as soon as the payment is [confirmed](https://docs.stripe.com/terminal/payments/collect-card-payment.md?process=inspect#confirm-payment).
 
 | Field | Name | Requirement |
 | --- | --- | --- |

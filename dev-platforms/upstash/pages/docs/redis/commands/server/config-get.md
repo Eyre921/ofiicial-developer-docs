@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/server/config-get
 path: docs/redis/commands/server/config-get
 ---
 
-> Read runtime configuration.
-
 Use `CONFIG GET` to read runtime configuration parameters.
 
 Parameter names may contain glob-style patterns, so one call can fetch a family of settings, and the reply is a flat array of alternating names and values in both RESP2 and RESP3.
@@ -26,9 +24,9 @@ CONFIG GET <parameter> [parameter ...]
 
 ## Important points
 
-- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
-- This deployment exposes only `notify-keyspace-events`. Other patterns return no matching entries.
-- Both RESP2 and RESP3 return a flat array of alternating parameter names and values.
+* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+* This deployment exposes only `notify-keyspace-events`. Other patterns return no matching entries.
+* Both RESP2 and RESP3 return a flat array of alternating parameter names and values.
 
 ## Response
 

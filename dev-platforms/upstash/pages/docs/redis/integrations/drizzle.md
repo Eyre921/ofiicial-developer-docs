@@ -43,11 +43,11 @@ const db = drizzle(process.env.DB_URL!, {
 })
 ```
 
----
+***
 
 ### Cache Behavior
 
-- **Per-query caching (opt-in, default):**  
+* **Per-query caching (opt-in, default):**
   No queries are cached unless you explicitly call `.$withCache()`.
 
   ```ts
@@ -57,7 +57,7 @@ const db = drizzle(process.env.DB_URL!, {
   await db.select().from(users).$withCache()
   ```
 
-- **Global caching:**  
+* **Global caching:**
   When setting `global: true`, all queries will read from cache by default.
 
   ```ts
@@ -75,7 +75,7 @@ const db = drizzle(process.env.DB_URL!, {
   await db.select().from(users).$withCache(false)
   ```
 
----
+***
 
 ### Manual Cache Invalidation
 
@@ -89,6 +89,6 @@ await db.$cache?.invalidate({ tables: ["usersTable"] })
 await db.$cache?.invalidate({ tags: ["custom_key"] })
 ```
 
----
+***
 
 For more details on this integration, refer to the [Drizzle ORM caching documentation](https://cache.drizzle-orm-fe.pages.dev/docs/cache).

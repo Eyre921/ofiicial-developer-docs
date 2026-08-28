@@ -4,8 +4,6 @@ source: https://upstash.com/docs/box/overall/browser/cookbook
 path: docs/box/overall/browser/cookbook
 ---
 
-> Runnable browser examples grouped by use case. Each one is self-contained: paste it, run it, read the output.
-
 <Info>
   Every example is a single self-contained file in the [Box SDK
   repo](https://github.com/upstash/box/tree/main/packages/sdk/examples/browser).

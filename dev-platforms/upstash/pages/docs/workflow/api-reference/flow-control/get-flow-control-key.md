@@ -4,6 +4,5 @@ source: https://upstash.com/docs/workflow/api-reference/flow-control/get-flow-co
 path: docs/workflow/api-reference/flow-control/get-flow-control-key
 ---
 
-> Get details of a specific Flow Control key
-
-`GET /v2/flowControl/{flowControlKey}`
+/workflow/openapi.yaml get /v2/flowControl/{flowControlKey}
+Get details of a specific Flow Control key

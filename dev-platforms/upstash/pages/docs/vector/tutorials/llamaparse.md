@@ -4,7 +4,7 @@ source: https://upstash.com/docs/vector/tutorials/llamaparse
 path: docs/vector/tutorials/llamaparse
 ---
 
-In this tutorial, we’ll learn how to parse a document using LlamaParse and then query it using an LLM with Upstash Vector. 
+In this tutorial, we’ll learn how to parse a document using LlamaParse and then query it using an LLM with Upstash Vector.
 
 We’ll split this guide into two parts: parsing a document and then querying the parsed document.
 
@@ -18,7 +18,7 @@ pip install llama-index upstash-vector llama-index-vector-stores-upstash python-
 
 We also need to create a Vector Index in the [Upstash Console](https://console.upstash.com). Make sure to set the index dimensions to 1536 and the distance metric to Cosine. To learn more about index creation, you can check out our [getting started page](https://docs.upstash.com/vector/overall/getstarted).
 
-Once we have our index, we will copy the `UPSTASH_VECTOR_REST_URL` and `UPSTASH_VECTOR_REST_TOKEN` and paste them into our `.env` file. 
+Once we have our index, we will copy the `UPSTASH_VECTOR_REST_URL` and `UPSTASH_VECTOR_REST_TOKEN` and paste them into our `.env` file.
 
 #### Environment Variables
 
@@ -50,8 +50,8 @@ documents = SimpleDirectoryReader(input_files=["./documents/global_warming.txt"]
 ```
 
 <Note type="info">
-    If you are using Jupyter Notebook, you need to allow nested event loops to parse the document. 
-    
+    If you are using Jupyter Notebook, you need to allow nested event loops to parse the document.
+
     You can do this by adding the following code snippet to your file:
 ```python
 import nest_asyncio
@@ -99,10 +99,10 @@ print(response)
 Here's the code output:
 
 ```plaintext
-The main points discussed in the document include the impact of global warming on agriculture 
-and food production systems, the importance of adopting sustainable food practices to mitigate 
-these effects, the role of agriculture in contributing to global warming through GHG emissions, 
-deforestation, and the use of synthetic fertilizers, and the need for sustainable food systems 
+The main points discussed in the document include the impact of global warming on agriculture
+and food production systems, the importance of adopting sustainable food practices to mitigate
+these effects, the role of agriculture in contributing to global warming through GHG emissions,
+deforestation, and the use of synthetic fertilizers, and the need for sustainable food systems
 to address environmental challenges and ensure food security for future generations.
 ```
 

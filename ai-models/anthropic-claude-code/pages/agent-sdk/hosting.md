@@ -8,7 +8,7 @@ Deploy the Agent SDK in production: subprocess architecture, session persistence
 
 The Agent SDK spawns and supervises a `claude` CLI subprocess that owns a shell, a working directory, and session files on disk. Hosting it is not like hosting a stateless API wrapper. Every running agent is a long-lived process tied to local state, which shapes how you allocate resources, persist sessions, and scale across tenants.
 
-This page covers self-hosting on your own infrastructure: understand [the subprocess model](#the-subprocess-model), [choose a session pattern](#choose-a-session-pattern), [provision the container](#provision-the-container), and [handle production concerns](#handle-production-concerns) like persistence, observability, auth, and multi-tenant isolation. For deployable Dockerfiles and Kubernetes manifests, see the [hosting cookbook](https://github.com/anthropics/claude-cookbooks/tree/main/claude_agent_sdk/hosting).
+This page covers self-hosting on your own infrastructure. For deployable Dockerfiles and Kubernetes manifests, see the [hosting cookbook](https://github.com/anthropics/claude-cookbooks/tree/main/claude_agent_sdk/hosting).
 
 If you do not need infrastructure control, custom isolation, or your own data plane, consider [Managed Agents](https://platform.claude.com/docs/en/managed-agents/overview) instead: a hosted REST API where Anthropic runs the agent and the sandbox, so your application sends events and streams back results with no hosting infrastructure to operate.
 
@@ -19,6 +19,8 @@ If you do not need infrastructure control, custom isolation, or your own data pl
 ## The subprocess model
 
 Every hosting decision on this page follows from how the SDK runs the agent. When your code calls `query()`, the SDK spawns a separate `claude` CLI process and talks to it over stdio. That subprocess owns the shell, the working directory, and the JSONL session transcripts on local disk.
+
+<img alt="Request flow: client to your app, which spawns a claude CLI subprocess over stdio inside the container; the subprocess writes to local disk and calls api.anthropic.com over HTTPS" />
 
 <img alt="Request flow: client to your app, which spawns a claude CLI subprocess over stdio inside the container; the subprocess writes to local disk and calls api.anthropic.com over HTTPS" />
 
@@ -58,16 +60,36 @@ Create a container for each user task and destroy it when the task completes. Be
 
 Example workloads include bug investigation and fix, invoice and receipt extraction, document translation, and media transformation.
 
-The container runs a one-shot entrypoint that calls the SDK and exits. The example below shows a minimal TypeScript version. Save it as `entrypoint.mts` or set `"type": "module"` in `package.json` so top-level `await` is available.
+The container runs a one-shot entrypoint that calls the SDK and exits. In TypeScript, save the file as `entrypoint.mts` or set `"type": "module"` in `package.json` so top-level `await` is available.
 
-```typescript theme={null}
-import { query } from "@anthropic-ai/claude-agent-sdk";
+<CodeGroup>
+  ```typescript TypeScript theme={null}
+  import { query } from "@anthropic-ai/claude-agent-sdk";
 
-const prompt = process.env.TASK_PROMPT!;
-for await (const message of query({ prompt, options: { maxTurns: 20 } })) {
-  console.log(message);
-}
-```
+  const prompt = process.env.TASK_PROMPT!;
+  for await (const message of query({ prompt, options: { maxTurns: 20 } })) {
+    console.log(message);
+  }
+  ```
+
+  ```python Python theme={null}
+  import asyncio
+  import os
+
+  from claude_agent_sdk import ClaudeAgentOptions, query
+
+
+  async def main():
+      async for message in query(
+          prompt=os.environ["TASK_PROMPT"],
+          options=ClaudeAgentOptions(max_turns=20),
+      ):
+          print(message)
+
+
+  asyncio.run(main())
+  ```
+</CodeGroup>
 
 ### Long-running sessions
 
@@ -139,7 +161,7 @@ Give each agent its own working directory so they do not overwrite each other's 
 
 ### Container-based sandboxing
 
-Run the SDK inside a sandboxed container for process isolation, resource limits, network control, and an ephemeral filesystem. Several providers specialize in sandboxed container environments that fit the Agent SDK's model.
+Run the SDK inside a sandboxed container for process isolation, resource limits, network control, and an ephemeral filesystem.
 
 Questions to answer when choosing a provider:
 
@@ -149,23 +171,14 @@ Questions to answer when choosing a provider:
 * **Pricing model**: per-second, per-request, or flat hourly billing. Per-second pricing suits bursty ephemeral workloads. Hourly suits long-running sessions.
 * **Networking**: support for custom egress rules, outbound proxies, and private VPC peering for regulated environments.
 
-Providers to evaluate:
-
-* [Modal Sandbox](https://modal.com/docs/guide/sandbox), with a [demo implementation](https://modal.com/docs/examples/claude-slack-gif-creator)
-* [Cloudflare Sandboxes](https://github.com/cloudflare/sandbox-sdk)
-* [Daytona](https://www.daytona.io/)
-* [E2B](https://e2b.dev/)
-* [Fly Machines](https://fly.io/docs/machines/)
-* [Vercel Sandbox](https://vercel.com/docs/functions/sandbox)
-
 For self-hosted options such as Docker, gVisor, and Firecracker, and detailed isolation configuration, see [Isolation Technologies](/docs/en/agent-sdk/secure-deployment#isolation-technologies).
 
 ### Runtime dependencies
 
-The container needs only your SDK's language runtime:
+The container needs your SDK's language runtime:
 
 * Python 3.10+ for the Python SDK, or Node.js 18+ for the TypeScript SDK
-* Both SDK packages bundle a native Claude Code binary for the host platform, so no separate Claude Code or Node.js install is needed for the spawned CLI
+* Both the TypeScript and Python SDKs bundle a native Claude Code binary for most installs, and the spawned CLI needs no separate Node.js install. See the [quickstart's install note](/docs/en/agent-sdk/quickstart) for the installs that need a separate native Claude Code install.
 
 The bundled binary is pinned to the SDK package version, so updating the SDK is how you update the CLI. The SDK follows semver: take patch releases continuously and review the [TypeScript](https://github.com/anthropics/claude-agent-sdk-typescript/blob/main/CHANGELOG.md) or [Python](https://github.com/anthropics/claude-agent-sdk-python/blob/main/CHANGELOG.md) changelog before taking a minor.
 
@@ -190,8 +203,8 @@ Default local disk is lost on restart, scale-down, or a move to a different node
 Three things to know about how `SessionStore` behaves:
 
 * **Transcripts only**: `SessionStore` mirrors transcripts, not `CLAUDE.md` memory files or other working-directory artifacts. Mount a shared volume or sync those separately.
-* **Mirror, not replacement**: the subprocess writes to local disk first, and the store receives a copy of each batch. Local writes remain authoritative.
-* **`mirror_error` messages**: a batch the store rejects is sent up to three times in total, with a short backoff before each retry; a timed-out call isn't retried. If the batch still fails, the SDK drops it, emits a `{ type: "system", subtype: "mirror_error" }` message, and continues the query. Alert on these if store durability matters.
+* **Mirror, not replacement**: the subprocess writes to local disk first, and the SDK forwards a copy of each batch to the store. A fresh session's local transcript outlives the run; a run resumed from the store deletes its local copy at the end, so the store holds the only durable copy. See [Dual-write architecture](/docs/en/agent-sdk/session-storage#dual-write-architecture).
+* **`mirror_error` messages**: when the SDK can't deliver a batch to the store, it drops the batch, emits a `{ type: "system", subtype: "mirror_error" }` message, and continues the query. Alert on these if store durability matters. See [Mirror writes are best-effort](/docs/en/agent-sdk/session-storage#mirror-writes-are-best-effort) for the retry and timeout behavior.
 
 ### Observability
 
@@ -215,7 +228,7 @@ Prompt text and tool inputs are not included in exports by default. See [Control
 
 Three auth concerns matter at hosting time:
 
-* **Anthropic API**: the subprocess reads `ANTHROPIC_API_KEY` from its environment. Supply it from your secret manager, or set `ANTHROPIC_BASE_URL` to route model calls through a proxy that injects the key outside the container. See [Credential management](/docs/en/agent-sdk/secure-deployment#credential-management) for the proxy pattern and the [SDK overview](/docs/en/agent-sdk/overview#get-started) for supported authentication methods.
+* **Anthropic API**: the subprocess reads `ANTHROPIC_API_KEY` from its environment. Supply it from your secret manager, or set `ANTHROPIC_BASE_URL` to route model calls through a proxy that injects the key outside the container. See [Credential management](/docs/en/agent-sdk/secure-deployment#credential-management) for the proxy pattern and [Setup in the SDK quickstart](/docs/en/agent-sdk/quickstart#setup) for supported authentication methods.
 * **Inbound**: put authentication at a gateway in front of the agent container. The agent should receive pre-authenticated requests and should not be the component that validates user tokens.
 * **Outbound tools**: keep tool credentials out of the agent environment. Route outbound calls through a proxy that injects API keys after the request leaves the container. The agent makes the call; the proxy adds the credential.
 
@@ -233,8 +246,6 @@ Measure the per-session ceiling by running a representative session to your targ
 
 Horizontal-scale routing depends on your pattern. For long-running sessions, where containers hold many sessions, run a pool of containers behind a load balancer and pin each session to one container using consistent hashing on `sessionId`. A pinned session keeps hitting the same container, and therefore the same running subprocess, until it is evicted or the container restarts.
 
-Large fanouts of concurrent [subagents](/docs/en/agent-sdk/subagents) from a single session can hit API rate limits. Break the work into smaller batches rather than issuing one wide dispatch.
-
 ### Cost
 
 Anthropic token cost typically dominates container infrastructure cost by an order of magnitude or more. A minimally provisioned container runs roughly \$0.05 per hour, while a single long agent session can spend dollars in tokens. See [Cost tracking](/docs/en/agent-sdk/cost-tracking) for per-session token accounting.
@@ -245,13 +256,13 @@ Default SDK behavior reads settings and `CLAUDE.md` memory files from the filesy
 
 To isolate tenants inside a shared container:
 
-* Pass `settingSources: []` in TypeScript or `setting_sources=[]` in Python so no filesystem settings load.
+* Pass `settingSources: []` in TypeScript or `setting_sources=[]` in Python to skip user, project, and local settings.
 * Set `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1` in `env`. [Auto memory](/docs/en/memory#auto-memory) at `~/.claude/projects/<project>/memory/` loads into the system prompt regardless of `settingSources`. See [What settingSources does not control](/docs/en/agent-sdk/claude-code-features#what-settingsources-does-not-control) for the other inputs that load unconditionally.
-* Point `CLAUDE_CONFIG_DIR` at a per-tenant directory so tenants do not share the `~/.claude.json` global config.
+* Point `CLAUDE_CONFIG_DIR` at a per-tenant directory so tenants do not share the `~/.claude.json` global config. When each config directory serves one working directory and you don't share a [`SessionStore`](/docs/en/agent-sdk/session-storage) across tenants, you can also set [`CLAUDE_CODE_PROJECT_DIR_NAME`](/docs/en/sessions#name-the-project-directory-yourself) in `env` to keep the transcript paths under it short. Requires TypeScript Agent SDK v0.3.234 or later, or Python Agent SDK v0.2.140 or later.
 * Use a per-tenant working directory. Pass `cwd` explicitly on every `query()` call.
 * Apply per-tenant egress rules at your proxy, such as distinct outbound IPs, credentials, or domain allowlists, so a compromised tenant cannot exfiltrate data via another tenant's outbound policy.
 
-The example below applies the four SDK-level options together. Construct `tenantDir` and `configDir` so each tenant gets a path no other tenant can read. In TypeScript, `env` replaces the subprocess environment, so spread `...process.env` to keep inherited variables like `PATH` and `ANTHROPIC_API_KEY`. In Python, `env` is merged on top of the inherited environment.
+The example below applies the settings, auto memory, config directory, and working directory options together. Construct `tenantDir` and `configDir` so each tenant gets a path no other tenant can read. In TypeScript, `env` replaces the subprocess environment, so spread `...process.env` to keep inherited variables like `PATH` and `ANTHROPIC_API_KEY`. In Python, `env` is merged on top of the inherited environment.
 
 <CodeGroup>
   ```typescript TypeScript theme={null}
@@ -311,11 +322,11 @@ For per-tenant network controls, see [Secure Deployment](/docs/en/agent-sdk/secu
 
 Plan around these in your deployment design.
 
-| Limitation                                          | What to do                                                                                                                                                                                                                                                                                   |
-| --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| No top-level session timeout                        | A session does not time out on its own. Set `maxTurns` in `Options` to bound how many tool-use round trips the agent takes before stopping.                                                                                                                                                  |
-| Memory growth over long sessions                    | Cap session length or recycle subprocesses periodically. See [Scaling and concurrency](#scaling-and-concurrency).                                                                                                                                                                            |
-| Large parallel-subagent fanouts can hit rate limits | Break work into smaller batches rather than issuing one wide dispatch.                                                                                                                                                                                                                       |
+| Limitation                                          | What to do                                                                                                                                                                                                                                                                                        |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No top-level session timeout                        | A session does not time out on its own. Set `maxTurns` in `Options` to bound how many tool-use round trips the agent takes before stopping.                                                                                                                                                       |
+| Memory growth over long sessions                    | Cap session length or recycle subprocesses periodically. See [Scaling and concurrency](#scaling-and-concurrency).                                                                                                                                                                                 |
+| Large parallel-subagent fanouts can hit rate limits | Break work into smaller batches rather than issuing one wide dispatch.                                                                                                                                                                                                                            |
 | No per-subagent wall-clock deadline                 | Cap each [subagent](/docs/en/agent-sdk/subagents) with `maxTurns` in its `AgentDefinition`. For background subagents only, `CLAUDE_ASYNC_AGENT_STALL_TIMEOUT_MS` sets a stall watchdog that fires when a `run_in_background` subagent stops producing output; it is not a total-runtime deadline. |
 
 ## Next steps

@@ -4,13 +4,11 @@ source: https://upstash.com/docs/qstash/howto/receiving
 path: docs/qstash/howto/receiving
 ---
 
-> What do we send to your API?
-
 When you publish a message, QStash will deliver it to your chosen destination. This is a brief overview of how a request to your API looks like.
 
 ## Headers
 
-We are forwarding all headers that have been prefixed with `Upstash-Forward-` to your API. [Learn more](/qstash/howto/publishing#sending-custom-http-headers)
+We are forwarding all headers that have been prefixed with `Upstash-Forward-` to your API. [Learn more](/docs/qstash/howto/publishing#sending-custom-http-headers)
 
 In addition to your custom headers, we're sending these headers as well:
 
@@ -19,7 +17,7 @@ In addition to your custom headers, we're sending these headers as well:
 | `User-Agent`          | Will be set to `Upstash-QStash`                                      |
 | `Content-Type`        | The original `Content-Type` header                                   |
 | `Upstash-Topic-Name`  | The URL Group (topic) name if sent to a URL Group                    |
-| `Upstash-Signature`   | The signature you need to verify [See here](/qstash/howto/signature) |
+| `Upstash-Signature`   | The signature you need to verify [See here](/docs/qstash/howto/signature) |
 | `Upstash-Retried`     | How often the message has been retried so far. Starts with 0.        |
 | `Upstash-Message-Id`  | The message id of the message.                                       |
 | `Upstash-Schedule-Id` | The schedule id of the message if it is related to a schedule.       |
@@ -31,4 +29,4 @@ The body is passed as is, we do not modify it at all. If you send a JSON body, y
 
 ## Verifying the signature
 
-[See here](/qstash/howto/signature)
+[See here](/docs/qstash/howto/signature)

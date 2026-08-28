@@ -8,7 +8,38 @@ Connect an MCP client to your Notion workspace.
 
 Follow the instructions for your MCP client. After you authorize the connection, the client can read and update content that you can access in the selected Notion workspace.
 
+## Codex (ChatGPT)
+
+Codex is OpenAI's coding agent. See the [Codex MCP documentation](https://developers.openai.com/codex/mcp/) for more details.
+
+<Steps>
+  <Step>
+    Add the Notion server to your Codex configuration at `~/.codex/config.toml`:
+
+    ```toml theme={null}
+    [mcp_servers.notion]
+    url = "https://mcp.notion.com/mcp"
+    ```
+  </Step>
+
+  <Step>
+    Authenticate by running:
+
+    ```bash theme={null}
+    codex mcp login notion
+    ```
+
+    Complete the OAuth flow to connect your Notion workspace.
+  </Step>
+</Steps>
+
+<Accordion title="Project-level configuration">
+  To share the Notion MCP configuration with your team, create a `.codex/config.toml` file in your project root with the same server configuration.
+</Accordion>
+
 ## Claude Code
+
+Claude Code is Anthropic's agentic coding tool for the terminal. See the [Claude Code MCP documentation](https://docs.anthropic.com/en/docs/claude-code/mcp) for more details.
 
 Run this command in your terminal:
 
@@ -32,13 +63,11 @@ Use the `/mcp` command to list and manage the MCP servers you have installed, an
 
 ## Cursor
 
+Cursor is an AI code editor that can connect to MCP servers. See the [Cursor MCP documentation](https://cursor.com/docs/mcp) for more details.
+
 <Steps>
   <Step>
-    Open **Cursor Settings** → **MCP** → **Add new global MCP server**
-  </Step>
-
-  <Step>
-    Paste the following configuration:
+    Create a `.cursor/mcp.json` file in your project root:
 
     ```json theme={null}
     {
@@ -52,12 +81,12 @@ Use the `/mcp` command to list and manage the MCP servers you have installed, an
   </Step>
 
   <Step>
-    Save and restart Cursor. When you use a Notion tool for the first time, complete the OAuth flow to connect your workspace.
+    Open **Customize** in Cursor's sidebar, then enable Notion and complete the OAuth flow to connect your workspace.
   </Step>
 </Steps>
 
-<Accordion title="Project-level configuration">
-  To share the Notion MCP configuration with your team, create a `.cursor/mcp.json` file in your project root:
+<Accordion title="Global configuration">
+  To configure Notion across all projects, add the same server configuration to `~/.cursor/mcp.json`:
 
   ```json theme={null}
   {
@@ -70,7 +99,150 @@ Use the `/mcp` command to list and manage the MCP servers you have installed, an
   ```
 </Accordion>
 
+## fx
+
+fx is an MCP client that makes configured servers available in its interactive shell and agent sessions. See the [fx MCP documentation](https://fx.sh/docs/capabilities/mcp) for more details.
+
+<Steps>
+  <Step>
+    Start an interactive fx session:
+
+    ```bash theme={null}
+    fx
+    ```
+  </Step>
+
+  <Step>
+    Add the Notion server:
+
+    ```bash theme={null}
+    /mcp add --transport http notion https://mcp.notion.com/mcp
+    ```
+  </Step>
+
+  <Step>
+    In the same session, run `/mcp auth notion --open` and complete the OAuth flow.
+  </Step>
+</Steps>
+
+<Accordion title="JSON configuration">
+  To configure Notion MCP without the CLI, add it to `~/.fx/mcp.json`:
+
+  ```json theme={null}
+  {
+    "mcp": {
+      "notion": {
+        "type": "http",
+        "url": "https://mcp.notion.com/mcp"
+      }
+    }
+  }
+  ```
+
+  If a session is already open, run `/mcp reload` to pick up the change.
+</Accordion>
+
+## Hermes
+
+Hermes is a coding agent from Nous Research that can be extended with MCP servers. See the [Hermes MCP documentation](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp) for more details.
+
+<Steps>
+  <Step>
+    Add the Notion server to `~/.hermes/config.yaml`:
+
+    ```yaml theme={null}
+    mcp_servers:
+      notion:
+        url: "https://mcp.notion.com/mcp"
+        auth: oauth
+    ```
+  </Step>
+
+  <Step>
+    Authenticate by running:
+
+    ```bash theme={null}
+    hermes mcp login notion
+    ```
+
+    Complete the OAuth flow to connect your Notion workspace.
+  </Step>
+</Steps>
+
+<Accordion title="Global configuration">
+  The `~/.hermes/config.yaml` configuration above applies to all projects for the current Hermes profile. See the [Hermes configuration documentation](https://hermes-agent.nousresearch.com/docs/user-guide/configuration) for more details.
+</Accordion>
+
+## Devin
+
+Devin is an AI software engineering agent that can connect to custom MCP servers. See the [Devin MCP documentation](https://docs.devin.ai/work-with-devin/mcp) for more details.
+
+<Steps>
+  <Step>
+    In Devin, go to **Settings** → **Connections** → **MCP servers**, then select **Add a custom MCP**.
+  </Step>
+
+  <Step>
+    Enter **Notion** as the server name, select **HTTP** as the transport, and set the server URL to:
+
+    ```
+    https://mcp.notion.com/mcp
+    ```
+  </Step>
+
+  <Step>
+    Select **OAuth** as the authentication method. Choose **Personal** access for an individual connection, or **Organization** access to share the connection with your organization.
+  </Step>
+
+  <Step>
+    Save the server, then complete the OAuth flow when Devin prompts you.
+  </Step>
+</Steps>
+
+<Note>
+  With **Organization** access, members share one authenticated connection. Use a Notion service account rather than a personal account, and have someone with the **Manage MCP Servers** permission complete the OAuth flow. With **Personal** access, each member authenticates their own Notion account.
+</Note>
+
+## Pi
+
+Pi is an open-source, terminal-based coding agent. It uses the third-party [Pi MCP Adapter](https://github.com/nicobailon/pi-mcp-adapter) to connect to MCP servers.
+
+<Steps>
+  <Step>
+    Install the adapter and restart Pi:
+
+    ```bash theme={null}
+    pi install npm:pi-mcp-adapter
+    ```
+  </Step>
+
+  <Step>
+    In Pi, run `/mcp setup`, then choose **Notion** to add the server.
+  </Step>
+
+  <Step>
+    Authenticate by running `/mcp-auth notion` and completing the OAuth flow to connect your Notion workspace.
+  </Step>
+</Steps>
+
+<Accordion title="Global and team configuration">
+  To use Notion in every Pi project, add this configuration to `~/.config/mcp/mcp.json`. To share it with a team, commit the same configuration in a project-root `.mcp.json`; each teammate then completes the OAuth flow locally.
+
+  ```json theme={null}
+  {
+    "mcpServers": {
+      "notion": {
+        "url": "https://mcp.notion.com/mcp",
+        "auth": "oauth"
+      }
+    }
+  }
+  ```
+</Accordion>
+
 ## VS Code (GitHub Copilot)
+
+Visual Studio Code supports MCP servers in its agent customization experience. See the [VS Code MCP documentation](https://code.visualstudio.com/docs/agent-customization/mcp-servers) for more details.
 
 <Steps>
   <Step>
@@ -101,110 +273,9 @@ Use the `/mcp` command to list and manage the MCP servers you have installed, an
   To configure Notion MCP across all workspaces, run **MCP: Open User Configuration** from the Command Palette and add the server configuration there.
 </Accordion>
 
-## Claude Desktop
-
-<Steps>
-  <Step>
-    Open **Settings** → **Connectors**
-  </Step>
-
-  <Step>
-    Select **Add Connector** and enter the URL:
-
-    ```
-    https://mcp.notion.com/mcp
-    ```
-  </Step>
-
-  <Step>
-    Complete the OAuth flow to connect your Notion workspace
-  </Step>
-</Steps>
-
-<Note>
-  Remote MCP servers in Claude Desktop are configured through Settings → Connectors, not the `claude_desktop_config.json` file. Available on Pro, Max, Team, and Enterprise plans.
-</Note>
-
-## Windsurf
-
-<Steps>
-  <Step>
-    Open **Windsurf Settings** (`Cmd+,` on Mac) → search for **MCP**
-  </Step>
-
-  <Step>
-    Select **View raw config** to open `mcp_config.json`
-  </Step>
-
-  <Step>
-    Add the Notion server configuration:
-
-    ```json theme={null}
-    {
-      "mcpServers": {
-        "notion": {
-          "serverUrl": "https://mcp.notion.com/mcp"
-        }
-      }
-    }
-    ```
-  </Step>
-
-  <Step>
-    Save and restart Windsurf. Complete the OAuth flow when prompted.
-  </Step>
-</Steps>
-
-## ChatGPT
-
-<Steps>
-  <Step>
-    Go to [chatgpt.com/#settings/Connectors](https://chatgpt.com/#settings/Connectors) (requires login)
-  </Step>
-
-  <Step>
-    Select **Add Connector** and enter the URL:
-
-    ```
-    https://mcp.notion.com/mcp
-    ```
-  </Step>
-
-  <Step>
-    Complete the OAuth flow to connect your Notion workspace
-  </Step>
-</Steps>
-
-## Codex
-
-For more details, see the [Codex MCP documentation](https://developers.openai.com/codex/mcp/).
-
-<Steps>
-  <Step>
-    Add the Notion server to your Codex configuration at `~/.codex/config.toml`:
-
-    ```toml theme={null}
-    [mcp_servers.notion]
-    url = "https://mcp.notion.com/mcp"
-    ```
-  </Step>
-
-  <Step>
-    Authenticate by running:
-
-    ```bash theme={null}
-    codex mcp login notion
-    ```
-
-    Complete the OAuth flow to connect your Notion workspace.
-  </Step>
-</Steps>
-
-<Accordion title="Project-level configuration">
-  To share the Notion MCP configuration with your team, create a `.codex/config.toml` file in your project root with the same server configuration.
-</Accordion>
-
 ## Antigravity
+
+Antigravity supports MCP servers across its products. See the [Antigravity MCP documentation](https://antigravity.google/docs/mcp) for more details.
 
 We recommend connecting to Notion MCP as a custom server rather than using the pre-configured "Notion" connector in the Antigravity MCP gallery, which uses the deprecated [`notion-mcp-server`](https://github.com/makenotion/notion-mcp-server) package.
 
@@ -230,16 +301,14 @@ We recommend connecting to Notion MCP as a custom server rather than using the p
 
 ## Other MCP clients
 
-If your MCP client isn't listed above, use one of these URLs:
+If your MCP client isn't listed above, add Notion as a remote MCP server:
 
-| Transport                         | URL                          | Notes                                          |
-| :-------------------------------- | :--------------------------- | :--------------------------------------------- |
-| **Streamable HTTP** (recommended) | `https://mcp.notion.com/mcp` | Recommended for new clients                    |
-| **SSE** (Server-Sent Events)      | `https://mcp.notion.com/sse` | For clients that don't support Streamable HTTP |
+* **Streamable HTTP (recommended):** `https://mcp.notion.com/mcp`
+* **SSE fallback:** `https://mcp.notion.com/sse` — use this only if the client doesn't support Streamable HTTP.
 
-### JSON configuration format
+### JSON configuration
 
-Most MCP clients accept a JSON configuration. Use the format supported by your client:
+If your client accepts a JSON configuration, start with Streamable HTTP:
 
 <CodeGroup>
   ```json Streamable HTTP theme={null}
@@ -277,24 +346,6 @@ Most MCP clients accept a JSON configuration. Use the format supported by your c
 
 Use the STDIO configuration if your client doesn't support remote HTTP connections.
 
-## Connect through the Notion app
-
-You can also start the connection from Notion:
-
-<Steps>
-  <Step>
-    Open **Settings** in the Notion app
-  </Step>
-
-  <Step>
-    Go to **Connections** → **Notion MCP**
-  </Step>
-
-  <Step>
-    Choose your MCP client from the list and complete the OAuth flow
-  </Step>
-</Steps>
-
 ## Troubleshooting
 
 <AccordionGroup>
@@ -322,11 +373,11 @@ You can also start the connection from Notion:
   </Accordion>
 
   <Accordion title="My MCP client isn't listed here">
-    Check the client's documentation for how to add a remote MCP server. Most MCP clients accept a URL or JSON configuration. If the client doesn't support MCP, contact its developer.
+    See [Other MCP clients](#other-mcp-clients) for the Notion MCP endpoints and JSON configuration examples. If the client doesn't support MCP, contact its developer.
   </Accordion>
 </AccordionGroup>
 
-## FAQ
+## FAQs
 
 <AccordionGroup>
   <Accordion title="Can I use Notion MCP without interactive authorization?">
@@ -353,7 +404,3 @@ You can also start the connection from Notion:
     and connection requirements.
   </Accordion>
 </AccordionGroup>
-
-## Next steps
-
-See the [Notion MCP tools](/guides/mcp/mcp-supported-tools) that a connected client can use.

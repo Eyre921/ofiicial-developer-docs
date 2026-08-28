@@ -35,7 +35,7 @@ the function, then you can add or remove endpoints by only updating the URL Grou
 URL Groups give you freedom to modify endpoints without touching the backend
 implementation.
 
-Check [here](/qstash/howto/publishing#publish-to-url-group) to learn how to publish
+Check [here](/docs/qstash/howto/publishing#publish-to-url-group) to learn how to publish
 to URL Groups.
 
 ## How URL Groups work
@@ -43,7 +43,7 @@ to URL Groups.
 When you publish a message to a URL Group, we will enqueue a unique task for each
 subscribed endpoint and guarantee successful delivery to each one of them.
 
-[![](https://mermaid.ink/img/pako:eNp1kl1rgzAUhv9KyOWoddXNtrkYVNdf0F0U5ijRHDVMjctHoRT_-2KtaztUQeS8j28e8JxxKhhggpWmGt45zSWtnKMX13GN7PX59IUc5w19iIanBDUmKbkq-qwfXuKdSVQqeQLssK1ZI3itVQ9dekdzdO6Ja9ntKKq-DxtEoP4xYGCIr-OOGCoOG4IYlPwIcqBu0V0XQRK0PE0w9lyCvP1-iB1n1CgcNwofjcJpo_Cua8ooHDWadIrGnaJHp2jaKbrrmnKK_jl1d9s98AxXICvKmd2fy8-MsS6gghgT-5oJCUrH2NKWNA2zi7BlXAuJSUZLBTNMjRa7U51ioqWBAbpu4R9VCsrAfnTG-tR0u5pzpW1lKuqM593cyNKOC60bRVy3i-c514VJ5qmoXMVZQaUujuvADbxgRT0fgqVPX32fpclivcq8l0XGls8Lj-K2bX8Bx2nzPg)](https://mermaid.live/edit#pako:eNp1kl1rgzAUhv9KyOWoddXNtrkYVNdf0F0U5ijRHDVMjctHoRT_-2KtaztUQeS8j28e8JxxKhhggpWmGt45zSWtnKMX13GN7PX59IUc5w19iIanBDUmKbkq-qwfXuKdSVQqeQLssK1ZI3itVQ9dekdzdO6Ja9ntKKq-DxtEoP4xYGCIr-OOGCoOG4IYlPwIcqBu0V0XQRK0PE0w9lyCvP1-iB1n1CgcNwofjcJpo_Cua8ooHDWadIrGnaJHp2jaKbrrmnKK_jl1d9s98AxXICvKmd2fy8-MsS6gghgT-5oJCUrH2NKWNA2zi7BlXAuJSUZLBTNMjRa7U51ioqWBAbpu4R9VCsrAfnTG-tR0u5pzpW1lKuqM593cyNKOC60bRVy3i-c514VJ5qmoXMVZQaUujuvADbxgRT0fgqVPX32fpclivcq8l0XGls8Lj-K2bX8Bx2nzPg)
+[![]()](https://mermaid.live/edit#pako:eNp1kl1rgzAUhv9KyOWoddXNtrkYVNdf0F0U5ijRHDVMjctHoRT_-2KtaztUQeS8j28e8JxxKhhggpWmGt45zSWtnKMX13GN7PX59IUc5w19iIanBDUmKbkq-qwfXuKdSVQqeQLssK1ZI3itVQ9dekdzdO6Ja9ntKKq-DxtEoP4xYGCIr-OOGCoOG4IYlPwIcqBu0V0XQRK0PE0w9lyCvP1-iB1n1CgcNwofjcJpo_Cua8ooHDWadIrGnaJHp2jaKbrrmnKK_jl1d9s98AxXICvKmd2fy8-MsS6gghgT-5oJCUrH2NKWNA2zi7BlXAuJSUZLBTNMjRa7U51ioqWBAbpu4R9VCsrAfnTG-tR0u5pzpW1lKuqM593cyNKOC60bRVy3i-c514VJ5qmoXMVZQaUujuvADbxgRT0fgqVPX32fpclivcq8l0XGls8Lj-K2bX8Bx2nzPg)
 
 Consider this scenario: You have a URL Group and 3 endpoints that are subscribed to
 it. Now when you publish a message to the URL Group, internally we will create a
@@ -52,4 +52,4 @@ each other.
 
 ## How to create a URL Group
 
-Please refer to the howto [here](/qstash/howto/url-group-endpoint).
+Please refer to the howto [here](/docs/qstash/howto/url-group-endpoint).

@@ -21,27 +21,20 @@ const { workflowRunId } = await client.trigger({
 })
 ```
 
-
 **Example**:
 If `rate = 2` and `period = 1 minute`, then **a maximum of 2 steps** can be executed per minute.
 
 The first 2 requests within the minute are executed immediately:
 
-<Frame caption="Steps are executed within limit">
-  <img src="/img/workflow/rate_1.png" />
-</Frame>
+  <img />
 
 The 3rd request in the same minute is not executed immediately:
 
-<Frame caption="A new step cannot execute immediately">
-  <img src="/img/workflow/rate_2.png" />
-</Frame>
+  <img />
 
 Instead of rejecting it, Workflow schedules the request in the next available time window:
 
-<Frame caption="The new step is moved to the next time window">
-  <img src="/img/workflow/rate_3.png" />
-</Frame>
+  <img />
 
 Note that step executions may take longer than the defined period.
 The rate limit only controls how many steps are **started** within each time window,

@@ -7,8 +7,8 @@ path: docs/workflow/integrations/aisdk
 <Note>
   This feature is not yet available in
   [workflow-py](https://github.com/upstash/workflow-py). See our
-  [Roadmap](/workflow/roadmap) for feature parity plans and
-  [Changelog](/workflow/changelog) for updates.
+  [Roadmap](/docs/workflow/roadmap) for feature parity plans and
+  [Changelog](/docs/workflow/changelog) for updates.
 </Note>
 
 <Card title="GitHub Repository" icon="github" href="https://github.com/upstash/workflow-js/blob/main/examples/nextjs/app/vercel-ai-sdk/route.ts" horizontal>
@@ -17,11 +17,11 @@ path: docs/workflow/integrations/aisdk
 
 Upstash Workflow integrates with the Vercel AI SDK to provide durable and reliable AI applications. This allows you to:
 
-- Build resilient AI applications with automatic retries
-- Manage AI operations with workflow steps
-- Implement tools and function calling with durability
-- Handle errors gracefully across your AI operations
-- Handle long-running AI operations with extended timeouts
+* Build resilient AI applications with automatic retries
+* Manage AI operations with workflow steps
+* Implement tools and function calling with durability
+* Handle errors gracefully across your AI operations
+* Handle long-running AI operations with extended timeouts
 
 This guide will walk you through setting up and implementing AI features using Upstash Workflow's durability guarantees with Vercel AI SDK's capabilities.
 
@@ -29,9 +29,9 @@ This guide will walk you through setting up and implementing AI features using U
 
 Before getting started, make sure you have:
 
-- An OpenAI API key
-- Basic familiarity with Upstash Workflow and Vercel AI SDK
-- Vercel AI SDK version 4.0.12 or higher (required for ToolExecutionError handling)
+* An OpenAI API key
+* Basic familiarity with Upstash Workflow and Vercel AI SDK
+* Vercel AI SDK version 4.0.12 or higher (required for ToolExecutionError handling)
 
 ## Installation
 
@@ -146,8 +146,8 @@ export const { POST } = serve<{ prompt: string }>(async (context) => {
       console.log(`TEXT: ${result.text}`);
       return result.text;
     });
-    
-  } catch (error) {    
+
+  } catch (error) {
     if (error instanceof ToolExecutionError && error.cause instanceof WorkflowAbort) {
       throw error.cause;
     } else {
@@ -157,7 +157,7 @@ export const { POST } = serve<{ prompt: string }>(async (context) => {
 });
 ```
 
-We can either [run the app locally](/workflow/howto/local-development/development-server) or deploy it. Once the app is running, we can trigger the workflow using the following code:  
+We can either [run the app locally](/docs/workflow/howto/local-development/development-server) or deploy it. Once the app is running, we can trigger the workflow using the following code:
 
 ```ts
 import { Client } from "@upstash/workflow";
@@ -171,9 +171,7 @@ const { workflowRunId } = await client.trigger({
 
 The workflow will execute, and we can view the logs in `the Workflow dashboard`
 
-<Frame>
-  <img src="/img/qstash-workflow/ai-sdk/without-tool.png" alt="Workflow logs in dashboard" />
-</Frame>
+  <img alt="Workflow logs in dashboard" />
 
 ### Advanced Implementation with Tools
 
@@ -221,7 +219,7 @@ export const { POST } = serve<{ prompt: string }>(async (context) => {
       maxSteps: 2,
       prompt,
     });
-    
+
     await context.run("text", () => {
       console.log(`TEXT: ${result.text}`);
       return result.text;
@@ -238,9 +236,7 @@ export const { POST } = serve<{ prompt: string }>(async (context) => {
 
 When called with the same prompt as above, we will see the following logs:
 
-<Frame>
-  <img src="/img/qstash-workflow/ai-sdk/with-tool.png" />
-</Frame>
+  <img />
 
 ## Important Considerations
 
@@ -287,7 +283,7 @@ You must use the following error handling pattern exactly as shown. The conditio
 ```typescript {3-9}
 try {
   // Your generation code
-} catch (error) {    
+} catch (error) {
   if (error instanceof ToolExecutionError && error.cause instanceof WorkflowAbort) {
     throw error.cause;
   } else {
@@ -296,13 +292,12 @@ try {
 }
 ```
 
-
 ### Tool Implementation
 
 When implementing tools:
-- Each tool's `execute` function must be wrapped in a `context.run()` call
-- Tool steps should have descriptive names for tracking
-- Tools must follow the same error handling pattern as above
+* Each tool's `execute` function must be wrapped in a `context.run()` call
+* Tool steps should have descriptive names for tracking
+* Tools must follow the same error handling pattern as above
 
 Example:
 ```typescript

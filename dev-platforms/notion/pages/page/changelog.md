@@ -12,6 +12,12 @@ path: page/changelog
   `old_str` must also be a non-empty string. Empty values were previously ignored, which silently skipped the replacement; they now fail validation on both `notion-update-page` and [Update a page's content as markdown](/reference/update-page-markdown).
 </Update>
 
+<Update label="August 24, 2026">
+  ### Admin API reference for users and permission groups
+
+  The [Admin API](/reference/admin/intro) reference now covers [listing workspace users](/reference/admin/list-users) and managing workspace permission groups and direct memberships. These endpoints require the new `user:read`, `permission-group:read`, and `permission-group:write` scopes and are available to eligible Enterprise organizations.
+</Update>
+
 <Update label="August 20, 2026">
   ### Notion Agent APIs in public beta
 

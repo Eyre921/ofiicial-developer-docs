@@ -4,20 +4,20 @@ source: https://upstash.com/docs/workflow/features/sleep
 path: docs/workflow/features/sleep
 ---
 
-Upstash Workflow provides a **Sleep** feature that allows you to pause workflow execution for specified durations without consuming compute resources. 
+Upstash Workflow provides a **Sleep** feature that allows you to pause workflow execution for specified durations without consuming compute resources.
 
 This feature enables you to build time-based workflows, implement delays between steps, and create scheduled operations without the limitations of traditional serverless timeouts.
 
 ## How Sleep Works
 
-When you use `context.sleep` or `context.sleepUntil` in your workflow, Upstash Workflow automatically pauses execution and schedules the next step to run after the specified delay. 
+When you use `context.sleep` or `context.sleepUntil` in your workflow, Upstash Workflow automatically pauses execution and schedules the next step to run after the specified delay.
 This happens without keeping your serverless function running, making it cost-effective and reliable for long delays.
 
 <Note>
   **Important:** Sleep durations have limits based on your pricing plan:
-  - **Free**: Maximum delay of 7 days
-  - **Pay-as-you-go**: Maximum delay of 1 year  
-  - **Fixed pricing**: Custom delays (no limit)
+  * **Free**: Maximum delay of 7 days
+  * **Pay-as-you-go**: Maximum delay of 1 year
+  * **Fixed pricing**: Custom delays (no limit)
 </Note>
 
 ## Sleep Methods
@@ -61,40 +61,40 @@ serve = Serve(app)
 @serve.post("/api/onboarding")
 async def onboarding(context: AsyncWorkflowContext[str]) -> None:
     user_id = context.request_payload["user_id"]
-    
+
     # Send welcome email immediately
     async def _send_welcome_email():
         return await send_welcome_email(user_id)
-    
+
     await context.run("send-welcome-email", _send_welcome_email)
-    
+
     # Wait for 3 days before sending follow-up
     await context.sleep("wait-for-follow-up", "3d")
-    
+
     # Send follow-up email
     async def _send_follow_up_email():
         return await send_follow_up_email(user_id)
-    
+
     await context.run("send-follow-up-email", _send_follow_up_email)
 ```
 </CodeGroup>
 
 You can specify durations using human-readable strings:
 
-- `"10s"` = 10 seconds
-- `"1m"` = 1 minute  
-- `"30m"` = 30 minutes
-- `"2h"` = 2 hours
-- `"1d"` = 1 day
-- `"1w"` = 1 week
-- `"1mo"` = 1 month
-- `"1y"` = 1 year
+* `"10s"` = 10 seconds
+* `"1m"` = 1 minute
+* `"30m"` = 30 minutes
+* `"2h"` = 2 hours
+* `"1d"` = 1 day
+* `"1w"` = 1 week
+* `"1mo"` = 1 month
+* `"1y"` = 1 year
 
 You can also use numeric values in seconds:
 
-- `60` = 60 seconds (1 minute)
-- `3600` = 3600 seconds (1 hour)
-- `86400` = 86400 seconds (1 day)
+* `60` = 60 seconds (1 minute)
+* `3600` = 3600 seconds (1 hour)
+* `86400` = 86400 seconds (1 day)
 
 ### 2. context.sleepUntil
 
@@ -133,26 +133,26 @@ serve = Serve(app)
 async def scheduled_task(context: AsyncWorkflowContext[str]) -> None:
     user_id = context.request_payload["user_id"]
     scheduled_time = context.request_payload["scheduled_time"]
-    
+
     # Calculate the scheduled time
     scheduled_date = datetime.fromisoformat(scheduled_time)
-    
+
     # Wait until the scheduled time
     await context.sleep_until("wait-until-scheduled", scheduled_date)
-    
+
     # Execute the scheduled task
     async def _execute_task():
         return await execute_task(user_id)
-    
+
     await context.run("execute-scheduled-task", _execute_task)
 ```
 </CodeGroup>
 
 For `context.sleepUntil`, you can use:
 
-- `Date` objects (JavaScript/TypeScript)
-- Unix timestamps (Python)
-- ISO string dates
+* `Date` objects (JavaScript/TypeScript)
+* Unix timestamps (Python)
+* ISO string dates
 
 <Tip>
   Sleep operations have a precision of approximately 1 second. Very short delays (less than 1 second) may not be exact.

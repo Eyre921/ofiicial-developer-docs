@@ -4,10 +4,6 @@ source: https://upstash.com/docs/devops/developer-api/start-redis/create
 path: docs/devops/developer-api/start-redis/create
 ---
 
-> Creates a free, temporary Redis database without an account or API key.
-
-`POST https://upstash.com/start-redis`
-
 This endpoint does not require authentication. It creates a zero-config
 Redis database and returns its credentials, so an AI agent can get scratch
 storage on the fly without signing up.
@@ -42,8 +38,57 @@ keep the database in their Upstash account.
 
 The response body is `text/markdown` and contains:
 
-- The database ID (reuse it as `Idempotency-Key` to re-fetch the credentials).
-- The REST endpoint and token.
-- A metrics URL (see [Get Metrics](/devops/developer-api/start-redis/metrics)).
-- The expiry date, and a console URL a user can open to view usage and claim the database.
-- A quickstart with example commands using the REST API.
+* The database ID (reuse it as `Idempotency-Key` to re-fetch the credentials).
+* The REST endpoint and token.
+* A metrics URL (see [Get Metrics](/docs/devops/developer-api/start-redis/metrics)).
+* The expiry date, and a console URL a user can open to view usage and claim the database.
+* A quickstart with example commands using the REST API.
+
+<RequestExample>
+
+```sh curl
+curl -X POST https://upstash.com/start-redis \
+  -H "Idempotency-Key: $(uuidgen | tr '[:upper:]' '[:lower:]')" \
+  -H "User-Agent: <your-agent-name>"
+```
+
+```sh Re-fetch an existing database
+curl -X POST https://upstash.com/start-redis \
+  -H "Idempotency-Key: <the-uuid-you-used-before>" \
+  -H "User-Agent: <your-agent-name>"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```md 200 OK
+# Your Redis is ready
+
+**Database ID:** 3b1f7c2e-9d4a-4c8b-a1e5-6f2d8e9c0b47
+**Endpoint:** https://example-123456.upstash.io
+**Token:** <token>
+**Metrics:** https://upstash.com/start-redis/metrics/3b1f7c2e-9d4a-4c8b-a1e5-6f2d8e9c0b47 (JSON: uptime, commands, keys, throughput, memory, bandwidth)
+**Expires:** 2026-08-28 (3 days from creation).
+To keep this database alive, share the console URL with the user
+(they can view usage and click Claim to take ownership):
+https://upstash.com/start-redis/console/3b1f7c2e-9d4a-4c8b-a1e5-6f2d8e9c0b47
+
+To re-fetch these credentials, POST again with the database id as
+the `Idempotency-Key` header:
+
+  curl -X POST -H "Idempotency-Key: 3b1f7c2e-9d4a-4c8b-a1e5-6f2d8e9c0b47" https://upstash.com/start-redis
+
+**Avoid storing sensitive data** (PII, secrets, production credentials) — this database is temporary and not tied to a user account until claimed.
+
+## Quickstart
+
+# Short-term memory — state across tool calls in one run
+curl https://example-123456.upstash.io \
+  -H "Authorization: Bearer <token>" \
+  -d '["SET","session:abc","{\"step\":2,\"plan\":\"...\"}","EX","3600"]'
+
+...
+```
+
+</ResponseExample>

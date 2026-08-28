@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/hash/hpexpire
 path: docs/redis/commands/hash/hpexpire
 ---
 
-> Set field TTL in milliseconds.
-
 Use `HPEXPIRE` to give individual hash fields a lifetime in milliseconds, after which those fields are removed from the hash.
 
-It is the millisecond form of [`HEXPIRE`](/redis/commands/hash/hexpire) and behaves identically otherwise: expiration is per field, the hash survives as long as it has fields, and the key disappears when the last field expires. The finer precision matters for short-lived fields such as per-field locks or rate limit windows.
+It is the millisecond form of [`HEXPIRE`](/docs/redis/commands/hash/hexpire) and behaves identically otherwise: expiration is per field, the hash survives as long as it has fields, and the key disappears when the last field expires. The finer precision matters for short-lived fields such as per-field locks or rate limit windows.
 
 `FIELDS <numfields>` introduces the field list and the count must match. The optional condition applies the new lifetime only in certain cases: `NX` when the field has no expiration, `XX` when it already has one, `GT` when the new expiration is later than the current one, and `LT` when it is earlier. The reply holds one status code per field: `1` when set, `0` when the condition prevented it, `2` when the field was deleted immediately, and `-2` when it does not exist.
 
@@ -31,8 +29,8 @@ HPEXPIRE <key> <milliseconds>
 
 ## Important points
 
-- `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
-- A field with no expiration counts as an infinite one, so `GT` never sets an expiration on such a field and `LT` always does.
+* `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
+* A field with no expiration counts as an infinite one, so `GT` never sets an expiration on such a field and `LT` always does.
 
 ## Response
 

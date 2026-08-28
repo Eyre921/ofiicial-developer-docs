@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/server/acl-deluser
 path: docs/redis/commands/server/acl-deluser
 ---
 
-> Delete one or more ACL users.
-
 Use `ACL DELUSER` to remove one or more ACL users and close any connections currently authenticated as them.
 
 Multiple usernames can be deleted in a single call. The reply is the number of users that actually existed and were removed, which can be lower than the number of names passed in.
@@ -24,8 +22,8 @@ ACL DELUSER <username> [username ...]
 
 ## Important points
 
-- The `default` user cannot be deleted; the command returns an error if it is included.
-- Deleting a user immediately terminates any of its active connections and subscriptions.
+* The `default` user cannot be deleted; the command returns an error if it is included.
+* Deleting a user immediately terminates any of its active connections and subscriptions.
 
 ## Response
 

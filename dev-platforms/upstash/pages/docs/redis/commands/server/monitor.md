@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/server/monitor
 path: docs/redis/commands/server/monitor
 ---
 
-> Stream all commands received.
-
 Use `MONITOR` to stream every command the server processes, as it happens, to the current connection.
 
 The connection turns into a continuous feed and stops accepting other commands, so it must be a dedicated one; closing it is how you stop monitoring. Each line carries a timestamp, the client that sent the command, and the command with its arguments.
@@ -24,9 +22,9 @@ This command takes no arguments.
 
 ## Important points
 
-- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
-- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
-- MONITOR changes the TCP connection into a continuous command stream. Use a dedicated connection and close it to stop monitoring.
+* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+* MONITOR changes the TCP connection into a continuous command stream. Use a dedicated connection and close it to stop monitoring.
 
 ## Response
 

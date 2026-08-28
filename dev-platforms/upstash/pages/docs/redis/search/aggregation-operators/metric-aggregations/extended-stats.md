@@ -8,10 +8,10 @@ path: docs/redis/search/aggregation-operators/metric-aggregations/extended-stats
 
 In addition to `count`, `sum`, `min`, `max`, and `avg`, this operator provides:
 
-- `sumOfSquares`
-- `variance`, `variancePopulation`, `varianceSampling`
-- `stdDeviation`, `stdDeviationPopulation`, `stdDeviationSampling`
-- `stdDeviationBounds` (`upper`, `lower`, plus sampling/population variants)
+* `sumOfSquares`
+* `variance`, `variancePopulation`, `varianceSampling`
+* `stdDeviation`, `stdDeviationPopulation`, `stdDeviationSampling`
+* `stdDeviationBounds` (`upper`, `lower`, plus sampling/population variants)
 
 `sigma` controls the width of `stdDeviationBounds`.
 

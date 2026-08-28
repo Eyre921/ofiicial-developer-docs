@@ -19,9 +19,9 @@ Because a deep link is a URL, you can put one anywhere a link can go:
 
 This page covers how to [build a link](#build-a-link), [embed one in a runbook or trigger it from the shell](#examples), and [manage or disable handler registration](#registration-and-supported-platforms) on each platform.
 
-## How it works
+## How deep links work
 
-The `claude-cli://` prefix is a custom URL scheme that Claude Code registers with your operating system, similar to how `mailto:` links open your email client. The link can live on a web page, in a wiki, in a Slack message, or in any app that renders links. When you click one:
+The `claude-cli://` prefix is a custom URL scheme that Claude Code registers with your operating system, similar to how `mailto:` links open your email client. When you click a deep link:
 
 1. The browser or app hands the URL to your operating system.
 2. The operating system recognizes the `claude-cli://` prefix and starts Claude Code on your machine.
@@ -30,9 +30,7 @@ The `claude-cli://` prefix is a custom URL scheme that Claude Code registers wit
 
 The link itself can be hosted anywhere, but the session always opens locally on the computer where you clicked. See [Registration and supported platforms](#registration-and-supported-platforms) for which terminal emulator opens on each operating system.
 
-<Note>
-  The platform that displays the link must allow custom URL schemes. GitHub-rendered Markdown allows `http` and `https` but strips schemes like `claude-cli://` in READMEs, issues, pull requests, and wikis. Only the link text shows, with no link behind it and the URL hidden. See [Troubleshooting](#the-link-renders-as-plain-text-instead-of-being-clickable) for a workaround.
-</Note>
+The platform that displays the link must allow custom URL schemes. For what GitHub does with them and the workaround, see [The link renders as plain text instead of being clickable](#the-link-renders-as-plain-text-instead-of-being-clickable).
 
 ### What a launched session shows
 
@@ -73,7 +71,7 @@ Investigate the failed deploy of payments-api.
 Check recent commits to main and the last successful build.
 ```
 
-You can edit the prompt before pressing Enter to send it. If you have no local clone of the repository, the session opens in your home directory instead. See [Choose between `cwd` and `repo`](#choose-between-cwd-and-repo) for how the local path is selected when you have multiple clones or worktrees.
+You can edit the prompt before pressing Enter to send it. See [Choose between `cwd` and `repo`](#choose-between-cwd-and-repo) for how the local path is selected when you have multiple clones or worktrees.
 
 ### Choose between `cwd` and `repo`
 
@@ -81,9 +79,7 @@ Use `cwd` when everyone who clicks the link has the project at the same absolute
 
 Use `repo` when the link is shared and each person clones to a different location. Claude Code resolves the slug to a local path as follows:
 
-* Each time you run `claude` in a Git repository, that directory's filesystem path is recorded against the repository's GitHub `owner/name` slug.
-* When a deep link arrives, `repo` opens whichever matching path you used most recently. Multiple clones and worktrees are tracked separately, so it picks the one you worked in last.
-* The lookup only finds paths where you have already run Claude Code at least once.
+* `repo` opens the linked repository's clone or worktree where you most recently ran `claude`. Each time you run `claude` in a Git repository, Claude Code records that directory's path against the repository's GitHub `owner/name` slug. Claude Code tracks clones and worktrees separately.
 * The link does not change which branch is checked out. The session opens in whatever state that directory is currently in.
 
 The welcome header shows which path it picked so you can confirm the right clone opened.
@@ -121,6 +117,8 @@ You can also open a deep link from a shell script, alias, or automation rather t
     ```bash theme={null}
     open "claude-cli://open?repo=acme/payments&q=review%20open%20PRs"
     ```
+
+    On success, a new terminal window opens with Claude Code running and the prompt pre-filled.
   </Tab>
 
   <Tab title="Linux">
@@ -145,6 +143,8 @@ You can also open a deep link from a shell script, alias, or automation rather t
     ```cmd theme={null}
     start "" "claude-cli://open?repo=acme/payments&q=review%20open%20PRs"
     ```
+
+    On success, a new terminal window opens with Claude Code running and the prompt pre-filled.
   </Tab>
 </Tabs>
 
@@ -160,7 +160,7 @@ Claude Code registers the `claude-cli://` handler with your operating system on 
 
 The handler launches Claude Code in a detected terminal emulator. On macOS, Claude Code remembers the terminal from your most recent interactive session and reuses it, supporting iTerm2, Ghostty, kitty, Alacritty, WezTerm, and Terminal.app. On Linux it honors the `$TERMINAL` environment variable, then `x-terminal-emulator`, then a list of common emulators. On Windows it prefers Windows Terminal, then PowerShell, then `cmd.exe`.
 
-To prevent registration entirely, set [`disableDeepLinkRegistration`](/docs/en/settings) to `"disable"` in `settings.json`. To enforce this across an organization so users cannot re-enable it, set it in [managed settings](/docs/en/server-managed-settings) instead.
+To prevent registration entirely, set [`disableDeepLinkRegistration`](/docs/en/settings-reference#disabledeeplinkregistration) to `"disable"` in `settings.json`. To enforce this across an organization so users cannot re-enable it, set it in [managed settings](/docs/en/server-managed-settings) instead.
 
 ## Open a VS Code tab instead of a terminal
 
@@ -182,7 +182,7 @@ Some Markdown renderers only allow `http` and `https` links and strip other URL 
 
 ### The session opens in my home directory instead of the repo
 
-The `repo` parameter only resolves to clones Claude Code has already seen. Run `claude` inside the clone once so its path is recorded, or switch the link to use `cwd` with an absolute path.
+The `repo` parameter only resolves to clones Claude Code has already seen. Run `claude` inside the clone once so Claude Code records its path, or switch the link to use `cwd` with an absolute path.
 
 ### The link opens the wrong terminal
 

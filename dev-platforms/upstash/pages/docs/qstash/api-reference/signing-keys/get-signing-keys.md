@@ -4,6 +4,5 @@ source: https://upstash.com/docs/qstash/api-reference/signing-keys/get-signing-k
 path: docs/qstash/api-reference/signing-keys/get-signing-keys
 ---
 
-> Retrieve your current and next signing keys
-
-`GET /v2/keys`
+/qstash/openapi.yaml get /v2/keys
+Retrieve your current and next signing keys

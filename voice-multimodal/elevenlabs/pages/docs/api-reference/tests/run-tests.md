@@ -116,6 +116,10 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/run-tests
       - `monitoring_enabled` (boolean, optional, default: false) — Enable real-time monitoring of conversations via WebSocket
       - `monitoring_events` (list of enum, optional) — The events that will be sent to monitoring connections.
         - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `context_usage`, `internal_turn_probability`, `internal_tentative_agent_response`
+      - `dtmf_input_settings` (object, optional, nullable) — Configure DTMF (keypad) input collection during phone calls
+        - `dtmf_input_timeout` (double, optional, default: 2) — Timeout in seconds to wait for additional DTMF digits
+        - `hash_terminator` (boolean, optional, default: true) — If true, pressing # immediately completes DTMF input
+        - `redact_input` (boolean, optional, default: false) — If true, replace the caller's DTMF (keypad) entries with a redaction marker in the transcript, conversation log and analysis. Digits the agent repeats back or passes to a tool are not affected.
       - `background_sound` (object, optional) — Configuration for background sound during conversations.
         - `source_type` (enum, optional, nullable) — The type of background sound source.
           - Allowed values: `preset`
@@ -972,6 +976,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/run-tests
             - `file_input` (object, optional, nullable) — Configuration for file input (image/PDF uploads) during conversations.
             - `monitoring_enabled` (boolean, optional, nullable) — Enable real-time monitoring of conversations via WebSocket
             - `monitoring_events` (list of enum, optional, nullable) — The events that will be sent to monitoring connections.
+            - `dtmf_input_settings` (object, optional, nullable) — Configure DTMF (keypad) input collection during phone calls
             - `background_sound` (object, optional, nullable) — Configuration for background sound during conversations.
             - `source_attribution` (boolean, optional, nullable) — When enabled and knowledge base content is present, the LLM is instructed to report which sources it used.
           - `language_presets` (map from string to object, optional, nullable) — Language presets for conversations
@@ -1020,6 +1025,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/run-tests
             - `value` (string, required) — The dynamic variable name to resolve
           - `type`: `static` (PostDialDigitsStatic)
             - `value` (string, required) — DTMF digits to send after call connects (e.g., 'ww1234' for extension)
+        - `sip_refer_play_dialtone` (boolean, optional, default: true) — When True, a ringing tone is played on the original call leg while a SIP REFER transfer completes. The tone is carried over RTP to the SIP peer executing the REFER, so disable this if the receiving system (e.g. an SBC or contact center) should not hear it. When disabled the caller hears silence until the transfer completes. SIP REFER transfers only.
         - `transfer_type` (enum, optional, default: conference)
           - Allowed values: `blind`, `conference`, `sip_refer`
         - `uui` (object, optional, nullable) — User-to-User Information (RFC 7433) to attach to SIP REFER transfers. Carries call context such as CRM identifiers or escalation reason across the transfer boundary.
@@ -1213,7 +1219,7 @@ Successful Response
           - `summary` (string, optional, nullable)
           - `provider_redact` (boolean, optional, default: false)
         - `source_medium` (enum, optional, nullable)
-          - Allowed values: `audio`, `text`, `image`, `file`
+          - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
         - `source_event_id` (integer, optional, nullable)
         - `used_static_kb_document_ids` (list of string, optional)
         - `user_identifier` (string, optional, nullable)
@@ -1283,7 +1289,7 @@ Successful Response
             - `summary` (string, optional, nullable)
             - `provider_redact` (boolean, optional, default: false)
           - `source_medium` (enum, optional, nullable)
-            - Allowed values: `audio`, `text`, `image`, `file`
+            - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
           - `source_event_id` (integer, optional, nullable)
           - `used_static_kb_document_ids` (list of string, optional)
           - `user_identifier` (string, optional, nullable)
@@ -1431,7 +1437,7 @@ Successful Response
           - `summary` (string, optional, nullable)
           - `provider_redact` (boolean, optional, default: false)
         - `source_medium` (enum, optional, nullable)
-          - Allowed values: `audio`, `text`, `image`, `file`
+          - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
         - `source_event_id` (integer, optional, nullable)
         - `used_static_kb_document_ids` (list of string, optional)
         - `user_identifier` (string, optional, nullable)
@@ -1500,7 +1506,7 @@ Successful Response
             - `summary` (string, optional, nullable)
             - `provider_redact` (boolean, optional, default: false)
           - `source_medium` (enum, optional, nullable)
-            - Allowed values: `audio`, `text`, `image`, `file`
+            - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
           - `source_event_id` (integer, optional, nullable)
           - `used_static_kb_document_ids` (list of string, optional)
           - `user_identifier` (string, optional, nullable)
@@ -1670,7 +1676,7 @@ Successful Response
           - `summary` (string, optional, nullable)
           - `provider_redact` (boolean, optional, default: false)
         - `source_medium` (enum, optional, nullable)
-          - Allowed values: `audio`, `text`, `image`, `file`
+          - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
         - `source_event_id` (integer, optional, nullable)
         - `used_static_kb_document_ids` (list of string, optional)
         - `user_identifier` (string, optional, nullable)
@@ -1738,7 +1744,7 @@ Successful Response
             - `summary` (string, optional, nullable)
             - `provider_redact` (boolean, optional, default: false)
           - `source_medium` (enum, optional, nullable)
-            - Allowed values: `audio`, `text`, `image`, `file`
+            - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
           - `source_event_id` (integer, optional, nullable)
           - `used_static_kb_document_ids` (list of string, optional)
           - `user_identifier` (string, optional, nullable)
@@ -2031,7 +2037,7 @@ Successful Response
       - `summary` (string, optional, nullable)
       - `provider_redact` (boolean, optional, default: false)
     - `source_medium` (enum, optional, nullable)
-      - Allowed values: `audio`, `text`, `image`, `file`
+      - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
     - `source_event_id` (integer, optional, nullable)
     - `used_static_kb_document_ids` (list of string, optional)
     - `user_identifier` (string, optional, nullable)

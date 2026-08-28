@@ -25,19 +25,19 @@ The response contains information about the dispute and any response or evidence
 
 ```json
 {
-  object: "dispute"
-  id: "{{DISPUTE_ID}}",
-  charge: "ch_5Q4BjL06oPWwho",
-  evidence: {
-    customer_name: "Jane Austen",
-    customer_purchase_ip: "127.0.0.1",
-    product_description: "Widget ABC, color: red",
-    shipping_tracking_number: "Z01234567890",
-    uncategorized_text: "Additional notes and comments",
+  "object": "dispute",
+  "id": "{{DISPUTE_ID}}",
+  "charge": "ch_5Q4BjL06oPWwho",
+  "evidence": {
+    "customer_name": "Jane Austen",
+    "customer_purchase_ip": "127.0.0.1",
+    "product_description": "Widget ABC, color: red",
+    "shipping_tracking_number": "Z01234567890",
+    "uncategorized_text": "Additional notes and comments"
   },
-  evidence_details: {
-    due_by: 1403047735,
-    submission_count: 1
+  "evidence_details": {
+    "due_by": 1403047735,
+    "submission_count": 1
   }
   ...
 }

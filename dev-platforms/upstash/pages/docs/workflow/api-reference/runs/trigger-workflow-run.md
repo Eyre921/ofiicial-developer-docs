@@ -4,6 +4,5 @@ source: https://upstash.com/docs/workflow/api-reference/runs/trigger-workflow-ru
 path: docs/workflow/api-reference/runs/trigger-workflow-run
 ---
 
-> Start a new workflow run.
-
-`POST /v2/trigger/{workflowUrl}`
+/workflow/openapi.yaml post /v2/trigger/{workflowUrl}
+Start a new workflow run.

@@ -12,6 +12,8 @@ path: changelog/llms.txt
 
 ## Docs
 
+- [August 28, 2026](https://developers.deepgram.com/changelog/2026/8/28.md)
+- [August 27, 2026](https://developers.deepgram.com/changelog/2026/8/27.md)
 - [August 26, 2026](https://developers.deepgram.com/changelog/2026/8/26.md): Deepgram Self-Hosted release 260826 adds expressivity control to Flux TTS, and improves currency, date, and Japanese punctuation formatting.
 - [August 19, 2026](https://developers.deepgram.com/changelog/2026/8/19.md)
 - [August 17, 2026](https://developers.deepgram.com/changelog/2026/8/17.md)

@@ -84,7 +84,7 @@ Pass an object with a `filter` field:
 <ParamField body="flowControl" type="object" optional>
     An optional flow control configuration to limit concurrency and execution rate of restarted workflow runs.
 
-    See [Flow Control](/workflow/features/flow-control) for details.
+    See [Flow Control](/docs/workflow/features/flow-control) for details.
 
     <Expandable title="properties">
         <ParamField body="key" type="string">

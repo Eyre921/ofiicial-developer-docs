@@ -51,10 +51,10 @@ The route function defines the execution logic of the workflow.
 It is an async function that receives a context object, which is automatically created and passed by Upstash Workflow.
 
 The context object provides:
-- **Workflow APIs** – functions for defining workflow steps.
-- **Workflow Run Properties** – request payload, request headers, and other metadata.
+* **Workflow APIs** – functions for defining workflow steps.
+* **Workflow Run Properties** – request payload, request headers, and other metadata.
 
-For a full list of available APIs and properties, see the [Workflow Context](/workflow/basics/context) documentation.
+For a full list of available APIs and properties, see the [Workflow Context](/docs/workflow/basics/context) documentation.
 
 <CodeGroup>
     ```typescript TypeScript highlight={4-9}
@@ -98,7 +98,7 @@ For a full list of available APIs and properties, see the [Workflow Context](/wo
 ## Options
 
 Options provide additional configuration for workflow runs.
-Most of them are advanced settings and are not required for typical use cases. See [Advanced Options](/workflow/basics/serve/advanced) for more details.
+Most of them are advanced settings and are not required for typical use cases. See [Advanced Options](/docs/workflow/basics/serve/advanced) for more details.
 
 <CodeGroup>
 

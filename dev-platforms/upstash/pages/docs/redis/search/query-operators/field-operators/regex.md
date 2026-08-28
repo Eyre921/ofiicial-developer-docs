@@ -13,15 +13,15 @@ Regex patterns are matched against individual tokenized terms, not the entire fi
 Text fields are tokenized (split into words) during indexing, so the regex is applied to each term separately.
 
 For example, if a document contains "hello world" in a text field:
-- `{ $regex: "hel.*" }` matches (matches the "hello" term)
-- `{ $regex: "hello world.*" }` does NOT match (regex cannot span multiple terms)
-- `{ $regex: "wor.*" }` matches (matches the "world" term)
+* `{ $regex: "hel.*" }` matches (matches the "hello" term)
+* `{ $regex: "hello world.*" }` does NOT match (regex cannot span multiple terms)
+* `{ $regex: "wor.*" }` matches (matches the "world" term)
 
 For exact phrase matching across multiple words, use the [$phrase](./phrase) operator instead.
 
 ### Performance Considerations
 
-- **Avoid leading wildcards:** Patterns like `".*suffix"` require scanning all terms in the index and are slow.
+* **Avoid leading wildcards:** Patterns like `".*suffix"` require scanning all terms in the index and are slow.
   Prefer patterns that start with literal characters.
 
 ### Stemming Behavior

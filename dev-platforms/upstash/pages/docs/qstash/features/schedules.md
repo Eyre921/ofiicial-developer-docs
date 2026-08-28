@@ -12,7 +12,7 @@ Schedules can be configured using `cron` expressions.
 [crontab.guru](https://crontab.guru/) is a great tool for understanding and
 creating cron expressions.
 
-By default, we evaluate cron expressions in `UTC`.  
+By default, we evaluate cron expressions in `UTC`.
 If you want to run your schedule in a specific timezone, see the section on
 [Timezones](#timezones).
 
@@ -48,7 +48,7 @@ curl -XPOST \
 ```
 </CodeGroup>
 
-All of the [other config options](/qstash/howto/publishing#optional-parameters-and-configuration)
+All of the [other config options](/docs/qstash/howto/publishing#optional-parameters-and-configuration)
 can still be used.
 
 <Info>
@@ -121,7 +121,7 @@ curl -XPOST \
 ```
 </CodeGroup>
 
-### Overwriting an existing schedule 
+### Overwriting an existing schedule
 
 You can pass scheduleId explicitly to overwrite an existing schedule or just simply create the schedule
 with the given schedule id.
@@ -150,9 +150,9 @@ curl -XPOST \
 
 ### Timezones
 
-By default, cron expressions are evaluated in `UTC`.  
+By default, cron expressions are evaluated in `UTC`.
 You can specify a different timezone using the `CRON_TZ` prefix directly inside
-the cron expression.  All [IANA timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) 
+the cron expression.  All [IANA timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 are supported.
 
 For example, this schedule runs every day at `04:00 AM` in New York time:

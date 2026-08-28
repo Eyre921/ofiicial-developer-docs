@@ -80,12 +80,13 @@ Reference: https://elevenlabs.io/docs/api-reference/music/compose-detailed-strea
 - `finetune_id` (string, optional, nullable) — The ID of the finetune to use for the generation
 - `store_for_inpainting` (boolean, optional, default: false) — Whether to store the generated song for inpainting.
 - `with_timestamps` (boolean, optional, default: false) — Whether to return the timestamps of the words in the generated song.
+- `with_waveform_visual` (boolean, optional, default: false) — Whether to return the visual waveform of the generated song.
 
 ## Response
 
 ### 200
 
-Server-Sent Events for composition plan, song metadata, audio chunks with optional word timestamps, and completion.
+Server-Sent Events for composition plan, song metadata, audio chunks with optional word timestamps and visual waveform, and completion.
 
 - Streaming response of `string`.
 

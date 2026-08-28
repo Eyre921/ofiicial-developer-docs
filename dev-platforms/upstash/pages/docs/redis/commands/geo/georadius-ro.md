@@ -4,17 +4,15 @@ source: https://upstash.com/docs/redis/commands/geo/georadius-ro
 path: docs/redis/commands/geo/georadius-ro
 ---
 
-> Find members within a radius of a point.
-
 <Warning>
-  Prefer [`GEOSEARCH`](/redis/commands/geo/geosearch) with `FROMLONLAT` and `BYRADIUS` in new code: `GEOSEARCH <key> FROMLONLAT <longitude> <latitude> BYRADIUS <radius> (m | km | ft | mi)`. 
+  Prefer [`GEOSEARCH`](/docs/redis/commands/geo/geosearch) with `FROMLONLAT` and `BYRADIUS` in new code: `GEOSEARCH <key> FROMLONLAT <longitude> <latitude> BYRADIUS <radius> (m | km | ft | mi)`.
 </Warning>
 
-Use `GEORADIUS_RO` to find members within a radius of a point. It is the read-only form of [`GEORADIUS`](/redis/commands/geo/georadius).
+Use `GEORADIUS_RO` to find members within a radius of a point. It is the read-only form of [`GEORADIUS`](/docs/redis/commands/geo/georadius).
 
 It accepts the same query and the same `WITHCOORD`, `WITHDIST`, `WITHHASH`, `COUNT`, and sorting options, but it has no `STORE` or `STOREDIST` clause, so the server knows the call cannot write and can serve it on replicas and from read-only scripts.
 
-[`GEOSEARCH`](/redis/commands/geo/geosearch) is read-only as well and also supports rectangular areas.
+[`GEOSEARCH`](/docs/redis/commands/geo/geosearch) is read-only as well and also supports rectangular areas.
 
 ## Syntax
 

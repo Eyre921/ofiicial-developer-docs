@@ -23,8 +23,8 @@ The operators work together as follows:
 
 1. **`$must`** defines the required conditions. Documents must match ALL of these.
 2. **`$should`** adds optional conditions:
-   - When used alone: documents must match at least one condition
-   - When combined with `$must`: conditions become optional score boosters
+   * When used alone: documents must match at least one condition
+   * When combined with `$must`: conditions become optional score boosters
 3. **`$mustNot`** filters out unwanted documents from the result set.
 
 ### Combining Operators

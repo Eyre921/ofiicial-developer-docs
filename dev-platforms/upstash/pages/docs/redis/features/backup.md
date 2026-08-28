@@ -19,13 +19,11 @@ There are two ways to create a backup of your database:
 
 To create a backup right now:
 
-- Go to the database details page and navigate to the `Backups` tab
-- Click on the `Backup & Export` button
-- Choose `Backup`
+* Go to the database details page and navigate to the `Backups` tab
+* Click on the `Backup & Export` button
+* Choose `Backup`
 
-<Frame>
-  <img src="/img/backuprestore/backup-export-button.png" width="800" />
-</Frame>
+  <img width="800" />
 
 Backup process will start and will appear in the backups table below.
 
@@ -33,12 +31,10 @@ Backup process will start and will appear in the backups table below.
 
 To automatically create backups on a regular schedule:
 
-- Go to the database details page and navigate to the `Backups` tab
-- Click the switch next to `Daily Backup` to enable daily backup or click on `Daily Backup` text itself to select how long the backup is to be stored (1 or 3 days)
+* Go to the database details page and navigate to the `Backups` tab
+* Click the switch next to `Daily Backup` to enable daily backup or click on `Daily Backup` text itself to select how long the backup is to be stored (1 or 3 days)
 
-<Frame>
-  <img src="/img/backuprestore/daily-backup-toggle.png" width="800" />
-</Frame>
+  <img width="800" />
 
 With daily backups enabled, your database will be automatically backed up every day.
 
@@ -46,9 +42,9 @@ With daily backups enabled, your database will be automatically backed up every 
 
 All created backups are displayed in the backups table in the `Backups` tab. From this table, you can:
 
-- View backup details (name, creation date, size)
-- Restore your database from any backup
-- Delete backups you no longer need
+* View backup details (name, creation date, size)
+* Restore your database from any backup
+* Delete backups you no longer need
 
 ## Restoring from Backup
 
@@ -62,29 +58,25 @@ You can restore your database from any backup in your account or team.
 
 To restore from a backup of the current database:
 
-- Go to the database details page and navigate to the `Backups` tab
-- Find the backup you want to restore in the backups table
-- Click on the `Restore` button next to the backup
-- Confirm that you are deleting existing data and want to proceed with the restore
+* Go to the database details page and navigate to the `Backups` tab
+* Find the backup you want to restore in the backups table
+* Click on the `Restore` button next to the backup
+* Confirm that you are deleting existing data and want to proceed with the restore
 
-<Frame>
-  <img src="/img/backuprestore/restore-from-table.png" width="800" />
-</Frame>
+  <img width="800" />
 
 ### Restore from Any Database Backup
 
 To restore from a backup created from any database in your account or team:
 
-- Go to the database details page and navigate to the `Backups` tab
-- Click on the `Restore...` button
-- Select the source database (the database from which the backup was created)
-- Select the backup you want to restore
-- Click on `Start Restore`
+* Go to the database details page and navigate to the `Backups` tab
+* Click on the `Restore...` button
+* Select the source database (the database from which the backup was created)
+* Select the backup you want to restore
+* Click on `Start Restore`
 
-<Frame>
-  <img src="/img/backuprestore/restore-modal.png" width="700" />
-</Frame>
+  <img width="700" />
 
 ### Restore from the Redis List Page
 
-You can also restore databases directly from the Redis list page. This method is explained in detail in the [Import/Export documentation](/redis/howto/importexport).
+You can also restore databases directly from the Redis list page. This method is explained in detail in the [Import/Export documentation](/docs/redis/howto/importexport).

@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zinter
 path: docs/redis/commands/sorted-set/zinter
 ---
 
-> Get sorted set intersection.
-
 Use `ZINTER` to get the members that appear in every one of the given sorted sets.
 
 `<numkeys>` states how many keys follow. By default the score of each member in the result is the sum of its scores across all the inputs, which is what makes intersections useful for combining rankings. `WEIGHTS` multiplies each input's scores by a factor before they are combined, so one source can count more than another, and `AGGREGATE` replaces the sum with `MIN` or `MAX`. `WITHSCORES` returns the computed scores along with the members.
 
-The result is not stored; use [`ZINTERSTORE`](/redis/commands/sorted-set/zinterstore) to keep it or [`ZINTERCARD`](/redis/commands/sorted-set/zintercard) when only the size matters.
+The result is not stored; use [`ZINTERSTORE`](/docs/redis/commands/sorted-set/zinterstore) to keep it or [`ZINTERCARD`](/docs/redis/commands/sorted-set/zintercard) when only the size matters.
 
 ## Syntax
 
@@ -33,9 +31,9 @@ ZINTER <numkeys> <key> [<key> ...]
 
 ## Important points
 
-- `numkeys` must equal the number of key arguments that immediately follow it.
-- Pair-based results may be flattened into one alternating array in RESP2 while RESP3 preserves nested pairs or a map.
-- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+* `numkeys` must equal the number of key arguments that immediately follow it.
+* Pair-based results may be flattened into one alternating array in RESP2 while RESP3 preserves nested pairs or a map.
+* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

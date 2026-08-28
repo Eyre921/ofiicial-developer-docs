@@ -44,7 +44,7 @@ path: api/customers/object
 - `id` (string)
   Unique identifier for the object.
 
-- `object` (string)
+- `object` (string, value is "customer")
   String representing the object’s type. Objects of the same type share the same value.
 
 - [`address`](https://docs.stripe.com/api/customers/object.md?query=address) (object, nullable)

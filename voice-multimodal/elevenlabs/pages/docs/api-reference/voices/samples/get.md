@@ -37,12 +37,6 @@ Successful Response
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
@@ -55,10 +49,8 @@ Successful Response
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
-    const client = new ElevenLabsClient({
-        apiKey: "sk-1234abcd5678efgh9012ijkl",
-    });
-    await client.voices.samples.audio.get("21m00Tcm4TlvDq8ikWAM", "VW7YKqPnjY4h39yTbx2L");
+    const client = new ElevenLabsClient();
+    await client.voices.samples.audio.get("voice_id", "sample_id");
 }
 main();
 
@@ -67,13 +59,11 @@ main();
 ```python
 from elevenlabs import ElevenLabs
 
-client = ElevenLabs(
-    api_key="sk-1234abcd5678efgh9012ijkl",
-)
+client = ElevenLabs()
 
 client.voices.samples.audio.get(
-    voice_id="21m00Tcm4TlvDq8ikWAM",
-    sample_id="VW7YKqPnjY4h39yTbx2L",
+    voice_id="voice_id",
+    sample_id="sample_id",
 )
 
 ```
@@ -83,21 +73,15 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L/audio"
+	url := "https://api.elevenlabs.io/v1/voices/voice_id/samples/sample_id/audio"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("xi-api-key", "sk-1234abcd5678efgh9012ijkl")
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -114,15 +98,12 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L/audio")
+url = URI("https://api.elevenlabs.io/v1/voices/voice_id/samples/sample_id/audio")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["xi-api-key"] = 'sk-1234abcd5678efgh9012ijkl'
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -132,10 +113,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L/audio")
-  .header("xi-api-key", "sk-1234abcd5678efgh9012ijkl")
-  .header("Content-Type", "application/json")
-  .body("{}")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/voices/voice_id/samples/sample_id/audio")
   .asString();
 ```
 
@@ -145,13 +123,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L/audio', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-    'xi-api-key' => 'sk-1234abcd5678efgh9012ijkl',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/voices/voice_id/samples/sample_id/audio');
 
 echo $response->getBody();
 ```
@@ -159,31 +131,18 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L/audio");
+var client = new RestClient("https://api.elevenlabs.io/v1/voices/voice_id/samples/sample_id/audio");
 var request = new RestRequest(Method.GET);
-request.AddHeader("xi-api-key", "sk-1234abcd5678efgh9012ijkl");
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = [
-  "xi-api-key": "sk-1234abcd5678efgh9012ijkl",
-  "Content-Type": "application/json"
-]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L/audio")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voices/voice_id/samples/sample_id/audio")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

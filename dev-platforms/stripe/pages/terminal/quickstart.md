@@ -622,7 +622,7 @@ github "stripe/stripe-terminal-ios"
 2. Enter the Stripe Terminal iOS SDK’s GitHub URL:
 
 ```bash
-https://github.com/stripe/stripe-terminal-ios
+https://github.com/stripe/stripe-terminal-ios-spm
 ```
 
 ### Create Locations for your readers

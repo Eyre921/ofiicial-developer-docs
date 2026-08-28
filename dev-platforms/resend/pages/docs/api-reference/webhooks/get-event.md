@@ -10,7 +10,7 @@ Retrieve the details of a single event delivered to a webhook.
 <Warning>
   Webhook events and delivery attempts are currently in private beta and only
   available to a limited number of users. APIs might change before it is
-  generally available. [Get in touch](https://resend.com/contact) if you're
+  generally available. [Get in touch](https://resend.com/help) if you're
   interested in testing this feature.
 
   <span />

@@ -4,10 +4,6 @@ source: https://upstash.com/docs/vector/api/endpoints/rename-namespace
 path: docs/vector/api/endpoints/rename-namespace
 ---
 
-> Renames a namespace of an index.
-
-`POST https://{endpoint}/rename-namespace`
-
 <Note>
   The default namespace, which is the empty string `""`, cannot be renamed.
 </Note>
@@ -37,3 +33,24 @@ path: docs/vector/api/endpoints/rename-namespace
 <ResponseField name="renamed" type="boolean">
   Whether the namespace is renamed or not.
 </ResponseField>
+
+<RequestExample>
+
+```sh curl
+curl $UPSTASH_VECTOR_REST_URL/rename-namespace \
+  -X POST \
+  -d '{ "namespace": "ns", "newNamespace": "newNs" }' \
+  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 OK
+{
+    "result": { "renamed": true }
+}
+```
+
+</ResponseExample>

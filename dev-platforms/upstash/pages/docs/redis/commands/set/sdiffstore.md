@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/set/sdiffstore
 path: docs/redis/commands/set/sdiffstore
 ---
 
-> Store set difference.
-
 Use `SDIFFSTORE` to compute the difference between sets and store it in another key.
 
 The destination holds the members of the first source set that are absent from all the others. It is overwritten if it already exists, and deleted when the result is empty. The reply is the number of members stored.

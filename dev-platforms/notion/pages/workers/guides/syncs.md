@@ -441,6 +441,10 @@ worker.sync("customersSync", {
 
 `await api.wait()` blocks until a request slot is available. In this example, at most 10 requests per second.
 
+<Note>
+  A pacer only paces calls to *your* third-party API. Notion separately limits how often the platform runs your sync — see [Limits](/workers/reference/limits) for the workspace-wide sync run and database write limits.
+</Note>
+
 ## Manage syncs from the CLI
 
 ```bash theme={null}
@@ -536,5 +540,9 @@ See the [CLI command reference](/cli/reference/commands) for the full list of `n
 
   <Card title="OAuth" icon="key" href="/workers/guides/oauth">
     Connect to APIs that require user authorization.
+  </Card>
+
+  <Card title="Limits" icon="bolt" href="/workers/reference/limits">
+    Sync run and database write rate limits.
   </Card>
 </CardGroup>

@@ -5,7 +5,7 @@ path: docs/redis/sdks/ratelimit-ts/methods
 ---
 
 This page contains information on what methods are available in Ratelimit and how they can be used. For information on the
-cost of these operations in term of number of Redis commands, refer to the [Costs page](/redis/sdks/ratelimit-ts/costs).
+cost of these operations in term of number of Redis commands, refer to the [Costs page](/docs/redis/sdks/ratelimit-ts/costs).
 
 ## `limit`
 
@@ -157,7 +157,7 @@ ratelimit.getRemaining(identifier: string): Promise<{
 
 ## `setDynamicLimit`
 
-This method sets or removes a [global dynamic rate limit](/redis/sdks/ratelimit-ts/features#dynamic-limits). Dynamic limits override the default limiter settings for all subsequent rate limit checks.
+This method sets or removes a [global dynamic rate limit](/docs/redis/sdks/ratelimit-ts/features#dynamic-limits). Dynamic limits override the default limiter settings for all subsequent rate limit checks.
 
 ```ts
 ratelimit.setDynamicLimit(options: {
@@ -166,7 +166,7 @@ ratelimit.setDynamicLimit(options: {
 ```
 
 **Parameters:**
-- `limit`: The new limit value (number), or `false` to remove the dynamic limit and fall back to the default
+* `limit`: The new limit value (number), or `false` to remove the dynamic limit and fall back to the default
 
 **Example:**
 
@@ -186,7 +186,7 @@ await ratelimit.setDynamicLimit({ limit: false });
 
 ## `getDynamicLimit`
 
-This method retrieves the current [dynamic limit](/redis/sdks/ratelimit-ts/features#dynamic-limits) if one is set.
+This method retrieves the current [dynamic limit](/docs/redis/sdks/ratelimit-ts/features#dynamic-limits) if one is set.
 
 ```ts
 ratelimit.getDynamicLimit(): Promise<{ dynamicLimit: number | null }>

@@ -6,9 +6,9 @@ path: docs/workflow/howto/use-webhooks
 
 This guide explains how to handle webhooks effectively in your Upstash Workflow applications. We'll walk through:
 
-- setting up webhook endpoints
-- verifying webhook requests
-- and processing webhook events
+* setting up webhook endpoints
+* verifying webhook requests
+* and processing webhook events
 
 <Card
   title="GitHub Repository"
@@ -56,10 +56,8 @@ from upstash_workflow import AsyncWorkflowContext
 app = FastAPI()
 serve = Serve(app)
 
-
 def initial_payload_parser(payload):
     return payload
-
 
 @serve.post("/api/example", initial_payload_parser=initial_payload_parser)
 async def example(context: AsyncWorkflowContext[str]) -> None:
@@ -96,7 +94,6 @@ export const { POST } = serve<string>(async (context) => {
 async def validate_request(payload_string: str, header_payload: dict):
     # Validate the request
     pass
-
 
 @serve.post("/api/example")
 async def example(context: AsyncWorkflowContext[str]) -> None:

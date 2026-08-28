@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/json/json-arrpop
 path: docs/redis/commands/json/json-arrpop
 ---
 
-> Pop value from JSON array.
-
 Use `JSON.ARRPOP` to remove an element from the arrays a path selects and return it.
 
 Without an index the last element is popped, which makes the command a stack pop; index `0` pops the first element, and negative indexes count from the end. An index past the end of the array is clamped to the last element. The reply is the removed element as JSON text, or null when the array is empty.
@@ -28,8 +26,8 @@ JSON.ARRPOP <key> [path [index]]
 
 ## Important points
 
-- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

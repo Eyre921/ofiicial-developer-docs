@@ -55,7 +55,7 @@ path: api/payment_methods/object
 - `id` (string)
   Unique identifier for the object.
 
-- `object` (string)
+- `object` (string, value is "payment_method")
   String representing the object’s type. Objects of the same type share the same value.
 
 - [`acss_debit`](https://docs.stripe.com/api/payment_methods/object.md?query=acss_debit) (object, nullable)

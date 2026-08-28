@@ -45,15 +45,9 @@ The requested audio file, or a zip file containing multiple audio files when mul
 ```json
 {
   "history_item_ids": [
-    "a1b2c3d4-e5f6-7890-ab12-cd34ef567890"
+    "string"
   ]
 }
-```
-
-**Response**
-
-```json
-{}
 ```
 
 **SDK Code**
@@ -65,7 +59,7 @@ async function main() {
     const client = new ElevenLabsClient();
     await client.history.download({
         historyItemIds: [
-            "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
+            "string",
         ],
     });
 }
@@ -80,7 +74,7 @@ client = ElevenLabs()
 
 client.history.download(
     history_item_ids=[
-        "a1b2c3d4-e5f6-7890-ab12-cd34ef567890"
+        "string"
     ],
 )
 
@@ -100,7 +94,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/history/download"
 
-	payload := strings.NewReader("{\n  \"history_item_ids\": [\n    \"a1b2c3d4-e5f6-7890-ab12-cd34ef567890\"\n  ]\n}")
+	payload := strings.NewReader("{\n  \"history_item_ids\": [\n    \"string\"\n  ]\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -128,7 +122,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"history_item_ids\": [\n    \"a1b2c3d4-e5f6-7890-ab12-cd34ef567890\"\n  ]\n}"
+request.body = "{\n  \"history_item_ids\": [\n    \"string\"\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -140,7 +134,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/history/download")
   .header("Content-Type", "application/json")
-  .body("{\n  \"history_item_ids\": [\n    \"a1b2c3d4-e5f6-7890-ab12-cd34ef567890\"\n  ]\n}")
+  .body("{\n  \"history_item_ids\": [\n    \"string\"\n  ]\n}")
   .asString();
 ```
 
@@ -153,7 +147,7 @@ $client = new \GuzzleHttp\Client();
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/history/download', [
   'body' => '{
   "history_item_ids": [
-    "a1b2c3d4-e5f6-7890-ab12-cd34ef567890"
+    "string"
   ]
 }',
   'headers' => [
@@ -170,7 +164,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/history/download");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"history_item_ids\": [\n    \"a1b2c3d4-e5f6-7890-ab12-cd34ef567890\"\n  ]\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"history_item_ids\": [\n    \"string\"\n  ]\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -178,7 +172,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["history_item_ids": ["a1b2c3d4-e5f6-7890-ab12-cd34ef567890"]] as [String : Any]
+let parameters = ["history_item_ids": ["string"]] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

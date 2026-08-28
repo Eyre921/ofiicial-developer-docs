@@ -14,8 +14,7 @@ Custom Channel connects an external messaging system to an ElevenLabs agent. Sen
 
 Custom Channel is in alpha.
 
-Custom Channel is unavailable for agents or workspaces using zero-retention mode. Inbound requests
-for such an agent or workspace are rejected with `403 Forbidden`.
+Custom Channel is unavailable for agents or workspaces using zero-retention mode.
 
 ## Setup
 
@@ -78,10 +77,6 @@ ElevenLabs returns `202 Accepted` before processing the turn:
 ```
 
 To continue the conversation, send another request with that `conversation_id` and a new `user_message_id`.
-
-Replaying the same scoped `user_message_id` within 24 hours does not start another turn. Initial
-messages are scoped by trigger and `user_identifier`; continuation messages are additionally
-scoped by `conversation_id`.
 
 ## Receive replies
 
@@ -181,7 +176,5 @@ export function verifySignature(rawBody: Buffer, header: string, secret: string)
 ## Delivery behavior
 
 ElevenLabs makes three in-process delivery attempts at approximately 0, 0.5, and 2 seconds. A `2xx` response marks delivery successful.
-
-The reply URL must use HTTPS. Local development also permits loopback HTTP URLs such as `http://127.0.0.1:8765/webhook`.
 
 Request bodies are limited to 256 KiB.

@@ -6,7 +6,7 @@ path: docs/redis/search/querying
 
 Queries are JSON strings that describe which documents to return. If the index doesn't exist, queries return `null`.
 
-Use the [`SEARCH.QUERY`](/redis/commands/search/search-query) command to run a query.
+Use the [`SEARCH.QUERY`](/docs/redis/commands/search/search-query) command to run a query.
 
 We recommend searching by field values directly because we automatically provide intelligent matching behavior out of the box:
 
@@ -59,7 +59,7 @@ SEARCH.QUERY products '{"inStock": true, "price": 199.99}'
 
 </Tabs>
 
----
+***
 
 ### Response Format
 
@@ -111,9 +111,9 @@ When `select` / `NOCONTENT` is used, the response shape changes — see [Control
 
 If no documents match, an empty array is returned. If the index doesn't exist, `null` is returned.
 
-For exact syntax and a detailed breakdown of the raw response structure, see the [`SEARCH.QUERY` command reference](/redis/commands/search/search-query).
+For exact syntax and a detailed breakdown of the raw response structure, see the [`SEARCH.QUERY` command reference](/docs/redis/commands/search/search-query).
 
----
+***
 
 ### Smart Matching
 
@@ -122,16 +122,16 @@ we automatically apply [smart matching](./query-operators/field-operators/smart-
 For numeric, boolean, and date fields, this performs an exact equality check.
 For text fields, it works like this:
 
-- **Single-word values**: Performs a term search, matching the word against tokens in the field.
-- **Multi-word values**: Combines phrase matching, term matching, and fuzzy matching with
+* **Single-word values**: Performs a term search, matching the word against tokens in the field.
+* **Multi-word values**: Combines phrase matching, term matching, and fuzzy matching with
   different boost weights to rank exact phrases highest while still finding partial matches.
-- **Double-quoted phrases**: Forces exact phrase matching (e.g., `"\"noise cancelling\""` matches
+* **Double-quoted phrases**: Forces exact phrase matching (e.g., `"\"noise cancelling\""` matches
   only those words adjacent and in order).
 
 For more control, use explicit operators like [`$phrase`](./query-operators/field-operators/phrase),
 or [`$fuzzy`](./query-operators/field-operators/fuzzy).
 
----
+***
 
 ## Query Options
 
@@ -331,12 +331,12 @@ SEARCH.QUERY products '{"name": "headphones"}' SELECT 2 name price
 </Tabs>
 
 <Note>
-When using [aliased fields](/redis/search/schema-definition#aliased-fields),
+When using [aliased fields](/docs/redis/search/schema-definition#aliased-fields),
 use the **actual document field name** (not the alias) when selecting fields to return.
 This is because aliasing happens at the index level and does not modify the underlying documents.
 </Note>
 
----
+***
 
 ### 4. Score Function
 
@@ -350,7 +350,7 @@ Only `.fast()` fields of type `i64`, `u64`, or `f64` can be used with score func
 Each `FIELDVALUE` entry references a numeric field and optionally configures
 how its value is transformed before being applied to the score:
 
-- **`MODIFIER`** (default: `none`) — A mathematical transformation applied to the field value before use:
+* **`MODIFIER`** (default: `none`) — A mathematical transformation applied to the field value before use:
 
 | Modifier     | Description                                          |
 | ------------ | ---------------------------------------------------- |
@@ -365,10 +365,10 @@ how its value is transformed before being applied to the score:
 | `sqrt`       | Square root of the value.                            |
 | `reciprocal` | Reciprocal of the value (`1 / value`).               |
 
-- **`FACTOR`** (default: `1.0`) — A float multiplier applied **after** the modifier transformation.
-- **`MISSING`** (default: `0.0`) — A float fallback value used when:
-  - The field value is missing from the document.
-  - The field value is invalid for the chosen modifier (e.g., a negative value with `log`).
+* **`FACTOR`** (default: `1.0`) — A float multiplier applied **after** the modifier transformation.
+* **`MISSING`** (default: `0.0`) — A float fallback value used when:
+  * The field value is missing from the document.
+  * The field value is invalid for the chosen modifier (e.g., a negative value with `log`).
 
   If both the field value and the missing value are invalid for the modifier, the final contribution is `MISSING * FACTOR`.
 
@@ -376,16 +376,16 @@ how its value is transformed before being applied to the score:
 
 When multiple `FIELDVALUE` entries are specified, `COMBINEMODE` controls how their results are combined:
 
-- **`multiply`** (default) — Multiply all field value results together.
-- **`sum`** — Add all field value results together.
+* **`multiply`** (default) — Multiply all field value results together.
+* **`sum`** — Add all field value results together.
 
 #### Score Mode
 
 `SCOREMODE` controls how the combined field value result is applied to the original query relevance score:
 
-- **`multiply`** (default) — Multiply the original score by the combined result.
-- **`sum`** — Add the combined result to the original score.
-- **`replace`** — Replace the original score with the combined result entirely.
+* **`multiply`** (default) — Multiply the original score by the combined result.
+* **`sum`** — Add the combined result to the original score.
+* **`replace`** — Replace the original score with the combined result entirely.
 
 <Tabs>
 
@@ -503,7 +503,7 @@ SEARCH.QUERY products '{"name": "headphones"}' SCOREFUNC SCOREMODE replace FIELD
 score with the sort field's value, combining it with score function is not supported.
 </Warning>
 
----
+***
 
 ### 5. Highlighting
 
@@ -560,7 +560,12 @@ SEARCH.QUERY products '{"description": "wireless"}' HIGHLIGHT FIELDS 1 descripti
 Note that highlighting only works for operators that resolve to terms, such as term or phrase queries.
 
 <Note>
-When using [aliased fields](/redis/search/schema-definition#aliased-fields),
+When using [aliased fields](/docs/redis/search/schema-definition#aliased-fields),
 use the **alias name** (not the actual document field name) when specifying fields to highlight.
 The highlighting feature works with indexed field names, which are the aliases.
 </Note>
+
+- [Blog Search](https://upstash.com/docs/redis/search/recipes/blog-search.md)
+- [E-commerce Search](https://upstash.com/docs/redis/search/recipes/e-commerce-search.md)
+- [Overview](https://upstash.com/docs/redis/search/recipes/overview.md)
+- [User Directory](https://upstash.com/docs/redis/search/recipes/user-directory.md)

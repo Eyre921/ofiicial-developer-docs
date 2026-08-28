@@ -4,10 +4,6 @@ source: https://upstash.com/docs/vector/api/endpoints/resumable-query/stop
 path: docs/vector/api/endpoints/resumable-query/stop
 ---
 
-> Ends a resumable query and releases associated resources.
-
-`POST https://{endpoint}/resumable-query-end`
-
 ## Request
 
 <ParamField body="uuid" type="string" required>
@@ -19,3 +15,26 @@ path: docs/vector/api/endpoints/resumable-query/stop
 <ResponseField name="result" type="string">
   A success message indicating the query was ended.
 </ResponseField>
+
+<RequestExample>
+
+```sh curl
+curl $UPSTASH_VECTOR_REST_URL/resumable-query-end \
+  -X POST \
+  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
+  -d '{
+    "uuid": "550e8400-e29b-41d4-a716-446655440000"
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 OK
+{
+  "result": "Success"
+}
+```
+
+</ResponseExample>

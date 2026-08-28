@@ -8,8 +8,6 @@ path: capital/getting-started
 
 Determine which integration option to use when you set up Stripe Capital.
 
-> Capital for platforms is available in [public preview](https://docs.stripe.com/release-phases.md).
-
 Use Stripe Capital to offer financing to eligible connected accounts. Choose the integration that fits your platform, then use the quickstart to launch.
 
 ## Compare integrations 

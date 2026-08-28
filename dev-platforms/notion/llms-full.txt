@@ -1415,6 +1415,8 @@ Events are split into the following categories:
 * **Organization verified an email domain**: That an email domain was verified for an organization.
 * **Organization’s request to claim a domain had its status updated**: That an organization's request to claim a domain had its status updated.
 * **Page view analytics toggled for the organization**: That the page view analytics setting was toggled for an organization.
+* **Security Center category weights updated**: That Security Center category weights were updated for an organization.
+* **Security Center custom checks updated**: That Security Center custom checks were updated for an organization.
 * **Session duration for managed users updated**: That the session duration for managed users was updated for an organization.
 * **Toggled enable SAML for all spaces in the organization**: That an organization owner has disabled or enabled SAML for all spaces in the organization.
 * **Toggled enforce SAML for all spaces in the organization**: That an organization owner has disabled or enabled Enforce SAML for all spaces in the organization.
@@ -11394,30 +11396,24 @@ Find setup documentation for MCP clients that can connect to Notion MCP.
 These MCP clients can connect to Notion MCP. Follow the link for your client to learn how to add a remote MCP server.
 
 <CardGroup>
+  <Card title="Codex" href="https://developers.openai.com/codex/mcp" icon="angles-right" />
+
   <Card title="Claude Code" href="https://docs.anthropic.com/en/docs/claude-code/mcp" icon="angles-right" />
 
-  <Card title="Cursor" href="https://docs.cursor.com/context/mcp" icon="angles-right" />
+  <Card title="Cursor" href="https://cursor.com/docs/mcp" icon="angles-right" />
 
-  <Card title="VS Code" href="https://code.visualstudio.com/docs/copilot/customization/mcp-servers" icon="angles-right" />
+  <Card title="fx" href="https://fx.sh/docs/capabilities/mcp" icon="angles-right" />
 
-  <Card title="Claude Desktop" href="https://support.claude.com/en/articles/11503834-building-custom-connectors-via-remote-mcp-servers" icon="angles-right" />
+  <Card title="Hermes" href="https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp" icon="angles-right" />
 
-  <Card title="Windsurf" href="https://docs.windsurf.com/windsurf/cascade/mcp" icon="angles-right" />
+  <Card title="Devin" href="https://docs.devin.ai/work-with-devin/mcp" icon="angles-right" />
 
-  <Card title="ChatGPT" href="https://help.openai.com/en/articles/11487775-connectors-in-chatgpt" icon="angles-right" />
+  <Card title="Pi" href="https://github.com/nicobailon/pi-mcp-adapter" icon="angles-right" />
 
-  <Card title="Codex" href="https://developers.openai.com/codex/mcp" icon="angles-right" />
+  <Card title="VS Code" href="https://code.visualstudio.com/docs/agent-customization/mcp-servers" icon="angles-right" />
 
   <Card title="Antigravity" href="https://antigravity.google/docs/mcp" icon="angles-right" />
 </CardGroup>
-
-Some clients include a directory or marketplace where you can add **Notion**. For setup instructions, see [Connect to Notion MCP](/guides/mcp/get-started-with-mcp).
-
-For the [local MCP server](/guides/mcp/hosting-open-source-mcp), see the [README for connection instructions](https://github.com/makenotion/notion-mcp-server?tab=readme-ov-file#3-adding-mcp-config-to-your-client).
-
-<Note>
-  Building your own MCP client? See [Build an MCP client for Notion](/guides/mcp/build-mcp-client) for OAuth and connection requirements.
-</Note>
 
 
 # Connect to Notion MCP
@@ -11427,7 +11423,38 @@ Connect an MCP client to your Notion workspace.
 
 Follow the instructions for your MCP client. After you authorize the connection, the client can read and update content that you can access in the selected Notion workspace.
 
+## Codex (ChatGPT)
+
+Codex is OpenAI's coding agent. See the [Codex MCP documentation](https://developers.openai.com/codex/mcp/) for more details.
+
+<Steps>
+  <Step>
+    Add the Notion server to your Codex configuration at `~/.codex/config.toml`:
+
+    ```toml theme={null}
+    [mcp_servers.notion]
+    url = "https://mcp.notion.com/mcp"
+    ```
+  </Step>
+
+  <Step>
+    Authenticate by running:
+
+    ```bash theme={null}
+    codex mcp login notion
+    ```
+
+    Complete the OAuth flow to connect your Notion workspace.
+  </Step>
+</Steps>
+
+<Accordion title="Project-level configuration">
+  To share the Notion MCP configuration with your team, create a `.codex/config.toml` file in your project root with the same server configuration.
+</Accordion>
+
 ## Claude Code
+
+Claude Code is Anthropic's agentic coding tool for the terminal. See the [Claude Code MCP documentation](https://docs.anthropic.com/en/docs/claude-code/mcp) for more details.
 
 Run this command in your terminal:
 
@@ -11451,13 +11478,11 @@ Use the `/mcp` command to list and manage the MCP servers you have installed, an
 
 ## Cursor
 
+Cursor is an AI code editor that can connect to MCP servers. See the [Cursor MCP documentation](https://cursor.com/docs/mcp) for more details.
+
 <Steps>
   <Step>
-    Open **Cursor Settings** → **MCP** → **Add new global MCP server**
-  </Step>
-
-  <Step>
-    Paste the following configuration:
+    Create a `.cursor/mcp.json` file in your project root:
 
     ```json theme={null}
     {
@@ -11471,12 +11496,12 @@ Use the `/mcp` command to list and manage the MCP servers you have installed, an
   </Step>
 
   <Step>
-    Save and restart Cursor. When you use a Notion tool for the first time, complete the OAuth flow to connect your workspace.
+    Open **Customize** in Cursor's sidebar, then enable Notion and complete the OAuth flow to connect your workspace.
   </Step>
 </Steps>
 
-<Accordion title="Project-level configuration">
-  To share the Notion MCP configuration with your team, create a `.cursor/mcp.json` file in your project root:
+<Accordion title="Global configuration">
+  To configure Notion across all projects, add the same server configuration to `~/.cursor/mcp.json`:
 
   ```json theme={null}
   {
@@ -11489,7 +11514,150 @@ Use the `/mcp` command to list and manage the MCP servers you have installed, an
   ```
 </Accordion>
 
+## fx
+
+fx is an MCP client that makes configured servers available in its interactive shell and agent sessions. See the [fx MCP documentation](https://fx.sh/docs/capabilities/mcp) for more details.
+
+<Steps>
+  <Step>
+    Start an interactive fx session:
+
+    ```bash theme={null}
+    fx
+    ```
+  </Step>
+
+  <Step>
+    Add the Notion server:
+
+    ```bash theme={null}
+    /mcp add --transport http notion https://mcp.notion.com/mcp
+    ```
+  </Step>
+
+  <Step>
+    In the same session, run `/mcp auth notion --open` and complete the OAuth flow.
+  </Step>
+</Steps>
+
+<Accordion title="JSON configuration">
+  To configure Notion MCP without the CLI, add it to `~/.fx/mcp.json`:
+
+  ```json theme={null}
+  {
+    "mcp": {
+      "notion": {
+        "type": "http",
+        "url": "https://mcp.notion.com/mcp"
+      }
+    }
+  }
+  ```
+
+  If a session is already open, run `/mcp reload` to pick up the change.
+</Accordion>
+
+## Hermes
+
+Hermes is a coding agent from Nous Research that can be extended with MCP servers. See the [Hermes MCP documentation](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp) for more details.
+
+<Steps>
+  <Step>
+    Add the Notion server to `~/.hermes/config.yaml`:
+
+    ```yaml theme={null}
+    mcp_servers:
+      notion:
+        url: "https://mcp.notion.com/mcp"
+        auth: oauth
+    ```
+  </Step>
+
+  <Step>
+    Authenticate by running:
+
+    ```bash theme={null}
+    hermes mcp login notion
+    ```
+
+    Complete the OAuth flow to connect your Notion workspace.
+  </Step>
+</Steps>
+
+<Accordion title="Global configuration">
+  The `~/.hermes/config.yaml` configuration above applies to all projects for the current Hermes profile. See the [Hermes configuration documentation](https://hermes-agent.nousresearch.com/docs/user-guide/configuration) for more details.
+</Accordion>
+
+## Devin
+
+Devin is an AI software engineering agent that can connect to custom MCP servers. See the [Devin MCP documentation](https://docs.devin.ai/work-with-devin/mcp) for more details.
+
+<Steps>
+  <Step>
+    In Devin, go to **Settings** → **Connections** → **MCP servers**, then select **Add a custom MCP**.
+  </Step>
+
+  <Step>
+    Enter **Notion** as the server name, select **HTTP** as the transport, and set the server URL to:
+
+    ```
+    https://mcp.notion.com/mcp
+    ```
+  </Step>
+
+  <Step>
+    Select **OAuth** as the authentication method. Choose **Personal** access for an individual connection, or **Organization** access to share the connection with your organization.
+  </Step>
+
+  <Step>
+    Save the server, then complete the OAuth flow when Devin prompts you.
+  </Step>
+</Steps>
+
+<Note>
+  With **Organization** access, members share one authenticated connection. Use a Notion service account rather than a personal account, and have someone with the **Manage MCP Servers** permission complete the OAuth flow. With **Personal** access, each member authenticates their own Notion account.
+</Note>
+
+## Pi
+
+Pi is an open-source, terminal-based coding agent. It uses the third-party [Pi MCP Adapter](https://github.com/nicobailon/pi-mcp-adapter) to connect to MCP servers.
+
+<Steps>
+  <Step>
+    Install the adapter and restart Pi:
+
+    ```bash theme={null}
+    pi install npm:pi-mcp-adapter
+    ```
+  </Step>
+
+  <Step>
+    In Pi, run `/mcp setup`, then choose **Notion** to add the server.
+  </Step>
+
+  <Step>
+    Authenticate by running `/mcp-auth notion` and completing the OAuth flow to connect your Notion workspace.
+  </Step>
+</Steps>
+
+<Accordion title="Global and team configuration">
+  To use Notion in every Pi project, add this configuration to `~/.config/mcp/mcp.json`. To share it with a team, commit the same configuration in a project-root `.mcp.json`; each teammate then completes the OAuth flow locally.
+
+  ```json theme={null}
+  {
+    "mcpServers": {
+      "notion": {
+        "url": "https://mcp.notion.com/mcp",
+        "auth": "oauth"
+      }
+    }
+  }
+  ```
+</Accordion>
+
 ## VS Code (GitHub Copilot)
+
+Visual Studio Code supports MCP servers in its agent customization experience. See the [VS Code MCP documentation](https://code.visualstudio.com/docs/agent-customization/mcp-servers) for more details.
 
 <Steps>
   <Step>
@@ -11520,110 +11688,9 @@ Use the `/mcp` command to list and manage the MCP servers you have installed, an
   To configure Notion MCP across all workspaces, run **MCP: Open User Configuration** from the Command Palette and add the server configuration there.
 </Accordion>
 
-## Claude Desktop
-
-<Steps>
-  <Step>
-    Open **Settings** → **Connectors**
-  </Step>
-
-  <Step>
-    Select **Add Connector** and enter the URL:
-
-    ```
-    https://mcp.notion.com/mcp
-    ```
-  </Step>
-
-  <Step>
-    Complete the OAuth flow to connect your Notion workspace
-  </Step>
-</Steps>
-
-<Note>
-  Remote MCP servers in Claude Desktop are configured through Settings → Connectors, not the `claude_desktop_config.json` file. Available on Pro, Max, Team, and Enterprise plans.
-</Note>
-
-## Windsurf
-
-<Steps>
-  <Step>
-    Open **Windsurf Settings** (`Cmd+,` on Mac) → search for **MCP**
-  </Step>
-
-  <Step>
-    Select **View raw config** to open `mcp_config.json`
-  </Step>
-
-  <Step>
-    Add the Notion server configuration:
-
-    ```json theme={null}
-    {
-      "mcpServers": {
-        "notion": {
-          "serverUrl": "https://mcp.notion.com/mcp"
-        }
-      }
-    }
-    ```
-  </Step>
-
-  <Step>
-    Save and restart Windsurf. Complete the OAuth flow when prompted.
-  </Step>
-</Steps>
-
-## ChatGPT
-
-<Steps>
-  <Step>
-    Go to [chatgpt.com/#settings/Connectors](https://chatgpt.com/#settings/Connectors) (requires login)
-  </Step>
-
-  <Step>
-    Select **Add Connector** and enter the URL:
-
-    ```
-    https://mcp.notion.com/mcp
-    ```
-  </Step>
-
-  <Step>
-    Complete the OAuth flow to connect your Notion workspace
-  </Step>
-</Steps>
-
-## Codex
-
-For more details, see the [Codex MCP documentation](https://developers.openai.com/codex/mcp/).
-
-<Steps>
-  <Step>
-    Add the Notion server to your Codex configuration at `~/.codex/config.toml`:
-
-    ```toml theme={null}
-    [mcp_servers.notion]
-    url = "https://mcp.notion.com/mcp"
-    ```
-  </Step>
-
-  <Step>
-    Authenticate by running:
-
-    ```bash theme={null}
-    codex mcp login notion
-    ```
-
-    Complete the OAuth flow to connect your Notion workspace.
-  </Step>
-</Steps>
-
-<Accordion title="Project-level configuration">
-  To share the Notion MCP configuration with your team, create a `.codex/config.toml` file in your project root with the same server configuration.
-</Accordion>
-
 ## Antigravity
+
+Antigravity supports MCP servers across its products. See the [Antigravity MCP documentation](https://antigravity.google/docs/mcp) for more details.
 
 We recommend connecting to Notion MCP as a custom server rather than using the pre-configured "Notion" connector in the Antigravity MCP gallery, which uses the deprecated [`notion-mcp-server`](https://github.com/makenotion/notion-mcp-server) package.
 
@@ -11649,16 +11716,14 @@ We recommend connecting to Notion MCP as a custom server rather than using the p
 
 ## Other MCP clients
 
-If your MCP client isn't listed above, use one of these URLs:
+If your MCP client isn't listed above, add Notion as a remote MCP server:
 
-| Transport                         | URL                          | Notes                                          |
-| :-------------------------------- | :--------------------------- | :--------------------------------------------- |
-| **Streamable HTTP** (recommended) | `https://mcp.notion.com/mcp` | Recommended for new clients                    |
-| **SSE** (Server-Sent Events)      | `https://mcp.notion.com/sse` | For clients that don't support Streamable HTTP |
+* **Streamable HTTP (recommended):** `https://mcp.notion.com/mcp`
+* **SSE fallback:** `https://mcp.notion.com/sse` — use this only if the client doesn't support Streamable HTTP.
 
-### JSON configuration format
+### JSON configuration
 
-Most MCP clients accept a JSON configuration. Use the format supported by your client:
+If your client accepts a JSON configuration, start with Streamable HTTP:
 
 <CodeGroup>
   ```json Streamable HTTP theme={null}
@@ -11696,24 +11761,6 @@ Most MCP clients accept a JSON configuration. Use the format supported by your c
 
 Use the STDIO configuration if your client doesn't support remote HTTP connections.
 
-## Connect through the Notion app
-
-You can also start the connection from Notion:
-
-<Steps>
-  <Step>
-    Open **Settings** in the Notion app
-  </Step>
-
-  <Step>
-    Go to **Connections** → **Notion MCP**
-  </Step>
-
-  <Step>
-    Choose your MCP client from the list and complete the OAuth flow
-  </Step>
-</Steps>
-
 ## Troubleshooting
 
 <AccordionGroup>
@@ -11741,11 +11788,11 @@ You can also start the connection from Notion:
   </Accordion>
 
   <Accordion title="My MCP client isn't listed here">
-    Check the client's documentation for how to add a remote MCP server. Most MCP clients accept a URL or JSON configuration. If the client doesn't support MCP, contact its developer.
+    See [Other MCP clients](#other-mcp-clients) for the Notion MCP endpoints and JSON configuration examples. If the client doesn't support MCP, contact its developer.
   </Accordion>
 </AccordionGroup>
 
-## FAQ
+## FAQs
 
 <AccordionGroup>
   <Accordion title="Can I use Notion MCP without interactive authorization?">
@@ -11773,12 +11820,8 @@ You can also start the connection from Notion:
   </Accordion>
 </AccordionGroup>
 
-## Next steps
 
-See the [Notion MCP tools](/guides/mcp/mcp-supported-tools) that a connected client can use.
-
-
-# Hosting a local MCP server
+# Hosting Notion MCP locally
 Source: https://developers.notion.com/guides/mcp/hosting-open-source-mcp
 
 Learn how and when to use the open-source Notion MCP server.
@@ -12327,7 +12370,7 @@ Find the Custom Agents your token can access, track their usage, and manage thei
   </Card>
 
   <Card title="Retrieve agent insights" icon="chart-line" href="/reference/notion-agent-apis/retrieve-agent-insights">
-    Read a Custom Agent's credits used and runs completed.
+    Read credits used and runs completed for a Custom Agent or your personal agent.
   </Card>
 
   <Card title="Update agent status" icon="toggle-on" href="/reference/notion-agent-apis/update-agent-status">
@@ -17051,6 +17094,12 @@ Source: https://developers.notion.com/page/changelog
   `old_str` must also be a non-empty string. Empty values were previously ignored, which silently skipped the replacement; they now fail validation on both `notion-update-page` and [Update a page's content as markdown](/reference/update-page-markdown).
 </Update>
 
+<Update label="August 24, 2026">
+  ### Admin API reference for users and permission groups
+
+  The [Admin API](/reference/admin/intro) reference now covers [listing workspace users](/reference/admin/list-users) and managing workspace permission groups and direct memberships. These endpoints require the new `user:read`, `permission-group:read`, and `permission-group:write` scopes and are available to eligible Enterprise organizations.
+</Update>
+
 <Update label="August 20, 2026">
   ### Notion Agent APIs in public beta
 
@@ -17766,6 +17815,21 @@ The organization bot token must have the following scopes:
 * `legal-hold:write`
 
 
+# Add a group member
+Source: https://developers.notion.com/reference/admin/add-permission-group-member
+
+openapi-adminApi.json POST /v1/spaces/{space_id}/groups/{group_id}/members
+Add a direct user member to an admin-managed permission group.
+
+The organization bot token must have the following scopes:
+
+* `permission-group:write`
+
+The target must be a workspace member; guests aren't supported. Restricted members must be allowed by the workspace's plan and security settings and cannot be group owners.
+
+SCIM-managed memberships must be changed through the configured identity provider. Trying to add a member to one returns a `409 conflict_error`.
+
+
 # Create a legal hold
 Source: https://developers.notion.com/reference/admin/create-legal-hold
 
@@ -17777,6 +17841,21 @@ The organization bot token must have the following scopes:
 * `legal-hold:write`
 
 
+# Create a group
+Source: https://developers.notion.com/reference/admin/create-permission-group
+
+openapi-adminApi.json POST /v1/spaces/{space_id}/groups
+Create an admin-managed permission group in a workspace.
+
+The organization bot token must have the following scopes:
+
+* `permission-group:write`
+
+Creates an admin-managed permission group. Creating a group returns `409 conflict_error` if another active group has the same exact, case-sensitive name. Legacy duplicates may still appear in list responses.
+
+After creating the group, use [Add a group member](/reference/admin/add-permission-group-member) to add direct user memberships.
+
+
 # Delete an agent in a space
 Source: https://developers.notion.com/reference/admin/delete-agent
 
@@ -17786,6 +17865,21 @@ Delete an agent in a space.
 The organization bot token must have the following scopes:
 
 * `workflows:write`
+
+
+# Delete a group
+Source: https://developers.notion.com/reference/admin/delete-permission-group
+
+openapi-adminApi.json DELETE /v1/spaces/{space_id}/groups/{group_id}
+Delete an admin-managed permission group.
+
+The organization bot token must have the following scopes:
+
+* `permission-group:write`
+
+If deleting the group would orphan access, pass an active workspace owner as `transfer_to_owner_id`. Omitting a required transfer target returns a `409 conflict_error` and leaves the group unchanged.
+
+SCIM-managed groups must be deleted through the configured identity provider.
 
 
 # Enqueue a workspace export
@@ -17903,7 +17997,7 @@ Samples requests and responses are shown for each endpoint. Requests are shown u
 
 ## Pagination
 
-Endpoints that return lists of objects support cursor-based pagination requests. By default, Notion returns ten items per API call. If the number of items in a response from a support endpoint exceeds the default, then you can use pagination to request a specific set of the results and/or to limit the number of returned items.
+List endpoints that paginate use cursor-based pagination. Some endpoints use a fixed page size; endpoints that accept `page_size` document its default and maximum. Pass a returned `next_cursor` as `start_cursor` to request the next page.
 
 
 # List pages on a legal hold
@@ -17991,6 +18085,34 @@ Filters only match workspaces in the organization that owns the token. Unknown I
 For recognized MCP clients, Notion provides `client.name` and `client.type`. A custom or unregistered client can provide its own name, and its type is `other`. Use `client.key`, not the name, to identify the client in later API requests.
 
 
+# List group members
+Source: https://developers.notion.com/reference/admin/list-permission-group-members
+
+openapi-adminApi.json GET /v1/spaces/{space_id}/groups/{group_id}/members
+List a permission group's direct user memberships.
+
+The organization bot token must have the following scopes:
+
+* `permission-group:read`
+
+Returns direct user memberships for admin-managed and SCIM-managed groups. Nested-group memberships are not included.
+
+Each membership's `role` is either `owner` or `member`.
+
+
+# List groups
+Source: https://developers.notion.com/reference/admin/list-permission-groups
+
+openapi-adminApi.json GET /v1/spaces/{space_id}/groups
+List permission groups in a workspace.
+
+The organization bot token must have the following scopes:
+
+* `permission-group:read`
+
+Returns both admin-managed and SCIM-managed permission groups. Use a group's `id` to retrieve the group or manage its direct user memberships.
+
+
 # List personal access tokens in a workspace
 Source: https://developers.notion.com/reference/admin/list-personal-access-tokens
 
@@ -18016,6 +18138,21 @@ Use bracket encoding to filter by more than one status or creator:
 To learn how PATs work and how members create them, see [Personal access tokens](/guides/get-started/personal-access-tokens).
 
 
+# List users
+Source: https://developers.notion.com/reference/admin/list-users
+
+openapi-adminApi.json GET /v1/spaces/{space_id}/users
+List active workspace members and guest bots.
+
+The organization bot token must have the following scopes:
+
+* `user:read`
+
+Returns a cursor-paginated directory of active workspace members—including restricted members—and guest bots. Each result uses the standard Notion user object shape. Person entries include an email at `person.email` when available; bot entries include a `bot` object. This endpoint currently returns `avatar_url` as `null`.
+
+Page guests and expired temporary memberships are not included. Search and single-user lookup parameters are not supported.
+
+
 # Release a legal hold
 Source: https://developers.notion.com/reference/admin/release-legal-hold
 
@@ -18036,6 +18173,32 @@ Remove a user from a legal hold.
 The organization bot token must have the following scopes:
 
 * `legal-hold:write`
+
+
+# Remove a group member
+Source: https://developers.notion.com/reference/admin/remove-permission-group-member
+
+openapi-adminApi.json DELETE /v1/spaces/{space_id}/groups/{group_id}/members/users/{user_id}
+Remove a direct user member from an admin-managed permission group.
+
+The organization bot token must have the following scopes:
+
+* `permission-group:write`
+
+SCIM-managed memberships must be changed through the configured identity provider. Trying to remove one returns a `409 conflict_error`.
+
+
+# Retrieve a group
+Source: https://developers.notion.com/reference/admin/retrieve-permission-group
+
+openapi-adminApi.json GET /v1/spaces/{space_id}/groups/{group_id}
+Retrieve a permission group in a workspace.
+
+The organization bot token must have the following scopes:
+
+* `permission-group:read`
+
+Returns an admin-managed or SCIM-managed permission group by ID. SCIM-managed groups are readable, but must be changed through the configured identity provider.
 
 
 # Revoke an MCP client connection
@@ -18096,6 +18259,10 @@ When you create an organization bot token, you assign scopes that control which 
 
 Each scope combines a resource and a capability, such as `legal-hold:read`.
 
+<Info>
+  The `user` and `permission-group` scopes are available only to eligible Enterprise organizations. If these scopes don't appear in the organization console, contact your Notion representative.
+</Info>
+
 ## Scope resources
 
 | Scope resource          | Controls access to                                      |
@@ -18103,7 +18270,9 @@ Each scope combines a resource and a capability, such as `legal-hold:read`.
 | `legal-hold`            | Legal hold data and members                             |
 | `managed-user-session`  | Managed users' active sessions                          |
 | `mcp-client-connection` | Members' MCP client connections                         |
+| `permission-group`      | Workspace permission groups and direct memberships      |
 | `personal-access-token` | Personal access tokens in the organization's workspaces |
+| `user`                  | Workspace people and bots                               |
 | `workflows`             | Custom-agent inventory and governance                   |
 | `workspace`             | Workspace data and settings                             |
 
@@ -18119,6 +18288,10 @@ Each scope combines a resource and a capability, such as `legal-hold:read`.
 | `write`             | Modify a resource                                              |
 | `write-high-impact` | Make sensitive changes, such as revoking credentials or access |
 | `export`            | Export a resource                                              |
+
+<Note>
+  Scope capabilities are independent. For example, `permission-group:write` does not grant `permission-group:read`. Assign both scopes when a connection must inspect groups or memberships before changing them.
+</Note>
 
 
 # Update who can create agents in a space
@@ -18294,6 +18467,36 @@ Set `access` to `denied` to block future connections and revoke the member's cur
 You can repeat the same request safely. Repeating a deny keeps access blocked and revokes any new tokens. Repeating a restore keeps access allowed. You can restore access only when enterprise-managed connections are available for the workspace.
 
 The workspace and member must belong to the organization that owns the token. The endpoint returns the same not-found response for invalid targets and targets outside the organization.
+
+
+# Update a group
+Source: https://developers.notion.com/reference/admin/update-permission-group
+
+openapi-adminApi.json PATCH /v1/spaces/{space_id}/groups/{group_id}
+Rename an admin-managed permission group.
+
+The organization bot token must have the following scopes:
+
+* `permission-group:write`
+
+Renaming a group returns `409 conflict_error` if another active group has the same exact, case-sensitive name. Legacy duplicates may still appear in list responses.
+
+SCIM-managed groups must be changed through the configured identity provider. Trying to update one returns a `409 conflict_error`.
+
+
+# Update a group member
+Source: https://developers.notion.com/reference/admin/update-permission-group-member
+
+openapi-adminApi.json PATCH /v1/spaces/{space_id}/groups/{group_id}/members/users/{user_id}
+Change a direct member's role in an admin-managed permission group.
+
+The organization bot token must have the following scopes:
+
+* `permission-group:write`
+
+Set `role` to `owner` or `member`. Restricted members cannot be group owners.
+
+SCIM-managed memberships must be changed through the configured identity provider. Trying to update one returns a `409 conflict_error`.
 
 
 # Update the default agent credit limit for a workspace
@@ -22380,8 +22583,22 @@ Retrieve metadata for one accessible Custom Agent.
 Source: https://developers.notion.com/reference/notion-agent-apis/retrieve-agent-insights
 
 get /v1/agents/{agent_id}/insights
-Retrieve configuration and usage insights for a Custom Agent.
+Retrieve configuration and usage insights for a Custom Agent or the authenticated user's personal agent.
 
+### Personal agent insights
+
+Pass `notion_ai` as the `agent_id` to read insights for the personal agent (Notion AI) instead of a Custom Agent. The response keeps the same `agent_insights` shape, with a few differences:
+
+* `id` and `agent_type` are both `notion_ai`.
+* `created_by` is the user the token acts as.
+* `status` is always `active` and `pause_reason` is always `null`, because the personal agent has no per-agent status controls.
+* `credit_limit` reports the workspace's default per-member credit limit, or `null` when the workspace has not set one.
+
+<Info>
+  **Access**
+
+  Only a [personal access token](/guides/get-started/personal-access-tokens) can read personal agent insights, and the totals always cover the user that token acts as — never another member's usage. Any other token receives a `404` `object_not_found`.
+</Info>
 
 
 # Retrieve a session
@@ -31765,6 +31982,10 @@ Your code runs in a sandboxed Node.js environment. You can make HTTP requests to
   <Card title="CLI reference" icon="https://mintcdn.com/notion-demo/7WdlNb9IZkRhGCcR/icons/nds/terminal.svg?fit=max&auto=format&n=7WdlNb9IZkRhGCcR&q=85&s=ed75fe4bd49b0ec0117eeead6adb4e5d" href="/cli/get-started/overview">
     Install and configure the Notion CLI.
   </Card>
+
+  <Card title="Limits" icon="https://mintcdn.com/notion-demo/7WdlNb9IZkRhGCcR/icons/nds/lightning.svg?fit=max&auto=format&n=7WdlNb9IZkRhGCcR&q=85&s=c9a479b1d46711f4edc71c5f9187e5bd" href="/workers/reference/limits">
+    Rate limits for runs, webhooks, and sync database writes.
+  </Card>
 </CardGroup>
 
 
@@ -32950,6 +33171,10 @@ worker.sync("customersSync", {
 
 `await api.wait()` blocks until a request slot is available. In this example, at most 10 requests per second.
 
+<Note>
+  A pacer only paces calls to *your* third-party API. Notion separately limits how often the platform runs your sync — see [Limits](/workers/reference/limits) for the workspace-wide sync run and database write limits.
+</Note>
+
 ## Manage syncs from the CLI
 
 ```bash theme={null}
@@ -33045,6 +33270,10 @@ See the [CLI command reference](/cli/reference/commands) for the full list of `n
 
   <Card title="OAuth" icon="key" href="/workers/guides/oauth">
     Connect to APIs that require user authorization.
+  </Card>
+
+  <Card title="Limits" icon="bolt" href="/workers/reference/limits">
+    Sync run and database write rate limits.
   </Card>
 </CardGroup>
 
@@ -33496,6 +33725,8 @@ If your handler throws `WebhookVerificationError`, Notion records a verification
 
 Successful runs reset the consecutive verification failure counter.
 
+Incoming webhook requests can be rejected with `429` before they are queued. A `202 Accepted` response means the event was queued for asynchronous processing, not that your handler has run successfully. Queued webhook executions are rate-limited separately and retried when they reach a rate limit. See [Limits](/workers/reference/limits) for the standard thresholds.
+
 ## Use Notion from a webhook
 
 Webhook handlers receive the same context object as other capabilities, including `context.notion`, the Notion API SDK client:
@@ -33578,6 +33809,63 @@ See the [CLI command reference](/cli/reference/commands) for all `ntn workers` f
 
   <Card title="SDK reference" icon="book-open" href="/workers/reference/sdk#worker-webhook">
     Detailed API docs for worker.webhook() and WebhookVerificationError.
+  </Card>
+
+  <Card title="Limits" icon="bolt" href="/workers/reference/limits">
+    Webhook ingress and run rate limits.
+  </Card>
+</CardGroup>
+
+
+# Limits
+Source: https://developers.notion.com/workers/reference/limits
+
+Rate limits and other quotas that apply to workers.
+
+Notion enforces rate limits on worker execution to keep the platform stable for every workspace. The limits below are standard workspace defaults. A workspace with custom limits may have different thresholds.
+
+## Run rate limits
+
+Worker runs use separate limits by capability type. Every worker in a workspace shares the applicable workspace budget.
+
+| Action                                  | Default limit                       | Scope                                                             |
+| --------------------------------------- | ----------------------------------- | ----------------------------------------------------------------- |
+| Tool runs and queued webhook executions | 600 per hour; 60 per minute burst   | Per workspace, shared between tools and queued webhook executions |
+| Sync runs                               | 600 per hour; 60 per minute burst   | Per workspace                                                     |
+| Builds (`ntn workers deploy`)           | 100 per day; 10 per 5 minutes burst | Per workspace                                                     |
+
+When a tool run, sync run, or queued webhook execution reaches its limit, its recorded worker run has a `rate_limit_error` result. The result includes `retryAfterSeconds` when available. The way a direct invocation surfaces that error depends on its transport.
+
+## Webhook ingress limits
+
+Before Notion accepts a webhook event, it applies a separate workspace-level admission limit of 600 requests per hour, with a burst limit of 60 requests per minute. This limit is separate from the queued webhook execution limit above.
+
+Incoming webhook HTTP requests are also throttled before worker code runs:
+
+| Scope                                        | Default limit             |
+| -------------------------------------------- | ------------------------- |
+| Per worker                                   | 600 requests per minute   |
+| Per workspace (all webhook workers combined) | 1,200 requests per minute |
+
+If a webhook request exceeds an ingress or admission limit, Notion responds synchronously with HTTP `429` and `{ "error": "Rate limit exceeded" }`. A request that receives `202 Accepted` was queued, but its later asynchronous execution can still reach the shared tool and webhook execution limit. Notion retries rate-limited webhook executions.
+
+## Sync database write limits
+
+Sync upserts and deletes (the `changes` your `execute` function returns) are limited separately from sync runs, since a single sync run can write many rows:
+
+| Scope         | Default limit                          | Burst limit       |
+| ------------- | -------------------------------------- | ----------------- |
+| Per workspace | 1,000,000 database operations per hour | 25,000 per minute |
+
+## Next steps
+
+<CardGroup>
+  <Card title="Syncs" icon="https://mintcdn.com/notion-demo/7WdlNb9IZkRhGCcR/icons/nds/arrowCircleLoopForward.svg?fit=max&auto=format&n=7WdlNb9IZkRhGCcR&q=85&s=25d8d1ea2405c9af06347df80ab90fcf" href="/workers/guides/syncs">
+    Configure sync schedules and pace outbound requests to third-party APIs.
+  </Card>
+
+  <Card title="Webhooks" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/bell.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=0ee1c6e084361d853c48609a1f989a2c" href="/workers/guides/webhooks">
+    Receive HTTP events and understand webhook delivery behavior.
   </Card>
 </CardGroup>
 

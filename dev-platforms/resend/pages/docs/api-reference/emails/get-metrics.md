@@ -90,6 +90,7 @@ Retrieve account-level email metrics.
   const { data } = await resend.emails.metrics({
     startDate: '2026-07-01',
     endDate: '2026-07-08',
+    metrics: ['sent', 'delivered', 'open_rate'],
     dimensions: ['period', 'broadcast'],
     broadcastId: ['5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a'],
   });
@@ -99,6 +100,7 @@ Retrieve account-level email metrics.
   params: resend.Emails.MetricsParams = {
     "start_date": "2026-07-01",
     "end_date": "2026-07-08",
+    "metrics": ["sent", "delivered", "open_rate"],
     "dimensions": ["period", "broadcast"],
     "broadcast_id": ["5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a"],
   }
@@ -111,6 +113,7 @@ Retrieve account-level email metrics.
   params = {
     start_date: "2026-07-01",
     end_date: "2026-07-08",
+    metrics: ["sent", "delivered", "open_rate"],
     dimensions: ["period", "broadcast"],
     broadcast_id: ["5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a"]
   }
@@ -139,6 +142,11 @@ Retrieve account-level email metrics.
     metrics, err := client.Emails.MetricsWithOptions(ctx, &resend.MetricsOptions{
       StartDate: &startDate,
       EndDate:   &endDate,
+      Metrics: []resend.MetricName{
+        resend.MetricSent,
+        resend.MetricDelivered,
+        resend.MetricOpenRate
+      },
       Dimensions: []resend.MetricsDimension{
         resend.MetricsDimensionPeriod,
         resend.MetricsDimensionBroadcast,
@@ -154,7 +162,7 @@ Retrieve account-level email metrics.
   ```
 
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::types::GetEmailMetricsOptions;
+  use resend_rs::types::{GetEmailMetricsOptions, Metric};
   use resend_rs::{Resend, Result};
 
   #[tokio::main]
@@ -164,6 +172,7 @@ Retrieve account-level email metrics.
     let options = GetEmailMetricsOptions::default()
       .with_start_date("2026-07-01")
       .with_end_date("2026-07-08")
+      .with_metrics([Metric::Sent, Metric::Delivered, Metric::OpenRate])
       .with_period_dimension()
       .with_broadcast_dimension()
       .with_broadcast_id("5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a");
@@ -185,6 +194,7 @@ Retrieve account-level email metrics.
           GetEmailsMetricsOptions options = GetEmailsMetricsOptions.builder()
                   .startDate("2026-07-01")
                   .endDate("2026-07-08")
+                  .metrics(MetricName.SENT, MetricName.DELIVERED, MetricName.OPEN_RATE)
                   .dimensions(MetricsDimension.PERIOD, MetricsDimension.BROADCAST)
                   .broadcastIds("5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a")
                   .build();
@@ -203,6 +213,7 @@ Retrieve account-level email metrics.
   {
       StartDate = new DateTime( 2026, 7, 1 ),
       EndDate = new DateTime( 2026, 7, 8 ),
+      Metrics = new List<MetricType> { MetricType.Sent, MetricType.Delivered, MetricType.OpenRate },
       Dimensions = new List<MetricDimension> { MetricDimension.Period, MetricDimension.Broadcast },
       BroadcastId = new List<Guid> { Guid.Parse( "5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a" ) },
   } );

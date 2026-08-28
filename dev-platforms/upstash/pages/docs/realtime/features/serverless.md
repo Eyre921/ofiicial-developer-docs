@@ -7,11 +7,11 @@ path: docs/realtime/features/serverless
 <Note>
   Deploy Upstash Realtime to providers that bill **based on active CPU time**. Great places to
   deploy are
-  - Vercel with Fluid Compute enabled
-  - Cloudflare
-  - Railway
-  - A personal VPS
-  - any other service that does not bill based on connection duration.
+  * Vercel with Fluid Compute enabled
+  * Cloudflare
+  * Railway
+  * A personal VPS
+  * any other service that does not bill based on connection duration.
 </Note>
 
 ## Deploying to Vercel
@@ -22,9 +22,7 @@ Fluid Compute allows for less cold-starts, has much higher function timeouts com
 
 That way, you're only billed for actual message processing time, not connection duration.
 
-<Frame>
-  <img src="/img/realtime/vercel-fluid-enabled.png" />
-</Frame>
+  <img />
 
 ## Optional: Configure Max Duration
 

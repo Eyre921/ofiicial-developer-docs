@@ -37,13 +37,9 @@ If multiple of these happen in sequence, e.g. a multi-turn conversation, or seve
 
 A trace shows up in the Langfuse UI as a trace tree and an [agent graph](/docs/observability/features/agent-graphs):
 
-<div className="grid grid-cols-2 mt-4 gap-4">
-
 ![Trace tree](/images/docs/faq/good-trace-tree.png)
 
 ![Agent graph](/images/docs/faq/good-trace-agent-graph.png)
-
-</div>
 
 ## Look at the trace tree
 
@@ -70,11 +66,7 @@ Framework integrations usually get this right automatically. If you're instrumen
 
 Not every observation in the tree is useful for understanding what your application did. HTTP spans, database queries, and framework internals often add clutter without giving you meaningful insight. If you see observations like these polluting your trace tree, you can [filter them out](/faq/all/unwanted-http-database-spans).
 
-<div className="max-w-[50%]">
-
 ![Noisy spans in a trace tree](/images/docs/faq/good-trace-noisy-spans.png)
-
-</div>
 
 ## Choose good names
 

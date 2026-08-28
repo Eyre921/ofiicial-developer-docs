@@ -18,9 +18,9 @@ non-zero valued dimensions depending on the text.
 Generally, sparse vectors can be represented with two arrays of equal
 sizes:
 
-- The first array for the indices contains the indices of the non-zero
+* The first array for the indices contains the indices of the non-zero
   dimensions.
-- The second array for values contains the floating point values for
+* The second array for values contains the floating point values for
   the non-zero dimensions.
 
 ```python
@@ -37,13 +37,13 @@ sparse vectors are particularly useful for tasks that require exact or
 near exact matching of tokens/words/features. That makes it useful
 for various tasks, such as:
 
-- **Information Retrieval and Text Analysis**: By representing documents
+* **Information Retrieval and Text Analysis**: By representing documents
   as sparse vectors where each token/word would correspond to a dimension
   in high dimensional vocabulary; and varying values by the frequencies
   of the tokens/words in the document or by weighting them with inverse
   document frequencies to favor rare terms, you can build complex
   search pipelines.
-- **Recommender Systems**: By representing user interactions, preferences,
+* **Recommender Systems**: By representing user interactions, preferences,
   ratings, or purchases as sparse vectors, you can identify relevant
   recommendations, and personalize content delivery.
 
@@ -84,16 +84,16 @@ This algorithm relies on key principles of term frequency,
 inverse document frequency, and document length normalization,
 making it well-suited for text retrieval tasks.
 
-- **Rare terms are important**: BM25 gives more weight to words that are
+* **Rare terms are important**: BM25 gives more weight to words that are
   less common in the collection of documents. For example, in a search
   for “Upstash Vector”, the word “Upstash” might be considered more
   important than “Vector” if it appears less frequently across all documents.
-- **Repeating a Word Helps—But Only Up to a Point**: BM25 considers how
+* **Repeating a Word Helps—But Only Up to a Point**: BM25 considers how
   often a word appears in a document, but it limits the benefit of repeating
   the word too many times. This means mentioning “Upstash” a hundred times
   won’t make a document overly important compared to one that mentions
   it just a few times.
-- **Shorter Documents Often Rank Higher**: Shorter documents that match
+* **Shorter Documents Often Rank Higher**: Shorter documents that match
   the query are usually more relevant. BM25 adjusts for document length
   so longer documents don’t get unfairly ranked just because they contain
   more words.
@@ -111,20 +111,20 @@ BM25(D, Q) = Σ ----------------------------------------------
 
 Where:
 
-- `f(qᵢ, D)` is the frequency of term `qᵢ` in document `D`.
-- `|D|` is the length of document `D`.
-- `avg(|D|)` is the average document length in the collection.
-- `k₁` is the term frequency saturation parameter.
-- `b` is the length normalization parameter.
-- `IDF(qᵢ)` is the inverse document frequency of term `qᵢ`
+* `f(qᵢ, D)` is the frequency of term `qᵢ` in document `D`.
+* `|D|` is the length of document `D`.
+* `avg(|D|)` is the average document length in the collection.
+* `k₁` is the term frequency saturation parameter.
+* `b` is the length normalization parameter.
+* `IDF(qᵢ)` is the inverse document frequency of term `qᵢ`
 
 To make it a general purpose model, we had to decide on some of the
 constants mentioned above, which would differ from implementation
 to implementation. We decided to use the following values for
 
-- `k₁` = `1.2`, a widely used value in the absence of advanced optimizations
-- `b` = `0.75`, a widely used value in the absence of advanced optimizations
-- `avg(|D|)` = `32`, which was chosen by tokenizing and taking the average of
+* `k₁` = `1.2`, a widely used value in the absence of advanced optimizations
+* `b` = `0.75`, a widely used value in the absence of advanced optimizations
+* `avg(|D|)` = `32`, which was chosen by tokenizing and taking the average of
   [MSMARCO](https://microsoft.github.io/msmarco/) dataset vectors, rounded
   to the nearest power of two.
 
@@ -637,8 +637,8 @@ is defined as:
 IDF(qᵢ) = log((N - n(qᵢ) + 0.5) / (n(qᵢ) + 0.5))
 ```
 
-- `N` is the total number of documents in the collection.
-- `n(qᵢ)` is the number of documents containing term `qᵢ`.
+* `N` is the total number of documents in the collection.
+* `n(qᵢ)` is the number of documents containing term `qᵢ`.
 
 <Tabs>
 

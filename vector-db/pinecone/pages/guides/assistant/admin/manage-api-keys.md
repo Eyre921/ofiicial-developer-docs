@@ -49,7 +49,7 @@ You can create a new API key for your project, as follows:
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/release-notes/feature-availability).
     </Note>
 
     <CodeGroup>
@@ -119,7 +119,7 @@ You can [view the API keys](/reference/api/latest/admin/list_api_keys) for your 
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/release-notes/feature-availability).
     </Note>
 
     <CodeGroup>
@@ -197,7 +197,7 @@ You can [view the details of an API key](/reference/api/latest/admin/fetch_api_k
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/release-notes/feature-availability).
     </Note>
 
     <CodeGroup>
@@ -271,7 +271,7 @@ If you are a [project owner](/guides/assistant/admin/projects-overview#project-r
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/release-notes/feature-availability).
     </Note>
 
     <CodeGroup>
@@ -344,7 +344,7 @@ If you are a [project owner](/guides/assistant/admin/projects-overview#project-r
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/release-notes/feature-availability).
     </Note>
 
     <CodeGroup>

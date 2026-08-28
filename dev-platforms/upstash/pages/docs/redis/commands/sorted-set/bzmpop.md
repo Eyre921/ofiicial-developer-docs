@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/sorted-set/bzmpop
 path: docs/redis/commands/sorted-set/bzmpop
 ---
 
-> Pop from the first non-empty sorted set, blocking until one arrives.
-
 Use `BZMPOP` to pop members from the first non-empty sorted set among several, blocking until one has members or the timeout expires.
 
-It is the blocking form of [`ZMPOP`](/redis/commands/sorted-set/zmpop): keys are examined in the order given, so earlier keys act as higher priority queues, `MIN` or `MAX` chooses whether the lowest or highest scoring members are taken, and `COUNT` sets how many. The reply names the key that was popped from along with the members and their scores.
+It is the blocking form of [`ZMPOP`](/docs/redis/commands/sorted-set/zmpop): keys are examined in the order given, so earlier keys act as higher priority queues, `MIN` or `MAX` chooses whether the lowest or highest scoring members are taken, and `COUNT` sets how many. The reply names the key that was popped from along with the members and their scores.
 
 The timeout is in seconds, may be fractional, and `0` waits indefinitely; when it expires the reply is null. This is what a worker uses to wait on several priority queues at once without polling.
 
@@ -30,7 +28,7 @@ BZMPOP <timeout> <numkeys> <key> [<key> ...] (MIN | MAX) [COUNT <count>]
 
 ## Important points
 
-- A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
+* A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
 
 ## Response
 

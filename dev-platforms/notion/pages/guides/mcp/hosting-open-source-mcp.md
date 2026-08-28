@@ -1,5 +1,5 @@
 ---
-title: "Hosting a local MCP server"
+title: "Hosting Notion MCP locally"
 source: https://developers.notion.com/guides/mcp/hosting-open-source-mcp
 path: guides/mcp/hosting-open-source-mcp
 ---

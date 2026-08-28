@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/hash/hincrbyfloat
 path: docs/redis/commands/hash/hincrbyfloat
 ---
 
-> Increment float value of a field.
-
 Use `HINCRBYFLOAT` to add a floating point number to the value of a hash field and get the result.
 
 The stored value and the increment are parsed as double precision floats, and a missing field or key counts as `0`. The increment may be negative, and there is no separate decrement command. A value that is not a valid number returns an error.
 
-The reply is the new value as a string, which client libraries usually decode into a native number. Note that the result is stored in the same textual form, so repeated increments of values that cannot be represented exactly in binary floating point accumulate the usual rounding error; keep money and similar quantities in integer units and use [`HINCRBY`](/redis/commands/hash/hincrby).
+The reply is the new value as a string, which client libraries usually decode into a native number. Note that the result is stored in the same textual form, so repeated increments of values that cannot be represented exactly in binary floating point accumulate the usual rounding error; keep money and similar quantities in integer units and use [`HINCRBY`](/docs/redis/commands/hash/hincrby).
 
 ## Syntax
 
@@ -28,7 +26,7 @@ HINCRBYFLOAT <key> <field> <increment>
 
 ## Important points
 
-- The value is always returned as a bulk string, in both RESP2 and RESP3. Client libraries commonly decode it to a language number.
+* The value is always returned as a bulk string, in both RESP2 and RESP3. Client libraries commonly decode it to a language number.
 
 ## Response
 

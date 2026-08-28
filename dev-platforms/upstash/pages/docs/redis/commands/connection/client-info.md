@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/connection/client-info
 path: docs/redis/commands/connection/client-info
 ---
 
-> Get info about current connection.
-
 Use `CLIENT INFO` to get a line of statistics about the connection issuing the command.
 
-The reply is a single line of space-separated `field=value` pairs describing the connection: its id, name, address, age, idle time, the number of commands it has run, and the last command it executed. It reports the same fields as one line of [`CLIENT LIST`](/redis/commands/connection/client-list), limited to your own connection, which makes it a cheap way to confirm what the server thinks of the connection you are on. Parse it defensively, since fields can be added over time.
+The reply is a single line of space-separated `field=value` pairs describing the connection: its id, name, address, age, idle time, the number of commands it has run, and the last command it executed. It reports the same fields as one line of [`CLIENT LIST`](/docs/redis/commands/connection/client-list), limited to your own connection, which makes it a cheap way to confirm what the server thinks of the connection you are on. Parse it defensively, since fields can be added over time.
 
 ## Syntax
 
@@ -22,8 +20,8 @@ This command takes no arguments.
 
 ## Important points
 
-- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
-- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
 
 ## Response
 

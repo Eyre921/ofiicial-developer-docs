@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/connection/quit
 path: docs/redis/commands/connection/quit
 ---
 
-> Close the connection.
-
 <Warning>
   Prefer closing the connection from the client in new code, which avoids leaving `TIME_WAIT` sockets on the server.
 </Warning>
@@ -26,7 +24,7 @@ This command takes no arguments.
 
 ## Important points
 
-- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
 
 ## Response
 

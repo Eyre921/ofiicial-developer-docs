@@ -1,5 +1,5 @@
 ---
-title: "API versioning"
+title: "Pinecone API versioning"
 source: https://docs.pinecone.io/reference/api/versioning
 path: reference/api/versioning
 ---
@@ -75,4 +75,4 @@ Non-breaking changes are additive and should not break your integration. Additiv
 
 ## Get updates
 
-To ensure you always know about upcoming API changes, follow the [Release notes](/release-notes/).
+To ensure you always know about upcoming API changes, follow the [changelog](/release-notes).

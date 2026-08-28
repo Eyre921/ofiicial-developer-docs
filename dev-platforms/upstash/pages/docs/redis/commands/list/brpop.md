@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/list/brpop
 path: docs/redis/commands/list/brpop
 ---
 
-> Pop from the tail of a list, blocking until an element arrives.
-
 Use `BRPOP` to pop an element from the tail of the first non-empty list, blocking until one has an element or the timeout expires.
 
-It is the blocking form of [`RPOP`](/redis/commands/list/rpop) and behaves like [`BLPOP`](/redis/commands/list/blpop) in every other respect: several keys are checked in the order given, the reply names the key the element came from, the timeout is in seconds and may be fractional with `0` meaning wait forever, and clients blocked on the same key are served in the order they started waiting.
+It is the blocking form of [`RPOP`](/docs/redis/commands/list/rpop) and behaves like [`BLPOP`](/docs/redis/commands/list/blpop) in every other respect: several keys are checked in the order given, the reply names the key the element came from, the timeout is in seconds and may be fractional with `0` meaning wait forever, and clients blocked on the same key are served in the order they started waiting.
 
-Producers pushing with [`LPUSH`](/redis/commands/list/lpush) and consumers waiting with `BRPOP` form the classic first-in, first-out worker queue.
+Producers pushing with [`LPUSH`](/docs/redis/commands/list/lpush) and consumers waiting with `BRPOP` form the classic first-in, first-out worker queue.
 
 ## Syntax
 
@@ -27,7 +25,7 @@ BRPOP <key> [<key> ...] <timeout>
 
 ## Important points
 
-- A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
+* A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
 
 ## Response
 

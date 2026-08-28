@@ -8,17 +8,17 @@ path: docs/vector/sdks/py/example_calls/range
 
 The `range` method allows you to retrieve vectors from the index within a specified range. The function accepts the following parameters:
 
-- `cursor`: A cursor to start the range query.
-- `prefix`: A string prefix to match vector IDs. All vectors with IDs that start with this prefix will be retrieved.
-- `limit`: The maximum number of vectors to retrieve in a single query.
-- `include_vectors`: A boolean flag indicating whether to include vectors in the range results.
-- `include_metadata`: A boolean flag indicating whether to include metadata in the range results.
-- `include_data`: A boolean flag indicating whether to include data in the range results.
+* `cursor`: A cursor to start the range query.
+* `prefix`: A string prefix to match vector IDs. All vectors with IDs that start with this prefix will be retrieved.
+* `limit`: The maximum number of vectors to retrieve in a single query.
+* `include_vectors`: A boolean flag indicating whether to include vectors in the range results.
+* `include_metadata`: A boolean flag indicating whether to include metadata in the range results.
+* `include_data`: A boolean flag indicating whether to include data in the range results.
 
 As response, the object has the following fields:
 
-- `next_cursor`: A cursor indicating the position to start the next range query. If `""`, there are no more results.
-- `vectors`: A list containing information for each vector, including `id`, `vector`, and `metadata`.
+* `next_cursor`: A cursor indicating the position to start the next range query. If `""`, there are no more results.
+* `vectors`: A list containing information for each vector, including `id`, `vector`, and `metadata`.
 
 <Note>
   The range command is stateless, meaning you need to pass all of the parameters

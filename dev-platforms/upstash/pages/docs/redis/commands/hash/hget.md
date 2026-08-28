@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/hash/hget
 path: docs/redis/commands/hash/hget
 ---
 
-> Get the value of a hash field.
-
 Use `HGET` to read the value of a single field of a hash.
 
-The reply is null when either the field or the whole key is missing, so the two cases cannot be told apart from the reply alone; use [`HEXISTS`](/redis/commands/hash/hexists) when that difference matters. To read several fields use [`HMGET`](/redis/commands/hash/hmget) rather than repeated calls, and to read all of them use [`HGETALL`](/redis/commands/hash/hgetall).
+The reply is null when either the field or the whole key is missing, so the two cases cannot be told apart from the reply alone; use [`HEXISTS`](/docs/redis/commands/hash/hexists) when that difference matters. To read several fields use [`HMGET`](/docs/redis/commands/hash/hmget) rather than repeated calls, and to read all of them use [`HGETALL`](/docs/redis/commands/hash/hgetall).
 
 ## Syntax
 

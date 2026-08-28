@@ -28,4 +28,4 @@ Samples requests and responses are shown for each endpoint. Requests are shown u
 
 ## Pagination
 
-Endpoints that return lists of objects support cursor-based pagination requests. By default, Notion returns ten items per API call. If the number of items in a response from a support endpoint exceeds the default, then you can use pagination to request a specific set of the results and/or to limit the number of returned items.
+List endpoints that paginate use cursor-based pagination. Some endpoints use a fixed page size; endpoints that accept `page_size` document its default and maximum. Pass a returned `next_cursor` as `start_cursor` to request the next page.

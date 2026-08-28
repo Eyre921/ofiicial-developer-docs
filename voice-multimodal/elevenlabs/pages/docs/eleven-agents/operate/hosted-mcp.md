@@ -60,14 +60,14 @@ sign in with your account for that environment, not your elevenlabs.io account.
 In a new chat, select the **+** button, then **Add connector** > **Add custom connector**. You
 can also add connectors from **Settings** > **Connectors**.
 
-![The Claude chat input menu with Add connector and Add custom connector highlighted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1c3f441dcc1e77404715e95da3f290f61f913b65b8e3636e404b71b1f4da3797/assets/images/agents/hosted-mcp-add-custom-connector.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T233407Z&X-Amz-Expires=604800&X-Amz-Signature=f030189f17e65f18cb9469a528562b70d2ba8b1ececb04d209cbd6a673dea2de&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![The Claude chat input menu with Add connector and Add custom connector highlighted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1c3f441dcc1e77404715e95da3f290f61f913b65b8e3636e404b71b1f4da3797/assets/images/agents/hosted-mcp-add-custom-connector.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260828%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260828T111520Z&X-Amz-Expires=604800&X-Amz-Signature=08d39a9d781ec4ba3102dde1fc4afc53d62841d22f3325129a7c4438a3ddd736&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Enter a name and your region's URL
 
 Name the connector so the region is clear, for example "ElevenLabs EU", and enter your region's
 MCP server URL. Select **Continue**.
 
-![The Add custom connector dialog with the name ElevenLabs EU and the EU server URL filled in](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1f5f6c459eafc68ce220f1e4d6dd1402e5e78f0d7abb87a41d1800ba6e4c355/assets/images/agents/hosted-mcp-custom-connector-url.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T233407Z&X-Amz-Expires=604800&X-Amz-Signature=6e97550a3a6102d99486f44ccb3a0fe8572b5cb6b12a2ad2a11202904286c934&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![The Add custom connector dialog with the name ElevenLabs EU and the EU server URL filled in](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1f5f6c459eafc68ce220f1e4d6dd1402e5e78f0d7abb87a41d1800ba6e4c355/assets/images/agents/hosted-mcp-custom-connector-url.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260828%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260828T111520Z&X-Amz-Expires=604800&X-Amz-Signature=3b0dd3027857ee627406796d211b8330df2af735c80280bd5cfc0e2477791dc1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Keep the detected settings
 
@@ -75,14 +75,14 @@ Claude detects the server's settings automatically: authentication is set to **A
 required** and the OAuth client uses **Anthropic's hosted client metadata**. Leave both as
 detected and select **Add**.
 
-![The connector authentication settings with Always required and hosted client metadata detected](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5f5b5941ec2d311769570cb194bbd70dc347db5bde46c812f94bae7da1c25c47/assets/images/agents/hosted-mcp-custom-connector-auth.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T233407Z&X-Amz-Expires=604800&X-Amz-Signature=2ffd2894f2d4257711dc4055970ed714b675902903fb0673ca9fd2911532f1c9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![The connector authentication settings with Always required and hosted client metadata detected](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5f5b5941ec2d311769570cb194bbd70dc347db5bde46c812f94bae7da1c25c47/assets/images/agents/hosted-mcp-custom-connector-auth.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260828%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260828T111520Z&X-Amz-Expires=604800&X-Amz-Signature=94e578cf6b9b6c04b329c0b995fe627963cdff1261e63aa96615098a3380309b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Sign in and authorize
 
 Complete the OAuth flow with your account for that environment. Choose the workspace, review
 the requested permissions, and select **Authorize**.
 
-![The ElevenLabs consent screen showing the workspace picker and requested permissions](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/550401ee663f8b123ad61feffcc8cd6767f3f8f665419bf0a0b5cf999a6688ec/assets/images/agents/hosted-mcp-oauth-consent.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T233407Z&X-Amz-Expires=604800&X-Amz-Signature=3b9e12e20bfd5904691966c3d0a93b226c538130da8152bef778292c4b40049b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![The ElevenLabs consent screen showing the workspace picker and requested permissions](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/550401ee663f8b123ad61feffcc8cd6767f3f8f665419bf0a0b5cf999a6688ec/assets/images/agents/hosted-mcp-oauth-consent.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260828%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260828T111520Z&X-Amz-Expires=604800&X-Amz-Signature=9f9d0c6a2f7cc0e15ffb49f91911d4664f8cf70c76f28650078e8a387988bdf6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Other MCP clients work the same way: point the client at your region's server URL and complete the
 OAuth flow. No client registration is needed for clients that support hosted client metadata

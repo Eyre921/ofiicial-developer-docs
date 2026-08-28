@@ -4,10 +4,10 @@ source: https://upstash.com/docs/agent-resources/mcp
 path: docs/agent-resources/mcp
 ---
 
-The Upstash MCP server lets your agent manage and debug your Upstash resources directly, across Redis, QStash, Workflow, and [Upstash Box](/box/overall/quickstart).
+The Upstash MCP server lets your agent manage and debug your Upstash resources directly, across Redis, QStash, Workflow, and [Upstash Box](/docs/box/overall/quickstart).
 
 <Tip>
-  Only running commands against a single Redis database? Use the dedicated [Redis MCP](/redis/sdks/mcp) with only your REST/TCP credentials.
+  Only running commands against a single Redis database? Use the dedicated [Redis MCP](/docs/redis/sdks/mcp) with only your REST/TCP credentials.
 </Tip>
 
 <Tip>
@@ -17,7 +17,7 @@ The Upstash MCP server lets your agent manage and debug your Upstash resources d
 Find the GitHub repository [here](https://github.com/upstash/mcp-server).
 
 <Note>
-  For most workflows, prefer installing the [Upstash Skill](/agent-resources/skills) and letting your agent drive [`@upstash/cli`](/agent-resources/cli) over running the MCP server.
+  For most workflows, prefer installing the [Upstash Skill](/docs/agent-resources/skills) and letting your agent drive [`@upstash/cli`](/docs/agent-resources/cli) over running the MCP server.
 </Note>
 
 # Example prompts
@@ -81,7 +81,7 @@ The Upstash MCP server works with any MCP-compatible client. If your client isn'
 
     Since Cursor 1.0, the one-click install button also works:
 
-    [![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=upstash&config=eyJjb21tYW5kIjoibnB4IC15IEB1cHN0YXNoL21jcC1zZXJ2ZXJAbGF0ZXN0IC0tZW1haWwgWU9VUl9FTUFJTCAtLWFwaS1rZXkgWU9VUl9BUElfS0VZIn0%3D)
+    [![Install MCP Server]()](https://cursor.com/en/install-mcp?name=upstash&config=eyJjb21tYW5kIjoibnB4IC15IEB1cHN0YXNoL21jcC1zZXJ2ZXJAbGF0ZXN0IC0tZW1haWwgWU9VUl9FTUFJTCAtLWFwaS1rZXkgWU9VUl9BUElfS0VZIn0%3D)
 
     ```json
     {
@@ -154,7 +154,7 @@ The Upstash MCP server works with any MCP-compatible client. If your client isn'
   <Accordion title="VS Code">
     Add this to your VS Code MCP config file at `.vscode/mcp.json`, or paste it into the `mcp.servers` user setting. See the [VS Code MCP docs](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) for more info.
 
-    [<img alt="Install in VS Code (npx)" src="https://img.shields.io/badge/Install%20in%20VS%20Code-0098FF?style=for-the-badge&logo=visualstudiocode&logoColor=white" />](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%7B%22name%22%3A%22upstash-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40upstash%2Fmcp-server%40latest%22%5D%7D)
+    [<img alt="Install in VS Code (npx)" />](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%7B%22name%22%3A%22upstash-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40upstash%2Fmcp-server%40latest%22%5D%7D)
 
     ```json
     {
@@ -221,7 +221,7 @@ The Upstash MCP server works with any MCP-compatible client. If your client isn'
   </Accordion>
 
   <Accordion title="DeepSeek Harness">
-    Installing the [Upstash Skill](/agent-resources/skills) as a DeepSeek Harness bundle also installs the MCP server. Requires `pnpm` on your `PATH`.
+    Installing the [Upstash Skill](/docs/agent-resources/skills) as a DeepSeek Harness bundle also installs the MCP server. Requires `pnpm` on your `PATH`.
 
     ```bash
     # Install into a profile (`web` is the one `dsh web` boots)
@@ -256,7 +256,7 @@ The Upstash MCP server works with any MCP-compatible client. If your client isn'
 
 # Upstash Box API key (optional)
 
-For the MCP to interact with [Upstash Box](/box/overall/quickstart), the agent needs your Box API key. By default you have to paste it into the chat (or keep it in a `.env`) every time the agent runs a Box tool. To avoid this, you can wire the key into the MCP setup itself so the server picks it up automatically on startup.
+For the MCP to interact with [Upstash Box](/docs/box/overall/quickstart), the agent needs your Box API key. By default you have to paste it into the chat (or keep it in a `.env`) every time the agent runs a Box tool. To avoid this, you can wire the key into the MCP setup itself so the server picks it up automatically on startup.
 
 You can pass it in two ways.
 

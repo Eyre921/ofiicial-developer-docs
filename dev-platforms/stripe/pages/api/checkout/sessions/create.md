@@ -333,15 +333,6 @@ Possible enum values:
 - [`payment_method_options`](https://docs.stripe.com/api/checkout/sessions/create.md?query=payment_method_options) (object, optional)
   Payment-method-specific configuration.
 
-- `payment_method_types` (array of enums, optional)
-  A list of the types of payment methods (e.g., `card`) this Checkout Session can accept.
-
-  You can omit this attribute to manage your payment methods from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods). See [Dynamic Payment Methods](https://docs.stripe.com/payments/payment-methods/integration-options.md#using-dynamic-payment-methods) for more details.
-
-  Read more about the supported payment methods and their requirements in our [payment method details guide](https://docs.stripe.com/payments/checkout/payment-methods.md).
-
-  If multiple payment methods are passed, Checkout will dynamically reorder them to prioritize the most relevant payment methods based on the customer’s location and other characteristics.
-
 - [`permissions`](https://docs.stripe.com/api/checkout/sessions/create.md?query=permissions) (object, optional)
   This property is used to set up permissions for various actions (e.g., update) on the CheckoutSession object. Can only be set when creating `embedded` or `custom` sessions.
 

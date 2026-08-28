@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/hash/hdel
 path: docs/redis/commands/hash/hdel
 ---
 
-> Delete one or more hash fields.
-
 Use `HDEL` to remove one or more fields from a hash.
 
 The reply counts only the fields that were actually present, so deleting a field that is already gone is not an error. When the last field of a hash is removed the key itself is deleted, because Redis does not keep empty collections.

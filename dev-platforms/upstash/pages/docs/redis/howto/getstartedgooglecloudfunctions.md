@@ -6,13 +6,13 @@ path: docs/redis/howto/getstartedgooglecloudfunctions
 
 ### Prerequisites:
 
-- A GCP account for Google Cloud functions.
-- Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install).
-- An Upstash account for Serverless Redis.
+* A GCP account for Google Cloud functions.
+* Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install).
+* An Upstash account for Serverless Redis.
 
 ### Step 1: Init the Project
 
-- Create a folder, then run `npm init` inside the folder.
+* Create a folder, then run `npm init` inside the folder.
 
 ### Step 2: Install a Redis Client
 
@@ -43,7 +43,10 @@ exports.helloGET = async (req, res) => {
 };
 ```
 
-<Snippet file="redis/ioredisnote.mdx" />
+<Note>
+  This example uses ioredis, you can copy the connection string from the
+  **Node** tab in the console.
+</Note>
 
 The code simply increments a counter in Redis database and returns its value in
 json format.
@@ -69,6 +72,4 @@ url: https://us-central1-functions-317005.cloudfunctions.net/helloGET
 In case of an issue, you can check the logs of your Cloud Function in the GCP
 console as below.
 
-<Frame>
-  <img src="/img/examples/gcp-error.png" width="100%" />
-</Frame>
+  <img width="100%" />

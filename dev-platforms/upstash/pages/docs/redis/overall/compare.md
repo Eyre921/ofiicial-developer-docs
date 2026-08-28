@@ -8,20 +8,20 @@ In this section, we will compare Upstash with alternative cloud based solutions.
 
 ## AWS ElastiCache
 
-- **Serverless Pricing:** Elasticache does not have a serverless pricing model.
+* **Serverless Pricing:** Elasticache does not have a serverless pricing model.
   The price does not scale to zero. You need to pay for the instances even when
   you do not use them. Upstash charges per request.
-- **REST API:** Unlike ElastiCache, Upstash has a built-in REST API, so you can
+* **REST API:** Unlike ElastiCache, Upstash has a built-in REST API, so you can
   access from environments where TCP connections are not allowed such as edge
   functions at Cloudflare Workers.
-- **Access:** Elasticache is designed to be used inside AWS VPC. You can access
+* **Access:** Elasticache is designed to be used inside AWS VPC. You can access
   Upstash from anywhere.
-- **Durability:** Upstash persists your data to the block storage in addition to
+* **Durability:** Upstash persists your data to the block storage in addition to
   memory so you can use it as your primary database.
 
 ## AWS MemoryDB
 
-- **Serverless Pricing:** Similar to Elasticache, MemoryDB does not offer a
+* **Serverless Pricing:** Similar to Elasticache, MemoryDB does not offer a
   serverless pricing model. The pricing does not scale down to zero, and even
   the most affordable instance costs over \$200 per month. This means you are
   required to pay for the instances regardless of usage. In contrast, Upstash
@@ -29,58 +29,58 @@ In this section, we will compare Upstash with alternative cloud based solutions.
   incur charges when actively using your Redis database, ensuring that you do
   not have to pay when it's not in use.
 
-- **REST API:** Unlike MemoryDB, Upstash has a built-in REST API, so you can
+* **REST API:** Unlike MemoryDB, Upstash has a built-in REST API, so you can
   access from environments where TCP connections are not allowed such as edge
   functions at Cloudflare Workers.
 
-- **Access:** MemoryDB is designed to be used inside AWS VPC. You can access
+* **Access:** MemoryDB is designed to be used inside AWS VPC. You can access
   Upstash from anywhere.
 
 ## Redis Labs
 
-- **Serverless Pricing:** Redis Labs does not have a serverless pricing model
+* **Serverless Pricing:** Redis Labs does not have a serverless pricing model
   either. The price does not scale to zero. You need to pay for the instances
   even when you do not use them. Upstash charges per request, so you only pay
   for your real usage.
-- **REST API:** Unlike Redis Labs, Upstash has a built-in REST API, so you can
+* **REST API:** Unlike Redis Labs, Upstash has a built-in REST API, so you can
   access from environments where TCP connections are not allowed such as edge
   functions at Cloudflare Workers.
-- **Durability:** Upstash persists your data to the block storage instantly in
+* **Durability:** Upstash persists your data to the block storage instantly in
   addition to the memory, so you can use it as your primary database.
-- **Full-text search:** Upstash offers [Upstash Redis Search](/redis/search/introduction), a fast
+* **Full-text search:** Upstash offers [Upstash Redis Search](/docs/redis/search/introduction), a fast
   Tantivy-based full-text search extension that works with JSON, Hashes, and Strings out of the box
   and stays automatically in sync as you write.
-- **JSON:** Upstash supports the `JSON.*` commands natively. See [compatibility](/redis/overall/compatibility).
+* **JSON:** Upstash supports the `JSON.*` commands natively. See [compatibility](/docs/redis/overall/compatibility).
 
 ## AWS DynamoDB
 
-- **Latency:** DynamoDB is a disk based data storage. Both write and read
+* **Latency:** DynamoDB is a disk based data storage. Both write and read
   latency are much higher than Redis. Check our
   [benchmark app](https://serverless-battleground.vercel.app/) to get an idea.
 
-- **Complex Pricing:** Initially, DynamoDB may appear cost-effective, but if you
+* **Complex Pricing:** Initially, DynamoDB may appear cost-effective, but if you
   begin utilizing advanced features such as DAX or Global Tables, you might
   encounter unexpected expenses on your AWS bill. In contrast, Upstash offers a
   more transparent pricing policy, ensuring that you are not taken by surprise.
   With Upstash, you can optionally set a budget to cap your maximum costs,
   providing clarity and preventing any unwelcome surprises in your billing.
 
-- **Portability:** DynamoDB is exclusive to AWS and cannot be used outside of
+* **Portability:** DynamoDB is exclusive to AWS and cannot be used outside of
   the AWS platform. However, Redis is supported by numerous cloud providers and
   can also be self-hosted. Upstash provides compatibility with Redis, ensuring
   vendor neutrality.
 
-- **Testability:** Running a local Redis for testing purposes is much easier
+* **Testability:** Running a local Redis for testing purposes is much easier
   than running a local DynamoDB. Check
   [this](https://stackoverflow.com/questions/26901613/easier-dynamodb-local-testing).
 
 ## FaunaDB
 
-- **Latency:** FaunaDB is a globally consistent database. Consistency at global
+* **Latency:** FaunaDB is a globally consistent database. Consistency at global
   level comes with performance cost. Check our
   [benchmark app](https://serverless-battleground.vercel.app/) to get an idea.
 
-- **Complex Pricing:** FaunaDB has a complicated pricing. It has 6 different
+* **Complex Pricing:** FaunaDB has a complicated pricing. It has 6 different
   dimensions to calculate the price. Check
   [this article](https://docs.fauna.com/fauna/current/manage/plans-billing/billing/)
   where the pricing is explained. If your use case is write heavy and
@@ -89,11 +89,11 @@ In this section, we will compare Upstash with alternative cloud based solutions.
   pricing is simple for all options. You pay per request in addition to
   storage cost which is generally much smaller amount.
 
-- **Portability:** FaunaDB is only supported by Fauna Inc. On the other hand,
+* **Portability:** FaunaDB is only supported by Fauna Inc. On the other hand,
   you can use Redis almost in all cloud providers as well as you can host Redis
   yourself. Upstash does not lock you to any vendor.
 
-- **Testability:** Running a local Redis for testing purposes is much easier
+* **Testability:** Running a local Redis for testing purposes is much easier
   than running a local FaunaDB. Check
   [this](https://dev.to/englishcraig/how-to-set-up-faunadb-for-local-development-5ha7).
 
@@ -114,9 +114,7 @@ requests. For 1 million, it is \$2 plus the storage cost that is \$0.25. So for
 1GB, 1M request per months, ElastiCache is \$24, RedisLabs is \$22, Upstash is
 $2.25.
 
-<Frame>
-  <img src="/img/compare/comparecosts.png" />
-</Frame>
+  <img />
 
 **What if your product becomes popular and starts to gain high and steady
 traffic?**
@@ -124,11 +122,11 @@ traffic?**
 Most of the serverless products start to lose their spell if the service
 receives steady and high traffic as it starts to cost higher than
 server/instance based pricing models. To overcome this situation we give you
-the option to switch to a [Fixed plan](/redis/overall/pricing). On a Fixed plan you set a
+the option to switch to a [Fixed plan](/docs/redis/overall/pricing). On a Fixed plan you set a
 fixed price per month with a restriction on max throughput and data size. For high and
 steady throughput use cases, Fixed plans cost less than pay-as-you-go.
 The good thing is you can start your database with pay-as-you-go pricing and
-move to a Fixed plan when you want. See [pricing](/redis/overall/pricing) and [enterprise plans](/redis/overall/enterprise) for more information.
+move to a Fixed plan when you want. See [pricing](/docs/redis/overall/pricing) and [enterprise plans](/docs/redis/overall/enterprise) for more information.
 
 Even if you choose not to upgrade to a Fixed plan, Upstash gives you control
 over your spending through optional budgets. By default, there is no monthly

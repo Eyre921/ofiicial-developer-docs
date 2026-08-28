@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/server/info
 path: docs/redis/commands/server/info
 ---
 
-> Get server statistics and information.
-
 Use `INFO` to get statistics and information about the server.
 
 The reply groups fields into sections such as `server`, `clients`, `memory`, `stats`, `replication`, and `keyspace`, and passing a section name limits the reply to that one. It is the usual source for operational numbers such as connected clients, memory in use, hit and miss counts, and the number of keys per database.
@@ -26,9 +24,9 @@ INFO [section]
 
 ## Important points
 
-- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
-- `default` and `all` return the same Upstash section set. Unsupported section names produce only a section heading.
-- The reply is a CRLF-delimited text report, not a RESP map. Parse it defensively because fields may be added over time.
+* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+* `default` and `all` return the same Upstash section set. Unsupported section names produce only a section heading.
+* The reply is a CRLF-delimited text report, not a RESP map. Parse it defensively because fields may be added over time.
 
 ## Response
 

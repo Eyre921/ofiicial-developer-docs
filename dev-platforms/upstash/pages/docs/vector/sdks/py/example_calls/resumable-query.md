@@ -40,27 +40,27 @@ with handle:
 
 Parameters
 
-- vector (List[float] | SupportsToList | None) — query vector (mutually exclusive with `data`).
-- top_k (int, default 10) — how many top matches to return in the initial batch.
-- include_vectors (bool, default False) — include full vector values on results.
-- include_metadata (bool, default False) — include metadata on results.
-- filter (str, default "") — filter expression to narrow results by metadata.
-- data (str | None) — text query for indexes using Upstash-hosted embedding models.
-- namespace (str, default DEFAULT_NAMESPACE) — namespace to search in.
-- include_data (bool, default False) — include stored `data` field (used for embedding indexes).
-- max_idle (int, default 3600) — how long the server keeps the resumable query alive (seconds).
-- sparse_vector (SparseVector | TupleAsSparseVectorT | None) — sparse vector for sparse/hybrid indexes.
-- weighting_strategy (WeightingStrategy | None) — weighting strategy for sparse vectors.
-- fusion_algorithm (FusionAlgorithm | None) — fusion algorithm for hybrid scoring.
-- query_mode (QueryMode | None) — query mode for hybrid embedding indexes (e.g. SPARSE).
+* vector (List[float] | SupportsToList | None) — query vector (mutually exclusive with `data`).
+* top_k (int, default 10) — how many top matches to return in the initial batch.
+* include_vectors (bool, default False) — include full vector values on results.
+* include_metadata (bool, default False) — include metadata on results.
+* filter (str, default "") — filter expression to narrow results by metadata.
+* data (str | None) — text query for indexes using Upstash-hosted embedding models.
+* namespace (str, default DEFAULT_NAMESPACE) — namespace to search in.
+* include_data (bool, default False) — include stored `data` field (used for embedding indexes).
+* max_idle (int, default 3600) — how long the server keeps the resumable query alive (seconds).
+* sparse_vector (SparseVector | TupleAsSparseVectorT | None) — sparse vector for sparse/hybrid indexes.
+* weighting_strategy (WeightingStrategy | None) — weighting strategy for sparse vectors.
+* fusion_algorithm (FusionAlgorithm | None) — fusion algorithm for hybrid scoring.
+* query_mode (QueryMode | None) — query mode for hybrid embedding indexes (e.g. SPARSE).
 
 How it works
 
-- The call to `resumable_query` returns a tuple `(result, handle)` where `result`
+* The call to `resumable_query` returns a tuple `(result, handle)` where `result`
   is the first batch (list of QueryResult) and `handle` is a `ResumableQueryHandle`.
-- Use `handle.fetch_next(n)` (or `await handle.fetch_next(n)`) to retrieve the next
+* Use `handle.fetch_next(n)` (or `await handle.fetch_next(n)`) to retrieve the next
   `n` results. If no more results are available an empty list is returned.
-- Always stop the handle when finished (use `with handle:` / `async with handle:` or
+* Always stop the handle when finished (use `with handle:` / `async with handle:` or
   call `handle.stop()` / `await handle.stop()`). After the handle is stopped, further
   calls to `fetch_next` or `stop` raise an error (tests expect UpstashError).
 
@@ -108,7 +108,7 @@ with handle:
 
 Notes
 
-- The server enforces a limit on the number of active resumable queries; keep them
+* The server enforces a limit on the number of active resumable queries; keep them
   short-lived and call `stop()` when finished. The default `max_idle` is 3600 seconds.
-- After calling `stop()` (explicitly or via context manager), further `fetch_next` or
+* After calling `stop()` (explicitly or via context manager), further `fetch_next` or
   `stop` calls will raise an error.

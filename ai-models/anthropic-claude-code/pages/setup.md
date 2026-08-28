@@ -108,10 +108,10 @@ If you encounter any issues during installation, see [Troubleshoot installation 
 You can run Claude Code natively on Windows or inside WSL. Pick based on where your projects are located and which features you need:
 
 | Option         | Requires                                                               | [Sandboxing](/docs/en/sandboxing) | When to use                                     |
-| -------------- | ---------------------------------------------------------------------- | ---------------------------- | ----------------------------------------------- |
-| Native Windows | None; [Git for Windows](https://git-scm.com/downloads/win) is optional | Not supported                | Windows-native projects and tools               |
-| WSL 2          | WSL 2 enabled                                                          | Supported                    | Linux toolchains or sandboxed command execution |
-| WSL 1          | WSL 1 enabled                                                          | Not supported                | If WSL 2 is unavailable                         |
+| -------------- | ---------------------------------------------------------------------- | --------------------------------- | ----------------------------------------------- |
+| Native Windows | None; [Git for Windows](https://git-scm.com/downloads/win) is optional | Not supported                     | Windows-native projects and tools               |
+| WSL 2          | WSL 2 enabled                                                          | Supported                         | Linux toolchains or sandboxed command execution |
+| WSL 1          | WSL 1 enabled                                                          | Not supported                     | If WSL 2 is unavailable                         |
 
 **Option 1: Native Windows**
 
@@ -132,7 +132,7 @@ After installation, launch `claude` from any terminal.
   }
   ```
 
-When Git for Windows is installed, the PowerShell tool is rolling out progressively as an additional option alongside Bash. Set `CLAUDE_CODE_USE_POWERSHELL_TOOL=1` to opt in or `0` to opt out. See [PowerShell tool](/docs/en/tools-reference#powershell-tool) for setup and limitations.
+When Git for Windows is installed, the PowerShell tool is available alongside Bash: on by default for claude.ai and Console accounts, and enabled with `CLAUDE_CODE_USE_POWERSHELL_TOOL=1` in Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry sessions. Set it to `0` to turn the tool off. See [PowerShell tool](/docs/en/tools-reference#powershell-tool) for setup and limitations.
 
 **Option 2: WSL**
 
@@ -156,7 +156,7 @@ echo "https://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/reposit
 
 Run `apk update` to refresh the package index, and retry the `apk add` command.
 
-Then set `USE_BUILTIN_RIPGREP` to `0` in your [`settings.json`](/docs/en/settings#available-settings) file:
+Then set `USE_BUILTIN_RIPGREP` to `0` in your [`settings.json`](/docs/en/settings-reference#all-settings) file:
 
 ```json theme={null}
 {
@@ -237,7 +237,7 @@ Configure this via `/config` → **Auto-update channel**, or add it to your [set
 }
 ```
 
-For enterprise deployments, you can enforce a consistent release channel across your organization using [managed settings](/docs/en/permissions#managed-settings).
+For enterprise deployments, you can enforce a consistent release channel across your organization using [managed settings](/docs/en/managed-settings).
 
 Homebrew installations choose a channel by cask name instead of this setting: `claude-code` tracks stable and `claude-code@latest` tracks latest.
 
@@ -256,13 +256,13 @@ Add it to your [settings.json file](/docs/en/settings) to pin a floor explicitly
 }
 ```
 
-In [managed settings](/docs/en/permissions#managed-settings), this enforces an organization-wide minimum that user and project settings cannot override.
+In [managed settings](/docs/en/managed-settings), this enforces an organization-wide minimum that user and project settings cannot override.
 
-The `minimumVersion` pin only constrains updates. To make Claude Code refuse to start outside a version range, use the managed settings `requiredMinimumVersion` and `requiredMaximumVersion` instead. Updates also respect the `requiredMaximumVersion` ceiling. See [available settings](/docs/en/settings#available-settings).
+The `minimumVersion` pin only constrains updates. To make Claude Code refuse to start outside a version range, use the managed settings `requiredMinimumVersion` and `requiredMaximumVersion` instead. Updates also respect the `requiredMaximumVersion` ceiling. See [`requiredMinimumVersion`](/docs/en/settings-reference#requiredminimumversion) and [`requiredMaximumVersion`](/docs/en/settings-reference#requiredmaximumversion).
 
 ### Disable auto-updates
 
-Set `DISABLE_AUTOUPDATER` to `"1"` in the `env` key of your [`settings.json`](/docs/en/settings#available-settings) file:
+Set `DISABLE_AUTOUPDATER` to `"1"` in the `env` key of your [`settings.json`](/docs/en/settings-reference#all-settings) file:
 
 ```json theme={null}
 {
@@ -358,6 +358,8 @@ To install a specific version number:
   </Tab>
 </Tabs>
 
+To confirm which version installed, run `claude --version`: the command prints the exact version you passed, such as `2.1.89 (Claude Code)`.
+
 ### Install with Linux package managers
 
 Claude Code publishes signed apt, dnf, and apk repositories. Each repository offers two channels: `stable` serves a version that is typically about one week old, skipping releases with major regressions, and `latest` serves every release as soon as it ships. The commands below configure the `stable` channel, which fits most users; each tab also shows the `latest` repository URL. Package manager installations do not auto-update through Claude Code; updates arrive through your normal system upgrade workflow.
@@ -366,18 +368,31 @@ All repositories are signed with the [Claude Code release signing key](#binary-i
 
 <Tabs>
   <Tab title="apt">
-    For Debian and Ubuntu. The install commands below download the signing key with `curl`, which fresh Debian and Ubuntu installations may not include. If the download fails with `sudo: curl: command not found`, install curl first:
+    For Debian and Ubuntu. The install commands below download the signing key with `curl` and verify it with `gpg`, which fresh Debian and Ubuntu installations may not include. If either command reports `command not found`, install both first:
 
     ```bash theme={null}
-    sudo apt install curl
+    sudo apt install curl gnupg
     ```
 
-    The following commands configure the `stable` channel:
+    Download the signing key:
 
     ```bash theme={null}
     sudo install -d -m 0755 /etc/apt/keyrings
     sudo curl -fsSL https://downloads.claude.ai/keys/claude-code.asc \
       -o /etc/apt/keyrings/claude-code.asc
+    ```
+
+    If this download fails, `apt update` later fails with `NO_PUBKEY BAA929FF1A7ECACE`. Confirm the key downloaded and belongs to Anthropic before continuing:
+
+    ```bash theme={null}
+    gpg --show-keys /etc/apt/keyrings/claude-code.asc
+    ```
+
+    The fingerprint gpg prints should be `31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE`. If gpg reports that the file can't be opened or contains no valid OpenPGP data, the download failed or returned the wrong content: confirm your network can reach `downloads.claude.ai`, then rerun the download command.
+
+    Register the repository on the `stable` channel and install:
+
+    ```bash theme={null}
     echo "deb [signed-by=/etc/apt/keyrings/claude-code.asc] https://downloads.claude.ai/claude-code/apt/stable stable main" \
       | sudo tee /etc/apt/sources.list.d/claude-code.list
     sudo apt update
@@ -390,8 +405,6 @@ All repositories are signed with the [Claude Code release signing key](#binary-i
     echo "deb [signed-by=/etc/apt/keyrings/claude-code.asc] https://downloads.claude.ai/claude-code/apt/latest latest main" \
       | sudo tee /etc/apt/sources.list.d/claude-code.list
     ```
-
-    Verify the GPG key fingerprint before trusting it: `gpg --show-keys /etc/apt/keyrings/claude-code.asc` should report `31DD DE24 DDFA B679 F42D 7BD2 BAA9 29FF 1A7E CACE`.
 
     To upgrade later, run `sudo apt update && sudo apt upgrade claude-code`.
   </Tab>

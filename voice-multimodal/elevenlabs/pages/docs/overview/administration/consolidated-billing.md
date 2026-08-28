@@ -8,8 +8,8 @@ path: docs/overview/administration/consolidated-billing
 
 # Consolidated billing
 
-Consolidated billing is an Enterprise feature that allows you to link multiple workspaces under a
-single billing account.
+Consolidated billing is an Enterprise feature that lets you link multiple workspaces under a
+single billing account. Enterprise admins can set this up from Workspace settings.
 
 ## Overview
 
@@ -26,7 +26,9 @@ With consolidated billing, you have:
 
 ## How it works
 
-Consolidated billing creates a relationship between workspaces where one workspace (the "billing workspace") receives usage reports from other workspaces (the "reporting workspaces"). All usage is then billed through the billing workspace.
+Consolidated billing links a **billing workspace** (also called the parent) to one or more
+**reporting workspaces** (also called child workspaces). All usage is billed through the billing
+workspace.
 
 ### Billing workspace
 
@@ -44,26 +46,47 @@ Reporting workspaces can be located on elevenlabs.io or in an isolated environme
 * Maintain their own members and configurations.
 * Show, as usual, granular usage analytics for that workspace.
 
-Within the same region, users cannot be members of multiple workspaces. This limitation only
-applies within the same environment.
+In Workspace settings they appear as **Child Workspaces**.
 
-## Setup process
+## Set up consolidated billing
 
-Consolidated billing is an Enterprise feature that requires configuration by our team. To enable consolidated billing for your organization, contact your dedicated Customer Success Manager.
+Enterprise admins can create a new reporting workspace or link an existing one from the billing workspace.
+
+### Open Workspace settings
+
+In the billing workspace, click your profile icon and select **Workspace settings**, or go to
+[Workspace settings](https://elevenlabs.io/app/workspace).
+
+### Add a child workspace
+
+In the **Child Workspaces** section, click **Add Child Workspace**. Choose **Create new
+workspace** or **Link existing workspace**.
+
+### Complete the setup
+
+To create a workspace, enter a name, select an owner from the billing workspace, then click
+**Create**.
+
+To link a workspace, paste its workspace ID, then click **Link workspace**. You must be an admin
+of both workspaces.
+
+There are certain limitations to this self-serve flow. If you don't see **Add Child Workspace**,
+or an action fails, please contact your Customer Success Manager, who can help you set up
+consolidated billing.
 
 ## Usage tracking
 
 The billing workspace will be able to see the usage of all linked workspaces.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b4a2896939345df00263961ea080724f268655a4b258c6988b7344cb3c6ebb0/assets/images/product-guides/administration/consolidated-billing-reporting.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T221920Z&X-Amz-Expires=604800&X-Amz-Signature=b91dba9c475969588ff7a21c0affbedb7f851766b7775cd4921e367a05030627&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Consolidated billing reporting view" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7e4b4abd815940402a5e68e37da191da43d4dd70e13efa3a1f84decdec9bc98b/assets/images/product-guides/administration/consolidated-billing-reporting.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260828%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260828T112719Z&X-Amz-Expires=604800&X-Amz-Signature=fc2c05b628ece8fdf910b3372f34156c905f9d9daba0697eb8c2239b787589bc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Usage analytics grouped by reporting workspace" />
 
-The reporting workspace will only be able to see analytics for its own usage. However, the total credits left shown in the sidebar will be the sum of all linked workspaces.
+The reporting workspace will only be able to see analytics for its own usage.
 
 ## Credit limits
 
 By default, every reporting workspace can draw from the full shared credit pool. Admins of the billing workspace can optionally set a credit limit on each reporting workspace to control how many credits it can consume during a billing cycle.
 
-Credit limits are managed from the billing workspace's settings page. For each reporting workspace, you can set a credit limit or leave it unlimited so the workspace continues to draw from the full shared pool.
+Credit limits are managed from **Workspace settings** in the billing workspace. For each reporting workspace under **Child Workspaces**, click **Set Limits**, then **Set Credit Limit**. You can set a credit limit or leave it unlimited so the workspace continues to draw from the full shared pool.
 
 Credit limits reset at the start of each billing cycle, aligned with the billing workspace's subscription cycle. Admins can adjust or remove a workspace's credit limit at any time, and changes take effect immediately. When a reporting workspace reaches its credit limit, all requests made from that workspace are rejected until the next billing cycle or the limit is removed.
 
@@ -71,9 +94,15 @@ Credit limits reset at the start of each billing cycle, aligned with the billing
 
 Billing workspace admins can set a text to speech (TTS) concurrency limit on each reporting workspace.
 
-TTS concurrency limits are managed from the billing workspace's settings page. For each reporting workspace, you can set a concurrency limit or leave it uncapped (in which case, the parent workspace concurrency limit applies). Admins can adjust or remove a workspace's TTS concurrency limit at any time, and changes take effect immediately.
+TTS concurrency limits are managed from **Workspace settings** in the billing workspace. For each reporting workspace under **Child Workspaces**, click **Set Limits**, then **Set Concurrency**. You can set a concurrency limit or leave it uncapped (in which case, the parent workspace concurrency limit applies). Admins can adjust or remove a workspace's TTS concurrency limit at any time, and changes take effect immediately.
 
 ## FAQ
+
+#### Can I set this up myself?
+
+Yes. Use **Add Child Workspace** in [Workspace settings](https://elevenlabs.io/app/workspace) to
+create a new reporting workspace or link an existing one. If you don't see the option or
+something fails, contact your Customer Success Manager.
 
 #### Can I set credit limits for each workspace?
 
@@ -94,7 +123,8 @@ touch with your dedicated Customer Success Manager.
 
 #### Can both workspaces be located on elevenlabs.io?
 
-Yes, both workspaces can be located on elevenlabs.io - this is useful if you want to have
-multiple segregated teams. Sharing resources between workspaces is not possible so consider
-using permissions with [user groups](/docs/overview/administration/workspaces/user-groups)
-before enabling consolidated billing.
+Yes, both workspaces can be located on elevenlabs.io. This is useful if you want to have
+multiple segregated teams. Enterprise workspaces can copy supported resources between workspaces
+in the same consolidated billing group. See [workspaces
+overview](/docs/overview/administration/workspaces). For access within a single workspace,
+consider permissions with [user groups](/docs/overview/administration/workspaces/user-groups).

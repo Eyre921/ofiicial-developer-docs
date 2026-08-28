@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/search/search-waitindexing
 path: docs/redis/commands/search/search-waitindexing
 ---
 
-> Wait until pending index updates are visible.
-
 Use `SEARCH.WAITINDEXING` to block until all pending index updates are processed and visible to queries.
 
-See [Waiting for Indexing](/redis/search/index-management#waiting-for-indexing) for guidance on when to wait for index updates.
+See [Waiting for Indexing](/docs/redis/search/index-management#waiting-for-indexing) for guidance on when to wait for index updates.
 
 The command accepts an index name or alias and waits for every update queued before the command began. Writes that arrive later may require another call.
 

@@ -4,8 +4,6 @@ source: https://upstash.com/docs/devops/terraform/resources/upstash_redis_databa
 path: docs/devops/terraform/resources/upstash_redis_database
 ---
 
-> Create and manage Upstash Redis databases.
-
 <RequestExample>
 
 ```hcl example.tf

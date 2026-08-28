@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/streams/xackdel
 path: docs/redis/commands/streams/xackdel
 ---
 
-> Acknowledge and delete messages.
-
 Use `XACKDEL` to acknowledge entries in a consumer group and delete them from the stream in one atomic step.
 
-It combines what [`XACK`](/redis/commands/streams/xack) and [`XDEL`](/redis/commands/streams/xdel) do, which is what you want when a stream serves a single group and processed entries have no reason to stay around. `IDS <numids>` introduces the list of IDs and the count must match.
+It combines what [`XACK`](/docs/redis/commands/streams/xack) and [`XDEL`](/docs/redis/commands/streams/xdel) do, which is what you want when a stream serves a single group and processed entries have no reason to stay around. `IDS <numids>` introduces the list of IDs and the count must match.
 
 The reference policy controls what happens to consumer group references of the deleted entries: `KEEPREF`, the default, leaves references in other groups' pending lists in place, `DELREF` removes them everywhere, and `ACKED` only deletes entries that every group has read and acknowledged, leaving the rest in the stream. The reply holds one status code per requested ID, in order.
 

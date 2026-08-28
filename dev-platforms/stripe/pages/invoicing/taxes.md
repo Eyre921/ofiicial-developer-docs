@@ -39,7 +39,7 @@ Create a customer-configured [Account](https://docs.stripe.com/accounts-v2/use-a
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   --json '{
     "identity": {
         "country": "US",
@@ -75,7 +75,7 @@ Instead of a physical address, you can provide their IP address:
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   --json '{
     "configuration": {
         "customer": {

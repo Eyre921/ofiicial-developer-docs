@@ -23,6 +23,8 @@ path: v1/llms.txt
 - [Tool Use & Agents](https://docs.cohere.com/docs/tool-use-quickstart.md): A quickstart guide for using tool use and building agents with Cohere's Command models (v1 API).
 - [Semantic Search](https://docs.cohere.com/docs/sem-search-quickstart.md): A quickstart guide for performing text semantic search with Cohere's Embed models (v1 API).
 - [Reranking](https://docs.cohere.com/docs/reranking-quickstart.md): A quickstart guide for performing reranking with Cohere's Reranking models (v1 API).
+- [Document Parsing](https://docs.cohere.com/docs/parse-quickstart.md): A quickstart guide for parsing documents with Cohere's Parse model.
+- [Document Parsing - best practices](https://docs.cohere.com/docs/parse-best-practices.md): Best practices for image format, resolution, and throughput when using the Cohere Parse API.
 - [An Overview of the Developer Playground](https://docs.cohere.com/docs/playground-overview.md): The Cohere Playground is a powerful visual interface for testing Cohere's generation and embedding language models without coding.
 - [Frequently Asked Questions About Cohere](https://docs.cohere.com/docs/cohere-faqs.md): Cohere is a powerful platform for using Large Language Models (LLMs). This page covers FAQs related to functionality, pricing, troubleshooting, and more.
 - [Model Vault Overview](https://docs.cohere.com/docs/model-vault.md): Model Vault is a Cohere-managed, single-tenant environment for deploying and serving Cohere models. Every vault is either Standard or Encrypted.
@@ -37,7 +39,9 @@ path: v1/llms.txt
 - [Standard Vault Pricing](https://docs.cohere.com/docs/model-vault/standard/pricing.md): Standard Vault pricing models (Fixed and Flex) and per-model performance tiers and rates.
 - [Encrypted Vault Overview](https://docs.cohere.com/docs/model-vault/encrypted.md): Encrypted Vaults add confidential computing to Model Vault, so prompts and responses stay protected end to end with verifiable attestation.
 - [Supported Models](https://docs.cohere.com/docs/model-vault/encrypted/supported-models.md): Which Cohere models are available in Model Vault Encrypted, the supported confidential-computing GPUs, and the isolating architecture.
+- [Calling an Encrypted Vault over the API](https://docs.cohere.com/docs/model-vault/encrypted/api-usage.md): Call an Encrypted Vault through the Cohere OHTTP proxy that verifies the TEE and encrypts end to end before any data is sent.
 - [Confidential Computing Primer](https://docs.cohere.com/docs/model-vault/encrypted/confidential-computing.md): A primer on the trusted execution environments and GPU confidential computing that power Model Vault Encrypted.
+- [Security Model](https://docs.cohere.com/docs/model-vault/encrypted/security-model.md): The trust boundary and threat model for Model Vault Encrypted: who can and cannot access your data.
 - [Remote Attestation](https://docs.cohere.com/docs/model-vault/encrypted/attestation.md): How remote attestation and the Passport model with Intel Trust Authority prove which code is running inside a Model Vault Encrypted deployment.
 - [Verifying Your Deployment](https://docs.cohere.com/docs/model-vault/encrypted/verifying-deployment.md): How to verify a Model Vault Encrypted deployment: automatic client-side checks and the attestation details you can inspect in the Model Vault app.
 - [Encryption & Key Management](https://docs.cohere.com/docs/model-vault/encrypted/encryption-key-management.md): How Model Vault Encrypted protects data in transit, at rest, and in use, and how encryption keys and Zero Data Retention are handled.
@@ -190,52 +194,52 @@ path: v1/llms.txt
 
 ## API Docs
 
-- Cohere API > Endpoints > v1/chat [Chat  (V1)](https://docs.cohere.com/reference/chat-v1.md)
-- Cohere API > Endpoints > v1/chat [Chat with Streaming (V1)](https://docs.cohere.com/reference/chat-stream-v1.md)
-- Cohere API > Endpoints > v1/embed [Embed API (v1)](https://docs.cohere.com/reference/embed.md)
-- Cohere API > Endpoints > v1/embed-jobs [Create an Embed Job](https://docs.cohere.com/reference/create-embed-job.md)
-- Cohere API > Endpoints > v1/embed-jobs [List Embed Jobs](https://docs.cohere.com/reference/list-embed-jobs.md)
-- Cohere API > Endpoints > v1/embed-jobs [Fetch an Embed Job](https://docs.cohere.com/reference/get-embed-job.md)
-- Cohere API > Endpoints > v1/embed-jobs [Cancel an Embed Job](https://docs.cohere.com/reference/cancel-embed-job.md)
-- Cohere API > Endpoints > v1/rerank [Rerank API (v1)](https://docs.cohere.com/reference/rerank.md)
-- Cohere API > Endpoints > v1/datasets [Create a Dataset](https://docs.cohere.com/reference/create-dataset.md)
-- Cohere API > Endpoints > v1/datasets [List Datasets](https://docs.cohere.com/reference/list-datasets.md)
-- Cohere API > Endpoints > v1/datasets [Get Dataset Usage](https://docs.cohere.com/reference/get-dataset-usage.md)
-- Cohere API > Endpoints > v1/datasets [Get a Dataset](https://docs.cohere.com/reference/get-dataset.md)
-- Cohere API > Endpoints > v1/datasets [Delete a Dataset](https://docs.cohere.com/reference/delete-dataset.md)
-- Cohere API > Endpoints > v1/tokenize [Tokenize](https://docs.cohere.com/reference/tokenize.md)
-- Cohere API > Endpoints > v1/detokenize [Detokenize](https://docs.cohere.com/reference/detokenize.md)
-- Cohere API > Endpoints > v1/models [Get a Model](https://docs.cohere.com/reference/get-model.md)
-- Cohere API > Endpoints > v1/models [List Models](https://docs.cohere.com/reference/list-models.md)
-- Cohere API > Deprecated > v1/classify [Classify](https://docs.cohere.com/reference/classify.md)
-- Cohere API > Deprecated > v1/connectors [List Connectors](https://docs.cohere.com/reference/list-connectors.md)
-- Cohere API > Deprecated > v1/connectors [Create a Connector](https://docs.cohere.com/reference/create-connector.md)
-- Cohere API > Deprecated > v1/connectors [Get a Connector](https://docs.cohere.com/reference/get-connector.md)
-- Cohere API > Deprecated > v1/connectors [Update a Connector](https://docs.cohere.com/reference/update-connector.md)
-- Cohere API > Deprecated > v1/connectors [Delete a Connector](https://docs.cohere.com/reference/delete-connector.md)
-- Cohere API > Deprecated > v1/connectors [Authorize with oAuth](https://docs.cohere.com/reference/oauthauthorize-connector.md)
-- Cohere API > Deprecated > v1/finetuning [Lists fine-tuned models.](https://docs.cohere.com/reference/listfinetunedmodels.md)
-- Cohere API > Deprecated > v1/finetuning [Trains and deploys a fine-tuned model.](https://docs.cohere.com/reference/createfinetunedmodel.md)
-- Cohere API > Deprecated > v1/finetuning [Updates a fine-tuned model.](https://docs.cohere.com/reference/updatefinetunedmodel.md)
-- Cohere API > Deprecated > v1/finetuning [Returns a fine-tuned model by ID.](https://docs.cohere.com/reference/getfinetunedmodel.md)
-- Cohere API > Deprecated > v1/finetuning [Deletes a fine-tuned model.](https://docs.cohere.com/reference/deletefinetunedmodel.md)
-- Cohere API > Deprecated > v1/finetuning [Fetch history of statuses for a fine-tuned model.](https://docs.cohere.com/reference/listevents.md)
-- Cohere API > Deprecated > v1/finetuning [Retrieve training metrics for fine-tuned models.](https://docs.cohere.com/reference/listtrainingstepmetrics.md)
-- Cohere API > Deprecated > v1/generate [Generate](https://docs.cohere.com/reference/generate-v1.md)
-- Cohere API > Deprecated > v1/generate [Generate with Streaming](https://docs.cohere.com/reference/generate-stream-v1.md)
-- Cohere API > Deprecated > v1/summarize [Summarize](https://docs.cohere.com/reference/summarize.md)
-- Cohere API > Deprecated > v1/check-api-key [Check API key](https://docs.cohere.com/reference/check-api-key.md)
-- Cohere API > Audio > Transcriptions [Create a transcription](https://docs.cohere.com/reference/create-audio-transcription.md)
-- Cohere API > Batches [List batches](https://docs.cohere.com/reference/list-batches.md)
-- Cohere API > Batches [Create a batch](https://docs.cohere.com/reference/create-batch.md)
-- Cohere API > Batches [Retrieve a batch](https://docs.cohere.com/reference/get-batch.md)
-- Cohere API > Batches [Cancel a batch](https://docs.cohere.com/reference/cancel-batch.md)
+- Cohere API > Inference > chat [Chat](https://docs.cohere.com/reference/chat-v1.md)
+- Cohere API > Inference > chat [Chat with Streaming](https://docs.cohere.com/reference/chat-stream-v1.md)
+- Cohere API > Inference > rerank [Rerank API (v1)](https://docs.cohere.com/reference/rerank.md)
+- Cohere API > Inference > embed [Embed API (v1)](https://docs.cohere.com/reference/embed.md)
+- Cohere API > Inference > embed-jobs [Create an Embed Job](https://docs.cohere.com/reference/create-embed-job.md)
+- Cohere API > Inference > embed-jobs [List Embed Jobs](https://docs.cohere.com/reference/list-embed-jobs.md)
+- Cohere API > Inference > embed-jobs [Fetch an Embed Job](https://docs.cohere.com/reference/get-embed-job.md)
+- Cohere API > Inference > embed-jobs [Cancel an Embed Job](https://docs.cohere.com/reference/cancel-embed-job.md)
+- Cohere API > Inference > audio/transcriptions [Create a transcription](https://docs.cohere.com/reference/create-audio-transcription.md)
+- Cohere API > Inference > batches [Create a batch](https://docs.cohere.com/reference/create-batch.md)
+- Cohere API > Inference > batches [List batches](https://docs.cohere.com/reference/list-batches.md)
+- Cohere API > Inference > batches [Retrieve a batch](https://docs.cohere.com/reference/get-batch.md)
+- Cohere API > Inference > batches [Cancel a batch](https://docs.cohere.com/reference/cancel-batch.md)
+- Cohere API > Utilities > tokenize [Tokenize](https://docs.cohere.com/reference/tokenize.md)
+- Cohere API > Utilities > detokenize [Detokenize](https://docs.cohere.com/reference/detokenize.md)
+- Cohere API > Utilities > datasets [Create a Dataset](https://docs.cohere.com/reference/create-dataset.md)
+- Cohere API > Utilities > datasets [List Datasets](https://docs.cohere.com/reference/list-datasets.md)
+- Cohere API > Utilities > datasets [Get Dataset Usage](https://docs.cohere.com/reference/get-dataset-usage.md)
+- Cohere API > Utilities > datasets [Get a Dataset](https://docs.cohere.com/reference/get-dataset.md)
+- Cohere API > Utilities > datasets [Delete a Dataset](https://docs.cohere.com/reference/delete-dataset.md)
+- Cohere API > Utilities > models [Get a Model](https://docs.cohere.com/reference/get-model.md)
+- Cohere API > Utilities > models [List Models](https://docs.cohere.com/reference/list-models.md)
+- Cohere API > Deprecated > classify [Classify](https://docs.cohere.com/reference/classify.md)
+- Cohere API > Deprecated > connectors [List Connectors](https://docs.cohere.com/reference/list-connectors.md)
+- Cohere API > Deprecated > connectors [Create a Connector](https://docs.cohere.com/reference/create-connector.md)
+- Cohere API > Deprecated > connectors [Get a Connector](https://docs.cohere.com/reference/get-connector.md)
+- Cohere API > Deprecated > connectors [Update a Connector](https://docs.cohere.com/reference/update-connector.md)
+- Cohere API > Deprecated > connectors [Delete a Connector](https://docs.cohere.com/reference/delete-connector.md)
+- Cohere API > Deprecated > connectors [Authorize with oAuth](https://docs.cohere.com/reference/oauthauthorize-connector.md)
+- Cohere API > Deprecated > finetuning [Lists fine-tuned models.](https://docs.cohere.com/reference/listfinetunedmodels.md)
+- Cohere API > Deprecated > finetuning [Trains and deploys a fine-tuned model.](https://docs.cohere.com/reference/createfinetunedmodel.md)
+- Cohere API > Deprecated > finetuning [Updates a fine-tuned model.](https://docs.cohere.com/reference/updatefinetunedmodel.md)
+- Cohere API > Deprecated > finetuning [Returns a fine-tuned model by ID.](https://docs.cohere.com/reference/getfinetunedmodel.md)
+- Cohere API > Deprecated > finetuning [Deletes a fine-tuned model.](https://docs.cohere.com/reference/deletefinetunedmodel.md)
+- Cohere API > Deprecated > finetuning [Fetch history of statuses for a fine-tuned model.](https://docs.cohere.com/reference/listevents.md)
+- Cohere API > Deprecated > finetuning [Retrieve training metrics for fine-tuned models.](https://docs.cohere.com/reference/listtrainingstepmetrics.md)
+- Cohere API > Deprecated > generate [Generate](https://docs.cohere.com/reference/generate-v1.md)
+- Cohere API > Deprecated > generate [Generate with Streaming](https://docs.cohere.com/reference/generate-stream-v1.md)
+- Cohere API > Deprecated > summarize [Summarize](https://docs.cohere.com/reference/summarize.md)
+- Cohere API > Deprecated > check-api-key [Check API key](https://docs.cohere.com/reference/check-api-key.md)
 
 ## OpenAPI Specification
 
 The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://docs.cohere.com/openapi.json)
-- [OpenAPI YAML](https://docs.cohere.com/openapi.yaml)
+- [OpenAPI JSON](https://docs.cohere.com/v1/openapi.json)
+- [OpenAPI YAML](https://docs.cohere.com/v1/openapi.yaml)
 
 
 > **Note:** This page contains both a page directory (above) and the landing page content (below). The page directory is generated for agent use and does not appear on the landing page.

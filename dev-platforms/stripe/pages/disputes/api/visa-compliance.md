@@ -66,7 +66,8 @@ To acknowledge the network fee, you must set [evidence.enhanced_evidence.visa_co
     "enhanced_evidence": {
       "visa_compliance": {
         "fee_acknowledged": true
-    },
+      }
+    }
   }
   ...
 }
@@ -83,14 +84,16 @@ If you acknowledge the Visa compliance network fee, [evidence_details.enhanced_e
     "enhanced_evidence": {
       "visa_compliance": {
         "fee_acknowledged": true
-    },
+      }
+    }
   },
   "evidence_details": {
     ...
     "enhanced_eligibility": {
       "visa_compliance": {
         "status": "fee_acknowledged"
-    },
+      }
+    }
   }
   ...
 }

@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/server/acl-log
 path: docs/redis/commands/server/acl-log
 ---
 
-> Show the ACL log entries.
-
 Use `ACL LOG` to inspect recent authentication and permission failures, and `ACL LOG RESET` to clear it.
 
 On standard Redis this is where to look when a client is unexpectedly denied: each entry records the reason, the username, and the command or key involved. This deployment does not yet record ACL failures, so `ACL LOG` currently always returns an empty array regardless of the optional count, while `ACL LOG RESET` still succeeds.
@@ -25,8 +23,8 @@ ACL LOG [count | RESET]
 
 ## Important points
 
-- `ACL LOG` currently always returns an empty array; this deployment does not yet track authentication or permission failures.
-- `ACL LOG RESET` still returns `OK`.
+* `ACL LOG` currently always returns an empty array; this deployment does not yet track authentication or permission failures.
+* `ACL LOG RESET` still returns `OK`.
 
 ## Response
 

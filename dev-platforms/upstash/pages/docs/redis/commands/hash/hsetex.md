@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/hash/hsetex
 path: docs/redis/commands/hash/hsetex
 ---
 
-> Set fields with expiration.
-
 Use `HSETEX` to write hash fields and set their expiration in the same atomic call.
 
 `FIELDS <numfields>` introduces the field and value pairs and the count must match. `EX`, `PX`, `EXAT`, and `PXAT` give the written fields a lifetime or an absolute deadline, and `KEEPTTL` keeps whatever expiration those fields already had. Without any of these options the fields are written without an expiration, so a previously set one is dropped.

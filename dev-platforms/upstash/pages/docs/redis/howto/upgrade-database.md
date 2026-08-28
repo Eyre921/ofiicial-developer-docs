@@ -8,7 +8,7 @@ The free tier has limits on monthly commands, data size, and the number of datab
 
 If your database is close to any of these limits, upgrade to the pay-as-you-go plan, which removes the daily request cap and raises the data size ceiling.
 
-To upgrade, you need a payment method. Follow the steps in [Add a Payment Method](/common/account/add-payment-method). Once a payment method is added, your database switches automatically to the pay-as-you-go plan.
+To upgrade, you need a payment method. Follow the steps in [Add a Payment Method](/docs/common/account/add-payment-method). Once a payment method is added, your database switches automatically to the pay-as-you-go plan.
 
 See [Pricing & Limits](../overall/pricing) for the full breakdown of the pay-as-you-go and Fixed plans. If your workload will exceed those quotas, reach out at support@upstash.com about our [Enterprise Plan](../overall/enterprise) where the limits are configurable.
 

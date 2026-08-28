@@ -22,7 +22,7 @@ Or drop the existing index first with `SEARCH.DROP <name>`.
 
 If the existing index has a different schema/configuration, `EXISTSOK` still returns an error. In that case, drop and recreate the index (or use a different index name).
 
----
+***
 
 ## Query Errors
 
@@ -31,9 +31,9 @@ If the existing index has a different schema/configuration, `EXISTSOK` still ret
 The `LIMIT` value must be a positive integer. Valid range is `1` to `1000` (inclusive).
 
 **Common causes:**
-- Using `LIMIT 0` — the minimum is 1
-- Using `LIMIT 1001` or greater — the maximum is 1000
-- Using RediSearch-style `LIMIT <offset> <count>` syntax — Upstash uses separate `LIMIT` and `OFFSET` keywords
+* Using `LIMIT 0` — the minimum is 1
+* Using `LIMIT 1001` or greater — the maximum is 1000
+* Using RediSearch-style `LIMIT <offset> <count>` syntax — Upstash uses separate `LIMIT` and `OFFSET` keywords
 
 **Fix:**
 ```bash
@@ -56,7 +56,7 @@ SEARCH.QUERY products '{"$mustNot": [{"status": "discontinued"}]}'
 SEARCH.QUERY products '{"status": {"$not": "discontinued"}}'
 ```
 
----
+***
 
 ## Aggregation Errors
 
@@ -117,7 +117,7 @@ Incorrect — alias maps directly to an operator string:
 {"avg_price": "$avg"}
 ```
 
----
+***
 
 ## Schema Errors
 
@@ -129,7 +129,7 @@ If a document field's value doesn't match the schema type (e.g., a string value 
 
 If a document doesn't have a field defined in the schema, it simply won't match queries filtering on that field. No error is raised.
 
----
+***
 
 ## Upstash Redis Search vs RediSearch
 

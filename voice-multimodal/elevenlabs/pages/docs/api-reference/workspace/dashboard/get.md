@@ -40,12 +40,6 @@ Successful Response
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
@@ -53,7 +47,7 @@ Successful Response
   "charts": [
     {
       "type": "call_success",
-      "name": "Overall Call Success Rate"
+      "name": "string"
     }
   ]
 }
@@ -86,7 +80,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -95,11 +88,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/settings/dashboard"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -122,8 +111,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -134,8 +121,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/settings/dashboard")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -145,12 +130,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/settings/dashboard', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/settings/dashboard');
 
 echo $response->getBody();
 ```
@@ -160,25 +140,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/settings/dashboard");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/settings/dashboard")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

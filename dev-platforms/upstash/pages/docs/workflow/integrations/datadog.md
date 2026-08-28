@@ -22,17 +22,17 @@ Upstash Datadog Integration covers Prod Pack.
 1. In Datadog, open the Integrations page.
 2. Search for "Upstash" and open the integration.
 
-![integration-tab.png](/img/datadog/integration-tab.png)
+![integration-tab.png]()
 
 Click "Install" to add Upstash to your Datadog account.
 
-![installation.png](/img/datadog/installation.png)
+![installation.png]()
 
 ## **Step 3: Connect Accounts**
 
 After installing Upstash, click "Connect Accounts". Datadog will redirect you to Upstash to complete account linking.
 
-![connect-acc.png](/img/datadog/connect-acc.png)
+![connect-acc.png]()
 
 ## **Step 4: Select Account to Integrate**
 
@@ -41,17 +41,17 @@ After installing Upstash, click "Connect Accounts". Datadog will redirect you to
 
 **Caveats**
 
-- The integration can be established once at a time. To change the account scope (e.g., add/remove teams), re-establish the integration from scratch.
+* The integration can be established once at a time. To change the account scope (e.g., add/remove teams), re-establish the integration from scratch.
 
-![personal.png](/img/datadog/personal.png)
+![personal.png]()
 
-![team.png](/img/datadog/team.png)
+![team.png]()
 
 ## **Step 5: Wait for Metrics Availability**
 
 Once the integration is completed, metrics from QStash (publish counts, success/error rates, retries, DLQ, schedule executions) will start appearing in Datadog dashboards shortly.
 
-![upstash-dashboard.png](/img/datadog/upstash-qstash-dashboard.png)
+![upstash-dashboard.png]()
 
 ## **Step 6: Datadog Integration Removal Process**
 

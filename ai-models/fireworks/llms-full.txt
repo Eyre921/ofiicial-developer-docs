@@ -13298,6 +13298,10 @@ Returns the model dict from the API (includes `state`, `kind`, `peftDetails`). S
 
 Validate `output_model_id` with [`validate_output_model_id`](#validate-output-model-id-output-model-id) before calling — a rejected ID (>63 chars or bad charset) orphans the staged sampler blob.
 
+<Warning>
+  The 63-character limit also applies to the **checkpoint id** in `name`, composed as `run-<32-hex>-<your-name>-<8-hex>`. Names passed to `save_weights_for_sampler` / `save_state` must be **17 characters or fewer** or the checkpoint cannot be promoted — and this is only checked at promote time, after training completes.
+</Warning>
+
 ### `list_checkpoints(job_id, *, page_size=200)`
 
 Server-side list of a trainer's checkpoints (sampler + DCP, with promotability metadata). Works on any trainer state — including deleted — while the DB record + GCS blobs survive. Auto-paginates. Distinct from [`FiretitanTrainingClient.list_checkpoints()`](/fine-tuning/training-api/reference/service-client) (live-pod, DCP names only).
@@ -14437,6 +14441,12 @@ training_client.load_state("step-0100").result()
 
 Save and load calls return futures — call `.result()` to block and surface failures. `save_state` also accepts a `timeout` to bound the wait. Give each checkpoint a distinct name: overwriting an existing name (`overwrite=True`) is not supported.
 
+<Warning>
+  **Keep checkpoint names to 17 characters or fewer.** The server-side id is `run-<32-hex>-<your-name>-<8-hex>` and must fit in 63 characters, leaving 17 for your name.
+
+  This is only checked at promote time, so an overlong name fails after training completes. Recovery is `load_state` into a fresh session and re-saving under a shorter name.
+</Warning>
+
 To see what checkpoints a run has saved, use the session-scoped control-plane list in [Promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) below — the trainer-local `training_client.list_checkpoints()` is not routed on the serverless surface.
 
 ### Resume a new run from a training checkpoint
@@ -14489,7 +14499,7 @@ Promotion turns a **sampler checkpoint** into a deployable Fireworks model (a st
 
     Each row carries `name` (the full 4-segment resource name), `checkpointName`, `checkpointType`, `promotable`, and `createTime`. Two things to know about the values:
 
-    * `checkpointName` is the server-side checkpoint id, **not** the bare name you passed: it is prefixed with the source run id and, for sampler checkpoints, suffixed with an 8-hex-char session id — a save named `final` surfaces as `run-<hex>-final-<8hex>`. Select rows on `promotable` + `createTime` as above, or with a prefix/substring test — never by equality with your logical name.
+    * `checkpointName` is the server-side checkpoint id, **not** the bare name you passed: it is prefixed with the source run id and, for sampler checkpoints, suffixed with an 8-hex-char session id — a save named `final` surfaces as `run-<hex>-final-<8hex>`. Select rows on `promotable` + `createTime` as above, or with a prefix/substring test — never by equality with your logical name. The composed id caps your own name at [17 characters](#save-and-resume-training-checkpoints).
     * `checkpointType` is a server enum string: `CHECKPOINT_TYPE_TRAINING_LORA` for training checkpoints, `CHECKPOINT_TYPE_INFERENCE_LORA` for sampler checkpoints. Treat it as opaque and filter on `promotable`, which is authoritative.
   </Step>
 
@@ -22501,23 +22511,34 @@ Source: https://docs.fireworks.ai/guides/video-audio-inputs
 
 Query multimodal models to process video and audio content directly
 
-Some Omni/multimodal models can process audio and/or video inputs directly, enabling video captioning, scene analysis, content understanding, and multimodal question answering. A good example is Qwen3 Omni (`qwen3-omni-30b-a3b-instruct`), which supports video, audio, and text inputs in a single request. Deploy these models using [dedicated deployments](/getting-started/ondemand-quickstart) for production workloads.
+Some multimodal models can process audio and/or video inputs directly, enabling video captioning, scene analysis, content understanding, and multimodal question answering. Availability depends on the model: GLM 5.3 Flash supports video input on Serverless, while Qwen3 Omni and Molmo2 use [dedicated deployments](/getting-started/ondemand-quickstart).
 
 ## Available models
 
 | Model                                                                                            | Input support      | Notes                         |
 | ------------------------------------------------------------------------------------------------ | ------------------ | ----------------------------- |
+| GLM 5.3 Flash                                                                                    | Image, video, text | Serverless                    |
 | [Qwen3 Omni 30B A3B Instruct](https://fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct) | Video, audio, text | Dedicated deployment required |
 | [Molmo2-4B](https://fireworks.ai/models/fireworks/molmo2-4b)                                     | Video, text        | Dedicated deployment required |
 | [Molmo2-8B](https://fireworks.ai/models/fireworks/molmo2-8b)                                     | Video, text        | Dedicated deployment required |
 
 <Note>
-  Qwen3 Omni supports native video and audio inputs. Molmo2 models are video-only, so use the same request structure as below, but omit `audio_url`. Molmo2 models cannot understand audio from videos.
+  GLM 5.3 Flash supports image, video, and text inputs. This page does not claim audio input support for GLM 5.3 Flash. Qwen3 Omni supports native video and audio inputs. Molmo2 models are video-only, so use the dedicated request structure below but omit `audio_url`; Molmo2 cannot understand audio from videos.
 </Note>
 
-## Create a deployment
+## Choose a serving path
 
-Video and audio models require dedicated deployments. Create one using firectl:
+### Serverless
+
+GLM 5.3 Flash is available directly through Serverless. No deployment is required:
+
+```text theme={null}
+accounts/fireworks/models/glm-5p3-flash
+```
+
+### Dedicated deployment
+
+Qwen3 Omni and Molmo2 require dedicated deployments. For Qwen3 Omni, create one using firectl:
 
 ```bash theme={null}
 firectl deployment create qwen3-omni-30b-a3b-instruct \
@@ -22533,7 +22554,78 @@ firectl deployment create qwen3-omni-30b-a3b-instruct \
 
 ## Chat Completions API
 
-Provide video and audio as base64-encoded data URLs. The model accepts `video_url`, `audio_url`, and `text` content types.
+### Serverless video by URL
+
+GLM 5.3 Flash accepts a reachable video URL in a `video_url` content block.
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    import os
+    import requests
+
+    url = "https://api.fireworks.ai/inference/v1/chat/completions"
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {os.environ['FIREWORKS_API_KEY']}",
+    }
+
+    payload = {
+        "model": "accounts/fireworks/models/glm-5p3-flash",
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "What happens in this video?"},
+                    {
+                        "type": "video_url",
+                        "video_url": {
+                            "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+                        },
+                    },
+                ],
+            }
+        ],
+    }
+
+    response = requests.post(url, headers=headers, json=payload, timeout=300)
+    response.raise_for_status()
+    print(response.json()["choices"][0]["message"]["content"])
+    ```
+  </Tab>
+
+  <Tab title="curl">
+    ```bash theme={null}
+    curl https://api.fireworks.ai/inference/v1/chat/completions \
+      -H "Content-Type: application/json" \
+      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+      -d '{
+        "model": "accounts/fireworks/models/glm-5p3-flash",
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {"type": "text", "text": "What happens in this video?"},
+              {
+                "type": "video_url",
+                "video_url": {
+                  "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+                }
+              }
+            ]
+          }
+        ]
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+The URL must return the media file directly and remain reachable while the request is processed. For private media, use a signed HTTPS URL that remains valid until inference finishes.
+
+### Dedicated video and audio with Base64
+
+Qwen3 Omni accepts `video_url`, `audio_url`, and `text` content types. Provide the video and audio as Base64-encoded data URLs.
 
 <Tabs>
   <Tab title="Python">
@@ -22609,7 +22701,7 @@ Provide video and audio as base64-encoded data URLs. The model accepts `video_ur
 
 ## Working with videos
 
-Video models perform best with preprocessed inputs that balance quality and token efficiency. Use ffmpeg to optimize your video and audio before sending requests.
+Video models perform best with inputs that balance quality and token efficiency. When you control the source media, use ffmpeg to optimize video and audio before sending requests. The settings below are starting points for the dedicated Base64 example, not universal hard limits.
 
 ### Preprocessing video
 
@@ -22721,15 +22813,17 @@ def preprocess_video(video_path: str) -> tuple[str, str]:
 
 * **Preprocess all videos** – 1 FPS at 360p provides good quality with minimal tokens
 * **Extract audio separately** – Opus/Ogg at 24kbps offers excellent compression
-* **Limit video duration** – Cap at 60 seconds for consistent performance
-* **Use dedicated deployments** – Scale replicas based on your throughput needs
+* **Limit video duration** – Start with 60 seconds or less for consistent performance
+* **Choose the appropriate serving path** – Use GLM 5.3 Flash on Serverless, or scale replicas for models that require dedicated deployments
 
 ## Known limitations
 
-1. **Video duration**: Maximum 60 seconds recommended for optimal performance
-2. **Supported formats**: `.mp4` for video, `.ogg` (Opus) for audio
-3. **Base64 size**: Total encoded payload should be under 10MB
-4. **Deployment required**: Video models are not available on serverless; dedicated deployment required
+1. **Video duration**: 60 seconds is a performance recommendation for the preprocessing example, not a universal API limit.
+2. **Supported formats**: The examples use `.mp4` for video and `.ogg` (Opus) for audio.
+3. **Base64 size**: Keep the total encoded payload for the dedicated example under 10MB.
+4. **Video URLs**: The URL must be reachable by Fireworks and return the media file directly without custom authorization headers.
+5. **Availability**: GLM 5.3 Flash supports Serverless video input. Qwen3 Omni and Molmo2 require dedicated deployments.
+6. **Audio support**: Only use `audio_url` with models whose input support explicitly includes audio.
 
 ## Related resources
 
@@ -23562,6 +23656,10 @@ For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deplo
     Per-token rates for text, vision, embeddings, and Priority.
   </Card>
 
+  <Card title="Reserved Throughput" icon="gauge-high" href="/serverless/reserved-throughput">
+    SLA-backed throughput that adds to your adaptive rate limits.
+  </Card>
+
   <Card title="Rate limits" icon="gauge" href="/serverless/rate-limits">
     Adaptive TPM bounds and how the limit ramps with usage.
   </Card>
@@ -23702,6 +23800,128 @@ Adaptive rate limits have an upper and lower bound. A higher account [Spending T
 
     * **You need higher than the defaults from day one.** Your launch traffic exceeds the starting limit and you can't wait for the adaptive ramp.
     * **You're ramping past the highest upper bound.** You are already at the highest account Spending Tier and the adaptive rate limits are not growing.
+  </Accordion>
+</AccordionGroup>
+
+
+# Reserved Throughput
+Source: https://docs.fireworks.ai/serverless/reserved-throughput
+
+Reserve throughput backed by an SLA
+
+## Overview
+
+Reserved throughput lets you pre-purchase throughput that **guarantees availability and uptime** up to your reservation level.
+
+If you are experiencing rate limits on Serverless, you should consider Reserved Throughput. [Contact us](https://fireworks.ai/contact) to purchase reserved throughput or learn more.
+
+You can re-allocate throughput between models served on Serverless. Usage above your reserved throughput is billed at standard Serverless pricing and subject to Serverless adaptive rate limits.
+
+## How it works
+
+You purchase Reserved Throughput as a reserved dollar-per-minute amount. Each minute, your eligible usage is priced and deducted from that amount. Any usage above the reserved amount is charged at standard [Serverless pricing](/serverless/pricing).
+
+For example, with a **\$10-per-minute reservation**:
+
+* Eligible usage is deducted from your reserved amount each minute.
+* In any minute when your eligible usage is \$10 or less, it is fully covered by your reservation.
+* If your usage exceeds \$10 in a minute, the amount above is billed at standard Serverless rates. If you use \$12 in a minute, \$10 is covered and \$2 is billed as overage.
+* Reserved throughput is use-it-or-lose-it per minute and does not accumulate.
+
+<img alt="Bar chart showing eligible usage covered by a $10-per-minute reservation and usage above $10 billed as overage" />
+
+<img alt="Bar chart showing eligible usage covered by a $10-per-minute reservation and usage above $10 billed as overage" />
+
+## Example: Kimi K3
+
+Assume an average workload shape of 5,000 uncached input tokens, 50,000 cached input tokens (about a 91% cache hit rate), and 200 output tokens per request, with average QPS of 4 and p95 QPS of 5.
+
+You decide to reserve to p95, so you size for 5 QPS × 60 seconds = 300 requests per minute.
+
+| Token type     | Tokens per request | TPM at 300 requests/min | List price   | Cost per minute |
+| -------------- | ------------------ | ----------------------- | ------------ | --------------- |
+| Uncached input | 5,000              | 1.5M                    | \$3.00 / 1M  | \$4.50          |
+| Cached input   | 50,000             | 15M                     | \$0.30 / 1M  | \$4.50          |
+| Output         | 200                | 0.06M                   | \$15.00 / 1M | \$0.90          |
+| **Total**      |                    |                         |              | **\$9.90**      |
+
+Your p95 workload costs \$9.90 per minute, so you purchase a **\$10-per-minute reservation** for some headroom.
+
+Your dollar-per-minute rate is derived from:
+
+* The throughput you need—tokens per minute across uncached input, cached input, and output.
+* Per-token list pricing for the models you are serving.
+
+## Burst usage
+
+If your usage exceeds your reserved amount in a minute, the amount above is billed at standard Serverless rates. This burst usage is not covered by an SLA and is subject to standard [Serverless adaptive rate limits](/serverless/rate-limits).
+
+For example, with a \$10-per-minute reservation and \$12 of usage in one minute, \$10 is covered and \$2 is billed as overage.
+
+## Move throughput across models
+
+Reserved Throughput can be allocated to any model served on Serverless. We are working on making this self-service. Until then, contact your Fireworks account team to move your reservation.
+
+For example, consider moving all of a \$10-per-minute reservation from Kimi K3 to DeepSeek V4 Pro (0813), while holding the workload shape from the previous example constant:
+
+|                          | Kimi K3      | DeepSeek V4 Pro (0813) |
+| ------------------------ | ------------ | ---------------------- |
+| Uncached input           | \$3.00 / 1M  | \$1.32 / 1M            |
+| Cached input             | \$0.30 / 1M  | \$0.044 / 1M           |
+| Output                   | \$15.00 / 1M | \$3.96 / 1M            |
+| Cost per 1,000 requests  | \$33.00      | \$9.59                 |
+| Requests/min at \$10/min | \~303        | \~1,042                |
+| Sustained QPS            | \~5          | \~17                   |
+
+Because DeepSeek V4 Pro (0813) has lower token pricing than Kimi K3, the same \$10-per-minute reservation sustains roughly 3.4 times the throughput—about 17 QPS instead of 5.
+
+The uplift is not a single price ratio. DeepSeek V4 Pro (0813) is 2.3 times cheaper on uncached input, 6.8 times cheaper on cached input, and 3.8 times cheaper on output. The improvement depends on your workload shape; a cache-heavy workload like this one benefits more than a generation-heavy workload.
+
+## Pricing and SLAs
+
+<AccordionGroup>
+  <Accordion title="How is Reserved Throughput priced?">
+    Reserved throughput is priced per token at standard [Serverless list prices](/serverless/pricing).
+  </Accordion>
+
+  <Accordion title="How should I size my reservation?">
+    Size your reservation against per-minute TPM levels, such as your peak or p95 usage.
+  </Accordion>
+
+  <Accordion title="What happens once I hit my reserved amount?">
+    Usage above your reservation is processed pay-as-you-go and billed at list price. Overage carries no SLA and is subject to your standard adaptive rate limits.
+  </Accordion>
+
+  <Accordion title="Is my reserved traffic subject to an SLA?">
+    Yes. Traffic within your reservation is covered by a throughput SLA.
+  </Accordion>
+
+  <Accordion title="Does unused reserved throughput roll over?">
+    No. Reserved throughput is use-it-or-lose-it on a per-minute basis.
+  </Accordion>
+</AccordionGroup>
+
+## Rate limits and usage
+
+<img alt="Diagram showing reserved throughput added on top of existing Serverless adaptive rate limits" />
+
+<img alt="Diagram showing reserved throughput added on top of existing Serverless adaptive rate limits" />
+
+<AccordionGroup>
+  <Accordion title="How do I enable calls to use Reserved Throughput?">
+    This happens automatically for models chosen in coordination with Fireworks. Eligible traffic on your account is counted against your reserved amount—no new endpoint, parameter, or code change is required.
+  </Accordion>
+
+  <Accordion title="How does this affect my rate limits?">
+    Reserved Throughput is added to your Serverless adaptive rate limits. Usage within your reservation does not count against adaptive rate limits.
+  </Accordion>
+
+  <Accordion title="How does my cache hit rate affect what I get?">
+    Cached input is priced well below uncached input, so a higher cache hit rate means more throughput per dollar reserved. See [prompt caching](/guides/prompt-caching).
+  </Accordion>
+
+  <Accordion title="Can I reserve throughput for custom or fine-tuned models?">
+    Yes. [Contact us](https://fireworks.ai/contact) to discuss your requirements.
   </Accordion>
 </AccordionGroup>
 

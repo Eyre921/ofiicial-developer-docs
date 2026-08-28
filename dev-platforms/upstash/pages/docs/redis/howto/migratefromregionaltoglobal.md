@@ -5,16 +5,16 @@ path: docs/redis/howto/migratefromregionaltoglobal
 ---
 
 This guide will help you migrate your data from a regional Upstash Redis database to a global database.
-If your database is Upstash Regional, we strongly recommend you to migrate to [Upstash Redis Global](/common/concepts/global-replication).
+If your database is Upstash Regional, we strongly recommend you to migrate to [Upstash Redis Global](/docs/common/concepts/global-replication).
 Our Regional Redis databases are legacy and deprecated.
 
 ## Why Migrate?
 
-- New infrastructure, more modern and more secure
-- Upstash Global is SOC-2 (included with Prod pack) and HIPAA (included with Enterprise) compatible
-- Enhanced feature set: New features are only made available on Upstash Global
-- Ability to add/remove read regions on the go
-- Better performance as per our benchmarks
+* New infrastructure, more modern and more secure
+* Upstash Global is SOC-2 (included with Prod pack) and HIPAA (included with Enterprise) compatible
+* Enhanced feature set: New features are only made available on Upstash Global
+* Ability to add/remove read regions on the go
+* Better performance as per our benchmarks
 
 ## Prerequisites
 
@@ -37,11 +37,11 @@ You can migrate your data without leaving Upstash Console:
    </Warning>
 
 1. Create a backup of your regional database:
-   - Go to your regional database details page
-   - Navigate to the `Backups` tab
-   - Click the `Backup` button
-   - Provide a unique name for your backup
-   - Wait for the backup process to complete
+   * Go to your regional database details page
+   * Navigate to the `Backups` tab
+   * Click the `Backup` button
+   * Provide a unique name for your backup
+   * Wait for the backup process to complete
 
    <Info>
      During a backup operation, certain administrative operations will be temporarily unavailable: Backup operations, database config changes, plan and region setup, transferring database.
@@ -49,12 +49,12 @@ You can migrate your data without leaving Upstash Console:
    </Info>
 
 2. Restore the backup to your global database:
-   - Go to your new global database's details page
-   - Navigate to the `Backups` tab
-   - Click `Restore...`
-   - Select your regional database as the source
-   - Select the backup you created
-   - Click `Start Restore`
+   * Go to your new global database's details page
+   * Navigate to the `Backups` tab
+   * Click `Restore...`
+   * Select your regional database as the source
+   * Select the backup you created
+   * Click `Start Restore`
 
    <Warning>
      The restore operation will flush (delete) all existing data in your (destination) global database before restoring the backup.

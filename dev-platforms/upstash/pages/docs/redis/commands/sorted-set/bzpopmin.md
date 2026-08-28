@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/sorted-set/bzpopmin
 path: docs/redis/commands/sorted-set/bzpopmin
 ---
 
-> Pop the lowest-scoring member, blocking until one arrives.
-
 Use `BZPOPMIN` to pop the lowest-scoring member from the first non-empty sorted set, blocking until one has a member or the timeout expires.
 
-It is the blocking form of [`ZPOPMIN`](/redis/commands/sorted-set/zpopmin) and accepts several keys, checked in the order given, with the reply naming the key the member came from along with the member and its score.
+It is the blocking form of [`ZPOPMIN`](/docs/redis/commands/sorted-set/zpopmin) and accepts several keys, checked in the order given, with the reply naming the key the member came from along with the member and its score.
 
 The timeout is in seconds, may be fractional, and `0` waits indefinitely; when it expires the reply is null. Since the lowest score is popped first, a set scored by timestamp or priority number becomes a queue that hands out the most urgent item to whichever worker is waiting.
 
@@ -27,7 +25,7 @@ BZPOPMIN <key> [<key> ...] <timeout>
 
 ## Important points
 
-- A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
+* A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
 
 ## Response
 

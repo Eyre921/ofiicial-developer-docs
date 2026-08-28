@@ -66,5 +66,5 @@ Unassigned tools are discovered but not used.
 
 You can connect multiple MCP servers, each providing different tools. All discovered tools appear in the same assignment interface.
 
-MCP integration requires the **Plus** plan or higher. Your MCP server must be accessible from the
+MCP integration requires the **Basic** plan or higher. Your MCP server must be accessible from the
 internet.

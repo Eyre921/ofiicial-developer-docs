@@ -68,7 +68,7 @@ Successful Response
   "charts": [
     {
       "type": "call_success",
-      "name": "Monthly Call Success Rate"
+      "name": "string"
     }
   ]
 }

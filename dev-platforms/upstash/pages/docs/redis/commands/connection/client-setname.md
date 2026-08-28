@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/connection/client-setname
 path: docs/redis/commands/connection/client-setname
 ---
 
-> Set the connection name.
-
 Use `CLIENT SETNAME` to label the current connection with a name of your choice.
 
-The name shows up in [`CLIENT LIST`](/redis/commands/connection/client-list) and [`CLIENT INFO`](/redis/commands/connection/client-info) output, which is handy when several components of an application share one database and you want to tell their connections apart. The name may not contain spaces or newlines, each call replaces the previous name, and passing an empty string clears it. It lives only as long as the connection.
+The name shows up in [`CLIENT LIST`](/docs/redis/commands/connection/client-list) and [`CLIENT INFO`](/docs/redis/commands/connection/client-info) output, which is handy when several components of an application share one database and you want to tell their connections apart. The name may not contain spaces or newlines, each call replaces the previous name, and passing an empty string clears it. It lives only as long as the connection.
 
 ## Syntax
 
@@ -24,8 +22,8 @@ CLIENT SETNAME <connection-name>
 
 ## Important points
 
-- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
-- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
 
 ## Response
 

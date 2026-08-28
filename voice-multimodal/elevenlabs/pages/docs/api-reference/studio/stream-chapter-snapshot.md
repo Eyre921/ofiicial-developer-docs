@@ -55,7 +55,7 @@ Streaming audio data
 
 ```json
 [
-  "<audio data stream in MPEG format>"
+  "string"
 ]
 ```
 

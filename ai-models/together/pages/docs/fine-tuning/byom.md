@@ -115,9 +115,9 @@ The base model dictates whether the result can be hosted. If the base model isn'
 
 ## FAQ
 
-**Can I fine-tune a LoRA adapter?**
+**Can I fine-tune a low-rank adapter (LoRA)?**
 
-Yes. The platform merges the adapter with the base during training, producing a full checkpoint rather than a separate adapter.
+Yes. Pass the adapter repo as `from_hf_model` in a [LoRA job](/docs/fine-tuning/lora-vs-full) whose LoRA settings (`lora_r`, `lora_alpha`, `lora_dropout`, and `lora_trainable_modules`) exactly match the adapter's configuration. Training continues the adapter's weights directly on the base model, without merging the adapter first. The job outputs a trained adapter plus merged weights, like any other LoRA job.
 
 **Can I train a model I uploaded for dedicated inference?**
 

@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zcount
 path: docs/redis/commands/sorted-set/zcount
 ---
 
-> Count members in score range.
-
 Use `ZCOUNT` to count the members of a sorted set whose score falls in a range.
 
 Both bounds are inclusive by default; prefix a bound with `(` to make it exclusive, and use `-inf` and `+inf` for open ends, so `ZCOUNT key (5 +inf` counts everything scored above 5. Redis finds the range by rank rather than scanning the whole set, so the count is fast even on large sets.

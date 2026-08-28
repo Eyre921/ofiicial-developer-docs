@@ -64,8 +64,8 @@ documents = [
 # Embed documents and store in Upstash Vector with batching
 vector_store.add_documents(
     documents=documents,
-    batch_size=100,               
-    embedding_chunk_size=200      
+    batch_size=100,
+    embedding_chunk_size=200
 )
 
 print("Documents with embeddings have been stored in Upstash Vector.")
@@ -73,12 +73,12 @@ print("Documents with embeddings have been stored in Upstash Vector.")
 
 When inserting documents, they are first embedded using the `Embeddings` object. Many embedding models, such as the Hugging Face models, support embedding multiple documents at once. This allows for efficient processing by batching documents and embedding them in parallel.
 
-- The `embedding_chunk_size` parameter controls the number of documents processed in parallel when creating embeddings.
-  
+* The `embedding_chunk_size` parameter controls the number of documents processed in parallel when creating embeddings.
+
 Once the embeddings are created, they are stored in Upstash Vector. To reduce the number of HTTP requests, the vectors are also batched when they are sent to Upstash Vector.
 
-- The `batch_size` parameter controls the number of vectors included in each HTTP request when sending to Upstash Vector.
-  
+* The `batch_size` parameter controls the number of vectors included in each HTTP request when sending to Upstash Vector.
+
 <Note type="info">
 In the Upstash Vector free tier, there is a limit of 1000 vectors per batch.
 </Note>
@@ -128,7 +128,7 @@ This will output similar results, as it is searching based on the similarity of 
 
 ### Notes
 
-- You can specify batch sizes and chunk sizes to control the efficiency of document processing and storage in Upstash Vector.
-- Upstash Vector supports namespaces for organizing different types of documents. You can set a namespace while creating the `UpstashVectorStore` instance.
+* You can specify batch sizes and chunk sizes to control the efficiency of document processing and storage in Upstash Vector.
+* Upstash Vector supports namespaces for organizing different types of documents. You can set a namespace while creating the `UpstashVectorStore` instance.
 
 To learn more about LangChain and its integration with Upstash Vector, visit the [LangChain documentation](https://python.langchain.com/docs/integrations/vectorstores/upstash/).

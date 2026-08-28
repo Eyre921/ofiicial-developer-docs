@@ -6,7 +6,7 @@ path: docs/workflow/basics/client/notify
 
 The `notify` method notifies workflows that are waiting for a specific event.
 
-Workflows paused at a [`context.waitForEvent`](/workflow/basics/context/waitForEvent) step with the matching `eventId` will be resumed, and the provided `eventData` will be passed back to them.
+Workflows paused at a [`context.waitForEvent`](/docs/workflow/basics/context/waitForEvent) step with the matching `eventId` will be resumed, and the provided `eventData` will be passed back to them.
 
 ## Arguments
 
@@ -29,7 +29,28 @@ Workflows paused at a [`context.waitForEvent`](/workflow/basics/context/waitForE
 
 Returns a list of `Waiter` objects representing the workflows that were notified:
 
-<Snippet file="qstash/waiter.mdx" />
+<ResponseField name="Waiter" type="object">
+  <Expandable>
+   	<ResponseField name="url" type="string" required>
+      URL to call upon notify
+    </ResponseField>
+   	<ResponseField name="deadline" type="number" required>
+      Unix timestamp for when the wait will time out
+    </ResponseField>
+   	<ResponseField name="headers" type="Record<string, string[]>" required>
+      Headers sent in case of notify
+    </ResponseField>
+   	<ResponseField name="timeoutUrl" type="string">
+      URL to call upon timeout
+    </ResponseField>
+   	<ResponseField name="timeoutBody" type="unknown">
+      Body used in timeout request
+    </ResponseField>
+   	<ResponseField name="timeoutHeaders" type="Record<string, string[]>">
+      Headers sent in case of time out
+    </ResponseField>
+  </Expandable>
+</ResponseField>
 
 ## Usage
 

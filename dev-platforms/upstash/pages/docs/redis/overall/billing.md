@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/overall/billing
 path: docs/redis/overall/billing
 ---
 
-> How Upstash Redis pricing works — free tier, Pay-As-You-Go, and Fixed plans, with current limits and billing details.
-
 <Info>
   The most up-to-date pricing is always available at
   [upstash.com/pricing/redis](https://upstash.com/pricing/redis).
@@ -73,29 +71,29 @@ You can start on PAYG and switch to a Fixed plan later, or vice versa.
 | 500 GB | $1,500        | 500 GB    | 20 TB     | 16,000         | 100 MB      | 5 GB       |
 
 <sub>*PAYG bandwidth is free up to 200 GB/month, then $0.03/GB. Enterprise plans
-support larger data sizes and custom limits — [contact us](/common/help/support).</sub>
+support larger data sizes and custom limits — [contact us](/docs/common/help/support).</sub>
 
 ## How billing works
 
-- **What counts as a command.** Pricing is based on the number of commands (requests)
-  executed. This applies equally to the [REST API](/redis/features/restapi) and to
+* **What counts as a command.** Pricing is based on the number of commands (requests)
+  executed. This applies equally to the [REST API](/docs/redis/features/restapi) and to
   commands made over the Redis protocol — one command is one billable request in both
   cases.
-- **Global databases.** With [Global replication](/redis/features/globaldatabase),
+* **Global databases.** With [Global replication](/docs/redis/features/globaldatabase),
   each write is replicated to every read region, and each replicated write counts as a
   command for billing. Adding read regions to a Fixed plan costs 50% of the base tier
   price per region.
-- **Storage.** On PAYG, storage is billed at $0.25/GB per month with the first 1 GB free.
+* **Storage.** On PAYG, storage is billed at $0.25/GB per month with the first 1 GB free.
   Fixed plans include storage up to the plan's data-size cap.
-- **Prod Pack.** Production features (high availability, encryption, SOC-2, advanced
+* **Prod Pack.** Production features (high availability, encryption, SOC-2, advanced
   monitoring) are available as an add-on for $200/month per database. See
-  [Prod Pack & Enterprise](/redis/overall/enterprise).
+  [Prod Pack & Enterprise](/docs/redis/overall/enterprise).
 
 ## Optimizing cost
 
-- On PAYG, a high baseline of background commands (for example, [Sidekiq](/redis/integrations/sidekiq)
+* On PAYG, a high baseline of background commands (for example, [Sidekiq](/docs/redis/integrations/sidekiq)
   polling) can drive up command count even when there is no real workload — switching to
   a Fixed plan caps that cost.
-- Prefer pipelines and `MULTI`/`EXEC` to reduce round trips; note that each command inside
+* Prefer pipelines and `MULTI`/`EXEC` to reduce round trips; note that each command inside
   a pipeline or transaction is still billed individually.
-- Set a monthly budget on PAYG databases to bound spend.
+* Set a monthly budget on PAYG databases to bound spend.

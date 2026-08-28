@@ -47,8 +47,8 @@ and may be assigned to someone else.
 | ------- | ------------- |
 | Trial   | 1             |
 | Basic   | 1             |
-| Plus    | 1             |
-| Premium | 3             |
+| Plus    | 3             |
+| Premium | 5             |
 
 ## How inbound calls are routed
 

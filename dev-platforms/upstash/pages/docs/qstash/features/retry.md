@@ -5,7 +5,7 @@ path: docs/qstash/features/retry
 ---
 
 <Warning title="Max HTTP Response Duration">
-QStash will abort a delivery attempt if **the HTTP call to your endpoint does not return within the plan-specific Max HTTP Response Duration**.  
+QStash will abort a delivery attempt if **the HTTP call to your endpoint does not return within the plan-specific Max HTTP Response Duration**.
 See the current limits on the <a href="https://upstash.com/pricing/qstash" target="_blank" rel="noopener">QStash pricing page</a>.
 </Warning>
 
@@ -113,35 +113,35 @@ client.message.publish_json(
 The `retryDelay` expression can use mathematical functions and the special variable `retried` (current retry attempt count starting from 0).
 
 **Supported functions:**
-- `pow` - Power function
-- `sqrt` - Square root
-- `abs` - Absolute value
-- `exp` - Exponential
-- `floor` - Floor function
-- `ceil` - Ceiling function
-- `round` - Rounding function
-- `min` - Minimum of values
-- `max` - Maximum of values
+* `pow` - Power function
+* `sqrt` - Square root
+* `abs` - Absolute value
+* `exp` - Exponential
+* `floor` - Floor function
+* `ceil` - Ceiling function
+* `round` - Rounding function
+* `min` - Minimum of values
+* `max` - Maximum of values
 
 **Examples:**
-- `1000` - Fixed 1 second delay
-- `1000 * (1 + retried)` - Linear backoff: 1s, 2s, 3s, 4s...
-- `pow(2, retried) * 1000` - Exponential backoff: 1s, 2s, 4s, 8s...
-- `max(1000, pow(2, retried) * 100)` - Exponential with minimum 1s delay
+* `1000` - Fixed 1 second delay
+* `1000 * (1 + retried)` - Linear backoff: 1s, 2s, 3s, 4s...
+* `pow(2, retried) * 1000` - Exponential backoff: 1s, 2s, 4s, 8s...
+* `max(1000, pow(2, retried) * 100)` - Exponential with minimum 1s delay
 
 ## Retry-After Headers
 
 Instead of using the default backoff algorithm, you can specify when QStash should retry your message.
-To do this, include one of the following headers in your response to QStash request. 
-- Retry-After
-- X-RateLimit-Reset
-- X-RateLimit-Reset-Requests
-- X-RateLimit-Reset-Tokens
+To do this, include one of the following headers in your response to QStash request.
+* Retry-After
+* X-RateLimit-Reset
+* X-RateLimit-Reset-Requests
+* X-RateLimit-Reset-Tokens
 
 These headers can be set to a value in seconds, the RFC1123 date format, or a duration format (e.g., 6m5s).
 For the duration format, valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
 
-Note that you can only delay retries up to the maximum value of the default backoff algorithm, which is one day. 
+Note that you can only delay retries up to the maximum value of the default backoff algorithm, which is one day.
 If you specify a value beyond this limit, the backoff algorithm will be applied.
 
 This feature is particularly useful if your application has rate limits, ensuring retries are scheduled appropriately without wasting attempts during restricted periods.

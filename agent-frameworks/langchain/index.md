@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1150 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1160 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -117,6 +117,7 @@
 - `langsmith/byoc-faq` — [BYOC FAQ](pages/langsmith/byoc-faq.md) · [原文](https://docs.langchain.com/langsmith/byoc-faq)
 - `langsmith/byoc-onboarding` — [BYOC onboarding](pages/langsmith/byoc-onboarding.md) · [原文](https://docs.langchain.com/langsmith/byoc-onboarding)
 - `langsmith/byoc-operations` — [BYOC operations](pages/langsmith/byoc-operations.md) · [原文](https://docs.langchain.com/langsmith/byoc-operations)
+- `langsmith/byoc-shared-responsibility` — [BYOC shared responsibility model](pages/langsmith/byoc-shared-responsibility.md) · [原文](https://docs.langchain.com/langsmith/byoc-shared-responsibility)
 - `langsmith/byoc-usage` — [BYOC usage](pages/langsmith/byoc-usage.md) · [原文](https://docs.langchain.com/langsmith/byoc-usage)
 - `langsmith/byoc-why` — [Why BYOC](pages/langsmith/byoc-why.md) · [原文](https://docs.langchain.com/langsmith/byoc-why)
 - `langsmith/caching` — [Use server-side caching](pages/langsmith/caching.md) · [原文](https://docs.langchain.com/langsmith/caching)
@@ -962,9 +963,18 @@
 - `langsmith/smith-api/tags/update-tag` — [Update tag](pages/langsmith/smith-api/tags/update-tag.md) · [原文](https://docs.langchain.com/langsmith/smith-api/tags/update-tag)
 - `langsmith/smith-api/tenant/create-tenant` — [Create tenant](pages/langsmith/smith-api/tenant/create-tenant.md) · [原文](https://docs.langchain.com/langsmith/smith-api/tenant/create-tenant)
 - `langsmith/smith-api/tenant/list-tenants` — [List tenants](pages/langsmith/smith-api/tenant/list-tenants.md) · [原文](https://docs.langchain.com/langsmith/smith-api/tenant/list-tenants)
+- `langsmith/smith-api/threads/get-a-public-shared-threads-manifest` — [Get a public shared thread's manifest](pages/langsmith/smith-api/threads/get-a-public-shared-threads-manifest.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/get-a-public-shared-threads-manifest)
+- `langsmith/smith-api/threads/get-one-run-in-a-public-shared-thread` — [Get one run in a public shared thread](pages/langsmith/smith-api/threads/get-one-run-in-a-public-shared-thread.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/get-one-run-in-a-public-shared-thread)
+- `langsmith/smith-api/threads/get-stats-for-a-public-shared-thread` — [Get stats for a public shared thread](pages/langsmith/smith-api/threads/get-stats-for-a-public-shared-thread.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/get-stats-for-a-public-shared-thread)
+- `langsmith/smith-api/threads/list-runs-of-one-trace-in-a-public-shared-thread` — [List runs of one trace in a public shared thread](pages/langsmith/smith-api/threads/list-runs-of-one-trace-in-a-public-shared-thread.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/list-runs-of-one-trace-in-a-public-shared-thread)
+- `langsmith/smith-api/threads/list-traces-in-a-public-shared-thread` — [List traces in a public shared thread](pages/langsmith/smith-api/threads/list-traces-in-a-public-shared-thread.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/list-traces-in-a-public-shared-thread)
 - `langsmith/smith-api/threads/query-single-thread-stats` — [Query single thread stats](pages/langsmith/smith-api/threads/query-single-thread-stats.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/query-single-thread-stats)
 - `langsmith/smith-api/threads/query-thread-traces` — [Query thread traces](pages/langsmith/smith-api/threads/query-thread-traces.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/query-thread-traces)
 - `langsmith/smith-api/threads/query-threads` — [Query threads](pages/langsmith/smith-api/threads/query-threads.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/query-threads)
+- `langsmith/smith-api/threads/read-a-threads-share-state` — [Read a thread's share state](pages/langsmith/smith-api/threads/read-a-threads-share-state.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/read-a-threads-share-state)
+- `langsmith/smith-api/threads/share-a-thread` — [Share a thread](pages/langsmith/smith-api/threads/share-a-thread.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/share-a-thread)
+- `langsmith/smith-api/threads/stream-messages-for-a-public-shared-thread` — [Stream messages for a public shared thread](pages/langsmith/smith-api/threads/stream-messages-for-a-public-shared-thread.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/stream-messages-for-a-public-shared-thread)
+- `langsmith/smith-api/threads/unshare-a-thread` — [Unshare a thread](pages/langsmith/smith-api/threads/unshare-a-thread.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/unshare-a-thread)
 - `langsmith/smith-api/tools/create-a-tool` — [Create a tool](pages/langsmith/smith-api/tools/create-a-tool.md) · [原文](https://docs.langchain.com/langsmith/smith-api/tools/create-a-tool)
 - `langsmith/smith-api/tools/delete-a-tool-by-handle` — [Delete a tool by handle](pages/langsmith/smith-api/tools/delete-a-tool-by-handle.md) · [原文](https://docs.langchain.com/langsmith/smith-api/tools/delete-a-tool-by-handle)
 - `langsmith/smith-api/tools/delete-a-tool-by-id` — [Delete a tool by ID](pages/langsmith/smith-api/tools/delete-a-tool-by-id.md) · [原文](https://docs.langchain.com/langsmith/smith-api/tools/delete-a-tool-by-id)

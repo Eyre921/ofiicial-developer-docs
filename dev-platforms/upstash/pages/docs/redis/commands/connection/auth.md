@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/connection/auth
 path: docs/redis/commands/connection/auth
 ---
 
-> Authenticate to the server.
-
 Use `AUTH` to authenticate the current connection, with a password alone or with a username and password when ACL users are configured.
 
 Until the connection is authenticated the server rejects other commands with an error. Client libraries usually send `AUTH` for you as part of connecting when the credentials are part of the connection string, so applications rarely call it directly. The password is sent to the server on every connection, which is why Upstash endpoints use TLS.
@@ -25,7 +23,7 @@ AUTH [<username>] <password>
 
 ## Important points
 
-- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
 
 ## Response
 

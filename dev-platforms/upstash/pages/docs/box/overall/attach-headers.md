@@ -10,9 +10,9 @@ path: docs/box/overall/attach-headers
 
 When a box is created with attach headers, a TLS-intercepting proxy on the host injects the configured headers into outbound HTTPS requests that match the configured host patterns.
 
-- The secrets stay on the host
-- They do not appear in environment variables, files, or process memory inside the container
-- Traffic to hosts that do not match any rule passes through untouched
+* The secrets stay on the host
+* They do not appear in environment variables, files, or process memory inside the container
+* Traffic to hosts that do not match any rule passes through untouched
 
 ## Global attach headers
 
@@ -20,8 +20,8 @@ You can configure attach headers at the user or team level in the console Settin
 
 When a box is created, global and per-box headers are merged:
 
-- Per-box headers override global headers for the same host pattern
-- Global headers for host patterns not specified per-box are included as-is
+* Per-box headers override global headers for the same host pattern
+* Global headers for host patterns not specified per-box are included as-is
 
 ## Per-box attach headers
 
@@ -88,9 +88,9 @@ The `Authorization` header is added by the proxy. The container never sees the s
 | `api.stripe.com` | Exact match only |
 | `*.supabase.co` | Any subdomain such as `xyz.supabase.co` or `db.supabase.co` |
 
-- Patterns must be lowercase
-- Only `*.` prefix wildcards are supported
-- Most-specific match wins
+* Patterns must be lowercase
+* Only `*.` prefix wildcards are supported
+* Most-specific match wins
 
 ## When to use attach headers vs env vars
 
@@ -103,8 +103,8 @@ The `Authorization` header is added by the proxy. The container never sees the s
 
 ## Limitations
 
-- Attach headers are set at box creation time after merging global and per-box values
-- They are not updated on a running box
-- Only HTTPS traffic on port `443` is intercepted
-- HTTP/2 connections through matched hosts are downgraded to HTTP/1.1
-- Header values are encrypted at rest and never returned by API responses
+* Attach headers are set at box creation time after merging global and per-box values
+* They are not updated on a running box
+* Only HTTPS traffic on port `443` is intercepted
+* HTTP/2 connections through matched hosts are downgraded to HTTP/1.1
+* Header values are encrypted at rest and never returned by API responses

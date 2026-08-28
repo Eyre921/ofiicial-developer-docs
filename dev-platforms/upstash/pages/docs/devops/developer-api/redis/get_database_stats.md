@@ -4,6 +4,5 @@ source: https://upstash.com/docs/devops/developer-api/redis/get_database_stats
 path: docs/devops/developer-api/redis/get_database_stats
 ---
 
-> This endpoint gets detailed stats of a database.
-
-`GET /redis/stats/{id}`
+/devops/developer-api/openapi.yaml get /redis/stats/{id}
+This endpoint gets detailed stats of a database.

@@ -142,7 +142,7 @@ in the behavior.
 
 You can see an estimated cost (under the prompt) when creating or editing a custom guardrail.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a829a7451a1bb209dcbbe718dc75c3f6a28191f4de8ad6be44da6e0b7d4466ec/assets/images/agents/agents-custom-guardail-prompt-estimated-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T205724Z&X-Amz-Expires=604800&X-Amz-Signature=ba2bd58dead71bc1544093ac79ae094b103602cd76d24a6b08b4f6b6274e621a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Custom guardrail cost estimation" class="fern-card rounded-2 shadow-x" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a829a7451a1bb209dcbbe718dc75c3f6a28191f4de8ad6be44da6e0b7d4466ec/assets/images/agents/agents-custom-guardail-prompt-estimated-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260828%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260828T113131Z&X-Amz-Expires=604800&X-Amz-Signature=662a148dff32df6fda0b000595083d9e00f179ad5a0692a7f8c2cfb831d5ae2b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Custom guardrail cost estimation" class="fern-card rounded-2 shadow-x" />
 
 **Retry and cost:** Each attempt is an extra agent generation plus another guardrail evaluation,
 so **retry** increases usage-based billing compared to **end\_call** (up to three attempts per

@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zdiffstore
 path: docs/redis/commands/sorted-set/zdiffstore
 ---
 
-> Store sorted set difference.
-
 Use `ZDIFFSTORE` to compute the difference between sorted sets and store it in another key.
 
 The destination receives the members of the first source that appear in none of the others, keeping their scores from that source. It is overwritten if it exists and deleted when the result is empty, and the reply is the number of members stored.
@@ -28,7 +26,7 @@ ZDIFFSTORE <destination> <numkeys> <key> [<key> ...]
 
 ## Important points
 
-- `numkeys` must equal the number of key arguments that immediately follow it.
+* `numkeys` must equal the number of key arguments that immediately follow it.
 
 ## Response
 

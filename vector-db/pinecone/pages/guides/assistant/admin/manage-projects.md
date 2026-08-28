@@ -17,7 +17,7 @@ This page shows you how to view project details, rename a project, and delete a 
 You can view the details of a project, as in the following example:
 
 <Note>
-  An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
+  An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/release-notes/feature-availability).
 </Note>
 
 <CodeGroup>
@@ -91,7 +91,7 @@ You can change the name of your project:
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/release-notes/feature-availability).
     </Note>
 
     <CodeGroup>
@@ -175,7 +175,7 @@ To delete a project, you must first [delete all data](/guides/manage-data/delete
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/release-notes/feature-availability).
     </Note>
 
     <CodeGroup>

@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/string/overview
 path: docs/redis/commands/string/overview
 ---
 
-> Commands for storing and manipulating string values.
-
 <CardGroup cols={2}>
 <Card title="APPEND" href="/redis/commands/string/append">Append value to a string</Card>
 <Card title="DECR" href="/redis/commands/string/decr">Decrement integer value by 1</Card>

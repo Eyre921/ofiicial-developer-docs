@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/search/search-listindexes
 path: docs/redis/commands/search/search-listindexes
 ---
 
-> List search indexes in the database.
-
 Use `SEARCH.LISTINDEXES` to list search indexes in the database.
 
-`MATCH` filters index names with a glob-style pattern, while `LIMIT` and `OFFSET` page through the reply, which keeps the command usable on a database with many indexes. Only index names are returned; use [`SEARCH.DESCRIBE`](/redis/commands/search/search-describe) to see an index's schema and settings.
+`MATCH` filters index names with a glob-style pattern, while `LIMIT` and `OFFSET` page through the reply, which keeps the command usable on a database with many indexes. Only index names are returned; use [`SEARCH.DESCRIBE`](/docs/redis/commands/search/search-describe) to see an index's schema and settings.
 
-See [Listing Indexes](/redis/search/index-management#listing-indexes) for the feature guide.
+See [Listing Indexes](/docs/redis/search/index-management#listing-indexes) for the feature guide.
 
 ## Syntax
 

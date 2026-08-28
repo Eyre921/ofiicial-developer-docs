@@ -102,6 +102,10 @@ For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deplo
     Per-token rates for text, vision, embeddings, and Priority.
   </Card>
 
+  <Card title="Reserved Throughput" icon="gauge-high" href="/serverless/reserved-throughput">
+    SLA-backed throughput that adds to your adaptive rate limits.
+  </Card>
+
   <Card title="Rate limits" icon="gauge" href="/serverless/rate-limits">
     Adaptive TPM bounds and how the limit ramps with usage.
   </Card>

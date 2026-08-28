@@ -4,8 +4,6 @@ source: https://upstash.com/docs/qstash/integrations/pipedream
 path: docs/qstash/integrations/pipedream
 ---
 
-> Build and run workflows with 1000s of open source triggers and actions across 900+ apps.
-
 [Pipedream](https://pipedream.com) allows you to build and run workflows with
 1000s of open source triggers and actions across 900+ apps.
 
@@ -33,7 +31,7 @@ Sign into [Pipedream](https://pipedream.com) and create a new workflow.
 In the workflow **Trigger** search for QStash and select the **Create Topic
 Endpoint** trigger.
 
-![Select the QStash Create Topic Endpoint trigger](https://res.cloudinary.com/pipedreamin/image/upload/v1664298855/docs/components/CleanShot_2022-09-27_at_13.13.56_x6gzgk.gif)
+![Select the QStash Create Topic Endpoint trigger]()
 
 Then, connect your QStash account by clicking the QStash prop and retrieving
 your token from the
@@ -44,7 +42,7 @@ appear containing the QStash topics on your account.
 
 Then _click_ on a specific topic to listen for new messages on.
 
-![Selecting a QStash topic to subscribe to](https://res.cloudinary.com/pipedreamin/image/upload/v1664299016/docs/components/CleanShot_2022-09-27_at_13.16.35_rewzbo.gif)
+![Selecting a QStash topic to subscribe to]()
 
 Finally, _click_ **Continue**. Pipedream will create a unique HTTP endpoint and
 add it to your QStash topic.
@@ -87,7 +85,7 @@ quickstart-trigger-pipedream-workflow-from-topic.md 3 KB
 If you prefer video, you can check out this tutorial by
 [pipedream](https://pipedream.com).
 
-[![Video](https://img.youtube.com/vi/-oXlWuxNG5A/0.jpg)](https://www.youtube.com/watch?v=-oXlWuxNG5A)
+[![Video]()](https://www.youtube.com/watch?v=-oXlWuxNG5A)
 
 ## Trigger a Pipedream workflow from a QStash topic message
 
@@ -106,7 +104,7 @@ Sign into [Pipedream](https://pipedream.com) and create a new workflow.
 
 In the workflow **Trigger** select the **New HTTP / Webhook Requests** option.
 
-![Create new HTTP Webhook trigger](https://res.cloudinary.com/pipedreamin/image/upload/v1664296111/docs/components/CleanShot_2022-09-27_at_12.27.42_cqzolg.png)
+![Create new HTTP Webhook trigger]()
 
 Pipedream will create a unique HTTP endpoint for your workflow.
 
@@ -115,12 +113,12 @@ Pipedream will always return a 200 response, which allows us to return a non-200
 response to QStash to retry the workflow again if there's an error during the
 execution of the QStash message.
 
-![Configure the webhook to return a custom response](https://res.cloudinary.com/pipedreamin/image/upload/v1664296210/docs/components/CleanShot_2022-09-27_at_12.29.45_jbwtcm.png)
+![Configure the webhook to return a custom response]()
 
 Lastly, set the **Event Body** to be a **Raw request**. This will make sure the
 QStash verify webhook action receives the data in the correct format.
 
-![Set the event body to a raw body](https://res.cloudinary.com/pipedreamin/image/upload/v1664302540/docs/components/CleanShot_2022-09-27_at_14.15.15_o4xinz.png)
+![Set the event body to a raw body]()
 
 ### 3. Test with a sample message
 
@@ -169,7 +167,7 @@ transform, or send data to other services.
 In the final step of your workflow, return a 200 response by adding a new step
 and selecting **Return an HTTP Response**.
 
-![Returning an HTTP response](https://res.cloudinary.com/pipedreamin/image/upload/v1664296812/docs/components/CleanShot_2022-09-27_at_12.39.25_apkngf.png)
+![Returning an HTTP response]()
 
 This will generate Node.js code to return an HTTP response to QStash using the
 `$.respond` helper in Pipedream.
@@ -185,4 +183,4 @@ automatically process new messages to your QStash topic.
 If you prefer video, you can check out this tutorial by
 [pipedream](https://pipedream.com).
 
-[![Video](https://img.youtube.com/vi/uG8eO7BNok4/0.jpg)](https://youtu.be/uG8eO7BNok4)
+[![Video]()](https://youtu.be/uG8eO7BNok4)

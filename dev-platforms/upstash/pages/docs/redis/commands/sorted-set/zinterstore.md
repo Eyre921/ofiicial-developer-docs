@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zinterstore
 path: docs/redis/commands/sorted-set/zinterstore
 ---
 
-> Store sorted set intersection.
-
 Use `ZINTERSTORE` to compute the intersection of sorted sets and store it in another key.
 
 The destination gets the members present in every input, scored by the sum of their scores by default, or by `MIN` or `MAX` when `AGGREGATE` is given, with `WEIGHTS` scaling each input beforehand. The destination is overwritten if it exists and deleted when the intersection is empty, and the reply is the number of members stored.
 
-This is how a combined ranking is built once, for instance blending a relevance score with a popularity score, and then paged through with [`ZRANGE`](/redis/commands/sorted-set/zrange).
+This is how a combined ranking is built once, for instance blending a relevance score with a popularity score, and then paged through with [`ZRANGE`](/docs/redis/commands/sorted-set/zrange).
 
 ## Syntax
 
@@ -32,7 +30,7 @@ ZINTERSTORE <destination> <numkeys> <key> [<key> ...]
 
 ## Important points
 
-- `numkeys` must equal the number of key arguments that immediately follow it.
+* `numkeys` must equal the number of key arguments that immediately follow it.
 
 ## Response
 

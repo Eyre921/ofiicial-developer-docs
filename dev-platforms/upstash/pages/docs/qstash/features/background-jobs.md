@@ -5,13 +5,13 @@ path: docs/qstash/features/background-jobs
 ---
 
 ## When do you need background jobs
-Background jobs are essential for executing tasks that are too time-consuming to run in the 
-main execution thread without affecting the user experience. 
+Background jobs are essential for executing tasks that are too time-consuming to run in the
+main execution thread without affecting the user experience.
 
-These tasks might include data processing, sending batch emails, performing scheduled maintenance, 
-or any other operations that are not immediately required to respond to user requests. 
+These tasks might include data processing, sending batch emails, performing scheduled maintenance,
+or any other operations that are not immediately required to respond to user requests.
 
-Utilizing background jobs allows your application to remain responsive and scalable, handling more requests simultaneously by offloading 
+Utilizing background jobs allows your application to remain responsive and scalable, handling more requests simultaneously by offloading
 heavy lifting to background processes.
 
 <Note>
@@ -24,10 +24,10 @@ QStash provides a simple and efficient way to run background jobs, you can under
 
 1. **Public API** Create a public API endpoint within your application. The endpoint should contain the logic for the background job.
 <Warning>
-QStash requires a public endpoint to trigger background jobs, which means it cannot directly access localhost APIs. 
+QStash requires a public endpoint to trigger background jobs, which means it cannot directly access localhost APIs.
 To get around this, you have two options:
-- Run QStash [development server](/qstash/howto/local-development) locally
-- Set up a [local tunnel](/qstash/howto/local-tunnel) for your API
+* Run QStash [development server](/docs/qstash/howto/local-development) locally
+* Set up a [local tunnel](/docs/qstash/howto/local-tunnel) for your API
 </Warning>
 2. **QStash Request** Invoke QStash to start/schedule the execution of the API endpoint.
 
@@ -109,18 +109,16 @@ Here's what this looks like in a simple Next.js application:
 To better understand the application, let's break it down:
 
 1. **Client**: The client application contains a button that, when clicked, sends a request to the server to start the background job.
-2. **Next.js server**: The first endpoint, `/api/start-email-job`, is invoked by the client to start the background job. 
+2. **Next.js server**: The first endpoint, `/api/start-email-job`, is invoked by the client to start the background job.
 3. **QStash**: The QStash client is used to invoke the `/api/send-email` endpoint, which contains the logic for the background job.
 
 Here is a visual representation of the process:
 
-<Frame>
-  <img className="block dark:hidden" src="/img/qstash/qstash-bgjob-light.png" alt="Background job diagram" />
-  <img className="hidden dark:block" src="/img/qstash/qstash-bgjob-dark.png" alt="Background job diagram" />
-</Frame>
+  <img className="block dark:hidden" alt="Background job diagram" />
+  <img className="hidden dark:block" alt="Background job diagram" />
 
-To view a more detailed Next.js quick start guide for setting up QStash, refer to the [quick start](/qstash/quickstarts/vercel-nextjs) guide.
+To view a more detailed Next.js quick start guide for setting up QStash, refer to the [quick start](/docs/qstash/quickstarts/vercel-nextjs) guide.
 
-It's also possible to schedule a background job to run at a later time using [schedules](/qstash/features/schedules).
+It's also possible to schedule a background job to run at a later time using [schedules](/docs/qstash/features/schedules).
 
-If you'd like to invoke another endpoint when the background job is complete, you can use [callbacks](/qstash/features/callbacks).
+If you'd like to invoke another endpoint when the background job is complete, you can use [callbacks](/docs/qstash/features/callbacks).

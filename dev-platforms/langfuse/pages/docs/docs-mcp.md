@@ -94,7 +94,6 @@ Start a new Codex session, then run `codex mcp list` to confirm the server is re
 
 Add Langfuse Docs MCP to Cursor via the one-click install:
 
-<div className="flex gap-2 mt-3 mb-6">
   <Button asChild>
     <Link
       href="https://cursor.com/en/install-mcp?name=langfuse-docs&config=eyJ1cmwiOiJodHRwczovL2xhbmdmdXNlLmNvbS9hcGkvbWNwIn0%3D"
@@ -104,7 +103,6 @@ Add Langfuse Docs MCP to Cursor via the one-click install:
       Install MCP Server in Cursor
     </Link>
   </Button>
-</div>
 
 <details>
 <summary>Manual configuration</summary>
@@ -151,7 +149,6 @@ Add Langfuse Docs MCP to Windsurf via the following steps:
 
 Add Langfuse Docs MCP to Copilot in VSCode via the one-click install:
 
-<div className="flex gap-2 mt-3 mb-6">
   <Button asChild>
     <Link
       href="vscode:mcp/install?%7B%22name%22%3A%22langfuse-docs%22%2C%22url%22%3A%22https%3A%2F%2Flangfuse.com%2Fapi%2Fmcp%22%7D"
@@ -161,7 +158,6 @@ Add Langfuse Docs MCP to Copilot in VSCode via the one-click install:
       Install MCP Server in VS Code
     </Link>
   </Button>
-</div>
 
 <details>
 <summary>Manual configuration</summary>

@@ -121,7 +121,7 @@ curl $UPSTASH_VECTOR_REST_URL/upsert \
 
 When you do a query or fetch, you can opt-in to retrieve the metadata as follows:
 
-- **Query Example**
+* **Query Example**
 
 <Tabs>
 
@@ -346,9 +346,9 @@ curl $UPSTASH_VECTOR_REST_URL/query \
 
 </Tabs>
 
-See [Metadata Filtering documentation](/vector/features/filtering) for more details.
+See [Metadata Filtering documentation](/docs/vector/features/filtering) for more details.
 
-- **Range Example**
+* **Range Example**
 
 <Tabs>
 

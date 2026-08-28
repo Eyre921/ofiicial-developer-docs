@@ -156,7 +156,7 @@ Follow the guidance below for Apps on Devices integrations.
 
 #### Android
 
-> In version `5.0.0` of the Android SDK, you can use the `easyConnect` method to combine reader discovery and connection into a single API call to simplify integration. See the [SDK migration guide](https://docs.stripe.com/terminal/references/sdk-migration-guide.md#update-your-reader-connection-usage) for details.
+> In version `5.0.0` of the Android SDK, you can use the `easyConnect` method to combine reader discovery and connection into a single API call to simplify integration. See the [SDK migration guide](https://docs.stripe.com/terminal/references/sdk-migration-guide.md?terminal-sdk-platform=android#update-your-reader-connection-usage) for details.
 
 You must register a new Stripe device to your account as a new [Reader object](https://docs.stripe.com/api/terminal/readers/object.md). Use the pairing code provided in the device’s admin settings to [create the Reader object](https://docs.stripe.com/api/terminal/readers/create.md). Your app uses the Stripe Terminal Android SDK to discover and connect to your device:
 
@@ -640,7 +640,7 @@ Google’s [Android Debug Bridge documentation](https://developer.android.com/st
 Follow these steps to test your app in the Dashboard:
 
 1. In a sandbox, open the [Terminal readers](https://dashboard.stripe.com/test/terminal/readers) page.
-2. If you haven’t already, click **Register reader** to [register](https://docs.stripe.com/terminal/payments/connect-reader.md?reader-type=internet#register-reader) the DevKit device to your account.
+2. If you haven’t already, click **Register reader** to [register](https://docs.stripe.com/terminal/payments/connect-reader.md?terminal-sdk-platform=android&reader-type=internet#register-reader) the DevKit device to your account.
 3. Click **Terminal** > **Software**.
 4. On the [Software](https://dashboard.stripe.com/terminal/software) tab, choose the app that you want to deploy. You can also create a new app to deploy.
 5. On the app details page, click **Deploy version**.

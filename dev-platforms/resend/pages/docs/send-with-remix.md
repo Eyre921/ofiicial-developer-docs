@@ -65,7 +65,7 @@ Learn how to send your first email using Remix and the Resend Node.js SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 

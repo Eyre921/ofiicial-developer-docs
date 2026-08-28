@@ -81,11 +81,11 @@ print(page.title)
 
 <Note>
   The AI-powered operations use an LLM and are metered:
-  [`extract`](/box/overall/browser/reading-pages) and [`observe`,
-  `act`](/box/overall/browser/ai-actions). They need an API key for the model's
+  [`extract`](/docs/box/overall/browser/reading-pages) and [`observe`,
+  `act`](/docs/box/overall/browser/ai-actions). They need an API key for the model's
   provider (Anthropic, OpenAI, OpenRouter, Vercel, or OpenCode) on the box or
   your account. The exception is replaying a resolved action with
-  [`act(action)`](/box/overall/browser/ai-actions#replay-an-action-without-an-llm),
+  [`act(action)`](/docs/box/overall/browser/ai-actions#replay-an-action-without-an-llm),
   which uses no LLM and needs no key.
 </Note>
 

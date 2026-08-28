@@ -17,10 +17,10 @@ A duplicate delivery can happen in a flow like this:
 5. To avoid losing the message, QStash delivers it again.
 
 <Info>
-  True exactly-once delivery cannot be guaranteed in distributed systems under all failure scenarios. 
-  
-  Most production messaging systems therefore use at-least-once delivery together with idempotent handlers to prioritize reliability and prevent message loss. 
-  
+  True exactly-once delivery cannot be guaranteed in distributed systems under all failure scenarios.
+
+  Most production messaging systems therefore use at-least-once delivery together with idempotent handlers to prioritize reliability and prevent message loss.
+
   To learn more about the underlying coordination challenge, see the [Two Generals' Problem](https://en.wikipedia.org/wiki/Two_Generals%27_Problem).
 </Info>
 

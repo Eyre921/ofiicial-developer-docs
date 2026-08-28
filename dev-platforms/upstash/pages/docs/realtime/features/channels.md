@@ -6,8 +6,8 @@ path: docs/realtime/features/channels
 
 Channels allow you to scope events to specific people or rooms. For example:
 
-- Chat rooms
-- Emitting events to a specific user
+* Chat rooms
+* Emitting events to a specific user
 
 ## Default Channel
 
@@ -28,7 +28,7 @@ useRealtime({
 })
 ```
 
----
+***
 
 ## Custom Channels
 
@@ -164,7 +164,7 @@ await Promise.all(
 
 ## Channel Security
 
-Combine channels with [middleware](/realtime/features/middleware) for secure access control:
+Combine channels with [middleware](/docs/realtime/features/middleware) for secure access control:
 
 ```typescript title="app/api/realtime/route.ts"
 import { handle } from "@upstash/realtime"

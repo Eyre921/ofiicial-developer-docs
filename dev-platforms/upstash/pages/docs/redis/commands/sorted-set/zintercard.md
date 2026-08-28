@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zintercard
 path: docs/redis/commands/sorted-set/zintercard
 ---
 
-> Get intersection cardinality.
-
 Use `ZINTERCARD` to get the number of members that the given sorted sets have in common, without building the intersection.
 
 `<numkeys>` states how many keys follow. `LIMIT` stops the count once that many common members are found and returns the limit, which answers "do these sets overlap by at least N" far more cheaply than a full intersection; `LIMIT 0` means no limit. Only the count is computed and returned, so nothing is stored and no scores are transferred.

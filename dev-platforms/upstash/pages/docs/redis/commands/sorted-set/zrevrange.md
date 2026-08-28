@@ -4,10 +4,8 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zrevrange
 path: docs/redis/commands/sorted-set/zrevrange
 ---
 
-> Get members in reverse order.
-
 <Warning>
-  Prefer [`ZRANGE`](/redis/commands/sorted-set/zrange) with `REV` in new code: `ZRANGE <key> <start> <stop> REV [WITHSCORES]`.
+  Prefer [`ZRANGE`](/docs/redis/commands/sorted-set/zrange) with `REV` in new code: `ZRANGE <key> <start> <stop> REV [WITHSCORES]`.
 </Warning>
 
 Use `ZREVRANGE` to list a range of members of a sorted set ordered from the highest score down.
@@ -31,7 +29,7 @@ ZREVRANGE <key> <start> <stop> [WITHSCORES]
 
 ## Important points
 
-- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

@@ -10,7 +10,6 @@ We support the Redis `MONITOR` command, a debugging command that allows you to s
 
 In this video, we'll walk through setting up a monitor instance step-by-step.
 
-<Frame>
   <iframe
     id="intro-video"
     width="560"
@@ -21,10 +20,9 @@ In this video, we'll walk through setting up a monitor instance step-by-step.
     allow="accelerometer; fullscreen; clipboard-write; encrypted-media; gyroscope"
     allowfullscreen
   ></iframe>
-</Frame>
 
 <Note>
-  The `MONITOR`command expects a persistent connection and, therefore, does not work over HTTP. 
+  The `MONITOR`command expects a persistent connection and, therefore, does not work over HTTP.
 </Note>
 
 In this video, we use `ioredis` to connect to our Upstash Redis database. Using an event handler, we can define what should happen for each executed command against on Redis instance. For example, logging all data to the console.

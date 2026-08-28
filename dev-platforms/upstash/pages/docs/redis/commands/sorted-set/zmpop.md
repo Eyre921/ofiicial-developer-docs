@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zmpop
 path: docs/redis/commands/sorted-set/zmpop
 ---
 
-> Pop from the first non-empty sorted set.
-
 Use `ZMPOP` to pop members from the first of several sorted sets that is not empty.
 
 `<numkeys>` states how many keys follow, `MIN` or `MAX` chooses whether the lowest or the highest scoring members are taken, and `COUNT` sets how many to pop. Keys are examined in the order given and only the first non-empty one is touched, so listing a high priority queue first drains it before the others are considered.
 
-The reply names the key that was popped from along with the members and their scores, which matters when a worker watches several queues. When every key is empty the reply is null; use [`BZMPOP`](/redis/commands/sorted-set/bzmpop) to wait instead of returning.
+The reply names the key that was popped from along with the members and their scores, which matters when a worker watches several queues. When every key is empty the reply is null; use [`BZMPOP`](/docs/redis/commands/sorted-set/bzmpop) to wait instead of returning.
 
 ## Syntax
 
@@ -29,7 +27,7 @@ ZMPOP <numkeys> <key> [<key> ...] (MIN | MAX) [COUNT <count>]
 
 ## Important points
 
-- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zscan
 path: docs/redis/commands/sorted-set/zscan
 ---
 
-> Incrementally iterate sorted set.
-
 Use `ZSCAN` to iterate the members of a sorted set in batches instead of reading them all at once.
 
 Each call takes a cursor and returns the next cursor together with a batch of members and their scores. Start at cursor `0` and keep calling with the cursor from the previous reply until the server returns `0`. `MATCH` filters member names with a glob-style pattern and `COUNT` hints at how much work each call should do.
 
-Filtering happens after a batch is read, so a call can come back empty while the cursor is still non-zero. Members present for the whole iteration are returned at least once, and members added or removed while it runs may or may not appear. When you want members in score order rather than in scan order, use [`ZRANGE`](/redis/commands/sorted-set/zrange).
+Filtering happens after a batch is read, so a call can come back empty while the cursor is still non-zero. Members present for the whole iteration are returned at least once, and members added or removed while it runs may or may not appear. When you want members in score order rather than in scan order, use [`ZRANGE`](/docs/redis/commands/sorted-set/zrange).
 
 ## Syntax
 
@@ -29,9 +27,9 @@ ZSCAN <key> <cursor> [MATCH <pattern>] [COUNT <count>]
 
 ## Important points
 
-- This operation can inspect a large part of the database. Prefer cursor-based scans where possible and avoid unbounded use on hot paths.
-- The cursor is opaque. Start with `0` and continue until the server returns cursor `0`; a single iteration may return no elements.
-- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+* This operation can inspect a large part of the database. Prefer cursor-based scans where possible and avoid unbounded use on hot paths.
+* The cursor is opaque. Start with `0` and continue until the server returns cursor `0`; a single iteration may return no elements.
+* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

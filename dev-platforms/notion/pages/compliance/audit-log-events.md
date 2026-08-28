@@ -343,6 +343,8 @@ Events are split into the following categories:
 * **Organization verified an email domain**: That an email domain was verified for an organization.
 * **Organization’s request to claim a domain had its status updated**: That an organization's request to claim a domain had its status updated.
 * **Page view analytics toggled for the organization**: That the page view analytics setting was toggled for an organization.
+* **Security Center category weights updated**: That Security Center category weights were updated for an organization.
+* **Security Center custom checks updated**: That Security Center custom checks were updated for an organization.
 * **Session duration for managed users updated**: That the session duration for managed users was updated for an organization.
 * **Toggled enable SAML for all spaces in the organization**: That an organization owner has disabled or enabled SAML for all spaces in the organization.
 * **Toggled enforce SAML for all spaces in the organization**: That an organization owner has disabled or enabled Enforce SAML for all spaces in the organization.

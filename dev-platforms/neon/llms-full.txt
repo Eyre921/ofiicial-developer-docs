@@ -1093,9 +1093,9 @@ Browse the full catalog below. Switch between the **Text** and **Image** tabs, f
 
 | Model                                                                     | Model ID        | Inputs           | Context | Reasoning | Input /M | Output /M | Endpoints                           | License      |
 | ------------------------------------------------------------------------- | --------------- | ---------------- | ------- | --------- | -------- | --------- | ----------------------------------- | ------------ |
-| [GPT-5.6 Luna](https://neon.com/docs/ai-gateway/models/gpt-5-6-luna.md)   | `gpt-5-6-luna`  | text, image, pdf | 1.1M    | Yes       | $1       | $6        | chat/completions · openai/responses | Proprietary  |
+| [GPT-5.6 Luna](https://neon.com/docs/ai-gateway/models/gpt-5-6-luna.md)   | `gpt-5-6-luna`  | text, image, pdf | 1.1M    | Yes       | $0.20    | $1.20     | chat/completions · openai/responses | Proprietary  |
 | [GPT-5.6 Sol](https://neon.com/docs/ai-gateway/models/gpt-5-6-sol.md)     | `gpt-5-6-sol`   | text, image, pdf | 1.1M    | Yes       | $5       | $30       | chat/completions · openai/responses | Proprietary  |
-| [GPT-5.6 Terra](https://neon.com/docs/ai-gateway/models/gpt-5-6-terra.md) | `gpt-5-6-terra` | text, image, pdf | 1.1M    | Yes       | $2.50    | $15       | chat/completions · openai/responses | Proprietary  |
+| [GPT-5.6 Terra](https://neon.com/docs/ai-gateway/models/gpt-5-6-terra.md) | `gpt-5-6-terra` | text, image, pdf | 1.1M    | Yes       | $2       | $12       | chat/completions · openai/responses | Proprietary  |
 | [GPT-5.5](https://neon.com/docs/ai-gateway/models/gpt-5-5.md)             | `gpt-5-5`       | text, image, pdf | 1.1M    | Yes       | $5       | $30       | chat/completions · openai/responses | Proprietary  |
 | [GPT-5.5 Pro](https://neon.com/docs/ai-gateway/models/gpt-5-5-pro.md)     | `gpt-5-5-pro`   | text, image, pdf | 1.1M    | Yes       | $30      | $180      | openai/responses                    | Proprietary  |
 | [GPT-5.4 mini](https://neon.com/docs/ai-gateway/models/gpt-5-4-mini.md)   | `gpt-5-4-mini`  | text, image      | 400K    | Yes       | $0.75    | $4.50     | chat/completions · openai/responses | Proprietary  |
@@ -1107,8 +1107,8 @@ Browse the full catalog below. Switch between the **Text** and **Image** tabs, f
 | [GPT-5](https://neon.com/docs/ai-gateway/models/gpt-5.md)                 | `gpt-5`         | text, image      | 400K    | Yes       | $1.25    | $10       | chat/completions · openai/responses | Proprietary  |
 | [GPT-5 Mini](https://neon.com/docs/ai-gateway/models/gpt-5-mini.md)       | `gpt-5-mini`    | text, image      | 400K    | Yes       | $0.25    | $2        | chat/completions · openai/responses | Proprietary  |
 | [GPT-5 Nano](https://neon.com/docs/ai-gateway/models/gpt-5-nano.md)       | `gpt-5-nano`    | text, image      | 400K    | Yes       | $0.05    | $0.40     | chat/completions · openai/responses | Proprietary  |
-| [GPT OSS 120B](https://neon.com/docs/ai-gateway/models/gpt-oss-120b.md)   | `gpt-oss-120b`  | text             | 131K    | Yes       | $0.07    | $0.28     | chat/completions                    | Open weights |
-| [GPT OSS 20B](https://neon.com/docs/ai-gateway/models/gpt-oss-20b.md)     | `gpt-oss-20b`   | text             | 131K    | Yes       | $0.05    | $0.20     | chat/completions                    | Open weights |
+| [GPT OSS 120B](https://neon.com/docs/ai-gateway/models/gpt-oss-120b.md)   | `gpt-oss-120b`  | text             | 131K    | Yes       | $0.15    | $0.60     | chat/completions                    | Open weights |
+| [GPT OSS 20B](https://neon.com/docs/ai-gateway/models/gpt-oss-20b.md)     | `gpt-oss-20b`   | text             | 131K    | Yes       | $0.07    | $0.30     | chat/completions                    | Open weights |
 
 #### Google
 
@@ -1147,7 +1147,7 @@ Browse the full catalog below. Switch between the **Text** and **Image** tabs, f
 
 | Model                                                         | Model ID  | Inputs             | Context | Reasoning | Input /M | Output /M | Endpoints        | License      |
 | ------------------------------------------------------------- | --------- | ------------------ | ------- | --------- | -------- | --------- | ---------------- | ------------ |
-| [Inkling](https://neon.com/docs/ai-gateway/models/inkling.md) | `inkling` | text, image, audio | 1M      | Yes       | —        | —         | chat/completions | Open weights |
+| [Inkling](https://neon.com/docs/ai-gateway/models/inkling.md) | `inkling` | text, image, audio | 1M      | Yes       | $1       | $4.05     | chat/completions | Open weights |
 
 #### Moonshot AI
 
@@ -1165,9 +1165,9 @@ These models support image generation through the Responses API (base URL `/open
 
 | Model                                                                     | Model ID        | Inputs           | Context | Reasoning | Input /M | Output /M | Endpoints                           | License     |
 | ------------------------------------------------------------------------- | --------------- | ---------------- | ------- | --------- | -------- | --------- | ----------------------------------- | ----------- |
-| [GPT-5.6 Luna](https://neon.com/docs/ai-gateway/models/gpt-5-6-luna.md)   | `gpt-5-6-luna`  | text, image, pdf | 1.1M    | Yes       | $1       | $6        | chat/completions · openai/responses | Proprietary |
+| [GPT-5.6 Luna](https://neon.com/docs/ai-gateway/models/gpt-5-6-luna.md)   | `gpt-5-6-luna`  | text, image, pdf | 1.1M    | Yes       | $0.20    | $1.20     | chat/completions · openai/responses | Proprietary |
 | [GPT-5.6 Sol](https://neon.com/docs/ai-gateway/models/gpt-5-6-sol.md)     | `gpt-5-6-sol`   | text, image, pdf | 1.1M    | Yes       | $5       | $30       | chat/completions · openai/responses | Proprietary |
-| [GPT-5.6 Terra](https://neon.com/docs/ai-gateway/models/gpt-5-6-terra.md) | `gpt-5-6-terra` | text, image, pdf | 1.1M    | Yes       | $2.50    | $15       | chat/completions · openai/responses | Proprietary |
+| [GPT-5.6 Terra](https://neon.com/docs/ai-gateway/models/gpt-5-6-terra.md) | `gpt-5-6-terra` | text, image, pdf | 1.1M    | Yes       | $2       | $12       | chat/completions · openai/responses | Proprietary |
 | [GPT-5.5](https://neon.com/docs/ai-gateway/models/gpt-5-5.md)             | `gpt-5-5`       | text, image, pdf | 1.1M    | Yes       | $5       | $30       | chat/completions · openai/responses | Proprietary |
 | [GPT-5.5 Pro](https://neon.com/docs/ai-gateway/models/gpt-5-5-pro.md)     | `gpt-5-5-pro`   | text, image, pdf | 1.1M    | Yes       | $30      | $180      | openai/responses                    | Proprietary |
 | [GPT-5.4 mini](https://neon.com/docs/ai-gateway/models/gpt-5-4-mini.md)   | `gpt-5-4-mini`  | text, image      | 400K    | Yes       | $0.75    | $4.50     | chat/completions · openai/responses | Proprietary |
@@ -6363,11 +6363,11 @@ Jul 2026
 
 ## Input /M
 
-$1
+$0.20
 
 ## Output /M
 
-$6
+$1.20
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-6-sol.md) ---
 
@@ -6913,11 +6913,11 @@ Jul 2026
 
 ## Input /M
 
-$2.50
+$2
 
 ## Output /M
 
-$15
+$12
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-mini.md) ---
 
@@ -7849,11 +7849,11 @@ Aug 2025
 
 ## Input /M
 
-$0.07
+$0.15
 
 ## Output /M
 
-$0.28
+$0.60
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/gpt-oss-20b.md) ---
 
@@ -7960,11 +7960,11 @@ Aug 2025
 
 ## Input /M
 
-$0.05
+$0.07
 
 ## Output /M
 
-$0.20
+$0.30
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/inkling.md) ---
 
@@ -8117,11 +8117,11 @@ Jul 2026
 
 ## Input /M
 
-—
+$1
 
 ## Output /M
 
-—
+$4.05
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/kimi-k3.md) ---
 
@@ -10681,20 +10681,24 @@ Proper cleanup reduces costs and keeps your project manageable:
 - **Cleanup strategy**: Set `expires_at` on temporary snapshots and preview branches. Delete orphaned branches (for example, `production (old)`) created during restores.
 - **Version metadata**: Keep version metadata separate to preserve audit trail across restores.
 
-## FAQ
+## Frequently asked questions
 
-Why must I poll operations after restore?
-: With `finalize_restore: true`, Neon moves compute resources to the new state. Until operations complete, connections still point to the old compute.
+### Why must I poll operations after restore?
 
-What happens to my active branch when I restore?
-: When restoring with `finalize_restore: true`, your current active branch becomes orphaned (disconnected from the compute endpoint) and is renamed with "(old)" appended. This orphaned branch preserves your pre-restore state temporarily, but you should delete it after verifying the restore to avoid storage costs.
+With `finalize_restore: true`, Neon moves compute resources to the new state. Until operations complete, connections still point to the old compute.
 
-What if we need multiple preview environments?
-: Restore different snapshots to new branches using `finalize_restore: false`. Each restore creates a new branch with its own connection string.
+### What happens to my active branch when I restore?
 
-Why use snapshots instead of branches for versioning?
-: **Snapshots**: Restoring a snapshot onto your active branch (`finalize_restore: true`) replaces the data but keeps the same database connection string. This is ideal for production rollbacks.
-: **Branches**: Creating a new branch always generates a new connection string, which would require reconfiguring your application for every version change. Branches also create dependency chains that can complicate deletion.
+When restoring with `finalize_restore: true`, your current active branch becomes orphaned (disconnected from the compute endpoint) and is renamed with "(old)" appended. This orphaned branch preserves your pre-restore state temporarily, but you should delete it after verifying the restore to avoid storage costs.
+
+### What if we need multiple preview environments?
+
+Restore different snapshots to new branches using `finalize_restore: false`. Each restore creates a new branch with its own connection string.
+
+### Why use snapshots instead of branches for versioning?
+
+- **Snapshots**: Restoring a snapshot onto your active branch (`finalize_restore: true`) replaces the data but keeps the same database connection string. This is ideal for production rollbacks.
+- **Branches**: Creating a new branch always generates a new connection string, which would require reconfiguring your application for every version change. Branches also create dependency chains that can complicate deletion.
 
 ## Summary
 
@@ -12571,16 +12575,20 @@ Pick a check with the `check` parameter (for example `table-sizes` or `unused-in
 
 Tools are grouped into categories. Use the `?category=` URL parameter to restrict which categories are active. You can pass it more than once to enable multiple categories.
 
-| Category                          | What it enables                                                                     |
-| --------------------------------- | ----------------------------------------------------------------------------------- |
-| Project management (`projects`)   | List, create, describe, and delete projects and organizations                       |
-| Branch management (`branches`)    | Create branches, compare schemas, reset branches to parent state                    |
-| Schema (`schema`)                 | Inspect tables and columns; run schema changes via a safe temporary branch workflow |
-| SQL (`querying`)                  | Execute queries and transactions; run the same diagnostics as `neon inspect db`     |
-| Managed Better Auth (`neon_auth`) | Set up and configure app authentication for a branch                                |
-| Neon Data API (`data_api`)        | Enable HTTP-based Data API access for a branch                                      |
-| Observability (`observability`)   | Query logs from your serverless functions and storage                               |
-| Documentation (`docs`)            | Look up Neon documentation from within your assistant (no OAuth required)           |
+| Category                          | What it enables                                                                                                             |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Project management (`projects`)   | List, create, describe, and delete projects; list organizations                                                             |
+| Branch management (`branches`)    | Create, reset, and delete branches; manage Postgres roles and databases                                                     |
+| Compute endpoints (`endpoints`)   | List, create, start, suspend, and restart branch computes                                                                   |
+| Snapshots (`snapshots`)           | Create, restore, and schedule snapshots                                                                                     |
+| Schema (`schema`)                 | Inspect tables and columns; compare schemas                                                                                 |
+| SQL (`querying`)                  | Execute queries and transactions; apply schema changes on a temporary branch; run the same diagnostics as `neon inspect db` |
+| Managed Better Auth (`neon_auth`) | Provision Auth; manage OAuth providers, trusted domains, and users                                                          |
+| Neon Data API (`data_api`)        | Enable, update, and disable the Data API for a branch                                                                       |
+| Observability (`observability`)   | Query function and storage logs; check AI Gateway availability                                                              |
+| Documentation (`docs`)            | Look up Neon documentation from within your assistant (no OAuth required)                                                   |
+| Functions (`functions`)           | List, deploy, update, and delete Neon Functions                                                                             |
+| Object storage (`storage`)        | Manage buckets and objects; create presigned URLs                                                                           |
 
 Search and navigation tools (search across projects, fetch resource details by ID) are available by default but disabled in [project-scoped mode](https://neon.com/docs/ai/neon-mcp-server#project-scoped-mode).
 
@@ -13848,7 +13856,7 @@ Enable, configure, and disable Managed Better Auth using the Neon API
 
 The **Managed Better Auth** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
 
-You can manage Managed Better Auth programmatically using the [Neon API](https://neon.com/docs/reference/api), or from the terminal with the [Neon CLI](https://neon.com/docs/cli/neon-auth) (`neon neon-auth`), which wraps these same operations. You can also enable and configure Managed Better Auth from an AI editor using the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server#supported-actions-tools) (`provision_neon_auth`, `configure_neon_auth`, `get_neon_auth_config`). See [Set up with your AI editor](https://neon.com/docs/auth/overview#set-up-with-your-ai-editor).
+You can manage Managed Better Auth programmatically using the [Neon API](https://neon.com/docs/reference/api), or from the terminal with the [Neon CLI](https://neon.com/docs/cli/neon-auth) (`neon neon-auth`), which wraps these same operations. You can also enable and configure Managed Better Auth from an AI editor using the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server#available-tools) (`provision_neon_auth`, `update_auth_config`, `add_auth_oauth_provider`, `get_neon_auth_config`). See [Set up with your AI editor](https://neon.com/docs/auth/overview#set-up-with-your-ai-editor).
 
 **Note:** Managed Better Auth operates at the **branch level**. Each branch can have its own independent auth configuration, which means preview and development branches can have separate auth state from your production branch.
 
@@ -17622,10 +17630,10 @@ This command configures the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-
 1. **Configure Managed Better Auth on your branch (MCP).** After `init`, ask your assistant to enable and configure auth in natural language. The MCP server exposes:
 
    - `provision_neon_auth`: Enable Managed Better Auth on a branch
-   - `configure_neon_auth`: Set OAuth providers, email, sign-in methods, trusted domains, and more
-   - `get_neon_auth_config`: Read the current configuration
+   - `add_auth_oauth_provider`, `add_auth_trusted_domain`, `update_auth_config`: Change Auth settings
+   - `get_neon_auth_config`: Read the current configuration (secrets redacted)
 
-   See [Neon MCP Server: Managed Better Auth tools](https://neon.com/docs/ai/neon-mcp-server#supported-actions-tools) for details.
+   See [Available tools](https://neon.com/docs/ai/neon-mcp-server#available-tools) (`neon_auth`) for the full set.
 
 2. **Add Managed Better Auth to your application (Agent Skills).** Skills teach your assistant how to install the SDK, environment variables, and routes for your framework. Use the quick start guides on this page, or ask your assistant directly.
 
@@ -23957,7 +23965,7 @@ The supported agents are `antigravity`, `cline`, `cline-cli`, `claude-code`, `co
 By default the server exposes every MCP tool. Use these flags to narrow what an agent can do:
 
 - `--read-only` hides the write tools by adding `?readonly=true` to the server URL.
-- `--category <name>` limits tools to one or more categories (repeatable, or comma-separated). Categories are `projects`, `branches`, `schema`, `querying`, `neon_auth`, `data_api`, `observability`, and `docs`.
+- `--category <name>` limits tools to one or more categories (repeatable, or comma-separated). Categories are `projects`, `branches`, `endpoints`, `snapshots`, `schema`, `querying`, `neon_auth`, `data_api`, `observability`, `docs`, `functions`, and `storage`.
 - `--project-id <id>` pins the tools to a single Neon project with `?projectId=`, and limits a newly minted key to that project.
 
 `--read-only` and `--category` shape the server URL only; they don't change a key's scope, and neither does reusing an already-configured key.
@@ -26604,11 +26612,10 @@ Run `/list-doc-tools` in Claude to see the full list with descriptions, or brows
 
 ## Changelog and roadmap
 
-| Command             | Description                                                                                                              |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `/create-pr-report` | Weekly report of merged PRs across monitored repos. Supports PR deep dives and follow-on changelog or docs PR workflows. |
-| `/create-changelog` | Generate next Friday's changelog draft (or a specific date) with placeholder content and titled dropdown sections.       |
-| `/update-roadmap`   | Sync the introduction roadmap with recent changelog entries.                                                             |
+| Command             | Description                                                                                                        |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `/create-changelog` | Generate next Friday's changelog draft (or a specific date) with placeholder content and titled dropdown sections. |
+| `/update-roadmap`   | Sync the introduction roadmap with recent changelog entries.                                                       |
 
 ## Reference and navigation
 
@@ -26623,7 +26630,6 @@ Run `/list-doc-tools` in Claude to see the full list with descriptions, or brows
 The `.claude/agents/` directory contains specialized sub-agents used by the writing workflow commands:
 
 - **content-drafter**, **content-planner**, **content-refiner**, **ia-specialist**, **syntax-validator**, **supervisor** — write, plan, review, structure, validate, and orchestrate multi-step workflows
-- **extract-analyze-console**, **-cli**, **-mcp**, **-storage**, **-compute** — changelog extraction by repo, used by `/create-pr-report`
 
 --- [Document source](https://neon.com/docs/community/community-intro.md) ---
 
@@ -27726,6 +27732,51 @@ Individual checklist items used within CheckList components.
 - `href` prop is optional for anchor linking
 - Content is the description text
 
+---
+
+### Faq / FaqItem
+
+The standard, SEO-friendly frequently-asked-questions section for the end of docs and guides. Use it instead of ad-hoc `### question` headings, `**Q:/A:**` text, or `DefinitionList` for FAQs, so every FAQ looks and behaves the same. It emits `FAQPage` schema.org JSON-LD to help search engines and AI agents parse the questions and answers, and it renders each answer with native collapsible `<details>`, so answers stay crawlable and accessible even when collapsed. It also gives every FAQ consistent styling and deep-link anchors.
+
+Add a `## Frequently asked questions` heading above the component (sentence case) so the section appears in the table of contents.
+
+```mdx
+## Frequently asked questions
+
+<Faq>
+
+<FaqItem question="What is a branch?">
+A branch is a copy-on-write clone of your data that you can create from a current or past state.
+</FaqItem>
+
+<FaqItem question="Does creating a branch affect my production database?">
+No. Creating a branch does not increase load on the parent branch or affect its performance.
+</FaqItem>
+
+</Faq>
+```
+
+**Live preview:**
+
+## Frequently asked questions
+
+### What is a branch?
+
+A branch is a copy-on-write clone of your data that you can create from a current or past state.
+
+### Does creating a branch affect my production database?
+
+No. Creating a branch does not increase load on the parent branch or affect its performance.
+
+**Usage Notes:**
+
+- `FaqItem` requires a `question` prop. It renders as an `<h3>` inside the summary and is used verbatim in the JSON-LD.
+- `id` (optional) sets the anchor; it defaults to a slug of the question, so `#your-question` deep links work.
+- `defaultOpen` (optional) renders an item expanded on load.
+- Answers accept full markdown (lists, tables, links, images, code). Keep blank lines around block content.
+- Questions do not appear in the table of contents; the `## Frequently asked questions` heading is the single TOC entry.
+- Put shared blocks like `<NeedHelp/>` after `</Faq>`, not inside an item.
+
 ### CTA (Call to Action)
 
 Prominent call-to-action buttons for important actions.
@@ -28502,16 +28553,20 @@ Model Context Protocol tools integration component.
 
 Tools are grouped into categories. Use the `?category=` URL parameter to restrict which categories are active. You can pass it more than once to enable multiple categories.
 
-| Category                          | What it enables                                                                     |
-| --------------------------------- | ----------------------------------------------------------------------------------- |
-| Project management (`projects`)   | List, create, describe, and delete projects and organizations                       |
-| Branch management (`branches`)    | Create branches, compare schemas, reset branches to parent state                    |
-| Schema (`schema`)                 | Inspect tables and columns; run schema changes via a safe temporary branch workflow |
-| SQL (`querying`)                  | Execute queries and transactions; run the same diagnostics as `neon inspect db`     |
-| Managed Better Auth (`neon_auth`) | Set up and configure app authentication for a branch                                |
-| Neon Data API (`data_api`)        | Enable HTTP-based Data API access for a branch                                      |
-| Observability (`observability`)   | Query logs from your serverless functions and storage                               |
-| Documentation (`docs`)            | Look up Neon documentation from within your assistant (no OAuth required)           |
+| Category                          | What it enables                                                                                                             |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Project management (`projects`)   | List, create, describe, and delete projects; list organizations                                                             |
+| Branch management (`branches`)    | Create, reset, and delete branches; manage Postgres roles and databases                                                     |
+| Compute endpoints (`endpoints`)   | List, create, start, suspend, and restart branch computes                                                                   |
+| Snapshots (`snapshots`)           | Create, restore, and schedule snapshots                                                                                     |
+| Schema (`schema`)                 | Inspect tables and columns; compare schemas                                                                                 |
+| SQL (`querying`)                  | Execute queries and transactions; apply schema changes on a temporary branch; run the same diagnostics as `neon inspect db` |
+| Managed Better Auth (`neon_auth`) | Provision Auth; manage OAuth providers, trusted domains, and users                                                          |
+| Neon Data API (`data_api`)        | Enable, update, and disable the Data API for a branch                                                                       |
+| Observability (`observability`)   | Query function and storage logs; check AI Gateway availability                                                              |
+| Documentation (`docs`)            | Look up Neon documentation from within your assistant (no OAuth required)                                                   |
+| Functions (`functions`)           | List, deploy, update, and delete Neon Functions                                                                             |
+| Object storage (`storage`)        | Manage buckets and objects; create presigned URLs                                                                           |
 
 Search and navigation tools (search across projects, fetch resource details by ID) are available by default but disabled in [project-scoped mode](https://neon.com/docs/ai/neon-mcp-server#project-scoped-mode).
 
@@ -34929,7 +34984,7 @@ This guide walks you through enabling the Data API, creating a table with RLS, a
 
 **Tip: Enable programmatically**
 
-You can also enable the Data API from the terminal with [`neon data-api create`](https://neon.com/docs/cli/data-api#create), using the [Neon API](https://neon.com/docs/data-api/manage#manage-via-the-neon-api), or with the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server#supported-actions-tools) (`provision_neon_data_api` tool).
+You can also enable the Data API from the terminal with [`neon data-api create`](https://neon.com/docs/cli/data-api#create), using the [Neon API](https://neon.com/docs/data-api/manage#manage-via-the-neon-api), or with the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server#available-tools) (`provision_neon_data_api` tool).
 
 ### 1. Navigate to the Data API page
 
@@ -45062,12 +45117,12 @@ Neon supports the Postgres extensions shown below. Extension versions may differ
 | [isn](https://www.postgresql.org/docs/16/isn.html)                                                             |     1.2 |     1.2 |     1.2 |     1.2 |    1.3 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [lakebase\_text](https://neon.com/docs/extensions/lakebase-text)                                               |       - |       - |   0.1.1 |   0.1.1 |  0.1.1 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
 | [lakebase\_tokenizer](https://neon.com/docs/ai/lakebase-search)                                                |       - |       - |   0.1.0 |   0.1.0 |  0.1.0 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
-| [lakebase\_vector](https://neon.com/docs/extensions/lakebase-vector)                                           |       - |       - |   1.0.1 |   1.0.1 |  1.0.1 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
+| [lakebase\_vector](https://neon.com/docs/extensions/lakebase-vector)                                           |       - |       - |   1.1.0 |   1.1.0 |  1.1.0 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
 | [lo](https://www.postgresql.org/docs/16/lo.html)                                                               |     1.1 |     1.1 |     1.1 |     1.1 |    1.2 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [ltree](https://neon.com/docs/extensions/ltree)                                                                |     1.2 |     1.2 |     1.2 |     1.3 |    1.3 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [moddatetime (spi)](https://www.postgresql.org/docs/current/contrib-spi.html)                                  |     1.0 |     1.0 |     1.0 |     1.0 |    1.0 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [neon](https://neon.com/docs/extensions/neon)                                                                  |    1.14 |    1.14 |    1.14 |    1.14 |   1.14 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| [neon\_utils](https://neon.com/docs/extensions/neon-utils)                                                     |     1.0 |     1.0 |     1.0 |     1.0 |    1.0 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| [neon\_utils](https://neon.com/docs/extensions/neon-utils)                                                     |     1.1 |     1.1 |     1.1 |     1.1 |    1.1 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [online\_advisor](https://neon.com/docs/extensions/online_advisor)                                             |       - |       - |       - |     1.0 |      - |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [pg\_cron](https://neon.com/docs/extensions/pg_cron)                                                           |     1.6 |     1.6 |     1.6 |     1.6 |    1.6 | To install `pg_cron`, it must first be enabled. See [Enable the pg\_cron extension](https://neon.com/docs/extensions/pg_cron#enable-the-pgcron-extension) for instructions. Please note that `pg_cron` jobs will only run when your compute is active. We therefore recommend only using `pg_cron` on computes that run 24/7 or where you have disabled [scale to zero](https://neon.com/docs/introduction/scale-to-zero).                                     |
 | [pg\_graphql](https://neon.com/docs/extensions/pg_graphql)                                                     |  1.5.11 |  1.5.11 |  1.5.11 |  1.5.11 | 1.5.12 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
@@ -61772,11 +61827,11 @@ _There is a maximum limit of 5 AI requests every 60 seconds._
 
 --- [Document source](https://neon.com/docs/get-started/signing-up.md) ---
 
-> Summary: The Neon Console tour walks first-time users through sign-up, querying with the SQL Editor and AI assistant, editing rows in the Tables view, enabling Managed Better Auth, and creating an isolated development branch with the Neon CLI. Choose this page to understand the object hierarchy (project, branch, database, compute) and how branching isolates schema and data from production before you connect an application stack.
+> Summary: The Neon Console tour walks you through querying with the SQL Editor and AI assistant, editing rows in the Tables view, enabling Managed Better Auth, and creating an isolated development branch with the Neon CLI. Choose this page to understand the object hierarchy (project, branch, database, compute) and how branching isolates schema and data from production before you connect an application stack.
 
 # Tour the Neon Console
 
-Sign up and explore Neon's core features — the SQL Editor, branching, the Tables view, and Managed Better Auth
+Explore Neon's core Postgres database features: the SQL Editor, branching, the Tables view, and Managed Better Auth
 
 **What you will learn:**
 
@@ -61791,60 +61846,29 @@ Sign up and explore Neon's core features — the SQL Editor, branching, the Tabl
 - [Connect Neon to your stack](https://neon.com/docs/get-started/connect-neon)
 - [Managed Better Auth](https://neon.com/docs/auth/overview)
 
-This tutorial walks you through your first steps using Neon as your Postgres database. You'll explore the Neon object hierarchy and learn how database branching can simplify your development workflow.
+This tutorial walks you through your first steps using Neon as your Postgres database. It assumes you've already signed up and created a project. You'll explore the Neon object hierarchy and learn how database branching can simplify your development workflow.
+
+**Note:** This tour focuses on Postgres. For a tour of Neon's other backend services, including Object Storage, Functions, and the AI Gateway, see [Tour the Neon backend](https://neon.com/docs/get-started/backend-overview).
+
+## Everything starts with a project
+
+In Neon, everything starts with the **project**. It's the top-level container that holds your branches, databases, and roles. Typically, you create a project for each repository in your application. This lets you manage your database branches just like you manage your code branches: a branch for production, staging, development, new features, previews, and so forth.
 
 ## About branching
 
 Each [branch](https://neon.com/docs/introduction/branching) is a fully-isolated copy of its parent. We suggest creating a long-term branch for each developer on your team to maintain consistent connection strings. You can reset your development branch to production whenever needed.
 
-After signing up, you'll start with a `production` branch:
+Your project starts with a `production` branch:
 
 - `production` is your project's root default branch (default: 0.25-2 CU, adjustable up to 56 CU)
 
 You can create additional branches for development, staging, and other environments. For development branches, consider using a smaller compute size (0.25-1 CU) to optimize costs, while keeping production appropriately sized for your workload. All computes scale to zero after 5 minutes of inactivity by default, which keeps costs low for development branches. On paid plans, you can disable this for production if you need always-active compute. See [Scale to zero](https://neon.com/docs/introduction/scale-to-zero).
 
-## Sign up
-
-If you're already signed up, you can skip ahead to [Step 2](https://neon.com/docs/get-started/signing-up#step-2-onboarding-in-the-neon-console).
-
-If you haven't signed up yet, you can sign up for free here:
-
-[https://console.neon.tech/signup](https://console.neon.tech/signup)
-
-Sign up with your email, GitHub, Google, or other partner account.
-
-For information about what's included with the Free and paid plans, see
-[Neon plans](https://neon.com/docs/introduction/plans).
-
-![sign\_up](https://neon.com/docs/get-started/sign_up_reduced.png)
-
-## Onboarding in the Neon Console
-
-After you sign up, you are guided through some onboarding steps that ask you to create a **Project**.
-
-![onboarding](https://neon.com/docs/get-started/onboarding.png)
-
-The steps should be self-explanatory, but it's important to understand a few key points:
-
-- **In Neon, everything starts with the _Project_**
-
-  It is the top-level container that holds your branches, databases, and roles. Typically, you should create a project for each repository in your application. This allows you to manage your database branches just like you manage your code branches: a branch for production, staging, development, new features, previews, and so forth.
-
-- **We create a production branch for you**
-  - `production` is the root default branch. It hosts your database, role, and a compute that you can connect your application to
-  - You can create additional branches for development, staging, previews, and other workflows as needed
-
-At this point, if you want to just get started connecting Neon to your toolchain, go to [Connecting Neon to your tools](https://neon.com/docs/get-started/connect-neon). Or if you want a more detailed walkthrough of some of our key console and branching features, let's keep going.
-
-**Tip: Working with a team?**
-
-Your organization is now set up. You can start inviting teammates immediately. See [Invite members](https://neon.com/docs/manage/orgs-manage#invite-members).
-
 ## Add sample data
 
 Let's get familiar with the **SQL Editor**, where you can run queries against your databases directly from the Neon Console, as well as access more advanced features like [Time Travel](https://neon.com/docs/guides/time-travel-assist) and [Explain and Analyze](https://neon.com/docs/get-started/query-with-neon-sql-editor#explain-and-analyze).
 
-From the Neon Console, use the sidebar navigation to open **Postgres database** > **SQL Editor**. Notice that your default branch `production` is already selected, along with the database created during onboarding, `neondb`.
+From the Neon Console, use the sidebar navigation to open **Postgres database** > **SQL Editor**. Notice that your default branch `production` is already selected, along with your project's default database, `neondb`.
 
 ![Neon SQL Editor](https://neon.com/docs/get-started/sql_editor.png)
 
@@ -61943,8 +61967,6 @@ Let's create a `development` branch and learn how to use the Neon CLI to manage 
    ```bash
    neon auth
    ```
-
-   ![neon auth](https://neon.com/docs/get-started/neonctl_auth.png)
 
 4. **View your branches**
 
@@ -91242,6 +91264,10 @@ To configure Neon Private Networking, perform the following steps:
 
 **Important:** Do not enable **private DNS names** for the VPC endpoint until [Step 3](https://neon.com/docs/guides/neon-private-networking#enable-private-dns). You must add the VPC endpoint to your Neon organization first, as described in [Step 2](https://neon.com/docs/guides/neon-private-networking#add-your-vpc-endpoint-id-to-your-neon-organization).
 
+**Important: Add all service names for your region**
+
+A region can list multiple endpoint service names. When you create the endpoint, add **all** of the names listed for your region below (under **Service settings**). Neon adds service names over time as it expands capacity and updates this page, so re-check that list after a regional expansion. Adding those later additions is optional but improves capacity and reliability. Expansions are announced in the [changelog](https://neon.com/docs/changelog).
+
 1. Go to the AWS **VPC > Endpoints** dashboard and select **Create endpoint**. Make sure you create the endpoint in the same VPC as your client application.
 
    ![VPC Dashboard](https://neon.com/docs/guides/pl_vpc_dashboard.png)
@@ -91271,6 +91297,8 @@ To configure Neon Private Networking, perform the following steps:
      - `com.amazonaws.vpce.us-east-2.vpce-svc-0056bdfba63cc6ea1`
      - `com.amazonaws.vpce.us-east-2.vpce-svc-010736480bcef5824`
      - `com.amazonaws.vpce.us-east-2.vpce-svc-0465c21ce8ba95fb2`
+     - `com.amazonaws.vpce.us-east-2.vpce-svc-0a59493ecf790eccf`
+     - `com.amazonaws.vpce.us-east-2.vpce-svc-0ce57d490de78526a`
      - `com.amazonaws.vpce.us-east-2.vpce-svc-0d421498ff01becac`
      - `com.amazonaws.vpce.us-east-2.vpce-svc-0fcb5fccfc8573aa3`
    - **eu-central-1**: Create entries, one for each of the following:
@@ -104981,7 +105009,7 @@ Preview branches that aren't cleaned up still consume resources and count toward
 
 ---
 
-## FAQ
+## Frequently asked questions
 
 ### Why aren't my preview branches being deleted?
 
@@ -105265,7 +105293,7 @@ Because your database is managed by Vercel, you can only perform these actions *
 - Monitor usage via **Storage → Usage** (also available in Neon Console)
 - Create additional databases (each becomes a new Neon project)
 - Rename or delete a database (deleting removes the underlying Neon project permanently)
-- Manage members / collaborators (handled through Vercel "Members", not the Neon Console) - (see [FAQ](https://neon.com/docs/guides/vercel-managed-integration#frequently-asked-questions-faq) for details)
+- Manage members / collaborators (handled through Vercel "Members", not the Neon Console) - (see [FAQ](https://neon.com/docs/guides/vercel-managed-integration#frequently-asked-questions) for details)
 - Delete the Neon organization (only happens automatically if you uninstall the integration)
 - Update connection-string environment variables (prefix changes, etc.)
 
@@ -105358,7 +105386,7 @@ Branches you don't delete are eventually [archived](https://neon.com/docs/guides
 - Cannot install if you currently use Vercel Postgres (deprecated) - contact Vercel about transitioning
 - **Preview deployment environment variables**: Branch-specific connection variables cannot be accessed or viewed in your Vercel project's environment variable settings (they're injected at deployment time only and not stored to avoid manual cleanup when branches are deleted)
 
-## Frequently Asked Questions (FAQ)
+## Frequently asked questions
 
 ### Why can't I see Vercel team members in the Neon Console?
 
@@ -113216,91 +113244,113 @@ The following examples show what your monthly bill might look like on the **Laun
 
     **Amount due:** **$658.70**
 
-## FAQs
+## Frequently asked questions
 
-What is a CU?
-: A CU (Compute Unit) is Neon's measure of compute size. Each CU allocates approximately 4 GB of RAM to the database instance, along with associated CPU and local SSD resources. Scaling up increases these resources linearly. For example, a 2 CU compute has 8 GB RAM.
+### What is a CU?
 
-How is compute usage measured in Neon?
-: Compute usage is measured in **CU-hours**:  
+A CU (Compute Unit) is Neon's measure of compute size. Each CU allocates approximately 4 GB of RAM to the database instance, along with associated CPU and local SSD resources. Scaling up increases these resources linearly. For example, a 2 CU compute has 8 GB RAM.
+
+### How is compute usage measured in Neon?
+
+Compute usage is measured in **CU-hours**:  
 CU-hours = compute size (in CU) × hours running  
 Examples:  
 • 0.25 CU for 4 hours = 1 CU-hour  
 • 2 CU for 3 hours = 6 CU-hours  
 Your plan's compute price per CU-hour depends on whether you are on Launch or Scale. On the Free plan, you have 100 CU-hours/month included.
 
-How is storage usage billed in Neon?
-: Storage is billed based on actual usage, measured in **GB-months**:  
+### How is storage usage billed in Neon?
+
+Storage is billed based on actual usage, measured in **GB-months**:  
 1 GB-month = 1 GB stored for 1 month  
 Storage usage is metered hourly and summed over the month. For child branches, you're billed for the minimum of accumulated changes or logical data size; capped at your actual data size. On the Free plan, you get 0.5 GB per project.
 
-How do branches affect storage?
-: Your root branch contains your main data. Child branches share data with the root until changes are made. Child branches are billed for the minimum of accumulated changes or logical data size; you never pay more than your actual data size. Delete unused branches to control storage costs.
+### How do branches affect storage?
 
-How is extra branch usage billed?
-: Paid plans include a set number of branches per project. Additional branches are billed at **$1.50/branch-month**, prorated hourly (about $0.002/hour).  
+Your root branch contains your main data. Child branches share data with the root until changes are made. Child branches are billed for the minimum of accumulated changes or logical data size; you never pay more than your actual data size. Delete unused branches to control storage costs.
+
+### How is extra branch usage billed?
+
+Paid plans include a set number of branches per project. Additional branches are billed at **$1.50/branch-month**, prorated hourly (about $0.002/hour).  
 Example: If your plan includes 10 branches and you run 2 extra branches for 5 hours each, that's 10 branch-hours (~$0.02).
 
-How are instant restores billed?
-: Neon charges for PITR (point-in-time restore) storage only for branches you can point-in-time restore from: root branches. The charge is based on the amount of change history retained on those branches, not the number of restores you perform. Child branches do not add to PITR storage charges.  
+### How are instant restores billed?
+
+Neon charges for PITR (point-in-time restore) storage only for branches you can point-in-time restore from: root branches. The charge is based on the amount of change history retained on those branches, not the number of restores you perform. Child branches do not add to PITR storage charges.  
 • Free: Up to 6 hours of history, capped at 1 GB of changes, no charge.  
 • Launch: Up to 7 days of history, billed at $0.20/GB-month.  
 • Scale: Up to 30 days of history, billed at $0.20/GB-month.  
 Change history is stored as Postgres WAL records.
 
-Is instant restore history accumulated at the project or branch level?
-: You can only point-in-time restore from root branches, so only root branches contribute to your billed PITR storage. You set a single **history window** (for example, 7 days or 30 days) for the entire project for **instant restore**. You cannot enable, disable, or configure the history window per branch.
+### Is instant restore history accumulated at the project or branch level?
 
-Can I disable scale-to-zero?
-: Free: No, it's always enabled (5 min idle timeout).  
+You can only point-in-time restore from root branches, so only root branches contribute to your billed PITR storage. You set a single **history window** (for example, 7 days or 30 days) for the entire project for **instant restore**. You cannot enable, disable, or configure the history window per branch.
+
+### Can I disable scale-to-zero?
+
+Free: No, it's always enabled (5 min idle timeout).  
 Launch: Yes, you can disable it.  
 Scale: Yes, fully configurable (1 minute to always-on). Learn more: [Scale to zero](https://neon.com/docs/introduction/scale-to-zero)
 
-What is autoscaling and how does it work?
-: Autoscaling adjusts compute size based on load, between your set min/max limits. All plans support it, but maximum CU differs: Free up to 2 CU, Launch and Scale up to 16 CU. Scale supports up to 56 CU for fixed-size computes. Learn more: [Autoscaling](https://neon.com/docs/introduction/autoscaling)
+### What is autoscaling and how does it work?
 
-How are read replicas billed?
-: Each read replica is its own compute and contributes to CU-hours.
+Autoscaling adjusts compute size based on load, between your set min/max limits. All plans support it, but maximum CU differs: Free up to 2 CU, Launch and Scale up to 16 CU. Scale supports up to 56 CU for fixed-size computes. Learn more: [Autoscaling](https://neon.com/docs/introduction/autoscaling)
 
-Do public network transfer limits reset each month?
-: Yes. Free includes 5 GB/month. Launch and Scale include 500 GB per project per month. Beyond that, it's $0.10/GB.
+### How are read replicas billed?
 
-How is private network transfer billed?
-: Only available on Scale: $0.01/GB, bidirectional, between Neon and private network services.
+Each read replica is its own compute and contributes to CU-hours.
 
-What are the limits and quotas for the Free plan?
-: The Free plan costs $0/month and includes 100 projects, 10 branches per project, 100 CU-hours of compute per project per month, autoscaling up to 2 CU (≈8 GB RAM), 0.5 GB of storage per project, and 5 GB of public network transfer per month. It also includes a 6-hour instant restore history (capped at 1 GB-month of changes), 1 manual snapshot, up to 60,000 Managed Better Auth MAU, 1 day of monitoring history, and community support. Scale to zero is always enabled (computes suspend after 5 minutes of inactivity) and can't be disabled. Compute (CU-hours) and network transfer reset each monthly billing period; projects, branches, and storage are continuous limits. For the full row-by-row breakdown, see the [Plan overview](https://neon.com/docs/introduction/plans#plan-overview) table.
+### Do public network transfer limits reset each month?
 
-What happens if I exceed my Free plan limits?
-: On the Free plan, when you run out of CU-hours or public network transfer, your compute is suspended until the next billing period or until you upgrade. Exceeding the 0.5 GB storage cap causes operations that increase storage (inserts, updates, and deletes) to fail until you free space or upgrade. Branch creation fails once you reach 10 branches per project. None of these limits delete your data.
+Yes. Free includes 5 GB/month. Launch and Scale include 500 GB per project per month. Beyond that, it's $0.10/GB.
 
-Do you charge for idle computes?
-: If scale-to-zero is enabled, no. Computes that are suspended do not accrue CU-hours.
+### How is private network transfer billed?
 
-What is the difference between root and child branch storage billing?
-: Root branches are billed for their full logical data size. Child branches are billed for the minimum of accumulated changes since creation or logical data size; ensuring you never pay more than your actual data size.
+Only available on Scale: $0.01/GB, bidirectional, between Neon and private network services.
 
-Can I get more than the listed project limit?
-: Yes, on Scale you can request increases for projects beyond the listed limit.
+### What are the limits and quotas for the Free plan?
 
-Why is the compute rate higher on Scale than Launch?
-: Scale includes higher availability, advanced security features, compliance certifications, and SLAs. The higher CU-hour rate reflects these additional capabilities.
+The Free plan costs $0/month and includes 100 projects, 10 branches per project, 100 CU-hours of compute per project per month, autoscaling up to 2 CU (≈8 GB RAM), 0.5 GB of storage per project, and 5 GB of public network transfer per month. It also includes a 6-hour instant restore history (capped at 1 GB-month of changes), 1 manual snapshot, up to 60,000 Managed Better Auth MAU, 1 day of monitoring history, and community support. Scale to zero is always enabled (computes suspend after 5 minutes of inactivity) and can't be disabled. Compute (CU-hours) and network transfer reset each monthly billing period; projects, branches, and storage are continuous limits. For the full row-by-row breakdown, see the [Plan overview](https://neon.com/docs/introduction/plans#plan-overview) table.
 
-How can I control my costs?
-: • Set a maximum autoscaling limit to cap compute size.  
+### What happens if I exceed my Free plan limits?
+
+On the Free plan, when you run out of CU-hours or public network transfer, your compute is suspended until the next billing period or until you upgrade. Exceeding the 0.5 GB storage cap causes operations that increase storage (inserts, updates, and deletes) to fail until you free space or upgrade. Branch creation fails once you reach 10 branches per project. None of these limits delete your data.
+
+### Do you charge for idle computes?
+
+If scale-to-zero is enabled, no. Computes that are suspended do not accrue CU-hours.
+
+### What is the difference between root and child branch storage billing?
+
+Root branches are billed for their full logical data size. Child branches are billed for the minimum of accumulated changes since creation or logical data size; ensuring you never pay more than your actual data size.
+
+### Can I get more than the listed project limit?
+
+Yes, on Scale you can request increases for projects beyond the listed limit.
+
+### Why is the compute rate higher on Scale than Launch?
+
+Scale includes higher availability, advanced security features, compliance certifications, and SLAs. The higher CU-hour rate reflects these additional capabilities.
+
+### How can I control my costs?
+
+• Set a maximum autoscaling limit to cap compute size.  
 • Enable scale-to-zero for idle databases.  
 • Delete unused branches to reduce storage costs.  
 • Shorten your **history window** to reduce **History** usage (instant restore storage).  
 For more detailed strategies, see our [Cost optimization](https://neon.com/docs/introduction/cost-optimization) guide.
 
-Do you offer credits for startups?
-: Yes, venture-backed startups may apply for the Neon Startup Program. Learn more: [Startup Program](https://neon.com/startup)
+### Do you offer credits for startups?
 
-How is storage charged for snapshots?
-: Snapshot storage is billed at $0.09/GB-month.
+Yes, venture-backed startups may apply for the Neon Startup Program. Learn more: [Startup Program](https://neon.com/startup)
 
-Is storage cost different for archived branches?
-: No. Archived branches are billed at the same rate as active branches. Neon automatically archives inactive branches to optimize storage resources and maintain a cost-efficient storage infrastructure. See [Branch archiving](https://neon.com/docs/guides/branch-archiving) for details on how archiving works.
+### How is storage charged for snapshots?
+
+Snapshot storage is billed at $0.09/GB-month.
+
+### Is storage cost different for archived branches?
+
+No. Archived branches are billed at the same rate as active branches. Neon automatically archives inactive branches to optimize storage resources and maintain a cost-efficient storage infrastructure. See [Branch archiving](https://neon.com/docs/guides/branch-archiving) for details on how archiving works.
 
 --- [Document source](https://neon.com/docs/introduction/read-replicas.md) ---
 
@@ -113457,18 +113507,26 @@ A NAT gateway has a public IP address that external systems see when private res
 
 If you are unsure of your project's region, see [Check which region your project uses](https://neon.com/docs/introduction/regions#check-which-region-your-project-uses).
 
+**Important: Keep your allowlist up to date**
+
+Neon connects to external systems (for example, when replicating data into Neon from an external source) through NAT gateways, and adds NAT gateway IP addresses periodically as it expands capacity. If you allowlist Neon's outbound IPs on an external system and don't add the new addresses, those connections can fail intermittently, because Neon may route through a new IP your firewall hasn't allowed.
+
+Allow **all** NAT gateway IP addresses listed for your project's region, not just the ones you connect through today, and add the new addresses to your allowlist after Neon expands a region. Expansions are announced in the [changelog](https://neon.com/docs/changelog).
+
+_NAT gateway IP lists last updated: August 28, 2026._
+
 ### AWS NAT Gateway IP Addresses
 
-| Region               | NAT Gateway IP Addresses                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| :------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `aws-us-east-1`      | 100.26.142.14, 100.30.82.73, 100.51.56.234, 13.219.161.141, 18.211.255.174, 18.215.104.21, 23.23.0.232, 3.213.105.99, 3.220.225.247, 3.222.32.110, 3.93.203.54, 32.193.167.21, 34.199.194.48, 34.202.217.219, 34.224.137.41, 34.233.170.231, 34.235.208.71, 34.239.66.10, 35.168.244.148, 44.195.6.75, 44.206.76.236, 44.209.63.35, 44.212.197.226, 52.203.31.78, 52.205.172.123, 52.205.179.214, 52.4.26.44, 52.6.163.215, 52.70.189.141, 52.73.235.120, 54.156.66.192, 54.160.39.37, 54.173.116.247, 54.197.227.141, 54.205.208.153, 54.86.178.17, 54.88.155.118, 98.88.203.121, 98.88.212.99 |
-| `aws-us-east-2`      | 13.58.218.179, 16.58.110.124, 16.58.110.255, 16.58.110.55, 16.59.254.197, 16.59.67.63, 18.116.233.216, 18.117.23.33, 18.117.39.4, 18.118.172.16, 18.119.21.3, 18.217.181.229, 18.218.224.116, 18.220.57.29, 18.224.238.162, 3.128.125.142, 3.128.6.252, 3.129.145.179, 3.132.126.158, 3.133.42.168, 3.139.195.115, 3.139.7.20, 3.143.189.83, 3.150.57.42, 3.151.209.139, 3.151.57.14, 3.16.227.37, 52.14.237.223, 52.15.124.181, 52.15.165.218, 52.15.50.22                                                                                                                                     |
-| `aws-us-west-2`      | 34.213.87.149, 35.155.141.113, 35.164.221.218, 35.83.202.11, 44.235.241.217, 44.236.56.140, 44.245.132.244, 52.13.220.49, 52.32.22.241, 52.37.48.254, 52.40.99.9, 54.186.210.201, 54.213.57.47                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `aws-eu-central-1`   | 18.156.24.144, 18.157.202.178, 18.158.63.175, 18.184.82.97, 18.192.200.167, 18.194.181.241, 18.198.137.195, 3.123.76.138, 3.124.82.159, 3.125.214.237, 3.125.234.79, 3.125.57.42, 3.126.104.76, 3.127.13.64, 3.66.63.165, 3.74.218.49, 3.79.211.200, 52.58.17.95, 54.93.82.216, 63.176.236.186, 63.181.212.169, 63.181.53.159, 63.182.111.227, 63.184.85.228                                                                                                                                                                                                                                    |
-| `aws-eu-west-2`      | 16.60.68.174, 18.133.205.39, 18.134.194.79, 3.10.42.8, 35.178.12.220, 52.56.191.86                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `aws-ap-southeast-1` | 13.251.199.154, 18.141.120.105, 18.142.42.169, 3.1.149.186, 3.1.239.32, 47.131.90.115, 52.221.53.167, 52.74.190.151, 52.76.51.78, 54.254.50.26, 54.254.92.70, 54.255.161.23                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `aws-ap-southeast-2` | 13.237.134.148, 13.55.152.144, 54.153.185.87                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `aws-sa-east-1`      | 18.230.1.215, 52.67.202.176, 54.232.117.41                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Region               | NAT Gateway IP Addresses                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `aws-us-east-1`      | 100.26.142.14, 100.30.82.73, 100.51.56.234, 13.219.161.141, 18.211.255.174, 18.215.104.21, 23.23.0.232, 3.213.105.99, 3.220.225.247, 3.222.32.110, 3.93.203.54, 32.193.167.21, 34.199.194.48, 34.202.217.219, 34.224.137.41, 34.233.170.231, 34.235.208.71, 34.239.66.10, 35.168.244.148, 44.195.6.75, 44.206.76.236, 44.209.63.35, 44.212.197.226, 52.203.31.78, 52.205.172.123, 52.205.179.214, 52.4.26.44, 52.6.163.215, 52.70.189.141, 52.73.235.120, 54.156.66.192, 54.160.39.37, 54.173.116.247, 54.197.227.141, 54.205.208.153, 54.86.178.17, 54.88.155.118, 98.88.203.121, 98.88.212.99                                                                                                                                                    |
+| `aws-us-east-2`      | 13.58.218.179, 16.58.110.124, 16.58.110.255, 16.58.110.55, 16.59.242.134, 16.59.254.197, 16.59.67.63, 18.116.233.216, 18.117.23.33, 18.117.39.4, 18.118.172.16, 18.118.228.124, 18.119.198.133, 18.119.21.3, 18.188.221.27, 18.190.115.7, 18.217.181.229, 18.218.224.116, 18.220.57.29, 18.224.168.68, 18.224.238.162, 18.225.188.55, 18.226.197.170, 18.227.101.127, 18.227.138.172, 3.128.125.142, 3.128.6.252, 3.129.145.179, 3.131.221.179, 3.132.126.158, 3.133.42.168, 3.135.156.130, 3.139.195.115, 3.139.7.20, 3.14.39.143, 3.143.189.83, 3.147.34.169, 3.150.57.42, 3.151.136.191, 3.151.209.139, 3.151.57.14, 3.16.227.37, 3.21.178.250, 3.21.225.88, 3.21.57.242, 3.23.194.25, 52.14.237.223, 52.15.124.181, 52.15.165.218, 52.15.50.22 |
+| `aws-us-west-2`      | 34.213.87.149, 35.155.141.113, 35.164.221.218, 35.83.202.11, 44.235.241.217, 44.236.56.140, 44.245.132.244, 52.13.220.49, 52.32.22.241, 52.37.48.254, 52.40.99.9, 54.186.210.201, 54.213.57.47                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `aws-eu-central-1`   | 18.156.24.144, 18.157.202.178, 18.158.63.175, 18.184.82.97, 18.192.200.167, 18.194.181.241, 18.198.137.195, 3.123.76.138, 3.124.82.159, 3.125.214.237, 3.125.234.79, 3.125.57.42, 3.126.104.76, 3.127.13.64, 3.66.63.165, 3.74.218.49, 3.79.211.200, 52.58.17.95, 54.93.82.216, 63.176.236.186, 63.181.212.169, 63.181.53.159, 63.182.111.227, 63.184.85.228                                                                                                                                                                                                                                                                                                                                                                                       |
+| `aws-eu-west-2`      | 16.60.68.174, 18.133.205.39, 18.134.194.79, 3.10.42.8, 35.178.12.220, 52.56.191.86                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `aws-ap-southeast-1` | 13.251.199.154, 18.141.120.105, 18.142.42.169, 3.1.149.186, 3.1.239.32, 47.131.90.115, 52.221.53.167, 52.74.190.151, 52.76.51.78, 54.254.50.26, 54.254.92.70, 54.255.161.23                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `aws-ap-southeast-2` | 13.237.134.148, 13.55.152.144, 54.153.185.87                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `aws-sa-east-1`      | 18.230.1.215, 52.67.202.176, 54.232.117.41                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 ### Azure NAT Gateway IP Addresses
 
@@ -129225,16 +129283,19 @@ For step-by-step instructions, see [Delete a project](https://neon.com/docs/mana
 
 If you want to disable HIPAA for your Neon organization entirely, you need to [submit a support request](https://console.neon.tech/app/projects?modal=support). This can only be done after all HIPAA-enabled projects have been deleted.
 
-## Frequently Asked Questions
+## Frequently asked questions
 
-**Q: Can I request Neon to delete my PHI?**  
-A: Yes, upon termination of services, we will securely delete or return your PHI.
+### Can I request Neon to delete my PHI?
 
-**Q: How does Neon ensure compliance with HIPAA?**  
-A: We conduct regular internal audits and provide training to our employees to ensure adherence to HIPAA requirements.
+Yes, upon termination of services, we will securely delete or return your PHI.
 
-**Q: What should I do if I suspect a data breach?**  
-A: Contact our security team immediately at [security@neon.tech](mailto:security@neon.tech).
+### How does Neon ensure compliance with HIPAA?
+
+We conduct regular internal audits and provide training to our employees to ensure adherence to HIPAA requirements.
+
+### What should I do if I suspect a data breach?
+
+Contact our security team immediately at [security@neon.tech](mailto:security@neon.tech).
 
 ## Contact information
 

@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/string/strlen
 path: docs/redis/commands/string/strlen
 ---
 
-> Get string length.
-
 Use `STRLEN` to get the length in bytes of the string stored at a key.
 
-The reply is `0` when the key does not exist, and an error when the value is not a string. Since the value itself is never transferred, it is the cheap way to check how large a value is, for instance before deciding whether to fetch it or to read only part of it with [`GETRANGE`](/redis/commands/string/getrange). The count is in bytes, so multi-byte characters count more than once.
+The reply is `0` when the key does not exist, and an error when the value is not a string. Since the value itself is never transferred, it is the cheap way to check how large a value is, for instance before deciding whether to fetch it or to read only part of it with [`GETRANGE`](/docs/redis/commands/string/getrange). The count is in bytes, so multi-byte characters count more than once.
 
 ## Syntax
 

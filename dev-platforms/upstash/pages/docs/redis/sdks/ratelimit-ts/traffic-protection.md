@@ -11,7 +11,7 @@ user agents. In this case, you can make use of deny lists introduced in
 ratelimit version 1.2.1.
 
 Deny lists allow you to block based on IP addresses, user agents, countries
-and [identifiers](/redis/sdks/ratelimit-ts/methods#limit).
+and [identifiers](/docs/redis/sdks/ratelimit-ts/methods#limit).
 
 To enable checking the deny list in your Ratelimit client, simply pass
 `enableProtection` as `true`:
@@ -43,7 +43,7 @@ console.log(success, reason, deniedValue);
 
 If a request fails because a value was in deny list, `reason` field will
 be `"denyList"`. `deniedValue` will contain the value in the deny list.
-See [limit method](/redis/sdks/ratelimit-ts/methods#limit)
+See [limit method](/docs/redis/sdks/ratelimit-ts/methods#limit)
 for more detailts.
 
 Client also keeps a **cache** of denied values. When a value is found
@@ -54,12 +54,12 @@ you add a new value to the deny list, it will immediately take affect but when y
 remove a value, it can take up to a minute for clients to start
 accepting the value. This can significantly reduce the number of calls to Redis.
 
-Contents of the deny lists are managed from the [Ratelimit Dashboard](/redis/sdks/ratelimit-ts/features#dashboard).
+Contents of the deny lists are managed from the [Ratelimit Dashboard](/docs/redis/sdks/ratelimit-ts/features#dashboard).
 You can use the dashboard to add items to the deny list or remove them.
 If you have analytics enabled, you can also view the number of denied
 requests per country/ip address/user agent/identifier on the dashboard.
 
-![denylist.png](/img/ratelimit/denylist.png)
+![denylist.png]()
 
 Note that we look for exact match when checking a value to see if it's in
 the deny lists. **Pattern matching is not supported**.
@@ -101,7 +101,7 @@ await pending;
 ```
 
 For more information on effectively using pending, refer to the
-["Asynchronous synchronization between databases" section](/redis/sdks/ratelimit-ts/features#asynchronous-synchronization-between-databases).
+["Asynchronous synchronization between databases" section](/docs/redis/sdks/ratelimit-ts/features#asynchronous-synchronization-between-databases).
 
 Blocked IPs will be listed in the "Denied" section of the Ratelimit
 dashboard, providing a clear overview of the addresses that have

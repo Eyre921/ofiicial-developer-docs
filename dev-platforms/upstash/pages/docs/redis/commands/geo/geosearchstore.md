@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/geo/geosearchstore
 path: docs/redis/commands/geo/geosearchstore
 ---
 
-> Store geosearch results.
+Use `GEOSEARCHSTORE` to run the same query as [`GEOSEARCH`](/docs/redis/commands/geo/geosearch) and store the matching members in another key instead of returning them.
 
-Use `GEOSEARCHSTORE` to run the same query as [`GEOSEARCH`](/redis/commands/geo/geosearch) and store the matching members in another key instead of returning them.
-
-The destination is a sorted set holding the matches. By default their scores are the raw geohash values, so the destination is itself a valid geospatial index that can be queried further; with `STOREDIST` the score is the distance from the center in the unit of the query, which turns the result into a proximity-ordered list you can page through with [`ZRANGE`](/redis/commands/sorted-set/zrange).
+The destination is a sorted set holding the matches. By default their scores are the raw geohash values, so the destination is itself a valid geospatial index that can be queried further; with `STOREDIST` the score is the distance from the center in the unit of the query, which turns the result into a proximity-ordered list you can page through with [`ZRANGE`](/docs/redis/commands/sorted-set/zrange).
 
 The destination is overwritten on every call, and it is deleted when the query matches nothing. The reply is the number of members stored. This is the usual way to materialize a "nearby" result once and then reuse it for pagination or further set operations.
 

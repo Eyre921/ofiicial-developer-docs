@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/server/acl-genpass
 path: docs/redis/commands/server/acl-genpass
 ---
 
-> Generate a cryptographically strong random password.
-
 Use `ACL GENPASS` to generate a random, hex-encoded password suitable for a new ACL user.
 
-The optional `bits` argument controls the strength of the generated password, rounded up to the nearest multiple of 8, and defaults to 256 bits when omitted. This only generates the password string; it does not create or update a user. To actually authenticate an ACL user over the REST API, generate credentials with [`ACL GENTOKEN`](/redis/commands/server/acl-gentoken) instead, since a plain password from `GENPASS` cannot be passed to [`ACL SETUSER`](/redis/commands/server/acl-setuser).
+The optional `bits` argument controls the strength of the generated password, rounded up to the nearest multiple of 8, and defaults to 256 bits when omitted. This only generates the password string; it does not create or update a user. To actually authenticate an ACL user over the REST API, generate credentials with [`ACL GENTOKEN`](/docs/redis/commands/server/acl-gentoken) instead, since a plain password from `GENPASS` cannot be passed to [`ACL SETUSER`](/docs/redis/commands/server/acl-setuser).
 
 ## Syntax
 
@@ -24,8 +22,8 @@ ACL GENPASS [bits]
 
 ## Important points
 
-- The returned password is not stored anywhere; it is only generated and returned.
-- This value cannot be added to a user with `ACL SETUSER ... >password`. Use [`ACL GENTOKEN`](/redis/commands/server/acl-gentoken) to create credentials that `SETUSER` will accept.
+* The returned password is not stored anywhere; it is only generated and returned.
+* This value cannot be added to a user with `ACL SETUSER ... >password`. Use [`ACL GENTOKEN`](/docs/redis/commands/server/acl-gentoken) to create credentials that `SETUSER` will accept.
 
 ## Response
 

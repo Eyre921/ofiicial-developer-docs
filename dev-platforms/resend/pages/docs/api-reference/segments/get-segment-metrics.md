@@ -10,7 +10,7 @@ Retrieve segment metrics.
 <Warning>
   Segment metrics are currently in private beta and only available to a limited
   number of users. The response shape might change before GA. [Get in
-  touch](https://resend.com/contact) if you're interested in testing this
+  touch](https://resend.com/help) if you're interested in testing this
   feature.
 
   <span />

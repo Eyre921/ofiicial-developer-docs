@@ -128,7 +128,7 @@ When determining tax amounts, you can do either of the following:
 - Round at the invoice line item level to the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal) before summing individual tax amounts across the entire invoice. We refer to this as “line item level”.
 - Sum up all individual taxable amounts unrounded per tax rate. Combine them to a subtotal, apply the tax rate on the subtotal, and then round. We refer to this as “invoice level”.
 
-Select this configuration on the [invoice settings](https://dashboard.stripe.com/settings/billing/invoice) page in the Dashboard. The rounding configuration is only available for invoices with manual tax rates. Invoices with automatic Stripe tax always sum up the tax amounts first and then round.
+Select this configuration on the [invoice settings](https://dashboard.stripe.com/settings/billing/invoice) page in the Dashboard. The rounding configuration is only available for invoices with manual tax rates. Invoices with automatic Stripe tax always sum up the tax amounts first and then [round](https://docs.stripe.com/tax/calculating.md#round-tax-amounts).
 
 #### Line item level
 

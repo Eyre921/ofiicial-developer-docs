@@ -4,10 +4,6 @@ source: https://upstash.com/docs/vector/api/endpoints/query
 path: docs/vector/api/endpoints/query
 ---
 
-> Queries the approximate nearest neighbors of a vector.
-
-`POST https://{endpoint}/query/{namespace}`
-
 <Tip>
   Query will run against the default namespace by default.
   You can use a different namespace by specifying it in the request path.
@@ -41,7 +37,7 @@ of fields below.
   Whether to include the data of the vectors in the response, if any.
 </ParamField>
 <ParamField body="filter" type="string" default="">
-  [Metadata filter](/vector/features/filtering) to apply.
+  [Metadata filter](/docs/vector/features/filtering) to apply.
 </ParamField>
 <ParamField body="weightingStrategy" type="string">
   For sparse vectors of sparse and hybrid indexes, specifies what kind of
@@ -115,3 +111,59 @@ objects below is returned, one for each query item.
     </ResponseField>
   </Expandable>
 </ResponseField>
+
+<RequestExample>
+
+```sh curl
+curl $UPSTASH_VECTOR_REST_URL/query \
+  -X POST \
+  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
+  -d '{ "vector": [0.1, 0.2], "topK": 2, "includeMetadata": true }'
+```
+
+```sh curl (Namespace)
+curl $UPSTASH_VECTOR_REST_URL/query/ns \
+  -X POST \
+  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
+  -d '{ "vector": [0.1, 0.2], "topK": 2, "includeMetadata": true }'
+```
+
+```sh curl (Batch Query)
+curl "$UPSTASH_VECTOR_REST_URL/query" \
+  -X POST \
+  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
+  -d '[
+        {
+          "vector": [0.1, 0.2],
+          "topK": 2,
+          "includeMetadata": true
+        },
+        {
+          "vector": [0.2, 0.3],
+          "topK": 3
+        }
+      ]'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 OK
+{
+    "result": [
+        {
+            "id": "id-0",
+            "score": 1.0,
+            "metadata": {
+                "link": "upstash.com"
+            }
+        },
+        {
+            "id": "id-1",
+            "score": 0.99996454
+        }
+    ]
+}
+```
+</ResponseExample>

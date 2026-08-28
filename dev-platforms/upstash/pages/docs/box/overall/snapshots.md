@@ -6,14 +6,14 @@ path: docs/box/overall/snapshots
 
 Snapshots let you capture and duplicate box state. Use **snapshots** to save a point-in-time checkpoint you can restore later.
 
----
+***
 
 ## What's included
 
 A snapshot captures:
 
-- **Filesystem**: the full disk state of the box at the time of the snapshot.
-- **Agent configuration**: the agent harness, model, and API key settings.
+* **Filesystem**: the full disk state of the box at the time of the snapshot.
+* **Agent configuration**: the agent harness, model, and API key settings.
 
 A snapshot does not carry active schedules over to the new box.
 
@@ -21,7 +21,7 @@ A snapshot does not carry active schedules over to the new box.
 Snapshots are the best way to preserve cloned repositories, installed dependencies, and prepared workspaces. If your box already has a repo checked out, restoring from a snapshot is usually faster than cloning it again.
 </Note>
 
----
+***
 
 ## API
 
@@ -62,7 +62,7 @@ print(snapshot)
 Snapshots are independent of the source box. Deleting the original box does not delete its snapshots. They remain available for restore at any time.
 </Note>
 
----
+***
 
 ### List snapshots
 
@@ -90,7 +90,7 @@ print(snapshots)
 ```
 </CodeGroup>
 
----
+***
 
 ### Delete a snapshot
 
@@ -106,7 +106,7 @@ box.delete_snapshot("snap_x7f...")
 ```
 </CodeGroup>
 
----
+***
 
 ### Restore from a snapshot
 
@@ -136,7 +136,7 @@ print(files)
 
 The restored box starts with the same workspace state from the snapshot. You can also configure lifecycle settings such as keep-alive and init commands on the restored box.
 
----
+***
 
 ## Examples
 

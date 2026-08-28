@@ -8,11 +8,11 @@ path: docs/vector/sdks/php/laravel
 
 By using `upstash/vector-laravel` you will be able to:
 
-- Integrate Upstash Vector by only installing the package and setting environment variables.
-- A native Vector facade to interact with your vector database.
-- Able to maintain multiple index connections in your application.
+* Integrate Upstash Vector by only installing the package and setting environment variables.
+* A native Vector facade to interact with your vector database.
+* Able to maintain multiple index connections in your application.
 
-You can find the Github Repository [here](https://github.com/upstash/vector-laravel). 
+You can find the Github Repository [here](https://github.com/upstash/vector-laravel).
 
 ## Install
 
@@ -60,7 +60,7 @@ class Controller
     public function index(IndexInterface $index)
     {
         $namespaces = $index->listNamespaces();
-        
+
         return response()->json(['namespaces' => $namespaces]);
     }
 }

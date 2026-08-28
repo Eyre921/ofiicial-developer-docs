@@ -14,7 +14,7 @@ npm install @upstash/qstash
 
 ## Get QStash token
 
-Follow the instructions [here](/qstash/overall/getstarted) to get your QStash token and signing keys.
+Follow the instructions [here](/docs/qstash/overall/getstarted) to get your QStash token and signing keys.
 
 ## Usage
 
@@ -58,16 +58,16 @@ import { Client } from "@upstash/qstash";
 const client = new Client({ devMode: true });
 ```
 
-The same flag works on the receiving side — pass `devMode: true` to `Receiver` or `verifySignature*` to verify signatures with the dev server's keys. See [Local Development](/qstash/howto/local-development) for the full walkthrough, including the `registerQStashDev()` helper for Next.js edge routes.
+The same flag works on the receiving side — pass `devMode: true` to `Receiver` or `verifySignature*` to verify signatures with the dev server's keys. See [Local Development](/docs/qstash/howto/local-development) for the full walkthrough, including the `registerQStashDev()` helper for Next.js edge routes.
 
 ## Telemetry
 
 This sdk sends anonymous telemetry headers to help us improve your experience.
 We collect the following:
 
-- SDK version
-- Platform (Cloudflare, AWS or Vercel)
-- Runtime version (node@18.x)
+* SDK version
+* Platform (Cloudflare, AWS or Vercel)
+* Runtime version (node@18.x)
 
 You can opt out by setting the `UPSTASH_DISABLE_TELEMETRY` environment variable
 to any truthy value. Or setting `enableTelemetry: false` in the client options.

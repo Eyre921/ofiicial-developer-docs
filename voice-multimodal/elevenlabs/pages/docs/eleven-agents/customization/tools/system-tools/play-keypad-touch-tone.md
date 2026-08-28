@@ -14,6 +14,8 @@ The keypad touch tone tool allows ElevenLabs agents to play DTMF (Dual-Tone Mult
 
 This system tool supports standard DTMF tones (0-9, \*, #) as well as pause commands for timing control. It works seamlessly with both Twilio and SIP trunking phone integrations, automatically generating the appropriate audio tones for the underlying telephony infrastructure.
 
+To collect keypad digits from callers instead, see [DTMF input](/docs/eleven-agents/customization/multimodal-input#dtmf-input).
+
 ## Functionality
 
 * **Standard DTMF tones**: Supports all standard keypad characters (0-9, \*, #)

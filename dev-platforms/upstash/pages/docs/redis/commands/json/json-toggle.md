@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/json/json-toggle
 path: docs/redis/commands/json/json-toggle
 ---
 
-> Toggle JSON boolean.
-
 Use `JSON.TOGGLE` to flip the boolean values a path selects, turning `true` into `false` and back.
 
 The reply is the new value of each match, and a match that is not a boolean returns an error. Because the read and the write are one atomic step, this is the safe way to flip a flag inside a document, where reading it and writing the opposite value back would race with other clients.
@@ -25,8 +23,8 @@ JSON.TOGGLE <key> <path>
 
 ## Important points
 
-- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

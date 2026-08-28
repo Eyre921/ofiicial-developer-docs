@@ -8,9 +8,9 @@ path: docs/redis/search/aggregation-operators/metric-aggregations/percentiles
 
 A percentile tells you the value below which a percentage of observations fall.
 
-- `50`th percentile: median-like center point
-- `95`th percentile: tail latency/price threshold
-- `99`th percentile: extreme tail threshold
+* `50`th percentile: median-like center point
+* `95`th percentile: tail latency/price threshold
+* `99`th percentile: extreme tail threshold
 
 ### Compatibility
 

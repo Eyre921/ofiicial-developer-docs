@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/connection/client-setinfo
 path: docs/redis/commands/connection/client-setinfo
 ---
 
-> Set client connection attributes.
-
 Use `CLIENT SETINFO` to attach library identification to the current connection.
 
-`LIB-NAME` records the name of the client library and `LIB-VER` its version. Both values then appear in [`CLIENT INFO`](/redis/commands/connection/client-info) and [`CLIENT LIST`](/redis/commands/connection/client-list) output, which makes it possible to tell which application or SDK version owns a connection. Most client libraries send this during the handshake, so applications rarely call it themselves.
+`LIB-NAME` records the name of the client library and `LIB-VER` its version. Both values then appear in [`CLIENT INFO`](/docs/redis/commands/connection/client-info) and [`CLIENT LIST`](/docs/redis/commands/connection/client-list) output, which makes it possible to tell which application or SDK version owns a connection. Most client libraries send this during the handshake, so applications rarely call it themselves.
 
 ## Syntax
 
@@ -25,8 +23,8 @@ CLIENT SETINFO <LIB-NAME | LIB-VER> <value>
 
 ## Important points
 
-- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
-- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
 
 ## Response
 

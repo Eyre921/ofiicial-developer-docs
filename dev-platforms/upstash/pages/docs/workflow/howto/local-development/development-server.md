@@ -36,7 +36,7 @@ await client.trigger({
 });
 ```
 
-For details on the dev server behavior, ports, and the `registerQStashDev()` helper for Next.js edge routes, see the [QStash Local Development docs](/qstash/howto/local-development).
+For details on the dev server behavior, ports, and the `registerQStashDev()` helper for Next.js edge routes, see the [QStash Local Development docs](/docs/qstash/howto/local-development).
 
 ## Manual setup
 
@@ -67,13 +67,13 @@ If you would rather start and manage the QStash dev server yourself, follow the 
         https://upstash.com/docs/qstash/howto/local-development
         ```
 
-        For detailed instructions on setting up the development server, see our [QStash Local Development Guide](/qstash/howto/local-development).
+        For detailed instructions on setting up the development server, see our [QStash Local Development Guide](/docs/qstash/howto/local-development).
     </Step>
 
     <Step title="Enable Local Mode on Console">
         Once you start the local server, you can go to the Workflow tab on Upstash Console and enable local mode, which will allow you to monitor and debug workflow runs with the local server.
 
-        <img src="/img/workflow/local-mode-workflow.png" />
+        <img />
     </Step>
 
     <Step title="Update Environment Variables">
@@ -106,8 +106,8 @@ If you would rather start and manage the QStash dev server yourself, follow the 
         <Tip>
         Inside the `trigger()` call, you need to provide the URL of your workflow endpoint:
 
-        - Local development → use the URL where your app is running, for example: http://localhost:3000/api/PATH
-        - Production → use the URL of your deployed app, for example: https://yourapp.com/api/PATH
+        * Local development → use the URL where your app is running, for example: http://localhost:3000/api/PATH
+        * Production → use the URL of your deployed app, for example: https://yourapp.com/api/PATH
 
         To avoid hardcoding URLs, you can define a `BASE_URL` constant and set it based on the environment.
         A common pattern is to check an environment variable that only exists in production:

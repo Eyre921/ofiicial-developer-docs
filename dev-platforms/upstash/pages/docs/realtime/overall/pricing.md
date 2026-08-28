@@ -12,7 +12,7 @@ Upstash Realtime is built on Redis Streams and Pub/Sub. Every operation translat
 
 ### Client-Side Operations
 
-When using [`useRealtime`](/realtime/features/client-side#basic-usage) in your React components:
+When using [`useRealtime`](/docs/realtime/features/client-side#basic-usage) in your React components:
 
 | Operation | Commands | Count |
 | --------- | -------- | ----- |
@@ -22,13 +22,13 @@ When using [`useRealtime`](/realtime/features/client-side#basic-usage) in your R
 
 ### Server-Side Operations
 
-When using the [server-side API](/realtime/features/server-side):
+When using the [server-side API](/docs/realtime/features/server-side):
 
 | Operation | Commands | Count |
 | --------- | -------- | ----- |
-| [Emit event](/realtime/features/server-side#emit-events) | PUBLISH, XADD | 2 |
-| Emit with [`expireAfterSecs`](/realtime/features/history#param-expire-after-secs) | PUBLISH, XADD, EXPIRE | 3 |
-| [Read history](/realtime/features/history#server-side-history) | XRANGE | 1 |
+| [Emit event](/docs/realtime/features/server-side#emit-events) | PUBLISH, XADD | 2 |
+| Emit with [`expireAfterSecs`](/docs/realtime/features/history#param-expire-after-secs) | PUBLISH, XADD, EXPIRE | 3 |
+| [Read history](/docs/realtime/features/history#server-side-history) | XRANGE | 1 |
 
 ## Next Steps
 

@@ -68,3 +68,7 @@ The **Taxability** field shows whether tax was collected for a given transaction
 
 You can view all tax transactions for your account on the [Tax Transactions](https://dashboard.stripe.com/test/tax/transactions) page in the Dashboard. Click an individual transaction to see a detailed breakdown of calculated tax by jurisdiction, and by the individual products included in the transaction.
 
+## Review reports
+
+After you complete a test transaction, use the [Tax Transactions](https://dashboard.stripe.com/test/tax/transactions) page to confirm that Stripe Tax recorded it. Completed transactions can take up to 24 hours to appear in reports. To review filing and reporting data, go to the [Locations page](https://dashboard.stripe.com/test/tax/locations) in the Dashboard and select a location. For more information, see [File and remit](https://docs.stripe.com/tax/filing.md) or [Tax reporting](https://docs.stripe.com/tax/reports.md).
+

@@ -9,12 +9,12 @@ path: docs/redis/troubleshooting/max_requests_limit
 The client gets an exception similar to:
 
 ```
-ReplyError: ERR max requests limit exceeded. 
+ReplyError: ERR max requests limit exceeded.
 ```
 
 ### Diagnosis
 
-Your database exceeds the max monthly request count limit. 
+Your database exceeds the max monthly request count limit.
 
 ### Solution-1
 
@@ -22,7 +22,7 @@ You can refactor your application to send less number of commands.
 
 ### Solution-2
 
-You can upgrade your database to a paid plan, such as pay-as-you-go or a fixed plan 
+You can upgrade your database to a paid plan, such as pay-as-you-go or a fixed plan
 by entering a payment method. When you entered your credit card, your database will be upgraded
 automatically.
 

@@ -254,6 +254,10 @@ Successful Response
           - `monitoring_enabled` (boolean, optional) — Enable real-time monitoring of conversations via WebSocket
           - `monitoring_events` (list of enum, optional) — The events that will be sent to monitoring connections.
             - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `context_usage`, `internal_turn_probability`, `internal_tentative_agent_response`
+          - `dtmf_input_settings` (object, optional) — Configure DTMF (keypad) input collection during phone calls
+            - `dtmf_input_timeout` (double, optional, default: 2) — Timeout in seconds to wait for additional DTMF digits
+            - `hash_terminator` (boolean, optional, default: true) — If true, pressing # immediately completes DTMF input
+            - `redact_input` (boolean, optional, default: false) — If true, replace the caller's DTMF (keypad) entries with a redaction marker in the transcript, conversation log and analysis. Digits the agent repeats back or passes to a tool are not affected.
           - `background_sound` (object, optional) — Configuration for background sound during conversations.
             - `source_type` ("preset", optional) — The type of background sound source.
             - `source_id` (enum, optional) — Identifier for the sound source.
@@ -325,6 +329,7 @@ Successful Response
       - `position` (object, required) — Position of the node in the workflow.
         - `x` (double, required, default: 0)
         - `y` (double, required, default: 0)
+      - `sip_refer_play_dialtone` (boolean, required, default: true) — When True, a ringing tone is played on the original call leg while a SIP REFER transfer completes. The tone is carried over RTP to the SIP peer executing the REFER, so disable this if the receiving system (e.g. an SBC or contact center) should not hear it. When disabled the caller hears silence until the transfer completes. SIP REFER transfers only.
       - `transfer_destination` (object, required)
         - `type`: `phone`
           - `phone_number` (string, required)

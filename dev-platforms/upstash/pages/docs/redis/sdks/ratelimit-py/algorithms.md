@@ -17,13 +17,13 @@ than the set limit, the request is rejected.
 
 ### Pros
 
-- Very cheap in terms of data size and computation
-- Newer requests are not starved due to a high burst in the past
+* Very cheap in terms of data size and computation
+* Newer requests are not starved due to a high burst in the past
 
 ### Cons
 
-- Can cause high bursts at the window boundaries to leak through
-- Causes request stampedes if many users are trying to access your server,
+* Can cause high bursts at the window boundaries to leak through
+* Causes request stampedes if many users are trying to access your server,
   whenever a new window begins
 
 ### Usage
@@ -59,12 +59,12 @@ return rate < limit # True means we should allow the request
 
 ### Pros
 
-- Solves the issue near boundary from fixed window.
+* Solves the issue near boundary from fixed window.
 
 ### Cons
 
-- More expensive in terms of storage and computation
-- It's only an approximation because it assumes a uniform request flow in the
+* More expensive in terms of storage and computation
+* It's only an approximation because it assumes a uniform request flow in the
   previous window
 
 ### Usage
@@ -80,7 +80,7 @@ ratelimit = Ratelimit(
 ```
 
 <Tip>
-  `reset` field in the [`limit`](/redis/sdks/ratelimit-py/gettingstarted) method of sliding window does not
+  `reset` field in the [`limit`](/docs/redis/sdks/ratelimit-py/gettingstarted) method of sliding window does not
   provide an exact reset time. Instead, the reset time is the start time of
   the next window.
 </Tip>
@@ -93,14 +93,14 @@ if there is no token to take, the request is rejected.
 
 ### Pros
 
-- Bursts of requests are smoothed out and you can process them at a constant
+* Bursts of requests are smoothed out and you can process them at a constant
   rate.
-- Allows setting a higher initial burst limit by setting maximum number of
+* Allows setting a higher initial burst limit by setting maximum number of
   tokens higher than the refill rate
 
 ### Cons
 
-- Expensive in terms of computation
+* Expensive in terms of computation
 
 ### Usage
 

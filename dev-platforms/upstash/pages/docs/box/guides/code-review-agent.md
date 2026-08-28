@@ -6,7 +6,7 @@ path: docs/box/guides/code-review-agent
 
 In this guide, we're building a code review agent (like CodeRabbit or Greptile) with Upstash Box. We clone a repo, inspect the PR diff, and return structured findings with severity and suggested fixes.
 
----
+***
 
 ## 1. Installation
 
@@ -22,7 +22,7 @@ ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxxxxxx
 GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
 ```
 
----
+***
 
 ## 2. Create the reviewer
 
@@ -124,7 +124,7 @@ for (const finding of result.findings) {
 }
 ```
 
----
+***
 
 ## 3. Run the reviewer
 
@@ -132,7 +132,7 @@ for (const finding of result.findings) {
 npx tsx scripts/review-pr.ts
 ```
 
----
+***
 
 ## 4. Use in CI
 

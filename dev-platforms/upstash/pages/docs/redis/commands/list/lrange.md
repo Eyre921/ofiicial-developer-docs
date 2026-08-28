@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/list/lrange
 path: docs/redis/commands/list/lrange
 ---
 
-> Get range of elements.
-
 Use `LRANGE` to read a range of elements from a list.
 
 Both `<start>` and `<stop>` are zero-based, inclusive, and may be negative to count from the tail, so `LRANGE key 0 -1` returns the whole list and `LRANGE key 0 9` returns the first ten elements. Out-of-range indexes are clamped instead of producing an error, and a range that selects nothing, or a missing key, returns an empty list.

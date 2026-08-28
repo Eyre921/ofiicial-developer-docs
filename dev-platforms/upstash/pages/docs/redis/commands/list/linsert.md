@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/list/linsert
 path: docs/redis/commands/list/linsert
 ---
 
-> Insert before or after pivot.
-
 Use `LINSERT` to insert an element immediately before or after another element of a list.
 
 The pivot is matched by value, and only its first occurrence starting from the head is used. The reply is the new length of the list, `0` when the key does not exist, and `-1` when the pivot value was not found, which is how you tell a failed insert from a successful one.

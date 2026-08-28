@@ -104,4 +104,8 @@ Your code runs in a sandboxed Node.js environment. You can make HTTP requests to
   <Card title="CLI reference" icon="https://mintcdn.com/notion-demo/7WdlNb9IZkRhGCcR/icons/nds/terminal.svg?fit=max&auto=format&n=7WdlNb9IZkRhGCcR&q=85&s=ed75fe4bd49b0ec0117eeead6adb4e5d" href="/cli/get-started/overview">
     Install and configure the Notion CLI.
   </Card>
+
+  <Card title="Limits" icon="https://mintcdn.com/notion-demo/7WdlNb9IZkRhGCcR/icons/nds/lightning.svg?fit=max&auto=format&n=7WdlNb9IZkRhGCcR&q=85&s=c9a479b1d46711f4edc71c5f9187e5bd" href="/workers/reference/limits">
+    Rate limits for runs, webhooks, and sync database writes.
+  </Card>
 </CardGroup>

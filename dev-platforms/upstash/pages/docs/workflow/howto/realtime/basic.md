@@ -4,15 +4,15 @@ source: https://upstash.com/docs/workflow/howto/realtime/basic
 path: docs/workflow/howto/realtime/basic
 ---
 
-[**Upstash Realtime**](/realtime/overall/quickstart) lets you emit events from your workflow and subscribe to them in real-time on your frontend.
+[**Upstash Realtime**](/docs/realtime/overall/quickstart) lets you emit events from your workflow and subscribe to them in real-time on your frontend.
 
 ## How It Works
 
 Upstash Realtime is powered by Upstash Redis and provides a clean, 100% type-safe API for publishing and subscribing to events:
 
-- Your frontend can subscribe to events
-- When you **emit** an event, it's instantly delivered to live subscribers on the frontend
-- You can also replay events that happened in the past
+* Your frontend can subscribe to events
+* When you **emit** an event, it's instantly delivered to live subscribers on the frontend
+* You can also replay events that happened in the past
 
 This guide shows you how to integrate Upstash Workflow with Upstash Realtime to display real-time progress updates in your frontend.
 
@@ -77,10 +77,10 @@ export const realtimeMiddleware = new WorkflowMiddleware({
 
 **Key points:**
 
-- The `afterExecution` callback is triggered after each workflow step completes
-- The `runCompleted` callback is triggered when the entire workflow finishes
-- We use `context.workflowRunId` to create a unique channel for each workflow run
-- Events are automatically emitted without needing to manually call emit inside your workflow steps
+* The `afterExecution` callback is triggered after each workflow step completes
+* The `runCompleted` callback is triggered when the entire workflow finishes
+* We use `context.workflowRunId` to create a unique channel for each workflow run
+* Events are automatically emitted without needing to manually call emit inside your workflow steps
 
 ### 4. Create a Realtime Endpoint
 
@@ -132,7 +132,7 @@ import type { RealtimeEvents } from "./realtime";
 export const { useRealtime } = createRealtime<RealtimeEvents>();
 ```
 
----
+***
 
 ## Building the Workflow
 
@@ -172,9 +172,9 @@ export const { POST } = serve<WorkflowPayload>(
 
 **Key points:**
 
-- Import the `realtimeMiddleware` from `@/lib/middleware`
-- Pass the middleware in the `middlewares` array to the `serve` function
-- The middleware automatically emits events after each step and when the workflow completes
+* Import the `realtimeMiddleware` from `@/lib/middleware`
+* Pass the middleware in the `middlewares` array to the `serve` function
+* The middleware automatically emits events after each step and when the workflow completes
 
 ### 2. Create a Trigger Endpoint
 
@@ -204,7 +204,7 @@ export async function POST(request: NextRequest) {
 }
 ```
 
----
+***
 
 ## Building the Frontend
 
@@ -266,9 +266,9 @@ export function useWorkflow() {
 
 **Key features:**
 
-- Subscribe to multiple events using the `events` array: `["workflow.stepFinish", "workflow.runFinish"]`
-- The hook manages both triggering the workflow and subscribing to updates
-- Type-safe event handling with TypeScript
+* Subscribe to multiple events using the `events` array: `["workflow.stepFinish", "workflow.runFinish"]`
+* The hook manages both triggering the workflow and subscribing to updates
+* Type-safe event handling with TypeScript
 
 ### 2. Use the Hook in Your Component
 
@@ -312,6 +312,6 @@ For a complete working example with all steps, error handling, and UI components
 
 ## Next Steps
 
-- Learn about [human-in-the-loop workflows with Realtime](./human-in-the-loop)
-- Explore [Realtime features](/realtime/overall/quickstart)
-- Check out [Workflow configuration options](/workflow/howto/configure)
+* Learn about [human-in-the-loop workflows with Realtime](./human-in-the-loop)
+* Explore [Realtime features](/docs/realtime/overall/quickstart)
+* Check out [Workflow configuration options](/docs/workflow/howto/configure)

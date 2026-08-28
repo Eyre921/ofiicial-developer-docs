@@ -15,8 +15,8 @@ pip install llama-index upstash-vector llama-index-vector-stores-upstash python-
 ## Setup
 
 First, create a Vector Index in the [Upstash Console](https://console.upstash.com). Configure the index with:
-- **Dimensions**: 1536
-- **Distance Metric**: Cosine
+* **Dimensions**: 1536
+* **Distance Metric**: Cosine
 
 Once the index is created, copy the `UPSTASH_VECTOR_REST_URL` and `UPSTASH_VECTOR_REST_TOKEN` and add them to your `.env` file along with your OpenAI API key:
 
@@ -77,7 +77,7 @@ print(response_2)
 
 ## Notes
 
-- You can specify a namespace when creating the `UpstashVectorStore` instance:
+* You can specify a namespace when creating the `UpstashVectorStore` instance:
   ```python
   vector_store = UpstashVectorStore(
       url="your_upstash_url",
@@ -86,4 +86,4 @@ print(response_2)
   )
   ```
 
-- Visit the [LlamaIndex documentation](https://docs.llamaindex.ai/en/latest) for more details.
+* Visit the [LlamaIndex documentation](https://docs.llamaindex.ai/en/latest) for more details.

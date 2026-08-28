@@ -6,21 +6,15 @@ path: docs/common/account/teams
 
 Team management enables collaboration with other users. You can create a team and invite people to join by using their email addresses. Team members will have access to databases created under the team based on their assigned roles.
 
-<Frame>
-  <img src="/img/teams/team-member.png" />
-</Frame>
+  <img />
 
 ## Create Team
 
 You can create a team using the menu `Account > Teams`
 
-<Frame>
-  <img src="/img/teams/team-page.png" />
-</Frame>
+  <img />
 <br />
-<Frame>
-  <img src="/img/teams/team-create.png" />
-</Frame>
+  <img />
 
 > A user can create up to 5 teams. You can be part of even more teams but only
 > be the owner of 5 teams. If you need to own more teams please email us at
@@ -39,9 +33,7 @@ members. You can switch to the team via the switch button in the team table. Or
 you can click your profile pic in the top right and switch to any team listed
 there.
 
-<Frame>
-  <img src="/img/teams/change-team.png" />
-</Frame>
+  <img />
 
 ## Add/Remove Team Member
 
@@ -51,21 +43,19 @@ Until the invitation is accepted, the user appears as a **pending member** and d
 
 > Only Admins or the Owner can add/remove users.
 
-<Frame>
-  <img src="/img/teams/team-member-create.png" />
-</Frame>
+  <img />
 
 ## Roles
 
 While adding a team member, you will need to select a role. Here are the access rights associated with each role:
 
-- Admin: This role has full access, including the ability to add and remove members, manage databases, and payment methods.
+* Admin: This role has full access, including the ability to add and remove members, manage databases, and payment methods.
 
-- Dev: This role can create, manage, and delete databases but cannot manage users or payment methods.
+* Dev: This role can create, manage, and delete databases but cannot manage users or payment methods.
 
-- Finance: This role is limited to managing payment methods and cannot manage databases or users.
+* Finance: This role is limited to managing payment methods and cannot manage databases or users.
 
-- Owner: The Owner role has all the access rights of an Admin and, in addition to having the ability to delete the team. This role is automatically assigned to the user who created the team, and you cannot assign it to other members.
+* Owner: The Owner role has all the access rights of an Admin and, in addition to having the ability to delete the team. This role is automatically assigned to the user who created the team, and you cannot assign it to other members.
 
 > If you want to change a user's role, you will need to delete and re-add them with the desired access rights.
 
@@ -76,6 +66,4 @@ have any active databases, namely all databases under the team should be deleted
 first. To delete your team, first you need to switch your personal account then
 you can delete your team in the team list under `Account > Teams`.
 
-<Frame>
-  <img src="/img/teams/team-member.png" />
-</Frame>
+  <img />

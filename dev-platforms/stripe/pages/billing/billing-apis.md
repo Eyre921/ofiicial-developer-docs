@@ -203,5 +203,5 @@ A customer, `first_customer`, subscribes to the standard product. When you creat
 
 Another customer, `second_customer`, subscribes to the advanced product. When you create the Subscription, Stripe automatically creates two Entitlements: one that associates `second_customer` with `basic_features`, and one that associates `second_customer` with `extended_features`.
 
-You can determine which features to provision for a customer by [retrieving their active entitlements or listening to the Active Entitlement Summary event](https://docs.stripe.com/billing/entitlements.md#entitlements). You don’t have to retrieve their subscriptions, products, and features.
+You can determine which features to provision for a customer by [retrieving their active entitlements or listening to the Active Entitlement Summary event](https://docs.stripe.com/billing/entitlements.md?dashboard-or-api=api#entitlements). You don’t have to retrieve their subscriptions, products, and features.
 

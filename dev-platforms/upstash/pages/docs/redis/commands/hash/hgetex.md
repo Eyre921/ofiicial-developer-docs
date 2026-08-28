@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/hash/hgetex
 path: docs/redis/commands/hash/hgetex
 ---
 
-> Get fields and set their expiry.
-
 Use `HGETEX` to read hash fields and change their expiration in the same call.
 
-Without an expiration option it simply returns the values, like [`HMGET`](/redis/commands/hash/hmget). `EX`, `PX`, `EXAT`, and `PXAT` give every requested field a new lifetime or deadline, and `PERSIST` removes the expiration so the fields stop expiring altogether.
+Without an expiration option it simply returns the values, like [`HMGET`](/docs/redis/commands/hash/hmget). `EX`, `PX`, `EXAT`, and `PXAT` give every requested field a new lifetime or deadline, and `PERSIST` removes the expiration so the fields stop expiring altogether.
 
 Doing both in one command is what makes sliding expirations possible per field: reading a session attribute can extend it, with no window in which another client sees the field without its refreshed lifetime. `FIELDS <numfields>` introduces the field list and the count must match.
 

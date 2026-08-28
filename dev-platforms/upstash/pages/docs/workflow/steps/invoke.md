@@ -10,7 +10,7 @@ The calling workflow resumes once the invoked workflow either **succeeds**, **fa
 
 <Note>
     Workflows can only invoke other workflows that were served together in the same `serveMany` route.
-    For details, see [Invoke other workflows](/workflow/features/invoke).
+    For details, see [Invoke other workflows](/docs/workflow/features/invoke).
 </Note>
 
 ## Arguments
@@ -47,7 +47,7 @@ The calling workflow resumes once the invoked workflow either **succeeds**, **fa
 <ParamField body="flowControl" type="object" optional>
     Flow control configuration of the invoked workflow.
 
-    See [Flow Control](/workflow/features/flow-control) for details.
+    See [Flow Control](/docs/workflow/features/flow-control) for details.
 
     <Expandable title="properties">
         <ParamField body="key" type="string">

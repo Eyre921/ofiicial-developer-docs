@@ -61,6 +61,21 @@ For example, with a product priced at 150 USD and a 20 USD discount:
 
 Discounts don’t affect the tax rates themselves, only the amount on which tax is calculated. When using the Tax API, calculate the discount before sending the request.
 
+## Round tax amounts
+
+Stripe Tax retains precision while calculating tax, then rounds tax amounts half up to the [smallest currency unit](https://docs.stripe.com/currencies.md#minor-units) when determining amounts to collect.
+
+For automatic tax, Stripe calculates tax across amounts that have the same applicable tax rate before rounding the total tax. Stripe then allocates the rounded tax total back to each line item. A line item might receive an adjustment of the smallest currency unit so that the line item amounts add up to the transaction total.
+
+Rounding can make the applied tax rate appear slightly higher or lower if you divide the rounded tax amount by the rounded subtotal. For example, consider a tax-inclusive price of 79.20 EUR with a 19% tax rate. No subtotal and tax amounts in cents can both add up to 79.20 EUR and reproduce the 19% rate exactly:
+
+| Subtotal | Tax after rounding | Total |
+| --- | --- | --- |
+| 66.55 EUR | 12.64 EUR | 79.19 EUR |
+| 66.56 EUR | 12.65 EUR | 79.21 EUR |
+
+Instead, Stripe preserves the 79.20 EUR amount charged to the customer by reporting a 66.55 EUR subtotal and 12.65 EUR of tax. Those rounded amounts make the tax rate appear to be 19.01%, even though the applied rate is 19% Depending on the transaction amounts, this ratio might appear as 19.01%, 19.02%, or another nearby value.
+
 ## Tax breakdowns
 
 Stripe Tax provides detailed tax breakdowns for each transaction. All applicable taxes are calculated and applied simultaneously, and the order of items in the breakdown doesn’t indicate priority or application sequence. Stripe Tax orders the breakdown by jurisdiction level (country, then state, county, city, and district), then by tax amount, then by jurisdiction name.

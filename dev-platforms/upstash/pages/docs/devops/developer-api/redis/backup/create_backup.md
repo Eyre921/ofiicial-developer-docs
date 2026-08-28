@@ -4,6 +4,5 @@ source: https://upstash.com/docs/devops/developer-api/redis/backup/create_backup
 path: docs/devops/developer-api/redis/backup/create_backup
 ---
 
-> This endpoint creates a backup for a Redis database.
-
-`POST /redis/create-backup/{id}`
+/devops/developer-api/openapi.yaml post /redis/create-backup/{id}
+This endpoint creates a backup for a Redis database.

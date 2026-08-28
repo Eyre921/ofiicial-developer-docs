@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/list/ltrim
 path: docs/redis/commands/list/ltrim
 ---
 
-> Trim list to range.
-
 Use `LTRIM` to keep only a range of elements in a list and delete everything outside it.
 
 Both ends are inclusive, zero-based, and may be negative to count from the tail. If `<start>` is greater than `<stop>` or lies past the end of the list, every element is removed and the key is deleted. The reply is always `OK`.
 
-The classic use is a capped list: [`LPUSH`](/redis/commands/list/lpush) a new item and then `LTRIM key 0 99` to keep the hundred most recent ones, which bounds memory without any separate cleanup job.
+The classic use is a capped list: [`LPUSH`](/docs/redis/commands/list/lpush) a new item and then `LTRIM key 0 99` to keep the hundred most recent ones, which bounds memory without any separate cleanup job.
 
 ## Syntax
 

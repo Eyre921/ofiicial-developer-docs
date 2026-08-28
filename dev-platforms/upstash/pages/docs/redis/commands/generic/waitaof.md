@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/generic/waitaof
 path: docs/redis/commands/generic/waitaof
 ---
 
-> Wait for local and replica persistence.
-
 Use `WAITAOF` to block until preceding writes have been persisted to the append-only file locally and on replicas.
 
 `<numlocal>` is how many local acknowledgements to wait for and `<numreplicas>` how many replicas must have persisted the writes. The two-element reply gives the local count first and the replica count second, and either can come back lower than requested when the timeout expires, so both need checking. A timeout of `0` waits indefinitely.
 
-Where [`WAIT`](/redis/commands/generic/wait) confirms only that replicas received a write, `WAITAOF` confirms that it reached persistent storage, which is the stronger guarantee to ask for before acknowledging work that must survive a restart. On Upstash it waits for the writes enqueued before it began, including writes made by other connections.
+Where [`WAIT`](/docs/redis/commands/generic/wait) confirms only that replicas received a write, `WAITAOF` confirms that it reached persistent storage, which is the stronger guarantee to ask for before acknowledging work that must survive a restart. On Upstash it waits for the writes enqueued before it began, including writes made by other connections.
 
 ## Syntax
 
@@ -28,8 +26,8 @@ WAITAOF <numlocal> <numreplicas> <timeout>
 
 ## Important points
 
-- This deployment waits for writes enqueued before `WAITAOF` begins, including writes from other connections.
-- The two-element reply contains the local persistence acknowledgement first and the replica persistence count second.
+* This deployment waits for writes enqueued before `WAITAOF` begins, including writes from other connections.
+* The two-element reply contains the local persistence acknowledgement first and the replica persistence count second.
 
 ## Response
 

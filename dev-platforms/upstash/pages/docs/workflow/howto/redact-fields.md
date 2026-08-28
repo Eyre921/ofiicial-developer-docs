@@ -4,8 +4,6 @@ source: https://upstash.com/docs/workflow/howto/redact-fields
 path: docs/workflow/howto/redact-fields
 ---
 
-> How to redact private data in your workflow runs
-
 Workflow runs can contain private data that you don't want visible in the Upstash Console or API responses.
 
 Upstash Workflow allows you to redact specific fields so they appear as `REDACTED:<SHA256>` in the dashboard and API. The original values are still used when delivering requests to your workflow endpoint. The SHA256 hash lets you verify the data without revealing the original values.
@@ -65,9 +63,7 @@ curl -XPOST \
 ```
 </CodeGroup>
 
-<Frame caption="Logs of a workflow run with `body` and header[My-Secret-Header] redacted">
-  <img src="/img/qstash/redact-workflow.png" />
-</Frame>
+  <img />
 
 Redaction is configured per workflow run, so you can redact different fields for different runs.
 

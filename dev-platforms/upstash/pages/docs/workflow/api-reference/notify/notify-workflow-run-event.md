@@ -4,7 +4,8 @@ source: https://upstash.com/docs/workflow/api-reference/notify/notify-workflow-r
 path: docs/workflow/api-reference/notify/notify-workflow-run-event
 ---
 
-> Notify an event to a specific workflow run's waiters.
+/workflow/openapi.yaml post /v2/notify/{workflowRunId}/{eventId}
+Notify an event to a specific workflow run's waiters.
 
 This endpoint sends an event notification to waiters within a specific workflow run.
 Unlike the general notify endpoint, this uses a "safe notify" mechanism that guarantees
@@ -15,6 +16,3 @@ delivery even if no waiter is currently active.
 - If no waiter is active, the notification is saved in the database
 - When a waiter becomes active later, it will consume the saved notification
 - This ensures events are never lost due to timing issues
-
-
-`POST /v2/notify/{workflowRunId}/{eventId}`

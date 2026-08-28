@@ -13,12 +13,12 @@ Get direct access to our team of specialists who can provide insights, troublesh
 
 Professional Support package includes:
 
-- **Guaranteed Response Time:** Rapid Response Time SLA to urgent support requests, ensuring your concerns are addressed promptly with a **24/7 coverage**.
-- **Customer Onboarding:** A personalized session to guide you through utilizing our support services and reviewing your specific use case for a seamless start.
-- **Quarterly Use Case Review & Health Check:** On-request sessions every quarter to review your use case and ensure optimal performance.
-- **Dedicated Slack Channel:** Direct access to our team via a private Slack channel, so you can reach out whenever you need assistance.
-- **Incident Support:** Video call support during critical incidents to provide immediate help and resolution.
-- **Root Cause Analysis:** Comprehensive investigation and post-mortem analysis of critical incidents to identify and address the root cause.
+* **Guaranteed Response Time:** Rapid Response Time SLA to urgent support requests, ensuring your concerns are addressed promptly with a **24/7 coverage**.
+* **Customer Onboarding:** A personalized session to guide you through utilizing our support services and reviewing your specific use case for a seamless start.
+* **Quarterly Use Case Review & Health Check:** On-request sessions every quarter to review your use case and ensure optimal performance.
+* **Dedicated Slack Channel:** Direct access to our team via a private Slack channel, so you can reach out whenever you need assistance.
+* **Incident Support:** Video call support during critical incidents to provide immediate help and resolution.
+* **Root Cause Analysis:** Comprehensive investigation and post-mortem analysis of critical incidents to identify and address the root cause.
 
 # Response Time SLA
 We understand that timely assistance is critical for production workloads, so your access to our Support team comes with 24/7 coverage and below SLA:
@@ -36,9 +36,7 @@ As a Professional Support Customer, below are the **two methods** to reach out t
 #### Starting a Chat
 You will see a chatbox on the bottom right when viewing Upstash console, docs and website. Once you initiate a chat, Professional Support customers will be prompted to select a severity level:
 
-<Frame>
-  <img src="/img/pro-support/image.png" width="400" />
-</Frame>
+  <img width="400" />
 
 <Note>
 To be able to see these options in chat, remember to sign into your Upstash Account first.

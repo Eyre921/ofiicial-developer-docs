@@ -244,4 +244,4 @@ Here's how to build your own integration with Resend:
 
 1. Read the documentation on [how to send emails](/docs/api-reference/emails/send-email).
 2. Integrate with your product offering.
-3. [Reach out to us](https://resend.com/contact) to feature your product on this page.
+3. [Reach out to us](https://resend.com/help) to feature your product on this page.

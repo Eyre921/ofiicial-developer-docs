@@ -12,27 +12,27 @@ Reception.ai offers four tiers. All new accounts start with a free trial and can
 
 ## Plans overview
 
-|                            | Free Trial    | Basic      | Plus       | Premium    |
-| -------------------------- | ------------- | ---------- | ---------- | ---------- |
-| **Price**                  | \$0 (14 days) | \$22/month | \$55/month | \$99/month |
-| **Annual price**           | —             | \$17/month | \$43/month | \$77/month |
-| **Phone minutes**          | 30            | 60         | 200        | 500        |
-| **Web chat minutes**       | 60            | 120        | 400        | 1,000      |
-| **Receptionists**          | 1             | 1          | 1          | 3          |
-| **Phone numbers**          | 1             | 1          | 1          | 3          |
-| **Locations**              | 20            | 1          | 1          | 20         |
-| **Knowledge sources**      | 50            | 10         | 20         | 50         |
-| **Assistant messages/day** | 500           | 150        | 300        | 500        |
-| **Concurrent calls**       | 20            | 1          | 3          | 10         |
-| **Overage rate**           | —             | \$0.40/min | \$0.40/min | \$0.40/min |
-| **Zapier, Webhooks, MCP**  | Yes           | No         | Yes        | Yes        |
-| **Google Calendar**        | Yes           | Yes        | Yes        | Yes        |
+|                            | Free Trial    | Basic                   | Plus                    | Premium                    |
+| -------------------------- | ------------- | ----------------------- | ----------------------- | -------------------------- |
+| **Price**                  | \$0 (14 days) | \$29/month              | \$79/month              | \$199/month                |
+| **Annual price**           | —             | \$288/year (\$24/month) | \$792/year (\$66/month) | \$1,992/year (\$166/month) |
+| **Included credits**       | 30            | 75                      | 275                     | 1,000                      |
+| **Receptionists**          | 1             | 1                       | 1                       | 3                          |
+| **Phone numbers**          | 1             | 1                       | 3                       | 5                          |
+| **Locations**              | 20            | 1                       | 1                       | 20                         |
+| **Knowledge sources**      | 5             | 5                       | 10                      | 20                         |
+| **Assistant messages/day** | 150           | 150                     | 300                     | 500                        |
+| **Concurrent calls**       | 20            | 1                       | 3                       | 10                         |
+| **Overage rate**           | —             | \$0.45/credit           | \$0.38/credit           | \$0.30/credit              |
+| **Zapier**                 | Yes           | Yes                     | Yes                     | Yes                        |
+| **Webhooks and MCP**       | Yes           | Yes                     | Yes                     | Yes                        |
+| **Google Calendar**        | Yes           | Yes                     | Yes                     | Yes                        |
 
 ## Free trial
 
 Every new account starts with a **14-day free trial** that includes:
 
-* 30 phone minutes and 60 web chat minutes
+* 30 credits (up to 30 phone minutes or 60 web chat minutes)
 * A dedicated phone number
 * Full access to all features (including advanced integrations)
 * No credit card required
@@ -52,7 +52,11 @@ Each plan includes a monthly credit pool. Different activities consume credits a
 
 ## Overage
 
-On paid plans, if you exceed your included minutes, additional usage is billed at **\$0.40 per credit**.
+On paid plans, usage beyond your included credits is billed at your plan's overage rate:
+
+* Basic: **\$0.45 per credit**
+* Plus: **\$0.38 per credit**
+* Premium: **\$0.30 per credit**
 
 ## Upgrading
 

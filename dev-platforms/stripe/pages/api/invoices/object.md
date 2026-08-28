@@ -117,7 +117,7 @@ path: api/invoices/object
 - `id` (string)
   Unique identifier for the object. For preview invoices created using the [create preview](https://docs.stripe.com/api/invoices/create_preview.md) endpoint, this id will be prefixed with `upcoming_in`.
 
-- `object` (string)
+- `object` (string, value is "invoice")
   String representing the object’s type. Objects of the same type share the same value.
 
 - `account_country` (string, nullable)

@@ -10,7 +10,7 @@ There are two main ways to start your workflow:
 
 ### Using `client.trigger` (Recommended)
 
-We recommend using [`client.trigger`](/workflow/basics/client/trigger) to start your workflow.
+We recommend using [`client.trigger`](/docs/workflow/basics/client/trigger) to start your workflow.
 
 <CodeGroup>
     ```ts Single Workflow
@@ -67,5 +67,5 @@ curl -X POST https://<YOUR_WORKFLOW_ENDPOINT>/<YOUR-WORKFLOW-ROUTE> \
 <Warning>
     If you’ve secured your endpoint with signing keys, only the `trigger` method will work. Direct calls to the endpoint (e.g., via `curl` or `fetch`) will not be possible since `Upstash-Signature` header is missing.
 
-    For more information, read [Secure a workflow](/workflow/howto/security) documentation.
+    For more information, read [Secure a workflow](/docs/workflow/howto/security) documentation.
 </Warning>

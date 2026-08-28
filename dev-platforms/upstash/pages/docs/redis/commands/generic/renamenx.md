@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/generic/renamenx
 path: docs/redis/commands/generic/renamenx
 ---
 
-> Rename a key if new key doesn't exist.
-
 Use `RENAMENX` to rename a key only when the new name is not already in use.
 
 The reply is `1` when the rename happened and `0` when the destination already existed and nothing was changed; renaming a key that does not exist returns an error. Because the check and the rename are one atomic step, the command can serve as a way to claim a name: only one of several clients trying to rename onto the same destination succeeds.

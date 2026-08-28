@@ -8,22 +8,18 @@ This guide shows you how to **gracefully handle failed workflow runs**. This inv
 
 ## Why a workflow might fail
 
-- A step in your workflow throws a database error that causes your code to fail at runtime.
-- QStash calls your workflow URL, but the URL is not reachable - for example, because of a temporary outage of your deployment platform.
-- A single step takes longer than your platform's function execution limit.
+* A step in your workflow throws a database error that causes your code to fail at runtime.
+* QStash calls your workflow URL, but the URL is not reachable - for example, because of a temporary outage of your deployment platform.
+* A single step takes longer than your platform's function execution limit.
 
-Workflow automatically retries a failed step based on your configuration (by default, it retries three times with exponential backoff). 
+Workflow automatically retries a failed step based on your configuration (by default, it retries three times with exponential backoff).
 This helps handle temporary outages or intermittent failures gracefully.
 
-<Frame caption="A failed step is automatically retried three times">
-  <img src="/img/qstash-workflow/automatic_retry.png" />
-</Frame>
+  <img />
 
-If, even after all retries, your step does not succeed, we'll move the failed run into your [Dead Letter Queue (DLQ)](/qstash/howto/handling-failures#dead-letter-queue). That way, you can always manually retry it again and debug the issue.
+If, even after all retries, your step does not succeed, we'll move the failed run into your [Dead Letter Queue (DLQ)](/docs/qstash/howto/handling-failures#dead-letter-queue). That way, you can always manually retry it again and debug the issue.
 
-<Frame caption="Manually retry from the Dead-Letter-Queue (DLQ)">
-  <img src="/img/qstash-workflow/workflow_dlq.png" />
-</Frame>
+  <img />
 
 If you want to take an action (a cleanup/log), you can configure either `failureFunction` or a `failureUrl` on the `serve` method of your workflow.
 These options allow you to define custom logic or an external endpoint that will be triggered when a failure occurs.
@@ -47,7 +43,7 @@ export const { POST } = serve<string>(
     }) => {
       // Handle error, i.e. log to Sentry
       console.error("Workflow failed:", failResponse);
-      
+
       // You can optionally return a string that will be visible
       // in the UI (coming soon) and in workflow logs
       return `Workflow failed with status ${failStatus}: ${failResponse}`;
@@ -72,7 +68,7 @@ async def example(context: AsyncWorkflowContext[str]) -> None: ...
 
 </CodeGroup>
 
-Note: If you use a custom authorization method to secure your workflow endpoint, add authorization to the `failureFunction` too. Otherwise, anyone can invoke your failure function. Read more here: [securing your workflow endpoint](/workflow/howto/security).
+Note: If you use a custom authorization method to secure your workflow endpoint, add authorization to the `failureFunction` too. Otherwise, anyone can invoke your failure function. Read more here: [securing your workflow endpoint](/docs/workflow/howto/security).
 
 In `@upstash/workflow`, the `failureFunction` can optionally return a string value that will be displayed in the UI (coming soon) and included in the workflow logs. This is useful for providing custom error messages, debugging information, or tracking specific failure conditions.
 
@@ -158,17 +154,17 @@ If you don't want to verify the signature, you can remove `QSTASH_CURRENT_SIGNIN
 
 When a workflow run fails and is moved to the Dead Letter Queue (DLQ), you have several options to handle it manually via the REST API:
 
-### [Resume](/workflow/api-reference/dlq/resume-workflow-from-dlq)
-- **What it does:** Continues a failed workflow run from exactly where it failed, preserving all successful step results.
-- **When to use:** Use this if you want to retry only the failed/pending steps without re-executing the entire workflow.
+### [Resume](/docs/workflow/api-reference/dlq/resume-workflow-from-dlq)
+* **What it does:** Continues a failed workflow run from exactly where it failed, preserving all successful step results.
+* **When to use:** Use this if you want to retry only the failed/pending steps without re-executing the entire workflow.
 
-### [Restart](/workflow/api-reference/dlq/restart-workflow-from-dlq)
-- **What it does:** Starts the failed workflow run over from the beginning, discarding all previous step results.
-- **When to use:** Use this if you want a clean execution, or if the failure may have been caused by a corrupted state that requires a fresh start.
+### [Restart](/docs/workflow/api-reference/dlq/restart-workflow-from-dlq)
+* **What it does:** Starts the failed workflow run over from the beginning, discarding all previous step results.
+* **When to use:** Use this if you want a clean execution, or if the failure may have been caused by a corrupted state that requires a fresh start.
 
-### [Callback](/workflow/api-reference/dlq/retry-failure-callback)
-- **What it does:** Reruns the failure callback for a workflow run, in case the original failure callback was not delivered or failed.
-- **When to use:** Use this to ensure your system is notified of workflow failures, even if the original callback attempt did not succeed.
+### [Callback](/docs/workflow/api-reference/dlq/retry-failure-callback)
+* **What it does:** Reruns the failure callback for a workflow run, in case the original failure callback was not delivered or failed.
+* **When to use:** Use this to ensure your system is notified of workflow failures, even if the original callback attempt did not succeed.
 
 ## Debugging failed runs
 
@@ -176,6 +172,4 @@ In your DLQ, filter messages via the `Workflow URL` or `Workflow Run ID` to sear
 
 For example, let's debug the following failed run. Judging by the status code `404`, the `Ngrok-Error-Code` header of `ERR_NGROK_3200` and the returned HTML body, we know that the URL our workflow called does not exist.
 
-<Frame>
-  <img src="/img/qstash-workflow/workflow_dlq_debug.png" />
-</Frame>
+  <img />

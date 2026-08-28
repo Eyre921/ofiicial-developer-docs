@@ -47,7 +47,7 @@ app.post('/ephemeral-keys', async (request, response) => {
     nonce: nonce,
     issuing_card: card_id,
   }, {
-    apiVersion: '2026-07-29.dahlia',
+    apiVersion: '2026-08-26.dahlia',
   });
 
   response.json({

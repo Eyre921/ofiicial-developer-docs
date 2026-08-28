@@ -4,7 +4,7 @@ source: https://upstash.com/docs/qstash/features/batch
 path: docs/qstash/features/batch
 ---
 
-[Publishing](/qstash/howto/publishing) is great for sending one message
+[Publishing](/docs/qstash/howto/publishing) is great for sending one message
 at a time, but sometimes you want to send a batch of messages at once.
 
 This can be useful to send messages to a single or multiple destinations.
@@ -70,7 +70,7 @@ client.message.batch_json(
 
 ## Batching messages with URL Groups
 
-If you have a [URL Group](/qstash/howto/url-group-endpoint), you can batch send with
+If you have a [URL Group](/docs/qstash/howto/url-group-endpoint), you can batch send with
 the URL Group as well.
 
 <CodeGroup>
@@ -119,7 +119,7 @@ client.message.batch_json(
 
 ## Batching messages with queue
 
-If you have a [queue](/qstash/features/queues), you can batch send with
+If you have a [queue](/docs/qstash/features/queues), you can batch send with
 the queue. It is the same as publishing to a destination, but you need to set the queue name.
 
 <CodeGroup>

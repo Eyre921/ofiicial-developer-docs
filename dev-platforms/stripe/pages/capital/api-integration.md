@@ -8,8 +8,6 @@ path: capital/api-integration
 
 Integrate with our API to build a custom Capital program.
 
-> Capital for platforms is available in [public preview](https://docs.stripe.com/release-phases.md).
-
 [Stripe Capital](https://docs.stripe.com/capital/how-capital-for-platforms-works.md) enables your platform to retrieve prequalified financing offers for your connected accounts, expose a compliant financing offer application, and provide ongoing reporting for in-progress financing.
 
 This guide explains how [Connect](https://docs.stripe.com/connect.md) platforms can integrate with the [Capital API](https://docs.stripe.com/api/capital/financing_offers.md) to send offer emails and manage reporting. When you send offer emails, you must BCC [capital-offers@stripe.com](mailto:capital-offers@stripe.com) on all of them.
@@ -193,24 +191,46 @@ You can simulate the `capital.financing_offer.accepted` webhook by applying for 
 4. Verify you received the `capital.financing_offer.accepted` webhook.
 5. View the offer in the Dashboard, and check it has status accepted.
 
-### View the application tracker
+### Handle application requirements after submission
 
-A financing offer with the `accepted` status is pending application review by the Stripe [servicing](https://docs.stripe.com/capital/servicing.md) team. During this review, you can direct the connected account to the financing reporting page by using an [Account Link](https://docs.stripe.com/api/account_links.md) with the `capital_financing_reporting` type. The financing reporting page includes an application tracker with an estimated application review timeline.
+A financing offer with the `accepted` status is pending application review. During review, connected accounts can use the financing reporting page to view an application tracker, see the estimated review timeline, and take any required actions to remediate the application.
+
+To display the application tracker, use either:
+
+- The [Capital Financing embedded component](https://docs.stripe.com/connect/supported-embedded-components/capital-financing.md)
+- An [Account Link](https://docs.stripe.com/api/account_links.md) with the `capital_financing_reporting` type
+
+In some cases, after a connected account submits an application, Stripe might request additional information, such as identity verification or bank statements, to complete the review. When this happens, Stripe sends transactional emails directly to the connected account. The connected account can submit the requested information through the application tracker.
+
+If Stripe requires additional information, past-due requirements might appear on the `loans` or `cash_advances` capabilities. Requirements that apply only to these Capital capabilities don’t affect other account capabilities, such as `card_payments` or `transfers`.
+
+Stripe also sends an `account.updated` webhook when requirements change. This webhook is informational. It reflects the account’s complete requirements state and doesn’t require your platform to take action. If you want to update your integration in response to application requirements, listen to the `account.updated` webhook and use the capability requirements API to identify and handle requirements that affect Capital capabilities. For more information, see [Retrieve requirements by capability](https://docs.stripe.com/connect/handling-api-verification.md?accounts-namespace=v1#retrieve-requirements-by-capability).
+
+Example request to retrieve the `loans` capability requirements:
 
 #### curl
 
 ```bash
-curl https://api.stripe.com/v1/account_links \
-  -u <<YOUR_SECRET_KEY>>: \
-  -d account=acct_123 \
-  # When the connected account refreshes the page, where should we redirect them
-  -d refresh_url="https://example.com/reauth" \
-  # When the connected account completes the application, where should they return
-  -d return_url="https://example.com/thanks" \
-  -d type=capital_financing_reporting
+curl https://api.stripe.com/v1/accounts/{{CONNECTED_ACCOUNT_ID}}/capabilities/loans \
+  -u <<YOUR_SECRET_KEY>>:
 ```
 
-Navigate to the link, and view the application tracker.
+Example response:
+
+```json
+{
+  "id": "loans",
+  "object": "capability",
+  "account": "{{CONNECTED_ACCOUNT_ID}}",
+  "requirements": {
+    "currently_due": [
+      "{{REQUIREMENT_ID}}.credit_review.form",
+      "{{REQUIREMENT_ID}}.identity_verification.challenge"
+    ]
+  },
+  "status": "inactive"
+}
+```
 
 ## Approve the application [Dashboard]
 

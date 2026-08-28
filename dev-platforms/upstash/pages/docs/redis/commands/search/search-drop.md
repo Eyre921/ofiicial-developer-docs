@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/search/search-drop
 path: docs/redis/commands/search/search-drop
 ---
 
-> Drop a search index without deleting its keys.
-
 Use `SEARCH.DROP` to remove a search index. The underlying Redis keys are not deleted.
 
 Only the index and its internal structures go away, so the documents themselves stay exactly as they are and can be indexed again later by creating a new index over the same prefixes. Queries against the dropped name fail from then on.
 
-See [Dropping an Index](/redis/search/index-management#dropping-an-index) for the feature guide.
+See [Dropping an Index](/docs/redis/search/index-management#dropping-an-index) for the feature guide.
 
 `SEARCH.DROP` does not resolve aliases: `<name>` is always treated as the literal index name. Aliases that point to a dropped index are not removed automatically.
 

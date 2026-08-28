@@ -267,7 +267,7 @@ You can use the Pinecone Assistant through the [Pinecone console](https://app.pi
     Four features of the Assistant API you aren't using - but should
   </Card>
 
-  <Card title="Releases" icon="party-horn" href="/release-notes">
+  <Card title="Changelog" icon="party-horn" href="/release-notes">
     News about features and changes in Pinecone and related tools.
   </Card>
 </CardGroup>

@@ -167081,7 +167081,8 @@ const harness = createClaudeCode({
 
 Settings:
 
-- `auth`: authentication mode: `auto`, `direct`, or `ai-gateway`.
+- `auth`: authentication mode (`auto`, `direct`, or `ai-gateway`) or an
+  isolated authentication environment.
 - `credentialForwarding`: optional synchronous or asynchronous callback that
   customizes each credential immediately before the harness adapter forwards it
   into a sandbox process. It receives the credential value that would otherwise
@@ -167142,6 +167143,18 @@ Select a specific authentication mode when you do not want automatic detection:
 const directHarness = createClaudeCode({ auth: 'direct' });
 const gatewayHarness = createClaudeCode({ auth: 'ai-gateway' });
 ```
+
+Pass an authentication environment to use programmatically resolved
+credentials without reading `process.env`:
+
+```ts
+const harness = createClaudeCode({
+  auth: { ANTHROPIC_API_KEY: await resolveAnthropicToken() },
+});
+```
+
+The supplied record replaces the host environment for authentication
+discovery. Only recognized authentication variables are forwarded.
 
 ## Sandbox
 
@@ -167269,7 +167282,8 @@ const harness = createCodex({
 
 Settings:
 
-- `auth`: authentication mode: `auto`, `direct`, or `ai-gateway`.
+- `auth`: authentication mode (`auto`, `direct`, or `ai-gateway`) or an
+  isolated authentication environment.
 - `credentialForwarding`: optional synchronous or asynchronous callback that
   customizes each credential immediately before the harness adapter forwards it
   into a sandbox process. It receives the credential value that would otherwise
@@ -167330,6 +167344,18 @@ Select a specific authentication mode when you do not want automatic detection:
 const directHarness = createCodex({ auth: 'direct' });
 const gatewayHarness = createCodex({ auth: 'ai-gateway' });
 ```
+
+Pass an authentication environment to use programmatically resolved
+credentials without reading `process.env`:
+
+```ts
+const harness = createCodex({
+  auth: { OPENAI_API_KEY: await resolveOpenAIToken() },
+});
+```
+
+The supplied record replaces the host environment for authentication
+discovery. Only recognized authentication variables are forwarded.
 
 For OpenAI-compatible endpoints, select `direct` and set `OPENAI_BASE_URL`.
 
@@ -167457,8 +167483,8 @@ const harness = createPi({
 
 Settings:
 
-- `auth`: authentication mode: `auto`, `openai`, `anthropic`, `custom`, or
-  `ai-gateway`.
+- `auth`: authentication mode (`auto`, `openai`, `anthropic`, `custom`, or
+  `ai-gateway`) or an isolated authentication environment.
 - `extensionFactories`: trusted inline Pi extension factories that run in the
   host Node.js process.
 - `mcpServers`: MCP server definitions keyed by server name.
@@ -167508,6 +167534,21 @@ The `auth` setting selects which credentials Pi reads from the host environment:
 ```ts
 const harness = createPi({ auth: 'ai-gateway' });
 ```
+
+Pass an authentication environment to use programmatically resolved
+credentials without reading `process.env`:
+
+```ts
+const harness = createPi({
+  auth: {
+    MISTRAL_API_KEY: await resolveMistralToken(),
+    MISTRAL_BASE_URL: 'https://api.mistral.ai',
+  },
+});
+```
+
+The supplied record replaces the host environment for authentication
+discovery. Pi parses provider API keys and base URLs from that record.
 
 With `custom`, standard providers use environment variables such as
 `OPENAI_API_KEY`, `OPENAI_BASE_URL`, `ANTHROPIC_API_KEY`, and
@@ -167643,7 +167684,8 @@ const harness = createOpenCode({
 
 Settings:
 
-- `auth`: authentication mode: `auto`, `anthropic`, `openai`, or `ai-gateway`.
+- `auth`: authentication mode (`auto`, `anthropic`, `openai`, or `ai-gateway`)
+  or an isolated authentication environment.
 - `credentialForwarding`: optional synchronous or asynchronous callback that
   customizes each credential immediately before the harness adapter forwards it
   into a sandbox process. It receives the credential value that would otherwise
@@ -167707,6 +167749,19 @@ const anthropicHarness = createOpenCode({ auth: 'anthropic' });
 const openAIHarness = createOpenCode({ auth: 'openai' });
 const gatewayHarness = createOpenCode({ auth: 'ai-gateway' });
 ```
+
+Pass an authentication environment to use programmatically resolved
+credentials without reading `process.env`:
+
+```ts
+const harness = createOpenCode({
+  auth: { OPENAI_API_KEY: await resolveOpenAIToken() },
+  provider: 'openai',
+});
+```
+
+The supplied record replaces the host environment for authentication
+discovery. Only recognized authentication variables are forwarded.
 
 For OpenAI-compatible endpoints, select `openai` and set `OPENAI_BASE_URL`.
 
@@ -167838,7 +167893,8 @@ const harness = createDeepAgents({
 
 Settings:
 
-- `auth`: authentication mode: `auto`, `anthropic`, or `ai-gateway`.
+- `auth`: authentication mode (`auto`, `anthropic`, or `ai-gateway`) or an
+  isolated authentication environment.
 - `credentialForwarding`: optional synchronous or asynchronous callback that
   customizes each credential immediately before the harness adapter forwards it
   into a sandbox process. It receives the credential value that would otherwise
@@ -167902,6 +167958,18 @@ const harness = createDeepAgents({
   auth: 'ai-gateway',
 });
 ```
+
+Pass an authentication environment to use programmatically resolved
+credentials without reading `process.env`:
+
+```ts
+const harness = createDeepAgents({
+  auth: { ANTHROPIC_API_KEY: await resolveAnthropicToken() },
+});
+```
+
+The supplied record replaces the host environment for authentication
+discovery. Only recognized authentication variables are forwarded.
 
 ## Sandbox
 
@@ -168052,6 +168120,8 @@ try {
     are available.
   - `ai-gateway`: always use AI Gateway and throw when Gateway credentials are
     unavailable. This requires `providerAuthentication` configuration.
+  - An authentication environment: auto-detect from the supplied record
+    instead of the host process environment.
 - `providerAuthentication`: declarative runtime-specific Gateway environment.
 - `modelId`: a known implementation model identifier for Harness metadata.
 - `skillsDirectory`: native skills directory relative to the implementation's
@@ -168191,6 +168261,24 @@ adapter reads these environment variables:
 With the default `auth: 'auto'`, the adapter uses AI Gateway when
 `AI_GATEWAY_API_KEY` or `VERCEL_OIDC_TOKEN` is available and otherwise uses
 direct authentication.
+
+Applications that resolve credentials at runtime can pass them without
+mutating `process.env`:
+
+```ts
+const harness = createACP({
+  // ...implementation settings
+  auth: {
+    AI_GATEWAY_API_KEY: await resolveGatewayToken(),
+    AI_GATEWAY_BASE_URL: 'https://ai-gateway.vercel.sh',
+  },
+});
+```
+
+The supplied record replaces the host environment for authentication
+discovery. `credentialEnv` reads from this record while `forwardEnv` continues
+to read non-authentication runtime configuration from the host. Credential
+values are excluded from bootstrap and lifecycle identity.
 
 For direct authentication, configure `credentialEnv` with the host environment
 variable names that the underlying ACP implementation reads, and use
@@ -168683,9 +168771,10 @@ const harness = createGrokBuild({
 
 Settings:
 
-- `auth`: selects `auto`, `direct`, or `ai-gateway` authentication. The default
-  is `auto`, which selects AI Gateway when Gateway credentials are present and
-  direct xAI authentication otherwise.
+- `auth`: selects `auto`, `direct`, or `ai-gateway` authentication, or accepts
+  an isolated authentication environment. The default is `auto`, which selects
+  AI Gateway when Gateway credentials are present and direct xAI
+  authentication otherwise.
 - `credentialForwarding`: optional synchronous or asynchronous callback that
   customizes each credential immediately before the harness adapter forwards it
   into a sandbox process. It receives the credential value that would otherwise
@@ -168740,6 +168829,21 @@ available:
 const directHarness = createGrokBuild({ auth: 'direct' });
 const gatewayHarness = createGrokBuild({ auth: 'ai-gateway' });
 ```
+
+Pass an authentication environment when the host resolves credentials at
+runtime:
+
+```ts
+const gatewayHarness = createGrokBuild({
+  auth: {
+    AI_GATEWAY_API_KEY: await resolveGatewayToken(),
+    AI_GATEWAY_BASE_URL: 'https://ai-gateway.vercel.sh',
+  },
+});
+```
+
+The supplied record replaces the host environment for authentication
+discovery, so it can also select direct authentication with `XAI_API_KEY`.
 
 ## Sandbox
 
@@ -168882,7 +168986,8 @@ const harness = createCline({
 
 Settings:
 
-- `auth`: authentication mode: `auto`, `direct`, or `ai-gateway`.
+- `auth`: authentication mode (`auto`, `direct`, or `ai-gateway`) or an
+  isolated authentication environment.
 - `mcpServers`: MCP server definitions keyed by server name.
 - `providerId`: Cline LLM provider id (e.g. `anthropic`, `openai`, `gemini`).
   When omitted, direct authentication uses the Cline backend. Explicit custom
@@ -168924,11 +169029,26 @@ environment:
 const harness = createCline({ auth: 'ai-gateway' });
 ```
 
+Pass an authentication environment when the host resolves credentials at
+runtime:
+
+```ts
+const harness = createCline({
+  auth: {
+    AI_GATEWAY_API_KEY: await resolveGatewayToken(),
+    AI_GATEWAY_BASE_URL: 'https://ai-gateway.vercel.sh',
+  },
+});
+```
+
+The supplied record replaces the host environment for authentication
+discovery, so it can also select direct authentication with `CLINE_API_KEY`.
+
 `CLINE_API_BASE_URL` is Cline's backend root URL; the SDK's `/api/v1` provider
 path is appended to it. For AI Gateway, the adapter instead overrides Cline's
 in-process provider configuration with the Gateway credential and its `/v1`
 endpoint. Direct Cline credentials are never used as a fallback in explicit
-Gateway mode.
+Gateway mode or when a supplied authentication environment selects Gateway.
 
 ## Sandbox
 
@@ -169071,10 +169191,11 @@ const harness = createCursor({
 
 Settings:
 
-- `auth`: accepts the shared ACP modes `auto`, `direct`, or `ai-gateway`. This
-  cannot change Cursor's provider authentication route. Explicit `direct` and
-  `ai-gateway` values emit a configuration reminder; `auto` does not because it
-  does not declare an expected route.
+- `auth`: accepts the shared ACP modes `auto`, `direct`, or `ai-gateway`, or an
+  isolated authentication environment for `CURSOR_API_KEY`. This cannot change
+  Cursor's provider authentication route. Explicit `direct` and `ai-gateway`
+  values emit a configuration reminder; `auto` does not because it does not
+  declare an expected route.
 - `credentialForwarding`: optional synchronous or asynchronous callback that
   customizes each credential immediately before the harness adapter forwards it
   into a sandbox process. It receives the credential value that would otherwise
@@ -169120,6 +169241,18 @@ const automaticHarness = createCursor({ auth: 'auto' });
 const directHarness = createCursor({ auth: 'direct' });
 const gatewayHarness = createCursor({ auth: 'ai-gateway' });
 ```
+
+Supply a programmatically resolved Cursor account credential without mutating
+or reading `process.env`:
+
+```ts
+const harness = createCursor({
+  auth: { CURSOR_API_KEY: await resolveCursorToken() },
+});
+```
+
+This record configures Cursor CLI authentication only. Cursor's account
+settings still control model-provider routing.
 
 ## Sandbox
 
@@ -169253,10 +169386,11 @@ const harness = createFx({
 
 Settings:
 
-- `auth`: selects `auto`, `direct`, or `ai-gateway` authentication. fx always
-  sends model requests through Vercel AI Gateway, so `direct` and `ai-gateway`
-  differ only in how the harness passes the Gateway credential into the
-  sandbox.
+- `auth`: selects `auto`, `direct`, or `ai-gateway` authentication, or accepts
+  an authentication environment for programmatically resolved credentials. fx
+  always sends model requests through Vercel AI Gateway, so
+  `direct` and `ai-gateway` differ only in how the harness passes the Gateway
+  credential into the sandbox.
 - `credentialForwarding`: optional synchronous or asynchronous callback that
   customizes each credential immediately before the harness adapter forwards it
   into a sandbox process. It receives the credential value that would otherwise
@@ -169290,8 +169424,25 @@ Set one of these environment variables:
 - `AI_GATEWAY_API_KEY`
 
 fx prefers `VERCEL_OIDC_TOKEN` when both are available. The adapter brokers the
-selected credential only to `ai-gateway.vercel.sh` when the sandbox supports
-request transformations. Other sandboxes retain direct credential forwarding.
+selected credential only to the configured Gateway origin when the sandbox
+supports request transformations. Other sandboxes retain direct credential
+forwarding.
+
+Pass an authentication environment when the host resolves credentials at
+runtime instead of exposing them through `process.env`:
+
+```ts
+const gatewayHarness = createFx({
+  auth: {
+    AI_GATEWAY_API_KEY: await resolveGatewayToken(),
+    AI_GATEWAY_BASE_URL: 'https://ai-gateway.vercel.sh',
+  },
+});
+```
+
+The supplied record replaces the host environment for authentication
+discovery. The adapter does not add its credentials to `process.env` or include
+their values in persisted ACP lifecycle identity.
 
 Both authentication configurations reach AI Gateway:
 

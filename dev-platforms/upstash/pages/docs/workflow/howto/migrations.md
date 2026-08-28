@@ -47,7 +47,7 @@ This guide covers migration between different versions of Upstash Workflow.
     });
     ```
 
-    See [Agents documentation](/workflow/agents/overview) for more details.
+    See [Agents documentation](/docs/workflow/agents/overview) for more details.
 
     ## Removed `keepTriggerConfig` and `useFailureFunction`
 
@@ -187,7 +187,7 @@ This guide covers migration between different versions of Upstash Workflow.
     );
     ```
 
-    You can also create custom middlewares for more control. See [Middlewares documentation](/workflow/howto/middlewares) for details.
+    You can also create custom middlewares for more control. See [Middlewares documentation](/docs/workflow/howto/middlewares) for details.
 
     ## Removed `onStepFinish`
 
@@ -228,7 +228,7 @@ This guide covers migration between different versions of Upstash Workflow.
     );
     ```
 
-    See [Middlewares documentation](/workflow/howto/middlewares) for more details.
+    See [Middlewares documentation](/docs/workflow/howto/middlewares) for more details.
 
   </Accordion>
 
@@ -270,7 +270,7 @@ This guide covers migration between different versions of Upstash Workflow.
     // old
     import { serve } from "@upstash/qstash/nextjs"
 
-    // new 
+    // new
     import { serve } from "@upstash/workflow/nextjs"
     ```
 
@@ -288,7 +288,7 @@ This guide covers migration between different versions of Upstash Workflow.
     ```
 
     We kept the `serve` method of `Hono` the same. The rest are updated in a similar way.
-    See [the quickstarts](/workflow/quickstarts/platforms) for the new way `serve`
+    See [the quickstarts](/docs/workflow/quickstarts/platforms) for the new way `serve`
     should be used.
 
     Additionally, `@upstash/workflow/nuxt` import is removed. You should use `@upstash/workflow/h3`
@@ -297,7 +297,7 @@ This guide covers migration between different versions of Upstash Workflow.
 
     ### Updating `context.call`
 
-    If you were using [`context.call` method](/workflow/basics/context#context-call) in your workflow, you will need to change
+    If you were using [`context.call` method](/docs/workflow/basics/context#context-call) in your workflow, you will need to change
     how it's called and what it returns. Here is what the change looks like:
 
     ```javascript
@@ -317,7 +317,7 @@ This guide covers migration between different versions of Upstash Workflow.
     ```
 
     In the old version, we only returned the response body. Also, if the request
-    to the url failed, [the workflow run would fail](/workflow/howto/failures).
+    to the url failed, [the workflow run would fail](/docs/workflow/howto/failures).
 
     In the new version, we update how the parameters are passed to the `context.call`.
     Additionally, we change the fail behavior: if the request fails, it doesn't make the

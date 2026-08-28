@@ -4,13 +4,9 @@ source: https://upstash.com/docs/devops/developer-api/start-redis/metrics
 path: docs/devops/developer-api/start-redis/metrics
 ---
 
-> Returns usage metrics for a database created with start-redis.
-
-`GET https://upstash.com/start-redis/metrics/{id}`
-
 This endpoint does not require authentication. It returns usage metrics for
 a free database created with
-[`POST /start-redis`](/devops/developer-api/start-redis/create), so an agent
+[`POST /start-redis`](/docs/devops/developer-api/start-redis/create), so an agent
 can check how the database is being used without a console login.
 
 ## Request
@@ -55,3 +51,34 @@ can check how the database is being used without a console login.
 </ResponseField>
 
 Returns `404 Not Found` if no database exists with that ID.
+
+<RequestExample>
+
+```sh curl
+curl https://upstash.com/start-redis/metrics/<database-id> \
+  -H "User-Agent: <your-agent-name>"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 OK
+{
+  "uptime_seconds": 1,
+  "expires_at": "2026-08-28T13:25:49Z",
+  "console_url": "https://upstash.com/start-redis/console/3b1f7c2e-9d4a-4c8b-a1e5-6f2d8e9c0b47",
+  "commands_total": 0,
+  "commands_per_sec_1m": 0,
+  "keys": 0,
+  "memory_bytes": 0,
+  "bytes_in": 0,
+  "bytes_out": 0
+}
+```
+
+```json 404 Not Found
+"not found"
+```
+
+</ResponseExample>

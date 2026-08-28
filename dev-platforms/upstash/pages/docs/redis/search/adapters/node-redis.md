@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/search/adapters/node-redis
 path: docs/redis/search/adapters/node-redis
 ---
 
-> Use Redis Search with node-redis via the @upstash/search-redis adapter
-
 If you're already using **node-redis** in your project, you can use Redis Search without switching to the `@upstash/redis` client. The `@upstash/search-redis` package wraps your existing node-redis client and exposes the full Redis Search API.
 
 ### Installation

@@ -73,7 +73,7 @@ path: api/payment_intents/object
 - `id` (string)
   Unique identifier for the object.
 
-- `object` (string)
+- `object` (string, value is "payment_intent")
   String representing the object’s type. Objects of the same type share the same value.
 
 - `allowed_payment_method_types` (array of enums, nullable)
@@ -224,7 +224,7 @@ Possible enum values:
     [MobilePay](https://docs.stripe.com/payments/mobilepay.md) is a Nordic card-passthrough wallet payment method where customers authorize the payment in the MobilePay application.
 
   - `momo`
-    Momo is a payment method.
+    [MoMo](https://docs.stripe.com/payments/momo.md) is a Vietnamese mobile wallet payment method.
 
   - `mondu`
     [Mondu](https://docs.stripe.com/payments/mondu.md) is a payment method.
@@ -317,7 +317,7 @@ Possible enum values:
     [SEPA Direct Debit](https://docs.stripe.com/payments/sepa-debit.md) is used to debit bank accounts within the Single Euro Payments Area (SEPA) region.
 
   - `sequra`
-    Sequra is a payment method.
+    SeQura is a payment method.
 
   - `shop_pay`
     [Shop Pay](https://docs.stripe.com/payments/shop-pay.md) is a Wallet payment method that lets hundreds of millions of Shopify customers pay their way, every day.
@@ -345,6 +345,9 @@ Possible enum values:
 
   - `test_pay`
     TestPay is a payment method.
+
+  - `touch_n_go`
+    Touch 'n Go is a Malaysian mobile wallet payment method.
 
   - `truemoney`
     TrueMoney is a payment method.

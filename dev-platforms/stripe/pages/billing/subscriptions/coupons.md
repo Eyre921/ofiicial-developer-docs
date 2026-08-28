@@ -79,7 +79,7 @@ If you sell in multiple currencies, a single coupon can define different discoun
 | **Apply to specific products** (optional) | Limits the type of items that the coupon can apply to. |
 | **Duration** | Indicates how long the coupon is valid for. |
 | **Redemption limits** (optional) | Allows you to limit when a customer can redeem the coupon and the number of times a coupon can be redeemed. |
-| **Codes** (optional) | Allows you to create [promotion codes](https://docs.stripe.com/billing/subscriptions/coupons.md#promotion-codes--promotion-codes) for the coupon. |
+| **Codes** (optional) | Allows you to create [promotion codes](https://docs.stripe.com/billing/subscriptions/coupons.md#promotion-codes) for the coupon. |
 
 #### API
 

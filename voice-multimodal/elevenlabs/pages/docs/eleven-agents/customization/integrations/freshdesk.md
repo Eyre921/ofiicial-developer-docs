@@ -13,7 +13,7 @@ path: docs/eleven-agents/customization/integrations/freshdesk
 Connect your ElevenLabs AI agents with Freshdesk to drive customer support workflows. The integration covers two scopes:
 
 * **Tools**: let an agent look up tickets and contacts, search the helpdesk, post replies and internal notes, and create new tickets while a conversation is running.
-* **Triggers**: have an agent automatically respond to new tickets or customer replies on existing tickets, posted back as an admin reply through the Freshdesk Conversations API.
+* **Triggers**: have an agent automatically respond to new tickets or customer replies on existing tickets. Replies post back as an admin reply through the Freshdesk Conversations API, or as a private note when shadow mode is enabled.
 
 ## Setup
 
@@ -40,6 +40,7 @@ If you want the agent to respond automatically to customer activity on tickets, 
 
 * **Agent**: the agent that should handle incoming conversations.
 * **Responder**: the Freshdesk agent identity the bot posts replies as.
+* **Shadow Mode** (optional): when enabled, the agent writes a private note for staff review instead of sending a public reply.
 
 When you activate the trigger, ElevenLabs creates a Freshdesk automation rule in your account that POSTs to our webhook on ticket creation and customer reply. Deactivating removes the rule. No manual Freshdesk admin steps are required.
 
@@ -51,6 +52,19 @@ tickets. If that happens, open **Admin → Workflows → Automations → Ticket 
 `ElevenLabs agent …` rule above any conflicting rule. (Ticket-reply triggers use the **Ticket
 Updates** category, where all matching rules run, so this only affects responses to brand-new
 tickets.)
+
+### Shadow mode
+
+Enable shadow mode on a Freshdesk trigger to let the agent draft responses without sending them to customers. When shadow mode is active, the agent writes its responses as **private notes** on the ticket instead of public replies. Only Freshdesk agents can see private notes — the requester is not notified.
+
+Freshdesk does not expose a ticket-reply draft API. Private notes are the supported equivalent: staff copy the suggested reply into the ticket's reply editor, edit if needed, and send.
+
+Shadow mode only affects how the agent posts its responses. If the agent uses tools that modify
+the ticket (for example changing status, adding tags, or assigning the ticket), those changes
+still apply. To prevent unintended modifications, use a separate branch of the agent with
+modifying tool calls removed.
+
+Shadow mode is useful for evaluating agent quality before going live. Review the private notes alongside the actual support responses to compare accuracy and tone, then turn shadow mode off once you are confident in the output.
 
 ### CLI
 

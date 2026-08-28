@@ -4659,7 +4659,7 @@ For interoperability with RxJS Observables, the `.subscribe` method is also allo
 
 Context allows components to access values owned by parent components without passing them down as props (potentially through many layers of intermediate components, known as 'prop-drilling').
 
-By creating a `[get, set]` pair of functions with `createContext`, you can set the context in a parent component and get it in a child component:
+By creating a `[get, set, has]` triplet of functions with `createContext`, you can set the context in a parent component and get it in a child component:
 
 <!-- codeblock:start {"title":"Context","selected":"context.ts"} -->
 ```svelte
@@ -7815,7 +7815,7 @@ Available since 5.40.0
 
 </blockquote>
 
-Returns a `[get, set]` pair of functions for working with context in a type-safe way.
+Returns a `[get, set, has]` triplet of functions for working with context in a type-safe way.
 
 `get` will throw an error if `set` has not yet been called in the current component or any of
 its ancestors.
@@ -7823,7 +7823,11 @@ its ancestors.
 <div class="ts-block">
 
 ```dts
-function createContext<T>(): [() => T, (context: T) => T];
+function createContext<T>(): [
+	() => T,
+	(context: T) => T,
+	() => boolean
+];
 ```
 
 </div>
@@ -12468,6 +12472,24 @@ constructor(value?: Iterable<readonly [K, V]> | null | undefined);
 <div class="ts-block-property">
 
 ```dts
+getOrInsert(key: K, value: V): V;
+```
+
+<div class="ts-block-property-details"></div>
+</div>
+
+<div class="ts-block-property">
+
+```dts
+getOrInsertComputed(key: K, callbackFn: (key: K) => V): V;
+```
+
+<div class="ts-block-property-details"></div>
+</div>
+
+<div class="ts-block-property">
+
+```dts
 set(key: K, value: V): this;
 ```
 
@@ -16462,7 +16484,7 @@ Certain lifecycle methods can only be used during component initialisation. To f
 Context was not set in the current component or any of its ancestors
 ```
 
-The [`createContext()`](svelte#createContext) utility returns a `[get, set]` pair of functions. `get` will throw an error if `set` was not used to set the context in the current component or any of its ancestors.
+The [`createContext()`](svelte#createContext) utility returns a `[get, set, has]` triplet of functions. `get` will throw an error if `set` was not used to set the context in the current component or any of its ancestors.
 
 ### snippet_without_render_tag
 

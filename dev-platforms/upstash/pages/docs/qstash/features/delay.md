@@ -22,11 +22,11 @@ published.
 
 The format for the duration is `<number><unit>`. Here are some examples:
 
-- `10s` = 10 seconds
-- `1m` = 1 minute
-- `30m` = half an hour
-- `2h` = 2 hours
-- `7d` = 7 days
+* `10s` = 10 seconds
+* `1m` = 1 minute
+* `30m` = half an hour
+* `2h` = 2 hours
+* `7d` = 7 days
 
 You can send this duration inside the `Upstash-Delay` header.
 

@@ -144,7 +144,7 @@ You can always add [Connect embedded components](https://docs.stripe.com/connect
 
 > #### Preview API version required with the Express Dashboard
 > 
-> Combining Express Dashboard access with Stripe responsibility for negative balances is in [public preview](https://docs.stripe.com/release-phases.md). Use the current preview version string (`2026-07-29.preview`) in your Stripe SDK configuration when you create connected accounts.
+> Combining Express Dashboard access with Stripe responsibility for negative balances is in [public preview](https://docs.stripe.com/release-phases.md). Use the current preview version string (`2026-08-26.preview`) in your Stripe SDK configuration when you create connected accounts.
 > 
 > The generated code and prompt on this page use the current generally available API version. Replace that version with the preview version string if you use this combination.
 

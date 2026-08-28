@@ -4,8 +4,6 @@ source: https://upstash.com/docs/devops/terraform/resources/upstash_team
 path: docs/devops/terraform/resources/upstash_team
 ---
 
-> Create and manage teams on Upstash.
-
 <RequestExample>
 
 ```hcl example.tf

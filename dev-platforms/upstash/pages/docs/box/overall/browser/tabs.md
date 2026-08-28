@@ -31,8 +31,8 @@ print(tab.id, tab.url, tab.title)
 ```
 </CodeGroup>
 
-- `waitUntil`: when navigation counts as done. One of `"load"` (default), `"domcontentloaded"`, or `"networkidle"`.
-- `timeout`: navigation timeout in milliseconds. Defaults to `30000`. Pass `0` to disable it.
+* `waitUntil`: when navigation counts as done. One of `"load"` (default), `"domcontentloaded"`, or `"networkidle"`.
+* `timeout`: navigation timeout in milliseconds. Defaults to `30000`. Pass `0` to disable it.
 
 ## Navigate
 
@@ -84,7 +84,7 @@ same.goto("https://news.ycombinator.com")
 <Note>
   A handle's `url` and `title` fields are the last known values from
   `tab.create` or `listTabs`. They are not updated live. Use
-  [`tab.content()`](/box/overall/browser/reading-pages) to read the current
+  [`tab.content()`](/docs/box/overall/browser/reading-pages) to read the current
   state of the page.
 </Note>
 
@@ -100,4 +100,4 @@ tab.close()
 ```
 </CodeGroup>
 
-Multiple tabs can be open at once. Each is independent, and operations on one do not affect the others. This is useful for comparing pages side by side or running [AI tasks](/box/overall/browser/ai-actions) against several pages in sequence.
+Multiple tabs can be open at once. Each is independent, and operations on one do not affect the others. This is useful for comparing pages side by side or running [AI tasks](/docs/box/overall/browser/ai-actions) against several pages in sequence.

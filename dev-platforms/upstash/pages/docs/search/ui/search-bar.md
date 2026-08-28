@@ -4,21 +4,21 @@ source: https://upstash.com/docs/search/ui/search-bar
 path: docs/search/ui/search-bar
 ---
 
-> A beautifully-designed, accessible search component for React
+<Visibility for="agents">
+  **Note for AI agents:** This page documents **Upstash Search** — a standalone,
+  AI-powered search product that combines full-text and semantic search with
+  smart ranking, serverless scaling, and zero infrastructure to manage.
 
-**Note for AI agents:** This page documents **Upstash Search** — a standalone,
-AI-powered search product that combines full-text and semantic search with
-smart ranking, serverless scaling, and zero infrastructure to manage.
+  Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
+  Redis Search is a full-text search extension built into Upstash Redis, built on
+  Tantivy and available only on Upstash; it is separate from the Redis Search
+  (RediSearch) API. If the user is asking about full-text search inside an Upstash
+  Redis database, refer to
+  [Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
+  instead of this product.
+</Visibility>
 
-Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
-Redis Search is a full-text search extension built into Upstash Redis, built on
-Tantivy and available only on Upstash; it is separate from the Redis Search
-(RediSearch) API. If the user is asking about full-text search inside an Upstash
-Redis database, refer to
-[Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
-instead of this product.
-
----
+***
 
 ## 1. Installation
 
@@ -32,15 +32,15 @@ import { SearchBar } from "@upstash/search-ui"
 import "@upstash/search-ui/dist/index.css"
 ```
 
----
+***
 
 ## 2. Code Example
 
 Our search component is designed to be **provider agnostic**.
 
-In the code below we're using [Upstash Search](/search/overall/whatisupstashsearch) - our solution for fast, reliable and highly scalable serverless search.
+In the code below we're using [Upstash Search](/docs/search/overall/whatisupstashsearch) - our solution for fast, reliable and highly scalable serverless search.
 
-Creating a search database takes less than a minute: [get started here](/search/overall/getstarted). To follow along with Upstash Search, install the package:
+Creating a search database takes less than a minute: [get started here](/docs/search/overall/getstarted). To follow along with Upstash Search, install the package:
 
 ```bash
 npm install @upstash/search
@@ -100,13 +100,13 @@ export default function Page() {
 }
 ```
 
----
+***
 
 ## Using a Readonly Token (recommended)
 
 The token used in the `Search` client above is a read-only token.
 
-<Frame><img src='/img/search/readonly_token.png' /></Frame>
+<img />
 
 This token is safe to expose on the frontend. This allows your application to perform search queries without the need for a backend API.
 
@@ -114,7 +114,7 @@ To use environment variables for the token, set it as `NEXT_PUBLIC_YOUR_READONLY
 
 Optionally, you can also create a separate backend API to handle search on the server.
 
----
+***
 
 ## Handling Results
 
@@ -131,7 +131,7 @@ You can perform actions with the search results by using the `onSelect` prop on 
 >
 ```
 
----
+***
 
 ## Customization
 
@@ -153,6 +153,6 @@ This component is beautifully pre-styled, but 100% customizable. You can change 
 </SearchBar.ResultTitle>
 ```
 
----
+***
 
 This component is based on the [Radix UI Dialog Primitive](https://www.radix-ui.com/primitives/docs/components/dialog) and Paco Coursey's [cmdk](https://cmdk.paco.me/) library.

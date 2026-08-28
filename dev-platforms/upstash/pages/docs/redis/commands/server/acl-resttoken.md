@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/server/acl-resttoken
 path: docs/redis/commands/server/acl-resttoken
 ---
 
-> Generate a REST token for an existing user.
-
 Use `ACL RESTTOKEN` to get a REST API token for an ACL user you already created, given that user's username and password.
 
-The password is the same value used with `>password` in [`ACL SETUSER`](/redis/commands/server/acl-setuser), which is itself a value produced by [`ACL GENTOKEN`](/redis/commands/server/acl-gentoken); passing the full token string that `GENTOKEN` returned also works. The result is a bearer token scoped to that user's permissions that can be set as `UPSTASH_REDIS_REST_TOKEN`, which is how a database user created for TCP access is also given REST API access. `RESTTOKEN` is an Upstash extension.
+The password is the same value used with `>password` in [`ACL SETUSER`](/docs/redis/commands/server/acl-setuser), which is itself a value produced by [`ACL GENTOKEN`](/docs/redis/commands/server/acl-gentoken); passing the full token string that `GENTOKEN` returned also works. The result is a bearer token scoped to that user's permissions that can be set as `UPSTASH_REDIS_REST_TOKEN`, which is how a database user created for TCP access is also given REST API access. `RESTTOKEN` is an Upstash extension.
 
 ## Syntax
 
@@ -25,8 +23,8 @@ ACL RESTTOKEN <username> <password>
 
 ## Important points
 
-- Returns an error if the username does not exist or the password does not match.
-- The returned token carries the same permissions as the underlying user; revoking or narrowing the user with `ACL SETUSER` also affects every token issued for it.
+* Returns an error if the username does not exist or the password does not match.
+* The returned token carries the same permissions as the underlying user; revoking or narrowing the user with `ACL SETUSER` also affects every token issued for it.
 
 ## Response
 

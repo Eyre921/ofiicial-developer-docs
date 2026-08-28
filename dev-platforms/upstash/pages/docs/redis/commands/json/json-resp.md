@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/json/json-resp
 path: docs/redis/commands/json/json-resp
 ---
 
-> Get JSON in RESP format.
-
 Use `JSON.RESP` to get a JSON value in RESP form instead of as JSON text.
 
 The document is translated structurally: an object becomes an array whose first element is `{` followed by alternating field names and values, an array becomes an array whose first element is `[` followed by its elements, and scalars become the corresponding RESP types. Nested values are translated the same way, recursively.
 
-This lets a client walk the structure using the protocol types it already decodes, without running a JSON parser on the reply. For ordinary use, [`JSON.GET`](/redis/commands/json/json-get) is the more convenient command.
+This lets a client walk the structure using the protocol types it already decodes, without running a JSON parser on the reply. For ordinary use, [`JSON.GET`](/docs/redis/commands/json/json-get) is the more convenient command.
 
 ## Syntax
 
@@ -27,8 +25,8 @@ JSON.RESP <key> [path]
 
 ## Important points
 
-- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

@@ -32,9 +32,9 @@ want to connect over HTTP, you need to use the HTTP auth token.
    [Upstash console](https://console.upstash.com/redis) by copying the snippet
    from the `Connect` section -> `JavaScript` tab
 
-![](/img/troubleshooting/rest/console_upstash_redis.png)
+![]()
 
 Or select the `REST` tab in the `Connect` section and copy the
 `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` from there.
 
-![](/img/troubleshooting/rest/console_rest_api.png)
+![]()

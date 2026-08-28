@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/scripting/eval
 path: docs/redis/commands/scripting/eval
 ---
 
-> Execute a Lua script.
-
 Use `EVAL` to run a Lua script on the server.
 
 `<numkeys>` says how many of the arguments that follow are key names. The script receives those in the `KEYS` table and every remaining argument in `ARGV`. Passing key names as keys rather than hardcoding them in the script body matters, because Redis uses that list for routing and access checks. Inside the script, `redis.call` runs Redis commands and its return value is converted to a Lua value.
@@ -21,19 +19,19 @@ redis.call('INCR', KEYS[1])
 return 1
 ```
 
-With the flag set, every key the script touches must appear in `KEYS`, and commands that need database-wide access, such as `FLUSHDB`, are rejected. See [Key-Based Locking](/redis/features/key-locking) for the full rules.
+With the flag set, every key the script touches must appear in `KEYS`, and commands that need database-wide access, such as `FLUSHDB`, are rejected. See [Key-Based Locking](/docs/redis/features/key-locking) for the full rules.
 
 <Warning>
   Pass every key the script touches through `KEYS`, even when the script runs
   under the global lock. Upstash keeps idle entries
-  [on disk](/redis/features/durability): declared keys are loaded before the
+  [on disk](/docs/redis/features/durability): declared keys are loaded before the
   script starts and the lock is released during that read, but a key that the
   script builds while it runs is read from disk with the lock held, stalling
   every command waiting on it. See
-  [Dynamic Keys and Latency](/redis/features/key-locking#dynamic-keys-and-latency).
+  [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 </Warning>
 
-Sending a script also caches it under its SHA1 digest, so later calls can use [`EVALSHA`](/redis/commands/scripting/evalsha) and avoid resending the body. Use [`EVAL_RO`](/redis/commands/scripting/eval-ro) for scripts that only read.
+Sending a script also caches it under its SHA1 digest, so later calls can use [`EVALSHA`](/docs/redis/commands/scripting/evalsha) and avoid resending the body. Use [`EVAL_RO`](/docs/redis/commands/scripting/eval-ro) for scripts that only read.
 
 ## Syntax
 
@@ -52,10 +50,10 @@ EVAL <script> <numkeys> [<key> [<key> ...]] [<arg> [<arg> ...]]
 
 ## Important points
 
-- `numkeys` must equal the number of key arguments that immediately follow it; remaining arguments are available to the script or function as ordinary arguments.
-- The script takes the global lock unless its shebang sets the `allow-key-locking` flag, in which case it locks only the keys passed in `KEYS`. See [Key-Based Locking](/redis/features/key-locking).
-- A script queued inside a `MULTI`/`EXEC` transaction always runs under the global lock, even when it sets `allow-key-locking`. Call it directly if you want per-key locking.
-- Pass every key the script touches through `KEYS` whether or not `allow-key-locking` is set. A key built inside the script is read from disk under the lock when it is not in memory, and it is rejected outright when the flag is set. See [Dynamic Keys and Latency](/redis/features/key-locking#dynamic-keys-and-latency).
+* `numkeys` must equal the number of key arguments that immediately follow it; remaining arguments are available to the script or function as ordinary arguments.
+* The script takes the global lock unless its shebang sets the `allow-key-locking` flag, in which case it locks only the keys passed in `KEYS`. See [Key-Based Locking](/docs/redis/features/key-locking).
+* A script queued inside a `MULTI`/`EXEC` transaction always runs under the global lock, even when it sets `allow-key-locking`. Call it directly if you want per-key locking.
+* Pass every key the script touches through `KEYS` whether or not `allow-key-locking` is set. A key built inside the script is read from disk under the lock when it is not in memory, and it is rejected outright when the flag is set. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 
 ## Response
 

@@ -11,7 +11,6 @@ This SDK simplifies interaction with Upstash Vector through the [Upstash Vector 
 It is designed to work with Python versions 3.8 and above.
 
 Explore the source code, contribute, and stay informed through our [GitHub Repository](https://github.com/upstash/vector-py).
-    
 
 ## Install
 
@@ -67,4 +66,4 @@ def main():
 The example above demonstrates how to upsert a vector with metadata using the SDK into the Upstash Vector database.
 
 ## More SDK Features
-For additional functionalities and usage examples, check out the [Commands](/vector/sdks/py/example_calls) section in the documentation.
+For additional functionalities and usage examples, check out the [Commands](/docs/vector/sdks/py/example_calls) section in the documentation.

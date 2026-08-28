@@ -243,7 +243,7 @@ To manage this, you can use the `chunk_length_schedule` parameter when either in
 
 Here's an example of how this works with the default settings for `chunk_length_schedule`:
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/077efc232570b0f92355aed2d6766b66bba815e335466e81cd64f8dfcce10ada/assets/images/developer-guides/buffering-explainer.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T221725Z&X-Amz-Expires=604800&X-Amz-Signature=118618a8e1014bc19bccc15383f852f77767a4c0ea1fd3d7f0b9bdac5e45688e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/077efc232570b0f92355aed2d6766b66bba815e335466e81cd64f8dfcce10ada/assets/images/developer-guides/buffering-explainer.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260828%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260828T111530Z&X-Amz-Expires=604800&X-Amz-Signature=b66a0e1975851d1c4bdf143cc339afe620d7b716c61466979ea6c84ac7097657&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" />
 
 In the above diagram, audio is only generated after the second message is sent to the server. This is because the first message is below the threshold of 120 characters, while the second message brings the total number of characters above the threshold. The third message is above the threshold of 160 characters, so audio is immediately generated and returned to the client.
 
@@ -273,7 +273,7 @@ websocket.send(
 
 In the case that you want force the immediate return of the audio, you can use `flush: true` to clear out the buffer and force generate any buffered text. This can be useful, for example, when you have reached the end of a document and want to generate audio for the final section.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84011e01024effe1bba1556f0007c7947165a0101bce3a41f8b955d1a9788a9c/assets/images/developer-guides/buffering-flush-explainer.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T221725Z&X-Amz-Expires=604800&X-Amz-Signature=19140ff02870ac789940126b357c2bc5c7bcb88cb1f241aeb7eb923382834748&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84011e01024effe1bba1556f0007c7947165a0101bce3a41f8b955d1a9788a9c/assets/images/developer-guides/buffering-flush-explainer.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260828%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260828T111530Z&X-Amz-Expires=604800&X-Amz-Signature=8aba2d529243cc2687ff4043b880662d8ee62d1a9c5e9173ccfaa6e04605d786&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" />
 
 This can be specified on a per-message basis by setting `flush: true` in the message.
 

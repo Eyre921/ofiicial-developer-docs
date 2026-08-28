@@ -8,12 +8,12 @@ Because your API needs to be publicly accessible from the internet, you should
 make sure to verify the authenticity of each request.
 
 Upstash provides a JWT with each request. This JWT is signed by your individual
-secret signing keys. [Read more](/qstash/howto/signature).
+secret signing keys. [Read more](/docs/qstash/howto/signature).
 
 We are using 2 signing keys:
 
-- current: This is the key used to sign the JWT.
-- next: This key will be used to sign after you have rolled your keys.
+* current: This is the key used to sign the JWT.
+* next: This key will be used to sign after you have rolled your keys.
 
 If we were using only a single key, there would be some time between when you
 rolled your keys and when you can edit the key in your applications. In order to
@@ -44,4 +44,4 @@ Rolling your keys can be done by going to the
 [QStash UI](https://console.upstash.com/qstash) and clicking on the "Roll keys"
 button.
 
-![](/img/qstash/roll_keys.png)
+![]()

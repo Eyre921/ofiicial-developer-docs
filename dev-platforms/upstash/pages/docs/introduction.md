@@ -4,8 +4,6 @@ source: https://upstash.com/docs/introduction
 path: docs/introduction
 ---
 
-> Serverless data and messaging for developers: Redis, Vector, QStash, Workflow, Search, and Box, with SDKs, integrations, and a full-featured console.
-
 import { Hero, SectionHead, ProductGrid, AgentResources, Concepts, Community } from "/snippets/landing.jsx";
 
 <Hero />

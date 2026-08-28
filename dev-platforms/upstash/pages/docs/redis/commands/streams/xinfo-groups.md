@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/streams/xinfo-groups
 path: docs/redis/commands/streams/xinfo-groups
 ---
 
-> List stream groups.
-
 Use `XINFO GROUPS` to list the consumer groups defined on a stream.
 
 Each group is reported with its name, its number of consumers, how many entries are pending across the group, the ID it has delivered up to, and its lag, meaning how many entries in the stream it has not read yet. Lag and pending count together are the standard health signals for a stream consumer: a growing lag means consumers cannot keep up, while a growing pending count means they read entries but do not acknowledge them.

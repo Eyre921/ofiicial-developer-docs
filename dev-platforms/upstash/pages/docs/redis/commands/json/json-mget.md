@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/json/json-mget
 path: docs/redis/commands/json/json-mget
 ---
 
-> Get values from multiple keys.
-
 Use `JSON.MGET` to read the same path from several JSON documents in one call.
 
-The reply holds one entry per key, in the order requested, containing what the path selected in that document, or null when the key does not exist or the path matches nothing. It replaces one [`JSON.GET`](/redis/commands/json/json-get) per key when you are gathering the same field across many documents, for example the price of every product in a cart.
+The reply holds one entry per key, in the order requested, containing what the path selected in that document, or null when the key does not exist or the path matches nothing. It replaces one [`JSON.GET`](/docs/redis/commands/json/json-get) per key when you are gathering the same field across many documents, for example the price of every product in a cart.
 
 ## Syntax
 
@@ -25,8 +23,8 @@ JSON.MGET <key> [key ...] <path>
 
 ## Important points
 
-- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

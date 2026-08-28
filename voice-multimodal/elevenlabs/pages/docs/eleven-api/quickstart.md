@@ -59,6 +59,10 @@ scoop bucket add elevenlabs https://github.com/elevenlabs/scoop-bucket
 scoop install elevenlabs
 ```
 
+```bash title="npm"
+npm install -g @elevenlabs/cli
+```
+
 ```bash title="curl"
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
 ```

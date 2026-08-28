@@ -143,7 +143,7 @@ path: api/subscriptions/object
 - `id` (string)
   Unique identifier for the object.
 
-- `object` (string)
+- `object` (string, value is "subscription")
   String representing the object’s type. Objects of the same type share the same value.
 
 - `application` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))

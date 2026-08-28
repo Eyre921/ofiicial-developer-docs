@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 577 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 569 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api-reference
@@ -63,13 +63,6 @@
 - `api-reference/tasks/get-a-task-with-steps` — [Get a task (with steps)](pages/api-reference/tasks/get-a-task-with-steps.md) · [原文](https://docs.pinecone.io/api-reference/tasks/get-a-task-with-steps)
 - `api-reference/tasks/list-tasks-project-wide-paginated` — [List tasks (project-wide, paginated)](pages/api-reference/tasks/list-tasks-project-wide-paginated.md) · [原文](https://docs.pinecone.io/api-reference/tasks/list-tasks-project-wide-paginated)
 - `api-reference/tasks/live-token---runtime-stats-for-a-task` — [Live token + runtime stats for a task](pages/api-reference/tasks/live-token---runtime-stats-for-a-task.md) · [原文](https://docs.pinecone.io/api-reference/tasks/live-token-+-runtime-stats-for-a-task)
-
-## assistant-release-notes
-
-- `assistant-release-notes/2024` — [Pinecone Assistant 2024 release notes](pages/assistant-release-notes/2024.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2024)
-- `assistant-release-notes/2025` — [Pinecone Assistant 2025 release notes](pages/assistant-release-notes/2025.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2025)
-- `assistant-release-notes/2026` — [Pinecone Assistant 2026 release notes](pages/assistant-release-notes/2026.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2026)
-- `assistant-release-notes/feature-availability` — [Pinecone Assistant feature availability](pages/assistant-release-notes/feature-availability.md) · [原文](https://docs.pinecone.io/assistant-release-notes/feature-availability)
 
 ## examples
 
@@ -299,19 +292,9 @@
 - `integrations/voyage` — [Voyage AI](pages/integrations/voyage.md) · [原文](https://docs.pinecone.io/integrations/voyage)
 - `integrations/zapier` — [Zapier](pages/integrations/zapier.md) · [原文](https://docs.pinecone.io/integrations/zapier)
 
-## marketplace-release-notes
-
-- `marketplace-release-notes/2026` — [Pinecone Marketplace 2026 release notes](pages/marketplace-release-notes/2026.md) · [原文](https://docs.pinecone.io/marketplace-release-notes/2026)
-- `marketplace-release-notes/feature-availability` — [Pinecone Marketplace feature availability](pages/marketplace-release-notes/feature-availability.md) · [原文](https://docs.pinecone.io/marketplace-release-notes/feature-availability)
-
 ## models
 
 - `models/overview` — [Model Gallery](pages/models/overview.md) · [原文](https://docs.pinecone.io/models/overview)
-
-## nexus-release-notes
-
-- `nexus-release-notes/2026` — [Pinecone Nexus 2026 release notes](pages/nexus-release-notes/2026.md) · [原文](https://docs.pinecone.io/nexus-release-notes/2026)
-- `nexus-release-notes/feature-availability` — [Pinecone Nexus feature availability](pages/nexus-release-notes/feature-availability.md) · [原文](https://docs.pinecone.io/nexus-release-notes/feature-availability)
 
 ## reference
 
@@ -493,12 +476,12 @@
 - `reference/api/marketplace/versions` — [Versions and publishing](pages/reference/api/marketplace/versions.md) · [原文](https://docs.pinecone.io/reference/api/marketplace/versions)
 - `reference/api/nexus/authentication` — [Authentication](pages/reference/api/nexus/authentication.md) · [原文](https://docs.pinecone.io/reference/api/nexus/authentication)
 - `reference/api/nexus/introduction` — [Pinecone Nexus API](pages/reference/api/nexus/introduction.md) · [原文](https://docs.pinecone.io/reference/api/nexus/introduction)
-- `reference/api/versioning` — [API versioning](pages/reference/api/versioning.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
-- `reference/api/versioning` — [API versioning](pages/reference/api/versioning-2.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
-- `reference/api/versioning` — [API versioning](pages/reference/api/versioning-3.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
-- `reference/api/versioning` — [API versioning](pages/reference/api/versioning-4.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
-- `reference/api/versioning` — [API versioning](pages/reference/api/versioning-5.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
-- `reference/api/versioning` — [API versioning](pages/reference/api/versioning-6.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
+- `reference/api/versioning` — [Pinecone API versioning](pages/reference/api/versioning.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
+- `reference/api/versioning` — [Pinecone API versioning](pages/reference/api/versioning-2.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
+- `reference/api/versioning` — [Pinecone API versioning](pages/reference/api/versioning-3.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
+- `reference/api/versioning` — [Pinecone API versioning](pages/reference/api/versioning-4.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
+- `reference/api/versioning` — [Pinecone API versioning](pages/reference/api/versioning-5.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
+- `reference/api/versioning` — [Pinecone API versioning](pages/reference/api/versioning-6.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
 - `reference/architecture/assistant-architecture` — [Pinecone Assistant architecture](pages/reference/architecture/assistant-architecture.md) · [原文](https://docs.pinecone.io/reference/architecture/assistant-architecture)
 - `reference/architecture/assistant-architecture` — [Pinecone Assistant architecture](pages/reference/architecture/assistant-architecture-2.md) · [原文](https://docs.pinecone.io/reference/architecture/assistant-architecture)
 - `reference/cli/authentication` — [CLI authentication](pages/reference/cli/authentication.md) · [原文](https://docs.pinecone.io/reference/cli/authentication)
@@ -579,12 +562,12 @@
 
 ## release-notes
 
-- `release-notes/2022` — [2022 releases](pages/release-notes/2022.md) · [原文](https://docs.pinecone.io/release-notes/2022)
-- `release-notes/2023` — [2023 releases](pages/release-notes/2023.md) · [原文](https://docs.pinecone.io/release-notes/2023)
-- `release-notes/2024` — [2024 releases](pages/release-notes/2024.md) · [原文](https://docs.pinecone.io/release-notes/2024)
-- `release-notes/2025` — [2025 releases](pages/release-notes/2025.md) · [原文](https://docs.pinecone.io/release-notes/2025)
-- `release-notes/2026` — [2026 releases](pages/release-notes/2026.md) · [原文](https://docs.pinecone.io/release-notes/2026)
-- `release-notes/feature-availability` — [Feature availability](pages/release-notes/feature-availability.md) · [原文](https://docs.pinecone.io/release-notes/feature-availability)
+- `release-notes/2022` — [Pinecone 2022 changelog](pages/release-notes/2022.md) · [原文](https://docs.pinecone.io/release-notes/2022)
+- `release-notes/2023` — [Pinecone 2023 changelog](pages/release-notes/2023.md) · [原文](https://docs.pinecone.io/release-notes/2023)
+- `release-notes/2024` — [Pinecone 2024 changelog](pages/release-notes/2024.md) · [原文](https://docs.pinecone.io/release-notes/2024)
+- `release-notes/2025` — [Pinecone 2025 changelog](pages/release-notes/2025.md) · [原文](https://docs.pinecone.io/release-notes/2025)
+- `release-notes/2026` — [Pinecone 2026 changelog](pages/release-notes/2026.md) · [原文](https://docs.pinecone.io/release-notes/2026)
+- `release-notes/feature-availability` — [Pinecone feature availability](pages/release-notes/feature-availability.md) · [原文](https://docs.pinecone.io/release-notes/feature-availability)
 
 ## troubleshooting
 

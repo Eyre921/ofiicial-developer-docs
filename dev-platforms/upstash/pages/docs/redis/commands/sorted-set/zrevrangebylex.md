@@ -4,10 +4,8 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zrevrangebylex
 path: docs/redis/commands/sorted-set/zrevrangebylex
 ---
 
-> List members in a lexicographic range, in reverse order.
-
 <Warning>
-  Prefer [`ZRANGE`](/redis/commands/sorted-set/zrange) with `BYLEX` and `REV` in new code: `ZRANGE <key> <max> <min> BYLEX REV [LIMIT <offset> <count>]`. 
+  Prefer [`ZRANGE`](/docs/redis/commands/sorted-set/zrange) with `BYLEX` and `REV` in new code: `ZRANGE <key> <max> <min> BYLEX REV [LIMIT <offset> <count>]`.
 </Warning>
 
 Use `ZREVRANGEBYLEX` to list the members in a lexicographic range, in reverse order.

@@ -4,9 +4,7 @@ source: https://upstash.com/docs/redis/commands/generic/restore
 path: docs/redis/commands/generic/restore
 ---
 
-> Deserialize and restore a key.
-
-Use `RESTORE` to recreate a key from a payload produced by [`DUMP`](/redis/commands/generic/dump).
+Use `RESTORE` to recreate a key from a payload produced by [`DUMP`](/docs/redis/commands/generic/dump).
 
 `<ttl>` gives the new key a lifetime in milliseconds, where `0` means no expiration; with `ABSTTL` the same number is read as an absolute Unix timestamp in milliseconds instead. The command fails if the key already exists unless `REPLACE` is given.
 
@@ -36,7 +34,7 @@ RESTORE <key> <ttl> <serialized-value>
 
 ## Important points
 
-- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
 
 ## Response
 

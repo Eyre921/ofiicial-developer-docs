@@ -12,9 +12,7 @@ Workflow automatically handles transient errors such as network issues or servic
 When a step fails, Upstash Workflow automatically retries the failed step with configurable retry attempts and delay strategy.
 This allows temporary issues to resolve without manual intervention.
 
-<Frame caption="A failing step is automatically retried three times by default">
-  <img src="/img/workflow/automatic_retry.png" />
-</Frame>
+  <img />
 
 By default, the retry count is set to **3**, and an **exponential backoff** delay strategy is used.
 

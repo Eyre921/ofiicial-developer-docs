@@ -6,7 +6,7 @@ path: docs/qstash/howto/url-group-endpoint
 
 QStash allows you to group multiple APIs together into a single namespace,
 called a `URL Group` (Previously, it was called `Topics`).
-Read more about URL Groups [here](/qstash/features/url-groups).
+Read more about URL Groups [here](/docs/qstash/features/url-groups).
 
 There are two ways to create endpoints and URL Groups: The UI and the REST API.
 
@@ -17,15 +17,15 @@ on the `URL Groups` tab. Afterwards you can create a new URL Group by giving it 
 Keep in mind that URL Group names are restricted to alphanumeric, underscore, hyphen
 and dot characters.
 
-![](/img/qstash/create_topic.png)
+![]()
 
 After creating the URL Group, you can add endpoints to it:
 
-![](/img/qstash/create_endpoint.png)
+![]()
 
 ## API
 
-You can create a URL Group and endpoint using the [console](https://console.upstash.com/qstash) or [REST API](/qstash/api-reference/url-groups/upsert-url-group-and-endpoint).
+You can create a URL Group and endpoint using the [console](https://console.upstash.com/qstash) or [REST API](/docs/qstash/api-reference/url-groups/upsert-url-group-and-endpoint).
 
 <CodeGroup>
 ```bash cURL

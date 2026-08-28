@@ -30,7 +30,7 @@ import { WorkflowAbort } from '@upstash/workflow';
 
 try {
   await context.run( ... );
-} catch (error) {    
+} catch (error) {
   if (error instanceof WorkflowAbort) {
     throw error;
   } else {
@@ -60,12 +60,12 @@ except Exception as e:
 
 In some frameworks, you may need to pass specific headers for the workflow to access `requestPayload`:
 
-- Try passing `Content-type: text/plain` or `Content-type: application/json` headers when starting the workflow.
-- Note that `publishJSON` can only publish `Content-type: application/json`.
+* Try passing `Content-type: text/plain` or `Content-type: application/json` headers when starting the workflow.
+* Note that `publishJSON` can only publish `Content-type: application/json`.
 
 ### `context.call` Execution
 
-[During a workflow run, the endpoint will be called multiple times](/workflow/basics/how). While executing `context.call`, the endpoint is called at least twice, with the SDK attempting to run the route function until the first step for custom authorization.
+[During a workflow run, the endpoint will be called multiple times](/docs/workflow/basics/how). While executing `context.call`, the endpoint is called at least twice, with the SDK attempting to run the route function until the first step for custom authorization.
 
 Accessing `context.requestPayload` before any step can result in it becoming undefined:
 
@@ -121,7 +121,7 @@ async def example(context: AsyncWorkflowContext[str]) -> None:
 
     async def _get_payload() -> str:
         return context.request_payload
-    
+
     # Payload will never be None
     payload = await context.run("get payload", _get_payload)
 
@@ -133,11 +133,11 @@ async def example(context: AsyncWorkflowContext[str]) -> None:
 
 </CodeGroup>
 
-You can find an example of this usage in [our documentation on usage with AI SDK](/workflow/integrations/aisdk).
+You can find an example of this usage in [our documentation on usage with AI SDK](/docs/workflow/integrations/aisdk).
 
 ## Verification Failed Scenarios
 
-When [QStash signature verification](/workflow/howto/security#using-qstashs-built-in-request-verification-recommended) is enabled, you might encounter an error like:
+When [QStash signature verification](/docs/workflow/howto/security#using-qstashs-built-in-request-verification-recommended) is enabled, you might encounter an error like:
 
 ```
 Failed to verify that the Workflow request comes from QStash: some-error
@@ -149,9 +149,9 @@ If you want to disable QStash Verification, you should clear env variables QSTAS
 
 Troubleshooting verification errors:
 
-- Ensure you [start the workflow using `client.trigger` or by publishing to QStash](/workflow/howto/start).
-- Verify that `QSTASH_CURRENT_SIGNING_KEY` and `QSTASH_NEXT_SIGNING_KEY` environment variables are correct.
-- Pass [appropriate `Content-type` headers](/workflow/troubleshooting/general#headers-considerations) when starting the workflow.
+* Ensure you [start the workflow using `client.trigger` or by publishing to QStash](/docs/workflow/howto/start).
+* Verify that `QSTASH_CURRENT_SIGNING_KEY` and `QSTASH_NEXT_SIGNING_KEY` environment variables are correct.
+* Pass [appropriate `Content-type` headers](/docs/workflow/troubleshooting/general#headers-considerations) when starting the workflow.
 
 ## Authorization Error Handling
 
@@ -161,7 +161,7 @@ Consider this workflow:
 
 ```typescript TypeScript {2-5}
 export const { POST } = serve(async (context) => {
-  
+
   if (someCondition()) => {
     return;
   }
@@ -183,10 +183,10 @@ async def example(context: AsyncWorkflowContext[str]) -> None:
 </CodeGroup>
 
 Returning before running any steps will result in:
-- HTTP status: 400
-- Error message: `Failed to authenticate Workflow request.`
+* HTTP status: 400
+* Error message: `Failed to authenticate Workflow request.`
 
-This behavior is a direct result of the [custom authorization mechanism](/workflow/howto/security#custom-authorization-method). The Workflow SDK interprets an early function return without executing any steps as an authentication failure.
+This behavior is a direct result of the [custom authorization mechanism](/docs/workflow/howto/security#custom-authorization-method). The Workflow SDK interprets an early function return without executing any steps as an authentication failure.
 
 If the function `someCondition()` is non-deterministic, the recommended approach is to transform this condition into an explicit workflow step. Here's the recommended pattern for handling such non-deterministic conditions:
 
@@ -194,7 +194,7 @@ If the function `someCondition()` is non-deterministic, the recommended approach
 
 ```typescript TypeScript {3-6}
 export const { POST } = serve(async (context) => {
-  
+
   const shouldReturn = await context.run("check condition", () => someCondition())
   if (shouldReturn) => {
     return;
@@ -225,22 +225,22 @@ async def example(context: AsyncWorkflowContext[str]) -> None:
 
 Retry settings can be configured in two locations:
 
-1. [**Workflow Start** (client.trigger)](/workflow/howto/start): For the triggered workflow run
-   - Default retries: 3
+1. [**Workflow Start** (client.trigger)](/docs/workflow/howto/start): For the triggered workflow run
+   * Default retries: 3
 
-2. [**Context Call**](/workflow/basics/context#context-call): For third party requests
-   - Default retries: 0
+2. [**Context Call**](/docs/workflow/basics/context#context-call): For third party requests
+   * Default retries: 0
 
 ## Verbose Mode Diagnostics
 
 <Note>
   This feature is not yet available in
   [workflow-py](https://github.com/upstash/workflow-py). See our
-  [Roadmap](/workflow/roadmap) for feature parity plans and
-  [Changelog](/workflow/changelog) for updates.
+  [Roadmap](/docs/workflow/roadmap) for feature parity plans and
+  [Changelog](/docs/workflow/changelog) for updates.
 </Note>
 
-Use [verbose mode](/workflow/basics/serve#verbose) to diagnose workflow issues.
+Use [verbose mode](/docs/workflow/basics/serve#verbose) to diagnose workflow issues.
 
 The logs in this section should be seen very rarely. If you observe these logs consistently, you can reach out to our support.
 
@@ -255,12 +255,12 @@ localhost. Received: ...
 This error indicates that the workflow URL has localhost. Publish requests will fail and workflow won't be able to run.
 
 **Potential Solutions:**
-- Verify [baseUrl](/workflow/basics/serve#baseurl)
-- Check UPSTASH_WORKFLOW_URL
-- Explicitly pass the full [url](/workflow/basics/serve#url)
+* Verify [baseUrl](/docs/workflow/basics/serve#baseurl)
+* Check UPSTASH_WORKFLOW_URL
+* Explicitly pass the full [url](/docs/workflow/basics/serve#url)
 
 ### Deduplication Log
-Since QStash has at least once delivery guarantee, there is a very small chance that a step will run twice. This is why we suggest [idempotancy](/workflow/basics/caveats#ensure-idempotency-in-context-run). When this happens, the duplicate step should print the following log and terminate:
+Since QStash has at least once delivery guarantee, there is a very small chance that a step will run twice. This is why we suggest [idempotancy](/docs/workflow/basics/caveats#ensure-idempotency-in-context-run). When this happens, the duplicate step should print the following log and terminate:
 
 ```
 Upstash Workflow: The step 'some-step' with id 'step-index' has run twice during workflow execution. Rest of the workflow will continue running as usual.
@@ -289,7 +289,7 @@ The Workflow SDK automatically infers the protocol (HTTP or HTTPS) based on the 
 However, if your app is deployed behind a proxy (e.g., Railway or similar platforms), the proxy may terminate SSL and forward the request to your app using plain HTTP.
 This can cause the SDK to mistakenly infer that the request is using HTTP instead of HTTPS.
 
-To fix this, explicitly set the `UPSTASH_WORKFLOW_URL` environment variable to the base URL of your application. 
+To fix this, explicitly set the `UPSTASH_WORKFLOW_URL` environment variable to the base URL of your application.
 This disables automatic protocol inference and uses the provided static URL instead.
 
 If you’re using Express.js behind a front-facing proxy, an alternative solution is to enable [proxy trust](https://expressjs.com/en/api.html#app.set) so Express correctly identifies the original protocol from the X-Forwarded-Proto header:
@@ -300,16 +300,16 @@ app.set("trust proxy", true)
 
 ## Workflow Stuck in First Step
 
-Imagine that you trigger your workflow with [client.trigger](/workflow/basics/client/trigger) and the workflow starts (you see the run in the dashboard), but it doesn't proceed beyond the first step.
+Imagine that you trigger your workflow with [client.trigger](/docs/workflow/basics/client/trigger) and the workflow starts (you see the run in the dashboard), but it doesn't proceed beyond the first step.
 
 If it appears like the initial step has failed:
-- Expand the step in the dashboard to see detailed logs to check for any error messages or stack traces that can provide insights into what went wrong.
-- Ensure that the workflow endpoint is accessible. You can test by sending a `curl` request to see if the request lands on the endpoint.
-- Ensure that the URL you passed to the `client.trigger` method matches the workflow endpoint URL.
-- Verify that you're using the latest SDK version both in the workflow endpoint definition and in the code that calls `client.trigger`.
+* Expand the step in the dashboard to see detailed logs to check for any error messages or stack traces that can provide insights into what went wrong.
+* Ensure that the workflow endpoint is accessible. You can test by sending a `curl` request to see if the request lands on the endpoint.
+* Ensure that the URL you passed to the `client.trigger` method matches the workflow endpoint URL.
+* Verify that you're using the latest SDK version both in the workflow endpoint definition and in the code that calls `client.trigger`.
 
 If it appears like the initial step has completed but the workflow is still stuck:
-- Workflow SDK could be unable to correctly infer the workflow URL due to a proxy or an issue in the request object. To check if this is the issue, try passing the [`baseUrl` parameter to the `serve` method](/workflow/basics/serve/advanced#param-base-url). This will override the automatic URL inference and use the provided base URL instead.
+* Workflow SDK could be unable to correctly infer the workflow URL due to a proxy or an issue in the request object. To check if this is the issue, try passing the [`baseUrl` parameter to the `serve` method](/docs/workflow/basics/serve/advanced#param-base-url). This will override the automatic URL inference and use the provided base URL instead.
 
 ## Non-workflow Destination Error
 
@@ -322,10 +322,10 @@ make sure you are sending the request to the correct endpoint
 
 This error occurs when you call a non-workflow endpoint with `client.trigger` or via Request Builder on Upstash Console. If you check Upstash Console, you will see that the workflow run has started but failed before running any steps:
 
-<img src="/img/workflow/non-workflow-endpoint-log.png" />
+<img />
 
 Another way you can encounter this error is if you are calling a workflow endpoint on an older SDK version (before 0.2.17 in TypeScript and 0.1.4 in Python) from a newer SDK version. If this happens, in the logs, you will see that the first step of the workflow run has completed successfully, but the workflow fails immediately after that with the same error.
 
 To fix this error, ensure that:
-- You are calling a valid workflow endpoint.
-- Both the caller and the workflow endpoint are using the latest SDK versions.
+* You are calling a valid workflow endpoint.
+* Both the caller and the workflow endpoint are using the latest SDK versions.

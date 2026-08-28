@@ -174,7 +174,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/update
           - `summary` (string, optional, nullable)
           - `provider_redact` (boolean, optional, default: false)
         - `source_medium` (enum, optional, nullable)
-          - Allowed values: `audio`, `text`, `image`, `file`
+          - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
         - `source_event_id` (integer, optional, nullable)
         - `used_static_kb_document_ids` (list of string, optional)
         - `user_identifier` (string, optional, nullable)
@@ -428,7 +428,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/update
         - `summary` (string, optional, nullable)
         - `provider_redact` (boolean, optional, default: false)
       - `source_medium` (enum, optional, nullable)
-        - Allowed values: `audio`, `text`, `image`, `file`
+        - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
       - `source_event_id` (integer, optional, nullable)
       - `used_static_kb_document_ids` (list of string, optional)
       - `user_identifier` (string, optional, nullable)
@@ -591,7 +591,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/update
           - `summary` (string, optional, nullable)
           - `provider_redact` (boolean, optional, default: false)
         - `source_medium` (enum, optional, nullable)
-          - Allowed values: `audio`, `text`, `image`, `file`
+          - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
         - `source_event_id` (integer, optional, nullable)
         - `used_static_kb_document_ids` (list of string, optional)
         - `user_identifier` (string, optional, nullable)
@@ -845,7 +845,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/update
         - `summary` (string, optional, nullable)
         - `provider_redact` (boolean, optional, default: false)
       - `source_medium` (enum, optional, nullable)
-        - Allowed values: `audio`, `text`, `image`, `file`
+        - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
       - `source_event_id` (integer, optional, nullable)
       - `used_static_kb_document_ids` (list of string, optional)
       - `user_identifier` (string, optional, nullable)
@@ -1022,7 +1022,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/update
           - `summary` (string, optional, nullable)
           - `provider_redact` (boolean, optional, default: false)
         - `source_medium` (enum, optional, nullable)
-          - Allowed values: `audio`, `text`, `image`, `file`
+          - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
         - `source_event_id` (integer, optional, nullable)
         - `used_static_kb_document_ids` (list of string, optional)
         - `user_identifier` (string, optional, nullable)
@@ -1276,7 +1276,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/update
         - `summary` (string, optional, nullable)
         - `provider_redact` (boolean, optional, default: false)
       - `source_medium` (enum, optional, nullable)
-        - Allowed values: `audio`, `text`, `image`, `file`
+        - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
       - `source_event_id` (integer, optional, nullable)
       - `used_static_kb_document_ids` (list of string, optional)
       - `user_identifier` (string, optional, nullable)
@@ -1573,7 +1573,7 @@ Successful Response
         - `summary` (string, optional, nullable)
         - `provider_redact` (boolean, optional, default: false)
       - `source_medium` (enum, optional, nullable)
-        - Allowed values: `audio`, `text`, `image`, `file`
+        - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
       - `source_event_id` (integer, optional, nullable)
       - `used_static_kb_document_ids` (list of string, optional)
       - `user_identifier` (string, optional, nullable)
@@ -1729,7 +1729,7 @@ Successful Response
           - `summary` (string, optional, nullable)
           - `provider_redact` (boolean, optional, default: false)
         - `source_medium` (enum, optional, nullable)
-          - Allowed values: `audio`, `text`, `image`, `file`
+          - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
         - `source_event_id` (integer, optional, nullable)
         - `used_static_kb_document_ids` (list of string, optional)
         - `user_identifier` (string, optional, nullable)
@@ -1989,7 +1989,7 @@ Successful Response
         - `summary` (string, optional, nullable)
         - `provider_redact` (boolean, optional, default: false)
       - `source_medium` (enum, optional, nullable)
-        - Allowed values: `audio`, `text`, `image`, `file`
+        - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
       - `source_event_id` (integer, optional, nullable)
       - `used_static_kb_document_ids` (list of string, optional)
       - `user_identifier` (string, optional, nullable)
@@ -2143,7 +2143,7 @@ Successful Response
           - `summary` (string, optional, nullable)
           - `provider_redact` (boolean, optional, default: false)
         - `source_medium` (enum, optional, nullable)
-          - Allowed values: `audio`, `text`, `image`, `file`
+          - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
         - `source_event_id` (integer, optional, nullable)
         - `used_static_kb_document_ids` (list of string, optional)
         - `user_identifier` (string, optional, nullable)
@@ -2419,7 +2419,7 @@ Successful Response
         - `summary` (string, optional, nullable)
         - `provider_redact` (boolean, optional, default: false)
       - `source_medium` (enum, optional, nullable)
-        - Allowed values: `audio`, `text`, `image`, `file`
+        - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
       - `source_event_id` (integer, optional, nullable)
       - `used_static_kb_document_ids` (list of string, optional)
       - `user_identifier` (string, optional, nullable)
@@ -2574,7 +2574,7 @@ Successful Response
           - `summary` (string, optional, nullable)
           - `provider_redact` (boolean, optional, default: false)
         - `source_medium` (enum, optional, nullable)
-          - Allowed values: `audio`, `text`, `image`, `file`
+          - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
         - `source_event_id` (integer, optional, nullable)
         - `used_static_kb_document_ids` (list of string, optional)
         - `user_identifier` (string, optional, nullable)

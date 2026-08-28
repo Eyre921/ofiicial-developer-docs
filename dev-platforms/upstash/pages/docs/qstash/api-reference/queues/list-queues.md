@@ -4,6 +4,5 @@ source: https://upstash.com/docs/qstash/api-reference/queues/list-queues
 path: docs/qstash/api-reference/queues/list-queues
 ---
 
-> List all your queues
-
-`GET /v2/queues`
+/qstash/openapi.yaml get /v2/queues
+List all your queues

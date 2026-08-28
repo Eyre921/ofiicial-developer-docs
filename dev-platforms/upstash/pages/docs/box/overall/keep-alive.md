@@ -8,7 +8,7 @@ When `keepAlive` is enabled, the box stays on between sessions instead of auto-p
 
 For most workloads, the default Box lifecycle is still the better choice. Boxes auto-pause when idle and are more cost-efficient for bursty workloads unless `keepAlive` is enabled.
 
----
+***
 
 ## Create a keep-alive box
 
@@ -38,7 +38,7 @@ box = Box.create(
 
 You can combine keep-alive with all normal Box features, including agent, git, shell, filesystem, public URLs, and snapshots.
 
----
+***
 
 ## Sizes and specs
 
@@ -52,7 +52,7 @@ Boxes with `keepAlive` enabled use the same Box sizes as any other box. Pick the
 
 The selected size determines the box's available CPU, RAM, and workspace storage whether `keepAlive` is enabled or not.
 
----
+***
 
 ## Lifecycle differences
 
@@ -65,7 +65,7 @@ The selected size determines the box's available CPU, RAM, and workspace storage
 
 If you do not need the box to remain continuously available, keep `keepAlive` disabled.
 
----
+***
 
 ## Init command
 
@@ -91,10 +91,10 @@ box = Box.create(
 
 This is useful for:
 
-- starting a web server
-- launching a background process
-- preparing a long-running agent environment
-- restoring a development workflow automatically after the box starts
+* starting a web server
+* launching a background process
+* preparing a long-running agent environment
+* restoring a development workflow automatically after the box starts
 
 You can also manage the init command after creation:
 
@@ -120,24 +120,24 @@ print(box.keep_alive)  # True
 
 Init command management is only available when `keepAlive` is enabled.
 
----
+***
 
 ## Console
 
 In the Upstash Console you can:
 
-- enable **Keep alive** while creating a box
-- choose the box **Size**
-- manage the **Init Command** later from the box settings page
+* enable **Keep alive** while creating a box
+* choose the box **Size**
+* manage the **Init Command** later from the box settings page
 
----
+***
 
 ## When to use keep alive
 
 Use keep-alive when the box itself needs to stay available between requests:
 
-- hosting a dev server or app with a public URL
-- keeping an agent warm for low-latency use
-- preserving a long-running environment with startup automation
+* hosting a dev server or app with a public URL
+* keeping an agent warm for low-latency use
+* preserving a long-running environment with startup automation
 
-Avoid keep-alive when you only need a reusable workspace. In those cases, the default box lifecycle plus [Snapshots](/box/overall/snapshots) is usually enough.
+Avoid keep-alive when you only need a reusable workspace. In those cases, the default box lifecycle plus [Snapshots](/docs/box/overall/snapshots) is usually enough.

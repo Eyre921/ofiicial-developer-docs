@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/pub-sub/punsubscribe
 path: docs/redis/commands/pub-sub/punsubscribe
 ---
 
-> Unsubscribe from patterns.
-
 Use `PUNSUBSCRIBE` to cancel pattern subscriptions of the current connection.
 
-With no arguments the connection unsubscribes from every pattern it registered, otherwise only from the patterns named, which must be given exactly as they were passed to [`PSUBSCRIBE`](/redis/commands/pub-sub/psubscribe), since patterns are matched literally here and not expanded. The server sends one confirmation per pattern with the number of subscriptions still active.
+With no arguments the connection unsubscribes from every pattern it registered, otherwise only from the patterns named, which must be given exactly as they were passed to [`PSUBSCRIBE`](/docs/redis/commands/pub-sub/psubscribe), since patterns are matched literally here and not expanded. The server sends one confirmation per pattern with the number of subscriptions still active.
 
-Exact-channel subscriptions are not affected; cancel those with [`UNSUBSCRIBE`](/redis/commands/pub-sub/unsubscribe).
+Exact-channel subscriptions are not affected; cancel those with [`UNSUBSCRIBE`](/docs/redis/commands/pub-sub/unsubscribe).
 
 ## Syntax
 
@@ -26,8 +24,8 @@ PUNSUBSCRIBE [<pattern> [<pattern> ...]]
 
 ## Important points
 
-- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
-- Subscription commands require a dedicated TCP connection. In RESP3, subscription events use push replies.
+* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+* Subscription commands require a dedicated TCP connection. In RESP3, subscription events use push replies.
 
 ## Response
 

@@ -7,9 +7,9 @@ path: docs/workflow/features/flow-control
 Flow Control allows you to limit how many workflow steps are executed by delaying and queuing their delivery.
 
 This feature helps to:
-- Manage resource consumption
-- Prevent violations of external API rate limits
-- Ensure workflows run within defined system constraints
+* Manage resource consumption
+* Prevent violations of external API rate limits
+* Ensure workflows run within defined system constraints
 
 ## How Flow Control Works
 
@@ -21,8 +21,8 @@ The steps that has the same flow control key respect the same constraints.
 
 There are two main parameters to configure:
 
-- [Rate and Period](/workflow/features/flow-control/rate-period): Maximum number of steps that may start within a time window
-- [Parallelism](/workflow/features/flow-control/parallelism): Maximum number of steps allowed to run concurrently
+* [Rate and Period](/docs/workflow/features/flow-control/rate-period): Maximum number of steps that may start within a time window
+* [Parallelism](/docs/workflow/features/flow-control/parallelism): Maximum number of steps allowed to run concurrently
 
 These parameters can be combined for fine‑grained control.
 For example, you can allow up to 10 steps per minute but restrict concurrency
@@ -61,19 +61,15 @@ const { workflowRunId } = await client.trigger({
 Without Flow Control, all workflow runs immediately execute their steps as soon as possible.
 If the workflow calls an external API in a step, this would likely result in ~N concurrent requests being fired in a very short timeframe, potentially overloading services or breaching API limits.
 
-<Frame caption="Workflow simplified by step types">
-  <img src="/img/workflow/flow_control_ex_3.png" />
-</Frame>
+  <img />
 
 With the configuration above:
-- **Rate:** At most 3 steps per minute can start across all workflow runs.
-- **Parallelism:** At most 7 steps can be running at the same time.
+* **Rate:** At most 3 steps per minute can start across all workflow runs.
+* **Parallelism:** At most 7 steps can be running at the same time.
 
 Steps that exceed these limits are automatically queued and executed later.
 
-<Frame caption="Steps are enqueued for execution">
-  <img src="/img/workflow/flow_control_ex_2.png" />
-</Frame>
+  <img />
 
 Note that each step above corresponds to a separate workflow run.
 Because this workflow is sequential, each workflow run has only one pending step at a time.
@@ -82,9 +78,7 @@ In workflows with **parallel branches**, multiple steps from the same workflow r
 Parallelism slots are consumed by running steps.
 If no slots are available, new steps enter the **waitlist** until resources free up:
 
-<Frame caption="Parallelism waitlist for the flow-control">
-  <img src="/img/workflow/flow_control_ex_1.png" />
-</Frame>
+  <img />
 
 <Note>
 Upstash Workflow does not support per-step level configuration. Meaning that you can attach a flow-control configuration
@@ -93,8 +87,8 @@ Following the analogy above, you cannot enforce parallelism limit on "green" ste
 
 The context.call and context.invoke steps are exception this to this rule and accept their own flow control configuration:
 
-- [context.call](/workflow/basics/context/call) – lets you run external HTTP requests under a separate key, so you can throttle third‑party API calls independently of your workflow logic.
-- [context.invoke](/workflow/basics/context/invoke) – starts a new workflow run with its own flow control configuration. This allows the invoked workflow to run under different limits than the parent workflow, giving you more precise control.
+* [context.call](/docs/workflow/basics/context/call) – lets you run external HTTP requests under a separate key, so you can throttle third‑party API calls independently of your workflow logic.
+* [context.invoke](/docs/workflow/basics/context/invoke) – starts a new workflow run with its own flow control configuration. This allows the invoked workflow to run under different limits than the parent workflow, giving you more precise control.
 
 If you want to throttle a specific `context.run` step, the recommended approach is to **extract it into a separate workflow** and call it using `context.invoke()` with its own flow control configuration with a stricter limits.
 </Note>

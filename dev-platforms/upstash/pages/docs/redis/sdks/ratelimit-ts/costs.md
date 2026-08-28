@@ -4,7 +4,7 @@ source: https://upstash.com/docs/redis/sdks/ratelimit-ts/costs
 path: docs/redis/sdks/ratelimit-ts/costs
 ---
 
-This page details the cost of the Ratelimit algorithms in terms of the number of Redis commands. Note that these are calculated for Regional Ratelimits. For [Multi Region Ratelimit](/redis/sdks/ratelimit-ts/features#multi-region), costs will be higher. Additionally, if a Global Upstash Redis is used as the database, number of commands should be calculated as `(1+readRegionCount) * writeCommandCount + readCommandCount` and plus 1 if analytics is enabled.
+This page details the cost of the Ratelimit algorithms in terms of the number of Redis commands. Note that these are calculated for Regional Ratelimits. For [Multi Region Ratelimit](/docs/redis/sdks/ratelimit-ts/features#multi-region), costs will be higher. Additionally, if a Global Upstash Redis is used as the database, number of commands should be calculated as `(1+readRegionCount) * writeCommandCount + readCommandCount` and plus 1 if analytics is enabled.
 
 The Rate Limit SDK minimizes Redis calls to reduce latency overhead and cost. Number of commands executed by the Rate Limit algorithm depends on the chosen algorithm, as well as the state of the algorithm and the caching.
 
@@ -31,7 +31,7 @@ We distinguish the two cases when the identifier `ip1` is found in cache, result
 
 An identifier is saved in the cache only when a request is rate limited after a call to the Redis database. The request to Redis returns a timestamp for the time when such a request won't be rate limited anymore. We save this timestamp in the cache and this allows us to reject any request before this timestamp without having to consult the Redis database.
 
-See the [section on caching](/redis/sdks/ratelimit-ts/features) for more details.
+See the [section on caching](/docs/redis/sdks/ratelimit-ts/features) for more details.
 
 # Costs
 
@@ -96,7 +96,7 @@ Values passed in `identifier`, `ip`, `userAgent` and `country` are checked with 
 The other command is TTL which is for checking the status of the current ip deny list to figure out whether
 it is expired, valid or disabled.
 
-If [Auto IP deny list](/redis/sdks/ratelimit-ts/features#auto-ip-deny-list) is enabled,
+If [Auto IP deny list](/docs/redis/sdks/ratelimit-ts/features#auto-ip-deny-list) is enabled,
 the Ratelimit SDK will update the ip deny list everyday, in the first `limit` invocation after 2 AM UTC.
 This will consume 9 commands per day.
 
@@ -109,6 +109,6 @@ If analytics is enabled, all calls of `limit` will result in 1 more command sinc
 
 # Dynamic Limits
 
-When [dynamic limits](/redis/sdks/ratelimit-ts/features#dynamic-limits) are enabled, each `limit` and `getRemaining` call will execute one additional command.
+When [dynamic limits](/docs/redis/sdks/ratelimit-ts/features#dynamic-limits) are enabled, each `limit` and `getRemaining` call will execute one additional command.
 
 Both `setDynamicLimit` and `getDynamicLimit` execute 1 command each.

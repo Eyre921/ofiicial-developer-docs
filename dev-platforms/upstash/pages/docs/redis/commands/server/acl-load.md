@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/server/acl-load
 path: docs/redis/commands/server/acl-load
 ---
 
-> Reload ACL definitions from the primary node.
-
 Use `ACL LOAD` to make sure the node you are connected to has the latest ACL users and rules.
 
-Standard Redis reads `ACL LOAD` from an `aclfile` on disk. This deployment has no such file: instead, `ACL LOAD` refreshes this node's in-memory copy of the ACL definitions from the primary, which is useful right after a failover or when reconnecting to a node that may be slightly behind. Changes made with [`ACL SETUSER`](/redis/commands/server/acl-setuser) and [`ACL DELUSER`](/redis/commands/server/acl-deluser) are already propagated to replicas automatically, so `LOAD` is rarely needed in normal operation.
+Standard Redis reads `ACL LOAD` from an `aclfile` on disk. This deployment has no such file: instead, `ACL LOAD` refreshes this node's in-memory copy of the ACL definitions from the primary, which is useful right after a failover or when reconnecting to a node that may be slightly behind. Changes made with [`ACL SETUSER`](/docs/redis/commands/server/acl-setuser) and [`ACL DELUSER`](/docs/redis/commands/server/acl-deluser) are already propagated to replicas automatically, so `LOAD` is rarely needed in normal operation.
 
 ## Syntax
 
@@ -22,7 +20,7 @@ This command takes no arguments.
 
 ## Important points
 
-- There is no ACL file to load from; this refreshes the node's ACL state from the primary instead.
+* There is no ACL file to load from; this refreshes the node's ACL state from the primary instead.
 
 ## Response
 

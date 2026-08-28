@@ -49,8 +49,8 @@ A document matching all three `$should` conditions scores higher than one matchi
 
 The `$should` operator accepts either an object or an array:
 
-- **Object syntax**: Each key-value pair is a condition that should match
-- **Array syntax**: Each element is a separate condition object that should match
+* **Object syntax**: Each key-value pair is a condition that should match
+* **Array syntax**: Each element is a separate condition object that should match
 
 Array syntax is useful when you have multiple conditions on the same field
 or when building queries programmatically.

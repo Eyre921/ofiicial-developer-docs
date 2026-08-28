@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/hash/hpexpireat
 path: docs/redis/commands/hash/hpexpireat
 ---
 
-> Set field expiry as ms timestamp.
-
 Use `HPEXPIREAT` to schedule individual hash fields for deletion at a fixed point in time, given as a Unix timestamp in milliseconds.
 
-It combines the absolute deadline of [`HEXPIREAT`](/redis/commands/hash/hexpireat) with millisecond precision, which is what you need when fields spread over several hashes have to expire at exactly the same instant. A timestamp in the past removes the fields right away, and the key is deleted when its last field expires.
+It combines the absolute deadline of [`HEXPIREAT`](/docs/redis/commands/hash/hexpireat) with millisecond precision, which is what you need when fields spread over several hashes have to expire at exactly the same instant. A timestamp in the past removes the fields right away, and the key is deleted when its last field expires.
 
 `FIELDS <numfields>` introduces the field list and the count must match. The optional condition applies the deadline only when the field has no expiration (`NX`), already has one (`XX`), or when the new deadline is later (`GT`) or earlier (`LT`) than the current one. The reply holds one status code per field: `1` when set, `0` when the condition prevented it, `2` when the field was deleted immediately, and `-2` when it does not exist.
 
@@ -31,8 +29,8 @@ HPEXPIREAT <key> <unix-time-milliseconds>
 
 ## Important points
 
-- `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
-- A field with no expiration counts as an infinite one, so `GT` never sets an expiration on such a field and `LT` always does.
+* `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
+* A field with no expiration counts as an infinite one, so `GT` never sets an expiration on such a field and `LT` always does.
 
 ## Response
 

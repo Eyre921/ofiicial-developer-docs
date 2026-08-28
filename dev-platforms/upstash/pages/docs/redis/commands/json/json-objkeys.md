@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/json/json-objkeys
 path: docs/redis/commands/json/json-objkeys
 ---
 
-> Get JSON object keys.
-
 Use `JSON.OBJKEYS` to list the field names of the objects a path selects.
 
 Without a path the root value is used. The reply holds one list of keys per match, with null for matches that are not objects. Only the field names come back, not the values, which makes it a cheap way to inspect the shape of a document before reading it.
@@ -25,8 +23,8 @@ JSON.OBJKEYS <key> [path]
 
 ## Important points
 
-- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

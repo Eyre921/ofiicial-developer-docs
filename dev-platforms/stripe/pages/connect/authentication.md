@@ -61,7 +61,7 @@ The `Stripe-Account` header approach is implied in any API request that includes
 ```curl
 curl https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview"
+  -H "Stripe-Version: 2026-08-26.preview"
 ```
 
 All of Stripe’s server-side libraries support this approach on a per-request basis:

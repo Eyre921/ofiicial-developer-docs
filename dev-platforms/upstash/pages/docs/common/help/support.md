@@ -21,4 +21,4 @@ Follow us on [X](https://x.com/upstash).
 
 ## Enterprise Support
 
-Get [Enterprise Support](/common/help/prosupport) for your organization from the Upstash team.
+Get [Enterprise Support](/docs/common/help/prosupport) for your organization from the Upstash team.

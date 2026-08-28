@@ -37,7 +37,7 @@ If you are an [organization owner or organization manager](/guides/assistant/adm
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/release-notes/feature-availability).
     </Note>
 
     <CodeGroup>

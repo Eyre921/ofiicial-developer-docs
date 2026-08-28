@@ -20,16 +20,16 @@ HTTP status 400. Incompatible step name. Expected <STEP_NAME>, got <STEP_NAME>
 
 Updating workflow code is safe in the following cases:
 
-- No active workflow runs exist
-- Only new steps are added to the end of the workflow
+* No active workflow runs exist
+* Only new steps are added to the end of the workflow
 
 ## Guidelines for updating workflows
 
 Consider the following approaches when updating your workflow code:
 
-- **Accept potential failures:** If you're fine with in-progress workflows failing, you can make any code changes.
-- **Use a different route:** To avoid failures, consider serving the updated workflow under a different route.
-- **Stop traffic before deployment:** If you need to keep the same route, stop all traffic before deploying new code.
-- **Add steps only:** If stopping traffic is not an option, limit your changes to adding new steps at the end of the workflow.
+* **Accept potential failures:** If you're fine with in-progress workflows failing, you can make any code changes.
+* **Use a different route:** To avoid failures, consider serving the updated workflow under a different route.
+* **Stop traffic before deployment:** If you need to keep the same route, stop all traffic before deploying new code.
+* **Add steps only:** If stopping traffic is not an option, limit your changes to adding new steps at the end of the workflow.
 
-For a deeper understanding of these limitations, see our [how workflows work](/workflow/basics/how) section.
+For a deeper understanding of these limitations, see our [how workflows work](/docs/workflow/basics/how) section.

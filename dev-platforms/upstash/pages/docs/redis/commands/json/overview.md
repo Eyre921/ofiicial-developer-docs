@@ -4,9 +4,7 @@ source: https://upstash.com/docs/redis/commands/json/overview
 path: docs/redis/commands/json/overview
 ---
 
-> Commands for storing and manipulating JSON values.
-
-To query inside JSON values (full-text, fuzzy, phrase, regex), see [Upstash Redis Search](/redis/search/introduction).
+To query inside JSON values (full-text, fuzzy, phrase, regex), see [Upstash Redis Search](/docs/redis/search/introduction).
 
 <CardGroup cols={2}>
 <Card title="JSON.ARRAPPEND" href="/redis/commands/json/json-arrappend">Append values to JSON array</Card>

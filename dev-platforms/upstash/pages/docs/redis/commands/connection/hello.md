@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/connection/hello
 path: docs/redis/commands/connection/hello
 ---
 
-> Handshake with Redis protocol.
-
 Use `HELLO` to negotiate the protocol version of the connection and read the server handshake information.
 
-Passing `<protover>` switches the connection to RESP2 or RESP3. RESP3 adds native map, set, double, and push replies, so commands such as [`HGETALL`](/redis/commands/hash/hgetall) or [`CONFIG GET`](/redis/commands/server/config-get) come back as maps instead of flat arrays, and pub/sub messages arrive as push replies that do not block ordinary commands. `AUTH` authenticates in the same call and `SETNAME` names the connection, which lets a client complete its handshake in one round trip.
+Passing `<protover>` switches the connection to RESP2 or RESP3. RESP3 adds native map, set, double, and push replies, so commands such as [`HGETALL`](/docs/redis/commands/hash/hgetall) or [`CONFIG GET`](/docs/redis/commands/server/config-get) come back as maps instead of flat arrays, and pub/sub messages arrive as push replies that do not block ordinary commands. `AUTH` authenticates in the same call and `SETNAME` names the connection, which lets a client complete its handshake in one round trip.
 
 Called without arguments, `HELLO` only reports the server version, the protocol in use, the connection id, and the current role, leaving the protocol unchanged.
 
@@ -29,7 +27,7 @@ HELLO
 
 ## Important points
 
-- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
 
 ## Response
 

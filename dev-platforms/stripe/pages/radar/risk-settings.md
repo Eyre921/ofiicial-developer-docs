@@ -106,11 +106,19 @@ You can monitor performance and review affected payments on the [risk controls](
 
 ## Radar scores
 
-Radar scores are numerical signals that represent the likelihood of fraud or abuse for a payment. You can use scores to write custom [Radar rules](https://docs.stripe.com/radar/rules.md) or to understand why a payment was blocked. Some scores also contribute to an [overall risk level](https://docs.stripe.com/radar/risk-settings.md#overall-risk-level), which summarizes risk as a single signal.
+Radar scores are numerical signals that represent the likelihood of fraud or abuse for a payment. You can use scores to write custom [Radar rules](https://docs.stripe.com/radar/rules.md) or to understand why a payment was blocked. Some scores also contribute to an [overall risk level](https://docs.stripe.com/radar/risk-settings.md#risk-levels), which summarizes risk as a single signal.
 
-### Overall risk level 
+### Risk levels 
 
-The overall risk level combines the [fraudulent dispute](https://docs.stripe.com/radar/risk-settings.md#fraudulent-dispute-score), [early fraud warning](https://docs.stripe.com/radar/risk-settings.md#early-fraud-warning-score), and [risk](https://docs.stripe.com/radar/risk-settings.md#risk-score) scores that factored into the payment decision. It takes the maximum of these scores and appears as a single signal (**Normal**, **Elevated**, or **Highest**) on the payment details page. The overall risk level is separate from the `:risk_level:` Radar rules attribute, which only corresponds to the [risk score](https://docs.stripe.com/radar/risk-settings.md#risk-score). The highest applicable score also appears on the Radar [Reviews](https://dashboard.stripe.com/radar/reviews) page and in the **Related payments** section of the payment details page in the Dashboard.
+Each Radar score has a corresponding risk level:
+
+- **Normal**: Radar found fewer signals associated with the outcome measured by this score. Normal risk doesn’t guarantee that the payment is legitimate.
+- **Elevated**: Radar found more signals associated with the outcome measured by this score than it typically finds for normal-risk payments. This doesn’t mean the payment is fraudulent. Consider reviewing the payment or applying additional checks.
+- **Highest**: Radar found the strongest signals associated with the outcome measured by this score. Consider blocking the payment or requiring additional verification.
+
+The overall risk level on the Dashboard’s payment details page combines the [fraudulent dispute](https://docs.stripe.com/radar/risk-settings.md#fraudulent-dispute-score), [early fraud warning](https://docs.stripe.com/radar/risk-settings.md#early-fraud-warning-score), and [risk](https://docs.stripe.com/radar/risk-settings.md#risk-score) scores that factored into the payment decision. It uses the maximum of these scores and displays a single signal: **Normal**, **Elevated**, or **Highest**.
+
+The overall risk level differs from the `:risk_level:` Radar rules attribute, which reflects only the [risk score](https://docs.stripe.com/radar/risk-settings.md#risk-score). The highest applicable score also appears on the Radar [Reviews](https://dashboard.stripe.com/radar/reviews) page and in the **Related payments** section of the payment details page in the Dashboard.
 
 ### Fraudulent payment score 
 
@@ -157,7 +165,7 @@ The risk score appears on a payment when:
 - No fraudulent dispute or early fraud warning score is available, or
 - The payment was blocked by a rule that uses the legacy risk score, such as a Radar rule with a `:risk_score:` predicate or a Stripe block.
 
-The risk score factors into the [overall risk level](https://docs.stripe.com/radar/risk-settings.md#overall-risk-level) when visible.
+The risk score factors into the [overall risk level](https://docs.stripe.com/radar/risk-settings.md#risk-levels) when visible.
 
 If you want to block payments based on the risk score (even after selecting a risk setting) you can continue writing custom rules on `:risk_score:`.
 

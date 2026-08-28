@@ -4,10 +4,6 @@ source: https://upstash.com/docs/vector/api/endpoints/fetch-random
 path: docs/vector/api/endpoints/fetch-random
 ---
 
-> Fetches a random vector.
-
-`GET https://{endpoint}/random/{namespace}`
-
 ## Request
 
 This endpoint doesn't require any additional data.
@@ -40,3 +36,30 @@ The response will be `null` if the namespace is empty.
     </ResponseField>
   </Expandable>
 </ResponseField>
+
+<RequestExample>
+
+```sh curl
+curl $UPSTASH_VECTOR_REST_URL/random \
+  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN"
+```
+
+```sh curl (Namespace)
+curl $UPSTASH_VECTOR_REST_URL/random/ns \
+  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 OK
+{
+    "result": {
+        "id": "id-0",
+        "vector": [0.1, 0.2]
+    }
+}
+```
+
+</ResponseExample>

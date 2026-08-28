@@ -26,14 +26,14 @@ The client is lightweight and stateless. You can safely reuse a single instance 
 
 The client exposes a set of functions to manage workflow runs and inspect their state:
 
-- [client.trigger](/workflow/basics/client/trigger)
-- [client.cancel](/workflow/basics/client/cancel)
-- [client.notify](/workflow/basics/client/notify)
-- [client.logs](/workflow/basics/client/logs)
-- [client.getWaiters](/workflow/basics/client/waiters)
-- client.dlq
-    - [client.dlq.list](/workflow/basics/client/dlq/list)
-    - [client.dlq.restart](/workflow/basics/client/dlq/restart)
-    - [client.dlq.resume](/workflow/basics/client/dlq/resume)
-    - [client.dlq.delete](/workflow/basics/client/dlq/delete)
-    - [client.dlq.retryFailureFunction](/workflow/basics/client/dlq/callback)
+* [client.trigger](/docs/workflow/basics/client/trigger)
+* [client.cancel](/docs/workflow/basics/client/cancel)
+* [client.notify](/docs/workflow/basics/client/notify)
+* [client.logs](/docs/workflow/basics/client/logs)
+* [client.getWaiters](/docs/workflow/basics/client/waiters)
+* client.dlq
+    * [client.dlq.list](/docs/workflow/basics/client/dlq/list)
+    * [client.dlq.restart](/docs/workflow/basics/client/dlq/restart)
+    * [client.dlq.resume](/docs/workflow/basics/client/dlq/resume)
+    * [client.dlq.delete](/docs/workflow/basics/client/dlq/delete)
+    * [client.dlq.retryFailureFunction](/docs/workflow/basics/client/dlq/callback)

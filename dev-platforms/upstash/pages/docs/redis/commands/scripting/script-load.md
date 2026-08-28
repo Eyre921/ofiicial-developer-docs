@@ -4,17 +4,15 @@ source: https://upstash.com/docs/redis/commands/scripting/script-load
 path: docs/redis/commands/scripting/script-load
 ---
 
-> Load script into cache.
-
 Use `SCRIPT LOAD` to compile a script and put it in the server's script cache without running it.
 
-The reply is the script's SHA1 digest, which is what [`EVALSHA`](/redis/commands/scripting/evalsha) takes. Loading the same script twice is harmless and always yields the same digest, so applications typically load their scripts once at startup and then call them by digest.
+The reply is the script's SHA1 digest, which is what [`EVALSHA`](/docs/redis/commands/scripting/evalsha) takes. Loading the same script twice is harmless and always yields the same digest, so applications typically load their scripts once at startup and then call them by digest.
 
-The cache is lost on restart and cleared by [`SCRIPT FLUSH`](/redis/commands/scripting/script-flush), so keep the script source available and be ready to handle a `NOSCRIPT` error by loading it again.
+The cache is lost on restart and cleared by [`SCRIPT FLUSH`](/docs/redis/commands/scripting/script-flush), so keep the script source available and be ready to handle a `NOSCRIPT` error by loading it again.
 
-Shebang flags are part of the source, so they are fixed at load time and a change to them produces a different digest. This includes `allow-key-locking`, which opts the script out of the global lock and into locking only the keys passed in `KEYS`; see [Key-Based Locking](/redis/features/key-locking).
+Shebang flags are part of the source, so they are fixed at load time and a change to them produces a different digest. This includes `allow-key-locking`, which opts the script out of the global lock and into locking only the keys passed in `KEYS`; see [Key-Based Locking](/docs/redis/features/key-locking).
 
-Whether or not you set that flag, write the script so that every key it touches arrives through `KEYS` rather than being assembled from `ARGV` inside the script, since an undeclared key can force a disk read while the lock is held. See [Dynamic Keys and Latency](/redis/features/key-locking#dynamic-keys-and-latency).
+Whether or not you set that flag, write the script so that every key it touches arrives through `KEYS` rather than being assembled from `ARGV` inside the script, since an undeclared key can force a disk read while the lock is held. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 
 ## Syntax
 

@@ -4,10 +4,8 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zrangebyscore
 path: docs/redis/commands/sorted-set/zrangebyscore
 ---
 
-> Get members by score range.
-
 <Warning>
-  Prefer [`ZRANGE`](/redis/commands/sorted-set/zrange) with `BYSCORE` in new code: `ZRANGE <key> <min> <max> BYSCORE [LIMIT <offset> <count>] [WITHSCORES]`. 
+  Prefer [`ZRANGE`](/docs/redis/commands/sorted-set/zrange) with `BYSCORE` in new code: `ZRANGE <key> <min> <max> BYSCORE [LIMIT <offset> <count>] [WITHSCORES]`.
 </Warning>
 
 Use `ZRANGEBYSCORE` to list the members of a sorted set whose score falls in a range, from the lowest score up.
@@ -34,7 +32,7 @@ ZRANGEBYSCORE <key> <min> <max> [WITHSCORES] [LIMIT <offset> <count>]
 
 ## Important points
 
-- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

@@ -6,23 +6,34 @@ path: guides/video-audio-inputs
 
 Query multimodal models to process video and audio content directly
 
-Some Omni/multimodal models can process audio and/or video inputs directly, enabling video captioning, scene analysis, content understanding, and multimodal question answering. A good example is Qwen3 Omni (`qwen3-omni-30b-a3b-instruct`), which supports video, audio, and text inputs in a single request. Deploy these models using [dedicated deployments](/getting-started/ondemand-quickstart) for production workloads.
+Some multimodal models can process audio and/or video inputs directly, enabling video captioning, scene analysis, content understanding, and multimodal question answering. Availability depends on the model: GLM 5.3 Flash supports video input on Serverless, while Qwen3 Omni and Molmo2 use [dedicated deployments](/getting-started/ondemand-quickstart).
 
 ## Available models
 
 | Model                                                                                            | Input support      | Notes                         |
 | ------------------------------------------------------------------------------------------------ | ------------------ | ----------------------------- |
+| GLM 5.3 Flash                                                                                    | Image, video, text | Serverless                    |
 | [Qwen3 Omni 30B A3B Instruct](https://fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct) | Video, audio, text | Dedicated deployment required |
 | [Molmo2-4B](https://fireworks.ai/models/fireworks/molmo2-4b)                                     | Video, text        | Dedicated deployment required |
 | [Molmo2-8B](https://fireworks.ai/models/fireworks/molmo2-8b)                                     | Video, text        | Dedicated deployment required |
 
 <Note>
-  Qwen3 Omni supports native video and audio inputs. Molmo2 models are video-only, so use the same request structure as below, but omit `audio_url`. Molmo2 models cannot understand audio from videos.
+  GLM 5.3 Flash supports image, video, and text inputs. This page does not claim audio input support for GLM 5.3 Flash. Qwen3 Omni supports native video and audio inputs. Molmo2 models are video-only, so use the dedicated request structure below but omit `audio_url`; Molmo2 cannot understand audio from videos.
 </Note>
 
-## Create a deployment
+## Choose a serving path
 
-Video and audio models require dedicated deployments. Create one using firectl:
+### Serverless
+
+GLM 5.3 Flash is available directly through Serverless. No deployment is required:
+
+```text theme={null}
+accounts/fireworks/models/glm-5p3-flash
+```
+
+### Dedicated deployment
+
+Qwen3 Omni and Molmo2 require dedicated deployments. For Qwen3 Omni, create one using firectl:
 
 ```bash theme={null}
 firectl deployment create qwen3-omni-30b-a3b-instruct \
@@ -38,7 +49,78 @@ firectl deployment create qwen3-omni-30b-a3b-instruct \
 
 ## Chat Completions API
 
-Provide video and audio as base64-encoded data URLs. The model accepts `video_url`, `audio_url`, and `text` content types.
+### Serverless video by URL
+
+GLM 5.3 Flash accepts a reachable video URL in a `video_url` content block.
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    import os
+    import requests
+
+    url = "https://api.fireworks.ai/inference/v1/chat/completions"
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {os.environ['FIREWORKS_API_KEY']}",
+    }
+
+    payload = {
+        "model": "accounts/fireworks/models/glm-5p3-flash",
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "What happens in this video?"},
+                    {
+                        "type": "video_url",
+                        "video_url": {
+                            "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+                        },
+                    },
+                ],
+            }
+        ],
+    }
+
+    response = requests.post(url, headers=headers, json=payload, timeout=300)
+    response.raise_for_status()
+    print(response.json()["choices"][0]["message"]["content"])
+    ```
+  </Tab>
+
+  <Tab title="curl">
+    ```bash theme={null}
+    curl https://api.fireworks.ai/inference/v1/chat/completions \
+      -H "Content-Type: application/json" \
+      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+      -d '{
+        "model": "accounts/fireworks/models/glm-5p3-flash",
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {"type": "text", "text": "What happens in this video?"},
+              {
+                "type": "video_url",
+                "video_url": {
+                  "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+                }
+              }
+            ]
+          }
+        ]
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+The URL must return the media file directly and remain reachable while the request is processed. For private media, use a signed HTTPS URL that remains valid until inference finishes.
+
+### Dedicated video and audio with Base64
+
+Qwen3 Omni accepts `video_url`, `audio_url`, and `text` content types. Provide the video and audio as Base64-encoded data URLs.
 
 <Tabs>
   <Tab title="Python">
@@ -114,7 +196,7 @@ Provide video and audio as base64-encoded data URLs. The model accepts `video_ur
 
 ## Working with videos
 
-Video models perform best with preprocessed inputs that balance quality and token efficiency. Use ffmpeg to optimize your video and audio before sending requests.
+Video models perform best with inputs that balance quality and token efficiency. When you control the source media, use ffmpeg to optimize video and audio before sending requests. The settings below are starting points for the dedicated Base64 example, not universal hard limits.
 
 ### Preprocessing video
 
@@ -226,15 +308,17 @@ def preprocess_video(video_path: str) -> tuple[str, str]:
 
 * **Preprocess all videos** – 1 FPS at 360p provides good quality with minimal tokens
 * **Extract audio separately** – Opus/Ogg at 24kbps offers excellent compression
-* **Limit video duration** – Cap at 60 seconds for consistent performance
-* **Use dedicated deployments** – Scale replicas based on your throughput needs
+* **Limit video duration** – Start with 60 seconds or less for consistent performance
+* **Choose the appropriate serving path** – Use GLM 5.3 Flash on Serverless, or scale replicas for models that require dedicated deployments
 
 ## Known limitations
 
-1. **Video duration**: Maximum 60 seconds recommended for optimal performance
-2. **Supported formats**: `.mp4` for video, `.ogg` (Opus) for audio
-3. **Base64 size**: Total encoded payload should be under 10MB
-4. **Deployment required**: Video models are not available on serverless; dedicated deployment required
+1. **Video duration**: 60 seconds is a performance recommendation for the preprocessing example, not a universal API limit.
+2. **Supported formats**: The examples use `.mp4` for video and `.ogg` (Opus) for audio.
+3. **Base64 size**: Keep the total encoded payload for the dedicated example under 10MB.
+4. **Video URLs**: The URL must be reachable by Fireworks and return the media file directly without custom authorization headers.
+5. **Availability**: GLM 5.3 Flash supports Serverless video input. Qwen3 Omni and Molmo2 require dedicated deployments.
+6. **Audio support**: Only use `audio_url` with models whose input support explicitly includes audio.
 
 ## Related resources
 

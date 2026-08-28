@@ -52,7 +52,14 @@ See [Getting started with a GitHub Copilot plan](/en/copilot/how-tos/manage-your
 ### Organizations and enterprises
 
 > \[!IMPORTANT]
-> **Starting April 22, 2026**, new self-serve sign-ups for Copilot Business for organizations on GitHub Free and GitHub Team plans are temporarily paused.
+>
+> <!-- expires 2026-08-31 -->
+>
+> On April 22, 2026, new self-serve purchases of Copilot Business and Copilot Enterprise were temporarily paused.
+>
+> Self-serve sign-ups **are reopening soon** for customers paying by credit card or PayPal. You might be charged prorated seat costs at sign-up. Additional usage beyond your included amount requires payment as you go. Self-serve trials remain paused.
+>
+> <!-- end expires 2026-08-31 -->
 
 **Organization owners** can get Copilot Business for their team through an enterprise account. If you don't already have an enterprise account, you can create one specifically for managing Copilot Business licenses. See [About enterprise accounts for Copilot Business](/en/copilot/concepts/about-enterprise-accounts-for-copilot-business).
 

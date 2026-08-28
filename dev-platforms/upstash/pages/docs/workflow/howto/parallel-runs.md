@@ -7,8 +7,8 @@ path: docs/workflow/howto/parallel-runs
 <Note>
   This feature is not yet available in
   [workflow-py](https://github.com/upstash/workflow-py). See our
-  [Roadmap](/workflow/roadmap) for feature parity plans and
-  [Changelog](/workflow/changelog) for updates.
+  [Roadmap](/docs/workflow/roadmap) for feature parity plans and
+  [Changelog](/docs/workflow/changelog) for updates.
 </Note>
 
 Just like you can execute multiple JavaScript promises at the same time using `Promise.all`, you can run multiple workflow steps at the same time:
@@ -49,6 +49,4 @@ export const { POST } = serve(async (ctx) => {
 
 After running your workflow, your dashboard shows each step in detail:
 
-<Frame>
-  <img src="/img/qstash/parallel-workflow-runs.png" />
-</Frame>
+  <img />

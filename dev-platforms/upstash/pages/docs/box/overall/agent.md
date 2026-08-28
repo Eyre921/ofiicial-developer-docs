@@ -8,10 +8,10 @@ path: docs/box/overall/agent
 
 You can choose between:
 
-- `run()` when you want to wait for completion and then read the final typed result.
-- `stream()` when you want real-time output while the agent is running.
+* `run()` when you want to wait for completion and then read the final typed result.
+* `stream()` when you want real-time output while the agent is running.
 
----
+***
 
 ## Configure an Agent
 
@@ -182,15 +182,15 @@ run = box.agent.run(
 
 The exact option shape depends on the configured agent:
 
-- `ClaudeCode`: `maxTurns`, `maxBudgetUsd`, `effort`, `thinking`, `disallowedTools`, `agents`, `promptSuggestions`, `fallbackModel`, `systemPrompt`
-- `Codex`: `modelReasoningEffort`, `modelReasoningSummary`, `personality`, `webSearch`
-- `OpenCode`: `reasoningEffort`, `textVerbosity`, `reasoningSummary`, `thinking`
+* `ClaudeCode`: `maxTurns`, `maxBudgetUsd`, `effort`, `thinking`, `disallowedTools`, `agents`, `promptSuggestions`, `fallbackModel`, `systemPrompt`
+* `Codex`: `modelReasoningEffort`, `modelReasoningSummary`, `personality`, `webSearch`
+* `OpenCode`: `reasoningEffort`, `textVerbosity`, `reasoningSummary`, `thinking`
 
 <Note>
   In the Python SDK these option keys are **snake_case** — e.g. `max_turns`, `max_budget_usd`, `model_reasoning_effort`, `web_search`, `reasoning_effort`.
 </Note>
 
-To bring your own agent process, use a [custom agent](/box/overall/custom-agent).
+To bring your own agent process, use a [custom agent](/docs/box/overall/custom-agent).
 
 ## Quickstart
 
@@ -481,20 +481,20 @@ ranked = asyncio.run(main())
 </Tab>
 </Tabs>
 
----
+***
 
 ## API
 
 ### Prompt (required)
 
-Type: `string`  
+Type: `string`
 Supported on: `box.agent.run()` and `box.agent.stream()`
 
 The task instruction sent to the agent.
 
 ### Options
 
-Type: `AgentOptions`  
+Type: `AgentOptions`
 Supported on: `box.agent.run()`, `box.agent.stream()`, and `box.schedule.agent()`
 
 Provider-specific agent options forwarded to the underlying runner.
@@ -523,22 +523,22 @@ stream = box.agent.stream(
 
 ### Timeout
 
-Type: `number`  
-Supported on: `box.agent.run()`, `box.agent.stream()`, and `box.schedule.agent()`  
+Type: `number`
+Supported on: `box.agent.run()`, `box.agent.stream()`, and `box.schedule.agent()`
 Default: no execution timeout
 
 Execution timeout in milliseconds. When reached, the run is aborted.
 
 ### onToolUse
 
-Type: `{ name: string; input: Record<string, unknown> }`  
+Type: `{ name: string; input: Record<string, unknown> }`
 Supported on: `box.agent.run()` and `box.agent.stream()`
 
 Called whenever the agent invokes a tool (for example file, shell, or git tools).
 
 ### responseSchema
 
-Type: `Zod Schema`  
+Type: `Zod Schema`
 Supported on: `box.agent.run()`
 
 Attach a Zod schema to get typed output.
@@ -585,17 +585,17 @@ print(analysis.result.customers)
 
 ### maxRetries
 
-Type: `number`  
-Supported on: `box.agent.run()`  
+Type: `number`
+Supported on: `box.agent.run()`
 Default: `0`
 
 Retry count to compensate temporary provider outages or similar transient errors. Retries use exponential backoff (`1s`, `2s`, `4s`, ...) capped at `30s`.
 
 ### Webhook
 
-Type: `WebhookConfig`  
+Type: `WebhookConfig`
 Supported on: `box.agent.run()`
 
 Useful for fire-and-forget mode. The SDK returns immediately and sends the completion payload to your webhook URL when the run succeeds or fails.
 
----
+***

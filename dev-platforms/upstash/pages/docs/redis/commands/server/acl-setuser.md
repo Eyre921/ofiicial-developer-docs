@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/server/acl-setuser
 path: docs/redis/commands/server/acl-setuser
 ---
 
-> Create or modify a user with the specified attributes.
-
 Use `ACL SETUSER` to create a new ACL user or change the rules of an existing one.
 
 Rules are applied left to right in a single call: they enable or disable the user (`on`, `off`), grant or revoke access to key patterns (`~pattern`), channel patterns (`&pattern`), commands and categories (`+get`, `-@admin`), and manage passwords. Because rules are cumulative, calling `SETUSER` again only adds to or removes from what a user already has; use `reset` to start over from a clean slate.
@@ -26,7 +24,7 @@ ACL SETUSER <username> [rule ...]
 | Rule | Effect |
 | --- | --- |
 | `on` / `off` | Enable or disable authentication for the user. |
-| `>token` | Add a password. `token` must be a value returned by [`ACL GENTOKEN`](/redis/commands/server/acl-gentoken), not an arbitrary string. |
+| `>token` | Add a password. `token` must be a value returned by [`ACL GENTOKEN`](/docs/redis/commands/server/acl-gentoken), not an arbitrary string. |
 | `<token` | Remove a password previously added this way. |
 | `!hash` | Remove a password by its 64-character lowercase SHA-256 hash. |
 | `resetpass` | Remove every password set on the user. |
@@ -37,19 +35,19 @@ ACL SETUSER <username> [rule ...]
 | `allchannels` | Alias for `&*`. |
 | `resetchannels` | Remove every channel pattern granted so far. |
 | `+command` / `-command` | Grant or revoke a single command. |
-| `+@category` / `-@category` | Grant or revoke every command in a category; see [`ACL CAT`](/redis/commands/server/acl-cat). |
+| `+@category` / `-@category` | Grant or revoke every command in a category; see [`ACL CAT`](/docs/redis/commands/server/acl-cat). |
 | `allcommands` | Alias for `+@all`. |
 | `nocommands` | Alias for `-@all`. |
 | `reset` | Reset the user to its just-created state: `resetpass`, `resetkeys`, `resetchannels`, `off`, `nocommands`. |
 
 ## Important points
 
-- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
-- `nopass` is rejected. Every user must have at least one password; there is no way to allow authentication with any password.
-- Plain-text passwords (`>password`) and pre-hashed passwords (`#hash`) are rejected. Passwords must be generated with [`ACL GENTOKEN`](/redis/commands/server/acl-gentoken) and added with `>token`; this is what lets the same credential authenticate on both the TCP and REST endpoints.
-- Subcommand-scoped rules such as `+client|list` are not supported and return an error.
-- The `default` user cannot be modified; the command returns an error if it is the target.
-- Changes take effect immediately on new and existing connections, so a rule that narrows access can lock out a running application. Check with [`ACL GETUSER`](/redis/commands/server/acl-getuser) before applying it broadly.
+* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+* `nopass` is rejected. Every user must have at least one password; there is no way to allow authentication with any password.
+* Plain-text passwords (`>password`) and pre-hashed passwords (`#hash`) are rejected. Passwords must be generated with [`ACL GENTOKEN`](/docs/redis/commands/server/acl-gentoken) and added with `>token`; this is what lets the same credential authenticate on both the TCP and REST endpoints.
+* Subcommand-scoped rules such as `+client|list` are not supported and return an error.
+* The `default` user cannot be modified; the command returns an error if it is the target.
+* Changes take effect immediately on new and existing connections, so a rule that narrows access can lock out a running application. Check with [`ACL GETUSER`](/docs/redis/commands/server/acl-getuser) before applying it broadly.
 
 ## Response
 

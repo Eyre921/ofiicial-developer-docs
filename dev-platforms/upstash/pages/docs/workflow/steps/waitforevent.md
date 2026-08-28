@@ -21,8 +21,8 @@ Default timeout value is 7 days.
 <ParamField body="timeout" type="number|string">
     The maximum time to wait before continuing execution.
 
-    - **String format**: Human‑readable duration (e.g., `"10s"`, `"2h"`, `"1d"`).
-    - **Number format**: Duration in seconds (e.g., `60`, `3600`).
+    * **String format**: Human‑readable duration (e.g., `"10s"`, `"2h"`, `"1d"`).
+    * **Number format**: Duration in seconds (e.g., `60`, `3600`).
 
     Defaults to `7d` (7 days).
 </ParamField>

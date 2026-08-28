@@ -14,9 +14,7 @@ Every Upstash Box is a **secure, isolated cloud container with an AI Agent built
 
 Go to the [Upstash Console](https://console.upstash.com) and create an API key.
 
-<Frame>
-  <img src="/img/box/create-api-key.png" />
-</Frame>
+  <img />
 
 ### 2. Install the SDK
 
@@ -79,10 +77,10 @@ box = Box.create(runtime="node")
 Your box is ready to use! You can already use it as a standalone, secure, isolated sandbox with full shell access, git, and filesystem operations.
 
 <Tip>
-  You can also create a keep-alive box by setting `keepAlive: true`. Keep-alive boxes stay on between sessions and can run an `initCommand` at startup. See [Keep Alive](/box/overall/keep-alive).
+  You can also create a keep-alive box by setting `keepAlive: true`. Keep-alive boxes stay on between sessions and can run an `initCommand` at startup. See [Keep Alive](/docs/box/overall/keep-alive).
 </Tip>
 
----
+***
 
 ### 5. Configure an Agent (optional)
 
@@ -211,7 +209,7 @@ When SSH asks for a password, enter your **Box API key**.
 
 You can copy the exact SSH command for a box from the **SSH** button on its details page in the Upstash Console.
 
----
+***
 
 ## Use Cases
 
@@ -233,7 +231,7 @@ Great example use cases:
   </Card>
 </CardGroup>
 
----
+***
 
 ## Next Steps
 

@@ -4,7 +4,7 @@ source: https://upstash.com/docs/workflow/agents/patterns/evaluator-optimizer
 path: docs/workflow/agents/patterns/evaluator-optimizer
 ---
 
-<img src="/img/workflow/agents/diagram/evaluator-diagram.png" />
+<img />
 
 In this example, the generator creates output and passes it to the evaluator, which evaluates the response. If the evaluation fails, the evaluator returns corrections, and the generator is called again using the corrected output.
 
@@ -40,7 +40,7 @@ export const { POST } = serve(async (context) => {
   const prompt = "Generate a short explanation of quantum mechanics.";
   let nextPrompt = prompt;
   for (let i = 0; i < 3; i++) {
-    // Construct prompt for generator: 
+    // Construct prompt for generator:
     // - If there's no evaluation, use the original prompt
     // - If there's an evaluation, provide the prompt, the last generated text, and the evaluator's feedback
     if (evaluationResult && evaluationResult !== "PASS") {
@@ -65,7 +65,7 @@ export const { POST } = serve(async (context) => {
 });
 ```
 
-<img src="/img/workflow/agents/logs/logs-evaluator.png" />
+<img />
 
 In response to the prompt, our agents generate this response:
 

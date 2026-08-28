@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/list/rpop
 path: docs/redis/commands/list/rpop
 ---
 
-> Pop from list tail.
-
 Use `RPOP` to remove and return elements from the tail of a list.
 
 Without a count a single element is returned, or null when the key does not exist. With a count, up to that many elements are removed and returned in the order they were popped, and the key is deleted once the last element is gone.
 
-Combined with [`LPUSH`](/redis/commands/list/lpush) this gives a first-in, first-out queue, since producers add at the head and consumers take from the tail. Use [`BRPOP`](/redis/commands/list/brpop) when a consumer should wait for work instead of polling.
+Combined with [`LPUSH`](/docs/redis/commands/list/lpush) this gives a first-in, first-out queue, since producers add at the head and consumers take from the tail. Use [`BRPOP`](/docs/redis/commands/list/brpop) when a consumer should wait for work instead of polling.
 
 ## Syntax
 

@@ -69,6 +69,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Set Language Manually](#set-language-manually-docs-pre-recorded-audio-set-language-manually-mdx)
 - [Supported Languages](#supported-languages-docs-pre-recorded-audio-supported-languages-mdx)
 - [Custom Spelling](#custom-spelling-docs-pre-recorded-audio-correct-spelling-of-terms-mdx)
+- [Formatting](#formatting-docs-pre-recorded-audio-formatting-mdx)
 - [Filler Words](#filler-words-docs-pre-recorded-audio-include-filler-words-mdx)
 - [Word Search](#word-search-docs-pre-recorded-audio-search-for-words-in-transcript-mdx)
 - [Set the Start and End of the Transcript](#set-the-start-and-end-of-the-transcript-docs-pre-recorded-audio-set-the-start-and-end-of-the-transcript-mdx)
@@ -369,10 +370,9 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Why is the transcription I am receiving using the Playground in a different language?](#why-is-the-transcription-i-am-receiving-using-the-playground-in-a-different-language-docs-faq-why-is-the-transcription-i-am-receiving-using-the-playground-in-a-different-language-mdx)
 - [Do you have an affiliate marketing program?](#do-you-have-an-affiliate-marketing-program-docs-faq-do-you-have-an-affiliate-marketing-program-mdx)
 - [Do you have any job openings or internship opportunities?](#do-you-have-any-job-openings-or-internship-opportunities-docs-faq-do-you-have-any-job-openings-or-internship-opportunities-mdx)
-- [How do I contact support?](#how-do-i-contact-support-docs-faq-how-do-i-contact-support-mdx)
 - [How do I get in touch with your Sales team?](#how-do-i-get-in-touch-with-your-sales-team-docs-faq-how-do-i-get-in-touch-with-your-sales-team-mdx)
 - [I’ve spotted an issue with the website, what should I do?](#i-ve-spotted-an-issue-with-the-website-what-should-i-do-docs-faq-ive-spotted-an-issue-with-the-website-what-should-i-do-mdx)
-- [What are your support hours and response time SLAs?](#what-are-your-support-hours-and-response-time-slas-docs-faq-what-are-your-support-hours-and-response-time-slas-mdx)
+- [How do I contact support and what are your response time SLAs?](#how-do-i-contact-support-and-what-are-your-response-time-slas-docs-faq-what-are-your-support-hours-and-response-time-slas-mdx)
 - [What is your API Uptime SLA?](#what-is-your-api-uptime-sla-docs-faq-what-is-your-api-uptime-sla-mdx)
 - [Where can I find AssemblyAI's product roadmap?](#where-can-i-find-assemblyai-s-product-roadmap-docs-faq-where-can-i-find-assemblyais-product-roadmap-mdx)
 - [AssemblyAI integration prompt for AI coding agents](#assemblyai-integration-prompt-for-ai-coding-agents-docs-agent-instructions-mdx)
@@ -9166,6 +9166,18 @@ These are the key parameters to tune. Set them inside `AssemblyAISTTService.Sett
   [Tuning early partial timing](/streaming/getting-started/transcribe-streaming-audio)
   for details.
 
+  Languages to steer transcription toward. **Universal 3.5 Pro Realtime**
+  code-switches natively across all [supported
+  languages](/streaming/multilingual-transcription#supported-languages) by
+  default; set `language_codes` when you know which languages a session will
+  use to bias the model toward them. Pass a single-element list (e.g.
+  `["es"]`) to pin a monolingual session, or several codes (e.g.
+  `["en", "es"]`) to constrain code-switching to a known subset. Omit or
+  leave empty for automatic detection. Can also be updated mid-session via
+  `STTUpdateSettingsFrame` (takes effect from the next turn on reconnect).
+  U3 Pro family only. See [Multilingual
+  transcription](/streaming/multilingual-transcription).
+
   **Universal 3.5 Pro Realtime** code-switches natively between supported
   languages. This parameter controls whether `language_code` and
   `language_confidence` are included in turn messages.
@@ -9513,6 +9525,7 @@ await worker.queue_frame(
 | Entity dictation (email, phone, address)   | Raise `max_turn_silence` to ~`2000`–`4000` ms, then lower it again afterward     |
 | After each agent reply                     | Automatic — or push `agent_context` via `update_agent_context()`                 |
 | Faster barge-in                            | Lower `interruption_delay`                                                       |
+| Shift to a known language set              | Update `language_codes` (e.g., `["en", "es"]`; empty list to clear steering)     |
 
 For more information, see [Updating configuration mid-stream](/streaming/updating-configuration-mid-stream).
 
@@ -17482,6 +17495,132 @@ while (true) {
   an error message like `detected language 'bg', confidence 0.2949, is below the
   requested confidence threshold value of '0.4'`.
 
+## Handle audio with no speech
+
+By default, automatic language detection can't run on audio that contains no speech, and the transcript fails with an error like `language_detection cannot be performed on files with no spoken audio.` If you'd rather receive a completed transcript than an error — for example when processing recordings in bulk, where some may be silent — set `on_no_speech_detected` to `fallback`.
+
+- Set `language_detection_options.on_no_speech_detected` to `fallback`.
+- Set `language_detection_options.fallback_language` to a specific language code. `fallback` can't be combined with `auto`, which returns a `400`.
+- The transcript completes with an empty `text`, `language_code` set to your `fallback_language`, and a warning in `metadata.warnings` explaining that no speech was detected.
+
+```python title="Python" for="python" highlight={21-22}  expandable
+import requests
+import time
+
+base_url = "https://api.assemblyai.com"
+
+headers = {
+    "authorization": "<YOUR_API_KEY>"
+}
+
+with open("./my-audio.mp3", "rb") as f:
+  response = requests.post(base_url + "/v2/upload",
+                          headers=headers,
+                          data=f)
+
+upload_url = response.json()["upload_url"]
+
+data = {
+    "audio_url": upload_url, # You can also use a URL to an audio or video file on the web
+    "language_detection": True,
+    "language_detection_options": {
+      "on_no_speech_detected": "fallback",
+      "fallback_language": "en"
+  }
+}
+
+url = base_url + "/v2/transcript"
+response = requests.post(url, json=data, headers=headers)
+
+transcript_id = response.json()['id']
+polling_endpoint = base_url + "/v2/transcript/" + transcript_id
+
+while True:
+  transcription_result = requests.get(polling_endpoint, headers=headers).json()
+
+  if transcription_result['status'] == 'completed':
+    print(transcription_result['text'])
+
+    metadata = transcription_result.get('metadata') or {}
+    for warning in metadata.get('warnings') or []:
+      print(warning['message'])
+    break
+
+  elif transcription_result['status'] == 'error':
+    raise RuntimeError(f"Transcription failed: {transcription_result['error']}")
+
+  else:
+    time.sleep(3)
+```
+
+```javascript title="JavaScript" for="javascript" highlight={24-25}  expandable
+import fs from "fs-extra";
+
+const baseUrl = "https://api.assemblyai.com";
+
+const headers = {
+  authorization: "<YOUR_API_KEY>",
+};
+
+const path = "./my-audio.mp3";
+const audioData = await fs.readFile(path);
+let res = await fetch(`${baseUrl}/v2/upload`, {
+  method: "POST",
+  headers,
+  body: audioData,
+});
+if (!res.ok) throw new Error(`Error: ${res.status}`);
+const uploadResponse = await res.json();
+const uploadUrl = uploadResponse.upload_url;
+
+const data = {
+  audio_url: uploadUrl, // You can also use a URL to an audio or video file on the web
+  language_detection: true,
+  language_detection_options: {
+    on_no_speech_detected: "fallback",
+    fallback_language: "en",
+  },
+};
+
+const url = `${baseUrl}/v2/transcript`;
+res = await fetch(url, {
+  method: "POST",
+  headers: { ...headers, "Content-Type": "application/json" },
+  body: JSON.stringify(data),
+});
+if (!res.ok) throw new Error(`Error: ${res.status}`);
+const response = await res.json();
+
+const transcriptId = response.id;
+const pollingEndpoint = `${baseUrl}/v2/transcript/${transcriptId}`;
+
+while (true) {
+  res = await fetch(pollingEndpoint, { headers });
+  if (!res.ok) throw new Error(`Error: ${res.status}`);
+  const transcriptionResult = await res.json();
+
+  if (transcriptionResult.status === "completed") {
+    console.log(transcriptionResult.text);
+
+    for (const warning of transcriptionResult.metadata?.warnings ?? []) {
+      console.log(warning.message);
+    }
+    break;
+  } else if (transcriptionResult.status === "error") {
+    throw new Error(`Transcription failed: ${transcriptionResult.error}`);
+  } else {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+}
+```
+
+  **Things to know**
+
+  - **`fallback` requires a specific language.** `on_no_speech_detected` set to `fallback` alongside `fallback_language` set to `auto` returns a `400`, because there's no speech to pick a language from.
+  - **The transcript is empty.** A fallback transcript completes with `text` set to an empty string. Check for empty text rather than relying on `status` alone.
+  - **Check `metadata.warnings`.** The explanation for the empty transcript is returned there. The top-level `warnings` field isn't used for this.
+  - **The default is `error`.** Omitting `on_no_speech_detected` keeps the existing behavior, where the transcript fails.
+
 ## Troubleshooting
 
 ### Accented speech detected as the wrong language
@@ -17967,6 +18106,150 @@ run();
   
 
 The value in the `to` key is case-sensitive, but the value in the `from` key isn't. Additionally, the `to` key must only contain one word, while the `from` key can contain multiple words.
+
+---
+
+<a id="formatting-docs-pre-recorded-audio-formatting-mdx"></a>
+
+# Formatting
+
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/formatting
+Source: docs/pre-recorded-audio/formatting.mdx
+Navigation: Pre-recorded STT > Features
+Description: Control text formatting and normalization in pre-recorded audio transcripts.
+
+`format_text` lets you control how numbers and other entities in your transcript are formatted. By default, `format_text` is `true`, so numbers, dates, and similar entities are formatted for readability.
+
+When `format_text` is set to `false`, the transcript reflects exactly what was said instead — a speaker saying "one hundred" comes back as "one hundred" rather than `100`, useful for verbatim workflows, like medical dictation.
+
+To enable text formatting, set `format_text` to `True` in the POST request body:
+
+```python {10}  expandable
+import requests
+import time
+
+base_url = "https://api.assemblyai.com"
+headers = {"authorization": "<YOUR_API_KEY>"}
+
+data = {
+    "audio_url": "https://assemblyaiassets.com/8e23e453-format_text.m4a",
+    "language_detection": True,
+    "format_text": True
+}
+
+response = requests.post(base_url + "/v2/transcript", headers=headers, json=data)
+
+if response.status_code != 200:
+    print(f"Error: {response.status_code}, Response: {response.text}")
+    response.raise_for_status()
+
+transcript_response = response.json()
+transcript_id = transcript_response["id"]
+polling_endpoint = f"{base_url}/v2/transcript/{transcript_id}"
+
+while True:
+    transcript = requests.get(polling_endpoint, headers=headers).json()
+    if transcript["status"] == "completed":
+        print(transcript["text"])
+        break
+    elif transcript["status"] == "error":
+        raise RuntimeError(f"Transcription failed: {transcript['error']}")
+    else:
+        time.sleep(3)
+```
+
+To enable text formatting, set `format_text` to `True` in the transcription config.
+
+```python {11} 
+from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
+
+# You can use a local filepath:
+# audio_file = "./example.mp3"
+
+# Or use a publicly-accessible URL:
+audio_file = "https://assemblyaiassets.com/8e23e453-format_text.m4a"
+
+config = TranscriptionConfig(
+    language_detection=True,
+    format_text=True,
+)
+
+transcriber = Transcriber(api_key="<YOUR_API_KEY>")
+transcript = transcriber.transcribe(audio_file, config)
+
+print(transcript.text)
+```
+
+To enable text formatting, set `format_text` to `true` in the POST request body:
+
+```javascript {9}  expandable
+const baseUrl = "https://api.assemblyai.com";
+const headers = {
+  authorization: "<YOUR_API_KEY>",
+};
+
+const data = {
+  audio_url: "https://assemblyaiassets.com/8e23e453-format_text.m4a",
+  language_detection: true,
+  format_text: true,
+};
+
+const url = `${baseUrl}/v2/transcript`;
+let res = await fetch(url, {
+  method: "POST",
+  headers: { ...headers, "Content-Type": "application/json" },
+  body: JSON.stringify(data),
+});
+if (!res.ok) throw new Error(`Error: ${res.status}`);
+const response = await res.json();
+
+const transcriptId = response.id;
+const pollingEndpoint = `${baseUrl}/v2/transcript/${transcriptId}`;
+
+while (true) {
+  res = await fetch(pollingEndpoint, { headers });
+  if (!res.ok) throw new Error(`Error: ${res.status}`);
+  const transcriptionResult = await res.json();
+
+  if (transcriptionResult.status === "completed") {
+    console.log(transcriptionResult.text);
+    break;
+  } else if (transcriptionResult.status === "error") {
+    throw new Error(`Transcription failed: ${transcriptionResult.error}`);
+  } else {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+}
+```
+
+To enable text formatting, set `format_text` to `true` in the transcription config.
+
+```javascript {16}  expandable
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({
+  apiKey: "<YOUR_API_KEY>",
+});
+
+// You can use a local filepath:
+// const audioFile = "./example.mp3"
+
+// Or use a publicly-accessible URL:
+const audioFile = "https://assemblyaiassets.com/8e23e453-format_text.m4a";
+
+const params = {
+  audio: audioFile,
+  language_detection: true,
+  format_text: true,
+};
+
+const run = async () => {
+  const transcript = await client.transcripts.transcribe(params);
+  console.log(transcript.text);
+};
+
+run();
+```
 
 ---
 
@@ -37599,6 +37882,18 @@ These are the key parameters to tune. Set them inside `AssemblyAISTTService.Sett
   [Tuning early partial timing](/streaming/getting-started/transcribe-streaming-audio)
   for details.
 
+  Languages to steer transcription toward. **Universal 3.5 Pro Realtime**
+  code-switches natively across all [supported
+  languages](/streaming/multilingual-transcription#supported-languages) by
+  default; set `language_codes` when you know which languages a session will
+  use to bias the model toward them. Pass a single-element list (e.g.
+  `["es"]`) to pin a monolingual session, or several codes (e.g.
+  `["en", "es"]`) to constrain code-switching to a known subset. Omit or
+  leave empty for automatic detection. Can also be updated mid-session via
+  `STTUpdateSettingsFrame` (takes effect from the next turn on reconnect).
+  U3 Pro family only. See [Multilingual
+  transcription](/streaming/multilingual-transcription).
+
   **Universal 3.5 Pro Realtime** code-switches natively between supported
   languages. This parameter controls whether `language_code` and
   `language_confidence` are included in turn messages.
@@ -37946,6 +38241,7 @@ await worker.queue_frame(
 | Entity dictation (email, phone, address)   | Raise `max_turn_silence` to ~`2000`–`4000` ms, then lower it again afterward     |
 | After each agent reply                     | Automatic — or push `agent_context` via `update_agent_context()`                 |
 | Faster barge-in                            | Lower `interruption_delay`                                                       |
+| Shift to a known language set              | Update `language_codes` (e.g., `["en", "es"]`; empty list to clear steering)     |
 
 For more information, see [Updating configuration mid-stream](/streaming/updating-configuration-mid-stream).
 
@@ -81127,23 +81423,6 @@ As a fast-growing start-up, we are regularly growing our team! Check out our [Ca
 
 ---
 
-<a id="how-do-i-contact-support-docs-faq-how-do-i-contact-support-mdx"></a>
-
-# How do I contact support?
-
-URL: https://www.assemblyai.com/docs/faq/how-do-i-contact-support
-Source: docs/faq/how-do-i-contact-support.mdx
-Navigation: FAQ > Overview > Company
-Description: How do I contact support? documentation.
-
-When logged in to your account dashboard, you can chat with us via our chat widget.
-
-  <img src="/assets/img/faq/support2.png" alt="Support chat widget open in the AssemblyAI account dashboard" />
-
-You can also reach out to our support team at any time by sending an email to [support@assemblyai.com](mailto:support@assemblyai.com). When reaching out, please include a detailed description of any issues you're experiencing as well as transcript IDs for affected requests, if possible.
-
----
-
 <a id="how-do-i-get-in-touch-with-your-sales-team-docs-faq-how-do-i-get-in-touch-with-your-sales-team-mdx"></a>
 
 # How do I get in touch with your Sales team?
@@ -81175,26 +81454,27 @@ If you encounter an issue or problem with our website please reach out to us at 
 
 ---
 
-<a id="what-are-your-support-hours-and-response-time-slas-docs-faq-what-are-your-support-hours-and-response-time-slas-mdx"></a>
+<a id="how-do-i-contact-support-and-what-are-your-response-time-slas-docs-faq-what-are-your-support-hours-and-response-time-slas-mdx"></a>
 
-# What are your support hours and response time SLAs?
+# How do I contact support and what are your response time SLAs?
 
 URL: https://www.assemblyai.com/docs/faq/what-are-your-support-hours-and-response-time-slas
 Source: docs/faq/what-are-your-support-hours-and-response-time-slas.mdx
 Navigation: FAQ > Overview > Company
-Description: What are your support hours and response time SLAs? documentation.
+Description: How do I contact support and what are your response time SLAs? documentation.
 
-AssemblyAI provides technical support to Customer via telephone, live chat, and email on weekdays during the hours of 6:00 pm PT Sunday through 6:00 pm PT Friday, with the exclusion of federal holidays ("Support Hours").
+AssemblyAI provides technical support to Customers via live chat and email.
 
-Customers may initiate a helpdesk ticket by emailing [support@assemblyai.com](mailto:support@assemblyai.com), or the support widget on AssemblyAI's website [www.AssemblyAI.com](https://www.assemblyai.com/). Some select customers may also have a Slack Connect channel which is configured and monitored by the Support Team. All message services may be accessed 24/7.
+Customers can contact our team by emailing [support@assemblyai.com](mailto:support@assemblyai.com), using the chat widget on AssemblyAI's website [www.AssemblyAI.com](https://www.assemblyai.com/). Some select customers may also have a Slack Connect channel which is configured and monitored by the Support Team. All message services may be accessed 24/7.
 
-When reporting problems experienced with the Services, Customer shall provide AssemblyAI with the following information, as applicable, in the call or email:
+When reporting problems experienced with the Services, Customer shall provide AssemblyAI with the following information, as applicable, in their message:
 
 1. Company name
-2. Contact name and callback number
+2. Contact name and the email address associated with the account
 3. Problem description
 4. Date and time problem was detected
 5. Error messages
+6. Any other relevant information like transcript ids or session ids
 
 ## Ticket Severity and Response SLAs
 
@@ -86255,6 +86535,17 @@ components:
               items:
                 x-label: locale
                 type: string
+            on_no_speech_detected:
+              x-label: On no speech detected
+              description: |
+                Controls what happens when no speech is detected in the audio. With `error` (the default), the transcript fails and the reason is returned in `error`. With `fallback`, the transcript completes with an empty `text`, `language_code` is set to the `fallback_language`, and an explanatory warning is returned in `metadata.warnings`.
+
+                `fallback` requires `fallback_language` to be set to a specific language code; `auto` returns a `400`. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
+              type: string
+              enum:
+                - error
+                - fallback
+              default: error
 
         multichannel:
           x-label: Multichannel
@@ -87848,6 +88139,36 @@ components:
               items:
                 x-label: locale
                 type: string
+            on_no_speech_detected:
+              x-label: On no speech detected
+              description: |
+                Controls what happens when no speech is detected in the audio. With `error` (the default), the transcript fails and the reason is returned in `error`. With `fallback`, the transcript completes with an empty `text`, `language_code` is set to the `fallback_language`, and an explanatory warning is returned in `metadata.warnings`.
+
+                `fallback` requires `fallback_language` to be set to a specific language code; `auto` returns a `400`. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
+              type: string
+              enum:
+                - error
+                - fallback
+              default: error
+
+        metadata:
+          x-label: Metadata
+          description: Additional information about the transcript, including any warnings raised while processing the request.
+          type: [object, "null"]
+          properties:
+            warnings:
+              x-label: Warnings
+              description: |
+                Warnings raised while processing the request, for example when [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) was skipped because the audio contained no speech.
+              type: [array, "null"]
+              items:
+                x-label: Warning
+                type: object
+                properties:
+                  message:
+                    x-label: Message
+                    description: A human-readable description of the warning.
+                    type: string
 
         multichannel:
           x-label: Multichannel
@@ -93673,6 +93994,9 @@ components:
       contentType: application/json
       payload:
         $ref: "#/components/schemas/SessionTerminationPayload"
+      examples:
+        - payload:
+            type: Terminate
 
     AudioChunk:
       name: AudioChunk
@@ -93725,6 +94049,11 @@ components:
       contentType: application/json
       payload:
         $ref: "#/components/schemas/SpeechStartedPayload"
+      examples:
+        - payload:
+            type: SpeechStarted
+            timestamp: 1200
+            confidence: 0.99
 
     Turn:
       name: Turn
@@ -93788,6 +94117,11 @@ components:
       contentType: application/json
       payload:
         $ref: "#/components/schemas/TerminationPayload"
+      examples:
+        - payload:
+            type: Termination
+            audio_duration_seconds: 45
+            session_duration_seconds: 47
 
     Heartbeat:
       name: Heartbeat

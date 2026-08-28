@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/streams/xautoclaim
 path: docs/redis/commands/streams/xautoclaim
 ---
 
-> Auto-claim idle messages.
-
 Use `XAUTOCLAIM` to transfer ownership of pending entries that have been idle for too long, without having to name their IDs.
 
 Starting from `<start>`, it walks the group's pending entries list and claims for `<consumer>` every entry that has been idle at least `<min-idle-time>` milliseconds, up to `COUNT` of them. The reply has three parts: a cursor to pass as `<start>` on the next call, the claimed entries themselves (or only their IDs with `JUSTID`), and the IDs that were dropped from the pending list because they no longer exist in the stream.
 
-This is the recommended way to recover work from a consumer that crashed or stalled: it replaces the older loop of [`XPENDING`](/redis/commands/streams/xpending) to find idle entries followed by [`XCLAIM`](/redis/commands/streams/xclaim) to take them, and it can be run repeatedly by a janitor task, since the idle threshold keeps healthy consumers' work untouched.
+This is the recommended way to recover work from a consumer that crashed or stalled: it replaces the older loop of [`XPENDING`](/docs/redis/commands/streams/xpending) to find idle entries followed by [`XCLAIM`](/docs/redis/commands/streams/xclaim) to take them, and it can be run repeatedly by a janitor task, since the idle threshold keeps healthy consumers' work untouched.
 
 ## Syntax
 

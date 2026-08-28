@@ -31,7 +31,7 @@ path: api/tax_ids/object
 - `id` (string)
   Unique identifier for the object.
 
-- `object` (string)
+- `object` (string, value is "tax_id")
   String representing the object’s type. Objects of the same type share the same value.
 
 - `country` (string, nullable)

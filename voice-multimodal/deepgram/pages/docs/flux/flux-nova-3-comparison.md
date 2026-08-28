@@ -33,7 +33,7 @@ It's important to understand the differences between [Flux](/docs/models-languag
 | --------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | English                     | ✅                                                                            | ✅                                                                |
 | Multilingual (10 languages) | ✅ `flux-general-multi` ([Language Prompting](/docs/flux/language-prompting)) | ✅ [See language support](/docs/models-languages-overview#nova-3) |
-| 54 languages                | 🚫                                                                           | ✅                                                                |
+| Monolingual languages       | 🚫                                                                           | ✅ [Full list](/docs/models-languages-overview#nova-3)            |
 | Language control            | `language_hint` parameter                                                    | `language` parameter                                             |
 | Code-switching              | ✅ Native with `flux-general-multi`                                           | ✅ With `language=multi`                                          |
 

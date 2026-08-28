@@ -73,12 +73,12 @@ ACL SETUSER myreadonlyuser on >somesecurepassword ~* &* +@read -@dangerous
 ```
 
 This command:
-- `on` — enables the user
-- `>somesecurepassword` — sets the password
-- `~*` — allows access to all keys
-- `&*` — allows access to all pub/sub channels
-- `+@read` — grants all read commands
-- `-@dangerous` — revokes dangerous commands (such as `KEYS`, `SCAN`)
+* `on` — enables the user
+* `>somesecurepassword` — sets the password
+* `~*` — allows access to all keys
+* `&*` — allows access to all pub/sub channels
+* `+@read` — grants all read commands
+* `-@dangerous` — revokes dangerous commands (such as `KEYS`, `SCAN`)
 
 You can further restrict key access by replacing `~*` with a pattern like `~cache:*` to only allow reading keys that match that prefix.
 
@@ -88,5 +88,4 @@ You can further restrict key access by replacing `~*` with a pattern like `~cach
 redis-cli --tls -u rediss://myreadonlyuser:somesecurepassword@YOUR_ENDPOINT:YOUR_PORT
 ```
 
-
-If you want to use the REST API with your custom ACL user, you can generate a REST token for it. See [REST Token for ACL Users](/redis/features/restapi#rest-token-for-acl-users) for details.
+If you want to use the REST API with your custom ACL user, you can generate a REST token for it. See [REST Token for ACL Users](/docs/redis/features/restapi#rest-token-for-acl-users) for details.

@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/connection/overview
 path: docs/redis/commands/connection/overview
 ---
 
-> Commands for authenticating, inspecting, and managing client connections.
-
 <CardGroup cols={2}>
 <Card title="AUTH" href="/redis/commands/connection/auth">Authenticate to the server</Card>
 <Card title="CLIENT GETNAME" href="/redis/commands/connection/client-getname">Get the current connection name</Card>

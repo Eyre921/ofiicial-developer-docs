@@ -62,12 +62,12 @@ vector_store.add_documents(documents=documents, batch_size=100, embedding_chunk_
 
 When inserting documents, they are first embedded using the `Embeddings` object. Many embedding models, such as the Hugging Face models, support embedding multiple documents at once. This allows for efficient processing by batching documents and embedding them in parallel.
 
-- The `embedding_chunk_size` parameter controls the number of documents processed in parallel when creating embeddings.
-  
+* The `embedding_chunk_size` parameter controls the number of documents processed in parallel when creating embeddings.
+
 Once the embeddings are created, they are stored in Upstash Vector. To reduce the number of HTTP requests, the vectors are also batched when they are sent to Upstash Vector.
 
-- The `batch_size` parameter controls the number of vectors included in each HTTP request when sending to Upstash Vector.
-  
+* The `batch_size` parameter controls the number of vectors included in each HTTP request when sending to Upstash Vector.
+
 <Note type="info">
 In the Upstash Vector free tier, there is a limit of 1000 vectors per batch.
 </Note>
@@ -82,7 +82,7 @@ qa_pipeline = pipeline("question-answering", model="distilbert-base-cased-distil
 def answer_question(query):
     # Retrieve relevant documents from Upstash Vector
     results = vector_store.similarity_search(query, k=3)
-    
+
     # Use the most relevant document for QA
     if results:
         context = results[0].page_content
@@ -111,6 +111,6 @@ After setting up the code, run your script to start the Gradio app. You will be 
 
 ### Notes
 
-- **Deployment**: To create a public link, set `share=True` in `launch()`. This will generate a public URL for your Gradio app. This share link expires in 72 hours. For free permanent hosting and GPU upgrades, run `gradio deploy` from Terminal to deploy to [Hugging Face Spaces](https://huggingface.co/spaces)
-- **Batch Processing**: The `batch_size` and `embedding_chunk_size` parameters allow you to control the efficiency of document processing and storage in Upstash Vector.
-- **Namespaces**: Upstash Vector supports namespaces for organizing different types of documents. You can set a namespace while creating the `UpstashVectorStore` instance.
+* **Deployment**: To create a public link, set `share=True` in `launch()`. This will generate a public URL for your Gradio app. This share link expires in 72 hours. For free permanent hosting and GPU upgrades, run `gradio deploy` from Terminal to deploy to [Hugging Face Spaces](https://huggingface.co/spaces)
+* **Batch Processing**: The `batch_size` and `embedding_chunk_size` parameters allow you to control the efficiency of document processing and storage in Upstash Vector.
+* **Namespaces**: Upstash Vector supports namespaces for organizing different types of documents. You can set a namespace while creating the `UpstashVectorStore` instance.

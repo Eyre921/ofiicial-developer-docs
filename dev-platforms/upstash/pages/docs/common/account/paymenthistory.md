@@ -8,9 +8,7 @@ The Payment History page gives you information about your payments. You can open
 payment history in the left menu under Account > Payment History. Here an example
 report:
 
-<Frame>
-  <img src="/img/paymenthistory/paymenthistory.png" />
-</Frame>
+  <img />
 
 You can download receipt. If one of your payments failed, you can retry your
 payment on this page.

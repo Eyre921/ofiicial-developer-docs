@@ -104,6 +104,10 @@ The table below lists all models removed from serverless inference, most recent 
 
 | Removal date                | Model                                               | Supported by on-demand dedicated endpoints |
 | :-------------------------- | :-------------------------------------------------- | :----------------------------------------- |
+| 2026-08-27                  | `nvidia/Nemotron-3-ultra-550b-a55b`                 | Yes                                        |
+| 2026-08-27                  | `pearl-ai/gemma-4-31b-it`                           | No                                         |
+| 2026-08-27                  | `deepseek-ai/DeepSeek-V4-Pro`                       | Yes                                        |
+| 2026-08-27                  | `moonshotai/Kimi-K2.7-Code`                         | Yes                                        |
 | 2026-08-25                  | `meta-llama/Llama-Guard-4-12B`                      | No                                         |
 | 2026-08-25                  | `google/gemma-3n-E4B-it`                            | No                                         |
 | 2026-08-21                  | `deepcogito/cogito-v2-1-671b`                       | No                                         |

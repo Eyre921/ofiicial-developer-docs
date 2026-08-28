@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/string/mget
 path: docs/redis/commands/string/mget
 ---
 
-> Get values of multiple keys.
-
 Use `MGET` to read the values of several keys in one call.
 
 The reply holds one entry per key, in the order requested, so it can be zipped straight back onto your list of keys. Keys that do not exist, and keys holding a value that is not a string, come back as null rather than raising an error.
 
-One `MGET` replaces N round trips of [`GET`](/redis/commands/string/get), which is usually the difference that matters when loading a batch of cached objects.
+One `MGET` replaces N round trips of [`GET`](/docs/redis/commands/string/get), which is usually the difference that matters when loading a batch of cached objects.
 
 ## Syntax
 

@@ -23,8 +23,8 @@ they are implicitly wrapped in a `$must`. These queries are equivalent:
 
 The `$must` operator accepts either an object or an array:
 
-- **Object syntax**: Each key-value pair is a condition that must match
-- **Array syntax**: Each element is a separate condition object that must match
+* **Object syntax**: Each key-value pair is a condition that must match
+* **Array syntax**: Each element is a separate condition object that must match
 
 Array syntax is useful when you have multiple conditions on the same field
 or when building queries programmatically.

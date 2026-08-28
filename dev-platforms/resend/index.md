@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 355 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 356 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -247,6 +247,7 @@
 - `docs/knowledge-base/how-do-i-maximize-deliverability-for-supabase-auth-emails` — [How to maximize deliverability for Supabase Auth emails](pages/docs/knowledge-base/how-do-i-maximize-deliverability-for-supabase-auth-emails.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-maximize-deliverability-for-supabase-auth-emails)
 - `docs/knowledge-base/how-do-i-send-with-an-avatar` — [How to send with an avatar](pages/docs/knowledge-base/how-do-i-send-with-an-avatar.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-send-with-an-avatar)
 - `docs/knowledge-base/how-do-i-set-up-apple-branded-mail` — [How to set up Apple Branded Mail](pages/docs/knowledge-base/how-do-i-set-up-apple-branded-mail.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-set-up-apple-branded-mail)
+- `docs/knowledge-base/how-to-add-more-domains` — [How to add more domains](pages/docs/knowledge-base/how-to-add-more-domains.md) · [原文](https://resend.com/docs/knowledge-base/how-to-add-more-domains)
 - `docs/knowledge-base/how-to-handle-api-keys` — [How to Handle API Keys](pages/docs/knowledge-base/how-to-handle-api-keys.md) · [原文](https://resend.com/docs/knowledge-base/how-to-handle-api-keys)
 - `docs/knowledge-base/introduction` — [Introduction](pages/docs/knowledge-base/introduction.md) · [原文](https://resend.com/docs/knowledge-base/introduction)
 - `docs/knowledge-base/ionos` — [IONOS](pages/docs/knowledge-base/ionos.md) · [原文](https://resend.com/docs/knowledge-base/ionos)

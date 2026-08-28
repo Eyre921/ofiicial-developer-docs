@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/generic/pexpireat
 path: docs/redis/commands/generic/pexpireat
 ---
 
-> Set expiry as Unix ms timestamp.
-
 Use `PEXPIREAT` to schedule a key for automatic deletion at a fixed point in time, given as a Unix timestamp in milliseconds.
 
-It combines the absolute deadline of [`EXPIREAT`](/redis/commands/generic/expireat) with the millisecond precision of [`PEXPIRE`](/redis/commands/generic/pexpire), which is what you need when many keys must expire at exactly the same instant. A timestamp in the past deletes the key right away.
+It combines the absolute deadline of [`EXPIREAT`](/docs/redis/commands/generic/expireat) with the millisecond precision of [`PEXPIRE`](/docs/redis/commands/generic/pexpire), which is what you need when many keys must expire at exactly the same instant. A timestamp in the past deletes the key right away.
 
 The optional condition works as elsewhere: `NX` only when the key has no expiration, `XX` only when it already has one, `GT` only when the new deadline is later than the current one, and `LT` only when it is earlier.
 
@@ -28,8 +26,8 @@ PEXPIREAT <key> <unix-time-milliseconds> [NX | XX | GT | LT]
 
 ## Important points
 
-- `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
-- A key with no expiration counts as an infinite one, so `GT` never sets an expiration on such a key and `LT` always does.
+* `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
+* A key with no expiration counts as an infinite one, so `GT` never sets an expiration on such a key and `LT` always does.
 
 ## Response
 

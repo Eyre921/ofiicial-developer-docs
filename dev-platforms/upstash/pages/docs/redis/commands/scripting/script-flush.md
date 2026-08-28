@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/scripting/script-flush
 path: docs/redis/commands/scripting/script-flush
 ---
 
-> Clear the script cache.
-
 Use `SCRIPT FLUSH` to remove every script from the server's script cache.
 
-After the flush, [`EVALSHA`](/redis/commands/scripting/evalsha) calls fail with `NOSCRIPT` until the scripts are loaded again, so run it when you want clients to resend their current script bodies, typically after deploying changed scripts. `ASYNC` reclaims the memory in the background and `SYNC` reclaims it before the reply. Cached scripts are not part of the dataset, so flushing them does not touch your data.
+After the flush, [`EVALSHA`](/docs/redis/commands/scripting/evalsha) calls fail with `NOSCRIPT` until the scripts are loaded again, so run it when you want clients to resend their current script bodies, typically after deploying changed scripts. `ASYNC` reclaims the memory in the background and `SYNC` reclaims it before the reply. Cached scripts are not part of the dataset, so flushing them does not touch your data.
 
 ## Syntax
 

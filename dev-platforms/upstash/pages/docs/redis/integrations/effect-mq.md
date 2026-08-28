@@ -18,9 +18,7 @@ npm install effect-mq effect@rc @effect/platform-node@rc redis
 
 First, get your connection string from the **TCP** tab of the **Connect** section on your database page in the [Upstash Console](https://console.upstash.com):
 
-<Frame>
-  <img src="/img/effect-mq/console-tcp-url.png" />
-</Frame>
+  <img />
 
 Then create the Redis store layer with that URL. It must start with `rediss://` since Upstash requires TLS; `node-redis` picks up TLS from the scheme automatically, so no extra options are needed:
 
@@ -83,10 +81,10 @@ Provide `RunnerLive` to your app and the worker claims, runs, retries, and recor
 
 ## Connecting over HTTP
 
-The setup above talks to Upstash over a TCP connection, which suits a long-running worker process. You may prefer to connect over HTTP with [`@upstash/redis`](/redis/sdks/ts/overview) instead when:
+The setup above talks to Upstash over a TCP connection, which suits a long-running worker process. You may prefer to connect over HTTP with [`@upstash/redis`](/docs/redis/sdks/ts/overview) instead when:
 
-- **You enqueue jobs from serverless or edge functions.** Vercel Functions, Cloudflare Workers, Lambda, and similar runtimes either have no TCP sockets or would open a fresh TLS connection on every cold start. `@upstash/redis` uses `fetch`, so it works anywhere and has no connection to manage.
-- **You run many short-lived instances.** Each TCP client holds a connection open (two for the worker, one of them for pub/sub), which adds up across many serverless invocations or autoscaled replicas. HTTP requests are stateless, so there is no connection count to watch.
+* **You enqueue jobs from serverless or edge functions.** Vercel Functions, Cloudflare Workers, Lambda, and similar runtimes either have no TCP sockets or would open a fresh TLS connection on every cold start. `@upstash/redis` uses `fetch`, so it works anywhere and has no connection to manage.
+* **You run many short-lived instances.** Each TCP client holds a connection open (two for the worker, one of them for pub/sub), which adds up across many serverless invocations or autoscaled replicas. HTTP requests are stateless, so there is no connection count to watch.
 
 effect-mq does not need a separate storage driver for this. Its Redis store talks to Effect's client-agnostic `Redis` service, which only requires a `send` function for raw commands and a `subscribe` function for pub/sub wake-ups. `@upstash/redis` provides both (`exec` and `subscribe`), so the same store, Lua scripts, and key layout work unchanged.
 
@@ -165,4 +163,4 @@ Because both clients run the same Lua scripts against the same keys, you can mix
 
 ## Billing Optimization
 
-effect-mq workers poll Redis regularly (`pollInterval`), heartbeat locks on active jobs, and sweep for stalled jobs and history, even when there is no queue activity. This can incur extra costs because Upstash charges per request on the Pay-As-You-Go plan. With the introduction of [our Fixed plans](/redis/overall/pricing#all-plans-and-limits), **we recommend switching to a Fixed plan to avoid increased command count and high costs in effect-mq use cases.**
+effect-mq workers poll Redis regularly (`pollInterval`), heartbeat locks on active jobs, and sweep for stalled jobs and history, even when there is no queue activity. This can incur extra costs because Upstash charges per request on the Pay-As-You-Go plan. With the introduction of [our Fixed plans](/docs/redis/overall/pricing#all-plans-and-limits), **we recommend switching to a Fixed plan to avoid increased command count and high costs in effect-mq use cases.**

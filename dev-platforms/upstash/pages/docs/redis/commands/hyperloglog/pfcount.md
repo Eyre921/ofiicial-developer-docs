@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/hyperloglog/pfcount
 path: docs/redis/commands/hyperloglog/pfcount
 ---
 
-> Get estimated cardinality.
-
 Use `PFCOUNT` to read the estimated number of distinct elements recorded in one or more HyperLogLogs.
 
 With a single key the stored estimate is returned. With several keys the structures are merged on the fly and the cardinality of their union is returned, without modifying any of them, which is how you answer "how many unique users across these seven days" without double counting. The result is an approximation with a standard error of about 0.81%.
 
-The multi-key form does real work on every call, so when the same union is read often it is cheaper to roll the sources up into one key with [`PFMERGE`](/redis/commands/hyperloglog/pfmerge) and count that.
+The multi-key form does real work on every call, so when the same union is read often it is cheaper to roll the sources up into one key with [`PFMERGE`](/docs/redis/commands/hyperloglog/pfmerge) and count that.
 
 ## Syntax
 

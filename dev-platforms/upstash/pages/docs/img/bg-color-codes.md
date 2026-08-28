@@ -1,5 +1,5 @@
 ---
-title: "img/bg-color-codes"
+title: "Bg color codes"
 source: https://upstash.com/docs/img/bg-color-codes
 path: docs/img/bg-color-codes
 ---

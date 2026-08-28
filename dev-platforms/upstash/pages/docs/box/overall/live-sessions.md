@@ -12,7 +12,7 @@ That lets you do things a one-shot command cannot: write to stdin while the proc
   Live sessions are a Node.js API in the JavaScript SDK. Authentication travels in a request header, and browsers cannot set headers on a WebSocket handshake.
 </Note>
 
----
+***
 
 ## API
 
@@ -70,7 +70,7 @@ session = box.exec.session(cmd="cat *.log | grep ERROR")
   `argv` does not expand variables or treat `;` as a separator, so `argv: ["echo", "$HOME; rm -rf /"]` prints that text literally. Prefer it over `cmd` for untrusted input.
 </Tip>
 
----
+***
 
 ### Write to stdin
 
@@ -107,7 +107,7 @@ print(b"".join(chunks).decode())  # "apple\nbanana\n"
 
 A long-lived process can take many rounds of input without ever closing stdin.
 
----
+***
 
 ### Run interactive programs
 
@@ -143,7 +143,7 @@ repl.resize(50, 120)
 ```
 </CodeGroup>
 
----
+***
 
 ### Set the directory and environment
 
@@ -171,7 +171,7 @@ session = box.exec.session(
   A few environment variables are reserved by the runtime and are dropped rather than applied, so a session cannot use them to alter how the box itself runs.
 </Note>
 
----
+***
 
 ### Stop a session
 
@@ -207,14 +207,14 @@ session.kill("KILL")  # stop immediately
 ```
 </CodeGroup>
 
----
+***
 
 ## The session owns the process
 
 A session is a live connection, and the process belongs to it. Closing the handle, losing the network link, or exiting your program all stop the command rather than leaving it running in the box.
 
 <Warning>
-  Sessions cannot be reattached. Once the connection is gone the process is gone with it, so a session is the wrong tool for work that must outlive your program. Use [schedules](/box/overall/schedules) or a `keep_alive` box with `box.exec.command` for that.
+  Sessions cannot be reattached. Once the connection is gone the process is gone with it, so a session is the wrong tool for work that must outlive your program. Use [schedules](/docs/box/overall/schedules) or a `keep_alive` box with `box.exec.command` for that.
 </Warning>
 
 Always stop the session on your way out, including when your code raises. In Python the handle is a context manager. In JavaScript, close it in a `finally` block.
@@ -236,7 +236,7 @@ with box.exec.session(cmd="npm run dev", tty=True) as dev:
 ```
 </CodeGroup>
 
----
+***
 
 ## Sessions or commands?
 
@@ -246,7 +246,7 @@ with box.exec.session(cmd="npm run dev", tty=True) as dev:
 | `box.exec.stream` | You want output as it arrives, but no input and no signals. |
 | `box.exec.session` | You need stdin, a terminal, signals, or a process you hold open. |
 
----
+***
 
 ## Examples
 
@@ -286,7 +286,7 @@ print(b"".join(chunks).decode())
 ```
 </CodeGroup>
 
----
+***
 
 ### Answer a prompt from an installer
 
@@ -335,7 +335,7 @@ session.wait()
 ```
 </CodeGroup>
 
----
+***
 
 ### Stop a build that runs too long
 

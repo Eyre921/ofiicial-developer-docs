@@ -4,10 +4,8 @@ source: https://upstash.com/docs/workflow/api-reference/dlq/delete-failed-workfl
 path: docs/workflow/api-reference/dlq/delete-failed-workflow-run
 ---
 
-> Delete a specific failed workflow run from the DLQ.
+/workflow/openapi.yaml delete /v2/workflows/dlq/{dlqId}
+Delete a specific failed workflow run from the DLQ.
 
 Use this endpoint to remove a workflow from the DLQ after you have addressed the issue
 or determined that the workflow should not be retried.
-
-
-`DELETE /v2/workflows/dlq/{dlqId}`

@@ -4,14 +4,12 @@ source: https://upstash.com/docs/common/concepts/scale-to-zero
 path: docs/common/concepts/scale-to-zero
 ---
 
-> Pay nothing when idle, without giving up capacity when traffic is high.
-
 Traditionally, cloud services required users to predict their resource needs and provision servers based on those predictions. This often led to over-provisioning for potential peak loads and paying for unused resources during periods of low demand.
 
 Upstash solves this with two pricing models:
 
-- **Pay-as-you-go** databases _scale to zero_: you're billed per command, and an idle database costs $0.
-- **Fixed plans** offer a flat monthly price with unlimited commands for sustained, high-throughput workloads.
+* **Pay-as-you-go** databases _scale to zero_: you're billed per command, and an idle database costs $0.
+* **Fixed plans** offer a flat monthly price with unlimited commands for sustained, high-throughput workloads.
 
 Both run on the same high-performance production infrastructure.
 
@@ -21,17 +19,17 @@ On pay-as-you-go, you're only charged for the commands you run ($0.20 per 100K c
 
 This is ideal for:
 
-- Small teams and side projects that don't want a fixed monthly bill
-- Spiky traffic, where provisioning for peak would mean paying for idle capacity most of the time
-- Prototypes and internal tools with low or intermittent usage
+* Small teams and side projects that don't want a fixed monthly bill
+* Spiky traffic, where provisioning for peak would mean paying for idle capacity most of the time
+* Prototypes and internal tools with low or intermittent usage
 
 ## Fixed plans for high throughput
 
 Once your traffic is sustained, per-command billing may no longer be the best fit. Fixed plans start at $10/month and offer:
 
-- **Unlimited commands** at a flat monthly price, so costs stay predictable no matter how much traffic you serve
-- **Higher throughput limits**: up to 16,000 commands per second on larger fixed plans, and 100K+ commands per second with dedicated resources on Enterprise
-- **Graceful behavior under load**: requests beyond your plan's throughput limit are briefly queued instead of rejected, so traffic spikes don't turn into errors
+* **Unlimited commands** at a flat monthly price, so costs stay predictable no matter how much traffic you serve
+* **Higher throughput limits**: up to 16,000 commands per second on larger fixed plans, and 100K+ commands per second with dedicated resources on Enterprise
+* **Graceful behavior under load**: requests beyond your plan's throughput limit are briefly queued instead of rejected, so traffic spikes don't turn into errors
 
 See [Redis pricing](https://upstash.com/pricing/redis) for the full plan comparison, or a [live throughput benchmark](https://upstash.com/blog/upstash-vs-aws-elasticache-serverless-redis-pricing-and-performance-2026) sustaining 16,000+ commands per second on a fixed plan.
 

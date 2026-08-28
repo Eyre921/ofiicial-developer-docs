@@ -4,11 +4,9 @@ source: https://upstash.com/docs/search/overall/getstarted
 path: docs/search/overall/getstarted
 ---
 
-> Creating an Upstash Search Database
-
 import { Catalog } from "/snippets/catalog.jsx";
 
----
+***
 
 <iframe
   id="intro-video" width='560' height='315'
@@ -17,22 +15,22 @@ import { Catalog } from "/snippets/catalog.jsx";
   clipboard-write; encrypted-media; gyroscope' allowFullScreen>
 </iframe>
 
----
+***
 
 <Tip href="/redis/search/introduction" >
 
-We now have **[Redis Search](/redis/search/introduction)** in Upstash.
+We now have **[Redis Search](/docs/redis/search/introduction)** in Upstash.
 
 If you are starting a new project, we recommend using **Redis Search**:
 
-- Index and query your Redis data with a schema.
-- Use advanced query operators and aggregations.
-- Keep your data and search in one place.
+* Index and query your Redis data with a schema.
+* Use advanced query operators and aggregations.
+* Keep your data and search in one place.
 
-See [Redis Search Introduction](/redis/search/introduction) for details.
+See [Redis Search Introduction](/docs/redis/search/introduction) for details.
 </Tip>
 
----
+***
 
 ## Quickstart
 
@@ -44,31 +42,27 @@ Check out our Next.js quickstart guide if you're working in Next.js.
   </Card>
 </CardGroup>
 
----
+***
 
 ## Create a Database
 
 Create a Search Database by navigating to the `Vector` tab and clicking on the `Search Database` button under `Create`.
 
-<Frame style={{ width: "600px" }}>
-  <img src="/img/search/create-database.png" />
-</Frame>
+  <img />
 
 A dialog with the following options will open:
 
-- **Name:** Type a name for your database (e.g. "product-search").
+* **Name:** Type a name for your database (e.g. "product-search").
 
-- **Region:** Choose the region for your database. For best performance, select the region closest to your application.
+* **Region:** Choose the region for your database. For best performance, select the region closest to your application.
 
   _We plan to support additional regions and cloud providers. Feel free to send your requests to [support@upstash.com](mailto:support@upstash.com)._
 
 Once you're done, click `Next`, choose a plan, and your Database is ready:
 
-<Frame style={{ width: "600px" }}>
-  <img src="/img/search/database-created.png" />
-</Frame>
+  <img />
 
----
+***
 
 ## Add Documents
 
@@ -78,29 +72,25 @@ Add documents to your database using our REST API, our SDKs, or directly in the 
 
 Navigate to the `Data Browser` section of your Database and click `Upsert Documents`:
 
-<Frame style={{ width: "600px" }}>
-  <img src="/img/search/add-data.png" />
-</Frame>
+  <img />
 
 A dialog with the following options will open:
 
-<Frame style={{ width: "600px" }}>
-  <img src="/img/search/add-document.png" />
-</Frame>
+  <img />
 
-- **Index:** An [index](/search/features/indexes) to group your data.
+* **Index:** An [index](/docs/search/features/indexes) to group your data.
 
   _If you plan to query all documents in one place, you only need one index (e.g. "product-search"). If you plan to add multi-tenancy, so that each user can only search their own data, for example, you can create one index per user ("user-1", "user-2", etc.)._
 
-- **ID:** An automatically generated ID.
+* **ID:** An automatically generated ID.
 
-- **Content:** The searchable data in JSON format.
+* **Content:** The searchable data in JSON format.
 
-- **Metadata:** Optional information attached to this document.
+* **Metadata:** Optional information attached to this document.
 
-More information about content and metadata can be found [here](/search/features/content-and-metadata).
+More information about content and metadata can be found [here](/docs/search/features/content-and-metadata).
 
----
+***
 
 ### 2. Add Documents via SDKs
 
@@ -163,7 +153,7 @@ await index.upsert([
 
 </Tabs>
 
----
+***
 
 ## Search Your Database
 
@@ -173,9 +163,7 @@ You can search across your Database the same way: using our REST API, our SDKs o
 
 To search your documents, enter a search term and click `Search`:
 
-<Frame style={{ width: "600px" }}>
-  <img src="/img/search/first-search.png" />
-</Frame>
+  <img />
 
 ### 2. Searching Data via SDKs
 
@@ -199,15 +187,15 @@ const searchResults = await index.search({
 
 </Tabs>
 
----
+***
 
 **That's it!** 🎉 You've just created your first serverless search database with Upstash Search!
 
 But this is just the beginning. Upstash Search also supports:
 
-- Advanced reranking
-- Fine-grained control over search results
-- Metadata-based filtering
+* Advanced reranking
+* Fine-grained control over search results
+* Metadata-based filtering
 
 We'll get into those features in the next sections of this documentation. For now, you've already mastered the basics!
 

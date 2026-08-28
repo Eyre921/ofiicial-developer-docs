@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/sorted-set/overview
 path: docs/redis/commands/sorted-set/overview
 ---
 
-> Commands for storing and manipulating scored collections.
-
 <CardGroup cols={2}>
 <Card title="BZMPOP" href="/redis/commands/sorted-set/bzmpop">Blocking pop from sorted sets</Card>
 <Card title="BZPOPMAX" href="/redis/commands/sorted-set/bzpopmax">Blocking pop max score member</Card>

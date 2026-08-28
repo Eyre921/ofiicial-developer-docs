@@ -4,7 +4,7 @@ source: https://upstash.com/docs/box/overall/browser/recordings
 path: docs/box/overall/browser/recordings
 ---
 
-Recordings capture the browser to a replayable video. They cover all tabs, follow whichever one is in the foreground, and include everything an [AI task](/box/overall/browser/ai-actions) does. Use them for audit trails, debugging agent behavior, or showing users what happened after the fact.
+Recordings capture the browser to a replayable video. They cover all tabs, follow whichever one is in the foreground, and include everything an [AI task](/docs/box/overall/browser/ai-actions) does. Use them for audit trails, debugging agent behavior, or showing users what happened after the fact.
 
 ## Record a session
 
@@ -47,7 +47,7 @@ A recording stops when you call `stop()`, when it reaches `maxDurationSeconds` (
 A completed recording is an HLS video. `playlistUrl` points to its playlist, and `markers` holds chapters for tab switches (`tab_switch`) with their timestamps. A player can use the markers to jump straight to a specific point.
 
 <Note>
-  Unlike [live view](/box/overall/browser/live-view) URLs, the playlist URL is
+  Unlike [live view](/docs/box/overall/browser/live-view) URLs, the playlist URL is
   not tokenized. Fetching it requires your Box API key, like any other API
   call. Recordings are retained for 14 days.
 </Note>

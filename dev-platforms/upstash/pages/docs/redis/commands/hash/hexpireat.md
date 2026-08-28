@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/hash/hexpireat
 path: docs/redis/commands/hash/hexpireat
 ---
 
-> Set field expiry as timestamp.
-
 Use `HEXPIREAT` to schedule individual hash fields for deletion at a fixed point in time, given as a Unix timestamp in seconds.
 
-It is the absolute-deadline form of [`HEXPIRE`](/redis/commands/hash/hexpire), which is what you want when several fields, or fields across several hashes, must expire at the same moment. A timestamp in the past removes the fields right away. The key is deleted when its last field expires.
+It is the absolute-deadline form of [`HEXPIRE`](/docs/redis/commands/hash/hexpire), which is what you want when several fields, or fields across several hashes, must expire at the same moment. A timestamp in the past removes the fields right away. The key is deleted when its last field expires.
 
 `FIELDS <numfields>` introduces the field list and the count must match. The optional condition applies the deadline only in certain cases: `NX` when the field has no expiration, `XX` when it already has one, `GT` when the new deadline is later than the current one, and `LT` when it is earlier.
 
@@ -33,8 +31,8 @@ HEXPIREAT <key> <unix-time-seconds>
 
 ## Important points
 
-- `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
-- A field with no expiration counts as an infinite one, so `GT` never sets an expiration on such a field and `LT` always does.
+* `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
+* A field with no expiration counts as an infinite one, so `GT` never sets an expiration on such a field and `LT` always does.
 
 ## Response
 

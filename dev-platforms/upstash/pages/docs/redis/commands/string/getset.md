@@ -4,17 +4,15 @@ source: https://upstash.com/docs/redis/commands/string/getset
 path: docs/redis/commands/string/getset
 ---
 
-> Set value and return old value.
-
 <Warning>
-  Prefer [`SET`](/redis/commands/string/set) with the `GET` argument in new code: `SET <key> <value> GET`. 
+  Prefer [`SET`](/docs/redis/commands/string/set) with the `GET` argument in new code: `SET <key> <value> GET`.
 </Warning>
 
 Use `GETSET` to set a new value and get the previous one in a single atomic step.
 
 The reply is the old value, or null when the key did not exist. Note that the key's time to live is discarded, so a key with an expiration becomes permanent when written this way.
 
-The classic use is resetting a counter while reading it, where the atomicity guarantees nothing is counted twice. [`SET`](/redis/commands/string/set) with the `GET` option does the same thing and can additionally set or keep an expiration in the same call.
+The classic use is resetting a counter while reading it, where the atomicity guarantees nothing is counted twice. [`SET`](/docs/redis/commands/string/set) with the `GET` option does the same thing and can additionally set or keep an expiration in the same call.
 
 ## Syntax
 

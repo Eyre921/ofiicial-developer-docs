@@ -7,14 +7,14 @@ path: docs/redis/search/aggregations
 Aggregations let you compute analytics over your indexed data — metrics like averages, sums, and statistics,
 as well as bucket-based groupings like terms, ranges, and histograms.
 
-Use the [`SEARCH.AGGREGATE`](/redis/commands/search/search-aggregate) command to run aggregations.
+Use the [`SEARCH.AGGREGATE`](/docs/redis/commands/search/search-aggregate) command to run aggregations.
 
 They are useful when you want to answer questions like:
 
-- "What is the average price?"
-- "How many unique users do we have?"
-- "How many orders fall into each price range?"
-- "How does traffic change per hour/day?"
+* "What is the average price?"
+* "How many unique users do we have?"
+* "How many orders fall into each price range?"
+* "How does traffic change per hour/day?"
 
 <Tabs>
 
@@ -204,9 +204,9 @@ SEARCH.AGGREGATE products '{}' '{"avg_price": {"$avg": {"field": "price"}}, "pri
 
 Bucket operators can include sub-aggregations via `$aggs`, so you can compute per-bucket metrics.
 
-- `$terms`, `$range`, `$histogram`, and `$dateHistogram` support nested `$aggs`.
-- `$facet` does not support nested `$aggs`.
-- Metric operators do not support nested `$aggs`.
+* `$terms`, `$range`, `$histogram`, and `$dateHistogram` support nested `$aggs`.
+* `$facet` does not support nested `$aggs`.
+* Metric operators do not support nested `$aggs`.
 
 <Tabs>
 

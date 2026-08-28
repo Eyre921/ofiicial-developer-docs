@@ -173,7 +173,7 @@ How many times per second audio is measured, expressed in kilohertz (kHz). Eleve
 
 **DTMF (Dual-Tone Multi-Frequency)**
 
-The tones produced when pressing keys on a phone keypad, used to navigate automated menus. See [play keypad touch tone](/docs/eleven-agents/customization/tools/system-tools/play-keypad-touch-tone) for how agents send DTMF.
+The tones produced when pressing keys on a phone keypad, used to navigate automated menus. See [DTMF input](/docs/eleven-agents/customization/multimodal-input#dtmf-input) for how agents receive keypad digits, and [play keypad touch tone](/docs/eleven-agents/customization/tools/system-tools/play-keypad-touch-tone) for how agents send DTMF.
 
 ## Addressing and routing
 

@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/generic/memory-usage
 path: docs/redis/commands/generic/memory-usage
 ---
 
-> Estimate memory used by a key.
-
 Use `MEMORY USAGE` to estimate how many bytes a key and its value occupy in memory.
 
 The figure covers the stored data along with its internal overhead, so it is larger than the raw size of the value and is meant for comparing keys rather than for exact accounting. For aggregate types such as hashes, lists, sets, sorted sets, and streams the value is sampled instead of fully traversed: `SAMPLES` sets how many nested elements are inspected, and the value is clamped to the range this deployment supports, so it tunes the estimate rather than forcing an exact traversal. A missing key returns null.
@@ -27,8 +25,8 @@ MEMORY USAGE <key> [SAMPLES <count>]
 
 ## Important points
 
-- The result is an estimate in bytes and can change as the internal representation changes.
-- A missing key returns null. The sampling count is clamped to the deployment's supported range.
+* The result is an estimate in bytes and can change as the internal representation changes.
+* A missing key returns null. The sampling count is clamped to the deployment's supported range.
 
 ## Response
 

@@ -8,7 +8,7 @@ Install the Claude Security plugin to scan your codebase for vulnerabilities in 
 
 The Claude Security plugin runs a multi-agent vulnerability scan of your codebase inside a Claude Code session. A team of Claude agents maps your architecture, builds a threat model, hunts for vulnerabilities, and independently reviews every finding before writing the report. Use the plugin to scan a whole repository or [only a set of changes](#scan-only-your-changes), such as a branch's diff, a pull request's diff, or a single commit, then turn the findings you choose into patches that you review and apply yourself.
 
-The plugin runs locally in your session, and each scan counts against your plan's usage limits. If you want a managed service that monitors your repositories, see the [Claude Security](https://claude.com/product/claude-security) product, available on the Enterprise plan. The plugin reaches code the managed product can't reach, such as repositories hosted on GitLab or Bitbucket, or on networks that don't allow inbound connections.
+The plugin runs locally in your session, uses whichever models you have access to in Claude Code, and each scan counts against your plan's usage limits. If you want a managed service that monitors your repositories, or want to run scans on [Claude Mythos 5](https://platform.claude.com/docs/en/about-claude/models/introducing-claude-fable-5-and-claude-mythos-5), see the [Claude Security](https://claude.com/product/claude-security) product, available on the Enterprise plan. The plugin reaches code the managed product can't reach, such as repositories hosted on GitLab or Bitbucket, or on networks that don't allow inbound connections.
 
 The plugin is also distinct from the review tools already in Claude Code: the [security guidance plugin](/docs/en/security-guidance) reviews code as Claude writes it, [`/security-review`](/docs/en/commands#all-commands) runs a single pass over your branch, and [Code Review](/docs/en/code-review) reviews pull requests. For how the layers stack, see [How the plugin fits with other security tools](#how-the-plugin-fits-with-other-security-tools).
 
@@ -29,17 +29,18 @@ In a Claude Code session, install from the [official Anthropic marketplace](/doc
 /plugin install claude-security@claude-plugins-official
 ```
 
-<Note>
-  If Claude Code reports that the marketplace is not found, run `/plugin marketplace add anthropics/claude-plugins-official` first, then retry the install.
-</Note>
+If the install fails, the fix depends on which message Claude Code reports:
 
-Then activate the plugin in the current session with `/reload-plugins`, which applies pending plugin changes without a restart:
+* If it reports `Marketplace "claude-plugins-official" not found`, add the marketplace with `/plugin marketplace add anthropics/claude-plugins-official`, then retry the install.
+* If it reports that it [can't find the plugin in the marketplace](/docs/en/discover-plugins#install-plugins), check the plugin name for a typo.
+
+Check the install summary. If it reports `Run /reload-plugins to activate.`, apply the pending change without a restart:
 
 ```text theme={null}
 /reload-plugins
 ```
 
-The plugin is now active, and you're ready to [scan and fix your codebase](#scan-and-fix-your-codebase).
+Once the plugin is active, you're ready to [scan and fix your codebase](#scan-and-fix-your-codebase).
 
 ### Uninstall the plugin
 
@@ -75,7 +76,7 @@ The plugin adds one command, `/claude-security`, which opens a menu of its three
   </Step>
 </Steps>
 
-You don't have to start from the menu: ask for a job directly, as arguments to the command, such as `/claude-security scan my branch`, or in plain language, such as "scan commit abc1234". The plugin works best in [auto mode](/docs/en/permission-modes), which lets the scan's agents proceed without a permission prompt at each step; the plugin reminds you how to enable it when a job starts.
+You don't have to start from the menu: ask for a job directly, as arguments to the command, such as `/claude-security scan my branch`, or in plain language, such as "scan commit abc1234". The plugin works best in [auto mode](/docs/en/permission-modes), which lets the scan's agents proceed without a permission prompt at each step.
 
 ### Scan only your changes
 
@@ -121,10 +122,10 @@ The Claude Security plugin is the on-demand deep-scan layer in a defense-in-dept
 
 | Stage                  | Tool                                                                           | What it covers                                                                             |
 | :--------------------- | :----------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- |
-| In session             | [Security guidance plugin](/docs/en/security-guidance)                              | Common vulnerabilities in code Claude writes, fixed in the same session                    |
-| On demand, single pass | [`/security-review`](/docs/en/commands#all-commands)                                | One-time security pass on the current branch                                               |
+| In session             | [Security guidance plugin](/docs/en/security-guidance)                         | Common vulnerabilities in code Claude writes, fixed in the same session                    |
+| On demand, single pass | [`/security-review`](/docs/en/commands#all-commands)                           | One-time security pass on the current branch                                               |
 | On demand, deep scan   | Claude Security plugin                                                         | Multi-agent scan of a repository or diff, with independently reviewed findings and patches |
-| On pull request        | [Code Review](/docs/en/code-review), Team and Enterprise plans                      | Multi-agent correctness and security review with full codebase context                     |
+| On pull request        | [Code Review](/docs/en/code-review), Team and Enterprise plans                 | Multi-agent correctness and security review with full codebase context                     |
 | Managed                | [Claude Security](https://claude.com/product/claude-security), Enterprise plan | Hosted scanning that monitors connected repositories                                       |
 | In CI                  | Your existing static analysis and dependency scanners                          | Language-specific rules, supply-chain checks, and policy enforcement                       |
 

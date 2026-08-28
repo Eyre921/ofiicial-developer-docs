@@ -40,6 +40,10 @@ scoop bucket add elevenlabs https://github.com/elevenlabs/scoop-bucket
 scoop install elevenlabs
 ```
 
+```bash title="npm"
+npm install -g @elevenlabs/cli
+```
+
 ```bash title="curl"
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
 ```
@@ -102,7 +106,13 @@ your_project/
 
 ## Authentication
 
-The CLI stores API keys in `~/.agents/api_keys.json` file with restricted permissions (600).
+`elevenlabs auth login` stores credentials in your operating system's keyring — Keychain on macOS,
+Credential Manager on Windows, and the Secret Service on Linux. Where no keyring is available, the
+CLI falls back to `~/.config/elevenlabs/auth-keyring.json` with `0600` permissions. Run
+`elevenlabs auth status` to see which source is in use, and `elevenlabs auth logout` to remove the
+stored entry.
+
+For CI, set `ELEVENLABS_API_KEY` in the environment or a `.env` file instead of logging in.
 
 ### Authentication commands
 

@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/geo/geoadd
 path: docs/redis/commands/geo/geoadd
 ---
 
-> Add geospatial items.
-
 Use `GEOADD` to add longitude, latitude, and member triples to a geospatial index.
 
-Each position is encoded into a 52-bit geohash and stored as the score of the member in a sorted set, so a geospatial key is an ordinary sorted set and commands such as [`ZREM`](/redis/commands/sorted-set/zrem), [`ZCARD`](/redis/commands/sorted-set/zcard), and [`ZSCAN`](/redis/commands/sorted-set/zscan) work on it. Longitude must be between -180 and 180 and latitude between -85.05112878 and 85.05112878; anything outside those bounds returns an error. Adding a member that is already present moves it to the new position, and the encoding means coordinates read back with [`GEOPOS`](/redis/commands/geo/geopos) are very close to, but not exactly, the ones you stored.
+Each position is encoded into a 52-bit geohash and stored as the score of the member in a sorted set, so a geospatial key is an ordinary sorted set and commands such as [`ZREM`](/docs/redis/commands/sorted-set/zrem), [`ZCARD`](/docs/redis/commands/sorted-set/zcard), and [`ZSCAN`](/docs/redis/commands/sorted-set/zscan) work on it. Longitude must be between -180 and 180 and latitude between -85.05112878 and 85.05112878; anything outside those bounds returns an error. Adding a member that is already present moves it to the new position, and the encoding means coordinates read back with [`GEOPOS`](/docs/redis/commands/geo/geopos) are very close to, but not exactly, the ones you stored.
 
 `NX` only adds members that are not there yet, `XX` only updates members that already exist, and `CH` makes the reply count every member that changed rather than only the ones that were added.
 
@@ -33,7 +31,7 @@ GEOADD <key>
 
 ## Important points
 
-- `NX` and `XX` are mutually exclusive.
+* `NX` and `XX` are mutually exclusive.
 
 ## Response
 

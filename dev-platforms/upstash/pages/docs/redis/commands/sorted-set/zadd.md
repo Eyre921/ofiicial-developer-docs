@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zadd
 path: docs/redis/commands/sorted-set/zadd
 ---
 
-> Add members with scores.
-
 Use `ZADD` to add members with a score to a sorted set, or to change the score of members that are already there.
 
 Members are kept ordered by score, and members with equal scores are ordered lexicographically, which is what makes range queries by score or by member name possible. Scores are double precision floats and accept `+inf` and `-inf`. The key is created on first use, and the reply counts the members that were added.
 
-`NX` only adds new members and never changes an existing score, while `XX` only updates members that already exist. `GT` and `LT` update a score only when the new one is greater or less than the current one, which is how you keep a running maximum or minimum, such as a high score or an earliest deadline, without reading the old value first. `CH` makes the reply count every member that changed, added or updated, instead of only the new ones. `INCR` treats the given score as an increment and returns the member's new score, behaving like [`ZINCRBY`](/redis/commands/sorted-set/zincrby) for a single member and returning null when a condition prevented the change.
+`NX` only adds new members and never changes an existing score, while `XX` only updates members that already exist. `GT` and `LT` update a score only when the new one is greater or less than the current one, which is how you keep a running maximum or minimum, such as a high score or an earliest deadline, without reading the old value first. `CH` makes the reply count every member that changed, added or updated, instead of only the new ones. `INCR` treats the given score as an increment and returns the member's new score, behaving like [`ZINCRBY`](/docs/redis/commands/sorted-set/zincrby) for a single member and returning null when a condition prevented the change.
 
 ## Syntax
 
@@ -31,8 +29,8 @@ ZADD <key> [NX | XX] [GT | LT] [CH] [INCR] <score> <member> [<score> <member> ..
 
 ## Important points
 
-- `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
-- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+* `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
+* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

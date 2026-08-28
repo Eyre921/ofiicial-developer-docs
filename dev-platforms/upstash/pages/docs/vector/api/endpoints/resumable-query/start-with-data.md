@@ -4,10 +4,6 @@ source: https://upstash.com/docs/vector/api/endpoints/resumable-query/start-with
 path: docs/vector/api/endpoints/resumable-query/start-with-data
 ---
 
-> Perform queries using text data that can be resumed to fetch additional results.
-
-`POST https://{endpoint}/resumable-query-data/{namespace}`
-
 ## Request
 
 <ParamField body="data" type="string" required>
@@ -36,7 +32,7 @@ path: docs/vector/api/endpoints/resumable-query/start-with-data
 </ParamField>
 
 <ParamField body="filter" type="string" default="">
-  [Metadata filter](/vector/features/filtering) to apply.
+  [Metadata filter](/docs/vector/features/filtering) to apply.
 </ParamField>
 
 <ParamField body="maxIdle" type="number">
@@ -84,3 +80,19 @@ path: docs/vector/api/endpoints/resumable-query/start-with-data
 ## Response
 
 Same as Resumable Query.
+
+<RequestExample>
+
+```sh curl
+curl $UPSTASH_VECTOR_REST_URL/resumable-query-data \
+  -X POST \
+  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
+  -d '{
+    "data": "Hello world",
+    "topK": 2,
+    "includeMetadata": true,
+    "maxIdle": 3600
+  }'
+```
+
+</RequestExample>

@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/hash/hexists
 path: docs/redis/commands/hash/hexists
 ---
 
-> Check if a hash field exists.
-
 Use `HEXISTS` to check whether a field is present in a hash.
 
-The reply is `1` when the field exists and `0` when either the field or the key is missing. Since the value is never transferred, this is the cheap way to test for presence, and it is also how you tell a missing field apart from a field whose value happens to be empty, which [`HGET`](/redis/commands/hash/hget) cannot do.
+The reply is `1` when the field exists and `0` when either the field or the key is missing. Since the value is never transferred, this is the cheap way to test for presence, and it is also how you tell a missing field apart from a field whose value happens to be empty, which [`HGET`](/docs/redis/commands/hash/hget) cannot do.
 
 ## Syntax
 

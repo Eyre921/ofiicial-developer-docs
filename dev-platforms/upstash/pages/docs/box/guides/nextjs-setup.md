@@ -8,11 +8,11 @@ This guide walks you through scaffolding a [Next.js](https://nextjs.org) app ins
 
 The box gives you a full Linux environment with Node.js already installed, so you can create the app, run the dev server, and share it, all through the SDK.
 
----
+***
 
 ## 1. Create a Box
 
-Create a box with the `node` runtime. You don't need to configure an agent for this. See the [quickstart](/box/overall/quickstart) if you haven't created one before.
+Create a box with the `node` runtime. You don't need to configure an agent for this. See the [quickstart](/docs/box/overall/quickstart) if you haven't created one before.
 
 <CodeGroup>
 ```typescript box.ts
@@ -28,7 +28,7 @@ box = Box.create(runtime="node")
 ```
 </CodeGroup>
 
----
+***
 
 ## 2. Scaffold the App
 
@@ -44,7 +44,7 @@ box.exec.command("npx --yes create-next-app@latest my-next-app --yes")
 ```
 </CodeGroup>
 
----
+***
 
 ## 3. Start the Dev Server
 
@@ -60,7 +60,7 @@ box.exec.command("cd my-next-app && nohup npm run dev > dev.log 2>&1 &")
 ```
 </CodeGroup>
 
----
+***
 
 ## 4. Create a Public URL
 
@@ -82,7 +82,7 @@ print(public_url.url)
 ```
 </CodeGroup>
 
-Open the URL in your browser and your Next.js app loads. See [Public URLs](/box/overall/preview) for authentication and other options.
+Open the URL in your browser and your Next.js app loads. See [Public URLs](/docs/box/overall/preview) for authentication and other options.
 
 <Note>
   Next.js blocks cross-origin dev resources by default, so hot reloading won't work over the public URL until you add the host to `allowedDevOrigins` in `next.config.ts`:

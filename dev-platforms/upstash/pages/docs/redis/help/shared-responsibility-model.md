@@ -10,9 +10,9 @@ The Shared Responsibility Model defines the security and operational responsibil
 
 Upstash Redis is a serverless database service that provides Redis® API compatibility with automatic scaling, high availability, and enterprise-grade security features. The shared responsibility model divides responsibilities into three main categories:
 
-- **Upstash Responsibilities**: Infrastructure, platform, and service-level security
-- **Customer Responsibilities**: Data, application, and access management
-- **Shared Responsibilities**: Configuration, monitoring, and incident response
+* **Upstash Responsibilities**: Infrastructure, platform, and service-level security
+* **Customer Responsibilities**: Data, application, and access management
+* **Shared Responsibilities**: Configuration, monitoring, and incident response
 
 ## Responsibility Matrix
 
@@ -36,29 +36,29 @@ Upstash Redis is a serverless database service that provides Redis® API compati
 <AccordionGroup>
   <Accordion title="Upstash Responsibilities">
     **Infrastructure & Platform:**
-    - Physical security, network infrastructure, DDoS protection
-    - OS security, Redis updates, container security
-    - 99.99% uptime SLA (Prod Pack), multi-zone high availability for read regions (Prod Pack), multi-region replication, auto-scaling
-    - TLS encryption, encryption at rest (Prod Pack), key management
-    - SOC 2 (Prod Pack), GDPR, HIPAA (Enterprise)
-    - 24/7 infrastructure monitoring and incident response
+    * Physical security, network infrastructure, DDoS protection
+    * OS security, Redis updates, container security
+    * 99.99% uptime SLA (Prod Pack), multi-zone high availability for read regions (Prod Pack), multi-region replication, auto-scaling
+    * TLS encryption, encryption at rest (Prod Pack), key management
+    * SOC 2 (Prod Pack), GDPR, HIPAA (Enterprise)
+    * 24/7 infrastructure monitoring and incident response
   </Accordion>
 
   <Accordion title="Customer Responsibilities">
     **Data & Application Security:**
-    - Architecture: retries/backoff, idempotency, timeouts; region/topology choices
-    - Data governance: classification, retention, integrity
-    - App security: secure coding, input validation, authN/authZ
-    - Access: Redis ACL (least privilege), credential hygiene and rotation
-    - Network: IP allowlist and client hardening
-    - Ops: monitoring/alerts, error handling, budgets/limits
+    * Architecture: retries/backoff, idempotency, timeouts; region/topology choices
+    * Data governance: classification, retention, integrity
+    * App security: secure coding, input validation, authN/authZ
+    * Access: Redis ACL (least privilege), credential hygiene and rotation
+    * Network: IP allowlist and client hardening
+    * Ops: monitoring/alerts, error handling, budgets/limits
   </Accordion>
 
   <Accordion title="Shared Responsibilities">
     **Configuration & Operations:**
-    - ACL, IP allowlist, and Prod Pack configuration
-    - Compliance requirements understanding and implementation
-    - Performance monitoring setup and alerting
-    - Incident coordination and root cause analysis
+    * ACL, IP allowlist, and Prod Pack configuration
+    * Compliance requirements understanding and implementation
+    * Performance monitoring setup and alerting
+    * Incident coordination and root cause analysis
   </Accordion>
 </AccordionGroup>

@@ -4,28 +4,28 @@ source: https://upstash.com/docs/redis/howto/keyspacenotifications
 path: docs/redis/howto/keyspacenotifications
 ---
 
-Upstash allows you to listen for keyspace notifications over pubsub channels to 
+Upstash allows you to listen for keyspace notifications over pubsub channels to
 receive events for changes over the keys.
 
 For each event that occurs, two kinds of events are fired over the corresponding
 pubsub channels:
 
-- A keyspace event that will use the pubsub channel for the key, possibly containing
+* A keyspace event that will use the pubsub channel for the key, possibly containing
   other events for the same key
-- A keyevent event that will use the pubsub channel for the event, possibly containing
+* A keyevent event that will use the pubsub channel for the event, possibly containing
   other events for the different keys
 
 The channel names and their content are of the form:
 
-- `__keyspace@0__:keyname` channel with the values of the event names for the keyspace
+* `__keyspace@0__:keyname` channel with the values of the event names for the keyspace
   notifications
-- `__keyevent@0__:eventname` channel with the values of the key names for the keyevent
-  notifications 
+* `__keyevent@0__:eventname` channel with the values of the key names for the keyevent
+  notifications
 
 ## Enabling Notifications
 
 By default, all keyspace and keyevent notifications are off. To enable it, you can use
-the `CONFIG SET` command, and set the `notify-keyspace-events` options to one of the 
+the `CONFIG SET` command, and set the `notify-keyspace-events` options to one of the
 appropriate flags described below.
 
 <Warning>

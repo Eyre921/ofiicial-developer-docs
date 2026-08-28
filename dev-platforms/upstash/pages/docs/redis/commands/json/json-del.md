@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/json/json-del
 path: docs/redis/commands/json/json-del
 ---
 
-> Delete JSON values.
-
 Use `JSON.DEL` to delete the value at a path in a JSON document.
 
 Without a path the entire key is deleted. The reply is the number of values that were deleted, which is `0` when the path matched nothing, and deleting the root of a document removes the key itself. With a JSONPath that matches several places, every match is removed in the same call.
 
-[`JSON.FORGET`](/redis/commands/json/json-forget) is an alias with identical behavior.
+[`JSON.FORGET`](/docs/redis/commands/json/json-forget) is an alias with identical behavior.
 
 ## Syntax
 
@@ -27,8 +25,8 @@ JSON.DEL <key> [path]
 
 ## Important points
 
-- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

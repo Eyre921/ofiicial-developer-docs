@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/string/getex
 path: docs/redis/commands/string/getex
 ---
 
-> Get value and set expiration.
-
 Use `GETEX` to read a value and change its expiration in the same call.
 
-`EX`, `PX`, `EXAT`, and `PXAT` set a new lifetime or deadline, and `PERSIST` removes the expiration so the key stops expiring. With no option at all the expiration is left exactly as it was, which is the difference from [`GET`](/redis/commands/string/get) plus a separate [`EXPIRE`](/redis/commands/generic/expire).
+`EX`, `PX`, `EXAT`, and `PXAT` set a new lifetime or deadline, and `PERSIST` removes the expiration so the key stops expiring. With no option at all the expiration is left exactly as it was, which is the difference from [`GET`](/docs/redis/commands/string/get) plus a separate [`EXPIRE`](/docs/redis/commands/generic/expire).
 
 Doing both at once is what makes a sliding expiration correct: reading a session extends it atomically, with no window in which the key could expire between the read and the refresh.
 

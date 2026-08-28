@@ -31,6 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/list
 - `archived` (boolean, optional, nullable, default: false) — Filter agents by archived status
 - `show_only_owned_agents` (boolean, optional, default: false, deprecated) — If set to true, the endpoint will omit any agents that were shared with you by someone else and include only the ones you own. Deprecated: use created_by_user_id instead.
 - `created_by_user_id` (string, optional, nullable) — Filter agents by creator user ID. When set, only agents created by this user are returned. Takes precedence over show_only_owned_agents. Use '@me' to refer to the authenticated user.
+- `tags` (list of string, optional, nullable) — Filter agents by tag. Repeat the parameter to match any of several tags.
 - `sort_direction` (enum, optional) — The direction to sort the results
   - Allowed values: `asc`, `desc`
 - `sort_by` (enum, optional, nullable) — The field to sort the results by

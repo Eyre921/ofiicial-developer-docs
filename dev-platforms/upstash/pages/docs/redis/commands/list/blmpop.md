@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/list/blmpop
 path: docs/redis/commands/list/blmpop
 ---
 
-> Pop from the first non-empty list, blocking until one arrives.
-
 Use `BLMPOP` to pop elements from the first non-empty list among several, blocking until one has elements or the timeout expires.
 
-It is the blocking form of [`LMPOP`](/redis/commands/list/lmpop): keys are examined in the order given, so listing a high priority queue first drains it before the others are considered, `LEFT` or `RIGHT` chooses the end, and `COUNT` sets how many elements to take. The reply names the key that was popped from along with the elements.
+It is the blocking form of [`LMPOP`](/docs/redis/commands/list/lmpop): keys are examined in the order given, so listing a high priority queue first drains it before the others are considered, `LEFT` or `RIGHT` chooses the end, and `COUNT` sets how many elements to take. The reply names the key that was popped from along with the elements.
 
 The timeout is in seconds, may be fractional, and `0` waits indefinitely; when it expires the reply is null. This is the command to reach for when one worker serves several queues of differing priority.
 
@@ -30,7 +28,7 @@ BLMPOP <timeout> <numkeys> <key> [<key> ...] (LEFT | RIGHT) [COUNT <count>]
 
 ## Important points
 
-- A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
+* A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
 
 ## Response
 

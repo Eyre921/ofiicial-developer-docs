@@ -4,6 +4,5 @@ source: https://upstash.com/docs/workflow/api-reference/runs/batch-trigger-workf
 path: docs/workflow/api-reference/runs/batch-trigger-workflow-runs
 ---
 
-> Start multiple workflow runs in a single request.
-
-`POST /v2/batch/trigger`
+/workflow/openapi.yaml post /v2/batch/trigger
+Start multiple workflow runs in a single request.

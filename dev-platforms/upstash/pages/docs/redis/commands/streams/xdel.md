@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/streams/xdel
 path: docs/redis/commands/streams/xdel
 ---
 
-> Delete stream entries.
-
 Use `XDEL` to remove entries from a stream by ID.
 
-The reply counts the entries that were actually removed. Deleting an entry does not touch consumer group state: an entry already delivered stays in a group's pending entries list until it is acknowledged, so it can still show up in [`XPENDING`](/redis/commands/streams/xpending) after being deleted. Use [`XDELEX`](/redis/commands/streams/xdelex) when you need control over those references.
+The reply counts the entries that were actually removed. Deleting an entry does not touch consumer group state: an entry already delivered stays in a group's pending entries list until it is acknowledged, so it can still show up in [`XPENDING`](/docs/redis/commands/streams/xpending) after being deleted. Use [`XDELEX`](/docs/redis/commands/streams/xdelex) when you need control over those references.
 
-IDs are never reused, so the stream's ID sequence keeps moving forward after deletions. For bulk cleanup by size or age, [`XTRIM`](/redis/commands/streams/xtrim) is the right command.
+IDs are never reused, so the stream's ID sequence keeps moving forward after deletions. For bulk cleanup by size or age, [`XTRIM`](/docs/redis/commands/streams/xtrim) is the right command.
 
 ## Syntax
 

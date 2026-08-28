@@ -11,33 +11,33 @@ This software is a development server implementation of QStash API ("Development
 By using this Development Server, you agree to the following restrictions:
 
 a) The Development Server may only be used for:
-   - Local development and testing
-   - Continuous Integration (CI) testing
-   - Educational purposes
-   - API integration development
+   * Local development and testing
+   * Continuous Integration (CI) testing
+   * Educational purposes
+   * API integration development
 
 b) The Development Server may NOT be used for:
-   - Production environments
-   - Commercial service offerings
-   - Public-facing applications
-   - Operating as a Software-as-a-Service (SaaS)
-   - Reselling or redistributing as a service
+   * Production environments
+   * Commercial service offerings
+   * Public-facing applications
+   * Operating as a Software-as-a-Service (SaaS)
+   * Reselling or redistributing as a service
 
 ## 3. Restrictions on Modification and Reverse Engineering
 You may not:
-- Decompile, reverse engineer, disassemble, or attempt to derive the source code of the Development Server
-- Modify, adapt, translate, or create derivative works based upon the Development Server
-- Remove, obscure, or alter any proprietary rights notices within the Development Server
-- Attempt to bypass or circumvent any technical limitations or security measures in the Development Server
+* Decompile, reverse engineer, disassemble, or attempt to derive the source code of the Development Server
+* Modify, adapt, translate, or create derivative works based upon the Development Server
+* Remove, obscure, or alter any proprietary rights notices within the Development Server
+* Attempt to bypass or circumvent any technical limitations or security measures in the Development Server
 
 ## 4. Technical Limitations
 Users acknowledge that the Development Server:
-- Operates entirely in-memory without persistence
-- Provides limited functionality compared to the official service
-- Offers no data backup or recovery mechanisms
-- Has no security guarantees
-- May have performance limitations
-- Does not implement all features of the official service
+* Operates entirely in-memory without persistence
+* Provides limited functionality compared to the official service
+* Offers no data backup or recovery mechanisms
+* Has no security guarantees
+* May have performance limitations
+* Does not implement all features of the official service
 
 ## 5. Warranty Disclaimer
 THE DEVELOPMENT SERVER IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. THE AUTHORS OR COPYRIGHT HOLDERS SHALL NOT BE LIABLE FOR ANY CLAIMS, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THE SOFTWARE IN VIOLATION OF THIS LICENSE.

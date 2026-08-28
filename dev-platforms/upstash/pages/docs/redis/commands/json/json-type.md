@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/json/json-type
 path: docs/redis/commands/json/json-type
 ---
 
-> Get JSON value type.
-
 Use `JSON.TYPE` to find out the JSON type of the values a path selects.
 
 The reply names one type per match, one of `object`, `array`, `string`, `integer`, `number`, `boolean`, or `null`, and is empty when the path matches nothing. Whole numbers report as `integer` and fractional ones as `number`. It is the way to inspect documents whose shape you do not control before applying type-specific commands, which would otherwise fail.
@@ -25,8 +23,8 @@ JSON.TYPE <key> [path]
 
 ## Important points
 
-- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

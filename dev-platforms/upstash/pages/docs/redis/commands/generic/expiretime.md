@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/generic/expiretime
 path: docs/redis/commands/generic/expiretime
 ---
 
-> Get expiry as Unix timestamp.
-
 Use `EXPIRETIME` to read the absolute time at which a key will expire, as a Unix timestamp in seconds.
 
-The reply is `-1` when the key exists but has no expiration, and `-2` when the key does not exist, so the two cases can be told apart. Use [`TTL`](/redis/commands/generic/ttl) when you need the remaining lifetime instead of the deadline, and [`PEXPIRETIME`](/redis/commands/generic/pexpiretime) when you need millisecond precision.
+The reply is `-1` when the key exists but has no expiration, and `-2` when the key does not exist, so the two cases can be told apart. Use [`TTL`](/docs/redis/commands/generic/ttl) when you need the remaining lifetime instead of the deadline, and [`PEXPIRETIME`](/docs/redis/commands/generic/pexpiretime) when you need millisecond precision.
 
 ## Syntax
 
@@ -24,7 +22,7 @@ EXPIRETIME <key>
 
 ## Important points
 
-- Negative integer replies are sentinel values, not durations or timestamps; see the response description for missing or persistent data.
+* Negative integer replies are sentinel values, not durations or timestamps; see the response description for missing or persistent data.
 
 ## Response
 

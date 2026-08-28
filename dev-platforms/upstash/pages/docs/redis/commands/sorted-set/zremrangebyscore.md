@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zremrangebyscore
 path: docs/redis/commands/sorted-set/zremrangebyscore
 ---
 
-> Remove members by score range.
-
 Use `ZREMRANGEBYSCORE` to remove the members of a sorted set whose score falls in a range.
 
 Bounds are inclusive by default, become exclusive when prefixed with `(`, and accept `-inf` and `+inf`. The reply is the number of members removed, and the key is deleted when it becomes empty.

@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/connection/reset
 path: docs/redis/commands/connection/reset
 ---
 
-> Reset the connection.
-
 Use `RESET` to return the connection to the state it had right after connecting.
 
-It discards an open [`MULTI`](/redis/commands/transactions/multi) block, unwatches every key watched with [`WATCH`](/redis/commands/transactions/watch), leaves subscriber and monitor modes, clears the connection name, re-enables replies, and de-authenticates the connection when the database requires a password. This makes it the safe way to hand a connection back to a pool after an error, since the next user cannot inherit a half-finished transaction or a leftover subscription.
+It discards an open [`MULTI`](/docs/redis/commands/transactions/multi) block, unwatches every key watched with [`WATCH`](/docs/redis/commands/transactions/watch), leaves subscriber and monitor modes, clears the connection name, re-enables replies, and de-authenticates the connection when the database requires a password. This makes it the safe way to hand a connection back to a pool after an error, since the next user cannot inherit a half-finished transaction or a leftover subscription.
 
 ## Syntax
 
@@ -22,7 +20,7 @@ This command takes no arguments.
 
 ## Important points
 
-- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
 
 ## Response
 

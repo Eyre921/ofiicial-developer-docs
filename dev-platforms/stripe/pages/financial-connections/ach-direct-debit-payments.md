@@ -35,7 +35,7 @@ The `verification_method` parameter on various API resources controls whether Fi
 
 This option is available on the following APIs:
 
-Additional steps, such as Nacha mandate collection, are required for businesses that don’t use a Stripe-hosted integration such as Payment Element, Checkout, or Hosted Invoicing. See [this section of the ACH guide](https://docs.stripe.com/payments/ach-direct-debit/accept-a-payment.md?platform=web&ui=direct-api#web-collect-details).
+Additional steps, such as Nacha mandate collection, are required for businesses that don’t use a Stripe-hosted integration such as Payment Element, Checkout, or Hosted Invoicing. See [this section of the ACH guide](https://docs.stripe.com/payments/ach-direct-debit/accept-a-payment.md?payment-ui=direct-api&platform=web#web-collect-details).
 
 - [PaymentIntent](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-payment_method_options-us_bank_account-verification_method)
 - [SetupIntent](https://docs.stripe.com/api/setup_intents/create.md#create_setup_intent-payment_method_options-us_bank_account-verification_method)

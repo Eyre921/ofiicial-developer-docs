@@ -83,7 +83,7 @@ Learn how to send your first email using the Resend Python SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. Exceeding it raises `resend.exceptions.RateLimitError`. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. Exceeding it raises `resend.exceptions.RateLimitError`. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 

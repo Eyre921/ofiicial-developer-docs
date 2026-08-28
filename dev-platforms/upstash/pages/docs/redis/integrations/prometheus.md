@@ -23,7 +23,7 @@ Upstash Prometheus Integration only covers Pro databases or those included in th
 1. Select the database you want to integrate with Prometheus.
 2. This will open the database settings, where you can manage various configuration options for your selected database.
 
-![configuration.png](/img/prometheus/configuration.png)
+![configuration.png]()
 
 3. Enable Prometheus by toggling the switch. This allows you to monitor metrics related to your Upstash database performance, usage, and other key metrics.
 
@@ -40,28 +40,28 @@ You should add monitoring token according to this format `Bearer <MONITORING_TOK
 
 </Check>
 
-![monitoring-token.png](/img/prometheus/monitoring-token.png)
+![monitoring-token.png]()
 
 ## **Step 4: Set Up Prometheus Connection**
 ### **Grafana Dashboard Setup**
 
 1. Open your Grafana instance, navigate to the Data Sources section, and select Prometheus as the data source.
 
-![datasource.png](/img/prometheus/datasource.png)
+![datasource.png]()
 
 2. Enter the data source name, set `https://api.upstash.com/monitoring/prometheus` as the data source address, and then add your monitoring token in the HTTP Headers section.
 
-![headers.png](/img/prometheus/headers.png)
+![headers.png]()
 
 3. Then, click <b>Test and Save</b> to verify that the data source is working properly.
 
-![datasource-final.png](/img/prometheus/datasource-final.png)
+![datasource-final.png]()
 
 ### **Prometheus Federation Setup**
 Federation lets your Prometheus pull metrics from Upstash’s API and store them in **your own** Prometheus instance, so Grafana can query your Prometheus instead of hitting the Upstash endpoint directly.
 #### When to use federation
-- You already run Prometheus and want to persist Upstash metrics locally.
-- You want to control retention, recording rules, or alerts on Upstash metrics
+* You already run Prometheus and want to persist Upstash metrics locally.
+* You want to control retention, recording rules, or alerts on Upstash metrics
 
 1. Set up a new scrape job in your Prometheus configuration file (`prometheus.yml`):
 ```yaml
@@ -83,13 +83,13 @@ scrape_configs:
 ```
 <Check>
 This configuration assumes you want to pull all metrics. You can adjust the `match[]` parameter to filter specific metrics if needed.
-- `upstash_db_metrics{database_id="your_database_id"}` can be used to pull metrics for a specific database
-- `upstash_db_metrics{replica_id=~"us-east-1.*"}` can be used to pull metrics for replicas in a specific region
+* `upstash_db_metrics{database_id="your_database_id"}` can be used to pull metrics for a specific database
+* `upstash_db_metrics{replica_id=~"us-east-1.*"}` can be used to pull metrics for replicas in a specific region
 </Check>
 
 2. Verify the Federation Target
-- Reload (or restart) your Prometheus server to apply the new configuration.
-- Visit **Prometheus → Status → Targets** and confirm `federate_upstash` is **UP**
+* Reload (or restart) your Prometheus server to apply the new configuration.
+* Visit **Prometheus → Status → Targets** and confirm `federate_upstash` is **UP**
 
 ## **Step 5: Wait for Metrics Availability**
 
@@ -99,7 +99,7 @@ Select your Prometheus data source when prompted, and complete the import.
 
 Please check this address to access Upstash Grafana Dashboard <a href="https://grafana.com/grafana/dashboards/22257-upstash-redis-dashboard/"> Dashboard </a>
 
-![grafana-dashboard.png](/img/prometheus/grafana-dashboard.png)
+![grafana-dashboard.png]()
 
 ## **Conclusion**
 

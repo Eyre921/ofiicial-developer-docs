@@ -264,6 +264,12 @@ training_client.load_state("step-0100").result()
 
 Save and load calls return futures — call `.result()` to block and surface failures. `save_state` also accepts a `timeout` to bound the wait. Give each checkpoint a distinct name: overwriting an existing name (`overwrite=True`) is not supported.
 
+<Warning>
+  **Keep checkpoint names to 17 characters or fewer.** The server-side id is `run-<32-hex>-<your-name>-<8-hex>` and must fit in 63 characters, leaving 17 for your name.
+
+  This is only checked at promote time, so an overlong name fails after training completes. Recovery is `load_state` into a fresh session and re-saving under a shorter name.
+</Warning>
+
 To see what checkpoints a run has saved, use the session-scoped control-plane list in [Promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) below — the trainer-local `training_client.list_checkpoints()` is not routed on the serverless surface.
 
 ### Resume a new run from a training checkpoint
@@ -316,7 +322,7 @@ Promotion turns a **sampler checkpoint** into a deployable Fireworks model (a st
 
     Each row carries `name` (the full 4-segment resource name), `checkpointName`, `checkpointType`, `promotable`, and `createTime`. Two things to know about the values:
 
-    * `checkpointName` is the server-side checkpoint id, **not** the bare name you passed: it is prefixed with the source run id and, for sampler checkpoints, suffixed with an 8-hex-char session id — a save named `final` surfaces as `run-<hex>-final-<8hex>`. Select rows on `promotable` + `createTime` as above, or with a prefix/substring test — never by equality with your logical name.
+    * `checkpointName` is the server-side checkpoint id, **not** the bare name you passed: it is prefixed with the source run id and, for sampler checkpoints, suffixed with an 8-hex-char session id — a save named `final` surfaces as `run-<hex>-final-<8hex>`. Select rows on `promotable` + `createTime` as above, or with a prefix/substring test — never by equality with your logical name. The composed id caps your own name at [17 characters](#save-and-resume-training-checkpoints).
     * `checkpointType` is a server enum string: `CHECKPOINT_TYPE_TRAINING_LORA` for training checkpoints, `CHECKPOINT_TYPE_INFERENCE_LORA` for sampler checkpoints. Treat it as opaque and filter on `promotable`, which is authoritative.
   </Step>
 

@@ -161,6 +161,8 @@ If your handler throws `WebhookVerificationError`, Notion records a verification
 
 Successful runs reset the consecutive verification failure counter.
 
+Incoming webhook requests can be rejected with `429` before they are queued. A `202 Accepted` response means the event was queued for asynchronous processing, not that your handler has run successfully. Queued webhook executions are rate-limited separately and retried when they reach a rate limit. See [Limits](/workers/reference/limits) for the standard thresholds.
+
 ## Use Notion from a webhook
 
 Webhook handlers receive the same context object as other capabilities, including `context.notion`, the Notion API SDK client:
@@ -243,5 +245,9 @@ See the [CLI command reference](/cli/reference/commands) for all `ntn workers` f
 
   <Card title="SDK reference" icon="book-open" href="/workers/reference/sdk#worker-webhook">
     Detailed API docs for worker.webhook() and WebhookVerificationError.
+  </Card>
+
+  <Card title="Limits" icon="bolt" href="/workers/reference/limits">
+    Webhook ingress and run rate limits.
   </Card>
 </CardGroup>

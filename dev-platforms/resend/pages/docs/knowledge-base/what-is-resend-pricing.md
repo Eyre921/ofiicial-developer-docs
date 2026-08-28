@@ -36,7 +36,7 @@ For teams sending 3 million or more emails per month, Resend offers custom Enter
 * SSO
 * Dedicated IP options
 
-[Contact sales](https://resend.com/contact) to learn more.
+[Contact sales](https://resend.com/help) to learn more.
 
 ## Marketing Email
 
@@ -73,7 +73,7 @@ All plans include 10,000 Automation Runs per month. Paid plans can continue beyo
 
 Dedicated IPs are available for \$30/month on the Scale plan for customers sending more than 3,000 emails per day. Dedicated IPs include automatic warmup, monitoring, and autoscaling.
 
-Additional domains are available for \$20/month on the Pro and Scale plans. The add-on includes 100 domains on top of what your plan includes and can be added or removed at any time from the Dashboard.
+The domains add-on is available for \$20/month on paid transactional plans and adds 100 domains on top of the number included in your plan. See [How to add more domains](/docs/knowledge-base/how-to-add-more-domains).
 
 ## Annual plans
 

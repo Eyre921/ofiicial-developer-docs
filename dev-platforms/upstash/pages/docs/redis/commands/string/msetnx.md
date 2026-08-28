@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/string/msetnx
 path: docs/redis/commands/string/msetnx
 ---
 
-> Set multiple keys if none exist.
-
 Use `MSETNX` to set several keys at once, but only if none of them already exists.
 
 The command is all or nothing: if even a single key is present, nothing is written and the reply is `0`; otherwise every key is written and the reply is `1`. Since the check and the writes are one atomic step, it can be used to claim a whole group of related keys, so that a partially initialized state can never be observed.

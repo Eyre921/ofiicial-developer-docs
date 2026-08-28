@@ -6,7 +6,7 @@ path: docs/qstash/howto/webhook
 
 You can configure QStash to receive and process your webhook calls.
 
-Instead of having the webhook service call your endpoint directly, QStash acts as an intermediary, receiving the request and forwarding it to your endpoint. 
+Instead of having the webhook service call your endpoint directly, QStash acts as an intermediary, receiving the request and forwarding it to your endpoint.
 QStash provides additional control over webhook requests, allowing you to configure properties such as delay, retries, timeouts, callbacks, and flow control.
 
 There are multiple ways to configure QStash to receive webhook requests.
@@ -28,8 +28,8 @@ https://qstash.upstash.io/v2/publish/https://example.com/api/webhook?qstash_toke
 `
 
 <Note>
-Request configurations such as custom retries, timeouts, and other settings can be specified using HTTP headers in the publish request. 
-Refer to the [REST API documentation](/qstash/api-reference/messages/publish-a-message) for a full list of available configuration headers.
+Request configurations such as custom retries, timeouts, and other settings can be specified using HTTP headers in the publish request.
+Refer to the [REST API documentation](/docs/qstash/api-reference/messages/publish-a-message) for a full list of available configuration headers.
 
 It’s also possible to pass configuration via query parameters. You can use the lowercase format of headers as the key, such as ?upstash-retries=3&upstash-delay=100s. This makes it easier to configure webhook messages.
 </Note>
@@ -71,5 +71,5 @@ curl -X PATCH https://qstash.upstash.io/v2/topics/<URL_GROUP_NAME> \
 
 When you save this header for your URL Group, it ensures that all headers are forwarded as needed for your webhook processing.
 
-A URL Group also enables you to define multiple endpoints within group. 
+A URL Group also enables you to define multiple endpoints within group.
 When a publish request is made to a URL Group, all associated endpoints will be triggered, allowing you to fan-out a single webhook call to multiple destinations.

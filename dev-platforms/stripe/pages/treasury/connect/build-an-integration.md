@@ -615,7 +615,7 @@ The Stripe-Context header in this request is the path `{{CONNECTED_ACCOUNT_ID}}/
 ```curl
 curl https://api.stripe.com/v2/money_management/payout_methods \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 

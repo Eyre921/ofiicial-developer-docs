@@ -8,8 +8,6 @@ path: capital/servicing
 
 Support your Capital customers by region.
 
-> Capital for platforms is available in [public preview](https://docs.stripe.com/release-phases.md).
-
 Capital for Platforms is available in the following countries. Servicing arrangements vary by country based on the financing partner.
 
 - AU

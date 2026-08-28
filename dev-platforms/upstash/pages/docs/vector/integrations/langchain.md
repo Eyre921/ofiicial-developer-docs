@@ -67,7 +67,7 @@ Upstash Vector is a scalable vector database.
 
 ## Notes
 
-- Upstash Vector supports custom embeddings; you can specify an embedding model when initializing `UpstashVectorStore`.
-- Use `.env` files to manage your Upstash credentials for secure and reusable configuration.
+* Upstash Vector supports custom embeddings; you can specify an embedding model when initializing `UpstashVectorStore`.
+* Use `.env` files to manage your Upstash credentials for secure and reusable configuration.
 
 To learn more, visit the [LangChain documentation](https://python.langchain.com/docs/integrations/vectorstores/upstash/).

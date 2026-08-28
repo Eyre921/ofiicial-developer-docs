@@ -4,9 +4,9 @@ source: https://upstash.com/docs/workflow/agents/getting-started
 path: docs/workflow/agents/getting-started
 ---
 
-In this guide, we will be using **Next.js**. If you're working with a different supported framework, you can find instructions on how to define a workflow endpoint in the [quickstarts](/workflow/quickstarts/platforms).
+In this guide, we will be using **Next.js**. If you're working with a different supported framework, you can find instructions on how to define a workflow endpoint in the [quickstarts](/docs/workflow/quickstarts/platforms).
 
-If you're new to **Upstash Workflow**, it's a good idea to start by exploring the [Local Development documentation](/workflow/howto/local-development/development-server). This guide will help you set up and use Upstash Workflow in a local environment.
+If you're new to **Upstash Workflow**, it's a good idea to start by exploring the [Local Development documentation](/docs/workflow/howto/local-development/development-server). This guide will help you set up and use Upstash Workflow in a local environment.
 
 ##  Installation
 
@@ -32,7 +32,7 @@ QSTASH_DEV=true
 OPENAI_API_KEY=<OPENAI_API_KEY>
 ```
 
-For manual setup, custom ports, and the `registerQStashDev()` helper for Next.js edge routes, see the [Development Server guide](/workflow/howto/local-development/development-server).
+For manual setup, custom ports, and the `registerQStashDev()` helper for Next.js edge routes, see the [Development Server guide](/docs/workflow/howto/local-development/development-server).
 
 ## Define an endpoint
 
@@ -84,7 +84,7 @@ export const { POST } = serve<{ prompt: string }>(async (context) => {
 })
 ```
 
-You can refer to the documentations for [defining a workflow endpoint](/workflow/basics/serve) and [the Agents API features](/workflow/agents/features) to learn more.
+You can refer to the documentations for [defining a workflow endpoint](/docs/workflow/basics/serve) and [the Agents API features](/docs/workflow/agents/features) to learn more.
 
 ## Calling the Endpoint
 
@@ -94,7 +94,7 @@ To run the endpoint, first run the Next.js app with:
 npm run dev
 ```
 
-Then, we call the endpoint using [the Workflow Client](/workflow/basics/client):
+Then, we call the endpoint using [the Workflow Client](/docs/workflow/basics/client):
 
 ```ts
 import { Client } from "@upstash/workflow";
@@ -132,8 +132,8 @@ and exploration of distant celestial
 bodies.
 ```
 
-If you [run the same endpoint using a local tunnel](/workflow/howto/local-development/local-tunnel), you can also see how Upstash Workflow runs the agent in steps:
+If you [run the same endpoint using a local tunnel](/docs/workflow/howto/local-development/local-tunnel), you can also see how Upstash Workflow runs the agent in steps:
 
-<img src="/img/workflow/agents/logs/logs-getting-started.png" />
+<img />
 
 Each tool invocation and LLM call is a seperate step. Our agent first made a call to OpenAI to decide whether to use a tool or reply right away. OpenAI responded with a request to use the tool `communicationTool`. Tool was executed and OpenAI was called with the result of the tool. OpenAI then responded with the final response.

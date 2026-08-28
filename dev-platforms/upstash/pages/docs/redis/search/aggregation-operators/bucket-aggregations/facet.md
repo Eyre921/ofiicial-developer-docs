@@ -85,9 +85,9 @@ SEARCH.AGGREGATE products '{}' '{"by_category": {"$facet": {"field": "category",
 }
 ```
 
-- Increase `depth` for multi-level facet trees.
-- Use `size` and `minDocCount` to control noise and response size.
-- Use `order` to sort by count or by path.
+* Increase `depth` for multi-level facet trees.
+* Use `size` and `minDocCount` to control noise and response size.
+* Use `order` to sort by count or by path.
 
 <Tabs>
 
@@ -168,5 +168,5 @@ With `depth: 2`, the response includes nested children:
 }
 ```
 
-- `$facet` cannot contain `$aggs`.
-- `$facet` cannot be used as a sub-aggregation inside another `$aggs` block.
+* `$facet` cannot contain `$aggs`.
+* `$facet` cannot be used as a sub-aggregation inside another `$aggs` block.

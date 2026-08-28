@@ -13,15 +13,15 @@ Search results are ordered by a relevance score that reflects how well each docu
 By default, all matching conditions contribute equally to this score.
 The `$boost` operator multiplies a match's score contribution by the specified factor.
 
-- **Positive values greater than 1** increase the match's importance (e.g., `$boost: 2.0` doubles the contribution)
-- **Values between 0 and 1** decrease the match's importance
-- **Negative values** demote matches, pushing them lower in results
+* **Positive values greater than 1** increase the match's importance (e.g., `$boost: 2.0` doubles the contribution)
+* **Values between 0 and 1** decrease the match's importance
+* **Negative values** demote matches, pushing them lower in results
 
 ### Use Cases
 
-- **Prioritize premium content:** Boost matches in title fields over body text
-- **Promote featured items:** Give higher scores to promoted products
-- **Demote less relevant matches:** Use negative boosts to push certain matches down
+* **Prioritize premium content:** Boost matches in title fields over body text
+* **Promote featured items:** Give higher scores to promoted products
+* **Demote less relevant matches:** Use negative boosts to push certain matches down
 
 ### Compatibility
 

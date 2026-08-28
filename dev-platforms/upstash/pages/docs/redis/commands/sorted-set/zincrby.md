@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zincrby
 path: docs/redis/commands/sorted-set/zincrby
 ---
 
-> Increment member's score.
-
 Use `ZINCRBY` to add an increment to the score of a member of a sorted set.
 
 A member that is not there yet is created with the increment as its score, and a missing key is created too, so no initialization step is needed. The increment may be negative to move a member down. The reply is the new score.
 
-Because the update is atomic and the set stays ordered, this is the core operation behind leaderboards, vote counts, and any ranking that has to reflect concurrent updates: increment a member's score and read the position back with [`ZRANK`](/redis/commands/sorted-set/zrank) or the top of the ranking with [`ZRANGE`](/redis/commands/sorted-set/zrange).
+Because the update is atomic and the set stays ordered, this is the core operation behind leaderboards, vote counts, and any ranking that has to reflect concurrent updates: increment a member's score and read the position back with [`ZRANK`](/docs/redis/commands/sorted-set/zrank) or the top of the ranking with [`ZRANGE`](/docs/redis/commands/sorted-set/zrange).
 
 ## Syntax
 
@@ -28,7 +26,7 @@ ZINCRBY <key> <increment> <member>
 
 ## Important points
 
-- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

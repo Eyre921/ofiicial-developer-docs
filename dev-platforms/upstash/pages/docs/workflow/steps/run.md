@@ -7,8 +7,8 @@ path: docs/workflow/steps/run
 `context.run()` executes a piece of custom business logic as a workflow step.
 
 It returns a `Promise`, so you can decide how steps execute:
-- **Sequentially** by awaiting them one by one.
-- **In parallel** by awaiting multiple steps together.
+* **Sequentially** by awaiting them one by one.
+* **In parallel** by awaiting multiple steps together.
 
 ##  Arguments
 

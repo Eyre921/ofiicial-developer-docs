@@ -41,31 +41,15 @@ Successful Response
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 [
   {
-    "name": "Engineering Team",
-    "id": "grp_9876543210",
+    "name": "string",
+    "id": "string",
     "members_emails": [
-      "alice.jones@company.com",
-      "bob.martin@company.com",
-      "carla.white@company.com"
-    ]
-  },
-  {
-    "name": "Engineering Team - Backend",
-    "id": "grp_9876543211",
-    "members_emails": [
-      "david.lee@company.com",
-      "emma.wilson@company.com"
+      "string"
     ]
   }
 ]
@@ -79,7 +63,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.workspace.groups.search({
-        name: "Engineering Team",
+        name: "name",
     });
 }
 main();
@@ -92,7 +76,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.workspace.groups.search(
-    name="Engineering Team",
+    name="name",
 )
 
 ```
@@ -102,20 +86,15 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/workspace/groups/search?name=Engineering+Team"
+	url := "https://api.elevenlabs.io/v1/workspace/groups/search?name=name"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -132,14 +111,12 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/workspace/groups/search?name=Engineering+Team")
+url = URI("https://api.elevenlabs.io/v1/workspace/groups/search?name=name")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -149,9 +126,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/workspace/groups/search?name=Engineering+Team")
-  .header("Content-Type", "application/json")
-  .body("{}")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/workspace/groups/search?name=name")
   .asString();
 ```
 
@@ -161,12 +136,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/workspace/groups/search?name=Engineering+Team', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/workspace/groups/search?name=name');
 
 echo $response->getBody();
 ```
@@ -174,27 +144,18 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/workspace/groups/search?name=Engineering+Team");
+var client = new RestClient("https://api.elevenlabs.io/v1/workspace/groups/search?name=name");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/workspace/groups/search?name=Engineering+Team")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/workspace/groups/search?name=name")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

@@ -4,10 +4,6 @@ source: https://upstash.com/docs/vector/api/endpoints/update
 path: docs/vector/api/endpoints/update
 ---
 
-> Updates a vector, data or metadata.
-
-`POST https://{endpoint}/update/{namespace}`
-
 <Tip>
   The vector will be updated int the default namespace by default.
   You can use a different namespace by specifying it in the request path.
@@ -38,7 +34,7 @@ of those.
 </ParamField>
 <ParamField body="data" type="string">
   The raw text data to update to.
-  <Note>If the index is created with an [embedding model](/vector/features/embeddingmodels)
+  <Note>If the index is created with an [embedding model](/docs/vector/features/embeddingmodels)
       this will embed the data into a vector and will also update the vector, along with data.</Note>
 </ParamField>
 <ParamField body="metadata" type="Object">
@@ -69,3 +65,33 @@ must be present. It is not allowed to update only `vector` or `sparseVector`.
 <ResponseField name="updated" type="number">
   `1` if any vector is updated, `0` otherwise.
 </ResponseField>
+
+<RequestExample>
+
+```sh curl
+curl $UPSTASH_VECTOR_REST_URL/update \
+  -X POST \
+  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
+  -d '{ "id": "id-1", "metadata": { "link": "upstash.com" } }'
+```
+
+```sh curl (Namespace)
+curl $UPSTASH_VECTOR_REST_URL/update/ns \
+  -X POST \
+  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
+  -d '{ "id": "id-2", "vector": [0.1, 0.2] }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 OK
+{
+    "result": {
+        "updated": 1
+    }
+}
+```
+
+</ResponseExample>

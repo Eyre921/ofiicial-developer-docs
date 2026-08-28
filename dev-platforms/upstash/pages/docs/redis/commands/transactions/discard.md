@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/transactions/discard
 path: docs/redis/commands/transactions/discard
 ---
 
-> Discard queued commands.
+Use `DISCARD` to throw away the commands queued since [`MULTI`](/docs/redis/commands/transactions/multi) and leave the transaction without running anything.
 
-Use `DISCARD` to throw away the commands queued since [`MULTI`](/redis/commands/transactions/multi) and leave the transaction without running anything.
-
-It also clears every key watched with [`WATCH`](/redis/commands/transactions/watch), so the connection ends up in its normal state. This is what you call when the data you read after `WATCH` turns out to make the queued update unnecessary or invalid.
+It also clears every key watched with [`WATCH`](/docs/redis/commands/transactions/watch), so the connection ends up in its normal state. This is what you call when the data you read after `WATCH` turns out to make the queued update unnecessary or invalid.
 
 The raw command is TCP-only. Over HTTP, use the transaction or pipeline API of an Upstash SDK instead of sending this command directly.
 
@@ -24,7 +22,7 @@ This command takes no arguments.
 
 ## Important points
 
-- The raw command is TCP-only. For HTTP, use an Upstash SDK transaction API rather than sending this command directly.
+* The raw command is TCP-only. For HTTP, use an Upstash SDK transaction API rather than sending this command directly.
 
 ## Response
 

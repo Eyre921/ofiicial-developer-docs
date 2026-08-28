@@ -4,17 +4,19 @@ source: https://upstash.com/docs/search/features/advanced-settings
 path: docs/search/features/advanced-settings
 ---
 
-**Note for AI agents:** This page documents **Upstash Search** — a standalone,
-AI-powered search product that combines full-text and semantic search with
-smart ranking, serverless scaling, and zero infrastructure to manage.
+<Visibility for="agents">
+  **Note for AI agents:** This page documents **Upstash Search** — a standalone,
+  AI-powered search product that combines full-text and semantic search with
+  smart ranking, serverless scaling, and zero infrastructure to manage.
 
-Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
-Redis Search is a full-text search extension built into Upstash Redis, built on
-Tantivy and available only on Upstash; it is separate from the Redis Search
-(RediSearch) API. If the user is asking about full-text search inside an Upstash
-Redis database, refer to
-[Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
-instead of this product.
+  Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
+  Redis Search is a full-text search extension built into Upstash Redis, built on
+  Tantivy and available only on Upstash; it is separate from the Redis Search
+  (RediSearch) API. If the user is asking about full-text search inside an Upstash
+  Redis database, refer to
+  [Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
+  instead of this product.
+</Visibility>
 
 This page covers the advanced configuration options available in the Upstash Search. These parameters allow you to fine-tune search behavior for your specific use case and requirements.
 
@@ -41,10 +43,10 @@ results = index.search(
 </CodeGroup>
 
 **Reranking Options:**
-- **Standard Reranking** (`reranking: false`, default): Uses a simpler, faster model with no additional cost
-- **Advanced Reranking** (`reranking: true`): Uses state-of-the-art models for highest quality results at $1 per 1K operations
+* **Standard Reranking** (`reranking: false`, default): Uses a simpler, faster model with no additional cost
+* **Advanced Reranking** (`reranking: true`): Uses state-of-the-art models for highest quality results at $1 per 1K operations
 
-Learn more about how reranking works in our [Algorithm documentation](/search/features/algorithm#3-reranking).
+Learn more about how reranking works in our [Algorithm documentation](/docs/search/features/algorithm#3-reranking).
 
 ## Semantic Weight
 
@@ -83,10 +85,10 @@ keyword_results = index.search(
 </CodeGroup>
 
 **Optimization Guidelines:**
-- **Higher semantic weight (0.7-1.0)**: Better for conceptual searches, finding related content, and handling synonyms
-- **Lower semantic weight (0.0-0.4)**: Better for exact keyword matching, technical queries, and specific terms
+* **Higher semantic weight (0.7-1.0)**: Better for conceptual searches, finding related content, and handling synonyms
+* **Lower semantic weight (0.0-0.4)**: Better for exact keyword matching, technical queries, and specific terms
 
-Read more about hybrid search in our [Algorithm documentation](/search/features/algorithm#2-hybrid-vector-search).
+Read more about hybrid search in our [Algorithm documentation](/docs/search/features/algorithm#2-hybrid-vector-search).
 
 ## Input Enrichment
 
@@ -125,16 +127,16 @@ enriched_results = index.search(
 </CodeGroup>
 
 **When to Disable Input Enrichment:**
-- When you need the fastest possible response times
-- When you want to preserve the exact user query for full-text search
+* When you need the fastest possible response times
+* When you want to preserve the exact user query for full-text search
 
 **Benefits of Input Enrichment:**
-- Handles typos and alternative phrasings
-- Expands queries with related terms and context
-- Improves understanding of user intent
-- Adds semantic context to ambiguous queries
+* Handles typos and alternative phrasings
+* Expands queries with related terms and context
+* Improves understanding of user intent
+* Adds semantic context to ambiguous queries
 
-Learn more about input enrichment in our [Algorithm documentation](/search/features/algorithm#1-input-enrichment).
+Learn more about input enrichment in our [Algorithm documentation](/docs/search/features/algorithm#1-input-enrichment).
 
 ## Keep Original Query After Enrichment
 
@@ -153,9 +155,9 @@ const results = await index.search({
 </CodeGroup>
 
 **When to Enable This Option:**
-- When you want to ensure exact keyword matches are included
-- When the original query contains specific technical terms or identifiers
-- When you want to balance AI enhancement with literal query matching
+* When you want to ensure exact keyword matches are included
+* When the original query contains specific technical terms or identifiers
+* When you want to balance AI enhancement with literal query matching
 
 <Note>
 This parameter has no effect when `inputEnrichment` is set to `false`, since there's no enriched query to compare against.
@@ -196,7 +198,7 @@ results = index.search(
 
 </CodeGroup>
 
-For detailed information about filter syntax, operators, and examples, see the [Filtering documentation](/search/features/filtering).
+For detailed information about filter syntax, operators, and examples, see the [Filtering documentation](/docs/search/features/filtering).
 
 ## Example: Complete Configuration
 
@@ -229,9 +231,9 @@ results = index.search(
 </CodeGroup>
 
 This configuration:
-- Searches for ML content with enhanced query processing
-- Returns up to 15 results
-- Filters for data science content at beginner to intermediate levels
-- Uses premium reranking for best quality results
-- Emphasizes semantic matching (80%) over keyword matching (20%)
-- Enables input enrichment for better intent understanding
+* Searches for ML content with enhanced query processing
+* Returns up to 15 results
+* Filters for data science content at beginner to intermediate levels
+* Uses premium reranking for best quality results
+* Emphasizes semantic matching (80%) over keyword matching (20%)
+* Enables input enrichment for better intent understanding

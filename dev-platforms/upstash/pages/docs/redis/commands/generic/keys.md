@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/generic/keys
 path: docs/redis/commands/generic/keys
 ---
 
-> Find keys matching a pattern.
-
 Use `KEYS` to list every key in the database whose name matches a glob-style pattern.
 
 The pattern supports `*` for any sequence of characters, `?` for a single character, `[...]` for character classes, and `\` to escape a literal, so `user:*:session` matches all session keys of all users and `*` matches everything.
 
-The command walks the entire keyspace and returns all matches in one reply, which on a database of any real size means a long block and a very large response. Treat it as a debugging and maintenance tool: on hot paths use [`SCAN`](/redis/commands/generic/scan), which accepts the same `MATCH` patterns but walks the keyspace in small batches, or keep an index of your keys in a set instead.
+The command walks the entire keyspace and returns all matches in one reply, which on a database of any real size means a long block and a very large response. Treat it as a debugging and maintenance tool: on hot paths use [`SCAN`](/docs/redis/commands/generic/scan), which accepts the same `MATCH` patterns but walks the keyspace in small batches, or keep an index of your keys in a set instead.
 
 ## Syntax
 
@@ -26,8 +24,8 @@ KEYS <pattern>
 
 ## Important points
 
-- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
-- This operation can inspect a large part of the database. Prefer cursor-based scans where possible and avoid unbounded use on hot paths.
+* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+* This operation can inspect a large part of the database. Prefer cursor-based scans where possible and avoid unbounded use on hot paths.
 
 ## Response
 

@@ -4,6 +4,5 @@ source: https://upstash.com/docs/devops/developer-api/redis/backup/list_backup
 path: docs/devops/developer-api/redis/backup/list_backup
 ---
 
-> This endpoint lists all backups for a Redis database.
-
-`GET /redis/list-backup/{id}`
+/devops/developer-api/openapi.yaml get /redis/list-backup/{id}
+This endpoint lists all backups for a Redis database.

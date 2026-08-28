@@ -4,15 +4,13 @@ source: https://upstash.com/docs/redis/commands/search/search-create
 path: docs/redis/commands/search/search-create
 ---
 
-> Create a search index.
-
 Use `SEARCH.CREATE` to create a search index over JSON, hash, or string values.
 
 `ON` names the type of key to index and `PREFIX` the key prefixes to watch, so the index covers exactly the keys that match both, including keys written after it was created. The `SCHEMA` then declares which fields are searchable and how: `TEXT` fields are analyzed for full-text search, with `NOSTEM` and `NOTOKENIZE` to turn parts of that off, numeric, boolean, and date fields are matched exactly and can be marked `FAST` to make them usable for sorting and scoring, and `KEYWORD` and `FACET` fields are kept whole for exact matching and faceting. `FROM` maps a schema field to a differently named field in the document.
 
-Creating an index starts an initial scan of the matching keys, which `SKIPINITIALSCAN` skips when you only want to index data written from now on; [`SEARCH.REINDEX`](/redis/commands/search/search-reindex) can run that scan later. `EXISTSOK` makes the command succeed instead of failing when the index already exists.
+Creating an index starts an initial scan of the matching keys, which `SKIPINITIALSCAN` skips when you only want to index data written from now on; [`SEARCH.REINDEX`](/docs/redis/commands/search/search-reindex) can run that scan later. `EXISTSOK` makes the command succeed instead of failing when the index already exists.
 
-See [Index Management](/redis/search/index-management#creating-an-index) for a feature-level guide to creating indexes and [Schema Definition](/redis/search/schema-definition) for field types and schema design.
+See [Index Management](/docs/redis/search/index-management#creating-an-index) for a feature-level guide to creating indexes and [Schema Definition](/docs/redis/search/schema-definition) for field types and schema design.
 
 <Note>
   Upstash Redis Search uses `SEARCH.*` commands. They are separate from and incompatible with the `FT.*` commands in the open-source RediSearch module.
@@ -40,7 +38,7 @@ SEARCH.CREATE <name> ON <JSON|HASH|STRING>
 | `ON` | Type of Redis value to index: `JSON`, `HASH`, or `STRING`. A `STRING` value must contain a JSON object. |
 | `PREFIX` | One or more key prefixes. Prefixes in the same index cannot be duplicates or overlap one another. |
 | `LANGUAGE` | Stemming language for `TEXT` fields. Defaults to `english`. Supported values are `arabic`, `danish`, `dutch`, `english`, `finnish`, `french`, `german`, `greek`, `hungarian`, `italian`, `norwegian`, `portuguese`, `romanian`, `russian`, `spanish`, `swedish`, `tamil`, and `turkish`. |
-| `SKIPINITIALSCAN` | Create the index without scanning existing keys. Later writes are still indexed; use [`SEARCH.REINDEX`](/redis/commands/search/search-reindex) to add the current matching data. |
+| `SKIPINITIALSCAN` | Create the index without scanning existing keys. Later writes are still indexed; use [`SEARCH.REINDEX`](/docs/redis/commands/search/search-reindex) to add the current matching data. |
 | `EXISTSOK` | Return `0` when an index with the same data type, prefixes, and schema already exists. A configuration mismatch returns an error. |
 | `SCHEMA` | One or more field definitions. `SCHEMA` must be the final top-level clause. |
 

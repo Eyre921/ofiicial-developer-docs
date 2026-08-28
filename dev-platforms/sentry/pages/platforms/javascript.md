@@ -25,7 +25,7 @@ You need:
 
 Choose the features you want to configure, and this guide will show you how:
 
-Error Monitoring\[ ]Tracing\[ ]Session Replay\[ ]Logs\[ ]User Feedback
+Error Monitoring\[ ]Tracing\[ ]Session Replay\[ ]User Feedback
 
 Want to learn more about these features?
 
@@ -97,11 +97,6 @@ Sentry.init({
     }),
     // ___PRODUCT_OPTION_END___ user-feedback
   ],
-  // ___PRODUCT_OPTION_START___ logs
-
-  // Enable logs to be sent to Sentry
-  enableLogs: true,
-  // ___PRODUCT_OPTION_END___ logs
   // ___PRODUCT_OPTION_START___ performance
 
   // Set tracesSampleRate to 1.0 to capture 100%
@@ -163,11 +158,6 @@ Sentry.init({
         }),
         // ___PRODUCT_OPTION_END___ user-feedback
       ],
-      // ___PRODUCT_OPTION_START___ logs
-
-      // Enable logs to be sent to Sentry
-      enableLogs: true,
-      // ___PRODUCT_OPTION_END___ logs
       // ___PRODUCT_OPTION_START___ performance
 
       // Set tracesSampleRate to 1.0 to capture 100%
@@ -234,11 +224,6 @@ Sentry.init({
       }),
       // ___PRODUCT_OPTION_END___ user-feedback
     ],
-    // ___PRODUCT_OPTION_START___ logs
-
-    // Enable logs to be sent to Sentry
-    enableLogs: true,
-    // ___PRODUCT_OPTION_END___ logs
     // ___PRODUCT_OPTION_START___ performance
 
     // Set tracesSampleRate to 1.0 to capture 100%

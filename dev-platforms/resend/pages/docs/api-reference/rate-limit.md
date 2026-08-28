@@ -25,7 +25,7 @@ The default maximum rate limit is **10 requests per second per team**. This limi
 
 After that, you'll hit the rate limit and receive a `429` response error code. You can find all 429 responses by filtering for 429 at the [Resend Logs page](https://resend.com/logs?status=429).
 
-To prevent this, reduce the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/contact) to request a rate increase.
+To prevent this, reduce the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/help) to request a rate increase.
 
 ## Email Quotas
 

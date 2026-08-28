@@ -103,7 +103,7 @@ If you're using Laravel's Forge platform to provision and deploy your PHP applic
 - [Integrations](https://docs.sentry.io/platforms/php/integrations.md)
 - [Logs](https://docs.sentry.io/platforms/php/logs.md)
 - [Troubleshooting](https://docs.sentry.io/platforms/php/troubleshooting.md)
-- [Agent](https://docs.sentry.io/platforms/php/agent.md)
+- [Sidecar SDK Transport](https://docs.sentry.io/platforms/php/agent.md)
 - [Crons](https://docs.sentry.io/platforms/php/crons.md)
 - [Data Management](https://docs.sentry.io/platforms/php/data-management.md)
 - [Application Metrics](https://docs.sentry.io/platforms/php/metrics.md)

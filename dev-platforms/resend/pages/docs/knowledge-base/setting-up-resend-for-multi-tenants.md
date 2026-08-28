@@ -78,6 +78,7 @@ const apiKey = await resend.apiKeys.create({
 * No per-tenant volume breakdown or analytics in the dashboard
 * All tenants share your account's sender reputation
 * Aggregate sending volume will likely require a [rate-limit increase](/docs/knowledge-base/account-quotas-and-limits) as you onboard tenants
+* Each tenant domain counts toward your team's domain limit, which you can raise with the [domains add-on](/docs/knowledge-base/how-to-add-more-domains)
 
 <Warning>
   If one tenant engages in poor sending practices (spam, high bounce rates), it
@@ -124,7 +125,7 @@ await resend.emails.send({
 
 ## Billing implications
 
-With **Option A**, you pay a single plan that covers all tenant sending volume. Your total email count is the aggregate of all tenants' emails, so choose a plan that accommodates your combined volume.
+With **Option A**, you pay a single plan that covers all tenant sending volume. Your total email count is the aggregate of all tenants' emails, so choose a plan that accommodates your combined volume. Since each tenant domain counts toward your domain limit, you may also need to [add more domains](/docs/knowledge-base/how-to-add-more-domains) as you grow.
 
 With **Option B**, each tenant is responsible for their own Resend plan and billing. This removes billing complexity from your side but means tenants need to manage their own subscription. See [Resend pricing](/docs/knowledge-base/what-is-resend-pricing) and [account quotas and limits](/docs/knowledge-base/account-quotas-and-limits) for details.
 

@@ -30,6 +30,7 @@ Reference: https://elevenlabs.io/docs/api-reference/music/upload
 - `file` (file, required) — The audio file to upload.
 - `extract_composition_plan` (boolean or enum, optional) — Whether to generate and return the composition plan for the uploaded song. Pass a model id (`music_v1` or `music_v2`) to control which composition plan format is returned. Passing `true`/`false` is deprecated; `true` defaults to the `music_v1` plan format. Enabling this will increase the latency.
 - `with_timestamps` (boolean, optional) — Whether to transcribe the uploaded song and return word-level timestamps. If True, the response will include words_timestamps but will increase the latency.
+- `with_waveform_visual` (boolean, optional) — Whether to return the visual waveform of the uploaded song.
 
 ## Response
 
@@ -81,6 +82,7 @@ Successfully uploaded music file with optional composition plan
   - `word` (string, required)
   - `start_ms` (integer, required)
   - `end_ms` (integer, required)
+- `waveform_visual` (list of integer, optional, nullable) — A low-resolution waveform of the uploaded song, for showing a preview of it. Holds 4 values per second of audio, from -1000 to 1000. Stereo is mixed down to a single channel. Only present if `with_waveform_visual` was True in the request body.
 
 ## Examples
 
@@ -138,7 +140,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/music/upload"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"extract_composition_plan\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_timestamps\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"extract_composition_plan\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_timestamps\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_waveform_visual\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -166,7 +168,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"extract_composition_plan\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_timestamps\"\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"extract_composition_plan\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_timestamps\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_waveform_visual\"\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -178,7 +180,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/music/upload")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"extract_composition_plan\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_timestamps\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"extract_composition_plan\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_timestamps\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_waveform_visual\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -206,7 +208,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/music/upload");
 var request = new RestRequest(Method.POST);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"extract_composition_plan\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_timestamps\"\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"extract_composition_plan\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_timestamps\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_waveform_visual\"\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -225,6 +227,10 @@ let parameters = [
   ],
   [
     "name": "with_timestamps",
+    "value": 
+  ],
+  [
+    "name": "with_waveform_visual",
     "value": 
   ]
 ]

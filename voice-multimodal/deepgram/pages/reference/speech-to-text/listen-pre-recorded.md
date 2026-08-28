@@ -89,6 +89,9 @@ Returns either transcription results, or a request_id when using a callback.
       - `channels` (integer, required)
       - `models` (list of string, required)
       - `model_info` (object, required)
+      - `diarize_info` (object, optional) — The diarizer that produced the speaker labels. Present only when a diarizer ran.
+        - `model_uuid` (string, required) — The diarizer model UUID
+        - `arch` (string, required) — The diarizer arch, such as `v1` or `v2`
       - `summary_info` (object, optional)
         - `model_uuid` (string, optional)
         - `input_tokens` (integer, optional)
@@ -188,6 +191,8 @@ Returns either transcription results, or a request_id when using a callback.
 
 ## Examples
 
+### Remote File
+
 **Request**
 
 ```json
@@ -203,12 +208,11 @@ Returns either transcription results, or a request_id when using a callback.
   "metadata": {
     "channels": 1,
     "created": "2024-05-12T18:57:13.426Z",
-    "duration": 25.933313,
-    "intents_info": {
-      "input_tokens": 105,
-      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
-      "output_tokens": 4
+    "diarize_info": {
+      "arch": "v2",
+      "model_uuid": "9a1c8b3e-2f44-4c8a-b1d0-example0000"
     },
+    "duration": 25.933313,
     "model_info": {
       "30089e05-99d1-4376-b32e-c263170674af": {
         "arch": "nova-2",
@@ -220,210 +224,33 @@ Returns either transcription results, or a request_id when using a callback.
       "30089e05-99d1-4376-b32e-c263170674af"
     ],
     "request_id": "a847f427-4ad5-4d67-9b95-db801e58251c",
-    "sentiment_info": {
-      "input_tokens": 105,
-      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
-      "output_tokens": 105
-    },
-    "sha256": "154e291ecfa8be6ab8343560bcc109008fa7853eb5372533e8efdefc9b504c33",
-    "summary_info": {
-      "input_tokens": 95,
-      "model_uuid": "67875a7f-c9c4-48a0-aa55-5bdb8a91c34a",
-      "output_tokens": 63
-    },
-    "tags": [
-      "test"
-    ],
-    "topics_info": {
-      "input_tokens": 105,
-      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
-      "output_tokens": 7
-    },
-    "transaction_key": "deprecated"
+    "sha256": "154e291ecfa8be6ab8343560bcc109008fa7853eb5372533e8efdefc9b504c33"
   },
   "results": {
     "channels": [
       {
         "alternatives": [
           {
-            "confidence": 0.95,
-            "entities": [
-              {
-                "confidence": 0.95,
-                "end_word": 3,
-                "label": "Event",
-                "raw_value": "spacewalk",
-                "start_word": 2,
-                "value": "spacewalk"
-              }
-            ],
-            "paragraphs": {
-              "paragraphs": [
-                {
-                  "end": 6,
-                  "num_words": 12,
-                  "sentences": [
-                    {
-                      "end": 6,
-                      "start": 0,
-                      "text": "This historic spacewalk marks a significant milestone for women in space exploration."
-                    }
-                  ],
-                  "speaker": 1,
-                  "start": 0
-                }
-              ],
-              "transcript": "This historic spacewalk marks a significant milestone for women in space exploration."
-            },
-            "summaries": [
-              {
-                "end_word": 12,
-                "start_word": 0,
-                "summary": "The transcript highlights the importance of the first all-female spacewalk."
-              }
-            ],
-            "topics": [
-              {
-                "end_word": 12,
-                "start_word": 0,
-                "text": "This historic spacewalk marks a significant milestone for women in space exploration.",
-                "topics": [
-                  "Space Exploration"
-                ]
-              }
-            ],
-            "transcript": "This historic spacewalk marks a significant milestone for women in space exploration.",
+            "confidence": 0.9840088,
+            "transcript": "Yeah, as as much as, it's worth having a talk to the neighbors.",
             "words": [
               {
-                "confidence": 0.98,
-                "end": 0.3,
-                "start": 0,
-                "word": "This"
+                "confidence": 0.9975586,
+                "end": 0.32,
+                "speaker": 0,
+                "speaker_confidence": 0.98,
+                "start": 0.08,
+                "word": "yeah"
               },
               {
-                "confidence": 0.97,
-                "end": 0.7,
-                "start": 0.3,
-                "word": "historic"
-              },
-              {
-                "confidence": 0.99,
-                "end": 5.8,
-                "start": 5.2,
-                "word": "spacewalk"
+                "confidence": 0.9862061,
+                "end": 0.48,
+                "speaker": 0,
+                "speaker_confidence": 0.98,
+                "start": 0.32,
+                "word": "as"
               }
             ]
-          }
-        ],
-        "detected_language": "en",
-        "search": [
-          {
-            "hits": [
-              {
-                "confidence": 0.98,
-                "end": 5.8,
-                "snippet": "the first all-female spacewalk",
-                "start": 5.2
-              }
-            ],
-            "query": "spacewalk"
-          }
-        ]
-      }
-    ],
-    "intents": {
-      "results": {
-        "intents": {
-          "segments": [
-            {
-              "end_word": 414,
-              "intents": [
-                {
-                  "confidence_score": 0.0038975573,
-                  "intent": "Encourage podcasting"
-                }
-              ],
-              "start_word": 354,
-              "text": "If you found this valuable, you can subscribe to the show on spotify or your favorite podcast app."
-            }
-          ]
-        }
-      }
-    },
-    "sentiments": {
-      "average": {
-        "sentiment": "positive",
-        "sentiment_score": 0.5810185185185185
-      },
-      "segments": [
-        {
-          "end_word": 69,
-          "sentiment": "positive",
-          "sentiment_score": 0.5810546875,
-          "start_word": 0,
-          "text": "Yeah. As as much as, um, it's worth celebrating, uh, the first, uh, spacewalk, um, with an all-female team, I think many of us are looking forward to it just being normal. And, um, I think if it_signf"
-        }
-      ]
-    },
-    "summary": {
-      "result": "success",
-      "short": "Speaker 1 highlights the historic significance of the first all-female spacewalk as a milestone for women in space exploration."
-    },
-    "topics": {
-      "results": {
-        "topics": {
-          "segments": [
-            {
-              "end_word": 69,
-              "start_word": 32,
-              "text": "And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn't get the the same opportunities that we have today.",
-              "topics": [
-                {
-                  "confidence_score": 0.91581345,
-                  "topic": "Spacewalk"
-                }
-              ]
-            }
-          ]
-        }
-      }
-    },
-    "utterances": [
-      {
-        "channel": 1,
-        "confidence": 0.95,
-        "end": 6,
-        "id": "utt-001",
-        "speaker": 1,
-        "start": 0,
-        "transcript": "This historic spacewalk marks a significant milestone for women in space exploration.",
-        "words": [
-          {
-            "confidence": 0.98,
-            "end": 0.3,
-            "punctuated_word": "This",
-            "speaker": 1,
-            "speaker_confidence": 0.99,
-            "start": 0,
-            "word": "This"
-          },
-          {
-            "confidence": 0.97,
-            "end": 0.7,
-            "punctuated_word": "historic",
-            "speaker": 1,
-            "speaker_confidence": 0.99,
-            "start": 0.3,
-            "word": "historic"
-          },
-          {
-            "confidence": 0.99,
-            "end": 5.8,
-            "punctuated_word": "spacewalk.",
-            "speaker": 1,
-            "speaker_confidence": 0.99,
-            "start": 5.2,
-            "word": "spacewalk"
           }
         ]
       }
@@ -434,7 +261,7 @@ Returns either transcription results, or a request_id when using a callback.
 
 **SDK Code**
 
-```python
+```python Remote File
 import requests
 
 url = "https://api.deepgram.com/v1/listen"
@@ -450,7 +277,7 @@ response = requests.post(url, json=payload, headers=headers)
 print(response.json())
 ```
 
-```javascript
+```javascript Remote File
 const url = 'https://api.deepgram.com/v1/listen';
 const options = {
   method: 'POST',
@@ -467,7 +294,7 @@ try {
 }
 ```
 
-```go
+```go Remote File
 package main
 
 import (
@@ -499,7 +326,7 @@ func main() {
 }
 ```
 
-```ruby
+```ruby Remote File
 require 'uri'
 require 'net/http'
 
@@ -517,7 +344,7 @@ response = http.request(request)
 puts response.read_body
 ```
 
-```java
+```java Remote File
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
@@ -528,7 +355,7 @@ HttpResponse<String> response = Unirest.post("https://api.deepgram.com/v1/listen
   .asString();
 ```
 
-```php
+```php Remote File
 <?php
 require_once('vendor/autoload.php');
 
@@ -547,7 +374,7 @@ $response = $client->request('POST', 'https://api.deepgram.com/v1/listen', [
 echo $response->getBody();
 ```
 
-```csharp
+```csharp Remote File
 using RestSharp;
 
 var client = new RestClient("https://api.deepgram.com/v1/listen");
@@ -558,7 +385,7 @@ request.AddParameter("application/json", "{\n  \"url\": \"https://dpgr.am/spacew
 IRestResponse response = client.Execute(request);
 ```
 
-```swift
+```swift Remote File
 import Foundation
 
 let headers = [
@@ -575,6 +402,136 @@ let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v
 request.httpMethod = "POST"
 request.allHTTPHeaderFields = headers
 request.httpBody = postData as Data
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+### Local File
+
+**SDK Code**
+
+```python Local File
+import requests
+
+url = "https://api.deepgram.com/v1/listen"
+
+headers = {"Authorization": "Token <apiKey>"}
+
+response = requests.post(url, headers=headers)
+
+print(response.json())
+```
+
+```javascript Local File
+const url = 'https://api.deepgram.com/v1/listen';
+const options = {method: 'POST', headers: {Authorization: 'Token <apiKey>'}};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+```go Local File
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io"
+)
+
+func main() {
+
+	url := "https://api.deepgram.com/v1/listen"
+
+	req, _ := http.NewRequest("POST", url, nil)
+
+	req.Header.Add("Authorization", "Token <apiKey>")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+
+```ruby Local File
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.deepgram.com/v1/listen")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+
+request = Net::HTTP::Post.new(url)
+request["Authorization"] = 'Token <apiKey>'
+
+response = http.request(request)
+puts response.read_body
+```
+
+```java Local File
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+
+HttpResponse<String> response = Unirest.post("https://api.deepgram.com/v1/listen")
+  .header("Authorization", "Token <apiKey>")
+  .asString();
+```
+
+```php Local File
+<?php
+require_once('vendor/autoload.php');
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://api.deepgram.com/v1/listen', [
+  'headers' => [
+    'Authorization' => 'Token <apiKey>',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+```csharp Local File
+using RestSharp;
+
+var client = new RestClient("https://api.deepgram.com/v1/listen");
+var request = new RestRequest(Method.POST);
+request.AddHeader("Authorization", "Token <apiKey>");
+IRestResponse response = client.Execute(request);
+```
+
+```swift Local File
+import Foundation
+
+let headers = ["Authorization": "Token <apiKey>"]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/listen")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "POST"
+request.allHTTPHeaderFields = headers
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

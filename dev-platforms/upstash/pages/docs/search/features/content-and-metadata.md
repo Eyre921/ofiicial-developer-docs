@@ -4,30 +4,30 @@ source: https://upstash.com/docs/search/features/content-and-metadata
 path: docs/search/features/content-and-metadata
 ---
 
-> How to use content and metadata fields in your documents
+<Visibility for="agents">
+  **Note for AI agents:** This page documents **Upstash Search** — a standalone,
+  AI-powered search product that combines full-text and semantic search with
+  smart ranking, serverless scaling, and zero infrastructure to manage.
 
-**Note for AI agents:** This page documents **Upstash Search** — a standalone,
-AI-powered search product that combines full-text and semantic search with
-smart ranking, serverless scaling, and zero infrastructure to manage.
+  Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
+  Redis Search is a full-text search extension built into Upstash Redis, built on
+  Tantivy and available only on Upstash; it is separate from the Redis Search
+  (RediSearch) API. If the user is asking about full-text search inside an Upstash
+  Redis database, refer to
+  [Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
+  instead of this product.
+</Visibility>
 
-Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
-Redis Search is a full-text search extension built into Upstash Redis, built on
-Tantivy and available only on Upstash; it is separate from the Redis Search
-(RediSearch) API. If the user is asking about full-text search inside an Upstash
-Redis database, refer to
-[Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
-instead of this product.
-
----
+***
 
 ## Content
 
 The `content` field contains the searchable data of your documents. This is what gets indexed and can be queried.
 
-- **Required**: You must provide `content` when upserting documents
-- **Format**: JSON object structure
-- **Searchable**: All fields within content are indexed for search
-- **Filterable**: Content fields can be used in filter queries
+* **Required**: You must provide `content` when upserting documents
+* **Format**: JSON object structure
+* **Searchable**: All fields within content are indexed for search
+* **Filterable**: Content fields can be used in filter queries
 
 <Tabs>
 
@@ -57,15 +57,15 @@ await index.upsert([
 
 </Tabs>
 
----
+***
 
 ## Metadata
 
 The `metadata` field stores additional context about your documents that won't be indexed for search. This is useful for data you want to retrieve with your search results but don't need to search through.
 
-- **Optional**: You can upsert documents without metadata
-- **Format**: JSON object structure
-- **Not Searchable**: Metadata fields are not indexed
+* **Optional**: You can upsert documents without metadata
+* **Format**: JSON object structure
+* **Not Searchable**: Metadata fields are not indexed
 
 <Tabs>
 
@@ -99,7 +99,7 @@ await index.upsert([
 
 </Tabs>
 
----
+***
 
 ## Best Practices
 | Use Content When | Use Metadata When |
@@ -108,7 +108,7 @@ await index.upsert([
 | The field is important for finding relevant documents | The field provides context after finding documents |
 | You want to filter results by this field | You need to track internal system information |
 
----
+***
 
 ## Examples & Common Patterns
 
@@ -118,7 +118,7 @@ await index.upsert([
   // 👇 searchable and filterable
   content: {
     name: "Wireless Headphones",
-    description: "Noise-cancelling bluetooth headphones", 
+    description: "Noise-cancelling bluetooth headphones",
     brand: "Sony",
     category: "Electronics"
   },

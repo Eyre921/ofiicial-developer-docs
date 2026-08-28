@@ -4,15 +4,13 @@ source: https://upstash.com/docs/redis/commands/generic/expire
 path: docs/redis/commands/generic/expire
 ---
 
-> Set a key's TTL in seconds.
-
 Use `EXPIRE` to give a key a lifetime in seconds, after which the key is deleted automatically.
 
-Whether the expiration survives later writes depends on the command: replacing the value with [`SET`](/redis/commands/string/set) clears it, while commands that modify a value in place, such as [`INCR`](/redis/commands/string/incr), [`LPUSH`](/redis/commands/list/lpush) or [`HSET`](/redis/commands/hash/hset), leave it untouched. A negative lifetime deletes the key immediately.
+Whether the expiration survives later writes depends on the command: replacing the value with [`SET`](/docs/redis/commands/string/set) clears it, while commands that modify a value in place, such as [`INCR`](/docs/redis/commands/string/incr), [`LPUSH`](/docs/redis/commands/list/lpush) or [`HSET`](/docs/redis/commands/hash/hset), leave it untouched. A negative lifetime deletes the key immediately.
 
 The optional condition decides when the new expiration is applied: `NX` only when the key currently has none, `XX` only when it already has one, `GT` only when the new expiration is later than the current one, and `LT` only when it is earlier. Since a key without an expiration counts as living forever, `GT` never adds one and `LT` always does. The reply is `1` when the expiration was set and `0` when the key does not exist or the condition was not met.
 
-Read the remaining lifetime with [`TTL`](/redis/commands/generic/ttl) and remove it again with [`PERSIST`](/redis/commands/generic/persist).
+Read the remaining lifetime with [`TTL`](/docs/redis/commands/generic/ttl) and remove it again with [`PERSIST`](/docs/redis/commands/generic/persist).
 
 ## Syntax
 
@@ -30,8 +28,8 @@ EXPIRE <key> <seconds> [NX | XX | GT | LT]
 
 ## Important points
 
-- `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
-- A key with no expiration counts as an infinite one, so `GT` never sets an expiration on such a key and `LT` always does.
+* `NX` cannot be combined with `XX`, `GT`, or `LT`, and `GT` and `LT` cannot be used together.
+* A key with no expiration counts as an infinite one, so `GT` never sets an expiration on such a key and `LT` always does.
 
 ## Response
 

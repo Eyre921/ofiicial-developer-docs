@@ -8,9 +8,9 @@ Network policies control outbound network access from a box.
 
 Use them when you want to:
 
-- block all outbound traffic
-- allow only specific public domains
-- restrict egress to specific CIDR ranges
+* block all outbound traffic
+* allow only specific public domains
+* restrict egress to specific CIDR ranges
 
 By default, boxes use:
 
@@ -24,7 +24,7 @@ By default, boxes use:
 ```
 </CodeGroup>
 
----
+***
 
 ## Modes
 
@@ -65,7 +65,7 @@ NetworkPolicy = Union[AllowDenyNetworkPolicy, CustomNetworkPolicy]
 ```
 </CodeGroup>
 
----
+***
 
 ## Create a box with a policy
 
@@ -125,7 +125,7 @@ box = Box.create(
 
 `networkPolicy` is also supported in `Box.fromSnapshot()` and `EphemeralBox`.
 
----
+***
 
 ## Read the current policy
 
@@ -141,7 +141,7 @@ print(box.network_policy)  # {"mode": "allow-all"}
 ```
 </CodeGroup>
 
----
+***
 
 ## Update a running box
 
@@ -171,17 +171,17 @@ box.update_network_policy({"mode": "allow-all"})
 
 Changes take effect immediately. You do not need to recreate the box.
 
----
+***
 
 ## Matching rules
 
-- `allowedDomains` supports exact matches such as `api.github.com`
-- wildcard domains must use `*.suffix` form, for example `*.githubusercontent.com`
-- `allowedCidrs` and `deniedCidrs` use standard CIDR notation
-- in `custom` mode, `deniedCidrs` takes precedence over allowed CIDRs
-- private IP ranges are always blocked even if you try to allow them explicitly
+* `allowedDomains` supports exact matches such as `api.github.com`
+* wildcard domains must use `*.suffix` form, for example `*.githubusercontent.com`
+* `allowedCidrs` and `deniedCidrs` use standard CIDR notation
+* in `custom` mode, `deniedCidrs` takes precedence over allowed CIDRs
+* private IP ranges are always blocked even if you try to allow them explicitly
 
----
+***
 
 ## Example patterns
 
@@ -251,10 +251,10 @@ box.update_network_policy({
 ```
 </CodeGroup>
 
----
+***
 
 ## Related
 
-- [Security](/box/overall/security)
-- [Shell](/box/overall/shell)
-- [How It Works](/box/overall/how-it-works)
+* [Security](/docs/box/overall/security)
+* [Shell](/docs/box/overall/shell)
+* [How It Works](/docs/box/overall/how-it-works)

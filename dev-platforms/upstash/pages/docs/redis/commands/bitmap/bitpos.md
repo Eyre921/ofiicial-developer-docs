@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/bitmap/bitpos
 path: docs/redis/commands/bitmap/bitpos
 ---
 
-> Find first bit set or clear in a string.
-
 Use `BITPOS` to find the position of the first bit set to `0` or `1` in a string.
 
 The whole value is searched unless `<start>` and `<end>` are given, and those are byte offsets by default or bit offsets when `BIT` is given. Both ends are inclusive and may be negative to count backwards from the end of the value. The reply is always an absolute bit position counted from the start of the string, or `-1` when no matching bit is found.

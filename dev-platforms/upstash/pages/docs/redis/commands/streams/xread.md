@@ -4,15 +4,13 @@ source: https://upstash.com/docs/redis/commands/streams/xread
 path: docs/redis/commands/streams/xread
 ---
 
-> Read stream entries.
-
 Use `XREAD` to read entries from one or more streams that are newer than a given ID.
 
 After `STREAMS`, all keys are listed first and then exactly one ID for each key, in the same order. Only entries with an ID greater than the one you give are returned, and the special ID `$` means "only entries added after this call", which is how a client starts tailing a live stream.
 
 `BLOCK <milliseconds>` waits for new data instead of returning an empty reply, with `0` waiting indefinitely, which turns the command into an efficient follow rather than a polling loop. `COUNT` caps how many entries per stream come back.
 
-`XREAD` keeps no server-side position: the client remembers the last ID it processed and passes it on the next call, and every reader sees every entry. When work should be split across consumers, with the server tracking what has been delivered and acknowledged, use a consumer group and [`XREADGROUP`](/redis/commands/streams/xreadgroup).
+`XREAD` keeps no server-side position: the client remembers the last ID it processed and passes it on the next call, and every reader sees every entry. When work should be split across consumers, with the server tracking what has been delivered and acknowledged, use a consumer group and [`XREADGROUP`](/docs/redis/commands/streams/xreadgroup).
 
 ## Syntax
 
@@ -33,8 +31,8 @@ XREAD
 
 ## Important points
 
-- A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
-- After `STREAMS`, provide all keys first and then exactly one ID for each key, in the same order.
+* A blocking form holds the request until data arrives or its timeout expires. Set the client/network timeout longer than the command timeout.
+* After `STREAMS`, provide all keys first and then exactly one ID for each key, in the same order.
 
 ## Response
 

@@ -10,15 +10,13 @@ The failure function is typically a cleanup or notification operation that runs 
 
 This feature is particularly helpful for:
 
-- Ensuring that important cleanup operations are executed.
-- Guaranteeing that logging or alerting is completed after a workflow failure.
-- Recovering from temporary errors in the failure function itself.
+* Ensuring that important cleanup operations are executed.
+* Guaranteeing that logging or alerting is completed after a workflow failure.
+* Recovering from temporary errors in the failure function itself.
 
 By manually rerunning this function, you can ensure that critical operations—such as cleanup tasks, logging, or alerting—complete successfully even if the main workflow has failed.
 
-<Frame caption="You can retry the failure function of a workflow run if it has failed">
-  <img src="/img/workflow/retry_failure_callback.png" />
-</Frame>
+  <img />
 
 You can perform this action programmatically as well:
 

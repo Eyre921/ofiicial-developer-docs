@@ -6,7 +6,7 @@ path: docs/box/overall/ephemeral-box
 
 `EphemeralBox` is a lightweight, short-lived sandbox that provides only **exec** and **file** operations. It's designed for quick, disposable compute tasks where a full Box (with agent, git, snapshots, etc.) is unnecessary.
 
----
+***
 
 ## Creation
 
@@ -38,7 +38,7 @@ box = EphemeralBox.create(
 
 The request sends `{ ephemeral: true, ttl?, runtime? }` to `POST /v2/box`.
 
----
+***
 
 ## Available API
 
@@ -65,14 +65,14 @@ The request sends `{ ephemeral: true, ttl?, runtime? }` to `POST /v2/box`.
 | `configureModel()` | Yes | **No** |
 | `logs()` / `listRuns()` | Yes | **No** |
 
----
+***
 
 ## Properties
 
-- **`id`** — box identifier (e.g. `"sweet-shark-26021"`)
-- **`expiresAt`** — Unix timestamp (seconds) when the box auto-deletes
+* **`id`** — box identifier (e.g. `"sweet-shark-26021"`)
+* **`expiresAt`** — Unix timestamp (seconds) when the box auto-deletes
 
----
+***
 
 ## How it differs from Box
 
@@ -82,7 +82,7 @@ The request sends `{ ephemeral: true, ttl?, runtime? }` to `POST /v2/box`.
 4. **Simpler config** — `EphemeralBoxConfig` has only `apiKey`, `runtime`, `ttl`, `name`, `networkPolicy`, `baseUrl`, `timeout`, `debug` (no agent, git, env, skills, mcpServers)
 5. **Composition over inheritance** — `EphemeralBox` wraps an internal `Box` and exposes only the relevant subset, so agent/git/etc. are not accessible even at runtime
 
----
+***
 
 ## Examples
 
@@ -146,10 +146,10 @@ box.delete()
 ```
 </CodeGroup>
 
----
+***
 
 ## Exported types
 
-- `EphemeralBox` — the class
-- `EphemeralBoxConfig` — config for `EphemeralBox.create()`
-- `EphemeralBoxData` — extends `BoxData` with `ephemeral: boolean` and `expires_at: number`
+* `EphemeralBox` — the class
+* `EphemeralBoxConfig` — config for `EphemeralBox.create()`
+* `EphemeralBoxData` — extends `BoxData` with `ephemeral: boolean` and `expires_at: number`

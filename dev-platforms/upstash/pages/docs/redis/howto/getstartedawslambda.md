@@ -19,7 +19,7 @@ similar in other languages.
 <Note>
   This example uses Redis clients. If you expect many concurrent AWS Lambda
   invocation then we recommend using
-  **[upstash-redis](/redis/howto/connect-with-upstash-redis)** which is HTTP/REST
+  **[upstash-redis](/docs/redis/howto/connect-with-upstash-redis)** which is HTTP/REST
   based.
 </Note>
 
@@ -45,7 +45,10 @@ npm install ioredis
 
 Now create index.js file. Replace the Redis URL in the below code.
 
-<Snippet file="redis/ioredisnote.mdx" />
+<Note>
+  This example uses ioredis, you can copy the connection string from the
+  **Node** tab in the console.
+</Note>
 
 ```javascript
 var Redis = require("ioredis");
@@ -82,9 +85,7 @@ Now open your AWS console, from the top-right menu, select the region that you
 created your database in Upstash. Then find or search the lambda service, click
 on `Create Function` button.
 
-<Frame>
-  <img src="/img/awslambda/createfunction.png" width="100%" />
-</Frame>
+  <img width="100%" />
 
 Enter a name for your function and select `Node.js 14.x` as runtime. Click
 `Create Function`.
@@ -94,9 +95,7 @@ Now you are on the function screen, scroll below to `Function Code` section. On
 file you have just created and click on the `Save` button on the top-right. You
 need to see your code as below:
 
-<Frame>
-  <img src="/img/awslambda/functioncode.png" width="100%" />
-</Frame>
+  <img width="100%" />
 
 Now you can test your code. Click on the `Test` button on the top right. Create
 an event like the below:
@@ -110,24 +109,22 @@ an event like the below:
 
 Now, click on Test. You will see something like this:
 
-<Frame>
-  <img src="/img/awslambda/success.png" width="100%" />
-</Frame>
+  <img width="100%" />
 
 Congratulations, now your lambda function inserts entry to your Upstash
 database.
 
 **What can be the next?**
 
-- You can write and deploy another function to just get values from the
+* You can write and deploy another function to just get values from the
   database.
-- You can learn better ways to deploy your functions such as
+* You can learn better ways to deploy your functions such as
   [serverless framework](https://serverless.com/) and
   [AWS SAM](https://aws.amazon.com/serverless/sam/)
-- You can integrate
+* You can integrate
   [API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy-for-lambda.html)
   so you can call your function via http.
-- You can learn about how to monitor your functions from CloudWatch as described
+* You can learn about how to monitor your functions from CloudWatch as described
   [here](https://docs.aws.amazon.com/lambda/latest/dg//monitoring-functions-logs.html)
   .
 

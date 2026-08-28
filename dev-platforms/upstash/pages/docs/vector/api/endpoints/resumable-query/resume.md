@@ -4,10 +4,6 @@ source: https://upstash.com/docs/vector/api/endpoints/resumable-query/resume
 path: docs/vector/api/endpoints/resumable-query/resume
 ---
 
-> Resumes a previously started query to fetch additional results.
-
-`POST https://{endpoint}/resumable-query-next`
-
 ## Request
 
 <ParamField body="uuid" type="string" required>
@@ -51,3 +47,17 @@ path: docs/vector/api/endpoints/resumable-query/resume
     </ResponseField>
   </Expandable>
 </ResponseField>
+
+<RequestExample>
+
+```sh curl
+curl $UPSTASH_VECTOR_REST_URL/resumable-query-next \
+  -X POST \
+  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN" \
+  -d '{
+    "uuid": "550e8400-e29b-41d4-a716-446655440000",
+    "additionalK": 2
+  }'
+```
+
+</RequestExample>

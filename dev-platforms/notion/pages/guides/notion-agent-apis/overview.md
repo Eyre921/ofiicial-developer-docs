@@ -52,7 +52,7 @@ Find the Custom Agents your token can access, track their usage, and manage thei
   </Card>
 
   <Card title="Retrieve agent insights" icon="chart-line" href="/reference/notion-agent-apis/retrieve-agent-insights">
-    Read a Custom Agent's credits used and runs completed.
+    Read credits used and runs completed for a Custom Agent or your personal agent.
   </Card>
 
   <Card title="Update agent status" icon="toggle-on" href="/reference/notion-agent-apis/update-agent-status">

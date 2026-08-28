@@ -4,9 +4,7 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zrangestore
 path: docs/redis/commands/sorted-set/zrangestore
 ---
 
-> Store the result of a range query.
-
-Use `ZRANGESTORE` to run the same selection as [`ZRANGE`](/redis/commands/sorted-set/zrange) and store the result in another sorted set instead of returning it.
+Use `ZRANGESTORE` to run the same selection as [`ZRANGE`](/docs/redis/commands/sorted-set/zrange) and store the result in another sorted set instead of returning it.
 
 The selection works exactly as it does for `ZRANGE`: by index, or by score with `BYSCORE`, or by member with `BYLEX`, with `REV` and `LIMIT` available in the same way. The members keep their original scores in the destination, which is overwritten if it exists and deleted when the range is empty. The reply is the number of members stored.
 

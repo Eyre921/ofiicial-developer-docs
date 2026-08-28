@@ -86,10 +86,10 @@ print(f"Task result: {output}")  # Outputs '10'
 
 ## Billing Optimization
 
-Celery workers poll Redis continuously, even when there is no queue activity. This can incur extra costs because Upstash charges per request on the Pay-As-You-Go plan. With [our Fixed plans](/redis/overall/pricing#all-plans-and-limits), **we recommend switching to a Fixed plan to avoid increased command count and high costs in Celery use cases.**
+Celery workers poll Redis continuously, even when there is no queue activity. This can incur extra costs because Upstash charges per request on the Pay-As-You-Go plan. With [our Fixed plans](/docs/redis/overall/pricing#all-plans-and-limits), **we recommend switching to a Fixed plan to avoid increased command count and high costs in Celery use cases.**
 
 ## Conclusion
 
 To see a more detailed example of using Celery with Upstash Redis, check out the [Job Processor with Celery example](https://upstash.com/examples/jobprocessorwithcelery) on our website.
 
-For more details on Celery, visit the [Celery Documentation](https://docs.celeryproject.org). For Upstash Redis, check out the [Upstash Redis Documentation](/redis).
+For more details on Celery, visit the [Celery Documentation](https://docs.celeryproject.org). For Upstash Redis, check out the [Upstash Redis Documentation](/docs/redis).

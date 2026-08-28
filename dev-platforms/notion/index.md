@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 227 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 238 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -50,7 +50,7 @@
 - `guides/mcp/build-mcp-client` — [Build an MCP client for Notion](pages/guides/mcp/build-mcp-client.md) · [原文](https://developers.notion.com/guides/mcp/build-mcp-client)
 - `guides/mcp/common-mcp-clients` — [Common MCP clients](pages/guides/mcp/common-mcp-clients.md) · [原文](https://developers.notion.com/guides/mcp/common-mcp-clients)
 - `guides/mcp/get-started-with-mcp` — [Connect to Notion MCP](pages/guides/mcp/get-started-with-mcp.md) · [原文](https://developers.notion.com/guides/mcp/get-started-with-mcp)
-- `guides/mcp/hosting-open-source-mcp` — [Hosting a local MCP server](pages/guides/mcp/hosting-open-source-mcp.md) · [原文](https://developers.notion.com/guides/mcp/hosting-open-source-mcp)
+- `guides/mcp/hosting-open-source-mcp` — [Hosting Notion MCP locally](pages/guides/mcp/hosting-open-source-mcp.md) · [原文](https://developers.notion.com/guides/mcp/hosting-open-source-mcp)
 - `guides/mcp/mcp-security-best-practices` — [Security best practices](pages/guides/mcp/mcp-security-best-practices.md) · [原文](https://developers.notion.com/guides/mcp/mcp-security-best-practices)
 - `guides/mcp/mcp-supported-tools` — [Supported tools](pages/guides/mcp/mcp-supported-tools.md) · [原文](https://developers.notion.com/guides/mcp/mcp-supported-tools)
 - `guides/mcp/overview` — [Notion MCP](pages/guides/mcp/overview.md) · [原文](https://developers.notion.com/guides/mcp/overview)
@@ -69,8 +69,11 @@
 ## reference
 
 - `reference/admin/add-legal-hold-users` — [Add users to a legal hold](pages/reference/admin/add-legal-hold-users.md) · [原文](https://developers.notion.com/reference/admin/add-legal-hold-users)
+- `reference/admin/add-permission-group-member` — [Add a group member](pages/reference/admin/add-permission-group-member.md) · [原文](https://developers.notion.com/reference/admin/add-permission-group-member)
 - `reference/admin/create-legal-hold` — [Create a legal hold](pages/reference/admin/create-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/create-legal-hold)
+- `reference/admin/create-permission-group` — [Create a group](pages/reference/admin/create-permission-group.md) · [原文](https://developers.notion.com/reference/admin/create-permission-group)
 - `reference/admin/delete-agent` — [Delete an agent in a space](pages/reference/admin/delete-agent.md) · [原文](https://developers.notion.com/reference/admin/delete-agent)
+- `reference/admin/delete-permission-group` — [Delete a group](pages/reference/admin/delete-permission-group.md) · [原文](https://developers.notion.com/reference/admin/delete-permission-group)
 - `reference/admin/enqueue-space-export` — [Enqueue a workspace export](pages/reference/admin/enqueue-space-export.md) · [原文](https://developers.notion.com/reference/admin/enqueue-space-export)
 - `reference/admin/export-legal-hold` — [Export a legal hold](pages/reference/admin/export-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/export-legal-hold)
 - `reference/admin/get-agent-credit-usage` — [Get credit usage for an agent in a space](pages/reference/admin/get-agent-credit-usage.md) · [原文](https://developers.notion.com/reference/admin/get-agent-credit-usage)
@@ -85,9 +88,14 @@
 - `reference/admin/list-legal-hold-workspaces` — [List workspaces on a legal hold](pages/reference/admin/list-legal-hold-workspaces.md) · [原文](https://developers.notion.com/reference/admin/list-legal-hold-workspaces)
 - `reference/admin/list-legal-holds` — [List legal holds](pages/reference/admin/list-legal-holds.md) · [原文](https://developers.notion.com/reference/admin/list-legal-holds)
 - `reference/admin/list-mcp-client-connections` — [List MCP client connections in an organization](pages/reference/admin/list-mcp-client-connections.md) · [原文](https://developers.notion.com/reference/admin/list-mcp-client-connections)
+- `reference/admin/list-permission-group-members` — [List group members](pages/reference/admin/list-permission-group-members.md) · [原文](https://developers.notion.com/reference/admin/list-permission-group-members)
+- `reference/admin/list-permission-groups` — [List groups](pages/reference/admin/list-permission-groups.md) · [原文](https://developers.notion.com/reference/admin/list-permission-groups)
 - `reference/admin/list-personal-access-tokens` — [List personal access tokens in a workspace](pages/reference/admin/list-personal-access-tokens.md) · [原文](https://developers.notion.com/reference/admin/list-personal-access-tokens)
+- `reference/admin/list-users` — [List users](pages/reference/admin/list-users.md) · [原文](https://developers.notion.com/reference/admin/list-users)
 - `reference/admin/release-legal-hold` — [Release a legal hold](pages/reference/admin/release-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/release-legal-hold)
 - `reference/admin/remove-legal-hold-user` — [Remove a user from a legal hold](pages/reference/admin/remove-legal-hold-user.md) · [原文](https://developers.notion.com/reference/admin/remove-legal-hold-user)
+- `reference/admin/remove-permission-group-member` — [Remove a group member](pages/reference/admin/remove-permission-group-member.md) · [原文](https://developers.notion.com/reference/admin/remove-permission-group-member)
+- `reference/admin/retrieve-permission-group` — [Retrieve a group](pages/reference/admin/retrieve-permission-group.md) · [原文](https://developers.notion.com/reference/admin/retrieve-permission-group)
 - `reference/admin/revoke-mcp-client-connection` — [Revoke an MCP client connection](pages/reference/admin/revoke-mcp-client-connection.md) · [原文](https://developers.notion.com/reference/admin/revoke-mcp-client-connection)
 - `reference/admin/revoke-personal-access-token` — [Revoke a personal access token in a workspace](pages/reference/admin/revoke-personal-access-token.md) · [原文](https://developers.notion.com/reference/admin/revoke-personal-access-token)
 - `reference/admin/revoke-user-session` — [Revoke a managed user's sessions](pages/reference/admin/revoke-user-session.md) · [原文](https://developers.notion.com/reference/admin/revoke-user-session)
@@ -98,6 +106,8 @@
 - `reference/admin/update-agent-status` — [Disable or re-enable an agent in a space](pages/reference/admin/update-agent-status.md) · [原文](https://developers.notion.com/reference/admin/update-agent-status)
 - `reference/admin/update-legal-hold` — [Update a legal hold](pages/reference/admin/update-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/update-legal-hold)
 - `reference/admin/update-mcp-client-connection-enterprise-managed-access` — [Deny or restore enterprise-managed MCP client access](pages/reference/admin/update-mcp-client-connection-enterprise-managed-access.md) · [原文](https://developers.notion.com/reference/admin/update-mcp-client-connection-enterprise-managed-access)
+- `reference/admin/update-permission-group` — [Update a group](pages/reference/admin/update-permission-group.md) · [原文](https://developers.notion.com/reference/admin/update-permission-group)
+- `reference/admin/update-permission-group-member` — [Update a group member](pages/reference/admin/update-permission-group-member.md) · [原文](https://developers.notion.com/reference/admin/update-permission-group-member)
 - `reference/admin/update-workspace-credit-limit` — [Update the default agent credit limit for a workspace](pages/reference/admin/update-workspace-credit-limit.md) · [原文](https://developers.notion.com/reference/admin/update-workspace-credit-limit)
 - `reference/admin/versioning` — [Versioning](pages/reference/admin/versioning.md) · [原文](https://developers.notion.com/reference/admin/versioning)
 - `reference/authentication` — [Authentication](pages/reference/authentication.md) · [原文](https://developers.notion.com/reference/authentication)
@@ -245,5 +255,6 @@
 - `workers/guides/syncs` — [Syncs](pages/workers/guides/syncs.md) · [原文](https://developers.notion.com/workers/guides/syncs)
 - `workers/guides/tools` — [How to write an agent tool](pages/workers/guides/tools.md) · [原文](https://developers.notion.com/workers/guides/tools)
 - `workers/guides/webhooks` — [Webhooks](pages/workers/guides/webhooks.md) · [原文](https://developers.notion.com/workers/guides/webhooks)
+- `workers/reference/limits` — [Limits](pages/workers/reference/limits.md) · [原文](https://developers.notion.com/workers/reference/limits)
 - `workers/reference/schema` — [Schema and builders](pages/workers/reference/schema.md) · [原文](https://developers.notion.com/workers/reference/schema)
 - `workers/reference/sdk` — [SDK reference](pages/workers/reference/sdk.md) · [原文](https://developers.notion.com/workers/reference/sdk)

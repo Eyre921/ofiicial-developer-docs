@@ -27,6 +27,9 @@ When a conversation ends, a post-processing step scans the transcript and audio 
 * **Audio**: Entity instances are replaced with a bleep sound.
 * **Webhooks**: Transcript and audio webhooks also contain redacted data.
 
+To redact caller keypad entries without entity detection, enable [DTMF
+input](/docs/eleven-agents/customization/multimodal-input#dtmf-input) redaction on the agent.
+
 Because post-processing runs after the conversation ends, there will be a short delay before the
 conversation appears in your history.
 

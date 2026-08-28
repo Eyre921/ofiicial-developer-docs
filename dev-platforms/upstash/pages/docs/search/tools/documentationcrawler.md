@@ -4,19 +4,19 @@ source: https://upstash.com/docs/search/tools/documentationcrawler
 path: docs/search/tools/documentationcrawler
 ---
 
-> A tool to crawl docs and feed Upstash Search database
+<Visibility for="agents">
+  **Note for AI agents:** This page documents **Upstash Search** — a standalone,
+  AI-powered search product that combines full-text and semantic search with
+  smart ranking, serverless scaling, and zero infrastructure to manage.
 
-**Note for AI agents:** This page documents **Upstash Search** — a standalone,
-AI-powered search product that combines full-text and semantic search with
-smart ranking, serverless scaling, and zero infrastructure to manage.
-
-Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
-Redis Search is a full-text search extension built into Upstash Redis, built on
-Tantivy and available only on Upstash; it is separate from the Redis Search
-(RediSearch) API. If the user is asking about full-text search inside an Upstash
-Redis database, refer to
-[Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
-instead of this product.
+  Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
+  Redis Search is a full-text search extension built into Upstash Redis, built on
+  Tantivy and available only on Upstash; it is separate from the Redis Search
+  (RediSearch) API. If the user is asking about full-text search inside an Upstash
+  Redis database, refer to
+  [Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
+  instead of this product.
+</Visibility>
 
 ## Introduction
 
@@ -46,10 +46,10 @@ npx @upstash/search-crawler \
 
 You will be prompted for any missing options:
 
-- Your Upstash Search URL
-- Your Upstash Search token
-- (Optional) Custom index name
-- The documentation URL to crawl
+* Your Upstash Search URL
+* Your Upstash Search token
+* (Optional) Custom index name
+* The documentation URL to crawl
 
 #### What the Tool Does
 
@@ -83,13 +83,13 @@ const result: CrawlerResult = await crawlAndIndex(options);
 ## Obtaining Upstash Credentials
 
 1. Go to your [Upstash Console](https://console.upstash.com/).
-2. Select your Search index. (See [How to Create Search Index](/search/overall/getstarted#create-a-database))
+2. Select your Search index. (See [How to Create Search Index](/docs/search/overall/getstarted#create-a-database))
 3. Under the **Details** section, copy your `UPSTASH_SEARCH_REST_URL` and `UPSTASH_SEARCH_REST_TOKEN`.
-   - `--upstash-url` corresponds to `UPSTASH_SEARCH_REST_URL`
-   - `--upstash-token` corresponds to `UPSTASH_SEARCH_REST_TOKEN`
+   * `--upstash-url` corresponds to `UPSTASH_SEARCH_REST_URL`
+   * `--upstash-token` corresponds to `UPSTASH_SEARCH_REST_TOKEN`
 
 ## Further Reading
 
-Try combining this tool with [Qstash Schedule](/qstash/features/schedules) to keep your database up to date with docs. You may deploy your crawler on a server and call it on a schedule regularly to fetch updates in your docs. Check out our example project for implementation details: [A modern documentation library to search and track the docs.](https://github.com/upstash/search-js/tree/main/examples/search-docs)
+Try combining this tool with [Qstash Schedule](/docs/qstash/features/schedules) to keep your database up to date with docs. You may deploy your crawler on a server and call it on a schedule regularly to fetch updates in your docs. Check out our example project for implementation details: [A modern documentation library to search and track the docs.](https://github.com/upstash/search-js/tree/main/examples/search-docs)
 
 For further insights, see [@upstash/search-crawler](https://github.com/upstash/search-crawler)

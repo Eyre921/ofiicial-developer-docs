@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/geo/geodist
 path: docs/redis/commands/geo/geodist
 ---
 
-> Get distance between two members.
-
 Use `GEODIST` to get the distance between two members of a geospatial index.
 
 The unit defaults to meters and can be set to `m`, `km`, `ft`, or `mi`. The distance is a great-circle distance computed from the stored positions assuming the Earth is a sphere, so it carries the small error of the geohash encoding and, of course, says nothing about the distance actually travelled on roads. If either member is missing from the index the reply is null.
@@ -27,7 +25,7 @@ GEODIST <key> <member1> <member2> [m | km | ft | mi]
 
 ## Important points
 
-- The distance is always returned as a bulk string, in both RESP2 and RESP3. Client libraries commonly decode it to a language number.
+* The distance is always returned as a bulk string, in both RESP2 and RESP3. Client libraries commonly decode it to a language number.
 
 ## Response
 

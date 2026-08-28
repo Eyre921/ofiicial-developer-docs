@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/json/json-merge
 path: docs/redis/commands/json/json-merge
 ---
 
-> Merge JSON values.
-
 Use `JSON.MERGE` to merge a JSON value into a document at a path, following the JSON Merge Patch semantics of RFC 7386.
 
 Objects are merged recursively: keys in the patch replace or create the matching keys in the target, keys set to `null` delete them, and any value that is not an object, arrays included, replaces the target outright instead of being merged element by element. The parent must already exist: merging into a missing child of an existing object creates it, but intermediate levels are not built along the way, and a key that does not exist yet can only be created by merging at the root.
 
-This is the command for partial updates of an object, where [`JSON.SET`](/redis/commands/json/json-set) would replace the whole branch: one call can change a few fields, delete another, and leave the rest of the document untouched.
+This is the command for partial updates of an object, where [`JSON.SET`](/docs/redis/commands/json/json-set) would replace the whole branch: one call can change a few fields, delete another, and leave the rest of the document untouched.
 
 ## Syntax
 
@@ -28,8 +26,8 @@ JSON.MERGE <key> <path> <value>
 
 ## Important points
 
-- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

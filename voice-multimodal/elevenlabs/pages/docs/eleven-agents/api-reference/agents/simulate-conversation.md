@@ -863,7 +863,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
       - `summary` (string, optional)
       - `provider_redact` (boolean, optional, default: false)
     - `source_medium` (enum, optional)
-      - Allowed values: `audio`, `text`, `image`, `file`
+      - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
     - `source_event_id` (integer, optional)
     - `used_static_kb_document_ids` (list of string, optional)
     - `user_identifier` (string, optional)
@@ -1169,7 +1169,7 @@ Successful Response
     - `summary` (string, optional)
     - `provider_redact` (boolean, optional, default: false)
   - `source_medium` (enum, optional)
-    - Allowed values: `audio`, `text`, `image`, `file`
+    - Allowed values: `audio`, `dtmf`, `text`, `image`, `file`
   - `source_event_id` (integer, optional)
   - `used_static_kb_document_ids` (list of string, optional)
   - `user_identifier` (string, optional)
@@ -1178,7 +1178,12 @@ Successful Response
     - `guardrail_type` (enum, required)
       - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
     - `guardrail_name` (string, optional)
-  - `file_input` (object, optional)
+  - `file_input` (object, optional) — Deprecated: the first attachment on this turn. Use `file_inputs` to see every attachment.
+    - `file_id` (string, required)
+    - `original_filename` (string, required)
+    - `mime_type` (string, required)
+    - `file_url` (string, required)
+  - `file_inputs` (list of object, optional) — All files attached to this turn, in the order the user attached them.
     - `file_id` (string, required)
     - `original_filename` (string, required)
     - `mime_type` (string, required)
@@ -1364,6 +1369,14 @@ Successful Response
         "mime_type": "mime_type",
         "file_url": "file_url"
       },
+      "file_inputs": [
+        {
+          "file_id": "file_id",
+          "original_filename": "original_filename",
+          "mime_type": "mime_type",
+          "file_url": "file_url"
+        }
+      ],
       "contextual_update_info": {
         "context_id": "context_id"
       },

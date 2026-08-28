@@ -181,7 +181,7 @@ const stripe = loadStripe("<<YOUR_PUBLISHABLE_KEY>>", {
 import Stripe from 'stripe';
 // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 const stripe = new Stripe('<<YOUR_SECRET_KEY>>', {
-  apiVersion: '2026-07-29.dahlia; custom_checkout_beta=v1' as any,
+  apiVersion: '2026-08-26.dahlia; custom_checkout_beta=v1' as any,
 });
 ```
 

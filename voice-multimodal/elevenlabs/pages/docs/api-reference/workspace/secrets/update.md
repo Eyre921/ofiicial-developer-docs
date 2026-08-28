@@ -51,9 +51,9 @@ Successful Response
 
 ```json
 {
-  "type": "update",
-  "name": "DATABASE_PASSWORD",
-  "value": "s3cureP@ssw0rd2024"
+  "type": "string",
+  "name": "string",
+  "value": "string"
 }
 ```
 
@@ -61,9 +61,9 @@ Successful Response
 
 ```json
 {
-  "type": "stored",
-  "secret_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
-  "name": "DATABASE_PASSWORD"
+  "type": "string",
+  "secret_id": "string",
+  "name": "string"
 }
 ```
 
@@ -75,9 +75,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.secrets.update("secret_id", {
-        type: "update",
-        name: "DATABASE_PASSWORD",
-        value: "s3cureP@ssw0rd2024",
+        type: "string",
+        name: "string",
+        value: "string",
     });
 }
 main();
@@ -91,8 +91,8 @@ client = ElevenLabs()
 
 client.conversational_ai.secrets.update(
     secret_id="secret_id",
-    name="DATABASE_PASSWORD",
-    value="s3cureP@ssw0rd2024",
+    name="string",
+    value="string",
 )
 
 ```
@@ -111,7 +111,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/secrets/secret_id"
 
-	payload := strings.NewReader("{\n  \"type\": \"update\",\n  \"name\": \"DATABASE_PASSWORD\",\n  \"value\": \"s3cureP@ssw0rd2024\"\n}")
+	payload := strings.NewReader("{\n  \"type\": \"string\",\n  \"name\": \"string\",\n  \"value\": \"string\"\n}")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -139,7 +139,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"type\": \"update\",\n  \"name\": \"DATABASE_PASSWORD\",\n  \"value\": \"s3cureP@ssw0rd2024\"\n}"
+request.body = "{\n  \"type\": \"string\",\n  \"name\": \"string\",\n  \"value\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -151,7 +151,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/secrets/secret_id")
   .header("Content-Type", "application/json")
-  .body("{\n  \"type\": \"update\",\n  \"name\": \"DATABASE_PASSWORD\",\n  \"value\": \"s3cureP@ssw0rd2024\"\n}")
+  .body("{\n  \"type\": \"string\",\n  \"name\": \"string\",\n  \"value\": \"string\"\n}")
   .asString();
 ```
 
@@ -163,9 +163,9 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/secrets/secret_id', [
   'body' => '{
-  "type": "update",
-  "name": "DATABASE_PASSWORD",
-  "value": "s3cureP@ssw0rd2024"
+  "type": "string",
+  "name": "string",
+  "value": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -181,7 +181,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/secrets/secret_id");
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"type\": \"update\",\n  \"name\": \"DATABASE_PASSWORD\",\n  \"value\": \"s3cureP@ssw0rd2024\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"type\": \"string\",\n  \"name\": \"string\",\n  \"value\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -190,9 +190,9 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "type": "update",
-  "name": "DATABASE_PASSWORD",
-  "value": "s3cureP@ssw0rd2024"
+  "type": "string",
+  "name": "string",
+  "value": "string"
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

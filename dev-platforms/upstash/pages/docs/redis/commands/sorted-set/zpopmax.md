@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/sorted-set/zpopmax
 path: docs/redis/commands/sorted-set/zpopmax
 ---
 
-> Pop members with highest scores.
-
 Use `ZPOPMAX` to remove and return the members with the highest scores in a sorted set.
 
 Without a count one member is returned with its score, and with a count up to that many are removed, ordered from the highest score down. A missing or empty key returns an empty result, and the key is deleted once the last member is popped.
 
-Since the read and the removal are atomic, no two workers can take the same member, which turns a sorted set into a priority queue where the score is the priority. [`BZPOPMAX`](/redis/commands/sorted-set/bzpopmax) is the blocking form.
+Since the read and the removal are atomic, no two workers can take the same member, which turns a sorted set into a priority queue where the score is the priority. [`BZPOPMAX`](/docs/redis/commands/sorted-set/bzpopmax) is the blocking form.
 
 ## Syntax
 
@@ -27,7 +25,7 @@ ZPOPMAX <key> [<count>]
 
 ## Important points
 
-- RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
+* RESP2 represents floating-point reply values as bulk strings; RESP3 may use native double replies. Client libraries commonly decode either form to a language number.
 
 ## Response
 

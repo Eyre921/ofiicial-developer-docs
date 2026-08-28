@@ -172,7 +172,7 @@ Create a GB bank account and initiate Confirmation of Payee (CoP) using the [GB 
 ```curl
 curl -X POST https://api.stripe.com/v2/core/vault/gb_bank_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "sort_code": "108800",
@@ -199,14 +199,14 @@ Check CoP status and acknowledge if needed.
 ```curl
 curl https://api.stripe.com/v2/core/vault/gb_bank_accounts/{{PAYOUT_METHOD_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
 ```curl
 curl -X POST https://api.stripe.com/v2/core/vault/gb_bank_accounts/{{PAYOUT_METHOD_ID}}/acknowledge_confirmation_of_payee \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
@@ -217,7 +217,7 @@ Create a US bank account for ACH using the [US Bank Accounts API](https://docs.s
 ```curl
 curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "routing_number": "110000000",
@@ -242,7 +242,7 @@ Optionally, you can add a Fedwire routing number if you want to support wires.
 ```curl
 curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts/{{BANKACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "fedwire_routing_number": "110000000"
@@ -256,7 +256,7 @@ Create a payout method globally with the [OutboundSetupIntents API](https://docs
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "payout_method_data": {

@@ -7,9 +7,9 @@ path: docs/workflow/features/webhooks
 The Webhook feature allows you to pause workflow execution and wait for a webhook URL to be called, enabling seamless integration with third-party APIs and asynchronous operations.
 
 This feature is perfect for scenarios where you need to:
-- Wait for external API processing to complete
-- Integrate with services that use callback URLs
-- Receive notifications from external webhooks
+* Wait for external API processing to complete
+* Integrate with services that use callback URLs
+* Receive notifications from external webhooks
 
 ## How Webhooks Work
 
@@ -94,7 +94,7 @@ This means you don't need to worry about timing issues between creating the webh
 
 ## Comparison with Wait for Event
 
-Webhooks and [Wait for Event](/workflow/features/wait-for-event) serve similar purposes but with different approaches:
+Webhooks and [Wait for Event](/docs/workflow/features/wait-for-event) serve similar purposes but with different approaches:
 
 | Feature | Webhooks | Wait for Event |
 |---------|----------|----------------|

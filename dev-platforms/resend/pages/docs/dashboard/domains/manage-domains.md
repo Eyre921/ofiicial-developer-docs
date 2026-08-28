@@ -12,6 +12,13 @@ You can view and manage your domains from the [Domains Dashboard page](https://r
 
 All members of your team can create, verify, retrieve, update, and delete your domains.
 
+<Info>
+  The number of domains your team can add is set by your plan, listed on the
+  [pricing page](https://resend.com/pricing). Paid transactional plans can raise
+  the limit with the domains add-on. See [How to add more
+  domains](/docs/knowledge-base/how-to-add-more-domains).
+</Info>
+
 ## View domain details
 
 The [Domains Dashboard page](https://resend.com/domains) shows information about each domain's name, its verification status, and history. You can also filter your domains list by [status](#understand-a-domain-status) and [region](/docs/dashboard/domains/regions) and perform bulk actions on multiple domains, such as [deleting domains](#delete-a-domain).

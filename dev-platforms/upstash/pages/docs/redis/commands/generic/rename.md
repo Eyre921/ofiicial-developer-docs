@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/generic/rename
 path: docs/redis/commands/generic/rename
 ---
 
-> Rename a key.
-
 Use `RENAME` to give an existing key a new name.
 
 The value moves with the key and so does its remaining time to live, and the operation is atomic, so no client ever sees both names or neither. If a key with the destination name already exists it is overwritten and its old value is deleted. Renaming a key that does not exist returns an error.
 
-Use [`RENAMENX`](/redis/commands/generic/renamenx) when the destination must not be overwritten. A common pattern is to build a replacement value under a temporary key and then rename it over the live key, which swaps the data in one atomic step.
+Use [`RENAMENX`](/docs/redis/commands/generic/renamenx) when the destination must not be overwritten. A common pattern is to build a replacement value under a temporary key and then rename it over the live key, which swaps the data in one atomic step.
 
 ## Syntax
 

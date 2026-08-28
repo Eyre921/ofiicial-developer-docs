@@ -19,7 +19,7 @@ Upstash Prometheus Integration covers Prod Pack.
 2. Go to Settings → Monitoring.
 3. Enable Prometheus to allow scraping QStash metrics.
 
-![configuration.png](/img/prometheus/configuration-qstash.png)
+![configuration.png]()
 
 ## **Step 2: Copy Monitoring Token**
 
@@ -33,7 +33,7 @@ Send the token as `Authorization: Bearer <MONITORING_TOKEN>`.
 
 </Check>
 
-![monitoring-token.png](/img/prometheus/monitoring-token.png)
+![monitoring-token.png]()
 
 ## **Step 3: Configure Prometheus (via Grafana Data Source)**
 
@@ -41,13 +41,13 @@ Send the token as `Authorization: Bearer <MONITORING_TOKEN>`.
 2. Set the address to `https://api.upstash.com/monitoring/prometheus`.
 3. In HTTP headers, add the monitoring token.
 
-![datasource.png](/img/prometheus/datasource.png)
+![datasource.png]()
 
-![headers.png](/img/prometheus/headers.png)
+![headers.png]()
 
 Click <b>Test and Save</b>.
 
-![datasource-final.png](/img/prometheus/datasource-final.png)
+![datasource-final.png]()
 
 ## **Step 4: Import Dashboard**
 
@@ -55,7 +55,7 @@ You can use the Upstash Grafana dashboard to visualize QStash metrics.
 
 Open the import dialog and use: <a href="https://grafana.com/grafana/dashboards/24206-upstash-qstash-dashboard/">Upstash QStash Dashboard</a>
 
-![grafana-dashboard.png](/img/prometheus/grafana-qstash-dashboard.png)
+![grafana-dashboard.png]()
 
 ## **Conclusion**
 

@@ -16,15 +16,11 @@ You can connect your account like this:
 
 <Tabs>
     <Tab title="macOS">
-        <Frame>
-          <img src="/img/qstash-workflow/ngrok_mac_setup.png" />
-        </Frame>
+          <img />
     </Tab>
 
     <Tab title="Windows">
-        <Frame>
-          <img src="/img/qstash-workflow/ngrok_windows_setup.png" />
-        </Frame>
+          <img />
     </Tab>
 </Tabs>
 

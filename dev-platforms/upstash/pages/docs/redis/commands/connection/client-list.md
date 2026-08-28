@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/connection/client-list
 path: docs/redis/commands/connection/client-list
 ---
 
-> List all client connections.
-
 Use `CLIENT LIST` to get one line of statistics for every client connection to the server.
 
 Each line holds space-separated `field=value` pairs with the connection's id, name, address, age, idle time, protocol version, and last command, so the reply gives a snapshot of who is connected and what they are doing. It is the usual starting point for tracking down connection leaks and idle connections. The reply grows with the number of clients, so avoid calling it on a hot path, and parse it defensively because fields can be added over time.
@@ -22,8 +20,8 @@ This command takes no arguments.
 
 ## Important points
 
-- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
-- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
 
 ## Response
 

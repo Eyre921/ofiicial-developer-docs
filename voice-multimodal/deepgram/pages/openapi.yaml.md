@@ -3741,6 +3741,20 @@ components:
       type: object
       properties: {}
       title: ListenV1ResponseMetadataModelInfo
+    ListenV1ResponseMetadataDiarizeInfo:
+      type: object
+      properties:
+        model_uuid:
+          type: string
+          description: The diarizer model UUID
+        arch:
+          type: string
+          description: The diarizer arch, such as `v1` or `v2`
+      required:
+        - model_uuid
+        - arch
+      description: The diarizer that produced the speaker labels. Present only when a diarizer ran.
+      title: ListenV1ResponseMetadataDiarizeInfo
     ListenV1ResponseMetadataSummaryInfo:
       type: object
       properties:
@@ -3807,6 +3821,9 @@ components:
             type: string
         model_info:
           $ref: '#/components/schemas/ListenV1ResponseMetadataModelInfo'
+        diarize_info:
+          $ref: '#/components/schemas/ListenV1ResponseMetadataDiarizeInfo'
+          description: The diarizer that produced the speaker labels. Present only when a diarizer ran.
         summary_info:
           $ref: '#/components/schemas/ListenV1ResponseMetadataSummaryInfo'
         sentiment_info:

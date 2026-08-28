@@ -45,21 +45,21 @@ Suppose you've just joined a new project and need to understand its structure qu
   </Step>
 
   <Step title="Ask for a high-level overview">
-    ```text theme={null}
+    ```text wrap theme={null}
     give me an overview of this codebase
     ```
   </Step>
 
   <Step title="Dive deeper into specific components">
-    ```text theme={null}
+    ```text wrap theme={null}
     explain the main architecture patterns used here
     ```
 
-    ```text theme={null}
+    ```text wrap theme={null}
     what are the key data models?
     ```
 
-    ```text theme={null}
+    ```text wrap theme={null}
     how is authentication handled?
     ```
   </Step>
@@ -79,19 +79,19 @@ Suppose you need to locate code related to a specific feature or functionality.
 
 <Steps>
   <Step title="Ask Claude to find relevant files">
-    ```text theme={null}
+    ```text wrap theme={null}
     find the files that handle user authentication
     ```
   </Step>
 
   <Step title="Get context on how components interact">
-    ```text theme={null}
+    ```text wrap theme={null}
     how do these authentication files work together?
     ```
   </Step>
 
   <Step title="Understand the execution flow">
-    ```text theme={null}
+    ```text wrap theme={null}
     trace the login process from front-end to database
     ```
   </Step>
@@ -113,19 +113,19 @@ Suppose you've encountered an error message and need to find and fix its source.
 
 <Steps>
   <Step title="Share the error with Claude">
-    ```text theme={null}
+    ```text wrap theme={null}
     I'm seeing an error when I run npm test
     ```
   </Step>
 
   <Step title="Ask for fix recommendations">
-    ```text theme={null}
+    ```text wrap theme={null}
     suggest a few ways to fix the @ts-ignore in user.ts
     ```
   </Step>
 
   <Step title="Apply the fix">
-    ```text theme={null}
+    ```text wrap theme={null}
     update user.ts to add the null check you suggested
     ```
   </Step>
@@ -145,27 +145,29 @@ Suppose you've encountered an error message and need to find and fix its source.
 
 Suppose you need to update old code to use modern patterns and practices.
 
+For porting an entire codebase to a new language, see [how Anthropic runs large-scale code migrations with Claude Code](https://claude.com/blog/ai-code-migration) on the blog.
+
 <Steps>
   <Step title="Identify legacy code for refactoring">
-    ```text theme={null}
+    ```text wrap theme={null}
     find deprecated API usage in our codebase
     ```
   </Step>
 
   <Step title="Get refactoring recommendations">
-    ```text theme={null}
+    ```text wrap theme={null}
     suggest how to refactor utils.js to use modern JavaScript features
     ```
   </Step>
 
   <Step title="Apply the changes safely">
-    ```text theme={null}
+    ```text wrap theme={null}
     refactor utils.js to use ES2024 features while maintaining the same behavior
     ```
   </Step>
 
   <Step title="Verify the refactoring">
-    ```text theme={null}
+    ```text wrap theme={null}
     run tests for the refactored code
     ```
   </Step>
@@ -187,25 +189,25 @@ Suppose you need to add tests for uncovered code.
 
 <Steps>
   <Step title="Identify untested code">
-    ```text theme={null}
+    ```text wrap theme={null}
     find functions in NotificationsService.swift that are not covered by tests
     ```
   </Step>
 
   <Step title="Generate test scaffolding">
-    ```text theme={null}
+    ```text wrap theme={null}
     add tests for the notification service
     ```
   </Step>
 
   <Step title="Add meaningful test cases">
-    ```text theme={null}
+    ```text wrap theme={null}
     add test cases for edge conditions in the notification service
     ```
   </Step>
 
   <Step title="Run and verify tests">
-    ```text theme={null}
+    ```text wrap theme={null}
     run the new tests and fix any failures
     ```
   </Step>
@@ -223,25 +225,25 @@ You can create pull requests by asking Claude directly ("create a pr for my chan
 
 <Steps>
   <Step title="Summarize your changes">
-    ```text theme={null}
+    ```text wrap theme={null}
     summarize the changes I've made to the authentication module
     ```
   </Step>
 
   <Step title="Generate a pull request">
-    ```text theme={null}
+    ```text wrap theme={null}
     create a pr
     ```
   </Step>
 
   <Step title="Review and refine">
-    ```text theme={null}
+    ```text wrap theme={null}
     enhance the PR description with more context about the security improvements
     ```
   </Step>
 </Steps>
 
-When you create a PR using `gh pr create`, the session is automatically linked to that PR. To find it later, run `claude --from-pr 1234` with your own PR number, which opens the session picker filtered to sessions linked to that PR, or paste the PR URL into the [`/resume` picker](/docs/en/sessions#use-the-session-picker) search.
+To find the session later, run `claude --from-pr 1234` with your own PR number, which opens the session picker filtered to sessions linked to that PR, or paste the PR URL into the [`/resume` picker](/docs/en/sessions#use-the-session-picker) search. Claude Code links the session to the PR when Claude creates it with `gh pr create` or `glab mr create`, and when Claude [works on an existing PR](/docs/en/agent-view#pull-request-status).
 
 <Tip>
   Review Claude's generated PR before submitting and ask Claude to highlight potential risks or considerations.
@@ -253,25 +255,25 @@ Suppose you need to add or update documentation for your code.
 
 <Steps>
   <Step title="Identify undocumented code">
-    ```text theme={null}
+    ```text wrap theme={null}
     find functions without proper JSDoc comments in the auth module
     ```
   </Step>
 
   <Step title="Generate documentation">
-    ```text theme={null}
+    ```text wrap theme={null}
     add JSDoc comments to the undocumented functions in auth.js
     ```
   </Step>
 
   <Step title="Review and enhance">
-    ```text theme={null}
+    ```text wrap theme={null}
     improve the generated documentation with more context and examples
     ```
   </Step>
 
   <Step title="Verify documentation">
-    ```text theme={null}
+    ```text wrap theme={null}
     check if the documentation follows our project standards
     ```
   </Step>
@@ -304,40 +306,40 @@ Suppose you need to work with images in your codebase, and you want Claude's hel
     You can use any of these methods:
 
     1. Drag and drop an image into the Claude Code window
-    2. Copy an image and paste it into the CLI with Ctrl+V. On macOS, Cmd+V also works in iTerm2.
+    2. Copy an image and paste it into the CLI with `Ctrl+V`, or with [`Alt+V` on Windows and WSL](/docs/en/interactive-mode#general-controls)
     3. Provide an image path to Claude. E.g., "Analyze this image: /path/to/your/image.png"
   </Step>
 
   <Step title="Ask Claude to analyze the image">
-    ```text theme={null}
+    ```text wrap theme={null}
     What does this image show?
     ```
 
-    ```text theme={null}
+    ```text wrap theme={null}
     Describe the UI elements in this screenshot
     ```
 
-    ```text theme={null}
+    ```text wrap theme={null}
     Are there any problematic elements in this diagram?
     ```
   </Step>
 
   <Step title="Use images for context">
-    ```text theme={null}
+    ```text wrap theme={null}
     Here's a screenshot of the error. What's causing it?
     ```
 
-    ```text theme={null}
+    ```text wrap theme={null}
     This is our current database schema. How should we modify it for the new feature?
     ```
   </Step>
 
   <Step title="Get code suggestions from visual content">
-    ```text theme={null}
+    ```text wrap theme={null}
     Generate CSS to match this design mockup
     ```
 
-    ```text theme={null}
+    ```text wrap theme={null}
     What HTML structure would recreate this component?
     ```
   </Step>
@@ -361,7 +363,7 @@ Use @ to quickly include files or directories without waiting for Claude to read
 
 <Steps>
   <Step title="Reference a single file">
-    ```text theme={null}
+    ```text wrap theme={null}
     Explain the logic in @src/utils/auth.js
     ```
 
@@ -369,15 +371,13 @@ Use @ to quickly include files or directories without waiting for Claude to read
   </Step>
 
   <Step title="Reference a directory">
-    ```text theme={null}
+    ```text wrap theme={null}
     What's the structure of @src/components?
     ```
-
-    This provides a directory listing with file information.
   </Step>
 
   <Step title="Reference MCP resources">
-    ```text theme={null}
+    ```text wrap theme={null}
     Show me the data from @github:repos/owner/repo/issues
     ```
 
@@ -403,12 +403,12 @@ Suppose you want Claude to handle a task automatically on a recurring basis, lik
 
 Pick a scheduling option based on where you want the task to run:
 
-| Option                                                 | Where it runs                     | Best for                                                                                                                                                                                                 |
-| :----------------------------------------------------- | :-------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Routines](/docs/en/routines)                               | Anthropic-managed infrastructure  | Tasks that should run even when your computer is off. Can also trigger on API calls or GitHub events in addition to a schedule. Configure at [claude.ai/code/routines](https://claude.ai/code/routines). |
-| [Desktop scheduled tasks](/docs/en/desktop-scheduled-tasks) | Your machine, via the desktop app | Tasks that need direct access to local files, tools, or uncommitted changes.                                                                                                                             |
-| [GitHub Actions](/docs/en/github-actions)                   | Your CI pipeline                  | Tasks tied to repo events like opened PRs, or cron schedules that should live alongside your workflow config.                                                                                            |
-| [`/loop`](/docs/en/scheduled-tasks)                         | The current CLI session           | Quick polling while a session is open. Tasks stop when you start a new conversation; `--resume` and `--continue` restore unexpired ones.                                                                 |
+| Option                                                      | Where it runs                       | Best for                                                                                                                                                                                                 |
+| :---------------------------------------------------------- | :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Routines](/docs/en/routines)                               | Cloud, Anthropic-managed by default | Tasks that should run even when your computer is off. Can also trigger on API calls or GitHub events in addition to a schedule. Configure at [claude.ai/code/routines](https://claude.ai/code/routines). |
+| [Desktop scheduled tasks](/docs/en/desktop-scheduled-tasks) | Your machine, via the desktop app   | Tasks that need direct access to local files, tools, or uncommitted changes.                                                                                                                             |
+| [GitHub Actions](/docs/en/github-actions)                   | Your CI pipeline                    | Tasks tied to repo events like opened PRs, or cron schedules that should live alongside your workflow config.                                                                                            |
+| [`/loop`](/docs/en/scheduled-tasks)                         | The current CLI session             | Quick polling while a session is open. Tasks stop when you start a new conversation; `--resume` and `--continue` restore unexpired ones.                                                                 |
 
 <Tip>
   When writing prompts for scheduled tasks, be explicit about what success looks like and what to do with results. The task runs autonomously, so it can't ask clarifying questions. For example: "Review open PRs labeled `needs-review`, leave inline comments on any issues, and post a summary in the `#eng-reviews` Slack channel."
@@ -422,27 +422,27 @@ Claude has built-in access to its documentation and can answer questions about i
 
 #### Example questions
 
-```text theme={null}
+```text wrap theme={null}
 can Claude Code create pull requests?
 ```
 
-```text theme={null}
+```text wrap theme={null}
 how does Claude Code handle permissions?
 ```
 
-```text theme={null}
+```text wrap theme={null}
 what skills are available?
 ```
 
-```text theme={null}
+```text wrap theme={null}
 how do I use MCP with Claude Code?
 ```
 
-```text theme={null}
+```text wrap theme={null}
 how do I configure Claude Code for Amazon Bedrock?
 ```
 
-```text theme={null}
+```text wrap theme={null}
 what are the limitations of Claude Code?
 ```
 
@@ -488,13 +488,13 @@ For changes you want to review before they touch disk, switch to plan mode. Clau
 claude --permission-mode plan
 ```
 
-You can also press `Shift+Tab` mid-session to cycle to plan mode. The cycle runs `default` → `acceptEdits` → `plan`. See [Plan mode](/docs/en/permission-modes#analyze-before-you-edit-with-plan-mode) for the approval flow and editing the plan in your text editor.
+You can also press `Shift+Tab` mid-session until the status bar shows `⏸ plan mode on`. See [Plan mode](/docs/en/permission-modes#analyze-before-you-edit-with-plan-mode) for the approval flow and editing the plan in your text editor.
 
 ## Delegate research to subagents
 
 Exploring a large codebase fills your context with file reads. Delegate the exploration so only the findings come back.
 
-```text theme={null}
+```text wrap theme={null}
 use a subagent to investigate how our auth system handles token refresh
 ```
 
@@ -513,19 +513,19 @@ See [Non-interactive mode](/docs/en/headless) for output formats, permission fla
 ## Next steps
 
 <CardGroup>
-  <Card title="Best practices" icon="lightbulb" href="/en/best-practices">
+  <Card title="Best practices" icon="lightbulb" href="/docs/en/best-practices">
     Patterns for getting the most out of Claude Code
   </Card>
 
-  <Card title="Manage sessions" icon="rotate-left" href="/en/sessions">
+  <Card title="Manage sessions" icon="rotate-left" href="/docs/en/sessions">
     Resume, name, and branch conversations
   </Card>
 
-  <Card title="Worktrees" icon="code-branch" href="/en/worktrees">
+  <Card title="Worktrees" icon="code-branch" href="/docs/en/worktrees">
     Run isolated parallel sessions
   </Card>
 
-  <Card title="Extend Claude Code" icon="puzzle-piece" href="/en/features-overview">
+  <Card title="Extend Claude Code" icon="puzzle-piece" href="/docs/en/features-overview">
     Add skills, hooks, MCP, subagents, and plugins
   </Card>
 </CardGroup>

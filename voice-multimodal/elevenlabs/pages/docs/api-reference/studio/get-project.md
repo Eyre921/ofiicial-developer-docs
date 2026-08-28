@@ -51,7 +51,7 @@ Successful Response
   - Allowed values: `creating`, `default`, `converting`, `in_queue`
 - `access_level` (enum, required) — The access level of the project.
   - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-- `quality_preset` (enum, required, default: standard) — The quality preset level of the project.
+- `quality_preset` (enum, required) — The quality preset level of the project.
   - Allowed values: `standard`, `high`, `ultra`, `ultra_lossless`
 - `chapters` (list of object, required) — List of chapters of the project and their metadata.
   - `chapter_id` (string, required) — The ID of the chapter.

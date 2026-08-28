@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/hash/hmget
 path: docs/redis/commands/hash/hmget
 ---
 
-> Get values of multiple fields.
-
 Use `HMGET` to read several fields of a hash in one call.
 
 The reply holds one entry per requested field, in the order requested, with null for fields that do not exist. Asking for fields of a key that does not exist returns a list of nulls rather than an error, so the shape of the reply is always predictable and can be zipped back onto your list of field names.
 
-It saves the round trips of repeated [`HGET`](/redis/commands/hash/hget) calls and transfers far less than [`HGETALL`](/redis/commands/hash/hgetall) when you only need a few fields of a large hash.
+It saves the round trips of repeated [`HGET`](/docs/redis/commands/hash/hget) calls and transfers far less than [`HGETALL`](/docs/redis/commands/hash/hgetall) when you only need a few fields of a large hash.
 
 ## Syntax
 

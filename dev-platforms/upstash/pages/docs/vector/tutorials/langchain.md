@@ -60,7 +60,7 @@ inserted_vectors = store.add_documents(docs)
 
 Finally, we will perform a semantic search.
 
-```python 
+```python
 result = store.similarity_search("Technology's role in global warming.", k=5)
 print(result)
 ```
@@ -76,14 +76,14 @@ Here's the output:
 
 ### Notes
 
-- You can also query with score using `similarity_search_with_score` method.
+* You can also query with score using `similarity_search_with_score` method.
 
-- Namespaces can be used to separate different types of documents. You can specify a namespace when creating the `UpstashVectorStore` instance. 
+* Namespaces can be used to separate different types of documents. You can specify a namespace when creating the `UpstashVectorStore` instance.
 ```
 store = UpstashVectorStore(embedding=True, namespace="my_namespace")
 ```
 
-- You can use OpenAI's embeddings by setting `embedding=OpenAIEmbeddings()` in the `UpstashVectorStore` instance.
+* You can use OpenAI's embeddings by setting `embedding=OpenAIEmbeddings()` in the `UpstashVectorStore` instance.
 ```
 from langchain_openai import OpenAIEmbeddings
 store = UpstashVectorStore(embedding=OpenAIEmbeddings())

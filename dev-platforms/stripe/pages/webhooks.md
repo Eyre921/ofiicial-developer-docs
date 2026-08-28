@@ -61,7 +61,7 @@ To listen to [snapshot events](https://docs.stripe.com/api/events/types.md) from
 ```curl
 curl -X POST https://api.stripe.com/v2/core/event_destinations \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   --json '{
     "name": "My event destination",
     "type": "webhook_endpoint",
@@ -93,7 +93,7 @@ To listen to [thin events](https://docs.stripe.com/api/v2/core/events/event-type
 ```curl
 curl -X POST https://api.stripe.com/v2/core/event_destinations \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   --json '{
     "name": "My event destination",
     "type": "webhook_endpoint",

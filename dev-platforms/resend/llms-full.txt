@@ -9412,6 +9412,7 @@ Retrieve account-level email metrics.
   const { data } = await resend.emails.metrics({
     startDate: '2026-07-01',
     endDate: '2026-07-08',
+    metrics: ['sent', 'delivered', 'open_rate'],
     dimensions: ['period', 'broadcast'],
     broadcastId: ['5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a'],
   });
@@ -9421,6 +9422,7 @@ Retrieve account-level email metrics.
   params: resend.Emails.MetricsParams = {
     "start_date": "2026-07-01",
     "end_date": "2026-07-08",
+    "metrics": ["sent", "delivered", "open_rate"],
     "dimensions": ["period", "broadcast"],
     "broadcast_id": ["5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a"],
   }
@@ -9433,6 +9435,7 @@ Retrieve account-level email metrics.
   params = {
     start_date: "2026-07-01",
     end_date: "2026-07-08",
+    metrics: ["sent", "delivered", "open_rate"],
     dimensions: ["period", "broadcast"],
     broadcast_id: ["5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a"]
   }
@@ -9461,6 +9464,11 @@ Retrieve account-level email metrics.
     metrics, err := client.Emails.MetricsWithOptions(ctx, &resend.MetricsOptions{
       StartDate: &startDate,
       EndDate:   &endDate,
+      Metrics: []resend.MetricName{
+        resend.MetricSent,
+        resend.MetricDelivered,
+        resend.MetricOpenRate
+      },
       Dimensions: []resend.MetricsDimension{
         resend.MetricsDimensionPeriod,
         resend.MetricsDimensionBroadcast,
@@ -9476,7 +9484,7 @@ Retrieve account-level email metrics.
   ```
 
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::types::GetEmailMetricsOptions;
+  use resend_rs::types::{GetEmailMetricsOptions, Metric};
   use resend_rs::{Resend, Result};
 
   #[tokio::main]
@@ -9486,6 +9494,7 @@ Retrieve account-level email metrics.
     let options = GetEmailMetricsOptions::default()
       .with_start_date("2026-07-01")
       .with_end_date("2026-07-08")
+      .with_metrics([Metric::Sent, Metric::Delivered, Metric::OpenRate])
       .with_period_dimension()
       .with_broadcast_dimension()
       .with_broadcast_id("5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a");
@@ -9507,6 +9516,7 @@ Retrieve account-level email metrics.
           GetEmailsMetricsOptions options = GetEmailsMetricsOptions.builder()
                   .startDate("2026-07-01")
                   .endDate("2026-07-08")
+                  .metrics(MetricName.SENT, MetricName.DELIVERED, MetricName.OPEN_RATE)
                   .dimensions(MetricsDimension.PERIOD, MetricsDimension.BROADCAST)
                   .broadcastIds("5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a")
                   .build();
@@ -9525,6 +9535,7 @@ Retrieve account-level email metrics.
   {
       StartDate = new DateTime( 2026, 7, 1 ),
       EndDate = new DateTime( 2026, 7, 8 ),
+      Metrics = new List<MetricType> { MetricType.Sent, MetricType.Delivered, MetricType.OpenRate },
       Dimensions = new List<MetricDimension> { MetricDimension.Period, MetricDimension.Broadcast },
       BroadcastId = new List<Guid> { Guid.Parse( "5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a" ) },
   } );
@@ -14585,7 +14596,7 @@ The default maximum rate limit is **10 requests per second per team**. This limi
 
 After that, you'll hit the rate limit and receive a `429` response error code. You can find all 429 responses by filtering for 429 at the [Resend Logs page](https://resend.com/logs?status=429).
 
-To prevent this, reduce the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/contact) to request a rate increase.
+To prevent this, reduce the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/help) to request a rate increase.
 
 ## Email Quotas
 
@@ -15020,7 +15031,7 @@ Retrieve segment metrics.
 <Warning>
   Segment metrics are currently in private beta and only available to a limited
   number of users. The response shape might change before GA. [Get in
-  touch](https://resend.com/contact) if you're interested in testing this
+  touch](https://resend.com/help) if you're interested in testing this
   feature.
 
   <span />
@@ -15351,6 +15362,80 @@ Update an existing segment.
 </ParamField>
 
 <RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.segments.update(
+    '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+    {
+      name: 'Active Users',
+    },
+  );
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = 're_xxxxxxxxx'
+
+  params: resend.Segments.UpdateParams = {
+      "name": "Active Users",
+  }
+
+  segment = resend.Segments.update('78261eea-8f8b-4381-83c6-79fa7120f1cf', params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  params = {
+    segment_id: "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+    name: "Active Users"
+  }
+  Resend::Segments.update(params)
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import (
+  	"context"
+  	"fmt"
+
+  	"github.com/resend/resend-go/v3"
+  )
+
+  func main() {
+  	ctx := context.TODO()
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	params := &resend.UpdateSegmentRequest{
+  		Name: "Active Users",
+  	}
+
+  	segment, err := client.Segments.UpdateWithContext(ctx, "78261eea-8f8b-4381-83c6-79fa7120f1cf", params)
+  	if err != nil {
+  		panic(err)
+  	}
+  	fmt.Println(segment)
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  var resp = await resend.SegmentUpdateAsync( new Guid( "78261eea-8f8b-4381-83c6-79fa7120f1cf" ), new SegmentData() {
+    Name = "Active Users",
+  } );
+  Console.WriteLine( "Segment Id={0}", resp.Content.Id );
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X PATCH 'https://api.resend.com/segments/78261eea-8f8b-4381-83c6-79fa7120f1cf' \
        -H 'Authorization: Bearer re_xxxxxxxxx' \
@@ -15358,6 +15443,10 @@ Update an existing segment.
        -d $'{
     "name": "Active Users"
   }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend segments update 78261eea-8f8b-4381-83c6-79fa7120f1cf --name "Active Users"
   ```
 </RequestExample>
 
@@ -18544,7 +18633,7 @@ Retrieve the details of a single event delivered to a webhook.
 <Warning>
   Webhook events and delivery attempts are currently in private beta and only
   available to a limited number of users. APIs might change before it is
-  generally available. [Get in touch](https://resend.com/contact) if you're
+  generally available. [Get in touch](https://resend.com/help) if you're
   interested in testing this feature.
 
   <span />
@@ -18772,7 +18861,7 @@ Retrieve the delivery attempts for a single webhook event.
 <Warning>
   Webhook events and delivery attempts are currently in private beta and only
   available to a limited number of users. APIs might change before it is
-  generally available. [Get in touch](https://resend.com/contact) if you're
+  generally available. [Get in touch](https://resend.com/help) if you're
   interested in testing this feature.
 
   <span />
@@ -18892,7 +18981,7 @@ Retrieve a list of events delivered to a webhook.
 <Warning>
   Webhook events and delivery attempts are currently in private beta and only
   available to a limited number of users. APIs might change before it is
-  generally available. [Get in touch](https://resend.com/contact) if you're
+  generally available. [Get in touch](https://resend.com/help) if you're
   interested in testing this feature.
 
   <span />
@@ -29960,6 +30049,13 @@ Learn how to view, update, and delete your verified domains in Resend.
 You can view and manage your domains from the [Domains Dashboard page](https://resend.com/domains). You can also manage your sending and receiving domains using the [API](/docs/api-reference/domains/create-domain), the [CLI](/docs/cli#domains), or the [MCP server](/docs/mcp-server).
 
 All members of your team can create, verify, retrieve, update, and delete your domains.
+
+<Info>
+  The number of domains your team can add is set by your plan, listed on the
+  [pricing page](https://resend.com/pricing). Paid transactional plans can raise
+  the limit with the domains add-on. See [How to add more
+  domains](/docs/knowledge-base/how-to-add-more-domains).
+</Info>
 
 ## View domain details
 
@@ -41234,7 +41330,7 @@ Here's how to build your own integration with Resend:
 
 1. Read the documentation on [how to send emails](/docs/api-reference/emails/send-email).
 2. Integrate with your product offering.
-3. [Reach out to us](https://resend.com/contact) to feature your product on this page.
+3. [Reach out to us](https://resend.com/help) to feature your product on this page.
 
 
 # Introduction
@@ -41535,6 +41631,12 @@ Paid plans include pay-as-you-go overages, which allow you to continue sending e
   tier](https://resend.com/settings/billing) for better value and more
   predictable costs.
 </Tip>
+
+## Domain Limits
+
+Every plan includes a set number of verified custom domains, listed on the [pricing page](https://resend.com/pricing). You can see how many domains your team is using on the [**Usage page**](https://resend.com/settings/usage).
+
+If you need more, paid transactional plans can enable the domains add-on, which adds 100 domains on top of the number included in your plan for \$20 per month. See [How to add more domains](/docs/knowledge-base/how-to-add-more-domains).
 
 ## Rate Limits
 
@@ -45060,6 +45162,58 @@ For this reason, follow all possible methods for adding your logo to your emails
 </Steps>
 
 
+# How to add more domains
+Source: https://resend.com/docs/knowledge-base/how-to-add-more-domains
+
+Increase your domain limit with the domains add-on.
+
+Every Resend plan includes a set number of verified custom domains. If you need more, you can enable the **domains add-on** in **Settings** > **Usage**. The add-on adds 100 domains on top of the number included in your plan for \$20 per month.
+
+Adding more domains is a common need for multi-tenant products that verify a domain per customer. See [Setting up Resend for Multi-Tenant Applications](/docs/knowledge-base/setting-up-resend-for-multi-tenants) for how to structure that.
+
+## Check your current limit
+
+Navigate to [**Settings** > **Usage**](https://resend.com/settings/usage). The Domains section shows how many domains your team is using and how many your plan allows.
+
+The number of domains included in each plan is listed on the [pricing page](https://resend.com/pricing).
+
+<img alt="The Add-ons section of the Resend pricing page, showing the domains add-on at $20 per month" />
+
+## Add the domains add-on
+
+1. Navigate to [**Settings** > **Usage**](https://resend.com/settings/usage)
+2. Find **Domains** under **Add-ons**
+3. Turn on the **Domains** toggle
+4. Click **Confirm**
+
+If your team doesn't have a payment method on file, you will be taken to checkout to confirm the purchase.
+
+The add-on costs \$20 per month and applies immediately. Your next invoice includes a prorated charge for the remainder of the current billing cycle.
+
+Once enabled, the add-on appears on your [**Settings** > **Billing**](https://resend.com/settings/billing) page as its own line item, and the 100 extra domains are reflected in the domain count on **Settings** > **Usage**.
+
+<Note>
+  The domains add-on is available on paid transactional plans, and only team
+  admins can manage add-ons. On Enterprise plans, the domain limit is set in
+  your contract, so [contact support](https://resend.com/help) to change it.
+</Note>
+
+<Info>
+  The add-on raises the number of domains you can add. It does not change your
+  monthly email quota, your contact limit, or your rate limit. Those are set by
+  your plan. See [account quotas and
+  limits](/docs/knowledge-base/account-quotas-and-limits).
+</Info>
+
+## Remove the domains add-on
+
+You can remove the add-on from the same place: navigate to **Settings** > **Usage** and turn off the **Domains** toggle under **Add-ons**.
+
+## Need more than 100 extra domains
+
+There is no fixed ceiling on custom domains. If 100 extra domains aren't enough, [chat with support](https://resend.com/help) or email [support@resend.com](mailto:support@resend.com) with your use case and the number of domains you expect to verify.
+
+
 # How to Handle API Keys
 Source: https://resend.com/docs/knowledge-base/how-to-handle-api-keys
 
@@ -46490,6 +46644,7 @@ const apiKey = await resend.apiKeys.create({
 * No per-tenant volume breakdown or analytics in the dashboard
 * All tenants share your account's sender reputation
 * Aggregate sending volume will likely require a [rate-limit increase](/docs/knowledge-base/account-quotas-and-limits) as you onboard tenants
+* Each tenant domain counts toward your team's domain limit, which you can raise with the [domains add-on](/docs/knowledge-base/how-to-add-more-domains)
 
 <Warning>
   If one tenant engages in poor sending practices (spam, high bounce rates), it
@@ -46536,7 +46691,7 @@ await resend.emails.send({
 
 ## Billing implications
 
-With **Option A**, you pay a single plan that covers all tenant sending volume. Your total email count is the aggregate of all tenants' emails, so choose a plan that accommodates your combined volume.
+With **Option A**, you pay a single plan that covers all tenant sending volume. Your total email count is the aggregate of all tenants' emails, so choose a plan that accommodates your combined volume. Since each tenant domain counts toward your domain limit, you may also need to [add more domains](/docs/knowledge-base/how-to-add-more-domains) as you grow.
 
 With **Option B**, each tenant is responsible for their own Resend plan and billing. This removes billing complexity from your side but means tenants need to manage their own subscription. See [Resend pricing](/docs/knowledge-base/what-is-resend-pricing) and [account quotas and limits](/docs/knowledge-base/account-quotas-and-limits) for details.
 
@@ -47882,7 +48037,7 @@ For teams sending 3 million or more emails per month, Resend offers custom Enter
 * SSO
 * Dedicated IP options
 
-[Contact sales](https://resend.com/contact) to learn more.
+[Contact sales](https://resend.com/help) to learn more.
 
 ## Marketing Email
 
@@ -47919,7 +48074,7 @@ All plans include 10,000 Automation Runs per month. Paid plans can continue beyo
 
 Dedicated IPs are available for \$30/month on the Scale plan for customers sending more than 3,000 emails per day. Dedicated IPs include automatic warmup, monitoring, and autoscaling.
 
-Additional domains are available for \$20/month on the Pro and Scale plans. The add-on includes 100 domains on top of what your plan includes and can be added or removed at any time from the Dashboard.
+The domains add-on is available for \$20/month on paid transactional plans and adds 100 domains on top of the number included in your plan. See [How to add more domains](/docs/knowledge-base/how-to-add-more-domains).
 
 ## Annual plans
 
@@ -49486,7 +49641,7 @@ Learn how to send your first email using Astro, Resend, and Node.js.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -50380,7 +50535,7 @@ Learn how to send your first email using Bun and the Resend Node.js SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -50765,7 +50920,7 @@ Learn how to send your first email using Cloudflare Workers.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -51745,7 +51900,7 @@ Learn how to send your first email using Encore and the Resend Go SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ***
 
@@ -52162,7 +52317,7 @@ Learn how to send your first email using Encore and the Resend Node.js SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -52643,7 +52798,7 @@ Learn how to send your first email using Express and the Resend Node.js SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -53331,7 +53486,7 @@ Learn how to send your first email using Hono and the Resend Node.js SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -54328,7 +54483,7 @@ Learn how to send your first email using Next.js and the Resend Node.js SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -54769,7 +54924,7 @@ Learn how to send your first email using the Resend Node.js SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -55235,7 +55390,7 @@ Learn how to send your first email using Nuxt and the Resend Node.js SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -55901,7 +56056,7 @@ Learn how to send your first email using the Resend Python SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. Exceeding it raises `resend.exceptions.RateLimitError`. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. Exceeding it raises `resend.exceptions.RateLimitError`. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -56547,7 +56702,7 @@ Learn how to send your first email using Redwood.js and the Resend Node.js SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -56921,7 +57076,7 @@ Learn how to send your first email using Remix and the Resend Node.js SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -57892,7 +58047,7 @@ Learn how to send your first email using SvelteKit and the Resend Node.js SDK.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -58435,7 +58590,7 @@ Learn how to send your first email using TanStack Start and the Resend Node.js S
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -58885,7 +59040,7 @@ Learn how to send your first email using Vercel Functions.
 
   ### Rate Limiting
 
-  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+  The default rate limit is 10 requests per second per team. If you exceed the rate limit, you'll receive a `429` response error code. If needed, you can request a rate increase by [contacting support](https://resend.com/help).
 
   ### Idempotency
 
@@ -59264,7 +59419,7 @@ Received when a contact is created.
 
 Event triggered whenever a **contact was successfully created**.
 
-*Note: When importing multiple contacts using CSV, these events won't be triggered. [Contact support](https://resend.com/contact) if you have any questions.*
+*Note: When importing multiple contacts using CSV, these events won't be triggered. [Contact support](https://resend.com/help) if you have any questions.*
 
 <ResponseBodyParameters type="contact.created">
   <ParamField type="string">
@@ -61074,7 +61229,7 @@ List of supported event types and their payload.
 
     <div>
       *Note: When importing multiple contacts using CSV, these events won't be
-      triggered. [Contact support](https://resend.com/contact) if you have any
+      triggered. [Contact support](https://resend.com/help) if you have any
       questions.*
     </div>
   </div>

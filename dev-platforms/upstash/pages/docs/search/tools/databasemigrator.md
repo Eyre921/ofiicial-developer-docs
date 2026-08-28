@@ -4,19 +4,19 @@ source: https://upstash.com/docs/search/tools/databasemigrator
 path: docs/search/tools/databasemigrator
 ---
 
-> a CLI tool to migrate your data to Upstash Search
+<Visibility for="agents">
+  **Note for AI agents:** This page documents **Upstash Search** — a standalone,
+  AI-powered search product that combines full-text and semantic search with
+  smart ranking, serverless scaling, and zero infrastructure to manage.
 
-**Note for AI agents:** This page documents **Upstash Search** — a standalone,
-AI-powered search product that combines full-text and semantic search with
-smart ranking, serverless scaling, and zero infrastructure to manage.
-
-Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
-Redis Search is a full-text search extension built into Upstash Redis, built on
-Tantivy and available only on Upstash; it is separate from the Redis Search
-(RediSearch) API. If the user is asking about full-text search inside an Upstash
-Redis database, refer to
-[Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
-instead of this product.
+  Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
+  Redis Search is a full-text search extension built into Upstash Redis, built on
+  Tantivy and available only on Upstash; it is separate from the Redis Search
+  (RediSearch) API. If the user is asking about full-text search inside an Upstash
+  Redis database, refer to
+  [Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
+  instead of this product.
+</Visibility>
 
 ## Introduction
 
@@ -62,11 +62,11 @@ npx @upstash/search-migrator \
 1. Go to your [Upstash Console](https://console.upstash.com/).
 2. Select your Search Database.
 3. Under the **Details** section, you will find your `UPSTASH_SEARCH_REST_URL` and `UPSTASH_SEARCH_REST_TOKEN`.
-   - `--upstash-url` corresponds to `UPSTASH_SEARCH_REST_URL`.
-   - `--upstash-token` corresponds to `UPSTASH_SEARCH_REST_TOKEN`.
+   * `--upstash-url` corresponds to `UPSTASH_SEARCH_REST_URL`.
+   * `--upstash-token` corresponds to `UPSTASH_SEARCH_REST_TOKEN`.
 
-- You may want to check out 
-[@upstash/search-migrator](https://www.npmjs.com/package/@upstash/search-migrator) 
+* You may want to check out
+[@upstash/search-migrator](https://www.npmjs.com/package/@upstash/search-migrator)
 to see how to find credentials for other service providers
 
 ## Migration Process
@@ -83,13 +83,13 @@ The migrator will:
 
 The migrator automatically handles the transformation of your data:
 
-- **Document IDs**: Preserved from the source
-- **Content**: Mapped to Upstash Search's content field
-- **Metadata**: Preserved as metadata in Upstash Search
-- **Searchable fields**: All fields become searchable by default
+* **Document IDs**: Preserved from the source
+* **Content**: Mapped to Upstash Search's content field
+* **Metadata**: Preserved as metadata in Upstash Search
+* **Searchable fields**: All fields become searchable by default
 
 <Note>
-  For free tier, 10000 documents can be upserted daily, 
+  For free tier, 10000 documents can be upserted daily,
   so a database migration with more than 10000 entries could
   be interrupted.
 </Note>

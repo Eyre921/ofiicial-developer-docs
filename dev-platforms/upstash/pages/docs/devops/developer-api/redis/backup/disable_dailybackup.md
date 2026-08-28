@@ -4,6 +4,5 @@ source: https://upstash.com/docs/devops/developer-api/redis/backup/disable_daily
 path: docs/devops/developer-api/redis/backup/disable_dailybackup
 ---
 
-> This endpoint disables daily backup for a Redis database.
-
-`PATCH /redis/disable-dailybackup/{id}`
+/devops/developer-api/openapi.yaml patch /redis/disable-dailybackup/{id}
+This endpoint disables daily backup for a Redis database.

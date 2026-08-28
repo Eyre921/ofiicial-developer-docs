@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/server/time
 path: docs/redis/commands/server/time
 ---
 
-> Get current server time.
-
 Use `TIME` to read the server's clock.
 
 The reply has two values: the Unix time in seconds and the microseconds elapsed within the current second. Because it comes from the server, every client gets the same reference regardless of its own clock drift, which makes it the value to use when computing deadlines, measuring intervals, or writing timestamps that different machines must agree on.

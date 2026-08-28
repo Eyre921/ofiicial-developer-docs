@@ -120,7 +120,7 @@ For more information about separate charges and transfers, see [Separate charges
 
 To make the connected account the business of record for the payment, use the `on_behalf_of` parameter. When `on_behalf_of` is set to the ID of the connected account, Stripe automatically:
 
-- Settles charges in the country of the specified account to minimize declines and avoid [currency conversions](https://docs.stripe.com/connect/currencies/fx-quotes-api.md#currency-conversions).
+- Settles charges in the country of the specified account to minimize declines and avoid [currency conversions](https://docs.stripe.com/connect/currencies/fx-quotes-api.md#destination-charges-on-behalf-of).
 - Uses the fee structure for the connected account’s country.
 - Uses the [connected account’s statement descriptor](https://docs.stripe.com/connect/statement-descriptors.md).
 - Uses the connected account’s address and phone number (rather than the platform’s) on the customer’s statement if the connected account is in a different country than the platform.

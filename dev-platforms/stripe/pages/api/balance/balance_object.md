@@ -41,7 +41,7 @@ path: api/balance/balance_object
 
 ## Attributes
 
-- `object` (string)
+- `object` (string, value is "balance")
   String representing the object’s type. Objects of the same type share the same value.
 
 - [`available`](https://docs.stripe.com/api/balance/balance_object.md?query=available) (array of objects)

@@ -31,6 +31,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/list
 - `archived` (boolean, optional) — Filter agents by archived status
 - `show_only_owned_agents` (boolean, optional, default: false, deprecated) — If set to true, the endpoint will omit any agents that were shared with you by someone else and include only the ones you own. Deprecated: use created_by_user_id instead.
 - `created_by_user_id` (string, optional) — Filter agents by creator user ID. When set, only agents created by this user are returned. Takes precedence over show_only_owned_agents. Use '@me' to refer to the authenticated user.
+- `tags` (string, optional) — Filter agents by tag. Repeat the parameter to match any of several tags.
 - `sort_direction` (enum, optional) — The direction to sort the results
   - Allowed values: `asc`, `desc`
 - `sort_by` (enum, optional) — The field to sort the results by
@@ -110,6 +111,9 @@ async function main() {
         showOnlyOwnedAgents: true,
         sortBy: "name",
         sortDirection: "asc",
+        tags: [
+            "tags",
+        ],
     });
 }
 main();
@@ -130,6 +134,9 @@ client.conversational_ai.agents.list(
     show_only_owned_agents=True,
     sort_by="name",
     sort_direction="asc",
+    tags=[
+        "tags"
+    ],
 )
 
 ```
@@ -145,7 +152,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents?archived=true&created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_agents=true&sort_by=name&sort_direction=asc"
+	url := "https://api.elevenlabs.io/v1/convai/agents?archived=true&created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_agents=true&sort_by=name&sort_direction=asc&tags=%5B%22tags%22%5D"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -164,7 +171,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents?archived=true&created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_agents=true&sort_by=name&sort_direction=asc")
+url = URI("https://api.elevenlabs.io/v1/convai/agents?archived=true&created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_agents=true&sort_by=name&sort_direction=asc&tags=%5B%22tags%22%5D")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -179,7 +186,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents?archived=true&created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_agents=true&sort_by=name&sort_direction=asc")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents?archived=true&created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_agents=true&sort_by=name&sort_direction=asc&tags=%5B%22tags%22%5D")
   .asString();
 ```
 
@@ -189,7 +196,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents?archived=true&created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_agents=true&sort_by=name&sort_direction=asc');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents?archived=true&created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_agents=true&sort_by=name&sort_direction=asc&tags=%5B%22tags%22%5D');
 
 echo $response->getBody();
 ```
@@ -197,7 +204,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents?archived=true&created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_agents=true&sort_by=name&sort_direction=asc");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents?archived=true&created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_agents=true&sort_by=name&sort_direction=asc&tags=%5B%22tags%22%5D");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -205,7 +212,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents?archived=true&created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_agents=true&sort_by=name&sort_direction=asc")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents?archived=true&created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_agents=true&sort_by=name&sort_direction=asc&tags=%5B%22tags%22%5D")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

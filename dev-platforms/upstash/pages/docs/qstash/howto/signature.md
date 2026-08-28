@@ -9,10 +9,10 @@ signing key and sent in the `Upstash-Signature` HTTP header.
 
 You can use this signature to verify the request is coming from QStash.
 
-![](/img/qstash/signing-key-logic.png)
+![]()
 
 <Warning>
-You need to keep your signing keys in a secure location. 
+You need to keep your signing keys in a secure location.
 Otherwise some malicious actor could use them to send requests to your API as if they were coming from QStash.
 </Warning>
 
@@ -84,12 +84,12 @@ err := receiver.Verify(qstash.VerifyOptions{
 ```
 </CodeGroup>
 
-<Warning>Depending on the environment, the body might be parsed into an object by the HTTP handler if it is JSON. 
+<Warning>Depending on the environment, the body might be parsed into an object by the HTTP handler if it is JSON.
 Ensure you use the raw body string as is. For example, converting the parsed object back to a string (e.g., JSON.stringify(object)) may cause inconsistencies and result in verification failure.</Warning>
 
-### Manual verification 
+### Manual verification
 
-If you don't want to use the SDKs, you can implement your own verifier either by using an open-source library or by manually processing the JWT. 
+If you don't want to use the SDKs, you can implement your own verifier either by using an open-source library or by manually processing the JWT.
 
 The exact implementation depends on the language of your choice and the library if you use one.
 Instead here are the steps you need to follow:
@@ -97,11 +97,11 @@ Instead here are the steps you need to follow:
 1. Split the JWT into its header, payload and signature
 2. Verify the signature
 3. Decode the payload and verify the claims
-   - `iss`: The issuer must be`Upstash`.
-   - `sub`: The subject must the url of your API.
-   - `exp`: Verify the token has not expired yet.
-   - `nbf`: Verify the token is already valid.
-   - `body`: Hash the raw request body using `SHA-256` and compare it with the
+   * `iss`: The issuer must be`Upstash`.
+   * `sub`: The subject must the url of your API.
+   * `exp`: Verify the token has not expired yet.
+   * `nbf`: Verify the token is already valid.
+   * `body`: Hash the raw request body using `SHA-256` and compare it with the
      `body` claim.
 
 You can also reference the implementation in our
@@ -112,4 +112,4 @@ request came from Upstash and process it accordingly.
 
 ## Claims
 
-All claims in the JWT are listed [here](/qstash/features/security#claims)
+All claims in the JWT are listed [here](/docs/qstash/features/security#claims)

@@ -4,6 +4,5 @@ source: https://upstash.com/docs/devops/developer-api/redis/update_budget
 path: docs/devops/developer-api/redis/update_budget
 ---
 
-> This endpoint updates the monthly budget of a Redis database.
-
-`PATCH /redis/update-budget/{id}`
+/devops/developer-api/openapi.yaml patch /redis/update-budget/{id}
+This endpoint updates the monthly budget of a Redis database.

@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/streams/xadd
 path: docs/redis/commands/streams/xadd
 ---
 
-> Add entry to stream.
-
 Use `XADD` to append an entry to a stream, creating the stream when it does not exist.
 
 An entry is a set of field and value pairs identified by an ID of the form `<milliseconds>-<sequence>`. Passing `*` lets the server build the ID from the current time, which guarantees that IDs only ever increase; an explicit ID must be greater than the last one in the stream. The reply is the ID the entry was stored under. `NOMKSTREAM` skips creating a stream that does not exist yet and returns null instead.

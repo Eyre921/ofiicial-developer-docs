@@ -8,8 +8,6 @@ path: capital/marketing
 
 Build marketing assets for Capital.
 
-> Capital for platforms is available in [public preview](https://docs.stripe.com/release-phases.md).
-
 This guide helps you create marketing assets for Capital that educate your connected accounts and promote your Capital program. Learn how to co-brand your product with Stripe and develop content that adheres to [regulatory requirements](https://docs.stripe.com/capital/regulatory-compliance.md) applicable to Capital.
 
 Financing is a highly regulated space in every market where Capital operates. All new or updated customer-facing material referencing Stripe Capital must be reviewed and approved by Stripe and its financial partners before publication. This requirement applies throughout the entire lifespan of your Capital program.
@@ -180,7 +178,7 @@ Before publishing, you must submit all customer-facing materials for review usin
 
 ### Terminology reference 
 
-The list of approved and prohibited language isn’t exhaustive. For any questions, contact the Capital team at [capital-review@stripe.com](mailto:capital-review@stripe.com).
+The list of approved and prohibited language isn’t exhaustive.
 
 | Approved messaging | Prohibited messaging |
 | --- | --- |

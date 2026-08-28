@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/json/json-numincrby
 path: docs/redis/commands/json/json-numincrby
 ---
 
-> Increment JSON number.
-
 Use `JSON.NUMINCRBY` to add a number to the numeric values a path selects.
 
 The increment may be negative to count down, and it is applied atomically, so concurrent callers cannot lose an update. The reply is the new value of each match; a match that is not a number returns an error. This is how a counter kept inside a document is updated without reading and rewriting the whole document.
@@ -26,8 +24,8 @@ JSON.NUMINCRBY <key> <path> <value>
 
 ## Important points
 
-- Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
-- Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
+* Raw TCP examples pass JSON values as valid JSON text. Typed Upstash SDK helpers serialize native objects and values for you.
+* Paths beginning with `$` use JSONPath and can match multiple values, so many JSON commands return an array of per-match results.
 
 ## Response
 

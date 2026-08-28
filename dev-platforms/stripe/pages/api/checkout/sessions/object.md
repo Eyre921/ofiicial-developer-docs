@@ -92,7 +92,7 @@ path: api/checkout/sessions/object
 - `id` (string)
   Unique identifier for the object.
 
-- `object` (string)
+- `object` (string, value is "checkout.session")
   String representing the object’s type. Objects of the same type share the same value.
 
 - [`adaptive_pricing`](https://docs.stripe.com/api/checkout/sessions/object.md?query=adaptive_pricing) (object, nullable)
@@ -288,7 +288,7 @@ Possible enum values:
   The ID of the Payment Link that created this Session.
 
 - `payment_method_collection` (enum, nullable)
-  Configure whether a Checkout Session should collect a payment method. Defaults to `always`.
+  Configure whether a Checkout Session should collect a payment method for sessions with mode `payment`. Defaults to `always`.
 Possible enum values:
   - `always`
     The Checkout Session will always collect a PaymentMethod.

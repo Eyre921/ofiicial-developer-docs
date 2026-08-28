@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/functions/overview
 path: docs/redis/commands/functions/overview
 ---
 
-> Commands for loading, managing, and invoking Redis functions.
-
 <CardGroup cols={2}>
 <Card title="FCALL" href="/redis/commands/functions/fcall">Call a function</Card>
 <Card title="FCALL_RO" href="/redis/commands/functions/fcall-ro">Call a read-only function</Card>

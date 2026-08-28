@@ -1651,6 +1651,8 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot
 /en/copilot/get-started
 /en/copilot/get-started/quickstart
+/en/copilot/get-started/cli-quickstart
+/en/copilot/get-started/quickstart-copilot-app
 /en/copilot/get-started/what-is-github-copilot
 /en/copilot/get-started/plans
 /en/copilot/get-started/features
@@ -1793,7 +1795,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/chat-with-copilot/chat-in-ide
 /en/copilot/how-tos/chat-with-copilot/chat-in-windows-terminal
 /en/copilot/how-tos/copilot-cli
-/en/copilot/how-tos/copilot-cli/cli-getting-started
 /en/copilot/how-tos/copilot-cli/cli-best-practices
 /en/copilot/how-tos/copilot-cli/set-up-copilot-cli
 /en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli
@@ -1841,7 +1842,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/cloud-and-local-sandboxes/using-local-sandboxing
 /en/copilot/how-tos/cloud-and-local-sandboxes/configuring-local-sandbox-settings
 /en/copilot/how-tos/github-copilot-app
-/en/copilot/how-tos/github-copilot-app/getting-started
 /en/copilot/how-tos/github-copilot-app/customize-github-copilot-app
 /en/copilot/how-tos/github-copilot-app/agent-sessions
 /en/copilot/how-tos/github-copilot-app/working-with-canvas-extensions

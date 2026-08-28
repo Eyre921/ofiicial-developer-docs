@@ -4,6 +4,25 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="August 26, 2026">
+  ## New serverless models
+
+  The following model is now available on [serverless](/docs/serverless/models):
+
+  * `zai-org/GLM-5.3-Flash`: 1,000,000 context length, FP8 quantization, function calling and structured outputs. Pricing: \$0.15 input / \$0.50 output / \$0.03 cached input (per 1M tokens).
+</Update>
+
+<Update label="August 25, 2026">
+  ## Model deprecations
+
+  The following models have been deprecated and are no longer available on serverless:
+
+  * `google/gemma-3n-E4B-it`.
+  * `meta-llama/Llama-Guard-4-12B`.
+
+  These models are not supported by on-demand dedicated endpoints. See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
 <Update label="August 25, 2026">
   ## New models available for fine-tuning
 
@@ -59,6 +78,18 @@ path: docs/changelog
   * **Audit trail:** Automatically approved repairs record **Auto-Approved** in the repair's **Reviewed by** field, alongside the alert evidence that triggered them.
 
   See [Confirmation policy](/docs/node-repair#confirmation-policy) for details.
+</Update>
+
+<Update label="August 19, 2026">
+  ## Model deprecations
+
+  The following models have been deprecated and are no longer available on serverless:
+
+  * `black-forest-labs/FLUX.1-schnell`.
+  * `Qwen/Qwen2.5-7B`.
+  * `moonshotai/Kimi-K2.6`.
+
+  See [Deprecations](/docs/deprecations) for migration options.
 </Update>
 
 <Update label="August 17, 2026">

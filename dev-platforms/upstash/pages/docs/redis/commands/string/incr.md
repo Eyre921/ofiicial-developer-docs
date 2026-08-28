@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/string/incr
 path: docs/redis/commands/string/incr
 ---
 
-> Increment integer value by 1.
-
 Use `INCR` to add one to the integer stored at a key and get the result.
 
 A missing key counts as `0`, so the first call returns `1` and no initialization is needed. The value must be the string form of a 64-bit signed integer; anything else returns an error, as does an overflow.
 
-The read, the addition, and the write are one atomic step, so concurrent callers each receive a distinct number and no increment is lost. That property is what makes it the basis for counters, id generators, and rate limiters, usually combined with [`EXPIRE`](/redis/commands/generic/expire) to reset the count for each window.
+The read, the addition, and the write are one atomic step, so concurrent callers each receive a distinct number and no increment is lost. That property is what makes it the basis for counters, id generators, and rate limiters, usually combined with [`EXPIRE`](/docs/redis/commands/generic/expire) to reset the count for each window.
 
 ## Syntax
 

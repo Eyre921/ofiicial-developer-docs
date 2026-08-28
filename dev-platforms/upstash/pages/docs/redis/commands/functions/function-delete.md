@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/functions/function-delete
 path: docs/redis/commands/functions/function-delete
 ---
 
-> Delete a library.
-
 Use `FUNCTION DELETE` to remove a function library and every function it registered.
 
 The argument is the library name declared when the library was loaded, not the name of a single function, and there is no way to delete one function from a library: reload the library with `REPLACE` instead. Deleting a library that does not exist returns an error, and calls to its functions fail until the library is loaded again.

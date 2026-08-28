@@ -4,6 +4,5 @@ source: https://upstash.com/docs/devops/developer-api/vector/reset_index_passwor
 path: docs/devops/developer-api/vector/reset_index_passwords
 ---
 
-> This endpoint is used to reset regular and readonly tokens of an index.
-
-`POST /vector/index/{id}/reset-password`
+/devops/developer-api/openapi.yaml post /vector/index/{id}/reset-password
+This endpoint is used to reset regular and readonly tokens of an index.

@@ -49,7 +49,7 @@ Pinecone is the vector database for AI agents and applications, built for semant
     Third-party integrations for LangChain, LlamaIndex, and more
   </Card>
 
-  <Card title="Releases" icon="party-horn" href="/release-notes">
+  <Card title="Changelog" icon="party-horn" href="/release-notes">
     What's new in Pinecone
   </Card>
 </CardGroup>

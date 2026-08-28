@@ -43,7 +43,7 @@ If you want requests to retry automatically, you can explicitly pass a retry con
 <ParamField body="flowControl" type="object" optional>
     Throttle outbound requests.
 
-    See [Flow Control](/workflow/features/flow-control) for details.
+    See [Flow Control](/docs/workflow/features/flow-control) for details.
 
     <Expandable title="properties">
         <ParamField body="key" type="string">
@@ -70,7 +70,7 @@ If you want requests to retry automatically, you can explicitly pass a retry con
 </ParamField>
 
 <ParamField body="workflow" >
-    When using [`serveMany`](/workflow/features/invoke/serveMany#using-serve-manyny), you can call another workflow defined in the same `serveMany` by passing it to this parameter.
+    When using [`serveMany`](/docs/workflow/features/invoke/serveMany#using-serve-manyny), you can call another workflow defined in the same `serveMany` by passing it to this parameter.
 </ParamField>
 
 ## Response
@@ -137,11 +137,9 @@ from upstash_workflow import AsyncWorkflowContext
 app = FastAPI()
 serve = Serve(app)
 
-
 @dataclass
 class Request:
     topic: str
-
 
 @serve.post("/api/example")
 async def example(context: AsyncWorkflowContext[Request]) -> None:
@@ -174,12 +172,12 @@ async def example(context: AsyncWorkflowContext[Request]) -> None:
 
 <Tip>
     We provide integrations for **OpenAI, Anthropic, and Resend**, allowing you to call their APIs with strongly typed request bodies using `context.call`.
-    See [`context.api`](/workflow/basics/context#context-api) for details.
+    See [`context.api`](/docs/workflow/basics/context#context-api) for details.
 </Tip>
 
 <Info>
   The `context.call()` function can make requests to any public API endpoint. However, it cannot:
 
-  - Make requests to localhost (unless you set up a local tunnel, [here's how](/workflow/howto/local-development/local-tunnel))
-  - Make requests to internal Upstash QStash endpoints.
+  * Make requests to localhost (unless you set up a local tunnel, [here's how](/docs/workflow/howto/local-development/local-tunnel))
+  * Make requests to internal Upstash QStash endpoints.
 </Info>

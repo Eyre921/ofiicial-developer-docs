@@ -54,6 +54,12 @@ Paid plans include pay-as-you-go overages, which allow you to continue sending e
   predictable costs.
 </Tip>
 
+## Domain Limits
+
+Every plan includes a set number of verified custom domains, listed on the [pricing page](https://resend.com/pricing). You can see how many domains your team is using on the [**Usage page**](https://resend.com/settings/usage).
+
+If you need more, paid transactional plans can enable the domains add-on, which adds 100 domains on top of the number included in your plan for \$20 per month. See [How to add more domains](/docs/knowledge-base/how-to-add-more-domains).
+
 ## Rate Limits
 
 All accounts start with a rate limit of 10 requests per second. The [rate limits](/docs/api-reference/rate-limit) follow the [IETF standard](https://datatracker.ietf.org/doc/html/draft-ietf-httpapi-ratelimit-headers) for stating the rate limit in the response header. If you have specific requirements, [contact support](https://resend.com/help) to request a rate increase.

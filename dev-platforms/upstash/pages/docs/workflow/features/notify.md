@@ -121,9 +121,9 @@ await client.notify(
 By default, if you call `notify` before a workflow reaches its `waitForEvent` step, the notification will be lost (race condition). To prevent this, you can provide a `workflowRunId` parameter which enables **lookback** - the notification will be stored and delivered even if sent before the wait step.
 
 This is particularly useful when:
-- You trigger a workflow and immediately want to send it an event
-- You have concurrent operations where timing is unpredictable
-- You want to eliminate race conditions in your event-driven workflows
+* You trigger a workflow and immediately want to send it an event
+* You have concurrent operations where timing is unpredictable
+* You want to eliminate race conditions in your event-driven workflows
 
 <CodeGroup>
 ```typescript TypeScript
@@ -167,7 +167,7 @@ await client.notify(
 ```
 </CodeGroup>
 
-The same also applies to `context.notify` 
+The same also applies to `context.notify`
 
 <CodeGroup>
 ```typescript TypeScript

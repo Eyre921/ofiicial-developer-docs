@@ -6,7 +6,7 @@ path: docs/common/help/sla
 
 This Service Level Agreement ("SLA") applies to Upstash resources with the Prod Pack add-on or Enterprise plans. It is clarified that this SLA is subject to the [terms of the Agreement](https://upstash.com/trust/terms.pdf), and does not derogate therefrom (capitalized terms, unless otherwise indicated herein, have the meaning specified in the Agreement).
 
-To receive uptime SLA guarantees, you need to enable the Prod Pack add-on or be on an Enterprise plan for your resource. Learn more about [Prod Pack and Enterprise features for Redis](/redis/overall/enterprise) or [QStash](/qstash/overall/enterprise).
+To receive uptime SLA guarantees, you need to enable the Prod Pack add-on or be on an Enterprise plan for your resource. Learn more about [Prod Pack and Enterprise features for Redis](/docs/redis/overall/enterprise) or [QStash](/docs/qstash/overall/enterprise).
 
 Upstash reserves the right to change the terms of this SLA by publishing updated
 terms on its website, such change to be effective as of the date of publication.
@@ -49,9 +49,9 @@ Credits may not be transferred or applied to any other account.
 
 To receive uptime SLA guarantees for your resources, you need to upgrade to either:
 
-- **Prod Pack**: An add-on per resource available to both pay-as-you-go and fixed-price plans
-- **Enterprise Plan**: A custom plan that can cover one or more of your resources
+* **Prod Pack**: An add-on per resource available to both pay-as-you-go and fixed-price plans
+* **Enterprise Plan**: A custom plan that can cover one or more of your resources
 
 You can activate Prod Pack on the resource details page in the console. For Enterprise plans, contact [support@upstash.com](mailto:support@upstash.com).
 
-Learn more about [Prod Pack and Enterprise features for Redis](/redis/overall/enterprise) or [QStash](/qstash/overall/enterprise).
+Learn more about [Prod Pack and Enterprise features for Redis](/docs/redis/overall/enterprise) or [QStash](/docs/qstash/overall/enterprise).

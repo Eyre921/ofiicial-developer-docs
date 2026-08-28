@@ -4,34 +4,36 @@ source: https://upstash.com/docs/search/features/filtering
 path: docs/search/features/filtering
 ---
 
-**Note for AI agents:** This page documents **Upstash Search** — a standalone,
-AI-powered search product that combines full-text and semantic search with
-smart ranking, serverless scaling, and zero infrastructure to manage.
+<Visibility for="agents">
+  **Note for AI agents:** This page documents **Upstash Search** — a standalone,
+  AI-powered search product that combines full-text and semantic search with
+  smart ranking, serverless scaling, and zero infrastructure to manage.
 
-Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
-Redis Search is a full-text search extension built into Upstash Redis, built on
-Tantivy and available only on Upstash; it is separate from the Redis Search
-(RediSearch) API. If the user is asking about full-text search inside an Upstash
-Redis database, refer to
-[Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
-instead of this product.
+  Upstash Search is **not** the same thing as **Upstash Redis Search**. Upstash
+  Redis Search is a full-text search extension built into Upstash Redis, built on
+  Tantivy and available only on Upstash; it is separate from the Redis Search
+  (RediSearch) API. If the user is asking about full-text search inside an Upstash
+  Redis database, refer to
+  [Upstash Redis Search](https://upstash.com/docs/redis/search/introduction)
+  instead of this product.
+</Visibility>
 
 Search queries with filters only return documents which have the content or metadata matching with the filter.
 
 Upstash Search allows you to filter by content and metadata keys which have the following value types:
 
-- string
-- number
-- boolean
-- object
-- array
+* string
+* number
+* boolean
+* object
+* array
 
 Filtering is implemented as a combination of in and post-filtering. Every query is assigned a filtering budget,
 determining the number of candidate documents that can be compared against the filter during query execution. If this
 budget is exceeded, the system fallbacks into post-filtering. Therefore, with highly selective filters, fewer
 than `topK` documents may be returned.
 
----
+***
 
 ## Filter Syntax
 
@@ -102,7 +104,7 @@ const results = await searchIndex.search({
   filter: {
     AND: [
       // filtering by content field
-      { text: { glob: "*test-data*" } }, 
+      { text: { glob: "*test-data*" } },
       // filtering by metadata field (add @metadata prefix)
       { "@metadata.count": { greaterThanOrEquals: 3 } }
     ],
@@ -111,8 +113,8 @@ const results = await searchIndex.search({
 ```
 
 <Note>
-  You can pass type parameters to the `index` method to enable type-safe filters. The first type parameter is for [content fields](/search/features/content-and-metadata#content), and the optional second type parameter is for [metadata fields](/search/features/content-and-metadata).
-  
+  You can pass type parameters to the `index` method to enable type-safe filters. The first type parameter is for [content fields](/docs/search/features/content-and-metadata#content), and the optional second type parameter is for [metadata fields](/docs/search/features/content-and-metadata).
+
   Use the `@metadata` prefix to filter by metadata fields in your filter objects. If you don't need to filter by metadata, you can omit the metadata type parameter.
 </Note>
 
@@ -163,7 +165,7 @@ const searchResults = await index.search({
 
 All the operations below except for filtering array elements and nested objects are supported in the typesafe filters.
 
----
+***
 
 ## Operators
 
@@ -177,7 +179,7 @@ It is applicable to _string_, _number_, and _boolean_ values.
 warehouse_location = 'A3-15' AND in_stock = 3
 ```
 
----
+***
 
 #### Not Equals (!=)
 
@@ -189,7 +191,7 @@ It is applicable to _string_, _number_, and _boolean_ values.
 warehouse_location != 'A3-15' AND in_stock != 3
 ```
 
----
+***
 
 #### Less Than (\<)
 
@@ -201,7 +203,7 @@ It is applicable to _number_ values.
 in_stock < 3
 ```
 
----
+***
 
 #### Less Than or Equals (\<=)
 
@@ -213,7 +215,7 @@ It is applicable to _number_ values.
 in_stock <= 3
 ```
 
----
+***
 
 #### Greater Than (>)
 
@@ -225,7 +227,7 @@ It is applicable to _number_ values.
 in_stock > 3
 ```
 
----
+***
 
 #### Greater Than or Equals (>=)
 
@@ -237,7 +239,7 @@ It is applicable to _number_ values.
 in_stock >= 3
 ```
 
----
+***
 
 #### Glob
 
@@ -249,13 +251,13 @@ It is a case sensitive operator.
 
 The glob operator supports the following wildcards:
 
-- `*` matches zero or more characters.
-- `?` matches exactly one character.
-- `[]` matches one character from the list
-  - `[abc]` matches either `a`, `b`, or `c`.
-  - `[a-z]` matches one of the range of characters from `a` to `z`.
-  - `[^abc]` matches any one character other than `a`, `b`, or `c`.
-  - `[^a-z]` matches any one character other than `a` to `z`.
+* `*` matches zero or more characters.
+* `?` matches exactly one character.
+* `[]` matches one character from the list
+  * `[abc]` matches either `a`, `b`, or `c`.
+  * `[a-z]` matches one of the range of characters from `a` to `z`.
+  * `[^abc]` matches any one character other than `a`, `b`, or `c`.
+  * `[^a-z]` matches any one character other than `a` to `z`.
 
 For example, the filter below would only match with warehouse locations whose first character is `A` or `B`.
 
@@ -263,7 +265,7 @@ For example, the filter below would only match with warehouse locations whose fi
 warehouse_location GLOB '[AB]*'
 ```
 
----
+***
 
 #### Not Glob
 
@@ -279,7 +281,7 @@ For example, the filter below would only match with warehouse locations whose fi
 warehouse_location NOT GLOB 'A*'
 ```
 
----
+***
 
 #### In
 
@@ -297,7 +299,7 @@ Semantically, it is equivalent to equals operator applied to all of the given li
 country = 'Germany' OR country = 'Turkey' OR country = 'France'
 ```
 
----
+***
 
 #### Not In
 
@@ -315,7 +317,7 @@ Semantically, it is equivalent to not equals operator applied to all of the give
 economy.currency != 'USD' AND economy.currency != 'EUR'
 ```
 
----
+***
 
 #### Contains
 
@@ -327,7 +329,7 @@ It is applicable to _array_ values.
 economy.major_industries CONTAINS 'Tourism'
 ```
 
----
+***
 
 #### Not Contains
 
@@ -339,7 +341,7 @@ It is applicable to _array_ values.
 economy.major_industries NOT CONTAINS 'Steel Production'
 ```
 
----
+***
 
 #### Has Field
 
@@ -349,7 +351,7 @@ The `has field` operator filters content which have the given JSON field.
 HAS FIELD geography.coordinates
 ```
 
----
+***
 
 #### Has Not Field
 
@@ -359,7 +361,7 @@ The `has not field` operator filters content which do not have the given JSON fi
 HAS NOT FIELD geography.coordinates.longitude
 ```
 
----
+***
 
 ### Boolean Operators
 
@@ -389,7 +391,7 @@ would be equivalent to
 (country = 'Turkey' AND population > 10000000) OR is_capital = false
 ```
 
----
+***
 
 ### Filtering Nested Objects
 
@@ -402,7 +404,7 @@ in the same identifier.
 economy.currency != 'USD' AND geography.coordinates.latitude >= 35.0
 ```
 
----
+***
 
 ### Filtering Array Elements
 
@@ -423,13 +425,13 @@ last element.
 economy.major_industries[#-1] = 'Finance'
 ```
 
----
+***
 
 ### Miscellaneous
 
-- Identifiers (the left side of the operators) should be of the form `[a-zA-Z_][a-zA-Z_0-9.[\]#-]*`. In simpler terms, they should
+* Identifiers (the left side of the operators) should be of the form `[a-zA-Z_][a-zA-Z_0-9.[\]#-]*`. In simpler terms, they should
   start with characters from the English alphabet or `_`, and can continue with same characters plus numbers and other accessors
   like `.`, `[0]`, or `[#-1]`.
-- The string literals (strings in the right side of the operators) can be either single or double quoted.
-- Boolean literals are represented as `1` or `0`.
-- The operators, boolean operators, and boolean literals are case insensitive.
+* The string literals (strings in the right side of the operators) can be either single or double quoted.
+* Boolean literals are represented as `1` or `0`.
+* The operators, boolean operators, and boolean literals are case insensitive.

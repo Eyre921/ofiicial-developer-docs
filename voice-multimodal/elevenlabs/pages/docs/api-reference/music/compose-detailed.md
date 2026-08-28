@@ -81,6 +81,7 @@ Reference: https://elevenlabs.io/docs/api-reference/music/compose-detailed
 - `respect_sections_durations` (boolean, optional, default: true) — Controls how strictly section durations in the `composition_plan` are enforced. Only used with `composition_plan` and only applies to `music_v1`; for `music_v2` section durations are always enforced and this is ignored. When false for `music_v1`, the model may adjust individual section durations for better quality and latency, while preserving the total song duration from the plan.
 - `store_for_inpainting` (boolean, optional, default: false) — Whether to store the generated song for inpainting.
 - `with_timestamps` (boolean, optional, default: false) — Whether to return the timestamps of the words in the generated song.
+- `with_waveform_visual` (boolean, optional, default: false) — Whether to return the visual waveform of the generated song.
 - `sign_with_c2pa` (boolean, optional, default: false) — Whether to sign the generated song with C2PA. Applicable only for mp3 files.
 
 ## Response

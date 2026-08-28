@@ -72,6 +72,10 @@ Returns the model dict from the API (includes `state`, `kind`, `peftDetails`). S
 
 Validate `output_model_id` with [`validate_output_model_id`](#validate-output-model-id-output-model-id) before calling — a rejected ID (>63 chars or bad charset) orphans the staged sampler blob.
 
+<Warning>
+  The 63-character limit also applies to the **checkpoint id** in `name`, composed as `run-<32-hex>-<your-name>-<8-hex>`. Names passed to `save_weights_for_sampler` / `save_state` must be **17 characters or fewer** or the checkpoint cannot be promoted — and this is only checked at promote time, after training completes.
+</Warning>
+
 ### `list_checkpoints(job_id, *, page_size=200)`
 
 Server-side list of a trainer's checkpoints (sampler + DCP, with promotability metadata). Works on any trainer state — including deleted — while the DB record + GCS blobs survive. Auto-paginates. Distinct from [`FiretitanTrainingClient.list_checkpoints()`](/fine-tuning/training-api/reference/service-client) (live-pod, DCP names only).

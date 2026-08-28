@@ -150,20 +150,38 @@ When using diarization for live streaming audio, only the `speaker` value will b
 
 ### Diarizer Model Metadata
 
-When diarization runs, the response `metadata` includes a `diarize_info` object identifying which diarizer model produced the results. This is useful when `diarize_model=latest` resolves to different versions across batch and streaming.
+When a diarizer runs, the response `metadata` includes a `diarize_info` object that identifies the diarizer build that produced the speaker labels. It appears alongside `model_info` in both pre-recorded and streaming responses, which makes the resolved model visible when `diarize_model=latest` resolves to different versions across batch and streaming:
 
 ```json JSON
 "metadata": {
-  ...
+  "models": ["30089e05-99d1-4376-b32e-c263170674af"],
+  "model_info": {
+    "30089e05-99d1-4376-b32e-c263170674af": {
+      "name": "2-general-nova",
+      "version": "2024-01-09.29447",
+      "arch": "nova-2"
+    }
+  },
   "diarize_info": {
-    "model_uuid": "e2ec2b8a-9b3c-4f1a-8f2e-1a2b3c4d5e6f",
+    "model_uuid": "9a1c8b3e-2f44-4c8a-b1d0-example0000",
     "arch": "v2"
   }
 }
 ```
 
-* `model_uuid` — the UUID of the diarizer model that ran.
-* `arch` — the diarizer architecture family, `v1` or `v2`.
+* `model_uuid` — the UUID of the diarizer build that ran.
+* `arch` — the diarizer architecture family (`v1` or `v2`) that `diarize_model` resolved to, which makes `diarize_model=latest` resolution visible. Legacy `diarize=true` requests report `v1`.
+
+`diarize_info` is present only when a diarizer actually ran:
+
+| Request                                                                                                      | `diarize_info`                            |
+| ------------------------------------------------------------------------------------------------------------ | ----------------------------------------- |
+| `diarize_model=v1`, `v2` (batch only), or `latest`                                                           | Present; `arch` shows the resolved family |
+| `diarize=true` (deprecated)                                                                                  | Present; `arch: "v1"`                     |
+| No diarization requested                                                                                     | Absent                                    |
+| Diarization requested but no diarizer model available (for example, self-hosted v2-only with `diarize=true`) | Absent                                    |
+
+`diarize_info` is either present with both fields or absent entirely — it is never `null` or `{}`. An absent block on a request that asked for diarization means the diarizer did not run, which is how you distinguish a missing diarizer from single-speaker audio.
 
 ## Format Response
 

@@ -8,14 +8,14 @@ path: docs/vector/sdks/ts/getting-started
 
 Using `@upstash/vector` you can:
 
-- Upsert a vector with metadata to an index.
-- Fetching the vectors with specified IDs.
-- Querying a vector over pre-defined embeddings.
-- Delete vectors from an index.
-- Access index stats.
-- Reset everything related to an index.
+* Upsert a vector with metadata to an index.
+* Fetching the vectors with specified IDs.
+* Querying a vector over pre-defined embeddings.
+* Delete vectors from an index.
+* Access index stats.
+* Reset everything related to an index.
 
-You can find the Github Repository [here](https://github.com/upstash/vector-js). 
+You can find the Github Repository [here](https://github.com/upstash/vector-js).
 
 ## Install
 
@@ -38,7 +38,7 @@ There are two pieces of configuration required to use the Upstash vector client:
 
 #### Using environment variables
 
-The environment variables used to configure the client are the following. You can follow [this guide](/vector/overall/getstarted) to retrieve credentials.
+The environment variables used to configure the client are the following. You can follow [this guide](/docs/vector/overall/getstarted) to retrieve credentials.
 
 ```bash
 UPSTASH_VECTOR_REST_URL="your_rest_url"
@@ -81,10 +81,10 @@ const index = new Index<Metadata>();
 ```
 
 Passing a metadata type at the index level will provide strong type safety for the metadata coming back from or required for the following commands:
-- `query`
-- `upsert`
-- `fetch`
-- `range`
+* `query`
+* `upsert`
+* `fetch`
+* `range`
 
 ### Command level types
 
@@ -97,7 +97,7 @@ type Metadata = { genre: string, year: number };
 
 const index = new Index();
 
-index.upsert<Metadata>({ id: 1, vector: [...], metadata: { 
+index.upsert<Metadata>({ id: 1, vector: [...], metadata: {
   genre: "comedy",
   year: 1990
 }});

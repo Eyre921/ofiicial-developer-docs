@@ -208,7 +208,7 @@ List of supported event types and their payload.
 
     <div>
       *Note: When importing multiple contacts using CSV, these events won't be
-      triggered. [Contact support](https://resend.com/contact) if you have any
+      triggered. [Contact support](https://resend.com/help) if you have any
       questions.*
     </div>
   </div>

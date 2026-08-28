@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/transactions/watch
 path: docs/redis/commands/transactions/watch
 ---
 
-> Watch keys for changes.
-
 Use `WATCH` to mark keys whose modification should cancel the next transaction, which gives you optimistic locking.
 
-If any watched key is changed by another client between the `WATCH` and the [`EXEC`](/redis/commands/transactions/exec), the transaction is not executed and `EXEC` replies with null instead. Nothing is locked in the meantime: other clients keep working normally, and the conflict is detected rather than prevented.
+If any watched key is changed by another client between the `WATCH` and the [`EXEC`](/docs/redis/commands/transactions/exec), the transaction is not executed and `EXEC` replies with null instead. Nothing is locked in the meantime: other clients keep working normally, and the conflict is detected rather than prevented.
 
-The usual loop is: watch the keys, read them, decide what to write, open [`MULTI`](/redis/commands/transactions/multi), queue the writes, and call `EXEC`, retrying from the top when the reply is null. That is how a read-modify-write cycle stays correct without holding a lock. All watches are cleared by `EXEC` and [`DISCARD`](/redis/commands/transactions/discard).
+The usual loop is: watch the keys, read them, decide what to write, open [`MULTI`](/docs/redis/commands/transactions/multi), queue the writes, and call `EXEC`, retrying from the top when the reply is null. That is how a read-modify-write cycle stays correct without holding a lock. All watches are cleared by `EXEC` and [`DISCARD`](/docs/redis/commands/transactions/discard).
 
 The raw command is TCP-only. Over HTTP, use the transaction or pipeline API of an Upstash SDK instead of sending this command directly.
 
@@ -28,7 +26,7 @@ WATCH <key> [<key> ...]
 
 ## Important points
 
-- The raw command is TCP-only. For HTTP, use an Upstash SDK transaction API rather than sending this command directly.
+* The raw command is TCP-only. For HTTP, use an Upstash SDK transaction API rather than sending this command directly.
 
 ## Response
 

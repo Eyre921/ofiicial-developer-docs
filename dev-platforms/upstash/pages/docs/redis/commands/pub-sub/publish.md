@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/pub-sub/publish
 path: docs/redis/commands/pub-sub/publish
 ---
 
-> Publish message to channel.
-
 Use `PUBLISH` to send a message to a channel.
 
-The reply is the number of subscribers the message was delivered to, counting both channel and pattern subscribers, so a reply of `0` means nobody was listening. Delivery is fire and forget: messages are not stored and a client that is not connected at that moment never sees them, so use [streams](/redis/commands/streams/overview) when messages must survive a disconnect or be replayed.
+The reply is the number of subscribers the message was delivered to, counting both channel and pattern subscribers, so a reply of `0` means nobody was listening. Delivery is fire and forget: messages are not stored and a client that is not connected at that moment never sees them, so use [streams](/docs/redis/commands/streams/overview) when messages must survive a disconnect or be replayed.
 
 Publishing works over both the REST API and a TCP connection, while subscribing requires a TCP connection.
 

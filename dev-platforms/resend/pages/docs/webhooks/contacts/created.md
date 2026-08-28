@@ -8,7 +8,7 @@ Received when a contact is created.
 
 Event triggered whenever a **contact was successfully created**.
 
-*Note: When importing multiple contacts using CSV, these events won't be triggered. [Contact support](https://resend.com/contact) if you have any questions.*
+*Note: When importing multiple contacts using CSV, these events won't be triggered. [Contact support](https://resend.com/help) if you have any questions.*
 
 <ResponseBodyParameters type="contact.created">
   <ParamField type="string">

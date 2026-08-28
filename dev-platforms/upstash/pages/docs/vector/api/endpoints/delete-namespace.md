@@ -4,10 +4,6 @@ source: https://upstash.com/docs/vector/api/endpoints/delete-namespace
 path: docs/vector/api/endpoints/delete-namespace
 ---
 
-> Deletes a namespace of an index.
-
-`DELETE https://{endpoint}/delete-namespace/{namespace}`
-
 <Note>
   The default namespace, which is the empty string `""`, cannot be deleted.
 </Note>
@@ -27,3 +23,30 @@ This endpoint doesn't require any additional data.
 <ResponseField name="result" type="string">
   `"Success"` string.
 </ResponseField>
+
+<RequestExample>
+
+```sh curl
+curl $UPSTASH_VECTOR_REST_URL/delete-namespace/ns \
+  -X DELETE \
+  -H "Authorization: Bearer $UPSTASH_VECTOR_REST_TOKEN"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 OK
+{
+    "result": "Success"
+}
+```
+
+```json 404 Not Found
+{
+    "error": "Namespace ns for the index $NAME does not exist",
+    "status": 404
+}
+```
+
+</ResponseExample>

@@ -19,6 +19,15 @@ Your plan includes a monthly pool of credits. Credits are consumed by different 
 | Staff-first mode (human answers) | 1.0 per minute  |
 | Assistant chat message           | 0.1 per message |
 
+Monthly credit pools vary by plan:
+
+| Plan    | Included credits |
+| ------- | ---------------- |
+| Trial   | 30               |
+| Basic   | 75               |
+| Plus    | 275              |
+| Premium | 1,000            |
+
 ### Checking usage
 
 Go to **Settings** → **Billing** to see:
@@ -34,10 +43,10 @@ Each plan has hard limits on:
 
 | Resource               | Basic | Plus | Premium |
 | ---------------------- | ----- | ---- | ------- |
-| Phone numbers          | 1     | 1    | 3       |
+| Phone numbers          | 1     | 3    | 5       |
 | Receptionists          | 1     | 1    | 3       |
 | Locations              | 1     | 1    | 20      |
-| Knowledge sources      | 10    | 20   | 50      |
+| Knowledge sources      | 5     | 10   | 20      |
 | Concurrent calls       | 1     | 3    | 10      |
 | Assistant messages/day | 150   | 300  | 500     |
 
@@ -47,11 +56,13 @@ Credits reset at the start of each billing period. Unused credits do not roll ov
 
 ## Overage
 
-On paid plans, exceeding your credit pool triggers overage billing at **\$0.40 per credit**. This means:
+On paid plans, exceeding your credit pool triggers overage billing at a rate set by your plan:
 
-* Extra phone minutes: \$0.40/min
-* Extra web minutes: $0.20/min (0.5 credits × $0.40)
-* Extra chat messages: $0.04/message (0.1 credits × $0.40)
+| Plan    | Per credit | Phone call/min | Web chat/min | Assistant message |
+| ------- | ---------- | -------------- | ------------ | ----------------- |
+| Basic   | \$0.45     | \$0.45         | \$0.225      | \$0.045           |
+| Plus    | \$0.38     | \$0.38         | \$0.19       | \$0.038           |
+| Premium | \$0.30     | \$0.30         | \$0.15       | \$0.03            |
 
 ## Assistant daily limit
 
@@ -59,7 +70,7 @@ The business assistant has a separate daily message cap that resets at midnight 
 
 | Plan    | Messages per day |
 | ------- | ---------------- |
-| Trial   | 500              |
+| Trial   | 150              |
 | Basic   | 150              |
 | Plus    | 300              |
 | Premium | 500              |

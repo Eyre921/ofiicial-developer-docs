@@ -9,8 +9,8 @@ Middlewares allow you to intercept and respond to workflow lifecycle events and 
 ## Overview
 
 A middleware can hook into:
-- **Lifecycle Events**: Run started, run completed, before/after step execution
-- **Debug Events**: Errors, warnings, and info messages
+* **Lifecycle Events**: Run started, run completed, before/after step execution
+* **Debug Events**: Errors, warnings, and info messages
 
 ## Built-in Middleware
 
@@ -33,9 +33,9 @@ export const { POST } = serve(
 ```
 
 The logging middleware outputs detailed execution logs to your application's console, including:
-- When workflow runs start and complete
-- Before and after each step execution
-- Error, warning, and info messages
+* When workflow runs start and complete
+* Before and after each step execution
+* Error, warning, and info messages
 
 ## Creating Custom Middleware
 
@@ -116,7 +116,7 @@ const databaseMiddleware = new WorkflowMiddleware({
   Called when a workflow run begins.
 
   **Parameters:**
-  - `context`: The workflow context
+  * `context`: The workflow context
 
   ```typescript
   runStarted: async ({ context }) => {
@@ -129,8 +129,8 @@ const databaseMiddleware = new WorkflowMiddleware({
   Called before each step executes.
 
   **Parameters:**
-  - `context`: The workflow context
-  - `stepName`: Name of the step about to execute
+  * `context`: The workflow context
+  * `stepName`: Name of the step about to execute
 
   ```typescript
   beforeExecution: async ({ context, stepName }) => {
@@ -143,9 +143,9 @@ const databaseMiddleware = new WorkflowMiddleware({
   Called after each step completes.
 
   **Parameters:**
-  - `context`: The workflow context
-  - `stepName`: Name of the completed step
-  - `result`: The result returned by the step
+  * `context`: The workflow context
+  * `stepName`: Name of the completed step
+  * `result`: The result returned by the step
 
   ```typescript
   afterExecution: async ({ context, stepName, result }) => {
@@ -158,8 +158,8 @@ const databaseMiddleware = new WorkflowMiddleware({
   Called when the entire workflow run finishes.
 
   **Parameters:**
-  - `context`: The workflow context
-  - `result`: The final result of the workflow
+  * `context`: The workflow context
+  * `result`: The final result of the workflow
 
   ```typescript
   runCompleted: async ({ context, result }) => {
@@ -174,8 +174,8 @@ const databaseMiddleware = new WorkflowMiddleware({
   Called when an error occurs.
 
   **Parameters:**
-  - `workflowRunId`: The workflow run ID (optional)
-  - `error`: The error object
+  * `workflowRunId`: The workflow run ID (optional)
+  * `error`: The error object
 
   ```typescript
   onError: async ({ workflowRunId, error }) => {
@@ -188,8 +188,8 @@ const databaseMiddleware = new WorkflowMiddleware({
   Called when a warning is logged.
 
   **Parameters:**
-  - `workflowRunId`: The workflow run ID (optional)
-  - `warning`: The warning message
+  * `workflowRunId`: The workflow run ID (optional)
+  * `warning`: The warning message
 
   ```typescript
   onWarning: async ({ workflowRunId, warning }) => {
@@ -202,8 +202,8 @@ const databaseMiddleware = new WorkflowMiddleware({
   Called when an info message is logged.
 
   **Parameters:**
-  - `workflowRunId`: The workflow run ID (optional)
-  - `info`: The info message
+  * `workflowRunId`: The workflow run ID (optional)
+  * `info`: The info message
 
   ```typescript
   onInfo: async ({ workflowRunId, info }) => {

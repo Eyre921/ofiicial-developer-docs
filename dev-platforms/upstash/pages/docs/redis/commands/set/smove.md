@@ -4,8 +4,6 @@ source: https://upstash.com/docs/redis/commands/set/smove
 path: docs/redis/commands/set/smove
 ---
 
-> Move member between sets.
-
 Use `SMOVE` to move a member from one set to another atomically.
 
 The reply is `1` when the member was moved and `0` when it was not in the source set, in which case nothing changes. If the member already exists in the destination it is simply removed from the source. The destination is created when it does not exist, and the source is deleted when its last member leaves.

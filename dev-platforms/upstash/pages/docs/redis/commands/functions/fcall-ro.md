@@ -4,15 +4,13 @@ source: https://upstash.com/docs/redis/commands/functions/fcall-ro
 path: docs/redis/commands/functions/fcall-ro
 ---
 
-> Call a read-only function.
-
 Use `FCALL_RO` to invoke a function that is declared read-only.
 
 The function must have been registered with the `no-writes` flag; calling a function without it returns an error. In exchange the server knows the call cannot modify data, so it can serve it on replicas and reject accidental writes outright.
 
-Apart from that restriction it behaves like [`FCALL`](/redis/commands/functions/fcall): `<numkeys>` splits the arguments into the keys the function receives in `KEYS` and the plain arguments it receives in `ARGV`.
+Apart from that restriction it behaves like [`FCALL`](/docs/redis/commands/functions/fcall): `<numkeys>` splits the arguments into the keys the function receives in `KEYS` and the plain arguments it receives in `ARGV`.
 
-Being read-only does not by itself make the call concurrent with others. The function takes the global lock unless it was also registered with the `allow-key-locking` flag, as in `flags={'no-writes', 'allow-key-locking'}`. With both flags, the call takes shared read locks on the keys passed in the key list, so several readers of the same key proceed together. See [Key-Based Locking](/redis/features/key-locking).
+Being read-only does not by itself make the call concurrent with others. The function takes the global lock unless it was also registered with the `allow-key-locking` flag, as in `flags={'no-writes', 'allow-key-locking'}`. With both flags, the call takes shared read locks on the keys passed in the key list, so several readers of the same key proceed together. See [Key-Based Locking](/docs/redis/features/key-locking).
 
 ## Syntax
 
@@ -31,9 +29,9 @@ FCALL_RO <function> <numkeys> [<key> [<key> ...]] [<arg> [<arg> ...]]
 
 ## Important points
 
-- `numkeys` must equal the number of key arguments that immediately follow it; remaining arguments are available to the script or function as ordinary arguments.
-- A `no-writes` function still takes the global lock unless it was also registered with the `allow-key-locking` flag. See [Key-Based Locking](/redis/features/key-locking).
-- Pass every key the function reads in the key list whether or not `allow-key-locking` is set. A key built inside the function is read from disk under the lock when it is not in memory, and it is rejected outright when the flag is set. See [Dynamic Keys and Latency](/redis/features/key-locking#dynamic-keys-and-latency).
+* `numkeys` must equal the number of key arguments that immediately follow it; remaining arguments are available to the script or function as ordinary arguments.
+* A `no-writes` function still takes the global lock unless it was also registered with the `allow-key-locking` flag. See [Key-Based Locking](/docs/redis/features/key-locking).
+* Pass every key the function reads in the key list whether or not `allow-key-locking` is set. A key built inside the function is read from disk under the lock when it is not in memory, and it is rejected outright when the flag is set. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 
 ## Response
 

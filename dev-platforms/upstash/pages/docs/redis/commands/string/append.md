@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/string/append
 path: docs/redis/commands/string/append
 ---
 
-> Append value to a string.
-
 Use `APPEND` to add a value to the end of the string stored at a key.
 
-If the key does not exist it is created with the given value, so the command behaves like [`SET`](/redis/commands/string/set) on a fresh key. The reply is the length of the string after the append. Redis grows the underlying buffer with room to spare, so repeated appends stay cheap, which makes this a reasonable way to accumulate log lines or serialized events into one value; [`GETRANGE`](/redis/commands/string/getrange) can then read back a slice without transferring the whole thing.
+If the key does not exist it is created with the given value, so the command behaves like [`SET`](/docs/redis/commands/string/set) on a fresh key. The reply is the length of the string after the append. Redis grows the underlying buffer with room to spare, so repeated appends stay cheap, which makes this a reasonable way to accumulate log lines or serialized events into one value; [`GETRANGE`](/docs/redis/commands/string/getrange) can then read back a slice without transferring the whole thing.
 
 ## Syntax
 

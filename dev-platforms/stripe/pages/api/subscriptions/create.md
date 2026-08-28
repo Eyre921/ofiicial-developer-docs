@@ -194,7 +194,7 @@ The newly created `Subscription` object, if the call succeeded. If the attempted
   Controls how prorations and invoices for subscriptions are calculated and orchestrated.
 
 - [`billing_schedules`](https://docs.stripe.com/api/subscriptions/create.md?query=billing_schedules) (array of objects, optional)
-  Sets the billing schedules for the subscription.
+  An array of billing schedules, which allow you to bill customers in advance for multiple service periods. Requires flexible billing mode and API version 2026-05-27.dahlia or later. Learn more about [prebilling](https://docs.stripe.com/billing/subscriptions/prebilling.md).
 
 - [`billing_thresholds`](https://docs.stripe.com/api/subscriptions/create.md?query=billing_thresholds) (object, optional)
   Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. When updating, pass an empty string to remove previously-defined thresholds.
@@ -274,7 +274,7 @@ Possible enum values:
     When the first invoice requires payment, creates a Subscription with `status=incomplete` without attempting payment, otherwise `status=active`. You must request explicit confirmation of the Invoice’s PaymentIntent to activate the subscription. The resulting Invoice has [auto_advance=false](https://docs.stripe.com/api/invoices/object.md#invoice_object-auto_advance), so Stripe doesn’t automatically attempt payment, retry payment, or finalize the subscription.
 
   - `error_if_incomplete`
-    If payment fails, return an HTTP `402` status code and don’t create the subscription. This behavior doesn’t support payments that require user action, such as 3DS authentication, because it returns an error instead of creating a PaymentIntent with `status=requires_action`. This behavior was the default for API versions before [2019-03-14](changelog/2019-03-14/subscriptions-successfully-created-first-payment-fails).
+    If payment fails, return an HTTP `402` status code and don’t create the subscription. This behavior doesn’t support payments that require user action, such as 3DS authentication, because it returns an error instead of creating a PaymentIntent with `status=requires_action`. To handle payments that require action, use `allow_incomplete` or `default_incomplete` instead. This behavior was the default for API versions before [2019-03-14](changelog/2019-03-14/subscriptions-successfully-created-first-payment-fails).
 
   - `pending_if_incomplete`
     This behavior is exclusive to Subscription updates and cannot be used for creation.

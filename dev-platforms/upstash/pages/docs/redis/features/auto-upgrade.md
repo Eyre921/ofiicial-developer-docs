@@ -12,20 +12,16 @@ Auto Upgrade is particularly useful for applications with fluctuating or growing
 
 When enabled:
 
-- For **bandwidth limits**: Instead of throttling your traffic when you reach the bandwidth limit, your database will automatically upgrade to the next plan to accommodate the increased traffic.
-- For **storage limits**:  
-    - **When eviction is off**: Instead of rejecting write operations when you reach maximum data size, your database will upgrade to a plan with larger storage capacity. 
-    - **When eviction is on**: Your data will be evicted and operations will resume. Auto Upgrade will not be triggered and system will rely on eviction mechanism in this case.
+* For **bandwidth limits**: Instead of throttling your traffic when you reach the bandwidth limit, your database will automatically upgrade to the next plan to accommodate the increased traffic.
+* For **storage limits**:
+    * **When eviction is off**: Instead of rejecting write operations when you reach maximum data size, your database will upgrade to a plan with larger storage capacity.
+    * **When eviction is on**: Your data will be evicted and operations will resume. Auto Upgrade will not be triggered and system will rely on eviction mechanism in this case.
 
 ## Managing Auto Upgrade
 
-- You can enable Auto Upgrade by checking the Auto Upgrade checkbox while creating a new database:
+* You can enable Auto Upgrade by checking the Auto Upgrade checkbox while creating a new database:
 
-  <Frame>
-    <img src="/img/auto-upgrade/create-database.png" width="%50" />
-  </Frame>
+    <img width="%50" />
 
-- Or for an existing database by clicking Enable in the Configuration/Auto Upgrade box in the database details page:
-  <Frame>
-    <img src="/img/auto-upgrade/configuration.png" width="600" height="300" />
-  </Frame>
+* Or for an existing database by clicking Enable in the Configuration/Auto Upgrade box in the database details page:
+    <img width="600" height="300" />

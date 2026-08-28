@@ -14,8 +14,8 @@ In this guide, we’ll build a RAG chatbot using the AI SDK. This chatbot will b
 
 Before getting started, make sure you have:
 
-- An Upstash account (to upsert and query data)
-- An OpenAI API key (to generate responses and embeddings)
+* An Upstash account (to upsert and query data)
+* An OpenAI API key (to generate responses and embeddings)
 
 ## Setup and Installation
 
@@ -95,7 +95,7 @@ function generateChunks(input: string): string[] {
 // Upsert
 export async function upsertEmbedding(resourceId: string, content: string) {
   const chunks = generateChunks(content)
-  
+
   // Convert each chunk into an Upstash upsert object
   const toUpsert = chunks.map((chunk, i) => ({
     id: `${resourceId}-${i}`,
@@ -266,7 +266,7 @@ export async function POST(req: Request) {
     messages,
 
     // 3. Prompt the model
-    system: `You are a helpful RAG assistant. 
+    system: `You are a helpful RAG assistant.
     You have the ability to add and retrieve content from your knowledge base.
     Only respond to the user with information found in your knowledge base.
     If no relevant information is found, respond with: "Sorry, I don't know."`,
@@ -322,12 +322,12 @@ export default function Home() {
   return (
     <div className="mx-auto max-w-md py-6">
       <h1 className="text-xl font-bold mb-4">RAG Chatbot with Upstash Vector</h1>
-      
+
       {/* Render messages */}
       <div className="space-y-2 mb-8">
         {messages.map(m => (
           <div key={m.id} className="border p-2 rounded">
-            <strong>{m.role}:</strong> 
+            <strong>{m.role}:</strong>
             <div>
               {/* If the model calls a tool, show which tool it called */}
               {m.content.length > 0 ? (
@@ -367,22 +367,16 @@ npm run dev
 
 Here is a screenshot of the chatbot in action:
 
-<Frame caption="Adding information to the knowledge base">
-  <img src="/img/vector/integrations/ai-sdk/rag-chatbot-1.png" />
-</Frame>
+  <img />
 
-<Frame caption="Added information can be seen in Upstash Console">
-  <img src="/img/vector/integrations/ai-sdk/console.png" />
-</Frame>
+  <img />
 
-<Frame caption="Retrieving information from the knowledge base in another conversation">
-  <img src="/img/vector/integrations/ai-sdk/rag-chatbot-2.png" />
-</Frame>
+  <img />
 
 If you would like to see the entire code of a slightly revised version of this chatbot, you can check out the [GitHub repository](https://github.com/Abdusshh/rag-chatbot-ai-sdk). In this version, the user chooses which embedding model to use through the UI.
 
 ## Conclusion
 
-Congratulations! You have successfully created a RAG chatbot that uses Upstash Vector to store and retrieve information. To learn more about Upstash Vector, please visit the [Upstash Vector documentation](/vector).
+Congratulations! You have successfully created a RAG chatbot that uses Upstash Vector to store and retrieve information. To learn more about Upstash Vector, please visit the [Upstash Vector documentation](/docs/vector).
 
 To learn more about the AI SDK, visit the [Vercel AI SDK documentation](https://sdk.vercel.ai/docs/introduction). While creating this tutorial, we used the [RAG Chatbot guide](https://sdk.vercel.ai/docs/guides/rag-chatbot) created by Vercel, which uses PostgreSQL with pgvector as a vector database. Make sure to check it out if you want to learn how to create a RAG chatbot using pgvector.

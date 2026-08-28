@@ -20,7 +20,7 @@ Click <strong>Invite New User</strong>
 
 Enter the email address of the person you want to invite
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8fe6ed56dd94671c2eb5a48e4ce70cd6431bf21d8a4704b451f24befbbec8efc/assets/images/help-center/product/eleven-agents/how-do-i-share-an-agent-with-a-basic-seat-member-of-my-workspace.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260826%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260826T233801Z&X-Amz-Expires=604800&X-Amz-Signature=2c6931fee65ddc3094776794b719d563b6fc78d82bd2ce4eaf44082c8f74a861&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8fe6ed56dd94671c2eb5a48e4ce70cd6431bf21d8a4704b451f24befbbec8efc/assets/images/help-center/product/eleven-agents/how-do-i-share-an-agent-with-a-basic-seat-member-of-my-workspace.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260828%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260828T113350Z&X-Amz-Expires=604800&X-Amz-Signature=724a0575b3bd68d2c117fd0383c8f76770a817f9ffd67a3952e5b0c0d672fb50&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
 
 Once the new member has joined your workspace, you'll need to make sure that the agent is shared so that they can access it. 
 

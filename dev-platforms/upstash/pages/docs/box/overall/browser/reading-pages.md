@@ -98,7 +98,7 @@ print(article.title, article.author)
 <Note>
   `extract` uses an LLM and is metered. It needs a provider API key on the box
   or your account, and accepts an optional `model` override just like the other
-  [AI Actions](/box/overall/browser/ai-actions).
+  [AI Actions](/docs/box/overall/browser/ai-actions).
 </Note>
 
 The result is parsed with your schema before it is returned, so a successful call always gives you data in the shape you asked for.

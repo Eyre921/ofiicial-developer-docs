@@ -38,7 +38,7 @@ You can retrieve the mandate using the ID from the webhook event to review the a
 ```curl
 curl https://api.stripe.com/v2/money_management/received_debit_mandates/{{RECEIVED_DEBIT_MANDATE_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
 ```
 
@@ -79,7 +79,7 @@ You can cancel a mandate to end debit authorization at any time. Canceling while
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/received_debit_mandates/{{RECEIVED_DEBIT_MANDATE_ID}}/cancel \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
 ```
 
@@ -92,7 +92,7 @@ You can retrieve the set of mandates in place for a connected account. Use inlin
 ```curl
 curl https://api.stripe.com/v2/money_management/received_debit_mandates \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-08-26.preview" \
   -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
 ```
 

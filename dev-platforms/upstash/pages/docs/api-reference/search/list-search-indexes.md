@@ -4,6 +4,5 @@ source: https://upstash.com/docs/api-reference/search/list-search-indexes
 path: docs/api-reference/search/list-search-indexes
 ---
 
-> Returns a list of all search indices belonging to the authenticated user.
-
-`GET /search`
+/devops/developer-api/openapi.yaml get /search
+Returns a list of all search indices belonging to the authenticated user.

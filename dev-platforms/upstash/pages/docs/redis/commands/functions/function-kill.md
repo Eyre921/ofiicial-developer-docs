@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/functions/function-kill
 path: docs/redis/commands/functions/function-kill
 ---
 
-> Kill a running function.
-
 Use `FUNCTION KILL` to stop a function that is currently running and has not yet written anything.
 
-A function that has already modified data cannot be killed, because stopping it halfway would leave the dataset in a state that no atomic step could produce. Check [`FUNCTION STATS`](/redis/commands/functions/function-stats) to see whether a function is running before calling this.
+A function that has already modified data cannot be killed, because stopping it halfway would leave the dataset in a state that no atomic step could produce. Check [`FUNCTION STATS`](/docs/redis/commands/functions/function-stats) to see whether a function is running before calling this.
 
 The current Upstash deployment recognizes the command but has no interruptible running-function state to act on, so it replies with a `NOTBUSY` error.
 
@@ -24,7 +22,7 @@ This command takes no arguments.
 
 ## Important points
 
-- The current deployment recognizes this command but reports `NOTBUSY` because it does not expose an interruptible running-function state.
+* The current deployment recognizes this command but reports `NOTBUSY` because it does not expose an interruptible running-function state.
 
 ## Response
 

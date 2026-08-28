@@ -961,6 +961,7 @@ components:
       type: string
       enum:
         - audio
+        - dtmf
         - text
         - image
         - file
@@ -993,6 +994,7 @@ components:
       type: string
       enum:
         - audio
+        - dtmf
         - text
         - image
         - file
@@ -1026,7 +1028,23 @@ components:
           type: string
       required:
         - file_id
+      description: >-
+        Deprecated: single attachment, kept for clients that predate `files`.
+        Ignored when `files` is set.
       title: MultimodalMessageFile
+    MultimodalMessageFilesItems:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - file_input
+          default: file_input
+        file_id:
+          type: string
+      required:
+        - file_id
+      title: MultimodalMessageFilesItems
     MultimodalMessage:
       type: object
       properties:
@@ -1038,6 +1056,16 @@ components:
           $ref: '#/components/schemas/MultimodalMessageText'
         file:
           $ref: '#/components/schemas/MultimodalMessageFile'
+          description: >-
+            Deprecated: single attachment, kept for clients that predate
+            `files`. Ignored when `files` is set.
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/MultimodalMessageFilesItems'
+          description: >-
+            Files attached to this message, at most 5. Each file must already
+            have been uploaded via the conversation file upload endpoint.
       title: MultimodalMessage
     Pong:
       type: object

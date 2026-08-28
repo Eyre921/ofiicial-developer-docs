@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/set/srandmember
 path: docs/redis/commands/set/srandmember
 ---
 
-> Get random members.
-
 Use `SRANDMEMBER` to get random members of a set without removing them.
 
 Without a count one member is returned, or null when the key does not exist. A positive count returns up to that many distinct members, capped at the size of the set, while a negative count returns exactly that many members chosen independently, so the same member can appear more than once.
 
-This is the command for sampling, random selection, and inspecting an unfamiliar set. Use [`SPOP`](/redis/commands/set/spop) when the chosen members must be consumed.
+This is the command for sampling, random selection, and inspecting an unfamiliar set. Use [`SPOP`](/docs/redis/commands/set/spop) when the chosen members must be consumed.
 
 ## Syntax
 

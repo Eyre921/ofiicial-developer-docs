@@ -4,11 +4,9 @@ source: https://upstash.com/docs/redis/commands/connection/client-id
 path: docs/redis/commands/connection/client-id
 ---
 
-> Get the current client ID.
-
 Use `CLIENT ID` to get the unique identifier the server assigned to the current connection.
 
-IDs are integers that never repeat and always increase, so a larger ID means a connection that was established later. The ID identifies this connection in [`CLIENT LIST`](/redis/commands/connection/client-list) output, which makes it useful when correlating application logs with server-side connection state.
+IDs are integers that never repeat and always increase, so a larger ID means a connection that was established later. The ID identifies this connection in [`CLIENT LIST`](/docs/redis/commands/connection/client-list) output, which makes it useful when correlating application logs with server-side connection state.
 
 ## Syntax
 
@@ -22,8 +20,8 @@ This command takes no arguments.
 
 ## Important points
 
-- This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
-- This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
+* This is a connection-oriented command and is available over native Redis TCP, not the stateless REST endpoint.
+* This command can expose administrative information or make a broad destructive change. Restrict it to trusted code paths.
 
 ## Response
 

@@ -4,13 +4,11 @@ source: https://upstash.com/docs/redis/commands/hash/hrandfield
 path: docs/redis/commands/hash/hrandfield
 ---
 
-> Get random fields from a hash.
-
 Use `HRANDFIELD` to get one or more random fields from a hash.
 
 Without a count a single field name is returned, or null when the key does not exist. A positive count returns up to that many distinct fields, capped at the size of the hash, while a negative count returns exactly that many fields chosen independently, so the same field can come up more than once. `WITHVALUES` returns each field together with its value.
 
-Nothing is removed from the hash, which is the difference from [`HGETDEL`](/redis/commands/hash/hgetdel): use this for sampling, random selection, and quick inspection of an unfamiliar hash.
+Nothing is removed from the hash, which is the difference from [`HGETDEL`](/docs/redis/commands/hash/hgetdel): use this for sampling, random selection, and quick inspection of an unfamiliar hash.
 
 ## Syntax
 
@@ -27,7 +25,7 @@ HRANDFIELD <key> [<count> [WITHVALUES]]
 
 ## Important points
 
-- Pair-based results may be flattened into one alternating array in RESP2 while RESP3 preserves nested pairs or a map.
+* Pair-based results may be flattened into one alternating array in RESP2 while RESP3 preserves nested pairs or a map.
 
 ## Response
 
