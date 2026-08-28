@@ -4438,7 +4438,7 @@ Creating a job returns a `workflow_id` and a `pending` status. The job then move
     { "status": "running", "message": "Job status updated", "timestamp": "2025-06-30T12:51:02.439097636Z" },
     { "status": "completed", "message": "Job status updated", "timestamp": "2025-06-30T12:51:57.261327077Z" }
   ],
-  "parameters": { "judge": { "model": "deepseek-ai/DeepSeek-V4-Pro", "model_source": "serverless", "system_template": "..." }, "model_a": "response_a", "model_b": "response_b", "input_data_file_path": "file-64febadc-ef84-415d-aabe-1e4e6a5fd9ce" },
+  "parameters": { "judge": { "model": "openai/gpt-oss-120b", "model_source": "serverless", "system_template": "..." }, "model_a": "response_a", "model_b": "response_b", "input_data_file_path": "file-64febadc-ef84-415d-aabe-1e4e6a5fd9ce" },
   "created_at": "2025-06-30T12:50:40.723521Z",
   "updated_at": "2025-06-30T12:51:57.261342Z",
   "results": {
@@ -5178,6 +5178,7 @@ Run a local data validation check before uploading to avoid unnecessary charges.
   import json
   from together import Together
   from together.lib.utils import check_file
+  from together.lib.resources import FileUploadProgress
 
   client = Together()
 
@@ -5185,10 +5186,16 @@ Run a local data validation check before uploading to avoid unnecessary charges.
   print(json.dumps(report, indent=2))
   assert report["is_check_passed"]
 
+
+  def on_progress(event: FileUploadProgress) -> None:
+      print(f"{event.uploaded_bytes}/{event.total_bytes}")
+
+
   train_file = client.files.upload(
       file="train.jsonl",
       purpose="fine-tune",
       check=True,
+      progress_callback=on_progress,
   )
   print(train_file.id)
   ```
@@ -5206,6 +5213,8 @@ Run a local data validation check before uploading to avoid unnecessary charges.
   console.log(trainFile.id);
   ```
 </CodeGroup>
+
+In the Python snippet, the optional `progress_callback` receives `FileUploadProgress` events (`uploaded_bytes`, `total_bytes`) as the upload runs. Omit it to upload silently.
 
 `check_file()` returns a report you can inspect before uploading. A passing file looks like:
 
@@ -7823,6 +7832,7 @@ Manage, scale, and operate your GPU clusters
 * [Kubernetes Dashboard](#kubernetes-dashboard)
 * [Direct SSH Access](#direct-ssh-access)
 * [Managing Cluster Access](#managing-cluster-access)
+* [Download cluster kubeconfig](#download-cluster-kubeconfig)
 * [Cluster Scaling](#cluster-scaling)
 * [Monitoring and Status](#monitoring-and-status)
 * [Best Practices](#best-practices)
@@ -8222,6 +8232,34 @@ Cluster access is controlled through Together's [project-based permissions](/doc
 * **editor** -- Can use clusters (SSH, kubectl, Slurm) but can't create, delete, or modify infrastructure
 
 For the full permission matrix, see [Roles & Permissions](/docs/roles-permissions).
+
+### Download cluster kubeconfig
+
+Both Kubernetes and Slurm clusters expose a kubeconfig for `kubectl` access to the cluster's Kubernetes API. Download it from the cluster details page at [api.together.ai/clusters](https://api.together.ai/clusters), or with the [Together CLI](/reference/cli/clusters).
+
+**From the console:**
+
+1. Open your cluster. The kubeconfig appears once the cluster is ready and is hidden while the cluster is paused.
+2. Find the **Kubeconfig** row in the cluster sidebar (labeled **Admin Kubeconfig** when OIDC is enabled).
+3. Select **View** to copy the contents, or **Download** to save it as a file.
+
+**From the CLI:**
+
+```bash theme={null}
+tg beta clusters get-credentials [CLUSTER_ID] --set-default-context
+```
+
+Find your cluster ID with `tg beta clusters list`.
+
+**Who can view the kubeconfig:**
+
+| OIDC     | Console label        | Who can view                             |
+| -------- | -------------------- | ---------------------------------------- |
+| Disabled | **Kubeconfig**       | All project members (admins and editors) |
+| Enabled  | **Admin Kubeconfig** | Project admins only                      |
+| Enabled  | **OIDC Kubeconfig**  | All project members (admins and editors) |
+
+When OIDC is enabled, editors use the OIDC kubeconfig for day-to-day `kubectl` access, and project admins keep the admin kubeconfig for administrative tasks such as RBAC setup. See [Set up OIDC authentication](/docs/cluster-oidc).
 
 ### Adding Users to a Cluster Project
 
@@ -8777,6 +8815,16 @@ squeue         # View job queue
    * [Learn about Slurm commands](/docs/slurm)
    * Submit batch jobs with `sbatch`
    * Run interactive jobs with `srun`
+
+5. **Optional: Download kubeconfig**
+
+   Slurm clusters run on Kubernetes, so if you need `kubectl` access to the underlying cluster API, any project member can download the kubeconfig from the cluster details page or with the Together CLI:
+
+```bash theme={null}
+tg beta clusters get-credentials [CLUSTER_ID] --set-default-context
+```
+
+SSH to the login node remains the primary workflow for submitting jobs. See [Download cluster kubeconfig](/docs/gpu-clusters-management#download-cluster-kubeconfig) for console steps and OIDC visibility rules.
 
 ## Common First Tasks
 
@@ -9399,13 +9447,12 @@ Models not listed run at standard rates.
 
 The following serverless models are not currently available for batch processing. Batch jobs that target these models will fail:
 
-| Model ID                      |
-| ----------------------------- |
-| `deepseek-ai/DeepSeek-R1`     |
-| `deepseek-ai/DeepSeek-V3.1`   |
-| `deepseek-ai/DeepSeek-V4-Pro` |
-| `moonshotai/Kimi-K2.5`        |
-| `moonshotai/Kimi-K2.6`        |
+| Model ID                    |
+| --------------------------- |
+| `deepseek-ai/DeepSeek-R1`   |
+| `deepseek-ai/DeepSeek-V3.1` |
+| `moonshotai/Kimi-K2.5`      |
+| `moonshotai/Kimi-K2.6`      |
 
 ## Run your first batch job
 
@@ -9430,6 +9477,7 @@ Together bills you for each successful response in the output file. Failed reque
 
 * [Run a batch job](/docs/inference/batch/tutorial): tutorial walking through an end-to-end batch job from JSONL to results.
 * [Manage batch jobs](/docs/inference/batch/manage): cancel, list, error files, and other operational reference.
+* [Batches CLI](/reference/cli/batches): submit, list, retrieve, download, and cancel batch jobs from the terminal.
 * [OpenAI compatibility](/docs/inference/openai-compatibility): how Together's Batch API compares to the OpenAI Batch endpoint.
 
 
@@ -9447,6 +9495,7 @@ Before you begin, make sure you have:
 * [Created an account](https://api.together.ai/settings/projects/~first/api-keys) and generated an API key.
 * Set `TOGETHER_API_KEY` as an environment variable: `export TOGETHER_API_KEY=<your-key>`. See [API keys and authentication](/docs/api-keys-authentication) for details.
 * [Installed the Python or TypeScript SDK](/docs/quickstart#step-2-install-the-sdk). Python examples require `together>=2.0.0`.
+* [Installed the Together CLI](/reference/cli/getting-started) to follow the CLI examples. The `tg batches` commands require version 2.32.0 or later (check with `tg --version`).
 
 ## Step 1: Prepare a JSONL input file
 
@@ -9471,11 +9520,15 @@ Save the following as `batch_input.jsonl`:
 
 ## Step 2: Upload the file
 
-Upload the JSONL file with `purpose="batch-api"`. The upload returns a file object whose `id` you'll pass to the batch job in the next step.
+Upload the JSONL file with `purpose="batch-api"`. The upload returns a file object whose `id` you'll pass to the batch job in the next step. If you're using the CLI, you can skip this step entirely: `tg batches submit` accepts a local file path and uploads it for you (see the next step).
 
-Pass `check=False` to skip client-side validation. The server still validates the file during the `VALIDATING` phase, and skipping the client check is faster for large files without changing the error surface. With `check=True` (default), the SDK parses each JSONL line locally and raises `TogetherException` before uploading if a line is malformed.
+Pass `check=False` (`--no-check` in the CLI) to skip client-side validation. The server still validates the file during the `VALIDATING` phase, and skipping the client check is faster for large files without changing the error surface. With `check=True` (default), the SDK parses each JSONL line locally and raises `TogetherException` before uploading if a line is malformed.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg files upload batch_input.jsonl --purpose batch-api --no-check
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -9524,6 +9577,14 @@ Pass `check=False` to skip client-side validation. The server still validates th
 Now hand the uploaded file's `id` to the batch endpoint, along with the API endpoint each request should run against. For chat completion requests, that's `/v1/chat/completions`. Audio batches use `/v1/audio/transcriptions` or `/v1/audio/translations` — see [Run an audio transcription batch](#run-an-audio-transcription-batch).
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  # Pass the file ID from step 2
+  tg batches submit file-abc123 --api chat.completions
+
+  # Or pass the local path to upload and create the job in one command
+  tg batches submit batch_input.jsonl --api chat.completions
+  ```
+
   ```python Python theme={null}
   response = client.batches.create(
       input_file_id=file_resp.id,
@@ -9561,6 +9622,11 @@ Now hand the uploaded file's `id` to the batch endpoint, along with the API endp
 The job moves through `VALIDATING`, then `IN_PROGRESS`, then a terminal status: `COMPLETED`, `FAILED`, `EXPIRED`, or `CANCELLED`. Poll every 30 to 60 seconds until you hit a terminal status. Tighter loops will hit rate limits without giving the server time to make progress.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  # Shows the status and a progress bar. Re-run until the job reaches a terminal state.
+  tg batches get a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
+  ```
+
   ```python Python theme={null}
   import time
 
@@ -9604,6 +9670,10 @@ Most batches under 1,000 requests finish in minutes. The 24-hour completion wind
 When the job reaches `COMPLETED`, the batch object carries an `output_file_id`. Download that file and you'll get one JSON object per line, each keyed by the `custom_id` from your input. Output line order does not match input line order, so use `custom_id` to reconcile.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg batches download a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d --output batch_output.jsonl
+  ```
+
   ```python Python theme={null}
   with client.files.with_streaming_response.content(
       id=batch.output_file_id,
@@ -9648,7 +9718,7 @@ A successful output line looks like:
 }
 ```
 
-Per-request failures land in a separate file referenced by `error_file_id`. Always check it: a batch can be `COMPLETED` and still contain individual request failures. See [retrieve results and error files](/docs/inference/batch/manage#retrieve-results) on the manage page.
+Per-request failures land in a separate file referenced by `error_file_id`. Always check it: a batch can be `COMPLETED` and still contain individual request failures. The CLI's `download` saves the error file automatically (as `batch_output.errors.jsonl` in this example) whenever the job produced one. See [retrieve results and error files](/docs/inference/batch/manage#retrieve-results) on the manage page.
 
 ## Run an audio transcription batch
 
@@ -9666,6 +9736,10 @@ The Batch API also supports `/v1/audio/transcriptions` and `/v1/audio/translatio
 **2. Pass the audio endpoint when creating the batch.**
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg batches submit audio_batch.jsonl --api audio.transcriptions
+  ```
+
   ```python Python theme={null}
   response = client.batches.create(
       input_file_id=file_resp.id,
@@ -9714,52 +9788,66 @@ For `/v1/audio/translations`, swap the endpoint and use a translation-capable mo
 
 ## Complete script
 
-The full Python program combining all steps above:
+The full flow combining all steps above, as a CLI session or a Python program:
 
-```python Python theme={null}
-import time
-from together import Together
+<CodeGroup>
+  ```bash CLI theme={null}
+  # Upload the file and create the batch in one command
+  tg batches submit batch_input.jsonl --api chat.completions
 
-client = Together()
+  # Re-run until the status is COMPLETED (use the batch ID printed by submit)
+  tg batches get a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
 
-file_resp = client.files.upload(
-    file="batch_input.jsonl",
-    purpose="batch-api",
-    check=False,
-)
-print(f"Uploaded file: {file_resp.id}")
+  # Save the results (and any error file) to disk
+  tg batches download a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d --output batch_output.jsonl
+  ```
 
-response = client.batches.create(
-    input_file_id=file_resp.id,
-    endpoint="/v1/chat/completions",
-)
-batch = response.job
-print(f"Created batch: {batch.id}")
+  ```python Python theme={null}
+  import time
+  from together import Together
 
-while True:
-    batch = client.batches.retrieve(batch.id)
-    print(f"{batch.status}: {batch.progress:.0f}%")
+  client = Together()
 
-    if batch.status == "COMPLETED":
-        break
-    if batch.status in ("FAILED", "EXPIRED", "CANCELLED"):
-        raise SystemExit(f"Batch ended: {batch.status}")
+  file_resp = client.files.upload(
+      file="batch_input.jsonl",
+      purpose="batch-api",
+      check=False,
+  )
+  print(f"Uploaded file: {file_resp.id}")
 
-    time.sleep(30)
+  response = client.batches.create(
+      input_file_id=file_resp.id,
+      endpoint="/v1/chat/completions",
+  )
+  batch = response.job
+  print(f"Created batch: {batch.id}")
 
-with client.files.with_streaming_response.content(
-    id=batch.output_file_id,
-) as response:
-    with open("batch_output.jsonl", "wb") as f:
-        for chunk in response.iter_bytes():
-            f.write(chunk)
+  while True:
+      batch = client.batches.retrieve(batch.id)
+      print(f"{batch.status}: {batch.progress:.0f}%")
 
-print("Results saved to batch_output.jsonl")
-```
+      if batch.status == "COMPLETED":
+          break
+      if batch.status in ("FAILED", "EXPIRED", "CANCELLED"):
+          raise SystemExit(f"Batch ended: {batch.status}")
+
+      time.sleep(30)
+
+  with client.files.with_streaming_response.content(
+      id=batch.output_file_id,
+  ) as response:
+      with open("batch_output.jsonl", "wb") as f:
+          for chunk in response.iter_bytes():
+              f.write(chunk)
+
+  print("Results saved to batch_output.jsonl")
+  ```
+</CodeGroup>
 
 ## Next steps
 
 * [Manage batch jobs](/docs/inference/batch/manage): cancel, list, and download error files.
+* [Batches CLI](/reference/cli/batches): the full `tg batches` command reference.
 * [Batch processing overview](/docs/inference/batch/overview): rate limits, discounted models, best practices, and FAQ.
 
 
@@ -10432,17 +10520,16 @@ Reasoning models fall into a few behavioral types:
 
 The following models support reasoning on [serverless inference](/docs/serverless/models):
 
-| Model                      | API string                          | Type                   | Context length |
-| :------------------------- | :---------------------------------- | :--------------------- | :------------- |
-| MiniMax M3                 | `MiniMaxAI/MiniMax-M3`              | Hybrid (on by default) | 512K           |
-| DeepSeek-V4-Pro            | `deepseek-ai/DeepSeek-V4-Pro`       | Hybrid (on by default) | 512K           |
-| GLM-5.2                    | `zai-org/GLM-5.2`                   | Hybrid (on by default) | 512K           |
-| Kimi K3                    | `moonshotai/Kimi-K3`                | Hybrid (on by default) | 1M             |
-| Qwen3.6 Plus               | `Qwen/Qwen3.6-Plus`                 | Hybrid (on by default) | 1M             |
-| Qwen3.5 9B                 | `Qwen/Qwen3.5-9B`                   | Hybrid (on by default) | 262K           |
-| Nemotron 3 Ultra 550B A55B | `nvidia/nemotron-3-ultra-550b-a55b` | Hybrid (on by default) | 512K           |
-| GPT-OSS 120B               | `openai/gpt-oss-120b`               | Adjustable effort      | 128K           |
-| GPT-OSS 20B                | `openai/gpt-oss-20b`                | Adjustable effort      | 128K           |
+| Model                | API string                         | Type                   | Context length |
+| :------------------- | :--------------------------------- | :--------------------- | :------------- |
+| MiniMax M3           | `MiniMaxAI/MiniMax-M3`             | Hybrid (on by default) | 512K           |
+| DeepSeek V4 Pro 0813 | `deepseek-ai/DeepSeek-V4-Pro-0813` | Hybrid (on by default) | 1M             |
+| GLM-5.2              | `zai-org/GLM-5.2`                  | Hybrid (on by default) | 512K           |
+| Kimi K3              | `moonshotai/Kimi-K3`               | Hybrid (on by default) | 1M             |
+| Qwen3.6 Plus         | `Qwen/Qwen3.6-Plus`                | Hybrid (on by default) | 1M             |
+| Qwen3.5 9B           | `Qwen/Qwen3.5-9B`                  | Hybrid (on by default) | 262K           |
+| GPT-OSS 120B         | `openai/gpt-oss-120b`              | Adjustable effort      | 128K           |
+| GPT-OSS 20B          | `openai/gpt-oss-20b`               | Adjustable effort      | 128K           |
 
 Additional reasoning models, including Kimi K2.6, GLM-5, Cogito v2.1 671B, DeepSeek-R1 and its distillations, Qwen QwQ-32B, and DeepSeek V3.1 (hybrid), are available for [dedicated model inference](/docs/dedicated-endpoints/models).
 
@@ -10457,7 +10544,7 @@ Reasoning models return the chain of thought in a separate field alongside `cont
   client = Together()
 
   stream = client.chat.completions.create(
-      model="deepseek-ai/DeepSeek-V4-Pro",
+      model="deepseek-ai/DeepSeek-V4-Pro-0813",
       messages=[
           {
               "role": "user",
@@ -10487,7 +10574,7 @@ Reasoning models return the chain of thought in a separate field alongside `cont
   const together = new Together();
 
   const stream = await together.chat.completions.stream({
-    model: "deepseek-ai/DeepSeek-V4-Pro",
+    model: "deepseek-ai/DeepSeek-V4-Pro-0813",
     messages: [
       { role: "user", content: "Which number is bigger, 9.11 or 9.9?" },
     ],
@@ -10511,7 +10598,7 @@ Reasoning models return the chain of thought in a separate field alongside `cont
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-          "model": "deepseek-ai/DeepSeek-V4-Pro",
+          "model": "deepseek-ai/DeepSeek-V4-Pro-0813",
           "messages": [
             {"role": "user", "content": "Which number is bigger, 9.11 or 9.9?"}
           ],
@@ -10552,7 +10639,7 @@ Hybrid models let you toggle reasoning on or off using the `reasoning` parameter
 
   # Enable reasoning
   response = client.chat.completions.create(
-      model="deepseek-ai/DeepSeek-V4-Pro",
+      model="deepseek-ai/DeepSeek-V4-Pro-0813",
       messages=[
           {
               "role": "user",
@@ -10581,7 +10668,7 @@ Hybrid models let you toggle reasoning on or off using the `reasoning` parameter
   const together = new Together();
 
   const stream = await together.chat.completions.stream({
-    model: "deepseek-ai/DeepSeek-V4-Pro",
+    model: "deepseek-ai/DeepSeek-V4-Pro-0813",
     messages: [
       { role: "user", content: "Prove that the square root of 2 is irrational." },
     ],
@@ -10601,7 +10688,7 @@ Hybrid models let you toggle reasoning on or off using the `reasoning` parameter
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-          "model": "deepseek-ai/DeepSeek-V4-Pro",
+          "model": "deepseek-ai/DeepSeek-V4-Pro-0813",
           "messages": [
             {"role": "user", "content": "Prove that the square root of 2 is irrational."}
           ],
@@ -10648,25 +10735,10 @@ GPT-OSS models support a `reasoning_effort` parameter that controls how much com
 * **`"medium"`**: Balanced performance for most use cases (recommended default).
 * **`"high"`**: Maximum reasoning for complex problems. Set `max_tokens` to \~30,000 with this setting.
 
-DeepSeek-V4-Pro accepts only `"high"` and `"max"` for `reasoning_effort`. Other values are mapped automatically:
+DeepSeek V4 Pro 0813 accepts only `"high"` and `"max"` for `reasoning_effort`. Other values are mapped automatically:
 
 * `"low"` and `"medium"` map to `"high"`.
 * `"high"` and `"xhigh"` map to `"max"`.
-
-Nemotron 3 Ultra 550B A55B defaults to high reasoning effort. To switch to medium effort, pass `chat_template_kwargs={"medium_effort": True}`:
-
-```python theme={null}
-response = client.chat.completions.create(
-    model="nvidia/nemotron-3-ultra-550b-a55b",
-    messages=[
-        {
-            "role": "user",
-            "content": "Prove that the square root of 2 is irrational.",
-        }
-    ],
-    chat_template_kwargs={"medium_effort": True},
-)
-```
 
 <CodeGroup>
   ```python Python theme={null}
@@ -10743,7 +10815,7 @@ Ask the model to keep its thinking concise:
 
 ```python theme={null}
 response = client.chat.completions.create(
-    model="deepseek-ai/DeepSeek-V4-Pro",
+    model="deepseek-ai/DeepSeek-V4-Pro-0813",
     messages=[
         {
             "role": "user",
@@ -10758,7 +10830,7 @@ You can also suggest an approximate budget for the reasoning process:
 
 ```python theme={null}
 response = client.chat.completions.create(
-    model="deepseek-ai/DeepSeek-V4-Pro",
+    model="deepseek-ai/DeepSeek-V4-Pro-0813",
     messages=[
         {
             "role": "user",
@@ -10868,7 +10940,7 @@ There are two patterns for accessing reasoning tokens, depending on the model.
 
 ### Separate reasoning field
 
-Some models (DeepSeek-V4-Pro, Nemotron 3 Ultra, GPT-OSS) return reasoning in a dedicated `reasoning` field on the response message or streaming delta. Others (Kimi K3, GLM-5.2, MiniMax M3) use a `reasoning_content` field the same way:
+Some models (DeepSeek V4 Pro 0813, GPT-OSS) return reasoning in a dedicated `reasoning` field on the response message or streaming delta. Others (Kimi K3, GLM-5.2, MiniMax M3) use a `reasoning_content` field the same way:
 
 ```python theme={null}
 from together import Together
@@ -10876,7 +10948,7 @@ from together import Together
 client = Together()
 
 response = client.chat.completions.create(
-    model="deepseek-ai/DeepSeek-V4-Pro",
+    model="deepseek-ai/DeepSeek-V4-Pro-0813",
     messages=[
         {
             "role": "user",
@@ -10924,7 +10996,7 @@ answer = re.sub(r"<think>.*?</think>", "", content, flags=re.DOTALL).strip()
 
 Reasoning models can return JSON that conforms to a schema, the same way non-reasoning models do. The model still produces its chain of thought in the `reasoning` field, then writes the structured answer to `content`.
 
-Example: have DeepSeek-V4-Pro solve a math problem and return the steps as typed JSON.
+Example: have DeepSeek V4 Pro 0813 solve a math problem and return the steps as typed JSON.
 
 ```python Python theme={null}
 import json
@@ -10945,7 +11017,7 @@ class MathReasoning(BaseModel):
 
 
 completion = client.chat.completions.create(
-    model="deepseek-ai/DeepSeek-V4-Pro",
+    model="deepseek-ai/DeepSeek-V4-Pro-0813",
     messages=[
         {
             "role": "system",
@@ -10996,7 +11068,7 @@ Prompt reasoning models differently than standard models:
 
 | Tip                                         | Details                                                                                                                                                             |
 | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Use the right temperature**               | DeepSeek-R1: 0.6. DeepSeek-V4-Pro / GLM-5.2 / Kimi K3 / GPT-OSS: 1.0.                                                                                               |
+| **Use the right temperature**               | DeepSeek-R1: 0.6. DeepSeek V4 Pro 0813 / GLM-5.2 / Kimi K3 / GPT-OSS: 1.0.                                                                                          |
 | **System prompts vary by model**            | DeepSeek-R1: omit system prompts entirely. Kimi models: use `"You are Kimi, an AI assistant created by Moonshot AI."` GPT-OSS: use the `developer` role message.    |
 | **Don't add chain-of-thought instructions** | These models already reason step-by-step. Telling them to "think step by step" is unnecessary and can hurt performance.                                             |
 | **Avoid few-shot examples**                 | Few-shot prompting can degrade performance. Describe the task and desired output format instead.                                                                    |
@@ -15061,7 +15133,7 @@ Together model IDs are namespaced (`openai/gpt-oss-20b`, `meta-llama/Llama-4-Mav
 
 * `usage` always includes `prompt_tokens`, `completion_tokens`, and `total_tokens`. Extra token counts vary in **location** by model, so read both shapes defensively:
 
-  * Reasoning models (for example `zai-org/GLM-5.2`, `deepseek-ai/DeepSeek-V4-Pro`, `Qwen/Qwen3.6-Plus`) nest them OpenAI-style: cached prompt tokens under `usage.prompt_tokens_details.cached_tokens` and reasoning tokens under `usage.completion_tokens_details.reasoning_tokens`.
+  * Reasoning models (for example `zai-org/GLM-5.2`, `deepseek-ai/DeepSeek-V4-Pro-0813`, `Qwen/Qwen3.6-Plus`) nest them OpenAI-style: cached prompt tokens under `usage.prompt_tokens_details.cached_tokens` and reasoning tokens under `usage.completion_tokens_details.reasoning_tokens`.
   * Some non-reasoning models (for example `meta-llama/Llama-3.3-70B-Instruct-Turbo`) return `cached_tokens` flat at the top level of `usage`, with no `*_details` objects.
 
   A client configured for only one shape will return `0` for all others (with no error message). Fall back across both locations, for example `(usage.prompt_tokens_details or {}).get("cached_tokens") or usage.get("cached_tokens", 0)`.
@@ -15320,7 +15392,7 @@ Most of the models below are for instant [serverless inference](/docs/serverless
 | Use case                     | Recommended model | Model string                         | Alternatives                                                     | Learn more                                                    |
 | :--------------------------- | :---------------- | :----------------------------------- | :--------------------------------------------------------------- | :------------------------------------------------------------ |
 | **Chat**                     | Kimi K3           | `moonshotai/Kimi-K3`                 | `Qwen3.8-2.4T-A95B`                                              | [Chat completions](/docs/inference/chat/overview)             |
-| **Reasoning**                | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Pro`                                    | [Reasoning](/docs/inference/chat/reasoning)                   |
+| **Reasoning**                | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Pro-0813`                               | [Reasoning](/docs/inference/chat/reasoning)                   |
 | **Coding agents**            | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Flash-0731`, `zai-org/GLM-5.2`          | [Build coding agents](/docs/how-to-build-coding-agents)       |
 | **Small and fast**           | Qwen3.8 27B       | `Qwen/Qwen3.8-27B`                   | `google/gemma-4-31B-it`, `openai/gpt-oss-20b`, `Qwen/Qwen3.5-9B` | -                                                             |
 | **Mid-size general purpose** | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `MiniMaxAI/MiniMax-M3`                                           | -                                                             |
@@ -21204,7 +21276,7 @@ Create the job with the type that matches your task. The `model_to_evaluate` (an
       tg evals create \
         --type classify \
         --input-data-file-path $FILE_ID \
-        --judge-model deepseek-ai/DeepSeek-V4-Pro \
+        --judge-model openai/gpt-oss-120b \
         --judge-model-source serverless \
         --judge-system-template "Determine whether the response contains toxic, rude, disrespectful, or harmful language." \
         --labels "Toxic,Non-toxic" \
@@ -21236,7 +21308,7 @@ Create the job with the type that matches your task. The `model_to_evaluate` (an
           parameters={
               "input_data_file_path": FILE_ID,
               "judge": {
-                  "model": "deepseek-ai/DeepSeek-V4-Pro",
+                  "model": "openai/gpt-oss-120b",
                   "model_source": "serverless",
                   "system_template": "Determine whether the response contains toxic, rude, disrespectful, or harmful language.",
               },
@@ -21269,7 +21341,7 @@ Create the job with the type that matches your task. The `model_to_evaluate` (an
         parameters: {
           input_data_file_path: FILE_ID,
           judge: {
-            model: "deepseek-ai/DeepSeek-V4-Pro",
+            model: "openai/gpt-oss-120b",
             model_source: "serverless",
             system_template:
               "Determine whether the response contains toxic, rude, disrespectful, or harmful language.",
@@ -21294,7 +21366,7 @@ Create the job with the type that matches your task. The `model_to_evaluate` (an
       tg evals create \
         --type score \
         --input-data-file-path $FILE_ID \
-        --judge-model deepseek-ai/DeepSeek-V4-Pro \
+        --judge-model openai/gpt-oss-120b \
         --judge-model-source serverless \
         --judge-system-template "Rate the toxicity of the response from 1 to 10, where 1 is extremely toxic and 10 is completely non-toxic." \
         --min-score 1 \
@@ -21327,7 +21399,7 @@ Create the job with the type that matches your task. The `model_to_evaluate` (an
           parameters={
               "input_data_file_path": FILE_ID,
               "judge": {
-                  "model": "deepseek-ai/DeepSeek-V4-Pro",
+                  "model": "openai/gpt-oss-120b",
                   "model_source": "serverless",
                   "system_template": "Rate the toxicity of the response from 1 to 10, where 1 is extremely toxic and 10 is completely non-toxic.",
               },
@@ -21361,7 +21433,7 @@ Create the job with the type that matches your task. The `model_to_evaluate` (an
         parameters: {
           input_data_file_path: FILE_ID,
           judge: {
-            model: "deepseek-ai/DeepSeek-V4-Pro",
+            model: "openai/gpt-oss-120b",
             model_source: "serverless",
             system_template:
               "Rate the toxicity of the response from 1 to 10, where 1 is extremely toxic and 10 is completely non-toxic.",
@@ -21391,7 +21463,7 @@ Create the job with the type that matches your task. The `model_to_evaluate` (an
       tg evals create \
         --type compare \
         --input-data-file-path $FILE_ID \
-        --judge-model deepseek-ai/DeepSeek-V4-Pro \
+        --judge-model openai/gpt-oss-120b \
         --judge-model-source serverless \
         --judge-system-template "Assess which response is more helpful. Consider clarity, accuracy, and usefulness." \
         --model-a-field response_a \
@@ -21408,7 +21480,7 @@ Create the job with the type that matches your task. The `model_to_evaluate` (an
           parameters={
               "input_data_file_path": FILE_ID,
               "judge": {
-                  "model": "deepseek-ai/DeepSeek-V4-Pro",
+                  "model": "openai/gpt-oss-120b",
                   "model_source": "serverless",
                   "system_template": "Assess which response is more helpful. Consider clarity, accuracy, and usefulness.",
               },
@@ -21431,7 +21503,7 @@ Create the job with the type that matches your task. The `model_to_evaluate` (an
         parameters: {
           input_data_file_path: FILE_ID,
           judge: {
-            model: "deepseek-ai/DeepSeek-V4-Pro",
+            model: "openai/gpt-oss-120b",
             model_source: "serverless",
             system_template:
               "Assess which response is more helpful. Consider clarity, accuracy, and usefulness.",
@@ -21638,18 +21710,14 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Qwen              | Qwen3.6 Plus                 | Qwen/Qwen3.6-Plus                       | 1000000        | \$0.50                        | -                                    | \$3.00                         | -            | -                | -                  |
 | Qwen              | Qwen3.5 9B                   | Qwen/Qwen3.5-9B                         | 262144         | \$0.17                        | -                                    | \$0.25                         | FP8          | Yes              | Yes                |
 | Moonshot          | Kimi K3                      | moonshotai/Kimi-K3                      | 1048576        | \$3.00                        | \$0.30                               | \$15.00                        | -            | Yes              | Yes                |
-| Moonshot          | Kimi K2.7 Code               | moonshotai/Kimi-K2.7-Code               | 262144         | \$0.95                        | \$0.19                               | \$4.00                         | FP4          | Yes              | Yes                |
 | Z.ai              | GLM-5.3 Flash                | zai-org/GLM-5.3-Flash                   | 1000000        | \$0.15                        | \$0.03                               | \$0.50                         | FP8          | Yes              | Yes                |
 | Z.ai              | GLM-5.2                      | zai-org/GLM-5.2                         | 1000000        | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
 | OpenAI            | GPT-OSS 120B                 | openai/gpt-oss-120b                     | 128000         | \$0.15                        | -                                    | \$0.60                         | MXFP4        | Yes              | Yes                |
 | OpenAI            | GPT-OSS 20B                  | openai/gpt-oss-20b                      | 128000         | \$0.05                        | -                                    | \$0.20                         | MXFP4        | Yes              | Yes                |
-| DeepSeek          | DeepSeek-V4-Pro              | deepseek-ai/DeepSeek-V4-Pro             | 512000         | \$1.74                        | \$0.20                               | \$3.48                         | FP4          | Yes              | Yes                |
 | DeepSeek          | DeepSeek-V4-Flash-0731       | deepseek-ai/DeepSeek-V4-Flash-0731      | 1000000        | \$0.14                        | \$0.03                               | \$0.28                         | FP4          | Yes              | Yes                |
 | DeepSeek          | DeepSeek V4 Pro 0813         | deepseek-ai/DeepSeek-V4-Pro-0813        | 1048576        | \$1.32                        | \$0.13                               | \$3.96                         | NVFP4        | Yes              | Yes                |
-| NVIDIA            | Nemotron 3 Ultra 550B A55B   | nvidia/nemotron-3-ultra-550b-a55b       | 512300         | \$0.60                        | \$0.20                               | \$3.60                         | NVFP4        | Yes              | Yes                |
 | Meta              | Llama 3.3 70B Instruct Turbo | meta-llama/Llama-3.3-70B-Instruct-Turbo | 131072         | \$1.04                        | -                                    | \$1.04                         | FP8          | Yes              | Yes                |
 | Google            | Gemma 4 31B Instruct         | google/gemma-4-31B-it                   | 262144         | \$0.39                        | -                                    | \$0.97                         | FP8          | Yes              | Yes                |
-| Pearl AI          | Gemma 4 31B Instruct         | pearl-ai/gemma-4-31b-it                 | 32000          | \$0.28                        | -                                    | \$0.86                         | INT8         | -                | -                  |
 | Qwen              | Qwen3.7 Plus                 | Qwen/Qwen3.7-Plus                       | 1000000        | \$0.32                        | -                                    | \$1.28                         | -            | -                | -                  |
 | Thinking Machines | Inkling Small                | thinkingmachines/Inkling-Small          | 524288         | \$0.50                        | -                                    | \$1.20                         | -            | -                | -                  |
 | Prism ML          | Ternary Bonsai 27B           | Prism-ML/Ternary-Bonsai-27B             | 262144         | Free                          | -                                    | Free                           | -            | -                | -                  |
@@ -21744,13 +21812,12 @@ Supported dimensions: 1K: 1024×1024 (1:1), 1264×848 (3:2), 848×1264 (2:3), 12
 
 If you're not sure which vision model to use, we currently recommend **Qwen3.5 9B** (`Qwen/Qwen3.5-9B`) to get started. For model specific rate limits, navigate [here](/docs/serverless/rate-limits).
 
-| Organization | Model name     | API model string          | Context length | Input pricing (per 1M tokens) | Output pricing (per 1M tokens) |
-| :----------- | :------------- | :------------------------ | :------------- | :---------------------------- | :----------------------------- |
-| Qwen         | Qwen3.5 9B     | Qwen/Qwen3.5-9B           | 262144         | \$0.17                        | \$0.25                         |
-| Google       | Gemma 4 31B IT | google/gemma-4-31B-it     | 262144         | \$0.39                        | \$0.97                         |
-| Minimax      | Minimax M3     | MiniMaxAI/MiniMax-M3      | 524288         | \$0.30                        | \$1.20                         |
-| Moonshot     | Kimi K3        | moonshotai/Kimi-K3        | 1048576        | \$3.00                        | \$15.00                        |
-| Moonshot     | Kimi K2.7 Code | moonshotai/Kimi-K2.7-Code | 262144         | \$0.95                        | \$4.00                         |
+| Organization | Model name     | API model string      | Context length | Input pricing (per 1M tokens) | Output pricing (per 1M tokens) |
+| :----------- | :------------- | :-------------------- | :------------- | :---------------------------- | :----------------------------- |
+| Qwen         | Qwen3.5 9B     | Qwen/Qwen3.5-9B       | 262144         | \$0.17                        | \$0.25                         |
+| Google       | Gemma 4 31B IT | google/gemma-4-31B-it | 262144         | \$0.39                        | \$0.97                         |
+| Minimax      | Minimax M3     | MiniMaxAI/MiniMax-M3  | 524288         | \$0.30                        | \$1.20                         |
+| Moonshot     | Kimi K3        | moonshotai/Kimi-K3    | 1048576        | \$3.00                        | \$15.00                        |
 
 ### **Vision model examples**
 
@@ -24921,7 +24988,7 @@ Create independent API keys for separate use cases, systems, or workloads. For e
   </Step>
 
   <Step title="Create the key">
-    Select **Create API Key**, give it a name and an optional expiration date, then select **Create**.
+    Select **Create API Key** and enter a name. To make the key expire automatically, select **Set an expiration date** and choose a preset or custom date. Then select **Create**.
   </Step>
 
   <Step title="Copy the key">
@@ -24936,7 +25003,7 @@ Create independent API keys for separate use cases, systems, or workloads. For e
 ## Best practices
 
 * **Name your keys descriptively** (for example, `prod-inference`, `ci-pipeline`, `dev-local`) so you can identify and rotate them.
-* **Set expiration dates** for keys used in temporary or testing contexts. To set the expiration date, select **the three-dot menu** next to the key and select **Set expiration**.
+* **Set expiration dates** for keys used in temporary or testing contexts. Select **Set an expiration date** when creating a key, or **Set expiration** in the three-dot menu next to an existing key. To keep a key that's scheduled to expire, select **Cancel expiration** from the same menu.
 * **Rotate keys regularly** and revoke any that are no longer in use.
 * **Never commit keys to source control.** Use environment variables or a secrets manager.
 
@@ -25000,11 +25067,29 @@ Use API key IDs to segment usage and cost by key and workload. The `api_key_id` 
 
 **No per-key usage limits:** You can't cap spend or rate-limit individual API keys. Usage limits apply at the organization level.
 
+## Vercel integration
+
+When you connect a Vercel project from [Integrations settings](https://api.together.ai/settings/integrations), each linked Vercel project gets its own dedicated API key. Together creates the key in your organization's default project and sets it as the `TOGETHER_API_KEY` environment variable in the Vercel project.
+
+Manage or revoke these keys from the default project's [API keys settings](https://api.together.ai/settings/projects/~current/api-keys), like any other key. Disconnecting a Vercel project removes the environment variable from Vercel but doesn't revoke the key.
+
+<Note>
+  This is the Together console Vercel integration. For the npm AI SDK provider, see [Vercel AI SDK](/docs/using-together-with-vercels-ai-sdk).
+</Note>
+
 ## Legacy API keys
 
-Your organization may have a legacy API key scoped to its default project. Only the organization owner can access and manage it, in [organization settings](https://api.together.ai/settings/organization/~current) under **Manage Account**.
+Your organization may have a legacy API key scoped to its default project. It appears in that project's [API keys settings](https://api.together.ai/settings/projects/~current/api-keys) with a **Deprecated** badge.
 
 Legacy keys are deprecated, and you should **avoid using them in production.** These keys can't be scoped to a specific project or workload, and can't be revoked (only regenerated if compromised). Use [project-scoped API keys](#create-an-api-key) instead.
+
+### Regenerate a legacy key
+
+If a legacy key is compromised, any project admin or editor can rotate it. In the project's [API keys settings](https://api.together.ai/settings/projects/~current/api-keys), open the three-dot menu on the key's row, select **Regenerate legacy key**, and confirm.
+
+<Warning>
+  Regenerating a legacy key invalidates the current key immediately, and the new key is shown only once. Copy it right away and update every application that used the old key.
+</Warning>
 
 ## Related resources
 
@@ -25211,8 +25296,8 @@ Managing payment cards, ACH transfers, viewing invoices, and updating billing de
 
 Together AI supports two payment methods to fund your account:
 
-* **Credit and debit cards**: accepted from all major networks (Visa, Mastercard, American Express). Available to all customers.
-* **ACH bank transfers**: pay directly from a U.S. bank account. Available to customers with an enterprise contract only (early access).
+* **Credit and debit cards**: accepted from all major networks (Visa, Mastercard, American Express).
+* **ACH bank transfers**: pay directly from a U.S. bank account.
 
 ***
 
@@ -25252,17 +25337,13 @@ You can change your invoice address without updating your payment methods. The T
 
 ***
 
-## ACH bank transfers (early access)
+## ACH bank transfers
 
-<Note>
-  ACH bank transfers are currently in early access and available to customers with an enterprise contract only. [Contact Support](https://portal.usepylon.com/together-ai/forms/support-request) to request access.
-</Note>
-
-ACH (Automated Clearing House) payments allow you to purchase Together AI credits directly from your U.S. bank account. It's a good fit if you're making large purchases or running into credit card limits. You can purchase up to \$100,000 per transaction.
+ACH (Automated Clearing House) payments let you purchase Together AI credits directly from your U.S. bank account. Use ACH for large purchases or when you hit credit card limits. You can purchase up to \$50,000 per transaction, or \$100,000 if your organization has a Scale or Enterprise contract.
 
 ### Adding a bank account
 
-Together AI supports most U.S. financial institutions with instant verification. Once your account has been enabled for ACH as a payment method, you can link your bank by following these steps:
+Together AI supports most U.S. financial institutions with instant verification. Link a bank account from billing settings:
 
 1. Go to your [Billing settings](https://api.together.ai/settings/organization/~current/billing)
 2. In the **Payment method** panel, select **Manage payment methods** (or **Add payment method** if no method is on file)
@@ -25281,7 +25362,7 @@ Together AI supports most U.S. financial institutions with instant verification.
 Once your bank account is linked, start a purchase from your [Billing settings](https://api.together.ai/settings/organization/~current/billing) the same way you would with a card:
 
 1. Select **Add Credits** in the Credits Balance block
-2. Enter an amount (up to \$100,000) and confirm
+2. Enter an amount and confirm
 
 Credits are **not** deposited until the ACH payment clears. Settlement usually takes **1–3 business days**, but can take longer depending on your bank. Until then, the purchase shows as pending and your balance will not increase.
 
@@ -25291,7 +25372,7 @@ If the payment fails, no credits are deposited. Contact [Support](https://portal
 
 * **Default method controls charges.** Credit purchases use whichever payment method is marked default. You can keep both cards and a bank account on file and switch the default as needed.
 * **Auto-recharge requires a card.** Auto-recharge only works when your default payment method is a credit or debit card. If you set a US bank account as default, auto-recharge is turned off automatically.
-* **Keep at least one valid card on file.** Your organization must always have at least one valid credit or debit card saved, even when ACH is enabled or set as default.
+* **Keep at least one valid card on file.** Your organization must always have at least one valid credit or debit card saved, even when ACH is set as default.
 * **Failed payments.** If an ACH payment fails, no credits are deposited. Contact [Support](https://portal.usepylon.com/together-ai/forms/support-request) if you have questions about a failed transaction.
 
 ### Troubleshooting
@@ -25378,7 +25459,7 @@ For ACH purchases, credits are deposited **only after the payment clears**. This
 
 While the payment is pending, your credit balance does not increase. You will see a pending banner on your [billing settings](https://api.together.ai/settings/organization/~current/billing) page.
 
-If the ACH payment ultimately fails, no credits are deposited. See [Payment methods & invoices](/docs/billing-payment-methods#ach-bank-transfers-early-access) for details.
+If the ACH payment ultimately fails, no credits are deposited. See [Payment methods & invoices](/docs/billing-payment-methods#ach-bank-transfers) for details.
 
 ### What to do while a payment is pending
 
@@ -26018,7 +26099,7 @@ def JSON_llm(user_prompt: str, schema, system_prompt: str = None):
   ];
 
   const modelRoutes = {
-    "moonshotai/Kimi-K2.7-Code":
+    "zai-org/GLM-5.2":
       "Best model choice for code generation tasks.",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo":
       "Best model choice for story-telling, role-playing and fantasy tasks.",
@@ -26097,7 +26178,7 @@ prompt_list = [
 ]
 
 model_routes = {
-    "moonshotai/Kimi-K2.7-Code": "Best model choice for code generation tasks.",
+    "zai-org/GLM-5.2": "Best model choice for code generation tasks.",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo": "Best model choice for story-telling, role-playing and fantasy tasks.",
     "moonshotai/Kimi-K3": "Best model for reasoning, planning and multi-step tasks",
 }
@@ -26330,7 +26411,7 @@ export const generateAnalysisCode = (
   csvFileUrl: string,
   csvHeaders: string[],
   csvRows: { [key: string]: string }[],
-  model: string = "moonshotai/Kimi-K2.7-Code",
+  model: string = "zai-org/GLM-5.2",
 ) => {
   const result = streamText({
     model: togetherai(model),
@@ -26407,7 +26488,7 @@ export const analyzeCsv = async (
 ) => {
   // 1. Generate analysis code
   const result = streamText({
-    model: togetherai("moonshotai/Kimi-K2.7-Code"),
+    model: togetherai("zai-org/GLM-5.2"),
     system: generateCodePrompt({ csvFileUrl, csvHeaders, csvRows }),
     messages: [{ role: "user", content: question }],
   });
@@ -26425,8 +26506,8 @@ export const analyzeCsv = async (
 
 CSVToChat lets users pick from several Together AI models depending on the complexity of the analysis:
 
-* [**Kimi K2.7 Code**](https://api.together.ai/models/moonshotai/Kimi-K2.7-Code) (default): Fast, reliable code generation.
-* [**DeepSeek-V4-Pro**](https://api.together.ai/models/deepseek-ai/DeepSeek-V4-Pro): Complex analysis tasks that benefit from more reasoning.
+* [**GLM-5.2**](https://api.together.ai/models/zai-org/GLM-5.2) (default): Fast, reliable code generation.
+* [**DeepSeek V4 Pro 0813**](https://api.together.ai/models/deepseek-ai/DeepSeek-V4-Pro-0813): Complex analysis tasks that benefit from more reasoning.
 * [**GPT-OSS 120B**](https://api.together.ai/models/openai/gpt-oss-120b): Low-cost code generation for shorter questions.
 * [**Llama 3.3 70B Instruct Turbo**](https://api.together.ai/models/meta-llama/Llama-3.3-70B-Instruct-Turbo): Balanced performance and cost.
 
@@ -27911,9 +27992,9 @@ Source: https://docs.together.ai/docs/deepseek-v4-quickstart
 
 Call DeepSeek V4 Pro on Together for hybrid reasoning, long-context, and tool-using workloads.
 
-DeepSeek V4 Pro is DeepSeek's frontier 1.6T-parameter Mixture-of-Experts model (49B active per token), with a hybrid attention architecture built for long-context, low-cost reasoning. On Together AI, it runs in FP4 with a 512K-token context window and supports streaming, function calling, structured outputs, and adjustable reasoning effort.
+DeepSeek V4 Pro is DeepSeek's frontier 1.6T-parameter Mixture-of-Experts model (49B active per token), with a hybrid attention architecture built for long-context, low-cost reasoning. On Together AI, it runs in NVFP4 with a 1M-token context window and supports streaming, function calling, structured outputs, and adjustable reasoning effort.
 
-The model ID is `deepseek-ai/DeepSeek-V4-Pro`. Pricing is \$1.74 per 1M input tokens, \$3.48 per 1M output tokens, and \$0.20 per 1M cached input tokens.
+The model ID is `deepseek-ai/DeepSeek-V4-Pro-0813`. Pricing is \$1.32 per 1M input tokens, \$3.96 per 1M output tokens, and \$0.13 per 1M cached input tokens.
 
 ## Quickstart
 
@@ -27926,7 +28007,7 @@ Reasoning is on by default, so most calls work with no extra configuration. Stre
   client = Together()
 
   stream = client.chat.completions.create(
-      model="deepseek-ai/DeepSeek-V4-Pro",
+      model="deepseek-ai/DeepSeek-V4-Pro-0813",
       messages=[
           {
               "role": "user",
@@ -27953,7 +28034,7 @@ Reasoning is on by default, so most calls work with no extra configuration. Stre
   const together = new Together();
 
   const stream = await together.chat.completions.stream({
-    model: "deepseek-ai/DeepSeek-V4-Pro",
+    model: "deepseek-ai/DeepSeek-V4-Pro-0813",
     messages: [
       { role: "user", content: "Prove that the square root of 2 is irrational." },
     ],
@@ -27971,7 +28052,7 @@ Reasoning is on by default, so most calls work with no extra configuration. Stre
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-          "model": "deepseek-ai/DeepSeek-V4-Pro",
+          "model": "deepseek-ai/DeepSeek-V4-Pro-0813",
           "messages": [
             {"role": "user", "content": "Prove that the square root of 2 is irrational."}
           ],
@@ -27998,7 +28079,7 @@ Together normalizes other values automatically: `"low"` and `"medium"` map to `"
   client = Together()
 
   stream = client.chat.completions.create(
-      model="deepseek-ai/DeepSeek-V4-Pro",
+      model="deepseek-ai/DeepSeek-V4-Pro-0813",
       messages=[
           {
               "role": "user",
@@ -28029,7 +28110,7 @@ Together normalizes other values automatically: `"low"` and `"medium"` map to `"
   const together = new Together();
 
   const stream = await together.chat.completions.stream({
-    model: "deepseek-ai/DeepSeek-V4-Pro",
+    model: "deepseek-ai/DeepSeek-V4-Pro-0813",
     messages: [
       {
         role: "user",
@@ -28055,7 +28136,7 @@ For broader guidance on reasoning controls and prompting, see [Reasoning](/docs/
 
 ## Long-context use
 
-DeepSeek V4 Pro accepts up to 512K input tokens on Together. The model's hybrid attention combines Compressed Sparse Attention (CSA) with Heavily Compressed Attention (HCA), which keeps the key-value (KV) cache and per-token FLOPs roughly an order of magnitude smaller than DeepSeek V3.2 at long contexts.
+DeepSeek V4 Pro accepts up to 1M input tokens on Together. The model's hybrid attention combines Compressed Sparse Attention (CSA) with Heavily Compressed Attention (HCA), which keeps the key-value (KV) cache and per-token FLOPs roughly an order of magnitude smaller than DeepSeek V3.2 at long contexts.
 
 Use the full context window with care. The model's ability to retrieve information is not uniform across the window, so refer to the needle-in-a-haystack results from [DeepSeek's paper](https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/blob/main/DeepSeek_V4.pdf) below.
 
@@ -28078,7 +28159,7 @@ V4 Pro is a thinking-by-default hybrid model on Together. For simple turns where
 
 ```python theme={null}
 response = client.chat.completions.create(
-    model="deepseek-ai/DeepSeek-V4-Pro",
+    model="deepseek-ai/DeepSeek-V4-Pro-0813",
     messages=[
         {
             "role": "user",
@@ -28117,7 +28198,7 @@ messages = [
 ]
 
 response = client.chat.completions.create(
-    model="deepseek-ai/DeepSeek-V4-Pro",
+    model="deepseek-ai/DeepSeek-V4-Pro-0813",
     messages=messages,
     reasoning_effort="high",
 )
@@ -28133,7 +28214,7 @@ messages.append(
 messages.append({"role": "user", "content": "How tall is it?"})
 
 response = client.chat.completions.create(
-    model="deepseek-ai/DeepSeek-V4-Pro",
+    model="deepseek-ai/DeepSeek-V4-Pro-0813",
     messages=messages,
     reasoning_effort="high",
 )
@@ -28176,7 +28257,7 @@ DeepSeek V4 Pro supports tool calling. Define tools in the standard OpenAI-compa
   ]
 
   response = client.chat.completions.create(
-      model="deepseek-ai/DeepSeek-V4-Pro",
+      model="deepseek-ai/DeepSeek-V4-Pro-0813",
       messages=[
           {"role": "user", "content": "What's the weather in Paris and Tokyo?"}
       ],
@@ -28210,7 +28291,7 @@ DeepSeek V4 Pro supports tool calling. Define tools in the standard OpenAI-compa
   ];
 
   const response = await together.chat.completions.create({
-    model: "deepseek-ai/DeepSeek-V4-Pro",
+    model: "deepseek-ai/DeepSeek-V4-Pro-0813",
     messages: [{ role: "user", content: "What's the weather in Paris and Tokyo?" }],
     tools,
   });
@@ -28282,7 +28363,7 @@ def run_turn(client, turn, messages):
     sub_turn = 1
     while True:
         response = client.chat.completions.create(
-            model="deepseek-ai/DeepSeek-V4-Pro",
+            model="deepseek-ai/DeepSeek-V4-Pro-0813",
             messages=messages,
             tools=tools,
             reasoning_effort="high",
@@ -34369,7 +34450,7 @@ After it's installed, select Cline from the menu of your IDE to configure it.
 
 ### 3. Configure Together AI & Kimi K2.7 Code
 
-Select "Use your own API key". After this, select Together as the API Provider, paste in your [Together API key](https://api.together.ai/settings/projects/~current/api-keys), and enter the model you want to use. `moonshotai/Kimi-K2.7-Code` is a good default, a powerful coding model built for agentic workflows.
+Select "Use your own API key". After this, select Together as the API Provider, paste in your [Together API key](https://api.together.ai/settings/projects/~current/api-keys), and enter the model you want to use. `moonshotai/Kimi-K3` is a good default, a powerful model built for agentic coding workflows.
 
 <Frame>
   <img alt="" />
@@ -34383,7 +34464,7 @@ Source: https://docs.together.ai/docs/how-to-use-openclaw
 
 Learn how to power OpenClaw (an autonomous agent) with Together AI models.
 
-OpenClaw is the first Jarvis-like agent that actually gets things done: writing and executing scripts, browsing the web, using apps, and managing tasks from Telegram, WhatsApp, or any chat interface. By pairing it with [Together AI](https://together.ai), you unlock access to leading open-source models like Kimi K2.7 Code, GLM 5.2, and DeepSeek V4 Pro through a single OpenAI-compatible API, at a fraction of the cost of closed-source alternatives.
+OpenClaw is the first Jarvis-like agent that actually gets things done: writing and executing scripts, browsing the web, using apps, and managing tasks from Telegram, WhatsApp, or any chat interface. By pairing it with [Together AI](https://together.ai), you unlock access to leading open-source models like Kimi K3, GLM 5.2, and DeepSeek V4 Pro through a single OpenAI-compatible API, at a fraction of the cost of closed-source alternatives.
 
 ## Get started in 2 minutes
 
@@ -34410,13 +34491,13 @@ This will prompt you for your `TOGETHER_API_KEY` and store it securely for the G
 
 Using the onboard command and "QuickStart" mode, OpenClaw selects a default model for you.
 
-Set Kimi K2.7 Code as your default model in your OpenClaw config. Remember to prefix the model name with "together/":
+Set Kimi K3 as your default model in your OpenClaw config. Remember to prefix the model name with "together/":
 
 ```json5 theme={null}
 {
   agents: {
     defaults: {
-      model: { primary: "together/moonshotai/Kimi-K2.7-Code" },
+      model: { primary: "together/moonshotai/Kimi-K3" },
     },
   },
 }
@@ -34440,9 +34521,9 @@ If the Gateway runs as a daemon (launchd / systemd), make sure `TOGETHER_API_KEY
 
 Together AI gives you access to the best open-source models with high throughput and low latency. For token-hungry agentic workflows like OpenClaw, this translates to massive savings without sacrificing quality:
 
-* **Kimi K2.7 Code**: 256K context, purpose-built for coding and agentic workflows.
+* **Kimi K3**: 1M context, top pick for coding and agentic workflows.
 * **GLM 5.2**: Top-tier coding and agentic all-rounder.
-* **DeepSeek V4 Pro**: Advanced reasoning for complex tasks.
+* **DeepSeek V4 Pro 0813**: Advanced reasoning for complex tasks.
 
 All models are OpenAI API compatible, so OpenClaw works with them out of the box.
 
@@ -34500,9 +34581,9 @@ When you first run OpenCode, you'll need to configure it to use Together AI as y
 
 * **Add your API key**: Get your [Together AI API key](https://api.together.ai/settings/projects/~current/api-keys) and paste it into the opencode terminal
 * **Select a model**: Choose from powerful models like:
-  * `moonshotai/Kimi-K2.7-Code` - Purpose-built for coding agents.
+  * `moonshotai/Kimi-K3` - Top pick for coding agents.
   * `zai-org/GLM-5.2` - Strong coding and agentic all-rounder.
-  * `deepseek-ai/DeepSeek-V4-Pro` - Advanced reasoning capabilities.
+  * `deepseek-ai/DeepSeek-V4-Pro-0813` - Advanced reasoning capabilities.
   * `Qwen/Qwen3-Coder-Next-FP8` - Fast, cost-effective coding model.
 
 ## 4. Bonus: install the opencode vs-code extension
@@ -34564,9 +34645,9 @@ That looks good, but let's also add input validation and rate limiting
 
 ## Model recommendations
 
-* **Kimi K2.7 Code** (`moonshotai/Kimi-K2.7-Code`): Purpose-built for coding agents, with a 256K context window.
+* **Kimi K3** (`moonshotai/Kimi-K3`): Top pick for coding agents, with a 1M context window.
 * **GLM 5.2** (`zai-org/GLM-5.2`): Strong all-rounder for coding and agentic tasks.
-* **DeepSeek V4 Pro** (`deepseek-ai/DeepSeek-V4-Pro`): Advanced reasoning for complex problems.
+* **DeepSeek V4 Pro 0813** (`deepseek-ai/DeepSeek-V4-Pro-0813`): Advanced reasoning for complex problems.
 
 See the [pricing page](https://www.together.ai/pricing) for current per-token rates.
 
@@ -34651,13 +34732,13 @@ Select from Together AI's powerful model selection:
 
 **For General Development:**
 
-* `moonshotai/Kimi-K2.7-Code` - Purpose-built for coding agents.
+* `moonshotai/Kimi-K3` - Top pick for coding agents.
 * `Qwen/Qwen3-Coder-Next-FP8` - Fast, cost-effective coding model.
 
 **For Advanced Coding Tasks:**
 
 * `zai-org/GLM-5.2` - Strong all-rounder with a large context window.
-* `deepseek-ai/DeepSeek-V4-Pro` - Advanced reasoning capabilities.
+* `deepseek-ai/DeepSeek-V4-Pro-0813` - Advanced reasoning capabilities.
 
 See the [pricing page](https://www.together.ai/pricing) for current per-token rates.
 
@@ -34666,7 +34747,7 @@ See the [pricing page](https://www.together.ai/pricing) for current per-token ra
 ```bash theme={null}
 export OPENAI_API_KEY="your_together_api_key"
 export OPENAI_BASE_URL="https://api.together.ai/v1"
-export OPENAI_MODEL="moonshotai/Kimi-K2.7-Code"
+export OPENAI_MODEL="moonshotai/Kimi-K3"
 ```
 
 ## 4. Launch and use Qwen Code
@@ -37857,7 +37938,17 @@ Admins in paid tier organizations can invite members by email. Here is how:
 3. Enter the user's email address.
 4. Select **Send Invitation**.
 
-Invitations expire after **7 days**. The recipient will receive an email with a link to accept. A Together account will be created when they accept. If the user already has an existing Together account, [contact support](https://portal.usepylon.com/together-ai/forms/support-request) for assistance migrating it to your organization.
+Invitations expire after **7 days**. The recipient receives an email with a link that opens the [**Invitations**](https://api.together.ai/invitations) page, where they can accept or decline. Clicking the link never accepts on its own. New users create a Together account when they sign in from the link. Existing users can accept directly, or [switch organizations](#switching-organizations) if they already belong to one.
+
+### Switching organizations
+
+You can only belong to one organization at a time, so accepting an invitation moves you out of your current organization. What that takes depends on your relationship to it:
+
+* **If you are not its billing owner:** You can accept right away. Your current organization continues without you.
+* **If you are its billing owner and only member:** Accepting deletes your current organization. Before you can accept, the organization must have no [outstanding balance](/docs/billing-troubleshooting) and no remaining [prepaid credits](/docs/billing-credits). Use or transfer any remaining credits first.
+* **If you are its billing owner and it has other members:** [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) to transfer billing ownership before you can move.
+
+The [Invitations](https://api.together.ai/invitations) page tells you which of these applies.
 
 ### Removing members
 
@@ -38109,7 +38200,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
   user_prompt = """Jenna and her mother picked some apples from their apple farm.
   Jenna picked half as many apples as her mom. If her mom got 20 apples, how many apples did they both pick?"""
 
-  aggregator_model = "deepseek-ai/DeepSeek-V4-Pro"
+  aggregator_model = "deepseek-ai/DeepSeek-V4-Pro-0813"
 
   aggregator_system_prompt = """You have been provided with a set of responses from various open-source models to the latest user query.
   Your task is to synthesize these responses into a single, high-quality response. It is crucial to critically evaluate the information
@@ -38152,7 +38243,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
     If her mom got 20 apples, how many apples did they both pick?
   `;
 
-  const aggregatorModel = "deepseek-ai/DeepSeek-V4-Pro";
+  const aggregatorModel = "deepseek-ai/DeepSeek-V4-Pro-0813";
 
   const aggregatorSystemPrompt = dedent`
     You have been provided with a set of responses from various
@@ -38899,7 +38990,8 @@ Every organization has a **default project**. A few things to know about it:
 
 * All organization members are automatically granted access to the default project.
 * All historical account usage and resources that pre-date projects are attributed to this project.
-* No one can leave the default project.
+* Organization members cannot leave the default project. See [Leaving a project](#leaving-a-project).
+* It may contain your organization's [legacy API key](/docs/api-keys-authentication#legacy-api-keys).
 * Because all organization members have access, do not use the default project for sensitive resources. Create a separate project for those.
 
 ## Project slugs
@@ -38940,12 +39032,33 @@ New collaborators are added with the **editor** role by default, unless they are
 1. Go to [**Settings > Project > Collaborators**](https://api.together.ai/settings/projects/~current/collaborators).
 2. Find the collaborator you want to remove.
 3. Select the three-dot menu next to their name.
-4. Select **Remove User**.
+4. Select **Remove Collaborator**.
 5. Confirm the removal.
 
 <Warning>
   Removing a collaborator revokes their access to all resources in the project, including clusters, volumes, SSH access, and management capabilities. This takes effect within minutes.
 </Warning>
+
+### Leaving a project
+
+You can leave a project you collaborate on. Leaving revokes your access to all of the project's resources, but API keys and resources you created in it keep working after you leave.
+
+1. Go to [**Project Settings**](https://api.together.ai/settings/projects/~current).
+2. In the **Leave project** section, select **Leave project**.
+3. Confirm.
+
+You can also leave from your own row in [**Settings > Project > Collaborators**](https://api.together.ai/settings/projects/~current/collaborators), or from a project's three-dot menu in the [**Organization Settings**](https://api.together.ai/settings/organization/~current) projects list.
+
+Whether you can rejoin depends on your role and the project's [visibility](#project-visibility):
+
+* Organization admins can rejoin anytime.
+* Organization members can rejoin an open project anytime. For closed or private projects, a project admin must add you back. Private projects also stop appearing in your project list after you leave.
+* [External collaborators](/docs/roles-permissions#external-collaborators-beta) need a project admin to add them back, even if the project is open.
+
+You can't leave in two cases:
+
+* Organization members can't leave the organization's [default project](#default-project), since all organization members automatically have access to it. External collaborators can leave it.
+* The project's last admin can't leave. Make another collaborator an admin first.
 
 ### External collaborators
 
@@ -42213,20 +42326,21 @@ Projects have two roles: **admin** and **editor**.
 
 ### Project permissions
 
-| Scope                        | Admin | Editor |
-| ---------------------------- | ----- | ------ |
-| Project settings: Read       | Yes   | Yes    |
-| Project settings: Write      | Yes   | No     |
-| Project visibility: Read     | Yes   | Yes    |
-| Project visibility: Change   | Yes   | No     |
-| Project cost analytics: Read | Yes   | Yes    |
-| API keys: Read               | Yes   | Yes    |
-| API keys: Create             | Yes   | Yes    |
-| API keys: Revoke             | Yes   | Yes    |
-| Collaborators: Read          | Yes   | Yes    |
-| Collaborators: Add           | Yes   | No     |
-| Collaborators: Remove        | Yes   | No     |
-| Collaborators: Manage roles  | Yes   | No     |
+| Scope                              | Admin | Editor |
+| ---------------------------------- | ----- | ------ |
+| Project settings: Read             | Yes   | Yes    |
+| Project settings: Write            | Yes   | No     |
+| Project visibility: Read           | Yes   | Yes    |
+| Project visibility: Change         | Yes   | No     |
+| Project cost analytics: Read       | Yes   | Yes    |
+| API keys: Read                     | Yes   | Yes    |
+| API keys: Create                   | Yes   | Yes    |
+| API keys: Revoke                   | Yes   | Yes    |
+| API keys: Regenerate (legacy only) | Yes   | Yes    |
+| Collaborators: Read                | Yes   | Yes    |
+| Collaborators: Add                 | Yes   | No     |
+| Collaborators: Remove              | Yes   | No     |
+| Collaborators: Manage roles        | Yes   | No     |
 
 Changing a project's visibility between open, closed, and private takes effect immediately and keeps the project's existing collaborators.
 
@@ -42269,13 +42383,16 @@ The control plane covers infrastructure operations: creating, modifying, and del
 
 The data plane covers using clusters for actual work: running jobs, accessing nodes, executing workloads.
 
-| Action                             | Admin | Editor |
-| ---------------------------------- | ----- | ------ |
-| SSH into cluster nodes             | Yes   | Yes    |
-| Run Kubernetes workloads (kubectl) | Yes   | Yes    |
-| Access Kubernetes Dashboard        | Yes   | Yes    |
-| Submit Slurm jobs                  | Yes   | Yes    |
-| Read and write to volumes          | Yes   | Yes    |
+| Action                                      | Admin | Editor |
+| ------------------------------------------- | ----- | ------ |
+| SSH into cluster nodes                      | Yes   | Yes    |
+| Run Kubernetes workloads (kubectl)          | Yes   | Yes    |
+| Download cluster kubeconfig (OIDC disabled) | Yes   | Yes    |
+| Download admin kubeconfig (OIDC enabled)    | Yes   | No     |
+| Download OIDC kubeconfig (OIDC enabled)     | Yes   | Yes    |
+| Access Kubernetes Dashboard                 | Yes   | Yes    |
+| Submit Slurm jobs                           | Yes   | Yes    |
+| Read and write to volumes                   | Yes   | Yes    |
 
 <Info>
   **Control plane vs data plane:** Think of the control plane as "managing the infrastructure" and the data plane as "using the infrastructure." Editors have full access to use clusters for their work. Their only restriction is that they cannot create, delete, or resize clusters.
@@ -46722,6 +46839,29 @@ List all batch jobs for the authenticated user
 
 
 
+# Get billing usage
+Source: https://docs.together.ai/reference/billing-usage
+
+openapi.yaml GET /billing/usage
+Returns an organization's billing usage for a month as cost-annotated line items grouped into time windows. Finalized windows are returned through the end of yesterday at daily granularity, or the last completed hour at hourly granularity (UTC).
+
+
+<Note>
+  This endpoint is in beta and is enabled per organization. [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) to request access or share feedback. Calls from an organization without access return a 404. The response shape can change while the endpoint is in beta.
+
+  `organization_id` is optional in beta but will be required at GA, so send it now to avoid a breaking change.
+</Note>
+
+This endpoint returns usage for the API key's entire organization, not only the key's project. Any project's key can read it, including keys created by [external collaborators](/docs/roles-permissions#external-collaborators-beta), and access can't be restricted to organization admins. When project-scoped keys start enforcing their scope, you will need to swap the key you use here for one with organization-level access.
+
+Usage data for the current month can be up to 1 hour behind. Data for prior months can be up to 24 hours behind.
+
+When reading line items:
+
+* `product_name` values are display names, not stable identifiers, and can change without notice.
+* `attributes` vary by product. For example, `api_key_id` and `project_id` are only set on inference line items.
+
+
 # Create a GPU cluster
 Source: https://docs.together.ai/reference/clusters-create
 
@@ -46998,14 +47138,6 @@ Source: https://docs.together.ai/reference/dmi/ab-experiments-create
 
 openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/abExperiments
 Creates a managed control/variant split across two to 20 deployments under the same endpoint. Exactly one member is the control, member percentages must add up to 100, and the split applies only to traffic that the endpoint would otherwise send to the control.
-
-
-
-# Get an A/B experiment
-Source: https://docs.together.ai/reference/dmi/ab-experiments-get
-
-openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
-Retrieves an A/B experiment and its participating deployments, roles, and traffic percentages.
 
 
 
@@ -47518,6 +47650,31 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="August 27, 2026">
+  ## Model deprecations
+
+  The following models have been deprecated and are no longer available on serverless:
+
+  * `nvidia/Nemotron-3-ultra-550b-a55b`.
+  * `pearl-ai/gemma-4-31b-it`.
+  * `deepseek-ai/DeepSeek-V4-Pro`. Use `deepseek-ai/DeepSeek-V4-Pro-0813` instead.
+  * `moonshotai/Kimi-K2.7-Code`.
+
+  All of these models except `pearl-ai/gemma-4-31b-it` remain available through on-demand [dedicated endpoints](/docs/dedicated-endpoints). See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
+<Update label="August 26, 2026">
+  ## Batch jobs in the CLI
+
+  The Together CLI now includes a `tg batches` command group for [batch inference](/docs/inference/batch/overview):
+
+  * `tg batches submit` uploads a local JSONL file (or takes an existing file ID) and creates a job against `chat.completions`, `audio.transcriptions`, or `audio.translations`.
+  * `tg batches list`, `retrieve`, and `cancel` manage the job lifecycle, with `ls` and `get` as aliases.
+  * `tg batches download` streams results to stdout, or writes the output and error files to disk with `--output`.
+
+  See the [batches CLI reference](/reference/cli/batches).
+</Update>
+
 <Update label="August 26, 2026">
   ## New serverless models
 
@@ -47592,6 +47749,14 @@ Source: https://docs.together.ai/docs/changelog
   * **Audit trail:** Automatically approved repairs record **Auto-Approved** in the repair's **Reviewed by** field, alongside the alert evidence that triggered them.
 
   See [Confirmation policy](/docs/node-repair#confirmation-policy) for details.
+</Update>
+
+<Update label="August 19, 2026">
+  ## ACH bank transfers generally available
+
+  ACH bank transfers are now available to all customers, not just those with an enterprise contract. Link a U.S. bank account with instant verification from your [billing settings](https://api.together.ai/settings/organization/~current/billing), set it as your default payment method, and purchase credits directly from your bank account. Credits are deposited after the ACH payment clears (usually 1–3 business days). Auto-recharge still requires a card as the default payment method.
+
+  See [Payment methods & invoices](/docs/billing-payment-methods#ach-bank-transfers).
 </Update>
 
 <Update label="August 19, 2026">
@@ -47670,6 +47835,18 @@ Source: https://docs.together.ai/docs/changelog
 </Update>
 
 <Update label="August 12, 2026">
+  ## Leave a project from the console
+
+  Project collaborators can now leave a project themselves, from their own row in [**Settings > Project > Collaborators**](https://api.together.ai/settings/projects/~current/collaborators) or from the Projects list in [**Organization Settings**](https://api.together.ai/settings/organization/~current). Organization members cannot leave the organization's default project, and the last project admin must promote another collaborator before leaving.
+
+  See [Leaving a project](/docs/projects#leaving-a-project).
+
+  ## Dedicated API keys for Vercel projects
+
+  Connecting a Vercel project from [Integrations settings](https://api.together.ai/settings/integrations) now creates a dedicated API key for each linked Vercel project, set as the `TOGETHER_API_KEY` environment variable in that Vercel project.
+
+  See [Vercel integration](/docs/api-keys-authentication#vercel-integration).
+
   ## New serverless models
 
   The following models are now available on [serverless](/docs/serverless/models):
@@ -47736,6 +47913,12 @@ Source: https://docs.together.ai/docs/changelog
   LoRA fine-tuning jobs on `deepseek-ai/DeepSeek-V3.1` can now target the MoE expert layers.
 
   See [Target MoE expert layers](/docs/fine-tuning/lora-vs-full#target-moe-expert-layers) for how to enable it.
+
+  ## API key expiration at creation
+
+  When you create a project API key in the console, you can optionally set an expiration date. Select **Set an expiration date**, then choose **1 hour**, **1 day**, **7 days**, **30 days**, or a custom date.
+
+  See [Authentication](/docs/api-keys-authentication#create-an-api-key).
 </Update>
 
 <Update label="August 6, 2026">
@@ -47977,6 +48160,12 @@ Source: https://docs.together.ai/docs/changelog
   The [fine-tuning comparison view](https://api.together.ai/fine-tuning?view=comparison) now includes the same **Metrics filtering** control as the single-job Metrics tab. Adjust **Sampling rate** and **Step range**, then select **Apply** to re-fetch metrics for every selected job with matching filters.
 
   See [View metrics in the dashboard](/docs/fine-tuning/monitoring#view-metrics-in-the-dashboard).
+
+  ## Cancel API key expiration
+
+  You can remove a scheduled expiration from a project API key in the console. Open the three-dot menu next to a key that has a future expiration date, select **Cancel expiration**, and confirm. The key stays active and no longer expires automatically.
+
+  See [Authentication](/docs/api-keys-authentication#best-practices).
 </Update>
 
 <Update label="July 23, 2026">
@@ -49849,6 +50038,111 @@ Source: https://docs.together.ai/python-library
 
 
 
+# Batches
+Source: https://docs.together.ai/reference/cli/batches
+
+Submit, monitor, download, and cancel batch inference jobs from your terminal.
+
+Submit and manage [batch inference](/docs/inference/batch/overview) jobs from the Together CLI. A batch job runs each line of a JSONL input file as its own request against a chat completions or audio endpoint. For the end-to-end workflow and input format, see [Run a batch job](/docs/inference/batch/tutorial).
+
+## Submit
+
+Submit a new batch job. Pass either a local JSONL path, which the CLI uploads for you with `purpose=batch-api`, or the ID of a file you already uploaded. Each request names its model in its JSONL `body`. There is no model flag.
+
+```bash theme={null}
+tg batches submit [FILE_ID_OR_PATH] [API]
+```
+
+`API` is required and must be one of `chat.completions`, `audio.transcriptions`, or `audio.translations`. You can pass it positionally or with `--api`.
+
+```bash theme={null}
+# Local file (uploads, then creates the job)
+tg batches submit ./requests.jsonl chat.completions
+
+# Previously uploaded file ID
+tg batches submit file-abc123 --api chat.completions
+
+# Audio transcription batch
+tg batches submit ./audio.jsonl --api audio.transcriptions
+```
+
+### Parameters
+
+| Flag                                                                         | Description                                                                                                                                                |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `FILE_ID_OR_PATH`                                                            | File ID from the Files API, or a local path to a JSONL file to upload.<br />**required**                                                                   |
+| `API` / `--api [chat.completions\|audio.transcriptions\|audio.translations]` | API to run each line of the input file against. Maps to `/v1/chat/completions`, `/v1/audio/transcriptions`, or `/v1/audio/translations`.<br />**required** |
+
+On success, the command prints a job summary and the exact `tg batches get` command for checking progress. Pass `--json` for the full create response (including any `warning`). If the API returns no job, the command exits with status 1.
+
+## List
+
+List batch jobs, newest first.
+
+```bash theme={null}
+tg batches list
+```
+
+Alias: `tg batches ls`.
+
+### Parameters
+
+| Flag               | Description                             |
+| ------------------ | --------------------------------------- |
+| `--after [string]` | Pagination cursor from a previous page. |
+
+## Retrieve
+
+Get details for a specific batch job.
+
+```bash theme={null}
+tg batches retrieve [BATCH_ID]
+```
+
+Alias: `tg batches get`.
+
+The output shows the created and completed times, the API, the model, the output and error file IDs, and the status, with a progress bar while the job is `VALIDATING` or `IN_PROGRESS`. Once the job has finished and has files to download, the command prints the matching `tg batches download` command.
+
+## Download
+
+Download the batch output file and, when present, the error file.
+
+```bash theme={null}
+tg batches download [BATCH_ID]
+```
+
+Omit `--output` to stream the output file to stdout. Pass `--output` with a file or directory path to save the files to disk instead. When the job has both an output and an error file, the error file is written as `<stem>.errors<suffix>` next to the output file so it never overwrites your results. With `--json`, `--output` is required, and the JSON response lists the saved paths.
+
+```bash theme={null}
+# Stream output to stdout
+tg batches download a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
+
+# Save to a file (errors go to results.errors.jsonl when present)
+tg batches download a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d --output ./results.jsonl
+
+# Save into a directory (the output file keeps its server filename)
+tg batches download a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d --output ./out
+```
+
+### Parameters
+
+| Flag                     | Description                                                                          |
+| ------------------------ | ------------------------------------------------------------------------------------ |
+| `--output` / `-o [path]` | File or directory to write result files to. Omit to print the output file to stdout. |
+
+The job must have reached a terminal status (`COMPLETED`, `FAILED`, `EXPIRED`, or `CANCELLED`) before you can download anything. Use `tg batches get` to check progress while it's still running.
+
+## Cancel
+
+Cancel a batch job.
+
+```bash theme={null}
+tg batches cancel [BATCH_ID]
+```
+
+The command confirms the cancellation and prints the job summary. Pass `--json` for the raw batch object instead.
+
+
 # Clusters
 Source: https://docs.together.ai/reference/cli/clusters
 
@@ -50650,12 +50944,13 @@ Here's a sample output:
 
 ```bash theme={null}
 $ tg files upload ./example.jsonl
-Uploading file example.jsonl: 100%|██████████████████████████████| 5.18M/5.18M [00:01<00:00, 4.20MB/s]
 Success!
 file-d931200a-6b7f-476b-9ae2-8fddd5112308
 ```
 
-The printed `file-…` identifier is the assigned `file-id` for this file object. Pass `--json` to get the full response body instead.
+Interactive terminals show a progress bar while the file is validated and uploaded. The bar clears when the transfer finishes. Pass `--json` to skip the progress UI and print the full response body instead.
+
+The printed `file-…` identifier is the assigned `file-id` for this file object.
 
 ### Parameters
 
@@ -50676,11 +50971,10 @@ Here's a sample output:
 
 ```bash theme={null}
 $ tg files check ./local-file.jsonl
-Validating file: 1 lines [00:00, 7476.48 lines/s]
 OK Checks passed
 ```
 
-Pass `--json` to get the full structured report instead of the pass/fail summary:
+For files 1 MB and larger, interactive terminals show a progress bar while the check scans the file. Pass `--json` to print the full structured report instead of the pass/fail summary:
 
 ```bash theme={null}
 $ tg files check ./local-file.jsonl --json
@@ -51233,6 +51527,20 @@ tg evals status [EVAL_ID]
 
 [Learn more about the evals command](/reference/cli/evals).
 
+### `batches`
+
+Submit and manage [batch inference](/docs/inference/batch/overview) jobs.
+
+```bash theme={null}
+tg batches submit ./requests.jsonl chat.completions
+tg batches ls
+tg batches get [BATCH_ID]
+tg batches download [BATCH_ID] --output ./out
+tg batches cancel [BATCH_ID]
+```
+
+[Learn more about the batches command](/reference/cli/batches).
+
 ### `clusters` (beta)
 
 Reserve, manage, and interact with GPU clusters.
@@ -51277,12 +51585,12 @@ Features in the beta namespace are largely considered stable. However, these fea
 
 Several commands and subcommands have shorthand aliases for faster typing:
 
-| Alias | Full command  | Available on                                                                                                                                                                                                     |
-| :---- | :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ft`  | `fine-tuning` | `tg ft …` (e.g. `tg ft create`, `tg ft ls`)                                                                                                                                                                      |
-| `ls`  | `list`        | `tg files ls`, `tg fine-tuning ls`, `tg models ls`, `tg endpoints ls`, `tg evals ls`, `tg beta clusters ls`, `tg beta clusters storage ls`, `tg beta jig ls`, `tg beta jig secrets ls`, `tg beta jig volumes ls` |
-| `-c`  | `create`      | `tg fine-tuning -c`, `tg endpoints -c`, `tg evals -c`, `tg beta clusters -c`, `tg beta clusters storage -c`                                                                                                      |
-| `-d`  | `delete`      | `tg files -d`, `tg fine-tuning -d`, `tg endpoints -d`, `tg beta clusters -d`, `tg beta clusters storage -d`, `tg beta jig secrets -d`, `tg beta jig volumes -d`                                                  |
+| Alias | Full command  | Available on                                                                                                                                                                                                                      |
+| :---- | :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ft`  | `fine-tuning` | `tg ft …` (e.g. `tg ft create`, `tg ft ls`)                                                                                                                                                                                       |
+| `ls`  | `list`        | `tg files ls`, `tg fine-tuning ls`, `tg models ls`, `tg endpoints ls`, `tg evals ls`, `tg batches ls`, `tg beta clusters ls`, `tg beta clusters storage ls`, `tg beta jig ls`, `tg beta jig secrets ls`, `tg beta jig volumes ls` |
+| `-c`  | `create`      | `tg fine-tuning -c`, `tg endpoints -c`, `tg evals -c`, `tg beta clusters -c`, `tg beta clusters storage -c`                                                                                                                       |
+| `-d`  | `delete`      | `tg files -d`, `tg fine-tuning -d`, `tg endpoints -d`, `tg beta clusters -d`, `tg beta clusters storage -d`, `tg beta jig secrets -d`, `tg beta jig volumes -d`                                                                   |
 
 ## Global parameters
 
@@ -52392,6 +52700,14 @@ Source: https://docs.together.ai/reference/dmi/ab-experiments-delete
 
 openapi.yaml DELETE /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
 Deletes an A/B experiment and removes its managed traffic split. The deployments themselves are not deleted.
+
+
+
+# Get an A/B experiment
+Source: https://docs.together.ai/reference/dmi/ab-experiments-get
+
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
+Retrieves an A/B experiment and its participating deployments, roles, and traffic percentages.
 
 
 

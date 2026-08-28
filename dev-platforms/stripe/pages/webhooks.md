@@ -590,7 +590,7 @@ Stripe doesn’t guarantee the delivery of events in the order that they’re ge
 - `invoice.paid`
 - `charge.created` (if there’s a charge)
 
-Make sure that your event destination isn’t dependent on receiving events in a specific order. Be prepared to manage their delivery appropriately. You can also use the API to retrieve any missing objects. For example, you can retrieve the invoice, charge, and subscription objects with the information from `invoice.paid` if you receive this event first.
+Make sure that your event destination isn’t dependent on receiving events in a specific order. Snapshot events record `created` in seconds, so distinct events can share a timestamp. Don’t use `created` to determine event order or whether you’ve already processed an event. Track [event IDs](https://docs.stripe.com/api/events/object.md#event_object-id) to identify duplicate deliveries instead. You can also use the API to retrieve any missing objects. For example, you can retrieve the invoice, charge, and subscription objects with the information from `invoice.paid` if you receive this event first.
 
 ### API versioning
 

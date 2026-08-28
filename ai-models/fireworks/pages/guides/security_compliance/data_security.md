@@ -24,12 +24,12 @@ For US-only inference residency, see [US-only Serverless](/serverless/us-only-se
 
 **Bring Your Own Bucket:** Customers may integrate their own cloud storage to retain governance and apply their own compliance frameworks.
 
-* Datasets: [Bring your own bucket (BYOB)](/fine-tuning/finetuning-intro#dataset-storage-byob) (GCS, AWS S3, Azure)
+* Datasets: [Bring your own bucket (BYOB)](/guides/security_compliance/secure_training/byob) (GCS, AWS S3, Azure)
 * Models: [External AWS S3 Bucket Integration](/models/uploading-custom-models#uploading-your-model)
 
-**Bring Your Own Key:** Customers may integrate their own AWS KMS key to retain governance and apply their own encryption policies.
+**Bring Your Own Key:** Customers may integrate their own AWS KMS, Google Cloud KMS, or Azure Key Vault key to retain governance and apply their own encryption policies.
 
-* Datasets and checkpoints: [Customer-Managed Encryption Keys for Fine-Tuning](/fine-tuning/finetuning-intro#cmek) (SFT supported; DPO and RFT coming soon)
+* Datasets and checkpoints: [Customer-Managed Encryption Keys for Fine-Tuning](/guides/security_compliance/secure_training/cmek) (LoRA SFT, DPO, and RFT; full-parameter training not supported)
 * Final model weights: Coming soon
 
 **Access Logging:** All customer data access is logged, monitored, and protected against tampering. See [Audit & Access Logs](https://docs.fireworks.ai/guides/security_compliance/audit_logs).
@@ -53,7 +53,7 @@ Fireworks enables secure model training, including fine-tuning and reinforcement
 **API-Based Integration:** Customers leverage Fireworks' training APIs while maintaining full control over sensitive components, ensuring no cross-component data leakage.
 
 <Tip>
-  For detailed guidance on secure reinforcement fine-tuning and using your own cloud storage, see [Training security](/fine-tuning/finetuning-intro#training-security).
+  For detailed guidance on secure reinforcement fine-tuning and using your own cloud storage, see [Training security](/guides/security_compliance/secure_training).
 </Tip>
 
 ## Technical Safeguards

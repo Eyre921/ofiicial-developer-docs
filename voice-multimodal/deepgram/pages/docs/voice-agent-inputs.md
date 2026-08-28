@@ -21,6 +21,7 @@ Client Messages are JSON-formatted commands that the client sends to the Deepgra
 * [`Inject Agent Message`](/docs/voice-agent-inject-agent-message): Triggers an immediate statement from the agent.
 * [`Inject User Message`](/docs/voice-agent-inject-user-message): Sends a text-based message to the agent as if the user had spoken it.
 * [`Update Prompt`](/docs/voice-agent-update-prompt): Updates the system prompt of the agent during the conversation.
+* [`Force End Turn`](/docs/voice-agent-force-end-turn): Ends the current user turn immediately. Requires a Deepgram V2 (Flux) listen provider.
 * [`Function Call Response`](/docs/voice-agent-function-call-response): Sends the result of a function call back to the server.
 * [`Agent Keep Alive`](/docs/agent-keep-alive): Maintains the connection to prevent timeouts.
 

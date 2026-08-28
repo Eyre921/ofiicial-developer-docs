@@ -13,6 +13,7 @@ Manage, scale, and operate your GPU clusters
 * [Kubernetes Dashboard](#kubernetes-dashboard)
 * [Direct SSH Access](#direct-ssh-access)
 * [Managing Cluster Access](#managing-cluster-access)
+* [Download cluster kubeconfig](#download-cluster-kubeconfig)
 * [Cluster Scaling](#cluster-scaling)
 * [Monitoring and Status](#monitoring-and-status)
 * [Best Practices](#best-practices)
@@ -412,6 +413,34 @@ Cluster access is controlled through Together's [project-based permissions](/doc
 * **editor** -- Can use clusters (SSH, kubectl, Slurm) but can't create, delete, or modify infrastructure
 
 For the full permission matrix, see [Roles & Permissions](/docs/roles-permissions).
+
+### Download cluster kubeconfig
+
+Both Kubernetes and Slurm clusters expose a kubeconfig for `kubectl` access to the cluster's Kubernetes API. Download it from the cluster details page at [api.together.ai/clusters](https://api.together.ai/clusters), or with the [Together CLI](/reference/cli/clusters).
+
+**From the console:**
+
+1. Open your cluster. The kubeconfig appears once the cluster is ready and is hidden while the cluster is paused.
+2. Find the **Kubeconfig** row in the cluster sidebar (labeled **Admin Kubeconfig** when OIDC is enabled).
+3. Select **View** to copy the contents, or **Download** to save it as a file.
+
+**From the CLI:**
+
+```bash theme={null}
+tg beta clusters get-credentials [CLUSTER_ID] --set-default-context
+```
+
+Find your cluster ID with `tg beta clusters list`.
+
+**Who can view the kubeconfig:**
+
+| OIDC     | Console label        | Who can view                             |
+| -------- | -------------------- | ---------------------------------------- |
+| Disabled | **Kubeconfig**       | All project members (admins and editors) |
+| Enabled  | **Admin Kubeconfig** | Project admins only                      |
+| Enabled  | **OIDC Kubeconfig**  | All project members (admins and editors) |
+
+When OIDC is enabled, editors use the OIDC kubeconfig for day-to-day `kubectl` access, and project admins keep the admin kubeconfig for administrative tasks such as RBAC setup. See [Set up OIDC authentication](/docs/cluster-oidc).
 
 ### Adding Users to a Cluster Project
 

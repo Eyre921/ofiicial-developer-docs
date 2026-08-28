@@ -67,6 +67,14 @@ Claim a domain that is already verified by another team.
   });
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->domains->claims->create([
+    'name' => 'example.com'
+  ]);
+  ```
+
   ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
   import resend
 

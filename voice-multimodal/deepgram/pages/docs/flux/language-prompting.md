@@ -207,7 +207,8 @@ When using `flux-general-multi`, all `TurnInfo` events include two additional fi
     { "word": "are", "confidence": 0.97 },
     { "word": "you?", "confidence": 0.92 }
   ],
-  "end_of_turn_confidence": 0.86
+  "end_of_turn_confidence": 0.86,
+  "trigger": "model"
 }
 ```
 
@@ -287,6 +288,7 @@ wss://api.deepgram.com/v2/listen?model=flux-general-multi&language_hint=en&langu
   "transcript": "Hola, necesito ayuda con mi cuenta.",
   "languages": ["es"],
   "languages_hinted": [],
+  "trigger": "model",
   ...
 }
 ```

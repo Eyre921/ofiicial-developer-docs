@@ -6,6 +6,54 @@ path: docs/integrations
 
 Integrate Resend with the tools you already use.
 
+## Coding agents
+
+<CardGroup>
+  <Card title="Cursor" href="https://resend.com/cursor" icon={<CursorIcon />}>
+    Send emails from Cursor with the Resend MCP server
+  </Card>
+
+  <Card title="Claude" href="https://resend.com/claude" icon={<ClaudeIcon />}>
+    Connect Claude to Resend with the official connector
+  </Card>
+
+  <Card title="Claude Code" href="https://resend.com/claude-code" icon={<ClaudeIcon />}>
+    Send emails from Claude Code with the official plugin
+  </Card>
+
+  <Card title="Codex" href="https://resend.com/codex" icon={<CodexIcon />}>
+    Send emails from Codex with the official Resend plugin
+  </Card>
+
+  <Card title="Antigravity" href="https://resend.com/antigravity" icon={<AntigravityIcon />}>
+    Send emails from Antigravity with the Resend MCP server
+  </Card>
+
+  <Card title="Devin" href="https://resend.com/devin" icon={<DevinIcon />}>
+    Send emails from Devin with the Resend MCP server
+  </Card>
+
+  <Card title="Gemini" href="https://resend.com/gemini" icon={<GeminiIcon />}>
+    Build email automations with Gemini and Resend
+  </Card>
+
+  <Card title="GitHub Copilot" href="https://resend.com/github-copilot" icon={<GitHubCopilotIcon />}>
+    Build email automations with GitHub Copilot and Resend
+  </Card>
+
+  <Card title="OpenCode" href="https://resend.com/opencode" icon={<OpenCodeIcon />}>
+    Send emails from OpenCode with the Resend MCP server
+  </Card>
+
+  <Card title="Zed" href="https://resend.com/zed" icon={<ZedIcon />}>
+    Send emails from Zed with the Resend MCP server
+  </Card>
+
+  <Card title="Warp" href="https://resend.com/warp" icon={<WarpIcon />}>
+    Send emails from Warp with the Resend MCP server
+  </Card>
+</CardGroup>
+
 ## AI
 
 <CardGroup>

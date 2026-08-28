@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1295 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1296 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -1200,6 +1200,7 @@
 - `docs/help-center/product/voices/voice-library/what-voices-are-popular-on-tik-tok-you-tube-and-social-media` — [What voices are popular on TikTok, YouTube, and social media?](pages/docs/help-center/product/voices/voice-library/what-voices-are-popular-on-tik-tok-you-tube-and-social-media.md) · [原文](https://elevenlabs.io/docs/help-center/product/voices/voice-library/what-voices-are-popular-on-tik-tok-you-tube-and-social-media.md)
 - `docs/help-center/product/voices/voice-library/why-cant-i-use-some-voices-from-the-voice-library` — [Why can't I use some voices from the Voice Library?](pages/docs/help-center/product/voices/voice-library/why-cant-i-use-some-voices-from-the-voice-library.md) · [原文](https://elevenlabs.io/docs/help-center/product/voices/voice-library/why-cant-i-use-some-voices-from-the-voice-library.md)
 - `docs/help-center/technical` — [Technical FAQ](pages/docs/help-center/technical.md) · [原文](https://elevenlabs.io/docs/help-center/technical.md)
+- `docs/help-center/technical/api-error-code-400-or-401` — [API - Error Code 400 or 401](pages/docs/help-center/technical/api-error-code-400-or-401.md) · [原文](https://elevenlabs.io/docs/help-center/technical/api-error-code-400-or-401.md)
 - `docs/help-center/technical/api-error-code-422` — [API - Error Code 422](pages/docs/help-center/technical/api-error-code-422.md) · [原文](https://elevenlabs.io/docs/help-center/technical/api-error-code-422.md)
 - `docs/help-center/technical/api-error-code-429` — [API - Error Code 429](pages/docs/help-center/technical/api-error-code-429.md) · [原文](https://elevenlabs.io/docs/help-center/technical/api-error-code-429.md)
 - `docs/help-center/technical/can-i-reduce-api-latency` — [Can I reduce API latency?](pages/docs/help-center/technical/can-i-reduce-api-latency.md) · [原文](https://elevenlabs.io/docs/help-center/technical/can-i-reduce-api-latency.md)

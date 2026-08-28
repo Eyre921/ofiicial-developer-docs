@@ -70,7 +70,7 @@ The `Settings` message is a JSON object that contains the following fields:
 | `agent.listen.provider.version`             | String  | The Deepgram speech-to-text API version. Flux models use `v2` and all other models use `v1`.                                                                                                                |
 | `agent.listen.provider.language`            | String  | Optional [Deepgram speech-to-text language](/docs/language) to be used for transcription. Flux models automatically leverage the language within the model's name, and Nova models default to `en`.         |
 | `agent.listen.provider.keyterms`            | Array   | The [Keyterms](/docs/keyterm) you want increased recognition for. Each entry is a plain string with no weights or intensifiers; pass a multi-word phrase as a single array element.                         |
-| `agent.listen.provider.eot_threshold`       | Number  | Confidence threshold for [end-of-turn detection](/docs/flux/configuration#parameter-details). Valid range: `0.5` - `0.9`. Defaults to `0.7`. Flux models only.                                              |
+| `agent.listen.provider.eot_threshold`       | Number  | Confidence threshold for [end-of-turn detection](/docs/flux/configuration#parameter-details). Valid range: `0.5` - `1.0`. Defaults to `0.7`. Flux models only.                                              |
 | `agent.listen.provider.eager_eot_threshold` | Number  | Confidence threshold for [eager end-of-turn detection](/docs/flux/configuration#parameter-details). Valid range: `0.3` - `0.9`. Flux models only.                                                           |
 | `agent.listen.provider.eot_timeout_ms`      | Integer | Time in milliseconds after speech to finish a turn regardless of EOT confidence. Defaults to `5000`. Flux models only.                                                                                      |
 | `agent.listen.provider.language_hints`      | Array   | Array of one or more BCP-47 language codes to bias toward specific languages. See [supported languages](/docs/flux/language-prompting#supported-languages). Only supported when using `flux-general-multi`. |
@@ -102,7 +102,7 @@ The `Settings` message is a JSON object that contains the following fields:
 
 These parameters control [Flux end-of-turn detection](/docs/flux/configuration#parameter-details) and are only available when using Flux models with the v2 API (`agent.listen.provider.version` set to `v2`).
 
-* `eot_threshold` sets the confidence required to trigger an `EndOfTurn` event. Higher values reduce false positives but increase latency. Defaults to `0.7`.
+* `eot_threshold` sets the confidence required to trigger an `EndOfTurn` event. Higher values reduce false positives but increase latency. Defaults to `0.7`. Set it to `1.0` to fully suppress natural end-of-turn detection and own turn taking with [`ForceEndTurn`](/docs/voice-agent-force-end-turn).
 * `eager_eot_threshold` enables eager end-of-turn detection, triggering `EagerEndOfTurn` events before the user fully finishes speaking. This reduces end-to-end latency but increases LLM calls. Must be less than or equal to `eot_threshold`.
 * `eot_timeout_ms` sets a hard timeout in milliseconds — a turn finishes when this much time has passed after speech, regardless of EOT confidence. Defaults to `5000`.
 * All three parameters can be updated during a conversation using the [`UpdateListen`](/docs/voice-agent-update-listen) message.

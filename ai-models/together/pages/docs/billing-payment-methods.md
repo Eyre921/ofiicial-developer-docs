@@ -10,8 +10,8 @@ Managing payment cards, ACH transfers, viewing invoices, and updating billing de
 
 Together AI supports two payment methods to fund your account:
 
-* **Credit and debit cards**: accepted from all major networks (Visa, Mastercard, American Express). Available to all customers.
-* **ACH bank transfers**: pay directly from a U.S. bank account. Available to customers with an enterprise contract only (early access).
+* **Credit and debit cards**: accepted from all major networks (Visa, Mastercard, American Express).
+* **ACH bank transfers**: pay directly from a U.S. bank account.
 
 ***
 
@@ -51,17 +51,13 @@ You can change your invoice address without updating your payment methods. The T
 
 ***
 
-## ACH bank transfers (early access)
+## ACH bank transfers
 
-<Note>
-  ACH bank transfers are currently in early access and available to customers with an enterprise contract only. [Contact Support](https://portal.usepylon.com/together-ai/forms/support-request) to request access.
-</Note>
-
-ACH (Automated Clearing House) payments allow you to purchase Together AI credits directly from your U.S. bank account. It's a good fit if you're making large purchases or running into credit card limits. You can purchase up to \$100,000 per transaction.
+ACH (Automated Clearing House) payments let you purchase Together AI credits directly from your U.S. bank account. Use ACH for large purchases or when you hit credit card limits. You can purchase up to \$50,000 per transaction, or \$100,000 if your organization has a Scale or Enterprise contract.
 
 ### Adding a bank account
 
-Together AI supports most U.S. financial institutions with instant verification. Once your account has been enabled for ACH as a payment method, you can link your bank by following these steps:
+Together AI supports most U.S. financial institutions with instant verification. Link a bank account from billing settings:
 
 1. Go to your [Billing settings](https://api.together.ai/settings/organization/~current/billing)
 2. In the **Payment method** panel, select **Manage payment methods** (or **Add payment method** if no method is on file)
@@ -80,7 +76,7 @@ Together AI supports most U.S. financial institutions with instant verification.
 Once your bank account is linked, start a purchase from your [Billing settings](https://api.together.ai/settings/organization/~current/billing) the same way you would with a card:
 
 1. Select **Add Credits** in the Credits Balance block
-2. Enter an amount (up to \$100,000) and confirm
+2. Enter an amount and confirm
 
 Credits are **not** deposited until the ACH payment clears. Settlement usually takes **1–3 business days**, but can take longer depending on your bank. Until then, the purchase shows as pending and your balance will not increase.
 
@@ -90,7 +86,7 @@ If the payment fails, no credits are deposited. Contact [Support](https://portal
 
 * **Default method controls charges.** Credit purchases use whichever payment method is marked default. You can keep both cards and a bank account on file and switch the default as needed.
 * **Auto-recharge requires a card.** Auto-recharge only works when your default payment method is a credit or debit card. If you set a US bank account as default, auto-recharge is turned off automatically.
-* **Keep at least one valid card on file.** Your organization must always have at least one valid credit or debit card saved, even when ACH is enabled or set as default.
+* **Keep at least one valid card on file.** Your organization must always have at least one valid credit or debit card saved, even when ACH is set as default.
 * **Failed payments.** If an ACH payment fails, no credits are deposited. Contact [Support](https://portal.usepylon.com/together-ai/forms/support-request) if you have questions about a failed transaction.
 
 ### Troubleshooting

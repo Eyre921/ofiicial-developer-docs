@@ -86,7 +86,7 @@ An agent run that is waiting for answers is still active, so it holds one of you
 
 To check the status of your agent run, go to the **Agent Runs** tab in your Netlify project dashboard. Then choose your agent run and check the log for the current status.
 
-You can expand an individual agent run to view its credit usage. Note that credit usage for a run may take a brief moment to appear after the run begins. Learn more in [how pricing works](/build/build-with-ai/agent-runners/overview/#how-pricing-works).
+You can expand a task within your agent run to view its credit usage. Note that credit usage for a run may take a brief moment to appear after the run begins. Learn more in [how agent runs consume credits](/build/build-with-ai/agent-runners/overview/#how-agent-runs-consume-credits).
 
 If you change your mind about a run that's still going, you can stop it and take a different approach. For details, see [Stop an agent run](#stop-an-agent-run).
 
@@ -184,7 +184,7 @@ A run started by any team member on any project counts toward the same team limi
 
 Runs labeled **In progress** or **New** are active and hold a slot. Runs labeled **Done**, **Failed**, **Cancelled**, or **Archived** don't. With the CLI, `netlify agents:list --status running` lists the active runs for a project.
 
-### Runs cancelled because your team ran out of credits
+### Running out of credits during an agent run
 
 If your team runs out of credits, active agent runs are cancelled. A cancelled run will show a **Cancelled (out of credits)** status.
 
@@ -192,5 +192,5 @@ Once your team has more credits, you can continue your cancelled agent run. You'
 
 When you stop an agent run yourself, you won't find a **Continue** option. Instead, send a new prompt in the same agent run to pick the work back up, as described in [What happens when you stop a run](#what-happens-when-you-stop-a-run).
 
-When your team has no credits available you will not be able to start a new run. To learn how agent runs consume credits, see [pricing for AI features](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/pricing-for-ai-features).
+When your team has no credits available you will not be able to start a new run. To learn more, see [how agent runs consume credits](/build/build-with-ai/agent-runners/overview/#how-agent-runs-consume-credits).
 

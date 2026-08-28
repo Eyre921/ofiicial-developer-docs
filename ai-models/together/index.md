@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 336 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 338 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -213,7 +213,9 @@
 - `reference/batch-create` — [Create a batch job](pages/reference/batch-create.md) · [原文](https://docs.together.ai/reference/batch-create)
 - `reference/batch-get` — [Get a batch job](pages/reference/batch-get.md) · [原文](https://docs.together.ai/reference/batch-get)
 - `reference/batch-list` — [List batch jobs](pages/reference/batch-list.md) · [原文](https://docs.together.ai/reference/batch-list)
+- `reference/billing-usage` — [Get billing usage](pages/reference/billing-usage.md) · [原文](https://docs.together.ai/reference/billing-usage)
 - `reference/chat-completions` — [Create chat completion](pages/reference/chat-completions.md) · [原文](https://docs.together.ai/reference/chat-completions)
+- `reference/cli/batches` — [Batches](pages/reference/cli/batches.md) · [原文](https://docs.together.ai/reference/cli/batches)
 - `reference/cli/clusters` — [Clusters](pages/reference/cli/clusters.md) · [原文](https://docs.together.ai/reference/cli/clusters)
 - `reference/cli/endpoints` — [Endpoints](pages/reference/cli/endpoints.md) · [原文](https://docs.together.ai/reference/cli/endpoints)
 - `reference/cli/endpoints-beta` — [Endpoints](pages/reference/cli/endpoints-beta.md) · [原文](https://docs.together.ai/reference/cli/endpoints-beta)

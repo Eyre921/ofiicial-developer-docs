@@ -51,7 +51,7 @@ For current pricing, visit https://supabase.com/pricing.
 ### Enterprise - custom pricing
 - Designated Support manager
 - Uptime SLAs
-- BYO Cloud supported
+- Supports AWS PrivateLink
 - 24×7×365 premium enterprise support
 - Private Slack channel
 - Custom Security Questionnaires
@@ -179,7 +179,6 @@ Compute is billed hourly. Each project runs its own instance. Pro and Team plans
 
 | Feature                        | Free                    | Pro                                                                        | Team                                                                       | Enterprise                     |
 | ------------------------------ | ----------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------ |
-| BYO cloud                      | Not included            | Not included                                                               | Not included                                                               | Included                       |
 | Log retention (API & Database) | 1 day                   | 7 days                                                                     | 28 days                                                                    | 90 days                        |
 | Log Drain                      | Not included            | $60 per drain per month, + $0.20 per million events, + $0.09 per GB egress | $60 per drain per month, + $0.20 per million events, + $0.09 per GB egress | Custom                         |
 | Platform Audit Logs            | Not included            | Not included                                                               | Included                                                                   | Included                       |
@@ -69313,7 +69312,8 @@ Supabase branches create separate environments that spin off from your main proj
 - **Preview Branches**: Preview branches are ephemeral and best suited for focused testing. They are automatically deleted when a PR is merged or closed.
 - **Persistent Branches**: Persistent branches are long-lived and recommended for environments like staging, QA, or development. They aren't automatically paused or deleted due to inactivity or when a PR is merged or closed.
 - **Managing Branches**: You can create, review, and merge branches either automatically via our [GitHub integration](https://supabase.com/docs/guides/deployment/branching/github-integration) or directly [through the dashboard](https://supabase.com/docs/guides/deployment/branching/dashboard) (currently in beta). All branches show up in the branches page in the dashboard, regardless of how they were created.
-- **Data-less**: New branches do not start with any data from your main project. This is meant to better protect your sensitive production data. To start your branches with data, you can use a [seed file](https://supabase.com/docs/guides/deployment/branching/github-integration#seeding) if using the GitHub integration.
+- **Cloned from your main project**: Each new branch is created as a clone of your main project. It starts with that project's Edge Functions deployed and the configuration set.
+- **Data-less by default**: By default, new branches do not start with any data or storage objects from your main project. This is meant to better protect your sensitive production data. To start your branches with data, you can use a [seed file](https://supabase.com/docs/guides/deployment/branching/github-integration#seeding) if using the GitHub integration, or the [Include data](https://supabase.com/docs/guides/deployment/branching/dashboard#include-production-data) option if you create the branch from the dashboard.
 
 ## Deploying to production
 
@@ -69646,6 +69646,16 @@ Once you've enabled the feature, you can create a new branch:
 1. Click the arrows next to the branch name in the top menu bar. (The top menu bar has the format `YOUR_ORGANIZATION / YOUR_PROJECT / CURRENT_BRANCH_NAME`.)
 2. Click `Create branch`.
 
+The new branch is a clone of your base project. It starts with the project's schema, Edge Functions, and the configuration set.
+
+### Include production data
+
+By default, a branch starts without any of your production data or storage objects. If your project has the Point-in-Time Recovery add-on, you can turn on **Include data** when you create the branch to copy your production data into it.
+
+Caution: A branch created with **Include data** holds a copy of your production data, treat it with the same care as production.
+
+Note: A branch uses a larger disk and matches the compute size of your project, which increases its cost.
+
 ## Making changes to a branch
 
 Use the branch selector in the top bar to change to your branch. Any changes you make (including SQL run in the SQL editor, table editor changes, and configuration changes) are now made against the currently selected branch.
@@ -69743,19 +69753,25 @@ Enable the **Automatic branching** option in your GitHub Integration configurati
 
 When a new branch is created in GitHub, a corresponding branch is created in Supabase. (You can enable the **Supabase changes only** option to only create Supabase branches when Supabase files change.)
 
+Every Supabase branch, preview or persistent, is created as a clone of your base project. The new branch starts with the Edge Functions and configuration of that project. Its database schema is not cloned. Instead, it is built from the migrations you commit to your repository.
+
 ### Configuration
 
 You can test configuration changes on your Preview Branch by configuring the `config.toml` file in your Supabase directory. See the [Configuration docs](https://supabase.com/docs/guides/deployment/branching/configuration) for more information.
+
+Your branch starts with the configuration of your base project. The settings in your `config.toml` file are applied on top of that clone.
 
 A comment is added to your PR with the deployment status of your preview branch.
 
 ### Migrations
 
-The migrations in the `migrations` subdirectory of your Supabase directory are automatically run.
+The migrations in the `migrations` subdirectory of your Supabase directory are automatically run when the branch is created. Each later commit runs only the migrations that haven't been applied yet.
+
+If you want to rerun existing migrations, reset the branch from the Supabase dashboard to start from scratch. Note that existing data on your branch will also be dropped by a reset.
 
 ### Seeding
 
-No production data is copied to your Preview branch. This is meant to protect your sensitive production data.
+Cloning your base project copies its Edge Functions and configuration, but not its data or storage objects. This is meant to protect your sensitive production data. Your branch starts with the tables your migrations create, and the only rows in them are the ones your seed files add.
 
 You can seed your Preview Branch with sample data using the `seed.sql` file in your Supabase directory. See the [Seeding docs](https://supabase.com/docs/guides/local-development/seeding-your-database) for more information.
 
@@ -69877,7 +69893,9 @@ You might want to roll back changes you've made in an earlier migration change. 
 
 To fix this, push the latest changes, then delete the preview branch in Supabase and reopen it.
 
-The new preview branch is reseeded from the `./supabase/seed.sql` file by default. Any additional data changes made on the old preview branch are lost. This is equivalent to running `supabase db reset` locally. All migrations are rerun in sequential order.
+The new preview branch is a fresh clone of your base project and is reseeded from the `./supabase/seed.sql` file by default. Any additional data changes made on the old preview branch are lost.
+
+To rerun migrations that your base project has already applied, reset the branch from the Supabase dashboard instead. A reset reruns all migrations in sequential order and drops existing data on the branch.
 
 ### Deployment failures
 
@@ -70184,7 +70202,7 @@ After completing the steps above, you should receive a Slack message whenever an
 
 Migrations are run in sequential order. Each migration builds upon the previous one.
 
-The preview branch has a record of which migrations have been applied, and only applies new migrations for each commit. This can create an issue when rolling back migrations.
+The preview branch inherits the migration history of your base project, so it only applies migrations that haven't been run yet. This can create an issue when rolling back migrations.
 
 ### Using ORM or custom seed scripts
 
@@ -70240,7 +70258,9 @@ You might want to roll back changes you've made in an earlier migration change. 
 
 To fix this, push the latest changes, then delete the preview branch in Supabase and reopen it.
 
-The new preview branch is reseeded from the `./supabase/seed.sql` file by default. Any additional data changes made on the old preview branch are lost. This is equivalent to running `supabase db reset` locally. All migrations are rerun in sequential order.
+The new preview branch is a fresh clone of your base project and is reseeded from the `./supabase/seed.sql` file by default. Any additional data changes made on the old preview branch are lost.
+
+To rerun migrations that your base project has already applied, reset the branch from the Supabase dashboard instead. A reset reruns all migrations in sequential order and drops existing data on the branch.
 
 ### Seeding behavior
 
@@ -114778,7 +114798,7 @@ Existing projects on pg\_graphql 1.5.x are not impacted unless they choose to up
 
 ### Ltree indexes require reindexing after upgrade
 
-*Applies when upgrading to Postgres 15.18 or 17.10.*
+*Applies when upgrading to Postgres 15.19 or 17.11.*
 
 Caution: You are affected only if you have indexes on `ltree` columns and your database uses a multibyte encoding or a non-`libc` collation provider.
 
@@ -114803,29 +114823,111 @@ To mitigate this issue:
 2. If `reindex_required` is `true`, find the affected indexes:
 
    ```sql
-   select schemaname, tablename, indexname
-   from pg_indexes
+   select distinct
+     n.nspname as schema_name,
+     cls.relname as table_name,
+     ic.relname as index_name
+   from pg_index idx
+     join pg_class ic on idx.indexrelid = ic.oid
+     join pg_class cls on idx.indrelid = cls.oid
+     join pg_namespace n on ic.relnamespace = n.oid
+     join lateral unnest(idx.indclass::oid[]) with ordinality as k(opclass, pos) on true
+     join pg_opclass oc on oc.oid = k.opclass
+     join pg_type ty on ty.oid = oc.opcintype
    where
-     indexname in (
-       select c.relname
-       from
-         pg_index as i
-         join pg_class as c on i.indexrelid = c.oid
-         join pg_attribute as a on a.attrelid = i.indrelid and a.attnum = ANY(i.indkey)
-         join pg_type as t on a.atttypid = t.oid
-       where t.typname in ('ltree', '_ltree')
-     );
+     k.pos <= idx.indnkeyatts -- key columns only, excludes INCLUDE
+     and ty.typname in ('ltree', '_ltree');
    ```
 
-3. Reindex each affected index. `REINDEX INDEX CONCURRENTLY` runs online with no downtime:
+3. Reindex each affected index using its schema-qualified name. `REINDEX INDEX CONCURRENTLY` runs online with no downtime, but cannot run inside a transaction block:
 
    ```sql
-   REINDEX INDEX CONCURRENTLY <index_name>;
+   REINDEX INDEX CONCURRENTLY <schema_name>.<index_name>;
+   ```
+
+Separately from the encoding case above, this release also fixes an integer overflow in `ltree` comparisons: values with more than about 14,653 labels could compare incorrectly, which can corrupt B-tree indexes built over them, regardless of your database encoding. The following query lists only the B-tree indexes whose `ltree` column or expression actually contains such values, so they are the ones to reindex (an empty result means no action is needed):
+
+```sql
+SELECT s.schema_name || '.' || s.index_name AS index_to_reindex
+FROM (
+  SELECT
+    n.nspname AS schema_name,
+    c.relname AS table_name,
+    ic.relname AS index_name,
+    min(pg_get_expr(i.indpred, i.indrelid)) AS pred, -- partial-index predicate, if any
+    string_agg('nlevel(' || pg_get_indexdef(i.indexrelid, k.pos::int, true) || ') > 14653', ' OR ') AS keys_cond
+  FROM pg_index i
+  JOIN pg_class ic ON ic.oid = i.indexrelid
+  JOIN pg_class c ON c.oid = i.indrelid
+  JOIN pg_namespace n ON n.oid = c.relnamespace
+  JOIN pg_am am ON am.oid = ic.relam
+  JOIN LATERAL generate_series(1, i.indnkeyatts) AS k(pos) ON true
+  JOIN pg_attribute ia ON ia.attrelid = i.indexrelid AND ia.attnum = k.pos
+  JOIN pg_type t ON t.oid = ia.atttypid
+  WHERE am.amname = 'btree'
+    AND t.typname = 'ltree'
+    AND n.nspname NOT IN ('pg_catalog', 'information_schema')
+  GROUP BY n.nspname, c.relname, ic.relname
+) s
+WHERE (xpath(
+         '/row/cnt/text()',
+         query_to_xml(
+           format('SELECT count(*) AS cnt FROM %I.%I WHERE %s(%s)',
+                  s.schema_name, s.table_name,
+                  CASE WHEN s.pred IS NOT NULL THEN '(' || s.pred || ') AND ' ELSE '' END,
+                  s.keys_cond),
+           false, true, ''
+         )
+       ))[1]::text::bigint > 0
+ORDER BY 1;
+```
+
+Reindex each index it returns, using the schema-qualified name. `REINDEX INDEX CONCURRENTLY` runs online with no downtime, but cannot run inside a transaction block:
+
+```sql
+REINDEX INDEX CONCURRENTLY <schema_name>.<index_name>;
+```
+
+### Btree\_gist indexes on float columns require reindexing after upgrade
+
+*Applies when upgrading to Postgres 15.19 or 17.11.*
+
+Caution: You are affected only if you have `btree_gist` indexes on `float4` or `float8` columns that may contain `NaN` values.
+
+This release fixes `NaN` handling in `btree_gist`'s `float4` and `float8` operator classes. Indexes on those columns built under the previous version can return wrong results for rows containing `NaN` until the index is rebuilt.
+
+To mitigate this issue:
+
+1. Find `btree_gist` indexes on float columns:
+
+   ```sql
+   select distinct
+     n.nspname as schema_name,
+     cls.relname as table_name,
+     ic.relname as index_name
+   from pg_index idx
+     join pg_class ic on idx.indexrelid = ic.oid
+     join pg_am am on ic.relam = am.oid
+     join pg_class cls on idx.indrelid = cls.oid
+     join pg_namespace n on ic.relnamespace = n.oid
+     join lateral unnest(idx.indclass::oid[]) with ordinality as k(opclass, pos) on true
+     join pg_opclass oc on oc.oid = k.opclass
+     join pg_type ty on ty.oid = oc.opcintype
+   where
+     am.amname = 'gist'
+     and k.pos <= idx.indnkeyatts
+     and ty.typname in ('float4', 'float8');
+   ```
+
+2. If any indexes are returned and those columns may contain `NaN` values, reindex them using the schema-qualified name. `REINDEX INDEX CONCURRENTLY` runs online with no downtime, but cannot run inside a transaction block:
+
+   ```sql
+   REINDEX INDEX CONCURRENTLY <schema_name>.<index_name>;
    ```
 
 ### Custom operator selectivity estimators
 
-*Applies when upgrading to Postgres 15.18 or 17.10.*
+*Applies when upgrading to Postgres 15.19 or 17.11.*
 
 Attaching a non-built-in (extension- or user-provided) selectivity estimator function to an operator now requires superuser. Existing operators continue to work — the check only fires when an operator is (re)created, most commonly during `pg_dump` / `pg_restore`, a logical restore, or a branch.
 
@@ -114838,7 +114940,9 @@ ERROR: must be superuser to specify a non-built-in restriction estimator functio
 Most projects are not affected. To check whether your database has any user-defined operators that reference a non-built-in estimator:
 
 ```sql
-SELECT n.nspname AS schema, o.oprname AS operator
+SELECT n.nspname AS schema, o.oprname AS operator,
+       o.oprrest::regproc AS restrict_estimator,
+       o.oprjoin::regproc AS join_estimator
 FROM pg_operator o
 JOIN pg_namespace n ON o.oprnamespace = n.oid
 WHERE n.nspname NOT IN ('pg_catalog', 'information_schema')
@@ -170460,6 +170564,12 @@ credential is present; a JWT that is present but fails verification
 short-circuits the chain with `InvalidCredentialsError` instead of falling
 through to the next mode. Use verifyAuth to extract and verify in a
 single call.
+
+When `user` is among the allowed modes, a request carries a user token, and
+no JWKS source is configured, the failure is a 500 `ENV_ERROR` rather than
+a 401: the token cannot be verified, and that is a server misconfiguration,
+not a caller error. Another allowed mode matching the request's credentials
+still wins — the 500 is reported only when nothing matched.
 
 ### Examples
 

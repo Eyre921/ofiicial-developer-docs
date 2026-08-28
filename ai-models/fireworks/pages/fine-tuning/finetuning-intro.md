@@ -128,7 +128,7 @@ Model availability is decided per model and per surface — managed jobs by meth
 
 ## Training security
 
-Across every training surface, one principle holds: **your training data is never used to train Fireworks-owned or shared models**. Inference follows [Zero Data Retention](/guides/security_compliance/data_handling) by default. Step-by-step BYOB IAM, CMEK KMS setup, and secure RFT automation live in the [Fireworks training skill — secure training operations](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/secure-training-operations.md).
+Across every training surface, one principle holds: **your training data is never used to train Fireworks-owned or shared models**. Inference follows [Zero Data Retention](/guides/security_compliance/data_handling) by default. This section summarizes the training surfaces; step-by-step BYOB IAM setup, CMEK KMS setup, and secure RFT are in [Secure Training](/guides/security_compliance/secure_training) and [CMEK](/guides/security_compliance/secure_training/cmek).
 
 ### Choose a surface by data-privacy needs
 
@@ -148,11 +148,11 @@ Register an external URL so Fireworks reads your dataset during the job without 
 firectl dataset create my-dataset --external-url gs://your-bucket/path/train.jsonl
 ```
 
-Supported: GCS, AWS S3, and Azure Blob, with least-privilege IAM to Fireworks service accounts provided at onboarding. For AWS S3, lock the IAM trust policy with both `accounts.google.com:sub` and `accounts.google.com:oaud` (your Fireworks account ID) so tokens for other accounts are rejected. Full IAM trust policies, OIDC audience, and rotation are in the [secure training operations skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/secure-training-operations.md).
+Supported: GCS, AWS S3, and Azure Blob, with least-privilege IAM to Fireworks service accounts provided at onboarding. For AWS S3, lock the IAM trust policy with both `accounts.google.com:sub` and `accounts.google.com:oaud` (your Fireworks account ID) so tokens for other accounts are rejected. Full IAM trust policies, OIDC audience, and rotation are in [Secure Training](/guides/security_compliance/secure_training/byob).
 
 ### Customer-managed encryption keys (CMEK)
 
-CMEK encrypts datasets and checkpoints on Fireworks-managed storage with **your** cloud KMS key — revoke the key and Fireworks cannot decrypt. **Supported today:** AWS KMS + Managed SFT (DPO, RFT, Azure Key Vault, and GCP KMS coming soon). It does not cover in-memory training compute or inference request/response. Setup, IAM, and rotation detail: [secure training operations skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/secure-training-operations.md) · [Data Security Overview](/guides/security_compliance/data_security).
+CMEK encrypts datasets and checkpoints on Fireworks-managed storage with **your** cloud KMS key — revoke the key and Fireworks cannot decrypt. Supported on AWS KMS, Google Cloud KMS, and Azure Key Vault. It does not cover in-memory training compute or inference request/response. Setup, IAM, and rotation detail: [CMEK](/guides/security_compliance/secure_training/cmek) · [Data Security Overview](/guides/security_compliance/data_security).
 
 ### Secure RFT and customer controls
 

@@ -1302,6 +1302,7 @@ components:
         - Cloudflare
         - Cohere
         - CoreWeave
+        - Cosine
         - Crucible
         - Crusoe
         - Darkbloom
@@ -1347,6 +1348,7 @@ components:
         - NextBit
         - Novita
         - Nvidia
+        - Ollama
         - OpenAI
         - OpenInference
         - Parasail
@@ -1481,6 +1483,9 @@ components:
           additionalProperties: {}
           type: object
         coreweave:
+          additionalProperties: {}
+          type: object
+        cosine:
           additionalProperties: {}
           type: object
         crofai:
@@ -1667,6 +1672,9 @@ components:
           additionalProperties: {}
           type: object
         octoai:
+          additionalProperties: {}
+          type: object
+        ollama:
           additionalProperties: {}
           type: object
         open-inference:

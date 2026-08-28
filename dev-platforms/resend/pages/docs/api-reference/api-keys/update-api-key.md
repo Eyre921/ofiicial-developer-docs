@@ -5,7 +5,13 @@ path: docs/api-reference/api-keys/update-api-key
 ---
 
 PATCH /api-keys/:api_key_id
-Update an existing API key.
+Update the name of an existing API key.
+
+<Info>
+  This endpoint only updates the API key's name. To change an API key's
+  [permission or domain](/docs/dashboard/api-keys/introduction#edit-api-key-details),
+  edit the key in the [Resend Dashboard](https://resend.com/api-keys).
+</Info>
 
 ## Path Parameters
 
@@ -98,7 +104,9 @@ Update an existing API key.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.services.apikeys.model.UpdateApiKeyOptions;
+  import com.resend.services.apikeys.model.UpdateApiKeyResponseSuccess;
 
   public class Main {
       public static void main(String[] args) {

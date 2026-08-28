@@ -38,7 +38,7 @@ You can update the following parameters mid-stream:
 | --------------------- | ------ | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `keyterms`            | array  | Up to 100 terms          | Custom vocabulary terms to boost recognition accuracy. **Note:** Sending keyterms replaces the entire list, not merge.                                                                                                                         |
 | `language_hints`      | array  | Supported language codes | Bias `flux-general-multi` toward specific languages. **Note:** Non-empty array replaces current hints. Empty array `[]` clears hints. Omit or `null` to keep current hints unchanged. See [Language Prompting](/docs/flux/language-prompting). |
-| `eot_threshold`       | number | 0.5-0.9                  | Confidence threshold for standard turn detection. Higher values mean more confidence required before detecting turn end.                                                                                                                       |
+| `eot_threshold`       | number | 0.5-1.0                  | Confidence threshold for standard turn detection. Higher values mean more confidence required before detecting turn end. Set to `1.0` to suppress natural end-of-turn.                                                                         |
 | `eager_eot_threshold` | number | 0.3-0.9                  | Confidence threshold for eager turn detection. Must be ≤ `eot_threshold`.                                                                                                                                                                      |
 | `eot_timeout_ms`      | number | 500-60000                | Maximum silence duration (in milliseconds) before forcing turn end.                                                                                                                                                                            |
 
@@ -204,6 +204,7 @@ Configure messages are validated using the same rules as initial connection para
 * [Keyterm Boosting](/docs/keyterm) - Detailed guide to using keyterms for custom vocabulary
 * [State Messages](/docs/flux/state) - Understanding turn detection and state transitions
 * [Getting Started with Flux](/docs/flux/quickstart) - Quickstart guide with basic configuration
-* [Close Stream](/docs/flux/close-stream) - Force stream closure and final transcription
+* [Close Stream](/docs/flux/close-stream) - Close the WebSocket stream
+* [Force End Turn](/docs/flux/force-end-turn) - End the current turn immediately from an external signal
 
 ---

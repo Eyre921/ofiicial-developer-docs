@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 375 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 379 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -280,6 +280,10 @@
 - `guides/security_compliance/audit_logs` — [Audit & Access Logs](pages/guides/security_compliance/audit_logs.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/audit_logs)
 - `guides/security_compliance/data_handling` — [Zero Data Retention](pages/guides/security_compliance/data_handling.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/data_handling)
 - `guides/security_compliance/data_security` — [Data Security](pages/guides/security_compliance/data_security.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/data_security)
+- `guides/security_compliance/secure_training` — [Secure Training](pages/guides/security_compliance/secure_training.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/secure_training)
+- `guides/security_compliance/secure_training/byob` — [Bring Your Own Bucket (BYOB)](pages/guides/security_compliance/secure_training/byob.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/secure_training/byob)
+- `guides/security_compliance/secure_training/cmek` — [Customer-Managed Encryption Keys (CMEK)](pages/guides/security_compliance/secure_training/cmek.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/secure_training/cmek)
+- `guides/security_compliance/secure_training/secure_rft` — [Secure Reinforcement Fine-Tuning](pages/guides/security_compliance/secure_training/secure_rft.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/secure_training/secure_rft)
 - `guides/video-audio-inputs` — [Video & Audio Inputs](pages/guides/video-audio-inputs.md) · [原文](https://docs.fireworks.ai/guides/video-audio-inputs)
 
 ## models

@@ -24,7 +24,7 @@ If the charge currency differs from the customer’s payment method currency, th
 
 If the charge currency differs from your *settlement currency* (The settlement currency is the currency your bank account uses), Stripe converts the charge to your settlement currency, with [multiple options](https://docs.stripe.com/payments/currencies/localize-prices.md) for presenting, converting, and charging customers in different currencies.
 
-In certain countries, Stripe might support [settlement in additional currencies](https://docs.stripe.com/payments/currencies/settlement-payouts.md). If you need liquidity in additional currencies, you can enable settlement in those currencies and add a bank account in the [payout settings of your Dashboard](https://dashboard.stripe.com/account/payouts). Our [payouts documentation](https://docs.stripe.com/payouts.md#multiple-bank-accounts) lists the different bank account currencies we support. See [Stripe pricing](https://www.stripe.com/pricing) for conversion costs.
+In certain countries, Stripe might support [settlement in additional currencies](https://docs.stripe.com/payments/currencies/settlement-payouts.md). If you need liquidity in additional currencies, you can enable settlement in those currencies and add a bank account in the [payout settings of your Dashboard](https://dashboard.stripe.com/settings/money-management). Our [payouts documentation](https://docs.stripe.com/payouts.md#multiple-bank-accounts) lists the different bank account currencies we support. See [Stripe pricing](https://www.stripe.com/pricing) for conversion costs.
 
 ### Integration currency
 

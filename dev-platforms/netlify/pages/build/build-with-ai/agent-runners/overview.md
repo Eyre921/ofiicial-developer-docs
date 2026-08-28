@@ -120,23 +120,28 @@ To use Agent Runners, you must meet the following requirements:
 
 Learn more about [enabling or disabling Netlify AI features](/build/build-with-ai/manage-ai-for-your-team/manage-ai-features).
 
-## How pricing works
+## How agent runs consume credits
 
-Agent runs use your pricing plan credits and these usage meters:
-- AI inference
-- Compute
+Agent runs use two usage meters: [AI inference](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-ai-inference) and [compute](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-compute). AI inference costs depend on the AI agent, model, and effort you use for a run. The agent run detail view shows how many credits a run consumed.
 
-You can view the Netlify credits used for an individual agent run by expanding it in the agent run detail view.  This credit usage summary shows you the credits used by the AI inference usage meter.
-
-Learn more in [Make changes with Agent Runners](/build/build-with-ai/agent-runners/make-changes-with-agent-runners/#3-check-the-status-of-your-agent-run).
+There are also related actions to Agent Runners that consume credits, for example:
+* If you start an agent run to fix a failed deploy, your usage of [web requests](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-web-requests), [bandwidth](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-bandwidth), and [compute](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-compute) will consume your available credits.
+* When your agent runner is done, you may wish to publish the changes it made to production. When you publish a production deploy the [credit costs for deploying to production](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-production-deploys) will apply. If this deploy fails it does not consume any credits.
 
 To learn more about how pricing works for Agent Runners, check out [Pricing for AI features](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/pricing-for-ai-features).
 
-For example, if you run an agent through Netlify to fix a failed deploy, your usage of [web requests](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-web-requests), [bandwidth](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-bandwidth), and [compute](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-compute) will be calculated and applied to your credit balance.
+### When your team runs out of credits
 
-If you publish a production deploy, then the production deploy credit costs will apply. Learn more about [production deploy costs](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-production-deploys).
+If your team runs out of credits while an agent is working, Netlify keeps the progress the agent made and cancels the run. To continue the run, your team needs credits again. You can get more credits in one of the following ways:
+- Wait until your plan's monthly credits reset.
+- Upgrade from the Free plan to a [paid plan](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/#personal-plan).
+- Buy more credits with a [credit pack](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/buy-credit-packs/) if your team is already on a paid plan.
 
-Note that failed deploys do not use credits.
+Once your team has credits again, select **Continue** on the cancelled run to resume the task. For details, see [Running out of credits during an agent run](/build/build-with-ai/agent-runners/make-changes-with-agent-runners/#running-out-of-credits-during-an-agent-run).
+
+#### Stopped agent runs
+
+When you [create a new project with an AI agent](/start/quickstarts/create-new-project-with-ai-agent/) and your team is close to running out of credits, the agent finishes what's in progress and stops instead of starting anything new.
 
 ## Use Agent Runners
 
@@ -161,12 +166,12 @@ To learn more about different types of deploys and branch types, check out our [
 
 ### Redeploy an agent run
 
-After a successful agent run, you or a team member may update your site's environment variables or build settings. To see these changes reflected in your agent run's Deploy Preview, you can redeploy the agent run. This rebuilds the Deploy Preview with your updated configuration without re-running the AI agent and costing you more AI inference credits.
+After a successful agent run, you or a team member may update your project's environment variables or build settings. To see these changes reflected in your agent run's Deploy Preview, you can redeploy the agent run. This rebuilds the Deploy Preview with your updated configuration without re-running the AI agent and costing you more AI inference credits.
 
-Redeploying a Deploy Preview from an agent run is useful when you or someone on your Netlify team changes your site configuration.
+Redeploying a Deploy Preview from an agent run is useful when you or someone on your Netlify team changes your project configuration.
 
 For example, when updates are made to the following:
-   - changes to environment variables that your site needs at build time or runtime
+   - changes to environment variables that your project needs at build time or runtime
    - updates to your build configuration or build commands
 
 To redeploy an agent run:
@@ -179,7 +184,7 @@ Agent runs
 2. Find the completed agent run you want to redeploy.
 3. On the far right of the agent run, select the hamburger icon menu, then choose **Redeploy**.
 
-The redeploy creates a new agent run session that applies the same code changes from your original agent run but builds with your updated site configuration. Because the AI agent does not re-run, redeployments are faster than the original agent run and don't use credits for AI inference like other agent runs.
+The redeploy creates a new agent run session that applies the same code changes from your original agent run but builds with your updated project configuration. Because the AI agent does not re-run, redeployments are faster than the original agent run and don't use credits for AI inference like other agent runs.
 
 ### Note
 
@@ -191,7 +196,7 @@ Your team can have only a limited number of agent runs active at the same time, 
 
 If your project is set up with continuous deployment through a connection to a Git provider, then Agent Runners will only work with your project if it is using GitHub as a Git provider. You cannot use Agent Runners with projects connected to Git repositories hosted on GitLab, Bitbucket, or Azure DevOps.
 
-Agent Runners are not compatible with [Split Testing](/manage/monitoring/split-testing/). If your site has Split Testing enabled, you must disable it before using Agent Runners.
+Agent Runners are not compatible with [Split Testing](/manage/monitoring/split-testing/). If your project has Split Testing enabled, you must disable it before using Agent Runners.
 
 ### Troubleshoot with Agent Runners
 

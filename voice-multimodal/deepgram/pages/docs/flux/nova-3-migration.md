@@ -133,11 +133,11 @@ For more information on using Flux with EndOfTurn only see the [Flux Getting Sta
 
 This is a simple approach using only `EndOfTurn` (lower latency, less complex, less LLM calls).
 
-To enable end of turn use the `eot_threshold` parameter which allows for a confidence of (0.5–0.9) for `EndOfTurn` events.
+To enable end of turn use the `eot_threshold` parameter which allows for a confidence of (0.5–1.0) for `EndOfTurn` events.
 
 #### Example
 
-```curl
+```text
 wss://api.deepgram.com/v2/listen?model=flux-general-en&sample_rate=16000&encoding=linear16&eot_threshold=0.8
 ```
 
@@ -145,12 +145,22 @@ wss://api.deepgram.com/v2/listen?model=flux-general-en&sample_rate=16000&encodin
 
 This is an optimized approach using both EagerEndOfTurn and EndOfTurn (lower latency, slightly more complex, more LLM calls)
 
-To enable eager end of turn use the `eager_eot_threshold` parameter which allows for a Confidence of (0.3–0.9). You can also set the `eot_threshold` with a confidence of (0.5–0.9) to handle `EndOfTurn` events and use the `eot_timeout_ms` which defaults to 5000 ms to force a timeout after a specified time.
+To enable eager end of turn use the `eager_eot_threshold` parameter which allows for a Confidence of (0.3–0.9). You can also set the `eot_threshold` with a confidence of (0.5–1.0) to handle `EndOfTurn` events and use the `eot_timeout_ms` which defaults to 5000 ms to force a timeout after a specified time.
 
 #### Example
 
-```curl
+```text
 wss://api.deepgram.com/v2/listen?model=flux-general-en&sample_rate=16000&encoding=linear16&eager_eot_threshold=0.6&eot_threshold=0.8&eot_timeout_ms=7000
+```
+
+### Keeping Your Own Turn Detection
+
+If you already have a turn detection stack you want to keep (VAD, endpointing, or push-to-talk), you don't have to adopt Flux's native detection. Set `eot_threshold=1.0` to suppress natural end-of-turn, then send a [`ForceEndTurn`](/docs/flux/force-end-turn) message when your own detector fires. See [Bring Your Own Turn Detection](/docs/flux/own-turn-detection) for the full recipe.
+
+#### Example
+
+```text
+wss://api.deepgram.com/v2/listen?model=flux-general-en&sample_rate=16000&encoding=linear16&eot_threshold=1.0
 ```
 
 ### Nova 3 Migration Checklist
@@ -160,4 +170,4 @@ wss://api.deepgram.com/v2/listen?model=flux-general-en&sample_rate=16000&encodin
 * [ ] Adjust client to parse `TurnInfo` messages
 * [ ] Implement turn event handling (start, eager end of turn, turn resumed, end)
 * [ ] Tune `eager_eot_threshold` and `eot_threshold` for your use case
-* [ ] Remove custom VAD/barge-in logic (Flux handles this natively!)
+* [ ] Remove custom VAD/barge-in logic (Flux handles this natively) — or keep it and drive turns with [`ForceEndTurn`](/docs/flux/force-end-turn); see [Bring Your Own Turn Detection](/docs/flux/own-turn-detection)

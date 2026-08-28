@@ -14,7 +14,7 @@ To link an external bank account or to manage your linked accounts, go to [Linke
 
 > #### Linked external accounts vs. payout accounts
 > 
-> Linked accounts are different from payout accounts. Linking an account only gives Stripe access to information, while a payout account can receive funds from a Stripe account. You manage your payout account in [Payout settings](https://dashboard.stripe.com/settings/payouts).
+> Linked accounts are different from payout accounts. Linking an account only gives Stripe access to information, while a payout account can receive funds from a Stripe account. You manage your payout account in [Payout settings](https://dashboard.stripe.com/settings/money-management).
 
 Different Stripe products use linked account data in different ways. We might ask you to link your account in the following cases:
 
@@ -61,7 +61,7 @@ To remove a linked account, go to [Linked external accounts](https://dashboard.s
 
 After you remove an account, Stripe stops obtaining data from it.
 
-Removing a linked account doesn’t affect your payouts. Your payout bank account is managed separately in [Payout settings](https://dashboard.stripe.com/settings/payouts). However, unlinking might affect your eligibility for products like [Issuing](https://docs.stripe.com/issuing.md) or [Stripe Capital](https://docs.stripe.com/capital/how-stripe-capital-works.md) that rely on linked account data. In some cases, Stripe might request alternative information, such as financial statements.
+Removing a linked account doesn’t affect your payouts. Your payout bank account is managed separately in [Payout settings](https://dashboard.stripe.com/settings/money-management). However, unlinking might affect your eligibility for products like [Issuing](https://docs.stripe.com/issuing.md) or [Stripe Capital](https://docs.stripe.com/capital/how-stripe-capital-works.md) that rely on linked account data. In some cases, Stripe might request alternative information, such as financial statements.
 
 ## How Stripe protects your data
 

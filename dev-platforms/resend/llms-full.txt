@@ -980,7 +980,13 @@ Retrieve a list of API keys for the authenticated user.
 Source: https://resend.com/docs/api-reference/api-keys/update-api-key
 
 PATCH /api-keys/:api_key_id
-Update an existing API key.
+Update the name of an existing API key.
+
+<Info>
+  This endpoint only updates the API key's name. To change an API key's
+  [permission or domain](/docs/dashboard/api-keys/introduction#edit-api-key-details),
+  edit the key in the [Resend Dashboard](https://resend.com/api-keys).
+</Info>
 
 ## Path Parameters
 
@@ -1073,7 +1079,9 @@ Update an existing API key.
   ```
 
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
+  import com.resend.Resend;
+  import com.resend.services.apikeys.model.UpdateApiKeyOptions;
+  import com.resend.services.apikeys.model.UpdateApiKeyResponseSuccess;
 
   public class Main {
       public static void main(String[] args) {
@@ -7807,6 +7815,14 @@ Claim a domain that is already verified by another team.
   });
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->domains->claims->create([
+    'name' => 'example.com'
+  ]);
+  ```
+
   ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
   import resend
 
@@ -8492,6 +8508,14 @@ Retrieve the latest claim for a domain.
   );
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->domains->claims->get(
+    'd91cd9bd-1176-453e-8fc1-35364d380206'
+  );
+  ```
+
   ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
   import resend
 
@@ -9109,6 +9133,14 @@ Trigger DNS verification for a domain claim.
   );
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->domains->claims->verify(
+    'd91cd9bd-1176-453e-8fc1-35364d380206'
+  );
+  ```
+
   ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
   import resend
 
@@ -9341,14 +9373,18 @@ Retrieve account-level email metrics.
   return slightly stale data within that window.
 </Note>
 
+All parameters are optional. With none, the response covers the last 7 days
+(today plus the 6 previous days), includes every metric, and returns only
+`totals`.
+
 ## Query Parameters
 
 <ListParamFormatNote />
 
 <ParamField type="string">
   The start of the date range, as an ISO 8601 date (`2026-07-01`) or datetime
-  (`2026-07-01T00:00:00Z`). Must be on or before `end_date`. Defaults to 6 days
-  before `end_date`.
+  (`2026-07-01T00:00:00Z`). Must be on or before `end_date`, and can equal it to
+  query a single day. Defaults to 6 days before `end_date`.
 </ParamField>
 
 <ParamField type="string">
@@ -9368,22 +9404,15 @@ Retrieve account-level email metrics.
 </ParamField>
 
 <ParamField type="string[]">
-  List of metrics to include in the response. Defaults to all of the
-  following:
-
-  `received`, `delivered`, `complained`, `suppressed`, `bounced`,
-  `bounced_transient`, `bounced_permanent`, `bounced_undetermined`, `opened`,
-  `clicked`, `unsubscribed`, `delivery_delayed`, `failed`, `sent`,
-  `unique_opened`, `unique_clicked`, `delivery_rate`, `open_rate`, `click_rate`,
-  `bounce_rate`, `complaint_rate`, `unsubscribe_rate`
+  List of metrics to include in the response. Omit for all. See
+  [Metrics](#metrics).
 </ParamField>
 
 <ParamField type="string[]">
   List of dimensions to break the response down by. Combine
   any of `period`, `domain`, `email`, or `broadcast` to group the data by
   more than one at once, except `email` cannot be combined with `broadcast`.
-  Defaults to `[]`, returning a single `totals` row for the whole range, with
-  no `data`.
+  Omit for a single `totals` row for the whole range, with no `data`.
 
   Possible values:
 
@@ -9406,6 +9435,43 @@ Retrieve account-level email metrics.
   List of broadcast IDs to restrict the response to, up to 100. Cannot be
   combined with the `email` dimension or `email_id`.
 </ParamField>
+
+<Tip>
+  For a 24-hour breakdown of one day, set `start_date` and `end_date` to the
+  same date, with `granularity=hourly` and `period` in `dimensions`.
+</Tip>
+
+## Metrics
+
+| Metric                 | Description                                                                               |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
+| `received`             | Emails Resend accepted for processing.                                                    |
+| `sent`                 | Emails sent to the recipient's mail server.                                               |
+| `delivered`            | Emails the recipient's mail server accepted.                                              |
+| `delivery_delayed`     | Delivery postponed by a temporary issue. Not final.                                       |
+| `failed`               | Emails that never reached a mail server.                                                  |
+| `suppressed`           | Skipped because the recipient is [suppressed](/docs/dashboard/emails/email-suppressions). |
+| `bounced`              | All [bounces](/docs/dashboard/emails/email-bounces), summing the three below.             |
+| `bounced_transient`    | Soft bounce. Temporary, so a later send can succeed.                                      |
+| `bounced_permanent`    | Hard bounce. Permanent, and the address is suppressed.                                    |
+| `bounced_undetermined` | Bounce with no classifiable reason.                                                       |
+| `opened`               | Open events, including repeats.                                                           |
+| `unique_opened`        | Emails opened at least once.                                                              |
+| `clicked`              | Link click events, including repeats.                                                     |
+| `unique_clicked`       | Emails clicked at least once.                                                             |
+| `complained`           | Delivered emails marked as spam.                                                          |
+| `unsubscribed`         | Recipients who unsubscribed.                                                              |
+| `delivery_rate`        | `delivered` / `sent`                                                                      |
+| `open_rate`            | `unique_opened` / `delivered`                                                             |
+| `click_rate`           | `unique_clicked` / `delivered`                                                            |
+| `bounce_rate`          | `bounced` / `sent`                                                                        |
+| `complaint_rate`       | `complained` / `delivered`                                                                |
+| `unsubscribe_rate`     | `unsubscribed` / `delivered`                                                              |
+
+<Note>
+  Open and click metrics require [open and click
+  tracking](/docs/dashboard/domains/tracking) on the sending domain.
+</Note>
 
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -15040,7 +15106,7 @@ Retrieve segment metrics.
   page:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.19.0-preview-headless-dashboard.7
     ```
   </CodeGroup>
@@ -15051,22 +15117,26 @@ across your whole account by default, or scoped to specific segments via
 `segment_id`.
 
 <Info>
-  Responses are cached for up to 15 minutes, so requesting the same range again
-  may return slightly stale data within that window.
+  Responses are cached for up to 15 minutes, so repeating the same request may
+  return slightly stale data within that window.
 </Info>
+
+All parameters are optional. With none, the response covers your whole account,
+includes every metric, and returns only `totals`. There's no date range, so
+counts are a point-in-time snapshot rather than a historical window.
 
 ## Query Parameters
 
 <ListParamFormatNote />
 
 <ResendParamField type="string[]">
-  List of metrics to include in `totals` and `data`. Defaults to all of the
-  following: `all_contacts`, `subscribers`, `unsubscribers`.
+  List of metrics to include in `totals` and `data`. Omit for all. See
+  [Metrics](#metrics).
 </ResendParamField>
 
 <ResendParamField type="string[]">
-  List of dimensions to break `data` down by. Defaults to `[]`, returning
-  only `totals` with no `data`.
+  List of dimensions to break `data` down by. Omit for only `totals`, with no
+  `data`.
 
   Possible values:
 
@@ -15081,6 +15151,21 @@ across your whole account by default, or scoped to specific segments via
 <Info>
   When `dimensions` includes `segment`, `data` is ordered by each segment's
   creation date, newest first.
+</Info>
+
+## Metrics
+
+Every metric counts contacts, not emails.
+
+| Metric          | Description                                              |
+| --------------- | -------------------------------------------------------- |
+| `all_contacts`  | Every contact. Sum of `subscribers` and `unsubscribers`. |
+| `subscribers`   | Contacts with `unsubscribed` set to `false`.             |
+| `unsubscribers` | Contacts with `unsubscribed` set to `true`.              |
+
+<Info>
+  `totals` counts each contact once. `data` counts a contact in every segment it
+  belongs to.
 </Info>
 
 <RequestExample>
@@ -21080,7 +21165,7 @@ To create a new API Key from the Resend Dashboard:
   <Step title="Select a permission for your API key.">
     Choose **"Sending access"** to grant access to only sending emails unless your key needs full access to Resend’s API to create, delete, get, and update any resource.
 
-    This [API key permission](/docs/api-reference/api-keys/create-api-key#param-permission) can be updated at any time.
+    This [API key permission](/docs/api-reference/api-keys/create-api-key#param-permission) can be updated at any time [in the Dashboard](/docs/dashboard/api-keys/introduction#edit-api-key-details).
   </Step>
 
   <Step title="(Optional) Restrict sending to a specific domain">
@@ -21176,7 +21261,12 @@ You can use multiple keys to isolate different application actions to different 
 
 ## API key management
 
-You can view and manage your API keys from the [**API keys** Dashboard page](https://resend.com/api-keys). You can also create, list, or delete your API keys using the [API](/docs/api-reference/api-keys/create-api-key), or the [Resend CLI](/docs/cli#api-keys).
+You can view and manage your API keys from the [**API keys** Dashboard page](https://resend.com/api-keys). You can also manage your API keys programmatically using the [API](/docs/api-reference/api-keys/create-api-key) or the [Resend CLI](/docs/cli#api-keys):
+
+* [Create](/docs/api-reference/api-keys/create-api-key) a new API key with a name, permission, and optional domain restriction
+* [List](/docs/api-reference/api-keys/list-api-keys) all API keys in your account
+* [Update](/docs/api-reference/api-keys/update-api-key) an API key's name (other properties can only be edited in the Dashboard)
+* [Delete](/docs/api-reference/api-keys/delete-api-key) an API key
 
 ## View all API keys
 
@@ -21197,6 +21287,8 @@ After [creating an API key](/docs/create-an-api-key), you can edit the following
 <Info>You cannot view or edit an API key value after it has been created.</Info>
 
 To edit an API key in the Resend Dashboard, click the **More options** <Icon icon="ellipsis" /> button and then **Edit API key**.
+
+You can also rename an API key programmatically using the [Update API key endpoint](/docs/api-reference/api-keys/update-api-key). The API only updates the key's name, while permission and domain can only be edited in the Dashboard.
 
 <img alt="View Inactive API key" />
 
@@ -41092,6 +41184,54 @@ Source: https://resend.com/docs/integrations
 
 Integrate Resend with the tools you already use.
 
+## Coding agents
+
+<CardGroup>
+  <Card title="Cursor" href="https://resend.com/cursor" icon={<CursorIcon />}>
+    Send emails from Cursor with the Resend MCP server
+  </Card>
+
+  <Card title="Claude" href="https://resend.com/claude" icon={<ClaudeIcon />}>
+    Connect Claude to Resend with the official connector
+  </Card>
+
+  <Card title="Claude Code" href="https://resend.com/claude-code" icon={<ClaudeIcon />}>
+    Send emails from Claude Code with the official plugin
+  </Card>
+
+  <Card title="Codex" href="https://resend.com/codex" icon={<CodexIcon />}>
+    Send emails from Codex with the official Resend plugin
+  </Card>
+
+  <Card title="Antigravity" href="https://resend.com/antigravity" icon={<AntigravityIcon />}>
+    Send emails from Antigravity with the Resend MCP server
+  </Card>
+
+  <Card title="Devin" href="https://resend.com/devin" icon={<DevinIcon />}>
+    Send emails from Devin with the Resend MCP server
+  </Card>
+
+  <Card title="Gemini" href="https://resend.com/gemini" icon={<GeminiIcon />}>
+    Build email automations with Gemini and Resend
+  </Card>
+
+  <Card title="GitHub Copilot" href="https://resend.com/github-copilot" icon={<GitHubCopilotIcon />}>
+    Build email automations with GitHub Copilot and Resend
+  </Card>
+
+  <Card title="OpenCode" href="https://resend.com/opencode" icon={<OpenCodeIcon />}>
+    Send emails from OpenCode with the Resend MCP server
+  </Card>
+
+  <Card title="Zed" href="https://resend.com/zed" icon={<ZedIcon />}>
+    Send emails from Zed with the Resend MCP server
+  </Card>
+
+  <Card title="Warp" href="https://resend.com/warp" icon={<WarpIcon />}>
+    Send emails from Warp with the Resend MCP server
+  </Card>
+</CardGroup>
+
 ## AI
 
 <CardGroup>
@@ -41682,6 +41822,24 @@ Tips to keep a spam rate low:
 * Give recipients a clear way to opt out of emails.
 * Send relevant and timely emails.
 * Only send to recipients who have given consent to receive email.
+
+## Data Retention
+
+Resend retains email data for **30 days** across all plans (Free, Pro, and Scale). This includes:
+
+* Email content and metadata
+* Delivery status and events
+* Logs and metrics
+
+Enterprise plans have access to **flexible data retention** options. [Contact support](https://resend.com/help) to discuss custom retention requirements.
+
+<Tip>
+  If you need access to historical email data beyond the 30-day retention
+  window, consider storing [webhook
+  events](/docs/dashboard/webhooks/how-to-store-webhooks-data) in your own database.
+  This gives you full control over retention periods and ensures you never lose
+  important information.
+</Tip>
 
 
 # Audience Hygiene: How to keep your Audiences in good shape?

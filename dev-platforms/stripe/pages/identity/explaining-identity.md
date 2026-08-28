@@ -6,9 +6,9 @@ path: identity/explaining-identity
 
 # Explain Identity to your customers
 
-Answer customer questions about ID verification and Stripe Identity.
+Answer customer questions about identity verification and Stripe Identity.
 
-If you use Stripe Identity for ID verification, copy and customize these questions and answers to create Frequently Asked Questions (FAQs) around ID verification. To obtain Stripe logos, badges, and buttons for your site, visit the **Media assets** section on [stripe.com](https://stripe.com/newsroom/information).
+If you use Stripe Identity for identity verification, copy and customize these questions and answers to create Frequently Asked Questions (FAQs) around identity verifications. To obtain Stripe logos, badges, and buttons for your site, visit the **Media assets** section on [stripe.com](https://stripe.com/newsroom/information).
 
 ## Pre-approved content 
 
@@ -26,7 +26,9 @@ Stripe helps PLATFORM confirm your identity by conducting the following checks:
 
 3. **Stripe collects your name, date of birth, and government ID number, and validates that it’s real.** They’ll check this information against a global set of databases to confirm that it exists.
 
-Stripe asks for your consent before collecting and using your biometric information. They only use your verification data in accordance with the [permissions](https://support.stripe.com/questions/common-questions-about-stripe-identity#verification-permissions) you grant before starting the verification process, and based on their [Privacy Policy](https://stripe.com/privacy).
+4. **Stripe verifies your phone number, address, and email address by checking them against trusted third-party data sources and Stripe’s own network data.** This helps confirm that you are associated with the contact information you provided, allowing a risk assessment without requiring you to upload documents or photos.
+
+Where Stripe collects biometric information, Stripe asks for your consent before collecting and using it. For verification of your name, phone number, address, and email address, Stripe collects and processes your data for fraud prevention purposes in accordance with its Privacy Policy. Stripe only uses your verification data in accordance with its [Privacy Policy](https://stripe.com/privacy) and, where relevant, in accordance with the [permissions](https://support.stripe.com/questions/common-questions-about-stripe-identity#verification-permissions) you grant before starting a verification process.
 
 Learn more about how Stripe [handles and stores your data](https://support.stripe.com/questions/common-questions-about-stripe-identity).
 
@@ -36,7 +38,7 @@ Update the checks based on the verification methods that you use, and include yo
 
 Be sure to transparently disclose to your users the information you’re receiving and how you’re using, storing, and sharing it, including the use of cookies if that’s part of your integration. Also disclose that you use Stripe as a service provider:
 
-We use Stripe Identity for identity verification and other business services. Stripe collects identifying information about you and the devices that connect to its services, which includes the use of cookies. Stripe uses this information to operate and improve the services it provides to us, including for fraud detection, authentication, and analytics. You can learn more about [Stripe](https://stripe.com), [Stripe Identity](https://support.stripe.com/questions/common-questions-about-stripe-identity), and read its privacy policy at https://stripe.com/privacy.
+We use Stripe Identity for identity verification and other business services. Stripe collects identifying information about you, including name, phone number, address, email address, and the devices that connect to its services, which includes the use of cookies. Stripe uses this information to operate and improve the services it provides to us, including for fraud detection, authentication, and analytics. You can learn more about [Stripe](https://stripe.com/), [Stripe Identity](https://support.stripe.com/questions/common-questions-about-stripe-identity), and read its privacy policy at https://stripe.com/privacy.
 
 ### What are the best practices for a successful verification?
 
@@ -52,13 +54,18 @@ The quality of the images you capture affects success rates dramatically. Below 
 - **Don’t block any part of your face.** Remove sunglasses, masks, or other accessories.
 - **Find a location with ambient lighting.** Avoid spaces with strong overhead lights that cast a shadow on your face or ID document. Avoid sitting directly in front of a bright light which can wash out your face and add a glare to your ID document.
 
+Your verification might only use your name, phone number, email address, and address. In that case:
+
+- Make sure the phone number, address, and email address you provide are current and belong to you.
+- Use the same contact details you’ve previously used with our platform.
+
 ### Additional information 
 
 We recommend adding these best practices before a user starts the verification process so they know what to expect.
 
 ### Who has access to my verification data?
 
-Both PLATFORM and Stripe have access to the information that you submit through the verification flow. We rely on Stripe to help store your verification data. Stripe uses access controls and security standards that are at least as stringent as those used to handle their own KYC and payments compliance data.
+Both PLATFORM and Stripe have access to the information that you submit through the verification flow. Stripe may also share your information with trusted third-party verification providers to confirm your identity, in accordance with Stripe’s [Privacy Policy](https://stripe.com/privacy). We rely on Stripe to help store your verification data. Stripe uses access controls and security standards that are at least as stringent as those used to handle their own KYC and payments compliance data.
 
 Learn more about how Stripe [handles and stores your data](https://support.stripe.com/questions/common-questions-about-stripe-identity).
 
@@ -73,8 +80,8 @@ For the following questions, provide your preferred answer:
 | Question | Additional information |
 | --- | --- |
 | **Why am I asked to verify my identity?** | Provide your preferred answer. Some users might be hesitant to share their ID information, so it’s important to help them understand why you’re asking for this information |
-| **Why was I rejected?** | You might want to offer alternative methods for verification if a user disputes their results. |
-| **Can I get verified using a different method?** | Privacy laws might require you to provide an alternative verification process that doesn’t use biometric technology if the user doesn’t consent to use of their biometric information. Consult your legal counsel for regional requirements. |
+| **Why was I rejected?** | You might want to offer alternative methods for verification if a user disputes their results. For verifications that only use a phone number, address, or email address, users who can’t be verified might be asked to complete additional steps, such as uploading a photo ID. |
+| **Can I get verified using a different method?** | Privacy laws might require you to provide an alternative verification process that doesn’t use biometric technology if the user doesn’t consent to use of their biometric information. For verifications that only use personal information (phone number, email address, or address), biometric consent doesn’t apply. Consult your legal counsel for regional requirements. |
 | **How can I access or delete my verification data?** | Provide your data privacy process.
 
 The Identity API has a [redaction endpoint](https://docs.stripe.com/api/identity/verification_sessions/redact.md) that allows you to delete the verification data that Stripe Identity stores on behalf of your business. For example, you can use this tool to meet your deletion requirements when an end-user from Europe or California asks you to delete their data, or when you collect an ID from a country such as Germany that requires you to delete an ID card upon completion of the verification even if there’s no deletion request from the end user. If you’ve created additional copies of a user’s data, you might also need to delete these as well.
@@ -83,7 +90,7 @@ Stripe doesn’t delete data on your behalf when we store the data as your proce
 
 If your end-user reaches out to us requesting deletion, we’ll respond to the request with respect to any data that we hold as data controller, and also recommend the end-user reach out to you to request deletion.
 
-Likewise, remind any of your end-users who request deletion to also reach out to Stripe, because we’re also holding verification data as an independent controller. They can also contact us if they want to opt-out of Stripe using their biometric data. They can contact us at [privacy@stripe.com](mailto:privacy@stripe.com).
+Likewise, remind any of your end-users who request deletion to also reach out to Stripe, because we’re also holding verification data as an independent controller. They can also contact us if they want to opt out of Stripe using their identity data (including biometric data). They can contact us at [privacy@stripe.com](mailto:privacy@stripe.com).
 
 Learn more about privacy considerations for [handling ID verification data](https://support.stripe.com/questions/privacy-considerations-for-handling-id-verification-data-as-a-business) as a business. |
 

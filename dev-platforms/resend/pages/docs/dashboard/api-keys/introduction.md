@@ -14,7 +14,12 @@ You can use multiple keys to isolate different application actions to different 
 
 ## API key management
 
-You can view and manage your API keys from the [**API keys** Dashboard page](https://resend.com/api-keys). You can also create, list, or delete your API keys using the [API](/docs/api-reference/api-keys/create-api-key), or the [Resend CLI](/docs/cli#api-keys).
+You can view and manage your API keys from the [**API keys** Dashboard page](https://resend.com/api-keys). You can also manage your API keys programmatically using the [API](/docs/api-reference/api-keys/create-api-key) or the [Resend CLI](/docs/cli#api-keys):
+
+* [Create](/docs/api-reference/api-keys/create-api-key) a new API key with a name, permission, and optional domain restriction
+* [List](/docs/api-reference/api-keys/list-api-keys) all API keys in your account
+* [Update](/docs/api-reference/api-keys/update-api-key) an API key's name (other properties can only be edited in the Dashboard)
+* [Delete](/docs/api-reference/api-keys/delete-api-key) an API key
 
 ## View all API keys
 
@@ -35,6 +40,8 @@ After [creating an API key](/docs/create-an-api-key), you can edit the following
 <Info>You cannot view or edit an API key value after it has been created.</Info>
 
 To edit an API key in the Resend Dashboard, click the **More options** <Icon icon="ellipsis" /> button and then **Edit API key**.
+
+You can also rename an API key programmatically using the [Update API key endpoint](/docs/api-reference/api-keys/update-api-key). The API only updates the key's name, while permission and domain can only be edited in the Dashboard.
 
 <img alt="View Inactive API key" />
 

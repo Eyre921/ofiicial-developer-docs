@@ -98,7 +98,9 @@ channels:
           - $ref: >-
               #/components/messages/subpackage_listen/v2.listen.v2-client-1-ListenV2CloseStream
           - $ref: >-
-              #/components/messages/subpackage_listen/v2.listen.v2-client-2-ListenV2Configure
+              #/components/messages/subpackage_listen/v2.listen.v2-client-2-ListenV2ForceEndTurn
+          - $ref: >-
+              #/components/messages/subpackage_listen/v2.listen.v2-client-3-ListenV2Configure
 servers:
   Production:
     url: wss://api.deepgram.com/
@@ -150,7 +152,13 @@ components:
       description: Send a CloseStream message to close the WebSocket stream
       payload:
         $ref: '#/components/schemas/ListenV2_ListenV2CloseStream'
-    subpackage_listen/v2.listen.v2-client-2-ListenV2Configure:
+    subpackage_listen/v2.listen.v2-client-2-ListenV2ForceEndTurn:
+      name: ListenV2ForceEndTurn
+      title: ListenV2ForceEndTurn
+      description: Send a ForceEndTurn message to immediately end the current turn
+      payload:
+        $ref: '#/components/schemas/ListenV2_ListenV2ForceEndTurn'
+    subpackage_listen/v2.listen.v2-client-3-ListenV2Configure:
       name: ListenV2Configure
       title: ListenV2Configure
       description: Send a Configure message to update Flux settings
@@ -409,6 +417,25 @@ components:
           type: string
           title: float
           description: Confidence that no more speech is coming in this turn
+        trigger:
+          type: string
+          description: >
+            The cause of the turn ending. Present on every `EndOfTurn` event and
+            only there.
+
+
+            - **model** - the turn ended by Flux's native end-of-turn detection
+
+
+            - **manual** - the turn ended because a `ForceEndTurn` message was
+            sent
+
+
+            - **timeout** - the turn ended because `eot_timeout_ms` elapsed
+
+
+            This is an open enum. New values may be added over time, so clients
+            must tolerate values they do not recognize.
         languages:
           type: array
           items:
@@ -573,6 +600,17 @@ components:
       required:
         - type
       title: ListenV2_ListenV2CloseStream
+    ListenV2_ListenV2ForceEndTurn:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - ForceEndTurn
+          description: Message type identifier
+      required:
+        - type
+      title: ListenV2_ListenV2ForceEndTurn
     ChannelsListenV2MessagesListenV2ConfigureThresholds:
       type: object
       properties:

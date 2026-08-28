@@ -21,6 +21,8 @@ stateDiagram-v2
   TurnOngoing --> AwaitingEnd : EagerEndOfTurn
   AwaitingEnd --> TurnOngoing : TurnResumed
   AwaitingEnd --> Initial : EndOfTurn
+  TurnOngoing --> Initial : ForceEndTurn
+  AwaitingEnd --> Initial : ForceEndTurn
 
   state Initial {
     [*] --> Ready
@@ -41,6 +43,8 @@ stateDiagram-v2
 4. The `EndOfTurn` transcript will always match the immediately preceding `EagerEndOfTurn` transcript. If the transcript changes after an `EagerEndOfTurn`, a `TurnResumed` event will occur first.
 5. The `turn_index` increments immediately following an `EndOfTurn` message.
 6. When using `flux-general-multi`, all `TurnInfo` events include `languages` (detected languages sorted by word count) and `languages_hinted` (active language hints). See [Language Prompting](/docs/flux/language-prompting).
+7. Every `EndOfTurn` event includes a `trigger` field — `model` (native detection), `manual` ([`ForceEndTurn`](/docs/flux/force-end-turn)), or `timeout` (`eot_timeout_ms`) — indicating what ended the turn.
+8. You can end the current turn at any time by sending a [`ForceEndTurn`](/docs/flux/force-end-turn) message. Flux emits an `EndOfTurn` with `trigger: "manual"` from any in-turn state.
 
 **Configuring Event Behavior**: The `EagerEndOfTurn` and `TurnResumed` events are only triggered when you set the `eager_eot_threshold` parameter. The `EndOfTurn` event behavior is controlled by `eot_threshold` and `eot_timeout_ms` parameters. See the [End-of-Turn Configuration](/docs/flux/configuration) for details on tuning these thresholds for your use case.
 
@@ -173,6 +177,7 @@ Notice how confidence builds up and how the `EagerEndOfTurn` event fires before 
   "audio_window_end": 1.7,
   "transcript": "Hi I need to cancel my subscription please.",
   "words": [...],
-  "end_of_turn_confidence": 0.7
+  "end_of_turn_confidence": 0.7,
+  "trigger": "model"
 }
 ```

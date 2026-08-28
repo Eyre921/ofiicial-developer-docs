@@ -9340,7 +9340,7 @@ Model availability is decided per model and per surface — managed jobs by meth
 
 ## Training security
 
-Across every training surface, one principle holds: **your training data is never used to train Fireworks-owned or shared models**. Inference follows [Zero Data Retention](/guides/security_compliance/data_handling) by default. Step-by-step BYOB IAM, CMEK KMS setup, and secure RFT automation live in the [Fireworks training skill — secure training operations](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/secure-training-operations.md).
+Across every training surface, one principle holds: **your training data is never used to train Fireworks-owned or shared models**. Inference follows [Zero Data Retention](/guides/security_compliance/data_handling) by default. This section summarizes the training surfaces; step-by-step BYOB IAM setup, CMEK KMS setup, and secure RFT are in [Secure Training](/guides/security_compliance/secure_training) and [CMEK](/guides/security_compliance/secure_training/cmek).
 
 ### Choose a surface by data-privacy needs
 
@@ -9360,11 +9360,11 @@ Register an external URL so Fireworks reads your dataset during the job without 
 firectl dataset create my-dataset --external-url gs://your-bucket/path/train.jsonl
 ```
 
-Supported: GCS, AWS S3, and Azure Blob, with least-privilege IAM to Fireworks service accounts provided at onboarding. For AWS S3, lock the IAM trust policy with both `accounts.google.com:sub` and `accounts.google.com:oaud` (your Fireworks account ID) so tokens for other accounts are rejected. Full IAM trust policies, OIDC audience, and rotation are in the [secure training operations skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/secure-training-operations.md).
+Supported: GCS, AWS S3, and Azure Blob, with least-privilege IAM to Fireworks service accounts provided at onboarding. For AWS S3, lock the IAM trust policy with both `accounts.google.com:sub` and `accounts.google.com:oaud` (your Fireworks account ID) so tokens for other accounts are rejected. Full IAM trust policies, OIDC audience, and rotation are in [Secure Training](/guides/security_compliance/secure_training/byob).
 
 ### Customer-managed encryption keys (CMEK)
 
-CMEK encrypts datasets and checkpoints on Fireworks-managed storage with **your** cloud KMS key — revoke the key and Fireworks cannot decrypt. **Supported today:** AWS KMS + Managed SFT (DPO, RFT, Azure Key Vault, and GCP KMS coming soon). It does not cover in-memory training compute or inference request/response. Setup, IAM, and rotation detail: [secure training operations skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/secure-training-operations.md) · [Data Security Overview](/guides/security_compliance/data_security).
+CMEK encrypts datasets and checkpoints on Fireworks-managed storage with **your** cloud KMS key — revoke the key and Fireworks cannot decrypt. Supported on AWS KMS, Google Cloud KMS, and Azure Key Vault. It does not cover in-memory training compute or inference request/response. Setup, IAM, and rotation detail: [CMEK](/guides/security_compliance/secure_training/cmek) · [Data Security Overview](/guides/security_compliance/data_security).
 
 ### Secure RFT and customer controls
 
@@ -10256,7 +10256,7 @@ Fireworks RFT helps you train frontier models like DeepSeek V3 and Kimi K2 to **
     **1–2 hours** — multi-turn rollouts in your environment with HTTP tracing.
   </Card>
 
-  <Card title="Training security (BYOB)" icon="shield-check" href="/fine-tuning/finetuning-intro#training-security">
+  <Card title="Training security (BYOB)" icon="shield-check" href="/guides/security_compliance/secure_training">
     **2–4 hours** — datasets stay in your GCS/S3 bucket.
   </Card>
 </CardGroup>
@@ -22419,12 +22419,12 @@ For US-only inference residency, see [US-only Serverless](/serverless/us-only-se
 
 **Bring Your Own Bucket:** Customers may integrate their own cloud storage to retain governance and apply their own compliance frameworks.
 
-* Datasets: [Bring your own bucket (BYOB)](/fine-tuning/finetuning-intro#dataset-storage-byob) (GCS, AWS S3, Azure)
+* Datasets: [Bring your own bucket (BYOB)](/guides/security_compliance/secure_training/byob) (GCS, AWS S3, Azure)
 * Models: [External AWS S3 Bucket Integration](/models/uploading-custom-models#uploading-your-model)
 
-**Bring Your Own Key:** Customers may integrate their own AWS KMS key to retain governance and apply their own encryption policies.
+**Bring Your Own Key:** Customers may integrate their own AWS KMS, Google Cloud KMS, or Azure Key Vault key to retain governance and apply their own encryption policies.
 
-* Datasets and checkpoints: [Customer-Managed Encryption Keys for Fine-Tuning](/fine-tuning/finetuning-intro#cmek) (SFT supported; DPO and RFT coming soon)
+* Datasets and checkpoints: [Customer-Managed Encryption Keys for Fine-Tuning](/guides/security_compliance/secure_training/cmek) (LoRA SFT, DPO, and RFT; full-parameter training not supported)
 * Final model weights: Coming soon
 
 **Access Logging:** All customer data access is logged, monitored, and protected against tampering. See [Audit & Access Logs](https://docs.fireworks.ai/guides/security_compliance/audit_logs).
@@ -22448,7 +22448,7 @@ Fireworks enables secure model training, including fine-tuning and reinforcement
 **API-Based Integration:** Customers leverage Fireworks' training APIs while maintaining full control over sensitive components, ensuring no cross-component data leakage.
 
 <Tip>
-  For detailed guidance on secure reinforcement fine-tuning and using your own cloud storage, see [Training security](/fine-tuning/finetuning-intro#training-security).
+  For detailed guidance on secure reinforcement fine-tuning and using your own cloud storage, see [Training security](/guides/security_compliance/secure_training).
 </Tip>
 
 ## Technical Safeguards
@@ -22504,6 +22504,714 @@ These certifications are maintained through continuous monitoring and annual aud
 <Note>
   Documentation and audit reports are available in our [Trust Center](https://trust.fireworks.ai/).
 </Note>
+
+
+# Secure Training
+Source: https://docs.fireworks.ai/guides/security_compliance/secure_training
+
+Choose the right training surface for your data-privacy needs, and understand what Fireworks retains and how to delete it
+
+Fireworks lets you fine-tune models while keeping your data and sensitive components under your control. Across every training surface, one principle holds: **your training data is never used to train Fireworks-owned or shared models**.
+
+This page covers training. Inference follows [Zero Data Retention](/guides/security_compliance/data_handling) by default — prompts and generations are never written to persistent storage — so we focus here on the training lifecycle: where your data lives while you train, what Fireworks retains afterward (checkpoints and traces), and the controls you have to delete it.
+
+Use it to:
+
+* Understand how each training surface handles your data.
+* Choose the surface that fits your data-privacy requirements.
+* Know exactly what is retained, what is not, and how to delete it.
+
+## Choosing a training surface
+
+Fireworks offers three ways to train, differing mainly in **where your training data lives**:
+
+| Surface                     | Where your training data lives                                                                                                             | What Fireworks retains           | Your deletion controls                                                      |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | --------------------------------------------------------------------------- |
+| **Managed Training**        | Uploaded to Fireworks-managed storage (GCS); only a reference link is kept in our database                                                 | Dataset, checkpoints, and traces | Delete the dataset anytime after the job; request checkpoint/trace deletion |
+| **Managed Training + BYOB** | Stays in your own cloud bucket; Fireworks reads it in-place during training, with no copy persisted                                        | Checkpoints and traces only      | Revoke bucket access after the job; request checkpoint/trace deletion       |
+| **Training API**            | No dataset upload — you load and tokenize data locally; the trainer receives only transient tokenized batches, never a stored dataset file | Checkpoints and traces only      | Request checkpoint/trace deletion                                           |
+
+<Tip>
+  For the strictest data governance, use [BYOB](/guides/security_compliance/secure_training/byob) (keep the dataset in your own bucket) or the [Training API](#training-api) (no dataset is ever uploaded to or stored on Fireworks).
+</Tip>
+
+## Data retention by surface
+
+When training runs on Fireworks-managed storage, training data is stored in Google Cloud Storage (GCS) with only a reference link retained in our database. Customers control deletion of their own datasets.
+
+### Managed Training
+
+Retention behavior depends on the job type:
+
+| Job Type               | Data Generated                                       | Retention / Deletion                                                                                                                                             |
+| ---------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SFT — Managed Training | Uploaded dataset only                                | Customer-controlled; deletable immediately after the job completes                                                                                               |
+| DPO — Managed Training | Uploaded dataset only                                | Customer-controlled; deletable immediately after the job completes                                                                                               |
+| RFT — Managed Training | Input prompts + rollout datasets (generated outputs) | Input prompts: customer-controlled, deletable after the job completes (same policy as SFT and DPO). Rollout datasets (generated outputs): deletable upon request |
+| Job chunks / artifacts | Intermediate checkpoints                             | Retained for 30 days, then deleted; deletable earlier on request. Kept so jobs can be retrieved or restarted                                                     |
+| Traces / logs          | Request/response metadata                            | Retained for 30 days, then deleted; deletable earlier on request                                                                                                 |
+
+### Training API
+
+The [Training API](/fine-tuning/training-api/introduction) works differently: you write the training loop in your own environment, load and tokenize data locally, and send tokenized `Datum` batches to Fireworks GPUs on each `forward_backward` call. What this means for your data:
+
+* **No dataset upload step and no dataset file stored on Fireworks' side.** Fireworks never receives your raw JSONL, and for RL or distillation the trainer never sees raw prompt text.
+* **The trainer does receive the training content** — as tokenized `Datum` batches on every `forward_backward` call. Those tokens are your data; they are processed transiently for the gradient step and are not retained as a dataset.
+
+What Fireworks does retain is minimal and deletable on request:
+
+* **Checkpoints** — retained for 30 days (deletable earlier on request) so you can restart jobs without losing work.
+* **Traces / logs** — retained for 30 days (deletable earlier on request) so you can evaluate job performance and improve your training.
+
+This barebones retention is by design: it keeps the product easy to use — retrieve checkpoints to restart jobs, and inspect traces to understand and improve training — while your training data is never uploaded or stored as a dataset on Fireworks.
+
+## How Fireworks accesses your cloud
+
+Both BYOB and CMEK work by granting a Fireworks identity least-privilege access to a resource in your account — a storage bucket for BYOB, a KMS key for CMEK. Fireworks authenticates as a Google-issued OIDC identity, and you configure your cloud's IAM to trust it. Three properties follow:
+
+* **No long-lived secrets.** Fireworks presents a short-lived, automatically rotated token on each call. There is no API key or client secret for you to store, rotate, or risk leaking.
+* **Nothing runs in your cloud.** Fireworks does not deploy software into your account — it calls your cloud's API from Fireworks infrastructure, as the identity you authorized.
+* **Scoped to your account.** The token carries your Fireworks account ID as its audience, and you configure your trust to accept only that audience. A token issued for any other Fireworks account is rejected by your own infrastructure, not just by Fireworks.
+
+Where federation applies, you pin trust on these values:
+
+| Value                        | Identifier                    |
+| ---------------------------- | ----------------------------- |
+| OIDC issuer                  | `https://accounts.google.com` |
+| Fireworks identity (subject) | Provided at onboarding        |
+| Token audience               | `<YOUR_FIREWORKS_ACCOUNT_ID>` |
+
+<Note>
+  BYOB and CMEK authenticate as **different** Fireworks service accounts, so their subject identifiers differ — don't reuse one for the other. Two cases don't use this pattern: **GCS BYOB** grants access to Fireworks service account emails directly, with no token audience to scope, and **Azure BYOB** uses the fixed `api://AzureADTokenExchange` audience. Each setup page states which applies.
+</Note>
+
+## Two independent controls
+
+BYOB and CMEK address different needs and can be used separately or together:
+
+|                                                                                      | What it controls                                                                                          | Use when                                                                 |
+| ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **[Bring your own bucket (BYOB)](/guides/security_compliance/secure_training/byob)** | *Where the dataset lives* — it stays in your bucket and is read in place, never copied to Fireworks       | You need the dataset itself to never leave your storage                  |
+| **[Customer-managed keys (CMEK)](/guides/security_compliance/secure_training/cmek)** | *Who holds the key* for data Fireworks does store — datasets and checkpoints on Fireworks-managed storage | You use managed storage but need to control encryption and revoke access |
+
+CMEK covers artifacts on Fireworks-managed storage, so it complements rather than replaces BYOB. For the strictest governance, combine BYOB with [secure RFT](/guides/security_compliance/secure_training/secure_rft), or use the [Training API](/fine-tuning/training-api/introduction), where no dataset is stored at all.
+
+## Inference
+
+Inference at Fireworks follows Zero Data Retention by default: prompts and generations exist only in volatile memory for the duration of the request and are never written to persistent storage or used to train any model. For full details, including the Response API storage exception and how to opt out, see the [Zero Data Retention policy](/guides/security_compliance/data_handling).
+
+## Customer controls
+
+The following controls are available for training workloads:
+
+| Control                                                          | How to exercise it                                                                                                                                                                     |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Delete a fine-tuning dataset                                     | Delete via the Fireworks console or API after the job completes.                                                                                                                       |
+| Request deletion of checkpoints, traces, or RFT rollout datasets | Contact your Fireworks account team to delete these retained artifacts.                                                                                                                |
+| Keep data in your own bucket                                     | Use [BYOB integration](/guides/security_compliance/secure_training/byob) to register an external dataset URL.                                                                          |
+| Control encryption of managed data with your own key             | Register a [CMEK](/guides/security_compliance/secure_training/cmek) key from your cloud KMS (AWS, Google Cloud, or Azure); revoke it anytime to cut off Fireworks' ability to decrypt. |
+| Avoid storing a dataset on Fireworks                             | Use the [Training API](#training-api): no dataset is uploaded or stored; the trainer only receives transient tokenized batches.                                                        |
+| Revoke Fireworks access post-training                            | Remove the IAM bindings from your bucket after the job completes.                                                                                                                      |
+
+For inference-side controls — disabling Response API storage (`store=False`) or deleting a specific response — see the [Zero Data Retention policy](/guides/security_compliance/data_handling).
+
+## Related Resources
+
+<CardGroup>
+  <Card title="Zero Data Retention" href="/guides/security_compliance/data_handling" icon="lock">
+    How Fireworks handles inference data by default
+  </Card>
+
+  <Card title="Customer-Managed Encryption Keys (CMEK)" href="/guides/security_compliance/secure_training/cmek" icon="key">
+    Encrypt managed fine-tuning data with your own KMS key
+  </Card>
+
+  <Card title="Data Security Overview" href="/guides/security_compliance/data_security" icon="shield-check">
+    Learn about our comprehensive security measures
+  </Card>
+
+  <Card title="Reinforcement Fine Tuning" href="/fine-tuning/reinforcement-fine-tuning-models" icon="brain">
+    Full guide to reinforcement fine-tuning
+  </Card>
+
+  <Card title="Training API" href="/fine-tuning/training-api/introduction" icon="code">
+    Custom training loops that keep your data on your side
+  </Card>
+</CardGroup>
+
+
+# Bring Your Own Bucket (BYOB)
+Source: https://docs.fireworks.ai/guides/security_compliance/secure_training/byob
+
+Keep training datasets in your own cloud storage; Fireworks reads them in place and never persists a copy
+
+Bring Your Own Bucket (BYOB) is the recommended configuration for Managed Training under strict data-governance requirements. Your dataset stays in your own cloud storage: Fireworks reads it in-place during active training only, with no copy persisted on Fireworks-managed storage, and you retain full ownership and deletion authority. This applies to both Supervised Fine-Tuning (SFT) and Reinforcement Fine-Tuning (RFT) jobs.
+
+BYOB works with all three major cloud providers — bring a bucket from whichever you already use:
+
+* [Google Cloud Storage (GCS)](#gcs-bucket-integration)
+* [AWS S3](#aws-s3-bucket-integration)
+* [Azure Blob Storage](#azure-blob-storage-integration)
+
+<Tip>
+  Grant least-privilege IAM to only the bucket/path prefixes needed for training. Use server-side encryption and your KMS policies where required.
+</Tip>
+
+## GCS Bucket Integration
+
+Use external Google Cloud Storage (GCS) buckets for fine-tuning while keeping your data private. Fireworks creates proxy datasets that reference your external buckets—data is only accessed during fine-tuning within a secure, isolated cluster.
+
+<Info>
+  Your data never leaves your GCS bucket except during fine-tuning, ensuring maximum privacy and security.
+</Info>
+
+### Required Permissions
+
+You need to grant access to three service accounts. Fireworks provides the control plane and inference service account emails during BYOB onboarding.
+
+**Fireworks Control Plane**
+
+* **Account**: Fireworks control plane service account (provided at onboarding)
+* **Required role**: Custom role with `storage.buckets.getIamPolicy` permission
+
+```bash theme={null}
+gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
+  --member=serviceAccount:<FIREWORKS_CONTROL_PLANE_SA> \
+  --role=projects/<YOUR_PROJECT>/roles/<YOUR_CUSTOM_ROLE>
+```
+
+**Inference Service Account**
+
+* **Account**: Fireworks inference service account (provided at onboarding)
+* **Required role**: Storage Object Viewer (`roles/storage.objectViewer`)
+
+```bash theme={null}
+gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
+  --member=serviceAccount:<FIREWORKS_INFERENCE_SA> \
+  --role=roles/storage.objectViewer
+```
+
+**Your Company's Fireworks Service Account**
+
+* **Account**: Your company's Fireworks account email (get it with `firectl account get`)
+* **Required role**: Storage Object Viewer (`roles/storage.objectViewer`)
+
+```bash theme={null}
+gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
+  --member=serviceAccount:<YOUR_COMPANY_FW_ACCOUNT_EMAIL> \
+  --role=roles/storage.objectViewer
+```
+
+<Tip>
+  After the job completes, revoke or rotate these IAM bindings to remove Fireworks' access to your bucket.
+</Tip>
+
+<Note>
+  GCS access is granted directly to the Fireworks service account emails above rather than through token federation, so there is no token audience to scope to your account the way the [S3](#aws-s3-bucket-integration) trust policy does. Fireworks instead verifies at dataset creation that the bucket grants access to your own Fireworks account, which is what keeps another customer from referencing your bucket.
+</Note>
+
+### Usage
+
+```bash theme={null}
+# Create dataset referencing your GCS bucket
+firectl dataset create {DATASET_NAME} --external-url gs://bucket-name/path/to/data.jsonl
+
+# Use in fine-tuning job
+firectl sftj create \
+  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
+  --base-model "accounts/fireworks/models/{MODEL}" \
+  --output-model {TRAINED_MODEL_NAME}
+```
+
+## AWS S3 Bucket Integration
+
+Use external AWS S3 buckets for fine-tuning while keeping your data private. Fireworks accesses your S3 data using GCP-to-AWS OIDC federation—no long-lived credentials are stored.
+
+<Note>
+  S3 bucket integration is currently supported for **training datasets only** (SFT and RFT jobs). Evaluation datasets are not yet supported.
+</Note>
+
+### IAM Role Setup
+
+Create an IAM role that Fireworks can assume via web identity federation. You do **not** need to register an OIDC identity provider — `accounts.google.com` is a built-in federated principal in AWS STS.
+
+Trust policy on the role, locked to the Fireworks identity and scoped to your account:
+
+```json theme={null}
+{
+  "Effect": "Allow",
+  "Principal": { "Federated": "accounts.google.com" },
+  "Action": "sts:AssumeRoleWithWebIdentity",
+  "Condition": {
+    "StringEquals": {
+      "accounts.google.com:sub": "<FIREWORKS_GCP_SERVICE_ACCOUNT_UNIQUE_ID>",
+      "accounts.google.com:oaud": "<YOUR_FIREWORKS_ACCOUNT_ID>"
+    }
+  }
+}
+```
+
+This is the standard trust model described in [How Fireworks accesses your cloud](/guides/security_compliance/secure_training#how-fireworks-accesses-your-cloud): `sub` locks assumption to the Fireworks identity, `oaud` pins the token's audience to your Fireworks account so a token issued for any other account is rejected by your own IAM. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) for the BYOB subject identifier; the audience is your own Fireworks account ID.
+
+Then attach a policy granting `s3:GetObject` and `s3:ListBucket` on your bucket.
+
+See the [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html) for detailed steps on creating roles for OIDC federation.
+
+### Usage
+
+```bash theme={null}
+# Create dataset referencing your S3 bucket
+firectl dataset create {DATASET_NAME} --external-url s3://bucket-name/path/to/data.jsonl
+
+# Use in fine-tuning job with IAM role
+firectl sftj create \
+  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
+  --base-model "accounts/fireworks/models/{MODEL}" \
+  --output-model {TRAINED_MODEL_NAME} \
+  --aws-iam-role "arn:aws:iam::{AWS_ACCOUNT_ID}:role/{ROLE_NAME}"
+```
+
+<Check>
+  For RFT jobs, use `firectl rftj create` with the same `--aws-iam-role` flag.
+</Check>
+
+### Alternative: Credentials Secret
+
+Instead of IAM role federation, you can use static AWS access keys stored in a Fireworks secret:
+
+```bash theme={null}
+# Create secret
+firectl secret create --name aws-creds \
+  --aws-access-key-id "AKIA..." \
+  --aws-secret-access-key "..."
+
+# Use in fine-tuning job
+firectl sftj create \
+  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
+  --base-model "accounts/fireworks/models/{MODEL}" \
+  --output-model {TRAINED_MODEL_NAME} \
+  --aws-credentials-secret "accounts/{ACCOUNT}/secrets/aws-creds"
+```
+
+<Warning>
+  IAM role federation is recommended for production. If using credentials, rotate them regularly.
+</Warning>
+
+## Azure Blob Storage Integration
+
+Use external Azure Blob Storage containers for fine-tuning while keeping your data private. Fireworks accesses your Azure data using GCP-to-Azure Workload Identity Federation—no long-lived credentials are stored.
+
+<Note>
+  Azure Blob Storage integration is currently supported for **training datasets only** (SFT and RFT jobs). Evaluation datasets are not yet supported.
+</Note>
+
+### Federated Identity Setup
+
+Create an App Registration (or user-assigned Managed Identity) in your Azure AD tenant with a federated credential that trusts the Fireworks GCP service account. Fireworks provides the subject identifier during BYOB onboarding.
+
+* **Issuer:** `https://accounts.google.com`
+* **Subject identifier:** `<FIREWORKS_GCP_SERVICE_ACCOUNT_UNIQUE_ID>`
+* **Audience:** `api://AzureADTokenExchange`
+
+Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) if you need the exact subject identifier.
+
+Then assign the **Storage Blob Data Reader** role on your storage account or container to the app registration.
+
+See the [Azure documentation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust) for detailed steps on configuring workload identity federation.
+
+### Usage
+
+```bash theme={null}
+# Create dataset referencing your Azure Blob container
+firectl dataset create {DATASET_NAME} \
+  --external-url https://{STORAGE_ACCOUNT}.blob.core.windows.net/{CONTAINER}/path/to/data.jsonl
+
+# Use in fine-tuning job with managed identity federation
+firectl sftj create \
+  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
+  --base-model "accounts/fireworks/models/{MODEL}" \
+  --output-model {TRAINED_MODEL_NAME} \
+  --azure-managed-identity-client-id "{MANAGED_IDENTITY_CLIENT_ID}" \
+  --azure-tenant-id "{AZURE_TENANT_ID}"
+```
+
+<Check>
+  For RFT jobs, use `firectl rftj create` with the same `--azure-managed-identity-client-id` and `--azure-tenant-id` flags.
+</Check>
+
+### Alternative: Credentials Secret
+
+Instead of workload identity federation, you can store Azure credentials in a Fireworks secret. The secret value must be a JSON object containing one of: `connection_string`, `sas_token`, or `account_key`.
+
+```bash theme={null}
+# Create secret with Azure credentials
+firectl secret create --name azure-creds \
+  --value '{"sas_token": "sv=2023-01-03&ss=b&srt=o&sp=rl&se=..."}'
+
+# Use in fine-tuning job
+firectl sftj create \
+  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
+  --base-model "accounts/fireworks/models/{MODEL}" \
+  --output-model {TRAINED_MODEL_NAME} \
+  --azure-credentials-secret "accounts/{ACCOUNT}/secrets/azure-creds"
+```
+
+<Warning>
+  Workload Identity Federation is recommended for production. If using credentials, rotate them regularly.
+</Warning>
+
+
+# Customer-Managed Encryption Keys (CMEK)
+Source: https://docs.fireworks.ai/guides/security_compliance/secure_training/cmek
+
+Use your own cloud KMS key to control encryption of your managed fine-tuning data
+
+With Customer-Managed Encryption Keys (CMEK), you bring an encryption key from your own cloud KMS — AWS KMS, Google Cloud KMS, or Azure Key Vault — and Fireworks uses it to encrypt the data your managed fine-tuning jobs read and write. Your key controls access to your data at rest: revoke it and Fireworks can no longer decrypt your datasets or checkpoints. Calls Fireworks makes to your key are recorded in your own cloud's audit log.
+
+<Info>
+  Fireworks never stores your root key. Each fine-tuning resource gets a unique data key that is encrypted ("wrapped") by your KMS key and stored only in wrapped form. The unwrapped key exists only briefly in memory during a job and is then discarded.
+</Info>
+
+## How it works
+
+CMEK uses envelope encryption:
+
+1. You create a key (your key-encryption key, or KEK) in your own cloud KMS and grant Fireworks permission to call `Encrypt` and `Decrypt` on it — nothing else.
+2. The first time a job, dataset, or checkpoint needs encryption, Fireworks generates a unique 256-bit data-encryption key (DEK) for that resource and immediately wraps it with your KEK. Only the wrapped key is persisted.
+3. Fireworks encrypts your artifacts locally with AES-256-GCM before they are written to storage.
+4. To read the data back, Fireworks asks your KMS to unwrap the DEK. That call — and every call — is logged in your cloud's KMS audit trail. Unwrapped keys are cached briefly (about 5 minutes) and then discarded, so subsequent reads re-validate against your KMS.
+
+Because access to your data depends on your KMS answering an unwrap request, you stay in control: disable or revoke the key and the data becomes unreadable.
+
+<Note>
+  During an active fine-tuning job, training compute processes your data in plaintext in memory — that is inherent to training a model on it. CMEK controls access to your data **at rest** (datasets, checkpoints, and logs), not the in-memory computation during the job itself.
+</Note>
+
+## What CMEK protects
+
+CMEK covers the durable artifacts your fine-tuning jobs read and write:
+
+* Training and evaluation datasets you upload
+* Intermediate checkpoints and distributed-checkpoint shards
+
+The following are governed by separate operational and contractual controls rather than your key:
+
+* Job metadata (job names, hyperparameters, status) stored in the Fireworks control plane
+* Transient scratch data that exists only for the duration of a job and is destroyed when the job ends
+
+<Note>
+  CMEK supports **LoRA** Supervised Fine-Tuning (SFT), Direct Preference Optimization (DPO), and Reinforcement Fine-Tuning (RFT). Full-parameter training is not supported. Today, CMEK covers the datasets and intermediate checkpoints your jobs read and write. Encrypting **final model weights** with your key, and deploying a model whose weights were encrypted with your key, is coming soon. Encrypting inference requests and responses with your key is not part of CMEK today.
+</Note>
+
+## Supported KMS providers
+
+CMEK supports all three major cloud KMS services. Fireworks needs only `Encrypt` and `Decrypt` on your key, and authenticates with short-lived, federated credentials.
+
+| Cloud        | KMS             | How Fireworks authenticates                               |
+| ------------ | --------------- | --------------------------------------------------------- |
+| AWS          | AWS KMS         | IAM role assumed via OIDC web-identity federation         |
+| Google Cloud | Cloud KMS       | Workload Identity Federation via a workload identity pool |
+| Azure        | Azure Key Vault | Workload Identity Federation to an Entra app registration |
+
+### How Fireworks authenticates
+
+CMEK uses the federated trust model described in [How Fireworks accesses your cloud](/guides/security_compliance/secure_training#how-fireworks-accesses-your-cloud): Fireworks authenticates as a Google-issued OIDC identity, you configure your cloud's IAM to trust it, and you allow it `Encrypt`/`Decrypt` on your key — nothing else. No long-lived secret is exchanged, and nothing Fireworks runs is deployed into your account.
+
+Pin trust on these values:
+
+| Value                        | Identifier                      |
+| ---------------------------- | ------------------------------- |
+| OIDC issuer                  | `https://accounts.google.com`   |
+| Fireworks identity (subject) | `<FIREWORKS_CMEK_OIDC_SUBJECT>` |
+| Token audience               | `<YOUR_FIREWORKS_ACCOUNT_ID>`   |
+
+The subject is stable per environment and is provided during CMEK onboarding; the audience is your own Fireworks account ID. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) if you need the exact subject identifier.
+
+<Note>
+  CMEK and [BYOB](/guides/security_compliance/secure_training/byob) authenticate as **different** Fireworks service accounts, so their subject identifiers differ. Use the CMEK subject here, not the one from your BYOB setup.
+</Note>
+
+<Warning>
+  Grant only `Encrypt` and `Decrypt` on the specific key. CMEK never needs to export key material, and never needs administrative permissions on your key.
+</Warning>
+
+## Setup
+
+<Steps>
+  <Step title="Create or choose a key in your KMS">
+    Create a symmetric encryption key in your cloud KMS (or pick an existing one). One key per Fireworks account is sufficient — Fireworks derives a unique data key per resource underneath it.
+
+    * **AWS KMS** — a symmetric KMS key in your account and region.
+    * **Google Cloud KMS** — a symmetric key in a key ring.
+    * **Azure Key Vault** — a key in a Standard vault or Managed HSM.
+  </Step>
+
+  <Step title="Grant Fireworks Encrypt/Decrypt on the key">
+    Authorize the Fireworks identity to call `Encrypt` and `Decrypt` on your key. You grant access to the federated identity — you never share a secret.
+
+    <Tabs>
+      <Tab title="AWS KMS">
+        Create an IAM role the Fireworks identity can assume via web-identity federation, and allow that role `Encrypt`/`Decrypt` on your key. You do **not** need to register an OIDC identity provider — `accounts.google.com` is a built-in federated principal in AWS STS.
+
+        Trust policy on the role, locked to the Fireworks identity:
+
+        ```json theme={null}
+        {
+          "Effect": "Allow",
+          "Principal": { "Federated": "accounts.google.com" },
+          "Action": "sts:AssumeRoleWithWebIdentity",
+          "Condition": {
+            "StringEquals": {
+              "accounts.google.com:sub": "<FIREWORKS_CMEK_OIDC_SUBJECT>",
+              "accounts.google.com:oaud": "<YOUR_FIREWORKS_ACCOUNT_ID>"
+            }
+          }
+        }
+        ```
+
+        The `sub` condition locks assumption to the Fireworks identity; the `oaud` condition pins the token's audience to your Fireworks account, so a token issued for any other account is rejected.
+
+        AWS KMS authorizes against both IAM and the key policy, so grant `kms:Encrypt` and `kms:Decrypt` on the specific key in **both** the role's permissions policy **and** the key policy.
+
+        You'll register the account ID, region, key ARN, and role ARN with Fireworks in the next step.
+      </Tab>
+
+      <Tab title="Google Cloud KMS">
+        Create a workload identity pool with an OIDC provider that trusts the Fireworks identity, then grant the federated principal `Encrypt`/`Decrypt` on your key. The principal lives in your own project, so this works even under org policies that forbid granting roles to service accounts outside your organization.
+
+        ```bash theme={null}
+        # 1. Create a workload identity pool
+        gcloud iam workload-identity-pools create fireworks-cmek \
+          --location="global" --display-name="Fireworks CMEK"
+
+        # 2. Add an OIDC provider that trusts the Fireworks identity,
+        #    scoped to your Fireworks account ID as the allowed audience
+        gcloud iam workload-identity-pools providers create-oidc fireworks-cmek \
+          --location="global" \
+          --workload-identity-pool="fireworks-cmek" \
+          --issuer-uri="https://accounts.google.com" \
+          --allowed-audiences="<YOUR_FIREWORKS_ACCOUNT_ID>" \
+          --attribute-mapping="google.subject=assertion.sub" \
+          --attribute-condition="assertion.sub == '<FIREWORKS_CMEK_OIDC_SUBJECT>'"
+
+        # 3. Grant Encrypt/Decrypt on the key to the federated principal
+        gcloud kms keys add-iam-policy-binding <YOUR_KEY> \
+          --keyring="<YOUR_KEYRING>" --location="<LOCATION>" \
+          --member="principal://iam.googleapis.com/projects/<YOUR_PROJECT_NUMBER>/locations/global/workloadIdentityPools/fireworks-cmek/subject/<FIREWORKS_CMEK_OIDC_SUBJECT>" \
+          --role="roles/cloudkms.cryptoKeyEncrypterDecrypter"
+        ```
+
+        The predefined `cryptoKeyEncrypterDecrypter` role is exactly `useToEncrypt` + `useToDecrypt`. If you prefer to pin the permission set yourself, create a custom role with just those two permissions and bind that instead.
+
+        You'll register your project number, workload identity pool and provider IDs, and the key resource name with Fireworks in the next step.
+      </Tab>
+
+      <Tab title="Azure Key Vault">
+        Add a federated credential to an Entra app registration (or a user-assigned managed identity) that trusts the Fireworks identity, then grant that identity crypto permissions on your key. Works with both Standard vaults and Managed HSM.
+
+        ```bash theme={null}
+        # 1. Trust the Fireworks identity on your app registration
+        az identity federated-credential create \
+          --name fireworks-cmek \
+          --identity-name <YOUR_MANAGED_IDENTITY> \
+          --resource-group <YOUR_RESOURCE_GROUP> \
+          --issuer "https://accounts.google.com" \
+          --subject "<FIREWORKS_CMEK_OIDC_SUBJECT>" \
+          --audiences "<YOUR_FIREWORKS_ACCOUNT_ID>"
+
+        # 2. Grant Encrypt/Decrypt on the key
+        az role assignment create \
+          --assignee <YOUR_CLIENT_ID> \
+          --role "Key Vault Crypto User" \
+          --scope <YOUR_KEY_VAULT_KEY_ID>
+        ```
+
+        Fireworks authenticates as one app registration per Fireworks account. You'll register the tenant ID, client ID, and the fully versioned Key Vault key identifier (including the version segment) with Fireworks in the next step.
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Register the key with your Fireworks account">
+    Send the identity references you gathered above to your Fireworks account team, who register the key on your account and enable CMEK enforcement for it.
+
+    Depending on your cloud, that is:
+
+    | Cloud        | What to send                                                                              |
+    | ------------ | ----------------------------------------------------------------------------------------- |
+    | AWS          | Key ARN and the ARN of the IAM role Fireworks assumes                                     |
+    | Google Cloud | Cloud KMS key resource name and the workload identity pool provider resource name         |
+    | Azure        | Fully versioned Key Vault key identifier, Entra tenant ID, and app registration client ID |
+
+    <Note>
+      Key registration and CMEK enablement are performed by Fireworks, not self-serve — the underlying commands are restricted to Fireworks operators. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) or your account team to start onboarding.
+    </Note>
+
+    Once a key is registered and CMEK is enabled, encryption is automatic — your data is encrypted at rest with your key, and uploads through `firectl` and the SDKs are encrypted client-side, so plaintext never leaves your environment. Keep your `firectl` / SDK up to date.
+  </Step>
+
+  <Step title="Verify">
+    <Check>
+      Run a small fine-tune (below) and confirm `Encrypt` / `Decrypt` calls appear in your cloud's KMS audit log.
+    </Check>
+  </Step>
+</Steps>
+
+## Running a CMEK fine-tune
+
+Once your key is registered, fine-tuning works exactly as it does today — encryption and decryption are transparent.
+
+```bash theme={null}
+# Upload a dataset (encrypted client-side with your key)
+firectl dataset create {DATASET_NAME} --file ./data.jsonl
+
+# Launch a supervised fine-tuning job
+firectl sftj create \
+  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
+  --base-model "accounts/fireworks/models/{MODEL}" \
+  --output-model {TRAINED_MODEL_NAME}
+```
+
+<Note>
+  Encrypting the resulting model's **final weights** with your key — so downloads decrypt transparently and you can deploy the model on Fireworks with your key — is coming soon.
+</Note>
+
+## Rotating and revoking your key
+
+CMEK respects the lifecycle controls your KMS already gives you.
+
+* **Key-version rotation** — When you create a new version of a key in your KMS, new data is wrapped with the new version automatically and existing data keeps working. No action is needed on the Fireworks side, and your data is never re-encrypted.
+* **Rotating the registered key** — Your account can hold more than one registered key, exactly one of which is **primary**. New resources are wrapped under the primary key; previously registered keys stay registered so older data remains decryptable. To rotate, ask your account team to register the new key and promote it to primary, which demotes the previous primary. Retire the old key only once nothing still depends on it.
+* **Revocation** — Revoke the grant, disable the key, or schedule it for destruction in your KMS. In-flight jobs holding a cached key continue until the cache expires (about 5 minutes), then fail closed. New jobs fail immediately.
+* **Re-grant** — Restore the grant or re-enable the key and access resumes; new jobs work right away.
+
+<Warning>
+  Disabling or destroying your key makes the data encrypted under it **permanently unrecoverable** by Fireworks — by design. Likewise, if your KMS is unreachable for longer than the key cache window, in-flight jobs will fail.
+</Warning>
+
+## Auditing
+
+Every `Encrypt` and `Decrypt` call Fireworks makes against your key is recorded in your cloud's native audit log — AWS CloudTrail, Google Cloud Logging, or Azure Monitor — including the calls that fail after you revoke access. You hold the authoritative record of when and how your key was used.
+
+## Limitations
+
+* CMEK applies to **LoRA** SFT, DPO, and RFT jobs. Full-parameter training is not supported.
+* Encrypting **final model weights** with your key — and deploying a model whose weights were encrypted with your key — is coming soon. Today CMEK covers your datasets and intermediate checkpoints.
+* During an active job, compute processes your data in plaintext in memory; CMEK protects data at rest, not in-memory computation.
+* Encrypting inference requests and responses with your key is not part of CMEK today.
+* Uploads must go through `firectl` or the SDKs, which encrypt client-side before data leaves your environment. The web-console upload path doesn't perform that client-side encryption yet, so it isn't supported on CMEK-enabled accounts. *(Planned: web-console upload support is expected in a future release.)*
+* Key registration, rotation, and CMEK enablement are performed by Fireworks on your behalf rather than self-serve.
+* Job metadata and transient scratch data are covered by separate operational and contractual controls, not your key.
+
+## Related Resources
+
+<CardGroup>
+  <Card title="Bring Your Own Bucket (BYOB)" href="/guides/security_compliance/secure_training/byob" icon="lock">
+    Keep training datasets in your own cloud storage
+  </Card>
+
+  <Card title="Data Security Overview" href="/guides/security_compliance/data_security" icon="shield-check">
+    Learn about our comprehensive security measures
+  </Card>
+</CardGroup>
+
+
+# Secure Reinforcement Fine-Tuning
+Source: https://docs.fireworks.ai/guides/security_compliance/secure_training/secure_rft
+
+Run RFT end to end with your dataset, reward pipeline, and rollout infrastructure under your own control
+
+Use reinforcement fine-tuning while keeping sensitive components and data under your control. This composes [BYOB](/guides/security_compliance/secure_training/byob) storage with a reward pipeline and rollout infrastructure that stay in your environment.
+
+<Steps>
+  <Step title="Configure storage (BYOB)">
+    Set up your dataset storage using [GCS](/guides/security_compliance/secure_training/byob#gcs-bucket-integration), [AWS S3](/guides/security_compliance/secure_training/byob#aws-s3-bucket-integration), or [Azure Blob Storage](/guides/security_compliance/secure_training/byob#azure-blob-storage-integration) on the BYOB page.
+
+    For models, you can optionally use [External AWS S3 Bucket Integration](/models/uploading-custom-models#uploading-your-model).
+  </Step>
+
+  <Step title="Prepare your reward pipeline and rollouts">
+    Keep your reward functions, rollout servers, and training metrics under your control. Generate rewards from your environment and write them to examples in your dataset (or export a dataset that contains per-example rewards).
+
+    * Reward functions and reward models remain proprietary and never need to be shared
+    * Rollouts and evaluation infrastructure run in your environment
+    * Model checkpoints can be registered to your storage registry if desired
+  </Step>
+
+  <Step title="Create a dataset that includes rewards">
+    Create or point a `Dataset` at your BYOB storage. Ensure each example contains the information required by your reward pipeline (for example, prompts, outputs/trajectories, and numeric rewards).
+
+    <Info>
+      You can reuse existing supervised data by attaching reward signals produced by your pipeline, or export a fresh dataset into your bucket for consumption by RFT.
+    </Info>
+  </Step>
+
+  <Step title="Run reinforcement fine-tuning step from Python">
+    Use the Python SDK to create a reinforcement fine-tuning step that reads from your BYOB dataset and produces a new checkpoint.
+
+    ```python theme={null}
+    from fireworks import Fireworks
+
+    client = Fireworks()
+
+    # Create a reinforcement fine-tuning step
+    step = client.reinforcement_fine_tuning_steps.create(
+        rlor_trainer_job_id="my-rft-job-001",
+        display_name="Secure RFT Training Step",
+        training_config={
+            "base_model": "accounts/fireworks/models/{BASE_MODEL}",
+            "learning_rate": 1e-5,
+            "lora_rank": 8,
+            "max_context_length": 4096,
+            "batch_size_samples": 32,
+        },
+        dataset="accounts/{ACCOUNT}/datasets/{DATASET_NAME}",  # Your BYOB dataset with rewards
+        output_model="accounts/{ACCOUNT}/models/my-improved-model-v1",
+        reward_weights=["score"],  # Field name for rewards in your dataset
+    )
+
+    # Poll for completion
+    import time
+    timeout = 3600  # 1 hour timeout
+    start_time = time.time()
+    while True:
+        if time.time() - start_time > timeout:
+            raise TimeoutError(f"Job polling timed out after {timeout} seconds")
+        job = client.reinforcement_fine_tuning_steps.get(
+            rlor_trainer_job_id="my-rft-job-001"
+        )
+        if job.state == "JOB_STATE_COMPLETED":
+            print("Training complete!")
+            break
+        elif job.state in ("JOB_STATE_FAILED", "JOB_STATE_CANCELLED"):
+            raise RuntimeError(f"Training failed: {job.state}")
+        time.sleep(10)
+    ```
+
+    See the [Create Reinforcement Fine-tuning Step API reference](/api-reference/create-reinforcement-fine-tuning-step) for full parameters and options.
+
+    <Tip>
+      For a complete iterative RL workflow example using the [Python SDK](/tools-sdks/python-sdk), including rollout generation, reward computation, and hot-reloading LoRA adapters, see the [iterative RL workflow example on GitHub](https://github.com/fw-ai-external/python-sdk/tree/main/examples/iterative_rl_workflow).
+    </Tip>
+
+    <Note>
+      When continuing from a LoRA checkpoint, training parameters such as `lora_rank`, `learning_rate`, `max_context_length`, and `batch_size_samples` must match the original LoRA training.
+    </Note>
+  </Step>
+
+  <Step title="Verify outputs and enforce controls">
+    * Validate the new checkpoint functions as expected in your environment
+    * If exporting models to your storage, apply your registry policies and access reviews
+    * Review audit logs and rotate any temporary credentials used for the run
+  </Step>
+</Steps>
+
+<Warning>
+  Do not store long-lived credentials in code. Use short-lived tokens, workload identity, or scoped service accounts when granting Fireworks access to your buckets.
+</Warning>
+
+<Check>
+  You now have an end-to-end secure RFT workflow with BYOB datasets, proprietary reward pipelines, and isolated training jobs that generate new checkpoints.
+</Check>
 
 
 # Video & Audio Inputs
@@ -23712,6 +24420,8 @@ Per-model pricing for headline models. Fast variants appear as adjacent rows. In
 | [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)                                      | \$1.74 / \$0.145 / \$3.48 | \$2.61 / \$0.218 / \$5.22     |
 | [DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)                          | \$1.32 / \$0.044 / \$3.96 | \$1.65 / \$0.055 / \$4.95     |
 | [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)                      | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 |
+| [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                      | \$1.40 / \$0.26 / \$4.40  | \$1.75 / \$0.325 / \$5.50     |
+| [GLM 5.3 Fast](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                 | \$2.10 / \$0.39 / \$6.60  | —                             |
 | [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                      | \$1.40 / \$0.14 / \$4.40  | \$1.75 / \$0.18 / \$5.50      |
 | [GLM 5.2 Fast](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                 | \$2.10 / \$0.21 / \$6.60  | —                             |
 | [GLM 5.2 Fast US](https://app.fireworks.ai/models/fireworks/glm-5p2)                                              | \$2.10 / \$0.21 / \$6.60  | —                             |
@@ -29267,6 +29977,16 @@ Source: https://docs.fireworks.ai/updates/changelog
 
 
 
+<Update label="2026-08-26">
+  # Serverless Training deprecation: Qwen 3.5 9B and Qwen 3.6 27B
+
+  **Qwen 3.5 9B** and **Qwen 3.6 27B** are deprecated from Serverless Training effective August 26, 2026.
+
+  Migrate new and existing Serverless Training workloads to **[Qwen 3.8 27B](https://app.fireworks.ai/models/fireworks/qwen3p8-27b)**.
+
+  This change applies to the shared Serverless Training pool. Check the [training model catalog](/fine-tuning/models) for availability on other training surfaces.
+</Update>
+
 <Update label="2026-08-25">
   # SSO documentation: IdP-initiated SAML
 
@@ -29360,7 +30080,7 @@ Source: https://docs.fireworks.ai/updates/changelog
 
   Training datasets can now be stored in your own AWS S3 buckets using GCP-to-AWS OIDC federation. This Bring Your Own Bucket (BYOB) approach keeps your data private while enabling secure access during Supervised Fine-Tuning and Reinforcement Fine-Tuning jobs—no long-lived credentials required.
 
-  See the [Secure Training (BYOB) documentation](/fine-tuning/finetuning-intro#training-security) for IAM role setup and usage examples.
+  See the [Secure Training (BYOB) documentation](/guides/security_compliance/secure_training) for IAM role setup and usage examples.
 
   ## **Just-In-Time (JIT) User Provisioning for SSO** (Enterprise)
 
@@ -29371,7 +30091,7 @@ Source: https://docs.fireworks.ai/updates/changelog
   ## 📚 Documentation Updates
 
   * **Video & Audio Inputs:** New guide for processing video and audio with Qwen3 Omni and Molmo2 models ([Video & Audio Inputs](/guides/video-audio-inputs))
-  * **AWS S3 Bucket Integration:** BYOB dataset storage for training via OIDC federation ([Secure Training](/fine-tuning/finetuning-intro#training-security))
+  * **AWS S3 Bucket Integration:** BYOB dataset storage for training via OIDC federation ([Secure Training](/guides/security_compliance/secure_training))
   * **Rate Limits Clarification:** Expanded documentation on adaptive serverless limits, upper bounds, and monitoring ([Serverless rate limits](/serverless/rate-limits))
   * **Anthropic-Compatible Thinking Parameter:** Control reasoning with `thinking` parameter alongside `reasoning_effort` ([Reasoning](/guides/reasoning))
   * **Scaling from Zero Behavior:** Deployments scaled to zero return `503` immediately with retry guidance ([Autoscaling](/deployments/autoscaling))

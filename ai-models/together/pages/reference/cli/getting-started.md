@@ -139,6 +139,20 @@ tg evals status [EVAL_ID]
 
 [Learn more about the evals command](/reference/cli/evals).
 
+### `batches`
+
+Submit and manage [batch inference](/docs/inference/batch/overview) jobs.
+
+```bash theme={null}
+tg batches submit ./requests.jsonl chat.completions
+tg batches ls
+tg batches get [BATCH_ID]
+tg batches download [BATCH_ID] --output ./out
+tg batches cancel [BATCH_ID]
+```
+
+[Learn more about the batches command](/reference/cli/batches).
+
 ### `clusters` (beta)
 
 Reserve, manage, and interact with GPU clusters.
@@ -183,12 +197,12 @@ Features in the beta namespace are largely considered stable. However, these fea
 
 Several commands and subcommands have shorthand aliases for faster typing:
 
-| Alias | Full command  | Available on                                                                                                                                                                                                     |
-| :---- | :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ft`  | `fine-tuning` | `tg ft …` (e.g. `tg ft create`, `tg ft ls`)                                                                                                                                                                      |
-| `ls`  | `list`        | `tg files ls`, `tg fine-tuning ls`, `tg models ls`, `tg endpoints ls`, `tg evals ls`, `tg beta clusters ls`, `tg beta clusters storage ls`, `tg beta jig ls`, `tg beta jig secrets ls`, `tg beta jig volumes ls` |
-| `-c`  | `create`      | `tg fine-tuning -c`, `tg endpoints -c`, `tg evals -c`, `tg beta clusters -c`, `tg beta clusters storage -c`                                                                                                      |
-| `-d`  | `delete`      | `tg files -d`, `tg fine-tuning -d`, `tg endpoints -d`, `tg beta clusters -d`, `tg beta clusters storage -d`, `tg beta jig secrets -d`, `tg beta jig volumes -d`                                                  |
+| Alias | Full command  | Available on                                                                                                                                                                                                                      |
+| :---- | :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ft`  | `fine-tuning` | `tg ft …` (e.g. `tg ft create`, `tg ft ls`)                                                                                                                                                                                       |
+| `ls`  | `list`        | `tg files ls`, `tg fine-tuning ls`, `tg models ls`, `tg endpoints ls`, `tg evals ls`, `tg batches ls`, `tg beta clusters ls`, `tg beta clusters storage ls`, `tg beta jig ls`, `tg beta jig secrets ls`, `tg beta jig volumes ls` |
+| `-c`  | `create`      | `tg fine-tuning -c`, `tg endpoints -c`, `tg evals -c`, `tg beta clusters -c`, `tg beta clusters storage -c`                                                                                                                       |
+| `-d`  | `delete`      | `tg files -d`, `tg fine-tuning -d`, `tg endpoints -d`, `tg beta clusters -d`, `tg beta clusters storage -d`, `tg beta jig secrets -d`, `tg beta jig volumes -d`                                                                   |
 
 ## Global parameters
 

@@ -39,7 +39,7 @@ uv tool install "pipecat-ai[cli]"
 To update the CLI use:
 
 ```bash
-uv tool update pipecat-ai-cli
+uv tool upgrade "pipecat-ai[cli]"
 ```
 
 ### Choose your developer experience
@@ -121,6 +121,8 @@ Remove `CARTESIA_API_KEY` from your `.env` file — it is no longer needed. No o
 
 Flux TTS voices use the model string format `flux-{voice}-{language}`, such as `flux-alexis-en`. This differs from the `aura-2-{voice}-{language}` format used by Deepgram's Aura-2 voices. Browse the [Flux TTS voice catalog](/docs/flux-tts/voices) to choose a different voice.
 
+Flux TTS currently synthesizes English only. If your agent needs another language, use `DeepgramTTSService` with an [Aura-2 voice](/docs/tts-models) instead — Aura-2 covers English, Spanish, German, French, Dutch, Italian, and Japanese.
+
 Continue building by adding a [Pipecat Client](#next-steps)
 
 ### Use Flux for turn detection
@@ -149,18 +151,13 @@ stt = DeepgramFluxSTTService(
 Scaffold a new project using the Pipecat CLI.
 
 ```bash
-pipecat init
+pipecat init pipecat-deepgram --bot-type web --transport daily --mode cascade --stt deepgram_flux_stt --llm openai_llm --tts deepgram_flux_tts --no-deploy-to-cloud
 
-Project directory [pipecat-bot]: [enter]
-✔ Wrote pipecat-bot/AGENTS.md
-✔ Wrote pipecat-bot/GETTING_STARTED.md
-✔ Wrote pipecat-bot/CLAUDE.md
-```
+Wrote pipecat-deepgram/AGENTS.md
+Wrote pipecat-deepgram/CLAUDE.md
 
-```bash
-cd pipecat-bot
-
-pipecat create --name pipecat-deepgram --bot-type web --transport daily --mode cascade --stt deepgram_flux_stt --llm openai_llm --tts deepgram_tts --no-deploy-to-cloud
+Project created successfully!
+   pipecat-deepgram
 ```
 
 ### Step 2: Install dependencies
@@ -174,16 +171,22 @@ uv sync
 
 ### Step 3: Configure your environment
 
-Copy the example environment file and fill in your API keys and set the default Deepgram voice:
+Copy the example environment file and fill in your API keys:
 
 ```bash
 cp .env.example .env
 ```
 
+`.env.example` does not include a voice setting, so add one — the scaffolded bot reads `DEEPGRAM_VOICE_ID` and will not synthesize speech without it:
+
+```bash
+DEEPGRAM_VOICE_ID=flux-alexis-en
+```
+
 Replace the placeholder values with your API keys:
 
 * **DEEPGRAM\_API\_KEY** — from your [Deepgram Console](https://console.deepgram.com/)
-* **DEEPGRAM\_VOICE\_ID** — the voice setting when using `.env`. Choose from [Flux voices](/docs/flux-tts/voices) or [Aura-2 voices](/docs/tts-models), depending on your TTS model.
+* `DEEPGRAM_VOICE_ID` — the voice your agent speaks with. Choose a [Flux TTS voice](/docs/flux-tts/voices) such as `flux-alexis-en`, or an [Aura-2 voice](/docs/tts-models) if you switched to `DeepgramTTSService`.
 * **OPENAI\_API\_KEY** — from your [OpenAI dashboard](https://platform.openai.com/api-keys)
 * **DAILY\_API\_KEY** — from your [Daily dashboard](https://dashboard.daily.co/u/signup). Daily is the WebRTC transport layer that handles audio between the browser and your agent. See the [Pipecat Daily transport guide](https://docs.pipecat.ai/server/services/transport/daily) for more.
 
@@ -225,7 +228,7 @@ Add a pipecat client for React
 
 ## Go further with Deepgram
 
-* **Voices** — Deepgram offers 60+ voices across seven languages. Browse the [voice library](/docs/tts-models) and update `DEEPGRAM_VOICE_ID` in your `.env` file.
+* **Voices** — Update `DEEPGRAM_VOICE_ID` in your `.env` file. Browse the [Flux TTS voice catalog](/docs/flux-tts/voices) for `flux-{voice}-{language}` voices. If you switched to `DeepgramTTSService` for a non-English language, pick an [Aura-2 voice](/docs/tts-models) instead (`aura-2-{voice}-{language}`).
 * **Keyterm prompting** — Improve recognition of domain-specific vocabulary by passing [keyterms](/docs/keyterm) to Nova-3 via the STT service settings.
 * **Speaker diarization** — Assign a speaker identifier to each word in the transcript using [diarization](/docs/diarization) via the STT service settings.
 * **Dynamic STT settings** — Pipecat supports updating Deepgram STT settings without reconnecting. See the [Pipecat Deepgram STT guide](https://docs.pipecat.ai/server/services/stt/deepgram) for details.
@@ -233,7 +236,8 @@ Add a pipecat client for React
 ## Resources
 
 * [Deepgram Models & Languages](/docs/models-languages-overview)
-* [Deepgram TTS Voices](/docs/tts-models)
+* [Flux TTS Voices](/docs/flux-tts/voices)
+* [Aura-2 TTS Voices](/docs/tts-models)
 * [Pipecat Documentation](https://docs.pipecat.ai)
 * [Pipecat Deepgram STT Guide](https://docs.pipecat.ai/server/services/stt/deepgram)
 * [Pipecat Deepgram TTS Guide](https://docs.pipecat.ai/server/services/tts/deepgram)

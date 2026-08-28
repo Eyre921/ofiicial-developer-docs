@@ -18,12 +18,13 @@ Here's a sample output:
 
 ```bash theme={null}
 $ tg files upload ./example.jsonl
-Uploading file example.jsonl: 100%|██████████████████████████████| 5.18M/5.18M [00:01<00:00, 4.20MB/s]
 Success!
 file-d931200a-6b7f-476b-9ae2-8fddd5112308
 ```
 
-The printed `file-…` identifier is the assigned `file-id` for this file object. Pass `--json` to get the full response body instead.
+Interactive terminals show a progress bar while the file is validated and uploaded. The bar clears when the transfer finishes. Pass `--json` to skip the progress UI and print the full response body instead.
+
+The printed `file-…` identifier is the assigned `file-id` for this file object.
 
 ### Parameters
 
@@ -44,11 +45,10 @@ Here's a sample output:
 
 ```bash theme={null}
 $ tg files check ./local-file.jsonl
-Validating file: 1 lines [00:00, 7476.48 lines/s]
 OK Checks passed
 ```
 
-Pass `--json` to get the full structured report instead of the pass/fail summary:
+For files 1 MB and larger, interactive terminals show a progress bar while the check scans the file. Pass `--json` to print the full structured report instead of the pass/fail summary:
 
 ```bash theme={null}
 $ tg files check ./local-file.jsonl --json

@@ -35,7 +35,7 @@ To create a new API Key from the Resend Dashboard:
   <Step title="Select a permission for your API key.">
     Choose **"Sending access"** to grant access to only sending emails unless your key needs full access to Resend’s API to create, delete, get, and update any resource.
 
-    This [API key permission](/docs/api-reference/api-keys/create-api-key#param-permission) can be updated at any time.
+    This [API key permission](/docs/api-reference/api-keys/create-api-key#param-permission) can be updated at any time [in the Dashboard](/docs/dashboard/api-keys/introduction#edit-api-key-details).
   </Step>
 
   <Step title="(Optional) Restrict sending to a specific domain">

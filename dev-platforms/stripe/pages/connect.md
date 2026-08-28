@@ -42,6 +42,14 @@ Use Connect to build a platform, marketplace, or other business that manages pay
 
 [Manage connected accounts with the Dashboard](https://docs.stripe.com/connect/dashboard.md): Review and take action on your connected accounts.
 
+## Embedded finance 
+
+[Treasury for platforms](https://docs.stripe.com/treasury/connect.md): Embed Treasury in your platform to allow your customers to hold funds, pay bills, earn cash back, and manage cashflow.
+
+[Issuing](https://docs.stripe.com/issuing.md): Issue cards at platform scale. Create, distribute, and manage virtual and physical cards.
+
+[Capital for platforms](https://docs.stripe.com/capital/how-capital-for-platforms-works.md): Build and monetize a program that gives your customers access to financing.
+
 ## More resources 
 
 [Use Stripe Tax with Connect](https://docs.stripe.com/tax/connect.md): Calculate, collect, and report taxes for your platform or connected accounts.

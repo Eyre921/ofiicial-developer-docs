@@ -816,6 +816,7 @@ components:
         - Cloudflare
         - Cohere
         - CoreWeave
+        - Cosine
         - Crucible
         - Crusoe
         - Darkbloom
@@ -861,6 +862,7 @@ components:
         - NextBit
         - Novita
         - Nvidia
+        - Ollama
         - OpenAI
         - OpenInference
         - Parasail

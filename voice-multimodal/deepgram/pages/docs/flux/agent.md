@@ -83,6 +83,8 @@ Once comfortable with End of Turn, you can decide if you need to optimize latenc
 
 **Dynamic Tuning**: In production voice agents powered by Flux, you can use the [Configure control message](/docs/flux/configure) to adjust these thresholds, or keyterms, mid-stream as desired behavior changes throughout a conversation. Each `keyterms` entry is a plain string with no weights or intensifiers, and a multi-word phrase is a single array element—see [Keyterm Prompting](/docs/keyterm) for the full syntax rules.
 
+**External turn signals**: If you have your own turn-end signal — a push-to-talk release, a DTMF tone, or an existing VAD — you can end the current turn explicitly with the [`ForceEndTurn`](/docs/flux/force-end-turn) control message instead of relying on Flux's detection. Every `EndOfTurn` carries a `trigger` field (`model`, `manual`, or `timeout`) that tells you what ended the turn. To fully own turn detection, see [Bring Your Own Turn Detection](/docs/flux/own-turn-detection).
+
 ### Voice Agent vs Flux Agent Pipeline
 
 Using the [Voice Agent API](/reference/auth/tokens/grant), your pipeline will look like this:

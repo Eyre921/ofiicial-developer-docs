@@ -104,3 +104,21 @@ Tips to keep a spam rate low:
 * Give recipients a clear way to opt out of emails.
 * Send relevant and timely emails.
 * Only send to recipients who have given consent to receive email.
+
+## Data Retention
+
+Resend retains email data for **30 days** across all plans (Free, Pro, and Scale). This includes:
+
+* Email content and metadata
+* Delivery status and events
+* Logs and metrics
+
+Enterprise plans have access to **flexible data retention** options. [Contact support](https://resend.com/help) to discuss custom retention requirements.
+
+<Tip>
+  If you need access to historical email data beyond the 30-day retention
+  window, consider storing [webhook
+  events](/docs/dashboard/webhooks/how-to-store-webhooks-data) in your own database.
+  This gives you full control over retention periods and ensures you never lose
+  important information.
+</Tip>

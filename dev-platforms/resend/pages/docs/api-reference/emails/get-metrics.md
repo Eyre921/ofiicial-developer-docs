@@ -19,14 +19,18 @@ Retrieve account-level email metrics.
   return slightly stale data within that window.
 </Note>
 
+All parameters are optional. With none, the response covers the last 7 days
+(today plus the 6 previous days), includes every metric, and returns only
+`totals`.
+
 ## Query Parameters
 
 <ListParamFormatNote />
 
 <ParamField type="string">
   The start of the date range, as an ISO 8601 date (`2026-07-01`) or datetime
-  (`2026-07-01T00:00:00Z`). Must be on or before `end_date`. Defaults to 6 days
-  before `end_date`.
+  (`2026-07-01T00:00:00Z`). Must be on or before `end_date`, and can equal it to
+  query a single day. Defaults to 6 days before `end_date`.
 </ParamField>
 
 <ParamField type="string">
@@ -46,22 +50,15 @@ Retrieve account-level email metrics.
 </ParamField>
 
 <ParamField type="string[]">
-  List of metrics to include in the response. Defaults to all of the
-  following:
-
-  `received`, `delivered`, `complained`, `suppressed`, `bounced`,
-  `bounced_transient`, `bounced_permanent`, `bounced_undetermined`, `opened`,
-  `clicked`, `unsubscribed`, `delivery_delayed`, `failed`, `sent`,
-  `unique_opened`, `unique_clicked`, `delivery_rate`, `open_rate`, `click_rate`,
-  `bounce_rate`, `complaint_rate`, `unsubscribe_rate`
+  List of metrics to include in the response. Omit for all. See
+  [Metrics](#metrics).
 </ParamField>
 
 <ParamField type="string[]">
   List of dimensions to break the response down by. Combine
   any of `period`, `domain`, `email`, or `broadcast` to group the data by
   more than one at once, except `email` cannot be combined with `broadcast`.
-  Defaults to `[]`, returning a single `totals` row for the whole range, with
-  no `data`.
+  Omit for a single `totals` row for the whole range, with no `data`.
 
   Possible values:
 
@@ -84,6 +81,43 @@ Retrieve account-level email metrics.
   List of broadcast IDs to restrict the response to, up to 100. Cannot be
   combined with the `email` dimension or `email_id`.
 </ParamField>
+
+<Tip>
+  For a 24-hour breakdown of one day, set `start_date` and `end_date` to the
+  same date, with `granularity=hourly` and `period` in `dimensions`.
+</Tip>
+
+## Metrics
+
+| Metric                 | Description                                                                               |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
+| `received`             | Emails Resend accepted for processing.                                                    |
+| `sent`                 | Emails sent to the recipient's mail server.                                               |
+| `delivered`            | Emails the recipient's mail server accepted.                                              |
+| `delivery_delayed`     | Delivery postponed by a temporary issue. Not final.                                       |
+| `failed`               | Emails that never reached a mail server.                                                  |
+| `suppressed`           | Skipped because the recipient is [suppressed](/docs/dashboard/emails/email-suppressions). |
+| `bounced`              | All [bounces](/docs/dashboard/emails/email-bounces), summing the three below.             |
+| `bounced_transient`    | Soft bounce. Temporary, so a later send can succeed.                                      |
+| `bounced_permanent`    | Hard bounce. Permanent, and the address is suppressed.                                    |
+| `bounced_undetermined` | Bounce with no classifiable reason.                                                       |
+| `opened`               | Open events, including repeats.                                                           |
+| `unique_opened`        | Emails opened at least once.                                                              |
+| `clicked`              | Link click events, including repeats.                                                     |
+| `unique_clicked`       | Emails clicked at least once.                                                             |
+| `complained`           | Delivered emails marked as spam.                                                          |
+| `unsubscribed`         | Recipients who unsubscribed.                                                              |
+| `delivery_rate`        | `delivered` / `sent`                                                                      |
+| `open_rate`            | `unique_opened` / `delivered`                                                             |
+| `click_rate`           | `unique_clicked` / `delivered`                                                            |
+| `bounce_rate`          | `bounced` / `sent`                                                                        |
+| `complaint_rate`       | `complained` / `delivered`                                                                |
+| `unsubscribe_rate`     | `unsubscribed` / `delivered`                                                              |
+
+<Note>
+  Open and click metrics require [open and click
+  tracking](/docs/dashboard/domains/tracking) on the sending domain.
+</Note>
 
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}

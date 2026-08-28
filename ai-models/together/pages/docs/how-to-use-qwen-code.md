@@ -71,13 +71,13 @@ Select from Together AI's powerful model selection:
 
 **For General Development:**
 
-* `moonshotai/Kimi-K2.7-Code` - Purpose-built for coding agents.
+* `moonshotai/Kimi-K3` - Top pick for coding agents.
 * `Qwen/Qwen3-Coder-Next-FP8` - Fast, cost-effective coding model.
 
 **For Advanced Coding Tasks:**
 
 * `zai-org/GLM-5.2` - Strong all-rounder with a large context window.
-* `deepseek-ai/DeepSeek-V4-Pro` - Advanced reasoning capabilities.
+* `deepseek-ai/DeepSeek-V4-Pro-0813` - Advanced reasoning capabilities.
 
 See the [pricing page](https://www.together.ai/pricing) for current per-token rates.
 
@@ -86,7 +86,7 @@ See the [pricing page](https://www.together.ai/pricing) for current per-token ra
 ```bash theme={null}
 export OPENAI_API_KEY="your_together_api_key"
 export OPENAI_BASE_URL="https://api.together.ai/v1"
-export OPENAI_MODEL="moonshotai/Kimi-K2.7-Code"
+export OPENAI_MODEL="moonshotai/Kimi-K3"
 ```
 
 ## 4. Launch and use Qwen Code

@@ -6,9 +6,9 @@ path: docs/deepseek-v4-quickstart
 
 Call DeepSeek V4 Pro on Together for hybrid reasoning, long-context, and tool-using workloads.
 
-DeepSeek V4 Pro is DeepSeek's frontier 1.6T-parameter Mixture-of-Experts model (49B active per token), with a hybrid attention architecture built for long-context, low-cost reasoning. On Together AI, it runs in FP4 with a 512K-token context window and supports streaming, function calling, structured outputs, and adjustable reasoning effort.
+DeepSeek V4 Pro is DeepSeek's frontier 1.6T-parameter Mixture-of-Experts model (49B active per token), with a hybrid attention architecture built for long-context, low-cost reasoning. On Together AI, it runs in NVFP4 with a 1M-token context window and supports streaming, function calling, structured outputs, and adjustable reasoning effort.
 
-The model ID is `deepseek-ai/DeepSeek-V4-Pro`. Pricing is \$1.74 per 1M input tokens, \$3.48 per 1M output tokens, and \$0.20 per 1M cached input tokens.
+The model ID is `deepseek-ai/DeepSeek-V4-Pro-0813`. Pricing is \$1.32 per 1M input tokens, \$3.96 per 1M output tokens, and \$0.13 per 1M cached input tokens.
 
 ## Quickstart
 
@@ -21,7 +21,7 @@ Reasoning is on by default, so most calls work with no extra configuration. Stre
   client = Together()
 
   stream = client.chat.completions.create(
-      model="deepseek-ai/DeepSeek-V4-Pro",
+      model="deepseek-ai/DeepSeek-V4-Pro-0813",
       messages=[
           {
               "role": "user",
@@ -48,7 +48,7 @@ Reasoning is on by default, so most calls work with no extra configuration. Stre
   const together = new Together();
 
   const stream = await together.chat.completions.stream({
-    model: "deepseek-ai/DeepSeek-V4-Pro",
+    model: "deepseek-ai/DeepSeek-V4-Pro-0813",
     messages: [
       { role: "user", content: "Prove that the square root of 2 is irrational." },
     ],
@@ -66,7 +66,7 @@ Reasoning is on by default, so most calls work with no extra configuration. Stre
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
        -d '{
-          "model": "deepseek-ai/DeepSeek-V4-Pro",
+          "model": "deepseek-ai/DeepSeek-V4-Pro-0813",
           "messages": [
             {"role": "user", "content": "Prove that the square root of 2 is irrational."}
           ],
@@ -93,7 +93,7 @@ Together normalizes other values automatically: `"low"` and `"medium"` map to `"
   client = Together()
 
   stream = client.chat.completions.create(
-      model="deepseek-ai/DeepSeek-V4-Pro",
+      model="deepseek-ai/DeepSeek-V4-Pro-0813",
       messages=[
           {
               "role": "user",
@@ -124,7 +124,7 @@ Together normalizes other values automatically: `"low"` and `"medium"` map to `"
   const together = new Together();
 
   const stream = await together.chat.completions.stream({
-    model: "deepseek-ai/DeepSeek-V4-Pro",
+    model: "deepseek-ai/DeepSeek-V4-Pro-0813",
     messages: [
       {
         role: "user",
@@ -150,7 +150,7 @@ For broader guidance on reasoning controls and prompting, see [Reasoning](/docs/
 
 ## Long-context use
 
-DeepSeek V4 Pro accepts up to 512K input tokens on Together. The model's hybrid attention combines Compressed Sparse Attention (CSA) with Heavily Compressed Attention (HCA), which keeps the key-value (KV) cache and per-token FLOPs roughly an order of magnitude smaller than DeepSeek V3.2 at long contexts.
+DeepSeek V4 Pro accepts up to 1M input tokens on Together. The model's hybrid attention combines Compressed Sparse Attention (CSA) with Heavily Compressed Attention (HCA), which keeps the key-value (KV) cache and per-token FLOPs roughly an order of magnitude smaller than DeepSeek V3.2 at long contexts.
 
 Use the full context window with care. The model's ability to retrieve information is not uniform across the window, so refer to the needle-in-a-haystack results from [DeepSeek's paper](https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/blob/main/DeepSeek_V4.pdf) below.
 
@@ -173,7 +173,7 @@ V4 Pro is a thinking-by-default hybrid model on Together. For simple turns where
 
 ```python theme={null}
 response = client.chat.completions.create(
-    model="deepseek-ai/DeepSeek-V4-Pro",
+    model="deepseek-ai/DeepSeek-V4-Pro-0813",
     messages=[
         {
             "role": "user",
@@ -212,7 +212,7 @@ messages = [
 ]
 
 response = client.chat.completions.create(
-    model="deepseek-ai/DeepSeek-V4-Pro",
+    model="deepseek-ai/DeepSeek-V4-Pro-0813",
     messages=messages,
     reasoning_effort="high",
 )
@@ -228,7 +228,7 @@ messages.append(
 messages.append({"role": "user", "content": "How tall is it?"})
 
 response = client.chat.completions.create(
-    model="deepseek-ai/DeepSeek-V4-Pro",
+    model="deepseek-ai/DeepSeek-V4-Pro-0813",
     messages=messages,
     reasoning_effort="high",
 )
@@ -271,7 +271,7 @@ DeepSeek V4 Pro supports tool calling. Define tools in the standard OpenAI-compa
   ]
 
   response = client.chat.completions.create(
-      model="deepseek-ai/DeepSeek-V4-Pro",
+      model="deepseek-ai/DeepSeek-V4-Pro-0813",
       messages=[
           {"role": "user", "content": "What's the weather in Paris and Tokyo?"}
       ],
@@ -305,7 +305,7 @@ DeepSeek V4 Pro supports tool calling. Define tools in the standard OpenAI-compa
   ];
 
   const response = await together.chat.completions.create({
-    model: "deepseek-ai/DeepSeek-V4-Pro",
+    model: "deepseek-ai/DeepSeek-V4-Pro-0813",
     messages: [{ role: "user", content: "What's the weather in Paris and Tokyo?" }],
     tools,
   });
@@ -377,7 +377,7 @@ def run_turn(client, turn, messages):
     sub_turn = 1
     while True:
         response = client.chat.completions.create(
-            model="deepseek-ai/DeepSeek-V4-Pro",
+            model="deepseek-ai/DeepSeek-V4-Pro-0813",
             messages=messages,
             tools=tools,
             reasoning_effort="high",

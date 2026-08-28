@@ -252,7 +252,7 @@ File attachments are only forwarded when the agent's LLM supports multimodal inp
 
 #### Enable Allow file attachments in agent settings
 
-On the agent's configuration page, open **Settings** > **Advanced**. Under **Multimodal input**, turn on **Allow file attachments**. See [file input](/docs/eleven-agents/customization/multimodal-input#file-input) for the full setup. Without this setting, Slack attachments are ignored even when the Slack app and model support files.
+On the agent's configuration page, open **Settings** > **Advanced**. Under **Multimodal input**, turn on **Allow file attachments**. Save the agent. Without this setting, Slack attachments are ignored even when the Slack app and model support files.
 
 ## Useful links
 

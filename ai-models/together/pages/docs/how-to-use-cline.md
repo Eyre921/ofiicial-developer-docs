@@ -28,7 +28,7 @@ After it's installed, select Cline from the menu of your IDE to configure it.
 
 ### 3. Configure Together AI & Kimi K2.7 Code
 
-Select "Use your own API key". After this, select Together as the API Provider, paste in your [Together API key](https://api.together.ai/settings/projects/~current/api-keys), and enter the model you want to use. `moonshotai/Kimi-K2.7-Code` is a good default, a powerful coding model built for agentic workflows.
+Select "Use your own API key". After this, select Together as the API Provider, paste in your [Together API key](https://api.together.ai/settings/projects/~current/api-keys), and enter the model you want to use. `moonshotai/Kimi-K3` is a good default, a powerful model built for agentic coding workflows.
 
 <Frame>
   <img alt="" />

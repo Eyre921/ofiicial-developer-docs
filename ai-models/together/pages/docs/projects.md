@@ -45,7 +45,8 @@ Every organization has a **default project**. A few things to know about it:
 
 * All organization members are automatically granted access to the default project.
 * All historical account usage and resources that pre-date projects are attributed to this project.
-* No one can leave the default project.
+* Organization members cannot leave the default project. See [Leaving a project](#leaving-a-project).
+* It may contain your organization's [legacy API key](/docs/api-keys-authentication#legacy-api-keys).
 * Because all organization members have access, do not use the default project for sensitive resources. Create a separate project for those.
 
 ## Project slugs
@@ -86,12 +87,33 @@ New collaborators are added with the **editor** role by default, unless they are
 1. Go to [**Settings > Project > Collaborators**](https://api.together.ai/settings/projects/~current/collaborators).
 2. Find the collaborator you want to remove.
 3. Select the three-dot menu next to their name.
-4. Select **Remove User**.
+4. Select **Remove Collaborator**.
 5. Confirm the removal.
 
 <Warning>
   Removing a collaborator revokes their access to all resources in the project, including clusters, volumes, SSH access, and management capabilities. This takes effect within minutes.
 </Warning>
+
+### Leaving a project
+
+You can leave a project you collaborate on. Leaving revokes your access to all of the project's resources, but API keys and resources you created in it keep working after you leave.
+
+1. Go to [**Project Settings**](https://api.together.ai/settings/projects/~current).
+2. In the **Leave project** section, select **Leave project**.
+3. Confirm.
+
+You can also leave from your own row in [**Settings > Project > Collaborators**](https://api.together.ai/settings/projects/~current/collaborators), or from a project's three-dot menu in the [**Organization Settings**](https://api.together.ai/settings/organization/~current) projects list.
+
+Whether you can rejoin depends on your role and the project's [visibility](#project-visibility):
+
+* Organization admins can rejoin anytime.
+* Organization members can rejoin an open project anytime. For closed or private projects, a project admin must add you back. Private projects also stop appearing in your project list after you leave.
+* [External collaborators](/docs/roles-permissions#external-collaborators-beta) need a project admin to add them back, even if the project is open.
+
+You can't leave in two cases:
+
+* Organization members can't leave the organization's [default project](#default-project), since all organization members automatically have access to it. External collaborators can leave it.
+* The project's last admin can't leave. Make another collaborator an admin first.
 
 ### External collaborators
 

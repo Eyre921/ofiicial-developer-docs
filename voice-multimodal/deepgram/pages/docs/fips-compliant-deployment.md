@@ -10,6 +10,9 @@ path: docs/fips-compliant-deployment
 
 # FIPS-Compliant Deployment
 
+Deploying Deepgram on Amazon SageMaker? SageMaker supports AWS FIPS 140-3 endpoints without
+deploying these images yourself. See [Use FIPS Endpoints](/docs/fips-endpoints-sagemaker).
+
 Deepgram provides FIPS 140-3 self-hosted images for the API, Engine, License Proxy, and Billing containers, plus models encrypted using FIPS-approved algorithms.
 
 ## Container Images

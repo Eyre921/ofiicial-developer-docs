@@ -66404,12 +66404,13 @@ Description: Available models on LLM Gateway
 
 | Model | ID | Supported parameters | Providers | Default Provider | Max Context | Retirement Date |
 | --- | --- | --- | --- | --- | --- | --- |
-| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | `max_tokens`, `temperature`, `stream` | `AssemblyAI` | `AssemblyAI` | `32768` |  |
 | **Haiku 4.5** | `claude-haiku-4-5-20251001` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
 | **Opus 4.5** | `claude-opus-4-5-20251101` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
+| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | `max_tokens`, `temperature`, `stream` | `AssemblyAI` | `AssemblyAI` | `32768` |  |
 | **Opus 4.6** | `claude-opus-4-6` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
 | **Opus 4.7** | `claude-opus-4-7` | `max_tokens`, `tools`, `tool_choice`, `stream` | `Bedrock` | `Bedrock` | `1000000` |  |
 | **Opus 4.8** | `claude-opus-4-8` | `max_tokens`, `tools`, `tool_choice`, `stream` | `Bedrock` | `Bedrock` | `1000000` |  |
+| **Opus 5** | `claude-opus-5` | `max_tokens`, `tools`, `tool_choice`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
 | **Sonnet 4.5** | `claude-sonnet-4-5-20250929` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
 | **Sonnet 4.6** | `claude-sonnet-4-6` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
 | **Sonnet 5** | `claude-sonnet-5` | `max_tokens`, `tools`, `tool_choice`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
@@ -66432,6 +66433,7 @@ Description: Available models on LLM Gateway
 | **GPT-5.2** | `gpt-5.2` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `400000` |  |
 | **GPT-5.5** | `gpt-5.5` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `272000` |  |
 | **GPT-5.6 Luna** | `gpt-5.6-luna` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `270000` |  |
+| **GPT-5.6 Sol** | `gpt-5.6-sol` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `270000` |  |
 | **GPT-5.6 Terra** | `gpt-5.6-terra` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `270000` |  |
 | **Qwen3 32B** | `qwen3-32B` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
 | **Qwen3 Next 80B A3B** | `qwen3-next-80b-a3b` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `Bedrock` | `Bedrock` | `200000` |  |
@@ -66440,12 +66442,13 @@ Description: Available models on LLM Gateway
 
 | Model | Parameter | Prompt (per 1M) | Completion (per 1M) | Cache read (per 1M) | Cache write (per 1M) | Cache write 1h (per 1M) | Regional surcharge |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | $0.1 | $0.5 |  |  |  |  |
 | **Haiku 4.5** | `claude-haiku-4-5-20251001` | $1 | $5 | $0.1 | $1.25 | $2 | +10% |
 | **Opus 4.5** | `claude-opus-4-5-20251101` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
+| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | $0.1 | $0.5 |  |  |  |  |
 | **Opus 4.6** | `claude-opus-4-6` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
 | **Opus 4.7** | `claude-opus-4-7` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
 | **Opus 4.8** | `claude-opus-4-8` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
+| **Opus 5** | `claude-opus-5` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
 | **Sonnet 4.5** | `claude-sonnet-4-5-20250929` | $3 | $15 | $0.3 | $3.75 | $6 | +10% |
 | **Sonnet 4.6** | `claude-sonnet-4-6` | $3 | $15 | $0.3 | $3.75 | $6 | +10% |
 | **Sonnet 5** | `claude-sonnet-5` | $3 | $15 | $0.3 | $3.75 | $6 | +10% |
@@ -66468,6 +66471,7 @@ Description: Available models on LLM Gateway
 | **GPT-5.2** | `gpt-5.2` | $1.75 | $14 | $0.175 |  |  | +10% |
 | **GPT-5.5** | `gpt-5.5` | $5 | $30 | $0.5 |  |  | +10% |
 | **GPT-5.6 Luna** | `gpt-5.6-luna` | $1 | $6 | $0.1 | $1.25 |  | +10% |
+| **GPT-5.6 Sol** | `gpt-5.6-sol` | $4 | $20 | $0.4 | $5 |  | +10% |
 | **GPT-5.6 Terra** | `gpt-5.6-terra` | $2.5 | $15 | $0.25 | $3.125 |  | +10% |
 | **Qwen3 32B** | `qwen3-32B` | $0.15 | $0.6 |  |  |  |  |
 | **Qwen3 Next 80B A3B** | `qwen3-next-80b-a3b` | $0.15 | $1.2 |  |  |  |  |

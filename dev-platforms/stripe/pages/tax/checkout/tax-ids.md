@@ -10,7 +10,7 @@ Learn how to collect VAT and other customer tax IDs during checkout.
 
 Displaying a customer’s tax ID and legal business name on *invoices* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice) is a common requirement that you can satisfy by enabling tax ID collection in Checkout. Tax ID collection works with all Checkout integration types: the hosted page, embedded page, and elements mode.
 
-> #### Disclaimer
+> #### Business tax IDs only
 > 
 > The Checkout Sessions API only collects business tax IDs, which might have formats similar to personal tax IDs in certain jurisdictions. You must make sure that only business tax IDs, as designated for this field, are provided when using this feature.
 
@@ -92,7 +92,7 @@ If you don’t have saved addresses for existing customers, use the billing or s
 
 ## Optional: Require tax ID collection
 
-You can optionally configure Checkout to require tax ID collection by setting the [tax_id_collection[required]](https://docs.stripe.com/api/.md#create_checkout_session-tax_id_collection-required) parameter. When set to `if_supported`, Checkout requires tax ID information for payment for customers in [supported billing countries](https://docs.stripe.com/tax/checkout/tax-ids.md#supported-types).
+Optionally, configure Checkout to require tax ID collection by setting the [tax_id_collection[required]](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-tax_id_collection-required) parameter. When set to `if_supported`, Checkout requires tax ID information for payment for customers in [supported billing countries](https://docs.stripe.com/tax/checkout/tax-ids.md#supported-types).
 
 ```curl
 curl https://api.stripe.com/v1/checkout/sessions \
@@ -267,4 +267,10 @@ Checkout collects the following tax ID types in the given regions:
 | ZW | zw_tin | Zimbabwe Tax Identification Number | 1234567890 | No |
 
 \*Stripe Tax won't apply tax if this tax ID is provided, in line with the relevant laws.
+
+## See also
+
+- [Automatically collect tax with the Checkout page](https://docs.stripe.com/tax/checkout/page.md)
+- [Collect tax with Elements](https://docs.stripe.com/tax/checkout/elements.md#render-tax-id-element)
+- [Test your tax integration](https://docs.stripe.com/tax/testing.md)
 

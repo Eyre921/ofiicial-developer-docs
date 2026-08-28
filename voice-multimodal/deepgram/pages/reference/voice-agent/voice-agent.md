@@ -101,7 +101,9 @@ channels:
           - $ref: >-
               #/components/messages/subpackage_agent/v1.agent.v1-client-8-AgentV1UpdatePrompt
           - $ref: >-
-              #/components/messages/subpackage_agent/v1.agent.v1-client-9-AgentV1Media
+              #/components/messages/subpackage_agent/v1.agent.v1-client-9-AgentV1ForceEndTurn
+          - $ref: >-
+              #/components/messages/subpackage_agent/v1.agent.v1-client-10-AgentV1Media
 servers:
   Production:
     url: wss://agent.deepgram.com/
@@ -286,7 +288,13 @@ components:
       description: Send a prompt update to Deepgram's Voice Agent API
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1UpdatePrompt'
-    subpackage_agent/v1.agent.v1-client-9-AgentV1Media:
+    subpackage_agent/v1.agent.v1-client-9-AgentV1ForceEndTurn:
+      name: AgentV1ForceEndTurn
+      title: AgentV1ForceEndTurn
+      description: Send a ForceEndTurn message to immediately end the current user turn
+      payload:
+        $ref: '#/components/schemas/AgentV1_AgentV1ForceEndTurn'
+    subpackage_agent/v1.agent.v1-client-10-AgentV1Media:
       name: AgentV1Media
       title: AgentV1Media
       description: Send raw binary audio data to Deepgram's Voice Agent API for processing
@@ -1024,7 +1032,8 @@ components:
           format: double
           description: >-
             End-of-turn confidence required to finish a turn. Valid range: 0.5 -
-            0.9. Defaults to 0.7.
+            1.0. Defaults to 0.7. Set to 1.0 to fully suppress natural
+            end-of-turn detection and end turns with the ForceEndTurn message.
         eager_eot_threshold:
           type: number
           format: double
@@ -2174,6 +2183,17 @@ components:
         - type
         - prompt
       title: AgentV1_AgentV1UpdatePrompt
+    AgentV1_AgentV1ForceEndTurn:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - ForceEndTurn
+          description: Message type identifier for forcing the end of the current turn
+      required:
+        - type
+      title: AgentV1_AgentV1ForceEndTurn
     AgentV1_AgentV1Media:
       type: string
       format: binary

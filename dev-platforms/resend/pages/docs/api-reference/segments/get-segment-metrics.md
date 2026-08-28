@@ -19,7 +19,7 @@ Retrieve segment metrics.
   page:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.19.0-preview-headless-dashboard.7
     ```
   </CodeGroup>
@@ -30,22 +30,26 @@ across your whole account by default, or scoped to specific segments via
 `segment_id`.
 
 <Info>
-  Responses are cached for up to 15 minutes, so requesting the same range again
-  may return slightly stale data within that window.
+  Responses are cached for up to 15 minutes, so repeating the same request may
+  return slightly stale data within that window.
 </Info>
+
+All parameters are optional. With none, the response covers your whole account,
+includes every metric, and returns only `totals`. There's no date range, so
+counts are a point-in-time snapshot rather than a historical window.
 
 ## Query Parameters
 
 <ListParamFormatNote />
 
 <ResendParamField type="string[]">
-  List of metrics to include in `totals` and `data`. Defaults to all of the
-  following: `all_contacts`, `subscribers`, `unsubscribers`.
+  List of metrics to include in `totals` and `data`. Omit for all. See
+  [Metrics](#metrics).
 </ResendParamField>
 
 <ResendParamField type="string[]">
-  List of dimensions to break `data` down by. Defaults to `[]`, returning
-  only `totals` with no `data`.
+  List of dimensions to break `data` down by. Omit for only `totals`, with no
+  `data`.
 
   Possible values:
 
@@ -60,6 +64,21 @@ across your whole account by default, or scoped to specific segments via
 <Info>
   When `dimensions` includes `segment`, `data` is ordered by each segment's
   creation date, newest first.
+</Info>
+
+## Metrics
+
+Every metric counts contacts, not emails.
+
+| Metric          | Description                                              |
+| --------------- | -------------------------------------------------------- |
+| `all_contacts`  | Every contact. Sum of `subscribers` and `unsubscribers`. |
+| `subscribers`   | Contacts with `unsubscribed` set to `false`.             |
+| `unsubscribers` | Contacts with `unsubscribed` set to `true`.              |
+
+<Info>
+  `totals` counts each contact once. `data` counts a contact in every segment it
+  belongs to.
 </Info>
 
 <RequestExample>

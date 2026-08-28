@@ -53,13 +53,12 @@ Models not listed run at standard rates.
 
 The following serverless models are not currently available for batch processing. Batch jobs that target these models will fail:
 
-| Model ID                      |
-| ----------------------------- |
-| `deepseek-ai/DeepSeek-R1`     |
-| `deepseek-ai/DeepSeek-V3.1`   |
-| `deepseek-ai/DeepSeek-V4-Pro` |
-| `moonshotai/Kimi-K2.5`        |
-| `moonshotai/Kimi-K2.6`        |
+| Model ID                    |
+| --------------------------- |
+| `deepseek-ai/DeepSeek-R1`   |
+| `deepseek-ai/DeepSeek-V3.1` |
+| `moonshotai/Kimi-K2.5`      |
+| `moonshotai/Kimi-K2.6`      |
 
 ## Run your first batch job
 
@@ -84,4 +83,5 @@ Together bills you for each successful response in the output file. Failed reque
 
 * [Run a batch job](/docs/inference/batch/tutorial): tutorial walking through an end-to-end batch job from JSONL to results.
 * [Manage batch jobs](/docs/inference/batch/manage): cancel, list, error files, and other operational reference.
+* [Batches CLI](/reference/cli/batches): submit, list, retrieve, download, and cancel batch jobs from the terminal.
 * [OpenAI compatibility](/docs/inference/openai-compatibility): how Together's Batch API compares to the OpenAI Batch endpoint.

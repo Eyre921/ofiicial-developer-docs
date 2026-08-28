@@ -95,11 +95,11 @@ go get github.com/deepgram/deepgram-go-sdk
 # <dependency>
 #   <groupId>com.deepgram</groupId>
 #   <artifactId>deepgram-java-sdk</artifactId>
-#   <version>0.2.1</version>
+#   <version>0.9.0</version>
 # </dependency>
 
 # Gradle — add to build.gradle:
-# implementation 'com.deepgram:deepgram-java-sdk:0.7.0'
+# implementation 'com.deepgram:deepgram-java-sdk:0.9.0'
 ```
 
 ### Transcribe a remote file
@@ -110,7 +110,8 @@ Create a new file in your project and add the following code to transcribe a rem
 // index.js (node example)
 
 const { DeepgramClient } = require("@deepgram/sdk");
-require("dotenv").config();
+const dotenv = require("dotenv");
+dotenv.config();
 
 const transcribeUrl = async () => {
   // STEP 1: Create a Deepgram client using the API key
@@ -135,16 +136,18 @@ transcribeUrl();
 # main.py (python example)
 
 import os
-import logging
+import dotenv
 
 from deepgram import (
     DeepgramClient,
 )
 
+dotenv.load_dotenv()
+
 def main():
     try:
-        # STEP 1 Create a Deepgram client using the DEEPGRAM_API_KEY from your environment variables
-        deepgram: DeepgramClient = DeepgramClient()
+        # STEP 1 Create a Deepgram client using the API key
+        deepgram = DeepgramClient(api_key=os.getenv("DEEPGRAM_API_KEY"))
 
         # STEP 2 Call the transcribe_url method with the audio URL and options
         response = deepgram.listen.v1.media.transcribe_url(
@@ -310,13 +313,15 @@ public class Main {
 
 To transcribe a **local file** instead of a remote URL, use the `transcribeFile` (JavaScript), `transcribe_file` (Python), `TranscribeFile` (C#), `FromFile` (Go), or `transcribeFile` (Java) method. Pass the file's binary content and the same options. See the [Pre-Recorded Audio API reference](/reference/speech-to-text/listen-pre-recorded) for details.
 
-## Non-SDK code examples
+### Transcribe a local file
 
 ```javascript JavaScript
 // index.js (node example)
 
 const { DeepgramClient } = require("@deepgram/sdk");
 const fs = require("fs");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const transcribeFile = async () => {
   // STEP 1: Create a Deepgram client using the API key
@@ -347,10 +352,13 @@ transcribeFile();
 # main.py (python example)
 
 import os
+import dotenv
 
 from deepgram import (
     DeepgramClient,
 )
+
+dotenv.load_dotenv()
 
 # Path to the audio file
 AUDIO_FILE = "spacewalk.mp3"
@@ -358,7 +366,7 @@ AUDIO_FILE = "spacewalk.mp3"
 def main():
     try:
         # STEP 1 Create a Deepgram client using the API key
-        deepgram = DeepgramClient()
+        deepgram = DeepgramClient(api_key=os.getenv("DEEPGRAM_API_KEY"))
 
         # STEP 2: Call the transcribe_file method with the audio file and options
         with open(AUDIO_FILE, "rb") as audio_file:
@@ -526,10 +534,9 @@ public class Main {
 }
 ```
 
-## Non-SDK Code Examples
+## Non-SDK code examples
 
-If you would like to try out making a Deepgram speech-to-text request in a specific language (but not using Deepgram's SDKs), we offer a library of code-samples in this [Github repo](https://github.com/deepgram-devs/code-samples). However, we recommend first trying out our SDKs.
-For language-specific examples without Deepgram's SDKs, see the [code-samples repository](https://github.com/deepgram-devs/code-samples). We recommend trying the SDKs first.
+For language-specific examples that don't use Deepgram's SDKs, see the [recipes repository](https://github.com/deepgram/recipes). We recommend trying the SDKs first.
 
 ## Results
 

@@ -1221,7 +1221,7 @@ All paths below are appended to your branch's bare AI Gateway host (`NEON_AI_GAT
 
 **Warning: Content shape varies by model**
 
-For most models, `message.content` in a chat completions response is a plain string. For some models, confirmed on Gemini 3.x (`gemini-3-5-flash`, `gemini-3-1-pro`), `gpt-oss-120b`, and `qwen35-122b-a10b`, it's an array of typed content blocks instead (`{ type: 'reasoning', ... }`, `{ type: 'text', text: ... }`), matching how those models represent output natively. A low `max_tokens` value can also cut a response off before the `text` block appears, leaving only a `reasoning` block. Handle both shapes:
+For most models, `message.content` in a chat completions response is a plain string. For some models, confirmed on Gemini 3.x (`gemini-3-5-flash`, `gemini-3-1-pro`) and Claude 5 (`claude-sonnet-5`, `claude-opus-5`, `claude-fable-5`), it's an array of typed content blocks instead (`{ type: 'reasoning', ... }`, `{ type: 'text', text: ... }`). A low `max_tokens` value can also cut a response off before the `text` block appears, leaving only a `reasoning` block. Handle both shapes:
 
 ```typescript
 const { content } = response.choices[0].message;
@@ -7781,22 +7781,68 @@ console.log(text);
 Install:
 
 ```bash
-npm i @mastra/core ai @neondatabase/ai-sdk-provider
+npm i @mastra/core
 ```
 
 ```typescript
 import { Agent } from "@mastra/core/agent";
-import { neon } from "@neondatabase/ai-sdk-provider";
 
 const agent = new Agent({
   id: "neon-demo",
   name: "neon-demo",
   instructions: "You are a helpful assistant.",
-  model: neon("gpt-oss-120b"),
+  model: "neon/gpt-oss-120b",
 });
 
 const { text } = await agent.generate("Explain Serverless Postgres.");
 console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-oss-120b",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-oss-120b",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
 ```
 
 #### cURL
@@ -7892,22 +7938,68 @@ console.log(text);
 Install:
 
 ```bash
-npm i @mastra/core ai @neondatabase/ai-sdk-provider
+npm i @mastra/core
 ```
 
 ```typescript
 import { Agent } from "@mastra/core/agent";
-import { neon } from "@neondatabase/ai-sdk-provider";
 
 const agent = new Agent({
   id: "neon-demo",
   name: "neon-demo",
   instructions: "You are a helpful assistant.",
-  model: neon("gpt-oss-20b"),
+  model: "neon/gpt-oss-20b",
 });
 
 const { text } = await agent.generate("Explain Serverless Postgres.");
 console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-oss-20b",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-oss-20b",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
 ```
 
 #### cURL
@@ -8945,22 +9037,68 @@ console.log(text);
 Install:
 
 ```bash
-npm i @mastra/core ai @neondatabase/ai-sdk-provider
+npm i @mastra/core
 ```
 
 ```typescript
 import { Agent } from "@mastra/core/agent";
-import { neon } from "@neondatabase/ai-sdk-provider";
 
 const agent = new Agent({
   id: "neon-demo",
   name: "neon-demo",
   instructions: "You are a helpful assistant.",
-  model: neon("qwen35-122b-a10b"),
+  model: "neon/qwen35-122b-a10b",
 });
 
 const { text } = await agent.generate("Explain Serverless Postgres.");
 console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "qwen35-122b-a10b",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="qwen35-122b-a10b",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
 ```
 
 #### cURL
@@ -9550,19 +9688,27 @@ Pi reads the `skills/` directory directly, so there's no separate sync step. Thi
 
 ### neon init
 
-The `neon init` command sets up your project to use Neon with your AI coding assistant. It authenticates via OAuth, creates an API key, configures the MCP server, installs the Neon extension for Cursor and VS Code where applicable, and installs agent skills at the project level:
+The `neon init` command sets up the current directory to use Neon with your AI coding assistant. Run it in a terminal: it installs agent tooling (either a plugin, or skills and the MCP server), links a Neon project, and writes a `neon.ts` config. In an empty directory, it scaffolds a starter template first.
 
 ```bash
 npx neon@latest init
 ```
 
-If you're using the **Neon backend beta** (Functions, Storage, AI Gateway), use `neon init --preview` instead. See the [Neon backend beta guide](https://neon.com/docs/get-started/backend-beta) for access and setup.
+See the [`neon init` reference](https://neon.com/docs/cli/init) for the full flow, including how to set things up non-interactively for agents and CI.
 
-After running `init`, restart your editor and ask your AI assistant to "Get started with Neon" to launch the interactive onboarding guide. See the [`neon init` reference](https://neon.com/docs/cli/init) for details.
+After running `init`, restart your editor and ask your AI assistant to "Get started with Neon." The installed [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server) points your assistant to the right docs, so it can walk you through creating or connecting a project and configuring your connection.
 
 ## Available skills
 
 Skills are grouped by area. Each skill is a `SKILL.md` entry point that your agent reads and invokes when relevant. Browse and install individual skills on [skills.sh](https://skills.sh/neondatabase/agent-skills).
+
+Install any of them by name with [`neon skills`](https://neon.com/docs/cli/skills) (`-s` is repeatable):
+
+```bash
+neon skills -s neon -s neon-postgres
+```
+
+Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon -s neon-postgres` instead.
 
 ### Core
 
@@ -9718,6 +9864,12 @@ If you're using Claude Code, install the Neon plugin to get Skills, MCP integrat
 If you're using Cursor, install the Neon plugin to get Neon Skills and MCP integration in one package.
 
 - [Cursor plugin for Neon](https://neon.com/docs/ai/ai-cursor-plugin): Install the Neon Cursor plugin to use Neon Skills and Neon MCP integration directly in Cursor
+
+## Grok Bot plugin
+
+If you're using Grok Bot, install the Neon plugin to get Neon Skills and MCP in one package.
+
+- [Grok Bot plugin for Neon](https://neon.com/docs/ai/ai-grok-bot-plugin): Install the Neon plugin in Grok Bot for Neon Skills and MCP
 
 ## GitHub Copilot agents
 
@@ -10094,7 +10246,7 @@ To configure Neon MCP and agent skills across supported tools from the command l
 npx neon@latest init
 ```
 
-That flow can set up OAuth, API keys, MCP configuration, and project-level skills where applicable. See the [`neon init` reference](https://neon.com/docs/cli/init) for details. To install just the Neon MCP server for Codex, run [`npx neon@latest mcp --agent codex`](https://neon.com/docs/cli/mcp). To install the plugin (skills plus MCP) for Codex, run [`npx neon@latest plugins --agent codex`](https://neon.com/docs/cli/plugins).
+That flow installs agent tooling (either a plugin, or skills and the MCP server) and links a Neon project. See the [`neon init` reference](https://neon.com/docs/cli/init) for details. To install just the Neon MCP server for Codex, run [`npx neon@latest mcp --agent codex`](https://neon.com/docs/cli/mcp). To install the plugin (skills plus MCP) for Codex, run [`npx neon@latest plugins --agent codex`](https://neon.com/docs/cli/plugins).
 
 ## Use skills outside the Codex plugin
 
@@ -10950,6 +11102,71 @@ Alternatively, you can open a predefined Google Colab notebook for this guide by
 
 For more information about using Neon with `pgvector`, see [The pgvector extension](https://neon.com/docs/extensions/pgvector).
 
+--- [Document source](https://neon.com/docs/ai/ai-grok-bot-plugin.md) ---
+
+> Summary: Connect Neon to Grok Bot so you can create projects, work with branches and run SQL from chat.
+
+# Grok Bot plugin for Neon
+
+The Neon plugin for Grok Bot connects your Neon account. After you authorize it, you can create projects, work with branches and run SQL without leaving Grok Bot.
+
+## Install the plugin
+
+[Add the Neon plugin](https://neon.com/docs/ai/grokbot://app/v1/plugin/add?id=669) in Grok Bot. The link opens the Neon Postgres plugin page.
+
+If the link does not open Grok Bot, install from the plugins directory:
+
+1. Launch Grok Bot.
+2. Select **Plugins** in the sidebar.
+3. Enter `neon` in the search field.
+4. Select **Add** next to **Neon Postgres**.
+
+![Plugins directory in Grok Bot, searching for Neon](https://neon.com/docs/ai/grok_bot_plugins_search.png)
+
+## Ask for the Neon connector
+
+You can skip the plugins directory. In a Grok Bot chat, ask it to connect Neon:
+
+```text
+Can you connect Neon?
+```
+
+The bot finds the Neon Postgres plugin and asks you to confirm. Then it shows a connect card in the chat. Authorize Neon in the browser when that card appears.
+
+## Connect your Neon account
+
+After you add the plugin, Grok Bot asks you to authorize Neon in the browser. The plugin page then shows the default account as **Connected**.
+
+To connect another Neon account, add it from the plugin page and authorize it the same way.
+
+![Neon Postgres plugin in Grok Bot, with the default account Connected](https://neon.com/docs/ai/grok_bot_plugin.png)
+
+## Use Neon in Grok Bot
+
+Once it's connected, you can ask a bot to:
+
+- Create a project and get a connection string for your app
+- Create an isolated branch to test a migration
+- List projects and see which databases are unused
+- Create a routine that summarizes database usage
+- Coordinate a branch handoff between bots
+
+![Grok Bot using the Neon plugin to list organizations](https://neon.com/docs/ai/grok_bot_chat.png)
+
+Try one of these:
+
+Create a project and connect your app:
+
+```text
+Create a Neon project for this application and help me connect to it.
+```
+
+Create a branch for a migration:
+
+```text
+Create an isolated Neon branch for testing this migration.
+```
+
 --- [Document source](https://neon.com/docs/ai/ai-intro.md) ---
 
 > Summary: Neon AI Starter Kit is the central hub for building AI and vector search applications on Lakebase Postgres on Neon, collecting concepts, framework integrations, and deployable starter apps in one place. Use this page when starting an AI project on Neon and need to orient across pgvector setup, RAG pipelines, semantic search, or scaling strategies before diving into a specific guide. Supported frameworks include LangChain, LlamaIndex, Semantic Kernel, and Inngest; app types covered include RAG chatbots, hybrid search, reverse image search, and text-to-SQL.
@@ -11308,9 +11525,7 @@ The fastest way to get started:
 npx neon@latest init
 ```
 
-**`neon init`** (see [`neon init` reference](https://neon.com/docs/cli/init)) creates a Neon API key and configures the MCP server with **API key** auth so you can skip OAuth when using the connection. It installs the VS Code/Cursor extension where applicable, wires **Claude Code** and **many other assistants** the wizard supports, and installs Neon's [agent skills](https://github.com/neondatabase/agent-skills). Then restart and ask your AI assistant **"Get started with Neon"**.
-
-**Note:** Each run of `npx neon@latest init` creates a new Neon API key. If you run it multiple times, review your [API keys](https://console.neon.tech/app/settings/api-keys) and revoke any you no longer need.
+**`neon init`** (see [`neon init` reference](https://neon.com/docs/cli/init)) sets up the current directory for Neon. Run it in a terminal: it installs agent tooling (either the Neon plugin, or [agent skills](https://github.com/neondatabase/agent-skills) and the MCP server), links a Neon project, and writes a `neon.ts` config. Then restart your editor and ask your AI assistant **"Get started with Neon"**.
 
 If you only want the MCP server and nothing else, run [`neon mcp`](https://neon.com/docs/cli/mcp):
 
@@ -11393,7 +11608,7 @@ Run the [init](https://neon.com/docs/cli/init) command:
 npx neon@latest init
 ```
 
-Authenticates via OAuth, creates an API key, configures the MCP Server in `~/.claude.json`, and installs [agent skills](https://github.com/neondatabase/agent-skills). Then ask your AI assistant **"Get started with Neon"**.
+Signs you in, installs agent tooling (either the Neon plugin, or agent skills and the MCP server), and links a Neon project. Then ask your AI assistant **"Get started with Neon"**.
 
 **OAuth**
 
@@ -11520,7 +11735,7 @@ Run the [init](https://neon.com/docs/cli/init) command:
 npx neon@latest init
 ```
 
-Authenticates via OAuth, creates an API key, installs the [Neon extension](https://neon.com/docs/local/vscode-extension) (which includes the MCP Server), and installs [agent skills](https://github.com/neondatabase/agent-skills). Then ask your AI assistant **"Get started with Neon"**.
+Signs you in, installs agent tooling (either the Neon plugin, or agent skills and the MCP server), and links a Neon project. Then ask your AI assistant **"Get started with Neon"**.
 
 **OAuth**
 
@@ -11681,7 +11896,7 @@ Run the [init](https://neon.com/docs/cli/init) command:
 npx neon@latest init
 ```
 
-Authenticates via OAuth, creates an API key, installs the [Neon extension](https://neon.com/docs/local/vscode-extension) (which includes the MCP Server), and installs [agent skills](https://github.com/neondatabase/agent-skills). Then ask your AI assistant **"Get started with Neon"**.
+Signs you in, installs agent tooling (either the Neon plugin, or agent skills and the MCP server), and links a Neon project. Then ask your AI assistant **"Get started with Neon"**.
 
 **OAuth**
 
@@ -12485,7 +12700,13 @@ npx neon@latest mcp
 
 It prompts for where to write the config, which agents to install into, and how to authenticate, then writes it for you.
 
-To set up the MCP server together with agent skills and editor tooling, run [`neon init`](https://neon.com/docs/cli/init):
+For agents that support plugins (such as Cursor, Claude Code, and Codex), [`neon plugins`](https://neon.com/docs/cli/plugins) installs the Neon plugin, which bundles the MCP server and agent skills:
+
+```bash
+npx neon@latest plugins
+```
+
+To set up the MCP server together with agent skills and a linked Neon project, run [`neon init`](https://neon.com/docs/cli/init) in a terminal:
 
 ```bash
 npx neon@latest init
@@ -20214,7 +20435,7 @@ Usage: `neon auth [options]`
 
 ### bootstrap
 
-Scaffold a new project from a Neon starter template.
+Scaffold a new project from a Neon starter template, then install agent tooling and link a Neon project.
 
 Usage: `neon bootstrap [directory] [options]`
 
@@ -20346,7 +20567,7 @@ Manage Neon Functions.
 
 ### init
 
-Initialize a project with Neon using your AI coding assistant.
+Set up this directory for Neon: agent tooling, a linked project, and neon.ts. In an empty directory, scaffolds a template first. Skills needs Node.js 22.20 or newer.
 
 Usage: `neon init [options]`
 
@@ -20365,7 +20586,7 @@ Inspect a branch's Postgres health and configuration.
 | `neon inspect db outliers`             | Queries taking the most cumulative execution time (needs pg\_stat\_statements)                                                                 |
 | `neon inspect db replication-slots`    | Replication slots (compute-wide): kind, status, client, restart/confirmed-flush LSNs, and lag (pg\_replication\_slots + pg\_stat\_replication) |
 | `neon inspect db seq-scans`            | Number of sequential scans recorded against each table (pg\_stat\_user\_tables)                                                                |
-| `neon inspect db stalled-queries`      | Active queries running longer than 30 seconds with parallel workers, waits, and blockers (compute-wide)                                        |
+| `neon inspect db stalled-queries`      | Active queries running longer than 30 seconds with parallel workers, waits, and blockers, oldest group first (compute-wide)                    |
 | `neon inspect db subscriptions`        | Per-table logical replication progress on this subscriber (pg\_subscription\_rel)                                                              |
 | `neon inspect db table-sizes`          | Size of each table (including TOAST), largest first (pg\_table\_size)                                                                          |
 | `neon inspect db unused-indexes`       | Non-unique indexes with few scans — candidates for removal (pg\_stat\_user\_indexes)                                                           |
@@ -20820,6 +21041,7 @@ neon api <path> [options]
 | Option              | Description                                                                                                                                | Type    | Default | Required |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------- | :------: |
 | `--data`, `-d`      | Raw request body: a JSON string, @file, or - for stdin. Overrides --field.                                                                 | string  | —       |    No    |
+| `--describe`        | Print path, query, and body fields from the OpenAPI spec without calling the API. Body names are dotted for -F.                            | boolean | `false` |    No    |
 | `--field`, `-F`     | Body field key=value (repeatable). Dot-notation nests objects (e.g. -F branch.name=dev); values are typed (numbers, booleans, null, JSON). | array   | —       |    No    |
 | `--header`, `-H`    | Extra request header key:value (repeatable).                                                                                               | array   | —       |    No    |
 | `--include`, `-i`   | Print the response status and headers before the body.                                                                                     | boolean | `false` |    No    |
@@ -20827,7 +21049,7 @@ neon api <path> [options]
 | `--method`, `-X`    | HTTP method (GET, POST, PUT, PATCH, DELETE). Defaults to GET, or POST when a body is provided.                                             | string  | —       |    No    |
 | `--query`, `-Q`     | Query parameter key=value (repeatable).                                                                                                    | array   | —       |    No    |
 | `--raw-field`, `-f` | Body field key=value with the value kept as a raw string.                                                                                  | array   | —       |    No    |
-| `--refresh`         | Refresh the cached OpenAPI spec (used with --list).                                                                                        | boolean | `false` |    No    |
+| `--refresh`         | Refresh the cached OpenAPI spec (used with --list and --describe).                                                                         | boolean | `false` |    No    |
 
 ## Examples
 
@@ -20935,13 +21157,13 @@ Pass `--keyring` to store the credential in your operating system's keyring inst
 
 --- [Document source](https://neon.com/docs/cli/bootstrap.md) ---
 
-> Summary: Covers the usage of the `bootstrap` command in the Neon CLI to scaffold a new application from a Neon starter template, including the interactive template picker, the `--default` quick start, and post-scaffold setup steps (dependency install, git init, project linking).
+> Summary: Covers the usage of the `bootstrap` command in the Neon CLI to scaffold a new application from a Neon starter template, including the interactive template picker, the `--default` quick start, and post-scaffold setup steps (dependency install, git init, agent tooling, and project linking).
 
 # Neon CLI command: bootstrap
 
 Scaffold a new project from a Neon starter template
 
-The `bootstrap` command scaffolds a new application from a Neon starter template. By default it runs interactively: it prompts you to pick a template, scaffolds it into the target directory, then offers the usual setup steps (install dependencies, initialize git, link the directory to a Neon project). Requires neon 2.25.0 or later; check your version with `neon --version`.
+The `bootstrap` command scaffolds a new application from a Neon starter template. By default it runs interactively: it prompts you to pick a template, scaffolds it into the target directory, then offers the usual setup steps (install dependencies, initialize git, install agent tooling, and link the directory to a Neon project). Requires neon 2.25.0 or later; check your version with `neon --version`.
 
 ## Usage
 
@@ -20953,21 +21175,28 @@ The directory argument is optional. Use `.` to scaffold into the current directo
 
 ## Options
 
-| Option                               | Description                                                                                                                                                                                    | Type    | Default | Required |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--default`, `-y`                    | Quick start: scaffold the default template (or --template) and run the usual setup (install dependencies, git init) without prompting. Linking is left to you since it needs a project choice. | boolean | `false` |    No    |
-| `--force`                            | Scaffold into the target directory even if it is not empty (colliding files are overwritten).                                                                                                  | boolean | `false` |    No    |
-| `--git`                              | Initialize a git repository after scaffolding. In interactive mode this is offered as a prompt; use --no-git to skip without being asked.                                                      | boolean | `true`  |    No    |
-| `--install`                          | Install dependencies after scaffolding. In interactive mode this is offered as a prompt; use --no-install to skip without being asked.                                                         | boolean | `true`  |    No    |
-| `--link`                             | Run `neon link` in the scaffolded directory after installing. In interactive mode this is offered as a prompt; use --no-link to skip without being asked.                                      | boolean | `true`  |    No    |
-| `--list-templates`, `--list`, `--ls` | List available templates and exit. --output json and --output yaml print a machine-readable catalog.                                                                                           | boolean | `false` |    No    |
-| `--template`                         | Template to use (skips the interactive picker). Run with --list-templates to see available templates.                                                                                          | string  | —       |    No    |
+| Option                               | Description                                                                                                                                                                                                                                                                                           | Type    | Default | Required |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a`                      | Coding agent to install into (repeatable). Forwarded to plugins, or to skills and mcp. Skips agent selection. Values listed below                                                                                                                                                                     | array   | —       |    No    |
+| `--agent-setup`                      | After scaffolding, install the Neon plugin or skills and MCP. Use --no-agent-setup to skip                                                                                                                                                                                                            | boolean | `true`  |    No    |
+| `--default`, `-y`                    | Quick start: scaffold the default template (or --template), then install, git, agent tooling (project folders, else the host CLI agent; if none, pass --agent or omit --default in a terminal), and link --yes. Skips those pickers; link --yes still asks for a project unless one is already linked | boolean | `false` |    No    |
+| `--force`                            | Scaffold into the target directory even if it is not empty (colliding files are overwritten).                                                                                                                                                                                                         | boolean | `false` |    No    |
+| `--git`                              | Initialize a git repository after scaffolding. In interactive mode this is offered as a prompt; use --no-git to skip without being asked.                                                                                                                                                             | boolean | `true`  |    No    |
+| `--install`                          | Install dependencies after scaffolding. In interactive mode this is offered as a prompt; use --no-install to skip without being asked.                                                                                                                                                                | boolean | `true`  |    No    |
+| `--link`                             | Run `neon link` after scaffolding. Templates with neon.ts link after install so env pull works; otherwise link runs before install. In interactive mode this is offered as a prompt; use --no-link to skip without being asked.                                                                       | boolean | `true`  |    No    |
+| `--list-templates`, `--list`, `--ls` | List available templates and exit. --output json and --output yaml print a machine-readable catalog.                                                                                                                                                                                                  | boolean | `false` |    No    |
+| `--template`                         | Template to use (skips the interactive picker). Run with --list-templates to see available templates.                                                                                                                                                                                                 | string  | —       |    No    |
 
 Run with `--list-templates` to see the available templates (add `--output json` for a machine-readable catalog), and pass one with `--template` to skip the interactive picker.
 
-The post-scaffold steps (`--install`, `--git`, `--link`) all default to on. In interactive mode, bootstrap asks about each one; use the negated form (`--no-install`, `--no-git`, `--no-link`) to skip a step without being asked. With `--link`, bootstrap runs [`neon link`](https://neon.com/docs/cli/link) in the scaffolded directory after installing.
+The post-scaffold steps all default to on. In interactive mode, bootstrap asks about each one; pass the negated flag to skip it without being asked:
 
-Use `--default` (alias `-y`) for a quick start: it scaffolds the default template (or the one you pass with `--template`) and runs dependency install and git init without prompting. Linking is left to you, since it needs a project choice.
+- `--install` / `--no-install`: install dependencies.
+- `--git` / `--no-git`: initialize a git repository.
+- `--agent-setup` / `--no-agent-setup`: install agent tooling, either the Neon plugin, or agent skills and the MCP server. Pass `--agent` (alias `-a`, repeatable) to name the agents and skip the picker, for example `neon bootstrap my-app --agent cursor`.
+- `--link` / `--no-link`: run [`neon link`](https://neon.com/docs/cli/link) in the scaffolded directory.
+
+Use `--default` (alias `-y`) for a quick start: it scaffolds the default template (or the one you pass with `--template`), then runs dependency install, git init, agent tooling, and `neon link --yes` without prompting. `link --yes` still asks which project to use unless the directory is already linked.
 
 ## Examples
 
@@ -21120,6 +21349,7 @@ neon branches create [options]
 | `--protected`       | Whether the branch is protected. Protected branches (and their computes) cannot be deleted, archived, or reset, and block deletion of the project. Can be gated by `protected_branches_only` in the IP allowlist. Paid plans only.                                             | boolean | —               |    No    |
 | `--psql`            | Connect to a new branch via psql                                                                                                                                                                                                                                               | boolean | `false`         |    No    |
 | `--schema-only`     | Create a schema-only branch. Requires exactly one read-write compute.                                                                                                                                                                                                          | boolean | `false`         |    No    |
+| `--secrets`         | Include connection credentials in command output. Use --no-secrets to omit them                                                                                                                                                                                                | boolean | `true`          |    No    |
 | `--suspend-timeout` | Duration of inactivity in seconds after which the compute endpoint is automatically suspended. The value `0` means use the global default. The value `-1` means never suspend. The default value is `300` seconds (5 minutes). The maximum value is `604800` seconds (1 week). | number  | `0`             |    No    |
 | `--type`            | Type of compute to add                                                                                                                                                                                                                                                         | string  | `read_write`    |    No    |
 | `--project-id`      | Project ID                                                                                                                                                                                                                                                                     | string  | —               |    No    |
@@ -21153,6 +21383,14 @@ connection_uris
 ```
 
 **Note:** If the parent branch has more than one role or database, the `branches create` command does not output a connection URI. As an alternative, you can use the `connection-string` command to retrieve the connection URI for a branch. This command includes options for specifying the role and database. See [the connection-string command](https://neon.com/docs/cli/connection-string).
+
+Omit the connection string from the output, keeping it out of terminal scrollback and CI logs:
+
+```bash
+neon branches create --no-secrets
+```
+
+Needs Neon CLI 4.9.0+; older versions ignore `--no-secrets` and still print the connection string.
 
 Create a branch with `--output json`, which returns the full branch response data:
 
@@ -21907,7 +22145,7 @@ The `claim` command creates a temporary Neon project when there is no Neon accou
 
 If `neon claim` is not a command, or `neon claim --help` does not list `create`, install the latest CLI (`npm i -g neon@latest`) or use the HTTP flow in [Claimable Neon](https://neon.com/docs/reference/claimable-neon).
 
-Do not pass `--api-key` or `--profile`. Those are refused. `neon auth` and `neon init --agent` need a human Neon account; use this command instead when there is none.
+Do not pass `--api-key` or `--profile`. Those are refused. `neon auth` and `neon init` need a Neon account; use this command instead when there is none.
 
 Start in the browser at [neon.com/claimable-neon](https://neon.com/claimable-neon), or give an agent [`auth.md`](https://neon.com/auth.md).
 
@@ -22995,13 +23233,21 @@ INFO: Function hello deleted from branch br-cool-darkness-123456
 
 --- [Document source](https://neon.com/docs/cli/init.md) ---
 
-> Summary: The `neon init` command sets up a project to use Neon with an AI coding assistant: it installs or updates the Neon CLI, runs OAuth, creates an API key, installs agent skills, and can configure the Neon MCP server. Works with Cursor, VS Code, Claude Code, and any add-mcp client. The `--agent` flag runs it in agent/JSON mode.
+> Summary: The `neon init` command sets up the current directory to use Neon with your AI coding assistant. In an empty directory it scaffolds a starter template first, then installs agent tooling (either a plugin, or skills and the MCP server), links a Neon project, and writes a neon.ts config. It runs interactively by default; pass -y and --agent for an unattended agent setup.
 
 # Neon CLI command: init
 
-Install the Neon CLI and set up a project with auth, agent skills, and optionally the MCP server and editor extension
+Set up the current directory for Neon with agent tooling, a linked project, and a neon.ts config
 
-The `init` command sets up your app project to use Neon with your AI coding assistant. It installs or updates the Neon CLI, authenticates via OAuth, creates a Neon API key, can configure the Neon MCP server for your editor (installing the [Neon Local Connect extension](https://marketplace.visualstudio.com/items?itemName=databricks.neon-local-connect) for Cursor and VS Code), and installs [Neon agent skills](https://github.com/neondatabase/agent-skills). Run it once from your project root.
+The `init` command sets up the current directory to use Neon with your AI coding assistant. It's a thin wrapper that runs Neon's other setup commands for you: it installs agent tooling (either the [Neon plugin](https://neon.com/docs/cli/plugins), or [agent skills](https://neon.com/docs/cli/skills) and the [Neon MCP server](https://neon.com/docs/cli/mcp)), [links a Neon project](https://neon.com/docs/cli/link), and writes a [`neon.ts` config](https://neon.com/docs/cli/config). In an empty directory, it [scaffolds a starter template](https://neon.com/docs/cli/bootstrap) first.
+
+`init` is interactive, so run it from a terminal. It asks how coding agents should get Neon, and prompts you to pick a project to link. If you don't have the CLI installed, run it with `npx`:
+
+```bash
+npx neon@latest init
+```
+
+For agents, CI, or scripts that can't answer prompts, see [Run it non-interactively](https://neon.com/docs/cli/init#run-it-non-interactively).
 
 ## Usage
 
@@ -23009,121 +23255,105 @@ The `init` command sets up your app project to use Neon with your AI coding assi
 neon init [options]
 ```
 
-You can also run `init` without installing the CLI:
+## What it does
 
-```bash
-npx neon@latest init
-```
+What `init` runs depends on whether the directory is empty:
 
-After running the command, restart your editor and ask your AI assistant to "Get started with Neon" to launch an interactive onboarding guide. The installed agent skills help you get started, including configuring a database connection. For Cursor and VS Code, the Neon Local Connect extension also provides database schema browsing, SQL editing, and table data management directly in your IDE.
+| Directory                  | What `init` does                                                                                                   |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Empty (nothing but `.git`) | Runs [`neon bootstrap`](https://neon.com/docs/cli/bootstrap): scaffolds a template, then agent tooling and linking |
+| Already has files          | Installs agent tooling, links a project, then runs [`neon config init`](https://neon.com/docs/cli/config)          |
 
-Under the hood, `init` runs `npx skills add neondatabase/agent-skills --skill neon --skill neon-postgres --agent <name>` for each selected editor. To install skills on their own, without the rest of the init flow, use [`neon skills`](https://neon.com/docs/cli/skills) (add `--global` for a user-level install). See [neon-postgres on skills.sh](https://skills.sh/neondatabase/agent-skills/neon-postgres) for more about the skills.
+A directory counts as empty only when it contains nothing but a `.git` folder. Any other entry, including a `README`, a `.env` file, or a `.gitignore`, makes it an existing app. So a directory you just ran `git init` in that already has a `.gitignore` takes the existing-app path.
 
-**Warning:** Skills are installed at the project level in the current working directory. Run `init` from your project root, otherwise skills will end up in the wrong location. You may want to commit project-level files so teammates get the same skills, or add them to `.gitignore` for per-developer setup.
+### Choose how coding agents get Neon
+
+In a directory that already has files, `init` asks how your coding agents should get Neon:
+
+- **Plugin (recommended)** installs the `neon-postgres` plugin, which bundles agent skills and the MCP server.
+- **Skills and MCP separately** installs [agent skills](https://neon.com/docs/cli/skills), then the [Neon MCP server](https://neon.com/docs/cli/mcp).
+- **Skip agent setup** continues without a plugin, skills, or MCP.
+
+The plugin and the skills-plus-MCP option are mutually exclusive. Installing skills needs Node.js 22.20 or newer.
+
+`init` sets up agent tooling at the project level. It has no global option; for a user-level install, run [`neon skills --global`](https://neon.com/docs/cli/skills) or [`neon plugins --global`](https://neon.com/docs/cli/plugins) directly.
+
+### Link a project and write neon.ts
+
+After agent setup, `init` runs [`neon link`](https://neon.com/docs/cli/link) (unless the directory is already linked). Linking writes a `.neon` file with your org, project, and branch, and pulls the branch's environment variables (including `DATABASE_URL`) into `.env` if one exists, otherwise `.env.local`. It then runs [`neon config init`](https://neon.com/docs/cli/config), which creates a `neon.ts` config you can edit and apply with `neon config apply`.
 
 ## Options
 
-| Option              | Description                                                                              | Type    | Default | Required |
-| ------------------- | ---------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--agent`, `-a`     | Enable agent/JSON mode (agent type is auto-detected).                                    | boolean | `false` |    No    |
-| `--data`            | JSON object with a "step" field to route to a specific phase and phase-specific options. | string  | —       |    No    |
-| `--preview`         | Enable preview features (e.g. project bootstrapping from templates).                     | boolean | `false` |    No    |
-| `--skip-migrations` | Skip the migrations phase.                                                               | boolean | `false` |    No    |
+| Option          | Description                                                                                                                                                                                                                                         | Type    | Default | Required |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a` | Coding agent to install into (repeatable). Forwarded to plugins, or to skills and mcp. Skips agent selection. Values listed below                                                                                                                   | array   | —       |    No    |
+| `--yes`, `-y`   | Empty dir: bootstrap --default. Otherwise plugin, or skills and MCP, for project folders, else the host CLI agent. Exits if none. Then link --yes and config init --services none. link --yes still asks for a project unless one is already linked | boolean | `false` |    No    |
 
-Use `--agent` (alias `-a`) to run `init` in agent/JSON mode, designed for when an AI coding assistant runs the command for you; the agent type is auto-detected. Without `--agent`, `init` runs an interactive wizard that detects installed tools and lets you choose which to configure; if nothing is detected, you go straight to that list.
+Pass `-y` (alias `--yes`) to run each step with its defaults instead of prompting. In an empty directory it scaffolds the default template. Otherwise it sets up agent tooling, then links and writes `neon.ts`. With `-y`, `init` detects the target agent from the project folders, else the host CLI agent you're running inside. It installs the plugin for a plugin-capable agent (Cursor, Claude Code, or Codex), or skills and MCP for any other agent. If it detects no agent, it exits and asks you to pass `--agent`. Even with `-y`, first-time sign-in still opens a browser, and `link` still asks which project to use unless the directory is already linked.
 
-## Coding assistant support
+Pass `--agent` (alias `-a`) to name the coding agents to set up, which skips both detection and the picker. It's repeatable (`neon init --agent cursor --agent claude-code`) and works with `-y`. `init` sets up one family per run, so it forwards the names to the plugin, or to skills and the MCP server, not both. Run `neon init --help` to see which agents each family supports. Passing `--agent` with no value returns an error.
 
-`init` is backed by the `neon-init` package bundled with `neon`. Besides Cursor, VS Code, and Claude Code, the interactive flow can configure any client that [add-mcp supports](https://neon.com/docs/ai/connect-mcp-clients-to-neon#supported-agents-add-mcp). To register only the Neon MCP server in a client config (no `init`, no agent skills, no extension install), run [`neon mcp`](https://neon.com/docs/cli/mcp), or `npx add-mcp https://mcp.neon.tech/mcp` for the lower-level tool directly. See [Connect MCP clients to Neon](https://neon.com/docs/ai/connect-mcp-clients-to-neon).
+## Run it non-interactively
+
+Combine `-y` with `--agent` to do the agent setup without prompts, for example in CI or from an agent:
+
+```bash
+neon init -y --agent cursor
+```
+
+For the project, `init` links to the one the directory is already linked to. When the directory isn't linked yet, `neon link` picks the project interactively. To target a specific project without prompts, run the underlying commands directly and pass the project explicitly, each taking its own flags:
+
+```bash
+# Install agent tooling for a specific editor
+neon skills --agent cursor -s neon -s neon-postgres
+# or install the plugin instead:
+neon plugins --agent cursor
+
+# Link a specific project (no prompt)
+neon link --project-id <project-id> --org-id <org-id>
+
+# Scaffold neon.ts
+neon config init --services none
+```
+
+Authenticate without a browser by setting `NEON_API_KEY` or passing `--api-key`. See [`neon skills`](https://neon.com/docs/cli/skills), [`neon plugins`](https://neon.com/docs/cli/plugins), [`neon link`](https://neon.com/docs/cli/link), and [`neon config`](https://neon.com/docs/cli/config) for the full options.
 
 ## What gets created
 
-| Artifact                                                                                                          | Location                                         | Scope   |
-| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | ------- |
-| Neon API key                                                                                                      | Neon account (named `neonctl-init-{timestamp}`)  | Account |
-| OAuth credentials (created on first auth)                                                                         | `~/.config/neonctl/credentials.json`             | Global  |
-| MCP config (Cursor)                                                                                               | `~/.cursor/mcp.json` (written by extension)      | Global  |
-| MCP config (VS Code)                                                                                              | VS Code global `mcp.json` (written by extension) | Global  |
-| MCP config (Claude Code)                                                                                          | `~/.claude.json` (written by init)               | Global  |
-| [Neon Local Connect extension](https://marketplace.visualstudio.com/items?itemName=databricks.neon-local-connect) | Cursor / VS Code                                 | Global  |
-| Agent skills (Cursor, VS Code)                                                                                    | `.agents/skills/`                                | Project |
-| Agent skills (Claude Code)                                                                                        | `.claude/skills/`                                | Project |
-| `skills-lock.json`                                                                                                | Project root                                     | Project |
+The files created depend on the path you take. Each one is written by the command `init` runs, so see that command's page for details.
 
-## Credentials and API keys
-
-If you previously authenticated with `neon auth`, `init` reuses those credentials (from `~/.config/neonctl/credentials.json`). Otherwise, it opens the browser for OAuth.
-
-`init` creates a new API key each time it runs (named `neonctl-init-{timestamp}`). If you run it more than once, you can revoke old keys in the [Neon Console API Keys settings](https://console.neon.tech/app/settings/api-keys).
-
-For Claude Code, if a Neon MCP entry already exists in `~/.claude.json`, `init` prompts before overwriting it.
+| Artifact                                              | Written by                                                                                                                                            | Scope              |
+| ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `.neon` (org, project, and branch context)            | [`neon link`](https://neon.com/docs/cli/link)                                                                                                         | Project            |
+| `.env` or `.env.local` (`DATABASE_URL` and Neon vars) | [`neon link`](https://neon.com/docs/cli/link)                                                                                                         | Project            |
+| `neon.ts` (config-as-code policy)                     | [`neon config init`](https://neon.com/docs/cli/config)                                                                                                | Project            |
+| Agent skills, MCP config, or plugin                   | [`neon skills`](https://neon.com/docs/cli/skills) / [`neon mcp`](https://neon.com/docs/cli/mcp) / [`neon plugins`](https://neon.com/docs/cli/plugins) | Project, per agent |
+| Scaffolded template files (empty dir only)            | [`neon bootstrap`](https://neon.com/docs/cli/bootstrap)                                                                                               | Project            |
 
 ## Examples
 
-Navigate to the root directory of your application and run the `init` command:
+Run `init` from your project root:
 
 ```bash
-cd /path/to/your/app
 npx neon@latest init
 ```
 
-<details>
+Choose your agent setup, then pick a project to link. Linking writes the context and pulls your environment variables:
 
-<summary>Show output</summary>
+```text
+Linked /path/to/your/app/.neon:
+  orgId:     org-example-12345678
+  projectId: polished-snowflake-12345678
+  branch:    main
 
-```text filename="Output"
-┌  Adding Neon MCP server, extension (for VS Code and Cursor) and agent skills
-│
-◆  Which editor(s) would you like to configure? (Space to toggle each option, Enter to confirm your selection)
-│  ◼ Cursor
-│  ◼ VS Code
-│  ◻ Claude CLI
-│
-◒  Authenticating...
-┌────────┬──────────────────┬────────┬────────────────┐
-│ Login  │ Email            │ Name   │ Projects Limit │
-├────────┼──────────────────┼────────┼────────────────┤
-│ alex   │ alex@domain.com  │ Alex   │ 100            │
-└────────┴──────────────────┴────────┴────────────────┘
-◇  Authentication successful ✓
-│
-◇  Installing agent skills for Neon...
-│
-◇  Agent skills installed ✓
-│
-◇  Neon Local Connect extension installed for Cursor / VS Code.
-│
-├  What's next? ───────────────────────────────────────────────────────────────────────────────────╮
-│                                                                                                  │
-│  Restart Cursor / VS Code, open the Neon extension and type                                      │
-│  in "Get started with Neon" in your agent chat                                                   │
-│                                                                                                  │
-╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
-│
-└  Have feedback? Email us at feedback@neon.tech
+Pulled 3 Neon variables into /path/to/your/app/.env.local: NEON_BRANCH, DATABASE_URL, DATABASE_URL_UNPOOLED
 ```
 
-</details>
+After setup, restart your editor and ask your assistant to "Get started with Neon." The installed [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server) points your assistant to the right docs, so it can connect to your database and use Neon features as you build.
 
 ## Manual setup
 
-If you prefer to configure manually or need to set up for other IDEs, [create a Neon API key](https://console.neon.tech/app/settings?modal=create_api_key) in the Neon Console. Example configuration for Claude Code (`~/.claude.json`):
-
-```json
-{
-  "mcpServers": {
-    "Neon": {
-      "type": "http",
-      "url": "https://mcp.neon.tech/mcp",
-      "headers": {
-        "Authorization": "Bearer <NEON_API_KEY>"
-      }
-    }
-  }
-}
-```
-
-For detailed manual setup instructions for all editors, see [Connect MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon).
+To configure an editor without running `init`, or to register only the Neon MCP server, see [Connect MCP clients to Neon](https://neon.com/docs/ai/connect-mcp-clients-to-neon). To install only agent skills, use [`neon skills`](https://neon.com/docs/cli/skills); to install only the MCP server, use [`neon mcp`](https://neon.com/docs/cli/mcp).
 
 --- [Document source](https://neon.com/docs/cli/inspect.md) ---
 
@@ -23700,7 +23930,7 @@ neon link [options]
 
 | Option                    | Description                                                                                                                                                                                                                                                   | Type    | Default | Required |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--branch`, `--branch-id` | Branch name or ID to pin in the context (resolved to its ID before writing). Without it, link only resolves the org and project — pin a branch with `neon checkout <branch>` (link never guesses a default).                                                  | string  | —       |    No    |
+| `--branch`, `--branch-id` | Branch name or ID to pin in the context (resolved to its name before writing).                                                                                                                                                                                | string  | —       |    No    |
 | `--checks`                | Verify the org/project/branch exist (and resolve the org from the project) before writing. On by default; use --no-checks to write the context offline with no API calls — it then requires --org-id and --project-id (--branch optional) and skips env pull. | boolean | `true`  |    No    |
 | `--clear`                 | Remove the org/project/branch context (writes an empty context file) instead of linking.                                                                                                                                                                      | boolean | `false` |    No    |
 | `--env-pull`              | Pull the linked branch's Neon env vars (DATABASE\_URL, ...) into a local .env after linking. On by default; use --no-env-pull to skip, for example when injecting env at runtime with `neon-env run` (from `@neon/env`) or `neon dev`.                        | boolean | `true`  |    No    |
@@ -23709,7 +23939,7 @@ neon link [options]
 | `--project-id`            | Existing project ID to link to                                                                                                                                                                                                                                | string  | —       |    No    |
 | `--project-name`          | Name for a new project to create and link to                                                                                                                                                                                                                  | string  | —       |    No    |
 | `--region-id`             | Region ID for a new project (e.g. aws-us-east-2). Required with --project-name.                                                                                                                                                                               | string  | —       |    No    |
-| `--yes`, `-y`             | Skip the "already linked" confirmation in interactive mode and re-link anyway.                                                                                                                                                                                | boolean | `false` |    No    |
+| `--yes`, `-y`             | Skip the "already linked" confirmation, and pin the project's default branch when linking a project that has more than one.                                                                                                                                   | boolean | `false` |    No    |
 
 By default, linking pulls the linked branch's environment variables (such as `DATABASE_URL`) into a local `.env` file. Use `--no-env-pull` to skip this step, for example when you inject environment variables at runtime instead.
 
@@ -23924,7 +24154,7 @@ Run `neon mcp` with no flags for an interactive walkthrough: it asks whether to 
 
 **mcp vs init:**
 
-[`neon init`](https://neon.com/docs/cli/init) is the broader onboarding command: it sets up the MCP Server along with agent skills and editor config. Use `neon mcp` when you only want to install the Neon MCP Server into your agents, or [`neon skills`](https://neon.com/docs/cli/skills) when you only want to install agent skills.
+For the full setup, use [`neon init`](https://neon.com/docs/cli/init). For just one piece: [`neon skills`](https://neon.com/docs/cli/skills) (skills), [`neon plugins`](https://neon.com/docs/cli/plugins) (skills and MCP), or `neon mcp` (MCP server).
 
 ## Usage
 
@@ -23942,7 +24172,7 @@ neon mcp [options]
 | `--project`                 | Write project-level MCP config. Skips the config-location question. A linked project-folder install may still pin a project and scope a newly minted key                     | boolean | `false` |    No    |
 | `--project-id`              | Pin MCP tools to one Neon project (?projectId=). A newly minted API key is limited to that project. A linked project-folder install asks the same when you pick API-key auth | string  | —       |    No    |
 | `--read-only`, `--readonly` | Restrict MCP tools to read-only (?readonly=true). Not prompted. Does not change the minted key                                                                               | boolean | `false` |    No    |
-| `--yes`, `-y`               | Skip prompts. Defaults listed below. --project, --oauth, --agent, --read-only, --project-id and --category still apply                                                       | boolean | `false` |    No    |
+| `--yes`, `-y`               | Skip prompts. Defaults listed below. --agent, --project, --oauth, --read-only, --project-id and --category still apply                                                       | boolean | `false` |    No    |
 
 ### Authentication
 
@@ -24866,7 +25096,7 @@ With no flags it runs an interactive walkthrough: pick the agents, then confirm.
 
 **plugins vs skills vs mcp:**
 
-Use `neon plugins` for agents that support plugin marketplaces, where the plugin bundles skills and MCP access together. Use [`neon skills`](https://neon.com/docs/cli/skills) to install [agent skills](https://neon.com/docs/ai/agent-skills) on their own, and [`neon mcp`](https://neon.com/docs/cli/mcp) to set up just the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server). [`neon init`](https://neon.com/docs/cli/init) is the broader onboarding command that sets these up together.
+Use [`neon plugins`](https://neon.com/docs/cli/plugins) for agents that support plugin marketplaces, where the plugin bundles skills and MCP in one. For the full setup, use [`neon init`](https://neon.com/docs/cli/init); for skills or the MCP server on their own, use [`neon skills`](https://neon.com/docs/cli/skills) or [`neon mcp`](https://neon.com/docs/cli/mcp).
 
 `plugins` runs via `npx`, so it needs Node.js; without it the command stops with a message to install Node.js and retry.
 
@@ -24878,11 +25108,11 @@ neon plugins [options]
 
 ## Options
 
-| Option          | Description                                                                            | Type    | Default | Required |
-| --------------- | -------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker. Values listed below | array   | —       |    No    |
-| `--global`      | Install user-level. Default is project                                                 | boolean | `false` |    No    |
-| `--yes`, `-y`   | Skip prompts                                                                           | boolean | `false` |    No    |
+| Option          | Description                                                                                                                     | Type    | Default | Required |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker. Values listed below                                          | array   | —       |    No    |
+| `--global`      | Install user-level. Default is project                                                                                          | boolean | `false` |    No    |
+| `--yes`, `-y`   | Skip prompts. Detected agents (project folders, else the host CLI agent). --global uses installed apps, else the host CLI agent | boolean | `false` |    No    |
 
 ### Choosing agents
 
@@ -25217,6 +25447,7 @@ neon projects create [options]
 | `--psql`                     | Connect to a new project via psql                                                                                                                                                          | boolean | `false`            |    No    |
 | `--region-id`                | The region ID. Possible values: aws-us-west-2, aws-ap-southeast-1, aws-ap-southeast-2, aws-eu-central-1, aws-us-east-2, aws-us-east-1, azure-eastus2                                       | string  | —                  |    No    |
 | `--role`                     | The role name. If not specified, the default role name, `{database_name}_owner`, will be used.                                                                                             | string  | \{database}\_owner |    No    |
+| `--secrets`                  | Include connection credentials in command output. Use --no-secrets to omit them                                                                                                            | boolean | `true`             |    No    |
 | `--set-context`              | Set the current context to the new project                                                                                                                                                 | boolean | `false`            |    No    |
 
 The `--region-id` value defaults to `aws-us-east-2` if not specified. `--block-public-connections` and `--block-vpc-connections` are part of [Private Networking](https://neon.com/docs/guides/neon-private-networking); `--hipaa` enables [HIPAA compliance](https://neon.com/docs/security/hipaa) for the project.
@@ -25258,6 +25489,14 @@ Create a project with a specific Postgres major version:
 ```bash
 neon projects create --name mynewproject --pg-version 17
 ```
+
+Omit the connection string from the output, keeping it out of terminal scrollback and CI logs:
+
+```bash
+neon projects create --name mynewproject --no-secrets
+```
+
+Needs Neon CLI 4.9.0+; older versions ignore `--no-secrets` and still print the connection string.
 
 - Create a project with `--output json`, which returns the full project response data and is the recommended format for scripts and agents. The output below was captured on an earlier CLI version; new projects report `"pg_version": 18`.
 
@@ -26020,7 +26259,7 @@ With no flags it runs an interactive walkthrough: pick the agents, then the skil
 
 **skills vs init:**
 
-[`neon init`](https://neon.com/docs/cli/init) is the broader onboarding command: it sets up the Neon MCP Server along with agent skills and editor config. Use `neon skills` when you only want to install or update agent skills, and [`neon mcp`](https://neon.com/docs/cli/mcp) when you only want the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server).
+For the full setup, use [`neon init`](https://neon.com/docs/cli/init). For just one piece: `neon skills` (skills), [`neon plugins`](https://neon.com/docs/cli/plugins) (skills and MCP), or [`neon mcp`](https://neon.com/docs/cli/mcp) (MCP server).
 
 `skills` runs via `npx`, so it needs Node.js 22.20.0+; older or missing Node stops the command with an upgrade message.
 
@@ -26032,12 +26271,12 @@ Subcommands: [update](https://neon.com/docs/cli/skills#update)
 neon skills [command] [options]
 ```
 
-| Option          | Description                                                                            | Type    | Default | Required |
-| --------------- | -------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker. Values listed below | array   | —       |    No    |
-| `--global`      | Install user-level skills (skills CLI -g). Default is this directory                   | boolean | `false` |    No    |
-| `--skill`, `-s` | Skill to install (repeatable). Skips the skill picker. Values listed below             | array   | —       |    No    |
-| `--yes`, `-y`   | Skip prompts                                                                           | boolean | `false` |    No    |
+| Option          | Description                                                                                                                     | Type    | Default | Required |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker. Values listed below                                          | array   | —       |    No    |
+| `--global`      | Install user-level skills (skills CLI -g). Default is this directory                                                            | boolean | `false` |    No    |
+| `--skill`, `-s` | Skill to install (repeatable). Skips the skill picker. Does not select agents. Values listed below                              | array   | —       |    No    |
+| `--yes`, `-y`   | Skip prompts. Detected agents (project folders, else the host CLI agent). --global uses installed apps, else the host CLI agent | boolean | `false` |    No    |
 
 ### Choosing agents
 
@@ -26055,7 +26294,6 @@ The available skills are:
 
 | Skill                            | Installed by default |
 | -------------------------------- | -------------------- |
-| `claimable-postgres`             | Yes                  |
 | `neon`                           | Yes                  |
 | `neon-ai-gateway`                | Yes                  |
 | `neon-functions`                 | Yes                  |
@@ -26115,12 +26353,12 @@ Updates every skill installed in the current directory to its latest version, or
 neon skills update [options]
 ```
 
-| Option          | Description                                                                            | Type    | Default | Required |
-| --------------- | -------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--global`      | Update user-level skills (skills CLI -g). Default is this directory                    | boolean | `false` |    No    |
-| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker. Values listed below | array   | —       |    No    |
-| `--skill`, `-s` | Skill to install (repeatable). Skips the skill picker. Values listed below             | array   | —       |    No    |
-| `--yes`, `-y`   | Skip prompts                                                                           | boolean | `false` |    No    |
+| Option          | Description                                                                                        | Type    | Default | Required |
+| --------------- | -------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--global`      | Update user-level skills (skills CLI -g). Default is this directory                                | boolean | `false` |    No    |
+| `--yes`, `-y`   | Skip the confirm prompt                                                                            | boolean | `false` |    No    |
+| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker. Values listed below             | array   | —       |    No    |
+| `--skill`, `-s` | Skill to install (repeatable). Skips the skill picker. Does not select agents. Values listed below | array   | —       |    No    |
 
 Update skills in the current directory without prompting:
 
@@ -30432,7 +30670,7 @@ That's a deployed function in three commands. The rest of this guide builds a mo
 - The latest `neon`, installed and authenticated. Functions commands are new and change often, so upgrade before you start (`npm install -g neon@latest`).
 - Node.js 20 or later. Deployed functions run on Node.js 24, so use 24 locally for the closest match.
 
-`neon init --preview` is designed to be run by your AI coding assistant. It outputs structured instructions that guide the agent through setup. To install the Neon Platform (`neon`) and Neon Functions skills separately with the [Neon CLI](https://neon.com/docs/cli):
+To give your AI coding assistant context for Neon and Functions, install the [agent skills](https://neon.com/docs/ai/agent-skills) with the [Neon CLI](https://neon.com/docs/cli):
 
 ```bash
 neon skills -s neon -s neon-functions
@@ -30450,15 +30688,15 @@ mkdir my-function && cd my-function
 
 Then link the directory to your Neon project. There are two ways:
 
-**With an AI coding assistant.** Ask it to run `neon init --preview`. The command returns structured JSON instructions for the full setup: MCP server and agent skills, optional template scaffolding, project linking, and env var pull. Sign-in opens a browser window, and the agent pauses while you complete the OAuth step.
+**With an AI coding assistant.** Ask your assistant to set up Neon for the project. Using the skills you installed, it links your project (creating one if you need it) with `neon link` and pulls your environment variables. Sign-in opens a browser window, so complete the OAuth step when prompted.
 
-**By hand.** Run `neon link` and select your project and branch when prompted (or pass `--project-id`). This writes a `.neon` file and pulls the branch's environment variables into a local `.env`.
+**By hand.** Run `neon link` and select your project and branch when prompted (or pass `--project-id`). This writes a `.neon` file and pulls the branch's environment variables into a local `.env` file (or `.env.local` if there's no `.env` yet).
 
 ```bash
 neon link
 ```
 
-To start from a working example instead, run `neon bootstrap`. It scaffolds a starter template and links it. Available templates: Hono API, AI SDK agent, Mastra agent, MCP server, Realtime chat (Next.js + WebSockets), and Realtime counter (TanStack Router + SSE), all on Neon Functions. This guide builds the function by hand.
+To start from a working example instead, run `neon bootstrap`. It scaffolds a starter template, installs dependencies, and links it. Templates include a REST API, GraphQL API, tRPC API, MCP server, realtime chat and counter, AI agents, and Discord, Telegram, and WhatsApp bots. Run `neon bootstrap --list-templates` for the full catalog. This guide builds the function by hand.
 
 ## Define your function
 
@@ -60154,7 +60392,7 @@ The beta services live under `preview` while they're in beta; that key goes away
 
 Two ways to get it running:
 
-**Let your AI editor build it.** Copy the prompt at the top of this page and hand it to your assistant. It runs `neon init` to configure the MCP server and install the core skill, adds the Object Storage, Functions, and AI Gateway skills with `neon skills`, then builds against each capability's current API.
+**Let your AI editor build it.** Copy the prompt at the top of this page and hand it to your assistant. It installs the core skill, links a Neon project, adds the Object Storage, Functions, and AI Gateway skills with `neon skills`, then builds against each capability's current API.
 
 **Start from a template.** `neon bootstrap` scaffolds a ready-to-run starter, installs dependencies, and links a project:
 
@@ -62309,13 +62547,13 @@ Lakebase Postgres is available via Neon and via Databricks. For what's the same 
 
 --- [Document source](https://neon.com/docs/get-started/with-an-agent.md) ---
 
-> Summary: `neon init` sets up Neon for your project through your AI coding assistant: it installs the Neon CLI, signs you in, installs agent skills, and can configure the MCP server, so your agent can create a project and connect your app.
+> Summary: Set up Neon for your project with your AI coding assistant. Let your agent install the Neon tooling and connect your project, or run `neon init` yourself in a terminal, then ask your agent to get started.
 
 # Get started with your AI agent
 
 Set up Neon in your project using your AI coding assistant
 
-Set up Neon for your project without leaving your editor. `neon init` installs the Neon CLI, signs you in, installs Neon-specific agent skills, and can set up the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server). Together these give your agent what it needs to create a Neon project, connect your app, and use Neon features as you build. For Cursor and VS Code, it also installs the Neon Local Connect extension for in-editor schema browsing.
+Set up Neon for your project without leaving your editor. You have two options: let your AI coding assistant install the Neon tooling and connect your project for you, or run `neon init` yourself in a terminal and then hand off to your agent. Either way, your agent ends up with the [agent skills](https://neon.com/docs/ai/agent-skills) and [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server) it needs to create a Neon project, connect your app, and use Neon features as you build.
 
 New to the platform? The [backend overview](https://neon.com/docs/get-started/backend-overview) shows how Postgres, Managed Better Auth, Object Storage, Functions, and the AI Gateway fit together. For a hands-on walkthrough, see [Build a full backend](https://neon.com/docs/get-started/full-backend-quickstart).
 
@@ -62328,19 +62566,21 @@ You'll need:
 
 ## Let your agent set it up
 
-The fastest path is to let your agent do the whole setup, from running `init` to proving the connection works. Paste this prompt into your editor's AI chat:
+The fastest path is to let your agent do the whole setup, from installing the tooling to proving the connection works. Paste this prompt into your editor's AI chat:
 
 ```text filename="AI assistant prompt"
 Help me get set up with Neon, based on my project:
 
-1. Run `npx neon@latest init --agent` and work through the steps it returns to install the CLI, sign in, and connect my project. If it opens a browser for sign-in, ask me to confirm before continuing.
-2. Run it through verification and show me the real query result, not just "setup complete." Give me a command to re-check it myself (e.g. `neon psql`), and never print secrets.
-3. Then suggest next steps for my project, such as a schema or migrations, branching for previews, or Neon's other services (Object Storage, Functions, Managed Better Auth, AI Gateway).
+1. Install or upgrade the Neon CLI: `npm install -g neon@latest`.
+2. Install the Neon agent tooling for your editor, replacing `<agent>` with your editor id (for example `cursor`, `claude-code`, or `codex`): run `neon plugins --agent <agent>` (recommended, installs the Neon plugin), or `neon skills --agent <agent> -s neon -s neon-postgres`. If sign-in opens a browser, ask me to confirm before continuing, and never print secrets.
+3. Using the installed Neon skill, create a Neon project (or connect an existing one), link it, and pull my DATABASE_URL into my env file. Add a Postgres driver for my stack.
+4. Prove it works: run a real query and show me the result, not just "setup complete." Give me a command to re-check it myself (e.g. `neon psql`).
+5. Then suggest next steps, such as a schema or migrations, branching for previews, or Neon's other services (Object Storage, Functions, Managed Better Auth, AI Gateway).
 ```
 
-Your agent installs the Neon CLI and runs its setup for you, so there's no switching between the terminal and the chat. It:
+Your agent installs the Neon CLI and tooling and does the setup for you, so there's no switching between the terminal and the chat. It:
 
-- Signs you in to Neon (finish the browser step if it prompts), creates an API key, optionally configures the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server), and installs [agent skills](https://neon.com/docs/ai/agent-skills)
+- Installs either the Neon plugin, or [agent skills](https://neon.com/docs/ai/agent-skills) and the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server), for your editor, and signs you in (finish the browser step if it prompts)
 - Creates or connects a Neon project, writes your `DATABASE_URL` into your env file, and adds a Postgres driver for your stack
 - Uses the connection and shows you a real result so you can see it's working
 
@@ -62358,11 +62598,9 @@ From your project root, run:
 npx neon@latest init
 ```
 
-**Note:** `neon init` installs or updates the Neon CLI and sets up your editor tooling: authentication, agent skills, and optionally the MCP server. It doesn't create a Neon project, though; your agent does that when you ask it to get started.
+`neon init` is interactive, so run it in a terminal. It asks how your coding agents should get Neon (either a plugin, or skills and the MCP server), links a Neon project, and writes a `neon.ts` config. In an empty directory, it scaffolds a starter template first. For the full flow, and a non-interactive setup for agents and CI, see the [`neon init` reference](https://neon.com/docs/cli/init).
 
-The wizard asks which editor to configure, then signs you in, creates an API key, installs [agent skills](https://neon.com/docs/ai/agent-skills), optionally configures the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server), and (for Cursor and VS Code) installs the [Neon Local Connect extension](https://marketplace.visualstudio.com/items?itemName=databricks.neon-local-connect). Run it from your project root so the skills land in the right place. For details and manual setup, see the [`neon init` reference](https://neon.com/docs/cli/init).
-
-If you only want the MCP server, without the skills or extension, run [`npx neon@latest mcp`](https://neon.com/docs/cli/mcp) instead. If you only want agent skills, run [`npx neon@latest skills`](https://neon.com/docs/cli/skills).
+If you only want the MCP server, without the skills or plugin, run [`npx neon@latest mcp`](https://neon.com/docs/cli/mcp) instead. If you only want agent skills, run [`npx neon@latest skills`](https://neon.com/docs/cli/skills).
 
 ## Tell your agent
 
@@ -69835,6 +70073,8 @@ connection_uris
 ```
 
 **Tip:** The Neon CLI provides a `neon connection-string` command you can use to extract a connection uri programmatically. See [Neon CLI commands — connection-string](https://neon.com/docs/cli/connection-string).
+
+Pass `--no-secrets` (Neon CLI 4.9.0+) to keep the connection string out of terminal scrollback and CI logs; older versions ignore it and still print it.
 
 ## Create a branch from a non-default parent
 
@@ -113665,7 +113905,7 @@ We're accelerating work on improving and scaling the core database on Neon as we
 - **Agent Skills**: Install [Agent Skills](https://github.com/neondatabase/agent-skills) to teach your AI assistant about Neon best practices. The Neon MCP Server can also provision the Data API with optional Managed Better Auth or external auth. [Learn more](https://neon.com/docs/ai/connect-mcp-clients-to-neon).
 - **Managed Better Auth on Vercel previews**: Both Vercel-managed and Neon-managed integrations now automatically provision Managed Better Auth on preview branches when enabled on production, so preview deployments get the right auth environment variables. [Learn more](https://neon.com/docs/auth/overview).
 - **One-command setup for MCP and VS Code extension**: `npx neon@latest init` now configures both the Neon MCP Server and the Neon VS Code Extension in one step for Cursor or VS Code. [Learn more](https://neon.com/docs/ai/connect-mcp-clients-to-neon).
-- **Expanded `neon init`**: The **init** wizard configures MCP and agent skills for many more coding assistants (for example Claude Desktop, Codex, Zed, Gemini CLI, and GitHub Copilot CLI), not only Cursor, VS Code, and Claude Code. [Learn more](https://neon.com/docs/cli/init).
+- **Expanded `neon init`**: [`neon init`](https://neon.com/docs/cli/init) sets up your project with agent tooling (either a plugin, or skills and the MCP server) for many more coding assistants (for example Claude Desktop, Codex, Zed, Gemini CLI, and GitHub Copilot CLI), not only Cursor, VS Code, and Claude Code. [Learn more](https://neon.com/docs/cli/init).
 - **New Neon VS Code extension**: A revamped extension that replaces the previous Neon Local extension. It uses direct Neon connection strings and brings schema browsing, SQL editing, and table data into your IDE, plus automatic MCP Server configuration. Available for VS Code, Cursor, Windsurf, and other compatible editors. [Learn more](https://neon.com/docs/local/vscode-extension).
 - **Connection pooling metrics**: Pooler client and server connection graphs are now available in the Neon Console and via OpenTelemetry and Datadog integrations, so you can monitor PgBouncer usage and tune pool size. [Learn more](https://neon.com/docs/introduction/monitoring-page).
 - **GitHub Action support for Managed Better Auth and Data API**: The Neon Create Branch GitHub Action now supports `get_auth_url` and `get_data_api_url` outputs, so you can run integration tests against isolated branch environments with the same auth and data access patterns as production. [Learn more](https://github.com/marketplace/actions/neon-create-branch-github-action).
@@ -122162,14 +122402,14 @@ Neon does not support skipping minor releases or downgrading to a previous minor
 
 #### Recent minor version rollouts
 
-The table below shows when recent Postgres releases became available on Neon.
+The table below shows when recent Postgres releases became available on Neon. Each version links to its PostgreSQL release notes, which list the bug fixes and CVE patches included in that minor release.
 
-| Postgres release date | Versions in the release          | First available on Neon | Time to availability |
-| --------------------- | -------------------------------- | ----------------------- | -------------------- |
-| 2026-08-13            | 18.6, 17.11, 16.15, 15.19, 14.24 | 2026-08-18              | 5 days               |
-| 2026-05-14            | 18.4, 17.10, 16.14, 15.18, 14.23 | 2026-05-19              | 5 days               |
-| 2026-02-12            | 18.2, 17.8, 16.12, 15.16, 14.21  | 2026-02-13              | 1 day                |
-| 2025-11-13            | 18.1, 17.7, 16.11, 15.15, 14.20  | 2025-12-03              | 20 days              |
+| Postgres release date | Versions in the release                                                                                                                                                                                                                                                                   | First available on Neon | Time to availability |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | -------------------- |
+| 2026-08-13            | [18.6](https://www.postgresql.org/docs/release/18.6/), [17.11](https://www.postgresql.org/docs/release/17.11/), [16.15](https://www.postgresql.org/docs/release/16.15/), [15.19](https://www.postgresql.org/docs/release/15.19/), [14.24](https://www.postgresql.org/docs/release/14.24/) | 2026-08-18              | 5 days               |
+| 2026-05-14            | [18.4](https://www.postgresql.org/docs/release/18.4/), [17.10](https://www.postgresql.org/docs/release/17.10/), [16.14](https://www.postgresql.org/docs/release/16.14/), [15.18](https://www.postgresql.org/docs/release/15.18/), [14.23](https://www.postgresql.org/docs/release/14.23/) | 2026-05-19              | 5 days               |
+| 2026-02-12            | [18.2](https://www.postgresql.org/docs/release/18.2/), [17.8](https://www.postgresql.org/docs/release/17.8/), [16.12](https://www.postgresql.org/docs/release/16.12/), [15.16](https://www.postgresql.org/docs/release/15.16/), [14.21](https://www.postgresql.org/docs/release/14.21/)   | 2026-02-13              | 1 day                |
+| 2025-11-13            | [18.1](https://www.postgresql.org/docs/release/18.1/), [17.7](https://www.postgresql.org/docs/release/17.7/), [16.11](https://www.postgresql.org/docs/release/16.11/), [15.15](https://www.postgresql.org/docs/release/15.15/), [14.20](https://www.postgresql.org/docs/release/14.20/)   | 2025-12-03              | 20 days              |
 
 The **First available on Neon** date marks when a release first became available to run, not the point at which every compute is running it; each compute picks it up on the next restart, as described above.
 

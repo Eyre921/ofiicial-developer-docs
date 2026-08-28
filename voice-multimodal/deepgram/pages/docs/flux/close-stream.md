@@ -12,11 +12,13 @@ path: docs/flux/close-stream
 
 Streaming:Flux
 
-Use the `CloseStream` message to close the WebSocket stream. This forces the server to immediately process any unprocessed audio data and return the final transcription results.
+Use the `CloseStream` message to close the WebSocket stream. Flux decodes the audio it has already received — emitting the corresponding interim `Update` messages — and then closes the connection.
 
 ## Purpose
 
-In conversational audio processing, there are scenarios where you may need to force the server to close. Deepgram supports a `CloseStream` message to handle such situations. This message will send a shutdown command to the server instructing it to finish processing any cached data, send the response to the client, send a summary metadata object, and then terminate the WebSocket connection.
+In conversational audio processing, there are scenarios where you need to stop a stream and close the connection. The `CloseStream` message instructs the server to finish decoding the audio it has already received, emit the corresponding `Update` messages, and then terminate the WebSocket connection.
+
+`CloseStream` does not finalize the active turn. No `EndOfTurn` event is emitted, so the last message you receive is an interim `Update`, not a confirmed final transcript — treat the most recent `Update` as the final transcript for the stream. Flux does not emit a summary metadata object, and the server closes the connection without sending a WebSocket close status code.
 
 ## Example Payloads
 
@@ -28,18 +30,18 @@ To send the `CloseStream` message, you need to send the following JSON message t
 }
 ```
 
-Upon receiving the `CloseStream` message, the server will process all remaining audio data and return the following:
+Upon receiving `CloseStream`, the server emits `Update` messages for any audio it has already received, then closes the connection. A representative interim `Update`:
 
 ```json JSON
 {
 "type": "TurnInfo",         // Message type
 "request_id": "uuid",       // Unique identifier of the request (UUID format)
 "sequence_id": 0,           // Message sequence number, starts at 0 and increments for each server message
-"event": "Update|StartOfTurn|EagerEndOfTurn|TurnResumed|EndOfTurn", // Event type enum
+"event": "Update",          // Interim result — CloseStream does not emit an EndOfTurn
 "turn_index": 0,            // The index of the current turn
 "audio_window_start": 0.0,  // Start time in seconds of the transcribed audio range
 "audio_window_end": 0.0,    // End time in seconds of the transcribed audio range
-"transcript": "string",     // Current turn transcript
+"transcript": "string",     // Interim transcript — treat the latest as final
 "words": [...],             // Array of word objects
 "end_of_turn_confidence": 0.0 // Confidence score 0-1
 }
@@ -48,6 +50,7 @@ Upon receiving the `CloseStream` message, the server will process all remaining 
 ## Related Resources
 
 * [Configure](/docs/flux/configure) - Update stream configuration mid-stream
+* [Force End Turn](/docs/flux/force-end-turn) - End the current turn immediately from an external signal
 * [Getting Started with Flux](/docs/flux/quickstart) - Quickstart guide with basic configuration
 
 ---

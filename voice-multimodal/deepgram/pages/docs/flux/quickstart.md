@@ -67,11 +67,11 @@ Flux provides three key parameters to control end-of-turn detection behavior and
 
 ### End-of-Turn Detection Parameters
 
-| Parameter             | Range           | Default | Description                                                                                                                                                        |
-| --------------------- | --------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `eot_threshold`       | `0.5` - `0.9`   | `0.7`   | Confidence required to trigger an `EndOfTurn` event. Higher values = more reliable turn detection but slightly increased latency.                                  |
-| `eager_eot_threshold` | `0.3` - `0.9`   | *None*  | Confidence required to trigger an `EagerEndOfTurn` event. **Required** to enable early response generation. Lower values = earlier triggers but more false starts. |
-| `eot_timeout_ms`      | `500` - `60000` | `5000`  | Maximum milliseconds of silence before forcing an `EndOfTurn`, regardless of confidence.                                                                           |
+| Parameter             | Range           | Default | Description                                                                                                                                                                                                                                      |
+| --------------------- | --------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `eot_threshold`       | `0.5` - `1.0`   | `0.7`   | Confidence required to trigger an `EndOfTurn` event. Higher values = more reliable turn detection but slightly increased latency. Set to `1.0` to suppress natural end-of-turn and drive turns with [`ForceEndTurn`](/docs/flux/force-end-turn). |
+| `eager_eot_threshold` | `0.3` - `0.9`   | *None*  | Confidence required to trigger an `EagerEndOfTurn` event. **Required** to enable early response generation. Lower values = earlier triggers but more false starts.                                                                               |
+| `eot_timeout_ms`      | `500` - `60000` | `5000`  | Maximum milliseconds of silence before forcing an `EndOfTurn`, regardless of confidence.                                                                                                                                                         |
 
 ### When to Configure These Parameters
 
@@ -663,7 +663,7 @@ while ((bytesRead = await ffmpeg.StandardOutput.BaseStream.ReadAsync(buffer)) > 
     fluxClient.Send(buffer, bytesRead);
 }
 
-// Clean shutdown: CloseStream, flush the final turn, then tear down.
+// Clean shutdown: CloseStream, then tear down.
 await fluxClient.Stop();
 Library.Terminate();
 ```

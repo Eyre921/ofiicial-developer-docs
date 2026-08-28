@@ -43,6 +43,14 @@ Trigger DNS verification for a domain claim.
   );
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->domains->claims->verify(
+    'd91cd9bd-1176-453e-8fc1-35364d380206'
+  );
+  ```
+
   ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
   import resend
 

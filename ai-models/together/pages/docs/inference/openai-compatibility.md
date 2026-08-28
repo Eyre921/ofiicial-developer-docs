@@ -142,7 +142,7 @@ Together model IDs are namespaced (`openai/gpt-oss-20b`, `meta-llama/Llama-4-Mav
 
 * `usage` always includes `prompt_tokens`, `completion_tokens`, and `total_tokens`. Extra token counts vary in **location** by model, so read both shapes defensively:
 
-  * Reasoning models (for example `zai-org/GLM-5.2`, `deepseek-ai/DeepSeek-V4-Pro`, `Qwen/Qwen3.6-Plus`) nest them OpenAI-style: cached prompt tokens under `usage.prompt_tokens_details.cached_tokens` and reasoning tokens under `usage.completion_tokens_details.reasoning_tokens`.
+  * Reasoning models (for example `zai-org/GLM-5.2`, `deepseek-ai/DeepSeek-V4-Pro-0813`, `Qwen/Qwen3.6-Plus`) nest them OpenAI-style: cached prompt tokens under `usage.prompt_tokens_details.cached_tokens` and reasoning tokens under `usage.completion_tokens_details.reasoning_tokens`.
   * Some non-reasoning models (for example `meta-llama/Llama-3.3-70B-Instruct-Turbo`) return `cached_tokens` flat at the top level of `usage`, with no `*_details` objects.
 
   A client configured for only one shape will return `0` for all others (with no error message). Fall back across both locations, for example `(usage.prompt_tokens_details or {}).get("cached_tokens") or usage.get("cached_tokens", 0)`.

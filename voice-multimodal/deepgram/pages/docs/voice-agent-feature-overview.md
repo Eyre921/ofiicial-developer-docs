@@ -39,6 +39,7 @@ path: docs/voice-agent-feature-overview
 | [Update Prompt](/docs/voice-agent-update-prompt)               |
 | [Inject Agent Message](/docs/voice-agent-inject-agent-message) |
 | [Inject User](/docs/voice-agent-inject-user-message)           |
+| [Force End Turn](/docs/voice-agent-force-end-turn)             |
 | [Agent Keep Alive](/docs/agent-keep-alive)                     |
 
 ## Outputs: Server Events

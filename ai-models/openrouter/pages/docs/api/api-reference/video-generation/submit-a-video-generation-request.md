@@ -660,6 +660,9 @@ components:
         coreweave:
           additionalProperties: {}
           type: object
+        cosine:
+          additionalProperties: {}
+          type: object
         crofai:
           additionalProperties: {}
           type: object
@@ -844,6 +847,9 @@ components:
           additionalProperties: {}
           type: object
         octoai:
+          additionalProperties: {}
+          type: object
+        ollama:
           additionalProperties: {}
           type: object
         open-inference:

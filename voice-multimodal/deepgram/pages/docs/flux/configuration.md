@@ -16,12 +16,12 @@ Flux provides configurable parameters that control end-of-turn detection and lan
 
 Flux's behavior is controlled by the following key parameters:
 
-| Parameter             | Range                    | Default | Required       | Description                                                                                                   |
-| --------------------- | ------------------------ | ------- | -------------- | ------------------------------------------------------------------------------------------------------------- |
-| `eot_threshold`       | `0.5` - `0.9`            | `0.7`   | No             | Confidence threshold for triggering `EndOfTurn` events                                                        |
-| `eager_eot_threshold` | `0.3` - `0.9`            | *None*  | For eager mode | Confidence threshold for triggering `EagerEndOfTurn` events                                                   |
-| `eot_timeout_ms`      | `500` - `60000`          | `5000`  | No             | Maximum silence duration (ms) before forcing `EndOfTurn`                                                      |
-| `language_hint`       | Supported language codes | *None*  | No             | Bias `flux-general-multi` toward specific languages. See [Language Prompting](/docs/flux/language-prompting). |
+| Parameter             | Range                    | Default | Required       | Description                                                                                                                                                            |
+| --------------------- | ------------------------ | ------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `eot_threshold`       | `0.5` - `1.0`            | `0.7`   | No             | Confidence threshold for triggering `EndOfTurn` events. Set to `1.0` to suppress natural end-of-turn and drive turns with [`ForceEndTurn`](/docs/flux/force-end-turn). |
+| `eager_eot_threshold` | `0.3` - `0.9`            | *None*  | For eager mode | Confidence threshold for triggering `EagerEndOfTurn` events                                                                                                            |
+| `eot_timeout_ms`      | `500` - `60000`          | `5000`  | No             | Maximum silence duration (ms) before forcing `EndOfTurn`                                                                                                               |
+| `language_hint`       | Supported language codes | *None*  | No             | Bias `flux-general-multi` toward specific languages. See [Language Prompting](/docs/flux/language-prompting).                                                          |
 
 ## Parameter Details
 
@@ -29,7 +29,7 @@ Flux's behavior is controlled by the following key parameters:
 
 Confidence threshold required to trigger an `EndOfTurn` event, signaling that the user has finished speaking.
 
-**Valid Values:** `0.5` to `0.9`
+**Valid Values:** `0.5` to `1.0`
 **Default:** `0.7`
 **Type:** Float (passed as string in URL or SDK)
 
@@ -37,6 +37,7 @@ Confidence threshold required to trigger an `EndOfTurn` event, signaling that th
 
 * **Higher values** (e.g., `0.8` - `0.9`) = Higher certainty required before ending a turn, fewer false positives, slightly increased latency
 * **Lower values** (e.g., `0.5` - `0.7`) = Lower certainty required before ending a turn, faster responses, more false positives
+* **`1.0`** = Fully suppresses natural `EndOfTurn` detection. You take ownership of turn endings with [`ForceEndTurn`](/docs/flux/force-end-turn); the `eot_timeout_ms` backstop still applies. See [Bring Your Own Turn Detection](/docs/flux/own-turn-detection).
 
 **Example:**
 

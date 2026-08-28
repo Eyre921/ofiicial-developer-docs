@@ -4,6 +4,16 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="August 27, 2026">
+  ### Fetch saved database views in Notion MCP
+
+  Notion MCP's [`notion-fetch`](/guides/mcp/mcp-supported-tools) now accepts `view://` URLs to read saved view settings. Tool response text now names `fetch` instead of `view`, without changing page content.
+
+  ### Custom Agent session tools in Notion MCP
+
+  Notion MCP now supports finding and working with Custom Agent sessions. The new tools can query or search sessions, start a session, send a follow-up message, check or wait for its status, stop a run, and list or read session events. See [Supported tools](/guides/mcp/mcp-supported-tools) for the full tool list and examples.
+</Update>
+
 <Update label="August 25, 2026">
   ### Atomic batched content updates in Notion MCP
 
@@ -63,7 +73,7 @@ path: page/changelog
 
   ### Readable formula expressions in data source schemas
 
-  [Retrieve a data source](/reference/retrieve-a-data-source) is beginning to return formula expressions using the same `prop("Property Name")` syntax you write. This change is rolling out gradually over the coming days; expressions that can't be rendered faithfully in this syntax continue to use the internal property reference syntax.
+  [Retrieve a data source](/reference/retrieve-a-data-source) now returns formula expressions using the same `prop("Property Name")` syntax you write. Expressions that can't be rendered faithfully in this syntax continue to use the internal property reference syntax.
 
   ### Admin API reference for agents
 

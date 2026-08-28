@@ -58,20 +58,21 @@ Projects have two roles: **admin** and **editor**.
 
 ### Project permissions
 
-| Scope                        | Admin | Editor |
-| ---------------------------- | ----- | ------ |
-| Project settings: Read       | Yes   | Yes    |
-| Project settings: Write      | Yes   | No     |
-| Project visibility: Read     | Yes   | Yes    |
-| Project visibility: Change   | Yes   | No     |
-| Project cost analytics: Read | Yes   | Yes    |
-| API keys: Read               | Yes   | Yes    |
-| API keys: Create             | Yes   | Yes    |
-| API keys: Revoke             | Yes   | Yes    |
-| Collaborators: Read          | Yes   | Yes    |
-| Collaborators: Add           | Yes   | No     |
-| Collaborators: Remove        | Yes   | No     |
-| Collaborators: Manage roles  | Yes   | No     |
+| Scope                              | Admin | Editor |
+| ---------------------------------- | ----- | ------ |
+| Project settings: Read             | Yes   | Yes    |
+| Project settings: Write            | Yes   | No     |
+| Project visibility: Read           | Yes   | Yes    |
+| Project visibility: Change         | Yes   | No     |
+| Project cost analytics: Read       | Yes   | Yes    |
+| API keys: Read                     | Yes   | Yes    |
+| API keys: Create                   | Yes   | Yes    |
+| API keys: Revoke                   | Yes   | Yes    |
+| API keys: Regenerate (legacy only) | Yes   | Yes    |
+| Collaborators: Read                | Yes   | Yes    |
+| Collaborators: Add                 | Yes   | No     |
+| Collaborators: Remove              | Yes   | No     |
+| Collaborators: Manage roles        | Yes   | No     |
 
 Changing a project's visibility between open, closed, and private takes effect immediately and keeps the project's existing collaborators.
 
@@ -114,13 +115,16 @@ The control plane covers infrastructure operations: creating, modifying, and del
 
 The data plane covers using clusters for actual work: running jobs, accessing nodes, executing workloads.
 
-| Action                             | Admin | Editor |
-| ---------------------------------- | ----- | ------ |
-| SSH into cluster nodes             | Yes   | Yes    |
-| Run Kubernetes workloads (kubectl) | Yes   | Yes    |
-| Access Kubernetes Dashboard        | Yes   | Yes    |
-| Submit Slurm jobs                  | Yes   | Yes    |
-| Read and write to volumes          | Yes   | Yes    |
+| Action                                      | Admin | Editor |
+| ------------------------------------------- | ----- | ------ |
+| SSH into cluster nodes                      | Yes   | Yes    |
+| Run Kubernetes workloads (kubectl)          | Yes   | Yes    |
+| Download cluster kubeconfig (OIDC disabled) | Yes   | Yes    |
+| Download admin kubeconfig (OIDC enabled)    | Yes   | No     |
+| Download OIDC kubeconfig (OIDC enabled)     | Yes   | Yes    |
+| Access Kubernetes Dashboard                 | Yes   | Yes    |
+| Submit Slurm jobs                           | Yes   | Yes    |
+| Read and write to volumes                   | Yes   | Yes    |
 
 <Info>
   **Control plane vs data plane:** Think of the control plane as "managing the infrastructure" and the data plane as "using the infrastructure." Editors have full access to use clusters for their work. Their only restriction is that they cannot create, delete, or resize clusters.

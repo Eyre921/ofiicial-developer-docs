@@ -29,7 +29,17 @@ Admins in paid tier organizations can invite members by email. Here is how:
 3. Enter the user's email address.
 4. Select **Send Invitation**.
 
-Invitations expire after **7 days**. The recipient will receive an email with a link to accept. A Together account will be created when they accept. If the user already has an existing Together account, [contact support](https://portal.usepylon.com/together-ai/forms/support-request) for assistance migrating it to your organization.
+Invitations expire after **7 days**. The recipient receives an email with a link that opens the [**Invitations**](https://api.together.ai/invitations) page, where they can accept or decline. Clicking the link never accepts on its own. New users create a Together account when they sign in from the link. Existing users can accept directly, or [switch organizations](#switching-organizations) if they already belong to one.
+
+### Switching organizations
+
+You can only belong to one organization at a time, so accepting an invitation moves you out of your current organization. What that takes depends on your relationship to it:
+
+* **If you are not its billing owner:** You can accept right away. Your current organization continues without you.
+* **If you are its billing owner and only member:** Accepting deletes your current organization. Before you can accept, the organization must have no [outstanding balance](/docs/billing-troubleshooting) and no remaining [prepaid credits](/docs/billing-credits). Use or transfer any remaining credits first.
+* **If you are its billing owner and it has other members:** [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) to transfer billing ownership before you can move.
+
+The [Invitations](https://api.together.ai/invitations) page tells you which of these applies.
 
 ### Removing members
 

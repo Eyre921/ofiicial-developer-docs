@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 313 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 314 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -88,6 +88,7 @@
 - `docs/deployment/dev-branches` — [Development branches](pages/docs/deployment/dev-branches.md) · [原文](https://trigger.dev/docs/deployment/dev-branches)
 - `docs/deployment/overview` — [Deployment](pages/docs/deployment/overview.md) · [原文](https://trigger.dev/docs/deployment/overview)
 - `docs/deployment/preview-branches` — [Preview branches](pages/docs/deployment/preview-branches.md) · [原文](https://trigger.dev/docs/deployment/preview-branches)
+- `docs/deployment/version-skew-protection` — [Version skew protection](pages/docs/deployment/version-skew-protection.md) · [原文](https://trigger.dev/docs/deployment/version-skew-protection)
 - `docs/errors-retrying` — [Errors & Retrying](pages/docs/errors-retrying.md) · [原文](https://trigger.dev/docs/errors-retrying)
 - `docs/github-actions` — [CI / GitHub Actions](pages/docs/github-actions.md) · [原文](https://trigger.dev/docs/github-actions)
 - `docs/github-integration` — [GitHub integration](pages/docs/github-integration.md) · [原文](https://trigger.dev/docs/github-integration)

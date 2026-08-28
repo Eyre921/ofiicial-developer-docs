@@ -22,7 +22,7 @@ Create independent API keys for separate use cases, systems, or workloads. For e
   </Step>
 
   <Step title="Create the key">
-    Select **Create API Key**, give it a name and an optional expiration date, then select **Create**.
+    Select **Create API Key** and enter a name. To make the key expire automatically, select **Set an expiration date** and choose a preset or custom date. Then select **Create**.
   </Step>
 
   <Step title="Copy the key">
@@ -37,7 +37,7 @@ Create independent API keys for separate use cases, systems, or workloads. For e
 ## Best practices
 
 * **Name your keys descriptively** (for example, `prod-inference`, `ci-pipeline`, `dev-local`) so you can identify and rotate them.
-* **Set expiration dates** for keys used in temporary or testing contexts. To set the expiration date, select **the three-dot menu** next to the key and select **Set expiration**.
+* **Set expiration dates** for keys used in temporary or testing contexts. Select **Set an expiration date** when creating a key, or **Set expiration** in the three-dot menu next to an existing key. To keep a key that's scheduled to expire, select **Cancel expiration** from the same menu.
 * **Rotate keys regularly** and revoke any that are no longer in use.
 * **Never commit keys to source control.** Use environment variables or a secrets manager.
 
@@ -101,11 +101,29 @@ Use API key IDs to segment usage and cost by key and workload. The `api_key_id` 
 
 **No per-key usage limits:** You can't cap spend or rate-limit individual API keys. Usage limits apply at the organization level.
 
+## Vercel integration
+
+When you connect a Vercel project from [Integrations settings](https://api.together.ai/settings/integrations), each linked Vercel project gets its own dedicated API key. Together creates the key in your organization's default project and sets it as the `TOGETHER_API_KEY` environment variable in the Vercel project.
+
+Manage or revoke these keys from the default project's [API keys settings](https://api.together.ai/settings/projects/~current/api-keys), like any other key. Disconnecting a Vercel project removes the environment variable from Vercel but doesn't revoke the key.
+
+<Note>
+  This is the Together console Vercel integration. For the npm AI SDK provider, see [Vercel AI SDK](/docs/using-together-with-vercels-ai-sdk).
+</Note>
+
 ## Legacy API keys
 
-Your organization may have a legacy API key scoped to its default project. Only the organization owner can access and manage it, in [organization settings](https://api.together.ai/settings/organization/~current) under **Manage Account**.
+Your organization may have a legacy API key scoped to its default project. It appears in that project's [API keys settings](https://api.together.ai/settings/projects/~current/api-keys) with a **Deprecated** badge.
 
 Legacy keys are deprecated, and you should **avoid using them in production.** These keys can't be scoped to a specific project or workload, and can't be revoked (only regenerated if compromised). Use [project-scoped API keys](#create-an-api-key) instead.
+
+### Regenerate a legacy key
+
+If a legacy key is compromised, any project admin or editor can rotate it. In the project's [API keys settings](https://api.together.ai/settings/projects/~current/api-keys), open the three-dot menu on the key's row, select **Regenerate legacy key**, and confirm.
+
+<Warning>
+  Regenerating a legacy key invalidates the current key immediately, and the new key is shown only once. Copy it right away and update every application that used the old key.
+</Warning>
 
 ## Related resources
 

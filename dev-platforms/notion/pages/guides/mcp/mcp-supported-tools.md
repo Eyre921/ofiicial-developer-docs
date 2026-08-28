@@ -33,7 +33,9 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Fetch Notion content">
     `notion-fetch`
 
-    Retrieves content from a Notion page, database, or data source by its URL or ID. You can pass a data source ID (from `collection://...` tags in database responses) to fetch details about that specific data source, including its schema and properties. When fetching a database, the response includes available templates for each data source, which can be used with the create-pages and update-page tools.
+    Retrieves content from a Notion page, database, data source, or saved database view by its URL or ID. You can pass a data source ID (from `collection://...` tags in database responses) to fetch details about that specific data source, including its schema and properties. When fetching a database, the response includes available templates for each data source, which can be used with the create-pages and update-page tools.
+
+    Pass a `view://` URL from a database response to read a saved view's filters, sorts, and display settings. A database URL with a `?v=` parameter still returns the database. To read the rows shown by a view, use `notion-query-data-sources` with `mode: "view"`.
 
     Pass the special id `self` to retrieve the connected workspace and user identity instead of an entity. The response includes a `self` object with the workspace's ID and name, and the authenticated user's ID, name, type, and email — useful for labeling a connection after OAuth.
 
@@ -45,6 +47,7 @@ An MCP client can call several tools in one task. For example, it can search for
 
     * "What product requirements still need to be implemented from this ticket `https://notion.com/page-url`?"
     * "Fetch the data source `collection://f336d0bc-b841-465b-8045-024475c079dd` to see its schema"
+    * "Fetch the view `view://8ac3f3d0-1f2b-4c7e-9d51-4b0c0a9f2e77` to see how it's filtered and sorted"
     * "Fetch the bug tracking database so I can see the available templates"
     * "Fetch `self` to see which workspace and user this connection is for"
   </Accordion>
@@ -251,6 +254,37 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Find my meeting notes from this week"
     * "What were the action items from my sprint planning meetings?"
     * "Show my 1:1 meeting notes with Alice"
+  </Accordion>
+
+  <Accordion title="Work with Custom Agent sessions">
+    Use `notion-list-agents` to browse available Custom Agents. Use
+    `notion-search-agents` to get the Custom Agent URL needed to start a
+    session. Then use these tools to find sessions, start a session, send
+    follow-up messages, wait for a reply, stop a run, and read session events:
+
+    * `notion-query-sessions`
+    * `notion-search-sessions`
+    * `notion-spawn-session`
+    * `notion-get-session-status`
+    * `notion-wait-session`
+    * `notion-stop-session`
+    * `notion-send-message-to-session`
+    * `notion-list-session-events`
+    * `notion-read-session-event`
+
+    Search results include up to 20 matches. Each title is limited to 150
+    characters, and each matching text span is limited to 300 characters.
+
+    <Note>
+      These tools require access to Custom Agents and may not appear until they
+      are enabled for your workspace.
+    </Note>
+
+    **Example prompts:**
+
+    * "Ask our Support Agent to summarize this customer issue"
+    * "Wait for the agent session to finish, then show me its answer"
+    * "Search my past agent sessions for the launch decision"
   </Accordion>
 
   <Accordion title="Add a comment">

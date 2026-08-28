@@ -103,7 +103,7 @@ Creating a job returns a `workflow_id` and a `pending` status. The job then move
     { "status": "running", "message": "Job status updated", "timestamp": "2025-06-30T12:51:02.439097636Z" },
     { "status": "completed", "message": "Job status updated", "timestamp": "2025-06-30T12:51:57.261327077Z" }
   ],
-  "parameters": { "judge": { "model": "deepseek-ai/DeepSeek-V4-Pro", "model_source": "serverless", "system_template": "..." }, "model_a": "response_a", "model_b": "response_b", "input_data_file_path": "file-64febadc-ef84-415d-aabe-1e4e6a5fd9ce" },
+  "parameters": { "judge": { "model": "openai/gpt-oss-120b", "model_source": "serverless", "system_template": "..." }, "model_a": "response_a", "model_b": "response_b", "input_data_file_path": "file-64febadc-ef84-415d-aabe-1e4e6a5fd9ce" },
   "created_at": "2025-06-30T12:50:40.723521Z",
   "updated_at": "2025-06-30T12:51:57.261342Z",
   "results": {

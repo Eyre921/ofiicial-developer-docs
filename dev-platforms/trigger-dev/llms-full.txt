@@ -3062,7 +3062,7 @@ type ChatTaskWirePayload<TMessage extends UIMessage = UIMessage, TMetadata = unk
 ```
 
 <Note>
-  **`metadata` is the wire envelope for `clientData`.** The agent's `clientData` (typed via `chat.withClientData({ schema })`) is read from this field at run boot. If the agent declares e.g. `{ userId: string, model?: string }`, then every `kind: "message"` payload — and the `triggerConfig.basePayload` you sent at session create — must carry a matching `metadata.userId`. The agent rejects messages whose metadata fails schema validation.
+  **`metadata` is the wire envelope for `clientData`.** The agent's `clientData` (typed via `chat.withClientData({ schema })`) is read from this field at run boot. If the agent declares e.g. `{ userId: string, model?: string }`, then the `triggerConfig.basePayload` you sent at session create and every non-close `kind: "message"` payload must carry a matching `metadata.userId`. Invalid metadata is not passed to agent code. Async reads produce an error chunk followed by `turn-complete`; raw `chat.messages.on()` subscriptions use `onClientDataValidationError` and the task log so they do not end an active response.
 </Note>
 
 ### Sending a message
@@ -3123,7 +3123,9 @@ Custom actions (undo, rollback, edit) ride on the same `.in` channel using `kind
 }
 ```
 
-Actions wake the agent from suspension (same as messages) and fire the `onAction` hook — they are not turns, so `run()` and turn lifecycle hooks do not fire. If `onAction` returns a `StreamTextResult`, the response is auto-piped to the frontend (but still no `run()` or `onTurnComplete`). The `action` payload is validated against the agent's `actionSchema`. If the agent didn't register an `actionSchema` (or your `action` payload doesn't match it), validation fails the same way `metadata` does — `.in/append` returns `200 OK`, but the run trace shows `chat turn N [ERROR]` and the wire emits a `turn-complete` control record with no other chunks. See [Actions](/docs/ai-chat/actions) for the agent-side schema setup.
+For managed `chat.agent()` tasks, actions wake the agent from suspension (same as messages) and fire the `onAction` hook — they are not turns, so `run()` and turn lifecycle hooks do not fire. If `onAction` returns a `StreamTextResult`, the response is auto-piped to the frontend (but still no `run()` or `onTurnComplete`). The `action` payload is validated against the agent's `actionSchema`. If the agent didn't register an `actionSchema` (or your `action` payload doesn't match it), validation fails the same way `metadata` does — `.in/append` returns `200 OK`, but the run trace shows `chat turn N [ERROR]` and the wire emits a `turn-complete` control record with no other chunks. See [Actions](/docs/ai-chat/actions) for the agent-side schema setup.
+
+Raw `chat.customAgent()` tasks receive `action` as `unknown` and must validate it in their own loop.
 
 ### Regenerating the last response
 
@@ -3247,8 +3249,11 @@ You can send messages while the agent is still streaming a response. These are *
 
 The wire format is identical to a normal `kind: "message"` send — same `.in` channel, single `message` field. The difference is timing. What happens depends on the agent's `pendingMessages` configuration:
 
-* **With `pendingMessages.shouldInject`**: the message is injected into the model's context at the next `prepareStep` boundary. The agent sees it and can adjust its behavior mid-response.
+* **With `pendingMessages.shouldInject` returning `true`**: the message is injected into the model's context at the next `prepareStep` boundary. The agent sees it and can adjust its behavior mid-response.
+* **With a `pendingMessages` config that declines it**, either because `shouldInject` returned `false` or because it is absent: the message stays queued on the backend and is answered as the next turn.
 * **Without `pendingMessages` config**: the message queues for the next turn.
+
+In every case the message is answered. A declined message keeps its place in the queue, so it also survives a crash and is picked up by whichever run continues the conversation.
 
 See [Pending Messages](/docs/ai-chat/pending-messages) for how to configure the agent side.
 
@@ -3805,61 +3810,113 @@ Inside the wrapper, pick one of two loop styles:
 * **[Managed loop](#managed-loop-chatcreatesession)** — `chat.createSession()` yields turns; the SDK handles stop signals, accumulation, idle suspend/resume, and turn-complete signaling. You write the turn body.
 * **[Hand-rolled loop](#hand-rolled-loop-with-primitives)** — you write the loop itself with `chat.messages`, `MessageAccumulator`, `pipeAndCapture`, and `writeTurnComplete`. The right choice when you need complete control over `.toUIMessageStream()` (e.g. `onFinish`, `originalMessages`) beyond what `chat.setUIMessageStreamOptions()` provides, or you're implementing a custom protocol.
 
+### Validating client data
+
+Use `chat.withClientData({ schema })` to validate `payload.metadata`. Custom agents parse the metadata on the initial payload and every later non-close input frame before passing it to `run`, `chat.messages`, or `chat.createSession`. Schema defaults and transforms are included in the value your code receives.
+
+This only validates `metadata`. A raw custom agent does not expose an action schema, so `payload.action` remains `unknown`. Validate the full frame or action payload in your own loop when you need that boundary.
+
+If validation fails for a submitted turn or an async read such as `wait()`, the SDK consumes and skips the invalid frame, writes an `Invalid client data` error followed by `turn-complete`, then waits for the next valid frame. The invalid value is not returned to the raw caller. The detailed validator error is available in the task log and `onClientDataValidationError`, but it is not sent to the client.
+
+This convenience path settles the invalid input before the read returns. If your raw loop needs to coordinate validation with persistence or settlement, omit `withClientData({ schema })` and validate the full wire frame in the loop instead. A messageless preload or continuation boot has no submitted turn to complete, so the SDK reports the error through the task log and callback while it waits.
+
+An invalid [head-start handover](/docs/ai-chat/fast-starts#handover-with-custom-agents) boot fails closed. The SDK waits for the warm handler to finish so stream ordering stays intact. A handover skip ends the run. A real handover writes the validation error and `turn-complete` after the warm output, then ends the run. Without a schema, metadata is passed through unchanged.
+
+`chat.messages.on()` is different because a subscribed frame can arrive while the current response is still streaming. Ending the turn at that point would cut off the response. While the subscription is active, the SDK skips an invalid frame, logs the validation error, and calls `onClientDataValidationError` if you set it. A raw subscription has no turn boundary the SDK can key a later write to, so it reports through the callback and the task log only and never writes to the stream.
+
+The steering subscription created by `chat.createSession({ pendingMessages })` skips an invalid frame the same way, but the session does own the turn boundary, so it can write the client-visible error once the turn has closed. `reportErrorAt` governs that write and applies to steering frames only, not to `chat.messages.on()`.
+
+By default the `Invalid client data` error for a steering frame is held until the turn ends, so a bad send cannot truncate an answer the user is already reading. Pass `reportErrorAt: "arrival"` to `withClientData` if you would rather surface it as soon as validation fails, accepting that it ends the response in progress:
+
+```ts theme={"theme":"css-variables"}
+chat.withClientData({
+  schema: z.object({ userId: z.string() }),
+  reportErrorAt: "arrival",
+  onValidationError: ({ error, payload }) => logger.warn("bad client data", { error }),
+});
+```
+
+The validation callback and the task log fire on arrival in both modes, and the frame is never delivered as a turn either way.
+
+Calling `off()` stops the subscription from accepting new frames. A valid frame accepted before `off()` still finishes validation and is delivered to the handler. An invalid frame that finishes validation after `off()` is logged without calling the handler or error callback.
+
+```ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { z } from "zod";
+
+export const myChat = chat
+  .withClientData({ schema: z.object({ userId: z.string() }) })
+  .customAgent({
+    id: "my-chat",
+    onClientDataValidationError: ({ error, payload }) => {
+      console.warn("Invalid client data", { error, trigger: payload.trigger });
+    },
+    run: async (payload) => {
+      // ...
+    },
+  });
+```
+
+`chat.messages.peek()` validates synchronously and throws validation errors to the caller. If your schema only supports asynchronous parsing, use `once()`, `wait()`, or `waitWithIdleTimeout()` instead.
+
 ## Managed loop: chat.createSession()
 
 `chat.createSession()` gives you an async iterator of `ChatTurn` objects. Each turn arrives with the accumulated history, a combined stop+cancel signal, and helpers to finish the turn:
 
 ```ts trigger/my-chat.ts theme={"theme":"css-variables"}
-import { chat, type ChatTaskWirePayload } from "@trigger.dev/sdk/ai";
+import { chat } from "@trigger.dev/sdk/ai";
 import { streamText, stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
+import { z } from "zod";
 
-export const myChat = chat.customAgent({
-  id: "my-chat",
-  run: async (payload: ChatTaskWirePayload, { signal }) => {
-    // One-time initialization — plain code, no hooks. Upsert, not create:
-    // continuation runs boot with the row already in place.
-    const clientData = payload.metadata as { userId: string };
-    await db.chat.upsert({
-      where: { id: payload.chatId },
-      create: { id: payload.chatId, userId: clientData.userId },
-      update: {},
-    });
-
-    const session = chat.createSession(payload, {
-      signal,
-      idleTimeoutInSeconds: 60,
-      timeout: "1h",
-    });
-
-    for await (const turn of session) {
-      // Persist the incoming user message BEFORE streaming — this is your
-      // onTurnStart equivalent. Without it, a page reload mid-stream
-      // restores the assistant text (replayed from the session) but loses
-      // the user message that prompted it.
-      await db.chat.update({
-        where: { id: turn.chatId },
-        data: { messages: turn.uiMessages },
+export const myChat = chat
+  .withClientData({ schema: z.object({ userId: z.string() }) })
+  .customAgent({
+    id: "my-chat",
+    run: async (payload, { signal }) => {
+      // One-time initialization — plain code, no hooks. Upsert, not create:
+      // continuation runs boot with the row already in place.
+      const clientData = payload.metadata!;
+      await db.chat.upsert({
+        where: { id: payload.chatId },
+        create: { id: payload.chatId, userId: clientData.userId },
+        update: {},
       });
 
-      const result = streamText({
-        model: anthropic("claude-sonnet-4-5"),
-        messages: turn.messages,
-        abortSignal: turn.signal,
-        stopWhen: stepCountIs(15),
+      const session = chat.createSession(payload, {
+        signal,
+        idleTimeoutInSeconds: 60,
+        timeout: "1h",
       });
 
-      // Pipe, capture, accumulate, and signal turn-complete — all in one call
-      await turn.complete(result);
+      for await (const turn of session) {
+        // Persist the incoming user message BEFORE streaming — this is your
+        // onTurnStart equivalent. Without it, a page reload mid-stream
+        // restores the assistant text (replayed from the session) but loses
+        // the user message that prompted it.
+        await db.chat.update({
+          where: { id: turn.chatId },
+          data: { messages: turn.uiMessages },
+        });
 
-      // Persist the full exchange after the turn — your onTurnComplete equivalent
-      await db.chat.update({
-        where: { id: turn.chatId },
-        data: { messages: turn.uiMessages },
-      });
-    }
-  },
-});
+        const result = streamText({
+          model: anthropic("claude-sonnet-4-5"),
+          messages: turn.messages,
+          abortSignal: turn.signal,
+          stopWhen: stepCountIs(15),
+        });
+
+        // Pipe, capture, accumulate, and signal turn-complete — all in one call
+        await turn.complete(result);
+
+        // Persist the full exchange after the turn — your onTurnComplete equivalent
+        await db.chat.update({
+          where: { id: turn.chatId },
+          data: { messages: turn.uiMessages },
+        });
+      }
+    },
+  });
 ```
 
 <Warning>
@@ -3888,7 +3945,7 @@ Each turn yielded by the iterator provides:
 | `number`            | `number`                          | Turn number (0-indexed)                                                                                                              |
 | `chatId`            | `string`                          | Chat session ID                                                                                                                      |
 | `trigger`           | `string`                          | What triggered this turn                                                                                                             |
-| `clientData`        | `unknown`                         | Client data from the transport                                                                                                       |
+| `clientData`        | Schema output or `unknown`        | Parsed client data when `withClientData` is configured                                                                               |
 | `messages`          | `ModelMessage[]`                  | Full accumulated model messages — pass to `streamText`                                                                               |
 | `uiMessages`        | `UIMessage[]`                     | Full accumulated UI messages — use for persistence                                                                                   |
 | `signal`            | `AbortSignal`                     | Combined stop+cancel signal (fresh each turn)                                                                                        |
@@ -3930,6 +3987,31 @@ for await (const turn of session) {
 
 Without this, a resumed chat silently loses its history: the model sees only the message that triggered the continuation. In a hand-rolled loop, seed by passing the stored history into the turn-0 `addIncoming` call — shown in the example below.
 
+### Rotating to a new deployment
+
+With `chat.createSession()`, use `chat.requestUpgrade()` and let the iterator exit normally. For an immediate handoff, close the iterator before calling `chat.endAndContinue()`; the method rejects until the iterator and any active `next()` call have settled. In a fully hand-rolled custom agent, call it directly to hand the Session to a fresh run.
+
+Close the iterator between reads. If `return()` races a `next()` that is already waiting for input, it waits for that read to settle before releasing the handoff guard. Input dispatched while the iterator is closing is not yielded as a turn and remains available to the continuation unless you write another turn-complete boundary.
+
+Call it between turns, after detaching the old run's input listeners. If the old run completed its current turn, persist its state and write the turn-complete boundary before the handoff:
+
+```ts theme={"theme":"css-variables"}
+// Detach any chat.messages.on() subscriptions you created.
+stop.cleanup();
+await persistMessages(conversation.uiMessages);
+await chat.writeTurnComplete();
+await chat.endAndContinue();
+return;
+```
+
+The server starts a continuation run using the Session's existing trigger configuration and atomically makes it the current run. The Session and its streams stay open, so input that the old run has not consumed remains on `.in` for the continuation run. The new run uses the latest deployed task version unless the Session's trigger configuration sets `lockToVersion`.
+
+If input has been dispatched to the old run but should be processed by the continuation, detach the listeners and do not write another turn-complete boundary before handing off. `chat.writeTurnComplete()` acknowledges the latest input dispatched to the old run; writing it after that dispatch would make the continuation resume after the input.
+
+<Warning>
+  `chat.endAndContinue()` starts the new run but does not stop the caller. Await it and return from `run()` immediately; continuing to read or write can race the new run on the same Session. If the handoff fails, the promise rejects.
+</Warning>
+
 ### turn.complete() vs manual control
 
 `turn.complete(result)` is the one-call path — it handles piping, capturing the response, accumulating messages, cleaning up aborted parts on a stop, and writing the turn-complete chunk.
@@ -3965,6 +4047,12 @@ for await (const turn of session) {
 
 The frontend stops a turn with [`transport.stopGeneration(chatId)`](/docs/ai-chat/frontend#stop-generation), which writes a stop signal to the session's input stream. It aborts the current turn's generation but keeps the run alive, so the next message continues on the same session.
 
+A stop only applies to the turn that was live when it arrived. If the run crashes
+and a later run recovers a message that had not been answered yet, a stop that
+was already applied before the crash is not applied again, so the turn answering
+the recovered message runs to completion. A stop sent after the recovery is live
+and aborts that turn as normal.
+
 `turn.signal` is a combined stop-and-cancel `AbortSignal`, fresh each turn. Pass it to `streamText` so the stop reaches the model, then let `turn.complete()` finish the turn:
 
 ```ts trigger/my-chat.ts theme={"theme":"css-variables"}
@@ -3997,15 +4085,67 @@ A hand-rolled loop wires this itself with `chat.createStopSignal()` and `chat.cl
 
 For full control, skip `createSession` and compose the primitives directly:
 
-| Primitive                       | Description                                                                                 |
-| ------------------------------- | ------------------------------------------------------------------------------------------- |
-| `chat.messages`                 | Input stream for incoming messages — use `.waitWithIdleTimeout()` to wait for the next turn |
-| `chat.createStopSignal()`       | Create a managed stop signal wired to the stop input stream                                 |
-| `chat.pipeAndCapture(result)`   | Pipe a stream and capture the response; returns `{ message, status, error }`                |
-| `chat.writeTurnComplete()`      | Signal turn complete; returns `{ lastEventId, sessionInEventId }` resume cursors            |
-| `chat.MessageAccumulator`       | Accumulates conversation messages across turns                                              |
-| `chat.pipe(stream)`             | Pipe a stream to the frontend (no response capture)                                         |
-| `chat.cleanupAbortedParts(msg)` | Clean up incomplete parts from a stopped response                                           |
+| Primitive                       | Description                                                                                                |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `chat.messages`                 | Mailbox for incoming messages — inspect buffered input, consume one record, or suspend until the next turn |
+| `chat.createStopSignal()`       | Create a managed stop signal wired to the stop input stream                                                |
+| `chat.pipeAndCapture(result)`   | Pipe a stream and capture the response; returns `{ message, status, error }`                               |
+| `chat.writeTurnComplete()`      | Signal turn complete; returns `{ lastEventId, sessionInEventId }` resume cursors                           |
+| `chat.endAndContinue()`         | Hand off the Session to a continuation run; call between turns, then return                                |
+| `chat.MessageAccumulator`       | Accumulates conversation messages across turns                                                             |
+| `chat.pipe(stream)`             | Pipe a stream to the frontend (no response capture)                                                        |
+| `chat.cleanupAbortedParts(msg)` | Clean up incomplete parts from a stopped response                                                          |
+
+### `chat.messages` mailbox
+
+`chat.messages` exposes the incoming message mailbox for hand-rolled loops:
+
+| Method                         | Behavior                                                                                                      |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `peek()`                       | Return the next queued message without consuming it, or `undefined` when none is queued                       |
+| `hasPending()`                 | Resolve `true` when a message is queued; does not consume it                                                  |
+| `next({ timeoutInSeconds? })`  | Consume exactly one message record in channel order, or resolve `undefined` when the optional timeout elapses |
+| `on(handler)`                  | Consume messages as they arrive and invoke the handler                                                        |
+| `waitWithIdleTimeout(options)` | Wait warm, then suspend the run until the next message arrives                                                |
+
+`hasPending()` checks whether a message has already been delivered locally and is
+waiting for `next()` to take it. It does not query the remote Session channel or
+start a subscription. Use `waitWithIdleTimeout()` when the loop needs to idle
+until future input arrives.
+
+`next({ timeoutInSeconds: 0 })` is also a local, non-blocking read. Call
+`next()` without a timeout, or with a positive timeout, to subscribe for future
+input.
+
+`next()` returns a readonly record envelope:
+
+```ts theme={"theme":"css-variables"}
+const record = await chat.messages.next({ timeoutInSeconds: 5 });
+if (record) {
+  console.log(record.id, record.seqNum);
+  currentPayload = record.payload;
+}
+```
+
+* `id` is the append's stable idempotency key.
+* `seqNum` is the monotonic sequence on this Session's `.in` channel.
+* `payload` is the existing `ChatTaskWirePayload` delivered by the other mailbox methods.
+
+Both identifiers remain the same if the record is delivered again after a
+reconnect. Each `next()` call commits only the record it returns, so a loop that
+owns its own turn sequencing never advances past input it has not taken. By
+contrast, `on()` commits a record as soon as it dispatches the handler; avoid
+mixing `on()` and `next()` when a single loop owns mailbox consumption.
+
+The Session `.in` channel also carries control records such as stops and
+handovers. Those are routed to their own consumers and never block messages: a
+message that arrived behind one is still reported by `hasPending()` and still
+returned by `next()`, in channel order. The same holds for a record kind this
+version of the SDK does not recognise, which is discarded rather than left where
+it would make every message behind it undeliverable.
+
+`next()` returns `undefined` when no message became consumable before the
+timeout.
 
 A complete loop:
 
@@ -9150,7 +9290,7 @@ On a continuation boot, the runtime reads:
 * **`session.out` tail past the snapshot cursor** — closed assistant turns plus, optionally, a `partialAssistant` (the trailing message whose stream never received a `finish` chunk). `cleanupAbortedParts` has already stripped streaming-in-progress fragments.
 * **`session.in` tail past the last `turn-complete` cursor** — user messages the dead run hadn't acknowledged.
 
-If both `partialAssistant` and `inFlightUsers` are non-empty, the runtime splices `[firstInFlightUser, partialAssistant]` onto the chain. The remaining in-flight users dispatch as fresh turns. The model sees:
+If there's a `partialAssistant` and two or more `inFlightUsers`, the runtime splices `[firstInFlightUser, partialAssistant]` onto the chain. The remaining in-flight users dispatch as fresh turns. The model sees:
 
 ```
 [ ...settledMessages,  // chain through the last completed turn
@@ -9256,9 +9396,16 @@ type RecoveryBootResult<TUIM extends UIMessage = UIMessage> = {
 };
 ```
 
-* **`chain`** — replaces the seed chain. Defaults to `[...settledMessages, firstInFlightUser, partialAssistant]` when both partial and in-flight users exist, otherwise `settledMessages` alone.
+* **`chain`** — replaces the seed chain. Defaults to `[...settledMessages, firstInFlightUser, partialAssistant]` when there's a partial **and two or more** in-flight users, otherwise `settledMessages` alone.
 * **`recoveredTurns`** — user messages to dispatch as fresh turns after the chain is restored. Defaults to `inFlightUsers.slice(1)` when the smart default consumed the first user, otherwise `inFlightUsers`.
 * **`beforeBoot`** — runs after the writer flushes and before the first recovered turn fires. Use for blocking persistence (write the partial to your DB so a later turn can reference it). Errors bubble — wrap your own try/catch if you want to soft-fail.
+
+<Note>
+  The splice needs a follow-up user to answer, so it only applies with two or
+  more in-flight users. With exactly one — the plain OOM or crash-mid-answer
+  case — the orphan partial is dropped and that single user is re-dispatched as
+  a fresh turn, so the interrupted question still gets answered.
+</Note>
 
 ## Examples
 
@@ -10426,11 +10573,11 @@ You can harden further with a shared-secret header the worker injects (e.g. `X-E
 # Version upgrades
 Source: https://trigger.dev/docs/ai-chat/patterns/version-upgrades
 
-Gracefully migrate suspended chat agents to a new deployment using chat.requestUpgrade() and the continuation mechanism.
+Gracefully migrate chat agents to a new deployment using chat.requestUpgrade(), chat.endAndContinue(), and the continuation mechanism.
 
 Chat agent runs are pinned to the worker version they started on. When you deploy a new version, suspended runs resume on the **old** code. If your deploy includes breaking changes (new tools, changed schemas, updated API contracts), this can cause issues.
 
-`chat.requestUpgrade()` lets the agent opt out of the current run so the transport triggers a new one on the latest version.
+`chat.requestUpgrade()` is the managed upgrade signal for `chat.agent()` and the `chat.createSession()` iterator. Fully hand-rolled custom agents use `chat.endAndContinue()` between turns to immediately hand the Session to a new run.
 
 ## How it works
 
@@ -10576,14 +10723,34 @@ export const myChat = chat
 
 This upgrades on **every** deploy, not just breaking changes. Good for fast-moving projects where you always want the latest code.
 
-## Other agent types
+## Custom agents
 
-* **`chat.agent()`** and **`chat.createSession()`** — use `chat.requestUpgrade()` as shown above
-* **`chat.customAgent()`** — you control the turn loop, so just `return` from `run()` when you want to exit
+Use `chat.requestUpgrade()` with `chat.agent()`. With `chat.createSession()`, call `chat.requestUpgrade()`, then advance the iterator once more so it can exit normally. For an immediate handoff, close the iterator before calling `chat.endAndContinue()`. In a fully hand-rolled `chat.customAgent()` task, detach input listeners, persist the completed turn, write its boundary, then call `chat.endAndContinue()` and return immediately:
+
+Close a `chat.createSession()` iterator between reads. If `return()` races a `next()` that is already waiting for input, it waits for that read to settle before the handoff can continue. Input dispatched while the iterator is closing is not yielded as a turn and remains available to the continuation unless you write another turn-complete boundary.
+
+```ts theme={"theme":"css-variables"}
+// Detach any chat.messages.on() subscriptions you created.
+stop.cleanup();
+await persistMessages(conversation.uiMessages);
+await chat.writeTurnComplete();
+await chat.endAndContinue();
+return;
+```
+
+The continuation uses the same durable Session and receives `.in` records that the old run has not consumed. It starts on the latest deployed task version unless the Session's trigger configuration sets `lockToVersion`.
+
+If input has been dispatched to the old run but should be processed by the continuation, detach the old listeners and skip the final `chat.writeTurnComplete()`. A turn-complete boundary acknowledges the latest input dispatched to the old run, so writing one after that dispatch would cause the continuation to resume past the input.
+
+<Warning>
+  `chat.endAndContinue()` starts the successor but does not stop the calling run. Perform no more Session reads or writes after calling it, and return from the task. If the handoff fails, the promise rejects.
+</Warning>
 
 ## Interaction with recovery boot
 
-`chat.requestUpgrade()` is a graceful exit — the old run returns cleanly, never writing a partial assistant. The new continuation run boots with an empty `session.out` tail and the upgrade-trigger message on `session.in`. The trigger message dispatches as turn 1 on the new version via the normal continuation-wait path. [`onRecoveryBoot`](/docs/ai-chat/patterns/recovery-boot) does NOT fire on this path — the hook is reserved for mid-stream interruptions (cancel / crash / OOM) where a partial assistant exists on the tail.
+When `chat.requestUpgrade()` is handled before a turn starts, the SDK immediately hands the Session to a new run, which processes the same input on the latest version. When it is requested during a turn, including through `chat.createSession()`, the current turn finishes and the old run exits; the next input starts the continuation run.
+
+Both are graceful exits. [`onRecoveryBoot`](/docs/ai-chat/patterns/recovery-boot) does not fire — the hook is reserved for mid-stream interruptions (cancel, crash, or OOM) where a partial assistant exists on the tail.
 
 ## See also
 
@@ -10604,7 +10771,9 @@ When an AI agent is executing tool calls, users may want to send a message that 
 
 By default (without `pendingMessages`), a message sent while the agent is responding never interrupts the in-flight response: it's buffered and processed as its own turn once the current turn completes, with multiple messages running sequentially in arrival order.
 
-The `pendingMessages` option enables steering instead, injecting user messages between tool-call steps via the AI SDK's `prepareStep`. Messages that arrive during streaming are queued and injected at the next step boundary. If there are no more step boundaries (single-step response or final text generation), the message becomes the next turn automatically.
+The `pendingMessages` option enables steering instead, injecting user messages between tool-call steps via the AI SDK's `prepareStep`. Messages that arrive during streaming are queued and injected at the next step boundary. A message that is not injected becomes the next turn instead, whether that is because `shouldInject` returned `false` or because there were no more step boundaries (single-step response or final text generation). The backend handles that, so no client-side re-send is involved.
+
+Injection is what needs wiring: the `pendingMessages` options only reach `streamText` if you spread `chat.toStreamTextOptions()` (or pass `prepareStep`). Without that, nothing injects, so every mid-turn message is answered as the next turn. Deferral does not depend on it.
 
 ## How it works
 
@@ -10614,7 +10783,7 @@ The `pendingMessages` option enables steering instead, injecting user messages b
 4. At the next `prepareStep` boundary (between tool-call steps), `shouldInject` is called
 5. If it returns `true`, the message is injected into the LLM's context
 6. A `data-pending-message-injected` stream chunk confirms injection to the frontend
-7. If `prepareStep` never fires (no tool calls), the message becomes the next turn
+7. If `shouldInject` returns `false`, or `prepareStep` never fires (no tool calls), the message stays queued on the backend and is answered as the next turn
 
 ## Backend: chat.agent
 
@@ -10905,7 +11074,7 @@ function Chat({ chatId }: { chatId: string }) {
 
 ### Message lifecycle
 
-* **Steering messages** are sent via `transport.sendPendingMessage()` immediately. They appear as purple pending bubbles. If injected, they disappear from the overlay and render inline at the injection point. If not injected (no more step boundaries), they auto-send as the next turn when the response finishes.
+* **Steering messages** are sent via `transport.sendPendingMessage()` immediately. They appear as purple pending bubbles. If injected, they disappear from the overlay and render inline at the injection point. If not injected, the backend answers them as the next turn once the response finishes; the client does not need to re-send them.
 
 * **Queued messages** stay client-side until the turn completes, then auto-send as the next turn via `sendMessage()`. They can be promoted to steering mid-stream by clicking "Steer instead".
 
@@ -11701,12 +11870,12 @@ Passed to the `onCompacted` callback.
 
 Options for the `pendingMessages` field. See [Pending Messages](/docs/ai-chat/pending-messages) for usage guide.
 
-| Option         | Type                                                                              | Required | Description                                                                               |
-| -------------- | --------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------- |
-| `shouldInject` | `(event: PendingMessagesBatchEvent) => boolean \| Promise<boolean>`               | No       | Decide whether to inject the batch between tool-call steps. If absent, no injection.      |
-| `prepare`      | `(event: PendingMessagesBatchEvent) => ModelMessage[] \| Promise<ModelMessage[]>` | No       | Transform the batch before injection. Default: convert each via `convertToModelMessages`. |
-| `onReceived`   | `(event: PendingMessageReceivedEvent) => void \| Promise<void>`                   | No       | Called when a message arrives during streaming (per-message).                             |
-| `onInjected`   | `(event: PendingMessagesInjectedEvent) => void \| Promise<void>`                  | No       | Called after a batch is injected via prepareStep.                                         |
+| Option         | Type                                                                              | Required | Description                                                                                                                                                                                                                                                                                                             |
+| -------------- | --------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `shouldInject` | `(event: PendingMessagesBatchEvent) => boolean \| Promise<boolean>`               | No       | Decide whether to inject the batch between tool-call steps. If absent, nothing is injected and the messages are answered as the next turn. Only consulted when `chat.toStreamTextOptions()` (or `prepareStep`) reaches `streamText`; without that nothing is injected and every mid-turn message becomes the next turn. |
+| `prepare`      | `(event: PendingMessagesBatchEvent) => ModelMessage[] \| Promise<ModelMessage[]>` | No       | Transform the batch before injection. Default: convert each via `convertToModelMessages`.                                                                                                                                                                                                                               |
+| `onReceived`   | `(event: PendingMessageReceivedEvent) => void \| Promise<void>`                   | No       | Called when a message arrives during streaming (per-message).                                                                                                                                                                                                                                                           |
+| `onInjected`   | `(event: PendingMessagesInjectedEvent) => void \| Promise<void>`                  | No       | Called after a batch is injected via prepareStep.                                                                                                                                                                                                                                                                       |
 
 ## PendingMessagesBatchEvent
 
@@ -11811,13 +11980,14 @@ All methods available on the `chat` object from `@trigger.dev/sdk/ai`.
 | `chat.createSession(payload, options)`            | Create an async iterator for chat turns                                                                                                                                                                                              |
 | `chat.pipe(source, options?)`                     | Pipe a stream to the frontend (from anywhere inside a task)                                                                                                                                                                          |
 | `chat.pipeAndCapture(source, options?)`           | Pipe and capture the response; returns `{ message, status, error }`                                                                                                                                                                  |
-| `chat.writeTurnComplete(options?)`                | Signal turn complete; returns `{ lastEventId, sessionInEventId }` resume cursors                                                                                                                                                     |
+| `chat.writeTurnComplete(options?)`                | Signal turn complete; returns `{ lastEventId, sessionInEventId }` resume cursors. `sessionInEventId` is a lower bound, not the sequence of the record the turn answered                                                              |
 | `chat.createStopSignal()`                         | Create a managed stop signal wired to the stop input stream                                                                                                                                                                          |
-| `chat.messages`                                   | Input stream for incoming messages — use `.waitWithIdleTimeout()`                                                                                                                                                                    |
+| `chat.messages`                                   | Incoming message mailbox; supports non-consuming `.peek()` / `.hasPending()`, single-record `.next()`, `.on()`, and suspend-aware `.waitWithIdleTimeout()`                                                                           |
 | `chat.local<T>({ id })`                           | Create a per-run typed local (see [`chat.local`](/docs/ai-chat/chat-local))                                                                                                                                                          |
 | `chat.createStartSessionAction(taskId, options?)` | Returns a server action that creates a chat Session + triggers the first run + returns a session-scoped PAT. Idempotent on `(env, externalId)`.                                                                                      |
 | `chat.waitForHandover(options)`                   | Wait for a [`chat.headStart`](/docs/ai-chat/fast-starts#handover-with-custom-agents) handover signal in a custom loop. Returns the signal or `null`. `chat.MessageAccumulator` wraps this as `consumeHandover()` / `applyHandover()` |
 | `chat.requestUpgrade()`                           | End the current run after this turn so the next message starts on the latest agent version. Server-orchestrated handoff.                                                                                                             |
+| `chat.endAndContinue()`                           | In a hand-rolled custom agent, hand off the Session to a fresh continuation run. Call between turns after detaching input listeners, then return immediately. The promise rejects if the handoff fails.                              |
 | `chat.setTurnTimeout(duration)`                   | Override turn timeout at runtime (e.g. `"2h"`)                                                                                                                                                                                       |
 | `chat.setTurnTimeoutInSeconds(seconds)`           | Override turn timeout at runtime (in seconds)                                                                                                                                                                                        |
 | `chat.setIdleTimeoutInSeconds(seconds)`           | Override idle timeout at runtime                                                                                                                                                                                                     |
@@ -11853,15 +12023,30 @@ Use this when you need [`InferChatUIMessage`](#inferchatuimessage) / typed `data
 
 ## `chat.withClientData`
 
-Returns a [`ChatBuilder`](/docs/ai-chat/types#chatbuilder) with a fixed client data schema. All hooks and `run` get typed `clientData` without passing `clientDataSchema` in `.agent()` options.
+Returns a [`ChatBuilder`](/docs/ai-chat/types#chatbuilder) with a fixed client data schema. Managed-agent hooks and `run` get typed `clientData` without passing `clientDataSchema` in `.agent()` options. Custom agents parse `payload.metadata` on the initial payload and later input frames before passing it to user code.
 
 ```ts theme={"theme":"css-variables"}
-chat.withClientData<TSchema>({ schema: TSchema }): ChatBuilder<UIMessage, TSchema>;
+chat.withClientData<TSchema extends TaskSchema>(config: {
+  schema: TSchema;
+  reportErrorAt?: "turn-end" | "arrival";
+  onValidationError?: (event: {
+    error: unknown;
+    payload: ChatTaskWirePayload;
+  }) => Promise<void> | void;
+}): ChatBuilder<UIMessage, TSchema>;
 ```
 
-| Parameter | Type         | Description                                        |
-| --------- | ------------ | -------------------------------------------------- |
-| `schema`  | `TaskSchema` | Zod, ArkType, Valibot, or any supported schema lib |
+| Parameter           | Type                      | Default      | Description                                                                                                                |
+| ------------------- | ------------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `schema`            | `TaskSchema`              | required     | Zod, ArkType, Valibot, or any supported schema lib                                                                         |
+| `reportErrorAt`     | `"turn-end" \| "arrival"` | `"turn-end"` | When the client-visible `Invalid client data` error is written for a steering frame that failed validation mid-turn        |
+| `onValidationError` | `(event) => void`         | —            | Called when an input fails validation. Composes with the task-level `onClientDataValidationError` rather than replacing it |
+
+`reportErrorAt` governs only the stream-visible error, and only for frames arriving on the steering subscription created by `chat.createSession({ pendingMessages })`. `"turn-end"` holds it until the turn closes, so a bad send cannot truncate an answer the user is already reading; `"arrival"` writes it as soon as validation fails, ending the response in progress. `onValidationError` and the task log fire on arrival in both modes, and the frame is never delivered as a turn either way. A raw `chat.messages.on()` subscription has no turn boundary to defer to, so it always reports through the callback and the task log without writing to the stream.
+
+For `chat.customAgent()`, invalid client data is skipped. Async reads emit an error chunk followed by `turn-complete`. A `chat.messages.on()` subscription uses the task's `onClientDataValidationError` callback and task log instead, so an active response is not ended early. Without a schema, metadata is passed through unchanged.
+
+Passing options directly to `chat.customAgent()` instead of through the builder uses the flat equivalents: `clientDataSchema`, `clientDataReportErrorAt`, and `onClientDataValidationError`.
 
 Full guide: [Typed client data](/docs/ai-chat/types#typed-client-data-with-chatwithclientdata).
 
@@ -11946,14 +12131,14 @@ Options for the frontend transport constructor and `useTriggerChatTransport` hoo
 
 The `onEvent` callback receives a `ChatTransportEvent` (exported from `@trigger.dev/sdk/chat` and `@trigger.dev/sdk/chat/react`) for each lifecycle moment the transport observes. All events carry `chatId` and `timestamp`.
 
-| Event                 | Extra fields                                                                      | Fires when                                                                                                                                                                                                                                                                                                                                         |
-| --------------------- | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `message-sent`        | `messageId?`, `source`, `durationMs`, `partId?`, `bodyBytes?`                     | A send was durably acknowledged — a 2xx from the session input stream append (or the `headStart` POST), after any internal token-refresh retries. This means the message is durably written to the stream the agent consumes from, not merely "request accepted". `partId` is the append's idempotency key, also stored on the server-side record. |
-| `message-send-failed` | `messageId?`, `source`, `error`, `status?`, `durationMs`, `partId?`, `bodyBytes?` | A send definitively failed after internal retries. Fires in addition to `useChat`'s `onError`.                                                                                                                                                                                                                                                     |
-| `stream-connected`    | `resumed`, `lastEventId?`, `messageId?`                                           | The SSE subscription to the session's output stream started delivering. `resumed: true` when reconnecting from a stored cursor (page reload) rather than following a fresh send. `lastEventId` is the cursor it connected from.                                                                                                                    |
-| `first-chunk`         | `chunkType?`, `lastEventId?`, `messageId?`, `sinceSendMs?`                        | The first response chunk of a turn arrived. `sinceSendMs` is the delta from the last turn-producing send — time to first token without any bookkeeping.                                                                                                                                                                                            |
-| `turn-completed`      | `lastEventId?`, `sessionInEventId?`, `messageId?`, `sinceSendMs?`                 | The agent's turn-complete control record arrived — the "finished answering" signal. `sinceSendMs` is the full turn latency; `sessionInEventId` is the agent's committed input-stream cursor.                                                                                                                                                       |
-| `stream-error`        | `error`, `status?`                                                                | The output stream failed unrecoverably.                                                                                                                                                                                                                                                                                                            |
+| Event                 | Extra fields                                                                      | Fires when                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| --------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `message-sent`        | `messageId?`, `source`, `durationMs`, `partId?`, `bodyBytes?`                     | A send was durably acknowledged — a 2xx from the session input stream append (or the `headStart` POST), after any internal token-refresh retries. This means the message is durably written to the stream the agent consumes from, not merely "request accepted". `partId` is the append's idempotency key, also stored on the server-side record.                                                                                                     |
+| `message-send-failed` | `messageId?`, `source`, `error`, `status?`, `durationMs`, `partId?`, `bodyBytes?` | A send definitively failed after internal retries. Fires in addition to `useChat`'s `onError`.                                                                                                                                                                                                                                                                                                                                                         |
+| `stream-connected`    | `resumed`, `lastEventId?`, `messageId?`                                           | The SSE subscription to the session's output stream started delivering. `resumed: true` when reconnecting from a stored cursor (page reload) rather than following a fresh send. `lastEventId` is the cursor it connected from.                                                                                                                                                                                                                        |
+| `first-chunk`         | `chunkType?`, `lastEventId?`, `messageId?`, `sinceSendMs?`                        | The first response chunk of a turn arrived. `sinceSendMs` is the delta from the last turn-producing send — time to first token without any bookkeeping.                                                                                                                                                                                                                                                                                                |
+| `turn-completed`      | `lastEventId?`, `sessionInEventId?`, `messageId?`, `sinceSendMs?`                 | The agent's turn-complete control record arrived — the "finished answering" signal. `sinceSendMs` is the full turn latency; `sessionInEventId` is the cursor the agent can safely resume its input stream from. Treat it as a lower bound: it is held back behind any message still waiting to be handled, so it can be below the sequence of the record this turn answered. Do not use it to decide whether a turn boundary belongs to your own send. |
+| `stream-error`        | `error`, `status?`                                                                | The output stream failed unrecoverably.                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 `source` identifies the send path: `"submit-message"`, `"regenerate-message"`, `"steer"` (`sendPendingMessage`), `"action"` (`sendAction`), `"stop"` (`stopGeneration`), or `"head-start"`.
 
@@ -12091,7 +12276,7 @@ Send a custom action to the agent. Actions wake the agent from suspension and fi
 transport.sendAction(chatId: string, action: unknown): Promise<ReadableStream<UIMessageChunk>>
 ```
 
-The action payload is validated against the agent's `actionSchema` on the backend.
+For managed `chat.agent()` tasks, the action payload is validated against the agent's `actionSchema` on the backend. Raw `chat.customAgent()` tasks receive it as `unknown` and must validate it themselves.
 
 ```tsx theme={"theme":"css-variables"}
 // Undo button
@@ -13831,7 +14016,7 @@ You can also import `InferChatUIMessage` from `@trigger.dev/sdk/ai` in non-React
 
 ## Typed client data with `chat.withClientData`
 
-`chat.withClientData({ schema })` returns a [ChatBuilder](#chatbuilder) that fixes the client data schema. All hooks and `run` receive typed `clientData` without needing `clientDataSchema` in `.agent()` options.
+`chat.withClientData({ schema })` returns a [ChatBuilder](#chatbuilder) that fixes the client data schema. Managed-agent hooks and `run` receive typed `clientData` without needing `clientDataSchema` in `.agent()` options. A `.customAgent()` run receives the parsed schema output in `payload.metadata`, and `chat.createSession()` yields it as `turn.clientData`.
 
 ```ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
@@ -13857,6 +14042,10 @@ export const myChat = chat
     },
   });
 ```
+
+The schema runs at runtime for both `.agent()` and `.customAgent()`. Custom agents validate the initial payload and later `chat.messages` frames. Invalid frames are not passed to user code. Async reads emit an error chunk followed by `turn-complete`; `chat.messages.on()` reports through `onClientDataValidationError` and the task log so it does not end an active response. Without a schema, metadata is passed through unchanged.
+
+`withClientData` also takes `reportErrorAt` and `onValidationError` alongside `schema`. See [chat.withClientData](/docs/ai-chat/reference#chatwithclientdata) for both, and [Validating client data](/docs/ai-chat/custom-agents#validating-client-data) for the custom-agent walkthrough.
 
 ## ChatBuilder
 
@@ -15728,6 +15917,27 @@ npx trigger.dev@latest deploy [path]
 
 <ParamField type="--skip-sync-env-vars">
   Turn off syncing environment variables with the Trigger.dev instance.
+</ParamField>
+
+<ParamField type="--external-id">
+  Attach your own identifier to this deployment — a commit SHA, release tag or CI run id, up to 128
+  characters. Your app can then send the same id when triggering, and runs are pinned to this
+  deployment. See [version skew protection](/docs/deployment/version-skew-protection).
+
+  Repeating an id that is already deployed doesn't build again: the CLI reports the existing version,
+  sets the same outputs, and exits successfully. Repeating an id that has a build in flight is an
+  error. An id whose build failed rebuilds normally.
+
+  The short-circuit is keyed on the id, not on the build inputs — so redeploying the same id after
+  changing a synced environment variable produces no new build.
+</ParamField>
+
+<ParamField type="--force">
+  Start a new build for an `--external-id` that already has one. Non-destructive with respect to
+  deployments that already succeeded — both remain and the newer version wins. If a build for that
+  id is still in flight, `--force` **cancels** it first, so one id never has two live builds. A
+  cancelled build usually stops within seconds, but one running on another machine can keep going
+  briefly before it notices. Requires `--external-id`.
 </ParamField>
 
 <ParamField type="--local-build">
@@ -20471,6 +20681,18 @@ Source: https://trigger.dev/docs/deployment/atomic-deployment
 
 Use atomic deploys to coordinate changes to your tasks and your application.
 
+<Warning>
+  **There's now a simpler way to do this.** [Version skew
+  protection](/docs/deployment/version-skew-protection) solves the same problem without a second
+  deployment, without gating your app's deploy, and without setting `TRIGGER_VERSION` — and it covers
+  staging and preview as well as production. If you use the [Vercel
+  integration](/docs/vercel-integration), its **automatic atomic deployments** setting is now deprecated
+  in favour of skew protection.
+
+  The manual workflows on this page still work, and remain the right answer if you specifically want
+  your application's deployment held back until your tasks have finished building.
+</Warning>
+
 Atomic deploys in Trigger.dev allow you to synchronize the deployment of your application with a specific version of your tasks. This ensures that your application always uses the correct version of its associated tasks, preventing inconsistencies or errors due to version mismatches.
 
 ## How it works
@@ -20845,6 +21067,12 @@ If you want to set a global version to run all tasks against, you can use the `T
 TRIGGER_VERSION=20250228.1
 ```
 
+<Tip>
+  If what you actually want is for each release of your app to run against the tasks built from the
+  same commit, you don't need to plumb version numbers around by hand. See [version skew
+  protection](/docs/deployment/version-skew-protection).
+</Tip>
+
 ### Child tasks and auto-version locking
 
 Trigger and wait functions version lock child task runs to the parent task run version. This ensures the results from child runs match what the parent task is expecting. If you don't wait then version locking doesn't apply.
@@ -20878,7 +21106,7 @@ Or from the dashboard:
 
 <img alt="Trigger.dev dashboard showing the promote button" />
 
-To learn more about skipping promotion and how this enables atomic deployments, see our [Atomic deployment](/docs/deployment/atomic-deployment) guide.
+To learn more about skipping promotion and how this enables atomic deployments, see our [Atomic deployment](/docs/deployment/atomic-deployment) guide. To keep your app and tasks in sync without coordinating promotion at all, see [version skew protection](/docs/deployment/version-skew-protection).
 
 ## Staging deploys
 
@@ -21213,6 +21441,432 @@ export default defineConfig({
   },
 });
 ```
+
+
+# Version skew protection
+Source: https://trigger.dev/docs/deployment/version-skew-protection
+
+Pin task runs to the deployment that matches the release of your app that triggered them.
+
+Your app and your tasks are deployed separately, so they are never live at exactly the same instant. In the window between them, an app running new code can trigger tasks built from old code — or the other way around. That's **version skew**.
+
+Version skew protection closes the window. You give a deployment an **external deployment id**, your app sends the same id when it triggers, and Trigger.dev pins the run to the deployment carrying that id.
+
+<Note>
+  Version skew protection requires `@trigger.dev/sdk` and the `trigger.dev` CLI on [v4.5.12 or
+  later](https://github.com/triggerdotdev/trigger.dev/releases/tag/v4.5.12), the release that
+  introduced external deployment ids. On an older version no id is sent, and runs execute on the
+  current version with no warning.
+</Note>
+
+## The guarantee
+
+Once your app is sending an external deployment id, a triggered run has one of four outcomes:
+
+| Situation                                   | What happens                                                        |
+| ------------------------------------------- | ------------------------------------------------------------------- |
+| A deployment with that id is live           | The run is **pinned** to it and executes immediately.               |
+| A deployment with that id is still building | The run **waits**, then executes pinned to it once the build lands. |
+| No deployment with that id ever arrives     | The run waits up to **1 hour**, then expires.                       |
+| No id was sent at all                       | Nothing changes — the run executes on the current version.          |
+
+**The id is the contract.** There is no dashboard setting and nothing to switch on: if a trigger carries an external deployment id, that id is honoured. If it doesn't, behaviour is exactly what it is today.
+
+This works identically in production, staging and preview (including per-branch preview deployments), with no per-environment configuration.
+
+## Quick start
+
+The id is free-form and opaque to Trigger.dev — a commit SHA, a release tag, a CI run id, anything up to **128 characters**. The only rule is that both halves carry the **same value**.
+
+<Steps>
+  <Step title="Deploy your tasks with an external id">
+    ```bash theme={"theme":"css-variables"}
+    npx trigger.dev@latest deploy --external-id "$(git rev-parse HEAD)"
+    ```
+  </Step>
+
+  <Step title="Give your running app the same value">
+    Set this in your hosting platform's runtime environment variables, alongside `TRIGGER_SECRET_KEY`:
+
+    ```bash theme={"theme":"css-variables"}
+    TRIGGER_EXTERNAL_DEPLOYMENT_ID=<the-same-commit-sha>
+    ```
+  </Step>
+</Steps>
+
+<Warning>
+  Whatever you use on both sides, make sure it can't expand to an empty string. An unset shell
+  variable deploys with no id at all, which silently gives you no protection rather than an error.
+</Warning>
+
+That's it. Every task triggered by that release of your app now runs on the deployment you built for it.
+
+This recipe works on **every platform**, needs no integration, and is not git-specific. If you deploy to Vercel with the [Vercel integration](/docs/vercel-integration), both halves are filled in for you — see [Automatic skew protection on Vercel](#automatic-skew-protection-on-vercel).
+
+## Deploying with an external id
+
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest deploy --external-id <value>
+```
+
+The value is stored on the deployment. It is never interpreted, parsed or validated beyond its length — the only constraint is **128 characters or fewer**.
+
+### Reusing an id
+
+Because deploys are often retried, redeployed and re-run by CI, repeating an id is a normal thing to do rather than an error. What happens depends on the state of the deployment that already holds it:
+
+| Existing deployment for this id      | Default behaviour                                                                                                  | With `--force`                                          |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------- |
+| **Deployed**                         | **No build.** The CLI reports the existing version, sets the same outputs, and exits successfully.                 | Builds a new one.                                       |
+| **Building** (a deploy is in flight) | **Error**, naming the version that is already building. Two builds racing for one id is almost always an accident. | **Cancels the in-flight build**, then starts a new one. |
+| **Failed, cancelled or timed out**   | **Rebuilds.** No flag needed — builds fail for reasons that have nothing to do with your code.                     | Rebuilds.                                               |
+| **None**                             | Builds.                                                                                                            | Builds.                                                 |
+
+Deploying an id that is already live prints the existing version and stops:
+
+```bash theme={"theme":"css-variables"}
+Version 20250228.1 was already deployed for --external-id abc123 — nothing to build
+```
+
+Deploying an id that is mid-build fails, telling you which version is already building:
+
+```bash theme={"theme":"css-variables"}
+A deployment for external id "abc123" is already in progress (version 20250228.1). Wait for it to finish, or deploy again with --force to cancel it and start a new one.
+```
+
+The short-circuit on an already-deployed id makes `--external-id` useful on its own as **deploy idempotency**: a CI job that runs twice for the same commit builds once — provided the second run starts after the first has finished — and the short-circuited run still gets the version number in its output.
+
+A second run that starts while the first is still building hits the **Building** row above and errors. Only in the brief window before the first run has registered its build do both see "nothing deployed yet"; then both build, and the higher version wins.
+
+<Tip>
+  In GitHub Actions, the short-circuited run sets the same step outputs (such as
+  `deploymentVersion`) as a real build, so downstream steps work unchanged. One exception:
+  `needsPromotion` is always `false` on a short-circuit, because a reused version is never promoted —
+  so a workflow that gates a promote step on that output will skip promotion on the repeat run.
+</Tip>
+
+`--force` starts a new build for an id that already has one. It is non-destructive with respect to deployments that already **succeeded** — both remain, and the newer version wins. It *is* destructive to a build still in flight, which it cancels, because one id should not have two live builds racing to define it. It requires `--external-id`: on its own there is no previous deployment for it to build over, so it errors.
+
+<Note>
+  A cancelled deployment can never be deployed, so the build it replaces can't land. The build
+  itself is signalled to stop and usually does within seconds — but one running elsewhere (a
+  `--local-build`, or a deploy from someone else's machine) can keep going for a few minutes before
+  it notices.
+</Note>
+
+### Redeploying the same commit
+
+The short-circuit is keyed on the id alone, not on what went into the build. If you use the commit SHA as your id and then change something the commit doesn't capture — a synced environment variable, a secret, a dependency resolved at build time — redeploying that commit produces **no new build**, and the deployed image keeps the older inputs.
+
+Three ways out, in order of preference:
+
+* **Make a new commit.** `git commit --allow-empty -m "redeploy"` gives you a new SHA, which is a new id, which builds. This is the only remedy that also works for the Vercel and GitHub integrations, which never pass `--force`.
+* **Pass `--force`**, if you drive deploys yourself.
+* **Use an id that captures more than the commit** — `${GITHUB_SHA}-${GITHUB_RUN_ID}`, say — if your builds legitimately depend on inputs outside the tree. You lose idempotency in exchange.
+
+See the [deploy command reference](/docs/cli-deploy-commands) for all deploy flags.
+
+## Automatic discovery
+
+Setting the id yourself is the explicit path, and it always works. The SDK can also **discover** an id from the variables your hosting platform or CI system already injects, so you don't have to wire anything up.
+
+Discovery happens at **runtime**, on each trigger call — never at module load — so a prebuilt bundle can't pin a stale value.
+
+The SDK takes the first of these that yields a value:
+
+1. **`externalDeploymentId` passed to the trigger call** — always honoured.
+2. **`externalDeploymentId` passed to `configure()`** — always honoured.
+3. **`TRIGGER_EXTERNAL_DEPLOYMENT_ID`** — always honoured.
+4. **Platform and CI variables** — read **only** when `TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION` is set to `1` or `true`.
+
+The first three are explicit acts on your part, so they need no opt-in. Only the fourth — reading a commit SHA your platform injected on its own — requires one, because that value is there whether or not anyone asked for this feature.
+
+```bash theme={"theme":"css-variables"}
+TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION=1
+```
+
+The value is trimmed and matched case-insensitively, so `true`, `TRUE` and `True` are all the same thing. Any other value — including `0`, an empty string, or the variable being absent — leaves automatic discovery off. The variable gates *discovery* only; an id you set explicitly is always honoured either way.
+
+<Warning>
+  **Most platforms expose the commit SHA to the build, not to the running process.** Discovery reads
+  `process.env` inside your live application, so a variable that only exists during the build is a
+  variable the SDK cannot see. On those platforms nothing is discovered and **nothing breaks** — your
+  runs simply execute on the current version, silently, as they do today. If your platform is marked
+  "Build only" below, use the [manual recipe](#the-manual-recipe) instead.
+</Warning>
+
+### Hosting platforms
+
+Read first, because a hosting variable describes the deployment that is *running*.
+
+| Platform                      | Variable                                         | Available in the running app?                                                                                               |
+| ----------------------------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| **Vercel**                    | `VERCEL_GIT_COMMIT_SHA`                          | **Yes** — build and runtime, provided "Automatically expose System Environment Variables" is on for the project.            |
+| **Railway**                   | `RAILWAY_GIT_COMMIT_SHA`                         | **Yes** — injected at build and runtime, no configuration.                                                                  |
+| **Render**                    | `RENDER_GIT_COMMIT`                              | **Yes** — exposed in both build and runtime environments.                                                                   |
+| **Cloudflare Pages**          | `CF_PAGES_COMMIT_SHA`                            | **Yes** for Pages Functions; also present during the build.                                                                 |
+| **Cloudflare Workers Builds** | `WORKERS_CI_COMMIT_SHA`                          | **Build only** — not injected into the deployed Worker. Must be forwarded.                                                  |
+| **Netlify**                   | `COMMIT_REF`                                     | **Build only** in the general case. Must be forwarded. (`CACHED_COMMIT_REF` is the *previous* build's SHA and is not read.) |
+| **AWS Amplify Hosting**       | `AWS_COMMIT_ID`                                  | **Build only.** Must be forwarded.                                                                                          |
+| **Heroku**                    | `HEROKU_BUILD_COMMIT`, then `HEROKU_SLUG_COMMIT` | **Runtime, opt-in** — requires dyno metadata.                                                                               |
+| **Koyeb**                     | `KOYEB_GIT_SHA`                                  | **Runtime only** (not available during the build).                                                                          |
+| **DigitalOcean App Platform** | —                                                | No fixed variable. Bind `${_self.COMMIT_HASH}` to a variable named `COMMIT_HASH` and the generic tier below picks it up.    |
+| **Fly.io**                    | —                                                | Nothing is injected. Set one of the generic names below at deploy time.                                                     |
+
+### CI systems
+
+Read second. These are correct when your application *is* the CI job, and they are the natural source for `--external-id` in a pipeline. Once the job has ended they no longer exist, so they cannot be discovered from a long-running app.
+
+| System               | Variable              |
+| -------------------- | --------------------- |
+| GitHub Actions       | `GITHUB_SHA`          |
+| GitLab CI            | `CI_COMMIT_SHA`       |
+| CircleCI             | `CIRCLE_SHA1`         |
+| Bitbucket Pipelines  | `BITBUCKET_COMMIT`    |
+| Buildkite            | `BUILDKITE_COMMIT`    |
+| Azure Pipelines      | `BUILD_SOURCEVERSION` |
+| Google Cloud Build   | `COMMIT_SHA`          |
+| Drone / Woodpecker   | `DRONE_COMMIT_SHA`    |
+| Jenkins (git plugin) | `GIT_COMMIT`          |
+| TeamCity             | `BUILD_VCS_NUMBER`    |
+| Travis CI            | `TRAVIS_COMMIT`       |
+
+### Generic fallbacks
+
+Read last, after every named source above is exhausted:
+
+```text theme={"theme":"css-variables"}
+COMMIT_SHA  →  COMMIT_HASH  →  GIT_COMMIT  →  GIT_SHA  →  GIT_HASH
+```
+
+These are the answer for any platform not listed: set one of them and you get pinning with no other changes. They go last precisely because they are unnamespaced and could plausibly be set by something other than your deploy.
+
+Empty and whitespace-only values are skipped rather than treated as a match, and a value longer than 128 characters is skipped rather than sent — so a generic name holding something that isn't a deployment id degrades to "no id discovered" instead of an error.
+
+<Tip>
+  If a generic name means something else in your environment, you have two clean escapes: set
+  `TRIGGER_EXTERNAL_DEPLOYMENT_ID` explicitly (it outranks all discovery), or leave
+  `TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION` off and use the manual recipe.
+</Tip>
+
+## The manual recipe
+
+If your platform only exposes the commit at build time — or injects nothing at all — set the id yourself. This is not a lesser mode: it is the same mechanism, and the same code path the Vercel integration uses with both halves filled in automatically.
+
+Read the commit in the place where it *is* available, and write it into both halves:
+
+```bash theme={"theme":"css-variables"}
+# 1. Deploy side — name the deployment after the commit.
+npx trigger.dev@latest deploy --external-id "$(git rev-parse HEAD)"
+
+# 2. Application side — give the running app the same value.
+TRIGGER_EXTERNAL_DEPLOYMENT_ID=<the-same-commit-sha>
+```
+
+Substitute a real value on both sides — and prefer something that fails loudly over a bare shell variable. On the platforms this section is about, the platform's own commit variable is usually **not** set in the shell you are deploying from, so `--external-id "$COMMIT_SHA"` would quietly deploy with no id and leave you unprotected.
+
+Whatever your platform calls its build-time commit variable — `COMMIT_REF` on Netlify, `AWS_COMMIT_ID` on Amplify, `WORKERS_CI_COMMIT_SHA` on Cloudflare Workers Builds, `$(git rev-parse HEAD)` in a bespoke pipeline — read it there and forward it.
+
+Half two can be a runtime environment variable set in your platform's configuration, or a build-time constant inlined into your bundle. Either works.
+
+Three things are worth knowing:
+
+* **It needs no `TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION`.** That variable gates discovery, not pinning, and an explicitly set id is always honoured.
+* **It is not Vercel-specific, or even git-specific.** A release tag or CI run id is fine — the value only has to match on both sides.
+* **Any name the SDK reads works.** `TRIGGER_EXTERNAL_DEPLOYMENT_ID` is the clearest, but one of the [generic fallbacks](#generic-fallbacks) does the same job.
+
+### Example: Netlify
+
+Netlify exposes `COMMIT_REF` to the build only, so forward it:
+
+```bash theme={"theme":"css-variables"}
+# In your build command or CI step
+npx trigger.dev@latest deploy --external-id "$COMMIT_REF"
+```
+
+Then set `TRIGGER_EXTERNAL_DEPLOYMENT_ID` to the same commit in your site's runtime environment variables — for example by writing it during the build, or by having your deploy pipeline set it through the Netlify API.
+
+## Setting the id in code
+
+Environment variables are the usual way, but you can also pass the id directly. Both forms always win over discovery.
+
+Per trigger call:
+
+```ts theme={"theme":"css-variables"}
+import { myTask } from "./trigger/tasks";
+
+await myTask.trigger(
+  { foo: "bar" },
+  { externalDeploymentId: process.env.VERCEL_GIT_COMMIT_SHA }
+);
+```
+
+Or once, for every trigger made by the process:
+
+```ts theme={"theme":"css-variables"}
+import { configure } from "@trigger.dev/sdk";
+
+configure({
+  externalDeploymentId: process.env.MY_RELEASE_ID,
+});
+```
+
+An empty or whitespace-only value counts as "not supplied" rather than an error, so wiring up a variable that isn't always present is safe.
+
+Batch triggers carry the id too. `batchTrigger` resolves it per item exactly as `trigger` does, and it survives the asynchronous materialisation of batch items — so a large batch triggered during a deploy waits and releases item by item, each pinned to the deployment its calling code came from.
+
+## Waiting and expiry
+
+When a run arrives with an id that isn't deployed yet, it doesn't fail — it **waits**. This is the ordinary case, not an edge case: your app frequently goes live a few seconds before your task build finishes.
+
+A waiting run shows in the dashboard with the status **Pending version** and the reason *"Waiting for a deployment with this run's external deployment id"*. As soon as a deployment carrying that id is deployed, the run is released and executes pinned to it.
+
+An unknown id waits too, for the same reason: "we haven't seen this deployment" and "this deployment hasn't been created yet" look identical from the outside, and the second is common — your app often goes live before your deploy pipeline has even claimed a runner.
+
+<Warning>
+  A run waiting on an external deployment id that never arrives **expires after 1 hour**. It moves
+  to `EXPIRED` with a message naming the id it waited for — `Run expired because no deployment with
+      external id 'abc123' became available`. This bounds — but does not diagnose — the configuration
+  mistakes that produce a deployment which never lands. See [When nothing ever
+  lands](#when-nothing-ever-lands).
+</Warning>
+
+A shorter [run-level `ttl`](/docs/triggering#ttl) that you set yourself still wins — the one-hour deadline is a backstop, not an extension. Note that the run still expires *as* an external-deployment expiry: the status reason and message name the id it was waiting for, not the `ttl`.
+
+<Note>
+  This deadline applies only to runs waiting on an external deployment id. Runs that wait for the
+  reasons that already exist — such as triggering a task before your first deploy — keep waiting
+  indefinitely, unchanged.
+</Note>
+
+## When nothing ever lands
+
+Waiting is the right answer to a race and the wrong answer to a misconfiguration, and for the first hour the two look identical. Three setups produce an id that will never be deployed, and each expires **every** run from the affected release.
+
+### The commit didn't build any tasks
+
+The most damaging one, and the easiest to create by accident. If your deploy workflow is filtered on paths — `paths: ['trigger/**']` in a monorepo is the usual shape — a commit that only touches your application produces **no Trigger.dev deployment at all**. Your app still sends that commit's SHA, nothing ever holds it, and every run from that release waits an hour and expires.
+
+If you filter deploys by path, derive the id from the same filter on both sides — the SHA of the last commit that touched your task directory, not the commit being deployed:
+
+```bash theme={"theme":"css-variables"}
+TASK_ID=$(git log -1 --format=%H -- trigger/)
+npx trigger.dev@latest deploy --external-id "$TASK_ID"
+```
+
+Compute the same value where you set your app's variable. In GitHub Actions this needs `fetch-depth: 0` on `actions/checkout` — the default shallow clone can't see far enough back.
+
+### Two applications, one Trigger.dev project
+
+If two deployables share one Trigger.dev project and only one of them deploys tasks, the other still sends its own commit SHA — an id nothing will ever hold. Give the application that doesn't build tasks either no id, or the id of the deployment it should run against.
+
+### A preview deployment promoted to production
+
+Ids resolve **within a single environment**. An id deployed to a preview branch does not exist in production, so promoting that preview build in your hosting platform — without a production deploy carrying the same id — parks and expires every production run. Deploy to production the normal way rather than promoting a preview artifact.
+
+<Tip>
+  A run that hit one of these shows as `EXPIRED` with `Run expired because no deployment with
+      external id '…' became available`. An environment producing nothing but that message has a
+  configuration problem, not a timing problem.
+</Tip>
+
+## Precedence
+
+Several things can pin a run. The SDK sends an **explicit version** — the `version` option if you passed one, otherwise `TRIGGER_VERSION` — and the external deployment id, whenever it has them. The server then prefers the explicit version, then the id, then the current version:
+
+```text theme={"theme":"css-variables"}
+explicit version (version option, else TRIGGER_VERSION)  >  external deployment id  >  current version
+```
+
+* An explicit `version` passed to `trigger()` always wins. Because the SDK folds the option and the variable into a single value before sending, the `version` option overrides `TRIGGER_VERSION` on the client, and the server only ever sees the winner.
+* An explicit version therefore beats an external deployment id. This is what makes migration from [atomic deploys](/docs/deployment/atomic-deployment) safe: the legacy pin keeps governing until you remove the variable.
+* An external deployment id sent alongside an explicit version is **ignored, not an error**.
+* A trigger carrying neither runs on the current version.
+
+<Warning>
+  **Don't leave a stale `TRIGGER_VERSION` behind.** A `TRIGGER_VERSION` naming a version that
+  doesn't exist *in the environment being triggered* is not a soft failure and not a fallback —
+  **every trigger fails** with a `422`, wherever the trigger came from. It also suppresses the
+  external deployment id, so skew protection can't rescue it.
+
+  The usual way to hit this is setting `TRIGGER_VERSION` at the project level on your hosting
+  platform: a version built in production doesn't exist in preview, so every preview trigger fails.
+  Remove the variable once you've confirmed skew protection is working.
+</Warning>
+
+```ts theme={"theme":"css-variables"}
+// Explicit version wins, even if an external deployment id is discovered.
+await myTask.trigger({ foo: "bar" }, { version: "20250228.1" });
+```
+
+## Automatic skew protection on Vercel
+
+If you use the [Vercel integration](/docs/vercel-integration), version skew protection is set up for you and both halves are automatic:
+
+* The integration sets **`TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION=1`** on your Vercel project when you connect it, and adds it on the next build if it is missing — so projects connected before this existed pick it up without reconnecting. It only ever adds the variable, never overwrites one that is already there.
+* The integration passes **your commit SHA** as the deploy's external id.
+* `VERCEL_GIT_COMMIT_SHA` is available at runtime on Vercel, so the SDK discovers the matching id with no work from you.
+
+This covers production, staging and preview alike.
+
+### Opting out
+
+Set `TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION` to `0` on your Vercel project. A `0` you set today stays `0` through every subsequent build.
+
+Opting out only disables automatic *discovery*. You can still pin explicitly at any time by setting `TRIGGER_EXTERNAL_DEPLOYMENT_ID` yourself.
+
+## Replacing automatic atomic deployments
+
+<Warning>
+  **Automatic atomic deployments are deprecated.** The setting still exists in your Vercel
+  integration settings, is labelled Deprecated, and keeps working — nothing is being switched off
+  for you. New connections have it off by default. Version skew protection is the supported
+  mechanism.
+</Warning>
+
+[Atomic deployments](/docs/vercel-integration#atomic-deployments) solved the same problem by gating your Vercel deployment on the Trigger.dev build, then spawning a **second** Vercel deployment with `TRIGGER_VERSION` baked in and promoting it.
+
+Version skew protection replaces it and is strictly less invasive:
+
+|                                         | Automatic atomic deployments            | Version skew protection             |
+| --------------------------------------- | --------------------------------------- | ----------------------------------- |
+| Vercel deployments per release          | Two — the original, then a redeploy     | One                                 |
+| Blocks your Vercel deployment           | Yes, until the task build finishes      | Never                               |
+| `Auto-assign Custom Production Domains` | Must be disabled                        | Untouched                           |
+| Environments covered                    | Production only                         | Production, staging **and** preview |
+| Configuration                           | A setting on the production environment | None — the id is the contract       |
+| Runs triggered before the build lands   | Run on the previous version             | Wait, then run on the right version |
+
+### Migrating
+
+1. Make sure your app and your deploys are on **v4.5.12 or later** — the release that introduced external deployment ids. The CLI (`trigger.dev`) and the SDK (`@trigger.dev/sdk`) version together, so `npx trigger.dev@latest update` moves both; see the [v4.5.12 release notes](https://github.com/triggerdotdev/trigger.dev/releases/tag/v4.5.12).
+2. Confirm skew protection is working — deploy, then check that runs triggered by the new release are pinned to the new version.
+3. Turn **Atomic deployments** off in your project's Vercel settings.
+4. **Remove the `TRIGGER_VERSION` variable** from your Vercel project. Until you do, it outranks the external deployment id and keeps governing.
+5. Decide who promotes. Under atomic deployments Trigger.dev promoted for you; without it, either re-enable `Auto-assign Custom Production Domains` in Vercel or promote deliberately from your own pipeline.
+
+Both mechanisms can run at the same time without conflict while the variable still names a live version — `TRIGGER_VERSION` simply keeps winning — so there is no broken intermediate state and no need to do all of this at once.
+
+<Warning>
+  **Step 4 is not optional, and don't do it before step 2.** While `TRIGGER_VERSION` names a version
+  that exists in the environment being triggered, it simply keeps winning — safe, and why the two
+  mechanisms coexist. The moment it names a version that environment doesn't have, **every trigger
+  fails outright** with a `422`, and the external deployment id it suppresses can't catch it.
+</Warning>
+
+<Note>
+  If you want your Vercel deployment to stay **gated** on the Trigger.dev build, atomic deployments
+  remain the way to do that. Version skew protection never blocks a deployment; it makes blocking
+  unnecessary by making runs wait instead.
+</Note>
+
+## Related
+
+* [Deployment overview](/docs/deployment/overview) — versions, current version and version locking
+* [Deploy CLI command](/docs/cli-deploy-commands) — every deploy flag
+* [Vercel integration](/docs/vercel-integration)
+* [Preview branches](/docs/deployment/preview-branches)
+* [Atomic deploys](/docs/deployment/atomic-deployment) (deprecated for Vercel)
 
 
 # Errors & Retrying
@@ -21642,11 +22296,11 @@ The instructions below are specific to GitHub Actions, but the same concepts can
 
 ## GitHub Actions example
 
-This simple GitHub action workflow will deploy your Trigger.dev tasks when new code is pushed to the `main` branch and the `trigger` directory has changes in it.
+This simple GitHub action workflow will deploy your Trigger.dev tasks when new code is pushed to the `main` branch.
 
 <Warning>
   The deploy step will fail if any version mismatches are detected. Please see the [version
-  pinning](/docs/github-actions#version-pinning) section for more details.
+  pinning](/docs/github-actions#cli-version-pinning) section for more details.
 </Warning>
 
 <CodeGroup>
@@ -21677,7 +22331,7 @@ This simple GitHub action workflow will deploy your Trigger.dev tasks when new c
           env:
             TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
           run: |
-            npx trigger.dev@latest deploy
+            npx trigger.dev@latest deploy --external-id ${{ github.sha }}
   ```
 
   ```yaml .github/workflows/release-trigger-staging.yml theme={"theme":"css-variables"}
@@ -21706,11 +22360,35 @@ This simple GitHub action workflow will deploy your Trigger.dev tasks when new c
           env:
             TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
           run: |
-            npx trigger.dev@latest deploy --env staging
+            npx trigger.dev@latest deploy --env staging --external-id ${{ github.sha }}
   ```
 </CodeGroup>
 
 If you already have a GitHub action file, you can just add the final step "🚀 Deploy Trigger.dev" to your existing file.
+
+### Pinning runs to the deployment you just built
+
+The `--external-id ${{ github.sha }}` above tags the deployment with the commit it was built from. That is the first half of [version skew protection](/docs/deployment/version-skew-protection): to complete it, give your running application the **same value** so it sends that id when it triggers.
+
+```bash theme={"theme":"css-variables"}
+# In your application's runtime environment, for the release built from this commit
+TRIGGER_EXTERNAL_DEPLOYMENT_ID=<the-same-commit-sha>
+```
+
+Every task triggered by that release is then pinned to the deployment built from the same commit — and runs triggered before the task build finishes wait for it rather than executing on the previous version.
+
+<Note>
+  Tagging the deployment is harmless on its own: if nothing sends a matching id, runs behave exactly
+  as they do today. `--external-id` also makes repeat deploys idempotent — re-running the workflow
+  for a commit that is already deployed reports the existing version instead of building again.
+
+  Two things follow from that. Because no build runs, a re-run after changing a synced environment
+  variable won't pick the new value up — make an empty commit, or pass `--force`. And if you add a
+  `paths:` filter to this workflow, `${{ github.sha }}` stops being a safe id: commits that don't
+  touch your tasks never produce a deployment carrying that SHA, so every run from those releases
+  expires. See [when nothing ever
+  lands](/docs/deployment/version-skew-protection#when-nothing-ever-lands).
+</Note>
 
 ## Preview branches
 
@@ -21738,10 +22416,14 @@ jobs:
         run: npm install
 
       - name: Deploy preview branch
-        run: npx trigger.dev@latest deploy --env preview
+        run: npx trigger.dev@latest deploy --env preview --external-id ${{ github.event.pull_request.head.sha }}
         env:
           TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
 ```
+
+On `pull_request`, `github.sha` is the merge commit GitHub creates for the PR, not the commit your
+app was built from. Use `github.event.pull_request.head.sha` so the id matches the one your preview
+deployment sends.
 
 <Note>
   **Include `closed`** in the `pull_request.types` list. Without it, preview branches won't be archived when PRs are merged or closed, and you may hit the limit on active preview branches. See [Preview branches](/docs/deployment/preview-branches#preview-branches-with-github-actions-recommended) for more details.
@@ -21918,6 +22600,18 @@ The name of the preview branch matches the branch name of the pull request.
 <Note>
   Preview branch deployments require the preview environment to be enabled on your project. Learn more about [preview branches](/docs/deployment/preview-branches).
 </Note>
+
+## Version skew protection
+
+Every deployment the GitHub integration creates is tagged with the commit SHA it was built from. That is the deploy half of [version skew protection](/docs/deployment/version-skew-protection) — you get it for free.
+
+To complete it, give your running application the same value. Unlike the Vercel integration, we have no access to wherever your app is hosted, so this half is yours to set:
+
+```bash theme={"theme":"css-variables"}
+TRIGGER_EXTERNAL_DEPLOYMENT_ID=<the-commit-sha-this-release-was-built-from>
+```
+
+If your host already exposes the commit SHA at runtime, set `TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION=1` instead and the SDK will find it — see the [platform table](/docs/deployment/version-skew-protection#hosting-platforms).
 
 ## Disconnecting a repository
 
@@ -47463,6 +48157,7 @@ Environment variables for the supervisor container.
 | `KUBERNETES_NAMESPACE`                      | No       | default     | The namespace that runs should be in.                       |
 | `KUBERNETES_WORKER_NODETYPE_LABEL`          | No       | v4-worker   | Nodes for runs need `nodetype=<this>`. Empty: any node.     |
 | `KUBERNETES_RUNNER_TOLERATIONS`             | No       | —           | Run pod tolerations. CSV: `key=value:effect`/`key:effect`.  |
+| `KUBERNETES_ORG_PLACEMENT_OVERRIDES`        | No       | —           | Per-org run pod placement. JSON keyed by internal org ID.   |
 | `KUBERNETES_IMAGE_PULL_SECRETS`             | No       | —           | Image pull secrets (CSV).                                   |
 | `KUBERNETES_EPHEMERAL_STORAGE_SIZE_LIMIT`   | No       | 10Gi        | Ephemeral storage size limit. Applies to all runs.          |
 | `KUBERNETES_EPHEMERAL_STORAGE_SIZE_REQUEST` | No       | 2Gi         | Ephemeral storage size request. Applies to all runs.        |
@@ -47674,6 +48369,7 @@ Environment variables for the webapp container.
 | `MACHINE_PRESETS_OVERRIDE_PATH`                  | No       | —                                              | Path to machine presets override file. See [machine overrides](/docs/self-hosting/overview#machine-overrides).                                                                                                                      |
 | `APP_ENV`                                        | No       | `NODE_ENV`                                     | App environment. Used for things like the title tag.                                                                                                                                                                                |
 | `ADMIN_EMAILS`                                   | No       | —                                              | Regex of user emails to automatically promote to admin on signup. Does not apply to existing users.                                                                                                                                 |
+| `ADMIN_DASHBOARD_ENABLED`                        | No       | 1                                              | Set to anything other than `1` or `true` to disable the admin dashboard and user impersonation on this instance.                                                                                                                    |
 | `EVENT_LOOP_MONITOR_ENABLED`                     | No       | 1                                              | Node.js event loop lag monitor.                                                                                                                                                                                                     |
 
 ## Multi-Provider Object Storage
@@ -49716,6 +50412,50 @@ To use imperative schedules you need to do two things:
 1. Define a task in your code using `schedules.task()`.
 2. Attach 1+ schedules to the task either using the dashboard or the SDK.
 
+## Spreading runs with windows
+
+By default a schedule runs at its exact cron time. When many schedules share the same cron pattern, such as a daily `0 9 * * *`, they all fire at the same time and load your downstream systems as well as ours. A **window** spreads those runs out: each schedule is assigned a stable time within the window after its cron time, so the load is smoothed while each schedule keeps firing at a predictable, repeatable moment.
+
+The assigned time is deterministic. A given schedule always lands at the same offset for a given interval, so runs don't jump around between occurrences. And you can always see exactly when the next run will start.
+
+Set a `window` as either:
+
+* **An absolute duration** in whole minutes or hours, up to 24 hours: `"30m"`, `"2h"`, `"24h"`. Absolute windows are capped at the next cron time, so a run is never delayed past its following occurrence.
+* **A percentage** of the interval between runs: `"30%"`, `"100%"`. A `"50%"` window on an hourly schedule spreads runs across the first 30 minutes of each hour.
+
+Set `"0m"` (or `"0%"`) for no spreading — the run fires at its exact cron time.
+
+Declarative schedules set the window on the `cron` object:
+
+```ts theme={"theme":"css-variables"}
+export const dailyReport = schedules.task({
+  id: "daily-report",
+  cron: {
+    pattern: "0 0 * * *",
+    // spread this run across the 30 minutes after midnight
+    window: "30m",
+  },
+  run: async (payload) => {},
+});
+```
+
+Imperative schedules set it when creating or updating a schedule, either in the dashboard form or through the SDK:
+
+```ts theme={"theme":"css-variables"}
+const createdSchedule = await schedules.create({
+  task: dailyReport.id,
+  cron: "0 0 * * *",
+  window: "30m",
+  deduplicationKey: "user_123456-daily-report",
+});
+```
+
+<Note>
+  The payload `timestamp` and `upcoming` values are always the nominal cron times, not the assigned
+  times. When you retrieve a schedule, `nextRun` is the nominal cron time and `nextRunEffectiveAt`
+  is the assigned time the run will actually start.
+</Note>
+
 ## Supported cron syntax
 
 ```
@@ -49774,6 +50514,7 @@ You need to attach a schedule to a task before it will run on a schedule. You ca
     | Task              | The id of the task you want to attach to.                                                                                              |
     | Cron pattern      | The schedule in cron format. You can also describe it in natural language and press "Generate" to fill this in.                        |
     | Timezone          | The timezone the schedule will run in. Defaults to "UTC"                                                                               |
+    | Window            | An optional [window](#spreading-runs-with-windows) to spread runs after their cron time, e.g. `30m`, `2h`, or `50%`.                   |
     | External id       | An optional external id, usually you'd use a userId.                                                                                   |
     | Deduplication key | An optional deduplication key. If you pass the same value, it will update rather than create. Scoped per project, not per environment. |
     | Environments      | The environments this schedule will run in.                                                                                            |
@@ -53538,7 +54279,7 @@ Automatically deploy your tasks whenever you deploy to Vercel.
 
 ## How it works
 
-The Vercel integration connects your Vercel project to your Trigger.dev project so that every Vercel deployment automatically triggers a Trigger.dev deployment. It also syncs environment variables from Vercel into Trigger.dev and supports atomic deployments to keep your app and tasks in sync.
+The Vercel integration connects your Vercel project to your Trigger.dev project so that every Vercel deployment automatically triggers a Trigger.dev deployment. It also syncs environment variables from Vercel into Trigger.dev, and sets up [version skew protection](/docs/deployment/version-skew-protection) so your app and tasks stay in sync.
 
 This eliminates the need to manually run the `trigger.dev deploy` command or maintain custom CI/CD workflows for Vercel-based projects.
 
@@ -53574,8 +54315,7 @@ You can connect Vercel from two entry points:
   </Step>
 
   <Step title="Configure build options">
-    Optionally adjust [build options](#build-options) for atomic deployments, env var pulling, and new
-    env var discovery.
+    Optionally adjust [build options](#build-options) for env var pulling and new env var discovery.
   </Step>
 
   <Step title="Connect GitHub">
@@ -53628,7 +54368,7 @@ The integration syncs environment variables in both directions:
 
 The following variables are excluded from the Vercel → Trigger.dev sync:
 
-* `TRIGGER_SECRET_KEY`, `TRIGGER_VERSION`, `TRIGGER_PREVIEW_BRANCH` (managed by Trigger.dev)
+* `TRIGGER_SECRET_KEY`, `TRIGGER_API_URL`, `TRIGGER_VERSION`, `TRIGGER_PREVIEW_BRANCH`, `TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION` (managed by Trigger.dev)
 * Sensitive/secret-type variables (Vercel API limitation)
 
 You can control sync behavior per-variable from your project's Vercel settings. Deselecting a variable prevents its value from being updated during future syncs.
@@ -53649,7 +54389,40 @@ You can control sync behavior per-variable from your project's Vercel settings. 
 
 If you use [Supabase Branching](https://supabase.com/docs/guides/deployment/branching) or [Neon Database Branching](https://neon.tech/docs/guides/branching-intro) for preview environments, disable syncing for database env vars on the Environment Variables page and use the [syncSupabaseEnvVars](/docs/config/extensions/syncEnvVars#syncsupabaseenvvars) or [syncNeonEnvVars](/docs/config/extensions/syncEnvVars#syncneonenvvars) build extensions instead. These extensions automatically resolve the correct branch-specific credentials at build time.
 
+## Version skew protection
+
+Your Vercel app and your tasks are deployed separately, so there is always a window where a new app can trigger tasks built from older code. [Version skew protection](/docs/deployment/version-skew-protection) closes that window: each Trigger.dev deployment is tagged with your commit SHA, your app sends the same SHA when it triggers, and every run is pinned to the deployment built from the same commit. Runs triggered before the task build finishes wait for it rather than running on the previous version.
+
+The integration sets this up for you:
+
+* It sets `TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION=1` on your Vercel project when you connect it, and re-asserts it on every build — so existing projects pick it up on their next deployment.
+* It passes your commit SHA as the deployment's external id.
+* `VERCEL_GIT_COMMIT_SHA` is available at runtime on Vercel, so the SDK finds the matching id with no work from you.
+
+There is nothing to enable, and it works in production, staging and preview alike. Nothing is gated: your Vercel deployment is never held back.
+
+<Note>
+  Version skew protection requires the `@trigger.dev/sdk` release that introduces external
+  deployment ids. Check the [release
+  notes](https://github.com/triggerdotdev/trigger.dev/releases) for the exact version, or just use
+  the latest. On an older SDK no id is sent and your runs execute on the current version, with no
+  warning.
+</Note>
+
+To opt out, set `TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION` to `0` on your Vercel project. The integration only writes the variable when it is absent, so a value you set is never overwritten.
+
 ## Atomic deployments
+
+<Warning>
+  **Automatic atomic deployments are deprecated.** Use [version skew
+  protection](/docs/deployment/version-skew-protection) instead — it needs no second Vercel deployment,
+  never gates your app's deploy, doesn't touch `Auto-assign Custom Production Domains`, and covers
+  staging and preview as well as production.
+
+  Nothing is being switched off. The setting stays in your project's Vercel settings, keeps working,
+  and remains the way to hold your Vercel deployment back until your tasks have built. New
+  connections have it off by default.
+</Warning>
 
 Atomic deployments ensure your Vercel app and Trigger.dev tasks are deployed in sync. When enabled, Trigger.dev gates your Vercel deployment until the task build completes, then triggers a Vercel redeployment with the correct `TRIGGER_VERSION` set. This guarantees your app always uses the matching version of your tasks.
 
@@ -53681,15 +54454,16 @@ sequenceDiagram
   TD->>TD: Promote build
 ```
 
-Atomic deployments are enabled for the production environment by default.
+Atomic deployments are off by default for new connections. Projects that already had them enabled keep them enabled until you turn them off. Enabling them asks you to confirm first.
 
 <Note>
   When atomic deployments are enabled, the integration automatically disables `Auto-assign Custom
       Production Domains` on your Vercel project. This is required so that Vercel doesn't promote a
-  deployment before the Trigger.dev build is ready.
+  deployment before the Trigger.dev build is ready. If you turn atomic deployments off, re-enable
+  that setting in Vercel or promote deployments yourself.
 </Note>
 
-Previously, setting up atomic deployments with Vercel required custom GitHub Actions workflows. The Vercel integration automates this entirely. For more details on how atomic deployments work, see [Atomic deploys](/docs/deployment/atomic-deployment).
+Previously, setting up atomic deployments with Vercel required custom GitHub Actions workflows. The Vercel integration automates this entirely. For more details on how atomic deployments work, see [Atomic deploys](/docs/deployment/atomic-deployment). For how to move off them, see [replacing automatic atomic deployments](/docs/deployment/version-skew-protection#replacing-automatic-atomic-deployments).
 
 ## Environment mapping
 
@@ -53713,7 +54487,7 @@ If your Vercel project has a custom environment, you can select which one maps t
 
 You can configure the following settings per-environment from your project's Vercel settings:
 
-* **Atomic deployments**: Controls whether Trigger.dev and Vercel deployments are synchronized. Enabled for production by default.
+* **Atomic deployments** (deprecated): Controls whether Trigger.dev gates and redeploys your Vercel deployment to keep it in sync. Off by default for new connections — use [version skew protection](/docs/deployment/version-skew-protection) instead.
 * **Pull env vars before build**: When enabled, Trigger.dev pulls the latest environment variables from Vercel before each build. Enabled for production, staging, and preview by default.
 * **Discover new env vars**: When enabled, new environment variables found in Vercel that don't yet exist in Trigger.dev are created automatically during builds. Only available for environments that also have env var pulling enabled. Enabled for production, staging, and preview by default.
 
@@ -53730,8 +54504,9 @@ Disconnecting stops automatic deployments, environment variable syncing, and dep
 
 ## Related
 
+* [Version skew protection](/docs/deployment/version-skew-protection)
 * [GitHub integration](/docs/github-integration)
-* [Atomic deploys](/docs/deployment/atomic-deployment)
+* [Atomic deploys](/docs/deployment/atomic-deployment) (deprecated for Vercel)
 * [Environment variables](/docs/deploy-environment-variables)
 * [Preview branches](/docs/deployment/preview-branches)
 
@@ -53784,6 +54559,8 @@ So a task run will continue running on the version it was locked to. We do this 
 ## Deployment
 
 Every deployment creates a new version of all tasks for that environment.
+
+Because your application and your tasks deploy separately, a release of your app can briefly trigger tasks that belong to a different version. [Version skew protection](/docs/deployment/version-skew-protection) pins each run to the deployment built from the same commit, once your app sends the id it was deployed with.
 
 ## Retries and reattempts
 

@@ -207,7 +207,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
   user_prompt = """Jenna and her mother picked some apples from their apple farm.
   Jenna picked half as many apples as her mom. If her mom got 20 apples, how many apples did they both pick?"""
 
-  aggregator_model = "deepseek-ai/DeepSeek-V4-Pro"
+  aggregator_model = "deepseek-ai/DeepSeek-V4-Pro-0813"
 
   aggregator_system_prompt = """You have been provided with a set of responses from various open-source models to the latest user query.
   Your task is to synthesize these responses into a single, high-quality response. It is crucial to critically evaluate the information
@@ -250,7 +250,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
     If her mom got 20 apples, how many apples did they both pick?
   `;
 
-  const aggregatorModel = "deepseek-ai/DeepSeek-V4-Pro";
+  const aggregatorModel = "deepseek-ai/DeepSeek-V4-Pro-0813";
 
   const aggregatorSystemPrompt = dedent`
     You have been provided with a set of responses from various

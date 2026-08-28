@@ -4,6 +4,31 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="August 27, 2026">
+  ## Model deprecations
+
+  The following models have been deprecated and are no longer available on serverless:
+
+  * `nvidia/Nemotron-3-ultra-550b-a55b`.
+  * `pearl-ai/gemma-4-31b-it`.
+  * `deepseek-ai/DeepSeek-V4-Pro`. Use `deepseek-ai/DeepSeek-V4-Pro-0813` instead.
+  * `moonshotai/Kimi-K2.7-Code`.
+
+  All of these models except `pearl-ai/gemma-4-31b-it` remain available through on-demand [dedicated endpoints](/docs/dedicated-endpoints). See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
+<Update label="August 26, 2026">
+  ## Batch jobs in the CLI
+
+  The Together CLI now includes a `tg batches` command group for [batch inference](/docs/inference/batch/overview):
+
+  * `tg batches submit` uploads a local JSONL file (or takes an existing file ID) and creates a job against `chat.completions`, `audio.transcriptions`, or `audio.translations`.
+  * `tg batches list`, `retrieve`, and `cancel` manage the job lifecycle, with `ls` and `get` as aliases.
+  * `tg batches download` streams results to stdout, or writes the output and error files to disk with `--output`.
+
+  See the [batches CLI reference](/reference/cli/batches).
+</Update>
+
 <Update label="August 26, 2026">
   ## New serverless models
 
@@ -78,6 +103,14 @@ path: docs/changelog
   * **Audit trail:** Automatically approved repairs record **Auto-Approved** in the repair's **Reviewed by** field, alongside the alert evidence that triggered them.
 
   See [Confirmation policy](/docs/node-repair#confirmation-policy) for details.
+</Update>
+
+<Update label="August 19, 2026">
+  ## ACH bank transfers generally available
+
+  ACH bank transfers are now available to all customers, not just those with an enterprise contract. Link a U.S. bank account with instant verification from your [billing settings](https://api.together.ai/settings/organization/~current/billing), set it as your default payment method, and purchase credits directly from your bank account. Credits are deposited after the ACH payment clears (usually 1–3 business days). Auto-recharge still requires a card as the default payment method.
+
+  See [Payment methods & invoices](/docs/billing-payment-methods#ach-bank-transfers).
 </Update>
 
 <Update label="August 19, 2026">
@@ -156,6 +189,18 @@ path: docs/changelog
 </Update>
 
 <Update label="August 12, 2026">
+  ## Leave a project from the console
+
+  Project collaborators can now leave a project themselves, from their own row in [**Settings > Project > Collaborators**](https://api.together.ai/settings/projects/~current/collaborators) or from the Projects list in [**Organization Settings**](https://api.together.ai/settings/organization/~current). Organization members cannot leave the organization's default project, and the last project admin must promote another collaborator before leaving.
+
+  See [Leaving a project](/docs/projects#leaving-a-project).
+
+  ## Dedicated API keys for Vercel projects
+
+  Connecting a Vercel project from [Integrations settings](https://api.together.ai/settings/integrations) now creates a dedicated API key for each linked Vercel project, set as the `TOGETHER_API_KEY` environment variable in that Vercel project.
+
+  See [Vercel integration](/docs/api-keys-authentication#vercel-integration).
+
   ## New serverless models
 
   The following models are now available on [serverless](/docs/serverless/models):
@@ -222,6 +267,12 @@ path: docs/changelog
   LoRA fine-tuning jobs on `deepseek-ai/DeepSeek-V3.1` can now target the MoE expert layers.
 
   See [Target MoE expert layers](/docs/fine-tuning/lora-vs-full#target-moe-expert-layers) for how to enable it.
+
+  ## API key expiration at creation
+
+  When you create a project API key in the console, you can optionally set an expiration date. Select **Set an expiration date**, then choose **1 hour**, **1 day**, **7 days**, **30 days**, or a custom date.
+
+  See [Authentication](/docs/api-keys-authentication#create-an-api-key).
 </Update>
 
 <Update label="August 6, 2026">
@@ -463,6 +514,12 @@ path: docs/changelog
   The [fine-tuning comparison view](https://api.together.ai/fine-tuning?view=comparison) now includes the same **Metrics filtering** control as the single-job Metrics tab. Adjust **Sampling rate** and **Step range**, then select **Apply** to re-fetch metrics for every selected job with matching filters.
 
   See [View metrics in the dashboard](/docs/fine-tuning/monitoring#view-metrics-in-the-dashboard).
+
+  ## Cancel API key expiration
+
+  You can remove a scheduled expiration from a project API key in the console. Open the three-dot menu next to a key that has a future expiration date, select **Cancel expiration**, and confirm. The key stays active and no longer expires automatically.
+
+  See [Authentication](/docs/api-keys-authentication#best-practices).
 </Update>
 
 <Update label="July 23, 2026">

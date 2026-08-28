@@ -4,6 +4,16 @@ source: https://docs.fireworks.ai/updates/changelog
 path: updates/changelog
 ---
 
+<Update label="2026-08-26">
+  # Serverless Training deprecation: Qwen 3.5 9B and Qwen 3.6 27B
+
+  **Qwen 3.5 9B** and **Qwen 3.6 27B** are deprecated from Serverless Training effective August 26, 2026.
+
+  Migrate new and existing Serverless Training workloads to **[Qwen 3.8 27B](https://app.fireworks.ai/models/fireworks/qwen3p8-27b)**.
+
+  This change applies to the shared Serverless Training pool. Check the [training model catalog](/fine-tuning/models) for availability on other training surfaces.
+</Update>
+
 <Update label="2026-08-25">
   # SSO documentation: IdP-initiated SAML
 
@@ -97,7 +107,7 @@ path: updates/changelog
 
   Training datasets can now be stored in your own AWS S3 buckets using GCP-to-AWS OIDC federation. This Bring Your Own Bucket (BYOB) approach keeps your data private while enabling secure access during Supervised Fine-Tuning and Reinforcement Fine-Tuning jobs—no long-lived credentials required.
 
-  See the [Secure Training (BYOB) documentation](/fine-tuning/finetuning-intro#training-security) for IAM role setup and usage examples.
+  See the [Secure Training (BYOB) documentation](/guides/security_compliance/secure_training) for IAM role setup and usage examples.
 
   ## **Just-In-Time (JIT) User Provisioning for SSO** (Enterprise)
 
@@ -108,7 +118,7 @@ path: updates/changelog
   ## 📚 Documentation Updates
 
   * **Video & Audio Inputs:** New guide for processing video and audio with Qwen3 Omni and Molmo2 models ([Video & Audio Inputs](/guides/video-audio-inputs))
-  * **AWS S3 Bucket Integration:** BYOB dataset storage for training via OIDC federation ([Secure Training](/fine-tuning/finetuning-intro#training-security))
+  * **AWS S3 Bucket Integration:** BYOB dataset storage for training via OIDC federation ([Secure Training](/guides/security_compliance/secure_training))
   * **Rate Limits Clarification:** Expanded documentation on adaptive serverless limits, upper bounds, and monitoring ([Serverless rate limits](/serverless/rate-limits))
   * **Anthropic-Compatible Thinking Parameter:** Control reasoning with `thinking` parameter alongside `reasoning_effort` ([Reasoning](/guides/reasoning))
   * **Scaling from Zero Behavior:** Deployments scaled to zero return `503` immediately with retry guidance ([Autoscaling](/deployments/autoscaling))

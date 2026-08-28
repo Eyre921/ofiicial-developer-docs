@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 379 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 382 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -120,8 +120,10 @@
 - `docs/flux/configure` — [Configure](pages/docs/flux/configure.md) · [原文](https://developers.deepgram.com/docs/flux/configure.md)
 - `docs/flux/feature-overview` — [Flux Feature Overview](pages/docs/flux/feature-overview.md) · [原文](https://developers.deepgram.com/docs/flux/feature-overview.md)
 - `docs/flux/flux-nova-3-comparison` — [Compare Flux to Nova-3](pages/docs/flux/flux-nova-3-comparison.md) · [原文](https://developers.deepgram.com/docs/flux/flux-nova-3-comparison.md)
+- `docs/flux/force-end-turn` — [Force End Turn](pages/docs/flux/force-end-turn.md) · [原文](https://developers.deepgram.com/docs/flux/force-end-turn.md)
 - `docs/flux/language-prompting` — [Flux Multilingual & Language Prompting](pages/docs/flux/language-prompting.md) · [原文](https://developers.deepgram.com/docs/flux/language-prompting.md)
 - `docs/flux/nova-3-migration` — [Migrating from Nova-3 to Flux](pages/docs/flux/nova-3-migration.md) · [原文](https://developers.deepgram.com/docs/flux/nova-3-migration.md)
+- `docs/flux/own-turn-detection` — [Bring Your Own Turn Detection](pages/docs/flux/own-turn-detection.md) · [原文](https://developers.deepgram.com/docs/flux/own-turn-detection.md)
 - `docs/flux/quickstart` — [Getting Started with Flux](pages/docs/flux/quickstart.md) · [原文](https://developers.deepgram.com/docs/flux/quickstart.md)
 - `docs/flux/state` — [Understanding the Flux State Machine](pages/docs/flux/state.md) · [原文](https://developers.deepgram.com/docs/flux/state.md)
 - `docs/flux/voice-agent-eager-eot` — [Optimize Voice Agent Latency with Eager End of Turn](pages/docs/flux/voice-agent-eager-eot.md) · [原文](https://developers.deepgram.com/docs/flux/voice-agent-eager-eot.md)
@@ -289,6 +291,7 @@
 - `docs/voice-agent-echo-cancellation` — [Voice Agent Adaptive Echo Cancellation](pages/docs/voice-agent-echo-cancellation.md) · [原文](https://developers.deepgram.com/docs/voice-agent-echo-cancellation.md)
 - `docs/voice-agent-errors-warnings` — [Errors & Warnings](pages/docs/voice-agent-errors-warnings.md) · [原文](https://developers.deepgram.com/docs/voice-agent-errors-warnings.md)
 - `docs/voice-agent-feature-overview` — [Feature Overview](pages/docs/voice-agent-feature-overview.md) · [原文](https://developers.deepgram.com/docs/voice-agent-feature-overview.md)
+- `docs/voice-agent-force-end-turn` — [Force End Turn](pages/docs/voice-agent-force-end-turn.md) · [原文](https://developers.deepgram.com/docs/voice-agent-force-end-turn.md)
 - `docs/voice-agent-function-call-context` — [Function Call Context](pages/docs/voice-agent-function-call-context.md) · [原文](https://developers.deepgram.com/docs/voice-agent-function-call-context.md)
 - `docs/voice-agent-function-call-request` — [Function Call Request](pages/docs/voice-agent-function-call-request.md) · [原文](https://developers.deepgram.com/docs/voice-agent-function-call-request.md)
 - `docs/voice-agent-function-call-response` — [Function Call Response](pages/docs/voice-agent-function-call-response.md) · [原文](https://developers.deepgram.com/docs/voice-agent-function-call-response.md)

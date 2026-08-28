@@ -59,7 +59,7 @@ For ACH purchases, credits are deposited **only after the payment clears**. This
 
 While the payment is pending, your credit balance does not increase. You will see a pending banner on your [billing settings](https://api.together.ai/settings/organization/~current/billing) page.
 
-If the ACH payment ultimately fails, no credits are deposited. See [Payment methods & invoices](/docs/billing-payment-methods#ach-bank-transfers-early-access) for details.
+If the ACH payment ultimately fails, no credits are deposited. See [Payment methods & invoices](/docs/billing-payment-methods#ach-bank-transfers) for details.
 
 ### What to do while a payment is pending
 

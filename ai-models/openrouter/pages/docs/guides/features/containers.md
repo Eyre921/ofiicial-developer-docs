@@ -1,7 +1,7 @@
 ---
 title: "Containers"
-source: https://openrouter.ai/docs/guides/features/server-tools/containers.md
-path: docs/guides/features/server-tools/containers
+source: https://openrouter.ai/docs/guides/features/containers.md
+path: docs/guides/features/containers
 ---
 
 > ## Documentation Index
@@ -105,8 +105,11 @@ request:
 * When the request has a session id, the container id is
   `sess_` plus the session id. All requests with the same session id share
   one container.
-* When the request has no session id, the container id is `gen_` plus a
-  hash of the request id. Each request gets its own container.
+* When the request has no session id, the container id is the most
+  recently returned `container_id` in the replayed conversation, if there
+  is one — so a multi-turn conversation keeps its files across turns.
+  Otherwise the container id is `gen_` plus a hash of the request id, and
+  each request gets its own container.
 
 We treat all of these as session ids, in this order:
 
@@ -115,8 +118,8 @@ We treat all of these as session ids, in this order:
 3. The `prompt_cache_key` field in the request body.
 
 A session id must use only letters, digits, `_`, and `-`. An id with other
-characters is ignored, and the request falls back to a per-request
-container. When the session id is longer than 20 characters, only the last
+characters is ignored, and the request falls back to the no-session
+behavior above. When the session id is longer than 20 characters, only the last
 20 characters are used.
 
 ### Your own ids (`container_reference`)
@@ -306,19 +309,6 @@ By default, a container has no outbound internet access. The
 [shell network policy](/docs/guides/features/server-tools/shell#network-policy)
 and [bash network policy](/docs/guides/features/server-tools/bash#network-policy)
 sections.
-
-## Limits
-
-| Limit                                   | Value                                     |
-| --------------------------------------- | ----------------------------------------- |
-| Commands per tool call                  | 100                                       |
-| Characters per command                  | 16,384                                    |
-| Command timeout (`timeout_ms`)          | Default 120,000 ms, maximum 300,000 ms    |
-| Output per stream (`max_output_length`) | Default 16,384, maximum 65,536 characters |
-| Idle sleep (`sleep_after_seconds`)      | Default 900 s, maximum 14,400 s           |
-| Attached workspace files                | 20                                        |
-| Reported changed files                  | 10 per command                            |
-| Server tool calls per request           | 30                                        |
 
 ## Next steps
 

@@ -326,6 +326,7 @@ Run a local data validation check before uploading to avoid unnecessary charges.
   import json
   from together import Together
   from together.lib.utils import check_file
+  from together.lib.resources import FileUploadProgress
 
   client = Together()
 
@@ -333,10 +334,16 @@ Run a local data validation check before uploading to avoid unnecessary charges.
   print(json.dumps(report, indent=2))
   assert report["is_check_passed"]
 
+
+  def on_progress(event: FileUploadProgress) -> None:
+      print(f"{event.uploaded_bytes}/{event.total_bytes}")
+
+
   train_file = client.files.upload(
       file="train.jsonl",
       purpose="fine-tune",
       check=True,
+      progress_callback=on_progress,
   )
   print(train_file.id)
   ```
@@ -354,6 +361,8 @@ Run a local data validation check before uploading to avoid unnecessary charges.
   console.log(trainFile.id);
   ```
 </CodeGroup>
+
+In the Python snippet, the optional `progress_callback` receives `FileUploadProgress` events (`uploaded_bytes`, `total_bytes`) as the upload runs. Omit it to upload silently.
 
 `check_file()` returns a report you can inspect before uploading. A passing file looks like:
 

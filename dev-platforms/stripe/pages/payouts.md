@@ -18,9 +18,9 @@ If you’re a *Connect* (Connect is Stripe's solution for multi-party businesses
 
 ## Add or update your bank account 
 
-You can add a bank account or update existing account details in [Payout settings](https://dashboard.stripe.com/account/payouts) in the Dashboard. To update an account, click **Edit** next to the bank account.
+You can add a bank account or update existing account details in [Payout settings](https://dashboard.stripe.com/settings/money-management) in the Dashboard. To update an account, click **Edit** next to the bank account.
 
-The account details required depend on your bank’s location. The bank account currency must match the currency in your [Payout settings](https://dashboard.stripe.com/account/payouts). Use the following table to find the required bank details for each country:
+The account details required depend on your bank’s location. The bank account currency must match the currency in your [Payout settings](https://dashboard.stripe.com/settings/money-management). Use the following table to find the required bank details for each country:
 
 #### Albania (AL)
 
@@ -1037,7 +1037,7 @@ Charges that are *presented* (The presentment currency is the currency the custo
 
 For example, you’re based in the United Kingdom and added both GBP and USD bank accounts, with GBP selected as the default settlement currency. USD payments (where USD is the presentment currency) are automatically paid out to the USD bank account without conversion, while payments in all other currencies are converted into GBP.
 
-You can manage your bank accounts and default settlement currency from the [Bank accounts and currencies](https://dashboard.stripe.com/settings/payouts) settings in the Dashboard.
+You can manage your bank accounts and default settlement currency from the [Bank accounts and currencies](https://dashboard.stripe.com/settings/money-management) settings in the Dashboard.
 
 ## Receive Capital payouts
 

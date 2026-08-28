@@ -46,9 +46,9 @@ When you first run OpenCode, you'll need to configure it to use Together AI as y
 
 * **Add your API key**: Get your [Together AI API key](https://api.together.ai/settings/projects/~current/api-keys) and paste it into the opencode terminal
 * **Select a model**: Choose from powerful models like:
-  * `moonshotai/Kimi-K2.7-Code` - Purpose-built for coding agents.
+  * `moonshotai/Kimi-K3` - Top pick for coding agents.
   * `zai-org/GLM-5.2` - Strong coding and agentic all-rounder.
-  * `deepseek-ai/DeepSeek-V4-Pro` - Advanced reasoning capabilities.
+  * `deepseek-ai/DeepSeek-V4-Pro-0813` - Advanced reasoning capabilities.
   * `Qwen/Qwen3-Coder-Next-FP8` - Fast, cost-effective coding model.
 
 ## 4. Bonus: install the opencode vs-code extension
@@ -110,9 +110,9 @@ That looks good, but let's also add input validation and rate limiting
 
 ## Model recommendations
 
-* **Kimi K2.7 Code** (`moonshotai/Kimi-K2.7-Code`): Purpose-built for coding agents, with a 256K context window.
+* **Kimi K3** (`moonshotai/Kimi-K3`): Top pick for coding agents, with a 1M context window.
 * **GLM 5.2** (`zai-org/GLM-5.2`): Strong all-rounder for coding and agentic tasks.
-* **DeepSeek V4 Pro** (`deepseek-ai/DeepSeek-V4-Pro`): Advanced reasoning for complex problems.
+* **DeepSeek V4 Pro 0813** (`deepseek-ai/DeepSeek-V4-Pro-0813`): Advanced reasoning for complex problems.
 
 See the [pricing page](https://www.together.ai/pricing) for current per-token rates.
 

@@ -27,7 +27,7 @@ Fireworks RFT helps you train frontier models like DeepSeek V3 and Kimi K2 to **
     **1–2 hours** — multi-turn rollouts in your environment with HTTP tracing.
   </Card>
 
-  <Card title="Training security (BYOB)" icon="shield-check" href="/fine-tuning/finetuning-intro#training-security">
+  <Card title="Training security (BYOB)" icon="shield-check" href="/guides/security_compliance/secure_training">
     **2–4 hours** — datasets stay in your GCS/S3 bucket.
   </Card>
 </CardGroup>

@@ -1579,9 +1579,35 @@ type Category = z.infer<typeof Category>;
 // { name: string; subcategories: Category[] }
 ```
 
-<Callout type="warn">
-  Though recursive schemas are supported, passing cyclical data into Zod will cause an infinite loop.
-</Callout>
+Cyclical inputs work out of the box with Zod. For bundle size reasons, Zod Mini requires you to register a memoizer explicitly (see code example).
+
+<Tabs groupId="lib" items={["Zod", "Zod Mini"]}>
+  <Tab value="Zod">
+    ```ts
+    const input: any = { name: "root", subcategories: [] };
+    input.subcategories.push(input);
+
+    const result = Category.parse(input);
+    result.subcategories[0] === result; // true
+
+    // the output graph mirrors the input graph
+    result.subcategories[0].subcategories[0] === result; // true
+    ```
+  </Tab>
+
+  <Tab value="Zod Mini">
+    ```ts
+    // Zod Mini requires a memoizer, registered before schemas are defined
+    z.config({ memoizer: z.memoizer() });
+
+    const input: any = { name: "root", subcategories: [] };
+    input.subcategories.push(input);
+
+    const result = Category.parse(input);
+    result.subcategories[0] === result; // true
+    ```
+  </Tab>
+</Tabs>
 
 You can also represent *mutually recursive types*:
 
@@ -3573,14 +3599,14 @@ if (!result.success) {
   ```
 </Callout>
 
-When you only need to know whether an input is acceptable, use the top-level `z.isValid()` function. It returns a boolean, never builds an error, and acts as a type guard on the schema's input type.
+When you only need to know whether an input is acceptable, use the top-level `z.validate()` function. It returns a boolean, never builds an error, and acts as a type guard on the schema's input type.
 
 ```ts
-z.isValid(Player, { username: "billie", xp: 100 }); // true
-z.isValid(Player, { username: 42, xp: "100" });     // false
+z.validate(Player, { username: "billie", xp: 100 }); // true
+z.validate(Player, { username: 42, xp: "100" });     // false
 ```
 
-Use `z.isValidAsync()` for schemas with async refinements or transforms. On a [compiled schema](/compile), `z.isValid()` answers directly from the compiled fast path.
+Use `z.validateAsync()` for schemas with async refinements or transforms. On a [compiled schema](/compile), `z.validate()` answers directly from the compiled fast path.
 
 ## Inferring types
 
@@ -4272,50 +4298,45 @@ uriComponent.encode("Hello World!");      // => "Hello%20World!"
 
 import { Callout } from "fumadocs-ui/components/callout";
 
-<Callout type="warn">
-  Compilation is canary-only — it has not shipped in a stable release yet. Install with `npm install zod@canary`.
-</Callout>
+Under the hood, `z.compile()` walks the entire schema once and produces a hyperoptimized snippet of flat, loop-free JavaScript that can validate inputs far faster than a standard runtime validator. This snippet can be executed via `new Function()` (effectively a more powerful `eval`) to serve as a fast-path validator. Schemas use this to "fast check" validity, falling back to the regular runtime logic on validation failure to provide granular error information. Results and errors are identical to the standard parser.
 
-For hot validation paths, Zod can compile a schema into a specialized validator ahead of time, with identical results and identical errors.
+This can lead to dramatic speedups, especially for container types like objects, arrays, unions, and tuples.
 
-Across a 55-schema benchmark the median speedup is **2.4x**. It scales with how much work the schema does per parse, because what compilation removes is per-node dispatch and allocation rather than the checks themselves:
-
-| schema                               | speedup |
-| ------------------------------------ | ------- |
-| `z.array(z.string())`, 100 items     | \~14x   |
-| `z.array(z.object({…}))`, 50 items   | \~9x    |
-| 20-key object                        | \~9x    |
-| nested object                        | \~4.5x  |
-| discriminated union                  | \~4x    |
-| 5-key object                         | \~2.5x  |
-| `z.string().min(3).max(64).regex(…)` | \~2.8x  |
-| bare `z.string()`                    | none    |
-
-A schema whose entire body is one `typeof` has no dispatch to remove, so compiling it buys nothing. Everything built out of such schemas still benefits — leaves are inlined into their parent's compiled code.
+| schema                             | speedup |
+| ---------------------------------- | ------- |
+| 20-key object                      | \~8x    |
+| `z.array(z.string())`, 10 items    | \~7x    |
+| `z.array(z.object({…}))`, 10 items | \~5.5x  |
+| union of 3 objects                 | \~5x    |
+| tuple of 3                         | \~3.5x  |
+| discriminated union                | \~3.5x  |
+| 5-key object                       | \~2.8x  |
 
 There are two ways to opt in.
 
 ## `z.compile()`
 
-Compiles a single schema eagerly and returns a clone with the fast path installed.
+Compiles a single schema and returns a compiled copy. The original schema is unchanged.
 
 ```ts
 import * as z from "zod";
 
 const Player = z.object({
   username: z.string(),
-  xp: z.number(),
+  bio: z.string(),
+  xp: z.number()
 });
 
 const CompiledPlayer = z.compile(Player);
-
-CompiledPlayer.parse({ username: "billie", xp: 100 });
-CompiledPlayer.safeParse({ username: "billie", xp: 100 });
 ```
 
-The clone is a regular Zod schema — `.parse()`, `.safeParse()`, type inference, Standard Schema integration, and composition all work as usual. The original schema is unchanged.
+A compiled schema is a Zod schema like any other:
 
-One thing to keep in mind: methods that derive a *new* schema (`.refine()`, `.extend()`, `.optional()`, `.meta()`, …) return uncompiled schemas. Compile the final schema, not an intermediate:
+* Same methods: `.parse()`, `.safeParse()`, `.extend()`, `.optional()`, etc.
+* Same inferred input and output types
+* Same issues and error messages
+
+Methods that derive a *new* schema (`.refine()`, `.extend()`, `.optional()`, `.meta()`, …) return uncompiled schemas. Compile the final schema, not an intermediate:
 
 ```ts
 // ❌ the .refine() result is not compiled
@@ -4327,7 +4348,7 @@ const schema2 = z.compile(z.string().refine((val) => val.length > 1));
 
 ## `import "zod/compile"`
 
-Enables compilation globally. Every schema constructed *after* this import is compiled automatically on its first parse.
+Enables compilation globally. Every schema constructed *after* this import is compiled automatically the first time it parses.
 
 ```ts
 import "zod/compile"; // must come before modules that define schemas
@@ -4337,22 +4358,78 @@ const schema = z.object({ name: z.string() });
 schema.parse({ name: "ok" }); // compiled on first parse
 ```
 
-Module evaluation order matters: schemas constructed before the import are not affected. Place the import at the top of your application entry point.
+Compilation is lazy, so only the schemas you actually parse with get compiled.
 
-Compilation is lazy (first parse), so intermediate schemas created during builder chains cost nothing extra.
+It also works as a Node.js CLI flag, which guarantees it runs before any module defines a schema:
 
-## Error parity
+```sh
+node --import zod/compile app.js   # ESM
+node --require zod/compile app.cjs # CommonJS
+```
 
-The compiled fast path is a happy-path validator. When an input fails validation — or requires anything the fast path doesn't support — Zod transparently falls back to the standard parser, which produces the exact same `ZodError` as the uncompiled schema. There is no separate compiled error path to drift out of sync.
+Or set `preload` in [`bunfig.toml`](https://bun.com/docs/runtime/bunfig#preload) or [`nub.jsonc`](https://nubjs.com/docs/config#preload).
 
-Two consequences worth knowing:
+```jsonc title="nub.jsonc"
+{
+  "preload": ["zod/compile"]
+}
+```
 
-* Invalid inputs pay for both the fast path and the fallback. If your workload is dominated by invalid inputs, compilation won't help (it also won't change any behavior).
-* Refinements and transforms may run twice on invalid input — once in the fast path, once in the fallback. They run exactly once on valid input, and never more than twice.
+This import is for applications, not libraries.
+
+## How it works
+
+Take this simple `Point` schema:
+
+```ts
+const Point = z.object({
+  x: z.number(),
+  y: z.number()
+});
+```
+
+Here is the generated snippet for it:
+
+```ts
+const isPoint = new Function("input", `
+  if (typeof input !== "object" || input === null) return false;
+  if (typeof input.x !== "number") return false;
+  if (typeof input.y !== "number") return false;
+  return true;
+`);
+
+isPoint({ x: 1, y: 2 }); // true
+isPoint({ x: "1" });     // false
+```
+
+For the large majority of inputs, the generated function validates the data with the fastest logic JavaScript can express: straight-line `typeof` checks and property reads, with no interpreter in between. When it can't handle an input, Zod falls back to the standard parser.
+
+This is the function Zod generates for the `Player` schema above:
+
+```js
+if (typeof input !== "object" || input === null || Array.isArray(input)) return INVALID;
+const v0 = input["username"];
+if (typeof v0 !== "string") return INVALID;
+const v1 = input["bio"];
+if (typeof v1 !== "string") return INVALID;
+const v2 = input["xp"];
+if (typeof v2 !== "number" || !Number.isFinite(v2)) return INVALID;
+const v3 = { "username": v0, "bio": v1, "xp": v2 };
+return v3;
+```
+
+Armed with the power of `new Function()`, this happens in-process at runtime. There is no need to integrate with your build system.
+
+<Callout>The compiled schema is purely additive on top of the existing schema. It tacks on the pre-compiled fast path for checking valid inputs. When invalid data is detected, it returns the `INVALID` symbol to signal that parsing should fall back to the uncompiled parser. This structurally prevents subtle deviations in error reporting between compiled and uncompiled variants.</Callout>
+
+On invalid input the fallback runs the uncompiled schema, so the error is the uncompiled schema's error. Two consequences:
+
+* Invalid inputs pay for both the fast path and the fallback, so compilation does not speed up failures.
+* Refinements and transforms run once on valid input, and at most twice on invalid input.
 
 ## Unsupported schemas
 
-Compilation is sync and forward-only. A schema the fast path can't fully model is not an error — `z.compile()` hands it back unchanged, still running on the standard parser:
+Some features can't be compiled or don't benefit from compilation. In these cases, `z.compile()` ejects from compilation and returns the original schema unchanged:
 
 ```ts
 const Schema = z.string().refine(async (val) => isAvailable(val));
@@ -4360,33 +4437,28 @@ const Schema = z.string().refine(async (val) => isAvailable(val));
 z.compile(Schema); // returns Schema itself, uncompiled
 ```
 
-Pass `strict` to surface the refusal instead. Use it to confirm that a schema on a hot path really did compile:
+* `async` refinements, transforms, and checks
+* `z.xor()`
+* recursive schemas
+* `z.coerce.*`
+* checks with a custom `when`
+* `.catch()` given a callback (`.catch(value)` with a constant compiles normally)
+
+Inside an object, array, tuple, record, or intersection, an unsupported child runs on the standard parser while the surrounding structure stays compiled. A union with an unsupported member, a `.catch()` callback, or anything async anywhere in the subtree makes the whole schema fall back.
+
+Encoding (`z.encode()`, the codec `"backward"` direction) and async parsing always use the standard parser.
+
+Pass `strict` to throw instead of falling back — for example, to confirm that a schema on a hot path really did compile:
 
 ```ts
 z.compile(Schema, { strict: true }); // throws ZodCompileAsyncError
 ```
 
-There are two error classes, and both are thrown only under `strict`:
-
-* **`ZodCompileAsyncError`** — the schema contains an async refinement, transform, or check.
-* **`ZodCompileUnsupportedError`** — the schema uses a construct the fast path can't reproduce exactly:
-  * `z.xor()`, whose exactly-one-match rule needs every branch to reject for the same reason the standard parser would.
-  * Checks with custom `when` conditions.
-  * A recursive schema, which needs the standard parser to resolve reference cycles in the input.
-  * Coercion (`z.coerce.*`), which the fast path does not model.
-  * `.catch()` given a *callback*. A callback receives issues finalized against the caller's error map, which compiled code never sees. `.catch(value)` with a constant compiles normally.
-
-Inside containers (objects, arrays, tuples, records, intersections), an unsupported *child* doesn't prevent compilation — the child runs on the standard parser while the surrounding structure stays compiled.
-
-`.catch()` with a callback is the exception: it's the one construct that *consumes* issues instead of propagating them, so running only that node on the standard parser would finalize its issues against the wrong error map and still succeed. A schema containing one falls back as a whole.
-
-Global mode behaves identically: a schema it can't compile keeps using the standard parser. Either way the only thing lost is the speedup. Avoid enabling global mode in a library on behalf of your users; leave the choice to the application.
-
-Encode operations (`z.encode()`, codec `"backward"` direction) and async parsing always use the standard parser.
+`ZodCompileAsyncError` is thrown for async schemas and `ZodCompileUnsupportedError` for everything else. Both are thrown only under `strict`.
 
 ## Content Security Policy
 
-Compilation uses `new Function`, which is unavailable in CSP/no-`eval` environments. Global mode automatically stands down when `jitless` is set:
+Compilation uses `new Function`, which is unavailable in CSP/no-`eval` environments. Global mode stands down when `jitless` is set:
 
 ```ts
 z.config({ jitless: true });
@@ -4831,6 +4903,7 @@ The following locales are available:
 * `fi` — Finnish
 * `fr` — French
 * `frCA` — Canadian French
+* `gu` — Gujarati
 * `he` — Hebrew
 * `hi` — Hindi
 * `hr` — Croatian
@@ -4847,6 +4920,7 @@ The following locales are available:
 * `lt` — Lithuanian
 * `mk` — Macedonian
 * `ms` — Malay
+* `ne` — Nepali
 * `nl` — Dutch
 * `nn` — Norwegian Nynorsk
 * `no` — Norwegian
@@ -6399,65 +6473,6 @@ myRegistry.add(z.string(), { description: "A number" }); // ✅
 myRegistry.add(z.number(), { description: "A number" }); // ❌ 
 //             ^ 'ZodNumber' is not assignable to parameter of type 'ZodString' 
 ```
-
-
-# Joining Clerk as an OSS Fellow to work on Zod 4
-
-I'm thrilled to announce that I'm the inaugural recipient of [Clerk's](https://go.clerk.com/zod-clerk) OSS Fellowship! This fellowship is kind of like a "summer internship"—Clerk is paying me a full-time wage (think entry-level software engineer) to work on Zod full-time throughout summer 2024.
-
-In the context of both my own career path and Zod's development, this is a perfect arrangement, and I'm beyond grateful that Clerk was willing to experiment with some alternative funding arrangements for OSS.
-
-Let's look at some of the context here.
-
-## On deck: Zod 4
-
-The current major version of Zod (v3) was released in 2021. In terms of structure and implementation, I got a lot of things right with Zod 3. The codebase has been versatile enough to supporting 23(!) minor releases, each with new features and enhancements, with no breaking changes to the public API.
-
-But there are a couple recurring DX papercuts that will require structural changes to address, and that will involve breaking changes. (It's worth noting upfront that most Zod users will not be affected, but a lot of the libraries in Zod's ecosystem rely on internal APIs and will need to be updated.)
-
-* To simplify the codebase and enable easier code generation tooling, some subclasses of `ZodType` will be split or consolidated.
-* To improve performance, the signature of the (quasi-)internal `_parse` method will be changed. Any user-defined subclasses of `ZodType` will need to be updated accordingly.
-* To clean up autocompletion, some internal methods and properties will be made `protected`. Some current APIs will be deprecated; some deprecated APIs will be removed.
-* To improve error reporting, I'll be simplifying Zod's error map system. The new system will also be more amenable to internationalization (RFC forthcoming).
-* To enable `exactOptionalPropertyTypes` semantics, the logic used to determine key optionality in `ZodObject` will change. Depending on the value of `exactOptionalPropertyTypes` in your `tsconfig.json`, some inferred types may change (RFC forthcoming).
-* To improve TypeScript server performance, some generic class signatures (e.g. `ZodUnion`) will be changed or simplified. Other type utilities will be re-implemented for efficiency, but may result in marginally different behavior in some contexts.
-
-All told, Zod 4 will be a ground-up rewrite of the library with few breaking changes for typical users, dramatic speed improvements, a simpler internal structure, and a big slate of new features.
-
-## Zod's current funding story
-
-Zod's has [many generous donors](https://github.com/sponsors/colinhacks) and is likely one of the most well-sponsored TypeScript utility libraries of its kind. Right now, that works out to just over $2600/mo. I'm grateful for this level of support, and it far exceeds the expectations I had when I first set up my GitHub Sponsors profile.
-
-But with much love and appreciation to all the people and companies that support Zod, that's far from replacing a full-time salary in the US.
-
-I left Bun early this year and spent a couple months traveling, learning new things, and recovering from burnout. Starting in April, I spent about 6 weeks merging PRs and fixing issues, culminating in the release of Zod 3.23 (the final 3.x version). I've spent the last month or so spec'ing out Zod 4.
-
-In my estimation it will take about three more months of full-time work to complete the rewrite and roll out the new release responsibly to Zod's now-massive base of users and third-party ecosystem libraries. I'm beyond excited to do all this work, but that's a long time to be without an income.
-
-So I reached out to a few companies with an experimental proposal: an "OSS incubator" where the company would sponsor the development of Zod for 12 weeks (my timeline for the release of Zod 4). During this pre-determined window, I'd get paid some reasonable wage, and the company would be Zod's primary patron. The cost to the company is known upfront, since everything is term-limited; it's like an incubator or an internship.
-
-## The Clerk fellowship
-
-Much to my delight, [Colin](https://twitter.com/tweetsbycolin) from Clerk (AKA "other Colin") was enthusiastically on board. I've admired Clerk for a long time for their product, eye for developer experience, and commitment to open source. In fact, I covered them on my podcast the day they launched on HN in February 2021. They've already been sponsoring [Auth.js](https://authjs.dev) (formerly NextAuth) for some time and were immediately open to discussing the terms of a potential "fellowship".
-
-In exchange for the support, Clerk is getting a super-charged version of the perks that Zod's other sponsors already get:
-
-1. Diamond-tier placement in the README and the docs 💎 Big logo. Big. Huge.
-2. Updating my Twitter bio for the duration of the fellowship to reflect my new position as a Clerk OSS Fellow 💅
-3. Mentions in the forthcoming Zod 4 RFCs (Requests for Comment). Historically Zod's RFCs have attracted a lot of attention and feedback from the TypeScript community (or at least TypeScript Twitter). This is a perfect place to shout out the company that is (effectively) paying me to implement these new features.
-4. A small ad at the bottom of the sidebar of Zod's new docs site (under construction now). You can see what this might look like in the [Auth.js](https://authjs.dev/getting-started) docs.
-5. For continuity after the release of Zod 4, Clerk gets "first dibs" (right of first refusal) on a new ongoing "diamond tier" sponsor slot for 6 months. The idea is that this is an exclusive "slot"—only one company can hold it at a time.The perks of this tier include the big README logo and the sidebar ad placement.
-6. This announcement post! Yes, you've been reading marketing material this whole time. Gotcha.
-
-## OSS, funding models, and trying new things
-
-This model represents an interesting middle ground between the traditional sponsorship model and the "maintainer-in-residence" approach that companies like Vercel have taken with Rich Harris/Svelte. Zod doesn't need a full-time maintainer in perpetuity (actually, I wouldn't mind that... 🙄) but it does need full-time attention to get this major version out the door.
-
-This fellowship is a way to bridge that gap. All-in-all, I'm beyond excited to have found a partner in Clerk that is interested in trying something like this.
-
-> I encourage other companies to try similar things! There is no shortage of invaluable libraries with full-time (or nearly full-time) maintainers who are forgoing a regular income to build free tools. ArkType, Valibot, and tRPC come to mind.
-
-So if you're building an app sometime soon, be smart—validate your `Request` bodies (or, uh, Server Action arguments?) and don't roll your own auth.
 
 
 # Zod Core

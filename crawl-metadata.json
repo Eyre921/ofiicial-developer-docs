@@ -23,11 +23,11 @@
     "status": "error: curl failed (22) for https://developers.openai.com/api/docs/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/together": {
-    "pages": 336,
+    "pages": 338,
     "status": "ok"
   },
   "ai-models/fireworks": {
-    "pages": 375,
+    "pages": 379,
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
@@ -82,7 +82,8 @@
     "status": "ok"
   },
   "dev-platforms/supabase": {
-    "status": "error: curl failed (28) for https://supabase.com/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 3587729 bytes received\ncurl: (28) Operation timed out after 90001 milliseconds with 0 bytes received\ncurl: (28) Recv failure: Connection re"
+    "pages": 0,
+    "status": "ok"
   },
   "dev-platforms/prisma": {
     "pages": 0,
@@ -101,7 +102,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -143,7 +144,7 @@
     "status": "ok"
   },
   "dev-platforms/trigger-dev": {
-    "pages": 313,
+    "pages": 314,
     "status": "ok"
   },
   "dev-platforms/sentry": {
@@ -186,7 +187,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 95,
+    "pages": 107,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -198,12 +199,12 @@
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
-    "pages": 379,
+    "pages": 382,
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1295,
+    "pages": 1296,
     "status": "ok"
   },
-  "_last_crawl": "2026-08-28T11:30:42Z"
+  "_last_crawl": "2026-08-28T23:31:05Z"
 }

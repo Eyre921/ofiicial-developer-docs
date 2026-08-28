@@ -121,6 +121,16 @@ squeue         # View job queue
    * Submit batch jobs with `sbatch`
    * Run interactive jobs with `srun`
 
+5. **Optional: Download kubeconfig**
+
+   Slurm clusters run on Kubernetes, so if you need `kubectl` access to the underlying cluster API, any project member can download the kubeconfig from the cluster details page or with the Together CLI:
+
+```bash theme={null}
+tg beta clusters get-credentials [CLUSTER_ID] --set-default-context
+```
+
+SSH to the login node remains the primary workflow for submitting jobs. See [Download cluster kubeconfig](/docs/gpu-clusters-management#download-cluster-kubeconfig) for console steps and OIDC visibility rules.
+
 ## Common First Tasks
 
 ### Upload Data

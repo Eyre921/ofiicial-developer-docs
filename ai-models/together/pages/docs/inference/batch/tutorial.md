@@ -15,6 +15,7 @@ Before you begin, make sure you have:
 * [Created an account](https://api.together.ai/settings/projects/~first/api-keys) and generated an API key.
 * Set `TOGETHER_API_KEY` as an environment variable: `export TOGETHER_API_KEY=<your-key>`. See [API keys and authentication](/docs/api-keys-authentication) for details.
 * [Installed the Python or TypeScript SDK](/docs/quickstart#step-2-install-the-sdk). Python examples require `together>=2.0.0`.
+* [Installed the Together CLI](/reference/cli/getting-started) to follow the CLI examples. The `tg batches` commands require version 2.32.0 or later (check with `tg --version`).
 
 ## Step 1: Prepare a JSONL input file
 
@@ -39,11 +40,15 @@ Save the following as `batch_input.jsonl`:
 
 ## Step 2: Upload the file
 
-Upload the JSONL file with `purpose="batch-api"`. The upload returns a file object whose `id` you'll pass to the batch job in the next step.
+Upload the JSONL file with `purpose="batch-api"`. The upload returns a file object whose `id` you'll pass to the batch job in the next step. If you're using the CLI, you can skip this step entirely: `tg batches submit` accepts a local file path and uploads it for you (see the next step).
 
-Pass `check=False` to skip client-side validation. The server still validates the file during the `VALIDATING` phase, and skipping the client check is faster for large files without changing the error surface. With `check=True` (default), the SDK parses each JSONL line locally and raises `TogetherException` before uploading if a line is malformed.
+Pass `check=False` (`--no-check` in the CLI) to skip client-side validation. The server still validates the file during the `VALIDATING` phase, and skipping the client check is faster for large files without changing the error surface. With `check=True` (default), the SDK parses each JSONL line locally and raises `TogetherException` before uploading if a line is malformed.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg files upload batch_input.jsonl --purpose batch-api --no-check
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -92,6 +97,14 @@ Pass `check=False` to skip client-side validation. The server still validates th
 Now hand the uploaded file's `id` to the batch endpoint, along with the API endpoint each request should run against. For chat completion requests, that's `/v1/chat/completions`. Audio batches use `/v1/audio/transcriptions` or `/v1/audio/translations` — see [Run an audio transcription batch](#run-an-audio-transcription-batch).
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  # Pass the file ID from step 2
+  tg batches submit file-abc123 --api chat.completions
+
+  # Or pass the local path to upload and create the job in one command
+  tg batches submit batch_input.jsonl --api chat.completions
+  ```
+
   ```python Python theme={null}
   response = client.batches.create(
       input_file_id=file_resp.id,
@@ -129,6 +142,11 @@ Now hand the uploaded file's `id` to the batch endpoint, along with the API endp
 The job moves through `VALIDATING`, then `IN_PROGRESS`, then a terminal status: `COMPLETED`, `FAILED`, `EXPIRED`, or `CANCELLED`. Poll every 30 to 60 seconds until you hit a terminal status. Tighter loops will hit rate limits without giving the server time to make progress.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  # Shows the status and a progress bar. Re-run until the job reaches a terminal state.
+  tg batches get a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
+  ```
+
   ```python Python theme={null}
   import time
 
@@ -172,6 +190,10 @@ Most batches under 1,000 requests finish in minutes. The 24-hour completion wind
 When the job reaches `COMPLETED`, the batch object carries an `output_file_id`. Download that file and you'll get one JSON object per line, each keyed by the `custom_id` from your input. Output line order does not match input line order, so use `custom_id` to reconcile.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg batches download a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d --output batch_output.jsonl
+  ```
+
   ```python Python theme={null}
   with client.files.with_streaming_response.content(
       id=batch.output_file_id,
@@ -216,7 +238,7 @@ A successful output line looks like:
 }
 ```
 
-Per-request failures land in a separate file referenced by `error_file_id`. Always check it: a batch can be `COMPLETED` and still contain individual request failures. See [retrieve results and error files](/docs/inference/batch/manage#retrieve-results) on the manage page.
+Per-request failures land in a separate file referenced by `error_file_id`. Always check it: a batch can be `COMPLETED` and still contain individual request failures. The CLI's `download` saves the error file automatically (as `batch_output.errors.jsonl` in this example) whenever the job produced one. See [retrieve results and error files](/docs/inference/batch/manage#retrieve-results) on the manage page.
 
 ## Run an audio transcription batch
 
@@ -234,6 +256,10 @@ The Batch API also supports `/v1/audio/transcriptions` and `/v1/audio/translatio
 **2. Pass the audio endpoint when creating the batch.**
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg batches submit audio_batch.jsonl --api audio.transcriptions
+  ```
+
   ```python Python theme={null}
   response = client.batches.create(
       input_file_id=file_resp.id,
@@ -282,50 +308,64 @@ For `/v1/audio/translations`, swap the endpoint and use a translation-capable mo
 
 ## Complete script
 
-The full Python program combining all steps above:
+The full flow combining all steps above, as a CLI session or a Python program:
 
-```python Python theme={null}
-import time
-from together import Together
+<CodeGroup>
+  ```bash CLI theme={null}
+  # Upload the file and create the batch in one command
+  tg batches submit batch_input.jsonl --api chat.completions
 
-client = Together()
+  # Re-run until the status is COMPLETED (use the batch ID printed by submit)
+  tg batches get a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
 
-file_resp = client.files.upload(
-    file="batch_input.jsonl",
-    purpose="batch-api",
-    check=False,
-)
-print(f"Uploaded file: {file_resp.id}")
+  # Save the results (and any error file) to disk
+  tg batches download a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d --output batch_output.jsonl
+  ```
 
-response = client.batches.create(
-    input_file_id=file_resp.id,
-    endpoint="/v1/chat/completions",
-)
-batch = response.job
-print(f"Created batch: {batch.id}")
+  ```python Python theme={null}
+  import time
+  from together import Together
 
-while True:
-    batch = client.batches.retrieve(batch.id)
-    print(f"{batch.status}: {batch.progress:.0f}%")
+  client = Together()
 
-    if batch.status == "COMPLETED":
-        break
-    if batch.status in ("FAILED", "EXPIRED", "CANCELLED"):
-        raise SystemExit(f"Batch ended: {batch.status}")
+  file_resp = client.files.upload(
+      file="batch_input.jsonl",
+      purpose="batch-api",
+      check=False,
+  )
+  print(f"Uploaded file: {file_resp.id}")
 
-    time.sleep(30)
+  response = client.batches.create(
+      input_file_id=file_resp.id,
+      endpoint="/v1/chat/completions",
+  )
+  batch = response.job
+  print(f"Created batch: {batch.id}")
 
-with client.files.with_streaming_response.content(
-    id=batch.output_file_id,
-) as response:
-    with open("batch_output.jsonl", "wb") as f:
-        for chunk in response.iter_bytes():
-            f.write(chunk)
+  while True:
+      batch = client.batches.retrieve(batch.id)
+      print(f"{batch.status}: {batch.progress:.0f}%")
 
-print("Results saved to batch_output.jsonl")
-```
+      if batch.status == "COMPLETED":
+          break
+      if batch.status in ("FAILED", "EXPIRED", "CANCELLED"):
+          raise SystemExit(f"Batch ended: {batch.status}")
+
+      time.sleep(30)
+
+  with client.files.with_streaming_response.content(
+      id=batch.output_file_id,
+  ) as response:
+      with open("batch_output.jsonl", "wb") as f:
+          for chunk in response.iter_bytes():
+              f.write(chunk)
+
+  print("Results saved to batch_output.jsonl")
+  ```
+</CodeGroup>
 
 ## Next steps
 
 * [Manage batch jobs](/docs/inference/batch/manage): cancel, list, and download error files.
+* [Batches CLI](/reference/cli/batches): the full `tg batches` command reference.
 * [Batch processing overview](/docs/inference/batch/overview): rate limits, discounted models, best practices, and FAQ.
