@@ -281,5 +281,5 @@ See the [Price comparison vs Tinker](/fine-tuning/multi-turn-cost-comparison) ca
 * [Dedicated Training](/fine-tuning/training-api/dedicated) — provisioned trainer and deployment lifecycle
 * [Dedicated Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling) — deployment-sampling lifecycle
 * [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) — built-in and custom loss functions
-* [Vision Inputs](/fine-tuning/models) — fine-tune vision-language models with image and text data
+* [Vision Inputs](/fine-tuning/models) — train vision-language models with image and text data
 * [The Cookbook](/fine-tuning/training-api/cookbook/overview) — ready-to-run recipes for SFT, DPO, ORPO, GRPO/IGPO, and async RL (experimental)

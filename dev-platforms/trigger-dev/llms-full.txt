@@ -43224,6 +43224,24 @@ When using non-root API keys (recommended), the expiration cannot be more than 3
 
 The format used for a time span is the same as the [jose package](https://github.com/panva/jose), which is a number followed by a unit. Valid units are: "sec", "secs", "second", "seconds", "s", "minute", "minutes", "min", "mins", "m", "hour", "hours", "hr", "hrs", "h", "day", "days", "d", "week", "weeks", "w", "year", "years", "yr", "yrs", and "y". It is not possible to specify months. 365.25 days is used as an alias for a year. If the string is suffixed with "ago", or prefixed with a "-", the resulting time span gets subtracted from the current unix timestamp. A "from now" suffix can also be used for readability when adding to the current unix timestamp.
 
+### Refreshing an expired token
+
+A realtime stream subscription can outlive its token. Pass a `refreshAccessToken` callback and a subscription rejected with a 401/403 re-mints once and reconnects, instead of failing. With no refresher, auth errors stay terminal. Mint the fresh token from your backend, where your secret key lives:
+
+```tsx theme={"theme":"css-variables"}
+import { useRealtimeStream } from "@trigger.dev/react-hooks";
+
+const { parts } = useRealtimeStream<{ url: string }>(runId, "frames", {
+  accessToken,
+  refreshAccessToken: async () => {
+    const res = await fetch("/api/realtime-token"); // your backend calls auth.createPublicToken
+    return (await res.json()).token;
+  },
+});
+```
+
+`refreshAccessToken` is available on every realtime hook, and on `useApiClient` and `TriggerAuthContext` so hooks under a provider share one refresher.
+
 ### Auto-generated tokens
 
 When you [trigger tasks](/docs/triggering) from your backend, the `handle` received includes a `publicAccessToken` field. This token can be used to authenticate real-time requests in your frontend application.
@@ -44217,6 +44235,116 @@ We offer two "styles" of hooks: SWR and Realtime. SWR hooks use the [swr](https:
 </Note>
 
 
+# Read a session channel in React
+Source: https://trigger.dev/docs/realtime/react-hooks/session-stream
+
+Subscribe to a session's output or input channel from React with useSessionStream: accumulate records, resume from a cursor, and read only the latest.
+
+**`useSessionStream` subscribes to one channel of a [session](/docs/ai-chat/sessions) and updates a `records` array as new records arrive.** It reads the `out` channel by default (the agent's output) or `in` (the input channel). It is read-only; `useSession` is reserved for two-way (read and write) communication.
+
+<Note>
+  Requires a Public Access Token with the `read:sessions:{id}` scope. See [Realtime
+  auth](/docs/realtime/auth) for generating one.
+</Note>
+
+## Basic usage
+
+Pass the session id (or external id) and an `accessToken`. The hook returns the `records` received so far, the last control record, the cursor of the last record seen, and any error:
+
+```tsx theme={"theme":"css-variables"}
+"use client";
+
+import { useSessionStream } from "@trigger.dev/react-hooks";
+
+export function SessionViewer({
+  sessionId,
+  accessToken,
+}: {
+  sessionId: string;
+  accessToken: string;
+}) {
+  const { records, error } = useSessionStream<string>(sessionId, { accessToken });
+
+  if (error) return <div>Error: {error.message}</div>;
+
+  return <div>{records.join("")}</div>;
+}
+```
+
+## Options
+
+```tsx theme={"theme":"css-variables"}
+const { records, lastEventId, lastControl, error, stop } = useSessionStream(sessionId, {
+  accessToken: "pk_...", // Required: public access token with read:sessions:{id}
+  io: "out", // Optional: "out" (default) or "in"
+  from: "beginning", // Optional: "beginning" (default) or "latest"
+  maxRecords: 100, // Optional: keep only the most recent N records (default: unbounded)
+  lastEventId: undefined, // Optional: resume cursor
+  timeoutInSeconds: 60, // Optional: close after this long with no new data (default: 60)
+  throttleInMs: 16, // Optional: throttle record updates (default: 16ms)
+  onRecords: (batch) => {}, // Optional: callback per throttled batch, each with its event id
+  onControl: (event) => {}, // Optional: callback for control records (e.g. turn-complete)
+});
+```
+
+The return value:
+
+* **`records`**: every data record received so far, in arrival order. Control records are delivered to `onControl` instead.
+* **`lastEventId`**: the cursor of the last record seen. Persist it and pass it back as the `lastEventId` option to resume.
+* **`lastControl`**: the last control record (for example `turn-complete`).
+* **`stop`**: abort the subscription, keeping the records received so far.
+
+## Start from the latest record
+
+By default the hook replays the channel history, then live-tails. Pass `from: "latest"` to start at the current tail (the latest record, then live updates) instead of replaying, and `maxRecords` to bound memory:
+
+```tsx theme={"theme":"css-variables"}
+const { records } = useSessionStream<{ url: string }>(sessionId, {
+  accessToken,
+  io: "out",
+  from: "latest", // start at the latest record, then live updates
+  maxRecords: 1, // keep just the most recent record
+});
+```
+
+<Note>
+  `from: "latest"` requires a server that supports it. Against an older server a client that passes
+  it degrades safely to a full replay.
+</Note>
+
+## Resume from a cursor
+
+The hook resumes automatically across a component remount. A full page reload clears in-memory state, so to resume there, persist the returned `lastEventId` and pass it back on the next load. The channel then continues after that record with no replay and no gap:
+
+```tsx theme={"theme":"css-variables"}
+const cursorKey = `session-cursor:${sessionId}:out`; // scope the key to this session and channel
+const saved = localStorage.getItem(cursorKey) ?? undefined;
+
+const { records, lastEventId } = useSessionStream<string>(sessionId, {
+  accessToken,
+  lastEventId: saved,
+  onRecords: (batch) => localStorage.setItem(cursorKey, batch.at(-1)!.id),
+});
+```
+
+## React to control records
+
+Control records (such as `turn-complete`) never enter `records`. Handle them with `onControl`, or read the latest from `lastControl`:
+
+```tsx theme={"theme":"css-variables"}
+const { records, lastControl } = useSessionStream<string>(sessionId, {
+  accessToken,
+  onControl: (event) => {
+    if (event.subtype === "turn-complete") {
+      console.log("The turn is complete");
+    }
+  },
+});
+```
+
+For an expiring token on a long-lived subscription, pass `refreshAccessToken` (see [Realtime auth](/docs/realtime/auth)). To read a session channel outside React, use [`session.out.read()`](/docs/ai-chat/sessions).
+
+
 # Stream data to React (AI, files, progress)
 Source: https://trigger.dev/docs/realtime/react-hooks/streams
 
@@ -44348,15 +44476,83 @@ export function AIStreamViewer({
 The `useRealtimeStream` hook accepts the following options:
 
 ```tsx theme={"theme":"css-variables"}
-const { parts, error } = useRealtimeStream(streamOrRunId, streamKeyOrOptions, {
+const { parts, lastEventId, error } = useRealtimeStream(streamOrRunId, streamKeyOrOptions, {
   accessToken: "pk_...", // Required: Public access token
   baseURL: "https://api.trigger.dev", // Optional: Custom API URL
   timeoutInSeconds: 60, // Optional: Timeout (default: 60)
-  startIndex: 0, // Optional: Start from specific chunk
+  from: "beginning", // Optional: "beginning" (default) or "latest"
+  maxParts: 100, // Optional: keep only the most recent N parts (default: unbounded)
+  lastEventId: undefined, // Optional: resume cursor (takes precedence over startIndex)
+  startIndex: 0, // Optional: start from a specific chunk index
   throttleInMs: 16, // Optional: Throttle updates (default: 16ms)
-  onData: (chunk) => {}, // Optional: Callback for each chunk
+  onData: (chunk) => {}, // Optional: callback for each chunk
+  onParts: (batch) => {}, // Optional: callback per throttled batch, each with its event id
+  refreshAccessToken: async () => "pk_...", // Optional: mint a fresh token on expiry
 });
 ```
+
+The hook returns `lastEventId`, the cursor of the last part it received. Persist it and pass it back as the `lastEventId` option to resume later.
+
+### Live view: start from the latest record
+
+By default a subscriber replays the whole stream history, then live-tails. Pass `from: "latest"` to start at the current tail (the latest record, then live updates) instead of replaying, and `maxParts` to keep memory bounded. Together they give a last-value view:
+
+```tsx theme={"theme":"css-variables"}
+"use client";
+
+import { useRealtimeStream } from "@trigger.dev/react-hooks";
+
+export function LatestFrame({ runId, accessToken }: { runId: string; accessToken: string }) {
+  const { parts } = useRealtimeStream<{ url: string }>(runId, "frames", {
+    accessToken,
+    from: "latest", // start at the latest frame, then live updates
+    maxParts: 1, // keep just the most recent frame
+  });
+
+  const frame = parts.at(-1);
+  return frame ? <img src={frame.url} alt="latest frame" /> : null;
+}
+```
+
+<Note>
+  `from: "latest"` requires a server that supports it. Against an older server a client that passes
+  it degrades safely to a full replay.
+</Note>
+
+### Resume across a page reload
+
+The hook resumes automatically across a component remount. A full page reload clears in-memory
+state, so to resume there, persist the returned `lastEventId` and pass it back on the next load. The
+subscription then continues after that record with no replay and no gap:
+
+```tsx theme={"theme":"css-variables"}
+const cursorKey = `frames-cursor:${runId}`; // scope the key to this stream
+const saved = localStorage.getItem(cursorKey) ?? undefined;
+
+const { parts, lastEventId } = useRealtimeStream<{ url: string }>(runId, "frames", {
+  accessToken,
+  lastEventId: saved, // resume where the previous session left off
+  onParts: (batch) => localStorage.setItem(cursorKey, batch.at(-1)!.id),
+});
+```
+
+### Refresh an expired access token
+
+Public access tokens are short-lived. For a long-running subscription, pass `refreshAccessToken` to
+mint a fresh token when the server rejects the connection with a 401/403. The subscription re-mints
+once and reconnects; with no refresher, auth errors stay terminal:
+
+```tsx theme={"theme":"css-variables"}
+const { parts } = useRealtimeStream<{ url: string }>(runId, "frames", {
+  accessToken,
+  refreshAccessToken: async () => {
+    const res = await fetch("/api/realtime-token"); // your backend mints a fresh public token
+    return (await res.json()).token;
+  },
+});
+```
+
+`refreshAccessToken` is also available on [`useApiClient` and `TriggerAuthContext`](/docs/realtime/auth), so every hook under a provider shares one refresher.
 
 ### Using Default Stream
 
@@ -49325,7 +49521,7 @@ We take the security of Trigger.dev seriously, for both Cloud and self-hosted de
 <Steps>
   <Step title="Choose a private channel">
     * **GitHub (preferred):** open a private report from the repository's **Security** tab using **"Report a vulnerability"** ([direct link](https://github.com/triggerdotdev/trigger.dev/security/advisories/new)).
-    * **Email:** `security-advisories@trigger.dev`
+    * **Email:** `security@trigger.dev`
   </Step>
 
   <Step title="Include the details">
@@ -51277,8 +51473,11 @@ With options:
 const stream = await aiStream.read(runId, {
   timeoutInSeconds: 60, // Stop if no data for 60 seconds
   startIndex: 10, // Start from the 10th chunk
+  from: "latest", // Or skip history and read only new records from now
 });
 ```
+
+Pass `from: "latest"` to start at the current tail and receive only records appended after the read connects, instead of replaying from the beginning.
 
 #### Appending to a Stream
 

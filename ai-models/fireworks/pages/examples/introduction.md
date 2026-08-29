@@ -8,7 +8,7 @@ Standalone end-to-end examples showing how to use Fireworks to solve real-world 
 
 <CardGroup>
   <Card title="Text to SQL" href="/examples/text-to-sql">
-    Learn how to use Fireworks to fine-tune a model to convert natural language to SQL queries.
+    Learn how to use Fireworks to train a model to convert natural language to SQL queries.
   </Card>
 
   <Card title="Reward Hacking" href="/examples/reward-hacking">

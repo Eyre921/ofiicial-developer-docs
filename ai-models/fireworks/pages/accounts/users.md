@@ -25,13 +25,13 @@ Each user in an account is assigned a role that determines their level of access
 
 #### Resource management
 
-| Permission                                                             | Inference User | Contributor | User | Admin |
-| :--------------------------------------------------------------------- | :------------: | :---------: | :--: | :---: |
-| Execute inference on any deployment                                    |        ✅       |      ✅      |   ✅  |   ✅   |
-| View all resources (deployments, models, fine tuning jobs, datasets)   |        ✅       |      ✅      |   ✅  |   ✅   |
-| Create new resources (deployments, models, fine tuning jobs, datasets) |        ❌       |      ✅      |   ✅  |   ✅   |
-| Manage their own resources (edit/delete)                               |        ❌       |      ✅      |   ✅  |   ✅   |
-| Manage resources owned by others (edit/delete)                         |        ❌       |      ❌      |   ✅  |   ✅   |
+| Permission                                                          | Inference User | Contributor | User | Admin |
+| :------------------------------------------------------------------ | :------------: | :---------: | :--: | :---: |
+| Execute inference on any deployment                                 |        ✅       |      ✅      |   ✅  |   ✅   |
+| View all resources (deployments, models, training jobs, datasets)   |        ✅       |      ✅      |   ✅  |   ✅   |
+| Create new resources (deployments, models, training jobs, datasets) |        ❌       |      ✅      |   ✅  |   ✅   |
+| Manage their own resources (edit/delete)                            |        ❌       |      ✅      |   ✅  |   ✅   |
+| Manage resources owned by others (edit/delete)                      |        ❌       |      ❌      |   ✅  |   ✅   |
 
 #### API key & account management
 

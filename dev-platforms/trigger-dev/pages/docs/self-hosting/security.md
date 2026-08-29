@@ -17,7 +17,7 @@ We take the security of Trigger.dev seriously, for both Cloud and self-hosted de
 <Steps>
   <Step title="Choose a private channel">
     * **GitHub (preferred):** open a private report from the repository's **Security** tab using **"Report a vulnerability"** ([direct link](https://github.com/triggerdotdev/trigger.dev/security/advisories/new)).
-    * **Email:** `security-advisories@trigger.dev`
+    * **Email:** `security@trigger.dev`
   </Step>
 
   <Step title="Include the details">

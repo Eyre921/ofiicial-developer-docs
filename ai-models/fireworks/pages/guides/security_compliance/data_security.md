@@ -29,7 +29,7 @@ For US-only inference residency, see [US-only Serverless](/serverless/us-only-se
 
 **Bring Your Own Key:** Customers may integrate their own AWS KMS, Google Cloud KMS, or Azure Key Vault key to retain governance and apply their own encryption policies.
 
-* Datasets and checkpoints: [Customer-Managed Encryption Keys for Fine-Tuning](/guides/security_compliance/secure_training/cmek) (LoRA SFT, DPO, and RFT; full-parameter training not supported)
+* Datasets and checkpoints: [Customer-Managed Encryption Keys for Training](/guides/security_compliance/secure_training/cmek) (LoRA SFT, DPO, and RFT; full-parameter training not supported)
 * Final model weights: Coming soon
 
 **Access Logging:** All customer data access is logged, monitored, and protected against tampering. See [Audit & Access Logs](https://docs.fireworks.ai/guides/security_compliance/audit_logs).

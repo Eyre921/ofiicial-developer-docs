@@ -79,7 +79,7 @@ print(completion.choices[0].text)
 
 ### Chat Completion
 
-Works best for models fine-tuned for conversation (e.g. llama\*-chat variants):
+Works best for models trained for conversation (e.g. llama\*-chat variants):
 
 ```python theme={null}
 from openai import OpenAI
@@ -105,9 +105,9 @@ chat_completion = client.chat.completions.create(
 print(chat_completion.choices[0].message.content)
 ```
 
-## Fine-tuning compatibility
+## Training compatibility
 
-Fireworks fine-tuning uses the same **OpenAI-compatible chat completion format** for training data. If you have datasets formatted for OpenAI SFT, they work on Fireworks with no conversion required — the same `messages` array with `role`, `content`, `tool_calls`, and `weight` fields.
+Fireworks training uses the same **OpenAI-compatible chat completion format** for training data. If you have datasets formatted for OpenAI SFT, they work on Fireworks with no conversion required — the same `messages` array with `role`, `content`, `tool_calls`, and `weight` fields.
 
 Fireworks also supports additional features in the training schema:
 
@@ -116,7 +116,7 @@ Fireworks also supports additional features in the training schema:
 * **Per-sample weights** for weighted training
 * **Vision inputs** using the same OpenAI-compatible multimodal content format
 
-To get started with fine-tuning, see the [Supervised Fine-Tuning guide](/fine-tuning/fine-tuning-models) or the [Fine-Tuning overview](/fine-tuning/finetuning-intro).
+To get started with training, see the [Supervised Fine-Tuning guide](/fine-tuning/fine-tuning-models) or the [Training overview](/fine-tuning/finetuning-intro).
 
 ## API compatibility
 

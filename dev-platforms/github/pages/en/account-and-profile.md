@@ -44,7 +44,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Viewing contributions on your profile](/en/account-and-profile/how-tos/contribution-settings/viewing-contributions-on-your-profile)
 
-  You can see a history of your contributions on your profile.
+  <p>You can see a history of your contributions on your profile.</p>
 
 ## Links
 

@@ -67,6 +67,10 @@ If this happens, you will see a pending banner on your [billing settings](https:
 
 If this is the case, don't make any further payments. Each further payment will be treated as an individual transaction, so you could end up buying more credit packs than you intended.
 
+## Unexpected auto-recharge charges
+
+If you were charged right after configuring auto-recharge, check your threshold. Setting the threshold above your current balance triggers an immediate purchase to bring your balance up to your target. Auto-recharge always charges in a single transaction, so if you see repeated charges, check whether multiple manual purchases were submitted while a payment was still pending. See [Auto-recharge credits](/docs/billing-credits#auto-recharge-credits) for how the amounts are calculated.
+
 ## Understanding unexpected charges
 
 If you're seeing charges on your account without making API calls, you may be incurring costs from deployed resources that continue to run even when not actively used.

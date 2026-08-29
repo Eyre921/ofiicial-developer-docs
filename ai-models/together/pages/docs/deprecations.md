@@ -92,9 +92,14 @@ When a model is deprecated on the serverless platform, you have three options:
 
 1. Review the deprecation table below to find your current model.
 2. Check if on-demand dedicated endpoints are supported for your model.
-3. Decide on your preferred migration option.
-4. If you choose a new serverless model, test your application thoroughly before migrating.
-5. Update your API calls to use the new model or dedicated endpoint.
+3. Decide on your preferred migration option. If you choose a new serverless model, compare candidates on capability, latency, and cost for your workload.
+4. Run a small A/B test comparing the replacement against your current model on representative traffic. Replacement models rarely behave identically, so validate quality, latency, and cost before committing.
+5. Update your API calls, then shift traffic gradually (canary, then partial, then full cutover). Keep a fallback path during the rollout if possible.
+6. Monitor error rates, latency, and cost during and after the migration.
+
+<Note>
+  During a transition, a model can still appear in catalog listings while its route-level availability changes. If a listed model returns unavailable or disabled errors, treat the runtime API behavior and this page as the source of truth.
+</Note>
 
 ## Deprecation history
 

@@ -4,9 +4,9 @@ source: https://docs.fireworks.ai/getting-started/introduction
 path: getting-started/introduction
 ---
 
-Fast inference and fine-tuning for open source models
+Fast inference and training for open source models
 
-Fireworks AI is the fastest platform for building with open source AI models. Get production-ready inference and fine-tuning with best-in-class speed, cost and quality.
+Fireworks AI is the fastest platform for building with open source AI models. Get production-ready inference and training with best-in-class speed, cost and quality.
 
 ## Get started in minutes
 
@@ -19,17 +19,17 @@ Fireworks AI is the fastest platform for building with open source AI models. Ge
     Deploy with high performance on dedicated GPUs with fast autoscaling and minimal cold starts. Optimize deployments for speed and throughput.
   </Card>
 
-  <Card title="Fine-tune models for best quality" href="/fine-tuning/finetuning-intro" icon="sliders">
+  <Card title="Train models for best quality" href="/fine-tuning/finetuning-intro" icon="sliders">
     Boost model quality with supervised and reinforcement fine-tuning of models up to 1T+ parameters. Start training in minutes, deploy immediately.
   </Card>
 </CardGroup>
 
 <Tip>
-  Not sure where to start? First, pick the right model for your use case with our [**model selection guide**](/guides/recommended-models). Then choose [**Serverless**](/getting-started/quickstart) to prototype quickly, move to [**Deployments**](/getting-started/ondemand-quickstart) to optimize and run production workloads, or use [**Fine-tuning**](/fine-tuning/finetuning-intro) to improve quality.
+  Not sure where to start? First, pick the right model for your use case with our [**model selection guide**](/guides/recommended-models). Then choose [**Serverless**](/getting-started/quickstart) to prototype quickly, move to [**Deployments**](/getting-started/ondemand-quickstart) to optimize and run production workloads, or use [**Training**](/fine-tuning/finetuning-intro) to improve quality.
 
   New to AI or Fireworks? Look up any term in the [**Glossary**](/getting-started/glossary).
 
-  Need help optimizing deployments, fine-tuning models, or setting up production infrastructure? [Talk to our team](https://fireworks.ai/company/contact-us) - we'll help you get the best performance and reliability.
+  Need help optimizing deployments, training models, or setting up production infrastructure? [Talk to our team](https://fireworks.ai/company/contact-us) - we'll help you get the best performance and reliability.
 </Tip>
 
 ## What you can build
@@ -40,7 +40,7 @@ Fireworks AI is the fastest platform for building with open source AI models. Ge
   </Card>
 
   <Card title="Migrate from OpenAI" href="/tools-sdks/openai-compatibility" icon="arrow-right-arrow-left">
-    Drop-in replacement for inference and fine-tuning — same API, same SFT data format
+    Drop-in replacement for inference and training — same API, same SFT data format
   </Card>
 
   <Card title="Function Calling" href="/guides/function-calling" icon="function">

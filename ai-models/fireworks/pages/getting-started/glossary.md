@@ -6,14 +6,14 @@ path: getting-started/glossary
 
 Definitions for key terms used across Fireworks AI documentation.
 
-This glossary covers terms you'll encounter when working with the Fireworks AI platform — across inference, fine-tuning, deployments, security, and the API.
+This glossary covers terms you'll encounter when working with the Fireworks AI platform — across inference, training, deployments, security, and the API.
 
 ***
 
 ## Account & Billing
 
 **Account**\
-Your Fireworks AI organization identity. All deployments, models, fine-tuning jobs, and API keys belong to an account. Referenced as `accounts/<your-account>` in firectl and the API.
+Your Fireworks AI organization identity. All deployments, models, training jobs, and API keys belong to an account. Referenced as `accounts/<your-account>` in firectl and the API.
 
 **Credit**\
 The unit used for prepaid usage on Fireworks. Credits are consumed as you use inference and training resources.
@@ -59,20 +59,20 @@ A single instance of a deployed model. Adding replicas increases concurrency. Re
 Automatic adjustment of replica count based on traffic. Configured with scale-to-zero, minimum replicas, maximum replicas, and scale-up/down thresholds.
 
 **firectl**\
-The Fireworks command-line tool for managing models, deployments, fine-tuning jobs, and account resources.
+The Fireworks command-line tool for managing models, deployments, training jobs, and account resources.
 
 ***
 
 ## Models & Inference
 
 **Base model**\
-A foundation model available on Fireworks for inference or fine-tuning. Referenced as `accounts/fireworks/models/<model-id>`.
+A foundation model available on Fireworks for inference or training. Referenced as `accounts/fireworks/models/<model-id>`.
 
 **Addon**\
 A LoRA adapter loaded on top of a base model deployment at inference time. Enabled on a deployment with `--enable-addons`. The adapter is specified per request by passing the adapter model ID. FP8 and FP4 quantized shapes do not support addons — use a BF16 shape for LoRA addon inference.
 
 **Multi-LoRA**\
-A single base model deployment that serves multiple LoRA adapters. The adapter is selected per request. One deployment, multiple fine-tuned behaviors.
+A single base model deployment that serves multiple LoRA adapters. The adapter is selected per request. One deployment, multiple trained behaviors.
 
 **Quantization**\
 Reducing the numerical precision of model weights to decrease memory usage and increase throughput, with some quality tradeoff.
@@ -121,10 +121,10 @@ API parameter that controls how much thinking a reasoning model performs before 
 
 ***
 
-## Fine-tuning
+## Training
 
 **SFT (Supervised Fine-Tuning)**\
-Training a model on labeled input-output pairs to adapt it to a specific task or style. Available via the Fireworks managed fine-tuning pipeline.
+Training a model on labeled input-output pairs to adapt it to a specific task or style. Available via the Fireworks managed training pipeline.
 
 **LoRA (Low-Rank Adaptation)**\
 A parameter-efficient fine-tuning technique that trains a small set of adapter weights rather than the full model. The adapter can be loaded on top of the base model at inference time.
@@ -139,7 +139,7 @@ A reinforcement learning variant used in RFT. Optimizes model outputs using grou
 Fine-tuning using reinforcement learning signals rather than labeled examples. Trains the model to maximize a reward function — useful for tasks with verifiable outcomes such as math, code, and reasoning.
 
 **Training shape**\
-A validated trainer configuration for one base model and one training method. It fixes the GPU type and count per trainer replica, plus the maximum training context length. On the [Training API](/fine-tuning/training-api/training-shapes) you pass a shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k`; managed fine-tuning jobs select a compatible shape for you.
+A validated trainer configuration for one base model and one training method. It fixes the GPU type and count per trainer replica, plus the maximum training context length. On the [Training API](/fine-tuning/training-api/training-shapes) you pass a shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k`; managed training jobs select a compatible shape for you.
 
 **`dcp_save_interval`**\
 RFT training parameter that controls how often full training state (weights + optimizer) is checkpointed. Default is `0` (disabled). Set to a positive integer to enable full checkpoint-and-resume including optimizer state.
@@ -186,7 +186,7 @@ The Fireworks inference API is compatible with the OpenAI Chat Completions API f
 SDK method for recovering a training job that has been interrupted by pod preemption or a network error. Use in your training loop to make jobs resilient to transient interruptions.
 
 **JSONL**\
-JSON Lines format — one JSON object per line. Used for batch inference input files and fine-tuning dataset uploads.
+JSON Lines format — one JSON object per line. Used for batch inference input files and training dataset uploads.
 
 ***
 

@@ -32,7 +32,7 @@ Fireworks on Foundry supports three deployment modes.
 | ----------------- | ------------------------------ | --------------------------------- | -------------------- | -------------------------------------------- |
 | **PayGo**         | Serverless, Data Zone Standard | Per token, MACC-eligible          | US Data Zone only    | Prototyping, low-volume workloads            |
 | **PTU**           | Provisioned Throughput         | Per PTU-hour, ACD + MACC eligible | Global               | Production workloads with consistent traffic |
-| **Custom Models** | Bring Your Own Model           | PTU pricing                       | Global (PTU regions) | Fine-tuned model deployment                  |
+| **Custom Models** | Bring Your Own Model           | PTU pricing                       | Global (PTU regions) | Trained model deployment                     |
 
 PTU deployments can be created directly in the Azure portal. For help with PTU sizing on Fireworks models, contact [sales@fireworks.ai](mailto:sales@fireworks.ai).
 
@@ -84,7 +84,7 @@ For help with PTU sizing on Fireworks models, contact [sales@fireworks.ai](mailt
 
 ## Custom Models
 
-Fine-tune on Fireworks and deploy on Foundry, or bring your own weights from wherever you post-train to deploy on Foundry. Your model is served on Fireworks infrastructure within Azure, billed through your Azure account.
+Train on Fireworks and deploy on Foundry, or bring your own weights from wherever you post-train to deploy on Foundry. Your model is served on Fireworks infrastructure within Azure, billed through your Azure account.
 
 ### Supported base architectures
 
@@ -139,6 +139,6 @@ See [FireConnect + Microsoft Foundry](/ecosystem/fireconnect/microsoft-foundry) 
 
 * [Enable Fireworks on Foundry (Microsoft Learn)](https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/enable-fireworks-models)
 * [Microsoft Foundry portal](https://ai.azure.com/)
-* [Fireworks fine-tuning docs](/fine-tuning/finetuning-intro)
+* [Fireworks training docs](/fine-tuning/finetuning-intro)
 * [Fireworks Trust Center](https://fireworks.ai/trust)
 * [sales@fireworks.ai](mailto:sales@fireworks.ai) for PTU provisioning and Custom Model support

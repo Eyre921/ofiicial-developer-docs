@@ -1,10 +1,10 @@
 ---
-title: "Thinking history in fine-tuning"
+title: "Thinking history in training"
 source: https://docs.fireworks.ai/fine-tuning/thinking-history
 path: fine-tuning/thinking-history
 ---
 
-Choose how historical reasoning is rendered for managed fine-tuning and match training behavior to inference.
+Choose how historical reasoning is rendered for managed training and match training behavior to inference.
 
 Thinking models can store an assistant turn's reasoning in `reasoning_content`. A thinking-history mode controls whether that existing reasoning remains visible in the context of later turns.
 
@@ -15,7 +15,7 @@ This setting does **not** enable or disable thinking generation. It only control
 * **Interleaved** removes thinking across user-turn boundaries while retaining the complete assistant → tool → assistant trajectory for the current user turn.
 * **Preserved** retains thinking across user turns.
 
-These names align with the serving API's `reasoning_history="interleaved"` and `reasoning_history="preserved"` behaviors. Choose the mode that matches how you will replay reasoning history when serving the fine-tuned model.
+These names align with the serving API's `reasoning_history="interleaved"` and `reasoning_history="preserved"` behaviors. Choose the mode that matches how you will replay reasoning history when serving the trained model.
 
 <Warning>
   Do not interpret Interleaved as "keep only the final assistant's thinking." The boundary is the last real user query. If one user turn contains an assistant tool call, a tool result, and another assistant response, thinking from both assistant messages stays in that turn's trajectory.

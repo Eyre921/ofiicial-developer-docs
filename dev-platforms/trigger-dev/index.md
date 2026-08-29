@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 314 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 315 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -275,6 +275,7 @@
 - `docs/realtime/how-it-works` — [How Realtime works](pages/docs/realtime/how-it-works.md) · [原文](https://trigger.dev/docs/realtime/how-it-works)
 - `docs/realtime/overview` — [Realtime overview](pages/docs/realtime/overview.md) · [原文](https://trigger.dev/docs/realtime/overview)
 - `docs/realtime/react-hooks/overview` — [React hooks for real-time task updates](pages/docs/realtime/react-hooks/overview.md) · [原文](https://trigger.dev/docs/realtime/react-hooks/overview)
+- `docs/realtime/react-hooks/session-stream` — [Read a session channel in React](pages/docs/realtime/react-hooks/session-stream.md) · [原文](https://trigger.dev/docs/realtime/react-hooks/session-stream)
 - `docs/realtime/react-hooks/streams` — [Stream data to React (AI, files, progress)](pages/docs/realtime/react-hooks/streams.md) · [原文](https://trigger.dev/docs/realtime/react-hooks/streams)
 - `docs/realtime/react-hooks/subscribe` — [Run updates in React](pages/docs/realtime/react-hooks/subscribe.md) · [原文](https://trigger.dev/docs/realtime/react-hooks/subscribe)
 - `docs/realtime/react-hooks/swr` — [SWR hooks](pages/docs/realtime/react-hooks/swr.md) · [原文](https://trigger.dev/docs/realtime/react-hooks/swr)

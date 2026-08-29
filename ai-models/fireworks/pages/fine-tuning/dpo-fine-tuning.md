@@ -6,7 +6,7 @@ path: fine-tuning/dpo-fine-tuning
 
 Train on preferred and non-preferred response pairs using managed DPO or ORPO.
 
-Preference optimization fine-tunes models on pairs of preferred and non-preferred responses to the same prompt. Managed jobs support two objectives:
+Preference optimization trains models on pairs of preferred and non-preferred responses to the same prompt. Managed jobs support two objectives:
 
 * **DPO** compares the policy against a reference model.
 * **ORPO** combines supervised and preference objectives without a separate reference model.
@@ -18,7 +18,7 @@ Use either method for:
 * Improving response quality where there's no single "correct" answer
 * Teaching models to follow specific formatting or structural preferences
 
-## Fine-tuning with DPO or ORPO
+## Training with DPO or ORPO
 
 <Steps>
   <Step title="Prepare dataset">
@@ -72,7 +72,7 @@ Use either method for:
   </Step>
 
   <Step title="Create and upload the dataset">
-    There are a couple ways to upload the dataset to Fireworks platform for fine tuning: `firectl`, `Restful API` , `builder SDK` or `UI`.
+    There are a couple ways to upload the dataset to Fireworks platform for training: `firectl`, `Restful API` , `builder SDK` or `UI`.
 
     <Tabs>
       <Tab title="UI">
@@ -165,28 +165,28 @@ Use either method for:
       </Tab>
     </Tabs>
 
-    Once the job is complete, the `STATE` will be set to `JOB_STATE_COMPLETED`, and the fine-tuned model can be deployed.
+    Once the job is complete, the `STATE` will be set to `JOB_STATE_COMPLETED`, and the trained model can be deployed.
   </Step>
 
-  <Step title="Deploy the DPO fine-tuned model">
-    Once training completes, you can create a deployment to interact with the fine-tuned model. Refer to [deploying a fine-tuned model](/fine-tuning/fine-tuning-models#deploying-a-fine-tuned-model) for more details.
+  <Step title="Deploy the DPO trained model">
+    Once training completes, you can create a deployment to interact with the trained model. Refer to [deploying a trained model](/fine-tuning/fine-tuning-models#deploying-a-trained-model) for more details.
   </Step>
 </Steps>
 
 ## Next Steps
 
-Explore other fine-tuning methods to improve model output for different use cases.
+Explore other training methods to improve model output for different use cases.
 
 <CardGroup>
-  <Card title="Supervised Fine Tuning - Text" icon="message" href="/fine-tuning/fine-tuning-models">
+  <Card title="Supervised Fine-Tuning - Text" icon="message" href="/fine-tuning/fine-tuning-models">
     Train models on input-output examples to improve task-specific performance.
   </Card>
 
-  <Card title="Reinforcement Fine Tuning" icon="brain" href="/fine-tuning/reinforcement-fine-tuning-models">
+  <Card title="Reinforcement Fine-Tuning" icon="brain" href="/fine-tuning/reinforcement-fine-tuning-models">
     Optimize models using AI feedback for complex reasoning and decision-making.
   </Card>
 
-  <Card title="Supervised Fine Tuning - Vision" icon="eye" href="/fine-tuning/fine-tuning-models#vision-fine-tuning">
-    Fine-tune vision-language models to understand both images and text.
+  <Card title="Supervised Fine-Tuning - Vision" icon="eye" href="/fine-tuning/fine-tuning-models#vision-training">
+    Train vision-language models to understand both images and text.
   </Card>
 </CardGroup>

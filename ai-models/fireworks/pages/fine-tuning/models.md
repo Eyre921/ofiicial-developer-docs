@@ -6,7 +6,7 @@ path: fine-tuning/models
 
 Which base models you can train on Fireworks and the surfaces each one is available on.
 
-Managed fine-tuning, the Training API, and serverless training all draw from the same base model catalog, but availability is decided per model: managed jobs by method (SFT, DPO, RFT), Training API jobs by parameter mode (LoRA or full-parameter).
+Managed training, the Training API, and serverless training all draw from the same base model catalog, but availability is decided per model: managed jobs by method (SFT, DPO, RFT), Training API jobs by parameter mode (LoRA or full-parameter).
 
 ## Model availability
 
@@ -18,14 +18,14 @@ Pick a model to see the surfaces and methods it is enabled for, plus any trainin
 
 Vision support is model- and surface-specific. Use the catalog above to confirm that the selected VLM has a compatible managed method or Training API shape before preparing data.
 
-* Managed VLM SFT dataset schema and launch flow: [Supervised Fine-Tuning: Vision](/fine-tuning/fine-tuning-models#vision-fine-tuning)
+* Managed VLM SFT dataset schema and launch flow: [Supervised Fine-Tuning: Vision](/fine-tuning/fine-tuning-models#vision-training)
 * Training API VLM loops: start from a VLM-compatible shape and the same cookbook SFT, DPO, or RL recipe used for text, replacing the text tokenizer with the model processor
 * Inference request formats after deployment: [Vision-language models](/guides/querying-vision-language-models)
 
 ## Next steps
 
 <CardGroup>
-  <Card title="Managed Fine-Tuning" href="/fine-tuning/managed-finetuning-intro" icon="wand-magic-sparkles">
+  <Card title="Managed Training" href="/fine-tuning/managed-finetuning-intro" icon="wand-magic-sparkles">
     Hand Fireworks your data and let the platform run the job
   </Card>
 

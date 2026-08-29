@@ -40,6 +40,7 @@ Create independent API keys for separate use cases, systems, or workloads. For e
 * **Set expiration dates** for keys used in temporary or testing contexts. Select **Set an expiration date** when creating a key, or **Set expiration** in the three-dot menu next to an existing key. To keep a key that's scheduled to expire, select **Cancel expiration** from the same menu.
 * **Rotate keys regularly** and revoke any that are no longer in use.
 * **Never commit keys to source control.** Use environment variables or a secrets manager.
+* **Treat keys as secrets.** Anyone holding a key has full access to its project's resources and can spend your credit balance, which auto-recharge tops back up. If you suspect a key has leaked, revoke it immediately and create a new one.
 
 ## Set as an environment variable
 

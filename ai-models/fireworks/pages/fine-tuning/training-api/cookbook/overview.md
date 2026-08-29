@@ -116,11 +116,11 @@ main(cfg)
 
 ## Vision-language model support
 
-All cookbook recipes support VLM fine-tuning. Use a VLM training shape and tokenizer, and provide multimodal datasets with `image_url` content. See [Vision Inputs](/fine-tuning/models) for dataset format and examples.
+All cookbook recipes support VLM training. Use a VLM training shape and tokenizer, and provide multimodal datasets with `image_url` content. See [Vision Inputs](/fine-tuning/models) for dataset format and examples.
 
 ## Embedding loop
 
-The [`embedding_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/embedding_loop.py) recipe fine-tunes embedding models with contrastive or supervised embedding objectives. Use it when your base model is an embedding endpoint rather than a chat completion model.
+The [`embedding_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/embedding_loop.py) recipe trains embedding models with contrastive or supervised embedding objectives. Use it when your base model is an embedding endpoint rather than a chat completion model.
 
 ## Next steps
 
@@ -129,5 +129,5 @@ The [`embedding_loop`](https://github.com/fw-ai/cookbook/blob/main/training/reci
 * [Cookbook RL (GRPO)](/fine-tuning/training-api/cookbook/rl) — full GRPO walkthrough with reward functions
 * [Cookbook Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl) — multi-turn trajectory, token ancestry, and session design
 * [Cookbook Distillation](/fine-tuning/training-api/cookbook/distillation) — OPD, routed MOPD, and top-K SDFT
-* [Vision Inputs](/fine-tuning/models) — fine-tune VLMs with image and text data
+* [Vision Inputs](/fine-tuning/models) — train VLMs with image and text data
 * [Cookbook Reference](/fine-tuning/training-api/cookbook/reference) — all config classes and parameters

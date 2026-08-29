@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 382 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 380 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -40,7 +40,6 @@
 - `docs/audio-keep-alive` — [Audio Keep Alive](pages/docs/audio-keep-alive.md) · [原文](https://developers.deepgram.com/docs/audio-keep-alive.md)
 - `docs/auto-scaling-sagemaker` — [Auto-Scaling SageMaker Endpoints](pages/docs/auto-scaling-sagemaker.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker.md)
 - `docs/auto-scaling-sagemaker-async` — [Auto-Scaling Asynchronous SageMaker Endpoints (Currently Disabled)](pages/docs/auto-scaling-sagemaker-async.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker-async.md)
-- `docs/auto-scaling-sagemaker-streaming` — [Auto-Scaling Real-Time Endpoints](pages/docs/auto-scaling-sagemaker-streaming.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker-streaming.md)
 - `docs/automatically-generating-webvtt-and-srt-captions` — [Automatically Generating WebVTT & SRT Captions](pages/docs/automatically-generating-webvtt-and-srt-captions.md) · [原文](https://developers.deepgram.com/docs/automatically-generating-webvtt-and-srt-captions.md)
 - `docs/automatically-transcribing-and-summarizing-phone-calls` — [Automatically Transcribe and Summarize Phone Calls](pages/docs/automatically-transcribing-and-summarizing-phone-calls.md) · [原文](https://developers.deepgram.com/docs/automatically-transcribing-and-summarizing-phone-calls.md)
 - `docs/autoscaling-best-practices` — [Auto-Scaling](pages/docs/autoscaling-best-practices.md) · [原文](https://developers.deepgram.com/docs/autoscaling-best-practices.md)
@@ -64,7 +63,6 @@
 - `docs/build-voice-agent-with-pipecat-and-deepgram` — [Build a Voice Agent with Pipecat and Deepgram](pages/docs/build-voice-agent-with-pipecat-and-deepgram.md) · [原文](https://developers.deepgram.com/docs/build-voice-agent-with-pipecat-and-deepgram.md)
 - `docs/calculate-talk-time-analytics` — [Calculate Talk Time Analytics](pages/docs/calculate-talk-time-analytics.md) · [原文](https://developers.deepgram.com/docs/calculate-talk-time-analytics.md)
 - `docs/callback` — [STT Callback](pages/docs/callback.md) · [原文](https://developers.deepgram.com/docs/callback.md)
-- `docs/certificates-endpoint` — [Certificate Status](pages/docs/certificates-endpoint.md) · [原文](https://developers.deepgram.com/docs/certificates-endpoint.md)
 - `docs/channels` — [Channels](pages/docs/channels.md) · [原文](https://developers.deepgram.com/docs/channels.md)
 - `docs/close-stream` — [Close Stream](pages/docs/close-stream.md) · [原文](https://developers.deepgram.com/docs/close-stream.md)
 - `docs/confidence` — [Understanding Word Confidence Scores](pages/docs/confidence.md) · [原文](https://developers.deepgram.com/docs/confidence.md)

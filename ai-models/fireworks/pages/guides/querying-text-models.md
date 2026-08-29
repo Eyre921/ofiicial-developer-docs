@@ -650,7 +650,7 @@ Fireworks provides an OpenAI-compatible API, making migration from OpenAI straig
     Deploy models on dedicated GPUs
   </Card>
 
-  <Card title="Fine-tuning" href="/fine-tuning/finetuning-intro" icon="sliders">
+  <Card title="Training" href="/fine-tuning/finetuning-intro" icon="sliders">
     Customize models for your use case
   </Card>
 

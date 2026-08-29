@@ -8,7 +8,7 @@ Export billing and usage metrics for all Fireworks services
 
 ## Overview
 
-Fireworks provides a CLI tool to export comprehensive billing metrics for all usage types including serverless inference, on-demand deployments, and fine-tuning jobs. The exported data can be used for cost analysis, internal billing, and usage tracking.
+Fireworks provides a CLI tool to export comprehensive billing metrics for all usage types including serverless inference, on-demand deployments, and training jobs. The exported data can be used for cost analysis, internal billing, and usage tracking.
 
 <Note>
   This export reports metered **quantities** — tokens and accelerator-seconds — not dollars. For a
@@ -127,7 +127,7 @@ This export includes:
 
 * **Serverless inference**: All serverless API usage
 * **On-demand deployments**: Deployment usage (see also [Exporting deployment metrics](/deployments/exporting-metrics) for real-time Prometheus metrics)
-* **Fine-tuning jobs**: Fine-tuning compute usage
+* **Training jobs**: Training compute usage
 * **Other services**: All billable Fireworks services
 
 <Note>

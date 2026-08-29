@@ -12,7 +12,7 @@ Fireworks AI integrates with industry-leading MLOps and observability platforms 
 
 <CardGroup>
   <Card title="Weights & Biases" icon="chart-line" href="/ecosystem/integrations/wandb">
-    Track fine-tuning experiments and visualize training metrics with W\&B
+    Track training experiments and visualize training metrics with W\&B
   </Card>
 
   <Card title="MLflow" icon="chart-mixed" href="https://mlflow.org/docs/latest/genai/tracing/integrations/listing/fireworksai/">

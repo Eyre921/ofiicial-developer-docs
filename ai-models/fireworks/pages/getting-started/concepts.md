@@ -25,18 +25,18 @@ A user is an email address associated with an account. Each user is assigned a r
 
 A model is a set of model weights and metadata associated with the model. Each model has a [**globally unique name**](/getting-started/concepts#resource-names-and-ids) of the form `accounts/<ACCOUNT_ID>/models/<MODEL_ID>`. There are two types of models:
 
-**Base models:** A base model consists of the full set of model weights, including models pre-trained from scratch and full fine-tunes.
+**Base models:** A base model consists of the full set of model weights, including models pre-trained from scratch and full-parameter fine-tunes.
 
 * Fireworks has a library of common base models that can be used for [**serverless inference**](/models/overview#serverless-inference) as well as [**dedicated deployments**](/models/overview#dedicated-deployments). Model IDs for these models are pre-populated. For example, `llama-v3p1-70b-instruct` is the model ID for the Llama 3.1 70B model that Fireworks provides. The ID for each model can be found on its page ([**example**](https://app.fireworks.ai/models/fireworks/qwen3-coder-480b-a35b-instruct))
 * Users can also [upload their own](/models/uploading-custom-models) custom base models and specify model IDs.
 
-**LoRA (low-rank adaptation) addons:** A LoRA addon is a small, fine-tuned model that significantly reduces the amount of memory required to deploy compared to a fully fine-tuned model. Fireworks supports [**training**](/fine-tuning/finetuning-intro), [**uploading**](/models/uploading-custom-models#importing-fine-tuned-models), and [**serving**](/fine-tuning/fine-tuning-models#deploying-a-fine-tuned-model) LoRA addons. LoRA addons must be deployed on a dedicated deployment for its corresponding base model. Model IDs for LoRAs can be either auto-generated or user-specified.
+**LoRA (low-rank adaptation) addons:** A LoRA addon is a small, trained model that significantly reduces the amount of memory required to deploy compared to a fully trained model. Fireworks supports [**training**](/fine-tuning/finetuning-intro), [**uploading**](/models/uploading-custom-models#importing-trained-models), and [**serving**](/fine-tuning/fine-tuning-models#deploying-a-trained-model) LoRA addons. LoRA addons must be deployed on a dedicated deployment for its corresponding base model. Model IDs for LoRAs can be either auto-generated or user-specified.
 
 #### A Note on API Model Metadata
 
-When retrieving model details via the API, a model may be listed with both `supportsServerless: true` and `supportsLora: true`. This indicates that the base model is available for serverless inference, AND that the model architecture supports fine-tuning with LoRA.
+When retrieving model details via the API, a model may be listed with both `supportsServerless: true` and `supportsLora: true`. This indicates that the base model is available for serverless inference, AND that the model architecture supports training with LoRA.
 
-However, these two features are mutually exclusive in deployment. The `supportsServerless` flag applies **only** to the base model. A LoRA addon fine-tuned from that base model **cannot** be deployed serverlessly and requires a dedicated (on-demand) deployment.
+However, these two features are mutually exclusive in deployment. The `supportsServerless` flag applies **only** to the base model. A LoRA addon trained from that base model **cannot** be deployed serverlessly and requires a dedicated (on-demand) deployment.
 
 ### Deployments and deployment types
 
@@ -55,11 +55,11 @@ Users can specify a model to query for inference using the model name and deploy
 
 ### Dataset
 
-A dataset is an immutable set of training examples that can be used to fine-tune a model.
+A dataset is an immutable set of training examples that can be used to train a model.
 
-### Fine-tuning job
+### Training job
 
-A fine-tuning job is an offline training job that uses a dataset to train a LoRA addon model.
+A training job is an offline training job that uses a dataset to train a LoRA addon model.
 
 ## Resource names and IDs
 

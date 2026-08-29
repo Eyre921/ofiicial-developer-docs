@@ -11,7 +11,7 @@ path: faq-new/billing-pricing/how-does-billing-and-credit-usage-work
 Fireworks operates on a **pre-paid credits** billing system. You purchase credits to use the platform:
 
 * Add a valid payment method and billing address, then purchase credits.
-* Usage across serverless, on-demand deployments, and fine-tuning deducts from your credit balance.
+* Usage across serverless, on-demand deployments, and training deducts from your credit balance.
 * If your balance reaches zero and Auto Reload is not enabled, usage pauses until you add credits.
 * You can configure Auto Reload to purchase credits when your balance is low.
 * Separately, you can set a monthly spend limit for your usage. Adding credits does not raise this limit.

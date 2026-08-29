@@ -32,7 +32,7 @@ BYOC is a shared operational model.
 Fireworks deploys, updates, and version-manages inference deployments in the cluster. Customers request model or deployment changes through Fireworks, and Fireworks applies those changes through the managed BYOC operating process.
 
 <Warning>
-  Fine-tuning is not supported in BYOC during Private Preview.
+  Training is not supported in BYOC during Private Preview.
 </Warning>
 
 ## Autoscaling

@@ -84,7 +84,7 @@ Hybrid operation can help when:
 
 ## Known gaps during Private Preview
 
-Fine-tuning is not supported in BYOC during Private Preview. If you need fine-tuning and BYOC together, contact [sales@fireworks.ai](mailto:sales@fireworks.ai) so the team can review your requirements and roadmap fit.
+Training is not supported in BYOC during Private Preview. If you need training and BYOC together, contact [sales@fireworks.ai](mailto:sales@fireworks.ai) so the team can review your requirements and roadmap fit.
 
 ## Supported environments
 

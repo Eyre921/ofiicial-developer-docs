@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/accounts/model-access-policy
 path: accounts/model-access-policy
 ---
 
-Restrict which models users on your Enterprise account can access for inference, deployments, and fine-tuning
+Restrict which models users on your Enterprise account can access for inference, deployments, and training
 
 Model access policy lets Enterprise account admins control which models users on the account can use. You can allowlist models (deny by default, then permit specific models) or deny specific models while leaving the rest of the catalog open.
 
@@ -18,12 +18,12 @@ Policy applies **account-wide**: every user on the account shares the same rules
 
 Each model can be allowed or denied independently across four capabilities:
 
-| Capability                 | What it governs                                                   |
-| :------------------------- | :---------------------------------------------------------------- |
-| **Serverless inference**   | Chat, completions, embeddings, and other serverless API routes    |
-| **Serverless Fast**        | The model's Fast serving mode (separate from standard serverless) |
-| **Dedicated deployments**  | Creating on-demand deployments on that base model                 |
-| **Fine-tuning / training** | Supervised fine-tuning, DPO, and reinforcement fine-tuning jobs   |
+| Capability                | What it governs                                                   |
+| :------------------------ | :---------------------------------------------------------------- |
+| **Serverless inference**  | Chat, completions, embeddings, and other serverless API routes    |
+| **Serverless Fast**       | The model's Fast serving mode (separate from standard serverless) |
+| **Dedicated deployments** | Creating on-demand deployments on that base model                 |
+| **Training**              | Supervised fine-tuning, DPO, and reinforcement fine-tuning jobs   |
 
 Fast mode is evaluated separately from standard serverless. You can allow one without the other.
 

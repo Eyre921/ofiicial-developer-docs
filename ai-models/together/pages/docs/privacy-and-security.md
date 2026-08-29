@@ -41,6 +41,10 @@ Some models are offered as **passthrough**, meaning that Together forwards your 
 
 For customers with data-residency, regulatory, or compliance requirements (for example, GDPR-driven EU-region deployments), Together supports private networking and VPC-based deployments, including in EU regions. Serverless endpoints do not offer region selection; use a [dedicated endpoint](/docs/dedicated-endpoints/overview) or [contact us](https://www.together.ai/contact) to discuss the right setup for your workload. For the full legal picture, see the [privacy policy](https://www.together.ai/privacy).
 
+## Vulnerability disclosure
+
+Together AI accepts security vulnerability reports through its [HackerOne program](https://hackerone.com/together_ai). The program is private, so viewing it and submitting reports requires a HackerOne account. Program details are published in the standard [security.txt](https://together.ai/.well-known/security.txt) file. If you believe you've found a security issue, submit it through HackerOne rather than a support ticket.
+
 ## Third-party model providers
 
 Models published by third-party authors (DeepSeek, Qwen, Mistral, etc.) and hosted on Together run on Together's own infrastructure. They do not call out to the model author. The model author has no access to your requests or API calls.

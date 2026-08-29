@@ -9435,10 +9435,6 @@ Selected serverless models run at 50% off batch rates:
 | Model ID                                  |
 | ----------------------------------------- |
 | `meta-llama/Llama-3.3-70B-Instruct-Turbo` |
-| `meta-llama/Llama-3-70b-chat-hf`          |
-| `Qwen/Qwen2.5-7B-Instruct-Turbo`          |
-| `mistralai/Mixtral-8x7B-Instruct-v0.1`    |
-| `zai-org/GLM-4.5-Air-FP8`                 |
 | `openai/whisper-large-v3`                 |
 
 Models not listed run at standard rates.
@@ -21710,6 +21706,7 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Qwen              | Qwen3.6 Plus                 | Qwen/Qwen3.6-Plus                       | 1000000        | \$0.50                        | -                                    | \$3.00                         | -            | -                | -                  |
 | Qwen              | Qwen3.5 9B                   | Qwen/Qwen3.5-9B                         | 262144         | \$0.17                        | -                                    | \$0.25                         | FP8          | Yes              | Yes                |
 | Moonshot          | Kimi K3                      | moonshotai/Kimi-K3                      | 1048576        | \$3.00                        | \$0.30                               | \$15.00                        | -            | Yes              | Yes                |
+| Z.ai              | GLM-5.3                      | zai-org/GLM-5.3                         | 1000000        | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
 | Z.ai              | GLM-5.3 Flash                | zai-org/GLM-5.3-Flash                   | 1000000        | \$0.15                        | \$0.03                               | \$0.50                         | FP8          | Yes              | Yes                |
 | Z.ai              | GLM-5.2                      | zai-org/GLM-5.2                         | 1000000        | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
 | OpenAI            | GPT-OSS 120B                 | openai/gpt-oss-120b                     | 128000         | \$0.15                        | -                                    | \$0.60                         | MXFP4        | Yes              | Yes                |
@@ -22109,10 +22106,107 @@ Slurm is a cluster management system that allows users to manage and schedule jo
 
 You can use Slurm job arrays to partition input files into k chunks and distribute the chunks across the nodes. See this example on processing RPv1 which will need to be adapted to your processing: [arxiv-clean-slurm.sbatch](https://github.com/togethercomputer/RedPajama-Data/blob/rp_v1/data_prep/arxiv/scripts/arxiv-clean-slurm.sbatch)
 
-### **Troubleshooting Slurm**
+### Run a Jupyter notebook on a GPU node
 
-1. **Error Messages**: Slurm provides error messages that can help users diagnose and troubleshoot problems.
-2. **Log Files**: Slurm provides log files that can be used to monitor the status of the cluster and diagnose problems.
+Reserve a node through Slurm, start Jupyter there, then tunnel to it from your local machine:
+
+1. Start an interactive session on the target node:
+
+   ```bash theme={null}
+   srun --pty --nodes=1 --nodelist=<NODE_NAME> --ntasks-per-node=1 --gres=gpu:8 /bin/bash
+   ```
+
+2. Launch Jupyter from that session:
+
+   ```bash theme={null}
+   jupyter lab --no-browser --port=8888 --ip=0.0.0.0
+   ```
+
+3. From your local machine, open an SSH tunnel to the node through the cluster's SSH proxy (see [Direct SSH access](/docs/gpu-clusters-management#direct-ssh-access) for the host format):
+
+   ```bash theme={null}
+   ssh -N -L 8888:localhost:8888 -J <LOGIN>@ssh.<CLUSTER_ID>.<REGION>.cloud.together.ai <LOGIN>@<NODE_NAME>.slurm-compute.slurm
+   ```
+
+4. Open `http://localhost:8888` in your browser and sign in with the token Jupyter printed in step 2.
+
+### Install Python packages that persist
+
+Login node environments can be reset when the login pod restarts. Create a virtual environment on the shared filesystem instead of installing packages system-wide:
+
+```bash theme={null}
+python -m venv /home/$USER/venvs/myenv
+source /home/$USER/venvs/myenv/bin/activate
+pip install <package>
+```
+
+See [Cluster storage](/docs/cluster-storage) for which paths persist on your cluster type.
+
+## Troubleshooting
+
+### Jobs stuck in a pending state
+
+The most common causes:
+
+* **Insufficient resources:** All GPUs are currently allocated. Check the queue and node availability with `squeue` and `sinfo`.
+* **Request exceeds limits:** The job requests more resources than any node provides.
+* **Partition limits:** The job targets a partition with limited capacity. See [Slurm configuration](/docs/slurm-configuration#modify-partitions) to adjust partitions.
+
+Inspect a specific job with:
+
+```bash theme={null}
+squeue -u $USER
+scontrol show job <JOB_ID>
+```
+
+### "Unable to contact slurm controller (connect failure)"
+
+The Slurm controller is unreachable, usually because it's restarting or there's a network issue between nodes. Wait a few minutes and retry. Check the controller pod's status with `kubectl get pods -n slurm`, and see [Slurm configuration](/docs/slurm-configuration#troubleshooting) for restart and log commands. If the issue persists for more than 30 minutes, [contact support](https://www.together.ai/contact) with the cluster name, the exact error, and when it started.
+
+### "couldn't chdir to home directory" errors
+
+```
+slurmstepd: error: couldn't chdir to `/home/<username>': No such file or directory: going to /tmp instead
+```
+
+The job's working directory isn't accessible on the compute node. On Slurm clusters, `/home` is a shared NFS filesystem mounted on all nodes, so this usually means the mount is missing or unhealthy on that node. Set the working directory explicitly in your job script (`#SBATCH --chdir=<path>`), confirm the path exists on the node, and [contact support](https://www.together.ai/contact) if `/home` isn't mounted where it should be. See [Cluster storage](/docs/cluster-storage) for how `/home` behaves on each cluster type.
+
+### Node drained with reason "KillTaskFailure"
+
+`sinfo -R` shows a node drained with `KillTaskFailure` when Slurm couldn't cleanly terminate a job step on it. Slurm drains the node so no new work lands there. Common causes are unkillable processes (stuck in kernel I/O or a hung GPU driver call), container teardown failures, or a `KillWait` timeout that's too short for your cleanup.
+
+To recover:
+
+1. Confirm the reason and the affected jobs:
+
+   ```bash theme={null}
+   scontrol show node <NODE_NAME> | egrep -i "State=|Reason="
+   sacct -j <JOB_ID> --format=JobID,State,ExitCode,NodeList,Elapsed
+   ```
+
+2. Try resuming the node:
+
+   ```bash theme={null}
+   scontrol update nodename=<NODE_NAME> state=resume
+   ```
+
+3. If your job caused it, make it easier to kill next time: handle `SIGTERM` promptly in your training script, checkpoint periodically so exits are fast, and make sure all ranks of a distributed job exit when one rank is terminated.
+
+If the node won't resume, [contact support](https://www.together.ai/contact) with the cluster name, node name, drain reason, and the job IDs that were running.
+
+### Array jobs fail with "Invalid job array specification"
+
+The array exceeds the configured `MaxArraySize` (a maximum array index of 1,000 by default). Raise it in `slurm.conf` by editing the cluster's ConfigMap, then restart the controller. See [Slurm configuration](/docs/slurm-configuration#edit-configuration) for the procedure.
+
+### Jobs need more time to shut down cleanly
+
+If jobs are killed before checkpointing finishes, check the `KillWait` setting (30 seconds by default):
+
+```bash theme={null}
+scontrol show config | grep -i killwait
+```
+
+Raise it in `slurm.conf` the same way as other configuration changes. See [Slurm configuration](/docs/slurm-configuration#edit-configuration).
 
 
 # Slurm configuration
@@ -25006,6 +25100,7 @@ Create independent API keys for separate use cases, systems, or workloads. For e
 * **Set expiration dates** for keys used in temporary or testing contexts. Select **Set an expiration date** when creating a key, or **Set expiration** in the three-dot menu next to an existing key. To keep a key that's scheduled to expire, select **Cancel expiration** from the same menu.
 * **Rotate keys regularly** and revoke any that are no longer in use.
 * **Never commit keys to source control.** Use environment variables or a secrets manager.
+* **Treat keys as secrets.** Anyone holding a key has full access to its project's resources and can spend your credit balance, which auto-recharge tops back up. If you suspect a key has leaked, revoke it immediately and create a new one.
 
 ## Set as an environment variable
 
@@ -25253,6 +25348,14 @@ Together AI is **fully prepaid**. You need a positive credit balance to use the 
 
 Customers with an active Scale or Enterprise contract continue to be billed under their existing contract terms.
 
+## Buy credits
+
+1. Go to your [billing settings](https://api.together.ai/settings/organization/~current/billing).
+2. In the **Credit balance** card, select **Add credits**.
+3. Enter an amount (minimum \$5) and confirm. The purchase uses your default payment method.
+
+Credits from card purchases usually appear in your balance within a few moments. Avoid re-submitting the purchase while it's pending. ACH purchases deposit credits only after the payment clears, usually 1–3 business days. See [Payment methods & invoices](/docs/billing-payment-methods) for adding payment methods and changing the default.
+
 ## Auto-recharge credits
 
 Together supports automatic credit purchases when your balance falls below a set threshold. When auto-recharge runs, your **default** payment method is charged in a **single transaction** to bring your balance up to your target.
@@ -25466,6 +25569,10 @@ If the ACH payment ultimately fails, no credits are deposited. See [Payment meth
 If this happens, you will see a pending banner on your [billing settings](https://api.together.ai/settings/organization/~current/billing) page to let you know that the transaction has been received but is still in progress.
 
 If this is the case, don't make any further payments. Each further payment will be treated as an individual transaction, so you could end up buying more credit packs than you intended.
+
+## Unexpected auto-recharge charges
+
+If you were charged right after configuring auto-recharge, check your threshold. Setting the threshold above your current balance triggers an immediate purchase to bring your balance up to your target. Auto-recharge always charges in a single transaction, so if you see repeated charges, check whether multiple manual purchases were submitted while a payment was still pending. See [Auto-recharge credits](/docs/billing-credits#auto-recharge-credits) for how the amounts are calculated.
 
 ## Understanding unexpected charges
 
@@ -29511,14 +29618,14 @@ This page covers what to expect while a job runs and how to diagnose the most co
 
 **Time to start:** A job moves through `pending`, `queued`, and `running` before training begins. Start time depends on queue depth and hardware availability. With no other pending jobs and free hardware, a job usually reaches `running` within a minute, and most jobs start within an hour. There is no SLA on queue wait time.
 
-**Run time:** Run time depends on model size, dataset size, and network speed during the model and data downloads. Once a job is running, its estimated time remaining may appear on the [jobs dashboard](https://api.together.ai/jobs) or in the `tg fine-tuning retrieve` output.
+**Run time:** Run time depends on model size, dataset size, and network speed during the model and data downloads. Once a job is running, its estimated time remaining may appear on the [jobs dashboard](https://api.together.ai/jobs) or in the `tg fine-tuning retrieve` output. For a rough estimate of total training time, multiply the time the first epoch takes by your `n_epochs` value.
 
 ## Diagnose a failed or stopped job
 
 A job that doesn't finish ends in one of three states:
 
 * **Cancelled:** Usually an automatic cancellation, most often from a failed balance check. Add funds or raise your spending limit, then resubmit.
-* **User error:** A problem with your inputs, most often a dataset that fails server-side validation or an incompatible continued-fine-tuning checkpoint. The event log names the specific reason. See [Data validation failures](#data-validation-failures) below.
+* **User error:** A problem with your inputs, most often a dataset that fails server-side validation or an incompatible continued-fine-tuning checkpoint. The event log names the specific reason. See [Data validation failures](#data-validation-failures) below. Invalid Weights & Biases credentials also end a job this way: a wrong `wandb_api_key` fails the job during training with an `Unable to authenticate with Weights & Biases` event, and a `wandb_entity` you lack access to fails it with a permission error.
 * **Error:** A problem on Together AI's side. These are usually transient. Our support team will follow up about the failure, or you can reach out at [together.ai/contact](https://www.together.ai/contact).
 
 Read the event log to confirm the specific cause before you act:
@@ -29526,6 +29633,8 @@ Read the event log to confirm the specific cause before you act:
 ```bash theme={null}
 tg fine-tuning list-events <JOB_ID>
 ```
+
+In the web UI, the same events appear under the **Logs** tab on the job's page in the [jobs dashboard](https://api.together.ai/jobs).
 
 ## File upload failures
 
@@ -38937,6 +39046,10 @@ Some models are offered as **passthrough**, meaning that Together forwards your 
 
 For customers with data-residency, regulatory, or compliance requirements (for example, GDPR-driven EU-region deployments), Together supports private networking and VPC-based deployments, including in EU regions. Serverless endpoints do not offer region selection; use a [dedicated endpoint](/docs/dedicated-endpoints/overview) or [contact us](https://www.together.ai/contact) to discuss the right setup for your workload. For the full legal picture, see the [privacy policy](https://www.together.ai/privacy).
 
+## Vulnerability disclosure
+
+Together AI accepts security vulnerability reports through its [HackerOne program](https://hackerone.com/together_ai). The program is private, so viewing it and submitting reports requires a HackerOne account. Program details are published in the standard [security.txt](https://together.ai/.well-known/security.txt) file. If you believe you've found a security issue, submit it through HackerOne rather than a support ticket.
+
 ## Third-party model providers
 
 Models published by third-party authors (DeepSeek, Qwen, Mistral, etc.) and hosted on Together run on Together's own infrastructure. They do not call out to the model author. The model author has no access to your requests or API calls.
@@ -47650,6 +47763,14 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="August 28, 2026">
+  ## New serverless models
+
+  The following model is now available on [serverless](/docs/serverless/models):
+
+  * `zai-org/GLM-5.3`: 1,000,000 context length, FP4 quantization, function calling and structured outputs. Pricing: \$1.40 input / \$4.40 output / \$0.26 cached input (per 1M tokens).
+</Update>
+
 <Update label="August 27, 2026">
   ## Model deprecations
 
@@ -49651,9 +49772,14 @@ When a model is deprecated on the serverless platform, you have three options:
 
 1. Review the deprecation table below to find your current model.
 2. Check if on-demand dedicated endpoints are supported for your model.
-3. Decide on your preferred migration option.
-4. If you choose a new serverless model, test your application thoroughly before migrating.
-5. Update your API calls to use the new model or dedicated endpoint.
+3. Decide on your preferred migration option. If you choose a new serverless model, compare candidates on capability, latency, and cost for your workload.
+4. Run a small A/B test comparing the replacement against your current model on representative traffic. Replacement models rarely behave identically, so validate quality, latency, and cost before committing.
+5. Update your API calls, then shift traffic gradually (canary, then partial, then full cutover). Keep a fallback path during the rollout if possible.
+6. Monitor error rates, latency, and cost during and after the migration.
+
+<Note>
+  During a transition, a model can still appear in catalog listings while its route-level availability changes. If a listed model returns unavailable or disabled errors, treat the runtime API behavior and this page as the source of truth.
+</Note>
 
 ## Deprecation history
 

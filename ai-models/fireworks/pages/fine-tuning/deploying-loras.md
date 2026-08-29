@@ -1,26 +1,26 @@
 ---
-title: "Deploying Fine Tuned Models"
+title: "Deploying Trained Models"
 source: https://docs.fireworks.ai/fine-tuning/deploying-loras
 path: fine-tuning/deploying-loras
 ---
 
-Deploy one or multiple LoRA models fine tuned on Fireworks using live merge or multi-LoRA
+Deploy one or multiple LoRA models trained on Fireworks using live merge or multi-LoRA
 
-After fine-tuning your model on Fireworks, deploy it to make it available for inference. Fireworks supports two deployment methods for LoRA fine-tuned models: **live merge** and **multi-LoRA**. Each method has different tradeoffs around performance, cost, and flexibility.
+After training your model on Fireworks, deploy it to make it available for inference. Fireworks supports two deployment methods for LoRA trained models: **live merge** and **multi-LoRA**. Each method has different tradeoffs around performance, cost, and flexibility.
 
-To run training evals before production serving, see [Evaluating Fine Tuned Models](/fine-tuning/evaluating-fine-tuned-models). This page covers production serving.
+To run training evals before production serving, see [Evaluating Trained Models](/fine-tuning/evaluating-fine-tuned-models). This page covers production serving.
 
 <Warning>
-  Fine-tuned LoRA models, whether created on the Fireworks platform or imported, can **only** be deployed to **on-demand (dedicated) deployments**. Serverless deployment is not supported for LoRA models.
+  Trained LoRA models, whether created on the Fireworks platform or imported, can **only** be deployed to **on-demand (dedicated) deployments**. Serverless deployment is not supported for LoRA models.
 </Warning>
 
 <Note>
-  You can also upload and deploy LoRA models fine-tuned outside of Fireworks. See [importing fine-tuned models](/models/uploading-custom-models#importing-fine-tuned-models) for details.
+  You can also upload and deploy LoRA models trained outside of Fireworks. See [importing trained models](/models/uploading-custom-models#importing-trained-models) for details.
 </Note>
 
 ## Choosing a deployment method
 
-Fireworks offers two ways to deploy LoRA fine-tuned models. The right choice depends on how many fine-tuned variants you need to serve and your performance requirements.
+Fireworks offers two ways to deploy LoRA trained models. The right choice depends on how many trained variants you need to serve and your performance requirements.
 
 |                           | **Live merge**                                                                                 | **Multi-LoRA**                                                                                  |
 | ------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -28,16 +28,16 @@ Fireworks offers two ways to deploy LoRA fine-tuned models. The right choice dep
 | **Number of LoRAs**       | One per deployment                                                                             | Multiple per deployment                                                                         |
 | **Inference performance** | Matches the base model (no overhead)                                                           | Some overhead per request due to dynamic adapter application                                    |
 | **Throughput**            | Same as base model                                                                             | Lower maximum throughput under high concurrency                                                 |
-| **Cost efficiency**       | One deployment per fine-tune                                                                   | Share a single deployment across many fine-tunes                                                |
+| **Cost efficiency**       | One deployment per adapter                                                                     | Share a single deployment across many adapters                                                  |
 | **Best for**              | Production workloads requiring maximum performance                                             | Experimentation, A/B testing, or serving many variants of the same base model                   |
 
 <Tip>
-  If you only need to serve a single fine-tuned model, **live merge is the recommended approach**. It delivers the best performance with the simplest setup.
+  If you only need to serve a single trained model, **live merge is the recommended approach**. It delivers the best performance with the simplest setup.
 </Tip>
 
 ## Live merge deployment
 
-Live merge is the simplest way to deploy a fine-tuned model. Fireworks automatically merges the LoRA weights into the base model at deployment time, producing a model that performs identically to a natively fine-tuned model with no inference overhead.
+Live merge is the simplest way to deploy a trained model. Fireworks automatically merges the LoRA weights into the base model at deployment time, producing a model that performs identically to a natively trained model with no inference overhead.
 
 ### How it works
 
@@ -47,11 +47,11 @@ When you deploy a LoRA model directly, Fireworks:
 2. Merges them into a single set of weights at deployment time
 3. Serves the merged model as a standalone deployment
 
-The result is a deployment that is indistinguishable from a fully fine-tuned model in terms of latency, throughput, and memory usage.
+The result is a deployment that is indistinguishable from a fully trained model in terms of latency, throughput, and memory usage.
 
 ### Deploy with live merge
 
-Deploy your LoRA fine-tuned model with a single command:
+Deploy your LoRA trained model with a single command:
 
 ```bash theme={null}
 firectl deployment create "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>"
@@ -102,12 +102,12 @@ Send inference requests to your live-merge deployment by referencing the deploym
 ### When to use live merge
 
 * You need maximum inference performance (latency and throughput matching the base model)
-* You are serving a single fine-tuned model in production
+* You are serving a single trained model in production
 * You want the simplest possible deployment workflow
 
 ## Multi-LoRA deployment
 
-Multi-LoRA lets you load multiple LoRA adapters onto a single base model deployment. This is useful when you have several fine-tuned variants of the same base model and want to share GPU resources across them rather than creating a separate deployment for each.
+Multi-LoRA lets you load multiple LoRA adapters onto a single base model deployment. This is useful when you have several trained variants of the same base model and want to share GPU resources across them rather than creating a separate deployment for each.
 
 ### How it works
 
@@ -145,7 +145,7 @@ firectl deployment create "accounts/fireworks/models/<BASE_MODEL_ID>" \
 
 **Option 2 — Merge the adapter into a standalone model**
 
-If no BF16 addon-compatible shape is available, use [live merge](#live-merge-deployment) (recommended for a single adapter) or merge the LoRA into a standalone Fireworks model, then deploy that merged model without `--enable-addons`. See [Uploading custom models](/models/uploading-custom-models#importing-fine-tuned-models) and [`firectl model create`](/tools-sdks/firectl/commands/model-create).
+If no BF16 addon-compatible shape is available, use [live merge](#live-merge-deployment) (recommended for a single adapter) or merge the LoRA into a standalone Fireworks model, then deploy that merged model without `--enable-addons`. See [Uploading custom models](/models/uploading-custom-models#importing-trained-models) and [`firectl model create`](/tools-sdks/firectl/commands/model-create).
 
 <Note>
   `"addons cannot be enabled with quantized precisions (FP8/FP4)"` — your model's default shape is quantized; use Option 1 or 2 above.
@@ -261,14 +261,14 @@ To route inference requests to a specific LoRA adapter on a multi-LoRA deploymen
 
 ### When to use multi-LoRA
 
-* You need to serve multiple fine-tuned models based on the same base model
+* You need to serve multiple trained models based on the same base model
 * You want to maximize GPU utilization by sharing a single deployment
-* You are running experiments or A/B tests across multiple fine-tuned variants
+* You are running experiments or A/B tests across multiple trained variants
 * You can accept some performance overhead compared to live merge
 
 ## Downloading model weights
 
-You can download your fine-tuned weights from Fireworks to inspect them, extend the context locally, or serve them outside the platform. There are two things you might want: the **LoRA adapter** on its own, or the **merged (base + adapter) model**.
+You can download your trained weights from Fireworks to inspect them, extend the context locally, or serve them outside the platform. There are two things you might want: the **LoRA adapter** on its own, or the **merged (base + adapter) model**.
 
 ### Download the LoRA adapter
 
@@ -286,7 +286,7 @@ See [`firectl model download`](/tools-sdks/firectl/commands/model-download) for 
 
 ### Download the merged (base + adapter) model
 
-On the platform, **the merge happens on the fly at deployment time** (live merge), so serving a fine-tuned model does not require a standalone merged file. To produce a merged copy you can run off-platform, download the base and the adapter, then merge them locally in BF16 with PEFT:
+On the platform, **the merge happens on the fly at deployment time** (live merge), so serving a trained model does not require a standalone merged file. To produce a merged copy you can run off-platform, download the base and the adapter, then merge them locally in BF16 with PEFT:
 
 1. Download the base model with `firectl model download`.
 2. Download the LoRA adapter with `firectl model download`.
@@ -326,7 +326,7 @@ To reproduce this locally, merge in BF16 first, then quantize the merged weights
 Three factors explain most latency gaps:
 
 1. **Unmerged adapters** — dynamic LoRA application adds compute on each request. [Live merge](#live-merge-deployment) removes this entirely.
-2. **Speculative decoding** — base deployments often use SD; fine-tuned LoRA deployments may not unless you configure a custom draft model.
+2. **Speculative decoding** — base deployments often use SD; trained LoRA deployments may not unless you configure a custom draft model.
 3. **Concurrency** — multi-LoRA overhead shows up mainly under sustained load (see below).
 
 ### Live merge vs multi-LoRA (performance)
@@ -334,14 +334,14 @@ Three factors explain most latency gaps:
 |                         | **Live merge**                  | **Multi-LoRA**                                      |
 | ----------------------- | ------------------------------- | --------------------------------------------------- |
 | Latency / throughput    | Matches base model              | TTFT often +10–30%; lower max throughput under load |
-| Adapter count at deploy | One fine-tune per deployment    | Many adapters on one base deployment                |
+| Adapter count at deploy | One adapter per deployment      | Many adapters on one base deployment                |
 | Best for                | Production single-model serving | A/B tests, many variants, shared GPU                |
 
 The number of adapters registered on a deployment has **little effect** on per-request performance; concurrency and merge mode matter more.
 
 ### Speculative decoding
 
-Training and deploying a **custom draft model** for your fine-tuned setup can match or beat base-model latency. Speculative decoding for fine-tuned models is an enterprise feature — contact Fireworks for access.
+Training and deploying a **custom draft model** for your trained setup can match or beat base-model latency. Speculative decoding for trained models is an enterprise feature — contact Fireworks for access.
 
 ## Troubleshooting
 
@@ -371,7 +371,7 @@ curl -s "https://api.fireworks.ai/v1/accounts/-/deploymentShapes/-/versions?filt
 Signs you have hit this failure mode:
 
 * No validated shape version lists your exact model version under `snapshot.base_model` (every validated version binds a **different** version of the same model family).
-* The deployment comes up serving base-model behavior instead of your fine-tune.
+* The deployment comes up serving base-model behavior instead of your adapter.
 * Loading an addon (a Tinker or other LoRA checkpoint) is rejected even though the shape you requested supports addons.
 
 **How to avoid landing on the default serving image.**
@@ -387,7 +387,7 @@ Signs you have hit this failure mode:
     Deployment configuration, scaling, and hardware
   </Card>
 
-  <Card title="Import Fine-Tuned Models" href="/models/uploading-custom-models#importing-fine-tuned-models" icon="upload">
-    Upload LoRA models fine-tuned outside Fireworks
+  <Card title="Import Trained Models" href="/models/uploading-custom-models#importing-trained-models" icon="upload">
+    Upload LoRA models trained outside Fireworks
   </Card>
 </CardGroup>

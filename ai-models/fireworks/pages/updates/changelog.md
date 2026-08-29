@@ -4,6 +4,20 @@ source: https://docs.fireworks.ai/updates/changelog
 path: updates/changelog
 ---
 
+<Update label="2026-08-27">
+  # Serverless deprecation: MiniMax M2.7, GPT OSS 20B, Kimi K2.6 Turbo/Fast, Kimi K2.7 Code Fast, DeepSeek V4 Pro
+
+  The following models are deprecated from serverless effective August 27, 2026.
+
+  ## **Recommended migrations**
+
+  * **[MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)** — migrate to **[MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)**
+  * **[GPT OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b)** — migrate to **[GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)** or **[Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b)** for lower-latency workloads
+  * **[Kimi K2.6 Turbo / Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** (standard serving path)
+  * **[Kimi K2.7 Code Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** — migrate to **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** (standard serving path)
+  * **[DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)** — migrate to **[DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)**
+</Update>
+
 <Update label="2026-08-26">
   # Serverless Training deprecation: Qwen 3.5 9B and Qwen 3.6 27B
 
@@ -556,7 +570,7 @@ path: updates/changelog
   * Support for up to 64K context length during training
   * Built on the same Supervised Fine-tuning V2 infrastructure as text models
 
-  See the [VLM fine-tuning documentation](/fine-tuning/fine-tuning-models#vision-fine-tuning) for setup instructions and dataset formatting requirements.
+  See the [VLM fine-tuning documentation](/fine-tuning/fine-tuning-models#vision-training) for setup instructions and dataset formatting requirements.
 
   ## 🔧 Build SDK: Deployment Configuration Application Requirement
 

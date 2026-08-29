@@ -26,6 +26,14 @@ Together AI is **fully prepaid**. You need a positive credit balance to use the 
 
 Customers with an active Scale or Enterprise contract continue to be billed under their existing contract terms.
 
+## Buy credits
+
+1. Go to your [billing settings](https://api.together.ai/settings/organization/~current/billing).
+2. In the **Credit balance** card, select **Add credits**.
+3. Enter an amount (minimum \$5) and confirm. The purchase uses your default payment method.
+
+Credits from card purchases usually appear in your balance within a few moments. Avoid re-submitting the purchase while it's pending. ACH purchases deposit credits only after the payment clears, usually 1–3 business days. See [Payment methods & invoices](/docs/billing-payment-methods) for adding payment methods and changing the default.
+
 ## Auto-recharge credits
 
 Together supports automatic credit purchases when your balance falls below a set threshold. When auto-recharge runs, your **default** payment method is charged in a **single transaction** to bring your balance up to your target.

@@ -75,11 +75,11 @@ For production workloads requiring long-term model stability, we recommend [on-d
 
 ## Serverless vs On-demand
 
-| When Serverless fits                                           | When On-demand fits                                                                   |
-| -------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Pay per token, only for what you use                           | Pay per GPU-hour for dedicated capacity                                               |
-| You're using popular base models that Fireworks already hosts  | You're running custom base models or fine-tuned LoRA models (LoRA requires On-demand) |
-| You don't want to manage scaling, replicas, or hardware sizing | You have custom latency requirements and want control over hardware and replicas      |
+| When Serverless fits                                           | When On-demand fits                                                                |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Pay per token, only for what you use                           | Pay per GPU-hour for dedicated capacity                                            |
+| You're using popular base models that Fireworks already hosts  | You're running custom base models or trained LoRA models (LoRA requires On-demand) |
+| You don't want to manage scaling, replicas, or hardware sizing | You have custom latency requirements and want control over hardware and replicas   |
 
 For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deployments).
 

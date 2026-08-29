@@ -4,9 +4,9 @@ source: https://docs.fireworks.ai/fine-tuning/finetuning-intro
 path: fine-tuning/finetuning-intro
 ---
 
-Fine-tuning adapts a base model to your task by training it on your own data, so it learns your formats, tone, tools, and edge cases instead of relying on prompt instructions alone. Fireworks runs the training for you, without the burden of building and maintaining your own GPU or training infrastructure.
+Training adapts a base model to your task by training it on your own data, so it learns your formats, tone, tools, and edge cases instead of relying on prompt instructions alone. Fireworks runs the training for you, without the burden of building and maintaining your own GPU or training infrastructure.
 
-Fine-tuning is worth it when you want:
+Training is worth it when you want:
 
 * **Higher task quality** - beat a general-purpose model on your specific workload, and often match or exceed a larger closed model.
 * **Lower latency and cost** - a smaller specialized model can replace a bigger one at a fraction of the per-token cost.
@@ -19,21 +19,21 @@ Fine-tuning is worth it when you want:
 
 ## Choose a method
 
-Pick a method based on the data or signal you have. All three run as standard jobs on [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro), or as custom loops you write yourself on the [Training API](/fine-tuning/training-api/introduction).
+Pick a method based on the data or signal you have. All three run as standard jobs on [Managed Training](/fine-tuning/managed-finetuning-intro), or as custom loops you write yourself on the [Training API](/fine-tuning/training-api/introduction).
 
-|                              | SFT                                                                                                                                                         | DPO                                                                                                         | RL                                                                                                                                                     |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Good for**                 | Classification, extraction, format and tone adherence, distillation                                                                                         | Steering the model toward a goal you cannot measure objectively, such as style, helpfulness, or safety      | Tasks where you have no verified outputs to learn from, but you can tell whether an outcome was good or bad. Pushing the model beyond state-of-the-art |
-| **Data you supply**          | Verified input/output pairs, or successful trajectories                                                                                                     | Preference pairs, single-turn only: one prompt, a chosen and a rejected response                            | Prompts, plus an evaluator that can tell a good outcome from a bad one                                                                                 |
-| **Dataset size**             | Hundreds of examples, or roughly 10M+ tokens                                                                                                                | Hundreds to thousands of pairs                                                                              | Dozens to thousands of prompts, sometimes more. Often fewer than 100 is enough                                                                         |
-| **Consider alternatives if** | You have very few examples, or no high-quality verified outputs to learn from                                                                               | Outputs can be judged objectively, or you already have high-quality verified pairs. Both point to SFT or RL | You have no way at all to judge an outcome, including an LLM judge. Simpler methods are untried, or you want a quick fine-tuning experiment            |
-| **Guides**                   | [Text](/fine-tuning/fine-tuning-models) · [Vision](/fine-tuning/fine-tuning-models#vision-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/sft) | [Managed DPO / ORPO](/fine-tuning/dpo-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/dpo)     | [Managed RFT](/fine-tuning/reinforcement-fine-tuning-models) · [Cookbook](/fine-tuning/training-api/cookbook/rl)                                       |
+|                              | SFT                                                                                                                                                      | DPO                                                                                                         | RL                                                                                                                                                     |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Good for**                 | Classification, extraction, format and tone adherence, distillation                                                                                      | Steering the model toward a goal you cannot measure objectively, such as style, helpfulness, or safety      | Tasks where you have no verified outputs to learn from, but you can tell whether an outcome was good or bad. Pushing the model beyond state-of-the-art |
+| **Data you supply**          | Verified input/output pairs, or successful trajectories                                                                                                  | Preference pairs, single-turn only: one prompt, a chosen and a rejected response                            | Prompts, plus an evaluator that can tell a good outcome from a bad one                                                                                 |
+| **Dataset size**             | Hundreds of examples, or roughly 10M+ tokens                                                                                                             | Hundreds to thousands of pairs                                                                              | Dozens to thousands of prompts, sometimes more. Often fewer than 100 is enough                                                                         |
+| **Consider alternatives if** | You have very few examples, or no high-quality verified outputs to learn from                                                                            | Outputs can be judged objectively, or you already have high-quality verified pairs. Both point to SFT or RL | You have no way at all to judge an outcome, including an LLM judge. Simpler methods are untried, or you want a quick training experiment               |
+| **Guides**                   | [Text](/fine-tuning/fine-tuning-models) · [Vision](/fine-tuning/fine-tuning-models#vision-training) · [Cookbook](/fine-tuning/training-api/cookbook/sft) | [Managed DPO / ORPO](/fine-tuning/dpo-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/dpo)     | [Managed RFT](/fine-tuning/reinforcement-fine-tuning-models) · [Cookbook](/fine-tuning/training-api/cookbook/rl)                                       |
 
 <Tip>
   **Verifiable** means you can reliably judge whether a model output is good (rules, unit tests, programmatic checks). RL fits reasoning and agentic tasks where full ground-truth labels are hard to write.
 </Tip>
 
-The Training API also supports custom methods (GRPO, distillation, and others) via the Python SDK. See [Cookbook recipes](/fine-tuning/training-api/cookbook/overview) and [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro) for model support and pricing.
+The Training API also supports custom methods (GRPO, distillation, and others) via the Python SDK. See [Cookbook recipes](/fine-tuning/training-api/cookbook/overview) and [Managed Training](/fine-tuning/managed-finetuning-intro) for model support and pricing.
 
 ## Choose a surface
 
@@ -45,18 +45,18 @@ Answer the question below and the flow takes you to your surface, which links to
 
 Compare the last branch in detail on [serverless versus dedicated](/fine-tuning/training-api/introduction#infrastructure), and check per-model support on [Models](/fine-tuning/models).
 
-### Managed Fine-Tuning vs Training API
+### Managed Training vs Training API
 
-Fireworks offers two ways to train: **Managed Fine-Tuning** (Fireworks runs the loop) and the **Training API** (you write the loop in Python).
+Fireworks offers two ways to train: **Managed Training** (Fireworks runs the loop) and the **Training API** (you write the loop in Python).
 
-| Choose Managed Fine-Tuning when                                   | Choose the Training API when                                                               |
+| Choose Managed Training when                                      | Choose the Training API when                                                               |
 | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | You need a standard SFT, DPO, ORPO, or RFT job                    | You need a custom loss, reward, rollout, trajectory, or optimizer-step loop                |
 | You want Fireworks to own scheduling, training, and checkpointing | You want to fork or write Python training logic                                            |
 | A supported model and managed configuration cover the task        | You need inference in the loop, distillation, per-step diagnostics, or research algorithms |
 
 <CardGroup>
-  <Card title="Managed Fine-Tuning" icon="wand-magic-sparkles" href="/fine-tuning/managed-finetuning-intro">
+  <Card title="Managed Training" icon="wand-magic-sparkles" href="/fine-tuning/managed-finetuning-intro">
     Standard jobs with a platform-managed loop.
   </Card>
 
@@ -67,7 +67,7 @@ Fireworks offers two ways to train: **Managed Fine-Tuning** (Fireworks runs the 
 
 ### Serverless vs Dedicated infrastructure
 
-Infrastructure applies to the **Training API** only. Managed Fine-Tuning uses platform-managed compute.
+Infrastructure applies to the **Training API** only. Managed Training uses platform-managed compute.
 
 | Choose Serverless Training when                                                   | Choose Dedicated Training when                                                     |
 | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |

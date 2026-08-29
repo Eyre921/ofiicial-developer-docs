@@ -22,7 +22,7 @@ Every option below uses the same endpoint, `POST https://api.fireworks.ai/infere
 | **Voyage AI**                           | Your deployment path                              | Yes                   | Retrieval quality with asymmetric query and document embeddings   |
 | **Legacy BERT / sentence-transformers** | Hugging Face id, such as `BAAI/bge-small-en-v1.5` | **No**                | Small, cheap vectors and existing sentence-transformers pipelines |
 | **Generative LLM**                      | `fireworks/gpt-oss-20b` and similar               | Yes, as chat models   | Hidden-state vectors when you are already using the model         |
-| **Your own upload**                     | `accounts/<your-account>/models/<model-id>`       | In your account       | Custom or fine-tuned embedders                                    |
+| **Your own upload**                     | `accounts/<your-account>/models/<model-id>`       | In your account       | Custom or trained embedders                                       |
 
 <Tabs>
   <Tab title="Qwen3">

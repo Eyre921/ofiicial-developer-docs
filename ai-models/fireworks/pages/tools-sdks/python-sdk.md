@@ -12,7 +12,7 @@ Fireworks is [OpenAI-compatible](/tools-sdks/openai-compatibility), so you can u
 
 * **Better concurrency defaults** — Optimized connection pooling for high-throughput workloads
 * **Fireworks-exclusive features** — Access parameters and response fields not available in the OpenAI API
-* **Platform automation** — Manage datasets, evals, fine-tuning, and deployments programmatically
+* **Platform automation** — Manage datasets, evals, training, and deployments programmatically
 
 ## Installation
 

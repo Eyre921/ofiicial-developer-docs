@@ -20,7 +20,7 @@ Fireworks Enterprise accounts can use additional governance and administration f
 
 <CardGroup>
   <Card title="Model access policy" icon="shield-check" href="/accounts/model-access-policy">
-    Restrict which models users on your account can use for serverless inference, Fast mode, dedicated deployments, and fine-tuning.
+    Restrict which models users on your account can use for serverless inference, Fast mode, dedicated deployments, and training.
   </Card>
 
   <Card title="Custom SSO" icon="key" href="/accounts/sso">

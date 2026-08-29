@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/fine-tuning/training-api/serverless
 path: fine-tuning/training-api/serverless
 ---
 
-Run LoRA fine-tuning, preference optimization, and RL on a shared pooled trainer, with no provisioning and per-token pricing.
+Run LoRA training, preference optimization, and RL on a shared pooled trainer, with no provisioning and per-token pricing.
 
 <Info>
   Serverless training is currently in **private preview** and access is gated per account. [Request access](https://fireworks.ai/contact-training) and select "Serverless Training API."
@@ -80,7 +80,7 @@ You do not create or delete a trainer job or inference deployment. Close each sa
   </Card>
 </CardGroup>
 
-All three run as LoRA on the shared pool. For full-parameter training, ORPO, distillation, or the broader Training API method set, use [Dedicated Training](/fine-tuning/training-api/dedicated). For standard platform-managed jobs, use [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro).
+All three run as LoRA on the shared pool. For full-parameter training, ORPO, distillation, or the broader Training API method set, use [Dedicated Training](/fine-tuning/training-api/dedicated). For standard platform-managed jobs, use [Managed Training](/fine-tuning/managed-finetuning-intro).
 
 ## When to use dedicated
 
@@ -335,7 +335,7 @@ Promotion turns a **sampler checkpoint** into a deployable Fireworks model (a st
     )
     ```
 
-    `output_model_id` must be 1-63 characters of lowercase a-z, 0-9, and hyphens. The promoted model appears in your account's model list like any other fine-tuned model.
+    `output_model_id` must be 1-63 characters of lowercase a-z, 0-9, and hyphens. The promoted model appears in your account's model list like any other trained model.
   </Step>
 </Steps>
 
@@ -345,10 +345,10 @@ Promotion turns a **sampler checkpoint** into a deployable Fireworks model (a st
 
 ### Deploy the promoted model to production
 
-A promoted model deploys like any LoRA model fine-tuned on Fireworks: with **live merge**, Fireworks merges the adapter into the base weights at deployment time, so the deployment performs identically to the base model.
+A promoted model deploys like any LoRA model trained on Fireworks: with **live merge**, Fireworks merges the adapter into the base weights at deployment time, so the deployment performs identically to the base model.
 
 <Warning>
-  Fine-tuned LoRA models can only be deployed to **on-demand (dedicated) deployments**. Serverless per-token serving of your own fine-tuned LoRA is not available.
+  Trained LoRA models can only be deployed to **on-demand (dedicated) deployments**. Serverless per-token serving of your own trained LoRA is not available.
 </Warning>
 
 Deploy the promoted model directly:
@@ -369,7 +369,7 @@ response = client.chat.completions.create(
 )
 ```
 
-For deployment configuration, performance, and troubleshooting, see [Deploying fine-tuned models](/fine-tuning/deploying-loras).
+For deployment configuration, performance, and troubleshooting, see [Deploying trained models](/fine-tuning/deploying-loras).
 
 For the full SDK-level checkpoint reference (base/delta sampler types, weight sync, and cross-job resolution), see [Dedicated Training](/fine-tuning/training-api/dedicated#saving-and-loading) and the [Cookbook Reference](/fine-tuning/training-api/cookbook/reference#checkpoints).
 
@@ -409,11 +409,11 @@ Serverless training bills three separate token meters, so a run's cost depends o
 
 * **Set `max_seq_len` explicitly.** Serverless has no dedicated instance to infer sequence length from.
 * **Cross-run checkpoint resume.** A training checkpoint can be resumed inside the same run (`load_state_with_optimizer`), or forked into a new run with `create_training_client_from_state` / `create_training_client_from_state_with_optimizer` using a fully qualified `<account>/<run-id>/<checkpoint-name>` reference. See [Saving and loading checkpoints](#saving-and-loading-checkpoints).
-* **Serving your trained adapter.** Sample in-session during the run. To serve afterward, [promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) and [deploy it on an on-demand dedicated deployment](#deploy-the-promoted-model-to-production); serverless per-token serving of your own fine-tuned LoRA is not available.
+* **Serving your trained adapter.** Sample in-session during the run. To serve afterward, [promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) and [deploy it on an on-demand dedicated deployment](#deploy-the-promoted-model-to-production); serverless per-token serving of your own trained LoRA is not available.
 
 ## Video walkthrough: Train a prompt router
 
-This walkthrough fine-tunes Qwen 3.5 9B with LoRA SFT to classify prompts and route them to a small or large model. It covers the local Python loop, pooled serverless trainer, in-session evaluation, and the before-and-after comparison.
+This walkthrough trains Qwen 3.5 9B with LoRA SFT to classify prompts and route them to a small or large model. It covers the local Python loop, pooled serverless trainer, in-session evaluation, and the before-and-after comparison.
 
 <Frame>
   <iframe title="Train a prompt router with Fireworks Serverless Training" />

@@ -118,7 +118,7 @@ For inference-side controls — disabling Response API storage (`store=False`) o
   </Card>
 
   <Card title="Customer-Managed Encryption Keys (CMEK)" href="/guides/security_compliance/secure_training/cmek" icon="key">
-    Encrypt managed fine-tuning data with your own KMS key
+    Encrypt managed training data with your own KMS key
   </Card>
 
   <Card title="Data Security Overview" href="/guides/security_compliance/data_security" icon="shield-check">

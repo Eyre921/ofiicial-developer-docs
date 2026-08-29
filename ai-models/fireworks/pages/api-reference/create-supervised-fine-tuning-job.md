@@ -45,4 +45,4 @@ For `linear` and `cosine`:
 }
 ```
 
-See also [Fine-tuning models](/fine-tuning/fine-tuning-models) for CLI equivalents (`--learning-rate-scheduler`, `--learning-rate-min-lr-ratio`, `--learning-rate-decay-ratio`).
+See also [Training models](/fine-tuning/fine-tuning-models) for CLI equivalents (`--learning-rate-scheduler`, `--learning-rate-min-lr-ratio`, `--learning-rate-decay-ratio`).

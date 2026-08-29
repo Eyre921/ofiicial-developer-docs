@@ -130,7 +130,7 @@ done
 
 ## Coverage
 
-* **Serverless token usage only.** Costs are priced from cached input, uncached input, and output tokens. Dedicated deployment and fine-tuning spend are not included — for those, use [Exporting Billing Metrics](/accounts/exporting-billing-metrics) or the account-level totals from [`firectl billing get-usage --account-costs-only`](/accounts/exporting-usage-and-costs#account-level-cost-totals-only).
+* **Serverless token usage only.** Costs are priced from cached input, uncached input, and output tokens. Dedicated deployment and training spend are not included — for those, use [Exporting Billing Metrics](/accounts/exporting-billing-metrics) or the account-level totals from [`firectl billing get-usage --account-costs-only`](/accounts/exporting-usage-and-costs#account-level-cost-totals-only).
 * **Subtotals are rated, not invoiced.** They price usage with the subscription prices that apply to your account and exclude fixed fees, invoice-level discounts, minimums, credits, and taxes, so they may differ from the final invoice.
 * **One dimension at a time.** Rows are always bucketed by day plus the single dimension passed to `--group-by`. To combine dimensions, use [`POST /usageCosts:query`](/api-reference/query-usage-costs), which accepts up to two.
 

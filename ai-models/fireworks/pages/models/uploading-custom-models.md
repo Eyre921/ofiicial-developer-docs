@@ -6,7 +6,7 @@ path: models/uploading-custom-models
 
 Upload, verify, and deploy your own models from Hugging Face or elsewhere
 
-Upload your own models from Hugging Face or elsewhere to deploy fine-tuned or custom-trained models optimized for your use case.
+Upload your own models from Hugging Face or elsewhere to deploy trained or custom-trained models optimized for your use case.
 
 * **Multiple upload options** – Upload from local files or directly from S3 buckets or Azure Blob Storage
 * **Secure uploads** – All uploads are encrypted and models remain private to your account by default
@@ -182,14 +182,14 @@ For larger models, you can upload directly from cloud storage (S3 or Azure Blob 
 </Note>
 
 <Note>
-  To use Fireworks managed fine-tuning with an uploaded custom base model, provide the corresponding Hugging Face model URL when you create the model:
+  To use Fireworks managed training with an uploaded custom base model, provide the corresponding Hugging Face model URL when you create the model:
 
   ```bash theme={null}
   firectl model create <MODEL_ID> /path/to/files/ \
     --hugging-face-url https://huggingface.co/<ORG>/<MODEL>
   ```
 
-  Fireworks uses this URL to infer the training renderer and determine whether a compatible training shape exists. Custom uploads without a Hugging Face URL can be deployed for inference, but they are not eligible for managed fine-tuning until the URL is set and tunability is refreshed. This refresh runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after you provide the URL. We are working to make this refresh faster.
+  Fireworks uses this URL to infer the training renderer and determine whether a compatible training shape exists. Custom uploads without a Hugging Face URL can be deployed for inference, but they are not eligible for managed training until the URL is set and tunability is refreshed. This refresh runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after you provide the URL. We are working to make this refresh faster.
 </Note>
 
 ## Verifying your upload
@@ -244,9 +244,9 @@ firectl model update <MODEL_ID> --public
 firectl model update <MODEL_ID> --public=false
 ```
 
-## Importing fine-tuned models
+## Importing trained models
 
-In addition to models you fine-tune on the Fireworks platform, you can also upload your own custom fine-tuned models as LoRA adapters.
+In addition to models you train on the Fireworks platform, you can also upload your own custom trained models as LoRA adapters.
 
 <Note>
   Uploaded LoRA adapters can only be deployed to on-demand (dedicated) deployments. Serverless deployment is not supported.
@@ -328,7 +328,7 @@ Add a `fireworks.json` file to the directory containing your adapter files:
     | `model_arch`        | null    | Model architecture (e.g., `"qwen2"`, `"llama"`). Usually auto-detected from base model |
     | `model_config_name` | null    | Model configuration name (e.g., `"4B"`). Usually auto-detected from base model         |
     | `has_lora`          | true    | Set to `true` for LoRA adapters                                                        |
-    | `has_teft`          | false   | Set to `true` if using TEFT (Token-Efficient Fine-Tuning)                              |
+    | `has_teft`          | false   | Set to `true` if using TEFT (Token-Efficient Training)                                 |
   </Accordion>
 </AccordionGroup>
 
@@ -359,7 +359,7 @@ firectl model create <MODEL_ID> /path/to/files/ --base-model "accounts/fireworks
     Reduce serving costs with model quantization
   </Card>
 
-  <Card title="Fine-tuning" icon="wand-magic-sparkles" href="/fine-tuning/finetuning-intro">
-    Fine-tune models before deploying them
+  <Card title="Training" icon="wand-magic-sparkles" href="/fine-tuning/finetuning-intro">
+    Train models before deploying them
   </Card>
 </CardGroup>

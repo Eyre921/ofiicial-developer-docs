@@ -284,8 +284,8 @@ VLMs do not natively accept PDF files as input. To analyze PDF documents, conver
 ## Advanced capabilities
 
 <CardGroup>
-  <Card title="Vision fine-tuning" href="/fine-tuning/fine-tuning-models#vision-fine-tuning" icon="sliders">
-    Fine-tune VLMs for specialized visual tasks
+  <Card title="Vision training" href="/fine-tuning/fine-tuning-models#vision-training" icon="sliders">
+    Train VLMs for specialized visual tasks
   </Card>
 
   <Card title="LoRA adapters" href="/models/uploading-custom-models" icon="layer-group">

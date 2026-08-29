@@ -44,7 +44,7 @@ Your spend tier controls available quotas and capacity. For legacy self-serve po
 
 ### Training GPU quota
 
-Fine-tuning jobs use training GPU quota (separate from on-demand deployment quota), granted automatically by spending tier:
+Training jobs use training GPU quota (separate from on-demand deployment quota), granted automatically by spending tier:
 
 | Tier              | How to reach it                                       | B200 / B300 (Blackwell) |  H200  | H100 / A100 |
 | ----------------- | ----------------------------------------------------- | :---------------------: | :----: | :---------: |
@@ -55,7 +55,7 @@ Fine-tuning jobs use training GPU quota (separate from on-demand deployment quot
 | Tier 4            | Spend or add \$5,000 in credits                       |            32           |   32   |      32     |
 | Enterprise        | [Contact us](https://fireworks.ai/company/contact-us) |          Custom         | Custom |    Custom   |
 
-Counts are GPUs of that type available to training jobs. Blackwell (B200/B300) is `0` until Tier 2, and current managed fine-tuning shapes run on Blackwell, so most fine-tuning needs Tier 2. If a job is rejected with HTTP 429 `quota_exceeded`, raise your tier and resubmit.
+Counts are GPUs of that type available to training jobs. Blackwell (B200/B300) is `0` until Tier 2, and current managed training shapes run on Blackwell, so most training needs Tier 2. If a job is rejected with HTTP 429 `quota_exceeded`, raise your tier and resubmit.
 
 <Note>
   Need more training quota than your tier allows? [Reach out for enterprise support](https://fireworks.ai/contact-training) and we'll help size the right allocation for your workload.
@@ -112,7 +112,7 @@ firectl quota update monthly-spend-usd --value 200
 
 By default, Fireworks sends a warning email when usage reaches 80% of your monthly spend limit. You can add other notification amounts from the Billing page.
 
-When usage reaches 100% of the limit, all API requests pause automatically across serverless inference, deployments, and fine-tuning. Raise the monthly spend limit to resume usage. If your credit balance is also depleted, you must add credits as well.
+When usage reaches 100% of the limit, all API requests pause automatically across serverless inference, deployments, and training. Raise the monthly spend limit to resume usage. If your credit balance is also depleted, you must add credits as well.
 
 <Note>
   The suspension behavior described here does not apply to Enterprise accounts. Their monthly spend alerts are informational.

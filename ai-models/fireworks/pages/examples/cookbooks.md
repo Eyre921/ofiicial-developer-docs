@@ -8,7 +8,7 @@ Interactive Jupyter notebooks demonstrating advanced use cases and best practice
 
 Explore our collection of notebooks that showcase real-world applications, best practices, and advanced techniques for building with Fireworks AI.
 
-## Fine-Tuning & Training
+## Training
 
 <CardGroup>
   <Card title="Knowledge Distillation" href="https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/learn/finetuning/knowledge_distillation.ipynb" icon="graduation-cap">
@@ -19,8 +19,8 @@ Explore our collection of notebooks that showcase real-world applications, best 
     **Results:** 52% → 70% accuracy on GSM8K mathematical reasoning
   </Card>
 
-  <Card title="VLM Fine-tuning + Evals" href="https://huggingface.co/spaces/fireworks-ai/catalog-extract/blob/main/notebooks/01-eda-and-fine-tuning.ipynb" icon="image">
-    Beat frontier closed-source models for product catalog cleansing with vision-language model fine-tuning.
+  <Card title="VLM Training + Evals" href="https://huggingface.co/spaces/fireworks-ai/catalog-extract/blob/main/notebooks/01-eda-and-fine-tuning.ipynb" icon="image">
+    Beat frontier closed-source models for product catalog cleansing with vision-language model training.
 
     **Techniques:** Supervised Fine-Tuning (SFT)
 

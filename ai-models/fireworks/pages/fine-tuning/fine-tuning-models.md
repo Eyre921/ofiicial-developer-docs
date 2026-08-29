@@ -1,18 +1,18 @@
 ---
-title: "Supervised Fine Tuning - Text"
+title: "Supervised Fine-Tuning - Text"
 source: https://docs.fireworks.ai/fine-tuning/fine-tuning-models
 path: fine-tuning/fine-tuning-models
 ---
 
-This guide will focus on using supervised fine-tuning to fine-tune a model and deploy it to an on-demand (dedicated) deployment, which is the only supported method for serving fine-tuned models.
+This guide will focus on using supervised fine-tuning to train a model and deploy it to an on-demand (dedicated) deployment, which is the only supported method for serving trained models.
 
-For the full list of base models supported by managed fine-tuning (SFT, DPO, and RFT) and their max context lengths, see [Models](/fine-tuning/models).
+For the full list of base models supported by managed training (SFT, DPO, and RFT) and their max context lengths, see [Models](/fine-tuning/models).
 
 ## Fine-tuning a model using SFT
 
 <Steps>
-  <Step title="Confirm model support for fine-tuning">
-    You can confirm that a base model is available to fine-tune by looking for the `Tunable` tag in the model library or by using:
+  <Step title="Confirm model support for training">
+    You can confirm that a base model is available to train by looking for the `Tunable` tag in the model library or by using:
 
     ```bash theme={null}
     firectl model get -a fireworks <MODEL-ID>
@@ -25,12 +25,12 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     </Note>
 
     <Note>
-      Some base models cannot be tuned on Fireworks (`Tunable: false`) but still list support for LoRA (`Supports Lora: true`). This means that users can tune a LoRA for this base model on a separate platform and upload it to Fireworks for inference. Consult [importing fine-tuned models](/models/uploading-custom-models#importing-fine-tuned-models) for more information.
+      Some base models cannot be tuned on Fireworks (`Tunable: false`) but still list support for LoRA (`Supports Lora: true`). This means that users can tune a LoRA for this base model on a separate platform and upload it to Fireworks for inference. Consult [importing trained models](/models/uploading-custom-models#importing-trained-models) for more information.
     </Note>
   </Step>
 
   <Step title="Prepare a dataset">
-    Fireworks uses the **OpenAI-compatible chat completion format** for SFT training data. If you already have datasets formatted for OpenAI fine-tuning, they work on Fireworks with no changes needed.
+    Fireworks uses the **OpenAI-compatible chat completion format** for SFT training data. If you already have datasets formatted for OpenAI training, they work on Fireworks with no changes needed.
 
     Datasets must be in JSONL format, where each line represents a complete JSON-formatted training example. Make sure your data conforms to the following restrictions:
 
@@ -65,7 +65,7 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
 
     #### OpenAI-style structured content
 
-    In addition to plain strings, `content` may also be a list of content parts following the OpenAI chat completions format. For text fine-tuning, use `{"type": "text", "text": "..."}` parts. This is convenient if you already produce data in the OpenAI chat completions shape, or if you generate datasets with the OpenAI SDK. The string form and the list form are equivalent for text models, and you can mix them within the same file (and even within the same conversation):
+    In addition to plain strings, `content` may also be a list of content parts following the OpenAI chat completions format. For text training, use `{"type": "text", "text": "..."}` parts. This is convenient if you already produce data in the OpenAI chat completions shape, or if you generate datasets with the OpenAI SDK. The string form and the list form are equivalent for text models, and you can mix them within the same file (and even within the same conversation):
 
     ```json theme={null}
     {"messages": [{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": [{"type": "text", "text": "What is the capital of France?"}]}, {"role": "assistant", "content": [{"type": "text", "text": "Paris."}]}]}
@@ -74,7 +74,7 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     ```
 
     <Note>
-      All keys you can use with the string form — including the per-message `weight` and `reasoning_content` — work the same way with the list form. When a single message contains multiple text parts (as in the third example above), the parts are concatenated when the chat template is applied. For text-only fine-tuning, only `{"type": "text", ...}` parts are used; image parts are reserved for [vision fine-tuning](/fine-tuning/fine-tuning-models#vision-fine-tuning).
+      All keys you can use with the string form — including the per-message `weight` and `reasoning_content` — work the same way with the list form. When a single message contains multiple text parts (as in the third example above), the parts are concatenated when the chat template is applied. For text-only training, only `{"type": "text", ...}` parts are used; image parts are reserved for [vision training](/fine-tuning/fine-tuning-models#vision-training).
     </Note>
 
     Here is an example conversation dataset with sample weights:
@@ -164,13 +164,13 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
 
     How earlier thinking appears in later training contexts depends on the base model and its thinking-history mode. This is separate from enabling or disabling thinking generation. Some models offer both Interleaved and Preserved history, some have one fixed mode, and DeepSeek V4 derives its behavior from whether each dataset row declares tools.
 
-    <Card title="Thinking history in fine-tuning" icon="brain" href="/fine-tuning/thinking-history">
+    <Card title="Thinking history in training" icon="brain" href="/fine-tuning/thinking-history">
       Compare every supported model, understand per-user-turn unrolling, configure the job field, and preview what the trainer will see.
     </Card>
   </Step>
 
   <Step title="Create and upload a dataset">
-    There are a couple ways to upload the dataset to Fireworks platform for fine tuning: `firectl`, `Restful API` , `builder SDK` or `UI`.
+    There are a couple ways to upload the dataset to Fireworks platform for training: `firectl`, `Restful API` , `builder SDK` or `UI`.
 
     <Tabs>
       <Tab title="UI">
@@ -223,20 +223,20 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     Ensure the dataset ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids).
   </Step>
 
-  <Step title="Launch a fine-tuning job">
-    There are also a couple ways to launch the fine-tuning jobs. We highly recommend creating supervised fine tuning jobs via `UI` .
+  <Step title="Launch a training job">
+    There are also a couple ways to launch the training jobs. We highly recommend creating supervised fine-tuning jobs via `UI` .
 
     <Tabs>
       <Tab title="UI">
-        Simply navigate to the `Fine-Tuning` tab, click `Fine-Tune a Model` and follow the wizard from there. You can even pick a LoRA model to start the fine-tuning for continued training.
+        Simply navigate to the `Fine-Tuning` tab, click `Fine-Tune a Model` and follow the wizard from there. You can even pick a LoRA model to start the training for continued training.
 
-        <img alt="Fine Tuning Pn" />
+        <img alt="Training Pn" />
 
         <img alt="Create Sftj Pn" />
       </Tab>
 
       <Tab title="firectl">
-        Ensure the fine tuned model ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids). This will return a fine-tuning job ID. For a full explanation of the settings available to control the fine-tuning process, including learning rate and epochs, consult [additional managed fine-tuning job settings](#additional-managed-fine-tuning-job-settings).
+        Ensure the trained model ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids). This will return a training job ID. For a full explanation of the settings available to control the training process, including learning rate and epochs, consult [additional managed training job settings](#additional-managed-training-job-settings).
 
         ```bash theme={null}
         firectl sftj create --base-model <MODEL_ID> --dataset <DATASET_ID> --output-model <FINE_TUNED_MODEL_ID>
@@ -259,7 +259,7 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     <img alt="Sftj Details Pn" />
 
     <Tip>
-      If the fine-tuned model appears to learn the wrong text or ignore the expected assistant response, use **Render Samples** on the job details page to inspect the rendered token IDs and loss masks. See [Debug SFT tokenization](/fine-tuning/fine-tuning-models#debug-sft-tokenization).
+      If the trained model appears to learn the wrong text or ignore the expected assistant response, use **Render Samples** on the job details page to inspect the rendered token IDs and loss masks. See [Debug SFT tokenization](/fine-tuning/fine-tuning-models#debug-sft-tokenization).
     </Tip>
 
     With `firectl`, you can monitor the progress of the tuning job by running
@@ -283,9 +283,9 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
   example](https://github.com/fw-ai-external/python-sdk/blob/main/examples/sftj_workflow.py).
 </Tip>
 
-## Deploying a fine-tuned model
+## Deploying a trained model
 
-After fine-tuning completes, [evaluate the model](/fine-tuning/evaluating-fine-tuned-models) before you hold dedicated capacity for production serving.
+After training completes, [evaluate the model](/fine-tuning/evaluating-fine-tuned-models) before you hold dedicated capacity for production serving.
 
 To deploy for inference:
 
@@ -296,18 +296,18 @@ firectl deployment create <FINE_TUNED_MODEL_ID>
 This creates a dedicated deployment with performance matching the base model.
 
 <Tip>
-  For more details on deploying fine-tuned models, including multi-LoRA
-  deployments, see the [Deploying Fine Tuned Models
+  For more details on deploying trained models, including multi-LoRA
+  deployments, see the [Deploying Trained Models
   guide](/fine-tuning/deploying-loras).
 </Tip>
 
-## Additional managed fine-tuning job settings
+## Additional managed training job settings
 
 Additional tuning settings are available when starting an SFT or preference (DPO/ORPO) job. All of the settings below are optional and have reasonable defaults. For settings that affect tuning quality, such as `epochs` and `learning_rate`, use the defaults first and change them only when the results indicate a clear need. Examples use SFT unless otherwise noted.
 
 <AccordionGroup>
   <Accordion title="Evaluation">
-    By default, the fine-tuning job will run evaluation by running the fine-tuned model against an evaluation set that's created by automatically carving out a portion of your training set. You have the option to explicitly specify a separate evaluation dataset to use instead of carving out training data.
+    By default, the training job will run evaluation by running the trained model against an evaluation set that's created by automatically carving out a portion of your training set. You have the option to explicitly specify a separate evaluation dataset to use instead of carving out training data.
 
     `evaluation_dataset`: The ID of a separate dataset to use for evaluation. Must be pre-uploaded via firectl
 
@@ -437,7 +437,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
   </Accordion>
 
   <Accordion title="Training progress and monitoring">
-    The fine-tuning service integrates with Weights & Biases to provide observability into the tuning process. To use this feature, you must have a Weights & Biases account and have provisioned an API key.
+    The training service integrates with Weights & Biases to provide observability into the tuning process. To use this feature, you must have a Weights & Biases account and have provisioned an API key.
 
     ```shell theme={null}
     firectl sftj create \
@@ -451,7 +451,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
   </Accordion>
 
   <Accordion title="Model ID">
-    By default, the fine-tuning job will generate a random unique ID for the model. This ID is used to refer to the model at inference time. You can optionally specify a custom ID, within [ID constraints](/getting-started/concepts#resource-names-and-ids).
+    By default, the training job will generate a random unique ID for the model. This ID is used to refer to the model at inference time. You can optionally specify a custom ID, within [ID constraints](/getting-started/concepts#resource-names-and-ids).
 
     ```shell theme={null}
     firectl sftj create \
@@ -462,7 +462,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
   </Accordion>
 
   <Accordion title="Job ID">
-    By default, the fine-tuning job will generate a random unique ID for the fine-tuning job. You can optionally choose a custom ID.
+    By default, the training job will generate a random unique ID for the training job. You can optionally choose a custom ID.
 
     ```shell theme={null}
     firectl sftj create \
@@ -493,7 +493,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 
 <Warning>
   These parameters are deprecated. Do not include them in new managed
-  fine-tuning requests. The wire fields remain present so existing resources can
+  training requests. The wire fields remain present so existing resources can
   still be read, but Training V2 rejects or ignores non-default values as
   described below.
 </Warning>
@@ -516,7 +516,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 * `firectl` [references](/tools-sdks/firectl/firectl)
 * [Complete Python SDK workflow example](https://github.com/fw-ai-external/python-sdk/blob/main/examples/sftj_workflow.py) for a code-only implementation
 
-## Vision fine-tuning
+## Vision training
 
 Vision-language SFT uses the same managed job flow as text SFT with multimodal content in `messages`. Confirm VLM support and training shapes in the live [Models](/fine-tuning/models) matrix because modality, method, and shape eligibility are model-specific.
 
@@ -569,12 +569,12 @@ Common fix: ensure assistant messages you intend to train have non-zero loss wei
 
 ### Common findings
 
-| What you see                                        | Likely cause                                                                                                                                                                                                                         | What to do                                                                                                                                                   |
-| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Assistant answer tokens have `token_weights` of `0` | The assistant message has `weight: 0`, the sample has zero weight, or the job is configured to train on different content.                                                                                                           | Check the original JSONL row and remove unintended weights.                                                                                                  |
-| User or system tokens have positive `token_weights` | The row schema or training configuration is not representing roles as intended.                                                                                                                                                      | Verify every message has the correct `role`, and avoid putting assistant text in a `user` message.                                                           |
-| Expected text is missing from `decoded_tokens`      | The source row may have been split, truncated, or rendered differently by the model chat template.                                                                                                                                   | Check `split_index`, source line number, and the job's max context length.                                                                                   |
-| Extra special tokens appear around messages         | The selected model renderer is adding chat template markers.                                                                                                                                                                         | This is often expected. If the markers are wrong for your use case, check that the base model and dataset format match.                                      |
-| Thinking traces missing from conversation history   | The job's thinking-history mode and model renderer decide whether earlier turns' `reasoning_content` is retained. Interleaved removes thinking across user-turn boundaries; Preserved retains it. Datum unrolling is model-specific. | Compare the available modes in the render preview, then verify the created job's mode. See [Thinking history in fine-tuning](/fine-tuning/thinking-history). |
-| Token boundaries look surprising                    | Many tokenizers encode whitespace, Unicode, and byte fallback pieces in non-obvious ways.                                                                                                                                            | Compare with the same Hugging Face tokenizer using `skip_special_tokens=False`.                                                                              |
-| The Render Samples row is missing                   | The job may predate this feature, may have failed before rendering, or may not have captured samples.                                                                                                                                | Create a new supervised fine-tuning job, or contact support with the job ID if the job should have rendered samples.                                         |
+| What you see                                        | Likely cause                                                                                                                                                                                                                         | What to do                                                                                                                                                |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Assistant answer tokens have `token_weights` of `0` | The assistant message has `weight: 0`, the sample has zero weight, or the job is configured to train on different content.                                                                                                           | Check the original JSONL row and remove unintended weights.                                                                                               |
+| User or system tokens have positive `token_weights` | The row schema or training configuration is not representing roles as intended.                                                                                                                                                      | Verify every message has the correct `role`, and avoid putting assistant text in a `user` message.                                                        |
+| Expected text is missing from `decoded_tokens`      | The source row may have been split, truncated, or rendered differently by the model chat template.                                                                                                                                   | Check `split_index`, source line number, and the job's max context length.                                                                                |
+| Extra special tokens appear around messages         | The selected model renderer is adding chat template markers.                                                                                                                                                                         | This is often expected. If the markers are wrong for your use case, check that the base model and dataset format match.                                   |
+| Thinking traces missing from conversation history   | The job's thinking-history mode and model renderer decide whether earlier turns' `reasoning_content` is retained. Interleaved removes thinking across user-turn boundaries; Preserved retains it. Datum unrolling is model-specific. | Compare the available modes in the render preview, then verify the created job's mode. See [Thinking history in training](/fine-tuning/thinking-history). |
+| Token boundaries look surprising                    | Many tokenizers encode whitespace, Unicode, and byte fallback pieces in non-obvious ways.                                                                                                                                            | Compare with the same Hugging Face tokenizer using `skip_special_tokens=False`.                                                                           |
+| The Render Samples row is missing                   | The job may predate this feature, may have failed before rendering, or may not have captured samples.                                                                                                                                | Create a new supervised fine-tuning job, or contact support with the job ID if the job should have rendered samples.                                      |

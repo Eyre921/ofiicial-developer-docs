@@ -4,6 +4,14 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="August 28, 2026">
+  ## New serverless models
+
+  The following model is now available on [serverless](/docs/serverless/models):
+
+  * `zai-org/GLM-5.3`: 1,000,000 context length, FP4 quantization, function calling and structured outputs. Pricing: \$1.40 input / \$4.40 output / \$0.26 cached input (per 1M tokens).
+</Update>
+
 <Update label="August 27, 2026">
   ## Model deprecations
 

@@ -243,7 +243,7 @@ You can inspect individual rollouts to see the dramatic improvement in SVG gener
 
 <img alt="SVG Generation - After Training" />
 
-The reinforcement fine tuning process significantly improves the model's ability to generate accurate, detailed SVG graphics that better match the input descriptions.
+The reinforcement fine-tuning process significantly improves the model's ability to generate accurate, detailed SVG graphics that better match the input descriptions.
 
 ## Debugging Tips
 

@@ -53,7 +53,7 @@ npx --yes skills add fw-ai/cookbook -g \
 
 ## What it does
 
-Ask in plain language, for example *"Fine-tune qwen3-4b on my `train.jsonl` and deploy it."* The skill configures the job, validates inputs, runs it, and helps troubleshoot failures.
+Ask in plain language, for example *"Train qwen3-4b on my `train.jsonl` and deploy it."* The skill configures the job, validates inputs, runs it, and helps troubleshoot failures.
 
 Before creating cost or resources, it shows the resolved parameters and estimated cost for confirmation.
 
@@ -65,16 +65,16 @@ To improve the skill, authenticated API calls include the skill version and a ra
   The Fireworks CLI (`firectl`) may block mutating commands inside an AI-agent environment. When that happens, the skill gives you the exact command to run manually, then resumes monitoring and reporting.
 </Note>
 
-Use [managed fine-tuning](/fine-tuning/managed-finetuning-intro) for standard jobs, or the [Training API](/fine-tuning/training-api/introduction) for custom loops on [serverless or dedicated infrastructure](/fine-tuning/training-api/introduction#infrastructure).
+Use [managed training](/fine-tuning/managed-finetuning-intro) for standard jobs, or the [Training API](/fine-tuning/training-api/introduction) for custom loops on [serverless or dedicated infrastructure](/fine-tuning/training-api/introduction#infrastructure).
 
 ## See also
 
 <CardGroup>
   <Card title="Training Overview" icon="compass" href="/fine-tuning/finetuning-intro#choose-a-surface">
-    Pick managed fine-tuning vs the Training API before you install.
+    Pick managed training vs the Training API before you install.
   </Card>
 
-  <Card title="Managed Fine-Tuning" icon="sliders" href="/fine-tuning/managed-finetuning-intro">
+  <Card title="Managed Training" icon="sliders" href="/fine-tuning/managed-finetuning-intro">
     Drive the same training infra directly when you know your config.
   </Card>
 

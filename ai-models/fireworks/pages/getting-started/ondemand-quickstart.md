@@ -276,7 +276,7 @@ Ready to scale to production, explore other modalities, or customize your models
     Bring your own model and deploy it on Fireworks
   </Card>
 
-  <Card title="Fine-tune Models" href="/fine-tuning/finetuning-intro" icon="sliders">
+  <Card title="Train Models" href="/fine-tuning/finetuning-intro" icon="sliders">
     Improve model quality with supervised and reinforcement learning
   </Card>
 

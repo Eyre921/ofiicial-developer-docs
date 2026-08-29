@@ -26,7 +26,7 @@ At a high level, you need:
 Fireworks supports BYOC on major cloud providers and their managed Kubernetes offerings, select GPU cloud providers, and on-premises environments that provide a reachable Kubernetes endpoint, supported NVIDIA GPU nodes, and the required network setup. Fireworks confirms provider, environment, GPU capacity, and networking support during preview onboarding.
 
 <Warning>
-  Fine-tuning is not supported in BYOC during Private Preview.
+  Training is not supported in BYOC during Private Preview.
 </Warning>
 
 ## Setup flow

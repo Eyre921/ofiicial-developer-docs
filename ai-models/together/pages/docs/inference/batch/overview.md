@@ -41,10 +41,6 @@ Selected serverless models run at 50% off batch rates:
 | Model ID                                  |
 | ----------------------------------------- |
 | `meta-llama/Llama-3.3-70B-Instruct-Turbo` |
-| `meta-llama/Llama-3-70b-chat-hf`          |
-| `Qwen/Qwen2.5-7B-Instruct-Turbo`          |
-| `mistralai/Mixtral-8x7B-Instruct-v0.1`    |
-| `zai-org/GLM-4.5-Air-FP8`                 |
 | `openai/whisper-large-v3`                 |
 
 Models not listed run at standard rates.

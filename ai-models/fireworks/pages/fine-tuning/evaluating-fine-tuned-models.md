@@ -1,20 +1,20 @@
 ---
-title: "Evaluating Fine Tuned Models"
+title: "Evaluating Trained Models"
 source: https://docs.fireworks.ai/fine-tuning/evaluating-fine-tuned-models
 path: fine-tuning/evaluating-fine-tuned-models
 ---
 
-Run training evals on a fine-tuned adapter before you create a production deployment.
+Run training evals on a trained adapter before you create a production deployment.
 
 After training, run evals on the adapter before you create a production deployment. The preemptible deployment on this page is for **training evals only**. It is not a production serving setup, and Fireworks does not offer serverless LoRA inference for a customer fine-tune.
 
 <Warning>
-  Do not send production traffic through a preemptible deployment. For production serving after eval, create an on-demand deployment. See [Deploying Fine Tuned Models](/fine-tuning/deploying-loras).
+  Do not send production traffic through a preemptible deployment. For production serving after eval, create an on-demand deployment. See [Deploying Trained Models](/fine-tuning/deploying-loras).
 </Warning>
 
 ## Preemptible deployment
 
-If you want to eval a fine-tuned model without holding dedicated on-demand capacity, create a **preemptible deployment**. It borrows idle reserved GPU capacity instead of reserving GPUs exclusively for you.
+If you want to eval a trained model without holding dedicated on-demand capacity, create a **preemptible deployment**. It borrows idle reserved GPU capacity instead of reserving GPUs exclusively for you.
 
 It can be reclaimed (preempted) at any time. Fireworks does not guarantee how many GPUs are available or how long the deployment stays up, but in practice it typically lasts long enough to finish a training eval.
 
@@ -51,7 +51,7 @@ firectl deployment create accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID> \
 
 Replace the placeholders:
 
-* `<FINE_TUNED_MODEL_ID>`: the fine-tuned model to eval, not a base model.
+* `<FINE_TUNED_MODEL_ID>`: the trained model to eval, not a base model.
 * `<YOUR_DEPLOYMENT_ID>` / `<YOUR_DISPLAY_NAME>`: a name of your choice for the eval deployment.
 * `<DEPLOYMENT_SHAPE>`: the deployment shape to use for that model.
 
@@ -70,7 +70,7 @@ firectl deployment create accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID> \
 
 ### Run the eval and tear down
 
-Check that the deployment is ready, then send eval requests to the fine-tuned model:
+Check that the deployment is ready, then send eval requests to the trained model:
 
 ```bash theme={null}
 firectl deployment get <YOUR_DEPLOYMENT_ID> -a <ACCOUNT_ID>
@@ -100,7 +100,7 @@ firectl deployment delete <YOUR_DEPLOYMENT_ID> -a <ACCOUNT_ID>
 ## Next steps
 
 <CardGroup>
-  <Card title="Deploying Fine Tuned Models" href="/fine-tuning/deploying-loras" icon="rocket">
+  <Card title="Deploying Trained Models" href="/fine-tuning/deploying-loras" icon="rocket">
     Live merge or multi-LoRA for production serving
   </Card>
 </CardGroup>

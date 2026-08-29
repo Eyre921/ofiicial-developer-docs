@@ -26,7 +26,7 @@ Process large volumes of requests asynchronously at **50% off** [Serverless per-
 Not all models support the Batch API. Before submitting a batch job, verify your target model is batch-compatible.
 
 * **Base Models** – Any model that supports [On-Demand Deployments](https://docs.fireworks.ai/guides/ondemand-deployments) in the [Model Library](https://fireworks.ai/models)
-* **Custom Models** – Your uploaded or fine-tuned models built on a batch-compatible base model
+* **Custom Models** – Your uploaded or trained models built on a batch-compatible base model
 
 *Note: Newly added models may have a delay before being supported. See [Quantization](/models/quantization) for precision info.*
 
@@ -310,7 +310,7 @@ The equivalent HTTP field is `systemPrompt`:
 
   <Accordion title="Supported models">
     * **Base Models** – Any model that supports [On-Demand Deployments](https://docs.fireworks.ai/guides/ondemand-deployments) in the [Model Library](https://fireworks.ai/models)
-    * **Custom Models** – Your uploaded or fine-tuned models built on a batch-compatible base model
+    * **Custom Models** – Your uploaded or trained models built on a batch-compatible base model
 
     *Note: Newly added models may have a delay before being supported. See [Quantization](/models/quantization) for precision info.*
   </Accordion>
@@ -362,7 +362,7 @@ The equivalent HTTP field is `systemPrompt`:
     Maximize cost savings with automatic prompt caching
   </Card>
 
-  <Card title="Fine-Tuning" icon="sparkles" href="/fine-tuning/finetuning-intro">
+  <Card title="Training" icon="sparkles" href="/fine-tuning/finetuning-intro">
     Create custom models for your batch workloads
   </Card>
 

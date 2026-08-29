@@ -17,7 +17,7 @@ Fireworks Enterprise accounts can use additional governance and administration f
 
 <CardGroup>
   <Card title="Model access policy" icon="shield-check" href="/accounts/model-access-policy">
-    Restrict which models users on your account can use for serverless inference, Fast mode, dedicated deployments, and fine-tuning.
+    Restrict which models users on your account can use for serverless inference, Fast mode, dedicated deployments, and training.
   </Card>
 
   <Card title="Custom SSO" icon="key" href="/accounts/sso">
@@ -47,7 +47,7 @@ Export billing and usage metrics for all Fireworks services
 
 ## Overview
 
-Fireworks provides a CLI tool to export comprehensive billing metrics for all usage types including serverless inference, on-demand deployments, and fine-tuning jobs. The exported data can be used for cost analysis, internal billing, and usage tracking.
+Fireworks provides a CLI tool to export comprehensive billing metrics for all usage types including serverless inference, on-demand deployments, and training jobs. The exported data can be used for cost analysis, internal billing, and usage tracking.
 
 <Note>
   This export reports metered **quantities** — tokens and accelerator-seconds — not dollars. For a
@@ -166,7 +166,7 @@ This export includes:
 
 * **Serverless inference**: All serverless API usage
 * **On-demand deployments**: Deployment usage (see also [Exporting deployment metrics](/deployments/exporting-metrics) for real-time Prometheus metrics)
-* **Fine-tuning jobs**: Fine-tuning compute usage
+* **Training jobs**: Training compute usage
 * **Other services**: All billable Fireworks services
 
 <Note>
@@ -743,7 +743,7 @@ done
 
 ## Coverage
 
-* **Serverless token usage only.** Costs are priced from cached input, uncached input, and output tokens. Dedicated deployment and fine-tuning spend are not included — for those, use [Exporting Billing Metrics](/accounts/exporting-billing-metrics) or the account-level totals from [`firectl billing get-usage --account-costs-only`](/accounts/exporting-usage-and-costs#account-level-cost-totals-only).
+* **Serverless token usage only.** Costs are priced from cached input, uncached input, and output tokens. Dedicated deployment and training spend are not included — for those, use [Exporting Billing Metrics](/accounts/exporting-billing-metrics) or the account-level totals from [`firectl billing get-usage --account-costs-only`](/accounts/exporting-usage-and-costs#account-level-cost-totals-only).
 * **Subtotals are rated, not invoiced.** They price usage with the subscription prices that apply to your account and exclude fixed fees, invoice-level discounts, minimums, credits, and taxes, so they may differ from the final invoice.
 * **One dimension at a time.** Rows are always bucketed by day plus the single dimension passed to `--group-by`. To combine dimensions, use [`POST /usageCosts:query`](/api-reference/query-usage-costs), which accepts up to two.
 
@@ -758,7 +758,7 @@ done
 # Model access policy
 Source: https://docs.fireworks.ai/accounts/model-access-policy
 
-Restrict which models users on your Enterprise account can access for inference, deployments, and fine-tuning
+Restrict which models users on your Enterprise account can access for inference, deployments, and training
 
 Model access policy lets Enterprise account admins control which models users on the account can use. You can allowlist models (deny by default, then permit specific models) or deny specific models while leaving the rest of the catalog open.
 
@@ -772,12 +772,12 @@ Policy applies **account-wide**: every user on the account shares the same rules
 
 Each model can be allowed or denied independently across four capabilities:
 
-| Capability                 | What it governs                                                   |
-| :------------------------- | :---------------------------------------------------------------- |
-| **Serverless inference**   | Chat, completions, embeddings, and other serverless API routes    |
-| **Serverless Fast**        | The model's Fast serving mode (separate from standard serverless) |
-| **Dedicated deployments**  | Creating on-demand deployments on that base model                 |
-| **Fine-tuning / training** | Supervised fine-tuning, DPO, and reinforcement fine-tuning jobs   |
+| Capability                | What it governs                                                   |
+| :------------------------ | :---------------------------------------------------------------- |
+| **Serverless inference**  | Chat, completions, embeddings, and other serverless API routes    |
+| **Serverless Fast**       | The model's Fast serving mode (separate from standard serverless) |
+| **Dedicated deployments** | Creating on-demand deployments on that base model                 |
+| **Training**              | Supervised fine-tuning, DPO, and reinforcement fine-tuning jobs   |
 
 Fast mode is evaluated separately from standard serverless. You can allow one without the other.
 
@@ -1170,13 +1170,13 @@ Each user in an account is assigned a role that determines their level of access
 
 #### Resource management
 
-| Permission                                                             | Inference User | Contributor | User | Admin |
-| :--------------------------------------------------------------------- | :------------: | :---------: | :--: | :---: |
-| Execute inference on any deployment                                    |        ✅       |      ✅      |   ✅  |   ✅   |
-| View all resources (deployments, models, fine tuning jobs, datasets)   |        ✅       |      ✅      |   ✅  |   ✅   |
-| Create new resources (deployments, models, fine tuning jobs, datasets) |        ❌       |      ✅      |   ✅  |   ✅   |
-| Manage their own resources (edit/delete)                               |        ❌       |      ✅      |   ✅  |   ✅   |
-| Manage resources owned by others (edit/delete)                         |        ❌       |      ❌      |   ✅  |   ✅   |
+| Permission                                                          | Inference User | Contributor | User | Admin |
+| :------------------------------------------------------------------ | :------------: | :---------: | :--: | :---: |
+| Execute inference on any deployment                                 |        ✅       |      ✅      |   ✅  |   ✅   |
+| View all resources (deployments, models, training jobs, datasets)   |        ✅       |      ✅      |   ✅  |   ✅   |
+| Create new resources (deployments, models, training jobs, datasets) |        ❌       |      ✅      |   ✅  |   ✅   |
+| Manage their own resources (edit/delete)                            |        ❌       |      ✅      |   ✅  |   ✅   |
+| Manage resources owned by others (edit/delete)                      |        ❌       |      ❌      |   ✅  |   ✅   |
 
 #### API key & account management
 
@@ -1434,7 +1434,7 @@ For `linear` and `cosine`:
 }
 ```
 
-See also [Fine-tuning models](/fine-tuning/fine-tuning-models) for CLI equivalents (`--learning-rate-scheduler`, `--learning-rate-min-lr-ratio`, `--learning-rate-decay-ratio`).
+See also [Training models](/fine-tuning/fine-tuning-models) for CLI equivalents (`--learning-rate-scheduler`, `--learning-rate-min-lr-ratio`, `--learning-rate-decay-ratio`).
 
 
 # Create User
@@ -5959,7 +5959,7 @@ Fireworks on Foundry supports three deployment modes.
 | ----------------- | ------------------------------ | --------------------------------- | -------------------- | -------------------------------------------- |
 | **PayGo**         | Serverless, Data Zone Standard | Per token, MACC-eligible          | US Data Zone only    | Prototyping, low-volume workloads            |
 | **PTU**           | Provisioned Throughput         | Per PTU-hour, ACD + MACC eligible | Global               | Production workloads with consistent traffic |
-| **Custom Models** | Bring Your Own Model           | PTU pricing                       | Global (PTU regions) | Fine-tuned model deployment                  |
+| **Custom Models** | Bring Your Own Model           | PTU pricing                       | Global (PTU regions) | Trained model deployment                     |
 
 PTU deployments can be created directly in the Azure portal. For help with PTU sizing on Fireworks models, contact [sales@fireworks.ai](mailto:sales@fireworks.ai).
 
@@ -6011,7 +6011,7 @@ For help with PTU sizing on Fireworks models, contact [sales@fireworks.ai](mailt
 
 ## Custom Models
 
-Fine-tune on Fireworks and deploy on Foundry, or bring your own weights from wherever you post-train to deploy on Foundry. Your model is served on Fireworks infrastructure within Azure, billed through your Azure account.
+Train on Fireworks and deploy on Foundry, or bring your own weights from wherever you post-train to deploy on Foundry. Your model is served on Fireworks infrastructure within Azure, billed through your Azure account.
 
 ### Supported base architectures
 
@@ -6066,7 +6066,7 @@ See [FireConnect + Microsoft Foundry](/ecosystem/fireconnect/microsoft-foundry) 
 
 * [Enable Fireworks on Foundry (Microsoft Learn)](https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/enable-fireworks-models)
 * [Microsoft Foundry portal](https://ai.azure.com/)
-* [Fireworks fine-tuning docs](/fine-tuning/finetuning-intro)
+* [Fireworks training docs](/fine-tuning/finetuning-intro)
 * [Fireworks Trust Center](https://fireworks.ai/trust)
 * [sales@fireworks.ai](mailto:sales@fireworks.ai) for PTU provisioning and Custom Model support
 
@@ -6096,7 +6096,7 @@ At a high level, you need:
 Fireworks supports BYOC on major cloud providers and their managed Kubernetes offerings, select GPU cloud providers, and on-premises environments that provide a reachable Kubernetes endpoint, supported NVIDIA GPU nodes, and the required network setup. Fireworks confirms provider, environment, GPU capacity, and networking support during preview onboarding.
 
 <Warning>
-  Fine-tuning is not supported in BYOC during Private Preview.
+  Training is not supported in BYOC during Private Preview.
 </Warning>
 
 ## Setup flow
@@ -6177,7 +6177,7 @@ BYOC is a shared operational model.
 Fireworks deploys, updates, and version-manages inference deployments in the cluster. Customers request model or deployment changes through Fireworks, and Fireworks applies those changes through the managed BYOC operating process.
 
 <Warning>
-  Fine-tuning is not supported in BYOC during Private Preview.
+  Training is not supported in BYOC during Private Preview.
 </Warning>
 
 ## Autoscaling
@@ -6311,7 +6311,7 @@ Hybrid operation can help when:
 
 ## Known gaps during Private Preview
 
-Fine-tuning is not supported in BYOC during Private Preview. If you need fine-tuning and BYOC together, contact [sales@fireworks.ai](mailto:sales@fireworks.ai) so the team can review your requirements and roadmap fit.
+Training is not supported in BYOC during Private Preview. If you need training and BYOC together, contact [sales@fireworks.ai](mailto:sales@fireworks.ai) so the team can review your requirements and roadmap fit.
 
 ## Supported environments
 
@@ -6479,7 +6479,7 @@ Fireworks AI integrates with industry-leading MLOps and observability platforms 
 
 <CardGroup>
   <Card title="Weights & Biases" icon="chart-line" href="/ecosystem/integrations/wandb">
-    Track fine-tuning experiments and visualize training metrics with W\&B
+    Track training experiments and visualize training metrics with W\&B
   </Card>
 
   <Card title="MLflow" icon="chart-mixed" href="https://mlflow.org/docs/latest/genai/tracing/integrations/listing/fireworksai/">
@@ -6499,7 +6499,7 @@ Interactive Jupyter notebooks demonstrating advanced use cases and best practice
 
 Explore our collection of notebooks that showcase real-world applications, best practices, and advanced techniques for building with Fireworks AI.
 
-## Fine-Tuning & Training
+## Training
 
 <CardGroup>
   <Card title="Knowledge Distillation" href="https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/learn/finetuning/knowledge_distillation.ipynb" icon="graduation-cap">
@@ -6510,8 +6510,8 @@ Explore our collection of notebooks that showcase real-world applications, best 
     **Results:** 52% → 70% accuracy on GSM8K mathematical reasoning
   </Card>
 
-  <Card title="VLM Fine-tuning + Evals" href="https://huggingface.co/spaces/fireworks-ai/catalog-extract/blob/main/notebooks/01-eda-and-fine-tuning.ipynb" icon="image">
-    Beat frontier closed-source models for product catalog cleansing with vision-language model fine-tuning.
+  <Card title="VLM Training + Evals" href="https://huggingface.co/spaces/fireworks-ai/catalog-extract/blob/main/notebooks/01-eda-and-fine-tuning.ipynb" icon="image">
+    Beat frontier closed-source models for product catalog cleansing with vision-language model training.
 
     **Techniques:** Supervised Fine-Tuning (SFT)
 
@@ -6575,7 +6575,7 @@ Standalone end-to-end examples showing how to use Fireworks to solve real-world 
 
 <CardGroup>
   <Card title="Text to SQL" href="/examples/text-to-sql">
-    Learn how to use Fireworks to fine-tune a model to convert natural language to SQL queries.
+    Learn how to use Fireworks to train a model to convert natural language to SQL queries.
   </Card>
 
   <Card title="Reward Hacking" href="/examples/reward-hacking">
@@ -6708,17 +6708,17 @@ Source: https://docs.fireworks.ai/faq-new/billing-pricing/are-there-discounts-fo
 We offer discounts for bulk or pre-paid purchases. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) to discuss volume pricing.
 
 
-# Are there extra fees for serving fine-tuned models?
+# Are there extra fees for serving trained models?
 Source: https://docs.fireworks.ai/faq-new/billing-pricing/are-there-extra-fees-for-serving-fine-tuned-models
 
 
 
-Fine-tuned (LoRA) models require a dedicated deployment to serve. Here's what you need to know:
+Trained (LoRA) models require a dedicated deployment to serve. Here's what you need to know:
 
 **What you pay for**:
 
 * **Deployment costs** on a per-GPU-second basis for hosting the model
-* **The fine-tuning process** itself, if applicable
+* **The training process** itself, if applicable
 
 **Deployment options**:
 
@@ -6726,7 +6726,7 @@ Fine-tuned (LoRA) models require a dedicated deployment to serve. Here's what yo
 * **Multi-LoRA deployment**: Deploy up to 100 LoRA models as addons on a single base model deployment
 
 <Tip>
-  For more details on deploying fine-tuned models, see the [Deploying Fine Tuned Models guide](/fine-tuning/deploying-loras).
+  For more details on deploying trained models, see the [Deploying Trained Models guide](/fine-tuning/deploying-loras).
 </Tip>
 
 
@@ -6742,7 +6742,7 @@ Source: https://docs.fireworks.ai/faq-new/billing-pricing/how-does-billing-and-c
 Fireworks operates on a **pre-paid credits** billing system. You purchase credits to use the platform:
 
 * Add a valid payment method and billing address, then purchase credits.
-* Usage across serverless, on-demand deployments, and fine-tuning deducts from your credit balance.
+* Usage across serverless, on-demand deployments, and training deducts from your credit balance.
 * If your balance reaches zero and Auto Reload is not enabled, usage pauses until you add credits.
 * You can configure Auto Reload to purchase credits when your balance is low.
 * Separately, you can set a monthly spend limit for your usage. Adding credits does not raise this limit.
@@ -6880,7 +6880,7 @@ Fireworks AI uses a **usage-based pre-paid** billing system. You purchase credit
 
 * **Per token** for serverless inference
 * **Per GPU usage time** for on-demand deployments
-* **Per token of training data** for fine-tuning
+* **Per training token** for Managed Training
 
 For customers needing **enterprise-grade security and reliability**, please reach out to us at [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) to discuss options.
 
@@ -7390,7 +7390,7 @@ npx --yes skills add fw-ai/cookbook -g \
 
 ## What it does
 
-Ask in plain language, for example *"Fine-tune qwen3-4b on my `train.jsonl` and deploy it."* The skill configures the job, validates inputs, runs it, and helps troubleshoot failures.
+Ask in plain language, for example *"Train qwen3-4b on my `train.jsonl` and deploy it."* The skill configures the job, validates inputs, runs it, and helps troubleshoot failures.
 
 Before creating cost or resources, it shows the resolved parameters and estimated cost for confirmation.
 
@@ -7402,16 +7402,16 @@ To improve the skill, authenticated API calls include the skill version and a ra
   The Fireworks CLI (`firectl`) may block mutating commands inside an AI-agent environment. When that happens, the skill gives you the exact command to run manually, then resumes monitoring and reporting.
 </Note>
 
-Use [managed fine-tuning](/fine-tuning/managed-finetuning-intro) for standard jobs, or the [Training API](/fine-tuning/training-api/introduction) for custom loops on [serverless or dedicated infrastructure](/fine-tuning/training-api/introduction#infrastructure).
+Use [managed training](/fine-tuning/managed-finetuning-intro) for standard jobs, or the [Training API](/fine-tuning/training-api/introduction) for custom loops on [serverless or dedicated infrastructure](/fine-tuning/training-api/introduction#infrastructure).
 
 ## See also
 
 <CardGroup>
   <Card title="Training Overview" icon="compass" href="/fine-tuning/finetuning-intro#choose-a-surface">
-    Pick managed fine-tuning vs the Training API before you install.
+    Pick managed training vs the Training API before you install.
   </Card>
 
-  <Card title="Managed Fine-Tuning" icon="sliders" href="/fine-tuning/managed-finetuning-intro">
+  <Card title="Managed Training" icon="sliders" href="/fine-tuning/managed-finetuning-intro">
     Drive the same training infra directly when you know your config.
   </Card>
 
@@ -7942,26 +7942,26 @@ Remote RFT needs **correlated traces** so the trainer can join rollouts, tool ca
 </CardGroup>
 
 
-# Deploying Fine Tuned Models
+# Deploying Trained Models
 Source: https://docs.fireworks.ai/fine-tuning/deploying-loras
 
-Deploy one or multiple LoRA models fine tuned on Fireworks using live merge or multi-LoRA
+Deploy one or multiple LoRA models trained on Fireworks using live merge or multi-LoRA
 
-After fine-tuning your model on Fireworks, deploy it to make it available for inference. Fireworks supports two deployment methods for LoRA fine-tuned models: **live merge** and **multi-LoRA**. Each method has different tradeoffs around performance, cost, and flexibility.
+After training your model on Fireworks, deploy it to make it available for inference. Fireworks supports two deployment methods for LoRA trained models: **live merge** and **multi-LoRA**. Each method has different tradeoffs around performance, cost, and flexibility.
 
-To run training evals before production serving, see [Evaluating Fine Tuned Models](/fine-tuning/evaluating-fine-tuned-models). This page covers production serving.
+To run training evals before production serving, see [Evaluating Trained Models](/fine-tuning/evaluating-fine-tuned-models). This page covers production serving.
 
 <Warning>
-  Fine-tuned LoRA models, whether created on the Fireworks platform or imported, can **only** be deployed to **on-demand (dedicated) deployments**. Serverless deployment is not supported for LoRA models.
+  Trained LoRA models, whether created on the Fireworks platform or imported, can **only** be deployed to **on-demand (dedicated) deployments**. Serverless deployment is not supported for LoRA models.
 </Warning>
 
 <Note>
-  You can also upload and deploy LoRA models fine-tuned outside of Fireworks. See [importing fine-tuned models](/models/uploading-custom-models#importing-fine-tuned-models) for details.
+  You can also upload and deploy LoRA models trained outside of Fireworks. See [importing trained models](/models/uploading-custom-models#importing-trained-models) for details.
 </Note>
 
 ## Choosing a deployment method
 
-Fireworks offers two ways to deploy LoRA fine-tuned models. The right choice depends on how many fine-tuned variants you need to serve and your performance requirements.
+Fireworks offers two ways to deploy LoRA trained models. The right choice depends on how many trained variants you need to serve and your performance requirements.
 
 |                           | **Live merge**                                                                                 | **Multi-LoRA**                                                                                  |
 | ------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -7969,16 +7969,16 @@ Fireworks offers two ways to deploy LoRA fine-tuned models. The right choice dep
 | **Number of LoRAs**       | One per deployment                                                                             | Multiple per deployment                                                                         |
 | **Inference performance** | Matches the base model (no overhead)                                                           | Some overhead per request due to dynamic adapter application                                    |
 | **Throughput**            | Same as base model                                                                             | Lower maximum throughput under high concurrency                                                 |
-| **Cost efficiency**       | One deployment per fine-tune                                                                   | Share a single deployment across many fine-tunes                                                |
+| **Cost efficiency**       | One deployment per adapter                                                                     | Share a single deployment across many adapters                                                  |
 | **Best for**              | Production workloads requiring maximum performance                                             | Experimentation, A/B testing, or serving many variants of the same base model                   |
 
 <Tip>
-  If you only need to serve a single fine-tuned model, **live merge is the recommended approach**. It delivers the best performance with the simplest setup.
+  If you only need to serve a single trained model, **live merge is the recommended approach**. It delivers the best performance with the simplest setup.
 </Tip>
 
 ## Live merge deployment
 
-Live merge is the simplest way to deploy a fine-tuned model. Fireworks automatically merges the LoRA weights into the base model at deployment time, producing a model that performs identically to a natively fine-tuned model with no inference overhead.
+Live merge is the simplest way to deploy a trained model. Fireworks automatically merges the LoRA weights into the base model at deployment time, producing a model that performs identically to a natively trained model with no inference overhead.
 
 ### How it works
 
@@ -7988,11 +7988,11 @@ When you deploy a LoRA model directly, Fireworks:
 2. Merges them into a single set of weights at deployment time
 3. Serves the merged model as a standalone deployment
 
-The result is a deployment that is indistinguishable from a fully fine-tuned model in terms of latency, throughput, and memory usage.
+The result is a deployment that is indistinguishable from a fully trained model in terms of latency, throughput, and memory usage.
 
 ### Deploy with live merge
 
-Deploy your LoRA fine-tuned model with a single command:
+Deploy your LoRA trained model with a single command:
 
 ```bash theme={null}
 firectl deployment create "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>"
@@ -8043,12 +8043,12 @@ Send inference requests to your live-merge deployment by referencing the deploym
 ### When to use live merge
 
 * You need maximum inference performance (latency and throughput matching the base model)
-* You are serving a single fine-tuned model in production
+* You are serving a single trained model in production
 * You want the simplest possible deployment workflow
 
 ## Multi-LoRA deployment
 
-Multi-LoRA lets you load multiple LoRA adapters onto a single base model deployment. This is useful when you have several fine-tuned variants of the same base model and want to share GPU resources across them rather than creating a separate deployment for each.
+Multi-LoRA lets you load multiple LoRA adapters onto a single base model deployment. This is useful when you have several trained variants of the same base model and want to share GPU resources across them rather than creating a separate deployment for each.
 
 ### How it works
 
@@ -8086,7 +8086,7 @@ firectl deployment create "accounts/fireworks/models/<BASE_MODEL_ID>" \
 
 **Option 2 — Merge the adapter into a standalone model**
 
-If no BF16 addon-compatible shape is available, use [live merge](#live-merge-deployment) (recommended for a single adapter) or merge the LoRA into a standalone Fireworks model, then deploy that merged model without `--enable-addons`. See [Uploading custom models](/models/uploading-custom-models#importing-fine-tuned-models) and [`firectl model create`](/tools-sdks/firectl/commands/model-create).
+If no BF16 addon-compatible shape is available, use [live merge](#live-merge-deployment) (recommended for a single adapter) or merge the LoRA into a standalone Fireworks model, then deploy that merged model without `--enable-addons`. See [Uploading custom models](/models/uploading-custom-models#importing-trained-models) and [`firectl model create`](/tools-sdks/firectl/commands/model-create).
 
 <Note>
   `"addons cannot be enabled with quantized precisions (FP8/FP4)"` — your model's default shape is quantized; use Option 1 or 2 above.
@@ -8202,14 +8202,14 @@ To route inference requests to a specific LoRA adapter on a multi-LoRA deploymen
 
 ### When to use multi-LoRA
 
-* You need to serve multiple fine-tuned models based on the same base model
+* You need to serve multiple trained models based on the same base model
 * You want to maximize GPU utilization by sharing a single deployment
-* You are running experiments or A/B tests across multiple fine-tuned variants
+* You are running experiments or A/B tests across multiple trained variants
 * You can accept some performance overhead compared to live merge
 
 ## Downloading model weights
 
-You can download your fine-tuned weights from Fireworks to inspect them, extend the context locally, or serve them outside the platform. There are two things you might want: the **LoRA adapter** on its own, or the **merged (base + adapter) model**.
+You can download your trained weights from Fireworks to inspect them, extend the context locally, or serve them outside the platform. There are two things you might want: the **LoRA adapter** on its own, or the **merged (base + adapter) model**.
 
 ### Download the LoRA adapter
 
@@ -8227,7 +8227,7 @@ See [`firectl model download`](/tools-sdks/firectl/commands/model-download) for 
 
 ### Download the merged (base + adapter) model
 
-On the platform, **the merge happens on the fly at deployment time** (live merge), so serving a fine-tuned model does not require a standalone merged file. To produce a merged copy you can run off-platform, download the base and the adapter, then merge them locally in BF16 with PEFT:
+On the platform, **the merge happens on the fly at deployment time** (live merge), so serving a trained model does not require a standalone merged file. To produce a merged copy you can run off-platform, download the base and the adapter, then merge them locally in BF16 with PEFT:
 
 1. Download the base model with `firectl model download`.
 2. Download the LoRA adapter with `firectl model download`.
@@ -8267,7 +8267,7 @@ To reproduce this locally, merge in BF16 first, then quantize the merged weights
 Three factors explain most latency gaps:
 
 1. **Unmerged adapters** — dynamic LoRA application adds compute on each request. [Live merge](#live-merge-deployment) removes this entirely.
-2. **Speculative decoding** — base deployments often use SD; fine-tuned LoRA deployments may not unless you configure a custom draft model.
+2. **Speculative decoding** — base deployments often use SD; trained LoRA deployments may not unless you configure a custom draft model.
 3. **Concurrency** — multi-LoRA overhead shows up mainly under sustained load (see below).
 
 ### Live merge vs multi-LoRA (performance)
@@ -8275,14 +8275,14 @@ Three factors explain most latency gaps:
 |                         | **Live merge**                  | **Multi-LoRA**                                      |
 | ----------------------- | ------------------------------- | --------------------------------------------------- |
 | Latency / throughput    | Matches base model              | TTFT often +10–30%; lower max throughput under load |
-| Adapter count at deploy | One fine-tune per deployment    | Many adapters on one base deployment                |
+| Adapter count at deploy | One adapter per deployment      | Many adapters on one base deployment                |
 | Best for                | Production single-model serving | A/B tests, many variants, shared GPU                |
 
 The number of adapters registered on a deployment has **little effect** on per-request performance; concurrency and merge mode matter more.
 
 ### Speculative decoding
 
-Training and deploying a **custom draft model** for your fine-tuned setup can match or beat base-model latency. Speculative decoding for fine-tuned models is an enterprise feature — contact Fireworks for access.
+Training and deploying a **custom draft model** for your trained setup can match or beat base-model latency. Speculative decoding for trained models is an enterprise feature — contact Fireworks for access.
 
 ## Troubleshooting
 
@@ -8312,7 +8312,7 @@ curl -s "https://api.fireworks.ai/v1/accounts/-/deploymentShapes/-/versions?filt
 Signs you have hit this failure mode:
 
 * No validated shape version lists your exact model version under `snapshot.base_model` (every validated version binds a **different** version of the same model family).
-* The deployment comes up serving base-model behavior instead of your fine-tune.
+* The deployment comes up serving base-model behavior instead of your adapter.
 * Loading an addon (a Tinker or other LoRA checkpoint) is rejected even though the shape you requested supports addons.
 
 **How to avoid landing on the default serving image.**
@@ -8328,8 +8328,8 @@ Signs you have hit this failure mode:
     Deployment configuration, scaling, and hardware
   </Card>
 
-  <Card title="Import Fine-Tuned Models" href="/models/uploading-custom-models#importing-fine-tuned-models" icon="upload">
-    Upload LoRA models fine-tuned outside Fireworks
+  <Card title="Import Trained Models" href="/models/uploading-custom-models#importing-trained-models" icon="upload">
+    Upload LoRA models trained outside Fireworks
   </Card>
 </CardGroup>
 
@@ -8339,7 +8339,7 @@ Source: https://docs.fireworks.ai/fine-tuning/dpo-fine-tuning
 
 Train on preferred and non-preferred response pairs using managed DPO or ORPO.
 
-Preference optimization fine-tunes models on pairs of preferred and non-preferred responses to the same prompt. Managed jobs support two objectives:
+Preference optimization trains models on pairs of preferred and non-preferred responses to the same prompt. Managed jobs support two objectives:
 
 * **DPO** compares the policy against a reference model.
 * **ORPO** combines supervised and preference objectives without a separate reference model.
@@ -8351,7 +8351,7 @@ Use either method for:
 * Improving response quality where there's no single "correct" answer
 * Teaching models to follow specific formatting or structural preferences
 
-## Fine-tuning with DPO or ORPO
+## Training with DPO or ORPO
 
 <Steps>
   <Step title="Prepare dataset">
@@ -8405,7 +8405,7 @@ Use either method for:
   </Step>
 
   <Step title="Create and upload the dataset">
-    There are a couple ways to upload the dataset to Fireworks platform for fine tuning: `firectl`, `Restful API` , `builder SDK` or `UI`.
+    There are a couple ways to upload the dataset to Fireworks platform for training: `firectl`, `Restful API` , `builder SDK` or `UI`.
 
     <Tabs>
       <Tab title="UI">
@@ -8498,47 +8498,47 @@ Use either method for:
       </Tab>
     </Tabs>
 
-    Once the job is complete, the `STATE` will be set to `JOB_STATE_COMPLETED`, and the fine-tuned model can be deployed.
+    Once the job is complete, the `STATE` will be set to `JOB_STATE_COMPLETED`, and the trained model can be deployed.
   </Step>
 
-  <Step title="Deploy the DPO fine-tuned model">
-    Once training completes, you can create a deployment to interact with the fine-tuned model. Refer to [deploying a fine-tuned model](/fine-tuning/fine-tuning-models#deploying-a-fine-tuned-model) for more details.
+  <Step title="Deploy the DPO trained model">
+    Once training completes, you can create a deployment to interact with the trained model. Refer to [deploying a trained model](/fine-tuning/fine-tuning-models#deploying-a-trained-model) for more details.
   </Step>
 </Steps>
 
 ## Next Steps
 
-Explore other fine-tuning methods to improve model output for different use cases.
+Explore other training methods to improve model output for different use cases.
 
 <CardGroup>
-  <Card title="Supervised Fine Tuning - Text" icon="message" href="/fine-tuning/fine-tuning-models">
+  <Card title="Supervised Fine-Tuning - Text" icon="message" href="/fine-tuning/fine-tuning-models">
     Train models on input-output examples to improve task-specific performance.
   </Card>
 
-  <Card title="Reinforcement Fine Tuning" icon="brain" href="/fine-tuning/reinforcement-fine-tuning-models">
+  <Card title="Reinforcement Fine-Tuning" icon="brain" href="/fine-tuning/reinforcement-fine-tuning-models">
     Optimize models using AI feedback for complex reasoning and decision-making.
   </Card>
 
-  <Card title="Supervised Fine Tuning - Vision" icon="eye" href="/fine-tuning/fine-tuning-models#vision-fine-tuning">
-    Fine-tune vision-language models to understand both images and text.
+  <Card title="Supervised Fine-Tuning - Vision" icon="eye" href="/fine-tuning/fine-tuning-models#vision-training">
+    Train vision-language models to understand both images and text.
   </Card>
 </CardGroup>
 
 
-# Evaluating Fine Tuned Models
+# Evaluating Trained Models
 Source: https://docs.fireworks.ai/fine-tuning/evaluating-fine-tuned-models
 
-Run training evals on a fine-tuned adapter before you create a production deployment.
+Run training evals on a trained adapter before you create a production deployment.
 
 After training, run evals on the adapter before you create a production deployment. The preemptible deployment on this page is for **training evals only**. It is not a production serving setup, and Fireworks does not offer serverless LoRA inference for a customer fine-tune.
 
 <Warning>
-  Do not send production traffic through a preemptible deployment. For production serving after eval, create an on-demand deployment. See [Deploying Fine Tuned Models](/fine-tuning/deploying-loras).
+  Do not send production traffic through a preemptible deployment. For production serving after eval, create an on-demand deployment. See [Deploying Trained Models](/fine-tuning/deploying-loras).
 </Warning>
 
 ## Preemptible deployment
 
-If you want to eval a fine-tuned model without holding dedicated on-demand capacity, create a **preemptible deployment**. It borrows idle reserved GPU capacity instead of reserving GPUs exclusively for you.
+If you want to eval a trained model without holding dedicated on-demand capacity, create a **preemptible deployment**. It borrows idle reserved GPU capacity instead of reserving GPUs exclusively for you.
 
 It can be reclaimed (preempted) at any time. Fireworks does not guarantee how many GPUs are available or how long the deployment stays up, but in practice it typically lasts long enough to finish a training eval.
 
@@ -8575,7 +8575,7 @@ firectl deployment create accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID> \
 
 Replace the placeholders:
 
-* `<FINE_TUNED_MODEL_ID>`: the fine-tuned model to eval, not a base model.
+* `<FINE_TUNED_MODEL_ID>`: the trained model to eval, not a base model.
 * `<YOUR_DEPLOYMENT_ID>` / `<YOUR_DISPLAY_NAME>`: a name of your choice for the eval deployment.
 * `<DEPLOYMENT_SHAPE>`: the deployment shape to use for that model.
 
@@ -8594,7 +8594,7 @@ firectl deployment create accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID> \
 
 ### Run the eval and tear down
 
-Check that the deployment is ready, then send eval requests to the fine-tuned model:
+Check that the deployment is ready, then send eval requests to the trained model:
 
 ```bash theme={null}
 firectl deployment get <YOUR_DEPLOYMENT_ID> -a <ACCOUNT_ID>
@@ -8624,26 +8624,26 @@ firectl deployment delete <YOUR_DEPLOYMENT_ID> -a <ACCOUNT_ID>
 ## Next steps
 
 <CardGroup>
-  <Card title="Deploying Fine Tuned Models" href="/fine-tuning/deploying-loras" icon="rocket">
+  <Card title="Deploying Trained Models" href="/fine-tuning/deploying-loras" icon="rocket">
     Live merge or multi-LoRA for production serving
   </Card>
 </CardGroup>
 
 
-# Supervised Fine Tuning - Text
+# Supervised Fine-Tuning - Text
 Source: https://docs.fireworks.ai/fine-tuning/fine-tuning-models
 
 
 
-This guide will focus on using supervised fine-tuning to fine-tune a model and deploy it to an on-demand (dedicated) deployment, which is the only supported method for serving fine-tuned models.
+This guide will focus on using supervised fine-tuning to train a model and deploy it to an on-demand (dedicated) deployment, which is the only supported method for serving trained models.
 
-For the full list of base models supported by managed fine-tuning (SFT, DPO, and RFT) and their max context lengths, see [Models](/fine-tuning/models).
+For the full list of base models supported by managed training (SFT, DPO, and RFT) and their max context lengths, see [Models](/fine-tuning/models).
 
 ## Fine-tuning a model using SFT
 
 <Steps>
-  <Step title="Confirm model support for fine-tuning">
-    You can confirm that a base model is available to fine-tune by looking for the `Tunable` tag in the model library or by using:
+  <Step title="Confirm model support for training">
+    You can confirm that a base model is available to train by looking for the `Tunable` tag in the model library or by using:
 
     ```bash theme={null}
     firectl model get -a fireworks <MODEL-ID>
@@ -8656,12 +8656,12 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     </Note>
 
     <Note>
-      Some base models cannot be tuned on Fireworks (`Tunable: false`) but still list support for LoRA (`Supports Lora: true`). This means that users can tune a LoRA for this base model on a separate platform and upload it to Fireworks for inference. Consult [importing fine-tuned models](/models/uploading-custom-models#importing-fine-tuned-models) for more information.
+      Some base models cannot be tuned on Fireworks (`Tunable: false`) but still list support for LoRA (`Supports Lora: true`). This means that users can tune a LoRA for this base model on a separate platform and upload it to Fireworks for inference. Consult [importing trained models](/models/uploading-custom-models#importing-trained-models) for more information.
     </Note>
   </Step>
 
   <Step title="Prepare a dataset">
-    Fireworks uses the **OpenAI-compatible chat completion format** for SFT training data. If you already have datasets formatted for OpenAI fine-tuning, they work on Fireworks with no changes needed.
+    Fireworks uses the **OpenAI-compatible chat completion format** for SFT training data. If you already have datasets formatted for OpenAI training, they work on Fireworks with no changes needed.
 
     Datasets must be in JSONL format, where each line represents a complete JSON-formatted training example. Make sure your data conforms to the following restrictions:
 
@@ -8696,7 +8696,7 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
 
     #### OpenAI-style structured content
 
-    In addition to plain strings, `content` may also be a list of content parts following the OpenAI chat completions format. For text fine-tuning, use `{"type": "text", "text": "..."}` parts. This is convenient if you already produce data in the OpenAI chat completions shape, or if you generate datasets with the OpenAI SDK. The string form and the list form are equivalent for text models, and you can mix them within the same file (and even within the same conversation):
+    In addition to plain strings, `content` may also be a list of content parts following the OpenAI chat completions format. For text training, use `{"type": "text", "text": "..."}` parts. This is convenient if you already produce data in the OpenAI chat completions shape, or if you generate datasets with the OpenAI SDK. The string form and the list form are equivalent for text models, and you can mix them within the same file (and even within the same conversation):
 
     ```json theme={null}
     {"messages": [{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": [{"type": "text", "text": "What is the capital of France?"}]}, {"role": "assistant", "content": [{"type": "text", "text": "Paris."}]}]}
@@ -8705,7 +8705,7 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     ```
 
     <Note>
-      All keys you can use with the string form — including the per-message `weight` and `reasoning_content` — work the same way with the list form. When a single message contains multiple text parts (as in the third example above), the parts are concatenated when the chat template is applied. For text-only fine-tuning, only `{"type": "text", ...}` parts are used; image parts are reserved for [vision fine-tuning](/fine-tuning/fine-tuning-models#vision-fine-tuning).
+      All keys you can use with the string form — including the per-message `weight` and `reasoning_content` — work the same way with the list form. When a single message contains multiple text parts (as in the third example above), the parts are concatenated when the chat template is applied. For text-only training, only `{"type": "text", ...}` parts are used; image parts are reserved for [vision training](/fine-tuning/fine-tuning-models#vision-training).
     </Note>
 
     Here is an example conversation dataset with sample weights:
@@ -8795,13 +8795,13 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
 
     How earlier thinking appears in later training contexts depends on the base model and its thinking-history mode. This is separate from enabling or disabling thinking generation. Some models offer both Interleaved and Preserved history, some have one fixed mode, and DeepSeek V4 derives its behavior from whether each dataset row declares tools.
 
-    <Card title="Thinking history in fine-tuning" icon="brain" href="/fine-tuning/thinking-history">
+    <Card title="Thinking history in training" icon="brain" href="/fine-tuning/thinking-history">
       Compare every supported model, understand per-user-turn unrolling, configure the job field, and preview what the trainer will see.
     </Card>
   </Step>
 
   <Step title="Create and upload a dataset">
-    There are a couple ways to upload the dataset to Fireworks platform for fine tuning: `firectl`, `Restful API` , `builder SDK` or `UI`.
+    There are a couple ways to upload the dataset to Fireworks platform for training: `firectl`, `Restful API` , `builder SDK` or `UI`.
 
     <Tabs>
       <Tab title="UI">
@@ -8854,20 +8854,20 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     Ensure the dataset ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids).
   </Step>
 
-  <Step title="Launch a fine-tuning job">
-    There are also a couple ways to launch the fine-tuning jobs. We highly recommend creating supervised fine tuning jobs via `UI` .
+  <Step title="Launch a training job">
+    There are also a couple ways to launch the training jobs. We highly recommend creating supervised fine-tuning jobs via `UI` .
 
     <Tabs>
       <Tab title="UI">
-        Simply navigate to the `Fine-Tuning` tab, click `Fine-Tune a Model` and follow the wizard from there. You can even pick a LoRA model to start the fine-tuning for continued training.
+        Simply navigate to the `Fine-Tuning` tab, click `Fine-Tune a Model` and follow the wizard from there. You can even pick a LoRA model to start the training for continued training.
 
-        <img alt="Fine Tuning Pn" />
+        <img alt="Training Pn" />
 
         <img alt="Create Sftj Pn" />
       </Tab>
 
       <Tab title="firectl">
-        Ensure the fine tuned model ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids). This will return a fine-tuning job ID. For a full explanation of the settings available to control the fine-tuning process, including learning rate and epochs, consult [additional managed fine-tuning job settings](#additional-managed-fine-tuning-job-settings).
+        Ensure the trained model ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids). This will return a training job ID. For a full explanation of the settings available to control the training process, including learning rate and epochs, consult [additional managed training job settings](#additional-managed-training-job-settings).
 
         ```bash theme={null}
         firectl sftj create --base-model <MODEL_ID> --dataset <DATASET_ID> --output-model <FINE_TUNED_MODEL_ID>
@@ -8890,7 +8890,7 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     <img alt="Sftj Details Pn" />
 
     <Tip>
-      If the fine-tuned model appears to learn the wrong text or ignore the expected assistant response, use **Render Samples** on the job details page to inspect the rendered token IDs and loss masks. See [Debug SFT tokenization](/fine-tuning/fine-tuning-models#debug-sft-tokenization).
+      If the trained model appears to learn the wrong text or ignore the expected assistant response, use **Render Samples** on the job details page to inspect the rendered token IDs and loss masks. See [Debug SFT tokenization](/fine-tuning/fine-tuning-models#debug-sft-tokenization).
     </Tip>
 
     With `firectl`, you can monitor the progress of the tuning job by running
@@ -8914,9 +8914,9 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
   example](https://github.com/fw-ai-external/python-sdk/blob/main/examples/sftj_workflow.py).
 </Tip>
 
-## Deploying a fine-tuned model
+## Deploying a trained model
 
-After fine-tuning completes, [evaluate the model](/fine-tuning/evaluating-fine-tuned-models) before you hold dedicated capacity for production serving.
+After training completes, [evaluate the model](/fine-tuning/evaluating-fine-tuned-models) before you hold dedicated capacity for production serving.
 
 To deploy for inference:
 
@@ -8927,18 +8927,18 @@ firectl deployment create <FINE_TUNED_MODEL_ID>
 This creates a dedicated deployment with performance matching the base model.
 
 <Tip>
-  For more details on deploying fine-tuned models, including multi-LoRA
-  deployments, see the [Deploying Fine Tuned Models
+  For more details on deploying trained models, including multi-LoRA
+  deployments, see the [Deploying Trained Models
   guide](/fine-tuning/deploying-loras).
 </Tip>
 
-## Additional managed fine-tuning job settings
+## Additional managed training job settings
 
 Additional tuning settings are available when starting an SFT or preference (DPO/ORPO) job. All of the settings below are optional and have reasonable defaults. For settings that affect tuning quality, such as `epochs` and `learning_rate`, use the defaults first and change them only when the results indicate a clear need. Examples use SFT unless otherwise noted.
 
 <AccordionGroup>
   <Accordion title="Evaluation">
-    By default, the fine-tuning job will run evaluation by running the fine-tuned model against an evaluation set that's created by automatically carving out a portion of your training set. You have the option to explicitly specify a separate evaluation dataset to use instead of carving out training data.
+    By default, the training job will run evaluation by running the trained model against an evaluation set that's created by automatically carving out a portion of your training set. You have the option to explicitly specify a separate evaluation dataset to use instead of carving out training data.
 
     `evaluation_dataset`: The ID of a separate dataset to use for evaluation. Must be pre-uploaded via firectl
 
@@ -9068,7 +9068,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
   </Accordion>
 
   <Accordion title="Training progress and monitoring">
-    The fine-tuning service integrates with Weights & Biases to provide observability into the tuning process. To use this feature, you must have a Weights & Biases account and have provisioned an API key.
+    The training service integrates with Weights & Biases to provide observability into the tuning process. To use this feature, you must have a Weights & Biases account and have provisioned an API key.
 
     ```shell theme={null}
     firectl sftj create \
@@ -9082,7 +9082,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
   </Accordion>
 
   <Accordion title="Model ID">
-    By default, the fine-tuning job will generate a random unique ID for the model. This ID is used to refer to the model at inference time. You can optionally specify a custom ID, within [ID constraints](/getting-started/concepts#resource-names-and-ids).
+    By default, the training job will generate a random unique ID for the model. This ID is used to refer to the model at inference time. You can optionally specify a custom ID, within [ID constraints](/getting-started/concepts#resource-names-and-ids).
 
     ```shell theme={null}
     firectl sftj create \
@@ -9093,7 +9093,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
   </Accordion>
 
   <Accordion title="Job ID">
-    By default, the fine-tuning job will generate a random unique ID for the fine-tuning job. You can optionally choose a custom ID.
+    By default, the training job will generate a random unique ID for the training job. You can optionally choose a custom ID.
 
     ```shell theme={null}
     firectl sftj create \
@@ -9124,7 +9124,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 
 <Warning>
   These parameters are deprecated. Do not include them in new managed
-  fine-tuning requests. The wire fields remain present so existing resources can
+  training requests. The wire fields remain present so existing resources can
   still be read, but Training V2 rejects or ignores non-default values as
   described below.
 </Warning>
@@ -9147,7 +9147,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 * `firectl` [references](/tools-sdks/firectl/firectl)
 * [Complete Python SDK workflow example](https://github.com/fw-ai-external/python-sdk/blob/main/examples/sftj_workflow.py) for a code-only implementation
 
-## Vision fine-tuning
+## Vision training
 
 Vision-language SFT uses the same managed job flow as text SFT with multimodal content in `messages`. Confirm VLM support and training shapes in the live [Models](/fine-tuning/models) matrix because modality, method, and shape eligibility are model-specific.
 
@@ -9200,15 +9200,15 @@ Common fix: ensure assistant messages you intend to train have non-zero loss wei
 
 ### Common findings
 
-| What you see                                        | Likely cause                                                                                                                                                                                                                         | What to do                                                                                                                                                   |
-| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Assistant answer tokens have `token_weights` of `0` | The assistant message has `weight: 0`, the sample has zero weight, or the job is configured to train on different content.                                                                                                           | Check the original JSONL row and remove unintended weights.                                                                                                  |
-| User or system tokens have positive `token_weights` | The row schema or training configuration is not representing roles as intended.                                                                                                                                                      | Verify every message has the correct `role`, and avoid putting assistant text in a `user` message.                                                           |
-| Expected text is missing from `decoded_tokens`      | The source row may have been split, truncated, or rendered differently by the model chat template.                                                                                                                                   | Check `split_index`, source line number, and the job's max context length.                                                                                   |
-| Extra special tokens appear around messages         | The selected model renderer is adding chat template markers.                                                                                                                                                                         | This is often expected. If the markers are wrong for your use case, check that the base model and dataset format match.                                      |
-| Thinking traces missing from conversation history   | The job's thinking-history mode and model renderer decide whether earlier turns' `reasoning_content` is retained. Interleaved removes thinking across user-turn boundaries; Preserved retains it. Datum unrolling is model-specific. | Compare the available modes in the render preview, then verify the created job's mode. See [Thinking history in fine-tuning](/fine-tuning/thinking-history). |
-| Token boundaries look surprising                    | Many tokenizers encode whitespace, Unicode, and byte fallback pieces in non-obvious ways.                                                                                                                                            | Compare with the same Hugging Face tokenizer using `skip_special_tokens=False`.                                                                              |
-| The Render Samples row is missing                   | The job may predate this feature, may have failed before rendering, or may not have captured samples.                                                                                                                                | Create a new supervised fine-tuning job, or contact support with the job ID if the job should have rendered samples.                                         |
+| What you see                                        | Likely cause                                                                                                                                                                                                                         | What to do                                                                                                                                                |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Assistant answer tokens have `token_weights` of `0` | The assistant message has `weight: 0`, the sample has zero weight, or the job is configured to train on different content.                                                                                                           | Check the original JSONL row and remove unintended weights.                                                                                               |
+| User or system tokens have positive `token_weights` | The row schema or training configuration is not representing roles as intended.                                                                                                                                                      | Verify every message has the correct `role`, and avoid putting assistant text in a `user` message.                                                        |
+| Expected text is missing from `decoded_tokens`      | The source row may have been split, truncated, or rendered differently by the model chat template.                                                                                                                                   | Check `split_index`, source line number, and the job's max context length.                                                                                |
+| Extra special tokens appear around messages         | The selected model renderer is adding chat template markers.                                                                                                                                                                         | This is often expected. If the markers are wrong for your use case, check that the base model and dataset format match.                                   |
+| Thinking traces missing from conversation history   | The job's thinking-history mode and model renderer decide whether earlier turns' `reasoning_content` is retained. Interleaved removes thinking across user-turn boundaries; Preserved retains it. Datum unrolling is model-specific. | Compare the available modes in the render preview, then verify the created job's mode. See [Thinking history in training](/fine-tuning/thinking-history). |
+| Token boundaries look surprising                    | Many tokenizers encode whitespace, Unicode, and byte fallback pieces in non-obvious ways.                                                                                                                                            | Compare with the same Hugging Face tokenizer using `skip_special_tokens=False`.                                                                           |
+| The Render Samples row is missing                   | The job may predate this feature, may have failed before rendering, or may not have captured samples.                                                                                                                                | Create a new supervised fine-tuning job, or contact support with the job ID if the job should have rendered samples.                                      |
 
 
 # Training Overview
@@ -9216,9 +9216,9 @@ Source: https://docs.fireworks.ai/fine-tuning/finetuning-intro
 
 
 
-Fine-tuning adapts a base model to your task by training it on your own data, so it learns your formats, tone, tools, and edge cases instead of relying on prompt instructions alone. Fireworks runs the training for you, without the burden of building and maintaining your own GPU or training infrastructure.
+Training adapts a base model to your task by training it on your own data, so it learns your formats, tone, tools, and edge cases instead of relying on prompt instructions alone. Fireworks runs the training for you, without the burden of building and maintaining your own GPU or training infrastructure.
 
-Fine-tuning is worth it when you want:
+Training is worth it when you want:
 
 * **Higher task quality** - beat a general-purpose model on your specific workload, and often match or exceed a larger closed model.
 * **Lower latency and cost** - a smaller specialized model can replace a bigger one at a fraction of the per-token cost.
@@ -9231,21 +9231,21 @@ Fine-tuning is worth it when you want:
 
 ## Choose a method
 
-Pick a method based on the data or signal you have. All three run as standard jobs on [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro), or as custom loops you write yourself on the [Training API](/fine-tuning/training-api/introduction).
+Pick a method based on the data or signal you have. All three run as standard jobs on [Managed Training](/fine-tuning/managed-finetuning-intro), or as custom loops you write yourself on the [Training API](/fine-tuning/training-api/introduction).
 
-|                              | SFT                                                                                                                                                         | DPO                                                                                                         | RL                                                                                                                                                     |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Good for**                 | Classification, extraction, format and tone adherence, distillation                                                                                         | Steering the model toward a goal you cannot measure objectively, such as style, helpfulness, or safety      | Tasks where you have no verified outputs to learn from, but you can tell whether an outcome was good or bad. Pushing the model beyond state-of-the-art |
-| **Data you supply**          | Verified input/output pairs, or successful trajectories                                                                                                     | Preference pairs, single-turn only: one prompt, a chosen and a rejected response                            | Prompts, plus an evaluator that can tell a good outcome from a bad one                                                                                 |
-| **Dataset size**             | Hundreds of examples, or roughly 10M+ tokens                                                                                                                | Hundreds to thousands of pairs                                                                              | Dozens to thousands of prompts, sometimes more. Often fewer than 100 is enough                                                                         |
-| **Consider alternatives if** | You have very few examples, or no high-quality verified outputs to learn from                                                                               | Outputs can be judged objectively, or you already have high-quality verified pairs. Both point to SFT or RL | You have no way at all to judge an outcome, including an LLM judge. Simpler methods are untried, or you want a quick fine-tuning experiment            |
-| **Guides**                   | [Text](/fine-tuning/fine-tuning-models) · [Vision](/fine-tuning/fine-tuning-models#vision-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/sft) | [Managed DPO / ORPO](/fine-tuning/dpo-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/dpo)     | [Managed RFT](/fine-tuning/reinforcement-fine-tuning-models) · [Cookbook](/fine-tuning/training-api/cookbook/rl)                                       |
+|                              | SFT                                                                                                                                                      | DPO                                                                                                         | RL                                                                                                                                                     |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Good for**                 | Classification, extraction, format and tone adherence, distillation                                                                                      | Steering the model toward a goal you cannot measure objectively, such as style, helpfulness, or safety      | Tasks where you have no verified outputs to learn from, but you can tell whether an outcome was good or bad. Pushing the model beyond state-of-the-art |
+| **Data you supply**          | Verified input/output pairs, or successful trajectories                                                                                                  | Preference pairs, single-turn only: one prompt, a chosen and a rejected response                            | Prompts, plus an evaluator that can tell a good outcome from a bad one                                                                                 |
+| **Dataset size**             | Hundreds of examples, or roughly 10M+ tokens                                                                                                             | Hundreds to thousands of pairs                                                                              | Dozens to thousands of prompts, sometimes more. Often fewer than 100 is enough                                                                         |
+| **Consider alternatives if** | You have very few examples, or no high-quality verified outputs to learn from                                                                            | Outputs can be judged objectively, or you already have high-quality verified pairs. Both point to SFT or RL | You have no way at all to judge an outcome, including an LLM judge. Simpler methods are untried, or you want a quick training experiment               |
+| **Guides**                   | [Text](/fine-tuning/fine-tuning-models) · [Vision](/fine-tuning/fine-tuning-models#vision-training) · [Cookbook](/fine-tuning/training-api/cookbook/sft) | [Managed DPO / ORPO](/fine-tuning/dpo-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/dpo)     | [Managed RFT](/fine-tuning/reinforcement-fine-tuning-models) · [Cookbook](/fine-tuning/training-api/cookbook/rl)                                       |
 
 <Tip>
   **Verifiable** means you can reliably judge whether a model output is good (rules, unit tests, programmatic checks). RL fits reasoning and agentic tasks where full ground-truth labels are hard to write.
 </Tip>
 
-The Training API also supports custom methods (GRPO, distillation, and others) via the Python SDK. See [Cookbook recipes](/fine-tuning/training-api/cookbook/overview) and [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro) for model support and pricing.
+The Training API also supports custom methods (GRPO, distillation, and others) via the Python SDK. See [Cookbook recipes](/fine-tuning/training-api/cookbook/overview) and [Managed Training](/fine-tuning/managed-finetuning-intro) for model support and pricing.
 
 ## Choose a surface
 
@@ -9257,18 +9257,18 @@ Answer the question below and the flow takes you to your surface, which links to
 
 Compare the last branch in detail on [serverless versus dedicated](/fine-tuning/training-api/introduction#infrastructure), and check per-model support on [Models](/fine-tuning/models).
 
-### Managed Fine-Tuning vs Training API
+### Managed Training vs Training API
 
-Fireworks offers two ways to train: **Managed Fine-Tuning** (Fireworks runs the loop) and the **Training API** (you write the loop in Python).
+Fireworks offers two ways to train: **Managed Training** (Fireworks runs the loop) and the **Training API** (you write the loop in Python).
 
-| Choose Managed Fine-Tuning when                                   | Choose the Training API when                                                               |
+| Choose Managed Training when                                      | Choose the Training API when                                                               |
 | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | You need a standard SFT, DPO, ORPO, or RFT job                    | You need a custom loss, reward, rollout, trajectory, or optimizer-step loop                |
 | You want Fireworks to own scheduling, training, and checkpointing | You want to fork or write Python training logic                                            |
 | A supported model and managed configuration cover the task        | You need inference in the loop, distillation, per-step diagnostics, or research algorithms |
 
 <CardGroup>
-  <Card title="Managed Fine-Tuning" icon="wand-magic-sparkles" href="/fine-tuning/managed-finetuning-intro">
+  <Card title="Managed Training" icon="wand-magic-sparkles" href="/fine-tuning/managed-finetuning-intro">
     Standard jobs with a platform-managed loop.
   </Card>
 
@@ -9279,7 +9279,7 @@ Fireworks offers two ways to train: **Managed Fine-Tuning** (Fireworks runs the 
 
 ### Serverless vs Dedicated infrastructure
 
-Infrastructure applies to the **Training API** only. Managed Fine-Tuning uses platform-managed compute.
+Infrastructure applies to the **Training API** only. Managed Training uses platform-managed compute.
 
 | Choose Serverless Training when                                                   | Choose Dedicated Training when                                                     |
 | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
@@ -9375,10 +9375,10 @@ For RFT under strict governance, combine a [BYOB](#dataset-storage-byob) dataset
 Verify current model support, shapes, access status, pricing, limits, and quota in the linked live pages. A coding agent asks for confirmation before upload, registration, paid inference, job creation, promotion, deployment, or another mutation. Material changes require approval again; promotion and deployment are confirmed separately.
 
 
-# Managed Fine-Tuning Overview
+# Managed Training Overview
 Source: https://docs.fireworks.ai/fine-tuning/managed-finetuning-intro
 
-Fine-tune models with Fireworks-managed infrastructure — no custom code required.
+Train models with Fireworks-managed infrastructure — no custom code required.
 
 Give Fireworks your data and configuration. The platform handles scheduling, training, checkpointing, and model output. Training data uses the **OpenAI-compatible chat completion format**, so existing OpenAI SFT datasets work with no conversion required.
 
@@ -9412,17 +9412,17 @@ The Fireworks CLI is called `firectl`. [Install the training skill](/fine-tuning
 
 ## Supported base models
 
-Fireworks supports fine-tuning for major open source model families, including DeepSeek, Qwen, Kimi, Gemma, GLM, and Llama. Eligibility is decided per model and per method: a model can support SFT without supporting DPO or RFT.
+Fireworks supports training for major open source model families, including DeepSeek, Qwen, Kimi, Gemma, GLM, and Llama. Eligibility is decided per model and per method: a model can support SFT without supporting DPO or RFT.
 
 [**Models**](/fine-tuning/models) is the live per-model matrix: the surfaces and methods each base model is enabled for, the training shapes behind it, and each shape's maximum context length. Check it before creating a job, and set the job context from a shape that supports the method you picked, using `firectl sftj create`, `firectl dpo-job create`, or the corresponding RFT command.
 
-Custom models uploaded by users are not automatically tunable. To use managed fine-tuning with an uploaded custom base model, the model must have a corresponding Hugging Face URL. Fireworks uses that URL to infer the training renderer and locate compatible training shapes. A custom model is supported only when Fireworks can resolve both a supported renderer and at least one compatible training shape. After the Hugging Face URL is set, tunability is refreshed by a background operation that runs about every 30 minutes, so the model may take up to 30 minutes to show as `Tunable: true`. We are working to make this refresh faster.
+Custom models uploaded by users are not automatically tunable. To use managed training with an uploaded custom base model, the model must have a corresponding Hugging Face URL. Fireworks uses that URL to infer the training renderer and locate compatible training shapes. A custom model is supported only when Fireworks can resolve both a supported renderer and at least one compatible training shape. After the Hugging Face URL is set, tunability is refreshed by a background operation that runs about every 30 minutes, so the model may take up to 30 minutes to show as `Tunable: true`. We are working to make this refresh faster.
 
 To browse the broader catalog (including non-tunable inference models), visit the [Model Library for text models](https://app.fireworks.ai/models?filter=LLM\&tunable=true) or [vision models](https://app.fireworks.ai/models?filter=vision\&tunable=true).
 
 ## Tuning modes and context length
 
-Managed fine-tuning runs **[Low-Rank Adaptation (LoRA)](https://arxiv.org/abs/2106.09685)** only. It supports the full context lengths exposed by the available training shapes, matching the same long-context capabilities used by cookbook recipes.
+Managed training runs **[Low-Rank Adaptation (LoRA)](https://arxiv.org/abs/2106.09685)** only. It supports the full context lengths exposed by the available training shapes, matching the same long-context capabilities used by cookbook recipes.
 
 LoRA gives you efficient adapter training and flexible deployment, including [multiple LoRAs](/fine-tuning/deploying-loras#multi-lora-deployment) on a single base model deployment. For full-parameter tuning, use the [Training API](/fine-tuning/training-api/introduction).
 
@@ -9436,7 +9436,7 @@ Source: https://docs.fireworks.ai/fine-tuning/models
 
 Which base models you can train on Fireworks and the surfaces each one is available on.
 
-Managed fine-tuning, the Training API, and serverless training all draw from the same base model catalog, but availability is decided per model: managed jobs by method (SFT, DPO, RFT), Training API jobs by parameter mode (LoRA or full-parameter).
+Managed training, the Training API, and serverless training all draw from the same base model catalog, but availability is decided per model: managed jobs by method (SFT, DPO, RFT), Training API jobs by parameter mode (LoRA or full-parameter).
 
 ## Model availability
 
@@ -9448,14 +9448,14 @@ Pick a model to see the surfaces and methods it is enabled for, plus any trainin
 
 Vision support is model- and surface-specific. Use the catalog above to confirm that the selected VLM has a compatible managed method or Training API shape before preparing data.
 
-* Managed VLM SFT dataset schema and launch flow: [Supervised Fine-Tuning: Vision](/fine-tuning/fine-tuning-models#vision-fine-tuning)
+* Managed VLM SFT dataset schema and launch flow: [Supervised Fine-Tuning: Vision](/fine-tuning/fine-tuning-models#vision-training)
 * Training API VLM loops: start from a VLM-compatible shape and the same cookbook SFT, DPO, or RL recipe used for text, replacing the text tokenizer with the model processor
 * Inference request formats after deployment: [Vision-language models](/guides/querying-vision-language-models)
 
 ## Next steps
 
 <CardGroup>
-  <Card title="Managed Fine-Tuning" href="/fine-tuning/managed-finetuning-intro" icon="wand-magic-sparkles">
+  <Card title="Managed Training" href="/fine-tuning/managed-finetuning-intro" icon="wand-magic-sparkles">
     Hand Fireworks your data and let the platform run the job
   </Card>
 
@@ -10144,7 +10144,7 @@ You can inspect individual rollouts to see the dramatic improvement in SVG gener
 
 <img alt="SVG Generation - After Training" />
 
-The reinforcement fine tuning process significantly improves the model's ability to generate accurate, detailed SVG graphics that better match the input descriptions.
+The reinforcement fine-tuning process significantly improves the model's ability to generate accurate, detailed SVG graphics that better match the input descriptions.
 
 ## Debugging Tips
 
@@ -10946,10 +10946,10 @@ Detailed scope mismatch, checkpoint retention, promotion, and recovery procedure
 </Note>
 
 
-# Thinking history in fine-tuning
+# Thinking history in training
 Source: https://docs.fireworks.ai/fine-tuning/thinking-history
 
-Choose how historical reasoning is rendered for managed fine-tuning and match training behavior to inference.
+Choose how historical reasoning is rendered for managed training and match training behavior to inference.
 
 Thinking models can store an assistant turn's reasoning in `reasoning_content`. A thinking-history mode controls whether that existing reasoning remains visible in the context of later turns.
 
@@ -10960,7 +10960,7 @@ This setting does **not** enable or disable thinking generation. It only control
 * **Interleaved** removes thinking across user-turn boundaries while retaining the complete assistant → tool → assistant trajectory for the current user turn.
 * **Preserved** retains thinking across user turns.
 
-These names align with the serving API's `reasoning_history="interleaved"` and `reasoning_history="preserved"` behaviors. Choose the mode that matches how you will replay reasoning history when serving the fine-tuned model.
+These names align with the serving API's `reasoning_history="interleaved"` and `reasoning_history="preserved"` behaviors. Choose the mode that matches how you will replay reasoning history when serving the trained model.
 
 <Warning>
   Do not interpret Interleaved as "keep only the final assistant's thinking." The boundary is the last real user query. If one user turn contains an assistant tool call, a tool result, and another assistant response, thinking from both assistant messages stays in that turn's trajectory.
@@ -11635,11 +11635,11 @@ main(cfg)
 
 ## Vision-language model support
 
-All cookbook recipes support VLM fine-tuning. Use a VLM training shape and tokenizer, and provide multimodal datasets with `image_url` content. See [Vision Inputs](/fine-tuning/models) for dataset format and examples.
+All cookbook recipes support VLM training. Use a VLM training shape and tokenizer, and provide multimodal datasets with `image_url` content. See [Vision Inputs](/fine-tuning/models) for dataset format and examples.
 
 ## Embedding loop
 
-The [`embedding_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/embedding_loop.py) recipe fine-tunes embedding models with contrastive or supervised embedding objectives. Use it when your base model is an embedding endpoint rather than a chat completion model.
+The [`embedding_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/embedding_loop.py) recipe trains embedding models with contrastive or supervised embedding objectives. Use it when your base model is an embedding endpoint rather than a chat completion model.
 
 ## Next steps
 
@@ -11648,7 +11648,7 @@ The [`embedding_loop`](https://github.com/fw-ai/cookbook/blob/main/training/reci
 * [Cookbook RL (GRPO)](/fine-tuning/training-api/cookbook/rl) — full GRPO walkthrough with reward functions
 * [Cookbook Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl) — multi-turn trajectory, token ancestry, and session design
 * [Cookbook Distillation](/fine-tuning/training-api/cookbook/distillation) — OPD, routed MOPD, and top-K SDFT
-* [Vision Inputs](/fine-tuning/models) — fine-tune VLMs with image and text data
+* [Vision Inputs](/fine-tuning/models) — train VLMs with image and text data
 * [Cookbook Reference](/fine-tuning/training-api/cookbook/reference) — all config classes and parameters
 
 
@@ -12127,7 +12127,7 @@ The recipe automatically tokenizes conversations using the chat template, settin
 
 ### Vision datasets
 
-The SFT recipe also supports vision-language model fine-tuning. Use multimodal `content` arrays with `image_url` objects in your JSONL, and specify a VLM training shape and tokenizer. See [Vision Inputs](/fine-tuning/models) for dataset format details and a full walkthrough.
+The SFT recipe also supports vision-language model training. Use multimodal `content` arrays with `image_url` objects in your JSONL, and specify a VLM training shape and tokenizer. See [Vision Inputs](/fine-tuning/models) for dataset format details and a full walkthrough.
 
 ## Checkpointing and resume
 
@@ -12166,7 +12166,7 @@ main(cfg)
 
 ## Related guides
 
-* [Vision Inputs](/fine-tuning/models) — VLM fine-tuning with image and text data
+* [Vision Inputs](/fine-tuning/models) — VLM training with image and text data
 * [Cookbook DPO](/fine-tuning/training-api/cookbook/dpo) — preference optimization
 * [Cookbook RL (GRPO)](/fine-tuning/training-api/cookbook/rl) — reinforcement learning recipes
 * [Cookbook Reference](/fine-tuning/training-api/cookbook/reference) — all config classes and parameters
@@ -12638,7 +12638,7 @@ See the [Price comparison vs Tinker](/fine-tuning/multi-turn-cost-comparison) ca
 * [Dedicated Training](/fine-tuning/training-api/dedicated) — provisioned trainer and deployment lifecycle
 * [Dedicated Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling) — deployment-sampling lifecycle
 * [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) — built-in and custom loss functions
-* [Vision Inputs](/fine-tuning/models) — fine-tune vision-language models with image and text data
+* [Vision Inputs](/fine-tuning/models) — train vision-language models with image and text data
 * [The Cookbook](/fine-tuning/training-api/cookbook/overview) — ready-to-run recipes for SFT, DPO, ORPO, GRPO/IGPO, and async RL (experimental)
 
 
@@ -14181,7 +14181,7 @@ for step in range(total_steps):
 # Serverless Training
 Source: https://docs.fireworks.ai/fine-tuning/training-api/serverless
 
-Run LoRA fine-tuning, preference optimization, and RL on a shared pooled trainer, with no provisioning and per-token pricing.
+Run LoRA training, preference optimization, and RL on a shared pooled trainer, with no provisioning and per-token pricing.
 
 <Info>
   Serverless training is currently in **private preview** and access is gated per account. [Request access](https://fireworks.ai/contact-training) and select "Serverless Training API."
@@ -14257,7 +14257,7 @@ You do not create or delete a trainer job or inference deployment. Close each sa
   </Card>
 </CardGroup>
 
-All three run as LoRA on the shared pool. For full-parameter training, ORPO, distillation, or the broader Training API method set, use [Dedicated Training](/fine-tuning/training-api/dedicated). For standard platform-managed jobs, use [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro).
+All three run as LoRA on the shared pool. For full-parameter training, ORPO, distillation, or the broader Training API method set, use [Dedicated Training](/fine-tuning/training-api/dedicated). For standard platform-managed jobs, use [Managed Training](/fine-tuning/managed-finetuning-intro).
 
 ## When to use dedicated
 
@@ -14512,7 +14512,7 @@ Promotion turns a **sampler checkpoint** into a deployable Fireworks model (a st
     )
     ```
 
-    `output_model_id` must be 1-63 characters of lowercase a-z, 0-9, and hyphens. The promoted model appears in your account's model list like any other fine-tuned model.
+    `output_model_id` must be 1-63 characters of lowercase a-z, 0-9, and hyphens. The promoted model appears in your account's model list like any other trained model.
   </Step>
 </Steps>
 
@@ -14522,10 +14522,10 @@ Promotion turns a **sampler checkpoint** into a deployable Fireworks model (a st
 
 ### Deploy the promoted model to production
 
-A promoted model deploys like any LoRA model fine-tuned on Fireworks: with **live merge**, Fireworks merges the adapter into the base weights at deployment time, so the deployment performs identically to the base model.
+A promoted model deploys like any LoRA model trained on Fireworks: with **live merge**, Fireworks merges the adapter into the base weights at deployment time, so the deployment performs identically to the base model.
 
 <Warning>
-  Fine-tuned LoRA models can only be deployed to **on-demand (dedicated) deployments**. Serverless per-token serving of your own fine-tuned LoRA is not available.
+  Trained LoRA models can only be deployed to **on-demand (dedicated) deployments**. Serverless per-token serving of your own trained LoRA is not available.
 </Warning>
 
 Deploy the promoted model directly:
@@ -14546,7 +14546,7 @@ response = client.chat.completions.create(
 )
 ```
 
-For deployment configuration, performance, and troubleshooting, see [Deploying fine-tuned models](/fine-tuning/deploying-loras).
+For deployment configuration, performance, and troubleshooting, see [Deploying trained models](/fine-tuning/deploying-loras).
 
 For the full SDK-level checkpoint reference (base/delta sampler types, weight sync, and cross-job resolution), see [Dedicated Training](/fine-tuning/training-api/dedicated#saving-and-loading) and the [Cookbook Reference](/fine-tuning/training-api/cookbook/reference#checkpoints).
 
@@ -14586,11 +14586,11 @@ Serverless training bills three separate token meters, so a run's cost depends o
 
 * **Set `max_seq_len` explicitly.** Serverless has no dedicated instance to infer sequence length from.
 * **Cross-run checkpoint resume.** A training checkpoint can be resumed inside the same run (`load_state_with_optimizer`), or forked into a new run with `create_training_client_from_state` / `create_training_client_from_state_with_optimizer` using a fully qualified `<account>/<run-id>/<checkpoint-name>` reference. See [Saving and loading checkpoints](#saving-and-loading-checkpoints).
-* **Serving your trained adapter.** Sample in-session during the run. To serve afterward, [promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) and [deploy it on an on-demand dedicated deployment](#deploy-the-promoted-model-to-production); serverless per-token serving of your own fine-tuned LoRA is not available.
+* **Serving your trained adapter.** Sample in-session during the run. To serve afterward, [promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) and [deploy it on an on-demand dedicated deployment](#deploy-the-promoted-model-to-production); serverless per-token serving of your own trained LoRA is not available.
 
 ## Video walkthrough: Train a prompt router
 
-This walkthrough fine-tunes Qwen 3.5 9B with LoRA SFT to classify prompts and route them to a small or large model. It covers the local Python loop, pooled serverless trainer, in-session evaluation, and the before-and-after comparison.
+This walkthrough trains Qwen 3.5 9B with LoRA SFT to classify prompts and route them to a small or large model. It covers the local Python loop, pooled serverless trainer, in-session evaluation, and the before-and-after comparison.
 
 <Frame>
   <iframe title="Train a prompt router with Fireworks Serverless Training" />
@@ -15150,18 +15150,18 @@ A user is an email address associated with an account. Each user is assigned a r
 
 A model is a set of model weights and metadata associated with the model. Each model has a [**globally unique name**](/getting-started/concepts#resource-names-and-ids) of the form `accounts/<ACCOUNT_ID>/models/<MODEL_ID>`. There are two types of models:
 
-**Base models:** A base model consists of the full set of model weights, including models pre-trained from scratch and full fine-tunes.
+**Base models:** A base model consists of the full set of model weights, including models pre-trained from scratch and full-parameter fine-tunes.
 
 * Fireworks has a library of common base models that can be used for [**serverless inference**](/models/overview#serverless-inference) as well as [**dedicated deployments**](/models/overview#dedicated-deployments). Model IDs for these models are pre-populated. For example, `llama-v3p1-70b-instruct` is the model ID for the Llama 3.1 70B model that Fireworks provides. The ID for each model can be found on its page ([**example**](https://app.fireworks.ai/models/fireworks/qwen3-coder-480b-a35b-instruct))
 * Users can also [upload their own](/models/uploading-custom-models) custom base models and specify model IDs.
 
-**LoRA (low-rank adaptation) addons:** A LoRA addon is a small, fine-tuned model that significantly reduces the amount of memory required to deploy compared to a fully fine-tuned model. Fireworks supports [**training**](/fine-tuning/finetuning-intro), [**uploading**](/models/uploading-custom-models#importing-fine-tuned-models), and [**serving**](/fine-tuning/fine-tuning-models#deploying-a-fine-tuned-model) LoRA addons. LoRA addons must be deployed on a dedicated deployment for its corresponding base model. Model IDs for LoRAs can be either auto-generated or user-specified.
+**LoRA (low-rank adaptation) addons:** A LoRA addon is a small, trained model that significantly reduces the amount of memory required to deploy compared to a fully trained model. Fireworks supports [**training**](/fine-tuning/finetuning-intro), [**uploading**](/models/uploading-custom-models#importing-trained-models), and [**serving**](/fine-tuning/fine-tuning-models#deploying-a-trained-model) LoRA addons. LoRA addons must be deployed on a dedicated deployment for its corresponding base model. Model IDs for LoRAs can be either auto-generated or user-specified.
 
 #### A Note on API Model Metadata
 
-When retrieving model details via the API, a model may be listed with both `supportsServerless: true` and `supportsLora: true`. This indicates that the base model is available for serverless inference, AND that the model architecture supports fine-tuning with LoRA.
+When retrieving model details via the API, a model may be listed with both `supportsServerless: true` and `supportsLora: true`. This indicates that the base model is available for serverless inference, AND that the model architecture supports training with LoRA.
 
-However, these two features are mutually exclusive in deployment. The `supportsServerless` flag applies **only** to the base model. A LoRA addon fine-tuned from that base model **cannot** be deployed serverlessly and requires a dedicated (on-demand) deployment.
+However, these two features are mutually exclusive in deployment. The `supportsServerless` flag applies **only** to the base model. A LoRA addon trained from that base model **cannot** be deployed serverlessly and requires a dedicated (on-demand) deployment.
 
 ### Deployments and deployment types
 
@@ -15180,11 +15180,11 @@ Users can specify a model to query for inference using the model name and deploy
 
 ### Dataset
 
-A dataset is an immutable set of training examples that can be used to fine-tune a model.
+A dataset is an immutable set of training examples that can be used to train a model.
 
-### Fine-tuning job
+### Training job
 
-A fine-tuning job is an offline training job that uses a dataset to train a LoRA addon model.
+A training job is an offline training job that uses a dataset to train a LoRA addon model.
 
 ## Resource names and IDs
 
@@ -15222,14 +15222,14 @@ Source: https://docs.fireworks.ai/getting-started/glossary
 
 Definitions for key terms used across Fireworks AI documentation.
 
-This glossary covers terms you'll encounter when working with the Fireworks AI platform — across inference, fine-tuning, deployments, security, and the API.
+This glossary covers terms you'll encounter when working with the Fireworks AI platform — across inference, training, deployments, security, and the API.
 
 ***
 
 ## Account & Billing
 
 **Account**\
-Your Fireworks AI organization identity. All deployments, models, fine-tuning jobs, and API keys belong to an account. Referenced as `accounts/<your-account>` in firectl and the API.
+Your Fireworks AI organization identity. All deployments, models, training jobs, and API keys belong to an account. Referenced as `accounts/<your-account>` in firectl and the API.
 
 **Credit**\
 The unit used for prepaid usage on Fireworks. Credits are consumed as you use inference and training resources.
@@ -15275,20 +15275,20 @@ A single instance of a deployed model. Adding replicas increases concurrency. Re
 Automatic adjustment of replica count based on traffic. Configured with scale-to-zero, minimum replicas, maximum replicas, and scale-up/down thresholds.
 
 **firectl**\
-The Fireworks command-line tool for managing models, deployments, fine-tuning jobs, and account resources.
+The Fireworks command-line tool for managing models, deployments, training jobs, and account resources.
 
 ***
 
 ## Models & Inference
 
 **Base model**\
-A foundation model available on Fireworks for inference or fine-tuning. Referenced as `accounts/fireworks/models/<model-id>`.
+A foundation model available on Fireworks for inference or training. Referenced as `accounts/fireworks/models/<model-id>`.
 
 **Addon**\
 A LoRA adapter loaded on top of a base model deployment at inference time. Enabled on a deployment with `--enable-addons`. The adapter is specified per request by passing the adapter model ID. FP8 and FP4 quantized shapes do not support addons — use a BF16 shape for LoRA addon inference.
 
 **Multi-LoRA**\
-A single base model deployment that serves multiple LoRA adapters. The adapter is selected per request. One deployment, multiple fine-tuned behaviors.
+A single base model deployment that serves multiple LoRA adapters. The adapter is selected per request. One deployment, multiple trained behaviors.
 
 **Quantization**\
 Reducing the numerical precision of model weights to decrease memory usage and increase throughput, with some quality tradeoff.
@@ -15337,10 +15337,10 @@ API parameter that controls how much thinking a reasoning model performs before 
 
 ***
 
-## Fine-tuning
+## Training
 
 **SFT (Supervised Fine-Tuning)**\
-Training a model on labeled input-output pairs to adapt it to a specific task or style. Available via the Fireworks managed fine-tuning pipeline.
+Training a model on labeled input-output pairs to adapt it to a specific task or style. Available via the Fireworks managed training pipeline.
 
 **LoRA (Low-Rank Adaptation)**\
 A parameter-efficient fine-tuning technique that trains a small set of adapter weights rather than the full model. The adapter can be loaded on top of the base model at inference time.
@@ -15355,7 +15355,7 @@ A reinforcement learning variant used in RFT. Optimizes model outputs using grou
 Fine-tuning using reinforcement learning signals rather than labeled examples. Trains the model to maximize a reward function — useful for tasks with verifiable outcomes such as math, code, and reasoning.
 
 **Training shape**\
-A validated trainer configuration for one base model and one training method. It fixes the GPU type and count per trainer replica, plus the maximum training context length. On the [Training API](/fine-tuning/training-api/training-shapes) you pass a shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k`; managed fine-tuning jobs select a compatible shape for you.
+A validated trainer configuration for one base model and one training method. It fixes the GPU type and count per trainer replica, plus the maximum training context length. On the [Training API](/fine-tuning/training-api/training-shapes) you pass a shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k`; managed training jobs select a compatible shape for you.
 
 **`dcp_save_interval`**\
 RFT training parameter that controls how often full training state (weights + optimizer) is checkpointed. Default is `0` (disabled). Set to a positive integer to enable full checkpoint-and-resume including optimizer state.
@@ -15402,7 +15402,7 @@ The Fireworks inference API is compatible with the OpenAI Chat Completions API f
 SDK method for recovering a training job that has been interrupted by pod preemption or a network error. Use in your training loop to make jobs resilient to transient interruptions.
 
 **JSONL**\
-JSON Lines format — one JSON object per line. Used for batch inference input files and fine-tuning dataset uploads.
+JSON Lines format — one JSON object per line. Used for batch inference input files and training dataset uploads.
 
 ***
 
@@ -15458,9 +15458,9 @@ An instruction prepended to the conversation that sets the model's persona, task
 # Build with Fireworks AI
 Source: https://docs.fireworks.ai/getting-started/introduction
 
-Fast inference and fine-tuning for open source models
+Fast inference and training for open source models
 
-Fireworks AI is the fastest platform for building with open source AI models. Get production-ready inference and fine-tuning with best-in-class speed, cost and quality.
+Fireworks AI is the fastest platform for building with open source AI models. Get production-ready inference and training with best-in-class speed, cost and quality.
 
 ## Get started in minutes
 
@@ -15473,17 +15473,17 @@ Fireworks AI is the fastest platform for building with open source AI models. Ge
     Deploy with high performance on dedicated GPUs with fast autoscaling and minimal cold starts. Optimize deployments for speed and throughput.
   </Card>
 
-  <Card title="Fine-tune models for best quality" href="/fine-tuning/finetuning-intro" icon="sliders">
+  <Card title="Train models for best quality" href="/fine-tuning/finetuning-intro" icon="sliders">
     Boost model quality with supervised and reinforcement fine-tuning of models up to 1T+ parameters. Start training in minutes, deploy immediately.
   </Card>
 </CardGroup>
 
 <Tip>
-  Not sure where to start? First, pick the right model for your use case with our [**model selection guide**](/guides/recommended-models). Then choose [**Serverless**](/getting-started/quickstart) to prototype quickly, move to [**Deployments**](/getting-started/ondemand-quickstart) to optimize and run production workloads, or use [**Fine-tuning**](/fine-tuning/finetuning-intro) to improve quality.
+  Not sure where to start? First, pick the right model for your use case with our [**model selection guide**](/guides/recommended-models). Then choose [**Serverless**](/getting-started/quickstart) to prototype quickly, move to [**Deployments**](/getting-started/ondemand-quickstart) to optimize and run production workloads, or use [**Training**](/fine-tuning/finetuning-intro) to improve quality.
 
   New to AI or Fireworks? Look up any term in the [**Glossary**](/getting-started/glossary).
 
-  Need help optimizing deployments, fine-tuning models, or setting up production infrastructure? [Talk to our team](https://fireworks.ai/company/contact-us) - we'll help you get the best performance and reliability.
+  Need help optimizing deployments, training models, or setting up production infrastructure? [Talk to our team](https://fireworks.ai/company/contact-us) - we'll help you get the best performance and reliability.
 </Tip>
 
 ## What you can build
@@ -15494,7 +15494,7 @@ Fireworks AI is the fastest platform for building with open source AI models. Ge
   </Card>
 
   <Card title="Migrate from OpenAI" href="/tools-sdks/openai-compatibility" icon="arrow-right-arrow-left">
-    Drop-in replacement for inference and fine-tuning — same API, same SFT data format
+    Drop-in replacement for inference and training — same API, same SFT data format
   </Card>
 
   <Card title="Function Calling" href="/guides/function-calling" icon="function">
@@ -15826,7 +15826,7 @@ Ready to scale to production, explore other modalities, or customize your models
     Bring your own model and deploy it on Fireworks
   </Card>
 
-  <Card title="Fine-tune Models" href="/fine-tuning/finetuning-intro" icon="sliders">
+  <Card title="Train Models" href="/fine-tuning/finetuning-intro" icon="sliders">
     Improve model quality with supervised and reinforcement learning
   </Card>
 
@@ -17034,7 +17034,7 @@ Ready to scale to production, explore other modalities, or customize your models
     Deploy with high performance on dedicated GPUs with fast autoscaling and minimal cold starts
   </Card>
 
-  <Card title="Fine-tune Models" href="/fine-tuning/finetuning-intro" icon="sliders">
+  <Card title="Train Models" href="/fine-tuning/finetuning-intro" icon="sliders">
     Improve model quality with supervised and reinforcement learning
   </Card>
 
@@ -17081,7 +17081,7 @@ Process large volumes of requests asynchronously at **50% off** [Serverless per-
 Not all models support the Batch API. Before submitting a batch job, verify your target model is batch-compatible.
 
 * **Base Models** – Any model that supports [On-Demand Deployments](https://docs.fireworks.ai/guides/ondemand-deployments) in the [Model Library](https://fireworks.ai/models)
-* **Custom Models** – Your uploaded or fine-tuned models built on a batch-compatible base model
+* **Custom Models** – Your uploaded or trained models built on a batch-compatible base model
 
 *Note: Newly added models may have a delay before being supported. See [Quantization](/models/quantization) for precision info.*
 
@@ -17365,7 +17365,7 @@ The equivalent HTTP field is `systemPrompt`:
 
   <Accordion title="Supported models">
     * **Base Models** – Any model that supports [On-Demand Deployments](https://docs.fireworks.ai/guides/ondemand-deployments) in the [Model Library](https://fireworks.ai/models)
-    * **Custom Models** – Your uploaded or fine-tuned models built on a batch-compatible base model
+    * **Custom Models** – Your uploaded or trained models built on a batch-compatible base model
 
     *Note: Newly added models may have a delay before being supported. See [Quantization](/models/quantization) for precision info.*
   </Accordion>
@@ -17417,7 +17417,7 @@ The equivalent HTTP field is `systemPrompt`:
     Maximize cost savings with automatic prompt caching
   </Card>
 
-  <Card title="Fine-Tuning" icon="sparkles" href="/fine-tuning/finetuning-intro">
+  <Card title="Training" icon="sparkles" href="/fine-tuning/finetuning-intro">
     Create custom models for your batch workloads
   </Card>
 
@@ -18300,7 +18300,7 @@ More GPUs = faster generation. Note that scaling is sub-linear (2x GPUs ≠ 2x p
 
 ## Preemptible deployments (eval / batch)
 
-For the fine-tuning eval workflow, see [Evaluating Fine Tuned Models](/fine-tuning/evaluating-fine-tuned-models).
+For the training eval workflow, see [Evaluating Trained Models](/fine-tuning/evaluating-fine-tuned-models).
 
 Preemptible deployments let you run **evaluation and batch workloads without holding dedicated on-demand capacity**. Passing `--preemptible` at creation opts the deployment into *borrowing idle reserved GPUs* instead of reserving GPUs exclusively for you, so you do not pay to hold dedicated capacity for an eval that only runs occasionally.
 
@@ -18389,8 +18389,8 @@ firectl deployment delete <NAME> -a <ACCOUNT_ID>
     Purchase reserved GPUs for guaranteed capacity
   </Card>
 
-  <Card title="Fine-tuning" href="/fine-tuning/finetuning-intro" icon="wand-magic-sparkles">
-    Fine-tune models for your specific use case
+  <Card title="Training" href="/fine-tuning/finetuning-intro" icon="wand-magic-sparkles">
+    Train models for your specific use case
   </Card>
 </CardGroup>
 
@@ -18850,7 +18850,7 @@ Every option below uses the same endpoint, `POST https://api.fireworks.ai/infere
 | **Voyage AI**                           | Your deployment path                              | Yes                   | Retrieval quality with asymmetric query and document embeddings   |
 | **Legacy BERT / sentence-transformers** | Hugging Face id, such as `BAAI/bge-small-en-v1.5` | **No**                | Small, cheap vectors and existing sentence-transformers pipelines |
 | **Generative LLM**                      | `fireworks/gpt-oss-20b` and similar               | Yes, as chat models   | Hidden-state vectors when you are already using the model         |
-| **Your own upload**                     | `accounts/<your-account>/models/<model-id>`       | In your account       | Custom or fine-tuned embedders                                    |
+| **Your own upload**                     | `accounts/<your-account>/models/<model-id>`       | In your account       | Custom or trained embedders                                       |
 
 <Tabs>
   <Tab title="Qwen3">
@@ -19979,7 +19979,7 @@ Fireworks provides an OpenAI-compatible API, making migration from OpenAI straig
     Deploy models on dedicated GPUs
   </Card>
 
-  <Card title="Fine-tuning" href="/fine-tuning/finetuning-intro" icon="sliders">
+  <Card title="Training" href="/fine-tuning/finetuning-intro" icon="sliders">
     Customize models for your use case
   </Card>
 
@@ -20276,8 +20276,8 @@ VLMs do not natively accept PDF files as input. To analyze PDF documents, conver
 ## Advanced capabilities
 
 <CardGroup>
-  <Card title="Vision fine-tuning" href="/fine-tuning/fine-tuning-models#vision-fine-tuning" icon="sliders">
-    Fine-tune VLMs for specialized visual tasks
+  <Card title="Vision training" href="/fine-tuning/fine-tuning-models#vision-training" icon="sliders">
+    Train VLMs for specialized visual tasks
   </Card>
 
   <Card title="LoRA adapters" href="/models/uploading-custom-models" icon="layer-group">
@@ -20361,7 +20361,7 @@ Your spend tier controls available quotas and capacity. For legacy self-serve po
 
 ### Training GPU quota
 
-Fine-tuning jobs use training GPU quota (separate from on-demand deployment quota), granted automatically by spending tier:
+Training jobs use training GPU quota (separate from on-demand deployment quota), granted automatically by spending tier:
 
 | Tier              | How to reach it                                       | B200 / B300 (Blackwell) |  H200  | H100 / A100 |
 | ----------------- | ----------------------------------------------------- | :---------------------: | :----: | :---------: |
@@ -20372,7 +20372,7 @@ Fine-tuning jobs use training GPU quota (separate from on-demand deployment quot
 | Tier 4            | Spend or add \$5,000 in credits                       |            32           |   32   |      32     |
 | Enterprise        | [Contact us](https://fireworks.ai/company/contact-us) |          Custom         | Custom |    Custom   |
 
-Counts are GPUs of that type available to training jobs. Blackwell (B200/B300) is `0` until Tier 2, and current managed fine-tuning shapes run on Blackwell, so most fine-tuning needs Tier 2. If a job is rejected with HTTP 429 `quota_exceeded`, raise your tier and resubmit.
+Counts are GPUs of that type available to training jobs. Blackwell (B200/B300) is `0` until Tier 2, and current managed training shapes run on Blackwell, so most training needs Tier 2. If a job is rejected with HTTP 429 `quota_exceeded`, raise your tier and resubmit.
 
 <Note>
   Need more training quota than your tier allows? [Reach out for enterprise support](https://fireworks.ai/contact-training) and we'll help size the right allocation for your workload.
@@ -20429,7 +20429,7 @@ firectl quota update monthly-spend-usd --value 200
 
 By default, Fireworks sends a warning email when usage reaches 80% of your monthly spend limit. You can add other notification amounts from the Billing page.
 
-When usage reaches 100% of the limit, all API requests pause automatically across serverless inference, deployments, and fine-tuning. Raise the monthly spend limit to resume usage. If your credit balance is also depleted, you must add credits as well.
+When usage reaches 100% of the limit, all API requests pause automatically across serverless inference, deployments, and training. Raise the monthly spend limit to resume usage. If your credit balance is also depleted, you must add credits as well.
 
 <Note>
   The suspension behavior described here does not apply to Enterprise accounts. Their monthly spend alerts are informational.
@@ -20640,13 +20640,13 @@ You can preserve reasoning context in two ways:
 </Note>
 
 <Note>
-  **Fine-tuned models:** whether historical `reasoning_content` was visible during
+  **Trained models:** whether historical `reasoning_content` was visible during
   training depends on the base model and the job's thinking-history mode.
   Interleaved removes thinking across user-turn boundaries while retaining the
   assistant/tool trajectory within the current turn; Preserved retains thinking
   across user turns. Datum unrolling is model-specific. For reliable results,
-  serve a fine-tuned model consistently with how it was trained; see
-  [thinking history in fine-tuning](/fine-tuning/thinking-history)
+  serve a trained model consistently with how it was trained; see
+  [thinking history in training](/fine-tuning/thinking-history)
   for per-model behavior.
 </Note>
 
@@ -21439,34 +21439,34 @@ Looking for the right open source model? Whether you're exploring by use case or
     <tr>
       <td><strong>Code & Development</strong></td>
       <td><strong>Code generation, reasoning & agentic tasks</strong></td>
-      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k3">Kimi K3</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p2">GLM 5.2</a>, <a href="https://app.fireworks.ai/models/fireworks/minimax-m2p7">MiniMax M2.7</a></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813">DeepSeek V4 Pro (0813)</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k3">Kimi K3</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p2">GLM 5.2</a>, <a href="https://app.fireworks.ai/models/fireworks/minimax-m3">MiniMax M3</a></td>
     </tr>
 
     <tr>
       <td><strong>AI Applications</strong></td>
       <td><strong>AI agents with tool use</strong></td>
-      <td><a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p2">GLM 5.2</a>, <a href="https://app.fireworks.ai/models/fireworks/minimax-m2p7">MiniMax M2.7</a></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813">DeepSeek V4 Pro (0813)</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p2">GLM 5.2</a>, <a href="https://app.fireworks.ai/models/fireworks/minimax-m3">MiniMax M3</a></td>
     </tr>
 
     <tr>
       <td />
 
       <td><strong>General reasoning & planning</strong></td>
-      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p2">GLM 5.2</a>, <a href="https://app.fireworks.ai/models/fireworks/gpt-oss-120b">GPT-OSS 120B</a> <em>(medium)</em></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813">DeepSeek V4 Pro (0813)</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p2">GLM 5.2</a>, <a href="https://app.fireworks.ai/models/fireworks/gpt-oss-120b">GPT-OSS 120B</a> <em>(medium)</em></td>
     </tr>
 
     <tr>
       <td />
 
       <td><strong>Long context & summarization</strong></td>
-      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/qwen3p7-plus">Qwen3.7 Plus</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p2">GLM 5.2</a>, <a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731">DeepSeek V4 Flash (0731)</a></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813">DeepSeek V4 Pro (0813)</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/qwen3p7-plus">Qwen3.7 Plus</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p2">GLM 5.2</a>, <a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731">DeepSeek V4 Flash (0731)</a></td>
     </tr>
 
     <tr>
       <td />
 
       <td><strong>Fast extraction, classification & search</strong></td>
-      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731">DeepSeek V4 Flash (0731)</a>, <a href="https://app.fireworks.ai/models/fireworks/minimax-m2p7">MiniMax M2.7</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4">Step 3.7 Flash</a>, <a href="https://app.fireworks.ai/models/fireworks/gpt-oss-20b">GPT-OSS 20B</a> <em>(small)</em></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731">DeepSeek V4 Flash (0731)</a>, <a href="https://app.fireworks.ai/models/fireworks/minimax-m3">MiniMax M3</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4">Step 3.7 Flash</a>, <a href="https://app.fireworks.ai/models/fireworks/qwen3-8b">Qwen3 8B</a> <em>(small)</em></td>
     </tr>
 
     <tr>
@@ -21506,24 +21506,24 @@ If you're currently using Claude, OpenAI / GPT, or Gemini models, here's a guide
 
 ### Claude Alternatives
 
-| **Closed Source**                | **Use Case**                                             | **Latency Budget** | **Open Source Alternative**                                                                                                                                                                                                                                                                                                                                                        |
-| -------------------------------- | -------------------------------------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Claude Opus 4.8 / Sonnet 4.6** | • Agentic use cases<br />• Coding<br />• Research agents | High               | • [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)<br />• [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)<br />• [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)<br />• [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus) |
-| **Claude Haiku 4.5**             | • Agentic use cases<br />• Coding<br />• Research agents | Low                | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4)<br />• [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)<br />• [GPT-OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b) <em>(small)</em>                  |
+| **Closed Source**                | **Use Case**                                             | **Latency Budget** | **Open Source Alternative**                                                                                                                                                                                                                                                                                                                                                                |
+| -------------------------------- | -------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Claude Opus 4.8 / Sonnet 4.6** | • Agentic use cases<br />• Coding<br />• Research agents | High               | • [DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)<br />• [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)<br />• [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)<br />• [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)<br />• [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus) |
+| **Claude Haiku 4.5**             | • Agentic use cases<br />• Coding<br />• Research agents | Low                | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4)<br />• [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)<br />• [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)<br />• [Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b) <em>(small)</em>                                    |
 
 ### OpenAI GPT Alternatives
 
-| **Closed Source**         | **Use Case**                                          | **Latency Budget** | **Open Source Alternative**                                                                                                                                                                                                                                                                                                                                       |
-| ------------------------- | ----------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **GPT-5.5 / GPT-5.5 Pro** | • Agentic use cases<br />• Research agents            | High               | • [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)<br />• [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)<br />• [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)                                                          |
-| **GPT-5.4 mini & nano**   | • Chatbots<br />• Intent classification<br />• Search | Low                | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4)<br />• [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)<br />• [GPT-OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b) <em>(small)</em> |
+| **Closed Source**         | **Use Case**                                          | **Latency Budget** | **Open Source Alternative**                                                                                                                                                                                                                                                                                                                             |
+| ------------------------- | ----------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **GPT-5.5 / GPT-5.5 Pro** | • Agentic use cases<br />• Research agents            | High               | • [DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)<br />• [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)<br />• [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)<br />• [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)                                        |
+| **GPT-5.4 mini & nano**   | • Chatbots<br />• Intent classification<br />• Search | Low                | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4)<br />• [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)<br />• [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)<br />• [Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b) <em>(small)</em> |
 
 ### Google Gemini Alternatives
 
-| **Closed Source**                     | **Use Case**                                                 | **Latency Budget** | **Open Source Alternative**                                                                                                                                                                                                                                                                                                                                                            |
-| ------------------------------------- | ------------------------------------------------------------ | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Gemini 3.1 Pro**                    | • Agentic use cases<br />• Research agents<br />• Multimodal | High               | • [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)<br />• [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)<br />• [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)<br />• [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7) |
-| **Gemini 3.5 Flash & 3.1 Flash-Lite** | • Chatbots<br />• Intent classification<br />• Search        | Low                | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4)<br />• [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)<br />• [GPT-OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b) <em>(small)</em>                      |
+| **Closed Source**                     | **Use Case**                                                 | **Latency Budget** | **Open Source Alternative**                                                                                                                                                                                                                                                                                                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------ | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Gemini 3.1 Pro**                    | • Agentic use cases<br />• Research agents<br />• Multimodal | High               | • [DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)<br />• [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)<br />• [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)<br />• [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)<br />• [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) |
+| **Gemini 3.5 Flash & 3.1 Flash-Lite** | • Chatbots<br />• Intent classification<br />• Search        | Low                | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4)<br />• [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)<br />• [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)<br />• [Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b) <em>(small)</em>                                        |
 
 **Understanding Latency Budget:**
 
@@ -22424,7 +22424,7 @@ For US-only inference residency, see [US-only Serverless](/serverless/us-only-se
 
 **Bring Your Own Key:** Customers may integrate their own AWS KMS, Google Cloud KMS, or Azure Key Vault key to retain governance and apply their own encryption policies.
 
-* Datasets and checkpoints: [Customer-Managed Encryption Keys for Fine-Tuning](/guides/security_compliance/secure_training/cmek) (LoRA SFT, DPO, and RFT; full-parameter training not supported)
+* Datasets and checkpoints: [Customer-Managed Encryption Keys for Training](/guides/security_compliance/secure_training/cmek) (LoRA SFT, DPO, and RFT; full-parameter training not supported)
 * Final model weights: Coming soon
 
 **Access Logging:** All customer data access is logged, monitored, and protected against tampering. See [Audit & Access Logs](https://docs.fireworks.ai/guides/security_compliance/audit_logs).
@@ -22623,7 +22623,7 @@ For inference-side controls — disabling Response API storage (`store=False`) o
   </Card>
 
   <Card title="Customer-Managed Encryption Keys (CMEK)" href="/guides/security_compliance/secure_training/cmek" icon="key">
-    Encrypt managed fine-tuning data with your own KMS key
+    Encrypt managed training data with your own KMS key
   </Card>
 
   <Card title="Data Security Overview" href="/guides/security_compliance/data_security" icon="shield-check">
@@ -22864,9 +22864,9 @@ firectl sftj create \
 # Customer-Managed Encryption Keys (CMEK)
 Source: https://docs.fireworks.ai/guides/security_compliance/secure_training/cmek
 
-Use your own cloud KMS key to control encryption of your managed fine-tuning data
+Use your own cloud KMS key to control encryption of your managed training data
 
-With Customer-Managed Encryption Keys (CMEK), you bring an encryption key from your own cloud KMS — AWS KMS, Google Cloud KMS, or Azure Key Vault — and Fireworks uses it to encrypt the data your managed fine-tuning jobs read and write. Your key controls access to your data at rest: revoke it and Fireworks can no longer decrypt your datasets or checkpoints. Calls Fireworks makes to your key are recorded in your own cloud's audit log.
+With Customer-Managed Encryption Keys (CMEK), you bring an encryption key from your own cloud KMS — AWS KMS, Google Cloud KMS, or Azure Key Vault — and Fireworks uses it to encrypt the data your managed training jobs read and write. Your key controls access to your data at rest: revoke it and Fireworks can no longer decrypt your datasets or checkpoints. Calls Fireworks makes to your key are recorded in your own cloud's audit log.
 
 <Info>
   Fireworks never stores your root key. Each fine-tuning resource gets a unique data key that is encrypted ("wrapped") by your KMS key and stored only in wrapped form. The unwrapped key exists only briefly in memory during a job and is then discarded.
@@ -23772,7 +23772,7 @@ Source: https://docs.fireworks.ai/models/uploading-custom-models
 
 Upload, verify, and deploy your own models from Hugging Face or elsewhere
 
-Upload your own models from Hugging Face or elsewhere to deploy fine-tuned or custom-trained models optimized for your use case.
+Upload your own models from Hugging Face or elsewhere to deploy trained or custom-trained models optimized for your use case.
 
 * **Multiple upload options** – Upload from local files or directly from S3 buckets or Azure Blob Storage
 * **Secure uploads** – All uploads are encrypted and models remain private to your account by default
@@ -23948,14 +23948,14 @@ For larger models, you can upload directly from cloud storage (S3 or Azure Blob 
 </Note>
 
 <Note>
-  To use Fireworks managed fine-tuning with an uploaded custom base model, provide the corresponding Hugging Face model URL when you create the model:
+  To use Fireworks managed training with an uploaded custom base model, provide the corresponding Hugging Face model URL when you create the model:
 
   ```bash theme={null}
   firectl model create <MODEL_ID> /path/to/files/ \
     --hugging-face-url https://huggingface.co/<ORG>/<MODEL>
   ```
 
-  Fireworks uses this URL to infer the training renderer and determine whether a compatible training shape exists. Custom uploads without a Hugging Face URL can be deployed for inference, but they are not eligible for managed fine-tuning until the URL is set and tunability is refreshed. This refresh runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after you provide the URL. We are working to make this refresh faster.
+  Fireworks uses this URL to infer the training renderer and determine whether a compatible training shape exists. Custom uploads without a Hugging Face URL can be deployed for inference, but they are not eligible for managed training until the URL is set and tunability is refreshed. This refresh runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after you provide the URL. We are working to make this refresh faster.
 </Note>
 
 ## Verifying your upload
@@ -24010,9 +24010,9 @@ firectl model update <MODEL_ID> --public
 firectl model update <MODEL_ID> --public=false
 ```
 
-## Importing fine-tuned models
+## Importing trained models
 
-In addition to models you fine-tune on the Fireworks platform, you can also upload your own custom fine-tuned models as LoRA adapters.
+In addition to models you train on the Fireworks platform, you can also upload your own custom trained models as LoRA adapters.
 
 <Note>
   Uploaded LoRA adapters can only be deployed to on-demand (dedicated) deployments. Serverless deployment is not supported.
@@ -24094,7 +24094,7 @@ Add a `fireworks.json` file to the directory containing your adapter files:
     | `model_arch`        | null    | Model architecture (e.g., `"qwen2"`, `"llama"`). Usually auto-detected from base model |
     | `model_config_name` | null    | Model configuration name (e.g., `"4B"`). Usually auto-detected from base model         |
     | `has_lora`          | true    | Set to `true` for LoRA adapters                                                        |
-    | `has_teft`          | false   | Set to `true` if using TEFT (Token-Efficient Fine-Tuning)                              |
+    | `has_teft`          | false   | Set to `true` if using TEFT (Token-Efficient Training)                                 |
   </Accordion>
 </AccordionGroup>
 
@@ -24125,8 +24125,8 @@ firectl model create <MODEL_ID> /path/to/files/ --base-model "accounts/fireworks
     Reduce serving costs with model quantization
   </Card>
 
-  <Card title="Fine-tuning" icon="wand-magic-sparkles" href="/fine-tuning/finetuning-intro">
-    Fine-tune models before deploying them
+  <Card title="Training" icon="wand-magic-sparkles" href="/fine-tuning/finetuning-intro">
+    Train models before deploying them
   </Card>
 </CardGroup>
 
@@ -24239,7 +24239,7 @@ while True:
 ```
 
 <Note>
-  Set `huggingFaceUrl` if this uploaded custom base model should be considered for Fireworks managed fine-tuning. Fireworks uses the Hugging Face URL to infer the training renderer and locate compatible training shapes. The tunability check runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after the URL is set.
+  Set `huggingFaceUrl` if this uploaded custom base model should be considered for Fireworks managed training. Fireworks uses the Hugging Face URL to infer the training renderer and locate compatible training shapes. The tunability check runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after the URL is set.
 </Note>
 
 <Tip>
@@ -24337,11 +24337,11 @@ For production workloads requiring long-term model stability, we recommend [on-d
 
 ## Serverless vs On-demand
 
-| When Serverless fits                                           | When On-demand fits                                                                   |
-| -------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Pay per token, only for what you use                           | Pay per GPU-hour for dedicated capacity                                               |
-| You're using popular base models that Fireworks already hosts  | You're running custom base models or fine-tuned LoRA models (LoRA requires On-demand) |
-| You don't want to manage scaling, replicas, or hardware sizing | You have custom latency requirements and want control over hardware and replicas      |
+| When Serverless fits                                           | When On-demand fits                                                                |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Pay per token, only for what you use                           | Pay per GPU-hour for dedicated capacity                                            |
+| You're using popular base models that Fireworks already hosts  | You're running custom base models or trained LoRA models (LoRA requires On-demand) |
+| You don't want to manage scaling, replicas, or hardware sizing | You have custom latency requirements and want control over hardware and replicas   |
 
 For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deployments).
 
@@ -24414,23 +24414,17 @@ Per-model pricing for headline models. Fast variants appear as adjacent rows. In
 | [Kimi K3 Fast](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                 | \$4.50 / \$0.45 / \$22.50 | —                             |
 | [Kimi K3 US](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                   | \$3.30 / \$0.33 / \$16.50 | \$4.125 / \$0.4125 / \$20.625 |
 | [Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)                                        | \$0.95 / \$0.19 / \$4.00  | \$1.425 / \$0.285 / \$6.00    |
-| [Kimi K2.7 Code Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)                                   | \$1.90 / \$0.38 / \$8.00  | —                             |
 | [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                                  | \$0.95 / \$0.16 / \$4.00  | \$1.50 / \$0.22 / \$6.00      |
-| [Kimi K2.6 Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                             | \$2.00 / \$0.30 / \$8.00  | —                             |
-| [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)                                      | \$1.74 / \$0.145 / \$3.48 | \$2.61 / \$0.218 / \$5.22     |
 | [DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)                          | \$1.32 / \$0.044 / \$3.96 | \$1.65 / \$0.055 / \$4.95     |
 | [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)                      | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 |
 | [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                      | \$1.40 / \$0.26 / \$4.40  | \$1.75 / \$0.325 / \$5.50     |
-| [GLM 5.3 Fast](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                 | \$2.10 / \$0.39 / \$6.60  | —                             |
 | [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                      | \$1.40 / \$0.14 / \$4.40  | \$1.75 / \$0.18 / \$5.50      |
 | [GLM 5.2 Fast](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                 | \$2.10 / \$0.21 / \$6.60  | —                             |
 | [GLM 5.2 Fast US](https://app.fireworks.ai/models/fireworks/glm-5p2)                                              | \$2.10 / \$0.21 / \$6.60  | —                             |
 | [Qwen 3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)                                           | \$0.40 / \$0.08 / \$1.60  | —                             |
 | [Qwen 3.8 Max](https://app.fireworks.ai/models/fireworks/qwen3p8-max)                                             | \$2.00 / \$0.25 / \$6.00  | \$3.00 / \$0.375 / \$9.00     |
 | [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)                                                | \$0.30 / \$0.06 / \$1.20  | \$0.45 / \$0.09 / \$1.80      |
-| [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)                                            | \$0.30 / \$0.06 / \$1.20  | \$0.45 / \$0.09 / \$1.80      |
 | [OpenAI GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)                                     | \$0.15 / \$0.015 / \$0.60 | \$0.18 / \$0.018 / \$0.72     |
-| [OpenAI GPT OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b)                                       | \$0.07 / \$0.035 / \$0.30 | —                             |
 | [Muse Glimmer 30B](https://app.fireworks.ai/models/fireworks/muse-glimmer-30b)                                    | \$0.35 / \$0.04 / \$1.50  | \$0.525 / \$0.06 / \$2.25     |
 | [NVIDIA Nemotron 3.5 Lightning 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b) | \$0.05 / \$0.01 / \$0.20  | —                             |
 | [NVIDIA Nemotron 3 Ultra (Preview)](https://app.fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4)             | \$0.60 / \$0.12 / \$2.40  | —                             |
@@ -29834,7 +29828,7 @@ print(completion.choices[0].text)
 
 ### Chat Completion
 
-Works best for models fine-tuned for conversation (e.g. llama\*-chat variants):
+Works best for models trained for conversation (e.g. llama\*-chat variants):
 
 ```python theme={null}
 from openai import OpenAI
@@ -29860,9 +29854,9 @@ chat_completion = client.chat.completions.create(
 print(chat_completion.choices[0].message.content)
 ```
 
-## Fine-tuning compatibility
+## Training compatibility
 
-Fireworks fine-tuning uses the same **OpenAI-compatible chat completion format** for training data. If you have datasets formatted for OpenAI SFT, they work on Fireworks with no conversion required — the same `messages` array with `role`, `content`, `tool_calls`, and `weight` fields.
+Fireworks training uses the same **OpenAI-compatible chat completion format** for training data. If you have datasets formatted for OpenAI SFT, they work on Fireworks with no conversion required — the same `messages` array with `role`, `content`, `tool_calls`, and `weight` fields.
 
 Fireworks also supports additional features in the training schema:
 
@@ -29871,7 +29865,7 @@ Fireworks also supports additional features in the training schema:
 * **Per-sample weights** for weighted training
 * **Vision inputs** using the same OpenAI-compatible multimodal content format
 
-To get started with fine-tuning, see the [Supervised Fine-Tuning guide](/fine-tuning/fine-tuning-models) or the [Fine-Tuning overview](/fine-tuning/finetuning-intro).
+To get started with training, see the [Supervised Fine-Tuning guide](/fine-tuning/fine-tuning-models) or the [Training overview](/fine-tuning/finetuning-intro).
 
 ## API compatibility
 
@@ -29942,7 +29936,7 @@ Fireworks is [OpenAI-compatible](/tools-sdks/openai-compatibility), so you can u
 
 * **Better concurrency defaults** — Optimized connection pooling for high-throughput workloads
 * **Fireworks-exclusive features** — Access parameters and response fields not available in the OpenAI API
-* **Platform automation** — Manage datasets, evals, fine-tuning, and deployments programmatically
+* **Platform automation** — Manage datasets, evals, training, and deployments programmatically
 
 ## Installation
 
@@ -29976,6 +29970,20 @@ Quickstart](/getting-started/quickstart).
 Source: https://docs.fireworks.ai/updates/changelog
 
 
+
+<Update label="2026-08-27">
+  # Serverless deprecation: MiniMax M2.7, GPT OSS 20B, Kimi K2.6 Turbo/Fast, Kimi K2.7 Code Fast, DeepSeek V4 Pro
+
+  The following models are deprecated from serverless effective August 27, 2026.
+
+  ## **Recommended migrations**
+
+  * **[MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)** — migrate to **[MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)**
+  * **[GPT OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b)** — migrate to **[GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)** or **[Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b)** for lower-latency workloads
+  * **[Kimi K2.6 Turbo / Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** (standard serving path)
+  * **[Kimi K2.7 Code Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** — migrate to **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** (standard serving path)
+  * **[DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)** — migrate to **[DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)**
+</Update>
 
 <Update label="2026-08-26">
   # Serverless Training deprecation: Qwen 3.5 9B and Qwen 3.6 27B
@@ -30529,7 +30537,7 @@ Source: https://docs.fireworks.ai/updates/changelog
   * Support for up to 64K context length during training
   * Built on the same Supervised Fine-tuning V2 infrastructure as text models
 
-  See the [VLM fine-tuning documentation](/fine-tuning/fine-tuning-models#vision-fine-tuning) for setup instructions and dataset formatting requirements.
+  See the [VLM fine-tuning documentation](/fine-tuning/fine-tuning-models#vision-training) for setup instructions and dataset formatting requirements.
 
   ## 🔧 Build SDK: Deployment Configuration Application Requirement
 
