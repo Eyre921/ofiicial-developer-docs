@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1296 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1295 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -103,7 +103,6 @@
 - `docs/api-reference/dubbing/target-transcript/regenerate-target` — [Regenerate target](pages/docs/api-reference/dubbing/target-transcript/regenerate-target.md) · [原文](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/regenerate-target.md)
 - `docs/api-reference/dubbing/target-transcript/update-target-segment` — [Update target segment](pages/docs/api-reference/dubbing/target-transcript/update-target-segment.md) · [原文](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/update-target-segment.md)
 - `docs/api-reference/environment-variables/create` — [Create environment variable](pages/docs/api-reference/environment-variables/create.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/create.md)
-- `docs/api-reference/environment-variables/get` — [Get environment variable](pages/docs/api-reference/environment-variables/get.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/get.md)
 - `docs/api-reference/environment-variables/list` — [List environment variables](pages/docs/api-reference/environment-variables/list.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/list.md)
 - `docs/api-reference/environment-variables/update` — [Update environment variable](pages/docs/api-reference/environment-variables/update.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/update.md)
 - `docs/api-reference/exotel/outbound-call` — [Outbound call via Exotel](pages/docs/api-reference/exotel/outbound-call.md) · [原文](https://elevenlabs.io/docs/api-reference/exotel/outbound-call.md)

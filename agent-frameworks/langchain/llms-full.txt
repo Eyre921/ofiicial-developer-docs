@@ -451,7 +451,7 @@ In an **allow** policy, `_if_exists` variants grant access to resources that eit
 
 The `role_ids` array specifies which workspace roles the policy applies to. When a user with that role accesses a resource, the policy conditions are evaluated.
 
-Policies can be attached to roles when creating the policy, or attached later via the API.
+Policies can be attached to [workspace roles](/langsmith/rbac#workspace-roles) (built-in or [custom](/langsmith/rbac#custom-roles)) when creating the policy, or attached later via the API.
 
 ## Managing access policies
 
@@ -12426,6 +12426,12 @@ Yes. A workspace on LangSmith Cloud routes to the LangChain-managed backend rath
 
 ## Operations
 
+<Accordion title="Who is responsible for what in a BYOC deployment?">
+LangChain runs the control plane and manages the data plane infrastructure through delegated, least privilege access. You own the AWS account, network connectivity, the data in the data plane, and security monitoring inside your account.
+
+For the full division across platform and infrastructure, data and security, and operations and support, see the [BYOC shared responsibility model](/langsmith/byoc-shared-responsibility).
+</Accordion>
+
 <Accordion title="Who upgrades LangSmith, and how often?">
 LangChain upgrades the LangSmith version in your data plane once a week. Upgrades are rolling, so there is no whole-service downtime. Supporting services such as Istio and KEDA are upgraded on a regular cadence, and LangChain manages all EKS cluster upgrades.
 
@@ -12492,7 +12498,7 @@ See [Available features](/langsmith/byoc#available-features) for the current lis
 </Accordion>
 
 <Accordion title="Can I migrate an existing LangSmith instance to BYOC?">
-Partly. Users, roles, datasets, experiments, prompts, annotation queue configuration, automation rules, and dashboards can be copied over from a Cloud or self-hosted instance. Traces are not migrated today. To plan a migration, [contact our sales team](https://www.langchain.com/contact-sales).
+Partly. Users, roles, datasets, experiments, prompts, annotation queue configuration, automation rules, dashboards, and Fleet resources can be copied over. Traces are not migrated today. See [Migrate to BYOC](/langsmith/byoc-migration).
 </Accordion>
 
 ## See also
@@ -12509,6 +12515,156 @@ Partly. Users, roles, datasets, experiments, prompts, annotation queue configura
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-faq.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+</Callout>
+</div>
+
+
+# Migrate to BYOC
+Source: https://docs.langchain.com/langsmith/byoc-migration
+
+The [LangSmith data migration tool](https://github.com/langchain-ai/langsmith-data-migration-tool) copies data from an existing LangSmith Cloud organization or [self-hosted](/langsmith/self-hosted) instance into a BYOC data plane. The tool copies data (as opposed to moving data over), so the source instance is unchanged and stays available during the move.
+
+Run the migration after your data plane is [active and reachable](/langsmith/byoc-onboarding). Trace data is not migrated, so plan the [manual steps](#move-data-the-tool-does-not-migrate) alongside the tool.
+
+## Supported resources
+
+The tool migrates the following resources between a source instance and a destination data plane:
+
+| Resource | Details |
+|----------|---------|
+| Users and roles | Custom roles, organization members, and workspace memberships. |
+| Datasets | Datasets with their examples and file attachments. |
+| Experiments | Experiments, experiment runs, and feedback, migrated with their datasets. |
+| Annotation queues | Queue configuration and settings. Migrated queues start empty. |
+| Automation rules | Project automation rules, mapped onto destination projects. |
+| Prompts | Prompts with the full commit history. |
+| Charts | Monitoring charts and dashboards. |
+| Custom model pricing | Workspace-custom model price entries. |
+| Fleet | Agents, shared skills, MCP servers, integrations, auth providers, schedules, triggers, webhooks, usage limits, sandbox policies, and workspace secrets. |
+| Context Hub | Context Hub agents and skills, including files, repository metadata, commit history, and commit tags. |
+
+Each resource type has its own command, flags, and caveats. For the command reference, see the [tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md).
+
+<Note>
+Resources belonging to a feature that BYOC does not support yet, such as [Engine](/langsmith/engine-overview), cannot be migrated. See [Available features](/langsmith/byoc#available-features).
+</Note>
+
+## Migrate with the tool
+
+<Steps>
+
+<Step title="Install the tool">
+Install the latest release with `uv`, `uvx`, or `pip`. For the current install commands, see [Installation](https://github.com/langchain-ai/langsmith-data-migration-tool#installation).
+
+Verify the install:
+
+```bash
+langsmith-migrator --help
+```
+</Step>
+
+<Step title="Create the destination workspaces">
+Workspace IDs differ between instances, so create the target workspaces in the data plane first. See the `Create workspaces` section of the [BYOC onboarding docs](/langsmith/byoc-onboarding).
+
+Migration commands run per workspace pair. Repeat them for each pair.
+</Step>
+
+<Step title="Create the destination tracing projects">
+The tool does not create tracing projects. Create the projects you need in the destination workspace before you migrate automation rules or charts, or those mappings have no target.
+</Step>
+
+<Step title="Configure the connection details">
+Set the source and destination credentials and endpoints:
+
+```bash
+export LANGSMITH_OLD_API_KEY="<source_instance_key>"
+export LANGSMITH_NEW_API_KEY="<data_plane_key>"
+export LANGSMITH_OLD_BASE_URL="<source_instance_api_url>"
+export LANGSMITH_NEW_BASE_URL="https://<data_plane_host>"
+export LANGSMITH_VERIFY_SSL=true
+```
+
+Find the data plane API URL under **Settings > Data Planes**.
+
+<Warning>
+The destination key must be scoped to a workspace in the target data plane. An organization-scoped key does not work.
+
+To migrate Fleet agents with an owner, use a personal access token (`lsv2_pt_*`) as the destination key. Workspace API keys carry no user identity, so agents created with them have no owner.
+</Warning>
+</Step>
+
+<Step title="Test both connections">
+```bash
+langsmith-migrator test
+```
+</Step>
+
+<Step title="Run the migration">
+Use the interactive wizard to walk through every resource type:
+
+```bash
+langsmith-migrator migrate-all
+```
+
+To migrate one resource type at a time, run its command instead, such as `datasets`, `prompts`, or `fleet`. Add `--dry-run` to preview a step without writing, and `-v` for verbose output. Use `langsmith-migrator resume` to retry pending or failed items from a previous session.
+
+For per-command flags, workspace mapping, and project mapping, see the [tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md).
+</Step>
+
+</Steps>
+
+## Complete the Fleet manual steps
+
+[Fleet](/langsmith/fleet/index) resources migrate with the `fleet` command, but some values cannot cross instances. Complete the following in the destination workspace after migration:
+
+- **Re-enter secret values**: The Fleet API does not return secret values. The tool creates workspace secrets and auth provider client secrets as empty placeholders.
+- **Re-authenticate OAuth connections**: Per-user agent connections, such as Gmail, Slack, and GitHub, are tied to individual user tokens. Each user must reconnect.
+- **Re-share agents**: Per-user access lists keep only user IDs that exist on the destination. The tool reports which users it removed.
+- **Check agent models**: The tool substitutes a model when the destination catalog does not offer the source model. It logs every substitution.
+- **Configure infrastructure-level settings**: OAuth providers, the GitHub App, and the Slack app are set in the deployment configuration, not through the API. Contact the LangChain team to configure them in your data plane.
+
+Fleet migrators never overwrite resources that already exist on the destination, so re-running `fleet` is safe.
+
+## Move data the tool does not migrate
+
+### Traces
+
+The tool does not migrate traces. To keep historical traces beyond the lifecycle of your old instance, [bulk export](/langsmith/data-export) them to an S3-compatible bucket.
+
+To move tracing applications, create API keys scoped to a workspace in the data plane, then repoint the application:
+
+- **Cut over**: Set `LANGSMITH_ENDPOINT` to the data plane endpoint and `LANGSMITH_API_KEY` to the new key. See [Trace to a data plane](/langsmith/byoc-usage#trace-to-a-data-plane).
+- **Dual trace**: Write to the old instance and the data plane during the transition. See [Trace to multiple endpoints](/langsmith/byoc-usage#trace-to-multiple-endpoints).
+
+### Deployed agents
+
+Redeploy agents that run on your existing instance into a workspace in the data plane. Use the LangSmith UI or the API. You may also need to recreate service accounts, image pull secrets, and other resources in the data plane cluster.
+
+For agent databases and caches, choose one of the following:
+
+- Create new instances in the data plane and point the redeployed agents at them. Start empty, or restore from a backup of the old instance.
+- Point the redeployed agents at your existing database instances, and reach them from the data plane cluster over PrivateLink or VPC peering.
+
+For more information, see [LangSmith Deployment](/langsmith/deployment).
+
+### Insights reports
+
+[Insights](/langsmith/insights) reports are not migrated across instances. To keep a report, open its details in the LangSmith UI and select **Download**.
+
+## See also
+
+- [BYOC onboarding](/langsmith/byoc-onboarding)
+- [BYOC usage](/langsmith/byoc-usage)
+- [Bulk export trace data](/langsmith/data-export)
+
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+</Callout>
+<Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-migration.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 </Callout>
 </div>
 
@@ -12573,9 +12729,9 @@ Pick the correct data plane carefully when you create a workspace. A workspace c
 </Step>
 
 <Step title="(Optional) Migrate existing data">
-If you are moving from an existing LangSmith Cloud or [self-hosted](/langsmith/self-hosted) instance, users, roles, datasets, prompts, experiments, annotation queue configuration, automation rules, and dashboards can be copied over. Traces cannot be migrated today.
+If you are moving from an existing LangSmith Cloud or [self-hosted](/langsmith/self-hosted) instance, users, roles, datasets, prompts, experiments, annotation queue configuration, automation rules, dashboards, and Fleet resources can be copied over. Traces cannot be migrated today.
 
-To plan a migration, contact the LangChain team.
+For more information, see [Migrate to BYOC](/langsmith/byoc-migration).
 </Step>
 
 </Steps>
@@ -12773,24 +12929,24 @@ The LangSmith UI handles this automatically: it routes to the correct data plane
 
 ## Organizations, data planes, and workspaces
 
-A BYOC deployment has three levels:
+A BYOC deployment adds one level to the standard LangSmith [resource hierarchy](/langsmith/administration-overview#resource-hierarchy): the data plane, which sits between the organization and the workspace.
 
 - **Organization**: The top level. Users, roles, billing, SSO configuration, and API keys belong to the organization and live in the control plane.
 - **Data plane**: Belongs to an organization and represents physical separation of data. An organization can have several data planes, each in its own AWS account and region.
-- **Workspace**: Belongs to exactly one data plane, which you select when you create the workspace. Traces, datasets, experiments, and other application data live in a workspace, the same as on Cloud or self-hosted.
+- **Workspace**: Belongs to exactly one data plane, which you select when you create the workspace. Traces, datasets, experiments, and other application data live in a workspace.
 
 <img
   src="/langsmith/images/byoc-org-structure.png"
-  alt="Nesting diagram of a BYOC deployment. An organization contains two data planes, each labeled as physical separation. The first is in us-east-1 and holds three workspaces named Production, Staging, and Dev. The second is in eu-west-1 and holds two workspaces named Production and Dev. Every workspace is labeled as logical separation within its data plane."
+  alt="Nesting diagram of a BYOC deployment. An organization contains two data planes, each labeled as physical separation. The first is in us-east-1 and the second is in eu-west-1. Each data plane holds one workspace per team, and every workspace is labeled as logical separation within its data plane."
 />
 
-Use data planes for physical separation of data, and workspaces for logical separation within a data plane. Common combinations are:
+Use data planes for physical separation of data, and workspaces for logical separation within a data plane. Common ways to divide data planes are:
 
-| Data planes | Workspaces |
-|-------------|------------|
-| Per region, such as `us-east-1` and `us-west-2` | Per environment, such as dev, staging, and prod |
-| Per environment and region, such as prod `us-east-1`, staging `us-east-1`, and dev `us-east-1` | Per team |
-| Per business unit | Per team |
+- **Per region**, such as `us-east-1` and `us-west-2`, to keep sensitive application data in a specific region.
+- **Per environment and region**, such as prod `us-east-1` and dev `us-east-1`, to hold production and development data in separate AWS accounts.
+- **Per business unit**, when each unit owns its own AWS account.
+
+Below the data plane, workspaces and applications work the same as on Cloud or self-hosted. For more information, see [Administration overview](/langsmith/administration-overview) and [Workload isolation](/langsmith/workload-isolation).
 
 ## Find your data plane endpoint
 
@@ -29775,9 +29931,9 @@ polly:
 
 ## Enable Sandboxes
 
-<Info>
-Self-hosted Sandboxes require LangSmith Helm chart `0.16.0` or later.
-</Info>
+<Note>
+Self-hosted Sandboxes require LangSmith Helm chart v17 (`0.17.x`).
+</Note>
 
 Sandboxes are disabled by default. After installation, see [LangSmith Sandboxes](/langsmith/sandboxes) for user workflows in the LangSmith UI and APIs.
 
@@ -29787,16 +29943,14 @@ Self-hosted Sandboxes are supported on:
 
 - Amazon Elastic Kubernetes Service (EKS)
 - Google Kubernetes Engine (GKE)
-
-Azure Kubernetes Service (AKS) is supported by the base LangSmith chart, but self-hosted Sandboxes are not supported on AKS.
+- Azure Kubernetes Service (AKS)
 
 ### Components
 
 Enabling Sandboxes provisions the following resources:
 
 - Sandbox runtime pods that run sandbox workloads on KVM-capable nodes.
-- The JuiceFS CSI driver and a JuiceFS-backed volume for sandbox files and snapshots.
-- A JuiceFS metadata store backed by Redis and object storage backed by S3 or GCS.
+- A JuiceFS metadata store backed by Redis and object storage backed by S3, GCS, or Azure Blob Storage.
 - Optional wildcard ingress for services exposed from inside Sandboxes.
 
 ### Prerequisites
@@ -29839,18 +29993,15 @@ Enabling Sandboxes provisions the following resources:
 
     - A Redis-compatible metadata store.
     - An object storage bucket or bucket root.
-    - A JuiceFS CSI configuration Secret, or enough Helm values for the chart to create one.
+    - A JuiceFS configuration Secret, or enough Helm values for the chart to create one.
 
-    <Warning>
-    Enabling Sandboxes installs the JuiceFS CSI driver. The CSI driver includes cluster-scoped Kubernetes resources. Only one sandbox-enabled LangSmith release should manage the JuiceFS CSI driver in a cluster unless you have verified resource ownership.
-    </Warning>
+    Use these object storage backends for `sandboxes.juicefs.storage` and `sandboxes.juicefs.bucket`:
 
-    Supported object storage backends:
-
-    | Platform | `sandboxes.juicefs.storage` | `sandboxes.juicefs.bucket` format |
+    | **Platform** | **Storage value** | **Bucket format** |
     | --- | --- | --- |
     | AWS | `s3` | Region-explicit HTTPS S3 endpoint, such as `https://bucket-name.s3.us-west-2.amazonaws.com` |
     | GCP | `gs` | GCS URL, such as `gs://bucket-name` |
+    | Azure | `wasb` | Azure Blob Storage URL, such as `https://container-name.core.windows.net` |
 
     Do not use object-store subpaths in `sandboxes.juicefs.name`. Use a flat name, such as `sandbox-juicefs`. JuiceFS stores objects under that name inside the configured bucket.
 
@@ -29878,9 +30029,8 @@ Enabling Sandboxes provisions the following resources:
         If the Helm chart manages your LangSmith app Secret, set the sandbox secret values directly in your config file. Avoid committing this file to version control.
 
         ```yaml
-        config:
-          sandboxes:
-            callbackSigningJwk: '<ed25519-private-jwk>'
+        sandboxes:
+          callbackSigningJwk: '<ed25519-private-jwk>'
         ```
       </Tab>
     </Tabs>
@@ -29889,6 +30039,8 @@ Enabling Sandboxes provisions the following resources:
   </Step>
 
   <Step title="Choose a proxy CA mode">
+    The sandbox egress authentication proxy uses this CA for TLS interception and credential injection.
+
     The chart supports two proxy CA modes:
 
     | Mode | Use when |
@@ -29904,6 +30056,9 @@ Enabling Sandboxes provisions the following resources:
 
 Add the following values to your `langsmith_config.yaml`, along with the sandbox secret values described in the [Prerequisites](#prerequisites-2). Replace placeholders with your deployment-specific values.
 
+<Tabs>
+  <Tab title="AWS">
+
 ```yaml
 images:
   sandboxHostImage:
@@ -29917,29 +30072,76 @@ sandboxes:
     bucket: "https://bucket-name.s3.us-west-2.amazonaws.com"
     redis:
       metaURL: "redis://redis-host:6379/1"
-  proxyCa:
-    mode: "generatedSecret"
+  sandboxHost:
+    deployment:
+      nodeSelector:
+        kubernetes.io/arch: "amd64"
+        sandbox.langsmith.com/host: "true"
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: "<role_arn>"
 ```
 
-If you create the JuiceFS CSI config Secret yourself, set `sandboxes.juicefs.csi.existingSecretName` and omit `sandboxes.juicefs.name`, `storage`, `bucket`, and `redis.metaURL` from the Helm values:
+  </Tab>
+  <Tab title="GCP">
 
 ```yaml
+images:
+  sandboxHostImage:
+    tag: "<same-release-tag-as-your-langsmith-images>"
+
 sandboxes:
   enabled: true
   juicefs:
-    csi:
-      existingSecretName: "juicefs-csi-config"
+    name: "sandbox-juicefs"
+    storage: "gs"
+    bucket: "gs://bucket-name"
+    redis:
+      metaURL: "redis://redis-host:6379/1"
+  sandboxHost:
+    deployment:
+      nodeSelector:
+        kubernetes.io/arch: "amd64"
+        sandbox.langsmith.com/host: "true"
+    serviceAccount:
+      annotations:
+        iam.gke.io/gcp-service-account: "<gsa_name>@<project_id>.iam.gserviceaccount.com"
 ```
 
-The existing Secret must be in the LangSmith release namespace and contain these keys:
+  </Tab>
+  <Tab title="Azure">
 
 ```yaml
-stringData:
-  name: "sandbox-juicefs"
-  metaurl: "redis://redis-host:6379/1"
-  storage: "s3"
-  bucket: "https://bucket-name.s3.us-west-2.amazonaws.com"
+images:
+  sandboxHostImage:
+    tag: "<same-release-tag-as-your-langsmith-images>"
+
+sandboxes:
+  enabled: true
+  juicefs:
+    name: "sandbox-juicefs"
+    storage: "wasb"
+    bucket: "https://container-name.core.windows.net"
+    accessKey: "<storage-account-name>" # Account name, not a credential.
+    redis:
+      metaURL: "redis://redis-host:6379/1"
+  juicefsFormatJob:
+    labels:
+      azure.workload.identity/use: "true"
+  sandboxHost:
+    deployment:
+      labels:
+        azure.workload.identity/use: "true"
+      nodeSelector:
+        kubernetes.io/arch: "amd64"
+        sandbox.langsmith.com/host: "true"
+    serviceAccount:
+      annotations:
+        azure.workload.identity/client-id: "<client_id>"
 ```
+
+  </Tab>
+</Tabs>
 
 Apply the updated chart:
 
@@ -29953,9 +30155,12 @@ helm upgrade -i langsmith langchain/langsmith \
 
 ### Enable with Terraform
 
+<div className="my-6 rounded-xl border border-gray-200 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-900/40">
+
 The LangSmith Terraform modules can provision the required AWS and GCP infrastructure and generate the corresponding Helm values.
 
-#### AWS
+<Tabs>
+  <Tab title="AWS">
 
 In `modules/aws/infra/terraform.tfvars`, enable Sandboxes and configure the sandbox node capacity:
 
@@ -29978,7 +30183,7 @@ AWS Sandboxes require `redis_source = "external"`. The Terraform module:
 - Creates a dedicated ElastiCache Redis instance for JuiceFS sandbox metadata.
 - Configures that dedicated instance with the recommended `noeviction` policy.
 - Reuses the LangSmith S3 bucket for sandbox object storage.
-- Creates the JuiceFS CSI config Secret.
+- Creates the JuiceFS configuration Secret.
 - Adds the expected node label and taint.
 
 The AWS setup script generates the sandbox service-auth secret, callback signing JWK, and dedicated JuiceFS Redis auth token through the normal SSM-backed setup flow. Run the infra setup script before applying Terraform if those values do not exist yet.
@@ -29987,21 +30192,22 @@ If you deploy the Helm release with the Terraform app module, set the sandbox ap
 
 ```hcl
 enable_sandboxes      = true
-chart_version          = "~0.16.0"
+chart_version          = "~0.17.0"
 sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
 ```
 
-When `enable_sandboxes = true`, the Terraform app module requires an explicit LangSmith Helm chart version `0.16.0` or later and a sandbox runtime image tag.
+When `enable_sandboxes = true`, the Terraform app module requires an explicit LangSmith Helm chart v17 release and a sandbox runtime image tag.
 
 Run the normal AWS flow:
 
 ```bash
 make apply
 make init-values
-CHART_VERSION="~0.16.0" make deploy
+CHART_VERSION="~0.17.0" make deploy
 ```
 
-#### GCP
+  </Tab>
+  <Tab title="GCP">
 
 In `modules/gcp/infra/terraform.tfvars`, enable Sandboxes and configure a Standard GKE node pool:
 
@@ -30028,7 +30234,7 @@ GCP Sandboxes require `redis_source = "external"`. The Terraform module:
 - Creates a dedicated Memorystore Redis instance for JuiceFS sandbox metadata.
 - Configures that dedicated instance with the recommended `noeviction` policy.
 - Reuses the LangSmith GCS bucket for sandbox object storage.
-- Creates the JuiceFS CSI config Secret.
+- Creates the JuiceFS configuration Secret.
 - Adds the expected node label and taint.
 
 The GCP setup script generates the sandbox service-auth secret and callback signing JWK through the normal Secret Manager setup flow. Run the infra setup script before applying Terraform if those values do not exist yet.
@@ -30037,19 +30243,24 @@ If you deploy the Helm release with the Terraform app module, set the sandbox ap
 
 ```hcl
 enable_sandboxes      = true
-chart_version          = "~0.16.0"
+chart_version          = "~0.17.0"
 sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
 ```
 
-When `enable_sandboxes = true`, the Terraform app module requires an explicit LangSmith Helm chart version `0.16.0` or later and a sandbox runtime image tag.
+When `enable_sandboxes = true`, the Terraform app module requires an explicit LangSmith Helm chart v17 release and a sandbox runtime image tag.
 
 Run the normal GCP flow:
 
 ```bash
 make apply
 make init-values
-CHART_VERSION="~0.16.0" make deploy
+CHART_VERSION="~0.17.0" make deploy
 ```
+
+  </Tab>
+</Tabs>
+
+</div>
 
 ### Optional: enable service URLs
 
@@ -52397,9 +52608,9 @@ LangGraph provides the [**time travel**](/oss/python/langgraph/use-time-travel) 
 To time travel using the LangSmith Deployment API (via the LangGraph SDK):
 
 1. **Run the graph** with initial inputs using [LangGraph SDK](/langsmith/langgraph-python-sdk)'s [client.runs.wait](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.wait) or [client.runs.stream](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.stream) APIs.
-2. **Identify a checkpoint in an existing thread**: Use [client.threads.get_history](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_history) method to retrieve the execution history for a specific `thread_id` and locate the desired `checkpoint_id`.
+2. **Identify a checkpoint in an existing thread**: Use [client.threads.get_history](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_history) method to retrieve the execution history for a specific `thread_id` and locate the desired `checkpoint_id`.
   Alternatively, set a [breakpoint](/oss/python/langgraph/interrupts) before the node(s) where you want execution to pause. You can then find the most recent checkpoint recorded up to that breakpoint.
-3. **(Optional) modify the graph state**: Use the [client.threads.update_state](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.update_state) method to modify the graph’s state at the checkpoint and resume execution from alternative state.
+3. **(Optional) modify the graph state**: Use the [client.threads.update_state](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/update_state) method to modify the graph’s state at the checkpoint and resume execution from alternative state.
 4. **Resume execution from the checkpoint**: Use the [client.runs.wait](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.wait) or [client.runs.stream](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.stream) APIs with an input of `None` and the appropriate `thread_id` and `checkpoint_id`.
 
 ## Use time travel in a workflow
@@ -75667,7 +75878,7 @@ For an overview of LangSmith's RBAC system, role definitions, and permission con
 | **Core management:**<br/>• [Organization settings](#organization-settings): Org info and configuration<br/>• [Workspaces](#workspaces): Workspace management<br/>• [Organization members](#organization-members): Member management<br/>• [Roles and permissions](#roles-and-permissions): Custom roles | **Core resources:**<br/>• [Projects](#projects): Organize traces and runs<br/>• [Runs](#runs): Individual execution traces<br/>• [Datasets](#datasets): Test datasets for evaluation<br/>• [Examples](#examples): Individual dataset examples<br/>• [Experiments](#experiments): Comparative experiments |
 | **Security and authentication:**<br/>• [SSO and authentication](#sso-and-authentication): Single sign-on setup<br/>• [SCIM](#scim): Identity provisioning<br/>• [Access policies](#access-policies): Attribute-based access control | **Monitoring and analysis:**<br/>• [Rules](#rules): Automated run rules<br/>• [Alerts](#alerts): Alert rules for monitoring<br/>• [Feedback](#feedback): Scores and labels on outputs<br/>• [Annotation Queues](#annotation-queues): Human review queues<br/>• [Charts](#charts): Custom visualizations |
 | **Billing and accounts:**<br/>• [Billing and payments](#billing-and-payments): Subscription management<br/>• [API keys](#api-keys): Org-level keys | **Development and configuration:**<br/>• [Prompts](#prompts): Prompt templates (LangChain Hub)<br/>• [Custom apps](#custom-apps): User-authored mini web apps<br/>• [Deployments](#deployments): Deployment configurations<br/>• [MCP Servers](#mcp-servers): Model Context Protocol servers<br/>• [Fleet](#fleet): Fleet admin operations |
-| **Analytics:**<br/>• [Charts and dashboards](#organization-charts-and-dashboards): Org-level visualizations<br/>• [Usage and analytics](#usage-and-analytics): Usage tracking and TTL settings | **Workspace management:**<br/>• [Workspace settings](#workspace-settings-and-management): Members, settings<br/>• [Tags](#tags): Metadata tagging system<br/>• [Bulk Exports](#bulk-exports): Data export operations |
+| **Analytics:**<br/>• [Charts and dashboards](#organization-charts-and-dashboards): Org-level visualizations<br/>• [Usage and analytics](#usage-and-analytics): Usage tracking and TTL settings | **Workspace management:**<br/>• [Model price map](#model-price-map): Per-token model prices<br/>• [Workspace settings](#workspace-settings-and-management): Members, settings<br/>• [Tags](#tags): Metadata tagging system<br/>• [Bulk Exports](#bulk-exports): Data export operations |
 
 **Additional information:**
 
@@ -76144,6 +76355,21 @@ Custom visualizations and dashboards.
 | View deployment | ✓ | ✓ | ✓ | `deployments:read` |
 | Update deployment | ✓ | ✓ | ✗ | `deployments:update` |
 | Delete deployment | ✓ | ✗ | ✗ | `deployments:delete` |
+
+### Model price map
+
+Per-token model prices used to compute run costs. See [Cost tracking](/langsmith/cost-tracking).
+
+| Operation | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission |
+|-----------|:---------------:|:--------------:|:----------------:|---------------------|
+| View model prices | ✓ | ✓ | ✓ | `model-price-map:read` |
+| Create a model price entry | ✓ | ✓ | ✗ | `model-price-map:create` |
+| Update a model price entry | ✓ | ✓ | ✗ | `model-price-map:update` |
+| Delete a model price entry | ✓ | ✓ | ✗ | `model-price-map:delete` |
+
+<Note>
+These permissions replace the `runs:read` and `runs:create` checks that previously gated model prices. Built-in roles keep the access they had. Custom roles created after this change need the `model-price-map` permissions granted explicitly; they appear as their own checkboxes in the custom role editor.
+</Note>
 
 ### Workspace settings and management
 
@@ -102163,6 +102389,18 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
 
+<Update label="2026-08-27" tags={["self-hosted"]} rss={{ title: "2026-08-27 - self-hosted" }}>
+## langsmith-0.16.13
+
+**LangSmith version:** `0.16.47`
+
+- Users with `runs:read` granted through an ABAC policy were able to open traces in projects whose tags matched the policy, while trace access remained denied for projects outside the policy scope.
+- Run rules and automations avoided cross-slot transaction failures when Redis cluster-safe mode was enabled.
+
+**Download the Helm chart:** [`langsmith-0.16.13.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.13/langsmith-0.16.13.tgz)
+{/* langsmith-release-image: 0.16.13 0.16.47 */}
+</Update>
+
 <Update label="2026-08-24" tags={["Stable"]} rss={{ title: "2026-08-24 - self-hosted" }}>
 ## langsmith-0.16.12
 
@@ -105693,13 +105931,124 @@ Source: https://docs.langchain.com/langsmith/server-a2a
 
 The A2A endpoint is available in [Agent Server](/langsmith/agent-server) at `/a2a/{assistant_id}`.
 
+## Protocol version
+
+Agent Server speaks the A2A **v1.0** JSON-RPC binding and also accepts the v0.3 method names, so
+existing v0.3 clients keep working. The agent card declares one interface:
+
+```json
+"supportedInterfaces": [
+  {
+    "url": "https://your-deployment/a2a/{assistant_id}",
+    "protocolBinding": "JSONRPC",
+    "protocolVersion": "1.0"
+  }
+]
+```
+
+<Warning>
+The method name you send also selects the enum case in the response. A v1.0 name returns
+SCREAMING_SNAKE_CASE (`TASK_STATE_WORKING`, `ROLE_AGENT`); a v0.3 name returns lowercase
+(`working`, `agent`). Pick one family per client and stay on it.
+
+The envelope varies by method, not by family: `SendMessage` wraps the task in `result.task`, while
+`GetTask` and all v0.3 methods return it directly on `result`. `ListTasks` returns `result.tasks`.
+</Warning>
+
 ## Supported methods
 
-Agent Server supports the following A2A RPC methods:
+| v1.0 name | v0.3 name | Supported |
+|---|---|---|
+| `SendMessage` | `message/send` | Yes |
+| `SendStreamingMessage` | `message/stream` | Yes — Server-Sent Events |
+| `GetTask` | `tasks/get` | Yes |
+| `CancelTask` | `tasks/cancel` | Yes |
+| `ListTasks` | — | Yes |
+| `GetExtendedAgentCard` | — | Yes, under the v1.0 name only |
+| `SubscribeToTask` | — | Not yet — returns `-32601` |
+| `*TaskPushNotificationConfig` | — | Not yet — returns `-32601` |
 
-- **message/send**: Send a message to an assistant and receive a complete response
-- **message/stream**: Send a message and stream responses in real-time using Server-Sent Events (SSE)
-- **tasks/get**: Retrieve the status and results of a previously created task
+Exactly four v0.3 names are accepted: `message/send`, `message/stream`, `tasks/get` and
+`tasks/cancel`. Anything else — including `agent/getAuthenticatedExtendedCard` and
+`tasks/resubscribe` — returns `-32601 Method not found`.
+
+Only the JSON-RPC binding is available. gRPC and HTTP+JSON are not implemented.
+
+### Task history in responses
+
+A context holds many tasks. By default `SendMessage`, `GetTask` and `ListTasks` return the history
+of the **whole context**, not just the task you asked about. The second task in a context replays
+the first task's messages, so a client that renders every history entry shows earlier turns again —
+including earlier tool results and A2UI payloads.
+
+Set `historyScope` to `task` to get back only the messages that belong to the task you asked about.
+The default stays `context`, so existing integrations are unaffected.
+
+Where the option goes depends on the method. `SendMessage` reads it from `configuration`:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": "1",
+  "method": "SendMessage",
+  "params": {
+    "message": {
+      "role": "ROLE_USER",
+      "parts": [{"text": "Second request"}],
+      "messageId": "message-2",
+      "contextId": "8b1f0e5c-9a3d-4f27-b0c8-2e6a5d4c1b7a"
+    },
+    "configuration": {"historyScope": "task"}
+  }
+}
+```
+
+`GetTask` and `ListTasks` read it directly from `params`:
+
+```json
+{"jsonrpc": "2.0", "id": "2", "method": "GetTask",
+ "params": {"id": "<taskId>", "historyScope": "task"}}
+```
+
+If your client cannot add fields to the request body, send the header instead. An explicit value in
+the request wins over the header.
+
+```
+LangGraph-A2A-History-Scope: task
+```
+
+The agent card advertises this under `capabilities.extensions`, so you can detect support rather
+than assume it:
+
+```json
+{
+  "uri": "https://langchain.com/a2a/extensions/history-scope/v1",
+  "description": "Choose task-only or full-context response history",
+  "required": false,
+  "params": {
+    "header": "LangGraph-A2A-History-Scope",
+    "values": ["context", "task"],
+    "default": "context",
+    "methods": ["SendMessage", "GetTask", "ListTasks"]
+  }
+}
+```
+
+Three limits worth knowing:
+
+- Streaming ignores both history options. `SendStreamingMessage` reads neither `historyScope` nor `historyLength`, and returns no error if you send them — so do not rely on either over SSE.
+- `historyLength` caps at 10. A larger value returns `-32602` with `historyLength cannot exceed 10`.
+- Scope is applied before `historyLength`, so you get the last N messages *of that task*.
+
+An unrecognized value returns `-32602` with `historyScope must be 'context' or 'task'`. A mis-cased
+key such as `historyscope` is not an error — it is ignored, and you silently get full-context
+history, so check the spelling if filtering appears not to work.
+
+<Warning>
+Do not resend a `taskId` from a completed task. Each new turn starts a new task inside the same
+context — send the `contextId` alone. A message naming a terminal task is rejected with `-32004`,
+and a `taskId` minted by another agent is rejected with `-32001`.
+</Warning>
 
 ## Agent card discovery
 
@@ -105711,25 +106060,102 @@ GET /.well-known/agent-card.json?assistant_id={assistant_id}
 
 The agent card includes the assistant's name, description, available skills, supported input/output modes, and the A2A endpoint URL for communication.
 
-## Requirements
+## Optional capabilities
 
-To use A2A, ensure you have the following dependencies installed:
+These are configured per assistant through `metadata.a2a` on the Assistants API. `langgraph.json`
+cannot set assistant metadata, so patch the assistant after deploy.
 
-* `langgraph-api >= 0.4.21`
+### Declare input and output modes
 
-Install with:
-
-```bash
-pip install "langgraph-api>=0.4.21"
+```json
+{
+  "metadata": {
+    "a2a": {
+      "input_modes": ["text/plain", "application/pdf"],
+      "output_modes": ["text/plain", "application/pdf"]
+    }
+  }
+}
 ```
 
-## Usage overview
+The values feed both the card's `defaultInputModes`/`defaultOutputModes` and the generated skill's
+modes. They are advertisement only — an undeclared mode is still accepted. Replacement is per
+field, so send both if you want both overridden, and note that an empty list is rejected.
 
-To enable A2A:
+### File parts
 
-* Upgrade to use langgraph-api>=0.4.21.
-* Deploy your agent with message-based state structure.
-* Connect with other A2A-compatible agents using the endpoint.
+`FilePart` works in both directions. Inbound file, image, audio and video parts become LangChain
+content blocks. Outbound content blocks map back to `FilePart`, in task history and in the final
+streamed artifact. MIME types, URIs and filenames pass through unchanged; inline data is
+re-encoded as standard base64.
+
+### A2UI v0.9
+
+Opt in per assistant:
+
+```json
+{ "metadata": { "a2a": { "a2ui": true } } }
+```
+
+The card then advertises the extension and appends the canonical MIME type to both mode lists:
+
+```json
+"capabilities": {
+  "extensions": [
+    {
+      "uri": "https://a2ui.org/a2a-extension/a2ui/v0.9",
+      "description": "Ability to render A2UI v0.9",
+      "required": false,
+      "params": {
+        "v0.9": {
+          "supportedCatalogIds": [],
+          "acceptsInlineCatalogs": false
+        }
+      }
+    }
+  ]
+}
+```
+
+A client activates it by listing the URI in `message.extensions`. Payloads are validated in both
+directions against the v0.9 schemas, and A2UI parts are preserved in `message/send`, `tasks/get`
+and the final `message/stream` artifact. Responses carry
+`metadata.mimeType: "application/a2ui+json"`. `application/json+a2ui` is accepted as an alias on
+input.
+
+### Filter tool results
+
+By default every correlated tool result is published as a `DataPart`. To publish only some, set an
+allowlist of tool names on the deployment:
+
+```bash
+A2A_ALLOWED_TOOL_CALL_RESULTS=generative_ui_tool,another_tool
+```
+
+Unset means all tool results are published. The filter applies to both task history and streaming.
+
+## Requirements
+
+| Feature | Minimum version |
+|---|---|
+| A2A endpoint | `langgraph-api >= 0.4.21` |
+| Inbound `FilePart` | `0.12.0` |
+| Tool-result `DataPart`s | `0.12.2` |
+| `A2A_ALLOWED_TOOL_CALL_RESULTS` | `0.12.4` |
+| Outbound `FilePart`, configurable card modes | `0.13.0` |
+| A2UI v0.9 | `0.15.0` |
+| `historyScope` | `0.15.0` |
+
+```bash
+pip install "langgraph-api>=0.13.0"
+```
+
+A2UI v0.9 and `historyScope` landed after the `0.14.0` release candidates were cut, so they arrive
+in `0.15.0`. That version is not published as a stable release yet — check
+`capabilities.extensions` on the agent card before relying on `historyScope`.
+
+Your graph's state must include a `messages` key to accept A2A text and file parts. An assistant
+whose input schema has no `messages` field is rejected with an explanatory error.
 
 ## Creating an A2A-compatible agent
 
@@ -105741,7 +106167,7 @@ The A2A protocol uses two identifiers to maintain conversational continuity:
 * `contextId`: Groups messages into a conversation thread (like a session ID)
 * `taskId`: Identifies each individual request within that conversation
 
-On the first message, omit `contextId` and `taskId` - the agent will generate and return them. For all subsequent messages in the conversation, include the `contextId` and `taskId` from the prior response to maintain thread continuity.
+On the first message, omit both - the agent generates and returns them. For all subsequent messages in the conversation, send back the `contextId` from the prior response and omit `taskId`, so each turn opens a new task inside the same conversation. Send a `taskId` only to add to a task that is still running, such as one waiting on input.
 
 **LangSmith Tracing:** The Langsmith Deployment A2A endpoint automatically converts the A2A `contextId` to `thread_id` for LangSmith tracing, grouping all messages in the conversation under a single thread.
 
@@ -105851,6 +106277,9 @@ import uuid
 
 def extract_text(result: dict) -> str:
     """Best-effort extraction of response text from an A2A result."""
+    if "error" in result:
+        raise RuntimeError(f"A2A error {result['error']['code']}: {result['error']['message']}")
+
     for art in result.get("result", {}).get("artifacts", []) or []:
         for part in art.get("parts", []) or []:
             if part.get("kind") == "text" and part.get("text"):
@@ -105864,8 +106293,8 @@ def extract_text(result: dict) -> str:
     return "(no text found)"
 
 
-async def send_message(session, port, assistant_id, text, context_id=None, task_id=None):
-    """Send an A2A message. Returns (response_text, returned_context_id, returned_task_id)."""
+async def send_message(session, port, assistant_id, text, context_id=None):
+    """Send an A2A message. Returns (response_text, returned_context_id)."""
     url = f"http://127.0.0.1:{port}/a2a/{assistant_id}"
 
     message = {
@@ -105874,11 +106303,10 @@ async def send_message(session, port, assistant_id, text, context_id=None, task_
         "messageId": str(uuid.uuid4()),
     }
 
-    # A2A multi-turn continuity: reuse contextId and taskId across turns/agents
+    # A2A multi-turn continuity: reuse contextId across turns and agents.
+    # Do not reuse taskId — each turn starts a new task within the same context.
     if context_id:
         message["contextId"] = context_id
-    if task_id:
-        message["taskId"] = task_id
 
     payload = {
         "jsonrpc": "2.0",
@@ -105891,9 +106319,9 @@ async def send_message(session, port, assistant_id, text, context_id=None, task_
     async with session.post(url, json=payload, headers=headers) as response:
         result = await response.json()
 
+    text = extract_text(result)
     returned_context_id = result.get("result", {}).get("contextId") or context_id
-    returned_task_id = result.get("result", {}).get("id")
-    return extract_text(result), returned_context_id, returned_task_id
+    return text, returned_context_id
 
 
 async def simulate_conversation():
@@ -105909,23 +106337,18 @@ async def simulate_conversation():
 
     message = "Hello! Let's have a conversation."
     context_id = None
-    task_id = None
 
     async with aiohttp.ClientSession() as session:
         for i in range(3):
             print(f"--- Round {i + 1} ---")
 
-            message, context_id, task_id = await send_message(
-                session, 2024, agent_a_id, message,
-                context_id=context_id,
-                task_id=task_id,
+            message, context_id = await send_message(
+                session, 2024, agent_a_id, message, context_id=context_id
             )
             print(f"🔵 Agent A: {message}")
 
-            message, context_id, task_id = await send_message(
-                session, 2025, agent_b_id, message,
-                context_id=context_id,
-                task_id=task_id,
+            message, context_id = await send_message(
+                session, 2025, agent_b_id, message, context_id=context_id
             )
             print(f"🔴 Agent B: {message}\n")
 
@@ -105952,9 +106375,19 @@ The flow works as follows:
 1. The client passes the `contextId` in all subsequent messages to maintain conversation continuity.
 1. Agent Server maps the `contextId` to `thread_id` in LangSmith [metadata](/langsmith/add-metadata-tags), so all turns appear in the same thread.
 
+<Warning>
+The `contextId` is used directly as the LangGraph `thread_id`, so it must be a UUID. Echo back the
+one the server returned rather than minting your own identifier. A `contextId` such as
+`session-42` is rejected with `-32602` and the message `Failed to create run: Invalid thread ID`.
+</Warning>
+
 ### Tracing across multiple agents
 
-When agents from different frameworks communicate over A2A, you can unify their traces in LangSmith by sharing the same `thread_id` across all agents. Use the `contextId` returned by the first agent as the `thread_id` for all subsequent requests.
+When agents from different frameworks communicate over A2A, `contextId` is what unifies their traces. Reuse the `contextId` returned by the first agent on every later request, to that agent and to the others.
+
+<Warning>
+Agent Server does not read a top-level `metadata` field on the JSON-RPC payload. There is no way for a client to set the LangGraph `thread_id` directly — it is always the `contextId`. Sending `metadata.thread_id` to an Agent Server deployment has no effect.
+</Warning>
 
 The following code snippet demonstrates the key concepts. For a complete runnable implementation with two agents, refer to the [Google ADK + LangChain example](https://github.com/langchain-samples/A2A-google-adk/blob/main/test_agent_conversation.py).
 
@@ -105964,12 +106397,13 @@ import aiohttp
 import uuid
 
 
-async def send_message(session, url, text, context_id=None, task_id=None, thread_id=None):
-    """Send an A2A message and return (response_text, context_id, task_id)."""
+async def send_message(session, url, text, context_id=None):
+    """Send an A2A message and return (response_text, context_id)."""
 
     # --- 1. Build the message ---
-    # On follow-up turns, include contextId and taskId inside the message object
-    # so the server associates them with the ongoing conversation.
+    # On follow-up turns, include contextId inside the message object so the server
+    # associates them with the ongoing conversation. Do not resend taskId: each turn
+    # opens a new task within that conversation.
     message = {
         "role": "user",
         "parts": [{"kind": "text", "text": text}],
@@ -105977,17 +106411,15 @@ async def send_message(session, url, text, context_id=None, task_id=None, thread
     }
     if context_id:
         message["contextId"] = context_id
-    if task_id:
-        message["taskId"] = task_id
 
-    # --- 2. Set thread_id in metadata ---
-    # thread_id goes at the top level of the JSON-RPC payload, not inside params.
+    # --- 2. Send it ---
+    # contextId travels inside the message. Agent Server turns it into the
+    # LangGraph thread_id, so no separate tracing field is needed.
     payload = {
         "jsonrpc": "2.0",
         "id": str(uuid.uuid4()),
         "method": "message/send",
         "params": {"message": message},
-        "metadata": {"thread_id": thread_id},
     }
 
     async with session.post(url, json=payload, headers={"Accept": "application/json"}) as response:
@@ -106000,7 +106432,6 @@ async def send_message(session, url, text, context_id=None, task_id=None, thread
 
     result_obj = result.get("result", {})
     returned_context_id = result_obj.get("contextId") or context_id
-    returned_task_id = result_obj.get("id")
     text_out = next(
         (
             part.get("text", "")
@@ -106010,31 +106441,24 @@ async def send_message(session, url, text, context_id=None, task_id=None, thread
         ),
         "(no text)",
     )
-    return text_out, returned_context_id, returned_task_id
+    return text_out, returned_context_id
 
 
 async def run_conversation(agent_a_url, agent_b_url):
-    # --- 3. Share thread_id across agents ---
-    # Generate a shared thread_id upfront. Once the server returns a contextId,
-    # use that instead — this keeps the A2A context and LangSmith thread in sync.
-    thread_id = str(uuid.uuid4())
+    # --- 3. Share the context across agents ---
+    # The first response carries a contextId. Pass it to every agent from then
+    # on, and all their traces land in one LangSmith thread.
     context_id = None
-    task_id = None
     message = "Hello! Let's collaborate."
 
     async with aiohttp.ClientSession() as session:
         for _ in range(3):
-            message, context_id, task_id = await send_message(
-                session, agent_a_url, message,
-                context_id=context_id, task_id=task_id,
-                thread_id=context_id or thread_id,
+            message, context_id = await send_message(
+                session, agent_a_url, message, context_id=context_id
             )
 
-            # Passing the same thread_id to every agent groups all traces in LangSmith
-            message, context_id, task_id = await send_message(
-                session, agent_b_url, message,
-                context_id=context_id, task_id=task_id,
-                thread_id=context_id or thread_id,
+            message, context_id = await send_message(
+                session, agent_b_url, message, context_id=context_id
             )
 
 
@@ -106044,15 +106468,15 @@ asyncio.run(run_conversation(
 ))
 ```
 
-**1. Build the message**: Include `contextId` and `taskId` inside the `message` object on follow-up turns so the server can associate them with the ongoing conversation. Omit them on the first message, because the server generates a `contextId` and returns it in the response.
+**1. Build the message**: Include `contextId` inside the `message` object on follow-up turns so the server can associate them with the ongoing conversation. Omit it on the first message, because the server generates a `contextId` and returns it in the response. Do not resend `taskId` from a finished turn.
 
-**2. Set thread_id in metadata**: Pass `thread_id` in the top-level `metadata` field of the JSON-RPC payload, not inside `params`.
+**2. Send it**: The `contextId` travels inside `params.message`. Agent Server uses it as the LangGraph `thread_id`, so there is no separate tracing field to set.
 
-**3. Share thread_id across agents**: Generate a random `thread_id` before the first message. Once the server returns a `contextId`, use it as the `thread_id` for all subsequent requests, which keeps the A2A conversation context and the LangSmith thread in sync. Pass the same `thread_id` to every agent so all traces are grouped into one thread.
+**3. Share the context across agents**: Let the first agent mint the `contextId`, then pass that same value to every agent for the rest of the conversation. That is what groups their traces into one thread.
 
 ### Receive thread_id in non-LangGraph agents
 
-The [previous section](#tracing-across-multiple-agents) covers the client side—propagating `thread_id` when sending messages. If one of your agents is not built on LangGraph, it also needs to extract and attach the `thread_id` on the receiving end so its traces land in the same LangSmith thread. Use `langsmith.integrations.otel.configure()` to set up automatic tracing, and extract the `thread_id` from incoming A2A request metadata to group traces in the same thread.
+The [previous section](#tracing-across-multiple-agents) covers the client side — propagating `contextId` when sending messages. If one of your agents is not built on LangGraph, it also needs to read that `contextId` on the receiving end and attach it as the thread identifier, so its traces land in the same LangSmith thread. Use `langsmith.integrations.otel.configure()` to set up automatic tracing, and read `params.message.contextId` from the incoming A2A request.
 
 ```python
 from fastapi import FastAPI, Request
@@ -106073,11 +106497,11 @@ async def set_thread_id_middleware(request: Request, call_next):
     if request.method == "POST":
         body_bytes = await request.body()
         if body_bytes:
-            # --- 2. Extract thread_id from incoming A2A metadata ---
+            # --- 2. Extract contextId from the incoming A2A message ---
             try:
                 body = json.loads(body_bytes)
-                thread_id = body.get("metadata", {}).get("thread_id")
-            except Exception:
+                thread_id = body["params"]["message"].get("contextId")
+            except (ValueError, KeyError, TypeError):
                 pass
             # Re-inject the body so downstream handlers can still read it
             async def receive():
@@ -106101,6 +106525,77 @@ Set `LANGSMITH_API_KEY` and optionally `LANGSMITH_PROJECT` in your environment t
 ### View traces in LangSmith
 
 After running a multi-agent conversation, open the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-server-a2a) and navigate to **Threads**. All turns from all participating agents will appear under a single thread, identified by the shared `thread_id`.
+
+## Test your integration
+
+### Against your own deployment
+
+Fetch the card, then send a message:
+
+```bash
+curl "https://your-deployment/a2a/{assistant_id}/.well-known/agent-card.json"
+```
+
+```bash
+curl -X POST "https://your-deployment/a2a/{assistant_id}" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "SendMessage",
+    "params": {
+      "message": {
+        "role": "ROLE_USER",
+        "parts": [{"text": "hello"}],
+        "messageId": "test-1"
+      }
+    }
+  }'
+```
+
+The response contains `result.task.id` and `result.task.contextId`. Reuse the `contextId` on the
+next message to continue the conversation.
+
+For streaming, send `Accept: text/event-stream` and use `SendStreamingMessage`. The first event is
+the `Task`; status and artifact updates follow.
+
+### Against the official conformance suite
+
+A2A publishes a Technology Compatibility Kit at
+[a2aproject/a2a-tck](https://github.com/a2aproject/a2a-tck). It grades an implementation by
+RFC 2119 level and works against any A2A endpoint, including yours.
+
+```bash
+./run_tck.py --sut-host https://your-deployment/a2a/{assistant_id} --transport jsonrpc
+```
+
+<Note>
+The TCK drives some scenarios through `messageId` prefixes such as `tck-input-required`, described
+in its `docs/SUT_REQUIREMENTS.md`. A graph that does not implement those prefixes will report those
+requirements as skipped rather than failed.
+</Note>
+
+### What Agent Server currently fails
+
+Agent Server runs the TCK on every CI build as a required check, gated against a checked-in list of
+known failures. CI fails if a new failure appears, and also if a listed requirement starts passing,
+so the list cannot drift from what the server actually does.
+
+Read this before you build against a capability:
+
+| Gap | What you observe |
+|---|---|
+| Response wire shape is still v0.3 | Tasks, messages and parts carry `kind` and `mimeType` instead of v1.0 member-presence discrimination |
+| Streaming events are flat | SSE emits v0.3 objects with `final`, not `statusUpdate` / `artifactUpdate` wrappers |
+| `tool_results` is snake_case | v1.0 expects `toolResults`. Kept deliberately, because live A2UI clients read this key |
+| Timestamps | Serialized as `+00:00` rather than an ISO 8601 `Z` suffix |
+| `SubscribeToTask` | Returns `-32601` where the spec requires `-32001` |
+| Push notification config | Returns `-32601` where the spec requires `-32003` |
+| Errors carry no `data` | No `google.rpc.ErrorInfo` reason or domain is attached |
+| `A2A-Version` request header | Not read, so an unsupported version is processed instead of returning `-32009` |
+| Agent card caching | No `Cache-Control`, `ETag` or `Last-Modified` headers |
+| `GetExtendedAgentCard` | Served, but never advertised via `capabilities.extendedAgentCard` |
 
 ## Disable A2A
 
@@ -127030,13 +127525,13 @@ Source: https://docs.langchain.com/langsmith/trace-with-livekit
 This integration is in beta, so its API may change.
 </Note>
 
-Trace your [LiveKit Agents](https://docs.livekit.io/agents/) voice agents to LangSmith with the LangSmith LiveKit integration. For high-level conventions, see [Voice tracing fundamentals](/langsmith/trace-voice-fundamentals).
+Use the LangSmith LiveKit integration to trace your [LiveKit Agents](https://docs.livekit.io/agents/) voice agents, including their transcripts and audio recordings. For high-level conventions, see [Voice tracing fundamentals](/langsmith/trace-voice-fundamentals).
 
 <Note>
-The LiveKit integration requires `langsmith[livekit]>=0.9.7`.
+This setup requires `langsmith[livekit]>=0.11.2` and `livekit-agents>=1.6`.
 </Note>
 
-The integration hooks into the spans LiveKit already emits and maps them onto LangSmith's tracing format, so each conversation becomes a single LangSmith trace: a span per pipeline event, plus LiveKit's latency and token metrics.
+Each conversation appears as one LangSmith trace with its pipeline events, latency, and token metrics.
 
 ## Install
 
@@ -127070,7 +127565,7 @@ OPENAI_API_KEY=<your-openai-api-key>
 
 ## Set up tracing
 
-Import `configure_livekit` and call it once before creating your `AgentServer`. It builds the tracer provider, registers the LangSmith span processor, and wires it into LiveKit:
+Call `configure_livekit` once before creating your `AgentServer`.
 
 ```python
 from langsmith.integrations.livekit import configure_livekit
@@ -127089,29 +127584,35 @@ async def my_agent(ctx: agents.JobContext):
         llm="openai/gpt-4o-mini",
         tts="openai/tts-1:alloy",
     )
-    await session.start(room=ctx.room, agent=Agent(instructions="You are a helpful assistant."))
+    await session.start(
+        room=ctx.room,
+        agent=Agent(instructions="You are a helpful assistant."),
+        record={"audio": True},
+    )
 ```
 
-This works for both the STT/LLM/TTS cascade and speech-to-speech (realtime) models. Realtime models (for example, `lk_openai.realtime.RealtimeModel(...)`) need one extra call to capture the user's transcript. Refer to [When using LiveKit with a realtime model](#when-using-livekit-with-a-realtime-model).
+`configure_livekit()` uses LiveKit session recordings by default. The `record={"audio": True}` option tells LiveKit to create the recording.
+
+This setup works for both STT/LLM/TTS cascades and speech-to-speech (realtime) models. Realtime models need one extra call to capture the user's transcript. For more information, see [Use a realtime model](#use-a-realtime-model).
 
 ### Use your own tracer provider
 
-`configure_livekit()` builds a `TracerProvider`, registers the LangSmith span processor, and wires it into LiveKit. To use a `TracerProvider` you already manage, construct the processor yourself, add it to your provider, and register that provider with LiveKit's tracer hook. LiveKit only emits spans through the provider its tracer is bound to:
+If your application already manages an OpenTelemetry `TracerProvider`, add the LangSmith processor to that provider and register it with LiveKit:
 
 ```python
+from langsmith.integrations.livekit import LiveKitLangSmithSpanProcessor
 from livekit.agents import telemetry
 from opentelemetry.sdk.trace import TracerProvider
 
-from langsmith.integrations.livekit import LiveKitLangSmithSpanProcessor
-
 provider = TracerProvider()  # your own provider
-provider.add_span_processor(LiveKitLangSmithSpanProcessor())
+processor = LiveKitLangSmithSpanProcessor()
+provider.add_span_processor(processor)
 telemetry.set_tracer_provider(provider)
 ```
 
 ## Group a conversation into a thread
 
-To group a conversation's runs into a LangSmith [thread](/langsmith/threads), for thread-level views and token and cost aggregation, call `set_thread_id` once per conversation, inside its `@server.rtc_session()` handler before its spans are emitted:
+To group a conversation's runs into a LangSmith [thread](/langsmith/threads), call `set_thread_id` inside the session handler. Use a unique ID for each active session:
 
 ```python
 from langsmith.integrations.livekit import configure_livekit, set_thread_id
@@ -127125,15 +127626,9 @@ async def my_agent(ctx: agents.JobContext):
     ...
 ```
 
-## When using LiveKit with a realtime model
+## Use a realtime model
 
-With a speech-to-speech (realtime) model there is no separate speech-to-text step, so LiveKit transcribes the user's audio asynchronously and delivers the transcript through the session's `user_input_transcribed` event rather than on the OTel traces it emits.
-
-<Note>
-`instrument_session` requires `langsmith[livekit]>=0.10.4`.
-</Note>
-
-Call `instrument_session` once, right after creating the `AgentSession`, so the SDK subscribes to that event for you and pairs each transcript with its turn. It correlates by thread id, so set that first with `set_thread_id`, and pass the same id:
+For a speech-to-speech (realtime) model, call `instrument_session` after creating the `AgentSession` to capture the user's transcript. Pass the same thread ID to `set_thread_id` and `instrument_session`:
 
 ```python
 from langsmith.integrations.livekit import configure_livekit, set_thread_id
@@ -127149,29 +127644,6 @@ async def my_agent(ctx: agents.JobContext):
     session = AgentSession(llm=lk_openai.realtime.RealtimeModel(voice="marin"))
     processor.instrument_session(session, thread_id)  # capture the user transcript
 
-    await session.start(room=ctx.room, agent=Agent(instructions="You are a helpful assistant."))
-```
-
-Only call `instrument_session` for realtime models. In the STT/LLM/TTS cascade the transcript is already captured (from the speech-to-text step), so calling it there would record the user's turns a second time.
-
-## Record the conversation audio
-
-The integration attaches the call recording to the conversation root span. How you capture that recording differs between local development and production.
-
-### Development: embed a local file
-
-In console and local development, enable LiveKit's session recording and point `audio_path_provider` at the `audio.ogg` LiveKit writes under `ctx.session_directory`. The integration reads that file and embeds the bytes in the trace.
-
-```python
-from pathlib import Path
-
-_audio_path: Path | None = None
-configure_livekit(audio_path_provider=lambda: _audio_path)
-
-@server.rtc_session()
-async def my_agent(ctx: agents.JobContext):
-    global _audio_path
-    _audio_path = ctx.session_directory / "audio.ogg"
     await session.start(
         room=ctx.room,
         agent=Agent(instructions="You are a helpful assistant."),
@@ -127179,37 +127651,90 @@ async def my_agent(ctx: agents.JobContext):
     )
 ```
 
-In console mode, also pass `--record` on the command line. The recording reflects what was played to the client, so a barge-in shows up truncated.
+Only call `instrument_session` for realtime models. STT/LLM/TTS cascades already capture the user's transcript, so calling it there records each user turn twice.
 
-<Warning>
-Do not use `audio_path_provider` in production. In a deployed worker, `ctx.session_directory` is an ephemeral temporary directory that LiveKit deletes when the session ends, so there is no durable file to embed.
-</Warning>
+## Record the conversation audio
 
-### Production: record with Egress and attach the file
+By default, the integration uses LiveKit's session recording. Use Egress mode when you record to external storage instead.
 
-In production, record the room with [LiveKit Egress](https://docs.livekit.io/home/egress/overview/) into your own object storage, then attach the finished recording to the trace as a real audio attachment. Egress finishes uploading after the call ends, so the integration holds the conversation's root span open until you supply the bytes:
+### Record with LiveKit's session recording
 
-1. Call `processor.expect_recording(thread_id)` when you start egress.
-2. After the call, wait for egress to complete, download the file from your storage, and call `processor.complete_recording(thread_id, audio_bytes)`. The integration embeds the bytes and exports the trace.
-
-You must use the same `thread_id` for expect_recording and complete_recording, so the recording is matched to the right conversation.
+Turn on LiveKit's session recording.
 
 ```python
-import os
-
-from livekit import agents, api
+from langsmith.integrations.livekit import configure_livekit
+from livekit import agents
 from livekit.agents import Agent, AgentServer, AgentSession
-from langsmith.integrations.livekit import configure_livekit, set_thread_id
 
-RECORDING_BUCKET = os.environ["RECORDING_BUCKET"]
+configure_livekit()
 
-processor = configure_livekit()
 server = AgentServer()
 
 @server.rtc_session()
 async def my_agent(ctx: agents.JobContext):
+    session = AgentSession(...)
+    await session.start(
+        room=ctx.room,
+        agent=Agent(instructions="You are a helpful assistant."),
+        record={"audio": True},
+    )
+```
+
+By default, the LiveKit integration will capture the recording from LiveKit if present.
+
+<Note>
+In console mode, also pass `--record` on the command line (`python agent.py console --record`). Without it LiveKit creates the recorder but never starts it, so there is no file to attach. The recording reflects what was played to the client, so a barge-in shows up truncated.
+</Note>
+
+### Record with Egress
+
+Use [LiveKit Egress](https://docs.livekit.io/home/egress/overview/) when you want the recording in your own object storage or need video. Egress recording delivery requires a thread ID. Configure the integration for Egress, then call `complete_recording` after the Egress file is available:
+
+```python
+import asyncio
+import os
+import time
+
+from langsmith.integrations.livekit import configure_livekit, set_thread_id
+from livekit import agents, api
+from livekit.agents import Agent, AgentServer, AgentSession
+
+RECORDING_BUCKET = os.environ["RECORDING_BUCKET"]
+
+processor = configure_livekit(
+    recording_mode="egress",
+    recording_timeout_seconds=180,
+)
+server = AgentServer()
+
+async def wait_for_egress(
+    lkapi: api.LiveKitAPI,
+    egress_id: str,
+    timeout_seconds: float = 120,
+) -> api.EgressInfo:
+    deadline = time.monotonic() + timeout_seconds
+    failed_statuses = {
+        api.EgressStatus.EGRESS_FAILED,
+        api.EgressStatus.EGRESS_ABORTED,
+        api.EgressStatus.EGRESS_LIMIT_REACHED,
+    }
+    while time.monotonic() < deadline:
+        response = await lkapi.egress.list_egress(
+            api.ListEgressRequest(egress_id=egress_id)
+        )
+        if response.items:
+            info = response.items[0]
+            if info.status == api.EgressStatus.EGRESS_COMPLETE:
+                return info
+            if info.status in failed_statuses:
+                raise RuntimeError(f"Egress failed with status {info.status}")
+        await asyncio.sleep(1)
+    raise TimeoutError(f"Egress {egress_id} did not complete in time")
+
+@server.rtc_session()
+async def my_agent(ctx: agents.JobContext):
     thread_id = ctx.job.id  # unique per session; ctx.room.name is "console" in console mode
-    set_thread_id(thread_id)  # groups this conversation's spans into a thread
+    set_thread_id(thread_id)  # routes the Egress recording to this trace
     key = f"recordings/{thread_id}.ogg"
 
     # Start an audio-only room-composite egress to your storage.
@@ -127232,16 +127757,21 @@ async def my_agent(ctx: agents.JobContext):
             ],
         )
     )
-    # Hold the trace open until the recording is ready.
-    processor.expect_recording(thread_id)
 
     async def attach_recording():
         try:
-            await wait_for_egress(lkapi, egress.egress_id)  # poll until EGRESS_COMPLETE
+            info = await wait_for_egress(lkapi, egress.egress_id)  # poll until EGRESS_COMPLETE
             audio = download_from_storage(RECORDING_BUCKET, key)  # your storage client
-            processor.complete_recording(thread_id, audio, name="call.ogg")
+            processor.complete_recording(
+                thread_id,
+                data=audio,
+                # EgressInfo.started_at is a Unix timestamp in nanoseconds. This is
+                # when the egress worker began recording, which is what aligns the
+                # audio start with the trace.
+                started_at=info.started_at / 1e9,
+            )
         except Exception:
-            processor.complete_recording(thread_id, None)  # release without audio
+            processor.complete_recording(thread_id, data=None)
 
     ctx.add_shutdown_callback(attach_recording)
 
@@ -127249,10 +127779,11 @@ async def my_agent(ctx: agents.JobContext):
     await session.start(room=ctx.room, agent=Agent(instructions="..."))
 ```
 
-`wait_for_egress` polls [`list_egress`](https://docs.livekit.io/home/egress/api/) until the status is `EGRESS_COMPLETE` (or subscribe to the `egress_ended` webhook), and `download_from_storage` reads the object with your cloud provider's client. LiveKit Egress also writes to [Google Cloud Storage and Azure](https://docs.livekit.io/home/egress/overview/): swap `s3=` for `gcp=api.GCPUpload(...)` or `azure=api.AzureBlobUpload(...)`.
+`download_from_storage` represents your storage client's download operation. The default attachment name and MIME type are `recording.ogg` and `audio/ogg`. Set `name` or `mime_type` in `complete_recording` if your Egress output uses another format.
+
 
 <Note>
-Always call `complete_recording` because the trace's root span is held until it runs, including on failure with `data=None`. If the worker stops first, the integration will flush the trace without audio.
+Always call `complete_recording`, including on failure with `data=None`. Otherwise, the integration waits for `recording_timeout_seconds` (30 seconds by default) before exporting the trace without audio. Using `complete_recording` to capture Egress recordings requires setting a `thread_id`.
 </Note>
 
 ## Next steps
@@ -134159,7 +134690,7 @@ curl --request POST \
 ```
 </CodeGroup>
 
-For more information, refer to the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.create) and [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.create) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/create-thread) reference.
+For more information, refer to the [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/create) and [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/create) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/create-thread) reference.
 
 Output:
 
@@ -134197,7 +134728,7 @@ curl --request POST --url <DEPLOYMENT_URL>/threads/thread["thread_id"]/copy \
 ```
 </CodeGroup>
 
-For more information, refer to the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.copy) and [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.copy) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/copy-thread) reference.
+For more information, refer to the [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/copy) and [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/copy) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/copy-thread) reference.
 
 ### Prepopulated state
 
@@ -134416,7 +134947,7 @@ curl --request POST \
 ```
 </CodeGroup>
 
-For more information, refer to the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.search) and [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.search) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/search-threads) reference.
+For more information, refer to the [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/search) and [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/search) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/search-threads) reference.
 
 Output:
 
@@ -134568,7 +135099,7 @@ This will load a table of all threads in your deployment.
 
 ### Get thread
 
-To view a specific thread given its `thread_id`, use the [`get`](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get) method:
+To view a specific thread given its `thread_id`, use the [`get`](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient#member-get-0) method:
 
 <CodeGroup>
 ```python Python
@@ -134607,11 +135138,11 @@ Output:
 }
 ```
 
-For more information, refer to the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get) and [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/get-thread) reference.
+For more information, refer to the [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient#member-get-0) and [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient#member-get-0) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/get-thread) reference.
 
 ### Inspect thread state
 
-To view the current state of a given thread, use the [`get_state`](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_state) method. This returns the current values, next nodes to execute, and checkpoint information:
+To view the current state of a given thread, use the [`get_state`](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_state) method. This returns the current values, next nodes to execute, and checkpoint information:
 
 <CodeGroup>
 ```python Python
@@ -134698,7 +135229,7 @@ Output:
 }
 ```
 
-For more information, refer to the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_state) and [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_state) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/get-thread-state) reference.
+For more information, refer to the [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_state) and [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_state) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/get-thread-state) reference.
 
 Optionally, to view the state of a thread at a given checkpoint, pass in the checkpoint ID. This is useful for inspecting the thread state at a specific point in its execution history.
 
@@ -134753,7 +135284,7 @@ curl --request GET \
 
 ### Inspect full thread history
 
-To view a thread's history, use the [`get_history`](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_history) method. This returns a list of every state the thread experienced, allowing you to trace the full execution path:
+To view a thread's history, use the [`get_history`](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_history) method. This returns a list of every state the thread experienced, allowing you to trace the full execution path:
 
 <CodeGroup>
 ```python Python
@@ -134799,7 +135330,7 @@ This method is particularly useful for:
 - Auditing conversation history and state changes.
 - Replaying or analyzing past interactions.
 
-For more information, refer to the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_history) and [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_history) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/get-thread-history) reference.
+For more information, refer to the [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_history) and [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_history) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/get-thread-history) reference.
 
 </Tab>
 <Tab title="UI">
@@ -138031,6 +138562,25 @@ dcode --clear-default-model
 
 You can also pin a default from the interactive `/model` switcher (`Ctrl+S`) or set `[models].default` in `config.toml`. See [Set a default model](/oss/deepagents/code/providers#set-a-default-model).
 
+### Choose a summarization model
+
+Use a separate model for automatic context compaction, `/offload`, and `/compact` without changing the main agent model:
+
+```bash
+# Set the summarization model for this launch
+dcode --summarization-model openai:gpt-5.6-sol
+```
+
+In an interactive session, run `/summarization-model` to open the model picker, pass a model spec to switch directly, or pass `clear` to reuse the main agent model:
+
+```text
+/summarization-model
+/summarization-model openai:gpt-5.6-sol
+/summarization-model clear
+```
+
+The summarization model resolves from `--summarization-model`, then `[models].summarization_default` in `config.toml`, then the main agent model. See [Set a summarization model](/oss/deepagents/code/config-file#set-a-summarization-model).
+
 ### Model parameters and profile overrides
 
 Pass extra constructor kwargs to the model with `--model-params` as a JSON string. These apply for the current session only and override `config.toml` provider params:
@@ -138060,6 +138610,23 @@ dcode --install ollama
 ```
 
 Add `--package` to install an arbitrary provider package via `uv --with` (see [Arbitrary providers](/oss/deepagents/code/config-file#arbitrary-providers)), and `--yes` to skip confirmation prompts. To preinstall extras during the initial CLI install, set `DEEPAGENTS_CODE_EXTRAS` (for example, `DEEPAGENTS_CODE_EXTRAS="groq,fireworks"`).
+
+### Remove an optional extra
+
+Remove one installed extra while preserving the rest of the Deep Agents Code installation:
+
+<CodeGroup>
+    ```bash Shell
+    dcode uninstall groq
+    dcode --uninstall groq
+    ```
+
+    ```text In session
+    /uninstall groq
+    ```
+</CodeGroup>
+
+Removal rebuilds a uv tool installation without the selected extra while preserving the interpreter, release channel, other extras, and packages installed with `--package`.
 
 ## Agents and sessions
 
@@ -138104,6 +138671,8 @@ Use `-q`/`--quiet` to emit only the agent's response on stdout (for piping into 
 dcode -n "Generate a .gitignore for Python" -q > .gitignore
 dcode -n "List dependencies" -q --no-stream | sort
 ```
+
+Add `--show-reasoning` to display provider-visible reasoning. In an interactive session, reasoning streams into a separate row that collapses when the phase ends; press `Ctrl+O` to reopen it. In non-interactive mode, reasoning goes to stderr so the final answer on stdout remains pipeable. This setting is off by default and applies for the full session. See [Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning) for persistent configuration.
 
 Cap agent runs in CI with `--max-turns` or `--timeout`. Both exit with code 124 when the budget is exceeded. Requires `-n` or piped stdin:
 
@@ -138210,7 +138779,11 @@ dcode --allow-fs-tools ls,read_file tools list --json
 
 ## Diagnose and audit a session
 
-Deep Agents Code exposes read-only slash commands for inspecting what a session loads and spends: `/tools` lists the active tool set, `/context-doctor` audits the context injected before the conversation starts, and `/cost` reports the thread's estimated spend. Use them to confirm that a tool-shaping flag took effect or to find the source of unexpected context growth.
+dcode exposes read-only slash commands for inspecting what a session loads and spends: `/tools` lists the active tool set, `/extensions` lists loaded Python extension registrations, `/context-doctor` audits the context injected before the conversation starts, and `/cost` reports the thread's estimated spend. Use them to confirm that a tool-shaping flag took effect or to find the source of unexpected context growth.
+
+### List loaded Python extensions
+
+Run `/extensions` in a session to list each extension registration with its kind, name, scope, and source path. The report also shows load failures and whether graph-bound changes require `/restart`. This command and Python extension loading require `DEEPAGENTS_CODE_EXPERIMENTAL=1`. See [Python extensions](/oss/deepagents/code/extensions).
 
 ### List available tools
 
@@ -138363,6 +138936,7 @@ Run OAuth login for an MCP server marked `auth: "oauth"` with `dcode mcp login <
 |------------------------|-------------------------------------------------------------|
 | `-a`, `--agent NAME`   | Use named agent with separate memory. Overrides `[agents].recent` and `[agents].default` in `config.toml`. Default: `agent` (or the most recently used agent if `[agents].recent` is set) |
 | `-M`, `--model MODEL`  | Use a specific model (`provider:model`)                    |
+| `--summarization-model MODEL` | Model used for context-compaction summaries. Overrides `[models].summarization_default`; defaults to the main agent model |
 | `--model-params JSON`  | Extra kwargs to pass to the model as a JSON string (e.g., `'{"temperature": 0.7}'`) |
 | `--max-retries N`      | Override retries after a transient model error. Default: `5`; set to `0` to disable retries |
 | `--default-model [MODEL]` | Set the [default model](/oss/deepagents/code/providers#set-a-default-model) (omit `MODEL` to view the current default) |
@@ -138380,6 +138954,7 @@ Run OAuth login for an MCP server marked `auth: "oauth"` with `dcode mcp login <
 | `--timeout SECONDS`    | Hard wall-clock timeout for non-interactive mode. Exits with code 124 when exceeded. Requires `-n` or piped stdin. See [Non-interactive mode and piping](#non-interactive-mode-and-piping) |
 | `-q`, `--quiet`        | Clean output for piping—only the agent's response goes to stdout. Requires `-n` or piped stdin |
 | `--no-stream`          | Buffer the full response and write to stdout at once instead of streaming. Requires `-n` or piped stdin |
+| `--show-reasoning`     | Show provider-visible reasoning in the interactive transcript or on stderr in non-interactive mode. Off by default |
 | `--stdin`              | Read input from stdin explicitly instead of auto-detection. Errors clearly when stdin is unavailable or is a TTY |
 | `-y`, `--auto-approve` | Enable classifier-backed [Auto](/oss/deepagents/code/approval-modes) mode. Requires an interactive local session; toggle with `Shift+Tab` during an interactive session |
 | `--auto-classifier-model MODEL` | Model used by the [Auto classifier](/oss/deepagents/code/approval-modes#select-a-classifier-model) to review gated tool calls (`provider:model` format). Overrides `DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL` and `[models].auto_classifier` in `config.toml`. Interactive TUI sessions only |
@@ -138394,6 +138969,8 @@ Run OAuth login for an MCP server marked `auth: "oauth"` with `dcode mcp login <
 | `--mcp-config PATH`    | Add an explicit MCP config as the highest-precedence source (merged with auto-discovered configs) |
 | `--no-mcp`             | Disable all MCP tool loading                                |
 | `--trust-project-mcp`  | Trust project-level MCP servers without prompting for the current run. Explicit denies still apply. |
+| `-e`, `--extension PATH` | Load a Python extension file or directory for this run. Repeat to add multiple paths. Requires `DEEPAGENTS_CODE_EXPERIMENTAL=1` and extension discovery enabled (`[extensions].enabled` / `DEEPAGENTS_CODE_EXTENSIONS`). See [Python extensions](/oss/deepagents/code/extensions) |
+| `--trust-project-extensions` | Trust project-level `.deepagents/extensions/` Python extensions for this run. Requires `DEEPAGENTS_CODE_EXPERIMENTAL=1`. See [Python extensions](/oss/deepagents/code/extensions#trust-project-extensions) |
 | `--interpreter`        | Enable the JS interpreter (`js_eval`) middleware on the main agent when it has been disabled in config. `js_eval` is enabled by default. |
 | `--interpreter-tools VALUE` | PTC allowlist for `js_eval`: `safe`, `all`, or a comma-separated list of tool names. Default: `safe` (read-only `read_file`/`glob`/`grep` preset). See [JS interpreter](/oss/deepagents/code/config-file#js-interpreter) |
 | `--profile-override JSON` | Override model profile fields as a JSON string (e.g., `'{"max_input_tokens": 4096}'`). Merged on top of config file profile overrides |
@@ -138401,6 +138978,7 @@ Run OAuth login for an MCP server marked `auth: "oauth"` with `dcode mcp login <
 | `--update`             | Check for and install updates, then exit                    |
 | `--auto-update`        | Toggle automatic updates on or off, then exit               |
 | `--install NAME`       | Install an optional extra (e.g., `quickjs`, `daytona`, `fireworks`), then exit. Add `--package` to treat `NAME` as a custom provider package installed via `uv --with` rather than an extra (see [arbitrary providers](/oss/deepagents/code/config-file#arbitrary-providers)), and `--yes` to skip confirmation prompts |
+| `--uninstall NAME`     | Remove an installed optional extra and exit. Alias for `dcode uninstall NAME` |
 | `-v`, `--version`      | Display version                                             |
 | `-h`, `--help`         | Show help                                                   |
 
@@ -138452,6 +139030,7 @@ Pair `dcode doctor` with `dcode config show` when you need both a high-level hea
 | `dcode agents list`             | List all agents (alias: `ls`)          |
 | `dcode agents reset --agent NAME` | Clear agent memory and reset to default. Supports `--dry-run` |
 | `dcode agents reset --agent NAME --target SOURCE` | Copy memory from another agent |
+| `dcode uninstall NAME`         | Remove one installed optional extra while preserving the rest of the tool environment |
 | `dcode update`                  | Check for and install Deep Agents Code updates |
 | `dcode doctor`                  | Run diagnostics without launching a session. See [Run diagnostics](#run-diagnostics-dcode-doctor) |
 | `dcode skills list [--project]`           | List all skills (alias: `ls`) |
@@ -138483,6 +139062,7 @@ Destructive commands (`agents reset`, `skills delete`, `threads delete`) support
 - [Config file](/oss/deepagents/code/config-file)
 - [Provider credentials](/oss/deepagents/code/credentials)
 - [MCP tools](/oss/deepagents/code/mcp-tools)
+- [Python extensions](/oss/deepagents/code/extensions)
 
 ---
 
@@ -138501,9 +139081,11 @@ Source: https://docs.langchain.com/oss/deepagents/code/config-file
 
 `~/.deepagents/config.toml` lets you customize model providers, set defaults, and pass extra parameters to model constructors. For environment variables and inspection commands, see [Configuration](/oss/deepagents/code/configuration). This page covers:
 
-- **Defaults**: pin a [default model](#default-and-recent-model) or [agent](#default-and-recent-agent), or [restrict usable models](#allowed-models) with an allowlist.
+- **Defaults**: pin a [default model](#default-and-recent-model), [summarization model](#set-a-summarization-model), or [agent](#default-and-recent-agent), or [restrict usable models](#allowed-models) with an allowlist.
 - **Warnings**: [session cost](#session-cost-warning) and [cold prompt-cache](#cold-prompt-cache-warning) thresholds, and [trusted gateway endpoints](#trust-a-gateway-endpoint-for-cache-policies).
+- **Display**: [provider-visible reasoning](#show-provider-visible-reasoning) and diff line numbers.
 - **Interpreter**: the [`[interpreter]` settings](#js-interpreter) for the built-in QuickJS REPL.
+- **Python extensions**: [discovery and project trust](#python-extensions) for custom tools, middleware, and storage routes.
 - **Tracing**: [client-side secret redaction](#redact-langsmith-trace-secrets) for LangSmith traces.
 - **Provider setup**: the [`[models.providers.<name>]` table](#provider-configuration), [constructor params](#model-constructor-params), [retries](#retries), [profile overrides](#profile-overrides-advanced), and [adding models to the `/model` switcher](#adding-models-to-the-interactive-switcher).
 - **Auto mode**: the [auto classifier timeout](#auto-classifier-timeout).
@@ -138522,6 +139104,23 @@ auto_classifier = "openai:gpt-5.6-luna"  # optional: cheaper model for Auto appr
 `[models].default` always takes priority over `[models].recent`. The `/model` command only writes to `[models].recent`, so your configured default is never overwritten by mid-session switches. To remove the default, use `/model --default --clear` or delete the `default` key from the config file.
 
 `[models].auto_classifier` sets the model used by the [Auto approval classifier](/oss/deepagents/code/approval-modes#select-a-classifier-model) to review gated tool calls. When unset, the classifier inherits the main agent model. You can override this at runtime with `--auto-classifier-model` or `/auto model`. See [Select a classifier model](/oss/deepagents/code/approval-modes#select-a-classifier-model) for full precedence and security notes.
+
+## Set a summarization model
+
+Set a dedicated model for automatic context compaction, `/offload`, and `/compact`:
+
+```toml title="~/.deepagents/config.toml"
+[models]
+summarization_default = "openai:gpt-5.6-sol"
+```
+
+The summarization model resolves in this order:
+
+1. `--summarization-model` for the current launch.
+2. `[models].summarization_default`.
+3. The main agent model.
+
+In an interactive session, run `/summarization-model` to open the model picker, `/summarization-model <provider:model>` to switch directly, or `/summarization-model clear` to follow the main agent model again. Changing the summarization model does not change the main agent model.
 
 ## Default and recent agent
 
@@ -138570,6 +139169,23 @@ trusted_cache_endpoints = ["smith.langchain.com"]
 ```
 
 Entries are hostnames matched exactly — trusting `example.com` does not trust `gw.example.com`. One entry covers every provider routed through that endpoint. Cross-format routes through the LangSmith gateway (for example, an OpenAI-format request routed to an Anthropic model) stay silent even when trusted, because translation rewrites the cache settings the estimate assumes.
+
+## Show provider-visible reasoning
+
+Provider-visible reasoning is hidden by default. To show it in the interactive transcript and non-interactive output, set:
+
+```toml title="~/.deepagents/config.toml"
+[ui]
+show_reasoning = true
+```
+
+In an interactive session, reasoning streams into a separate row that collapses when the phase ends. Click the row or press `Ctrl+O` to reopen it. In non-interactive mode, reasoning goes to stderr so the final answer on stdout remains pipeable.
+
+Set `DEEPAGENTS_CODE_SHOW_REASONING=1` to override `config.toml`, or pass `--show-reasoning` to enable the setting for one launch. The launch flag takes precedence over the environment variable, which takes precedence over `config.toml`.
+
+<Note>
+    Deep Agents Code displays only reasoning content that the model provider exposes. Redacted or opaque reasoning remains hidden.
+</Note>
 
 ## Diff line numbers
 
@@ -138760,7 +139376,7 @@ max_retries = 0
 
 The global `[retries].max_retries` value applies to all supported providers. A provider-specific table, such as `[retries.fireworks]`, overrides the global value for that provider. Values must be integers greater than or equal to `0`.
 
-For an arbitrary provider, set `param` to its retry-count constructor argument so Deep Agents Code can disable the provider's retry loop and use the configured retry budget:
+For an arbitrary provider, set `param` to the name of its retry-count constructor argument. Deep Agents Code uses `param` only to disable the provider SDK's retry loop, which leaves the model-node middleware as the sole owner of the configured retry budget:
 
 ```toml
 [retries]
@@ -138771,7 +139387,7 @@ param = "retries"
 max_retries = 4
 ```
 
-`param` must be a valid Python identifier string, such as `"max_retries"` or `"retries"`.
+`param` must be a valid Python identifier string, such as `"max_retries"` or `"retries"`. It does not set the retry budget. Set the budget with `max_retries` in this section or with `--max-retries`.
 
 The retry-budget precedence order is:
 
@@ -139080,6 +139696,32 @@ ptc_acknowledge_unsafe = false  # default
     Acknowledge that `ptc = "all"` exposes every tool to PTC calls that bypass approval prompts. Required for `ptc = "all"` unless running with approvals disabled.
 </ResponseField>
 
+## Python extensions
+
+The `[extensions]` section controls [Python extension](/oss/deepagents/code/extensions) discovery and project trust. The experimental feature gate is required even when extension loading is enabled here.
+
+```toml title="~/.deepagents/config.toml"
+[extensions]
+enabled = true
+trust = "ask"
+extra_paths = [
+    "extensions/policy.py",
+    "~/src/company-extensions",
+]
+```
+
+<ResponseField name="enabled" type="boolean" default="true" post={["optional"]}>
+    Enable Python extension discovery for every source, including `-e` / `--extension` paths, user and project directories, plugins, and entry points. Set `DEEPAGENTS_CODE_EXTENSIONS` to override this value. Both settings require `DEEPAGENTS_CODE_EXPERIMENTAL=1` before starting Deep Agents Code.
+</ResponseField>
+
+<ResponseField name="trust" type="string" default='"ask"' post={["optional"]}>
+    Set the default policy for project extensions in `<project>/.deepagents/extensions/`: `ask` prompts in an interactive launch, `always` loads them, and `never` skips them. Set `DEEPAGENTS_CODE_EXTENSIONS_TRUST` to override this value. Only use `always` when every project you open is trusted.
+</ResponseField>
+
+<ResponseField name="extra_paths" type="string[]" default="[]" post={["optional"]}>
+    Add user-authorized Python extension files or directories. Relative paths resolve from the Deep Agents Code profile directory; `~` expands to your home directory.
+</ResponseField>
+
 ## Agent runtime limits
 
 The LangGraph graph step budget is the maximum number of node invocations the `dcode` agent graph may execute in a single turn. Configure this recursion limit with the `[runtime]` section:
@@ -139097,7 +139739,8 @@ Precedence (highest to lowest):
 2. `--recursion-limit` CLI flag
 3. `DEEPAGENTS_CODE_RECURSION_LIMIT` environment variable
 4. `[runtime].recursion_limit` in `config.toml`
-5. LangGraph server default
+5. `LANGGRAPH_DEFAULT_RECURSION_LIMIT` environment variable
+6. LangGraph server default
 
 Use `dcode config get runtime.recursion_limit` to see the effective Deep Agents Code value and its source. An unset result leaves the limit to the LangGraph server.
 
@@ -139129,6 +139772,7 @@ Use `dcode config get runtime.recursion_limit` to see the effective Deep Agents 
 - [Configuration](/oss/deepagents/code/configuration)
 - [Provider credentials](/oss/deepagents/code/credentials)
 - [Providers](/oss/deepagents/code/providers)
+- [Python extensions](/oss/deepagents/code/extensions)
 - [CLI reference](/oss/deepagents/code/cli-reference)
 
 ---
@@ -139164,6 +139808,9 @@ The main config files are:
     </Card>
     <Card title="MCP servers" icon="plug" href="/oss/deepagents/code/mcp-tools">
         Define global MCP servers in `~/.deepagents/.mcp.json`.
+    </Card>
+    <Card title="Python extensions" icon="puzzle" href="/oss/deepagents/code/extensions">
+        Add custom tools, middleware, and storage routes.
     </Card>
 </CardGroup>
 
@@ -139298,7 +139945,7 @@ When the environment variable is set, it takes precedence over the config file v
 
 ## Profile location (`DEEPAGENTS_HOME`)
 
-`DEEPAGENTS_HOME` selects the directory Deep Agents Code uses as its user profile — everything normally stored under `~/.deepagents/` moves under the configured path. This includes `config.toml`, the global `.env`, `~/.deepagents/.mcp.json` and `hooks.json`, per-agent directories (`AGENTS.md`, `skills/`, `memories/`, `agents/`), plugins, and `.state/` (sessions, input history, credentials, and locks). When unset, the profile defaults to `~/.deepagents`.
+`DEEPAGENTS_HOME` selects the directory Deep Agents Code uses as its user profile — everything normally stored under `~/.deepagents/` moves under the configured path. This includes `config.toml`, the global `.env`, `~/.deepagents/.mcp.json` and `hooks.json`, `extensions/`, per-agent directories (`AGENTS.md`, `skills/`, `memories/`, `agents/`), plugins, and `.state/` (sessions, input history, credentials, and locks). When unset, the profile defaults to `~/.deepagents`.
 
 Valid forms are an absolute path or a path beginning with `~/`:
 
@@ -139781,6 +140428,14 @@ All Deep Agents Code-specific environment variables use the `DEEPAGENTS_CODE_` p
     Opt into experimental, unstable Deep Agents Code behavior. Set to `1` (or any truthy value) to enable experimental features.
 </ResponseField>
 
+<ResponseField name="DEEPAGENTS_CODE_EXTENSIONS" type="string" default="true" post={["optional"]}>
+    Enable or disable [Python extension](/oss/deepagents/code/extensions) discovery for every source, including `-e` / `--extension`. Overrides `[extensions].enabled` in `config.toml`. `DEEPAGENTS_CODE_EXPERIMENTAL=1` is still required.
+</ResponseField>
+
+<ResponseField name="DEEPAGENTS_CODE_EXTENSIONS_TRUST" type="string" default='"ask"' post={["optional"]}>
+    Set the default project extension trust policy to `ask`, `always`, or `never`. Overrides `[extensions].trust` in `config.toml`. Only use `always` when every project you open is trusted.
+</ResponseField>
+
 <ResponseField name="DEEPAGENTS_CODE_DEBUG_FILE" type="string" default="/tmp/deepagents_debug.log" post={["optional"]}>
     Path for the debug log file.
 </ResponseField>
@@ -139846,11 +140501,19 @@ All Deep Agents Code-specific environment variables use the `DEEPAGENTS_CODE_` p
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_RECURSION_LIMIT" type="integer" post={["optional"]}>
-    LangGraph graph step budget, which is the maximum number of node invocations the `dcode` agent graph may execute per turn. Valid range: `25`–`100000`. Invalid values log a warning and resolution continues to the next source. When unset, the LangGraph server default applies. See [Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits).
+    LangGraph graph step budget, which is the maximum number of node invocations the `dcode` agent graph may execute per turn. Invalid values log a warning and resolution continues to the next source. When unset, Deep Agents Code inherits `LANGGRAPH_DEFAULT_RECURSION_LIMIT` or leaves the limit to the LangGraph server. See [Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits).
+</ResponseField>
+
+<ResponseField name="LANGGRAPH_DEFAULT_RECURSION_LIMIT" type="integer" post={["optional"]}>
+    Upstream LangGraph graph step budget inherited when no Deep Agents recursion-limit source wins. Set it in your shell or the global `~/.deepagents/.env`. Deep Agents Code ignores it in a project `.env` because it bypasses the bounded `runtime.recursion_limit` resolver. See [Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits).
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_SHELL_ALLOW_LIST" type="string" post={["optional"]}>
     Comma-separated shell commands to allow (or `recommended` / `all`).
+</ResponseField>
+
+<ResponseField name="DEEPAGENTS_CODE_SHOW_REASONING" type="string" default="false" post={["optional"]}>
+    Show provider-visible reasoning in the interactive transcript and on stderr in non-interactive mode. Overrides `[ui].show_reasoning`; `--show-reasoning` takes precedence for a single launch. See [Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning).
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_SHOW_USAGE_STATS" type="string" default="true" post={["optional"]}>
@@ -139922,6 +140585,7 @@ Deep Agents Code stores data in two directory hierarchies:
 │   ├── history.jsonl        #   Command input history
 │   ├── chatgpt-auth.json    #   ChatGPT OAuth token for the openai_codex provider
 │   ├── ...                  #   Other markers & credentials
+├── extensions/              # User-wide Python extensions (experimental)
 └── {agent}/                 # Per-agent directory (default: "agent")
     ├── AGENTS.md            # User customizations to agent instructions
     ├── skills/              # User-level skills
@@ -139940,6 +140604,7 @@ Deep Agents Code stores data in two directory hierarchies:
 ├── AGENTS.md                # Project instructions (root-level)
 └── .deepagents/
 │   ├── AGENTS.md            # Project instructions (preferred location)
+│   ├── extensions/          # Project Python extensions (requires trust; experimental)
 │   ├── skills/              # Project-specific skills
 │   │   └── {skill-name}/
 │   │       └── SKILL.md
@@ -139965,6 +140630,8 @@ Deep Agents Code stores data in two directory hierarchies:
 | **User skills** | `~/.deepagents/{agent}/skills/` | R/W | Agent-specific skills |
 | **Shared skills** | `~/.agents/skills/` | R | Tool-agnostic, cross-CLI |
 | **Project skills** | `.deepagents/skills/` or `.agents/skills/` | R | Project-scoped |
+| **User Python extensions** | `~/.deepagents/extensions/` | R/W | Experimental; see [Python extensions](/oss/deepagents/code/extensions) |
+| **Project Python extensions** | `.deepagents/extensions/` | R | Experimental; requires project trust |
 | **Custom subagents** | `~/.deepagents/{agent}/agents/` | R/W | User-defined subagents |
 | **Project subagents** | `.deepagents/agents/` | R | Project-defined subagents |
 
@@ -140041,6 +140708,7 @@ Use `.deepagents/skills/` for skills that rely on Deep Agents-specific tools or 
 - [Hooks](/oss/deepagents/code/hooks)
 - [Data locations](#data-locations)
 - [MCP tools](/oss/deepagents/code/mcp-tools)
+- [Python extensions](/oss/deepagents/code/extensions)
 
 ---
 
@@ -140227,6 +140895,209 @@ The built-in `web_search` tool uses [Tavily](https://tavily.com). Deep Agents Co
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/credentials.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+</Callout>
+</div>
+
+
+# Python extensions
+Source: https://docs.langchain.com/oss/deepagents/code/extensions
+
+Python extensions customize the dcode agent server without modifying dcode itself. Use them to register model tools, LangChain middleware, virtual storage routes.
+
+<Note>
+    Python extensions require `DEEPAGENTS_CODE_EXPERIMENTAL=1`. This experimental API can change or be removed without notice.
+</Note>
+
+<Warning>
+    Extensions run arbitrary Python with your user account's permissions. Load extensions only from sources you trust. Extension tools are not automatically added to the human-approval map, so extensions that perform sensitive work must enforce their own approval or policy through middleware.
+</Warning>
+
+## Create an extension
+
+An extension entry file must expose an asynchronous `extension` setup function. dcode passes an `ExtensionAPI` registrar with read-only session context and methods for adding capabilities.
+
+The following extension makes a LangGraph store available to the agent's file tools under `/memories/`:
+
+```python extension.py
+from deepagents.backends import StoreBackend
+
+from deepagents_code.extensions import ExtensionAPI
+
+
+async def extension(d: ExtensionAPI) -> None:
+    d.register_backend_route(
+        "/memories/",
+        StoreBackend(namespace=lambda _runtime: ("filesystem",)),
+    )
+```
+
+Start dcode with the experimental gate and load the file for one run:
+
+```bash
+DEEPAGENTS_CODE_EXPERIMENTAL=1 dcode --extension ./extension.py
+```
+
+Repeat `-e` or `--extension` to load multiple files or directories. A directory scan includes direct `*.py` files and direct subdirectories that contain `__init__.py` or `extension.py`. Loading also requires extension discovery to stay enabled (`[extensions].enabled` or `DEEPAGENTS_CODE_EXTENSIONS`); when discovery is disabled, Deep Agents Code skips every source, including CLI paths.
+
+## Register capabilities
+
+The extension API supports these methods:
+
+| Method | Signature | Purpose |
+|---|---|---|
+| `register_middleware` | `(class_or_instance)` | Add LangChain `AgentMiddleware`. A middleware class must have a zero-argument constructor; otherwise, pass an instance. |
+| `register_tool` | `(function_or_tool)` | Expose a callable or `BaseTool` to the model. dcode converts plain callables with LangChain tool-schema inference. |
+| `register_backend_route` | `(prefix, backend)` | Make a `BackendProtocol` storage provider available under a virtual path. |
+| `on_shutdown` | `(callback)` | Release session resources when the agent server stops. Synchronous and asynchronous callbacks are supported. |
+
+The registrar also exposes this read-only context:
+
+- `d.cwd`: Working directory for the session.
+- `d.mode`: `interactive` or `headless`.
+- `d.has_ui`: Whether the session has an interactive terminal UI.
+- `d.path`: Entry file for the extension.
+
+Do not open long-lived connections or start background tasks during module import. If setup opens a session resource, register an idempotent `on_shutdown` callback to release it.
+
+### Register middleware
+
+Register LangChain middleware to add model or tool behavior to the agent. dcode loads middleware when it builds the agent graph.
+
+```python
+from langchain.agents.middleware import AgentMiddleware
+
+from deepagents_code.extensions import ExtensionAPI
+
+
+class ExampleMiddleware(AgentMiddleware):
+    name = "example-middleware"
+
+
+async def extension(d: ExtensionAPI) -> None:
+    d.register_middleware(ExampleMiddleware())
+```
+
+Use an `AgentMiddleware` instance when construction needs configuration. You can also pass a middleware class that has a zero-argument constructor.
+
+### Register tools
+
+Register a callable or `BaseTool` to make it available to the model.
+
+```python
+from deepagents_code.extensions import ExtensionAPI
+
+
+async def extension(d: ExtensionAPI) -> None:
+    def current_directory() -> str:
+        """Return the working directory for the current dcode session."""
+        return str(d.cwd)
+
+    d.register_tool(current_directory)
+```
+
+dcode converts plain callables into LangChain tools by inferring their schema from the function signature and docstring. Extension tools can replace same-named built-in tools. Between extensions, the first registration for a tool name wins.
+
+### Route virtual storage
+
+Backend route prefixes must be lowercase absolute paths with leading and trailing slashes, such as `/memories/` or `/company/knowledge/`. dcode rejects invalid paths and routes that overlap its internal artifact or conversation-history storage.
+
+Routed content is available through the model's file tools. Shell `execute` remains attached to the default local or sandbox storage, so shell commands cannot access virtual routed content. A sandboxed agent also rejects a route backed directly by `FilesystemBackend`, because that would expose host storage while shell execution remains in the sandbox.
+
+Extension tools and middleware replace same-named built-ins. Between extensions, the first registration of a route prefix or unit name wins.
+
+### Apply runtime changes
+
+Tools registered after startup appear on the next model request. Middleware and backend routes change agent graph construction and require `/reload`. Run `/extensions` to list registrations, their source paths and scopes, load failures, and whether a restart is required.
+
+A separately managed remote agent server must be restarted or redeployed by its operator.
+
+## Choose an extension source
+
+dcode loads authorized extension sources in this order and ignores later duplicate entry paths:
+
+1. Python files in `~/.deepagents/extensions/`.
+2. Files and directories in `[extensions].extra_paths`.
+3. Files and directories passed with `-e` or `--extension`.
+4. Python extensions from enabled, versioned plugins.
+5. Modules exposed through the `dcode.extensions` Python entry-point group.
+6. Trusted project extensions in `<project>/.deepagents/extensions/`.
+
+Use `~/.deepagents/extensions/` for quick user-wide extensions. Use a [plugin](#package-an-extension-in-a-plugin) for versioned distribution and updates. Use a project extension for code maintained with one repository.
+
+## Trust project extensions
+
+Project extensions in `<project>/.deepagents/extensions/` execute only after project trust is granted. In interactive mode, dcode prompts you to allow the current files once, remember the canonical project path for future sessions and edits, or skip them. Canceling the prompt (for example, with Esc) aborts the launch.
+
+For a headless or CI run, grant trust for that invocation:
+
+```bash
+DEEPAGENTS_CODE_EXPERIMENTAL=1 \
+  dcode --trust-project-extensions -n "Run the project checks"
+```
+
+Set the default project policy to `ask`, `always`, or `never` with `[extensions].trust` or `DEEPAGENTS_CODE_EXTENSIONS_TRUST`. Only use `always` when every project you open is trusted.
+
+## Configure extensions
+
+Configure discovery in `~/.deepagents/config.toml`:
+
+```toml title="~/.deepagents/config.toml"
+[extensions]
+enabled = true
+trust = "ask"
+extra_paths = [
+    "extensions/policy.py",
+    "~/src/company-extensions",
+]
+```
+
+| Setting | Default | Description |
+|---|---|---|
+| `enabled` | `true` | Enable extension discovery for every source, including `-e` / `--extension`. The experimental environment variable is still required. |
+| `trust` | `"ask"` | Set project extension trust to `ask`, `always`, or `never`. |
+| `extra_paths` | `[]` | Add user-authorized Python files or directories. Relative paths resolve from the dcode profile directory; `~` expands to your home directory. |
+
+`DEEPAGENTS_CODE_EXTENSIONS` overrides `enabled`, and `DEEPAGENTS_CODE_EXTENSIONS_TRUST` overrides `trust`. Both still require `DEEPAGENTS_CODE_EXPERIMENTAL=1`. When `enabled` is `false`, Deep Agents Code skips every extension source.
+
+## Package an extension in a plugin
+
+A versioned [plugin](/oss/deepagents/code/plugins) is the preferred way to distribute an extension. Declare one entry file or a list under the Deep Agents Code namespace in the plugin manifest:
+
+```json title=".claude-plugin/plugin.json"
+{
+  "name": "shared-memory",
+  "version": "1.0.0",
+  "extensions": {
+    "com.langchain.deepagents.code": {
+      "pythonExtensions": "./extension.py"
+    }
+  }
+}
+```
+
+Every entry must start with `./` and remain inside the installed plugin snapshot. dcode rejects absolute paths, parent traversal, symlink escapes, missing files, and non-Python entries. A plugin that declares `pythonExtensions` must also declare a non-empty `version`. Installing and enabling the plugin authorizes its extension code.
+
+After installing, enabling, disabling, updating, or removing a plugin extension during a session, run `/restart` to rebuild the agent graph.
+
+## Handle failures
+
+Each extension setup is transactional. If import or initialization fails, Deep Agents Code removes that extension's partial registrations, records the failure in the debug log and `/extensions`, and continues loading later extensions. Shutdown callback failures also do not prevent other callbacks from running.
+
+## See also
+
+- [Plugins and marketplaces](/oss/deepagents/code/plugins)
+- [Command reference](/oss/deepagents/code/cli-reference)
+- [Config file](/oss/deepagents/code/config-file)
+- [Approval modes](/oss/deepagents/code/approval-modes)
+
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+</Callout>
+<Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/extensions.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 </Callout>
 </div>
 
@@ -141751,10 +142622,10 @@ See the [Quickstart](/oss/deepagents/code/quickstart) to add provider credential
 # Plugins and marketplaces
 Source: https://docs.langchain.com/oss/deepagents/code/plugins
 
-Plugins extend Deep Agents Code with reusable [skills](/oss/deepagents/code/memory-and-skills), [MCP servers](/oss/deepagents/code/mcp-tools), and [hooks](/oss/deepagents/code/hooks). Marketplaces provide catalogs for discovering and installing plugins across projects or teams. Deep Agents Code supports Claude- and Codex-style plugin manifests and marketplace catalogs, as described in [Create a plugin](#create-a-plugin) and [Create a marketplace](#create-a-marketplace).
+Plugins extend dcode with reusable [skills](/oss/deepagents/code/memory-and-skills), [MCP servers](/oss/deepagents/code/mcp-tools), [hooks](/oss/deepagents/code/hooks), and [Python extensions](/oss/deepagents/code/extensions). Marketplaces provide catalogs for discovering and installing plugins across projects or teams. dcode supports Claude- and Codex-style plugin manifests and marketplace catalogs, as described in [Create a plugin](#create-a-plugin) and [Create a marketplace](#create-a-marketplace).
 
 <Warning>
-    Install plugins and marketplaces only from sources you trust. An enabled plugin can add instructions and run MCP servers or hook commands with your user permissions.
+    Install plugins and marketplaces only from sources you trust. An enabled plugin can add instructions and run MCP servers, hook commands, or Python extensions with your user permissions.
 </Warning>
 
 ## Manage plugins interactively
@@ -141768,9 +142639,9 @@ To browse marketplaces and manage plugins in a `dcode` session:
     - An HTTPS URL that serves a marketplace JSON file.
     - A local marketplace directory or JSON file.
 3. Install a plugin from the marketplace.
-4. Run `/reload` to activate newly installed plugin skills, MCP servers, and hooks without restarting the session.
+4. Run `/reload` to activate newly installed plugin skills, MCP servers, and hooks without restarting the session. Plugins with [Python extensions](/oss/deepagents/code/extensions) require `/restart` to rebuild the agent graph.
 
-The plugin manager also lets you enable, disable, and uninstall installed plugins. Disabling a plugin keeps it installed but excludes its skills, MCP servers, and hooks after you run `/reload` or start a new session.
+The plugin manager also lets you enable, disable, and uninstall installed plugins. Disabling a plugin keeps it installed but excludes its skills, MCP servers, and hooks after you run `/reload` or start a new session. Python extensions stay loaded in the current graph until you run `/restart` or start a new session.
 
 Removing a marketplace uninstalls its plugins and removes managed cache data. Deep Agents Code preserves the original source when the marketplace came from a local directory or file. Run `/reload` or start a new session to apply the removal to an active session.
 
@@ -141911,6 +142782,28 @@ For supported MCP transports and fields, see [MCP tools](/oss/deepagents/code/mc
 
 Place a hook document at `hooks/hooks.json`, declare a relative `hooks` path, or define hooks inline in the plugin manifest. Hook commands receive the path variables above. See [Hooks](/oss/deepagents/code/hooks) for the configuration and event reference.
 
+### Add Python extensions
+
+<Note>
+    Python extensions require `DEEPAGENTS_CODE_EXPERIMENTAL=1`.
+</Note>
+
+Declare one Python entry file or a list under the Deep Agents Code namespace in the plugin manifest:
+
+```json
+{
+  "name": "my-plugin",
+  "version": "1.0.0",
+  "extensions": {
+    "com.langchain.deepagents.code": {
+      "pythonExtensions": "./extension.py"
+    }
+  }
+}
+```
+
+The plugin must declare a non-empty `version`. Every entry must start with `./` and remain inside the plugin root. After changing an installed plugin extension, restart dcode. For the setup function, supported registrations, trust model, and security behavior, see [Python extensions](/oss/deepagents/code/extensions).
+
 ## Create a marketplace
 
 A marketplace is a JSON catalog with a name and a `plugins` array. Store it at one of these paths in the marketplace root:
@@ -141977,6 +142870,7 @@ dcode plugin install code-review@acme-tools
 - [Memory and skills](/oss/deepagents/code/memory-and-skills)
 - [MCP tools](/oss/deepagents/code/mcp-tools)
 - [Hooks](/oss/deepagents/code/hooks)
+- [Python extensions](/oss/deepagents/code/extensions)
 - [Command reference](/oss/deepagents/code/cli-reference)
 - [Configuration](/oss/deepagents/code/configuration)
 
@@ -142517,6 +143411,7 @@ The agent uses its built-in tools, skills, and memory to help you with tasks.
         - `/context`: Open a color-coded context-window usage report with model capacity, usage categories, and remaining space.
         - `/context-doctor`: Audit the context injected into the session and its estimated token cost. See [Audit injected context](/oss/deepagents/code/cli-reference#audit-injected-context).
         - `/tools`: List the built-in and MCP tools available to the current agent. See [List available tools](/oss/deepagents/code/cli-reference#list-available-tools).
+        - `/extensions`: List loaded [Python extensions](/oss/deepagents/code/extensions), their registrations, and their source paths. Requires `DEEPAGENTS_CODE_EXPERIMENTAL=1`.
         - `/cost`: Show the thread's estimated cost. See [Track thread cost](/oss/deepagents/code/cli-reference#track-thread-cost).
         - `/tokens`: Display current context window token usage breakdown.
         - `/clear`: Start a fresh thread.

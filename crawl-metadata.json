@@ -10,7 +10,7 @@
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
     "pages": 191,
@@ -39,7 +39,7 @@
     "status": "ok"
   },
   "agent-frameworks/crewai": {
-    "pages": 233,
+    "pages": 234,
     "status": "ok"
   },
   "ai-models/anthropic-api": {
@@ -47,7 +47,7 @@
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1160,
+    "pages": 1162,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -82,8 +82,7 @@
     "status": "ok"
   },
   "dev-platforms/supabase": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://supabase.com/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 2129920 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 0 bytes received\ncurl: (28) OpenSSL SSL_read: OpenSSL/3"
   },
   "dev-platforms/prisma": {
     "pages": 0,
@@ -102,7 +101,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -187,7 +186,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 107,
+    "pages": 97,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -203,8 +202,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1296,
+    "pages": 1295,
     "status": "ok"
   },
-  "_last_crawl": "2026-08-28T23:31:05Z"
+  "_last_crawl": "2026-08-29T11:38:45Z"
 }

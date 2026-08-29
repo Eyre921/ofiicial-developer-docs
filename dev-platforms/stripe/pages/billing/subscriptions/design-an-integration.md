@@ -18,42 +18,53 @@ Use this guide to learn the different ways to build your subscriptions integrati
 
 Compare the following pricing models and determine how you want to charge your customers for the subscription to your product or service:
 
-- **Flat rate**: Charge customers a flat rate for the service tier they choose.
-- **Per-seat**: Charge customers for each pricing unit, which represents one user or seat.
-- **Tiered**: Charge customers a varied amount for each pricing unit (such as a user or seat), based on quantity or usage.
-- **Usage-based**: Charge customers based on their usage of your product or service.
+| Pricing model | Description | Example |
+| --- | --- | --- |
+| [Flat rate pricing](https://docs.stripe.com/subscriptions/pricing-models/flat-rate-pricing.md) | Charge customers a flat rate for each service tier. | You offer two service tiers, each with a fixed price:
+- Standard: 20 USD per month or 200 USD per year
+- Pro: 50 USD per month or 500 USD per year |
+| [Per-seat pricing](https://docs.stripe.com/subscriptions/pricing-models/per-seat-pricing.md) | Charge customers a single rate per user or unit license. | If you offer the prices from the flat rate example as per-seat licenses, a customer pays the following rates for 12 licenses:
+- Standard: 240 USD per month or 2400 USD per year
+- Pro: 600 USD per month or 6000 USD per year |
+| [Tiered pricing](https://docs.stripe.com/subscriptions/pricing-models/tiered-pricing.md) | Charge customers a per-seat rate that varies based on tiers of quantity or usage. There are two options:
+- **Volume-based pricing**: Charge a single rate based on the tier corresponding to the total quantity or usage for the period.
+- **Graduated pricing**: Charge a combination of rates based on the quantity or usage within each tier for the period, one rate per tier. | - **Volume-based pricing**: You offer three tiers:
 
-| Pricing model | Description |
-| --- | --- |
-| **Flat rate** | In the following example, you offer three different service levels: basic, starter, and enterprise. For each service level, you specify a monthly and yearly price.
-![An example of the flat rate pricing model that shows three service levels.](https://b.stripecdn.com/docs-statics-srv/assets/pricing_model-flat-rate.e99989aa8c2abe76edd607462840776e.png) |
-| **Per-seat** | In the following example, you offer a per-seat plan for software licenses. For each user, you charge a specific amount for their license.
-![An example of the per-seat pricing model that shows a per-seat plan for software licenses.](https://b.stripecdn.com/docs-statics-srv/assets/pricing_model-per-seat.8ed5ad9243ad6ae1c38b072cbb4ce07a.png) |
-| **Tiered** | **Volume-based pricing**: You multiply the quantity by the unit cost of the tier that corresponds to the usage at the end of the period.
+  - For customers using 1-10 seats, you charge 15 USD per seat for that month.
+  - For customers using 11-20 seats, you charge 12 USD per seat for that month.
+  - For customers using 21 or more seats, you charge 10 USD per seat for that month.
 
-**Graduated pricing**: You multiply the usage for each tier used during the period and then sum the totals for each tier. This differs from volume-based pricing, which only uses the tier from the end of the period.
+  A customer using 18 seats pays 18 x 12 USD = 216 USD per month.
 
-In the following example, you offer lower rates for customers who use more projects per month, with tiers that you can adjust based on volume or graduated pricing.
+  A customer using 25 seats pays 25 x 10 USD = 250 USD per month.
 
-|             | Number of projects | Price per tier |
-| ----------- | ------------------ | -------------- |
-| First tier  | 1-5                | 7 USD          |
-| Second tier | 6-10               | 6.50 USD       |
-| Third tier  | 11+                | 6 USD          | |
-| **Usage-based** | **Fixed fee and overage pricing**: You charge a flat fee per month for your product or service. The flat fee has some included usage entitlement, and you charge any additional usage (overage) at the end of the period.
+- **Graduated pricing**: You offer three tiers:
 
-**Pay as you go pricing**: You charge for usage tracked over a specific period. You can use any of the following pricing: per unit, per package, volume-based, or graduated.
+  - For the first 10 seats that a customer uses, you charge 15 USD per seat for that month.
+  - For the second 10 seats that a customer uses, you charge 12 USD per seat for that month.
+  - For each seat beyond 20 that a customer uses, you charge 10 USD per seat for that month.
 
-**Credit burndown pricing**: You collect prepayment for your usage-based product or service, and allow customers to apply billing credits as they use your product or service.
+  A customer using 18 seats pays (10 x 15 USD) + (8 x 12 USD) = 150 USD + 96 USD = 246 USD per month.
 
-In the following example, you charge a flat rate per month for your service that includes a set number of tokens. You charge any usage above the included tokens at an additional rate per token.
+  A customer using 25 seats pays (10 x 15 USD) + (10 x 12 USD) + (5 x 10 USD) = 150 USD + 120 USD + 50 USD = 320 USD per month. |
+| [Usage-based billing](https://docs.stripe.com/billing/usage-based.md) | Use [Metronome](https://docs.stripe.com/billing/usage-based.md) to configure more complex pricing models based on usage. | Here are some examples of models you can implement using Metronome, based on tracking token usage:
+- **Fixed fee and overage pricing**: You charge 100 USD per month for usage of up to 100 tokens. If a customer uses more than 100 tokens in a month (overage), you also charge 2 USD for each token used beyond the initial 100.
 
-|             | First unit | Last unit | Per unit  | Flat rate |
-| ----------- | ---------- | --------- | --------- | --------- |
-| First tier  | 0          | 100,000   | 0.001 USD | 1.00 USD  |
-| Second tier | 100,001    | ∞         | 0.002 USD | 2.00 USD  |
+  A customer that uses 85 tokens in a month pays 100 USD.
 
-To get started with usage-based billing, see [Metronome](https://docs.stripe.com/billing/usage-based.md). |
+  A customer that uses 105 tokens in a month pays 100 USD + (5 x 2 USD) = 110 USD.
+
+- **Pay as you go pricing**: You charge a fixed rate for usage tracked over a period. You can charge per unit, per package, volume-based, or graduated. If you charge 2 USD per token:
+
+  A customer that uses 85 tokens in a month pays 170 USD.
+
+  A customer that uses 105 tokens in a month pays 210 USD.
+
+- **Credit burndown pricing**: You collect prepayment for your product or service, and allow customers to apply billing credits as they use your product or service. If you collect 100 USD from each customer at the beginning of the month, and charge 2 USD per token used:
+
+  A customer that uses 35 tokens in the month has 100 USD - (35 x 2 USD) = 30 USD credit remaining at the end of the month.
+
+  A customer that uses 70 tokens in the month runs out of credit after using 50 tokens, and must purchase at least (20 x 2 USD) = 40 USD in credit before they can use the 20 remaining tokens they need. |
 
 ## Decide how customers check out 
 

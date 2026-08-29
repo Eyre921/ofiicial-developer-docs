@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1160 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1162 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -115,6 +115,7 @@
 - `langsmith/byoc-architecture` — [BYOC architecture](pages/langsmith/byoc-architecture.md) · [原文](https://docs.langchain.com/langsmith/byoc-architecture)
 - `langsmith/byoc-billing` — [BYOC billing](pages/langsmith/byoc-billing.md) · [原文](https://docs.langchain.com/langsmith/byoc-billing)
 - `langsmith/byoc-faq` — [BYOC FAQ](pages/langsmith/byoc-faq.md) · [原文](https://docs.langchain.com/langsmith/byoc-faq)
+- `langsmith/byoc-migration` — [Migrate to BYOC](pages/langsmith/byoc-migration.md) · [原文](https://docs.langchain.com/langsmith/byoc-migration)
 - `langsmith/byoc-onboarding` — [BYOC onboarding](pages/langsmith/byoc-onboarding.md) · [原文](https://docs.langchain.com/langsmith/byoc-onboarding)
 - `langsmith/byoc-operations` — [BYOC operations](pages/langsmith/byoc-operations.md) · [原文](https://docs.langchain.com/langsmith/byoc-operations)
 - `langsmith/byoc-shared-responsibility` — [BYOC shared responsibility model](pages/langsmith/byoc-shared-responsibility.md) · [原文](https://docs.langchain.com/langsmith/byoc-shared-responsibility)
@@ -1151,6 +1152,7 @@
 - `oss/deepagents/code/config-file` — [Config file](pages/oss/deepagents/code/config-file.md) · [原文](https://docs.langchain.com/oss/deepagents/code/config-file)
 - `oss/deepagents/code/configuration` — [Configuration](pages/oss/deepagents/code/configuration.md) · [原文](https://docs.langchain.com/oss/deepagents/code/configuration)
 - `oss/deepagents/code/credentials` — [Provider credentials](pages/oss/deepagents/code/credentials.md) · [原文](https://docs.langchain.com/oss/deepagents/code/credentials)
+- `oss/deepagents/code/extensions` — [Python extensions](pages/oss/deepagents/code/extensions.md) · [原文](https://docs.langchain.com/oss/deepagents/code/extensions)
 - `oss/deepagents/code/goals-and-rubrics` — [Goals and rubrics](pages/oss/deepagents/code/goals-and-rubrics.md) · [原文](https://docs.langchain.com/oss/deepagents/code/goals-and-rubrics)
 - `oss/deepagents/code/hooks` — [Hooks](pages/oss/deepagents/code/hooks.md) · [原文](https://docs.langchain.com/oss/deepagents/code/hooks)
 - `oss/deepagents/code/mcp-tools` — [MCP tools](pages/oss/deepagents/code/mcp-tools.md) · [原文](https://docs.langchain.com/oss/deepagents/code/mcp-tools)
