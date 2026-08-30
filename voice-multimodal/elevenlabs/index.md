@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1296 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1295 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -263,7 +263,6 @@
 - `docs/api-reference/tests/test-folders/delete` — [Delete folder](pages/docs/api-reference/tests/test-folders/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/test-folders/delete.md)
 - `docs/api-reference/tests/test-folders/get` — [Get folder](pages/docs/api-reference/tests/test-folders/get.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/test-folders/get.md)
 - `docs/api-reference/tests/test-folders/move` — [Bulk move tests to folder](pages/docs/api-reference/tests/test-folders/move.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/test-folders/move.md)
-- `docs/api-reference/tests/test-folders/update` — [Update folder](pages/docs/api-reference/tests/test-folders/update.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/test-folders/update.md)
 - `docs/api-reference/tests/test-invocations/get` — [Get test invocation](pages/docs/api-reference/tests/test-invocations/get.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/test-invocations/get.md)
 - `docs/api-reference/tests/test-invocations/list` — [List test invocations](pages/docs/api-reference/tests/test-invocations/list.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/test-invocations/list.md)
 - `docs/api-reference/tests/test-invocations/resubmit` — [Resubmit test invocation](pages/docs/api-reference/tests/test-invocations/resubmit.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/test-invocations/resubmit.md)

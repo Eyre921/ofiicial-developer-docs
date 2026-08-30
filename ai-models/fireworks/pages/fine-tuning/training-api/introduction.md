@@ -31,8 +31,8 @@ Use the Python SDK directly when you need full control over Training API behavio
 
 After choosing the Training API, decide how compute is provided:
 
-* [**Serverless Training**](/fine-tuning/training-api/serverless): shared pooled trainer, LoRA SFT, DPO, or RL on supported models, no provisioning, per-token billing.
-* [**Dedicated Training**](/fine-tuning/training-api/dedicated): provisioned trainer and deployment resources, broader model and method support, explicit checkpoint/resume/deployment control.
+* [**Serverless Training**](/fine-tuning/training-api/serverless): shared pooled trainer for LoRA SFT, DPO, ORPO, RL, distillation, and custom loops on supported models, with no provisioning and per-token billing.
+* [**Dedicated Training**](/fine-tuning/training-api/dedicated): provisioned trainer and deployment resources, broader model and parameter-mode support, explicit checkpoint/resume/deployment control.
 
 <CardGroup>
   <Card title="Serverless Training" icon="bolt" href="/fine-tuning/training-api/serverless">
@@ -40,7 +40,7 @@ After choosing the Training API, decide how compute is provided:
   </Card>
 
   <Card title="Dedicated Training" icon="server" href="/fine-tuning/training-api/dedicated">
-    Provision trainer and deployment resources for your run, with broader model and method support.
+    Provision trainer and deployment resources for your run, with broader model and parameter-mode support.
   </Card>
 </CardGroup>
 
@@ -51,7 +51,7 @@ After choosing the Training API, decide how compute is provided:
     <strong>Start with Serverless Training</strong>
 
     <div>
-      The model is supported, LoRA SFT or RL covers the task, and you want pooled compute with per-token billing.
+      The model is supported, LoRA covers the task, and you want pooled compute with per-token billing.
     </div>
   </div>
 
@@ -59,25 +59,25 @@ After choosing the Training API, decide how compute is provided:
     <strong>Choose Dedicated Training</strong>
 
     <div>
-      You need full-parameter training, DPO, explicit resume or deployment control, or sustained provisioned compute.
+      You need full-parameter training, a model outside the serverless pool, explicit resume or deployment control, or sustained provisioned compute.
     </div>
   </div>
 </div>
 
 ### Comparison
 
-| Dimension         | Serverless                                                       | Dedicated                                                                                     |
-| ----------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Provisioning      | Shared pooled trainer; no trainer or sampler deployment creation | SDK provisions trainer and deployment resources                                               |
-| Billing           | Per token; no idle GPU charge                                    | Time-based trainer and deployment billing                                                     |
-| Parameter mode    | LoRA only                                                        | LoRA and full-parameter                                                                       |
-| Methods           | SFT and RL on the supported serverless surface                   | SFT, DPO, ORPO, RL, distillation, and custom loops supported by the selected shape and recipe |
-| Models            | Current serverless model list                                    | Models with an enabled dedicated training shape                                               |
-| Capacity          | Shared pool and per-account limits                               | Resources allocated to the run, subject to account quota and platform availability            |
-| Checkpoint resume | In-run snapshots; cross-run resume is limited                    | Explicit checkpoint, reconnect, promotion, and deployment lifecycle                           |
-| Sampling          | In-session sampler, no deployment to create                      | SDK-managed rollout or evaluation deployment                                                  |
-| Teardown          | Session lifecycle is managed by the service                      | You must close trainers and delete or scale down deployments                                  |
-| Best fit          | Fast LoRA experiments and first RL iterations                    | Full-parameter work, DPO, sustained RL, larger workloads, explicit lifecycle control          |
+| Dimension         | Serverless                                                       | Dedicated                                                                                                    |
+| ----------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Provisioning      | Shared pooled trainer; no trainer or sampler deployment creation | SDK provisions trainer and deployment resources                                                              |
+| Billing           | Per token; no idle GPU charge                                    | Time-based trainer and deployment billing                                                                    |
+| Parameter mode    | LoRA only                                                        | LoRA and full-parameter                                                                                      |
+| Methods           | SFT, DPO, ORPO, RL, distillation, and custom loops               | SFT, DPO, ORPO, RL, distillation, and custom loops                                                           |
+| Models            | Current serverless model list                                    | Models with an enabled dedicated training shape                                                              |
+| Capacity          | Shared pool and per-account limits                               | Resources allocated to the run, subject to account quota and platform availability                           |
+| Checkpoint resume | In-run snapshots; cross-run resume is limited                    | Explicit checkpoint, reconnect, promotion, and deployment lifecycle                                          |
+| Sampling          | In-session sampler, no deployment to create                      | SDK-managed rollout or evaluation deployment                                                                 |
+| Teardown          | Session lifecycle is managed by the service                      | You must close trainers and delete or scale down deployments                                                 |
+| Best fit          | LoRA workloads on supported models without provisioning          | Full-parameter work, models outside the serverless pool, sustained workloads, and explicit lifecycle control |
 
 Always verify current models, limits, prices, and feature status in the [Serverless Training](/fine-tuning/training-api/serverless) and [Dedicated Training](/fine-tuning/training-api/dedicated) pages before launch.
 

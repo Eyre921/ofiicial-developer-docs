@@ -7,12 +7,19 @@ path: fine-tuning/training-api/serverless
 Run LoRA training, preference optimization, and RL on a shared pooled trainer, with no provisioning and per-token pricing.
 
 <Info>
-  Serverless training is currently in **private preview** and access is gated per account. [Request access](https://fireworks.ai/contact-training) and select "Serverless Training API."
+  Serverless training is generally available. Start with the [quickstart](#quickstart), or [contact us](https://fireworks.ai/contact-training) for help choosing between shared and dedicated training.
 </Info>
 
 Serverless training connects to a shared, already-running pooled trainer through the gateway and returns training and sampling clients. There is no trainer job or inference deployment to provision or delete. Close each sampler and the service client when finished.
 
 Not sure whether the shared pool fits your workload? [Compare serverless and dedicated training](/fine-tuning/training-api/introduction#infrastructure).
+
+## Supported models
+
+See the [Models catalog](/fine-tuning/models) and set **Availability** to **Serverless** for the current model list and context limits. You attach to a shared, always-on trainer pool with a base model and your own `max_seq_len`. Serverless supports LoRA SFT, DPO, ORPO, RL, distillation, and custom loops.
+
+* Checkpoint storage for serverless models is currently included at no charge.
+* The model catalog evolves, and other frontier models are coming soon. For full-parameter training, a model not listed for Serverless, or explicit infrastructure control, use [Dedicated Training](/fine-tuning/training-api/dedicated).
 
 <Info>
   **What you need**
@@ -20,7 +27,7 @@ Not sure whether the shared pool fits your workload? [Compare serverless and ded
   * **Install the SDK** (same one as the dedicated path, no separate console flow): `pip install "fireworks-ai[training]"`
   * **For the runnable example, clone the cookbook:** `git clone https://github.com/fw-ai/cookbook && pip install -e ./cookbook/training`
   * **Point at the serverless endpoint:** `base_url="https://api.fireworks.ai/training/v1/serverless"`
-  * **Pick a base model enabled for serverless training on your account.** See [Models](#models) below. Availability changes during private preview; verify it before launch.
+  * **Pick a supported base model.** See the [Models catalog](/fine-tuning/models), set **Availability** to **Serverless**, and verify current availability before launch.
   * Set your API key and run the [Quickstart](#quickstart) below.
 </Info>
 
@@ -30,7 +37,7 @@ Not sure whether the shared pool fits your workload? [Compare serverless and ded
 
 ## What is serverless training?
 
-You write the training loop, for supervised fine-tuning, preference optimization, or reinforcement learning, and Fireworks runs the forward pass, backward pass, and optimizer on remote GPUs, then serves your latest weights for sampling in the same session.
+You write the loop for supervised training, preference optimization, reinforcement learning, distillation, or another custom method. Fireworks runs the forward pass, backward pass, and optimizer on remote GPUs, then serves your latest weights for sampling in the same session.
 
 The [quickstart](#quickstart) shows the exact client setup and operation order. The cookbook provides a compact [`serverless_rl` implementation](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) and an experimental [`async_rl_loop_serverless` recipe](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) with the same rollout contract as the dedicated async RL recipe.
 
@@ -78,13 +85,21 @@ You do not create or delete a trainer job or inference deployment. Close each sa
   <Card title="Reinforcement Learning (RL)" icon="brain">
     Sample completions from the current adapter, score them with your own reward function, and train with an importance-sampling loss (GRPO-style). This is the primary serverless use case.
   </Card>
+
+  <Card title="Odds Ratio Preference Optimization (ORPO)" icon="scale-balanced">
+    Combine supervised learning on chosen responses with an odds-ratio preference objective, without a separate reference trainer.
+  </Card>
+
+  <Card title="Distillation and custom loops" icon="code">
+    Train a student from teacher scores or implement another loss with the same Training API operations used on dedicated infrastructure.
+  </Card>
 </CardGroup>
 
-All three run as LoRA on the shared pool. For full-parameter training, ORPO, distillation, or the broader Training API method set, use [Dedicated Training](/fine-tuning/training-api/dedicated). For standard platform-managed jobs, use [Managed Training](/fine-tuning/managed-finetuning-intro).
+These methods run as LoRA on the shared pool. Dedicated and serverless expose the same Training API method surface; the infrastructure and parameter-mode constraints differ. For full-parameter training, a model outside the serverless pool, or explicit infrastructure control, use [Dedicated Training](/fine-tuning/training-api/dedicated). For standard platform-managed jobs, use [Managed Training](/fine-tuning/managed-finetuning-intro).
 
 ## When to use dedicated
 
-Use [Dedicated Training](/fine-tuning/training-api/dedicated) when you need full-parameter training, broader model or method support, explicit resource lifecycle control, or sustained utilization. See the canonical [serverless versus dedicated comparison](/fine-tuning/training-api/introduction#infrastructure).
+Use [Dedicated Training](/fine-tuning/training-api/dedicated) when you need full-parameter training, a model outside the serverless pool, explicit resource lifecycle control, or sustained utilization. See the canonical [serverless versus dedicated comparison](/fine-tuning/training-api/introduction#infrastructure).
 
 ## Core concepts
 
@@ -152,7 +167,7 @@ service = FiretitanServiceClient(
     base_url="https://api.fireworks.ai/training/v1/serverless",
 )
 
-base_model = "accounts/fireworks/models/qwen3p6-27b"
+base_model = "accounts/fireworks/models/qwen3p8-27b"
 max_seq_len = 131072  # enforce this when rendering prompts and training datums
 training_client = service.create_lora_training_client(base_model=base_model, rank=8)
 
@@ -245,7 +260,7 @@ Serverless training writes **two different kinds of checkpoint**, and they are n
   Only **sampler checkpoints** can be promoted to a final model, and only **training checkpoints** can be loaded back by the trainer to resume. A training checkpoint cannot be served or promoted; a sampler checkpoint cannot restore training state (weights + optimizer).
 </Warning>
 
-Checkpoint storage is included during private preview.
+Checkpoint storage is currently included at no charge.
 
 ### Save and resume training checkpoints
 
@@ -331,7 +346,7 @@ Promotion turns a **sampler checkpoint** into a deployable Fireworks model (a st
     model = fw_client.promote_session_checkpoint(
         name=target["name"],  # accounts/<a>/trainingSessions/<s>/checkpoints/<c>
         output_model_id="my-serverless-lora",
-        base_model="accounts/fireworks/models/qwen3p6-27b",
+        base_model="accounts/fireworks/models/qwen3p8-27b",
     )
     ```
 
@@ -375,21 +390,9 @@ For the full SDK-level checkpoint reference (base/delta sampler types, weight sy
 
 ## Pricing
 
-Serverless training is billed per token, across three meters: prefill, sample, and train. Current rates per model are in [Models](#models) below. Available models, meter definitions, and rates can change during private preview, so verify current availability and [pricing](https://fireworks.ai/pricing) before launch.
+Serverless training is billed per token, across three meters: prefill, sample, and train. Available models, meter definitions, and rates can change, so verify current availability in the [Models catalog](/fine-tuning/models) and current rates on the [pricing page](https://fireworks.ai/pricing) before launch.
 
-## Supported models and limits
-
-### Models
-
-Serverless models are not selected by shape. You attach to a shared, always-on trainer pool with a base model and your own `max_seq_len`, and pay only for the tokens you prefill, sample, and train. Serverless is LoRA only, for SFT, DPO, and RL.
-
-<ServerlessModelsTable />
-
-* Checkpoint storage for serverless models is included during private preview.
-* The serverless model catalog evolves, and other frontier models are coming soon. For full-parameter training, ORPO, distillation, or a model not on that list, use [Dedicated Training](/fine-tuning/training-api/dedicated).
-* For per-model availability across all training surfaces, see the [Models](/fine-tuning/models) catalog.
-
-#### What the meters mean
+### What the meters mean
 
 Serverless training bills three separate token meters, so a run's cost depends on the mix of rollout and training tokens your loop generates:
 
@@ -399,7 +402,7 @@ Serverless training bills three separate token meters, so a run's cost depends o
 | **Sample**  | Tokens generated by the sampler during rollouts.                                                                                        |
 | **Train**   | Tokens passed through `forward_backward`, i.e. the datums you train on.                                                                 |
 
-### Capacity and rate limits (private preview)
+### Capacity and rate limits
 
 * **Concurrent runs:** The default quota is 8, although account overrides may differ. Slots are released when runs become terminal after session expiration.
 * **Request and token limits:** Contact Fireworks for the current limits on your account.
@@ -414,6 +417,10 @@ Serverless training bills three separate token meters, so a run's cost depends o
 ## Video walkthrough: Train a prompt router
 
 This walkthrough trains Qwen 3.5 9B with LoRA SFT to classify prompts and route them to a small or large model. It covers the local Python loop, pooled serverless trainer, in-session evaluation, and the before-and-after comparison.
+
+<Warning>
+  This walkthrough uses the deprecated Qwen 3.5 9B pool and is retained for conceptual reference. Use Qwen 3.8 27B for current Serverless Training runs.
+</Warning>
 
 <Frame>
   <iframe title="Train a prompt router with Fireworks Serverless Training" />

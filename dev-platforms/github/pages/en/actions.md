@@ -20,7 +20,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Using GitHub-hosted runners](/en/actions/how-tos/manage-runners/github-hosted-runners/use-github-hosted-runners)
 
-  You can assign a job to run on a virtual machine hosted by GitHub.
+  <p>You can assign a job to run on a virtual machine hosted by GitHub.</p>
 
 * [Workflow syntax for GitHub Actions](/en/actions/reference/workflows-and-actions/workflow-syntax)
 
@@ -28,7 +28,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Events that trigger workflows](/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
 
-  You can configure your workflows to run when specific activity on GitHub happens, at a scheduled time, or when an event outside of GitHub occurs.
+  <p>You can configure your workflows to run when specific activity on GitHub happens, at a scheduled time, or when an event outside of GitHub occurs.</p>
 
 * [Using artifact attestations to establish provenance for builds](/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 
@@ -44,7 +44,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Viewing GitHub Actions metrics](/en/actions/how-tos/administer/view-metrics)
 
-  You can view metrics to monitor where your organization or repositories use GitHub Actions and how they are performing.
+  <p>You can view metrics to monitor where your organization or repositories use GitHub Actions and how they are performing.</p>
 
 ## Links
 

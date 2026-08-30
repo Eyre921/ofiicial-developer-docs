@@ -187,7 +187,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 108,
+    "pages": 101,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -199,12 +199,12 @@
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
-    "pages": 380,
+    "pages": 382,
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1296,
+    "pages": 1295,
     "status": "ok"
   },
-  "_last_crawl": "2026-08-29T23:30:36Z"
+  "_last_crawl": "2026-08-30T11:30:56Z"
 }

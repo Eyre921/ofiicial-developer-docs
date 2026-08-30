@@ -33,8 +33,8 @@ Vision support is model- and surface-specific. Use the catalog above to confirm 
     Write your own training loop against a Tinker-compatible API
   </Card>
 
-  <Card title="Serverless Models" href="/fine-tuning/training-api/serverless#models" icon="bolt">
-    Serverless Training API model catalog with per-token pricing
+  <Card title="Serverless Training" href="/fine-tuning/training-api/serverless" icon="bolt">
+    Train on shared pooled infrastructure with per-token billing
   </Card>
 
   <Card title="Training Shapes" href="/fine-tuning/training-api/training-shapes" icon="microchip">
