@@ -27,7 +27,7 @@ The evaluations service keeps its own allowlist of serverless models, separate f
 | cogito-v2-1-671b                   | `deepcogito/cogito-v2-1-671b`             |
 | DeepSeek-R1                        | `deepseek-ai/DeepSeek-R1`                 |
 | DeepSeek-V3.1                      | `deepseek-ai/DeepSeek-V3.1`               |
-| Deepseek V4 Pro                    | `deepseek-ai/DeepSeek-V4-Pro`             |
+| DeepSeek-V4-Pro                    | `deepseek-ai/DeepSeek-V4-Pro`             |
 | rnj-1-instruct                     | `essentialai/rnj-1-instruct`              |
 | gemma-3n-E4B-it                    | `google/gemma-3n-E4B-it`                  |
 | Gemma 4 31B-it FP8                 | `google/gemma-4-31B-it`                   |

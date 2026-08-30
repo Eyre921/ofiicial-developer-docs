@@ -1,6 +1,6 @@
 # dev-platforms/sentry 文档索引
 
-> 共 122 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 120 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -70,9 +70,7 @@
 ## guides
 
 - `guides/custom-spans` — [Adding Custom Spans](pages/guides/custom-spans.md) · [原文](https://docs.sentry.io/guides/custom-spans.md)
-- `guides/issues-errors` — [What to Prioritize](pages/guides/issues-errors.md) · [原文](https://docs.sentry.io/guides/issues-errors.md)
 - `guides/logs` — [What to Log](pages/guides/logs.md) · [原文](https://docs.sentry.io/guides/logs.md)
-- `guides/metrics` — [What to Track](pages/guides/metrics.md) · [原文](https://docs.sentry.io/guides/metrics.md)
 - `guides/querying-traces` — [Querying Traces](pages/guides/querying-traces.md) · [原文](https://docs.sentry.io/guides/querying-traces.md)
 - `guides/session-replay` — [Using Session Replay](pages/guides/session-replay.md) · [原文](https://docs.sentry.io/guides/session-replay.md)
 

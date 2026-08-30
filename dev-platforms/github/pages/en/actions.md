@@ -16,7 +16,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Understanding GitHub Actions](/en/actions/get-started/understand-github-actions)
 
-  <p>Learn the basics of core concepts and essential terminology in GitHub Actions.</p>
+  Learn the basics of core concepts and essential terminology in GitHub Actions.
 
 * [Using GitHub-hosted runners](/en/actions/how-tos/manage-runners/github-hosted-runners/use-github-hosted-runners)
 
@@ -24,7 +24,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Workflow syntax for GitHub Actions](/en/actions/reference/workflows-and-actions/workflow-syntax)
 
-  <p>A workflow is a configurable automated process made up of one or more jobs. You must create a YAML file to define your workflow configuration.</p>
+  A workflow is a configurable automated process made up of one or more jobs. You must create a YAML file to define your workflow configuration.
 
 * [Events that trigger workflows](/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
 

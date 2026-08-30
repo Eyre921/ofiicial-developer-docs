@@ -4598,7 +4598,7 @@ The evaluations service keeps its own allowlist of serverless models, separate f
 | cogito-v2-1-671b                   | `deepcogito/cogito-v2-1-671b`             |
 | DeepSeek-R1                        | `deepseek-ai/DeepSeek-R1`                 |
 | DeepSeek-V3.1                      | `deepseek-ai/DeepSeek-V3.1`               |
-| Deepseek V4 Pro                    | `deepseek-ai/DeepSeek-V4-Pro`             |
+| DeepSeek-V4-Pro                    | `deepseek-ai/DeepSeek-V4-Pro`             |
 | rnj-1-instruct                     | `essentialai/rnj-1-instruct`              |
 | gemma-3n-E4B-it                    | `google/gemma-3n-E4B-it`                  |
 | Gemma 4 31B-it FP8                 | `google/gemma-4-31B-it`                   |
@@ -6948,7 +6948,7 @@ The tables below list every model available through the fine-tuning API. Context
 | DeepSeek     | DeepSeek V4 Flash                                  | `deepseek-ai/DeepSeek-V4-Flash`                      | 131072        | 32768         | 1               | 1               | 1         | 8          | 64            |
 | DeepSeek     | DeepSeek V3.1                                      | `deepseek-ai/DeepSeek-V3.1`                          | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
 | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`      | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
+| NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`      | 49152         | 24576         | 2               | 2               | 2         | 4          | 64            |
 | Qwen         | Qwen3.8 27B                                        | `Qwen/Qwen3.8-27B`                                   | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
 | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
 | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             | 65536         | 32768         | 16              | 16              | 16        | 1          | 64            |
@@ -21702,7 +21702,7 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Thinking Machines | Inkling                      | thinkingmachines/Inkling                | 524288         | \$1.00                        | \$0.17                               | \$4.05                         | NVFP4        | Yes              | Yes                |
 | Minimax           | Minimax M3                   | MiniMaxAI/MiniMax-M3                    | 524288         | \$0.30                        | \$0.06                               | \$1.20                         | FP4          | Yes              | Yes                |
 | Qwen              | Qwen3.8-2.4T-A95B            | Qwen/Qwen3.8-2.4T-A95B                  | -              | \$2.50                        | \$0.50                               | \$6.25                         | FP4          | -                | -                  |
-| Qwen              | Qwen3.7 Max                  | Qwen/Qwen3.7-Max                        | -              | \$1.25                        | -                                    | \$3.75                         | -            | -                | -                  |
+| Qwen              | Qwen3.7 Max                  | Qwen/Qwen3.7-Max                        | -              | \$2.50                        | -                                    | \$7.50                         | -            | -                | -                  |
 | Qwen              | Qwen3.6 Plus                 | Qwen/Qwen3.6-Plus                       | 1000000        | \$0.50                        | -                                    | \$3.00                         | -            | -                | -                  |
 | Qwen              | Qwen3.5 9B                   | Qwen/Qwen3.5-9B                         | 262144         | \$0.17                        | -                                    | \$0.25                         | FP8          | Yes              | Yes                |
 | Moonshot          | Kimi K3                      | moonshotai/Kimi-K3                      | 1048576        | \$3.00                        | \$0.30                               | \$15.00                        | -            | Yes              | Yes                |
@@ -49789,7 +49789,7 @@ The table below lists all models removed from serverless inference, most recent 
 
 | Removal date                | Model                                               | Supported by on-demand dedicated endpoints |
 | :-------------------------- | :-------------------------------------------------- | :----------------------------------------- |
-| 2026-08-27                  | `nvidia/Nemotron-3-ultra-550b-a55b`                 | Yes                                        |
+| 2026-08-27                  | `nvidia/Nemotron-3-ultra-550b-a55b`                 | No                                         |
 | 2026-08-27                  | `pearl-ai/gemma-4-31b-it`                           | No                                         |
 | 2026-08-27                  | `deepseek-ai/DeepSeek-V4-Pro`                       | Yes                                        |
 | 2026-08-27                  | `moonshotai/Kimi-K2.7-Code`                         | Yes                                        |
@@ -49797,7 +49797,7 @@ The table below lists all models removed from serverless inference, most recent 
 | 2026-08-25                  | `google/gemma-3n-E4B-it`                            | No                                         |
 | 2026-08-21                  | `deepcogito/cogito-v2-1-671b`                       | No                                         |
 | 2026-08-19                  | `black-forest-labs/FLUX.1-schnell`                  | No                                         |
-| 2026-08-19                  | `Qwen/Qwen2.5-7B`                                   | Yes                                        |
+| 2026-08-19                  | `Qwen/Qwen2.5-7B`                                   | No                                         |
 | 2026-08-19                  | `moonshotai/Kimi-K2.6`                              | Yes                                        |
 | 2026-07-10                  | `Qwen/Qwen3-235B-A22B-Instruct-2507-tput`           | Yes                                        |
 | 2026-07-10                  | `meta-llama/Meta-Llama-3-8B-Instruct-Lite`          | No                                         |

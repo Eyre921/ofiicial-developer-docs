@@ -20,7 +20,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Understanding the codespace lifecycle](/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle)
 
-  <p>Learn how to develop in a GitHub Codespaces environment, and maintain your data throughout the entire codespace lifecycle.</p>
+  Learn how to develop in a GitHub Codespaces environment, and maintain your data throughout the entire codespace lifecycle.
 
 * [Creating a codespace for a repository](/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository)
 
@@ -40,7 +40,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Enabling or disabling GitHub Codespaces for your organization](/en/codespaces/managing-codespaces-for-your-organization/enabling-or-disabling-github-codespaces-for-your-organization)
 
-  <p>You can control which users can use GitHub Codespaces in your organization's private and internal repositories.</p>
+  <p>You can control which users can use GitHub Codespaces in your organization's private repositories.</p>
 
 * [Security in GitHub Codespaces](/en/codespaces/reference/security-in-github-codespaces)
 

@@ -109,7 +109,7 @@ The table below lists all models removed from serverless inference, most recent 
 
 | Removal date                | Model                                               | Supported by on-demand dedicated endpoints |
 | :-------------------------- | :-------------------------------------------------- | :----------------------------------------- |
-| 2026-08-27                  | `nvidia/Nemotron-3-ultra-550b-a55b`                 | Yes                                        |
+| 2026-08-27                  | `nvidia/Nemotron-3-ultra-550b-a55b`                 | No                                         |
 | 2026-08-27                  | `pearl-ai/gemma-4-31b-it`                           | No                                         |
 | 2026-08-27                  | `deepseek-ai/DeepSeek-V4-Pro`                       | Yes                                        |
 | 2026-08-27                  | `moonshotai/Kimi-K2.7-Code`                         | Yes                                        |
@@ -117,7 +117,7 @@ The table below lists all models removed from serverless inference, most recent 
 | 2026-08-25                  | `google/gemma-3n-E4B-it`                            | No                                         |
 | 2026-08-21                  | `deepcogito/cogito-v2-1-671b`                       | No                                         |
 | 2026-08-19                  | `black-forest-labs/FLUX.1-schnell`                  | No                                         |
-| 2026-08-19                  | `Qwen/Qwen2.5-7B`                                   | Yes                                        |
+| 2026-08-19                  | `Qwen/Qwen2.5-7B`                                   | No                                         |
 | 2026-08-19                  | `moonshotai/Kimi-K2.6`                              | Yes                                        |
 | 2026-07-10                  | `Qwen/Qwen3-235B-A22B-Instruct-2507-tput`           | Yes                                        |
 | 2026-07-10                  | `meta-llama/Meta-Llama-3-8B-Instruct-Lite`          | No                                         |
