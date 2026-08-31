@@ -49,58 +49,49 @@ The **Skip Turn** tool allows your conversational agent to explicitly pause and 
 When creating an agent via API, you can add the Skip Turn tool to your agent configuration. It should be defined as a system tool, with the name `skip_turn`.
 
 ```python
-from elevenlabs import (
-    ConversationalConfig,
-    ElevenLabs,
-    AgentConfig,
-    PromptAgent,
-    PromptAgentInputToolsItem_System
-)
+from elevenlabs import AgentConfig, ConversationalConfig, ElevenLabs
 
-# Initialize the client
 elevenlabs = ElevenLabs(api_key="YOUR_API_KEY")
 
-# Create the skip turn tool
-skip_turn_tool = PromptAgentInputToolsItem_System(
-    name="skip_turn",
-    description=""  # Optional: Customize when the tool should be triggered, or leave blank for default.
-)
-
-# Create the agent configuration
-conversation_config = ConversationalConfig(
-    agent=AgentConfig(
-        prompt=PromptAgent(
-            tools=[skip_turn_tool]
-        )
-    )
-)
-
-# Create the agent
 response = elevenlabs.conversational_ai.agents.create(
-    conversation_config=conversation_config
+    conversation_config=ConversationalConfig(
+        agent=AgentConfig(
+            prompt={
+                "built_in_tools": {
+                    "skip_turn": {
+                        "type": "system",
+                        "name": "skip_turn",
+                        # Optional: customize when the tool should be triggered,
+                        # or leave blank for the default.
+                        "description": "",
+                        "params": {"system_tool_type": "skip_turn"},
+                    }
+                }
+            },
+        ),
+    ),
 )
 ```
 
 ```javascript
-import { ElevenLabs } from "@elevenlabs/elevenlabs-js";
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
-// Initialize the client
-const elevenlabs = new ElevenLabs({
+const elevenlabs = new ElevenLabsClient({
   apiKey: "YOUR_API_KEY",
 });
 
-// Create the agent with skip turn tool
 await elevenlabs.conversationalAi.agents.create({
   conversationConfig: {
     agent: {
       prompt: {
-        tools: [
-          {
+        builtInTools: {
+          skipTurn: {
             type: "system",
             name: "skip_turn",
             description: "", // Optional: Customize when the tool should be triggered, or leave blank for default.
+            params: { systemToolType: "skip_turn" },
           },
-        ],
+        },
       },
     },
   },
@@ -115,16 +106,16 @@ You can also configure the Skip Turn tool directly within the Agent's UI, in the
 
 Navigate to your agent's configuration page. In the "Tools" section, click on "Add tool", the `Skip Turn` option will already be available.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8b95051da94ada3dae7e42121148ad4509b49413e73bd16351142372ca26a68d/assets/images/conversational-ai/skip-turn-option.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260830T113148Z&X-Amz-Expires=604800&X-Amz-Signature=8706807d08dd0f0fb1467ed0bc3867420312ffe3539bb900e48b8199bf20d935&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Add Skip Turn Tool Option" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8b95051da94ada3dae7e42121148ad4509b49413e73bd16351142372ca26a68d/assets/images/conversational-ai/skip-turn-option.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=c2ecffed9e7b9c0a40e7503922c0a11804482bebf5fb63a802401ec6a9c32a5b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Add Skip Turn Tool Option" />
 
 ### Step 2: Configure the tool
 
 You can optionally provide a description to customize when the LLM should trigger this tool, or leave it blank to use the default behavior.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cbb419db630beb4feefc390ef3f3576f7a6dc2df098faec4fbd2d1d5e703364f/assets/images/conversational-ai/skip-turn-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260830T113148Z&X-Amz-Expires=604800&X-Amz-Signature=dc5a9c0a8e1e2b0b9641c427468c6b2fb3dfc235346de4e081960acc4fdad9c0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Configure Skip Turn Tool" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cbb419db630beb4feefc390ef3f3576f7a6dc2df098faec4fbd2d1d5e703364f/assets/images/conversational-ai/skip-turn-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=7c1840eb9b17cc643130c95989256f53d998827fd5b09c293011b9ae505f5346&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Configure Skip Turn Tool" />
 
 ### Step 3: Enable the tool
 
 Once configured, the `Skip Turn` tool will appear in your agent's list of enabled tools and the agent will be able to skip turns. .
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bdb738dc85ff91107cafa5899aad116420aabe9fe794b648bc1f0751729ba5af/assets/images/conversational-ai/skip-turn-enabled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260830T113148Z&X-Amz-Expires=604800&X-Amz-Signature=ec85fc7fbfaacb3587226c5ea3e59b4c47c0db955cffb70ca31690e9e439a660&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Skip Turn Tool Enabled" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bdb738dc85ff91107cafa5899aad116420aabe9fe794b648bc1f0751729ba5af/assets/images/conversational-ai/skip-turn-enabled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=949b23e27fc209e601ad3c9af5b9f0a9af180e74ebbcb964ddc2a5bebcff472e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Skip Turn Tool Enabled" />

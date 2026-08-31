@@ -3397,6 +3397,15 @@ components:
                     - 'null'
                 cost_details:
                   properties:
+                    server_tool_cost:
+                      description: >-
+                        Metered server-tool execution cost (for example, shell
+                        sandbox time) billed for this request, in USD. Matches
+                        the billed checkpoint and settlement amounts exactly.
+                      format: double
+                      type:
+                        - number
+                        - 'null'
                     upstream_inference_cost:
                       format: double
                       type:
@@ -3425,6 +3434,7 @@ components:
       example:
         cost: 0.0012
         cost_details:
+          server_tool_cost: null
           upstream_inference_cost: null
           upstream_inference_input_cost: 0.0008
           upstream_inference_output_cost: 0.0004

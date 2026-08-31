@@ -40,7 +40,7 @@ The **Voicemail Detection** tool allows your ElevenLabs agent to automatically i
 The voicemail detection tool can be configured with the following options:
 
 ![Voicemail detection configuration
-interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f2f9a87e27ce0d5f631d2d294163e8df39e6dee5b3a98aaba692589c66364550/assets/images/conversational-ai/voicemail_detection.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260830T031116Z&X-Amz-Expires=604800&X-Amz-Signature=66115872200461b339f00caec8ad8477a5be88429dfd15c56bedd811304fa86b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f2f9a87e27ce0d5f631d2d294163e8df39e6dee5b3a98aaba692589c66364550/assets/images/conversational-ai/voicemail_detection.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=56b06166f497f7ae5920cb3abf370a15e1410393473fc3e8ae454179ad85c6cd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * **Voicemail Message**: You can configure an optional custom message to be played when voicemail is detected. This message supports [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables), allowing you to personalize voicemail messages with runtime values such as `{{user_name}}` or `{{appointment_time}}`
 
@@ -49,58 +49,56 @@ interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenl
 When creating an agent via API, you can add the Voicemail Detection tool to your agent configuration. It should be defined as a system tool:
 
 ```python
-from elevenlabs import (
-    ConversationalConfig,
-    ElevenLabs,
-    AgentConfig,
-    PromptAgent,
-    PromptAgentInputToolsItem_System
-)
+from elevenlabs import AgentConfig, ConversationalConfig, ElevenLabs
 
-# Initialize the client
 elevenlabs = ElevenLabs(api_key="YOUR_API_KEY")
 
-# Create the voicemail detection tool
-voicemail_detection_tool = PromptAgentInputToolsItem_System(
-    name="voicemail_detection",
-    description=""  # Optional: Customize when the tool should be triggered
-)
-
-# Create the agent configuration
-conversation_config = ConversationalConfig(
-    agent=AgentConfig(
-        prompt=PromptAgent(
-            tools=[voicemail_detection_tool]
-        )
-    )
-)
-
-# Create the agent
 response = elevenlabs.conversational_ai.agents.create(
-    conversation_config=conversation_config
+    conversation_config=ConversationalConfig(
+        agent=AgentConfig(
+            prompt={
+                "built_in_tools": {
+                    "voicemail_detection": {
+                        "type": "system",
+                        "name": "voicemail_detection",
+                        # Optional: customize when the tool should be triggered
+                        "description": "",
+                        "params": {
+                            "system_tool_type": "voicemail_detection",
+                            # Optional: message left when voicemail is detected
+                            "voicemail_message": "Sorry I missed you. I'll call back later.",
+                        },
+                    }
+                }
+            },
+        ),
+    ),
 )
 ```
 
 ```javascript
-import { ElevenLabs } from "@elevenlabs/elevenlabs-js";
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
-// Initialize the client
-const elevenlabs = new ElevenLabs({
+const elevenlabs = new ElevenLabsClient({
   apiKey: "YOUR_API_KEY",
 });
 
-// Create the agent with voicemail detection tool
 await elevenlabs.conversationalAi.agents.create({
   conversationConfig: {
     agent: {
       prompt: {
-        tools: [
-          {
+        builtInTools: {
+          voicemailDetection: {
             type: "system",
             name: "voicemail_detection",
             description: "", // Optional: Customize when the tool should be triggered
+            params: {
+              systemToolType: "voicemail_detection",
+              // Optional: message left when voicemail is detected
+              voicemailMessage: "Sorry I missed you. I'll call back later.",
+            },
           },
-        ],
+        },
       },
     },
   },

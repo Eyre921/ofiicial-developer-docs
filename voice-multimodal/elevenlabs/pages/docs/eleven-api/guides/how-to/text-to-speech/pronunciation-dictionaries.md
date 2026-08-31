@@ -66,8 +66,10 @@ You can use AI tools like Claude or ChatGPT to help generate IPA or CMU notation
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
 ```python maxLines=0
-import requests
-from elevenlabs.play import play, PronunciationDictionaryVersionLocator
+from elevenlabs import ElevenLabs, PronunciationDictionaryVersionLocator
+from elevenlabs.play import play
+
+elevenlabs = ElevenLabs()
 
 with open("dictionary.pls", "rb") as f:
     # this dictionary changes how tomato is pronounced

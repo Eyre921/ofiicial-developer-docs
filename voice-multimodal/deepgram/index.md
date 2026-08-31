@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 376 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 382 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -20,12 +20,16 @@
 ## developer-tools
 
 - `developer-tools/agentic-tools` — [Agentic developer tools](pages/developer-tools/agentic-tools.md) · [原文](https://developers.deepgram.com/developer-tools/agentic-tools.md)
+- `developer-tools/cli/account-management` — [Account Management Commands](pages/developer-tools/cli/account-management.md) · [原文](https://developers.deepgram.com/developer-tools/cli/account-management.md)
 - `developer-tools/cli/authentication` — [CLI Authentication](pages/developer-tools/cli/authentication.md) · [原文](https://developers.deepgram.com/developer-tools/cli/authentication.md)
 - `developer-tools/cli/getting-started` — [Deepgram CLI — Getting Started](pages/developer-tools/cli/getting-started.md) · [原文](https://developers.deepgram.com/developer-tools/cli/getting-started.md)
+- `developer-tools/cli/installation` — [CLI Installation](pages/developer-tools/cli/installation.md) · [原文](https://developers.deepgram.com/developer-tools/cli/installation.md)
 - `developer-tools/cli/mcp-server` — [MCP Server](pages/developer-tools/cli/mcp-server.md) · [原文](https://developers.deepgram.com/developer-tools/cli/mcp-server.md)
+- `developer-tools/cli/plugins` — [Plugin System](pages/developer-tools/cli/plugins.md) · [原文](https://developers.deepgram.com/developer-tools/cli/plugins.md)
 - `developer-tools/cli/shell-completion` — [Shell Completion](pages/developer-tools/cli/shell-completion.md) · [原文](https://developers.deepgram.com/developer-tools/cli/shell-completion.md)
 - `developer-tools/cli/speech-to-text` — [Speech-to-Text Commands](pages/developer-tools/cli/speech-to-text.md) · [原文](https://developers.deepgram.com/developer-tools/cli/speech-to-text.md)
 - `developer-tools/cli/text-intelligence` — [Text Intelligence Commands](pages/developer-tools/cli/text-intelligence.md) · [原文](https://developers.deepgram.com/developer-tools/cli/text-intelligence.md)
+- `developer-tools/cli/text-to-speech` — [Text-to-Speech Commands](pages/developer-tools/cli/text-to-speech.md) · [原文](https://developers.deepgram.com/developer-tools/cli/text-to-speech.md)
 
 ## docs
 
@@ -323,6 +327,8 @@
 - `guides/deep-dives/managing-projects` — [Managing Projects](pages/guides/deep-dives/managing-projects.md) · [原文](https://developers.deepgram.com/guides/deep-dives/managing-projects.md)
 - `guides/deep-dives/safely-removing-team-members-with-active-api-keys` — [Safely Removing Team Members With Active API Keys](pages/guides/deep-dives/safely-removing-team-members-with-active-api-keys.md) · [原文](https://developers.deepgram.com/guides/deep-dives/safely-removing-team-members-with-active-api-keys.md)
 - `guides/deep-dives/using-multiple-projects` — [Using Multiple Projects](pages/guides/deep-dives/using-multiple-projects.md) · [原文](https://developers.deepgram.com/guides/deep-dives/using-multiple-projects.md)
+- `guides/deep-dives/working-with-roles` — [Working With Roles & API Scopes](pages/guides/deep-dives/working-with-roles.md) · [原文](https://developers.deepgram.com/guides/deep-dives/working-with-roles.md)
+- `guides/fundamentals/authenticating` — [Authenticating](pages/guides/fundamentals/authenticating.md) · [原文](https://developers.deepgram.com/guides/fundamentals/authenticating.md)
 - `guides/fundamentals/make-your-first-api-request` — [Make Your First API Request](pages/guides/fundamentals/make-your-first-api-request.md) · [原文](https://developers.deepgram.com/guides/fundamentals/make-your-first-api-request.md)
 - `guides/fundamentals/model-metadata` — [Model Metadata](pages/guides/fundamentals/model-metadata.md) · [原文](https://developers.deepgram.com/guides/fundamentals/model-metadata.md)
 - `guides/fundamentals/tagging-your-usage-data` — [Tagging Your Usage Data](pages/guides/fundamentals/tagging-your-usage-data.md) · [原文](https://developers.deepgram.com/guides/fundamentals/tagging-your-usage-data.md)

@@ -106,10 +106,10 @@ elevenlabs = ElevenLabs(
 ```
 
 ```typescript
-import { ElevenLabs } from "@elevenlabs/elevenlabs-js";
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import "dotenv/config";
 
-const elevenlabs = new ElevenLabs({
+const elevenlabs = new ElevenLabsClient({
   apiKey: process.env.ELEVENLABS_API_KEY,
   baseUrl: "https://api.us.elevenlabs.io",
 });

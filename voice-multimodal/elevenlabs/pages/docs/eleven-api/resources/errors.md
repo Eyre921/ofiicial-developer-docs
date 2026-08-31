@@ -49,7 +49,8 @@ Using the error properties, we can see that the error is a validation error, and
 The ElevenLabs SDKs provide typed error classes that give you access to the error details.
 
 ```python
-from elevenlabs import ElevenLabs, ApiError
+from elevenlabs import ElevenLabs
+from elevenlabs.core import ApiError
 
 elevenlabs = ElevenLabs()
 
@@ -78,9 +79,9 @@ except ApiError as e:
 ```
 
 ```typescript
-import { ElevenLabs, ElevenLabsError } from "elevenlabs";
+import { ElevenLabsClient, ElevenLabsError } from "@elevenlabs/elevenlabs-js";
 
-const elevenlabs = new ElevenLabs();
+const elevenlabs = new ElevenLabsClient();
 
 try {
   const audio = await elevenlabs.textToSpeech.convert("invalid-voice-id", {

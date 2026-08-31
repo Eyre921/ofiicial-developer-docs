@@ -15,7 +15,7 @@ The Users page lists everyone who has talked to your agents in this workspace â€
 Each user is identified by the `user_id` you pass when starting a conversation. See [conversation initiation client data](/docs/eleven-agents/customization/personalization#conversation-initiation-client-data-structure) for how to set this, or the relevant guide under [integrate](/docs/eleven-agents/integrate/overview) for your platform.
 
 ![Users page showing the user list and a selected user's
-conversations](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/353b30276a034eed7007aa17008b84bab1ae50fe903b0890fd0d87d7bbc51fcd/assets/images/conversational-ai/users-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260830T070853Z&X-Amz-Expires=604800&X-Amz-Signature=de9f24cdad0921e6a4bf8a626165ff18992bf4e53aa26d5c8234d09793c14e14&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+conversations](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/353b30276a034eed7007aa17008b84bab1ae50fe903b0890fd0d87d7bbc51fcd/assets/images/conversational-ai/users-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091734Z&X-Amz-Expires=604800&X-Amz-Signature=1252524b92cdd63f291892c5658b4c8b7704c2ead18dff113a345ccfbd7ad364&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Table columns
 

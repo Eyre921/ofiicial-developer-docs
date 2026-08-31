@@ -1,6 +1,6 @@
 # ai-models/replicate 文档索引
 
-> 共 67 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 66 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -27,7 +27,6 @@
 - `docs/guides/extend/working-with-loras` — [Working with LoRAs](pages/docs/guides/extend/working-with-loras.md) · [原文](https://replicate.com/docs/guides/extend/working-with-loras.md)
 - `docs/guides/run/discord-bot` — [Build a Discord bot with Python](pages/docs/guides/run/discord-bot.md) · [原文](https://replicate.com/docs/guides/run/discord-bot.md)
 - `docs/guides/run/make-art-with-stable-diffusion` — [Make art with Stable Diffusion](pages/docs/guides/run/make-art-with-stable-diffusion.md) · [原文](https://replicate.com/docs/guides/run/make-art-with-stable-diffusion.md)
-- `docs/guides/run/nextjs` — [Build a website with Next.js](pages/docs/guides/run/nextjs.md) · [原文](https://replicate.com/docs/guides/run/nextjs.md)
 - `docs/guides/run/swiftui` — [Build an app with SwiftUI](pages/docs/guides/run/swiftui.md) · [原文](https://replicate.com/docs/guides/run/swiftui.md)
 - `docs/guides/run/upscale-images-with-ai-models` — [Upscale images with AI models](pages/docs/guides/run/upscale-images-with-ai-models.md) · [原文](https://replicate.com/docs/guides/run/upscale-images-with-ai-models.md)
 - `docs/guides/run/vinext` — [Build a website with vinext](pages/docs/guides/run/vinext.md) · [原文](https://replicate.com/docs/guides/run/vinext.md)

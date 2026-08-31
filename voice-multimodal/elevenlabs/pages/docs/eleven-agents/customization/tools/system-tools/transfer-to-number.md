@@ -77,13 +77,13 @@ Human transfer is configured using the `transfer_to_number` system tool.
 
 Enable human transfer by selecting the `transfer_to_number` system tool in your agent's configuration within the `Agent` tab. Choose "Transfer to Human" when adding a tool.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b0a0985dd32cab9532b38b80aaa90873b4076bb26e7a47ce2e12832dd78ea45/assets/images/conversational-ai/transfer_human.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260829%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260829T013116Z&X-Amz-Expires=604800&X-Amz-Signature=ef51dd209156744567c6c98ff73b77dec89bb2ea9b786f7281b2ac2ee5b27efa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Add Human Transfer Tool" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b0a0985dd32cab9532b38b80aaa90873b4076bb26e7a47ce2e12832dd78ea45/assets/images/conversational-ai/transfer_human.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T090518Z&X-Amz-Expires=604800&X-Amz-Signature=c87130ba020b2b3062caee6b643aa79293c213f05b56ff023732e72f2dddb5ad&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Add Human Transfer Tool" />
 
 #### Configure tool description (optional)
 
 You can provide a custom description to guide the LLM on when to trigger a transfer. If left blank, a default description encompassing the defined transfer rules will be used.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/23b446030f915db9a10693153e44f95ab59c313e01df2b95291e40e12f2f4bde/assets/images/conversational-ai/transfer_human_tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260829%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260829T013116Z&X-Amz-Expires=604800&X-Amz-Signature=4cc177d22ae625989350d40a5e61c989e45fff159cbf145f64e8b4232f459a3a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Human Transfer Tool Description" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/23b446030f915db9a10693153e44f95ab59c313e01df2b95291e40e12f2f4bde/assets/images/conversational-ai/transfer_human_tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T090518Z&X-Amz-Expires=604800&X-Amz-Signature=daa676bd8e68e4f215332c953bb644ff98a90304464a279eb5544156a898c554&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Human Transfer Tool Description" />
 
 #### Define transfer rules
 
@@ -102,7 +102,7 @@ The LLM will use these conditions, along with the tool description, to decide wh
 
 **Blind transfers** are only available when the agent's phone number is imported via the [native Twilio integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration) and must be configured via the JSON editor. The original caller ID is preserved, but no warm transfer message is sent to the human operator.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/86e46148dc133fe68e6b517752d38bf493bef8347fee91a577e9f27600bafa5d/assets/images/conversational-ai/transfer_human_rule.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260829%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260829T013116Z&X-Amz-Expires=604800&X-Amz-Signature=f2d1f800fe8e901693eb3faac89219c6392f0d3d5a342aadad7336f2bbe07817&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Human Transfer Rules Configuration" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/86e46148dc133fe68e6b517752d38bf493bef8347fee91a577e9f27600bafa5d/assets/images/conversational-ai/transfer_human_rule.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T090518Z&X-Amz-Expires=604800&X-Amz-Signature=9b3a67e873f4b9e73cf6f64aa5e86078781f7d6d502069b46e2ca3ca55e66e8f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Human Transfer Rules Configuration" />
 
 Ensure destinations are correctly formatted:
 
@@ -160,73 +160,64 @@ Post-dial digits are supported for **conference** and **blind** transfer types o
 You can configure the `transfer_to_number` system tool when creating or updating an agent via the API ([Create agent](/docs/api-reference/agents/create), [Update agent](/docs/api-reference/agents/update)). The tool allows specifying messages for both the client (user being transferred) and the agent (human operator receiving the call).
 
 ```python
-from elevenlabs import (
-    ConversationalConfig,
-    ElevenLabs,
-    AgentConfig,
-    PromptAgent,
-    PromptAgentInputToolsItem_System,
-    SystemToolConfigInputParams_TransferToNumber,
-    PhoneNumberTransfer,
-)
+from elevenlabs import AgentConfig, ConversationalConfig, ElevenLabs
 
-# Initialize the client
 elevenlabs = ElevenLabs(api_key="YOUR_API_KEY")
 
 # Define transfer rules
 transfer_rules = [
-    PhoneNumberTransfer(
-        transfer_destination={"type": "phone", "phone_number": "+15551234567"},
-        condition="When the user asks for billing support.",
-        transfer_type="conference",
-        post_dial_digits="ww1234"  # Wait 1s, then dial extension 1234 (native Twilio only)
-    ),
-    PhoneNumberTransfer(
-        transfer_destination={"type": "phone", "phone_number": "+15559876543"},
-        condition="When the user asks to speak to a human.",
-        transfer_type="blind"  # Native Twilio integration only, preserves caller ID, no warm transfer message
-    ),
-    PhoneNumberTransfer(
-        transfer_destination={"type": "sip_uri", "sip_uri": "sip:support@example.com"},
-        condition="When the user requests to file a formal complaint.",
-        transfer_type="sip_refer",
-        custom_sip_headers=[
-            {"key": "X-Department", "value": "complaints"},
-            {"key": "X-Priority", "value": "high"},
-            {"key": "X-Customer-ID", "value": "{{customer_id}}"}
+    {
+        "transfer_destination": {"type": "phone", "phone_number": "+15551234567"},
+        "condition": "When the user asks for billing support.",
+        "transfer_type": "conference",
+        # Wait 1s, then dial extension 1234 (native Twilio only)
+        "post_dial_digits": {"type": "static", "value": "ww1234"},
+    },
+    {
+        "transfer_destination": {"type": "phone", "phone_number": "+15559876543"},
+        "condition": "When the user asks to speak to a human.",
+        # Native Twilio integration only, preserves caller ID, no warm transfer message
+        "transfer_type": "blind",
+    },
+    {
+        "transfer_destination": {"type": "sip_uri", "sip_uri": "sip:support@example.com"},
+        "condition": "When the user requests to file a formal complaint.",
+        "transfer_type": "sip_refer",
+        "custom_sip_headers": [
+            {"type": "static", "key": "X-Department", "value": "complaints"},
+            {"type": "static", "key": "X-Priority", "value": "high"},
+            # Use "dynamic" to read the value from a dynamic variable
+            {"type": "dynamic", "key": "X-Customer-ID", "value": "{{customer_id}}"},
         ],
-        uui={
+        "uui": {
             "data": "account_id={{customer_id}}",
-            "protocol_discriminator": "04",          # Genesys Cloud; omit for Talkdesk
-            "protocol_discriminator_mode": "prefix"  # or "pd_parameter"
-        }
-    )
+            "protocol_discriminator": "04",           # Genesys Cloud; omit for Talkdesk
+            "protocol_discriminator_mode": "prefix",  # or "pd_parameter"
+        },
+    },
 ]
 
-# Create the transfer tool configuration
-transfer_tool = PromptAgentInputToolsItem_System(
-    type="system",
-    name="transfer_to_human",
-    description="Transfer the user to a specialized agent based on their request.", # Optional custom description
-    params=SystemToolConfigInputParams_TransferToNumber(
-        transfers=transfer_rules
-    )
-)
-
-# Create the agent configuration
-conversation_config = ConversationalConfig(
-    agent=AgentConfig(
-        prompt=PromptAgent(
-            prompt="You are a helpful assistant.",
-            first_message="Hi, how can I help you today?",
-            tools=[transfer_tool],
-        )
-    )
-)
-
-# Create the agent
 response = elevenlabs.conversational_ai.agents.create(
-    conversation_config=conversation_config
+    conversation_config=ConversationalConfig(
+        agent=AgentConfig(
+            first_message="Hi, how can I help you today?",
+            prompt={
+                "prompt": "You are a helpful assistant.",
+                "built_in_tools": {
+                    "transfer_to_number": {
+                        "type": "system",
+                        "name": "transfer_to_number",
+                        # Optional custom description
+                        "description": "Transfer the user to a human operator based on their request.",
+                        "params": {
+                            "system_tool_type": "transfer_to_number",
+                            "transfers": transfer_rules,
+                        },
+                    }
+                },
+            },
+        ),
+    ),
 )
 
 # Note: When the LLM decides to call this tool, it needs to provide:
@@ -236,61 +227,59 @@ response = elevenlabs.conversational_ai.agents.create(
 ```
 
 ```javascript
-import { ElevenLabs } from "@elevenlabs/elevenlabs-js";
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
-// Initialize the client
-const elevenlabs = new ElevenLabs({
+const elevenlabs = new ElevenLabsClient({
   apiKey: "YOUR_API_KEY",
 });
 
-// Define transfer rules
-const transferRules = [
-  {
-    transferDestination: { type: "phone", phoneNumber: "+15551234567" },
-    condition: "When the user asks for billing support.",
-    transferType: "conference",
-    postDialDigits: "ww1234", // Wait 1s, then dial extension 1234 (native Twilio only)
-  },
-  {
-    transferDestination: { type: "phone", phoneNumber: "+15559876543" },
-    condition: "When the user asks to speak to a human.",
-    transferType: "blind", // Native Twilio integration only, preserves caller ID, no warm transfer message
-  },
-  {
-    transferDestination: { type: "sip_uri", sipUri: "sip:support@example.com" },
-    condition: "When the user requests to file a formal complaint.",
-    transferType: "sip_refer",
-    customSipHeaders: [
-      { key: "X-Department", value: "complaints" },
-      { key: "X-Priority", value: "high" },
-      { key: "X-Customer-ID", value: "{{customer_id}}" },
-    ],
-    uui: {
-      data: "account_id={{customer_id}}",
-      protocolDiscriminator: "04", // Genesys Cloud; omit for Talkdesk
-      protocolDiscriminatorMode: "prefix", // or "pd_parameter"
-    },
-  },
-];
-
-// Create the agent with the transfer tool
 await elevenlabs.conversationalAi.agents.create({
   conversationConfig: {
     agent: {
+      firstMessage: "Hi, how can I help you today?",
       prompt: {
         prompt: "You are a helpful assistant.",
-        firstMessage: "Hi, how can I help you today?",
-        tools: [
-          {
+        builtInTools: {
+          transferToNumber: {
             type: "system",
             name: "transfer_to_number",
             description: "Transfer the user to a human operator based on their request.", // Optional custom description
             params: {
               systemToolType: "transfer_to_number",
-              transfers: transferRules,
+              transfers: [
+                {
+                  transferDestination: { type: "phone", phoneNumber: "+15551234567" },
+                  condition: "When the user asks for billing support.",
+                  transferType: "conference",
+                  // Wait 1s, then dial extension 1234 (native Twilio only)
+                  postDialDigits: { type: "static", value: "ww1234" },
+                },
+                {
+                  transferDestination: { type: "phone", phoneNumber: "+15559876543" },
+                  condition: "When the user asks to speak to a human.",
+                  // Native Twilio only, preserves caller ID, no warm transfer message
+                  transferType: "blind",
+                },
+                {
+                  transferDestination: { type: "sip_uri", sipUri: "sip:support@example.com" },
+                  condition: "When the user requests to file a formal complaint.",
+                  transferType: "sip_refer",
+                  customSipHeaders: [
+                    { type: "static", key: "X-Department", value: "complaints" },
+                    { type: "static", key: "X-Priority", value: "high" },
+                    // Use "dynamic" to read the value from a dynamic variable
+                    { type: "dynamic", key: "X-Customer-ID", value: "{{customer_id}}" },
+                  ],
+                  uui: {
+                    data: "account_id={{customer_id}}",
+                    protocolDiscriminator: "04", // Genesys Cloud; omit for Talkdesk
+                    protocolDiscriminatorMode: "prefix", // or "pd_parameter"
+                  },
+                },
+              ],
             },
           },
-        ],
+        },
       },
     },
   },

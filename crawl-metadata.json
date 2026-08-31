@@ -1,9 +1,9 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
-    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15012 milliseconds\n"
   },
   "ai-models/cohere": {
     "pages": 2,
@@ -20,7 +20,7 @@
     "status": "error: curl failed (22) for https://console.groq.com/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/openai": {
-    "status": "error: curl failed (22) for https://developers.openai.com/api/docs/llms-full.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (22) The requested URL returned error: 403\n"
+    "status": "error: curl failed (22) for https://developers.openai.com/api/docs/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/together": {
     "pages": 338,
@@ -35,7 +35,8 @@
     "status": "ok"
   },
   "agent-frameworks/mcp": {
-    "status": "error: curl failed (28) for https://modelcontextprotocol.io/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "pages": 146,
+    "status": "ok"
   },
   "agent-frameworks/crewai": {
     "pages": 234,
@@ -62,7 +63,7 @@
     "status": "ok"
   },
   "vector-db/qdrant": {
-    "status": "error: curl failed (35) for https://qdrant.tech/llms-full.txt: curl: (35) TLS connect error: error:0A000126:SSL routines::unexpected eof while reading\n"
+    "status": "error: curl failed (22) for https://qdrant.tech/llms-full.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "vector-db/chroma": {
     "pages": 146,
@@ -77,7 +78,8 @@
     "status": "ok"
   },
   "dev-platforms/vercel": {
-    "status": "error: curl failed (28) for https://vercel.com/docs/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "pages": 0,
+    "status": "ok"
   },
   "dev-platforms/supabase": {
     "pages": 0,
@@ -88,7 +90,8 @@
     "status": "ok"
   },
   "dev-platforms/cloudflare": {
-    "status": "error: curl failed (28) for https://developers.cloudflare.com/llms-full.txt: curl: (28) Connection timed out after 15003 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "pages": 0,
+    "status": "ok"
   },
   "dev-platforms/drizzle": {
     "pages": 0,
@@ -130,10 +133,11 @@
     "status": "ok"
   },
   "ai-models/replicate": {
-    "status": "error: curl failed (28) for https://replicate.com/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "pages": 66,
+    "status": "ok"
   },
   "dev-platforms/x-developer": {
-    "status": "error: curl failed (35) for https://docs.x.com/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (35) Recv failure: Connection reset by peer\n"
+    "status": "error: curl failed (35) for https://docs.x.com/llms-full.txt: curl: (35) Recv failure: Connection reset by peer\n"
   },
   "dev-platforms/n8n": {
     "pages": 0,
@@ -144,7 +148,7 @@
     "status": "ok"
   },
   "dev-platforms/sentry": {
-    "pages": 120,
+    "pages": 122,
     "status": "ok"
   },
   "dev-platforms/notion": {
@@ -172,7 +176,7 @@
     "status": "ok"
   },
   "dev-platforms/netlify": {
-    "pages": 67,
+    "pages": 104,
     "status": "ok"
   },
   "libraries/zod": {
@@ -183,22 +187,24 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 98,
+    "pages": 99,
     "status": "ok"
   },
   "dev-platforms/stripe": {
-    "pages": 447,
+    "pages": 457,
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "status": "error: curl failed (28) for https://openrouter.ai/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "pages": 405,
+    "status": "ok"
   },
   "voice-multimodal/deepgram": {
-    "pages": 376,
+    "pages": 382,
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "status": "error: curl failed (35) for https://elevenlabs.io/docs/llms.txt: curl: (35) TLS connect error: error:0A000126:SSL routines::unexpected eof while reading\n"
+    "pages": 1296,
+    "status": "ok"
   },
-  "_last_crawl": "2026-08-30T23:30:50Z"
+  "_last_crawl": "2026-08-31T11:30:53Z"
 }

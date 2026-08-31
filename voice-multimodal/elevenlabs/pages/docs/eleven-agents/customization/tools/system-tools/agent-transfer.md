@@ -62,13 +62,13 @@ Agent transfer is configured using the `transfer_to_agent` system tool.
 
 Enable agent transfer by selecting the `transfer_to_agent` system tool in your agent's configuration within the `Agent` tab. Choose "Transfer to AI Agent" when adding a tool.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3e2756669b192395680d48a17c622493faee9fb61649f491bbe66820a91d46ef/assets/images/conversational-ai/transfertool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260830T070843Z&X-Amz-Expires=604800&X-Amz-Signature=34e745f5880b390f902cd0292383d863d90ab0615b9da72bd56a676ec4170f8f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Add Transfer Tool" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3e2756669b192395680d48a17c622493faee9fb61649f491bbe66820a91d46ef/assets/images/conversational-ai/transfertool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091732Z&X-Amz-Expires=604800&X-Amz-Signature=35c7ffb226fd78ada2a9e907ddd81c2df667302afbe963f25995db9bb95dab47&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Add Transfer Tool" />
 
 #### Configure tool description (optional)
 
 You can provide a custom description to guide the LLM on when to trigger a transfer. If left blank, a default description encompassing the defined transfer rules will be used.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6b916200ef66cd0c6f5af7f6ba51b4b48eb1a266c7b10e863ae874c5a11452ae/assets/images/conversational-ai/transferconfig.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260830T070843Z&X-Amz-Expires=604800&X-Amz-Signature=af9d57ef09748ba6d5bc8308955da2329567ced71cef0784c9ac967be8b9afa5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Transfer Tool Description" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6b916200ef66cd0c6f5af7f6ba51b4b48eb1a266c7b10e863ae874c5a11452ae/assets/images/conversational-ai/transferconfig.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091732Z&X-Amz-Expires=604800&X-Amz-Signature=69407dcd48a6a7ba68924c8e2aeda619fce1757a267e7e4a9944ed68c0a884db&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Transfer Tool Description" />
 
 #### Define transfer rules
 
@@ -82,7 +82,7 @@ Configure the specific rules for transferring to other agents. For each rule, sp
 
 The LLM will use these conditions, along with the tool description, to decide when and to which agent (by number) to transfer.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b1b7e0f58ae757640af46630fde962a78ef4a164a380f974297bb643ccc29443/assets/images/conversational-ai/transferrule.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260830T070843Z&X-Amz-Expires=604800&X-Amz-Signature=ff33fe9451f82e502811301711a60a1d45f0f109af9cdb6bc997f1fa46c83d47&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Transfer Rules Configuration" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b1b7e0f58ae757640af46630fde962a78ef4a164a380f974297bb643ccc29443/assets/images/conversational-ai/transferrule.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091732Z&X-Amz-Expires=604800&X-Amz-Signature=c73196a6fa0c1a5066fd7537918e39f9ff986e8f4b3ff3290da44fbb8d3910b2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Transfer Rules Configuration" />
 
 Ensure that the user account creating the agent has at least viewer permissions for any target agents specified in the transfer rules.
 
@@ -130,110 +130,93 @@ Individual messages do not carry an `agent_id` field. To determine which agent p
 You can configure the `transfer_to_agent` system tool when creating or updating an agent via the API.
 
 ```python
-from elevenlabs import (
-    ConversationalConfig,
-    ElevenLabs,
-    AgentConfig,
-    PromptAgent,
-    PromptAgentInputToolsItem_System,
-    SystemToolConfigInputParams_TransferToAgent,
-    AgentTransfer
-)
+from elevenlabs import AgentConfig, ConversationalConfig, ElevenLabs
 
-# Initialize the client
 elevenlabs = ElevenLabs(api_key="YOUR_API_KEY")
 
 # Define transfer rules with new options
 transfer_rules = [
-    AgentTransfer(
-        agent_id="AGENT_ID_1",
-        condition="When the user asks for billing support.",
-        delay_ms=1000,  # 1 second delay
-        transfer_message="I'm connecting you to our billing specialist.",
-        enable_transferred_agent_first_message=True
-    ),
-    AgentTransfer(
-        agent_id="AGENT_ID_2",
-        condition="When the user requests advanced technical help.",
-        delay_ms=0,  # Immediate transfer
-        transfer_message=None,  # Silent transfer
-        enable_transferred_agent_first_message=False
-    )
+    {
+        "agent_id": "AGENT_ID_1",
+        "condition": "When the user asks for billing support.",
+        "delay_ms": 1000,  # 1 second delay
+        "transfer_message": "I'm connecting you to our billing specialist.",
+        "enable_transferred_agent_first_message": True,
+    },
+    {
+        "agent_id": "AGENT_ID_2",
+        "condition": "When the user requests advanced technical help.",
+        "delay_ms": 0,  # Immediate transfer
+        "transfer_message": None,  # Silent transfer
+        "enable_transferred_agent_first_message": False,
+    },
 ]
 
-# Create the transfer tool configuration
-transfer_tool = PromptAgentInputToolsItem_System(
-    type="system",
-    name="transfer_to_agent",
-    description="Transfer the user to a specialized agent based on their request.", # Optional custom description
-    params=SystemToolConfigInputParams_TransferToAgent(
-        transfers=transfer_rules
-    )
-)
-
-# Create the agent configuration
-conversation_config = ConversationalConfig(
-    agent=AgentConfig(
-        prompt=PromptAgent(
-            prompt="You are a helpful assistant.",
-            first_message="Hi, how can I help you today?",
-            tools=[transfer_tool],
-        )
-    )
-)
-
-# Create the agent
 response = elevenlabs.conversational_ai.agents.create(
-    conversation_config=conversation_config
+    conversation_config=ConversationalConfig(
+        agent=AgentConfig(
+            first_message="Hi, how can I help you today?",
+            prompt={
+                "prompt": "You are a helpful assistant.",
+                "built_in_tools": {
+                    "transfer_to_agent": {
+                        "type": "system",
+                        "name": "transfer_to_agent",
+                        # Optional custom description
+                        "description": "Transfer the user to a specialized agent based on their request.",
+                        "params": {
+                            "system_tool_type": "transfer_to_agent",
+                            "transfers": transfer_rules,
+                        },
+                    }
+                },
+            },
+        ),
+    ),
 )
 
 print(response)
 ```
 
 ```javascript
-import { ElevenLabs } from "@elevenlabs/elevenlabs-js";
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
-// Initialize the client
-const elevenlabs = new ElevenLabs({
+const elevenlabs = new ElevenLabsClient({
   apiKey: "YOUR_API_KEY",
 });
 
-// Define transfer rules with new options
-const transferRules = [
-  {
-    agentId: "AGENT_ID_1",
-    condition: "When the user asks for billing support.",
-    delayMs: 1000, // 1 second delay
-    transferMessage: "I'm connecting you to our billing specialist.",
-    enableTransferredAgentFirstMessage: true,
-  },
-  {
-    agentId: "AGENT_ID_2",
-    condition: "When the user requests advanced technical help.",
-    delayMs: 0, // Immediate transfer
-    transferMessage: null, // Silent transfer
-    enableTransferredAgentFirstMessage: false,
-  },
-];
-
-// Create the agent with the transfer tool
 await elevenlabs.conversationalAi.agents.create({
   conversationConfig: {
     agent: {
+      firstMessage: "Hi, how can I help you today?",
       prompt: {
         prompt: "You are a helpful assistant.",
-        firstMessage: "Hi, how can I help you today?",
-        tools: [
-          {
+        builtInTools: {
+          transferToAgent: {
             type: "system",
             name: "transfer_to_agent",
             description: "Transfer the user to a specialized agent based on their request.", // Optional custom description
             params: {
               systemToolType: "transfer_to_agent",
-              transfers: transferRules,
+              transfers: [
+                {
+                  agentId: "AGENT_ID_1",
+                  condition: "When the user asks for billing support.",
+                  delayMs: 1000, // 1 second delay
+                  transferMessage: "I'm connecting you to our billing specialist.",
+                  enableTransferredAgentFirstMessage: true,
+                },
+                {
+                  agentId: "AGENT_ID_2",
+                  condition: "When the user requests advanced technical help.",
+                  delayMs: 0, // Immediate transfer
+                  // transferMessage omitted for a silent transfer
+                  enableTransferredAgentFirstMessage: false,
+                },
+              ],
             },
           },
-        ],
+        },
       },
     },
   },

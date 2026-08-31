@@ -75,62 +75,46 @@ The tool supports the following DTMF characters and commands:
 You can configure the `play_keypad_touch_tone` system tool when creating or updating an agent via the API. This tool requires no additional configuration parameters beyond enabling it.
 
 ```python
-from elevenlabs import (
-    ConversationalConfig,
-    ElevenLabs,
-    AgentConfig,
-    PromptAgent,
-    PromptAgentInputToolsItem_System,
-    SystemToolConfigInputParams_PlayKeypadTouchTone,
-)
+from elevenlabs import AgentConfig, ConversationalConfig, ElevenLabs
 
-# Initialize the client
 elevenlabs = ElevenLabs(api_key="YOUR_API_KEY")
 
-# Create the keypad touch tone tool configuration
-keypad_tool = PromptAgentInputToolsItem_System(
-    type="system",
-    name="play_keypad_touch_tone",
-    description="Play DTMF tones to interact with automated phone systems.", # Optional custom description
-    params=SystemToolConfigInputParams_PlayKeypadTouchTone(
-        system_tool_type="play_keypad_touch_tone"
-    )
-)
-
-# Create the agent configuration
-conversation_config = ConversationalConfig(
-    agent=AgentConfig(
-        prompt=PromptAgent(
-            prompt="You are a helpful assistant that can interact with phone systems.",
-            first_message="Hi, I can help you navigate phone systems. How can I assist you today?",
-            tools=[keypad_tool],
-        )
-    )
-)
-
-# Create the agent
 response = elevenlabs.conversational_ai.agents.create(
-    conversation_config=conversation_config
+    conversation_config=ConversationalConfig(
+        agent=AgentConfig(
+            first_message="Hi, I can help you navigate phone systems. How can I assist you today?",
+            prompt={
+                "prompt": "You are a helpful assistant that can interact with phone systems.",
+                "built_in_tools": {
+                    "play_keypad_touch_tone": {
+                        "type": "system",
+                        "name": "play_keypad_touch_tone",
+                        # Optional custom description
+                        "description": "Play DTMF tones to interact with automated phone systems.",
+                        "params": {"system_tool_type": "play_keypad_touch_tone"},
+                    }
+                },
+            },
+        ),
+    ),
 )
 ```
 
 ```javascript
-import { ElevenLabs } from "@elevenlabs/elevenlabs-js";
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
-// Initialize the client
-const elevenlabs = new ElevenLabs({
+const elevenlabs = new ElevenLabsClient({
   apiKey: "YOUR_API_KEY",
 });
 
-// Create the agent with the keypad touch tone tool
 await elevenlabs.conversationalAi.agents.create({
   conversationConfig: {
     agent: {
+      firstMessage: "Hi, I can help you navigate phone systems. How can I assist you today?",
       prompt: {
         prompt: "You are a helpful assistant that can interact with phone systems.",
-        firstMessage: "Hi, I can help you navigate phone systems. How can I assist you today?",
-        tools: [
-          {
+        builtInTools: {
+          playKeypadTouchTone: {
             type: "system",
             name: "play_keypad_touch_tone",
             description: "Play DTMF tones to interact with automated phone systems.", // Optional custom description
@@ -138,7 +122,7 @@ await elevenlabs.conversationalAi.agents.create({
               systemToolType: "play_keypad_touch_tone",
             },
           },
-        ],
+        },
       },
     },
   },

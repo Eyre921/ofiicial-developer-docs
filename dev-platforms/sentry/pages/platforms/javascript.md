@@ -414,7 +414,7 @@ Are you having problems setting up the SDK?
 - [Logs](https://docs.sentry.io/platforms/javascript/logs.md)
 - [Session Replay](https://docs.sentry.io/platforms/javascript/session-replay.md)
 - [Tracing](https://docs.sentry.io/platforms/javascript/tracing.md)
-- [Agent Tracing](https://docs.sentry.io/platforms/javascript/agent-tracing-browser.md)
+- [Agent Tracing](https://docs.sentry.io/platforms/javascript/agent-tracing.md)
 - [Application Metrics](https://docs.sentry.io/platforms/javascript/metrics.md)
 - [JavaScript](https://docs.sentry.io/platforms/javascript/legacy-sdk.md)
 - [Profiling](https://docs.sentry.io/platforms/javascript/profiling.md)

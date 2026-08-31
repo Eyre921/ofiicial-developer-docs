@@ -248,7 +248,7 @@ elevenlabs tools add "Client Function" --type "client" --config-path ./config.js
 Generate HTML embed code for web integration:
 
 ```bash
-elevenlabs agents widget <agent_id>
+elevenlabs agents widget embed <agent_id>
 ```
 
 This outputs HTML code like:

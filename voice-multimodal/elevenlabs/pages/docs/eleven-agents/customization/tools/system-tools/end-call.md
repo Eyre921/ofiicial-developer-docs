@@ -13,7 +13,7 @@ agents created via API or SDK, if you would like to enable the End Call tool, yo
 manually as a system tool in your agent configuration. [See API Implementation
 below](#api-implementation) for details.
 
-![End call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f260bfd4e43f7fb0374ce12d2ed984efb946a8ca9ebaa1c2d4b3e6d5f52a7851/assets/images/conversational-ai/end-call-tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260830T031116Z&X-Amz-Expires=604800&X-Amz-Signature=a810cb6dd063766fedfd3f836ecb6d1ded8fc93cab96215accf1eb52cbcc2487&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![End call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f260bfd4e43f7fb0374ce12d2ed984efb946a8ca9ebaa1c2d4b3e6d5f52a7851/assets/images/conversational-ai/end-call-tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091203Z&X-Amz-Expires=604800&X-Amz-Signature=bba3af9c5f8f38e6154a9d19dd6b9f43659fa0b313a2da893eee07ac5271611c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -58,58 +58,48 @@ The **End Call** tool allows your conversational agent to terminate a call with 
 When creating an agent via API, you can add the End Call tool to your agent configuration. It should be defined as a system tool:
 
 ```python
-from elevenlabs import (
-    ConversationalConfig,
-    ElevenLabs,
-    AgentConfig,
-    PromptAgent,
-    PromptAgentInputToolsItem_System
-)
+from elevenlabs import AgentConfig, ConversationalConfig, ElevenLabs
 
-# Initialize the client
 elevenlabs = ElevenLabs(api_key="YOUR_API_KEY")
 
-# Create the end call tool
-end_call_tool = PromptAgentInputToolsItem_System(
-    name="end_call",
-    description=""  # Optional: Customize when the tool should be triggered
-)
-
-# Create the agent configuration
-conversation_config = ConversationalConfig(
-    agent=AgentConfig(
-        prompt=PromptAgent(
-            tools=[end_call_tool]
-        )
-    )
-)
-
-# Create the agent
 response = elevenlabs.conversational_ai.agents.create(
-    conversation_config=conversation_config
+    conversation_config=ConversationalConfig(
+        agent=AgentConfig(
+            prompt={
+                "built_in_tools": {
+                    "end_call": {
+                        "type": "system",
+                        "name": "end_call",
+                        # Optional: customize when the tool should be triggered
+                        "description": "",
+                        "params": {"system_tool_type": "end_call"},
+                    }
+                }
+            },
+        ),
+    ),
 )
 ```
 
 ```javascript
-import { ElevenLabs } from "@elevenlabs/elevenlabs-js";
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
-// Initialize the client
-const elevenlabs = new ElevenLabs({
+const elevenlabs = new ElevenLabsClient({
   apiKey: "YOUR_API_KEY",
 });
 
-// Create the agent with end call tool
 await elevenlabs.conversationalAi.agents.create({
   conversationConfig: {
     agent: {
       prompt: {
-        tools: [
-          {
+        builtInTools: {
+          endCall: {
             type: "system",
             name: "end_call",
             description: "", // Optional: Customize when the tool should be triggered
+            params: { systemToolType: "end_call" },
           },
-        ],
+        },
       },
     },
   },
@@ -124,13 +114,14 @@ curl -X POST https://api.elevenlabs.io/v1/convai/agents/create \
   "conversation_config": {
     "agent": {
       "prompt": {
-        "tools": [
-          {
+        "built_in_tools": {
+          "end_call": {
             "type": "system",
             "name": "end_call",
-            "description": ""
+            "description": "",
+            "params": { "system_tool_type": "end_call" }
           }
-        ]
+        }
       }
     }
   }

@@ -8,7 +8,7 @@ path: docs/eleven-agents/phone-numbers/twilio-integration/sms-otp-verification
 
 # SMS OTP verification
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/97201c6fdad0c63900236b52726c867d3ff9405fdbd30725858f384653c95803/assets/images/conversational-ai/twilio-verify-sms-otp-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260830T070856Z&X-Amz-Expires=604800&X-Amz-Signature=86ce3245456dea5bf960568930412977cf677f52933cc47a6b5e0e77ddece0db&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Agent conversation collecting a phone number, OTP code, and verification success" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/97201c6fdad0c63900236b52726c867d3ff9405fdbd30725858f384653c95803/assets/images/conversational-ai/twilio-verify-sms-otp-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=ab6fa955235cabebc78acd73937a7e1ebe2c85bb9b3af23c548ab82cebb32dfe&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Agent conversation collecting a phone number, OTP code, and verification success" />
 
 ## Overview
 
@@ -72,7 +72,7 @@ Basic dkFDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==
 
 ### send\_SMS\_verification
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9d72a753674c17481e99ea871b1b178cd7791f2da1ec3491ad4786c3fbc9a84e/assets/images/conversational-ai/configure-webhook-tool-twilio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260830T070856Z&X-Amz-Expires=604800&X-Amz-Signature=5149331a96cfd4bc3b7958de122a5ae51833e559ae63db5a3f4d6b7b9379186c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Agent conversation collecting a phone number, OTP code, and verification success" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9d72a753674c17481e99ea871b1b178cd7791f2da1ec3491ad4786c3fbc9a84e/assets/images/conversational-ai/configure-webhook-tool-twilio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=bdda05904724f3011bd22b97ca2c05da022f239fa91c479c222ac5a6f5c3ce68&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Agent conversation collecting a phone number, OTP code, and verification success" />
 
 In the **Agent** section of your agent settings, choose **Add Tool** and select **Webhook**.
 
@@ -190,7 +190,7 @@ elevenlabs tools add "check_SMS_verification" --type "webhook" --config-path ./t
 
 #### Attach the tools to your agent
 
-Edit `agent_configs/<agent-name>.json`. Under `conversation_config.agent.prompt`, set `tool_ids` to include both tools (use the IDs from `tools.json` or from `elevenlabs tools list`). Then push:
+Edit `agent_configs/<agent-name>.json`. Under `conversation_config.agent.prompt`, set `tool_ids` to include both tools (use the IDs from `tools.json` or from `elevenlabs agents tools list`). Then push:
 
 ```bash
 elevenlabs agents push --agent "<agent-name>"
@@ -201,70 +201,74 @@ elevenlabs agents push --agent "<agent-name>"
 Create a [workspace secret](/docs/api-reference/workspace/secrets/create) holding the full `Basic ...` header value, then pass its ID as `secret_id` in `request_headers`.
 
 ```python
-from elevenlabs import ElevenLabs
+from elevenlabs import ElevenLabs, ToolRequestModel
 
 elevenlabs = ElevenLabs()
 
 send_sms = elevenlabs.conversational_ai.tools.create(
-    tool_config={
-        "type": "webhook",
-        "name": "send_SMS_verification",
-        "description": "Sends an OTP verification code via SMS to the provided phone number",
-        "api_schema": {
-            "url": "https://verify.twilio.com/v2/Services/YOUR_VERIFY_SERVICE_SID/Verifications",
-            "method": "POST",
-            "content_type": "application/x-www-form-urlencoded",
-            "request_headers": {
-                "Authorization": {"secret_id": "YOUR_SECRET_ID"},
-            },
-            "request_body_schema": {
-                "type": "object",
-                "description": "Twilio Verify start verification parameters",
-                "required": ["To", "Channel"],
-                "properties": {
-                    "To": {
-                        "type": "string",
-                        "description": "Caller phone number in E.164 format (for example +14155552671)",
-                    },
-                    "Channel": {
-                        "type": "string",
-                        "constant_value": "sms",
+    request=ToolRequestModel(
+        tool_config={
+            "type": "webhook",
+            "name": "send_SMS_verification",
+            "description": "Sends an OTP verification code via SMS to the provided phone number",
+            "api_schema": {
+                "url": "https://verify.twilio.com/v2/Services/YOUR_VERIFY_SERVICE_SID/Verifications",
+                "method": "POST",
+                "content_type": "application/x-www-form-urlencoded",
+                "request_headers": {
+                    "Authorization": {"secret_id": "YOUR_SECRET_ID"},
+                },
+                "request_body_schema": {
+                    "type": "object",
+                    "description": "Twilio Verify start verification parameters",
+                    "required": ["To", "Channel"],
+                    "properties": {
+                        "To": {
+                            "type": "string",
+                            "description": "Caller phone number in E.164 format (for example +14155552671)",
+                        },
+                        "Channel": {
+                            "type": "string",
+                            "constant_value": "sms",
+                        },
                     },
                 },
             },
-        },
-    }
+        }
+    )
 )
 
 check_sms = elevenlabs.conversational_ai.tools.create(
-    tool_config={
-        "type": "webhook",
-        "name": "check_SMS_verification",
-        "description": "Checks whether the OTP code provided by the caller is valid",
-        "api_schema": {
-            "url": "https://verify.twilio.com/v2/Services/YOUR_VERIFY_SERVICE_SID/VerificationCheck",
-            "method": "POST",
-            "content_type": "application/x-www-form-urlencoded",
-            "request_headers": {
-                "Authorization": {"secret_id": "YOUR_SECRET_ID"},
-            },
-            "request_body_schema": {
-                "type": "object",
-                "description": "Twilio Verify verification check parameters",
-                "required": ["To", "Code"],
-                "properties": {
-                    "To": {
-                        "type": "string",
-                        "description": "Same caller number in E.164 format",
-                    },
-                    "Code": {
-                        "type": "string",
-                        "description": "The OTP digits the caller provided",
+    request=ToolRequestModel(
+        tool_config={
+            "type": "webhook",
+            "name": "check_SMS_verification",
+            "description": "Checks whether the OTP code provided by the caller is valid",
+            "api_schema": {
+                "url": "https://verify.twilio.com/v2/Services/YOUR_VERIFY_SERVICE_SID/VerificationCheck",
+                "method": "POST",
+                "content_type": "application/x-www-form-urlencoded",
+                "request_headers": {
+                    "Authorization": {"secret_id": "YOUR_SECRET_ID"},
+                },
+                "request_body_schema": {
+                    "type": "object",
+                    "description": "Twilio Verify verification check parameters",
+                    "required": ["To", "Code"],
+                    "properties": {
+                        "To": {
+                            "type": "string",
+                            "description": "Same caller number in E.164 format",
+                        },
+                        "Code": {
+                            "type": "string",
+                            "description": "The OTP digits the caller provided",
+                        },
                     },
                 },
             },
-        },
-    }
+        }
+    )
 )
 
 elevenlabs.conversational_ai.agents.update(

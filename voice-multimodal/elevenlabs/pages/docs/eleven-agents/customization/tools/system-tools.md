@@ -287,68 +287,63 @@ The function's parameters depend on how the tool is configured. Each configured 
 Learn more: [Update state tool](/docs/eleven-agents/customization/tools/system-tools/update-state)
 
 ```python
-from elevenlabs import (
-    ConversationalConfig,
-    ElevenLabs,
-    AgentConfig,
-    PromptAgent,
-    PromptAgentInputToolsItem_System,
-)
+from elevenlabs import AgentConfig, ConversationalConfig, ElevenLabs
 
-# Initialize the client
 elevenlabs = ElevenLabs(api_key="YOUR_API_KEY")
 
-# Create system tools
-end_call_tool = PromptAgentInputToolsItem_System(
-    name="end_call",
-    description=""  # Optional: Customize when the tool should be triggered
-)
-
-language_detection_tool = PromptAgentInputToolsItem_System(
-    name="language_detection",
-    description=""  # Optional: Customize when the tool should be triggered
-)
-
-# Create the agent configuration with both tools
-conversation_config = ConversationalConfig(
-    agent=AgentConfig(
-        prompt=PromptAgent(
-            tools=[end_call_tool, language_detection_tool]
-        )
-    )
-)
-
-# Create the agent
+# Each system tool is keyed by name under built_in_tools.
+# Leave "description" blank to use the default, tool-specific prompt.
 response = elevenlabs.conversational_ai.agents.create(
-    conversation_config=conversation_config
+    conversation_config=ConversationalConfig(
+        agent=AgentConfig(
+            prompt={
+                "built_in_tools": {
+                    "end_call": {
+                        "type": "system",
+                        "name": "end_call",
+                        "description": "",
+                        "params": {"system_tool_type": "end_call"},
+                    },
+                    "language_detection": {
+                        "type": "system",
+                        "name": "language_detection",
+                        "description": "",
+                        "params": {"system_tool_type": "language_detection"},
+                    },
+                }
+            },
+        ),
+    ),
 )
 ```
 
 ```javascript
-import { ElevenLabs } from "@elevenlabs/elevenlabs-js";
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
-// Initialize the client
-const elevenlabs = new ElevenLabs({
+const elevenlabs = new ElevenLabsClient({
   apiKey: "YOUR_API_KEY",
 });
 
-// Create the agent with system tools
+// Each system tool is keyed by name under builtInTools.
+// Leave "description" blank to use the default, tool-specific prompt.
 await elevenlabs.conversationalAi.agents.create({
   conversationConfig: {
     agent: {
       prompt: {
-        tools: [
-          {
+        builtInTools: {
+          endCall: {
             type: "system",
             name: "end_call",
             description: "",
+            params: { systemToolType: "end_call" },
           },
-          {
+          languageDetection: {
             type: "system",
             name: "language_detection",
             description: "",
+            params: { systemToolType: "language_detection" },
           },
-        ],
+        },
       },
     },
   },

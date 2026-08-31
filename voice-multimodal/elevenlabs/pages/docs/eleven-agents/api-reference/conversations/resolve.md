@@ -158,6 +158,9 @@ Successful Response
   - `batch_call` (object, optional)
     - `batch_call_id` (string, required)
     - `batch_call_recipient_id` (string, required)
+    - `campaign` (object, optional)
+      - `campaign_id` (string, required)
+      - `campaign_lead_id` (string, required)
   - `termination_reason` (string, optional, default: )
   - `error` (object, optional)
     - `code` (integer, required)
@@ -772,7 +775,11 @@ Successful Response
     },
     "batch_call": {
       "batch_call_id": "batch_call_id",
-      "batch_call_recipient_id": "batch_call_recipient_id"
+      "batch_call_recipient_id": "batch_call_recipient_id",
+      "campaign": {
+        "campaign_id": "campaign_id",
+        "campaign_lead_id": "campaign_lead_id"
+      }
     },
     "termination_reason": "termination_reason",
     "error": {

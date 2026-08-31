@@ -87,9 +87,7 @@ agent = client.conversational_ai.agents.create(
     conversation_config=ConversationalConfig(
         agent=AgentConfig(
             first_message="Hello! How can I help you today?",
-            prompt=AgentPromptConfig(
-                prompt="You are a helpful assistant."
-            )
+            prompt={"prompt": "You are a helpful assistant."},
         )
     ),
     enable_versioning=True
@@ -237,9 +235,7 @@ agent = client.conversational_ai.agents.update(
     branch_id="agtbrch_xxxx",
     conversation_config=ConversationalConfig(
         agent=AgentConfig(
-            prompt=AgentPromptConfig(
-                prompt="You are a friendly customer support agent."
-            )
+            prompt={"prompt": "You are a friendly customer support agent."},
         )
     )
 )

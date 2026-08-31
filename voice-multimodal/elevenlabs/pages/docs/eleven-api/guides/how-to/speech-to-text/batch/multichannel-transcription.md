@@ -146,7 +146,7 @@ if hasattr(result, 'transcripts'): # Multichannel response
 ```
 
 ```javascript title="JavaScript"
-import { ElevenLabsClient } from "elevenlabs";
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import fs from "fs";
 
 const elevenlabs = new ElevenLabsClient({
@@ -165,15 +165,10 @@ async function transcribeMultichannel(audioFilePath) {
       timestampsGranularity: "word",
     });
 
-    if (result.transcripts) {
-      // Multichannel response
-      result.transcripts.forEach((transcript, index) => {
-        console.log(`Channel ${transcript.channel_index}: ${transcript.text}`);
-      });
-    } else {
-      // Single channel response
-      console.log(`Text: ${result.text}`);
-    }
+    // With useMultiChannel: true the SDK returns one transcript per channel
+    result.transcripts.forEach((transcript) => {
+      console.log(`Channel ${transcript.channelIndex}: ${transcript.text}`);
+    });
 
     return result;
   } catch (error) {
@@ -418,8 +413,8 @@ def process_large_multichannel_file(file_path, chunk_duration=300):
 ```
 
 ```javascript title="JavaScript"
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import { exec } from "child_process";
-import { ElevenLabsClient } from "elevenlabs";
 import fs from "fs";
 import path from "path";
 import { promisify } from "util";

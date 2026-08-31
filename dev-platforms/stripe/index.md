@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 447 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 457 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -77,6 +77,7 @@
 - `billing/customer` — [Customers](pages/billing/customer.md) · [原文](https://docs.stripe.com/billing/customer.md)
 - `billing/customer/tax-ids` — [Customer Tax IDs](pages/billing/customer/tax-ids.md) · [原文](https://docs.stripe.com/billing/customer/tax-ids.md)
 - `billing/entitlements` — [Entitlements](pages/billing/entitlements.md) · [原文](https://docs.stripe.com/billing/entitlements.md)
+- `billing/quickstart` — [Build a pre-built subscription page with Stripe Checkout](pages/billing/quickstart.md) · [原文](https://docs.stripe.com/billing/quickstart.md)
 - `billing/revenue-recovery` — [Revenue recovery](pages/billing/revenue-recovery.md) · [原文](https://docs.stripe.com/billing/revenue-recovery.md)
 - `billing/subscriptions/billing-cycle` — [Set the subscription billing renewal date](pages/billing/subscriptions/billing-cycle.md) · [原文](https://docs.stripe.com/billing/subscriptions/billing-cycle.md)
 - `billing/subscriptions/cancel` — [Cancel subscriptions](pages/billing/subscriptions/cancel.md) · [原文](https://docs.stripe.com/billing/subscriptions/cancel.md)
@@ -100,6 +101,7 @@
 - `capital/getting-started` — [Set up Capital](pages/capital/getting-started.md) · [原文](https://docs.stripe.com/capital/getting-started.md)
 - `capital/how-capital-for-platforms-works` — [How Stripe Capital for platforms works](pages/capital/how-capital-for-platforms-works.md) · [原文](https://docs.stripe.com/capital/how-capital-for-platforms-works.md)
 - `capital/how-stripe-capital-works` — [How Stripe Capital works](pages/capital/how-stripe-capital-works.md) · [原文](https://docs.stripe.com/capital/how-stripe-capital-works.md)
+- `capital/marketing` — [Marketing your Capital program](pages/capital/marketing.md) · [原文](https://docs.stripe.com/capital/marketing.md)
 - `capital/refills` — [Refills](pages/capital/refills.md) · [原文](https://docs.stripe.com/capital/refills.md)
 - `capital/regulatory-compliance` — [Regulatory compliance guidelines](pages/capital/regulatory-compliance.md) · [原文](https://docs.stripe.com/capital/regulatory-compliance.md)
 - `capital/replacements` — [Replacements](pages/capital/replacements.md) · [原文](https://docs.stripe.com/capital/replacements.md)
@@ -119,6 +121,7 @@
 - `climate/orders` — [Climate Orders overview](pages/climate/orders.md) · [原文](https://docs.stripe.com/climate/orders.md)
 - `climate/orders/carbon-removal-inventory` — [Carbon removal inventory](pages/climate/orders/carbon-removal-inventory.md) · [原文](https://docs.stripe.com/climate/orders/carbon-removal-inventory.md)
 - `climate/orders/how-it-works` — [How Climate Orders work](pages/climate/orders/how-it-works.md) · [原文](https://docs.stripe.com/climate/orders/how-it-works.md)
+- `climate/orders/order-carbon-removal` — [Order carbon removal](pages/climate/orders/order-carbon-removal.md) · [原文](https://docs.stripe.com/climate/orders/order-carbon-removal.md)
 - `climate/orders/quickstart` — [Accept carbon removal payments](pages/climate/orders/quickstart.md) · [原文](https://docs.stripe.com/climate/orders/quickstart.md)
 - `climate/orders/webhooks` — [Webhooks for Climate Orders API](pages/climate/orders/webhooks.md) · [原文](https://docs.stripe.com/climate/orders/webhooks.md)
 
@@ -157,6 +160,7 @@
 - `connect/standard-accounts` — [Using Standard connected accounts](pages/connect/standard-accounts.md) · [原文](https://docs.stripe.com/connect/standard-accounts.md)
 - `connect/supported-embedded-components/capital-financing` — [Capital financing component](pages/connect/supported-embedded-components/capital-financing.md) · [原文](https://docs.stripe.com/connect/supported-embedded-components/capital-financing.md)
 - `connect/supported-embedded-components/capital-financing-application` — [Capital application component](pages/connect/supported-embedded-components/capital-financing-application.md) · [原文](https://docs.stripe.com/connect/supported-embedded-components/capital-financing-application.md)
+- `connect/supported-embedded-components/capital-financing-promotion` — [Capital promotion component](pages/connect/supported-embedded-components/capital-financing-promotion.md) · [原文](https://docs.stripe.com/connect/supported-embedded-components/capital-financing-promotion.md)
 - `connect/supported-embedded-components/payment-details` — [Payment details](pages/connect/supported-embedded-components/payment-details.md) · [原文](https://docs.stripe.com/connect/supported-embedded-components/payment-details.md)
 - `connect/supported-embedded-components/tax-registrations` — [Tax registrations](pages/connect/supported-embedded-components/tax-registrations.md) · [原文](https://docs.stripe.com/connect/supported-embedded-components/tax-registrations.md)
 - `connect/supported-embedded-components/tax-settings` — [Tax settings](pages/connect/supported-embedded-components/tax-settings.md) · [原文](https://docs.stripe.com/connect/supported-embedded-components/tax-settings.md)
@@ -167,6 +171,7 @@
 
 - `crypto/onramp/embedded` — [Set up an Embedded onramp integration](pages/crypto/onramp/embedded.md) · [原文](https://docs.stripe.com/crypto/onramp/embedded.md)
 - `crypto/onramp/embedded-components` — [Embedded Components onramp](pages/crypto/onramp/embedded-components.md) · [原文](https://docs.stripe.com/crypto/onramp/embedded-components.md)
+- `crypto/onramp/stripe-hosted` — [Use the Stripe-hosted onramp](pages/crypto/onramp/stripe-hosted.md) · [原文](https://docs.stripe.com/crypto/onramp/stripe-hosted.md)
 
 ## dashboard
 
@@ -435,6 +440,7 @@
 
 ## revenue-recognition
 
+- `revenue-recognition/api` — [Revenue Recognition API](pages/revenue-recognition/api.md) · [原文](https://docs.stripe.com/revenue-recognition/api.md)
 - `revenue-recognition/chart-of-accounts` — [Map to your chart of accounts](pages/revenue-recognition/chart-of-accounts.md) · [原文](https://docs.stripe.com/revenue-recognition/chart-of-accounts.md)
 - `revenue-recognition/connect` — [Revenue Recognition for Connect platforms](pages/revenue-recognition/connect.md) · [原文](https://docs.stripe.com/revenue-recognition/connect.md)
 - `revenue-recognition/connect/charges-transfers` — [Revenue Recognition for separate charges and transfers](pages/revenue-recognition/connect/charges-transfers.md) · [原文](https://docs.stripe.com/revenue-recognition/connect/charges-transfers.md)
@@ -457,6 +463,7 @@
 - `revenue-recognition/reports/audit-numbers` — [Audit your numbers](pages/revenue-recognition/reports/audit-numbers.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/audit-numbers.md)
 - `revenue-recognition/reports/income-statement` — [Income statement](pages/revenue-recognition/reports/income-statement.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/income-statement.md)
 - `revenue-recognition/reports/period-summary` — [Period summary](pages/revenue-recognition/reports/period-summary.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/period-summary.md)
+- `revenue-recognition/reports/sigma-and-sdp` — [Revenue Recognition reports in Sigma and SDP](pages/revenue-recognition/reports/sigma-and-sdp.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/sigma-and-sdp.md)
 - `revenue-recognition/reports/trial-balance` — [Trial balance](pages/revenue-recognition/reports/trial-balance.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/trial-balance.md)
 - `revenue-recognition/reports/waterfall` — [Revenue waterfall](pages/revenue-recognition/reports/waterfall.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/waterfall.md)
 - `revenue-recognition/revenue-settings/accounting-period-control` — [Revenue Recognition accounting period control](pages/revenue-recognition/revenue-settings/accounting-period-control.md) · [原文](https://docs.stripe.com/revenue-recognition/revenue-settings/accounting-period-control.md)
@@ -473,16 +480,19 @@
 ## tax
 
 - `tax/calculating` — [Calculate tax](pages/tax/calculating.md) · [原文](https://docs.stripe.com/tax/calculating.md)
+- `tax/checkout` — [Collect tax with Checkout](pages/tax/checkout.md) · [原文](https://docs.stripe.com/tax/checkout.md)
 - `tax/checkout/tax-ids` — [Collect customer tax IDs with Checkout](pages/tax/checkout/tax-ids.md) · [原文](https://docs.stripe.com/tax/checkout/tax-ids.md)
 - `tax/connect` — [Use Stripe Tax with Connect](pages/tax/connect.md) · [原文](https://docs.stripe.com/tax/connect.md)
 - `tax/how-tax-works` — [How Stripe Tax works](pages/tax/how-tax-works.md) · [原文](https://docs.stripe.com/tax/how-tax-works.md)
 - `tax/invoicing` — [Automatically collect tax on invoices](pages/tax/invoicing.md) · [原文](https://docs.stripe.com/tax/invoicing.md)
 - `tax/invoicing/tax-ids` — [Account and customer tax IDs with Invoicing](pages/tax/invoicing/tax-ids.md) · [原文](https://docs.stripe.com/tax/invoicing/tax-ids.md)
 - `tax/payment-links` — [Automatically collect tax on Payment Links](pages/tax/payment-links.md) · [原文](https://docs.stripe.com/tax/payment-links.md)
+- `tax/products-prices-tax-codes-tax-behavior` — [Specify product tax codes and tax behavior](pages/tax/products-prices-tax-codes-tax-behavior.md) · [原文](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md)
 - `tax/registrations-api` — [Use the Registrations API to manage tax registrations](pages/tax/registrations-api.md) · [原文](https://docs.stripe.com/tax/registrations-api.md)
 - `tax/set-up` — [Set up Stripe Tax](pages/tax/set-up.md) · [原文](https://docs.stripe.com/tax/set-up.md)
 - `tax/settings-api` — [Use the Settings API to configure Stripe Tax](pages/tax/settings-api.md) · [原文](https://docs.stripe.com/tax/settings-api.md)
 - `tax/standalone-tax-api` — [Standalone Tax API](pages/tax/standalone-tax-api.md) · [原文](https://docs.stripe.com/tax/standalone-tax-api.md)
+- `tax/subscriptions` — [Collect taxes for recurring payments](pages/tax/subscriptions.md) · [原文](https://docs.stripe.com/tax/subscriptions.md)
 - `tax/subscriptions/update` — [Update existing subscriptions](pages/tax/subscriptions/update.md) · [原文](https://docs.stripe.com/tax/subscriptions/update.md)
 - `tax/supported-countries` — [Countries supported by Stripe Tax](pages/tax/supported-countries.md) · [原文](https://docs.stripe.com/tax/supported-countries.md)
 - `tax/supported-countries/asia-pacific` — [Tax in Asia Pacific](pages/tax/supported-countries/asia-pacific.md) · [原文](https://docs.stripe.com/tax/supported-countries/asia-pacific.md)

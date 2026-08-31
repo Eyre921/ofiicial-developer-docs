@@ -51,7 +51,7 @@ Then create a new parameter `message` with the following configuration:
 | Required    | true                                                                               |
 | Description | The message to log in the console. Ensure the message is informative and relevant. |
 
-![logMessage client-tool setup](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f7ed25d49a2a814b76112f3e385d471e0dc8444705e11f2f6fad0bd23f1eae12/assets/images/conversational-ai/client-tool-example.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260830T031114Z&X-Amz-Expires=604800&X-Amz-Signature=1d68bb6e3d5c4c671451e622ef7a63272e6fb3f9d810103e523cee4606256cb2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![logMessage client-tool setup](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f7ed25d49a2a814b76112f3e385d471e0dc8444705e11f2f6fad0bd23f1eae12/assets/images/conversational-ai/client-tool-example.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091732Z&X-Amz-Expires=604800&X-Amz-Signature=85826a09c44cde7a6389ec97a2112098badfa15e622cb98a38449f0f19d89146&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add via the CLI
 
@@ -65,15 +65,16 @@ Save the following as `tool_configs/log_message.json`:
   "name": "logMessage",
   "description": "Use this client-side tool to log a message to the user's client.",
   "expects_response": false,
-  "parameters": [
-    {
-      "id": "message",
-      "type": "string",
-      "value_type": "llm_prompt",
-      "description": "The message to log in the console.",
-      "required": true
-    }
-  ]
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "message": {
+        "type": "string",
+        "description": "The message to log in the console."
+      }
+    },
+    "required": ["message"]
+  }
 }
 ```
 
@@ -94,26 +95,29 @@ elevenlabs agents push --agent "<agent-name>"
 #### Add via the API
 
 ```python
-from elevenlabs import ElevenLabs
+from elevenlabs import ElevenLabs, ToolRequestModel
 
 elevenlabs = ElevenLabs()
 
 tool = elevenlabs.conversational_ai.tools.create(
-    tool_config={
-        "type": "client",
-        "name": "logMessage",
-        "description": "Use this client-side tool to log a message to the user's client.",
-        "expects_response": False,
-        "parameters": [
-            {
-                "id": "message",
-                "type": "string",
-                "value_type": "llm_prompt",
-                "description": "The message to log in the console.",
-                "required": True,
-            }
-        ],
-    }
+    request=ToolRequestModel(
+        tool_config={
+            "type": "client",
+            "name": "logMessage",
+            "description": "Use this client-side tool to log a message to the user's client.",
+            "expects_response": False,
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "The message to log in the console.",
+                    }
+                },
+                "required": ["message"],
+            },
+        }
+    )
 )
 
 elevenlabs.conversational_ai.agents.update(
@@ -135,15 +139,16 @@ const tool = await elevenlabs.conversationalAi.tools.create({
     name: "logMessage",
     description: "Use this client-side tool to log a message to the user's client.",
     expectsResponse: false,
-    parameters: [
-      {
-        id: "message",
-        type: "string",
-        valueType: "llm_prompt",
-        description: "The message to log in the console.",
-        required: true,
+    parameters: {
+      type: "object",
+      properties: {
+        message: {
+          type: "string",
+          description: "The message to log in the console.",
+        },
       },
-    ],
+      required: ["message"],
+    },
   },
 });
 
@@ -230,7 +235,7 @@ Now that you've set up a basic client-side event, you can:
 
 When you want your agent to receive data back from a client tool, ensure that you tick the **Wait for response** option in the tool configuration.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0ecc615fc9f25446b67369fd3e010e34b39549a22146a2483ea17251206caf1e/assets/images/conversational-ai/wait-until-tool-result.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260830T031114Z&X-Amz-Expires=604800&X-Amz-Signature=d33145b370488630484f05c29bdf8904377ad44880d65fbba664439cc02a9556&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Wait for response option in client tool configuration" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0ecc615fc9f25446b67369fd3e010e34b39549a22146a2483ea17251206caf1e/assets/images/conversational-ai/wait-until-tool-result.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091732Z&X-Amz-Expires=604800&X-Amz-Signature=d29d49ebe829e6f84dee7e47958640dd7da5b3765e980052bebc03020558feae&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Wait for response option in client tool configuration" />
 
 Once the client tool is added, when the function is called the agent will wait for its response and append the response to the conversation context.
 

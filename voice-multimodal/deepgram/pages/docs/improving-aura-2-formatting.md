@@ -29,6 +29,7 @@ If you are using a Large Language Model (LLM) to generate input text for Aura-2,
 | **Add exclamation points for enthusiasm** | Thanks for contacting our support team!         | Thanks for contacting our support team       |
 | **Use commas for natural pauses**         | You can reach us by phone, chat, or email.      | You can reach us by phone chat or email      |
 | **Put command words in quotes**           | Say "add item" to add more to your order.       | Say add item to add more to your order       |
+| **Spell out names with spaces**           | Your confirmation code is J O H N.              | Your confirmation code is J-O-H-N or J,O,H,N |
 
 ## Natural Speech Patterns
 
