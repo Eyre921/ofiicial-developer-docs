@@ -8,7 +8,7 @@ path: docs/help-center/product/voices/voice-cloning/my-professional-voice-clone-
 
 # My professional voice clone failed or is delayed, what can I do?
 
-After you've verified your voice, it will need to fine-tune on our models before you will be able to use it. While this is happening, you can check the status of your voice in [My Voices](https://elevenlabs.io/app/voice-lab) by hovering over the name of your voice. This will show you all the available models for your voice. To check the status for each model, hover over the model's name. 
+After you've verified your voice, it will need to fine-tune on our models before you will be able to use it. While this is happening, you can check the status of your voice in [My Voices](https://elevenlabs.io/app/voice-lab) by hovering over the name of your voice. This will show you all the available models for your voice. To check the status for each model, hover over the model's name.
 
 If something went wrong, then you may see the following status:
 

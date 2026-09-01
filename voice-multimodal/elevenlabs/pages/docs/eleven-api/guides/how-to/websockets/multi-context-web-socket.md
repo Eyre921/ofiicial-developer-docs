@@ -11,8 +11,7 @@ path: docs/eleven-api/guides/how-to/websockets/multi-context-web-socket
 #### Advanced
 
 Orchestrating voice agents using this multi-context WebSocket API is a complex task recommended
-for advanced developers. For a more managed solution, consider exploring our [Agents Platform
-product](/docs/eleven-agents/overview), which simplifies many of these challenges.
+for advanced developers. For a more managed solution, consider exploring our [Agents Platform product](/docs/eleven-agents/overview), which simplifies many of these challenges.
 
 ## Overview
 

@@ -10,7 +10,7 @@ path: docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android/what-
 
 The ElevenLabs mobile app brings our most popular voice and creative features straight to your phone, with more functionality coming soon.
 
- 
+
 
 **Available now**
 
@@ -36,7 +36,7 @@ creations directly within the app.
 
 Voice Design: Create custom voices from scratch with tonal and stylistic adjustments.
 
- 
+
 
 **Features available only on the web**
 
@@ -44,7 +44,7 @@ Some advanced ElevenLabs tools are currently only available via elevenlabs.io, i
 
 Professional Voice Cloning (PVC), Studio, Dubbing, Eleven Music, and the Agents platform.
 
- 
+
 
 **Why some features aren’t in the app (yet)**
 

@@ -10,7 +10,7 @@ path: docs/help-center/product/core-capabilities/text-to-speech/what-is-dialogue
 
 Eleven v3 offers Dialogue mode, allowing you to generate dynamic multi-speaker conversations with natural pacing, that handle interruptions, shifts in tone, and emotional cues based on conversational context.
 
-Dialogue mode is available when you use multiple speakers via the website. 
+Dialogue mode is available when you use multiple speakers via the website.
 
 We’ve also created new Text to Dialogue API endpoints for generating multi-speaker interactions. For more information, see our[ API documentation](/docs/capabilities/text-to-dialogue):
 

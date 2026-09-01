@@ -10,8 +10,7 @@ path: docs/eleven-agents/customization/events/client-events
 
 **Client events** are system-level events sent from the server to the client that facilitate real-time communication. These events deliver audio, transcription, agent responses, and other critical information to the client application.
 
-For information on events you can send from the client to the server, see the [Client-to-server
-events](/docs/eleven-agents/customization/events/client-to-server-events) documentation.
+For information on events you can send from the client to the server, see the [Client-to-server events](/docs/eleven-agents/customization/events/client-to-server-events) documentation.
 
 ## Overview
 
@@ -595,5 +594,4 @@ sequenceDiagram
 * Implement error boundaries
 * Check event handler registration
 
-For detailed implementation examples, check our [SDK
-documentation](/docs/eleven-agents/libraries/python).
+For detailed implementation examples, check our [SDK documentation](/docs/eleven-agents/libraries/python).

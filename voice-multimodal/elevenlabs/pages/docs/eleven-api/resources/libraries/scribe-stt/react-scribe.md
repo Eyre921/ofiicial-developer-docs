@@ -8,9 +8,7 @@ path: docs/eleven-api/resources/libraries/scribe-stt/react-scribe
 
 # React SDK
 
-For an overview of Scribe and its capabilities, see the [Speech to Text
-overview](/docs/capabilities/speech-to-text). For step-by-step usage guides, see [Client-side
-streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming).
+For an overview of Scribe and its capabilities, see the [Speech to Text overview](/docs/capabilities/speech-to-text). For step-by-step usage guides, see [Client-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming).
 
 ## Installation
 

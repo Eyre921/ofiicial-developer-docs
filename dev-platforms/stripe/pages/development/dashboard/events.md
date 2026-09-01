@@ -8,7 +8,7 @@ path: development/dashboard/events
 
 View events triggered by your account and their event object payload in the Developers Dashboard.
 
-> [Workbench](https://docs.stripe.com/workbench.md) replaces the Developers Dashboard, and we automatically enable it for all new Stripe accounts by default. Configure this setting from the [Developers](https://dashboard.stripe.com/settings/developers) settings in the Dashboard.
+> [Workbench](https://docs.stripe.com/workbench.md) replaces the Developers Dashboard, and we automatically enable it for all new Stripe accounts by default. Configure this setting from the [Developers](https://dashboard.stripe.com/settings/developers/preferences) settings in the Dashboard.
 > 
 > Read about how to [view event activity](https://docs.stripe.com/workbench/overview.md#events) in Workbench.
 > 

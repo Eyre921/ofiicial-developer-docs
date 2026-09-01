@@ -10,7 +10,7 @@ path: docs/help-center/legal/what-are-no-go-voices
 
 In our continuing efforts to ensure a positive experience for all users of our platform, we’re taking specific steps to prevent AI voices from being used to spread misinformation. While our [terms](https://elevenlabs.io/terms) already prohibit using our platform to impersonate or harm others, we are taking the added measure of introducing a “**no-go voices**” safeguard. This safeguard is designed to detect and prevent the creation of specific voice clones. We are working to expand this safeguard to other languages. We also aim to continually refine this measure through practical testing and feedback.
 
- 
+
 
 **What is the purpose of the no-go voices policy?**
 
@@ -28,7 +28,7 @@ In our continuing efforts to ensure a positive experience for all users of our p
 
 * We are currently evaluating additional voices and seek to work with industry partners to extend these safeguards.
 
- 
+
 
 You can read more about it here:
 

@@ -19,4 +19,4 @@ With the ElevenLabs app, you can:
 * Seamless login for existing users — one account with your voices, your projects, anywhere
 
 [Download on iOS](https://apps.apple.com/us/app/elevenlabs-ai-voice-generator/id6743162587)\
-[Download on Android ](https://play.google.com/store/apps/details?id=io.elevenlabs.coreapp\&hl=en_US)
+[Download on Android ](https://play.google.com/store/apps/details?id=io.elevenlabs.coreapp\&hl=en_US)

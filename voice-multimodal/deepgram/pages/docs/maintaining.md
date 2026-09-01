@@ -42,7 +42,6 @@ Putting it all together, the model `nova-3-general.en.streaming.a12b345.dg` will
 
 ## Legacy Model File Naming
 
-
 Models delivered prior to May 2024 may have different naming conventions for the model architecture. For example, they may read as `2-general-nova` instead of `nova-2-general` in the filename.
 
 The underlying model is identical, and both can be called with `model=nova-2-general` in your API calls.

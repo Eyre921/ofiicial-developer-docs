@@ -42,8 +42,7 @@ There are three types of text-to-speech endpoints available in our [API Referenc
 Streaming endpoints progressively return audio as it is being generated in real-time, reducing the time-to-first-byte. This endpoint is recommended for cases where the input text is available up-front.
 
 Streaming is supported for the [Text to Speech](/docs/api-reference/text-to-speech/stream) API,
-[Voice Changer](/docs/api-reference/speech-to-speech/stream) API & [Audio
-Isolation](/docs/api-reference/audio-isolation/stream) API.
+[Voice Changer](/docs/api-reference/speech-to-speech/stream) API & [Audio Isolation](/docs/api-reference/audio-isolation/stream) API.
 
 ### Websockets
 

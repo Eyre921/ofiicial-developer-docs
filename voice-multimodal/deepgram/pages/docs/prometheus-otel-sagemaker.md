@@ -107,7 +107,7 @@ awscurl --service monitoring --region YOUR_AWS_REGION \
 Because the API is Prometheus-compatible, you can also point Grafana or other Prometheus-native observability tools at it. See the [AWS documentation](https://docs.aws.amazon.com/sagemaker/latest/dg/monitoring-cloudwatch-detailed-observability.html) for supported integrations.
 
 * Detailed-observability metrics live in the OTel metric store only — they do not appear in `aws cloudwatch list-metrics` or the classic metric namespaces. Use PromQL to query them.
-* `/metrics` always responds, even when the container's internal API and Engine metric sources are not yet reachable. In that case it serves `sagemaker_endpoint_health` alone, so a scrape during startup returns health rather than failing.
+* `/metrics` always responds, even when the container's internal API and Engine metric sources are not yet reachable. In that case it serves the container's own health gauges alone, so a scrape during startup returns health rather than failing.
 
 ### Check endpoint health
 
@@ -118,6 +118,14 @@ sagemaker_endpoint_health{state="critical"}
 ```
 
 A `1` means the container cannot recover without being replaced. Query the family without a `state` filter to see the current state across a fleet and read whichever series is `1`. See [Read health as a metric](/docs/health-checks-sagemaker#read-health-as-a-metric) for what each state means.
+
+For earlier warning, `sagemaker_time_to_critical_seconds` counts down the seconds remaining before a container would enter `critical`. It reports `-1` when nothing is counting, so guard the comparison or the alarm fires on every healthy container:
+
+```promql
+sagemaker_time_to_critical_seconds >= 0 and sagemaker_time_to_critical_seconds < 120
+```
+
+See [Warning before a container is written off](/docs/health-checks-sagemaker#warning-before-a-container-is-written-off).
 
 ## Related resources
 

@@ -10,7 +10,7 @@ path: docs/help-center/troubleshooting/what-audio-formats-do-you-support
 
 We support a range of audio formats across our website and via API.
 
-###  
+###
 
 ### Speech Synthesis
 
@@ -20,13 +20,13 @@ We support a range of audio formats across our website and via API.
 
 128kbps (Free, Starter, Pro, Scale, Business)
 
- 
+
 
 WAV
 
-44.1kHz/16bit 
+44.1kHz/16bit
 
-###  
+###
 
 ### Studio
 
@@ -38,7 +38,7 @@ WAV
 
 192kbps (Pro, Scale, Business)
 
- 
+
 
 WAV
 
@@ -46,7 +46,7 @@ WAV
 
 In Projects, the quality setting affects other aspects the generation in addition to the compression quality.
 
-###  
+###
 
 ### API
 
@@ -73,24 +73,24 @@ PCM
 
 48kHz
 
- 
+
 
 Opus
 
 48kHz sample rate at multiple bitrates (32, 64, 96, 128, 192 kbps)
 
- 
+
 
 µ-law
 
 8kHz sample rate
 
- 
+
 
 A-law
 
 8kHz sample rate
 
- 
+
 
 If you require a different format, please reach out to our Enterprise Department directly via [this webpage](https://elevenlabs.io/enterprise). We will be happy to discuss a tailor-made plan that meets your specific requirements.

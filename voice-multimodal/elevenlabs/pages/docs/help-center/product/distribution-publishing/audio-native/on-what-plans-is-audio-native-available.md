@@ -8,6 +8,6 @@ path: docs/help-center/product/distribution-publishing/audio-native/on-what-plan
 
 # On what plans is Audio Native available?
 
-Audio Native is available on the Creator plan and above. 
+Audio Native is available on the Creator plan and above.
 
 For more information, please see our [Audio Native overview.](/docs/product-guides/audio-tools/audio-native)

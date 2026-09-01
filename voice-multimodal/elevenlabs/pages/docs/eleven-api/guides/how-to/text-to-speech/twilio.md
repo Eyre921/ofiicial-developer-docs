@@ -8,8 +8,7 @@ path: docs/eleven-api/guides/how-to/text-to-speech/twilio
 
 # Sending generated audio through Twilio
 
-**How-to guide** · Assumes you have completed the [ElevenAPI
-quickstart](/docs/eleven-api/quickstart) and have a Twilio account.
+**How-to guide** · Assumes you have completed the [ElevenAPI quickstart](/docs/eleven-api/quickstart) and have a Twilio account.
 
 In this guide, you'll learn how to send an AI generated message through a phone call using Twilio and ElevenLabs. This process allows you to send high-quality voice messages directly to your callers.
 
@@ -213,7 +212,7 @@ ngrok http 5000
 
 Copy the ngrok domain (without https\://) to use in your environment variables.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/830a701ecee4b2bd32f44a891806a91e00f27dcf263c5917fa20a91a3353d6a1/assets/images/cookbooks/ngrok.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T113316Z&X-Amz-Expires=604800&X-Amz-Signature=d0c72eba1043a34de7203a9cb89eb040d2a3f28d81065b350a4249142f53ecbd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/830a701ecee4b2bd32f44a891806a91e00f27dcf263c5917fa20a91a3353d6a1/assets/images/cookbooks/ngrok.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233323Z&X-Amz-Expires=604800&X-Amz-Signature=c938ae2e33ff4c48bdd130988eb872f1efde712da8da8391c20997e95c803a03&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Update your environment variables
 
@@ -241,7 +240,7 @@ In the "A call comes in" section, enter the full URL to your application (make s
 
 E.g. https\://**\*\*\***&#x6E;grok.app/call/incoming
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8f57f550bca8ac451980d98482ff5877c4f8fac30035e712cd0375a6527686ff/assets/images/cookbooks/twilio.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T113316Z&X-Amz-Expires=604800&X-Amz-Signature=a9c01fe9f3a777bcead4785592f418ab5f430adc34b2f42888c38a4fd1ce5a5b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8f57f550bca8ac451980d98482ff5877c4f8fac30035e712cd0375a6527686ff/assets/images/cookbooks/twilio.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233323Z&X-Amz-Expires=604800&X-Amz-Signature=af0487d768c8b33cd6314c1b2c5ee3c28fe2c523f5b9026015cd7e076a6314cf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Make a phone call
 

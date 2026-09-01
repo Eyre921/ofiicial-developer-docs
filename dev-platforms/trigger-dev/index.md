@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 315 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 316 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -41,6 +41,7 @@
 - `docs/ai-chat/reference` — [API Reference](pages/docs/ai-chat/reference.md) · [原文](https://trigger.dev/docs/ai-chat/reference)
 - `docs/ai-chat/server-chat` — [Server-Side Chat](pages/docs/ai-chat/server-chat.md) · [原文](https://trigger.dev/docs/ai-chat/server-chat)
 - `docs/ai-chat/sessions` — [Sessions](pages/docs/ai-chat/sessions.md) · [原文](https://trigger.dev/docs/ai-chat/sessions)
+- `docs/ai-chat/side-channels` — [Side channels](pages/docs/ai-chat/side-channels.md) · [原文](https://trigger.dev/docs/ai-chat/side-channels)
 - `docs/ai-chat/testing` — [Testing](pages/docs/ai-chat/testing.md) · [原文](https://trigger.dev/docs/ai-chat/testing)
 - `docs/ai-chat/tools` — [Tools](pages/docs/ai-chat/tools.md) · [原文](https://trigger.dev/docs/ai-chat/tools)
 - `docs/ai-chat/types` — [Types](pages/docs/ai-chat/types.md) · [原文](https://trigger.dev/docs/ai-chat/types)

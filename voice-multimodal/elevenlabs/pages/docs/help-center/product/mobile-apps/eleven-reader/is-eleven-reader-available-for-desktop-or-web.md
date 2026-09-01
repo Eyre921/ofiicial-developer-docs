@@ -8,6 +8,6 @@ path: docs/help-center/product/mobile-apps/eleven-reader/is-eleven-reader-availa
 
 # Is ElevenReader available for Desktop or Web?
 
-Yes, ElevenReader is available for web and desktop. 
+Yes, ElevenReader is available for web and desktop.
 
 You can sign up or log in by visiting [elevenreader.io](https://elevenreader.io/) on your desktop and it supports all major browsers.

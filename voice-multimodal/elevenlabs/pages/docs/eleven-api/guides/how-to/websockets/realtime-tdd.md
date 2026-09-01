@@ -11,10 +11,8 @@ path: docs/eleven-api/guides/how-to/websockets/realtime-tdd
 The Text to Dialogue WebSocket (`/v1/text-to-dialogue/stream-input`) keeps a single connection open while you send dialogue lines and receive base64-encoded audio chunks. It is intended for **Eleven v3** dialogue models only (`model_id` must start with `eleven_v3`).
 
 This guide covers the **Text to Dialogue** WebSocket. For **Flash**, **Multilingual v2**, or other
-non-v3 TTS models, use the [Realtime TTS
-WebSocket](/docs/eleven-api/guides/how-to/websockets/realtime-tts). For a side-by-side summary of
-both protocols, see [Text to Speech vs Text to Dialogue
-WebSockets](/docs/eleven-api/guides/how-to/websockets/tts-vs-ttd-websockets).
+non-v3 TTS models, use the [Realtime TTS WebSocket](/docs/eleven-api/guides/how-to/websockets/realtime-tts). For a side-by-side summary of
+both protocols, see [Text to Speech vs Text to Dialogue WebSockets](/docs/eleven-api/guides/how-to/websockets/tts-vs-ttd-websockets).
 
 ## Requirements
 

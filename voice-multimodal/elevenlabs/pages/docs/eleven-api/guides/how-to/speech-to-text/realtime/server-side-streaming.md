@@ -8,8 +8,7 @@ path: docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streamin
 
 # Server-side streaming
 
-**How-to guide** · Assumes you have completed the [Speech to Text
-quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text).
+**How-to guide** · Assumes you have completed the [Speech to Text quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text).
 
 ## Overview
 

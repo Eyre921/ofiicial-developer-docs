@@ -84,5 +84,5 @@ If you prefer, you can set things up manually:
 5. Run `netlify dev` or your Vite-based framework's development server (refer to [Local development](/build/data-and-storage/netlify-database/local-development/) for more information).
 6. Deploy. Netlify automatically provisions the database and applies your migration as part of the deploy lifecycle.
 
-If you'd rather provision the database first and wire up your code afterward, you can also do that from the Netlify UI: navigate to the **Database** page in your project and select **Create a database manually**. Once the database is provisioned, follow the same steps above to install the package and write your first migration.
+If you'd rather provision the database first and wire up your code afterward, you can also do that from the Netlify UI: navigate to **Data & Storage** > **Database** in your project and select **Create a database manually**. Once the database is provisioned, follow the same steps above to install the package and write your first migration.
 

@@ -16,6 +16,6 @@ ElevenAgents is a platform for deploying customized, interactive voice agents. O
 
 along with built in interruption handling, turn taking logic, and knowledge bases. Altogether, our platform makes it easy to create interactive agents that you and your users can talk to like a person.
 
-For more information on ElevenAgents, please see our [documentation](/docs/agents-platform/overview). 
+For more information on ElevenAgents, please see our [documentation](/docs/agents-platform/overview).
 
 We also have a series of YouTube videos and tutorials covering ElevenAgents. You can visit [our YouTube channel](https://www.youtube.com/@elevenlabsio) to access these.

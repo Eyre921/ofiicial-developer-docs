@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 238 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 239 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -53,6 +53,7 @@
 - `guides/mcp/hosting-open-source-mcp` — [Hosting Notion MCP locally](pages/guides/mcp/hosting-open-source-mcp.md) · [原文](https://developers.notion.com/guides/mcp/hosting-open-source-mcp)
 - `guides/mcp/mcp-security-best-practices` — [Security best practices](pages/guides/mcp/mcp-security-best-practices.md) · [原文](https://developers.notion.com/guides/mcp/mcp-security-best-practices)
 - `guides/mcp/mcp-supported-tools` — [Supported tools](pages/guides/mcp/mcp-supported-tools.md) · [原文](https://developers.notion.com/guides/mcp/mcp-supported-tools)
+- `guides/mcp/notion-skills` — [Use Notion Skills with MCP](pages/guides/mcp/notion-skills.md) · [原文](https://developers.notion.com/guides/mcp/notion-skills)
 - `guides/mcp/overview` — [Notion MCP](pages/guides/mcp/overview.md) · [原文](https://developers.notion.com/guides/mcp/overview)
 - `guides/notion-agent-apis/overview` — [Overview](pages/guides/notion-agent-apis/overview.md) · [原文](https://developers.notion.com/guides/notion-agent-apis/overview)
 - `guides/notion-agent-apis/quickstart` — [Quickstart](pages/guides/notion-agent-apis/quickstart.md) · [原文](https://developers.notion.com/guides/notion-agent-apis/quickstart)

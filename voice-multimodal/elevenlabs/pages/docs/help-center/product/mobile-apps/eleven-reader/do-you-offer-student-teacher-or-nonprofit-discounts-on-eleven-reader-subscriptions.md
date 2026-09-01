@@ -10,10 +10,9 @@ path: docs/help-center/product/mobile-apps/eleven-reader/do-you-offer-student-te
 
 Yes. If you’re currently enrolled in an educational program or employed as an educator, and you have a valid student or educator email address, you may be eligible for our ElevenReader education discount. Eligibility depends on your institution’s domain and country. You must also be 16 or older to use ElevenReader.
 
-You can check your eligibility and request access for your school here: [https://elevenreader.io/students](https://elevenreader.io/students) 
+You can check your eligibility and request access for your school here: [https://elevenreader.io/students](https://elevenreader.io/students)
 
 \
 
 
-We also offer select discounts for non-profit organizations, which can be found on our [ElevenLabs
-Impact Program webpage](https://elevenlabs.io/impact-program).
+We also offer select discounts for non-profit organizations, which can be found on our [ElevenLabs Impact Program webpage](https://elevenlabs.io/impact-program).

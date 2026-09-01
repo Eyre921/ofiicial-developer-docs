@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1295 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1296 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -146,6 +146,7 @@
 - `docs/api-reference/knowledge-base/dependent-agents-multiple` — [Get dependent agents for multiple documents](pages/docs/api-reference/knowledge-base/dependent-agents-multiple.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/dependent-agents-multiple.md)
 - `docs/api-reference/knowledge-base/get-agents` — [Get dependent agents](pages/docs/api-reference/knowledge-base/get-agents.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-agents.md)
 - `docs/api-reference/knowledge-base/get-chunk` — [Get document chunk](pages/docs/api-reference/knowledge-base/get-chunk.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-chunk.md)
+- `docs/api-reference/knowledge-base/get-chunks` — [Get RAG chunks for a document](pages/docs/api-reference/knowledge-base/get-chunks.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-chunks.md)
 - `docs/api-reference/knowledge-base/get-content` — [Get document content](pages/docs/api-reference/knowledge-base/get-content.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-content.md)
 - `docs/api-reference/knowledge-base/get-crawl-job` — [Get crawl job](pages/docs/api-reference/knowledge-base/get-crawl-job.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-crawl-job.md)
 - `docs/api-reference/knowledge-base/get-document` — [Get knowledge base document](pages/docs/api-reference/knowledge-base/get-document.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-document.md)

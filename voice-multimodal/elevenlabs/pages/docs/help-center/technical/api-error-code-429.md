@@ -12,7 +12,7 @@ API Error Code 429 can have two response messages: `too_many_concurrent_requests
 
 ### too\_many\_concurrent\_requests
 
-If you see the response message `too_many_concurrent_requests`, this means that you have exceeded the concurrency limit for your subscription.  
+If you see the response message `too_many_concurrent_requests`, this means that you have exceeded the concurrency limit for your subscription.
 
 The concurrency limit (concurrent requests running in parallel) depends on the plan you are on. Below are the current rates for each plan, but please note that we will likely revisit them in the future.
 

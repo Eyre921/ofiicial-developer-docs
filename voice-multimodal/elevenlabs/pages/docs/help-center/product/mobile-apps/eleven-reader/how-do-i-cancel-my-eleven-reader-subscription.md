@@ -19,25 +19,25 @@ subscriptions > Subscriptions.
 
 Cancelling will prevent future charges, but you'll still have access until the end of your current billing period.
 
- 
+
 
 **I paid for a year, can I downgrade to monthly halfway through?**
 
 Subscriptions cannot be downgraded mid-cycle through app stores. Once your current annual plan ends, you can choose a monthly option when resubscribing.
 
- 
+
 
 **Can I pause my subscription instead of cancelling?**
 
 At this time, we don’t offer the option to pause a subscription. If you no longer wish to be charged, we recommend cancelling your current plan. You’ll continue to have access to premium features until the end of your current billing cycle, and you can resubscribe at any time.
 
- 
+
 
 **What happens to my files/books if I cancel my subscription?**
 
 When you cancel your subscription, you will retain access to your files or books used during your subscription period. However, access to premium features – such as offline mode – will be restricted once the subscription ends.
 
- 
+
 
 **What happens to my hours if I cancel my subscription/downgrade to the free plan?**
 

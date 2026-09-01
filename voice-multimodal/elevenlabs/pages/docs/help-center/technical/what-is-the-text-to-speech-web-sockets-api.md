@@ -20,7 +20,7 @@ It’s well-suited for scenarios where:
 * The lowest possible latency is needed.
 * Word-to-audio alignment information is required.
 
- It may not be the best choice when:
+It may not be the best choice when:
 
 * The entire input text is delivered at once. Given that the generations are partial, some buffering is involved, which could potentially result in slightly higher latency compared to a standard HTTP request. Instead, using only the output streaming endpoint is most likely the better option in cases like this.
 * You want to quickly experiment or prototype. Working with WebSockets can be harder and more complex than using a standard HTTP API, which might slow down rapid development and testing.

@@ -36,6 +36,6 @@ Upload your LPF file and follow the platform’s steps to distribute your audiob
 
 Please note that if your project includes an Instant Voice Clone, you must verify the voice before exporting. When prompted, click **Verify**, then go to **Voices > My Voices**, select the voice, and click **Click to verify**. Once verification is complete, you can continue with the export process.
 
-All digitally narrated titles will be clearly marked in the metadata, and the book description will inform the listener that the title was created using digital voice narration. 
+All digitally narrated titles will be clearly marked in the metadata, and the book description will inform the listener that the title was created using digital voice narration.
 
 InAudio allows you to distribute your audiobook to Barnes and Noble, Rakuten, Everand, Scribd and many other more.

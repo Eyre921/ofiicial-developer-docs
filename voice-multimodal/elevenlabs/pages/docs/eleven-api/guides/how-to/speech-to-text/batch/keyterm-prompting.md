@@ -8,14 +8,12 @@ path: docs/eleven-api/guides/how-to/speech-to-text/batch/keyterm-prompting
 
 # Keyterm prompting
 
-**How-to guide** · Assumes you have completed the [Speech to Text
-quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text).
+**How-to guide** · Assumes you have completed the [Speech to Text quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text).
 
 ## Overview
 
 Keyterm prompting is available with the Scribe v2 model (batch and realtime) and comes at an
-additional cost. See the [API pricing
-page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
+additional cost. See the [API pricing page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
 for detailed pricing information.
 
 Keyterm prompting is a feature that allows you to highlight words or phrases to bias the model towards transcribing them. This is useful for transcribing specific words or sentences that are not common in the audio, such as product names, names, or other specific terms. Keyterms are more powerful than biased keywords or customer vocabularies offered by other models, because it relies on the context to decide whether to transcribe that term or not.

@@ -16,9 +16,19 @@ There are three metrics we use to rate limit accounts:
 * **Uncached Prompt TPM** — uncached input tokens per minute.
 * **Generated TPM** — output tokens per minute.
 
-**Default ceilings:** 21.6M Total Prompt TPM, 5.4M Uncached Prompt TPM, 216k Generated TPM (\~360k / \~90k / \~3.6k TPS). **Enforcement uses TPM**, not TPS.
+**Enforcement uses TPM**, not TPS.
 
-Based on your usage, your adaptive limits will grow and shrink. If your traffic ramps up too quickly, you will get 429s.
+Adaptive rate limit ceilings depend on the model's total parameter count. Smaller models get higher ceilings:
+
+| Tier       | Total parameters | Total Prompt TPM | Uncached Prompt TPM | Generated TPM |
+| ---------- | ---------------- | ---------------- | ------------------- | ------------- |
+| **Small**  | \< 400B          | 64.8M            | 16.2M               | 648k          |
+| **Medium** | 400B – \< 1.6T   | 43.2M            | 10.8M               | 432k          |
+| **Large**  | ≥ 1.6T           | 21.6M            | 5.4M                | 216k          |
+
+Fast, Priority, and US-only variants of a model share the same tier and ceilings as the base model. Models without a known parameter count use **Large** ceilings.
+
+Based on your usage, your adaptive limits will grow and shrink within these ceilings. If your traffic ramps up too quickly, you will get 429s.
 
 <img alt="kimi-k2p6 usage and rate limits" />
 
@@ -35,6 +45,10 @@ Adaptive rate limits have an upper and lower bound. A higher account [Spending T
 
   <Accordion title="How are rate limits scoped?">
     Rate limits are scoped **per account** and **per model**. **Fast** and **regular** model variants have **separate** limits. **Priority tier** and **regular** requests share the **same** rate limits for a given model.
+  </Accordion>
+
+  <Accordion title="How is my model's ceiling tier determined?">
+    Ceiling tiers are based on the model's **total parameter count**: **Small** (\< 400B), **Medium** (400B – \< 1.6T), or **Large** (≥ 1.6T). See [Model size tiers](#model-size-tiers) for the ceiling values.
   </Accordion>
 
   <Accordion title="What should I do first when I see 429s?">

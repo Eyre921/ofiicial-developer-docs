@@ -171,7 +171,7 @@ In the following example, the “flat” theme overrides the default text color 
 const stripe = Stripe('<<YOUR_PUBLISHABLE_KEY>>');
 
 const appearance = {
-  theme: 'flat'
+  theme: 'flat',
   variables: { colorPrimaryText: '#262626' }
 };
 const options = { /* options */ };

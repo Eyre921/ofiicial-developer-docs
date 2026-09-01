@@ -10,9 +10,9 @@ path: docs/help-center/account/general/what-is-usage-based-billing
 
 Usage based billing is a legacy feature, and is not available on new self-serve subscriptions. Enterprise contracts remain on overage-based billing and are not affected by this change.
 
-For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
+For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
-On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota. For full details on how to enable this feature, please see [How do I enable usage based billing for my account?](/docs/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account) 
+On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota. For full details on how to enable this feature, please see [How do I enable usage based billing for my account?](/docs/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account)
 
 To allow for more control over charges, usage based billing has a maximum number of credits that can be used. You can set this threshold yourself when you enable usage based billing. For a guide on how to do this, please see [How do I change the usage based billing threshold for my account?](/docs/help-center/account/general/how-do-i-change-the-usage-based-billing-threshold-for-my-account)
 

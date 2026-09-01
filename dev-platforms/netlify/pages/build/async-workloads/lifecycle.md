@@ -44,7 +44,7 @@ The default retention period for dead letters is 30 days after it was enqueued. 
 You can inspect the events in the project's 
 ### NavigationPath Component:
 
-Blobs
+Data & Storage > Blobs
  store under `async-workloads-state-dead-lettered/*`
 
 To retry these events, use the [management API](/build/async-workloads/lifecycle#management-apis) to target the events you want to re-trigger.

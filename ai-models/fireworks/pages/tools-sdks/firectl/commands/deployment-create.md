@@ -40,101 +40,28 @@ firectl deployment create falcon-7b --deployment-shape=falcon-7b-shape
       --enable-session-affinity                  If true, does sticky routing based on the 'user' field. Only available to enterprise accounts.
       --file string                              Path to a JSON configuration file containing deployment settings.
   -h, --help                                     help for create
-      --load-targets Map                         Map of autoscaling load metric name# Data residency
-Source: https://docs.fireworks.ai/accounts/data-residency
-
-Restrict inference for your Enterprise account to a selected region
-
-Data residency restricts inference on your account to a single region. Once a region is set, every request must use that region's API endpoint and a model served in that region.
-
-It does not change how your requests are routed. Turning it on will not move existing traffic into the region. This setting *enforces* all requests to be in the set region, and rejects the ones that are not.
-
-<Info>
-  **Enterprise feature.** Data residency is available on Enterprise accounts. Contact your Fireworks representative if you need this enabled.
-</Info>
-
-<Info>
-  Only account **Admins** can change data residency. Other roles can view the current setting but cannot change it.
-</Info>
-
-Residency applies **account-wide**: every API key on the account is restricted to the selected region.
-
-## Available regional restrictions
-
-| Regional restrictions | API endpoint                                  | Serverless                                           | Dedicated deployments                                                                |
-| :-------------------- | :-------------------------------------------- | :--------------------------------------------------- | :----------------------------------------------------------------------------------- |
-| None                  | <span><code>api.fireworks.ai</code></span>    | Any model                                            | Any region                                                                           |
-| US                    | <span><code>us.api.fireworks.ai</code></span> | [US-only Serverless](/serverless/us-only-serverless) | [`US` multi-region](/deployments/regions), or a single US region such as `US_IOWA_1` |
-
-**None** is the default. For a region that is not listed, contact [sales](https://fireworks.ai/company/contact-us).
-
-## Before you switch it on
-
-A residency change takes effect as soon as you save it, and anything that does not match the region is rejected.
-
-### Serverless
-
-Point your clients at the region's API endpoint and change every request to use a model from that region. See [US-only Serverless](/serverless/us-only-serverless) for the US endpoint and model IDs.
-
-<Warning>
-  **`inference_geo` is deprecated** in favor of data residency. As you switch over, remove the `inference_geo` field from your request bodies and the `Fireworks-Inference-Geo` header from your requests.
-</Warning>
-
-### Dedicated deployments
-
-Every dedicated deployment must run in the selected region. Create it with `--region` set to that region, or to a single region inside it. See [Regions](/deployments/regions).
-
-Check what you already have before you save the setting:
-
-```bash theme={null}
-firectl deployment list
+      --load-targets Map                         Map of autoscaling load metric names to their target utilization factors.
+      --long-prompt                              Whether this deployment is optimized for long prompts.
+      --max-context-length int32                 The maximum context length supported by the model (context window). If set to 0 or not specified, the model's default maximum context length will be used.
+      --max-replica-count int32                  Maximum number of replicas for the deployment. If min-replica-count > 0 defaults to 0, otherwise defaults to 1.
+      --max-with-revocable-replica-count int32   Maximum number of replicas including revocable replicas. Any replicas in excess of max_replica_count are revocable.
+      --min-replica-count int32                  Minimum number of replicas for the deployment. If min-replica-count < max-replica-count the deployment will automatically scale between the two replica counts based on load.
+      --ngram-speculation-length int32           The length of previous input sequence to be considered for N-gram speculation.
+  -o, --output Output                            Set the output format to "text", "json", or "flag". (default text)
+      --precision string                         The precision with which the model is served. If specified, must be one of {FP8, FP16, FP4, BF16}.
+      --region string                            Placement: 'global', region group (us), or specific region (us-iowa-1).
+      --scale-down-window duration               The duration the autoscaler will wait before scaling down a deployment after observing decreased load. Default is 10m.
+      --scale-to-zero-window duration            The duration after which there are no requests that the deployment will be scaled down to zero replicas, if min-replica-count is 0. Default 1h.
+      --scale-up-window duration                 The duration the autoscaler will wait before scaling up a deployment after observing increased load. Default is 30s.
+      --validate-only                            If true, this will not create the deployment, but will return the deployment that would be created.
+      --wait                                     Wait until the deployment is ready.
+      --wait-timeout duration                    Maximum time to wait when using --wait flag. (default 1h0m0s)
 ```
 
-* **New deployments outside the region are rejected** when you create them.
-* **Existing deployments are not checked, moved, or stopped** when you switch the setting on. One outside the region keeps running and keeps costing you money, but requests to it are rejected. Replace it first.
-* **You can move a deployment to another region inside your residency region, but not out of it.**
+### Global flags
 
-## Configure in the console
-
-Account admins can set data residency in the Fireworks console at **Settings → Governances → Data Residency** ([open in console](https://app.fireworks.ai/settings/governances/region-access)).
-
-Select the region and save. The console asks you to confirm that your clients already use the endpoint and models shown for that region.
-
-## Configure with firectl
-
-Set the region:
-
-```bash theme={null}
-firectl policy residency set US
 ```
-
-Inspect the current setting:
-
-```bash theme={null}
-firectl policy residency get
+  -a, --account-id string   The Fireworks account ID. If not specified, reads account_id from ~/.fireworks/auth.ini.
+      --api-key string      An API key used to authenticate with Fireworks.
+  -p, --profile string      fireworks auth and settings profile to use.
 ```
-
-Remove the restriction and return the account to unrestricted serving:
-
-```bash theme={null}
-firectl policy residency clear
-```
-
-## Pricing
-
-Regional models are priced at a premium over the base serverless price for the same model. See [Serverless pricing](/serverless/pricing).
-
-## Limitations
-
-The following are not supported while a region is set: calls are rejected, and stay rejected until you clear the setting.
-
-* **Training.** Fine-tuning and training jobs are blocked. Support is coming soon.
-* **FireRouter.** [FireRouter](/ecosystem/firerouter/overview) can pass a request through to a third-party provider, which Fireworks cannot constrain to a region.
-* **BYOC.** [BYOC](/ecosystem/integrations/byoc/overview) deployments run in your own cloud account, so Fireworks cannot enforce where they run.
-
-## Related
-
-* [US-only Serverless](/serverless/us-only-serverless) — endpoint and model IDs for the US region
-* [Enterprise features](/accounts/enterprise-features) — overview of Enterprise administration capabilities
-* [Managing users](/accounts/users) — account roles and permissions
-* [Data Security](/guides/security_compliance/data_security) — encryption, retention, and access controls

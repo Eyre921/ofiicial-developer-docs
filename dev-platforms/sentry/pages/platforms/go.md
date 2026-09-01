@@ -36,7 +36,7 @@ Consult the [Go documentation](https://github.com/golang/go/wiki/Modules#how-to-
 
 Configuration should happen as early as possible in your application's lifecycle.
 
-Error Monitoring\[ ]Tracing\[ ]Logs
+Error Monitoring\[ ]Tracing
 
 ```go
 err := sentry.Init(sentry.ClientOptions{

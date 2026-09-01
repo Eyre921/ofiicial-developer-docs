@@ -22,7 +22,5 @@ You can read more about rollovers [here](/docs/help-center/account/general/how-d
 
 Pay As You Go credits are not affected by monthly credit rollover, and will expire 12 months after
 purchase. However, if you change subscription plans, your PAYG credit balance may be adjusted
-because credits are stored as a dollar value and converted at your current plan's rate. See [What
-happens to my PAYG credits if I change subscription
-plans?](/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans)
+because credits are stored as a dollar value and converted at your current plan's rate. See [What happens to my PAYG credits if I change subscription plans?](/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans)
 for details.

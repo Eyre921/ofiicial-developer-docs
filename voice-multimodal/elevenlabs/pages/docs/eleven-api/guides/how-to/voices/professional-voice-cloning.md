@@ -14,9 +14,7 @@ Creating a PVC requires you to be on the [Creator plan or above](https://elevenl
 
 For an in-depth explanation of how IVC and PVC work under the hood and when to choose each, see [Voice cloning: how it works](/docs/eleven-api/concepts/voice-cloning).
 
-If you are unsure about what is permissible from a legal standpoint, please consult the [Terms of
-Service](https://elevenlabs.io/terms-of-use) and our [AI Safety
-information](https://elevenlabs.io/safety) for more information.
+If you are unsure about what is permissible from a legal standpoint, please consult the [Terms of Service](https://elevenlabs.io/terms-of-use) and our [AI Safety information](https://elevenlabs.io/safety) for more information.
 
 In terms of creating a PVC via the API, it contains considerably more steps than creating an Instant Voice Clone. This is due to the fact that PVCs are more complex and require more data and fine-tuning to create a high quality clone.
 

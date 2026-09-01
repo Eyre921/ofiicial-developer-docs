@@ -8,7 +8,7 @@ path: docs/help-center/product/mobile-apps/eleven-music/do-i-need-to-pay-to-use-
 
 # Do I need to pay to use ElevenMusic?
 
-We offer two subscription plans for ElevenMusic, including a free plan. 
+We offer two subscription plans for ElevenMusic, including a free plan.
 
 The free plan allows you to generate 5 tracks per day, while the Pro subscription offers 400 tracks per month, and a range of other benefits:
 

@@ -8,23 +8,23 @@ path: docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android/how-d
 
 # How do credits work on the ElevenLabs iOS or Android app?
 
-Credits give you flexibility to power your listening. For Text to Speech, one character will cost you one credit. 
+Credits give you flexibility to power your listening. For Text to Speech, one character will cost you one credit.
 
- 
+
 
 **Why do we use credits?**
 
-We believe it’s fair for users as it gives you maximum flexibility. You only get charged credits when you generate content. 
+We believe it’s fair for users as it gives you maximum flexibility. You only get charged credits when you generate content.
 
- 
+
 
 **How can I get more credits for the ElevenLabs iOS or Android app?**
 
-Subscribe to our Creator monthly or annual plans for the best savings on credits, or for more options you can login and upgrade at [elevenlabs.io](http://elevenlabs.io). You can use your subscription across our website, iOS and Android apps. 
+Subscribe to our Creator monthly or annual plans for the best savings on credits, or for more options you can login and upgrade at [elevenlabs.io](http://elevenlabs.io). You can use your subscription across our website, iOS and Android apps.
 
 If you subscribed through the mobile app, it isn't possible to purchase Pay As You Go credits. If you want access to this feature, you'll need to switch to a website subscription. For more information on how to manage your subscription in the app, see [Managing Your ElevenLabs Subscription (Mobile App vs. Website)](/docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android/managing-your-eleven-labs-subscription-mobile-app-vs-website)
 
- 
+
 
 **When do credits expire in the ElevenLabs iOS or Android app?**
 

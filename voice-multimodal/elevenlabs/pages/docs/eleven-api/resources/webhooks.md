@@ -23,7 +23,7 @@ Certain events within ElevenLabs can be configured to trigger webhooks, allowing
 
 Webhooks can be created, disabled and deleted from the general settings page. For users within [Workspaces](/docs/overview/administration/workspaces/overview), only the workspace admins can configure the webhooks for the workspace.
 
-![HMAC webhook configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9ea298daac1c64eb43c802a12f7824e83accca44ba2edd1d01a39bcd62c0b9d6/assets/images/product-guides/administration/hmacwebhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100018Z&X-Amz-Expires=604800&X-Amz-Signature=15dcd84f4ecbbd1bcd3311bd7473a124ae1197c5bbb334229ddebb01bca329a1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![HMAC webhook configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9ea298daac1c64eb43c802a12f7824e83accca44ba2edd1d01a39bcd62c0b9d6/assets/images/product-guides/administration/hmacwebhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233346Z&X-Amz-Expires=604800&X-Amz-Signature=30aa6df7d6f8fc24e4072108d9ba795a1bc00b49c25a4b4f886f31735e37e942&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 After creation, the webhook can be selected to listen for events within product settings such as [Agents Platform](/docs/eleven-agents/workflows/post-call-webhooks).
 

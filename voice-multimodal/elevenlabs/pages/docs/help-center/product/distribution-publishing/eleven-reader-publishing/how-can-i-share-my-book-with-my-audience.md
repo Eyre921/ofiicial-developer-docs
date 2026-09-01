@@ -8,7 +8,7 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # How can I share my book with my audience?
 
-Once your book has been reviewed and approved (status changes to ‘Published’), the sharing option becomes available. To share your book with readers, family and friends, follow these steps from [https://elevenreader.io/app/publishing](https://elevenreader.io/app/publishing) 
+Once your book has been reviewed and approved (status changes to ‘Published’), the sharing option becomes available. To share your book with readers, family and friends, follow these steps from [https://elevenreader.io/app/publishing](https://elevenreader.io/app/publishing)
 
 **From the ‘Bookshelf’ View:**
 

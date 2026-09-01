@@ -8,9 +8,9 @@ path: docs/help-center/product/mobile-apps/eleven-reader/how-do-i-redeem-an-elev
 
 # How do I redeem an ElevenReader discount code if I’m already subscribed to Ultra?
 
-If you’ve received a discount code, you can enter it when purchasing an Ultra plan via the web: [[https://elevenreader.io/pricing](https://elevenreader.io/pricing)](https://elevenreader.io/pricing) 
+If you’ve received a discount code, you can enter it when purchasing an Ultra plan via the web: [[https://elevenreader.io/pricing](https://elevenreader.io/pricing)](https://elevenreader.io/pricing)
 
-If you’re currently subscribed to Ultra through the App Store or Google Play, you’ll first need to cancel that subscription from those stores on your device before switching to a web subscription with a discount added. Unfortunately, Apple and Google don’t support overlapping subscriptions or applying discounts to a current subscription. Once your current subscription has ended, you can purchase an Ultra plan via the web and apply your discount code at checkout. 
+If you’re currently subscribed to Ultra through the App Store or Google Play, you’ll first need to cancel that subscription from those stores on your device before switching to a web subscription with a discount added. Unfortunately, Apple and Google don’t support overlapping subscriptions or applying discounts to a current subscription. Once your current subscription has ended, you can purchase an Ultra plan via the web and apply your discount code at checkout.
 
 Follow these steps:
 

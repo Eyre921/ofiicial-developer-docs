@@ -1536,7 +1536,7 @@ To explore and retrieve your site's blobs:
 1. In the Netlify UI, go to the 
 ### NavigationPath Component:
 
-Blobs
+Data & Storage > Blobs
  page for your project.
 2. If your site has more than one store, select the store of interest.
 

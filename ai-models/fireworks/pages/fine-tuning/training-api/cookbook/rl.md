@@ -10,14 +10,16 @@ The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai/c
 
 <Warning>
   `async_rl_loop` is experimental. Its configuration and rollout protocol may
-  change without backward-compatibility shims. Pin the cookbook version for
-  production workloads.
+  change without backward-compatibility shims. This page describes the current
+  Cookbook paired with `fireworks-ai[training]>=1.2.11`; pin the Cookbook commit
+  and SDK version for production workloads.
 </Warning>
 
 For the shared serverless pool, use the experimental
-[`async_rl_loop_serverless` sibling](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py).
-It keeps the rollout and scheduling contract described here but publishes
-session-scoped snapshots instead of hotloading an inference deployment. See
+[`async_rl_loop_serverless` adapter](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py).
+It keeps this recipe's rollout and scheduling contract but replaces dedicated
+resource lifecycle and hotloading with session-scoped snapshots. The two paths
+remain separate until they share one weight-publication contract. See
 [Serverless Training](/fine-tuning/training-api/serverless) for lifecycle and
 limits.
 
@@ -29,7 +31,7 @@ limits.
 | `rollout_fn_factory(setup) -> rollout_fn`                  | Rollout fan-out, admission, grouping, and advantages                               |
 | Environment interaction, scoring, and aligned rollout data | Reference and old-policy forwards, GRPO/TIS/KL, and optimizer steps                |
 | Scheduling and algorithm configuration                     | Training chunks, sampler hotload and version publication, metrics, and checkpoints |
-| Optional `dynamic_filter_fn`                               | Bounded handling of transient rollout failures                                     |
+| Optional `dynamic_filter_fn` and `evaluation_fn`           | Bounded failure handling, evaluation scheduling, and final-step deduplication      |
 
 ## Minimal setup
 
@@ -56,15 +58,24 @@ rows = [...]  # Each row is passed to rollout_fn as sample_prompt.
 main(cfg, rollout_fn_factory=make_rollout_fn, rows=rows)
 ```
 
-The example rollout above expects rows with `prompt_token_ids`. Fork the [single-turn example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/single_turn_token_in) or [multi-turn example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/multi_turn_message_in) for your environment.
+The example rollout above expects rows with `prompt_token_ids`. Fork the
+[single-turn example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/single_turn_token_in)
+for a minimal adapter. For multi-turn agents, you can start from the structured
+[Harbor recipe set](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor),
+which supports Pi, OpenCode, and Mini-SWE-Agent in local Docker or E2B.
 
 For multi-turn agents, tools, sandboxes, token ancestry, and session design, read
 [Cookbook: Agentic Reinforcement Learning](/fine-tuning/training-api/cookbook/agentic-rl).
 Agentic RL is a rollout integration concern; it does not change the async
 loop's scheduling contract. The
-[Terminal-Bench 2.0 example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor_rl_terminal_bench)
-shows a complete serverless integration with Harbor-managed local containers,
-OpenCode tool use, verifier rewards, and multi-segment logical rollouts.
+[Terminal-Bench recipe](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/recipes/terminal_bench)
+shows Harbor-managed environments, OpenCode tool use, verifier rewards, and
+multi-segment logical rollouts.
+
+The [DABstep recipes](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/recipes/dabstep)
+show both execution paths: `train.py` keeps the OpenCode
+`async_rl_loop_serverless` integration, while `train_pi.py` uses Pi, E2B, and
+SDK-managed dedicated resources.
 
 ## Rollout contract
 
@@ -91,7 +102,7 @@ Each segment carries aligned `tokens`, `logprobs`, and `loss_mask` lists plus a 
 
 ## Scheduling controls
 
-These five fields define the rollout/training pipeline:
+These fields define the rollout/training pipeline:
 
 | Field                            | Default | Meaning                                                                                           |
 | -------------------------------- | ------: | ------------------------------------------------------------------------------------------------- |
@@ -100,8 +111,17 @@ These five fields define the rollout/training pipeline:
 | `pipeline_chunks_per_step`       |     `1` | Balanced forward/backward chunks prepared for each optimizer batch.                               |
 | `max_head_offpolicy_versions`    |     `0` | Number of published policy versions that rollout admission may run ahead. `0` is fully on-policy. |
 | `max_concurrency_rollout_sample` |  `None` | Optional cap on in-flight rollout calls. It must fit at least one complete row.                   |
+| `min_group_size`                 |     `1` | Minimum surviving rollout runs required to train a row.                                           |
+| `max_incomplete_group_retries`   |     `0` | Number of times to rebuild a row that finishes below `min_group_size`.                            |
 
-Admission is row-atomic: the scheduler submits a row only when both the staleness budget and concurrency budget can fit all of its completions. `max_head_offpolicy_versions=0` is fully on-policy: every optimizer batch trains groups from its current published policy version. Chunk training can still overlap remaining rollouts from the same optimizer batch.
+Admission is row-atomic: the scheduler submits a row only when both the
+staleness budget and concurrency budget can fit all of its completions.
+`max_concurrency_rollout_sample` counts active `rollout_fn` calls, not the
+individual inference requests that a multi-turn agent makes. The shared
+`DeploymentSampler` owns inference-request concurrency separately.
+`max_head_offpolicy_versions=0` is fully on-policy: every optimizer batch
+trains groups from its current published policy version. Chunk training can
+still overlap remaining rollouts from the same optimizer batch.
 
 ## Runtime behavior
 
@@ -109,13 +129,66 @@ Admission is row-atomic: the scheduler submits a row only when both the stalenes
 2. The producer submits complete rows while both admission budgets allow it.
 3. Every completed rollout retries refill. As soon as the first training chunk is ready, serialized trainer work can begin while rollout production continues.
 4. Later chunks queue and run in order. One optimizer step follows the final chunk.
-5. The recipe hotloads the updated weights and publishes the next policy version. Publication reopens staleness capacity.
+5. The recipe waits for evaluation on the current sampler version before replacing that version, hotloads the updated weights, and publishes the next policy version. Publication reopens staleness capacity.
 
-There is one sampler hotload per optimizer batch; `async_rl_loop` does not expose a weight-sync interval. Known transient rollout failures are dropped behind a bounded circuit breaker. Invalid rollout data, unexpected cancellation, and unknown errors remain fatal.
+There is one sampler hotload per optimizer batch; `async_rl_loop` does not
+expose a weight-sync interval. The final partial optimizer batch is trained
+rather than discarded. Known transient rollout failures are dropped behind a
+bounded circuit breaker. Invalid rollout data, unexpected cancellation, and
+unknown errors remain fatal. A row may still train after recoverable failures
+when at least `min_group_size` runs survive.
 
 ## Loss behavior
 
-The stock recipe has one direct client-side GRPO path and no `policy_loss` or `loss_path` selector. `anchor_logp="old_policy"` (the default) snapshots trainer logprobs and applies TIS against rollout behavior logprobs; `anchor_logp="rollout"` reuses aligned rollout logprobs and makes the TIS ratio identity. Set `kl_beta=0` to disable reference-policy KL and reference provisioning.
+The default path computes GRPO in the client and does not expose a general
+`policy_loss` or `loss_path` selector. Dedicated async RL can opt into the
+trainer's built-in PPO kernel with `server_side_grpo=True`; this changes only
+where the GRPO policy update executes, requires `kl_beta=0`, and is not a
+different algorithm. `anchor_logp="old_policy"` (the default) snapshots
+trainer logprobs and applies TIS against rollout behavior logprobs;
+`anchor_logp="rollout"` reuses aligned rollout logprobs and makes the TIS ratio
+identity. Set `kl_beta=0` to disable reference-policy KL and reference
+provisioning.
+
+## TITO sidecars for multi-turn agents
+
+TITO (token-in/token-out) preserves the exact prompt tokens, sampled completion
+tokens, log probabilities, and optional Router Replay data from every policy
+turn. The Cookbook's Harbor integrations run one SDK `TITOSidecar` inside each
+Docker container or E2B sandbox. Pi, OpenCode, or Mini-SWE-Agent talks to its
+environment-local OpenAI-compatible loopback endpoint; the sidecar renders the
+complete conversation, calls the recipe-owned `DeploymentSampler`, and returns
+a compact exact-token trajectory artifact. No centralized gateway, callback,
+or public tunnel is required.
+
+This integration requires `fireworks-ai[training]>=1.2.11`. It can use the
+sampler supplied by either `async_rl_loop` or `async_rl_loop_serverless`; TITO
+does not require the dedicated deployment lifecycle.
+
+Full-history rendering is the default. Exact-prefix turns append to the active
+training segment. A bounded, renderer-safe drift in the latest assistant
+response may be realigned with the replaced span masked; an incompatible
+history closes the valid segment and starts another from the current full
+render. All segments remain one `RolloutRun`, so they share one reward, one
+GRPO group membership, and one advantage. The Miles-style incremental prompt
+mode is available only as an experimental opt-in for separately certified
+renderers; it does not change the full-history default.
+
+Use `max_completion_tokens` for one assistant turn and `max_seq_len` for the
+total prompt-plus-output and training-retention boundary. Start with
+[Cookbook: Agentic Reinforcement Learning](/fine-tuning/training-api/cookbook/agentic-rl)
+for the layer boundaries, supported harnesses, artifacts, and failure policy.
+
+## Evaluation
+
+Pass `evaluation_fn(step, rollout_fn)` and `evaluation_interval=N` to `main()`.
+Evaluation runs at the initial or resumed step, at each interval, and once at
+the actual final step without duplicating a periodic evaluation at that step.
+It uses the same rollout object, sampler, `max_completion_tokens`, and resolved
+`max_seq_len` as training, but it does not enter training groups or mutate the
+optimizer. Evaluation is fail-open. It can overlap the next batch's rollout and
+trainer work, but it must finish before that sampler version is replaced, so a
+slow evaluation can delay weight publication.
 
 ## Detailed reference
 

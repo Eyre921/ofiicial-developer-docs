@@ -52,7 +52,6 @@ Choose a host port `HOST_PORT` where external queries can be made, and choose a 
 
 ## Port Collision
 
-
 "Port collision" can occur when you try to bind to the same port from two different services. Since we are binding to both a container port and a host port, we have to be aware of this on two different networks.
 
 When selecting a host port, do not use the same port that is used by any other Deepgram service, or any other service running on the host machine. In the default Deepgram `docker-compose.yml` file, the API often uses port `8080`, and the License Proxy often uses ports `8443` and `8089`. A common default value for the Engine `HOST_PORT` is `9991`.

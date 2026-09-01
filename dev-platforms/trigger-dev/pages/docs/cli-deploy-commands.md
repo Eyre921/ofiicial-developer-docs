@@ -110,8 +110,32 @@ npx trigger.dev@latest deploy [path]
   briefly before it notices. Requires `--external-id`.
 </ParamField>
 
+<ParamField type="--native-build">
+  Use the native build server to install, bundle and build your project.
+</ParamField>
+
+<ParamField type="--local-bundle">
+  Install and bundle on your machine, then build the image on the build server from the uploaded
+  bundle. Requires `--native-build`. Use it if you prefer dependencies to be installed on your
+  machine rather than on the build server.
+</ParamField>
+
+<ParamField type="--detach">
+  Exit once the build is queued instead of streaming the build logs. The deployment continues on
+  the build server. Requires `--native-build`.
+</ParamField>
+
+<ParamField type="--depot-build">
+  Build the image with Depot, the default build provider.
+</ParamField>
+
 <ParamField type="--local-build">
   Force building the deployment image locally using your local Docker. This is automatic when self-hosting.
+</ParamField>
+
+<ParamField type="--build-logs">
+  How build logs are shown: `compact` (default, a single updating line) or `full` (every log line).
+  CI and piped output always use `full`.
 </ParamField>
 
 ### Common options

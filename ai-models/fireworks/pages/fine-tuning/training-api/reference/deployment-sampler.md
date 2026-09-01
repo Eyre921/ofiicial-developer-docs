@@ -32,21 +32,30 @@ sampler = DeploymentSampler(
 )
 ```
 
-| Parameter                | Type                                                                  | Description                                                                                                                                       |
-| ------------------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `inference_url`          | `str`                                                                 | Gateway URL for inference completions                                                                                                             |
-| `model`                  | `str`                                                                 | Deployment model path (`accounts/<id>/deployments/<id>`)                                                                                          |
-| `api_key`                | `str`                                                                 | Fireworks API key                                                                                                                                 |
-| `tokenizer`              | `PreTrainedTokenizerBase`                                             | HuggingFace tokenizer matching the base model                                                                                                     |
-| `concurrency_controller` | `AdaptiveConcurrencyController \| FixedConcurrencyController \| None` | Controls how many concurrent HTTP requests are in-flight. `None` (default) means no limit. See [Concurrency Control](#concurrency-control) below. |
+<Note>
+  The adaptive-by-default controller behavior and `TITOSidecar` API described
+  on this page require `fireworks-ai[training]>=1.2.11`.
+</Note>
+
+| Parameter                | Type                                                                  | Description                                                                                                                                                                                          |
+| ------------------------ | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `inference_url`          | `str`                                                                 | Gateway URL for inference completions                                                                                                                                                                |
+| `model`                  | `str`                                                                 | Deployment model path (`accounts/<id>/deployments/<id>`)                                                                                                                                             |
+| `api_key`                | `str`                                                                 | Fireworks API key                                                                                                                                                                                    |
+| `tokenizer`              | `PreTrainedTokenizerBase`                                             | HuggingFace tokenizer matching the base model                                                                                                                                                        |
+| `concurrency_controller` | `AdaptiveConcurrencyController \| FixedConcurrencyController \| None` | Controls concurrent HTTP requests. `None` constructs the default `AdaptiveConcurrencyController`; pass a fixed controller for a static limit. See [Concurrency Control](#concurrency-control) below. |
 
 ## Concurrency Control
 
-`sample_with_tokens(n=K)` fans out into K individual streaming requests. Without concurrency control, all requests fire simultaneously, which can overload the server. Two controllers are available:
+`sample_with_tokens(n=K)` fans out into K individual streaming requests. The
+sampler uses adaptive concurrency by default, so excess requests wait for a
+client-side slot instead of all starting at once. Two controllers are
+available:
 
 ### AdaptiveConcurrencyController (recommended)
 
-Auto-tunes the concurrency window using AIMD (Additive Increase / Multiplicative Decrease) based on the server's `prefill_queue_duration`:
+Auto-tunes the concurrency window using AIMD (Additive Increase /
+Multiplicative Decrease) from the congestion signals available on the target:
 
 ```python theme={null}
 from fireworks.training.sdk import AdaptiveConcurrencyController
@@ -65,7 +74,11 @@ summary = ctrl.step_completed()
 print(summary)  # {"window": 20, "avg_pq": 0.08, "cache_hit_rate": 0.95, ...}
 ```
 
-The controller reads `prefill_queue_duration` from server response metrics. When the queue is below target, the window grows proportionally. When above, it halves (multiplicative decrease). By default, it adjusts after every 32 completed requests and at step boundaries. Set `adjustment_interval=0` to adjust only at step boundaries.
+For dedicated deployments, the controller reads `prefill_queue_duration` from
+server response metrics. When that metric is unavailable, as on serverless, it
+uses HTTP 429/503 and transport failures as congestion signals instead. By
+default, it adjusts after every 32 completed requests and at step boundaries.
+Set `adjustment_interval=0` to adjust only at step boundaries.
 
 ### FixedConcurrencyController
 
@@ -206,6 +219,47 @@ finally:
 
 Here, `n=1` is intentional because `sample_with_prompt_tokens(n=2, user=...)` gives both child requests the same `user` value. With 32 entries in `batch_prompt_token_ids`, the example creates 64 individual sampling requests. Follow [Inference for RL rollouts](https://docs.fireworks.ai/guides/rollout-inference#inference-for-rl-rollouts) to decide when those requests should use distinct or shared session values.
 
+## TITO sidecars for agent harnesses
+
+`TITOSidecar` is the SDK's environment-local adapter for exact-token,
+multi-turn RL. Construct it from a `DeploymentSampler` and a certified
+conversation renderer, then give the returned trajectory endpoint to an
+OpenAI-compatible agent harness:
+
+```python theme={null}
+from fireworks.training.sdk import TITOSidecar
+
+sidecar = TITOSidecar.from_deployment_sampler(
+    sampler,
+    renderer=renderer,
+    max_context_tokens=131072,
+    max_output_tokens=4096,
+)
+
+async with sidecar:
+    endpoint = await sidecar.create_trajectory_async(
+        serving_affinity_key="one-opaque-key-per-attempt",
+    )
+    # Point the harness at endpoint.openai_base_url with endpoint.api_key.
+    # After the harness exits:
+    artifact = await sidecar.finish_trajectory(endpoint.trajectory_id)
+```
+
+The sidecar listens only on loopback inside the agent's Docker container or
+remote sandbox. It translates chat messages and tools into exact prompt token
+IDs, samples through the borrowed `DeploymentSampler`, and records aligned
+completion IDs, log probabilities, and optional Router Replay data. The
+default is full-history rendering with explicit append, bounded realign, or
+new-segment decisions; experimental incremental rendering requires a
+separately certified renderer contract.
+
+The SDK surface is harness-neutral and does not provide model-specific
+renderers or environment lifecycle. Most users should start from the
+[Cookbook Harbor integrations](/fine-tuning/training-api/cookbook/agentic-rl),
+which supply the renderer, Pi/OpenCode/Mini-SWE-Agent adapters, Docker/E2B
+lifecycle, retry policy, and conversion from the compact TITO artifact to
+`RolloutRun`.
+
 ## SampledCompletion
 
 Each completion returned by `sample_with_tokens` or `sample_with_prompt_tokens`:
@@ -227,4 +281,5 @@ Each completion returned by `sample_with_tokens` or `sample_with_prompt_tokens`:
 * [Serverless Training](/fine-tuning/training-api/serverless) — create an in-session sampler from a serverless checkpoint
 * [Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling) — end-to-end workflow
 * [Cookbook RL recipe](/fine-tuning/training-api/cookbook/rl) — GRPO with sampling pipeline
+* [Cookbook Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl) — TITO sidecars, harnesses, and multi-turn trajectories
 * [Inference for RL rollouts](https://docs.fireworks.ai/guides/rollout-inference#inference-for-rl-rollouts) — session affinity, KV-cache behavior, and rollout request fields

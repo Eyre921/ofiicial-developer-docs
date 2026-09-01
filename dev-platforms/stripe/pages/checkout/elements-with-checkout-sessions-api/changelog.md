@@ -175,7 +175,7 @@ const stripe = loadStripe("<<YOUR_PUBLISHABLE_KEY>>", {
 
 #### TypeScript
 
-```javascript
+```typescript
 // Set your secret key. Remember to switch to your live secret key in production.
 // See your keys here: https://dashboard.stripe.com/apikeys
 import Stripe from 'stripe';
@@ -189,7 +189,7 @@ const stripe = new Stripe('<<YOUR_SECRET_KEY>>', {
 
 #### TypeScript
 
-```javascript
+```typescript
 // Set your secret key. Remember to switch to your live secret key in production.
 // See your keys here: https://dashboard.stripe.com/apikeys
 import Stripe from 'stripe';

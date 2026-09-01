@@ -10,9 +10,9 @@ path: docs/help-center/account/general/what-are-credits
 
 Credits were previously referred to as "characters." We updated this terminology to streamline pricing and make it easier to understand, though the value remains unchanged.
 
-Credits can be used across our platform. The number of credits used depends on your plan, whether you're generating via the website or API, the product you’re using, and the model. For full details, see our[ Pricing page. ](https://elevenlabs.io/pricing)
+Credits can be used across our platform. The number of credits used depends on your plan, whether you're generating via the website or API, the product you’re using, and the model. For full details, see our[ Pricing page. ](https://elevenlabs.io/pricing)
 
- 
+
 
 **Credit Allocation and Rollover**
 
@@ -22,14 +22,12 @@ For enterprise annual plans, you will receive a yearly credit allocation upfront
 
 If you downgrade or cancel your subscription, this does not take effect until the end of your current billing cycle, and unused credits are not rolled over.
 
- 
+
 
 **Pay As You Go**
 
-Pay As You Go (PAYG) allows you to prepay for credits without committing to a monthly subscription, or buy additional credits if you run out of your subscription credits. For full details, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
+Pay As You Go (PAYG) allows you to prepay for credits without committing to a monthly subscription, or buy additional credits if you run out of your subscription credits. For full details, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
 If you change subscription plans, your PAYG credit balance may be adjusted because credits are
-stored as a dollar value and converted at your current plan's rate. See [What happens to my PAYG
-credits if I change subscription
-plans?](/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans)
+stored as a dollar value and converted at your current plan's rate. See [What happens to my PAYG credits if I change subscription plans?](/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans)
 for details.

@@ -8,7 +8,7 @@ path: docs/help-center/product/studio/studio/on-what-plans-can-i-use-studio
 
 # On what plans can I use Studio?
 
-Our professional end-to-end solution for long-form content, called Studio, is available on all our plans, including our free plan. 
+Our professional end-to-end solution for long-form content, called Studio, is available on all our plans, including our free plan.
 
 The exception being the **Create a podcast (GenFM)** feature, which requires a paid subscription to access.
 

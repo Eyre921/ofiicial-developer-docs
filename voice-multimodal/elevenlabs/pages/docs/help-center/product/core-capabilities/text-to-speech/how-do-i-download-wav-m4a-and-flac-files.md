@@ -8,7 +8,7 @@ path: docs/help-center/product/core-capabilities/text-to-speech/how-do-i-downloa
 
 # How do I download WAV, M4A and FLAC files?
 
-Files that you have generated using Text to Speech or Voice Changer can be downloaded as MP3, WAV, M4A or FLAC files. WAV, M4A and FLAC files need to be downloaded from your history.   
+Files that you have generated using Text to Speech or Voice Changer can be downloaded as MP3, WAV, M4A or FLAC files. WAV, M4A and FLAC files need to be downloaded from your history.
 
 #### **How to download WAV files**
 

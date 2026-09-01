@@ -25,7 +25,7 @@ This flag applies to all self-hosted container images: API, Engine, License Prox
 
 ## Configuration
 
-The log format is set as a CLI flag appended to the container's `command`. It is not configured via TOML.
+The log format is set as a CLI flag in the container's `command`. It is not configured via TOML. `--log-format` is a top-level option, so it must appear before the `serve` subcommand — appending it after `serve` causes the container to exit with `error: unexpected argument '--log-format' found`.
 
 ### Docker Compose
 
@@ -33,39 +33,41 @@ The log format is set as a CLI flag appended to the container's `command`. It is
 services:
   api:
     image: quay.io/deepgram/self-hosted-api:release-260319
-    command: -v serve /api.toml --log-format=json
+    command: -v --log-format=json serve /api.toml
     # ...
 
   engine:
     image: quay.io/deepgram/self-hosted-engine:release-260319
-    command: -v serve /engine.toml --log-format=json
+    command: -v --log-format=json serve /engine.toml
     # ...
 
   license-proxy:
     image: quay.io/deepgram/self-hosted-license-proxy:release-260319
-    command: -v serve /license-proxy.toml --log-format=json
+    command: -v --log-format=json serve /license-proxy.toml
     # ...
 ```
 
 ### Kubernetes (Helm)
 
-In a Helm values override, set the command args for each container:
+In a Helm values override, set `logFormat` for each component:
 
 ```yaml
 api:
-  additionalArgs: ["--log-format=json"]
+  logFormat: json
 
 engine:
-  additionalArgs: ["--log-format=json"]
+  logFormat: json
 
 licenseProxy:
-  additionalArgs: ["--log-format=json"]
+  logFormat: json
 
 billing:
-  additionalArgs: ["--log-format=json"]
+  logFormat: json
 ```
 
-The API container also accepts a legacy `--json` flag for JSON output. If both `--json` and `--log-format` are specified, `--log-format` takes precedence.
+`logFormat` accepts `full`, `compact`, `pretty`, or `json`. Leave it unset to use the container's default (`full`). The chart validates the value and renders the flag in the correct position in each container's arguments; an unrecognized value fails at template time rather than crash-looping the pod. Requires chart version `0.45.0` or later — earlier versions ignore `logFormat` silently, with no error and no change to log output.
+
+The API container also accepts a legacy `--json` flag and `JSON` environment variable that force JSON output. Do not combine either with `--log-format` set to a format other than `json` — the container exits with an error at startup. The Helm chart rejects this combination at template time.
 
 ## Example Output
 

@@ -8,8 +8,7 @@ path: docs/eleven-agents/guides/integrations/upstash-redis
 
 # Data Collection and Analysis with Agents Platform in Next.js
 
-**Tutorial** · Assumes you have completed the [ElevenAgents
-quickstart](/docs/eleven-agents/quickstart) and have a Next.js project set up.
+**Tutorial** · Assumes you have completed the [ElevenAgents quickstart](/docs/eleven-agents/quickstart) and have a Next.js project set up.
 
 ## Introduction
 

@@ -16,10 +16,13 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Search Notion and connected sources">
     `notion-search`
 
-    Search across your Notion workspace and connected tools like Slack, Google Drive, and Jira.
+    Search Notion and connected apps like Slack, Google Drive, and Jira. In Notion, narrow results by location (page, data source, or teamspace), creator or editor, date, title, or content status. You can also sort results, search with filters only, and return up to 50 results.
+
+    Results may include `path` and `verification` details. Fetch important matches before relying on them.
 
     <Note>
-      Requires Notion AI access. Without a Notion AI plan, search is limited to your Notion workspace only.
+      * Searching connected apps requires Notion AI.
+      * Full Notion MCP on Business or Enterprise is required to filter by editor, last-edited date, multiple teamspaces, title only, or content status, and to sort by date. Other filters are available on every plan.
     </Note>
 
     **Example prompts:**
@@ -30,10 +33,24 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Find all project pages that mention 'ready for dev'"
   </Accordion>
 
+  <Accordion title="Search Notion Skills">
+    `notion-search-skills`
+
+    Finds active [Notion Skills](/guides/mcp/notion-skills) that the connected user can access. Pass a Skill name or a short description of the task, or omit the query to list up to 10 recent Skills. Results contain compact metadata; fetch the selected Skill's URL before following its instructions.
+
+    **Example prompts:**
+
+    * "Find my usual workflow for preparing a customer briefing"
+    * "What reusable workflows do I have for code review?"
+    * "Use my weekly project update Skill"
+  </Accordion>
+
   <Accordion title="Fetch Notion content">
     `notion-fetch`
 
     Retrieves content from a Notion page, database, data source, or saved database view by its URL or ID. You can pass a data source ID (from `collection://...` tags in database responses) to fetch details about that specific data source, including its schema and properties. When fetching a database, the response includes available templates for each data source, which can be used with the create-pages and update-page tools.
+
+    Fetched pages include `path`, `page_last_edited_at`, and, when available, `verification.state` and `verification.expires_at`. These fields help distinguish pages with similar titles and identify sources that Notion marks as verified.
 
     Pass a `view://` URL from a database response to read a saved view's filters, sorts, and display settings. A database URL with a `?v=` parameter still returns the database. To read the rows shown by a view, use `notion-query-data-sources` with `mode: "view"`.
 
@@ -97,7 +114,9 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Create pages">
     `notion-create-pages`
 
-    Creates one or more Notion pages with specified properties and content. Supports applying [database templates](/guides/data-apis/creating-pages-from-templates) to pre-populate new pages with content and property values. Each page can optionally have an icon (emoji, custom emoji by name, or external URL) and a cover image. If a parent is not specified, a private page will be created.
+    Creates one or more Notion pages with specified properties and content. Supports applying [database templates](/guides/data-apis/creating-pages-from-templates) to pre-populate new pages with content and property values. Each page can optionally have an icon (emoji, custom emoji by name, or external URL) and a cover image. Set `is_skill: true` to create a page as a [Notion Skill](/guides/mcp/notion-skills). If a parent is not specified, a private page will be created.
+
+    Use `creation_mode: "draft"` when the user wants a durable page but has not named a destination. Draft mode creates a workspace-level private page and cannot be combined with `parent`. If the user names a private or shared destination, omit `creation_mode` and create the page under that parent.
 
     **Example prompts:**
 
@@ -106,12 +125,13 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Create a new bug report in the tracking database using the 'Urgent Bug' template"
     * "Add a new product feature request to our feature database"
     * "Create a page with the 🚀 icon and a cover image"
+    * "Draft a private launch plan; we'll decide where it belongs later"
   </Accordion>
 
   <Accordion title="Update a page">
     `notion-update-page`
 
-    Update a Notion page's properties, content, icon, or cover. Supports applying [database templates](/guides/data-apis/creating-pages-from-templates) to existing pages. Icon and cover can be set alongside any update command.
+    Update a Notion page's properties, content, icon, or cover. You can also [change whether a page is a Skill](/guides/mcp/notion-skills#change-whether-a-page-is-a-skill) or apply [database templates](/guides/data-apis/creating-pages-from-templates) to an existing page. Icon, cover, and `is_skill` can be set alongside any update command.
 
     <Note>
       The `update_content` command applies content-changing search-and-replace operations as a batch. If any such operation's `old_str` doesn't match content on the page, the call returns a validation error naming the unmatched value and the page is left unchanged. An operation whose `old_str` and `new_str` are identical is ignored without checking for a match. Each `old_str` must be a non-empty string that matches exactly one location, unless `replace_all_matches: true` is set for that operation.
@@ -129,7 +149,7 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Convert a page to a skill">
     `notion-convert-page-to-skill`
 
-    Marks a Notion page as an AI skill. Pass the page's full Notion URL. The page must be in the connected workspace, and you must have permission to edit it.
+    Marks a Notion page as a [Notion Skill](/guides/mcp/notion-skills) without changing its content. Pass the page's full Notion URL. The page must be in the connected workspace, and you must have permission to edit it.
 
     **Example prompts:**
 

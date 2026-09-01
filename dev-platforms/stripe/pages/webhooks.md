@@ -658,7 +658,7 @@ Without verification, an attacker could send fake webhook events to your endpoin
 Use both of these protections:
 
 - **IP allowlisting**: Stripe sends webhook events from a set list of [IP addresses](https://docs.stripe.com/ips.md). Configure your server or firewall to only accept webhook requests from these addresses.
-- **Signature verification**: Stripe signs every webhook event by including a signature in the `Stripe-Signature` header. Verify this signature using our [official libraries](https://docs.stripe.com/webhooks.md#verify-official-libraries) or [manually](https://docs.stripe.com/webhooks.md#verify-manually) to confirm the event wasn’t sent or modified by a third party.
+- **Signature verification**: Stripe signs every webhook event by including a signature in the `Stripe-Signature` header. Verify this signature using our [official libraries](https://docs.stripe.com/webhooks.md#verify-signature) or follow the [manual verification steps](https://docs.stripe.com/webhooks.md?verify=verify-manually#verify-signature) to confirm the event wasn’t sent or modified by a third party.
 
 The following section describes how to verify webhook signatures:
 

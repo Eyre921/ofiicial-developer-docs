@@ -15,7 +15,5 @@ If you downgrade or cancel your plan, this will not take effect until the end of
 Pay As You Go credits are affected when you upgrade or downgrade your subscription. When you
 change plans, your PAYG credit balance will be recalculated because credits are stored as a dollar
 value and converted at your current plan's rate. The dollar value remains the same, but the number
-of credits it converts to may change. See [What happens to my PAYG credits if I change
-subscription
-plans?](/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans)
+of credits it converts to may change. See [What happens to my PAYG credits if I change subscription plans?](/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans)
 for details. PAYG credits will expire 12 months after purchase.

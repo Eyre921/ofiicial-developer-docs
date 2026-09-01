@@ -10,11 +10,11 @@ path: docs/help-center/account/general/how-do-i-change-the-usage-based-billing-t
 
 Usage based billing is a legacy feature, and is not available on new self-serve subscriptions. Enterprise contracts remain on overage-based billing and are not affected by this change.
 
-For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
+For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
-On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota. 
+On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656/assets/images/help-center/account/general/how-do-i-change-the-usage-based-billing-threshold-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100020Z&X-Amz-Expires=604800&X-Amz-Signature=a962e0597bc1c4fe2aa28586392e46387f943f483f5385214bdea8c611d32519&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656/assets/images/help-center/account/general/how-do-i-change-the-usage-based-billing-threshold-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233412Z&X-Amz-Expires=604800&X-Amz-Signature=e2005b7183a7ed2f16ef8b165e35cb30ea046ef1abf940fc1831f19faf642a9c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 To allow for more control over charges, usage based billing lets you set a maximum number of additional credits that can be used on your account. You can set this threshold when you enable usage based billing, or adjust it at any time.
 

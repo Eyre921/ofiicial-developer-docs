@@ -8,8 +8,7 @@ path: docs/eleven-api/guides/how-to/music/streaming
 
 # Music streaming
 
-**How-to guide** · Assumes you have completed the [Music
-quickstart](/docs/eleven-api/guides/cookbooks/music).
+**How-to guide** · Assumes you have completed the [Music quickstart](/docs/eleven-api/guides/cookbooks/music).
 
 The Music API is only available to paid users.
 

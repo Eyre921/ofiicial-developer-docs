@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 405 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 406 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -264,6 +264,7 @@
 - `docs/cookbook/evaluate-and-optimize/distillation` — [Distillation](pages/docs/cookbook/evaluate-and-optimize/distillation.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/distillation.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6` — [Claude 4.6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7` — [Claude 4.7 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md)
+- `docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1` — [Claude Fable 5.1 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4` — [GPT-5.4 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6` — [GPT-5.6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/opus-5` — [Claude Opus 5 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5.md)

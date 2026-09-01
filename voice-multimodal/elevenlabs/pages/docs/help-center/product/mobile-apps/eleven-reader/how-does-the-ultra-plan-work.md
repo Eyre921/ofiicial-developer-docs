@@ -8,9 +8,9 @@ path: docs/help-center/product/mobile-apps/eleven-reader/how-does-the-ultra-plan
 
 # How does the Ultra plan work?
 
-The Ultra plan includes up to 24 hours of audio per day for your own imported content (PDFs, text, links, ePubs, docs, and more) at normal (1.0x) speed. Listening to your text-to-audio for your files at a higher playback speed will consume these hours at a faster rate.  
+The Ultra plan includes up to 24 hours of audio per day for your own imported content (PDFs, text, links, ePubs, docs, and more) at normal (1.0x) speed. Listening to your text-to-audio for your files at a higher playback speed will consume these hours at a faster rate.
 
-Plus, Ultra subscribers gain access to 20 hours per month of premium audiobooks and ebooks from our Explore catalog. The plan cannot be shared with other accounts. 
+Plus, Ultra subscribers gain access to 20 hours per month of premium audiobooks and ebooks from our Explore catalog. The plan cannot be shared with other accounts.
 
 The Ultra plan also includes:
 

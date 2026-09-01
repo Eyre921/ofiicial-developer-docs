@@ -39,7 +39,9 @@ Both accept up to 3600 seconds. They are ceilings, not delays — raising them d
 
 ## While the Endpoint is serving
 
-SageMaker keeps polling `/ping` every few seconds. If the container reaches a state where it should not serve — the inference engine stops responding, for example — it reports unhealthy and refuses new requests, so callers get a fast error instead of a stalled one.
+SageMaker keeps polling `/ping` every few seconds. If the container reaches a state where it should not serve — the inference engine stops responding, for example — it reports unhealthy, so SageMaker stops routing new traffic to it and, if the fault persists, replaces it.
+
+Reporting unhealthy is not the same as refusing requests. A container that is simply busy — at its configured stream limit, for example — reports unhealthy while still passing requests through to the inference API: one that fits is served normally, and one that does not receives the API's own response rather than a generic container error. The container refuses requests itself only when something is genuinely wrong and shedding load is the fastest way back to health.
 
 SageMaker then replaces the instance automatically. Replacement is not instantaneous: AWS requires a sustained failure signal, so a brief blip does not cycle your fleet.
 
@@ -56,14 +58,34 @@ sagemaker_endpoint_health{state="degraded"} 0
 sagemaker_endpoint_health{state="critical"} 0
 ```
 
-| `state`        | Meaning                                                                                  | What to do                                                                                                                                                |
-| -------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `initializing` | Normal startup while models load. `/ping` returns `503` and SageMaker routes no traffic. | Nothing. Expect this on every new instance.                                                                                                               |
-| `healthy`      | The container is serving inference.                                                      | Nothing.                                                                                                                                                  |
-| `degraded`     | A recoverable fault. The container refuses new requests until it clears.                 | Watch it. A brief `degraded` that returns to `healthy` is self-recovery working as designed.                                                              |
-| `critical`     | The container cannot recover on its own. Only replacement clears this state.             | SageMaker replaces the instance. If it recurs, contact your [Deepgram representative](https://deepgram.com/contact-us) with the Endpoint name and Region. |
+| `state`        | Meaning                                                                                                                                     | What to do                                                                                                                                                                                     |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `initializing` | Normal startup while models load. `/ping` returns `503` and SageMaker routes no traffic.                                                    | Nothing. Expect this on every new instance.                                                                                                                                                    |
+| `healthy`      | The container is serving inference.                                                                                                         | Nothing.                                                                                                                                                                                       |
+| `degraded`     | A recoverable fault, or a container at its stream limit. `/ping` reports unhealthy; requests that the container can serve are still served. | Watch it. A brief `degraded` that returns to `healthy` is self-recovery working as designed. Sustained `degraded` under heavy load usually means the endpoint needs more capacity, not repair. |
+| `critical`     | The container cannot recover on its own. Only replacement clears this state.                                                                | SageMaker replaces the instance. If it recurs, contact your [Deepgram representative](https://deepgram.com/contact-us) with the Endpoint name and Region.                                      |
 
 Because every state is always emitted, an alarm on any one of them never reads "no data" while the container is running. A series that disappears entirely means the scrape failed — a different condition, worth alarming on separately.
+
+### Warning before a container is written off
+
+`critical` is deliberately slow to arrive. A container only reaches it after the inference engine has looked unhealthy *continuously* for several minutes, so that a container which is simply at its stream limit sheds load and recovers instead of being written off. Any sign of recovery in that window resets the clock.
+
+That means `critical` is a reliable signal but not an early one. For early warning, use the companion gauge:
+
+```
+sagemaker_time_to_critical_seconds 214
+```
+
+It counts down the seconds remaining before the container would enter `critical`. It reports `-1` whenever nothing is counting — the normal reading on a healthy container — and `0` once the container has entered `critical`.
+
+Guard alarms against that `-1`, or they fire constantly on healthy containers:
+
+```
+sagemaker_time_to_critical_seconds >= 0 and sagemaker_time_to_critical_seconds < 120
+```
+
+A container that dips into a countdown and returns to `-1` recovered on its own, exactly as intended.
 
 The container emits this gauge itself, so `/metrics` answers even when the internal API and Engine metric sources are not yet reachable — during startup, for example. In that window the response carries the health gauge alone rather than failing the scrape.
 

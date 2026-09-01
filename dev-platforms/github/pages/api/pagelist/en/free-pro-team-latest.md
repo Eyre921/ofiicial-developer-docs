@@ -1747,7 +1747,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-on-github/set-up-copilot/enable-copilot/set-up-for-students
 /en/copilot/how-tos/copilot-on-github/set-up-copilot/enable-copilot/set-up-for-teachers-and-os-maintainers
 /en/copilot/how-tos/copilot-on-github/set-up-copilot/configure-access-to-ai-models
-/en/copilot/how-tos/copilot-on-github/set-up-copilot/configure-automatic-review
+/en/copilot/how-tos/copilot-on-github/set-up-copilot/configure-code-review
 /en/copilot/how-tos/copilot-on-github/set-up-copilot/configure-runners
 /en/copilot/how-tos/copilot-on-github/chat-with-copilot
 /en/copilot/how-tos/copilot-on-github/chat-with-copilot/get-started-with-chat
@@ -2891,6 +2891,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/github-cli/github-cli
 /en/github-cli/github-cli/about-github-cli
 /en/github-cli/github-cli/quickstart
+/en/github-cli/github-cli/attaching-files-with-github-cli
 /en/github-cli/github-cli/using-multiple-accounts
 /en/github-cli/github-cli/creating-github-cli-extensions
 /en/github-cli/github-cli/using-github-cli-extensions

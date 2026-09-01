@@ -109,3 +109,20 @@ const { records, lastControl } = useSessionStream<string>(sessionId, {
 ```
 
 For an expiring token on a long-lived subscription, pass `refreshAccessToken` (see [Realtime auth](/docs/realtime/auth)). To read a session channel outside React, use [`session.out.read()`](/docs/ai-chat/sessions).
+
+## Named side channels
+
+`useSessionStream` reads a session's reserved channel. To read a [named side channel](/docs/ai-chat/side-channels) — a durable, cross-run stream separate from the chat transcript — use `useSessionStreamChannel`. It takes the channel name as its first argument and has the same options and return shape, plus a channel-definition type argument that types `records`:
+
+```tsx theme={"theme":"css-variables"}
+import { useSessionStreamChannel } from "@trigger.dev/react-hooks";
+import type { screenshots } from "../trigger/channels";
+
+const { records } = useSessionStreamChannel<typeof screenshots>("screenshots", {
+  sessionId,
+  accessToken,
+  io: "out",
+  from: "latest",
+  maxRecords: 1,
+});
+```

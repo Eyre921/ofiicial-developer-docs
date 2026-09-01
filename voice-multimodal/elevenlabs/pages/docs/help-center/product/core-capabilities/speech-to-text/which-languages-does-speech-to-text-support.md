@@ -8,6 +8,6 @@ path: docs/help-center/product/core-capabilities/speech-to-text/which-languages-
 
 # Which languages does Speech to Text support?
 
-Speech to Text supports over 90 languages. 
+Speech to Text supports over 90 languages.
 
 For a full breakdown of which languages are supported, please see the [language support section](/docs/capabilities/speech-to-text#breakdown-of-language-support) of our [Speech to Text documentation.](/docs/capabilities/speech-to-text)

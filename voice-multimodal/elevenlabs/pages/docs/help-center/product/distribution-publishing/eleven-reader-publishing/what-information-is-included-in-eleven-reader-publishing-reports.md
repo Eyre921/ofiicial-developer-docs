@@ -8,7 +8,7 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # What information is included in ElevenReader Publishing reports?
 
-The ElevenReader Publishing program will provide you with detailed insights into how users interact with your content. In the ‘Reports’ tab on the publishing main page, you will find real-time charts that allow you to track engagement with you content from ElevenReader App content. Reports also include payout information. 
+The ElevenReader Publishing program will provide you with detailed insights into how users interact with your content. In the ‘Reports’ tab on the publishing main page, you will find real-time charts that allow you to track engagement with you content from ElevenReader App content. Reports also include payout information.
 
 Below is a list of definitions to help you navigate. Note that the top tiles in your report represent lifetime statistics, while you can set a preferred date range by selecting a custom date, last 30 days, or last 90 days. This can be applied to all titles or selected ones via the dropdown menu.
 

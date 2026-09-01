@@ -8,7 +8,7 @@ path: docs/help-center/account/workspaces/how-do-i-switch-between-workspaces
 
 # How do I switch between workspaces?
 
-You can be a member of multiple workspaces at any one time. 
+You can be a member of multiple workspaces at any one time.
 
 You can see all workspaces that you're part of, and switch between them, from your workspace switcher.
 

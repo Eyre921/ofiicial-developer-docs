@@ -75,7 +75,7 @@ The username claim is the field in the OIDC token that Kubernetes uses as the id
 Before you can set up OIDC authentication, make sure you have:
 
 * An OIDC-compatible identity provider (Google, Okta, Auth0, Entra ID, etc.).
-* A [GPU cluster](/docs/gpu-clusters-overview) with external OIDC enabled. OIDC must be configured at cluster creation; see [Enable external OIDC on the cluster](#enable-external-oidc-on-the-cluster) below.
+* A [GPU cluster](/docs/gpu-clusters-overview) with external OIDC enabled. OIDC must be configured at cluster creation (see [Enable external OIDC on the cluster](#set-up-the-cluster-admin) below).
 * `kubectl` installed locally.
 * The [admin kubeconfig](/docs/gpu-clusters-quickstart) for the cluster, to create RBAC bindings.
 
@@ -109,7 +109,7 @@ The tasks in this section are run by a cluster admin using the [admin kubeconfig
 
     * **Issuer URL**.
     * **Client ID**.
-    * **Client Secret**, only if your provider requires it (see [Set the OIDC client secret](#set-the-oidc-client-secret) below).
+    * **Client Secret**, only if your provider requires it (see [Set the OIDC client secret](#connect-to-the-cluster-user) below).
 
     <Tip>
       **Provider-specific issuer URL notes:**
@@ -279,10 +279,18 @@ The tasks in this section are run by each team member using their local machine.
     kubectl --kubeconfig=$HOME/.kube/my-cluster-oidc.yaml get nodes
     ```
 
+    <Note>
+      **Together-managed OIDC clusters verify with `get pods`.** If the dashboard **Quick setup** installed `kubelogin` rather than `together-login`, your cluster grants namespace-scoped RBAC, and `get nodes` returns `403 Forbidden` even when authentication works. Use the command shown in the UI:
+
+      ```bash theme={null}
+      kubectl --kubeconfig=$HOME/.kube/oidc-config.yaml get pods
+      ```
+    </Note>
+
     **What to expect:**
 
     * **Browser opens** for login. Sign in with your IdP credentials.
-    * **`403 Forbidden`:** authentication worked, but no RBAC binding exists for your identity. Ask your admin to complete [Grant RBAC permissions](#grant-rbac-permissions).
+    * **`403 Forbidden`:** authentication worked, but no RBAC binding exists for your identity. Ask your admin to complete [Grant RBAC permissions](#set-up-the-cluster-admin).
     * **Success:** you're authenticated and authorized. You're done.
   </Step>
 </Steps>
@@ -303,7 +311,21 @@ Existing tokens will continue to work until they expire. For immediate revocatio
 
 OIDC tokens are short-lived (typically one hour, depending on your IdP configuration). When a token expires, the login plugin automatically opens a browser for re-authentication. If your IdP supports refresh tokens, re-authentication may be seamless without a login prompt.
 
-Cached tokens are stored locally in `$HOME/.kube/cache/oidc-login/`. To force a fresh login, delete this directory.
+Cached tokens are stored locally in `$HOME/.kube/cache/oidc-login/`. To force a fresh login, clear the cache.
+
+<Warning>
+  **After a role or permissions change, clear the OIDC token cache.** When your role changes (for example, new RBAC bindings or a change to your IdP group), the cached token may still carry the old identity or claims until it expires. Clear the cache so the next `kubectl` call triggers a fresh login that picks up the new access:
+
+  ```bash theme={null}
+  kubectl together-login clean
+  ```
+
+  On Together-managed OIDC clusters, which use `kubelogin`, run `kubectl oidc-login clean` instead. Deleting the cache directory works with either plugin:
+
+  ```bash theme={null}
+  rm -rf $HOME/.kube/cache/oidc-login/
+  ```
+</Warning>
 
 ## Troubleshooting
 
@@ -314,7 +336,8 @@ Authentication succeeded, but there is no RBAC binding granting that identity th
 **Fix:**
 
 * Confirm the exact value of your username claim (e.g., is it `user@company.com` or a `sub` UUID?).
-* Ask a cluster admin to create a ClusterRoleBinding or RoleBinding for your user or group (see [Grant RBAC permissions](#grant-rbac-permissions)).
+* Ask a cluster admin to create a ClusterRoleBinding or RoleBinding for your user or group (see [Grant RBAC permissions](#set-up-the-cluster-admin)).
+* On Together-managed OIDC clusters, retry with `kubectl --kubeconfig=$HOME/.kube/oidc-config.yaml get pods` instead of `get nodes`. Members typically have namespace-scoped RBAC, so listing nodes is Forbidden even when access works.
 
 ### `401 Unauthorized` or "provide credentials"
 
@@ -323,8 +346,10 @@ Token validation failed at the API server.
 **Fix:**
 
 * Verify the cluster's OIDC configuration: issuer URL must match token `iss`, client ID must match token `aud`, and the username claim must exist in the token.
-* Clear cached tokens and retry:
+* Clear cached tokens and retry (also required after a role or permissions change):
   ```bash theme={null}
+  kubectl together-login clean
+  # Or delete the cache directly:
   rm -rf $HOME/.kube/cache/oidc-login/
   ```
 

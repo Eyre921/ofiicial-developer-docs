@@ -412,6 +412,9 @@ Possible enum values:
   - `embedded_page`
     The Checkout Session is displayed as an embedded form on your website.
 
+  - `form`
+    The Checkout Session is displayed using the Checkout form on your website.
+
   - `hosted_page`
     The Checkout Session is displayed on a hosted page that customers get redirected to.
 

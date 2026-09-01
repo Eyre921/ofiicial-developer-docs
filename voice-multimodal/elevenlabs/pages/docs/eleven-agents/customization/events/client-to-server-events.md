@@ -10,8 +10,7 @@ path: docs/eleven-agents/customization/events/client-to-server-events
 
 **Client-to-server events** are messages that your application proactively sends to the server to provide additional context during conversations. These events enable you to enhance the conversation with relevant information without interrupting the conversational flow.
 
-For information on events the server sends to the client, see the [Client
-events](/docs/eleven-agents/customization/events/client-events) documentation.
+For information on events the server sends to the client, see the [Client events](/docs/eleven-agents/customization/events/client-events) documentation.
 
 ## Overview
 
@@ -149,5 +148,4 @@ setInterval(sendUserActivity, 30000);
    * Consider grouping multiple contextual updates into a single update (instead of sending every small change separately).
    * Balance between keeping the session alive and avoiding excessive messaging.
 
-For detailed implementation examples, check our [SDK
-documentation](/docs/eleven-agents/libraries/python).
+For detailed implementation examples, check our [SDK documentation](/docs/eleven-agents/libraries/python).

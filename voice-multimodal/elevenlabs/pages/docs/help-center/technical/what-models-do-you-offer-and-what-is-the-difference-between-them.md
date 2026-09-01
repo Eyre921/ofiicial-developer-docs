@@ -12,11 +12,11 @@ path: docs/help-center/technical/what-models-do-you-offer-and-what-is-the-differ
 
 **Flagship Models**
 \
- 
+
 
 **Eleven v3 (model\_id = eleven\_v3)**- Eleven v3 is our latest and most advanced speech
 synthesis model. It is a state-of-the-art model that produces natural, life-like speech with high
-emotional range and contextual understanding across multiple languages. 
+emotional range and contextual understanding across multiple languages.
 
 For UI generations, 1 character costs 1 credit, excluding credit multipliers. API generations are discounted - for details, see our [API Pricing.](https://elevenlabs.io/pricing)\
 \
@@ -98,7 +98,7 @@ Eleven v3 supports 74 languages:
 * **CYM** Welsh
 
 **Multilingual v2 (model\_id = eleven\_multilingual\_v2)** - Multilingual v2 is our most
-life-like, emotionally rich model. It's best for voiceovers, audiobooks, and content creation. 
+life-like, emotionally rich model. It's best for voiceovers, audiobooks, and content creation.
 
 For UI generations, 1 character costs 1 credit, excluding credit multipliers. API generations are discounted - for details, see our [API Pricing.](https://elevenlabs.io/pricing)
 
@@ -134,11 +134,11 @@ Multilingual v2 supports 29 languages:
 * **TUR** Turkish
 * **UKR** Ukrainian
 
- 
+
 
 **Flash v2.5 - (model\_id = eleven\_flash\_v2\_5) -** our latest, ultra-low-latency model,
 generating speech in under 75ms.  Best for developer use cases requiring speed and multiple
-languages. 
+languages.
 
 For UI generations, 1 character costs 1 credit, excluding credit multipliers. API generations are discounted - for details, see our [API Pricing.](https://elevenlabs.io/pricing)
 
@@ -177,16 +177,16 @@ It supports 32 languages:
 * **UKR** Ukrainian
 * **VIE** Vietnamese
 
- 
+
 
 **Flash v2 - (model\_id = eleven\_flash\_v2)**- our latest, ultra-low-latency English-only
-model, generating speech in under 75ms.  Best for developer use cases requiring speed. 
+model, generating speech in under 75ms.  Best for developer use cases requiring speed.
 
 For UI generations, 1 character costs 1 credit, excluding credit multipliers. API generations are discounted - for details, see our [API Pricing.](https://elevenlabs.io/pricing)
 
 * **ENG** English
 
- 
+
 
 ## **Older Models**
 
@@ -194,7 +194,7 @@ For UI generations, 1 character costs 1 credit, excluding credit multipliers. AP
 
 **Turbo v2.5** - **(model\_id = eleven\_turbo\_v2\_5)**- Eleven Turbo v2.5 is
 our high-quality, low-latency model with a good balance of quality and speed. As the Flash models
-give very similar results, we recommend using the Flash models over Turbo. 
+give very similar results, we recommend using the Flash models over Turbo.
 
 For UI generations, 1 character costs 1 credit, excluding credit multipliers. API generations are discounted - for details, see our [API Pricing.](https://elevenlabs.io/pricing)
 
@@ -233,10 +233,10 @@ It supports 32 languages, including:
 * **UKR** Ukrainian
 * **VIE** Vietnamese
 
- 
+
 
 **Turbo v2 (model\_id = eleven\_turbo\_v2)** - As the Flash models give very similar
-results, we recommend using the Flash models over Turbo. 
+results, we recommend using the Flash models over Turbo.
 
 For UI generations, 1 character costs 1 credit, excluding credit multipliers. API generations are discounted - for details, see our [API Pricing.](https://elevenlabs.io/pricing)
 

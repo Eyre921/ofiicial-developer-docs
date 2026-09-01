@@ -8,8 +8,7 @@ path: docs/eleven-agents/guides/integrations/raspberry-pi-voice-assistant
 
 # Build a Voice Assistant with Agents Platform on a Raspberry Pi
 
-**Tutorial** · Assumes you have completed the [ElevenAgents
-quickstart](/docs/eleven-agents/quickstart) and have a Raspberry Pi with Python installed.
+**Tutorial** · Assumes you have completed the [ElevenAgents quickstart](/docs/eleven-agents/quickstart) and have a Raspberry Pi with Python installed.
 
 ## Introduction
 

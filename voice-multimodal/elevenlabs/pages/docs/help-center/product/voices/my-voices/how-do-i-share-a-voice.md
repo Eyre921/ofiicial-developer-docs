@@ -24,26 +24,21 @@ your Professional Voice Clones at the top of My Voices.
 
 In the pop-up, enable the **Publish to the Voice Library** toggle.
 
-Before proceeding, you can set a notice period and enable Live Moderation. See the [Voice
-Library Addendum](https://elevenlabs.io/vla) to our [Terms of
-Service](https://elevenlabs.io/terms-of-use) for details, as well as:
+Before proceeding, you can set a notice period and enable Live Moderation. See the [Voice Library Addendum](https://elevenlabs.io/vla) to our [Terms of Service](https://elevenlabs.io/terms-of-use) for details, as well as:
 
 * [What is a notice period?](/docs/help-center/product/voices/voice-library/what-is-a-notice-period)
 * [What is Live Moderation?](/docs/help-center/product/voices/voice-library/what-is-live-moderation)
 
 You can also select a custom voice preview. Any generations you’ve made of 70–150 characters
 will be available. If you don’t see options in the selection menu, no eligible generations are
-available. For more details, see [How do I add a custom preview for my shared
-voice?](/docs/help-center/product/voices/voice-library/how-do-i-add-a-custom-preview-for-my-shared-voice)
+available. For more details, see [How do I add a custom preview for my shared voice?](/docs/help-center/product/voices/voice-library/how-do-i-add-a-custom-preview-for-my-shared-voice)
 
-Enter a name and description for your voice. Make sure the name follows our [naming
-guidelines](/docs/product-guides/voices/voice-library#sharing-a-professional-voice-clone).
+Enter a name and description for your voice. Make sure the name follows our [naming guidelines](/docs/product-guides/voices/voice-library#sharing-a-professional-voice-clone).
 
 Set labels (language, accent, gender, age, use case, tone, and style) to help others find your
 voice.
 
-Review and accept the [Voice Library Addendum](https://elevenlabs.io/vla) to our [Terms of
-Service](https://elevenlabs.io/terms-of-use) and provide the required consents and confirmations.
+Review and accept the [Voice Library Addendum](https://elevenlabs.io/vla) to our [Terms of Service](https://elevenlabs.io/terms-of-use) and provide the required consents and confirmations.
 Do this carefully and make sure you understand the service before sharing. If you have
 questions, contact [legal@elevenlabs.io](mailto:legal@elevenlabs.io).
 
@@ -69,6 +64,5 @@ link will be generated, which you can give to other ElevenLabs users to add your
 account.
 
 Anyone with the link will be able to add your voice to their account. If you would like to
-restrict usage to named users, you can [add them to your
-workspace](/docs/help-center/account/workspaces/can-i-add-users-to-my-account) and share with
+restrict usage to named users, you can [add them to your workspace](/docs/help-center/account/workspaces/can-i-add-users-to-my-account) and share with
 them there.

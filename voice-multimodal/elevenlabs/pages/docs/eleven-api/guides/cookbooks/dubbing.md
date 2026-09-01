@@ -239,8 +239,7 @@ curl -o dubbed.wav "<lossless_audio_url>"
 The dubbed audio is saved to `dubbed.wav` in your working directory.
 
 Enterprise workspaces can review and correct the source transcript before adding a language, which
-produces more accurate translations. See [Refine and regenerate a
-dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate).
+produces more accurate translations. See [Refine and regenerate a dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate).
 
 ## Next steps
 

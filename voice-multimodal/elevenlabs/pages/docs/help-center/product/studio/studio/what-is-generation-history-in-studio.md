@@ -8,18 +8,18 @@ path: docs/help-center/product/studio/studio/what-is-generation-history-in-studi
 
 # What is Generation History in Studio?
 
-Generation History allows you to listen to, download and restore previous audio generations for each paragraph.  
+Generation History allows you to listen to, download and restore previous audio generations for each paragraph.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ae1cf11978757a256a23e019b15c5469f72754709daf7f9bfa5d4c1b90e7ebe4/assets/images/help-center/product/studio/studio-generation-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100020Z&X-Amz-Expires=604800&X-Amz-Signature=43a1bf5f071cae9db47c5b7b4f8a6d09c397d1b1c5e2427101fd37fbcd9e21da&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ae1cf11978757a256a23e019b15c5469f72754709daf7f9bfa5d4c1b90e7ebe4/assets/images/help-center/product/studio/studio-generation-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233554Z&X-Amz-Expires=604800&X-Amz-Signature=eefc0578bd8e6c306ed161d31beb32b2401f946c8bffd046adf72790f1de1990&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
- 
 
-The Generation History for each paragraph appears in the left sidebar when you select it. You can see and listen to all the previous generations for the selected paragraph. 
 
-If you prefer an earlier generation, you can restore this by clicking **Restore previous generation**. This audio will then appear as the current version of the paragraph in your project. You can use the lock button to lock the paragraph to prevent further changes. 
+The Generation History for each paragraph appears in the left sidebar when you select it. You can see and listen to all the previous generations for the selected paragraph.
 
-For each generation, you can download the individual audio file. To download, click **More actions** (three dots) > **Download**. 
+If you prefer an earlier generation, you can restore this by clicking **Restore previous generation**. This audio will then appear as the current version of the paragraph in your project. You can use the lock button to lock the paragraph to prevent further changes.
 
-You can also remove generations, but please bear in mind that removing a generation is permanent, and it cannot be recovered. To remove a generation, click **More actions** (three dots) > **Remove**. 
+For each generation, you can download the individual audio file. To download, click **More actions** (three dots) > **Download**.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b9153e995e6984e9d6af639df51542efe2f5a46c09e0a00b354ee9f02fbcbc05/assets/images/help-center/product/studio/studio-generation-history-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100020Z&X-Amz-Expires=604800&X-Amz-Signature=ad4d941978f6ba3f9c97fe999b5fa7ce50df26015b1f0be78dcda44004a5e208&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+You can also remove generations, but please bear in mind that removing a generation is permanent, and it cannot be recovered. To remove a generation, click **More actions** (three dots) > **Remove**.
+
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b9153e995e6984e9d6af639df51542efe2f5a46c09e0a00b354ee9f02fbcbc05/assets/images/help-center/product/studio/studio-generation-history-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233554Z&X-Amz-Expires=604800&X-Amz-Signature=daf9185d5aa4e21fbe9bd357093a2d0c7d57b3965afd2166706ab84119a5ae0a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)

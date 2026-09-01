@@ -8,23 +8,23 @@ path: docs/help-center/product/core-capabilities/text-to-speech/why-are-numbers-
 
 # Why are numbers, dates, symbols and acronyms not properly pronounced or spoken in the correct language?
 
-Numbers, dates, symbols and acronyms can present a challenge to the AI, as there are often multiple ways that they could be delivered correctly. This can also depend on the language that is being used, for example, “11” could be read as "Eleven," but it could also be "Once" in Spanish or "Elf" in German.  
+Numbers, dates, symbols and acronyms can present a challenge to the AI, as there are often multiple ways that they could be delivered correctly. This can also depend on the language that is being used, for example, “11” could be read as "Eleven," but it could also be "Once" in Spanish or "Elf" in German.
 
 There are several ways you can ensure the correct delivery of numbers, dates, acronyms and symbols.
 
- 
+
 
 **Write out fully, in words**
 
-For the best results, we recommend writing numbers, acronyms, dates and symbols fully, in words, in the way that you would like the AI to deliver them. This ensures that the AI has the most context so that it will provide the correct output. For example, for “\$100”, we would recommend writing either "a hundred dollars" or "one hundred dollars" to ensure you get the result you would like.  
+For the best results, we recommend writing numbers, acronyms, dates and symbols fully, in words, in the way that you would like the AI to deliver them. This ensures that the AI has the most context so that it will provide the correct output. For example, for “\$100”, we would recommend writing either "a hundred dollars" or "one hundred dollars" to ensure you get the result you would like.
 
- 
+
 
 **Using an LLM**
 
 If you are using a large language model to generate your text prompts, for example, when using [ElevenAgents](/docs/conversational-ai/overview), you can prompt the model to always write numbers, dates, symbols, and acronyms out in words in whichever way you would prefer them to be delivered by the AI.
 
- 
+
 
 **Normalization**
 
@@ -36,12 +36,12 @@ The`apply_text_normalization` parameter has three modes:
 * off, which means it is never applied
 * auto, which means that the AI will automatically decide when to apply text normalization
 
-You can also specify the language of your prompt using the `language_code`parameter. This is an optional parameter that accepts ISO 639-1 language codes. 
+You can also specify the language of your prompt using the `language_code`parameter. This is an optional parameter that accepts ISO 639-1 language codes.
 
 This can be useful for short or ambiguous prompts, such as when the text includes only numbers or symbols. Specifying the language ensures the normalizer applies the correct rules for that language.
 
 For more information, see our [API reference.](/docs/api-reference/introduction)
 
-Normalization is enabled by default when generating using Text to Speech via the website.  
+Normalization is enabled by default when generating using Text to Speech via the website.
 
 In Studio, the default is for normalization to be automatically applied, meaning that the AI will decide when to apply text normalization. You can also set normalization to be always applied - this option is in **Project settings** under the **Advanced** tab.

@@ -353,7 +353,7 @@ The username claim is the field in the OIDC token that Kubernetes uses as the id
 Before you can set up OIDC authentication, make sure you have:
 
 * An OIDC-compatible identity provider (Google, Okta, Auth0, Entra ID, etc.).
-* A [GPU cluster](/docs/gpu-clusters-overview) with external OIDC enabled. OIDC must be configured at cluster creation; see [Enable external OIDC on the cluster](#enable-external-oidc-on-the-cluster) below.
+* A [GPU cluster](/docs/gpu-clusters-overview) with external OIDC enabled. OIDC must be configured at cluster creation (see [Enable external OIDC on the cluster](#set-up-the-cluster-admin) below).
 * `kubectl` installed locally.
 * The [admin kubeconfig](/docs/gpu-clusters-quickstart) for the cluster, to create RBAC bindings.
 
@@ -387,7 +387,7 @@ The tasks in this section are run by a cluster admin using the [admin kubeconfig
 
     * **Issuer URL**.
     * **Client ID**.
-    * **Client Secret**, only if your provider requires it (see [Set the OIDC client secret](#set-the-oidc-client-secret) below).
+    * **Client Secret**, only if your provider requires it (see [Set the OIDC client secret](#connect-to-the-cluster-user) below).
 
     <Tip>
       **Provider-specific issuer URL notes:**
@@ -557,10 +557,18 @@ The tasks in this section are run by each team member using their local machine.
     kubectl --kubeconfig=$HOME/.kube/my-cluster-oidc.yaml get nodes
     ```
 
+    <Note>
+      **Together-managed OIDC clusters verify with `get pods`.** If the dashboard **Quick setup** installed `kubelogin` rather than `together-login`, your cluster grants namespace-scoped RBAC, and `get nodes` returns `403 Forbidden` even when authentication works. Use the command shown in the UI:
+
+      ```bash theme={null}
+      kubectl --kubeconfig=$HOME/.kube/oidc-config.yaml get pods
+      ```
+    </Note>
+
     **What to expect:**
 
     * **Browser opens** for login. Sign in with your IdP credentials.
-    * **`403 Forbidden`:** authentication worked, but no RBAC binding exists for your identity. Ask your admin to complete [Grant RBAC permissions](#grant-rbac-permissions).
+    * **`403 Forbidden`:** authentication worked, but no RBAC binding exists for your identity. Ask your admin to complete [Grant RBAC permissions](#set-up-the-cluster-admin).
     * **Success:** you're authenticated and authorized. You're done.
   </Step>
 </Steps>
@@ -581,7 +589,21 @@ Existing tokens will continue to work until they expire. For immediate revocatio
 
 OIDC tokens are short-lived (typically one hour, depending on your IdP configuration). When a token expires, the login plugin automatically opens a browser for re-authentication. If your IdP supports refresh tokens, re-authentication may be seamless without a login prompt.
 
-Cached tokens are stored locally in `$HOME/.kube/cache/oidc-login/`. To force a fresh login, delete this directory.
+Cached tokens are stored locally in `$HOME/.kube/cache/oidc-login/`. To force a fresh login, clear the cache.
+
+<Warning>
+  **After a role or permissions change, clear the OIDC token cache.** When your role changes (for example, new RBAC bindings or a change to your IdP group), the cached token may still carry the old identity or claims until it expires. Clear the cache so the next `kubectl` call triggers a fresh login that picks up the new access:
+
+  ```bash theme={null}
+  kubectl together-login clean
+  ```
+
+  On Together-managed OIDC clusters, which use `kubelogin`, run `kubectl oidc-login clean` instead. Deleting the cache directory works with either plugin:
+
+  ```bash theme={null}
+  rm -rf $HOME/.kube/cache/oidc-login/
+  ```
+</Warning>
 
 ## Troubleshooting
 
@@ -592,7 +614,8 @@ Authentication succeeded, but there is no RBAC binding granting that identity th
 **Fix:**
 
 * Confirm the exact value of your username claim (e.g., is it `user@company.com` or a `sub` UUID?).
-* Ask a cluster admin to create a ClusterRoleBinding or RoleBinding for your user or group (see [Grant RBAC permissions](#grant-rbac-permissions)).
+* Ask a cluster admin to create a ClusterRoleBinding or RoleBinding for your user or group (see [Grant RBAC permissions](#set-up-the-cluster-admin)).
+* On Together-managed OIDC clusters, retry with `kubectl --kubeconfig=$HOME/.kube/oidc-config.yaml get pods` instead of `get nodes`. Members typically have namespace-scoped RBAC, so listing nodes is Forbidden even when access works.
 
 ### `401 Unauthorized` or "provide credentials"
 
@@ -601,8 +624,10 @@ Token validation failed at the API server.
 **Fix:**
 
 * Verify the cluster's OIDC configuration: issuer URL must match token `iss`, client ID must match token `aud`, and the username claim must exist in the token.
-* Clear cached tokens and retry:
+* Clear cached tokens and retry (also required after a role or permissions change):
   ```bash theme={null}
+  kubectl together-login clean
+  # Or delete the cache directly:
   rm -rf $HOME/.kube/cache/oidc-login/
   ```
 
@@ -47764,15 +47789,47 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="August 31, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `Qwen/Qwen3.8-Flash`: 1,000,000 context length. Pricing: \$0.15 input / \$0.47 output (per 1M tokens).
+</Update>
+
 <Update label="August 28, 2026">
   ## New serverless models
 
-  The following model is now available on [serverless](/docs/serverless/models):
+  The following models are now available on [serverless](/docs/serverless/models):
 
   * `zai-org/GLM-5.3`: 1,000,000 context length, FP4 quantization, function calling and structured outputs. Pricing: \$1.40 input / \$4.40 output / \$0.26 cached input (per 1M tokens).
 </Update>
 
 <Update label="August 27, 2026">
+  ## Billing usage API (beta)
+
+  `GET /billing/usage` returns organization-wide usage and cost line items, filterable by month. The endpoint is in beta and enabled per organization.
+
+  See [Get billing usage](/reference/billing-usage).
+
+  ## File upload progress in the CLI and Python SDK
+
+  `tg files upload` and `tg files check` now show a progress bar in interactive terminals. The Python SDK accepts an optional `progress_callback` on `client.files.upload()` that receives upload progress events.
+
+  See the [files CLI reference](/reference/cli/files) and [Data preparation](/docs/fine-tuning/data-preparation).
+
+  ## Slurm cluster kubeconfig for project members
+
+  Project members can now download the cluster kubeconfig for Slurm clusters from the cluster details page, matching Kubernetes cluster behavior.
+
+  See [Download cluster kubeconfig](/docs/gpu-clusters-management#download-cluster-kubeconfig).
+
+  ## Legacy API key regeneration
+
+  Legacy API keys can now be regenerated by any admin or editor of the default project. Legacy keys appear in the project's API keys table with a **Deprecated** badge.
+
+  See [Legacy API keys](/docs/api-keys-authentication#legacy-api-keys).
+
   ## Model deprecations
 
   The following models have been deprecated and are no longer available on serverless:
@@ -47782,7 +47839,7 @@ Source: https://docs.together.ai/docs/changelog
   * `deepseek-ai/DeepSeek-V4-Pro`. Use `deepseek-ai/DeepSeek-V4-Pro-0813` instead.
   * `moonshotai/Kimi-K2.7-Code`.
 
-  All of these models except `pearl-ai/gemma-4-31b-it` remain available through on-demand [dedicated endpoints](/docs/dedicated-endpoints). See [Deprecations](/docs/deprecations) for migration options.
+  `deepseek-ai/DeepSeek-V4-Pro` and `moonshotai/Kimi-K2.7-Code` remain available through on-demand [dedicated endpoints](/docs/dedicated-endpoints). See [Deprecations](/docs/deprecations) for migration options.
 </Update>
 
 <Update label="August 26, 2026">
@@ -47800,7 +47857,7 @@ Source: https://docs.together.ai/docs/changelog
 <Update label="August 26, 2026">
   ## New serverless models
 
-  The following model is now available on [serverless](/docs/serverless/models):
+  The following models are now available on [serverless](/docs/serverless/models):
 
   * `zai-org/GLM-5.3-Flash`: 1,000,000 context length, FP8 quantization, function calling and structured outputs. Pricing: \$0.15 input / \$0.50 output / \$0.03 cached input (per 1M tokens).
 </Update>
@@ -47824,6 +47881,14 @@ Source: https://docs.together.ai/docs/changelog
   * `Qwen/Qwen3.8-27B`.
 
   See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+</Update>
+
+<Update label="August 25, 2026">
+  ## Longer context for GLM-5.2
+
+  `zai-org/GLM-5.2` on [serverless](/docs/serverless/models) now accepts a 1,000,000-token context length, up from 512,000. Pricing is unchanged.
+
+  See the [GLM-5.2 quickstart](/docs/glm-5.2-quickstart).
 </Update>
 
 <Update label="August 24, 2026">
@@ -48083,6 +48148,16 @@ Source: https://docs.together.ai/docs/changelog
   While a remote model upload is pending or running, the [Models](https://api.together.ai/models) page shows an **Uploading** badge on the model under **My models** and floats it to the top of the list. Opening the model shows a live **Upload progress** event log until the job finishes.
 
   See [Check upload status](/docs/dedicated-endpoints/custom-models#check-upload-status).
+</Update>
+
+<Update label="July 30, 2026">
+  ## OIDC kubeconfig verify access updates
+
+  In the GPU clusters console, the **OIDC Kubeconfig** dialog **Verify access** step now includes a copyable cache-clear command. After a role or permissions change (new RBAC bindings or an IdP group change), clear the cached OIDC token so the next `kubectl` login picks up the new access.
+
+  On Together-managed OIDC clusters, the step also now suggests `kubectl get pods` instead of `kubectl get nodes`. Members on those clusters typically have namespace-scoped RBAC, so listing nodes returns `403 Forbidden` even when authentication works.
+
+  See [Set up OIDC authentication](/docs/cluster-oidc#token-lifetime-and-refresh).
 </Update>
 
 <Update label="July 29, 2026">

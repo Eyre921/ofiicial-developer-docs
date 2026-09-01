@@ -7,29 +7,11 @@ path: docs/api-reference/webhooks/list-events
 GET /webhooks/:webhook_id/events
 Retrieve a list of events delivered to a webhook.
 
-<Warning>
-  Webhook events and delivery attempts are currently in private beta and only
-  available to a limited number of users. APIs might change before it is
-  generally available. [Get in touch](https://resend.com/help) if you're
-  interested in testing this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.7
-    ```
-  </CodeGroup>
-</Warning>
-
 ## Path Parameters
 
-<ParamField type="string">
+<ResendParamField type="string">
   The Webhook ID.
-</ParamField>
+</ResendParamField>
 
 ## Query Parameters
 
@@ -88,6 +70,89 @@ Retrieve a list of events delivered to a webhook.
   });
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $events = $resend->webhooks->events->list(
+      '4dd369bc-aa82-4ff3-97de-514ae3000ee0'
+  );
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = 're_xxxxxxxxx'
+
+  events = resend.Webhooks.list_events(
+      webhook_id='4dd369bc-aa82-4ff3-97de-514ae3000ee0'
+  )
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require 'resend'
+
+  Resend.api_key = 're_xxxxxxxxx'
+
+  events = Resend::Webhooks.list_events('4dd369bc-aa82-4ff3-97de-514ae3000ee0')
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v4"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Webhooks.ListEvents("4dd369bc-aa82-4ff3-97de-514ae3000ee0")
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{list_opts::ListOptions, Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _events = resend
+      .webhooks
+      .list_events(
+        "4dd369bc-aa82-4ff3-97de-514ae3000ee0",
+        ListOptions::default(),
+      )
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.webhooks.model.ListWebhookEventsResponseSuccess;
+
+  public class Main {
+      public static void main(String[] args) throws ResendException {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          ListWebhookEventsResponseSuccess events = resend.webhooks().listEvents(
+              "4dd369bc-aa82-4ff3-97de-514ae3000ee0"
+          );
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  var resp = await resend.WebhookEventListAsync(
+      new Guid( "4dd369bc-aa82-4ff3-97de-514ae3000ee0" )
+  );
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X GET 'https://api.resend.com/webhooks/4dd369bc-aa82-4ff3-97de-514ae3000ee0/events' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
@@ -101,16 +166,16 @@ Retrieve a list of events delivered to a webhook.
     "has_more": false,
     "data": [
       {
-        "id": "msg_1srOrx2ZWZBpBUvZwXKQmoEYga2",
-        "type": "email.sent",
-        "created_at": "2026-08-22T15:28:00.000Z",
-        "status": "success"
-      },
-      {
         "id": "msg_1srOsB4mXhCqCVwAxYRNnpFZhb3",
         "type": "email.delivered",
-        "created_at": "2026-08-22T15:27:42.000Z",
+        "created_at": "2026-08-22T15:28:00.000Z",
         "status": "failed"
+      },
+      {
+        "id": "msg_1srOrx2ZWZBpBUvZwXKQmoEYga2",
+        "type": "email.sent",
+        "created_at": "2026-08-22T15:27:42.000Z",
+        "status": "success"
       }
     ]
   }

@@ -32,7 +32,7 @@ This model allows users to move beyond stock music libraries and create bespoke 
 
 Eleven Music is available today for all users on the ElevenLabs website.
 
-API access is available for all users on paid subscription plans. See our [API documentation](/docs/cookbooks/music/quickstart) for more information. 
+API access is available for all users on paid subscription plans. See our [API documentation](/docs/cookbooks/music/quickstart) for more information.
 
 Visit the following resources for more information:
 

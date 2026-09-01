@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 357 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 358 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -193,6 +193,7 @@
 - `docs/dashboard/segments/introduction` — [Managing Segments](pages/docs/dashboard/segments/introduction.md) · [原文](https://resend.com/docs/dashboard/segments/introduction)
 - `docs/dashboard/segments/migrating-from-audiences-to-segments` — [Migrating from Audiences to Segments](pages/docs/dashboard/segments/migrating-from-audiences-to-segments.md) · [原文](https://resend.com/docs/dashboard/segments/migrating-from-audiences-to-segments)
 - `docs/dashboard/settings/billing` — [Managing Billing](pages/docs/dashboard/settings/billing.md) · [原文](https://resend.com/docs/dashboard/settings/billing)
+- `docs/dashboard/settings/sso` — [Single Sign-On](pages/docs/dashboard/settings/sso.md) · [原文](https://resend.com/docs/dashboard/settings/sso)
 - `docs/dashboard/settings/team` — [Managing Teams](pages/docs/dashboard/settings/team.md) · [原文](https://resend.com/docs/dashboard/settings/team)
 - `docs/dashboard/settings/unsubscribe-page` — [Custom Unsubscribe Page](pages/docs/dashboard/settings/unsubscribe-page.md) · [原文](https://resend.com/docs/dashboard/settings/unsubscribe-page)
 - `docs/dashboard/templates/introduction` — [Using Templates](pages/docs/dashboard/templates/introduction.md) · [原文](https://resend.com/docs/dashboard/templates/introduction)

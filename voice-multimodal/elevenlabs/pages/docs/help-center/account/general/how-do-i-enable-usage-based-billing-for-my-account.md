@@ -10,9 +10,9 @@ path: docs/help-center/account/general/how-do-i-enable-usage-based-billing-for-m
 
 Usage based billing is a legacy feature, and is not available on new self-serve subscriptions. Enterprise contracts remain on overage-based billing and are not affected by this change.
 
-For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
+For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df/assets/images/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T082929Z&X-Amz-Expires=604800&X-Amz-Signature=46261da7fbcd06a63fd040987b08a89bf9b8164d2014472c6cbaf7a40b8d0117&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df/assets/images/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233415Z&X-Amz-Expires=604800&X-Amz-Signature=15682f7bfd20fe595476251c19bb0a70e118976d3a1eb3ae1ef33c4f20e9bc0b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. If you're on an eligible plan, here’s how to enable usage based billing for your account:
 

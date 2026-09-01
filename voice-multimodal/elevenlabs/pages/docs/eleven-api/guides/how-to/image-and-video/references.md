@@ -8,8 +8,7 @@ path: docs/eleven-api/guides/how-to/image-and-video/references
 
 # References and assets
 
-**How-to guide** · Assumes you have completed the [Image & Video
-quickstart](/docs/eleven-api/guides/cookbooks/image-and-video).
+**How-to guide** · Assumes you have completed the [Image & Video quickstart](/docs/eleven-api/guides/cookbooks/image-and-video).
 
 ## Overview
 
@@ -87,13 +86,11 @@ console.log(clip.id);
 
 Only the last generation needs `webhook`. Setting it on the image as well delivers an event for the
 intermediate result too, which is useful for reporting progress but is not needed to drive the
-chain. As elsewhere, the field requires a webhook subscribed to generation events; see [Image &
-Video webhooks](/docs/eleven-api/guides/how-to/image-and-video/webhooks) to set one up.
+chain. As elsewhere, the field requires a webhook subscribed to generation events; see [Image & Video webhooks](/docs/eleven-api/guides/how-to/image-and-video/webhooks) to set one up.
 
 Without an endpoint to receive callbacks, drop `webhook` and poll the end of the chain instead. The
 intermediate image still needs no polling of its own — wait once, on the last generation, at the
-interval for its modality, which for video is no more than once every 10 seconds. See [Polling
-guidelines](/docs/eleven-api/guides/cookbooks/image-and-video#polling-guidelines).
+interval for its modality, which for video is no more than once every 10 seconds. See [Polling guidelines](/docs/eleven-api/guides/cookbooks/image-and-video#polling-guidelines).
 
 ```python
 import time

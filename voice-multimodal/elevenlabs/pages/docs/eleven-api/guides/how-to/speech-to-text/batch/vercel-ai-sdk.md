@@ -8,8 +8,7 @@ path: docs/eleven-api/guides/how-to/speech-to-text/batch/vercel-ai-sdk
 
 # Vercel AI SDK
 
-**How-to guide** · Assumes you have completed the [Speech to Text
-quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text) and have a Vercel project set up.
+**How-to guide** · Assumes you have completed the [Speech to Text quickstart](/docs/eleven-api/guides/cookbooks/speech-to-text) and have a Vercel project set up.
 
 # ElevenLabs Provider
 

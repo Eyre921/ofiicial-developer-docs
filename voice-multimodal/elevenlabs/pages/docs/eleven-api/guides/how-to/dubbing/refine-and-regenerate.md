@@ -181,6 +181,5 @@ console.log("Fresh output at", language.outputs!.losslessAudio!);
 Regenerate returns a `409 Conflict` if the project is not `ready` or the language is not in a settled state, for example when it is already generating. Once the language reaches `completed` again, `output_revision` equals `revision` and the downloaded audio reflects your edits.
 
 You can control how strongly the dubbed speakers clone the source voices with the
-`cloning_strength` voice setting (0 to 10, default 7) when adding a language. See the [create
-language target](/docs/api-reference/dubbing/language-targets/create-language-target) API
+`cloning_strength` voice setting (0 to 10, default 7) when adding a language. See the [create language target](/docs/api-reference/dubbing/language-targets/create-language-target) API
 reference.

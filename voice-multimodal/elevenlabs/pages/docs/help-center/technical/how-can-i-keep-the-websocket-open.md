@@ -12,7 +12,7 @@ If you're working with the text-to-speech WebSockets endpoint via our API, the c
 
 To keep the connection open, you can send a single space character " ". Please note that this string must include a space, as sending a fully empty string, "", will send an End of Sequence (EOS) message, closing the socket.
 
-This will keep the connection open for another 20 seconds.  To keep the connection open for longer, you will need to send additional single space characters " " every 20 seconds.  
+This will keep the connection open for another 20 seconds.  To keep the connection open for longer, you will need to send additional single space characters " " every 20 seconds.
 
 You can also specify how long the connection can be inactive before it's automatically closed.  The default value is 20 seconds, but you can change this by adding `inactivity_timeout` as a query parameter in the WebSockets endpoint.  The maximum allowed value is 180 seconds.
 

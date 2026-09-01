@@ -12,11 +12,11 @@ You can download the generated files in two ways:
 
 You can download a generated file immediately by clicking the download button on the bottom right after generating the content.
 
-Previously generated files can be downloaded from your history. 
+Previously generated files can be downloaded from your history.
 
 To access your history, log in to your account and select **Text to Speech** in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the **Generate speech** button.
 
-From your history, you can click the download icon to see the option to download as either an MP3 (128kbps) or WAV file. 
+From your history, you can click the download icon to see the option to download as either an MP3 (128kbps) or WAV file.
 
 You can also click **Advanced** to download in additional file formats:
 

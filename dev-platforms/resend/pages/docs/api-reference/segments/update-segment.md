@@ -33,6 +33,14 @@ Update an existing segment.
   );
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->segments->update('78261eea-8f8b-4381-83c6-79fa7120f1cf', [
+    'name' => 'Active Users',
+  ]);
+  ```
+
   ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
   import resend
 
@@ -80,6 +88,38 @@ Update an existing segment.
   		panic(err)
   	}
   	fmt.Println(segment)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _segment = resend
+      .segments
+      .update("78261eea-8f8b-4381-83c6-79fa7120f1cf", "Active Users")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          UpdateSegmentOptions options = UpdateSegmentOptions.builder()
+              .name("Active Users")
+              .build();
+
+          UpdateSegmentResponseSuccess response = resend.segments().update("78261eea-8f8b-4381-83c6-79fa7120f1cf", options);
+      }
   }
   ```
 

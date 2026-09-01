@@ -10,10 +10,10 @@ path: docs/help-center/other/what-languages-do-you-support
 
 **Eleven v3 -** our latest and most advanced speech synthesis model. It is a
 state-of-the-art model that produces natural, life-like speech with high emotional range and
-contextual understanding across multiple languages. 
+contextual understanding across multiple languages.
 
 **Eleven v3 Conversational** - our most emotionally intelligent, context-aware Text to
-Speech model, built on Eleven v3 and optimized for real-time dialogue. 
+Speech model, built on Eleven v3 and optimized for real-time dialogue.
 
 \
 \
@@ -96,10 +96,10 @@ Eleven v3 supports 74 languages:
 * **VIE** Vietnamese
 * **CYM** Welsh
 
- 
+
 
 **Multilingual v2** - our most life-like, emotionally rich model. It's best for
-voiceovers, audiobooks and content creation. 
+voiceovers, audiobooks and content creation.
 
 Multilingual v2 supports 29 languages:
 
@@ -133,9 +133,9 @@ Multilingual v2 supports 29 languages:
 * **TUR** Turkish
 * **UKR** Ukrainian
 
- 
 
-**Flash v2.5** - our latest, ultra-low-latency model, generating speech in under 75ms. 
+
+**Flash v2.5** - our latest, ultra-low-latency model, generating speech in under 75ms.
 
 It supports 32 languages:
 
@@ -172,10 +172,10 @@ It supports 32 languages:
 * **UKR** Ukrainian
 * **VIE** Vietnamese
 
- 
+
 
 **Flash v2** - our latest, ultra-low-latency English-only model, generating speech in
-under 75ms. Best for developer use cases requiring speed. 
+under 75ms. Best for developer use cases requiring speed.
 
 * **ENG** English
 

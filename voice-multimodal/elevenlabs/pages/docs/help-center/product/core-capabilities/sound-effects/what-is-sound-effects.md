@@ -10,9 +10,9 @@ path: docs/help-center/product/core-capabilities/sound-effects/what-is-sound-eff
 
 Our sound effects generator allows you to generate any sound imaginable by inputting a prompt.  Create anything from blockbuster sound design for films, to everyday sounds for your video game.
 
-To get started, visit [Sound Effects](https://elevenlabs.io/app/sound-effects) or select **Sound Effects** in the sidebar on the left while logged into your account. 
+To get started, visit [Sound Effects](https://elevenlabs.io/app/sound-effects) or select **Sound Effects** in the sidebar on the left while logged into your account.
 
-Enter your prompt in the text box.  There is a maximum length of 450 characters for your prompt.  
+Enter your prompt in the text box.  There is a maximum length of 450 characters for your prompt.
 
 You can use the settings to control the duration of the sound effect, and how strictly the AI follows your prompt.  If you don't specify the length of the clip, the AI will decide the audio length.
 

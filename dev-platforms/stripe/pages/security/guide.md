@@ -61,7 +61,7 @@ As TLS is a complex suite of cryptographic tools, it’s easy to miss a few deta
 
 Including JavaScript from other sites makes your security dependent on theirs and poses a security risk. If they’re ever compromised, an attacker could execute arbitrary code on your page. In practice, many sites use JavaScript for services like Google Analytics, even on secure pages. Nonetheless, we recommend trying to minimize it.
 
-If you’re using *webhooks* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests), use TLS for the endpoint to avoid traffic being intercepted and having notifications altered (sensitive information is never included in a webhook event). You must also [verify webhook signatures](https://docs.stripe.com/webhooks.md#verify-official-libraries) and [allowlist Stripe’s IP addresses](https://docs.stripe.com/ips.md) to ensure that every Stripe webhook you receive is sent exclusively by Stripe.
+If you’re using *webhooks* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests), use TLS for the endpoint to avoid traffic being intercepted and having notifications altered (sensitive information is never included in a webhook event). You must also [verify webhook signatures](https://docs.stripe.com/webhooks.md#verify-signature) and [allowlist Stripe’s IP addresses](https://docs.stripe.com/ips.md) to ensure that every Stripe webhook you receive is sent exclusively by Stripe.
 
 While complying with the Data Security Standards is important, it shouldn’t be where you stop thinking about security. Some good resources to learn about web security are:
 

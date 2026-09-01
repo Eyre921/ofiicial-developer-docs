@@ -8,8 +8,7 @@ path: docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries
 
 # Using pronunciation dictionaries
 
-**How-to guide** · Assumes you have completed the [ElevenAPI
-quickstart](/docs/eleven-api/quickstart).
+**How-to guide** · Assumes you have completed the [ElevenAPI quickstart](/docs/eleven-api/quickstart).
 
 ## Overview
 

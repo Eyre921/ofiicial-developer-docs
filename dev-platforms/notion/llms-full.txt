@@ -4200,12 +4200,12 @@ Uploaded files can be attached to:
 
 Before uploading, make sure your file type is supported. Here’s what the API accepts:
 
-| Category     | Extensions                                                                                                                                                                                                                                                                       | MIME types                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Audio**    | .aac, .adts, .mid, .midi, .mp3, .mpga, .m4a, .m4b, .mp4, .oga, .ogg, .opus, .wav, .wma, .weba, .flac                                                                                                                                                                             | audio/aac, audio/midi, audio/mpeg, audio/mp4, audio/ogg, audio/wav, audio/x-ms-wma, audio/webm, audio/x-flac                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| **Document** | .pdf, .txt, .csv, .json, .js, .ts, .py, .doc, .dot, .docx, .dotx, .xls, .xlt, .xla, .xlsx, .xltx, .ppt, .pot, .pps, .ppa, .pptx, .potx, .rtf, .md, .markdown, .html, .htm, .epub, .xml, .css, .odt, .ods, .odp, .ics, .yaml, .yml, .tsv, .zip, .gz, .gzip, .tar, .7z, .bz2, .rar | application/pdf, text/plain, text/csv, application/csv, application/json, application/javascript, text/javascript, application/typescript, text/x-python, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.wordprocessingml.template, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.openxmlformats-officedocument.spreadsheetml.template, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/vnd.openxmlformats-officedocument.presentationml.template, application/rtf, text/markdown, text/html, application/epub+zip, text/xml, application/xml, text/css, application/vnd.oasis.opendocument.text, application/vnd.oasis.opendocument.spreadsheet, application/vnd.oasis.opendocument.presentation, text/calendar, text/yaml, text/tab-separated-values, application/zip, application/gzip, application/x-tar, application/x-7z-compressed, application/x-bzip2, application/vnd.rar |
-| **Image**    | .gif, .heic, .jpeg, .jpg, .png, .svg, .tif, .tiff, .webp, .ico, .bmp, .avif, .apng                                                                                                                                                                                               | image/gif, image/heic, image/jpeg, image/png, image/svg+xml, image/tiff, image/webp, image/vnd.microsoft.icon, image/bmp, image/avif, image/apng                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| **Video**    | .amv, .asf, .wmv, .avi, .f4v, .flv, .gifv, .m4v, .mp4, .mkv, .webm, .mov, .qt, .mpeg, .ogv, .3gp, .3g2                                                                                                                                                                           | video/x-amv, video/x-ms-asf, video/x-msvideo, video/x-f4v, video/x-flv, video/mp4, application/mp4, video/webm, video/quicktime, video/mpeg, video/ogg, video/3gpp, video/3gpp2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Category     | Extensions                                                                                                                                                                                                                                                                             | MIME types                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Audio**    | .aac, .adts, .mid, .midi, .mp3, .mpga, .m4a, .m4b, .mp4, .oga, .ogg, .opus, .wav, .wma, .weba, .flac                                                                                                                                                                                   | audio/aac, audio/midi, audio/mpeg, audio/mp4, audio/ogg, audio/wav, audio/x-ms-wma, audio/webm, audio/x-flac                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| **Document** | .pdf, .txt, .csv, .json, .js, .ts, .tsx, .py, .doc, .dot, .docx, .dotx, .xls, .xlt, .xla, .xlsx, .xltx, .ppt, .pot, .pps, .ppa, .pptx, .potx, .rtf, .md, .markdown, .html, .htm, .epub, .xml, .css, .odt, .ods, .odp, .ics, .yaml, .yml, .tsv, .zip, .gz, .gzip, .tar, .7z, .bz2, .rar | application/pdf, text/plain, text/csv, application/csv, application/json, application/javascript, text/javascript, application/typescript, text/x-python, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.wordprocessingml.template, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.openxmlformats-officedocument.spreadsheetml.template, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/vnd.openxmlformats-officedocument.presentationml.template, application/rtf, text/markdown, text/html, application/epub+zip, text/xml, application/xml, text/css, application/vnd.oasis.opendocument.text, application/vnd.oasis.opendocument.spreadsheet, application/vnd.oasis.opendocument.presentation, text/calendar, text/yaml, text/tab-separated-values, application/zip, application/gzip, application/x-tar, application/x-7z-compressed, application/x-bzip2, application/vnd.rar |
+| **Image**    | .gif, .heic, .jpeg, .jpg, .png, .svg, .tif, .tiff, .webp, .ico, .bmp, .avif, .apng                                                                                                                                                                                                     | image/gif, image/heic, image/jpeg, image/png, image/svg+xml, image/tiff, image/webp, image/vnd.microsoft.icon, image/bmp, image/avif, image/apng                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Video**    | .amv, .asf, .wmv, .avi, .f4v, .flv, .gifv, .m4v, .mp4, .mkv, .webm, .mov, .qt, .mpeg, .ogv, .3gp, .3g2                                                                                                                                                                                 | video/x-amv, video/x-ms-asf, video/x-msvideo, video/x-f4v, video/x-flv, video/mp4, application/mp4, video/webm, video/quicktime, video/mpeg, video/ogg, video/3gpp, video/3gpp2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 <Warning>
   **Ensure your file type matches the context**
@@ -11898,10 +11898,13 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Search Notion and connected sources">
     `notion-search`
 
-    Search across your Notion workspace and connected tools like Slack, Google Drive, and Jira.
+    Search Notion and connected apps like Slack, Google Drive, and Jira. In Notion, narrow results by location (page, data source, or teamspace), creator or editor, date, title, or content status. You can also sort results, search with filters only, and return up to 50 results.
+
+    Results may include `path` and `verification` details. Fetch important matches before relying on them.
 
     <Note>
-      Requires Notion AI access. Without a Notion AI plan, search is limited to your Notion workspace only.
+      * Searching connected apps requires Notion AI.
+      * Full Notion MCP on Business or Enterprise is required to filter by editor, last-edited date, multiple teamspaces, title only, or content status, and to sort by date. Other filters are available on every plan.
     </Note>
 
     **Example prompts:**
@@ -11912,10 +11915,24 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Find all project pages that mention 'ready for dev'"
   </Accordion>
 
+  <Accordion title="Search Notion Skills">
+    `notion-search-skills`
+
+    Finds active [Notion Skills](/guides/mcp/notion-skills) that the connected user can access. Pass a Skill name or a short description of the task, or omit the query to list up to 10 recent Skills. Results contain compact metadata; fetch the selected Skill's URL before following its instructions.
+
+    **Example prompts:**
+
+    * "Find my usual workflow for preparing a customer briefing"
+    * "What reusable workflows do I have for code review?"
+    * "Use my weekly project update Skill"
+  </Accordion>
+
   <Accordion title="Fetch Notion content">
     `notion-fetch`
 
     Retrieves content from a Notion page, database, data source, or saved database view by its URL or ID. You can pass a data source ID (from `collection://...` tags in database responses) to fetch details about that specific data source, including its schema and properties. When fetching a database, the response includes available templates for each data source, which can be used with the create-pages and update-page tools.
+
+    Fetched pages include `path`, `page_last_edited_at`, and, when available, `verification.state` and `verification.expires_at`. These fields help distinguish pages with similar titles and identify sources that Notion marks as verified.
 
     Pass a `view://` URL from a database response to read a saved view's filters, sorts, and display settings. A database URL with a `?v=` parameter still returns the database. To read the rows shown by a view, use `notion-query-data-sources` with `mode: "view"`.
 
@@ -11979,7 +11996,9 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Create pages">
     `notion-create-pages`
 
-    Creates one or more Notion pages with specified properties and content. Supports applying [database templates](/guides/data-apis/creating-pages-from-templates) to pre-populate new pages with content and property values. Each page can optionally have an icon (emoji, custom emoji by name, or external URL) and a cover image. If a parent is not specified, a private page will be created.
+    Creates one or more Notion pages with specified properties and content. Supports applying [database templates](/guides/data-apis/creating-pages-from-templates) to pre-populate new pages with content and property values. Each page can optionally have an icon (emoji, custom emoji by name, or external URL) and a cover image. Set `is_skill: true` to create a page as a [Notion Skill](/guides/mcp/notion-skills). If a parent is not specified, a private page will be created.
+
+    Use `creation_mode: "draft"` when the user wants a durable page but has not named a destination. Draft mode creates a workspace-level private page and cannot be combined with `parent`. If the user names a private or shared destination, omit `creation_mode` and create the page under that parent.
 
     **Example prompts:**
 
@@ -11988,12 +12007,13 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Create a new bug report in the tracking database using the 'Urgent Bug' template"
     * "Add a new product feature request to our feature database"
     * "Create a page with the 🚀 icon and a cover image"
+    * "Draft a private launch plan; we'll decide where it belongs later"
   </Accordion>
 
   <Accordion title="Update a page">
     `notion-update-page`
 
-    Update a Notion page's properties, content, icon, or cover. Supports applying [database templates](/guides/data-apis/creating-pages-from-templates) to existing pages. Icon and cover can be set alongside any update command.
+    Update a Notion page's properties, content, icon, or cover. You can also [change whether a page is a Skill](/guides/mcp/notion-skills#change-whether-a-page-is-a-skill) or apply [database templates](/guides/data-apis/creating-pages-from-templates) to an existing page. Icon, cover, and `is_skill` can be set alongside any update command.
 
     <Note>
       The `update_content` command applies content-changing search-and-replace operations as a batch. If any such operation's `old_str` doesn't match content on the page, the call returns a validation error naming the unmatched value and the page is left unchanged. An operation whose `old_str` and `new_str` are identical is ignored without checking for a match. Each `old_str` must be a non-empty string that matches exactly one location, unless `replace_all_matches: true` is set for that operation.
@@ -12011,7 +12031,7 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Convert a page to a skill">
     `notion-convert-page-to-skill`
 
-    Marks a Notion page as an AI skill. Pass the page's full Notion URL. The page must be in the connected workspace, and you must have permission to edit it.
+    Marks a Notion page as a [Notion Skill](/guides/mcp/notion-skills) without changing its content. Pass the page's full Notion URL. The page must be in the connected workspace, and you must have permission to edit it.
 
     **Example prompts:**
 
@@ -12319,6 +12339,36 @@ To illustrate the above limitations, you'll experience rate limit errors in your
 ### What to do if you're rate-limited
 
 In most cases, the time it takes to do a complex AI-powered search across Notion and your connected tools means that sequential searches will typically stay under the rate limit. In general, if you encounter rate limit errors, prompt your LLM tool to reduce the amount of parallel searches or operations performed using Notion MCP, and/or try again later.
+
+
+# Use Notion Skills with MCP
+Source: https://developers.notion.com/guides/mcp/notion-skills
+
+Learn how MCP clients create, find, and use reusable instructions stored as Notion pages.
+
+A Notion Skill is a page you own with instructions for a repeatable workflow. You can maintain it yourself or ask an assistant to do it for you.
+
+## Create a Skill
+
+To create a page as a Skill, call `notion-create-pages` with `is_skill: true` on that page. Before writing it, read the `notion://docs/skills` MCP resource for focused guidance on when a Skill is appropriate and how to write instructions another assistant can follow.
+
+If the MCP client cannot read resources, pass `notion://docs/skills` to `notion-fetch` instead. Do not send this URI to a general web-fetching tool.
+
+To turn an existing page into a Skill without changing its content, call `notion-convert-page-to-skill` with the page's full Notion URL. The connected user must be able to edit the page.
+
+## Find and use a Skill
+
+If the user provides an exact Skill URL, call `notion-fetch` directly. Otherwise, call `notion-search-skills` with the Skill name or a short description of the task. Omit the query to list up to 10 recent Skills.
+
+`notion-search-skills` returns each Skill's name, URL, and, when available, description. Search results don't include the Skill's instructions. Choose a clear match and fetch it before using it.
+
+Only follow the fetched page as instructions when the user's request calls for that Skill or workflow. If the user asks to inspect, summarize, edit, rename, or configure the Skill, treat the page as content instead.
+
+## Change whether a page is a Skill
+
+Call `notion-update-page` with `is_skill: true` to make a page a Skill, or `is_skill: false` to stop treating it as a Skill. To change only whether a page is a Skill, use the `update_properties` command and omit `properties`.
+
+See [Supported tools](/guides/mcp/mcp-supported-tools) for tool details and example prompts.
 
 
 # Notion MCP
@@ -17119,6 +17169,26 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 Source: https://developers.notion.com/page/changelog
 
 
+
+<Update label="August 31, 2026">
+  ### Capture ideas and draft content in Notion
+
+  Your agent can now capture ideas and draft content in Notion without choosing where the page belongs first. The page starts as a private draft, so you can review it and organize it later.
+
+  ### Save and reuse your preferred workflows with Notion Skills
+
+  When you ask your AI to save a workflow you want to reuse, it can now create a [Notion Skill](/guides/mcp/notion-skills) or turn an existing page into one. Skills are reusable instructions stored as Notion pages that you own and can edit.
+
+  When you ask for that workflow later, your AI can find the right Skill and read its instructions before starting.
+
+  ### Find the right page more easily
+
+  Your AI can now narrow [Notion searches](/guides/mcp/mcp-supported-tools) by where a page lives, who created or edited it, when it changed, whether the title matches, and the page's status. It can also sort results and look through up to 50 matches.
+
+  Search results now show more context, including where a page lives and whether Notion has verified it. This helps your AI choose between similar or conflicting pages before reading the full content.
+
+  Every plan includes filters for creator, creation date, and a single page, data source, or teamspace. On Business and Enterprise plans, your AI can also filter by editor, last-edited date, multiple teamspaces, title, or content status, and sort by date.
+</Update>
 
 <Update label="August 27, 2026">
   ### Fetch saved database views in Notion MCP

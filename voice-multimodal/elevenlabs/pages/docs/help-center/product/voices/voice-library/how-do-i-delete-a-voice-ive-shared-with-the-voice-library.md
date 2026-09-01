@@ -12,10 +12,10 @@ To remove a voice that you have shared with the Voice Library, you first need to
 
 Click the **Publish to the Voice Library** toggle to stop sharing your voice with the Voice Library.
 
-If you did not agree a notice period when you shared the voice, you can delete the voice after you have disabled sharing. 
+If you did not agree a notice period when you shared the voice, you can delete the voice after you have disabled sharing.
 
 To do this, click **More actions** (three dots) then select **Delete voice**. Deleting a voice cannot be undone and you will be asked to confirm the deletion.
 
-If you did agree a notice period, you will need to wait for this to expire before you can remove your voice. During the notice period, your voice can be used by anyone who had already saved it to My Voices, but it will no longer be visible in the Voice Library. 
+If you did agree a notice period, you will need to wait for this to expire before you can remove your voice. During the notice period, your voice can be used by anyone who had already saved it to My Voices, but it will no longer be visible in the Voice Library.
 
 Once you have activated the notice period, you will see a clock icon which you can hover over for confirmation.  Please be aware that if you share your voice with the Voice Library again in the future this will reset your notice period.

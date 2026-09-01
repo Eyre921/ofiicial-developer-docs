@@ -10,7 +10,7 @@ path: docs/help-center/product/mobile-apps/eleven-reader/how-does-the-eleven-rea
 
 The ElevenReader Chrome extension makes it easy to import and listen to online content directly in ElevenReader. Once signed in, you can instantly import articles, web pages, or stories without copying links or switching tabs. The extension also supports capturing paywalled or complex pages, auto-importing ePUB files, detecting downloaded documents, highlighting text for quick import, and combining multiple chapters into a single continuous read.
 
- 
+
 
 **How do I install and sign in?**
 
@@ -39,7 +39,7 @@ When you highlight more than 1,000 characters on a webpage, the extension will p
 
 **Bulk chapter import**
 
-If a “Next Chapter” link is detected on your current webpage, the extension will display an **Add Next Chapter** button. Clicking this option collects all subsequent chapters and merges them into a single continuous read. This is best for web novels, fan fiction, and other chapter-based online reading. 
+If a “Next Chapter” link is detected on your current webpage, the extension will display an **Add Next Chapter** button. Clicking this option collects all subsequent chapters and merges them into a single continuous read. This is best for web novels, fan fiction, and other chapter-based online reading.
 
 **Troubleshooting**
 

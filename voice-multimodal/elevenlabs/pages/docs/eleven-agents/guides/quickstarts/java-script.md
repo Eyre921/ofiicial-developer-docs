@@ -10,8 +10,7 @@ path: docs/eleven-agents/guides/quickstarts/java-script
 
 This tutorial will guide you through creating a web client that can interact with a ElevenLabs agent. You'll learn how to implement real-time voice conversations, allowing users to speak with an AI agent that can listen, understand, and respond naturally using voice synthesis.
 
-Looking to build with React/Next.js? Check out our [Next.js
-guide](/docs/eleven-agents/guides/quickstarts/next-js)
+Looking to build with React/Next.js? Check out our [Next.js guide](/docs/eleven-agents/guides/quickstarts/next-js)
 
 ## What You'll Need
 
@@ -69,7 +68,7 @@ elevenlabs-conversational-ai/
 
 In `index.html`, set up a simple user interface:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ad9dea65eddc50beaf444e5d319dc5094df0f4183e50f7ed01900394b3ff9d2/assets/images/conversational-ai/vite-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=688d25009d93d323851f7e5788da8575e98e50560466fa1479c02496d36baf2a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ad9dea65eddc50beaf444e5d319dc5094df0f4183e50f7ed01900394b3ff9d2/assets/images/conversational-ai/vite-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233304Z&X-Amz-Expires=604800&X-Amz-Signature=46e13fc712e6f0dfba77c1fcd16a5ba1221dd5dd901e8d67c09a3673a9a1dcb9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ```html index.html
 <!DOCTYPE html>

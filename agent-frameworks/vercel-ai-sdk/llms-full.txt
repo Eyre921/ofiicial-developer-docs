@@ -46777,6 +46777,49 @@ const { text } = await generateText({
 Amazon Bedrock language models can also be used in the `streamText` function
 (see [AI SDK Core](/docs/ai-sdk-core)).
 
+### Structured Outputs
+
+For Anthropic models, you can use the `structuredOutputMode` provider option to
+choose how Amazon Bedrock generates structured outputs:
+
+- `"outputFormat"`: Use Bedrock's native `output_config.format` parameter.
+- `"jsonTool"`: Use a special `json` tool with required tool choice.
+- `"auto"`: Use native structured output when supported by the model and
+  request, and otherwise fall back to the JSON tool. This is the default.
+
+In `"auto"` mode, Claude Sonnet 4.6 and Claude Haiku 4.5 use the JSON tool
+fallback because native structured output can be unreliable across workloads
+and Bedrock accounts. You can set `"outputFormat"` to opt into native structured
+output when it works for your account and workload, or use `"jsonTool"` to force
+the fallback for any model:
+
+```ts
+import {
+  bedrock,
+  type BedrockProviderOptions,
+} from '@ai-sdk/amazon-bedrock';
+import { generateObject } from 'ai';
+import { z } from 'zod';
+
+const { object } = await generateObject({
+  model: bedrock('eu.anthropic.claude-sonnet-4-6'),
+  schema: z.object({
+    summary: z.string(),
+    findings: z.array(z.string()),
+  }),
+  prompt: 'Summarize the inspection report.',
+  providerOptions: {
+    bedrock: {
+      structuredOutputMode: 'jsonTool',
+    } satisfies BedrockProviderOptions,
+  },
+});
+```
+
+For parity with the Anthropic provider,
+`providerOptions.anthropic.structuredOutputMode` is also honored for Anthropic
+models on Bedrock. When both are provided, the `bedrock` value takes precedence.
+
 ### File Inputs
 
 <Note type="warning">
@@ -77808,6 +77851,13 @@ export default function Chat() {
 }
 ```
 
+Approval request chunks can also include an `approvalDescriptor` with opaque
+application-specific metadata. UI message processing exposes it as
+`part.approval.descriptor` in the `approval-requested` state and preserves it in
+the `approval-responded` state after `addToolApprovalResponse` is called. This
+lets clients render or persist server-computed approval metadata without using
+it to determine whether the tool was approved.
+
 ### Auto-Submit After Approval
 
 <Note>
@@ -89987,6 +90037,51 @@ const { text } = await generateText({
 
 Amazon Bedrock language models can also be used in the `streamText` function
 (see [AI SDK Core](/docs/ai-sdk-core)).
+
+### Structured Outputs
+
+For Anthropic models, you can use the `structuredOutputMode` provider option to
+choose how Amazon Bedrock generates structured outputs:
+
+- `"outputFormat"`: Use Bedrock's native `output_config.format` parameter.
+- `"jsonTool"`: Use a special `json` tool with required tool choice.
+- `"auto"`: Use native structured output when supported and otherwise fall
+  back to the JSON tool. This is the default.
+
+In `"auto"` mode, Claude Sonnet 4.6 and Claude Haiku 4.5 use the JSON tool
+fallback because native structured output can be unreliable across workloads
+and Bedrock accounts. You can set `"outputFormat"` to opt into native structured
+output when it works for your account and workload, or use `"jsonTool"` to force
+the fallback for any model:
+
+```ts
+import {
+  bedrock,
+  type AmazonBedrockLanguageModelOptions,
+} from '@ai-sdk/amazon-bedrock';
+import { generateText, Output } from 'ai';
+import { z } from 'zod';
+
+const { output } = await generateText({
+  model: bedrock('eu.anthropic.claude-sonnet-4-6'),
+  output: Output.object({
+    schema: z.object({
+      summary: z.string(),
+      findings: z.array(z.string()),
+    }),
+  }),
+  prompt: 'Summarize the inspection report.',
+  providerOptions: {
+    bedrock: {
+      structuredOutputMode: 'jsonTool',
+    } satisfies AmazonBedrockLanguageModelOptions,
+  },
+});
+```
+
+For parity with the Anthropic provider,
+`providerOptions.anthropic.structuredOutputMode` is also honored for Anthropic
+models on Bedrock. When both are provided, the `bedrock` value takes precedence.
 
 ### File Inputs
 
@@ -119061,11 +119156,11 @@ Agents provide lifecycle callbacks for logging, observability, and custom teleme
 const agent = new WorkflowAgent({
   model: 'anthropic/claude-sonnet-4-6',
 
-  experimental_onStart({ modelId, messages }) {
-    console.log('Agent started');
+  onStart({ messages }) {
+    console.log(`Agent started with ${messages.length} messages`);
   },
 
-  experimental_onStepStart({ stepNumber }) {
+  onStepStart({ stepNumber }) {
     console.log(`Step ${stepNumber} starting`);
   },
 
@@ -119086,6 +119181,11 @@ const agent = new WorkflowAgent({
   },
 });
 ```
+
+The deprecated `experimental_onStart` and `experimental_onStepStart` names
+remain available for backwards compatibility. When both the stable and
+experimental name are provided in the same constructor or `stream()` call, the
+stable callback is used.
 
 ## Type Inference
 
@@ -119238,7 +119338,7 @@ For persistence, store `UIMessage[]` as your source of truth and call [`convertT
 
 ### Everything else
 
-Other options carry over with the same names: `prepareStep`, `onStepEnd`, `onEnd`, `onError`, `toolChoice`, `activeTools`, `timeout`, `repairToolCall`, `experimental_sandbox`, and the usual generation settings (`temperature`, `maxOutputTokens`, `topP`, …). `WorkflowAgent` additionally adds `prepareCall` (runs once before the loop) and the `experimental_onStart` / `experimental_onStepStart` / `onToolExecutionStart` / `onToolExecutionEnd` lifecycle callbacks documented above.
+Other options carry over with the same names: `prepareStep`, `onStart`, `onStepStart`, `onStepEnd`, `onEnd`, `onError`, `toolChoice`, `activeTools`, `timeout`, `repairToolCall`, `experimental_sandbox`, and the usual generation settings (`temperature`, `maxOutputTokens`, `topP`, …). `WorkflowAgent` additionally adds `prepareCall` (runs once before the loop) and the `onToolExecutionStart` / `onToolExecutionEnd` lifecycle callbacks documented above. The deprecated `experimental_onStart` and `experimental_onStepStart` aliases remain available for backwards compatibility.
 
 ## Next Steps
 
@@ -121990,11 +122090,12 @@ async function generateSomething(prompt: string): Promise<{
 
 ## Handling Errors
 
-The AI SDK has three tool-call related errors:
+The AI SDK has four tool-call related errors:
 
 - [`NoSuchToolError`](/docs/reference/ai-sdk-errors/ai-no-such-tool-error): the model tries to call a tool that is not defined in the tools object
 - [`InvalidToolInputError`](/docs/reference/ai-sdk-errors/ai-invalid-tool-input-error): the model calls a tool with inputs that do not match the tool's input schema
 - [`ToolCallRepairError`](/docs/reference/ai-sdk-errors/ai-tool-call-repair-error): an error that occurred during tool call repair
+- [`ToolChoiceViolationError`](/docs/reference/ai-sdk-errors/ai-tool-choice-violation-error): the `generateText` response does not satisfy a required or specifically selected tool choice
 
 When tool execution fails (errors thrown by your tool's `execute` function), the AI SDK adds them as `tool-error` content parts to enable automated LLM roundtrips in multi-step scenarios.
 
@@ -126770,6 +126871,31 @@ const { providerReference } = await uploadFile({
   },
 });
 ```
+
+## Streaming Uploads
+
+Providers that support streaming uploads (e.g. OpenAI, xAI) accept a tagged
+`{ type: 'stream', stream }` shape, sending the bytes without buffering the
+full file in memory. Providers without streaming support reject stream data
+with an `UnsupportedFunctionalityError`.
+
+```ts
+const { providerReference } = await uploadFile({
+  api: openai.files(),
+  data: { type: 'stream', stream: fileStream },
+  mediaType: 'application/jsonl',
+  filename: 'batch.jsonl',
+});
+```
+
+The provider consumes the stream: any failed upload — including validation
+failures before a request is made — cancels it, and it must not be reused. Stream data cannot be sniffed, so `mediaType` defaults to
+`application/octet-stream` when omitted, and multipart-based providers default
+the filename to `"blob"`.
+
+Uploads can be cancelled with `abortSignal` and carry request-specific
+`headers`. Results include `byteSize`, `createdAt`, and `expiresAt` (the
+provider-applied retention expiry) when the provider reports them.
 
 ## Provider References
 
@@ -138039,11 +138165,11 @@ To see `WorkflowAgent` in action, check out [these examples](#examples).
         'Telemetry configuration with options for enabling/disabling telemetry, setting a function ID, and recording inputs/outputs.',
     },
     {
-      name: 'experimental_onStart',
+      name: 'onStart',
       type: 'WorkflowAgentOnStartCallback',
       isOptional: true,
       description:
-        'Callback called when the agent starts streaming, before any LLM calls. Receives the model, messages, runtime context, and tools context. If also specified in `stream()`, both callbacks fire (constructor first). Experimental (can break in patch releases).',
+        'Callback called when the agent starts streaming, before any LLM calls. Receives the model, messages, runtime context, and tools context. If also specified in `stream()`, both callbacks fire (constructor first). Takes precedence over `experimental_onStart` when both are provided in the constructor.',
       properties: [
         {
           type: 'GenerateTextStartEvent',
@@ -138073,11 +138199,18 @@ To see `WorkflowAgent` in action, check out [these examples](#examples).
       ],
     },
     {
-      name: 'experimental_onStepStart',
+      name: 'experimental_onStart',
+      type: 'WorkflowAgentOnStartCallback',
+      isOptional: true,
+      description:
+        'Deprecated alias for `onStart`. Used only when `onStart` is not provided in the constructor.',
+    },
+    {
+      name: 'onStepStart',
       type: 'WorkflowAgentOnStepStartCallback',
       isOptional: true,
       description:
-        'Callback called before each step (LLM call) begins. Receives step number, model, messages, previous steps, runtime context, and tools context. If also specified in `stream()`, both callbacks fire (constructor first). Experimental (can break in patch releases).',
+        'Callback called before each step (LLM call) begins. Receives step number, model, messages, previous steps, runtime context, and tools context. If also specified in `stream()`, both callbacks fire (constructor first). Takes precedence over `experimental_onStepStart` when both are provided in the constructor.',
       properties: [
         {
           type: 'GenerateTextStepStartEvent',
@@ -138111,6 +138244,13 @@ To see `WorkflowAgent` in action, check out [these examples](#examples).
           ],
         },
       ],
+    },
+    {
+      name: 'experimental_onStepStart',
+      type: 'WorkflowAgentOnStepStartCallback',
+      isOptional: true,
+      description:
+        'Deprecated alias for `onStepStart`. Used only when `onStepStart` is not provided in the constructor.',
     },
     {
       name: 'onToolExecutionStart',
@@ -138461,18 +138601,32 @@ const result = await agent.stream({
         'Per-call prepareStep override. Receives the initial instructions and messages alongside the current step state.',
     },
     {
+      name: 'onStart',
+      type: 'WorkflowAgentOnStartCallback',
+      isOptional: true,
+      description:
+        'Per-call onStart callback. If also specified in the constructor, both fire (constructor first). Takes precedence over `experimental_onStart` when both are provided in this call.',
+    },
+    {
       name: 'experimental_onStart',
       type: 'WorkflowAgentOnStartCallback',
       isOptional: true,
       description:
-        'Per-call onStart callback. If also specified in the constructor, both fire (constructor first). Experimental.',
+        'Deprecated alias for the per-call `onStart` callback. Used only when `onStart` is not provided in this call.',
+    },
+    {
+      name: 'onStepStart',
+      type: 'WorkflowAgentOnStepStartCallback',
+      isOptional: true,
+      description:
+        'Per-call onStepStart callback. If also specified in the constructor, both fire (constructor first). Takes precedence over `experimental_onStepStart` when both are provided in this call.',
     },
     {
       name: 'experimental_onStepStart',
       type: 'WorkflowAgentOnStepStartCallback',
       isOptional: true,
       description:
-        'Per-call onStepStart callback. If also specified in the constructor, both fire (constructor first). Experimental.',
+        'Deprecated alias for the per-call `onStepStart` callback. Used only when `onStepStart` is not provided in this call.',
     },
     {
       name: 'onToolExecutionStart',
@@ -140358,6 +140512,45 @@ import { ToolCallRepairError } from 'ai';
 
 if (ToolCallRepairError.isInstance(error)) {
   // Handle the error
+}
+```
+
+---
+title: ToolChoiceViolationError
+description: Learn how to fix AI SDK ToolChoiceViolationError
+---
+
+# ToolChoiceViolationError
+
+This error occurs when a `generateText` response does not satisfy an enforced
+tool choice. It is thrown when `toolChoice` is set to `'required'` but the
+response contains no structured tool call, or when a specifically selected tool
+was not called.
+
+The error does not automatically interpret text or reasoning as an executable
+tool call. You can inspect `content` to implement opt-in recovery, including
+schema validation before executing any recovered call.
+
+## Properties
+
+- `toolChoice`: The effective tool choice that the response did not satisfy
+- `finishReason`: The reason why the model finished generating the response
+- `provider`: The provider that returned the response
+- `modelId`: The model that returned the response
+- `content`: The normalized content returned by the model
+- `message`: The error message
+
+## Checking for this Error
+
+You can check if an error is an instance of `ToolChoiceViolationError` using:
+
+```typescript
+import { ToolChoiceViolationError } from 'ai';
+
+if (ToolChoiceViolationError.isInstance(error)) {
+  const serializedCall = error.content.find(part => part.type === 'text')?.text;
+
+  // Parse and validate serializedCall before treating it as a tool call.
 }
 ```
 
@@ -150723,6 +150916,52 @@ const { text } = await generateText({
 
 Amazon Bedrock language models can also be used in the `streamText` function
 (see [AI SDK Core](/docs/ai-sdk-core)).
+
+### Structured Outputs
+
+For Anthropic models, you can use the `structuredOutputMode` provider option to
+choose how Amazon Bedrock generates structured outputs:
+
+- `"outputFormat"`: Use Bedrock's native `output_config.format` parameter.
+- `"jsonTool"`: Use a special `json` tool with required tool choice.
+- `"auto"`: Use native structured output when supported and otherwise fall
+  back to the JSON tool. This is the default.
+
+In `"auto"` mode, Claude Sonnet 4.6 and Claude Haiku 4.5 use the JSON tool
+fallback because native structured output can be unreliable across workloads
+and Bedrock accounts. You can set `"outputFormat"` to opt into native structured
+output when it works for your account and workload, or use `"jsonTool"` to force
+the fallback for any model:
+
+```ts
+import {
+  amazonBedrock,
+  type AmazonBedrockLanguageModelChatOptions,
+} from '@ai-sdk/amazon-bedrock';
+import { generateText, Output } from 'ai';
+import { z } from 'zod';
+
+const { output } = await generateText({
+  model: amazonBedrock('eu.anthropic.claude-sonnet-4-6'),
+  output: Output.object({
+    schema: z.object({
+      summary: z.string(),
+      findings: z.array(z.string()),
+    }),
+  }),
+  prompt: 'Summarize the inspection report.',
+  providerOptions: {
+    amazonBedrock: {
+      structuredOutputMode: 'jsonTool',
+    } satisfies AmazonBedrockLanguageModelChatOptions,
+  },
+});
+```
+
+The legacy `providerOptions.bedrock` key remains supported. For parity with the
+Anthropic provider, `providerOptions.anthropic.structuredOutputMode` is also
+honored for Anthropic models on Bedrock. When both are provided, the
+`amazonBedrock` or legacy `bedrock` value takes precedence.
 
 ### File Inputs
 

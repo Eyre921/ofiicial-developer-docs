@@ -50,8 +50,12 @@ You can send funds from an external bank account to fund your financial account.
 
 1. On the [Balances](https://dashboard.stripe.com/balance/overview) page, click **Add funds**.
 2. Select the balance to add money to.
-3. Enter the amount and click **Next**.
-4. Verify the account details to send money through ACH, RTP, a wire, or other local payment from your bank. Click **Done**.
+3. Select the funding method.
+4. The next steps depend on the selected method:
+   - **Manually transfer from your bank**: Click **Continue**, then copy the account details and use them to initiate the transfer from your bank. If you’re using a *sandbox* (A sandbox is an isolated test environment that allows you to test Stripe functionality in your account without affecting your live integration. Use sandboxes to safely experiment with new features and changes), enter an amount to simulate a transfer without accessing your real bank account. Then click **Done** (for a VBAN) or **Confirm transfer** (for a wire transfer).
+   - **Linked bank account**: Select a bank account or click **Add bank account** and enter the account details. Then, enter the amount and click **Continue**. Review the details, then click **Add {amount}**.
+
+The bank associated with the displayed account number or VBAN depends on the selected balance. For example, the Refunds and disputes balance might show a Wells Fargo VBAN, and a Treasury financial account might show a Fifth/Third VBAN.
 
 ### After you send funds
 

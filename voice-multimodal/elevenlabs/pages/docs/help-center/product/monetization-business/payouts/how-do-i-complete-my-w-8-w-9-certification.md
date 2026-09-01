@@ -15,11 +15,11 @@ To do this, click **My Account** and select **Payouts** to go to your Payouts pa
 You will see a section for W-8/W-9 certification, which will be marked **Incomplete**. Click **Update** to open the form\
 
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/how-do-i-complete-my-w-8w-9-certification.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100019Z&X-Amz-Expires=604800&X-Amz-Signature=1af915edd634dd7fdd6cb40e93714802a0ba8bb772cc7c2505e2782665bf0e90&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/how-do-i-complete-my-w-8w-9-certification.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233545Z&X-Amz-Expires=604800&X-Amz-Signature=80b98f352414a81f6bfebcf4912b7c31859f9bcdce3ed568da696daf4b263825&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Answer the questions on screen. The first question, "Are you considered a U.S. person for Federal Tax Purpose?", will determine whether you complete Form W-9 or Form W-8.
 
- 
+
 
 **Are you considered a U.S. person for Federal Tax Purpose?**
 
@@ -45,15 +45,15 @@ Enter your mailing address if its different from your permanent residence addres
 
 Enter your U.S. Taxpayer ID if you have one.
 
-Enter your non-U.S. Taxpayer Identification number if you have one. This will be the Tax ID for your country of residence. 
+Enter your non-U.S. Taxpayer Identification number if you have one. This will be the Tax ID for your country of residence.
 
 Check the box if non-U.S. Taxpayer Identification number not legally required, for example, if your country does not issue Tax IDs.
 
-**Tax Treaty Claims** - if you would like to claim reduced rate of withholding tax, complete this section. This will allow Eleven Labs to apply a lower rate or 0% rate (depending on your country of residence) on the payments it remits to you. 
+**Tax Treaty Claims** - if you would like to claim reduced rate of withholding tax, complete this section. This will allow Eleven Labs to apply a lower rate or 0% rate (depending on your country of residence) on the payments it remits to you.
 
-Are you claiming a reduced rate of withholding under a tax treaty? 
+Are you claiming a reduced rate of withholding under a tax treaty?
 
-Select **Yes** to claim treaty benefits or **No** if you do not want to claim reduced rate of withholding. 
+Select **Yes** to claim treaty benefits or **No** if you do not want to claim reduced rate of withholding.
 
 Type of income: select **Royalties - Copyrights.**
 

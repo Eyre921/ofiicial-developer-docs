@@ -84,9 +84,7 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 });
 ```
 
-For complete API reference and all available configuration options, see the [text only field in
-Create Agent API
-documentation](/docs/api-reference/agents/create#request.body.conversation_config.conversation.text_only).
+For complete API reference and all available configuration options, see the [text only field in Create Agent API documentation](/docs/api-reference/agents/create#request.body.conversation_config.conversation.text_only).
 
 ## Runtime Overrides for Text-Only Mode
 
@@ -145,8 +143,7 @@ displayed to the user.
 
 **Security Overrides**: When using runtime overrides (not agent-level configuration), you must
 enable the conversation overrides in your agent's security settings. Navigate to your agent's
-**Security** tab and enable the appropriate overrides. For more details, see the [Overrides
-documentation](/docs/eleven-agents/customization/personalization/overrides).
+**Security** tab and enable the appropriate overrides. For more details, see the [Overrides documentation](/docs/eleven-agents/customization/personalization/overrides).
 
 ### Key Requirements
 

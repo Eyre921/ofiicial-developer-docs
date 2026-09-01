@@ -8,7 +8,7 @@ path: webhooks/signature
 
 Learn how to fix a common error when listening to webhook events.
 
-When processing webhook events, we recommend securing your endpoint by [verifying](https://docs.stripe.com/webhooks.md#verify-official-libraries) that the event is coming from Stripe. To do this, use the `Stripe-Signature` header and call the `constructEvent()` function with three parameters:
+When processing webhook events, we recommend securing your endpoint by [verifying](https://docs.stripe.com/webhooks.md#verify-signature) that the event is coming from Stripe. To do this, use the `Stripe-Signature` header and call the `constructEvent()` function with three parameters:
 
 - `requestBody`: The request body string sent by Stripe.
 - `signature`: The Stripe-Signature header in the request sent by Stripe.

@@ -10,19 +10,19 @@ path: docs/help-center/product/core-capabilities/text-to-speech/how-do-i-select-
 
 **Language when generating via the website**
 
-When you generate audio on the ElevenLabs website, our AI automatically detects the language based on the context of the text of your prompt. This means that it's best to avoid using multiple languages in a single prompt, as this can cause confusion about which language should be used. At the moment, it isn’t possible to specify a language when generating on the website. 
+When you generate audio on the ElevenLabs website, our AI automatically detects the language based on the context of the text of your prompt. This means that it's best to avoid using multiple languages in a single prompt, as this can cause confusion about which language should be used. At the moment, it isn’t possible to specify a language when generating on the website.
 
- 
+
 
 **Language when generating via API**
 
-If you generate audio through the API, you can manually specify the language of your prompt using the `language_code` parameter. This is an optional parameter that accepts ISO 639-1 language codes. 
+If you generate audio through the API, you can manually specify the language of your prompt using the `language_code` parameter. This is an optional parameter that accepts ISO 639-1 language codes.
 
 This can be useful for short or ambiguous prompts, such as when the text includes only numbers. Specifying the language ensures the normalizer applies the correct rules for that language.
 
-For more information on normalization, see [this article. ](/docs/help-center/product/core-capabilities/text-to-speech/why-are-numbers-dates-symbols-and-acronyms-not-properly-pronounced-or-spoken-in-the-correct-language)
+For more information on normalization, see [this article. ](/docs/help-center/product/core-capabilities/text-to-speech/why-are-numbers-dates-symbols-and-acronyms-not-properly-pronounced-or-spoken-in-the-correct-language)
 
- 
+
 
 **Accent**
 
@@ -38,4 +38,4 @@ You can:
 * **Browse the Voice Library** and use the search filters to find suitable voices that
   match your needs.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3e4de803d69ffbd3aed314c2c5f9defa87d3d7fd6fc1931a4a02278041c1c43/assets/images/help-center/product/core-capabilities/text-to-speech/how-do-i-select-the-language-and-accent.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100019Z&X-Amz-Expires=604800&X-Amz-Signature=87a8ba4088a9859f09f49294579e58052e52723ecfd08243a8b76b4d3c24182e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3e4de803d69ffbd3aed314c2c5f9defa87d3d7fd6fc1931a4a02278041c1c43/assets/images/help-center/product/core-capabilities/text-to-speech/how-do-i-select-the-language-and-accent.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233449Z&X-Amz-Expires=604800&X-Amz-Signature=e6c91df7f56f1b667a179d057fe660b5ed4106d250e2beef03154a2d365ddd2c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)

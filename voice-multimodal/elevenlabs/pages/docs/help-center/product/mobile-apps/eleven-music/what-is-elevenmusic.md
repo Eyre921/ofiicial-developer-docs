@@ -12,6 +12,6 @@ ElevenMusic is an AI-powered music platform built for independent artists and mu
 
 ElevenMusic is built around creation. You can listen to tracks, remix them into something new, or start from scratch and develop an original song using AI-assisted tools. Every track on the platform is built on our Music model.
 
-ElevenMusic is available as an [iOS app](https://apps.apple.com/gb/app/elevenmusic-by-elevenlabs/id6755965224) and on the web at [elevenmusic.io](https://www.elevenmusic.io/). 
+ElevenMusic is available as an [iOS app](https://apps.apple.com/gb/app/elevenmusic-by-elevenlabs/id6755965224) and on the web at [elevenmusic.io](https://www.elevenmusic.io/).
 
 ElevenMusic is a separate product from ElevenCreative Music, and you'll need to create a new account to use it. Free and Pro subscriptions are available, and existing ElevenCreative subscriptions can't be used with ElevenMusic.

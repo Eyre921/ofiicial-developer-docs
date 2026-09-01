@@ -3749,6 +3749,8 @@ If provided, this value overrides any values previously set using [updateShippin
           State, county, province, or region.
     - `expressCheckoutConfirmEvent`
       The [event object](https://docs.stripe.com/js/elements_object/express_checkout_element_confirm_event.md#express_checkout_element_on_confirm-handler) passed to your Express Checkout Element `confirm` handler.
+    - `formConfirmEvent`
+      The [event object](https://docs.stripe.com/js/custom_checkout/element_events/on_confirm.md?type=checkoutForm) passed to your Embedded form `confirm` handler.
 
 ### Example
 
@@ -6570,6 +6572,8 @@ If provided, this value overrides any values previously set using [updateShippin
           State, county, province, or region.
     - `expressCheckoutConfirmEvent`
       The [event object](https://docs.stripe.com/js/elements_object/express_checkout_element_confirm_event.md#express_checkout_element_on_confirm-handler) passed to your Express Checkout Element `confirm` handler.
+    - `formConfirmEvent`
+      The [event object](https://docs.stripe.com/js/custom_checkout/element_events/on_confirm.md?type=checkoutForm) passed to your Embedded form `confirm` handler.
 
 ### Example
 

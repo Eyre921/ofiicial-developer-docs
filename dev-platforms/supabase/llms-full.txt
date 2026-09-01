@@ -111212,6 +111212,329 @@ It is possible for violations of these assumptions to not cause an immediate out
 
 ---
 
+# Personal Access Tokens
+
+Scope personal access tokens to specific organizations, projects, and permissions
+
+Caution: Scoped personal access tokens are in **public alpha** and rolling out gradually. If you don't see the option to choose permissions when creating a token, your account doesn't have access yet. File a [support ticket](https://supabase.help) to get early access.
+
+Personal access tokens (PATs) authenticate you to the [Management API](https://supabase.com/docs/reference/api/introduction) and the tools built on it, like the Supabase CLI and the [MCP server](https://supabase.com/docs/guides/ai-tools/mcp). They come in two flavors:
+
+- **Classic tokens** carry your account's full access. That means every permission, on every organization and every project you belong to today, and on every one you create or join in the future. A classic token created a year ago can touch a project you created today.
+- **Scoped tokens** carry only the organizations, projects, and permissions you choose. For example: read one project's database and view its logs, with no access to billing or organization settings.
+
+Note: We recommend scoped tokens for everything, especially AI agents, automation scripts, and CI environments. If a token leaks, the blast radius stays small.
+
+To use scoped personal access tokens you need a Supabase account with a role on the organization or project you want the token to reach. A scoped personal access token's permissions only ever narrow what your account can already do. They never grant more. If your role doesn't include a permission (see [Access Control](https://supabase.com/docs/guides/platform/access-control)), granting that permission to a token has no effect: the token still can't do it.
+
+You create scoped tokens the same way as classic tokens, from your [access tokens](https://supabase.com/dashboard/account/tokens) settings. Choose which permissions to grant during creation instead of leaving the token with full access.
+
+## Create and use a scoped personal access token
+
+This example creates a token that can only read one project's settings, then calls an endpoint outside that scope. Both calls are reads available to every organization role, including Read-Only, so anyone can run it.
+
+1. Go to your [access tokens](https://supabase.com/dashboard/account/tokens) settings and generate a new token.
+2. While creating it, scope the token to one project and grant only the **Project Settings** permission with **Read** access.
+3. Copy the token (scoped personal access tokens start with `sbp_fc`) and use it against the Management API, replacing `your-project-ref` with the project's ref:
+
+```bash
+export SUPABASE_ACCESS_TOKEN="sbp_fc..."
+
+# Allowed: Project Settings Read unlocks this endpoint
+curl "https://api.supabase.com/v1/projects/your-project-ref" \
+  -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN"
+# Returns the project's details
+
+# Denied: this endpoint needs the Database permission, which the token lacks
+curl -i "https://api.supabase.com/v1/projects/your-project-ref/types/typescript" \
+  -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN"
+# Returns HTTP 403
+```
+
+The tables below list which permission unlocks which endpoints, and which permission each [MCP tool](#mcp-tools) requires, so you can grant exactly what a workflow needs.
+
+## Permission scopes
+
+Each permission controls read or read-write access to one resource, for example **Database**, **Edge Functions**, or **Production Branches**. The permissions and names below match those shown when creating a scoped personal access token. Permissions that currently unlock neither a public Management API endpoint nor an MCP tool are omitted. A few endpoints need more than one permission. The footnotes call these out.
+
+| Permission                       | Access required | Management API endpoint                                                                                                                 |
+| -------------------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Project**                      |                 |                                                                                                                                         |
+| Project Settings                 | Read            | [Get JIT access config](https://supabase.com/docs/reference/api/v1-get-jit-access-config)                                               |
+|                                  |                 | [Get postgres upgrade eligibility](https://supabase.com/docs/reference/api/v1-get-postgres-upgrade-eligibility)[^1]                     |
+|                                  |                 | [Get postgres upgrade status](https://supabase.com/docs/reference/api/v1-get-postgres-upgrade-status)[^1]                               |
+|                                  |                 | [Get project](https://supabase.com/docs/reference/api/v1-get-project)                                                                   |
+|                                  |                 | [Get services health](https://supabase.com/docs/reference/api/v1-get-services-health)                                                   |
+|                                  |                 | [List available restore versions](https://supabase.com/docs/reference/api/v1-list-available-restore-versions)                           |
+|                                  |                 | [List private link associations](https://supabase.com/docs/reference/api/v2-list-private-link-associations)                             |
+|                                  |                 | [Preview a project transfer](https://supabase.com/docs/reference/api/v2-preview-a-project-transfer)                                     |
+|                                  | Read-write      | [Cancel a project restoration](https://supabase.com/docs/reference/api/v1-cancel-a-project-restoration)                                 |
+|                                  |                 | [Create private link association](https://supabase.com/docs/reference/api/v2-create-private-link-association)                           |
+|                                  |                 | [Delete a project](https://supabase.com/docs/reference/api/v1-delete-a-project)                                                         |
+|                                  |                 | [Delete private link association](https://supabase.com/docs/reference/api/v2-delete-private-link-association)                           |
+|                                  |                 | [Delete private link association for database](https://supabase.com/docs/reference/api/v2-delete-private-link-association-for-database) |
+|                                  |                 | [Get pgsodium config](https://supabase.com/docs/reference/api/v1-get-pgsodium-config)                                                   |
+|                                  |                 | [OAuth authorize project claim](https://supabase.com/docs/reference/api/v1-oauth-authorize-project-claim)[^2]                           |
+|                                  |                 | [Pause a project](https://supabase.com/docs/reference/api/v1-pause-a-project)                                                           |
+|                                  |                 | [Restart a project](https://supabase.com/docs/reference/api/v1-restart-a-project)                                                       |
+|                                  |                 | [Restore a project](https://supabase.com/docs/reference/api/v1-restore-a-project)                                                       |
+|                                  |                 | [Update a project](https://supabase.com/docs/reference/api/v1-update-a-project)                                                         |
+|                                  |                 | [Update auth service config](https://supabase.com/docs/reference/api/v1-update-auth-service-config)[^3]                                 |
+|                                  |                 | [Update JIT access config](https://supabase.com/docs/reference/api/v1-update-jit-access-config)                                         |
+|                                  |                 | [Update pgsodium config](https://supabase.com/docs/reference/api/v1-update-pgsodium-config)                                             |
+|                                  |                 | [Upgrade postgres version](https://supabase.com/docs/reference/api/v1-upgrade-postgres-version)[^4]                                     |
+| Action Runs                      | Read            | [Count action runs](https://supabase.com/docs/reference/api/v1-count-action-runs)                                                       |
+|                                  |                 | [Get action run](https://supabase.com/docs/reference/api/v1-get-action-run)                                                             |
+|                                  |                 | [Get action run logs](https://supabase.com/docs/reference/api/v1-get-action-run-logs)                                                   |
+|                                  |                 | [List action runs](https://supabase.com/docs/reference/api/v1-list-action-runs)                                                         |
+|                                  | Read-write      | [Update action run status](https://supabase.com/docs/reference/api/v1-update-action-run-status)                                         |
+| Advisors                         | Read            | [Get performance advisors](https://supabase.com/docs/reference/api/v1-get-performance-advisors)                                         |
+|                                  |                 | [Get security advisors](https://supabase.com/docs/reference/api/v1-get-security-advisors)                                               |
+| Analytics Config                 | Read            | [List log drains](https://supabase.com/docs/reference/api/v2-list-log-drains)                                                           |
+|                                  | Read-write      | [Create log drain](https://supabase.com/docs/reference/api/v2-create-log-drain)                                                         |
+|                                  |                 | [Delete log drain](https://supabase.com/docs/reference/api/v2-delete-log-drain)                                                         |
+|                                  |                 | [Update log drain](https://supabase.com/docs/reference/api/v2-update-log-drain)                                                         |
+| Logs                             | Read            | [Get project logs](https://supabase.com/docs/reference/api/v1-get-project-logs)                                                         |
+|                                  |                 | [Get project logs all](https://supabase.com/docs/reference/api/v1-get-project-logs-all)                                                 |
+|                                  |                 | [Scrape project metrics](https://supabase.com/docs/reference/api/v1-scrape-project-metrics)                                             |
+| Usage Analytics                  | Read            | [Get project function combined stats](https://supabase.com/docs/reference/api/v1-get-project-function-combined-stats)                   |
+|                                  |                 | [Get project usage API count](https://supabase.com/docs/reference/api/v1-get-project-usage-api-count)                                   |
+|                                  |                 | [Get project usage request count](https://supabase.com/docs/reference/api/v1-get-project-usage-request-count)                           |
+| Platform Webhooks                | Read            | [Get delivery](https://supabase.com/docs/reference/api/v2-projects-ref-webhooks-deliveries-id-get)                                      |
+|                                  |                 | [Get endpoint](https://supabase.com/docs/reference/api/v2-projects-ref-webhooks-endpoints-id-get)                                       |
+|                                  |                 | [List deliveries](https://supabase.com/docs/reference/api/v2-projects-ref-webhooks-endpoints-id-deliveries-get)                         |
+|                                  |                 | [List endpoints](https://supabase.com/docs/reference/api/v2-projects-ref-webhooks-endpoints-get)                                        |
+|                                  | Read-write      | [Create endpoint](https://supabase.com/docs/reference/api/v2-projects-ref-webhooks-endpoints-post)                                      |
+|                                  |                 | [Delete all endpoints](https://supabase.com/docs/reference/api/v2-projects-ref-webhooks-endpoints-delete)                               |
+|                                  |                 | [Delete endpoint](https://supabase.com/docs/reference/api/v2-projects-ref-webhooks-endpoints-id-delete)                                 |
+|                                  |                 | [Retry delivery](https://supabase.com/docs/reference/api/v2-projects-ref-webhooks-deliveries-id-retry-post)                             |
+|                                  |                 | [Send test event](https://supabase.com/docs/reference/api/v2-projects-ref-webhooks-endpoints-id-test-post)                              |
+|                                  |                 | [Update endpoint](https://supabase.com/docs/reference/api/v2-projects-ref-webhooks-endpoints-id-patch)                                  |
+| **Database**                     |                 |                                                                                                                                         |
+| Backups                          | Read            | [Get backup schedule](https://supabase.com/docs/reference/api/v1-get-backup-schedule)                                                   |
+|                                  |                 | [List all backups](https://supabase.com/docs/reference/api/v1-list-all-backups)                                                         |
+|                                  | Read-write      | [Restore PITR backup](https://supabase.com/docs/reference/api/v1-restore-pitr-backup)                                                   |
+|                                  |                 | [Update backup schedule](https://supabase.com/docs/reference/api/v1-update-backup-schedule)                                             |
+| Database                         | Read            | [Generate typescript types](https://supabase.com/docs/reference/api/v1-generate-typescript-types)                                       |
+|                                  |                 | [Get database metadata](https://supabase.com/docs/reference/api/v1-get-database-metadata)                                               |
+|                                  |                 | [Get database openapi](https://supabase.com/docs/reference/api/v1-get-database-openapi)                                                 |
+|                                  |                 | [Get postgres upgrade eligibility](https://supabase.com/docs/reference/api/v1-get-postgres-upgrade-eligibility)[^1]                     |
+|                                  |                 | [Get postgres upgrade status](https://supabase.com/docs/reference/api/v1-get-postgres-upgrade-status)[^1]                               |
+|                                  |                 | [Get project config](https://supabase.com/docs/reference/api/v2-get-project-config)[^5]                                                 |
+|                                  |                 | [Get project PgBouncer config](https://supabase.com/docs/reference/api/v1-get-project-pgbouncer-config)                                 |
+|                                  |                 | [Read only query](https://supabase.com/docs/reference/api/v1-read-only-query)                                                           |
+|                                  |                 | [Run a query](https://supabase.com/docs/reference/api/v1-run-a-query)                                                                   |
+|                                  | Read-write      | [Create login role](https://supabase.com/docs/reference/api/v1-create-login-role)                                                       |
+|                                  |                 | [Delete login roles](https://supabase.com/docs/reference/api/v1-delete-login-roles)                                                     |
+|                                  |                 | [Run a query](https://supabase.com/docs/reference/api/v1-run-a-query)                                                                   |
+|                                  |                 | [Upgrade postgres version](https://supabase.com/docs/reference/api/v1-upgrade-postgres-version)[^4]                                     |
+| Database Config                  | Read            | [Get postgres config](https://supabase.com/docs/reference/api/v1-get-postgres-config)                                                   |
+|                                  |                 | [Get project config](https://supabase.com/docs/reference/api/v2-get-project-config)[^5]                                                 |
+|                                  | Read-write      | [Update database password](https://supabase.com/docs/reference/api/v1-update-database-password)                                         |
+|                                  |                 | [Update postgres config](https://supabase.com/docs/reference/api/v1-update-postgres-config)                                             |
+| Database JIT                     | Read            | [Authorize JIT access](https://supabase.com/docs/reference/api/v1-authorize-jit-access)                                                 |
+|                                  |                 | [Get JIT access](https://supabase.com/docs/reference/api/v1-get-jit-access)                                                             |
+|                                  | Read-write      | [Delete invite external JIT access](https://supabase.com/docs/reference/api/v1-delete-invite-external-jit-access)                       |
+|                                  |                 | [Delete JIT access](https://supabase.com/docs/reference/api/v1-delete-jit-access)                                                       |
+|                                  |                 | [Invite external JIT access](https://supabase.com/docs/reference/api/v1-invite-external-jit-access)                                     |
+|                                  |                 | [List JIT access](https://supabase.com/docs/reference/api/v1-list-jit-access)                                                           |
+|                                  |                 | [Update JIT access](https://supabase.com/docs/reference/api/v1-update-jit-access)                                                       |
+| Network Bans                     | Read            | [List all network bans](https://supabase.com/docs/reference/api/v1-list-all-network-bans)                                               |
+|                                  |                 | [List all network bans enriched](https://supabase.com/docs/reference/api/v1-list-all-network-bans-enriched)                             |
+|                                  | Read-write      | [Delete network bans](https://supabase.com/docs/reference/api/v1-delete-network-bans)                                                   |
+| Network Restrictions             | Read            | [Get network restrictions](https://supabase.com/docs/reference/api/v1-get-network-restrictions)                                         |
+|                                  |                 | [Get project config](https://supabase.com/docs/reference/api/v2-get-project-config)[^5]                                                 |
+|                                  | Read-write      | [Patch network restrictions](https://supabase.com/docs/reference/api/v1-patch-network-restrictions)                                     |
+|                                  |                 | [Update network restrictions](https://supabase.com/docs/reference/api/v1-update-network-restrictions)                                   |
+| Migrations                       | Read            | [Get a migration](https://supabase.com/docs/reference/api/v1-get-a-migration)                                                           |
+|                                  |                 | [List migration history](https://supabase.com/docs/reference/api/v1-list-migration-history)                                             |
+|                                  | Read-write      | [Apply a migration](https://supabase.com/docs/reference/api/v1-apply-a-migration)                                                       |
+|                                  |                 | [Patch a migration](https://supabase.com/docs/reference/api/v1-patch-a-migration)                                                       |
+|                                  |                 | [Rollback migrations](https://supabase.com/docs/reference/api/v1-rollback-migrations)                                                   |
+|                                  |                 | [Upsert a migration](https://supabase.com/docs/reference/api/v1-upsert-a-migration)                                                     |
+| Connection Pooling               | Read            | [Get pooler config](https://supabase.com/docs/reference/api/v1-get-pooler-config)                                                       |
+|                                  | Read-write      | [Update pooler config](https://supabase.com/docs/reference/api/v1-update-pooler-config)                                                 |
+| Read-only Mode                   | Read            | [Get read-only mode status](https://supabase.com/docs/reference/api/v1-get-readonly-mode-status)                                        |
+|                                  | Read-write      | [Disable read-only mode temporarily](https://supabase.com/docs/reference/api/v1-disable-readonly-mode-temporarily)                      |
+| SSL Enforcement                  | Read            | [Get project config](https://supabase.com/docs/reference/api/v2-get-project-config)[^5]                                                 |
+|                                  |                 | [Get SSL enforcement config](https://supabase.com/docs/reference/api/v1-get-ssl-enforcement-config)                                     |
+|                                  | Read-write      | [Update SSL enforcement config](https://supabase.com/docs/reference/api/v1-update-ssl-enforcement-config)                               |
+| Database Webhooks                | Read-write      | [Enable database webhook](https://supabase.com/docs/reference/api/v1-enable-database-webhook)                                           |
+| **Application services**         |                 |                                                                                                                                         |
+| API Keys                         | Read            | [Get project API key](https://supabase.com/docs/reference/api/v1-get-project-api-key)                                                   |
+|                                  |                 | [Get project API keys](https://supabase.com/docs/reference/api/v1-get-project-api-keys)                                                 |
+|                                  |                 | [Get project legacy API keys](https://supabase.com/docs/reference/api/v1-get-project-legacy-api-keys)                                   |
+|                                  | Read-write      | [Create project API key](https://supabase.com/docs/reference/api/v1-create-project-api-key)                                             |
+|                                  |                 | [Delete project API key](https://supabase.com/docs/reference/api/v1-delete-project-api-key)                                             |
+|                                  |                 | [Update project API key](https://supabase.com/docs/reference/api/v1-update-project-api-key)                                             |
+|                                  |                 | [Update project legacy API keys](https://supabase.com/docs/reference/api/v1-update-project-legacy-api-keys)                             |
+| Auth Config                      | Read            | [Get a SSO provider](https://supabase.com/docs/reference/api/v1-get-a-sso-provider)                                                     |
+|                                  |                 | [Get auth service config](https://supabase.com/docs/reference/api/v1-get-auth-service-config)                                           |
+|                                  |                 | [Get project config](https://supabase.com/docs/reference/api/v2-get-project-config)[^5]                                                 |
+|                                  |                 | [Get project TPA integration](https://supabase.com/docs/reference/api/v1-get-project-tpa-integration)                                   |
+|                                  |                 | [List all SSO provider](https://supabase.com/docs/reference/api/v1-list-all-sso-provider)                                               |
+|                                  |                 | [List project TPA integrations](https://supabase.com/docs/reference/api/v1-list-project-tpa-integrations)                               |
+|                                  | Read-write      | [Create a SSO provider](https://supabase.com/docs/reference/api/v1-create-a-sso-provider)                                               |
+|                                  |                 | [Create project TPA integration](https://supabase.com/docs/reference/api/v1-create-project-tpa-integration)                             |
+|                                  |                 | [Delete a SSO provider](https://supabase.com/docs/reference/api/v1-delete-a-sso-provider)                                               |
+|                                  |                 | [Delete project TPA integration](https://supabase.com/docs/reference/api/v1-delete-project-tpa-integration)                             |
+|                                  |                 | [Update a SSO provider](https://supabase.com/docs/reference/api/v1-update-a-sso-provider)                                               |
+|                                  |                 | [Update auth service config](https://supabase.com/docs/reference/api/v1-update-auth-service-config)[^3]                                 |
+| Auth Signing Keys                | Read            | [Get legacy signing key](https://supabase.com/docs/reference/api/v1-get-legacy-signing-key)                                             |
+|                                  |                 | [Get project signing key](https://supabase.com/docs/reference/api/v1-get-project-signing-key)                                           |
+|                                  |                 | [Get project signing keys](https://supabase.com/docs/reference/api/v1-get-project-signing-keys)                                         |
+|                                  | Read-write      | [Create legacy signing key](https://supabase.com/docs/reference/api/v1-create-legacy-signing-key)                                       |
+|                                  |                 | [Create project signing key](https://supabase.com/docs/reference/api/v1-create-project-signing-key)                                     |
+|                                  |                 | [Remove project signing key](https://supabase.com/docs/reference/api/v1-remove-project-signing-key)                                     |
+|                                  |                 | [Update project signing key](https://supabase.com/docs/reference/api/v1-update-project-signing-key)                                     |
+| Data API Config                  | Read            | [Get PostgREST service config](https://supabase.com/docs/reference/api/v1-get-postgrest-service-config)                                 |
+|                                  |                 | [Get project config](https://supabase.com/docs/reference/api/v2-get-project-config)[^5]                                                 |
+|                                  | Read-write      | [Update PostgREST service config](https://supabase.com/docs/reference/api/v1-update-postgrest-service-config)                           |
+| Edge Functions                   | Read            | [Get a function](https://supabase.com/docs/reference/api/v1-get-a-function)                                                             |
+|                                  |                 | [Get a function body](https://supabase.com/docs/reference/api/v1-get-a-function-body)                                                   |
+|                                  |                 | [List all functions](https://supabase.com/docs/reference/api/v1-list-all-functions)                                                     |
+|                                  | Read-write      | [Bulk update functions](https://supabase.com/docs/reference/api/v1-bulk-update-functions)                                               |
+|                                  |                 | [Create a function](https://supabase.com/docs/reference/api/v1-create-a-function)                                                       |
+|                                  |                 | [Delete a function](https://supabase.com/docs/reference/api/v1-delete-a-function)                                                       |
+|                                  |                 | [Deploy a function](https://supabase.com/docs/reference/api/v1-deploy-a-function)                                                       |
+|                                  |                 | [Update a function](https://supabase.com/docs/reference/api/v1-update-a-function)                                                       |
+| Edge Function Secrets            | Read            | [List all secrets](https://supabase.com/docs/reference/api/v1-list-all-secrets)                                                         |
+|                                  | Read-write      | [Bulk create secrets](https://supabase.com/docs/reference/api/v1-bulk-create-secrets)                                                   |
+|                                  |                 | [Bulk delete secrets](https://supabase.com/docs/reference/api/v1-bulk-delete-secrets)                                                   |
+| Realtime Config                  | Read            | [Get project config](https://supabase.com/docs/reference/api/v2-get-project-config)[^5]                                                 |
+|                                  |                 | [Get realtime config](https://supabase.com/docs/reference/api/v1-get-realtime-config)                                                   |
+|                                  | Read-write      | [Shutdown realtime](https://supabase.com/docs/reference/api/v1-shutdown-realtime)                                                       |
+|                                  |                 | [Update realtime config](https://supabase.com/docs/reference/api/v1-update-realtime-config)                                             |
+| Storage                          | Read            | [List all buckets](https://supabase.com/docs/reference/api/v1-list-all-buckets)                                                         |
+| Storage Config                   | Read            | [Get project config](https://supabase.com/docs/reference/api/v2-get-project-config)[^5]                                                 |
+|                                  |                 | [Get storage config](https://supabase.com/docs/reference/api/v1-get-storage-config)                                                     |
+|                                  | Read-write      | [Update storage config](https://supabase.com/docs/reference/api/v1-update-storage-config)                                               |
+| **Infrastructure and delivery**  |                 |                                                                                                                                         |
+| Development Branches             | Read            | [Get a branch](https://supabase.com/docs/reference/api/v1-get-a-branch)                                                                 |
+|                                  |                 | [Get a branch config](https://supabase.com/docs/reference/api/v1-get-a-branch-config)                                                   |
+|                                  |                 | [List all branches](https://supabase.com/docs/reference/api/v1-list-all-branches)                                                       |
+|                                  | Read-write      | [Create a branch](https://supabase.com/docs/reference/api/v1-create-a-branch)                                                           |
+|                                  |                 | [Delete a branch](https://supabase.com/docs/reference/api/v1-delete-a-branch)                                                           |
+|                                  |                 | [Diff a branch](https://supabase.com/docs/reference/api/v1-diff-a-branch)                                                               |
+|                                  |                 | [Merge a branch](https://supabase.com/docs/reference/api/v1-merge-a-branch)                                                             |
+|                                  |                 | [Push a branch](https://supabase.com/docs/reference/api/v1-push-a-branch)                                                               |
+|                                  |                 | [Reset a branch](https://supabase.com/docs/reference/api/v1-reset-a-branch)                                                             |
+|                                  |                 | [Restore a branch](https://supabase.com/docs/reference/api/v1-restore-a-branch)                                                         |
+|                                  |                 | [Update a branch config](https://supabase.com/docs/reference/api/v1-update-a-branch-config)                                             |
+| Production Branches              | Read            | [Get a branch](https://supabase.com/docs/reference/api/v1-get-a-branch)                                                                 |
+|                                  |                 | [Get a branch config](https://supabase.com/docs/reference/api/v1-get-a-branch-config)                                                   |
+|                                  |                 | [List all branches](https://supabase.com/docs/reference/api/v1-list-all-branches)                                                       |
+|                                  | Read-write      | [Create a branch](https://supabase.com/docs/reference/api/v1-create-a-branch)                                                           |
+|                                  |                 | [Delete a branch](https://supabase.com/docs/reference/api/v1-delete-a-branch)                                                           |
+|                                  |                 | [Diff a branch](https://supabase.com/docs/reference/api/v1-diff-a-branch)                                                               |
+|                                  |                 | [Disable preview branching](https://supabase.com/docs/reference/api/v1-disable-preview-branching)                                       |
+|                                  |                 | [Merge a branch](https://supabase.com/docs/reference/api/v1-merge-a-branch)                                                             |
+|                                  |                 | [Push a branch](https://supabase.com/docs/reference/api/v1-push-a-branch)                                                               |
+|                                  |                 | [Reset a branch](https://supabase.com/docs/reference/api/v1-reset-a-branch)                                                             |
+|                                  |                 | [Restore a branch](https://supabase.com/docs/reference/api/v1-restore-a-branch)                                                         |
+|                                  |                 | [Update a branch config](https://supabase.com/docs/reference/api/v1-update-a-branch-config)                                             |
+| Custom Domains                   | Read            | [Get hostname config](https://supabase.com/docs/reference/api/v1-get-hostname-config)                                                   |
+|                                  | Read-write      | [Activate custom hostname](https://supabase.com/docs/reference/api/v1-activate-custom-hostname)                                         |
+|                                  |                 | Delete hostname config                                                                                                                  |
+|                                  |                 | [Update hostname config](https://supabase.com/docs/reference/api/v1-update-hostname-config)                                             |
+|                                  |                 | [Verify DNS config](https://supabase.com/docs/reference/api/v1-verify-dns-config)                                                       |
+| Add-ons                          | Read            | [List project add-ons](https://supabase.com/docs/reference/api/v1-list-project-addons)                                                  |
+|                                  | Read-write      | [Apply project add-on](https://supabase.com/docs/reference/api/v1-apply-project-addon)                                                  |
+|                                  |                 | [Remove project add-on](https://supabase.com/docs/reference/api/v1-remove-project-addon)                                                |
+| Disk Config                      | Read            | [Get database disk](https://supabase.com/docs/reference/api/v1-get-database-disk)                                                       |
+|                                  |                 | [Get disk utilization](https://supabase.com/docs/reference/api/v1-get-disk-utilization)                                                 |
+|                                  |                 | [Get project disk auto-scaling config](https://supabase.com/docs/reference/api/v1-get-project-disk-autoscale-config)                    |
+|                                  | Read-write      | [Modify database disk](https://supabase.com/docs/reference/api/v1-modify-database-disk)                                                 |
+| Read Replicas                    | Read-write      | [Remove a read replica](https://supabase.com/docs/reference/api/v1-remove-a-read-replica)                                               |
+|                                  |                 | [Setup a read replica](https://supabase.com/docs/reference/api/v1-setup-a-read-replica)                                                 |
+| Vanity Subdomain                 | Read            | [Get vanity subdomain config](https://supabase.com/docs/reference/api/v1-get-vanity-subdomain-config)                                   |
+|                                  | Read-write      | [Activate vanity subdomain config](https://supabase.com/docs/reference/api/v1-activate-vanity-subdomain-config)                         |
+|                                  |                 | [Check vanity subdomain availability](https://supabase.com/docs/reference/api/v1-check-vanity-subdomain-availability)                   |
+|                                  |                 | [Deactivate vanity subdomain config](https://supabase.com/docs/reference/api/v1-deactivate-vanity-subdomain-config)                     |
+| **Account and organization**     |                 |                                                                                                                                         |
+| Organizations                    | Read            | [List all organizations](https://supabase.com/docs/reference/api/v1-list-all-organizations)                                             |
+|                                  | Read-write      | [Create an organization](https://supabase.com/docs/reference/api/v1-create-an-organization)                                             |
+| Projects (account-wide)          | Read            | [List all projects](https://supabase.com/docs/reference/api/v1-list-all-projects)                                                       |
+| SQL Snippets (account-wide)      | Read            | [Get a snippet](https://supabase.com/docs/reference/api/v1-get-a-snippet)                                                               |
+|                                  |                 | [List all snippets](https://supabase.com/docs/reference/api/v1-list-all-snippets)                                                       |
+| Organization Settings            | Read            | [Get an organization](https://supabase.com/docs/reference/api/v1-get-an-organization)                                                   |
+|                                  |                 | [Get organization entitlements](https://supabase.com/docs/reference/api/v1-get-organization-entitlements)                               |
+|                                  | Read-write      | [Assign organization member role](https://supabase.com/docs/reference/api/v2-assign-organization-member-role)                           |
+|                                  |                 | [OAuth authorize project claim](https://supabase.com/docs/reference/api/v1-oauth-authorize-project-claim)[^2]                           |
+|                                  |                 | [Transfer a project](https://supabase.com/docs/reference/api/v2-transfer-a-project)                                                     |
+| Organization Members             | Read            | [List organization members](https://supabase.com/docs/reference/api/v1-list-organization-members)                                       |
+|                                  |                 | [List organization members](https://supabase.com/docs/reference/api/v2-list-organization-members)                                       |
+|                                  |                 | [List organization roles](https://supabase.com/docs/reference/api/v2-list-organization-roles)                                           |
+|                                  | Read-write      | [Create organization invitations](https://supabase.com/docs/reference/api/v2-create-organization-invitations)                           |
+|                                  |                 | [Delete organization invitations](https://supabase.com/docs/reference/api/v2-delete-organization-invitations)                           |
+| Organization Projects            | Read            | [Get all projects for organization](https://supabase.com/docs/reference/api/v1-get-all-projects-for-organization)                       |
+|                                  |                 | [List organization GitHub connections](https://supabase.com/docs/reference/api/v2-list-organization-github-connections)                 |
+|                                  |                 | [List organization projects](https://supabase.com/docs/reference/api/v2-list-organization-projects)                                     |
+|                                  | Read-write      | [Create a project](https://supabase.com/docs/reference/api/v1-create-a-project)                                                         |
+| Platform Webhooks (organization) | Read            | [Get delivery](https://supabase.com/docs/reference/api/v2-organizations-slug-webhooks-deliveries-id-get)                                |
+|                                  |                 | [Get endpoint](https://supabase.com/docs/reference/api/v2-organizations-slug-webhooks-endpoints-id-get)                                 |
+|                                  |                 | [List deliveries](https://supabase.com/docs/reference/api/v2-organizations-slug-webhooks-endpoints-id-deliveries-get)                   |
+|                                  |                 | [List endpoints](https://supabase.com/docs/reference/api/v2-organizations-slug-webhooks-endpoints-get)                                  |
+|                                  | Read-write      | [Create endpoint](https://supabase.com/docs/reference/api/v2-organizations-slug-webhooks-endpoints-post)                                |
+|                                  |                 | [Delete all endpoints](https://supabase.com/docs/reference/api/v2-organizations-slug-webhooks-endpoints-delete)                         |
+|                                  |                 | [Delete endpoint](https://supabase.com/docs/reference/api/v2-organizations-slug-webhooks-endpoints-id-delete)                           |
+|                                  |                 | [Retry delivery](https://supabase.com/docs/reference/api/v2-organizations-slug-webhooks-deliveries-id-retry-post)                       |
+|                                  |                 | [Send test event](https://supabase.com/docs/reference/api/v2-organizations-slug-webhooks-endpoints-id-test-post)                        |
+|                                  |                 | [Update endpoint](https://supabase.com/docs/reference/api/v2-organizations-slug-webhooks-endpoints-id-patch)                            |
+
+[^1]: Requires **Project Settings** (Read) and **Database** (Read).
+
+[^2]: Requires **Organization Settings** (Read-write) and **Project Settings** (Read-write).
+
+[^3]: Requires **Auth Config** (Read-write) and **Project Settings** (Read-write).
+
+[^4]: Requires **Project Settings** (Read-write) and **Database** (Read-write).
+
+[^5]: Requires **Database Config** (Read), **Database** (Read), **SSL Enforcement** (Read), **Network Restrictions** (Read), **Auth Config** (Read), **Data API Config** (Read), **Realtime Config** (Read), and **Storage Config** (Read).
+
+## MCP tools
+
+A scoped personal access token used to authenticate the [MCP server](https://supabase.com/docs/guides/ai-tools/mcp) can only call the tools its granted permissions unlock. See [Available tools](https://supabase.com/docs/guides/ai-tools/mcp#available-tools) for what each tool does.
+
+| MCP tool                    | Required permission                                                           |
+| --------------------------- | ----------------------------------------------------------------------------- |
+| `apply_migration`           | **Migrations** (Read-write)                                                   |
+| `confirm_cost`              | None (always available)                                                       |
+| `create_branch`             | **Development Branches** (Read-write) or **Production Branches** (Read-write) |
+| `create_project`            | **Organization Projects** (Read-write)                                        |
+| `delete_branch`             | **Production Branches** (Read-write) or **Development Branches** (Read-write) |
+| `deploy_edge_function`      | **Edge Functions** (Read-write)                                               |
+| `execute_sql`               | **Database** (Read)                                                           |
+| `generate_typescript_types` | **Database** (Read)                                                           |
+| `get_advisors`              | **Advisors** (Read)                                                           |
+| `get_cost`                  | **Organization Settings** (Read) and **Projects (account-wide)** (Read)       |
+| `get_edge_function`         | **Edge Functions** (Read)                                                     |
+| `get_logs`                  | **Logs** (Read)                                                               |
+| `get_organization`          | **Organization Settings** (Read)                                              |
+| `get_project`               | **Project Settings** (Read)                                                   |
+| `get_project_url`           | **Project Settings** (Read)                                                   |
+| `get_publishable_keys`      | **API Keys** (Read)                                                           |
+| `get_storage_config`        | **Storage Config** (Read)                                                     |
+| `list_branches`             | **Development Branches** (Read) or **Production Branches** (Read)             |
+| `list_edge_functions`       | **Edge Functions** (Read)                                                     |
+| `list_extensions`           | **Database** (Read)                                                           |
+| `list_migrations`           | **Migrations** (Read)                                                         |
+| `list_organizations`        | **Organizations** (Read)                                                      |
+| `list_projects`             | **Projects (account-wide)** (Read)                                            |
+| `list_storage_buckets`      | **Storage** (Read)                                                            |
+| `list_tables`               | **Database** (Read)                                                           |
+| `merge_branch`              | **Production Branches** (Read-write) or **Development Branches** (Read-write) |
+| `pause_project`             | **Project Settings** (Read-write)                                             |
+| `query_logs`                | **Logs** (Read)                                                               |
+| `rebase_branch`             | **Production Branches** (Read-write) or **Development Branches** (Read-write) |
+| `reset_branch`              | **Production Branches** (Read-write) or **Development Branches** (Read-write) |
+| `restore_project`           | **Project Settings** (Read-write)                                             |
+| `search_docs`               | None (always available)                                                       |
+| `update_storage_config`     | **Storage Config** (Read-write)                                               |
+
+
+---
+
 # Postgres connection logging
 
 Enable or disable Postgres connection logging for audit and compliance.

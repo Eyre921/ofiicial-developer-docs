@@ -233,8 +233,7 @@ func executeClientTool(name: String, parameters: [String: Any]) async -> [String
 }
 ```
 
-Remember to setup your agent with the client-tools in the ElevenLabs UI. See the [Client Tools
-documentation](/docs/eleven-agents/customization/tools/client-tools) for setup instructions.
+Remember to setup your agent with the client-tools in the ElevenLabs UI. See the [Client Tools documentation](/docs/eleven-agents/customization/tools/client-tools) for setup instructions.
 
 ### Connection State Management
 

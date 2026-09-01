@@ -18,6 +18,10 @@ GitHub CLI is an open source tool for using GitHub from your computer's command 
 
   Start using GitHub CLI to work with GitHub in the command line.
 
+* [Attaching files with GitHub CLI](/en/github-cli/github-cli/attaching-files-with-github-cli)
+
+  Attach local images and videos to issues, pull requests, and comments without leaving the command line.
+
 * [Using the GitHub CLI across GitHub platforms](/en/github-cli/github-cli/using-multiple-accounts)
 
   Learn how to run commands when you are authenticated to accounts on different GitHub platforms.

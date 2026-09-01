@@ -4,6 +4,14 @@ source: https://docs.fireworks.ai/updates/changelog
 path: updates/changelog
 ---
 
+<Update label="2026-09-01">
+  <Badge>Inference</Badge>
+
+  # Serverless rate limit ceilings now scale by model size
+
+  Serverless adaptive rate limit ceilings now vary by model size tier. Smaller models (\< 400B parameters) get higher ceilings; medium models (400B – \< 1.6T) get intermediate ceilings; large models (≥ 1.6T) keep the previous base ceilings. See [Serverless rate limits](/serverless/rate-limits#model-size-tiers) for tier thresholds and ceiling values.
+</Update>
+
 <Update label="2026-08-30">
   <Badge>Training</Badge>
 

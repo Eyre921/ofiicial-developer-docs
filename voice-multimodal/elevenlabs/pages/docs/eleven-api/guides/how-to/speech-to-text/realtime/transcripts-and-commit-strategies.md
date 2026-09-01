@@ -10,8 +10,7 @@ path: docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-comm
 
 **How-to guide** · Assumes you have completed the
 [client-side](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming) or
-[server-side
-streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming) guide.
+[server-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming) guide.
 
 ## Overview
 

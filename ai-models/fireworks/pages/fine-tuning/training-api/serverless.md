@@ -32,14 +32,14 @@ See the [Models catalog](/fine-tuning/models) and set **Availability** to **Serv
 </Info>
 
 <Tip>
-  **Using a code agent?** Start with the self-contained [`serverless_rl` Countdown example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl), or fork the experimental [`async_rl_loop_serverless` recipe](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) when you need rollout functions, rollout/training overlap, or agentic trajectories. Both run against the serverless gateway.
+  Start with the out-of-the-box [`serverless_rl` loops](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl). When you need rollout functions, rollout/training overlap, or agentic trajectories, use the experimental [`async_rl_loop_serverless` adapter](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py). It adapts the dedicated `async_rl_loop` to the pooled serverless lifecycle and is expected to fold into the main recipe once both paths share one weight-publication contract.
 </Tip>
 
 ## What is serverless training?
 
 You write the loop for supervised training, preference optimization, reinforcement learning, distillation, or another custom method. Fireworks runs the forward pass, backward pass, and optimizer on remote GPUs, then serves your latest weights for sampling in the same session.
 
-The [quickstart](#quickstart) shows the exact client setup and operation order. The cookbook provides a compact [`serverless_rl` implementation](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) and an experimental [`async_rl_loop_serverless` recipe](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) with the same rollout contract as the dedicated async RL recipe.
+The [quickstart](#quickstart) shows the exact client setup and operation order. The Cookbook paths above cover both a simple loop and the experimental async adapter.
 
 ### Serverless lifecycle
 
@@ -426,8 +426,8 @@ This walkthrough trains Qwen 3.5 9B with LoRA SFT to classify prompts and route 
   <iframe title="Train a prompt router with Fireworks Serverless Training" />
 </Frame>
 
-<Card title="Open the serverless prompt-router notebook" icon="github" href="https://github.com/fw-ai/cookbook/blob/main/training/case-studies/sft_prompt_router/prompt_router_serverless.ipynb">
-  Follow the complete Cookbook example for dataset preparation, LoRA SFT, sampling, and evaluation.
+<Card title="Open the current prompt-router SDK notebook" icon="github" href="https://github.com/fw-ai/cookbook/blob/main/training/case-studies/sft_prompt_router/prompt_router_sft_sdk.ipynb">
+  Follow the current dedicated SDK example for dataset preparation, LoRA SFT, deployment, sampling, and evaluation.
 </Card>
 
 ## Next steps

@@ -85,8 +85,7 @@ rather than ignored.
 
 `webhook` asks for the finished result to be delivered to your workspace's webhooks, so the call
 returns as soon as the generation is queued. It requires a webhook subscribed to generation
-events; see [Image & Video
-webhooks](/docs/eleven-api/guides/how-to/image-and-video/webhooks) to set one up, or omit the
+events; see [Image & Video webhooks](/docs/eleven-api/guides/how-to/image-and-video/webhooks) to set one up, or omit the
 field and poll instead.
 
 #### SDK

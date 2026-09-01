@@ -520,6 +520,10 @@ Manage your n8n Cloud trial, plan, and instance, including the admin dashboard a
 [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
 {% endcontent-ref %}
 
+{% content-ref url="/pages/EYLYcr1BAGjTozHgLl8d" %}
+[Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+{% endcontent-ref %}
+
 {% content-ref url="/pages/9EfpVVUfKqLf574RAV8G" %}
 [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
 {% endcontent-ref %}
@@ -875,6 +879,183 @@ Queue mode is available for n8n Cloud Enterprise plans. To enable it, [contact n
 Concurrency in queue mode is a separate mechanism from concurrency in regular mode. In queue mode, the concurrency settings determine how many jobs each worker can run in parallel. In regular mode, concurrency limits apply to the entire instance.
 
 [^1]: In n8n, evaluation allows you to tag and organize execution history and compare it against new executions. You can use this to understand how your workflow performs over time as you make changes. In particular, this is useful while developing AI-centered workflows.
+
+
+# Gateway credits
+
+Use Gateway credits to run AI models and third-party services in your n8n workflows without provider accounts or API keys.
+
+Gateway credits let you use supported AI models and third-party services in your workflows without creating provider accounts or managing API keys. Instead of setting up a credential, you select Gateway credits on a supported node, and n8n bills the usage from a prepaid credit balance.
+
+{% hint style="info" %}
+**Feature availability**
+
+Gateway credits are available on:
+
+* **n8n Cloud:** Starter, Pro
+
+They aren't available on n8n Cloud Enterprise or self-hosted n8n. Gateway credits are available from n8n 2.36.0.
+{% endhint %}
+
+## How Gateway credits work
+
+When you select **Use Gateway credits** on a supported node, n8n routes the node's requests through an n8n-managed gateway to the service provider. The gateway authenticates with the provider on n8n's behalf, so you don't need a provider account. n8n deducts the cost of each request from your credit balance.
+
+n8n bills usage per request at the rates listed on the [service pricing page](https://app.n8n.cloud/service-pricing). Rates vary by model and service, and change as providers update their pricing, so the service pricing page is always the source of truth for current rates.
+
+To learn how to select Gateway credits on a node and find supported nodes in the editor, see [Use Gateway credits](/build/understand-workflows/use-gateway-credits).
+
+## Supported services
+
+Gateway credits cover two categories of service:
+
+* **AI models**: large language model providers such as OpenAI, Anthropic, and Google Gemini.
+* **Tool services**: services for tasks like web search, web scraping, browser automation, and document parsing, such as Brave Search and Firecrawl.
+
+The catalogue grows over time. For the current list of supported services and models, check the [service pricing page](https://app.n8n.cloud/service-pricing). In the editor, the **Included in n8n** section of the nodes panel shows the nodes you can use with Gateway credits.
+
+Services that aren't in the catalogue still work in n8n the usual way: create a credential with your own API key. Refer to [Create and edit credentials](/build/understand-workflows/create-and-edit-credentials) for details.
+
+## Your credit balance
+
+Each Cloud instance has one credit balance, shared by everyone who uses Gateway credits on that instance. You can see the balance in the editor next to the Gateway credits option on a node, and on the **Gateway credits** tab in the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard), which also shows your spend over time. Refer to [Track Gateway credit spend](/deploy/use-n8n-cloud/gateway-credits/track-gateway-credit-spend) for details.
+
+New Cloud users receive a small amount of free credit at sign-up, so you can try supported services before you buy credits. Free trials include Gateway credits too: you can use them from your first workflow.
+
+When your balance reaches zero, nodes using Gateway credits stop working until you add credit. Nodes using your own credentials aren't affected. If the balance runs out in the middle of an execution, n8n lets the in-flight requests finish rather than stopping them partway through, and deducts the difference from your next top-up. On a paid plan, you can [top up your balance](/deploy/use-n8n-cloud/gateway-credits/top-up-gateway-credits) manually or automatically. Topping up isn't available during a free trial, so if you use up your free credit while trialing, upgrade to a paid plan to add more.
+
+### Credit expiry and forfeiture
+
+* n8n uses free credits before top-up credits, and uses the credits that expire soonest first.
+* Top-up credits expire 12 months after purchase.
+* Credits aren't cash and you can't transfer them to another account.
+* Top-ups are final. n8n doesn't refund unused credits except where required by law.
+* If you close your n8n account, you forfeit any remaining credits. Canceling your subscription doesn't forfeit credits while your account still exists.
+
+## Gateway credits and other credit types
+
+n8n has more than one kind of credit. They have separate balances and pay for different things:
+
+| Credit type             | What it pays for                                                                                           | Where you see it                                                                    |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Gateway credits         | AI models and tool services used by nodes in your workflows                                                | On supported nodes, and on the **Gateway credits** tab in the Cloud admin dashboard |
+| AI Assistant credits    | Your usage of [n8n's AI Assistant](/build/ways-of-building-workflows/ai-assistant) and AI Workflow Builder | In the AI Assistant panel in the editor                                             |
+| Free OpenAI API credits | A legacy one-time OpenAI allowance for new Cloud users                                                     | Only on instances without Gateway credits                                           |
+
+Topping up Gateway credits doesn't add AI Assistant credits, and using the AI Assistant doesn't spend your Gateway credit balance.
+
+## Data handling
+
+When a node runs on Gateway credits, n8n sends the request through its gateway to the service provider under n8n's own provider account. The provider receives the content of the request, such as the prompt you send to a model or the text you send to a parser, but not your identity or n8n account details. For more on how n8n handles your data, refer to [Privacy](/privacy-and-security) and n8n's terms of service.
+
+## Related resources
+
+* [Use Gateway credits](/build/understand-workflows/use-gateway-credits): select Gateway credits on a node and find supported nodes.
+* [Top up Gateway credits](/deploy/use-n8n-cloud/gateway-credits/top-up-gateway-credits): add credit manually or automatically.
+* [Track Gateway credit spend](/deploy/use-n8n-cloud/gateway-credits/track-gateway-credit-spend): monitor your balance, spend, and top-up history.
+* [Service pricing page](https://app.n8n.cloud/service-pricing): current rates for all supported services and models.
+
+
+# Top up Gateway credits
+
+Add credit to your Gateway credits balance manually or with auto top-up in the n8n Cloud admin dashboard.
+
+When your [Gateway credits](/deploy/use-n8n-cloud/gateway-credits) balance runs low, top it up from the Cloud admin dashboard. You can add credit manually whenever you need it, or turn on auto top-up so n8n refills your balance for you.
+
+Only the instance owner can top up, and topping up requires an active paid subscription. Free trials include Gateway credits, but not top-ups: if you use up your free credit during a trial, upgrade to a paid plan to add more.
+
+## Top up manually
+
+1. Open the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard) and select the **Gateway credits** tab.
+2. Select **Top up**.
+3. Choose an amount and complete the checkout. You can pay with the payment method saved on your subscription or with a different one. n8n emails you an invoice.
+
+Your new balance appears on the page once the payment completes.
+
+## Set up auto top-up
+
+Auto top-up refills your balance whenever it drops below a threshold you set, keeping it above zero so workflows that rely on Gateway credits keep running. Unlike manual top-ups, auto top-up always charges the payment method saved on your subscription.
+
+1. Open the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard) and select the **Gateway credits** tab.
+2. Turn on **Auto top-up**.
+3. Set **When balance drops to** (the balance that triggers a top-up) and **Top up to** (the balance to refill to).
+4. Optionally, turn on **Monthly auto top-up limit** to cap how much auto top-up can add per month.
+5. Select **Save changes**.
+
+{% hint style="info" %}
+If your balance is already below the threshold when you save, n8n triggers a one-time top-up straight away to reach your target balance. The page shows the estimated cost before you save.
+{% endhint %}
+
+How auto top-up behaves:
+
+* n8n emails you an invoice each time auto top-up adds credit.
+* If you set a monthly limit, auto top-up pauses once it adds that amount in the current month, and resumes the next month.
+* If a payment fails, n8n retries. If the retries also fail, n8n turns auto top-up off and emails you. Because auto top-up always charges the payment method saved on your subscription, fix that payment method before turning it back on.
+
+## Overspend
+
+Your balance can run out in the middle of an execution. When that happens, n8n lets the in-flight Gateway requests finish rather than stopping them partway through, so your balance can dip slightly below zero. n8n deducts the overspent amount from your next top-up, and the deduction appears in your [top-up history](/deploy/use-n8n-cloud/gateway-credits/track-gateway-credit-spend#top-up-history).
+
+## Refunds
+
+Top-ups are final. n8n doesn't refund unused credits except where required by law. If you think a charge is wrong, [contact n8n support](https://www.n8n.io/contact). For expiry and forfeiture rules, refer to [Credit expiry and forfeiture](/deploy/use-n8n-cloud/gateway-credits#credit-expiry-and-forfeiture).
+
+## Related resources
+
+* [Gateway credits](/deploy/use-n8n-cloud/gateway-credits): how Gateway credits work.
+* [Track Gateway credit spend](/deploy/use-n8n-cloud/gateway-credits/track-gateway-credit-spend): monitor your balance, spend, and top-up history.
+* [Service pricing page](https://app.n8n.cloud/service-pricing): current rates for all supported services and models.
+
+
+# Track Gateway credit spend
+
+Monitor your Gateway credits balance, spend by model or workflow, and top-up history in the n8n Cloud admin dashboard.
+
+The **Gateway credits** tab in the Cloud admin dashboard shows your balance, your spend over time, and your top-up history. To open it, go to the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard) and select the **Gateway credits** tab.
+
+You can also see your current balance in the editor, next to the Gateway credits option on supported nodes.
+
+## Balance
+
+The balance card shows your remaining credit, including how much of your free sign-up credit is left. If you're on a paid plan, you can top up from here. Refer to [Top up Gateway credits](/deploy/use-n8n-cloud/gateway-credits/top-up-gateway-credits) for details.
+
+## Spend
+
+The spend chart shows how your credit usage breaks down over time. You can:
+
+* Change the time range to see recent or longer-term usage.
+* Group spend by model or service, to see which providers cost the most.
+* Group spend by workflow, to see which of your workflows consume the most credit.
+
+Grouping by workflow helps you find a workflow that's spending more than you expect, for example one that calls a model on a frequent schedule.
+
+## Top-up history
+
+The top-up history lists every credit added to your balance: your free sign-up credit, manual top-ups, and auto top-ups. Each entry shows the amount, the date, and when those credits expire. Refunded top-ups stay in the list, marked as refunded.
+
+If your balance dipped below zero because n8n let in-flight requests finish, the overspent amount is deducted from your next top-up and shown here. Refer to [Overspend](/deploy/use-n8n-cloud/gateway-credits/top-up-gateway-credits#overspend) for details.
+
+## Notifications
+
+n8n emails the instance owner about balance changes:
+
+* When your balance runs low, so you can top up before workflows stop.
+* When your balance is empty.
+* When an auto top-up adds credit, fails to charge your payment method, or pauses because it reached your monthly limit.
+
+## When your balance runs out
+
+When your balance reaches zero, nodes using Gateway credits fail until you add credit. Executions that don't use Gateway credits keep running as normal.
+
+* On a paid plan, [top up your balance](/deploy/use-n8n-cloud/gateway-credits/top-up-gateway-credits) or set up auto top-up to avoid interruptions.
+* On a free trial, top-ups aren't available: upgrade to a paid plan to add more credit.
+* On any plan, you can switch the affected nodes to your own credentials. Refer to [Use Gateway credits](/build/understand-workflows/use-gateway-credits) for how to switch.
+
+## Related resources
+
+* [Gateway credits](/deploy/use-n8n-cloud/gateway-credits): how Gateway credits work.
+* [Top up Gateway credits](/deploy/use-n8n-cloud/gateway-credits/top-up-gateway-credits): add credit manually or automatically.
+* [Service pricing page](https://app.n8n.cloud/service-pricing): current rates for all supported services and models.
 
 
 # Download workflows
@@ -9963,181 +10144,6 @@ audit deny @{PROC}/[0-9]*/{environ,mounts} rwl,
 ```
 
 This denies and logs any attempt to read, write, or link to per-process `environ` and `mounts` files.
-
-
-# Verify user emails
-
-Require all new accounts to be verified by email.
-
-You can require all new accounts to be verified by email. This prevents malicious admins from registering accounts without email verification.
-
-## Prerequisites <a href="#prerequisites" id="prerequisites"></a>
-
-* SMTP must be set up and n8n must be able to send emails.
-
-## How to restrict account registration <a href="#how-to-restrict-account-registration" id="how-to-restrict-account-registration"></a>
-
-Set the environment variable `N8N_INVITE_LINKS_EMAIL_ONLY` to `true`. This locks down your instance so that only users with verified email addresses can register.
-
-For more details on configuring SMTP, see [Set up SMTP](/deploy/host-n8n/configure-n8n/user-management#step-one-smtp).
-
-
-# Enable SSRF protection
-
-Protect your self-hosted n8n instance from Server-Side Request Forgery (SSRF) attacks.
-
-{% hint style="info" %}
-**Feature availability**
-
-SSRF protection is available from n8n 2.12.0.
-{% endhint %}
-
-Server-Side Request Forgery (SSRF) attacks abuse workflow nodes to make requests to internal network resources, cloud metadata endpoints, or localhost services that shouldn't be accessible.
-
-{% hint style="warning" %}
-SSRF protection is an additional application-level defense. You should always configure network-level protections (firewalls, security groups, network policies) on your infrastructure as your primary line of defense. n8n's SSRF protection adds defense-in-depth on top of those controls.
-{% endhint %}
-
-## Enable SSRF protection <a href="#enable-ssrf-protection" id="enable-ssrf-protection"></a>
-
-```
-N8N_SSRF_PROTECTION_ENABLED=true
-```
-
-When enabled, n8n validates all outbound HTTP requests from user-controllable nodes (such as the HTTP Request node) against the configured blocked and allowed ranges. This includes redirect targets and DNS resolution to prevent bypass techniques like DNS rebinding.
-
-## Default blocked ranges <a href="#default-blocked-ranges" id="default-blocked-ranges"></a>
-
-When SSRF protection is enabled, the following IP ranges are blocked by default:
-
-| Range                                                                                             | Description                |
-| ------------------------------------------------------------------------------------------------- | -------------------------- |
-| `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`                                                   | RFC 1918 private addresses |
-| `127.0.0.0/8`, `::1/128`                                                                          | Loopback                   |
-| `169.254.0.0/16`, `fe80::/10`                                                                     | Link-local                 |
-| `fc00::/7`, `fd00::/8`                                                                            | IPv6 unique local          |
-| `0.0.0.0/8`, `192.0.0.0/24`, `192.0.2.0/24`, `198.18.0.0/15`, `198.51.100.0/24`, `203.0.113.0/24` | Reserved/special purpose   |
-
-You can extend this list with `N8N_SSRF_BLOCKED_IP_RANGES=default,100.0.0.0/8`.
-
-## Allow access to internal services <a href="#allow-access-to-internal-services" id="allow-access-to-internal-services"></a>
-
-If your workflows need to reach legitimate internal services, use allowlists. Allowlists take precedence over blocklists, following this order: hostname allowlist > IP allowlist > IP blocklist.
-
-Allow by hostname pattern (supports wildcards like `*.n8n.internal`):
-
-```
-N8N_SSRF_ALLOWED_HOSTNAMES=*.n8n.internal,*.company.local
-```
-
-Allow by IP range:
-
-```
-N8N_SSRF_ALLOWED_IP_RANGES=10.0.1.0/24,10.0.2.50/32
-```
-
-{% hint style="warning" %}
-Only allowlist hostnames within your control (internal DNS zones). Hostname allowlists bypass IP blocklist checks.
-{% endhint %}
-
-## Related resources <a href="#related-resources" id="related-resources"></a>
-
-Refer to [SSRF protection environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/ssrf-protection) for the full list of configuration options.
-
-Refer to [Configuration methods](/deploy/host-n8n/configure-n8n/basic-configuration) for more information on setting environment variables.
-
-
-# Rotate encryption keys
-
-Enable and rotate the data encryption key that protects credentials and other sensitive data on your self-hosted n8n instance.
-
-{% hint style="info" %}
-**Feature availability**
-
-Encryption key rotation is available on:
-
-* **Self-hosted:** All editions
-
-It isn't available on n8n Cloud.
-
-You need to be the instance owner to enable the feature and rotate keys.
-{% endhint %}
-
-Encryption key rotation lets you periodically replace the key that encrypts your n8n data, like credentials, OAuth tokens, and other sensitive content, without changing your instance's master encryption key.
-
-## How encryption key rotation works <a href="#how-encryption-key-rotation-works" id="how-encryption-key-rotation-works"></a>
-
-n8n uses a two-layer key model:
-
-* **Instance encryption key** (`N8N_ENCRYPTION_KEY`): your master key, set at deployment time. This key never changes. n8n uses it only to protect the data encryption keys.
-* **Data encryption key**: the key that directly encrypts your credential data. This is the key you rotate. n8n stores it encrypted in the database, protected by the instance key.
-
-When you rotate, n8n generates a new data encryption key and uses it for all future writes. Existing data encrypted with the previous key remains readable. n8n silently re-encrypts each record to the new key the next time you update it.
-
-## Before you begin <a href="#before-you-begin" id="before-you-begin"></a>
-
-{% hint style="danger" %}
-**Take a full database backup before enabling this feature**
-
-Enabling encryption key rotation is a one-way change. There's no rollback path. See [Backwards compatibility and rollback](#backwards-compatibility-and-rollback) for details.
-{% endhint %}
-
-You also need to make sure that:
-
-* All n8n instances, main and all workers, share the same `N8N_ENCRYPTION_KEY` value.
-* You have direct control over your environment variables and your n8n database. This is only possible on self-hosted deployments.
-
-## Enable encryption key rotation <a href="#enable-encryption-key-rotation" id="enable-encryption-key-rotation"></a>
-
-1. Set the following environment variable on **all** n8n instances, both main and workers:
-
-   ```sh
-   N8N_ENV_FEAT_ENCRYPTION_KEY_ROTATION=true
-   ```
-2. Restart all instances. On startup, n8n automatically generates the initial data encryption key and stores it, encrypted, in your database.
-3. To confirm the feature is active, go to **Settings** > **Data Encryption Keys**. You should see the active key listed.
-
-## Rotate the active key <a href="#rotate-the-active-key" id="rotate-the-active-key"></a>
-
-Once the feature is enabled, you can rotate to a new data encryption key at any time.
-
-### Using the UI <a href="#using-the-ui" id="using-the-ui"></a>
-
-Go to **Settings** > **Data Encryption Keys** and select **Rotate key**.
-
-### Using the API <a href="#using-the-api" id="using-the-api"></a>
-
-Make a `POST` call to the `/encryption/keys` endpoint. The request requires the `encryptionKey:manage` global scope. n8n never returns key material in API responses, only metadata such as the ID, algorithm, status, and timestamps.
-
-After rotation, n8n uses the new active key for all new writes. Records encrypted with previous keys remain readable. n8n re-encrypts them to the new key the next time you update each record.
-
-## Backwards compatibility and rollback <a href="#backwards-compatibility-and-rollback" id="backwards-compatibility-and-rollback"></a>
-
-{% hint style="danger" %}
-**This is a one-way migration**
-
-Read this section carefully before enabling encryption key rotation.
-{% endhint %}
-
-Once you enable encryption key rotation, n8n begins writing credentials and other sensitive data in a new format that includes a key identifier. Older versions of n8n, and instances running without the feature flag, can't read this format.
-
-* **Don't disable the feature flag** after any data has been written in the new format. Removing `N8N_ENV_FEAT_ENCRYPTION_KEY_ROTATION` or setting it to `false` makes all data encrypted after you enabled the feature permanently inaccessible.
-* **Don't downgrade your n8n version** after enabling. Older versions can't decrypt the new format.
-
-There's no automated tool to convert data encrypted in the new format back to the legacy format. The only recovery path is restoring from a database backup taken before you enabled the feature.
-
-## Recommended steps <a href="#recommended-steps" id="recommended-steps"></a>
-
-1. **Back up your database**. Take a full snapshot before any changes.
-2. **Enable on staging first**. Set `N8N_ENV_FEAT_ENCRYPTION_KEY_ROTATION=true` on a non-production environment, restart, and verify that credentials still decrypt correctly.
-3. **Enable on production**. Only do this after validating staging behavior.
-4. **Don't disable or downgrade**. Once production data has been written in the new format, keep the flag enabled and stay on the same or a newer n8n version.
-
-## Related resources <a href="#related-resources" id="related-resources"></a>
-
-* [Set a custom encryption key](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/set-a-custom-encryption-key): set the instance-level `N8N_ENCRYPTION_KEY` value.
-* [Deployment environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment): reference for `N8N_ENCRYPTION_KEY` and `N8N_ENV_FEAT_ENCRYPTION_KEY_ROTATION`.
-* [Configuring queue mode](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode): make sure all workers share the same instance encryption key.
 
 
 

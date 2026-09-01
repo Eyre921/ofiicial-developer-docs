@@ -8,8 +8,7 @@ path: docs/eleven-api/guides/how-to/text-to-speech/streaming-and-caching-with-su
 
 # Streaming and Caching with Supabase
 
-**How-to guide** · Assumes you have completed the [ElevenAPI
-quickstart](/docs/eleven-api/quickstart) and have a Supabase account.
+**How-to guide** · Assumes you have completed the [ElevenAPI quickstart](/docs/eleven-api/quickstart) and have a Supabase account.
 
 ## Introduction
 

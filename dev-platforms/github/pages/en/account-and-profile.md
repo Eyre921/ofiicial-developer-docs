@@ -16,7 +16,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Profile](/en/account-and-profile/get-started/profile)
 
-  <p>Get started with your GitHub profile.</p>
+  Get started with your GitHub profile.
 
 * [Quickstart for your personal dashboard](/en/account-and-profile/get-started/personal-dashboard-quickstart)
 

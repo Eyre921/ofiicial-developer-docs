@@ -9,10 +9,10 @@ path: docs/help-center/account/general/can-i-still-log-in-using-github-or-facebo
 # Can I still log in using GitHub or Facebook?
 
 GitHub and Facebook are no longer supported as sign-in options.\
- 
+
 
 If you previously used GitHub or Facebook to sign in, you’ll need to switch to email and password, or - if your account uses a Gmail address - you can use Google SSO. GitHub and Facebook sign-in options no longer appear on the sign-in page but you can still update your sign-in method at any time.\
- 
+
 
 **Switch to email and password**
 
@@ -26,7 +26,7 @@ Use the **Change password** button in the email we send you
 
 You’ll now be able to sign in with your email and password
 
- 
+
 
 **Switch to Google SSO**
 

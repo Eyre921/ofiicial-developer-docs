@@ -8,8 +8,7 @@ path: docs/eleven-agents/guides/integrations/expo-react-native
 
 # Cross-platform Voice Agents with Expo React Native
 
-**Tutorial** · Assumes you have completed the [ElevenAgents
-quickstart](/docs/eleven-agents/quickstart) and have an Expo development environment set up.
+**Tutorial** · Assumes you have completed the [ElevenAgents quickstart](/docs/eleven-agents/quickstart) and have an Expo development environment set up.
 
 ## Introduction
 

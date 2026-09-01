@@ -8,7 +8,7 @@ path: docs/help-center/product/voices/my-voices/what-are-default-voices
 
 # What are Default voices?
 
-Our Default voices are being replaced with new voices that you will be able to use forever. All our Default voices will expire on December 31, 2026, and they will no longer be accessible after this date. As part of this process, Default voices are only available for accounts that were created before March 2026. 
+Our Default voices are being replaced with new voices that you will be able to use forever. All our Default voices will expire on December 31, 2026, and they will no longer be accessible after this date. As part of this process, Default voices are only available for accounts that were created before March 2026.
 
 The new voices are designed to provide realistic, stable performance for long-form and real-time use cases and offer a broader range of accents and styles. We will continue expanding the voice library over time.
 

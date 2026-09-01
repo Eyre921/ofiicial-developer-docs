@@ -17,10 +17,8 @@ npx skills add elevenlabs/skills --skill speech-to-text
 ```
 
 This tutorial will demonstrate how to use the Batch Speech to Text API. For a guide on how to use
-the Realtime Speech to Text API, see the [Client-side
-streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming) or
-[Server-side
-streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming) guides.
+the Realtime Speech to Text API, see the [Client-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming) or
+[Server-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming) guides.
 
 ## Using the Speech to Text API
 

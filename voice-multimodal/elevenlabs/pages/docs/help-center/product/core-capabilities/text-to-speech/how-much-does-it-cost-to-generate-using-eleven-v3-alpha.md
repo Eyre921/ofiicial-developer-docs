@@ -8,7 +8,7 @@ path: docs/help-center/product/core-capabilities/text-to-speech/how-much-does-it
 
 # How much does it cost to generate using Eleven v3?
 
-The cost of generating with Eleven v3 is 1 credit per character on the website. API generations are discounted - see [API pricing](https://elevenlabs.io/pricing/api) for details. 
+The cost of generating with Eleven v3 is 1 credit per character on the website. API generations are discounted - see [API pricing](https://elevenlabs.io/pricing/api) for details.
 
 Visit the following resources for more information:
 

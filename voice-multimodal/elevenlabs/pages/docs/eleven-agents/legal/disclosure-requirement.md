@@ -49,7 +49,6 @@ For more information, please refer to our privacy policy available at: \[insert 
 ## Legal disclaimer
 
 The information provided above is for general informational purposes only. Your organization is
-solely responsible for ensuring that its use of ElevenAgents complies with the [ElevenAgents
-Platform Terms](https://elevenlabs.io/agents-terms) and all applicable laws and regulations. This
+solely responsible for ensuring that its use of ElevenAgents complies with the [ElevenAgents Platform Terms](https://elevenlabs.io/agents-terms) and all applicable laws and regulations. This
 guidance does not constitute legal advice. You should consult your legal counsel regarding any
 questions about legal or regulatory compliance.

@@ -8,7 +8,7 @@ path: docs/help-center/account/general/how-do-i-change-my-email
 
 # How do I change my email?
 
-If you signed up using an email and password, you can change your email from your profile: 
+If you signed up using an email and password, you can change your email from your profile:
 
 Click your profile icon in the top right corner of the website to open your account menu.
 
@@ -25,7 +25,7 @@ Use the verification link that is sent to your new email address to confirm the 
 
 Log into the website using your new email address and original password.
 
-You'll also receive a notification email to your original email address notifying you of the change. This will include a link you can use to revert the change. 
+You'll also receive a notification email to your original email address notifying you of the change. This will include a link you can use to revert the change.
 
 If you have trouble changing your email address, it might help to use Incognito or private browsing mode when verifying the change.
 

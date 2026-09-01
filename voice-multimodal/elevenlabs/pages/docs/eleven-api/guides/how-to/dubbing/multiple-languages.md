@@ -8,8 +8,7 @@ path: docs/eleven-api/guides/how-to/dubbing/multiple-languages
 
 # Dub into multiple languages
 
-**How-to guide** · Assumes you have created a dubbing project, as shown in the [Dubbing
-quickstart](/docs/eleven-api/guides/cookbooks/dubbing).
+**How-to guide** · Assumes you have created a dubbing project, as shown in the [Dubbing quickstart](/docs/eleven-api/guides/cookbooks/dubbing).
 
 A single project holds one source transcript, and you can add as many language targets as you need. Each language is generated independently and carries its own status and output, so you translate the source once and produce every dub from it.
 

@@ -8,7 +8,7 @@ path: docs/help-center/account/workspaces/what-are-basic-seats
 
 # What are Basic Seats?
 
-Basic Seats are designed for workspace members who primarily use ElevenLabs Agents or the ElevenAPI, with limited access to ElevenCreative. 
+Basic Seats are designed for workspace members who primarily use ElevenLabs Agents or the ElevenAPI, with limited access to ElevenCreative.
 
 Basic Seat users have access to core functionality, and limited access to ElevenCreative.
 

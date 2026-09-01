@@ -18,7 +18,7 @@ ElevenReader Ultra subscribers receive **20 hours of listening** bundled into th
 * Listening is calculated based on validated playback
 * Earnings accrue as subscribers engage with your content
 
-This model rewards high quality content and sustained engagement. 
+This model rewards high quality content and sustained engagement.
 
 2. Direct Sales
 

@@ -8,7 +8,7 @@ path: docs/help-center/technical/how-many-text-to-speech-requests-can-i-make-and
 
 # How many Text to Speech requests can I make and can I increase it?
 
-The concurrency limit (concurrent requests running in parallel) depends on the tier you are on. 
+The concurrency limit (concurrent requests running in parallel) depends on the tier you are on.
 
 Below are the current concurrency rates for Text to Speech.
 
@@ -21,7 +21,7 @@ Below are the current concurrency rates for Text to Speech.
 | Scale    | 30                     | 15               |
 | Business | 30                     | 15               |
 
- 
+
 
 If you require a higher number of concurrent requests, please reach out to our Enterprise Department directly via [this webpage](https://elevenlabs.io/enterprise). We will be happy to discuss a tailor-made plan that meets your specific requirements.
 

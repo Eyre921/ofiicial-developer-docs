@@ -20,7 +20,7 @@ To launch the program, your platform must support the three phases of the Capita
 - Provide access to the financing reporting page for in-progress financing through a hosted page, [embedded components](https://docs.stripe.com/connect/supported-embedded-components/capital-financing.md), API-based custom reporting, or a combination of all three.
 - Continue to provide access to the financing reporting page after connected accounts fully repay their financing.
 
-This guide explains how to leverage the Capital API to:
+This guide explains how to use the Capital API to:
 
 - Retrieve financing offers for eligible connected accounts.
 - Make the financing application available to connected accounts.
@@ -326,7 +326,7 @@ Capital financing offer state machine (See full diagram at https://docs.stripe.c
 
 When automatic offers are enabled in live mode, Stripe automatically creates financing offers for your connected accounts on a daily basis. Before enabling automatic offers, make sure that you:
 
-1. Confirm and update email addresses for your connected accounts through the [Comms Center](https://dashboard.stripe.com/connect/comms_center/collect) if you’re planning to leverage Stripe co-branded no-code offer emails. To be eligible for Capital financing, connected accounts must have an email saved with Stripe so that they can receive transactional emails such as payment progress updates.
+1. Confirm and update email addresses for your connected accounts through the [Comms Center](https://dashboard.stripe.com/connect/comms_center/collect) if you’re planning to use Stripe co-branded no-code offer emails. To be eligible for Capital financing, connected accounts must have an email saved with Stripe so that they can receive transactional emails such as payment progress updates.
 2. [Contact us](mailto:capital-review@stripe.com) to enable live mode access to the financing offers API.
 
 ### Enable additional features

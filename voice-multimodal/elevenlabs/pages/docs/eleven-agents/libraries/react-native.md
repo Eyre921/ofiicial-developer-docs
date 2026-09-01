@@ -38,8 +38,7 @@ LiveKit's WebRTC implementation, it requires development builds and cannot be us
 
 `@elevenlabs/react-native` resolves its React Native entry point via the `package.json`
 [`"exports"`](https://nodejs.org/api/packages.html#exports) field. Metro only resolves
-`"exports"` by default starting with Metro 0.82.0, which shipped in [React Native
-0.79.0](https://reactnative.dev/blog/2025/04/08/react-native-0.79) (released April 8, 2025). If
+`"exports"` by default starting with Metro 0.82.0, which shipped in [React Native 0.79.0](https://reactnative.dev/blog/2025/04/08/react-native-0.79) (released April 8, 2025). If
 you're on a React Native version older than 0.79, set `resolver.unstable_enablePackageExports =
   true` in your `metro.config.js` so this package resolves correctly:
 
@@ -72,8 +71,7 @@ function App() {
 ```
 
 `@elevenlabs/react-native` re-exports `ConversationProvider` and all hooks from
-`@elevenlabs/react`. The API is identical to the web React SDK — see the [React SDK
-documentation](/docs/eleven-agents/libraries/react) for the full API reference.
+`@elevenlabs/react`. The API is identical to the web React SDK — see the [React SDK documentation](/docs/eleven-agents/libraries/react) for the full API reference.
 
 ## Usage
 

@@ -14,8 +14,7 @@ By default, ElevenLabs retains data, in accordance with the Privacy Policy, to e
 
 Zero Retention Mode applies to **API use only**. Traffic through the ElevenLabs web UI or
 playground is not covered by ZRM. For ElevenAgents, you can enable ZRM per agent in the dashboard,
-but that setting applies to the agent's API traffic — UI traffic remains non-ZRM. See [Zero
-Retention Mode (per-agent)](/docs/eleven-agents/customization/privacy/zrm).
+but that setting applies to the agent's API traffic — UI traffic remains non-ZRM. See [Zero Retention Mode (per-agent)](/docs/eleven-agents/customization/privacy/zrm).
 
 ElevenLabs has agreements in place with each third-party LLM provider which expressly prohibit such providers from training their models on customer content, whether or not Zero Retention Mode is enabled.
 

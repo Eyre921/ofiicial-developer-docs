@@ -4,6 +4,26 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="August 31, 2026">
+  ### Capture ideas and draft content in Notion
+
+  Your agent can now capture ideas and draft content in Notion without choosing where the page belongs first. The page starts as a private draft, so you can review it and organize it later.
+
+  ### Save and reuse your preferred workflows with Notion Skills
+
+  When you ask your AI to save a workflow you want to reuse, it can now create a [Notion Skill](/guides/mcp/notion-skills) or turn an existing page into one. Skills are reusable instructions stored as Notion pages that you own and can edit.
+
+  When you ask for that workflow later, your AI can find the right Skill and read its instructions before starting.
+
+  ### Find the right page more easily
+
+  Your AI can now narrow [Notion searches](/guides/mcp/mcp-supported-tools) by where a page lives, who created or edited it, when it changed, whether the title matches, and the page's status. It can also sort results and look through up to 50 matches.
+
+  Search results now show more context, including where a page lives and whether Notion has verified it. This helps your AI choose between similar or conflicting pages before reading the full content.
+
+  Every plan includes filters for creator, creation date, and a single page, data source, or teamspace. On Business and Enterprise plans, your AI can also filter by editor, last-edited date, multiple teamspaces, title, or content status, and sort by date.
+</Update>
+
 <Update label="August 27, 2026">
   ### Fetch saved database views in Notion MCP
 

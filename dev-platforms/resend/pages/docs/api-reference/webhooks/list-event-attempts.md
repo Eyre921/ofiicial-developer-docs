@@ -7,33 +7,15 @@ path: docs/api-reference/webhooks/list-event-attempts
 GET /webhooks/:webhook_id/events/:event_id/attempts
 Retrieve the delivery attempts for a single webhook event.
 
-<Warning>
-  Webhook events and delivery attempts are currently in private beta and only
-  available to a limited number of users. APIs might change before it is
-  generally available. [Get in touch](https://resend.com/help) if you're
-  interested in testing this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.7
-    ```
-  </CodeGroup>
-</Warning>
-
 ## Path Parameters
 
-<ParamField type="string">
+<ResendParamField type="string">
   The Webhook ID.
-</ParamField>
+</ResendParamField>
 
-<ParamField type="string">
+<ResendParamField type="string">
   The Webhook Event ID.
-</ParamField>
+</ResendParamField>
 
 ## Query Parameters
 
@@ -89,6 +71,100 @@ Retrieve the delivery attempts for a single webhook event.
     eventId: 'msg_1srOrx2ZWZBpBUvZwXKQmoEYga2',
     webhookId: '4dd369bc-aa82-4ff3-97de-514ae3000ee0',
   });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $attempts = $resend->webhooks->events->attempts->list(
+      '4dd369bc-aa82-4ff3-97de-514ae3000ee0',
+      'msg_1srOrx2ZWZBpBUvZwXKQmoEYga2'
+  );
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = 're_xxxxxxxxx'
+
+  attempts = resend.Webhooks.list_event_attempts(
+      webhook_id='4dd369bc-aa82-4ff3-97de-514ae3000ee0',
+      event_id='msg_1srOrx2ZWZBpBUvZwXKQmoEYga2',
+  )
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require 'resend'
+
+  Resend.api_key = 're_xxxxxxxxx'
+
+  attempts = Resend::Webhooks.list_event_attempts(
+    '4dd369bc-aa82-4ff3-97de-514ae3000ee0',
+    'msg_1srOrx2ZWZBpBUvZwXKQmoEYga2'
+  )
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v4"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Webhooks.ListEventAttempts(
+  		"4dd369bc-aa82-4ff3-97de-514ae3000ee0",
+  		"msg_1srOrx2ZWZBpBUvZwXKQmoEYga2",
+  	)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{list_opts::ListOptions, Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _attempts = resend
+      .webhooks
+      .list_event_attempts(
+        "4dd369bc-aa82-4ff3-97de-514ae3000ee0",
+        "msg_1srOrx2ZWZBpBUvZwXKQmoEYga2",
+        ListOptions::default(),
+      )
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.webhooks.model.ListWebhookEventAttemptsResponseSuccess;
+
+  public class Main {
+      public static void main(String[] args) throws ResendException {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          ListWebhookEventAttemptsResponseSuccess attempts = resend.webhooks().listEventAttempts(
+              "4dd369bc-aa82-4ff3-97de-514ae3000ee0",
+              "msg_1srOrx2ZWZBpBUvZwXKQmoEYga2"
+          );
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  var resp = await resend.WebhookEventAttemptListAsync(
+      new Guid( "4dd369bc-aa82-4ff3-97de-514ae3000ee0" ),
+      "msg_1srOrx2ZWZBpBUvZwXKQmoEYga2"
+  );
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}

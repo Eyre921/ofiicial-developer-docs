@@ -9,8 +9,7 @@ path: docs/eleven-agents/libraries/web-sockets
 # WebSocket
 
 This documentation is for developers integrating directly with the ElevenLabs WebSocket API. For
-convenience, consider using [the official SDKs provided by
-ElevenLabs](/docs/eleven-agents/libraries/python).
+convenience, consider using [the official SDKs provided by ElevenLabs](/docs/eleven-agents/libraries/python).
 
 The [ElevenAgents](https://elevenlabs.io/agents) WebSocket API enables real-time, interactive voice conversations with AI agents. By establishing a WebSocket connection, you can send audio input and receive audio responses in real-time, creating life-like conversational experiences.
 
