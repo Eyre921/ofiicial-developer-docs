@@ -30,7 +30,9 @@ The [AWS CLI](https://aws.amazon.com/cli/) provides programmatic access to manag
 
 2. Once installed, follow the [setup guide](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html) to configure the CLI with access to your AWS account. When configuring, set the default region to `us-west-2`.
 
-   <h2> Choosing a Region </h2>
+   ## Choosing a Region
+
+
    The templates and steps in this guide provision resources in the AWS `us-west-2` region.
 
    If you would like to deploy to a different region, make sure to specify your desired region when running `aws configure`, and adjust templates and steps in this guide accordingly.

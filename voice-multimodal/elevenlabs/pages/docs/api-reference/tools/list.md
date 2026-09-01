@@ -109,19 +109,9 @@ Successful Response
       - `params` (object, required)
         - `system_tool_type`: `end_call` (EndCallToolConfig)
         - `system_tool_type`: `end_procedure` (EndProcedureToolConfig)
-          - `procedures` (map from string to object, optional)
-            - `procedure_id` (string, required) — Procedure ID
-            - `name` (string, required) — Procedure name
-            - `content` (string, required) — Procedure content
-            - `agent_id` (string, required) — Agent ID of the procedure
-            - `type` (enum, optional, default: free_form)
-            - `trigger` (string, optional, default: ) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it.
-            - `referenced_tool_ids` (list of string, optional) — Tool IDs referenced in the procedure content
-            - `referenced_kb_ids` (list of string, optional) — Knowledge base IDs referenced in the procedure content
-            - `referenced_procedure_ids` (list of string, optional) — Procedure IDs referenced in the procedure content
-            - `referenced_dynamic_variables` (list of string, optional) — Dynamic variable names used in the procedure content
-            - `guardrails` (list of object, optional)
-            - `version_id` (string, optional, nullable) — Version ID of a version of the procedure. None for a procedure never versioned.
+          - `procedures` (map from string to object or object, optional)
+            - ProcedureVersionRef
+            - ProcedureDraftRef
         - `system_tool_type`: `knowledge_base` (KnowledgeBaseToolConfig)
           - `enabled_strategies` (list of enum, optional)
             - Allowed values: `cat`, `keyword`, `semantic`, `ls`
@@ -139,19 +129,9 @@ Successful Response
             - `parameters` (object, optional, nullable)
         - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
         - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
-          - `procedures` (map from string to object, optional)
-            - `procedure_id` (string, required) — Procedure ID
-            - `name` (string, required) — Procedure name
-            - `content` (string, required) — Procedure content
-            - `agent_id` (string, required) — Agent ID of the procedure
-            - `type` (enum, optional, default: free_form)
-            - `trigger` (string, optional, default: ) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it.
-            - `referenced_tool_ids` (list of string, optional) — Tool IDs referenced in the procedure content
-            - `referenced_kb_ids` (list of string, optional) — Knowledge base IDs referenced in the procedure content
-            - `referenced_procedure_ids` (list of string, optional) — Procedure IDs referenced in the procedure content
-            - `referenced_dynamic_variables` (list of string, optional) — Dynamic variable names used in the procedure content
-            - `guardrails` (list of object, optional)
-            - `version_id` (string, optional, nullable) — Version ID of a version of the procedure. None for a procedure never versioned.
+          - `procedures` (map from string to object or object, optional)
+            - ProcedureVersionRef
+            - ProcedureDraftRef
         - `system_tool_type`: `transfer_to_agent` (TransferToAgentToolConfig)
           - `transfers` (list of object, required)
             - `condition` (string, required)

@@ -14,25 +14,19 @@ There are several ways you can ensure the correct delivery of numbers, dates, ac
 
  
 
-<strong>
-  Write out fully, in words
-</strong>
+**Write out fully, in words**
 
 For the best results, we recommend writing numbers, acronyms, dates and symbols fully, in words, in the way that you would like the AI to deliver them. This ensures that the AI has the most context so that it will provide the correct output. For example, for “\$100”, we would recommend writing either "a hundred dollars" or "one hundred dollars" to ensure you get the result you would like.  
 
  
 
-<strong>
-  Using an LLM
-</strong>
+**Using an LLM**
 
 If you are using a large language model to generate your text prompts, for example, when using [ElevenAgents](/docs/conversational-ai/overview), you can prompt the model to always write numbers, dates, symbols, and acronyms out in words in whichever way you would prefer them to be delivered by the AI.
 
  
 
-<strong>
-  Normalization
-</strong>
+**Normalization**
 
 If you’re generating via the API, you can specify whether to apply text normalization using the `apply_text_normalization` parameter. Text normalization spells out numbers and dates to ensure better pronunciation  This option does add latency as the normalization process takes additional processing time.
 
@@ -46,8 +40,8 @@ You can also specify the language of your prompt using the `language_code`parame
 
 This can be useful for short or ambiguous prompts, such as when the text includes only numbers or symbols. Specifying the language ensures the normalizer applies the correct rules for that language.
 
-For more information, see our <a href="/docs/api-reference/introduction">API reference.</a>
+For more information, see our [API reference.](/docs/api-reference/introduction)
 
 Normalization is enabled by default when generating using Text to Speech via the website.  
 
-In Studio, the default is for normalization to be automatically applied, meaning that the AI will decide when to apply text normalization. You can also set normalization to be always applied - this option is in <strong>Project settings</strong> under the <strong>Advanced</strong> tab.
+In Studio, the default is for normalization to be automatically applied, meaning that the AI will decide when to apply text normalization. You can also set normalization to be always applied - this option is in **Project settings** under the **Advanced** tab.

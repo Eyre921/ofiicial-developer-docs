@@ -62,4 +62,6 @@ For information on concurrency limits, refer to the [API Rate Limits](/reference
 Deepgram calculates usage based on WebSocket connection time. One hour of connection time equals one hour of API usage.
 
 Deepgram API Playground
+
+
 Try this feature out in our API Playground.

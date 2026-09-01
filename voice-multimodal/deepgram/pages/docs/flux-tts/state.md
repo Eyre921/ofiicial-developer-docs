@@ -33,7 +33,8 @@ You stream **chunks**; the server groups them into a **turn**; the wire reports 
 | `Finalizing` | You've sent `Flush`; the server is finishing the active turn's remaining audio. A `Speak` sent now starts a pending turn. |
 | `Closing`    | `Close` received; finishing queued audio, emitting `SessionMetadata`, then closing the socket.                            |
 
-<br />
+\
+
 
 ```mermaid
 stateDiagram-v2
@@ -51,7 +52,8 @@ stateDiagram-v2
   Closing --> [*] : SessionMetadata
 ```
 
-<br />
+\
+
 
 **Voice consistency carries across turns.** The model keeps conversational state across the turns it generates, so prosody stays consistent from turn to turn — with no API surface to manage. See [Cross-Turn Context](/docs/flux-tts/context).
 

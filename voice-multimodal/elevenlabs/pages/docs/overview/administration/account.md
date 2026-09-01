@@ -16,7 +16,7 @@ To begin using ElevenLabs, you'll need to create an account. Follow these steps:
 
 **Exercise**: Try out an example to get started or type something, select a voice and click generate!
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7098296148ad1263133ad9506a9e7de7e8a2d40c657222080963cb914a8780cb/assets/images/product-guides/administration/account-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=0e3cb4c355e0c2b55a64e153a6712fb0e00d4ae7981eed3d65e44314ed6fd284&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Account creation exercise" />
+![Account creation exercise](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7098296148ad1263133ad9506a9e7de7e8a2d40c657222080963cb914a8780cb/assets/images/product-guides/administration/account-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=2b267a4ff4ed58f69f97e655f366c1dc0def510e3e33eff1f5d14d1f23e25321&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 You can sign up with traditional email and password or using popular OAuth providers like Google, Facebook, and GitHub.
 
@@ -38,41 +38,39 @@ If these options don’t work, try creating an account on a different browser or
 
 #### Can I still log in using GitHub or Facebook?
 
-GitHub and Facebook are no longer supported as sign-in options.<br /> 
+GitHub and Facebook are no longer supported as sign-in options.\
+ 
 
-If you previously used GitHub or Facebook to sign in, you’ll need to switch to email and password, or - if your account uses a Gmail address - you can use Google SSO. GitHub and Facebook sign-in options no longer appear on the sign-in page but you can still update your sign-in method at any time.<br /> 
+If you previously used GitHub or Facebook to sign in, you’ll need to switch to email and password, or - if your account uses a Gmail address - you can use Google SSO. GitHub and Facebook sign-in options no longer appear on the sign-in page but you can still update your sign-in method at any time.\
+ 
 
-<strong>
-  Switch to email and password
-</strong>
+**Switch to email and password**
 
 Go to [https://elevenlabs.io/app/sign-in](https://elevenlabs.io/app/sign-in)
 
 Enter your ElevenLabs account email address
 
-Click <strong>Forgot password</strong>
+Click **Forgot password**
 
-Use the <strong>Change password</strong> button in the email we send you
+Use the **Change password** button in the email we send you
 
 You’ll now be able to sign in with your email and password
 
  
 
-<strong>
-  Switch to Google SSO
-</strong>
+**Switch to Google SSO**
 
 Go to [https://elevenlabs.io/app/sign-in](https://elevenlabs.io/app/sign-in)
 
-Click <strong>Sign in with Google</strong>
+Click **Sign in with Google**
 
 Select the Google account you want to link
 
 Confirm that you want to proceed
 
-You’ll now be able to sign in using <strong>Sign in with Google</strong>
+You’ll now be able to sign in using **Sign in with Google**
 
-<strong>Note:</strong> If you use Google SSO, you won’t be able to change the email address linked
+**Note:** If you use Google SSO, you won’t be able to change the email address linked
 to your account in the future.
 
 #### Can users have more than one account?
@@ -96,7 +94,7 @@ If you create multiple paid accounts and then switch to the free plan, those acc
 
 If you can't see the content that you are expecting to find in your account, and you think it may have been removed or deleted, the most likely explanation is that you are logged into the wrong account.
 
-You can check which account you're currently logged into by clicking your profile icon in the top right corner of the website to open your account menu, then selecting <strong>Settings</strong>. You will then see the email address associated with your account.
+You can check which account you're currently logged into by clicking your profile icon in the top right corner of the website to open your account menu, then selecting **Settings**. You will then see the email address associated with your account.
 
 If you are logged into the correct account, please try logging out and back in again as that might resolve the issue if there is a problem loading the content.
 
@@ -108,17 +106,17 @@ Log in to your account at [https://elevenlabs.io.](https://elevenlabs.io)
 
 Click your profile icon in the top right corner of the website to open your account menu.
 
-Select <strong>Settings.</strong>
+Select **Settings.**
 
-Click the red <strong>Delete Account</strong> button. You may need to scroll down to see this
+Click the red **Delete Account** button. You may need to scroll down to see this
 option.
 
-Confirm the request by entering the email address for your account and clicking{" "}
-<strong>Delete Account.</strong>
+Confirm the request by entering the email address for your account and clicking
+**Delete Account.**
 
 Please note that you will not be able to delete your account if you have an outstanding payment.
 
-Once your account is deleted, the associated data will be deleted in accordance with our <a href="https://elevenlabs.io/terms-of-use">Terms of Service</a> and [Privacy Policy](https://elevenlabs.io/privacy-policy)<em>.</em>
+Once your account is deleted, the associated data will be deleted in accordance with our [Terms of Service](https://elevenlabs.io/terms-of-use) and [Privacy Policy](https://elevenlabs.io/privacy-policy)*.*
 
 Deleting your account is permanent and you will not be able to use the same email address again.
 
@@ -140,7 +138,7 @@ We sometimes give early access to our Discord users in exchange for feedback bef
 
 When using the free tier, you might encounter a message like this if the abuse system has detected any unusual activity.
 
-* <strong>Unusual activity detected</strong> Free tier usage disabled.
+* **Unusual activity detected** Free tier usage disabled.
 
 This is regrettably a limitation we've needed to impose on the free tier to avoid people creating multiple accounts.
 It doesn't necessarily mean that you have multiple accounts. It could also mean that you are using a VPN and have shared
@@ -152,10 +150,10 @@ cause these types of issues. But regardless, something has happened that has ale
 
 There are two ways that you can avoid this message:
 
-* <strong>Buy a subscription:</strong> All paid subscriptions are immune to this error as it is only
+* **Buy a subscription:** All paid subscriptions are immune to this error as it is only
   triggered on free tiers. Our paid subscriptions also provide you with additional features compared
   to the free tier.
-* <strong>Use a unique IP:</strong> You can still use a unique IP that has not been flagged by the
+* **Use a unique IP:** You can still use a unique IP that has not been flagged by the
   abuse system, which will again circumvent this issue.
 
 We are sorry about the inconvenience but there is nothing we can do once the account has been flagged.
@@ -176,9 +174,7 @@ When you press 'Generate' on the website, you will be deducted credits since the
 
  
 
-<strong>
-  Free regenerations in Text to Speech and Voice Changer
-</strong>
+**Free regenerations in Text to Speech and Voice Changer**
 
 In the Text to Speech playground, you're eligible for two free generations in the following circumstances:
 
@@ -189,11 +185,11 @@ In the Text to Speech playground, you're eligible for two free generations in th
 
 If this is the case, you will see 'Regenerate speech', and the number of free regenerations remaining will be displayed if you hover over the 'Regenerate speech' button:
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bfcf041fb81235ac78fee6e1bee42750811986f999d0f19ac88935daf347268d/assets/images/help-center/account/general/tts-regenerate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=784228b0733d3b3fdb2ace352c144360ecca5505bbcfa3eb3840edd4e794cd4c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bfcf041fb81235ac78fee6e1bee42750811986f999d0f19ac88935daf347268d/assets/images/help-center/account/general/tts-regenerate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=14a8e64ca151ae01b98c11f6e34f0823147e304bec6126c480b76ed6014c1e76&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Once your free regenerations have been used, the button will return to 'Generate speech', and the number of credits that will be used for the generation will be displayed:
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/747483da90dc8cfdaf27d92c62082f4fbc55f94615391463b0122b00dfe20845/assets/images/help-center/account/general/tts-generate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=c3021c65671700b8206abb993d3dec67a9b50e3e18902840fabd38399388a4a0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/747483da90dc8cfdaf27d92c62082f4fbc55f94615391463b0122b00dfe20845/assets/images/help-center/account/general/tts-generate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=02d968b5c8a0eeab8b38535b0a8b2090bb577f7bf62e18442a84d4ddfc736f87&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 This works differently with the v3 model. Each time you click Generate, you’ll get two alternative outputs, but you’re only charged for one. If you click Generate again, you’ll get two new alternatives and you’ll be charged again. In short, you’re charged every time you click Generate, and each click gives you two options.
 
@@ -201,18 +197,16 @@ Free regenerations for Text to Speech and Speech to Speech are only available vi
 
  
 
-<strong>
-  Free regenerations in Studio
-</strong>
+**Free regenerations in Studio**
 
 We also offer two free regenerations in Studio, provided:
 
 * You haven't changed the text.
 * You haven't changed the voice.
 
-If the Generate/Regenerate button says <strong>Regenerate</strong>, rather than Generate, then you won't be charged for your next generation. You can hover over the button to see how many free regenerations are remaining.
+If the Generate/Regenerate button says **Regenerate**, rather than Generate, then you won't be charged for your next generation. You can hover over the button to see how many free regenerations are remaining.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/725da07a47c79e1d844c0a1994d147b8b57e501d30638a04725b273a3d1a45b8/assets/images/help-center/account/general/studio-regenerate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=568faeb7d1fd58ff42d743d87bbb96154acdb914b91de7ebc79ca3349daf5892&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/725da07a47c79e1d844c0a1994d147b8b57e501d30638a04725b273a3d1a45b8/assets/images/help-center/account/general/studio-regenerate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=5d4be5b0f3ddbb9aa79ea50db8632554d55290e134a65fdd41fbeaafe34c69b6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Can I be notified when I'm running low on credits?
 
@@ -222,13 +216,13 @@ Here’s how to set it up:
 
 Go to your [Subscription](https://elevenlabs.io/app/subscription) page.
 
-Click <strong>Manage Subscription</strong>.
+Click **Manage Subscription**.
 
-Use the <strong>Enable credit usage notification</strong> toggle to turn on this feature.
+Use the **Enable credit usage notification** toggle to turn on this feature.
 
 Once enabled, you can adjust the percentage at which the notification is triggered.
 
-Click <strong>Confirm</strong> when you’ve set the slider to your preferred threshold.
+Click **Confirm** when you’ve set the slider to your preferred threshold.
 
 When this feature is active, you’ll receive an email notification when you’ve reached the specified percentage of your total credits. In a multi-seat workspace, all admins will receive the email.
 
@@ -254,9 +248,9 @@ If you signed up using an email and password, you can change your email from you
 
 Click your profile icon in the top right corner of the website to open your account menu.
 
-Select <strong>Settings.</strong>
+Select **Settings.**
 
-Click <strong>Change Email.</strong>
+Click **Change Email.**
 
 If you've not verified your existing email address recently, you'll be asked to do this before
 changing the account email address.
@@ -271,9 +265,7 @@ You'll also receive a notification email to your original email address notifyin
 
 If you have trouble changing your email address, it might help to use Incognito or private browsing mode when verifying the change.
 
-<strong>
-  Important:
-</strong>
+**Important:**
 
 You can't change your email if another account already uses the new address. The new email must be completely unused by any ElevenLabs accounts.
 
@@ -285,13 +277,11 @@ If you signed up using Google Sign-in, it can’t be removed, and you won’t be
 
 You can add a password and log in using your email and password, but your account will still be linked to Google Sign-in.
 
-To do this, select <strong>Forgot password</strong> on the login page and follow the steps to set a password.
+To do this, select **Forgot password** on the login page and follow the steps to set a password.
 
 This doesn’t remove Google Sign-in or change how your account is linked. The original authentication method stays in place.
 
-<strong>
-  If you delete your account, you won’t be able to reuse the same email address to sign up again.
-</strong>
+**If you delete your account, you won’t be able to reuse the same email address to sign up again.**
 
 #### Can I change my account from Apple Sign-in to email and password?
 
@@ -299,13 +289,11 @@ If you signed up using Apple Sign-in, it can’t be removed, and you won’t be 
 
 You can add a password and log in using your email and password, but your account will still be linked to Apple Sign-in.
 
-To do this, select <strong>Forgot password</strong> on the login page and follow the steps to set a password.
+To do this, select **Forgot password** on the login page and follow the steps to set a password.
 
 This doesn’t remove Apple Sign-in or change how your account is linked. The original authentication method stays in place.
 
-<strong>
-  If you delete your account, you won’t be able to reuse the same email address to sign up again.
-</strong>
+**If you delete your account, you won’t be able to reuse the same email address to sign up again.**
 
 #### What is two-factor authentication (2FA)?
 
@@ -320,17 +308,17 @@ To add two-factor authentication (2FA) to your ElevenLabs account:
 Log in to your account at [https://elevenlabs.io](https://elevenlabs.io).
 
 Click your profile icon in the top right corner of the website to open your account menu, and
-select <strong>Settings</strong>.
+select **Settings**.
 
-Click <strong>Add Two-Factor Authentication</strong>.
+Click **Add Two-Factor Authentication**.
 
 You will see a QR code which you can scan with your preferred authentication app.
 
 If the QR code doesn't generate, this may be because you haven't logged in recently. In this
 case, you will need to log out and back in before the QR code will be generated.
 
-Enter the verification code shown in your authenticator app, then click{" "}
-<strong>Verify & Enable.</strong>
+Enter the verification code shown in your authenticator app, then click
+**Verify & Enable.**
 
 You will be shown a backup code, which allows you to remove 2FA from your account in the future.
 You will not be able to access the backup code again, so please keep it safe.
@@ -365,15 +353,15 @@ Log in to your account at [https://elevenlabs.io](https://elevenlabs.io).
 Click your profile icon in the top right corner of the website to open your account menu, then
 select [*Subscription*](https://elevenlabs.io/app/subscription).
 
-Click <strong>Billing</strong>.
+Click **Billing**.
 
-In the <strong>Modify Plan</strong> section, select the plan you would like to downgrade to from
-the <strong>Downgrade</strong> drop down selector.
+In the **Modify Plan** section, select the plan you would like to downgrade to from
+the **Downgrade** drop down selector.
 
 Once you confirm the downgrade, it will be scheduled for the end of your current billing cycle.
 
 You will see confirmation of the scheduled downgrade. At any time before the end of your billing
-cycle, you can click <strong>Cancel downgrade</strong> to remain on your current subscription.
+cycle, you can click **Cancel downgrade** to remain on your current subscription.
 
 Your browser can sometimes block popups from appearing or a button from working. If this happens, try using a different browser. The browsers that generally work best are Chrome, Edge, and Firefox.
 
@@ -429,7 +417,7 @@ To access [usage analytics](https://elevenlabs.io/app/usage) for your account, c
 
 The Analytics tab includes **API Requests**, **Usage**, and **Webhooks**. You can filter and analyze data by time period and at different levels of granularity. Use the **Request Log** tab to search and inspect individual API requests.
 
-![Analytics tab showing API Requests](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fdbcf3b2a35085656de4c63af220637ae39728f93f9fd88623fc2ccca4fb6193/assets/images/product-guides/administration/analytics.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=2d34c9359a732b9ec599928e7f919da7216a5dbcf02236ecdde54187151fbf04&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Analytics tab showing API Requests](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fdbcf3b2a35085656de4c63af220637ae39728f93f9fd88623fc2ccca4fb6193/assets/images/product-guides/administration/analytics.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=eea790f2339a333a1862c65ebc346dc07b047339eb338d58c0f48ad69c902f3f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 If you are part of a multi-seat workspace, you can switch between data for your account and your workspace. Account shows data for your individual account, while Workspace covers all accounts in your workspace. If you are not in a multi-seat workspace, you will not see this option.
 
@@ -448,7 +436,7 @@ The Usage view shows credit consumption and related performance metrics, includi
 
 When viewing workspace usage, you can also break usage down by individual user or workspace group.
 
-![Usage metrics in Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f901489e15c1211a1e7e99d75e6033848d5e3f86df55a320046af43b20614f7/assets/images/product-guides/administration/analytics-usage.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=6fa96b0a5846d3079769290842d6509d635eb944101d44a7f991138755dae478&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Usage metrics in Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f901489e15c1211a1e7e99d75e6033848d5e3f86df55a320046af43b20614f7/assets/images/product-guides/administration/analytics-usage.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=d6c55836c66d95b22e3e3578e7be62c5e902cc91ee69505d19ea09573aa39732&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 If you are part of a multi-seat workspace, you can switch between data for your account and your workspace. Account shows data for your individual account, while Workspace covers all accounts in your workspace. If you are not in a multi-seat workspace, you will not see this option.
 
@@ -468,7 +456,7 @@ The API Requests view shows request volume and performance for your account or w
 * Top called path
 
 ![API Requests metrics in
-Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/85616095f05819be54ba35639423d2175c51ca34aec2d34273a3e8b1a6bd8401/assets/images/product-guides/administration/analytics-requests.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=13b5aaf9dcffd1a9843664f32b0290e9cc13c4d7a3cefc97e4b460b13e71035e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/85616095f05819be54ba35639423d2175c51ca34aec2d34273a3e8b1a6bd8401/assets/images/product-guides/administration/analytics-requests.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=3833b5b1ee139cce2f5899c2a697a1fe1bbcdd57c292d9311821998839be0bee&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 You can filter by time period (for example, hour, day, month, or year) and at different levels of granularity.
 
@@ -485,7 +473,7 @@ Yes. [Usage analytics](https://elevenlabs.io/app/usage) lets you export the data
 Open **Developers** in the sidebar, go to the **Analytics** tab, set up the view you want, then click **Export**.
 
 ![Export button on an Analytics
-chart](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52d44c4736ed92ccb037fe8ffb7a3292f20a695350d689785e137fb75fac62a4/assets/images/product-guides/administration/analytics-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=c5d43516557847f8e5f86f1338b2f2ca9ca0ab358637dec2161215af4d607e37&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+chart](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52d44c4736ed92ccb037fe8ffb7a3292f20a695350d689785e137fb75fac62a4/assets/images/product-guides/administration/analytics-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=6e235c6c07052ce469f613a84b037ebb7e2813d0e35a8496e3707a59b5db36d5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For more information on Analytics views and filters, see [Usage analytics](/docs/overview/administration/usage-analytics).
 
@@ -497,15 +485,15 @@ You can update your billing information from your [Subscription](https://elevenl
 
 Go to your [Subscription](https://elevenlabs.io/app/subscription) page.
 
-Click <strong>Billing</strong>.
+Click **Billing**.
 
-At the bottom of the pop-up, click <strong>Manage billing information</strong>.
+At the bottom of the pop-up, click **Manage billing information**.
 
-Scroll down to <strong>Billing Information</strong> and click{" "}
-<strong>Update information</strong>.
+Scroll down to **Billing Information** and click
+**Update information**.
 
 Make the necessary changes to your billing information.
 
-If you want to add or edit your Tax ID, you can do this in the <strong>Tax ID</strong> section.
+If you want to add or edit your Tax ID, you can do this in the **Tax ID** section.
 
 The updated details will be applied automatically to all future invoices.

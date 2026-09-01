@@ -12,9 +12,9 @@ If you signed up using an email and password, you can change your email from you
 
 Click your profile icon in the top right corner of the website to open your account menu.
 
-Select <strong>Settings.</strong>
+Select **Settings.**
 
-Click <strong>Change Email.</strong>
+Click **Change Email.**
 
 If you've not verified your existing email address recently, you'll be asked to do this before
 changing the account email address.
@@ -29,9 +29,7 @@ You'll also receive a notification email to your original email address notifyin
 
 If you have trouble changing your email address, it might help to use Incognito or private browsing mode when verifying the change.
 
-<strong>
-  Important:
-</strong>
+**Important:**
 
 You can't change your email if another account already uses the new address. The new email must be completely unused by any ElevenLabs accounts.
 

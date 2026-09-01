@@ -8,4 +8,4 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # What are payouts for ElevenReader Publishing?
 
-The Payment Terms explain how you can earn and receive payouts for the content you publish through ElevenReader Publishing. They work alongside the general Terms of Service, the Content Guidelines and other applicable legal documents. In order to receive payouts, you need to agree to the Payment Terms. You can find the latest payment terms here: <a href="https://elevenreader.io/publishing-payment-terms">[https://elevenreader.io/publishing-payment-terms](https://elevenreader.io/publishing-payment-terms)</a>
+The Payment Terms explain how you can earn and receive payouts for the content you publish through ElevenReader Publishing. They work alongside the general Terms of Service, the Content Guidelines and other applicable legal documents. In order to receive payouts, you need to agree to the Payment Terms. You can find the latest payment terms here: [[https://elevenreader.io/publishing-payment-terms](https://elevenreader.io/publishing-payment-terms)](https://elevenreader.io/publishing-payment-terms)

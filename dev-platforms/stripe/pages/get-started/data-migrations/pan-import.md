@@ -126,8 +126,6 @@ Learn more about [testing your integration](https://docs.stripe.com/testing.md).
 
 | Payment method | Scenario | How to test |
 | --- | --- | --- |
-| BECS Direct Debit | Your customer successfully pays with BECS Direct Debit. | Fill out the form using the account number `900123456` and BSB `000000`. The confirmed PaymentIntent initially transitions to `processing`, then transitions to the `succeeded` status 3 minutes later. |
-| BECS Direct Debit | Your customer’s payment fails with an `account_closed` error code. | Fill out the form using the account number `111111113` and BSB `000000`. |
 | Bancontact, EPS, iDEAL, and Przelewy24 | Your customer fails to authenticate on the redirect page for a redirect-based and immediate notification payment method. | Choose any redirect-based payment method, fill out the required details, and confirm the payment. Then click **Fail test payment** on the redirect page. |
 | Pay by Bank | Your customer successfully pays with a redirect-based and [delayed notification](https://docs.stripe.com/payments/payment-methods.md#payment-notification) payment method. | Choose the payment method, fill out the required details, and confirm the payment. Then click **Complete test payment** on the redirect page. |
 | Pay by Bank | Your customer fails to authenticate on the redirect page for a redirect-based and delayed notification payment method. | Choose the payment method, fill out the required details, and confirm the payment. Then click **Fail test payment** on the redirect page. |
@@ -137,6 +135,8 @@ Learn more about [testing your integration](https://docs.stripe.com/testing.md).
 
 | Payment method | Scenario | How to test |
 | --- | --- | --- |
+| BECS Direct Debit | Your customer successfully pays with BECS Direct Debit. | Fill out the form using the account number `900123456` and BSB `000000`. The confirmed PaymentIntent initially transitions to `processing`, then transitions to the `succeeded` status 3 minutes later. |
+| BECS Direct Debit | Your customer’s payment fails with an `account_closed` error code. | Fill out the form using the account number `111111113` and BSB `000000`. |
 | SEPA Direct Debit | Your customer successfully pays with SEPA Direct Debit. | Fill out the form using the account number `AT321904300235473204`. The confirmed PaymentIntent initially transitions to processing, then transitions to the succeeded status three minutes later. |
 | SEPA Direct Debit | Your customer’s payment intent status transitions from `processing` to `requires_payment_method`. | Fill out the form using the account number `AT861904300235473202`. |
 

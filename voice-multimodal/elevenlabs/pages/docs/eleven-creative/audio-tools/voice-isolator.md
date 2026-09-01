@@ -14,7 +14,7 @@ Voice isolator is a tool that allows you to remove background noise from audio r
 
 ## Guide
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9a60aeca7a345ff15d3223b85a8fe2ce7798fb7815c8c013916cab745b45408c/assets/images/product-guides/voice-isolator/voice-isolator.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=b56d5e2276e419913633cc6731a4850dcb947f6c61049345de7b2e1f2a75f458&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice isolator" />
+![Voice isolator](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9a60aeca7a345ff15d3223b85a8fe2ce7798fb7815c8c013916cab745b45408c/assets/images/product-guides/voice-isolator/voice-isolator.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100019Z&X-Amz-Expires=604800&X-Amz-Signature=450c0226eae41f7f19e62eb2458b9a5f2bcb40b516bd72e571fa3e24cd4cbac8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 To use the voice isolator app, navigate to [Voice Isolator](https://elevenlabs.io/app/voice-isolator) under the Audio Tools section. Here you can upload or drag and drop your audio file into the app, or record a new audio file with your device's microphone.
 
@@ -39,7 +39,7 @@ Use the voice isolator API.
 
       [Voice Isolator](https://elevenlabs.io/app/voice-isolator) strips background noise from audio files for film, podcast, and interview post production.
 
-      To get started, you can either upload an existing audio file or record a new one directly using your device’s microphone. Once uploaded, simply click <strong>Isolate voice</strong> to begin the process.
+      To get started, you can either upload an existing audio file or record a new one directly using your device’s microphone. Once uploaded, simply click **Isolate voice** to begin the process.
 
       After the tool finishes processing your audio, it will generate a new file with the voice isolated from the background noise. You can listen to it directly in the app or download the cleaned-up version for your project.
 

@@ -22,7 +22,7 @@ To fetch records from a namespace based on their IDs, use the `fetch` operation 
 * `ids`: The IDs of the records to fetch. Maximum of 1000.
 
 <Note>
-  For on-demand indexes, since vector values are retrieved from object storage, fetch operations may have increased latency. If you only need metadata or IDs, consider using the [`query`](/reference/api/latest/data-plane/query) operation with `include_values` set to `false` instead. See [Decrease latency](/guides/optimize/decrease-latency#avoid-including-vector-values-when-not-needed) for more details.
+  For on-demand indexes, since vector values are retrieved from object storage, fetch operations may have increased latency. If you only need metadata or IDs, consider using the [`query`](/reference/api/latest/data-plane/query) operation instead, with `include_values` left at its default of `false`. See [Decrease latency](/guides/optimize/decrease-latency#avoid-including-vector-values-when-not-needed) for more details.
 </Note>
 
 <CodeGroup>

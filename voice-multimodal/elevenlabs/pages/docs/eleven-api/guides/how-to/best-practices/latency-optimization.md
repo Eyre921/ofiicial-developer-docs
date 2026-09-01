@@ -12,9 +12,7 @@ This guide covers the core principles for improving text-to-speech latency. For 
 
 While there are many individual techniques, we'll group them into **four principles**.
 
-<h4>
-  Four principles
-</h4>
+#### Four principles
 
 1. [Use Flash models](#use-flash-models)
 2. [Leverage streaming](#leverage-streaming)

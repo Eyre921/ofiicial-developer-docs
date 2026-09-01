@@ -11,9 +11,12 @@ path: docs/pre-recorded-audio
 # Getting Started
 
 Deepgram API Playground
+
+
 Try this feature out in our API Playground.
 
-<br />
+\
+
 
 This guide walks you through transcribing pre-recorded audio with the Deepgram API using cURL or one of Deepgram's SDKs.
 

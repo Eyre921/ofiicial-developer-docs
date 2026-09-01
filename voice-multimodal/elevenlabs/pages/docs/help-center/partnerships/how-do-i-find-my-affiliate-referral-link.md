@@ -8,7 +8,7 @@ path: docs/help-center/partnerships/how-do-i-find-my-affiliate-referral-link
 
 # How do I find my Affiliate referral link?
 
-To sign up for our Affiliate program, click your profile icon in the top right corner of the website to open your account menu, then select <strong>Affiliate program</strong>. In the pop-up that appears, click <strong>Sign up for the affiliate program.</strong>
+To sign up for our Affiliate program, click your profile icon in the top right corner of the website to open your account menu, then select **Affiliate program**. In the pop-up that appears, click **Sign up for the affiliate program.**
 
 Once you've signed up, you will get a unique referral link that you can copy and share with your community or audience. 
 

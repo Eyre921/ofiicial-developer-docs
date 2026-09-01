@@ -18,4 +18,5 @@ With the ElevenLabs app, you can:
 * Start with 10,000 free credits per month, with full plan support for existing users
 * Seamless login for existing users — one account with your voices, your projects, anywhere
 
-[Download on iOS](https://apps.apple.com/us/app/elevenlabs-ai-voice-generator/id6743162587)<br />[Download on Android ](https://play.google.com/store/apps/details?id=io.elevenlabs.coreapp\&hl=en_US)
+[Download on iOS](https://apps.apple.com/us/app/elevenlabs-ai-voice-generator/id6743162587)\
+[Download on Android ](https://play.google.com/store/apps/details?id=io.elevenlabs.coreapp\&hl=en_US)

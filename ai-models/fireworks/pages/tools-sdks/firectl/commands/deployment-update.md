@@ -22,7 +22,7 @@ firectl deployment update my-deployment --file=/path/to/deployment.json
 
 ```
       --accelerator-count int32                  The number of accelerators to use per replica.
-      --accelerator-type string                  The type of accelerator to use. Must be one of {NVIDIA_A100_80GB, NVIDIA_H100_80GB, NVIDIA_H200_141GB, AMD_MI300X_192GB}
+      --accelerator-type string                  The type of accelerator to use. Must be one of {NVIDIA_A100_80GB, NVIDIA_H100_80GB, NVIDIA_H200_141GB, NVIDIA_B200_180GB, NVIDIA_B300_288GB, AMD_MI325X_256GB, AMD_MI350X_288GB}
       --deployment-shape string                  The deployment shape to use for this deployment.
       --description string                       Description of the deployment.
       --direct-route-api-keys stringArray        The API keys for the direct route. Only available to enterprise accounts.

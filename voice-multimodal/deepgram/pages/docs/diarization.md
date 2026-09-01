@@ -11,9 +11,12 @@ path: docs/diarization
 # Speaker Diarization
 
 Deepgram API Playground
+
+
 Try this feature out in our API Playground.
 
-<br />
+\
+
 
 &#x20;Pre-recorded
 

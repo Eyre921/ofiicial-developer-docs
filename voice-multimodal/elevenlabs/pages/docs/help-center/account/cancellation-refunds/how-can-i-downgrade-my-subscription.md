@@ -19,15 +19,15 @@ Log in to your account at [https://elevenlabs.io](https://elevenlabs.io).
 Click your profile icon in the top right corner of the website to open your account menu, then
 select [*Subscription*](https://elevenlabs.io/app/subscription).
 
-Click <strong>Billing</strong>.
+Click **Billing**.
 
-In the <strong>Modify Plan</strong> section, select the plan you would like to downgrade to from
-the <strong>Downgrade</strong> drop down selector.
+In the **Modify Plan** section, select the plan you would like to downgrade to from
+the **Downgrade** drop down selector.
 
 Once you confirm the downgrade, it will be scheduled for the end of your current billing cycle.
 
 You will see confirmation of the scheduled downgrade. At any time before the end of your billing
-cycle, you can click <strong>Cancel downgrade</strong> to remain on your current subscription.
+cycle, you can click **Cancel downgrade** to remain on your current subscription.
 
 Your browser can sometimes block popups from appearing or a button from working. If this happens, try using a different browser. The browsers that generally work best are Chrome, Edge, and Firefox.
 

@@ -1,5 +1,5 @@
 ---
-title: "Model Gallery"
+title: "Pinecone model gallery"
 source: https://docs.pinecone.io/models/overview
 path: models/overview
 ---
@@ -38,7 +38,7 @@ Browse Pinecone's hosted embedding and reranking model gallery with details on d
 
     <ModelCard description="Cohere's latest reranker, with multilingual capabilities." />
 
-    <ModelCard description="Cohere's previous-generation reranker. Deprecated; migrate to cohere-rerank-4-fast." />
+    <ModelCard description="Cohere's previous-generation reranker. Deprecated; requests are served by cohere-rerank-4-fast." />
 
     <ModelCard description="Sparse-vector encoder for custom lexical retrieval. For general keyword search, use full-text search." />
 

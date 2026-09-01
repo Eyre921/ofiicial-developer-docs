@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-cloning/professional-voice-cloning
 
 # Professional Voice Cloning
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d01dc823cfce0a18de62027f92f80471d8e95604956a951bb858c2b45a8a2d0/assets/images/product-guides/voices/voice-cloning/voice-cloning-pvc-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085712Z&X-Amz-Expires=604800&X-Amz-Signature=c6417fe43cdf662242c22ac55c31387ce31729e34ec98666d8d0659d6fa888c8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Professional voice cloning feature" />
+![Professional voice cloning feature](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d01dc823cfce0a18de62027f92f80471d8e95604956a951bb858c2b45a8a2d0/assets/images/product-guides/voices/voice-cloning/voice-cloning-pvc-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081220Z&X-Amz-Expires=604800&X-Amz-Signature=6b4789297518707739189c5a3c78f65a144e8cf8d578855cbe7e04d7cf8119c7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Creating a Professional Voice Clone
 
@@ -31,7 +31,7 @@ From the pop-up, select **Professional Voice Clone**.
 Professional Voice Clones do not currently support singing. Audio recordings must consist of
 spoken voice only.
 
-![Create a new Professional Voice Clone](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84134ac62c71531ac93d090030d9651bf428dc90802c17b33ad924973b6560c2/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085712Z&X-Amz-Expires=604800&X-Amz-Signature=a6efd49773353cffdcceef7c328f7d1f125ca203dd9ded1de96aaab8c74a5ec5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Create a new Professional Voice Clone](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84134ac62c71531ac93d090030d9651bf428dc90802c17b33ad924973b6560c2/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081220Z&X-Amz-Expires=604800&X-Amz-Signature=dd8e21b6ec2630c2ace7220e955a9a516d36def972ebf90fd8ecbc017c6f7a7b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Upload your audio samples by clicking **Upload samples**.
 
@@ -41,13 +41,13 @@ If you don't already have pre-recorded training audio, you can also record direc
 
 Once your audio has been uploaded, you will see feedback on the length of your samples. For the best results, we recommend uploading at least an hour of training audio, and ideally as close to three hours as possible.
 
-![Create a new Professional Voice Clone](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/868803a15dac167dc8b97930436273e7196314e7a66a5db95ef2c16e7806c753/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation-samples.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085712Z&X-Amz-Expires=604800&X-Amz-Signature=0646c568103aaff36e670afde1680866b50246bcf117016bc2c996bb4944e8bd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Create a new Professional Voice Clone](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/868803a15dac167dc8b97930436273e7196314e7a66a5db95ef2c16e7806c753/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation-samples.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081220Z&X-Amz-Expires=604800&X-Amz-Signature=1930adf4129d970ce69e22824c2870e77edf12f7e8930e32bf0721116e3b5a71&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Process your audio
 
 Once your audio samples have been uploaded, you can process them to improve the quality. You can remove any background noise, and you can also separate out different speakers, if your audio includes more than one speaker. To access these options, click the **Audio settings** button next to the clip you want to process.
 
-![Create a new Professional Voice Clone](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2ad9fdf1aff0635cdf884d77da4dc6be7d77e7596601ebde4cb0bf50ecc80e37/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085712Z&X-Amz-Expires=604800&X-Amz-Signature=77ed1cd8ffe0b0d8ac3d7499e33689bd8fb9fd60ac3062d6faa866f1d340095d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Create a new Professional Voice Clone](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2ad9fdf1aff0635cdf884d77da4dc6be7d77e7596601ebde4cb0bf50ecc80e37/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081220Z&X-Amz-Expires=604800&X-Amz-Signature=6f06bf9af1b7fc21c2e5a07c64c4176bdb4c34694b016078ba8e513bf92fa103&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Verify your voice
 
@@ -168,11 +168,10 @@ Provide at least 30 minutes of high-quality audio that follows the above guideli
 
       Professional Voice Clone (PVC) slots vary by subscription tier:
 
-      <br />
+      \
 
-      <strong>
-        Base PVC Slots
-      </strong>
+
+      **Base PVC Slots**
 
       * Free and Starter plan: No PVC slots available
       * Creator, Pro, and legacy Scale plan: 1 PVC slot
@@ -180,11 +179,10 @@ Provide at least 30 minutes of high-quality audio that follows the above guideli
       * Business plan: 10 PVC slots
       * Enterprise plan: Custom number of PVC slots
 
-      <br />
+      \
 
-      <strong>
-        Additional PVC Slots
-      </strong>
+
+      **Additional PVC Slots**
 
       You can earn additional PVC slots when a Professional Voice Clone you have shared with the [Voice Library](https://elevenlabs.io/app/voice-library) is marked as Studio Quality.
 
@@ -196,9 +194,7 @@ Provide at least 30 minutes of high-quality audio that follows the above guideli
         * Earn extra slots through Studio Quality review of voices shared with the Voice Library
         * Upgrade to Scale or above
 
-      <strong>
-        Important Notes
-      </strong>
+      **Important Notes**
 
       * Professional Voice Clones can only be used to clone your own voice
       * If you downgrade below the Creator tier, your PVC will remain on your account, but you won't be able to use it until you upgrade to Creator or above
@@ -216,13 +212,13 @@ Provide at least 30 minutes of high-quality audio that follows the above guideli
 
        
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/87eadcea0297fa3c147d36c190c117a4f1feb2a25aa201082615a9e71f1ad14f/assets/images/help-center/product/voices/voice-cloning/how-do-i-add-or-upgrade-the-models-used-to-train-my-professional-voice-clone.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085712Z&X-Amz-Expires=604800&X-Amz-Signature=e25de9c66594288d7a80877d3b6c55c7abf3528dcbe871996ead3b686e76d20a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/87eadcea0297fa3c147d36c190c117a4f1feb2a25aa201082615a9e71f1ad14f/assets/images/help-center/product/voices/voice-cloning/how-do-i-add-or-upgrade-the-models-used-to-train-my-professional-voice-clone.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081220Z&X-Amz-Expires=604800&X-Amz-Signature=35b201351a7c792412d53e435a7ead4574712689ade6b096e7fef7108001e9e3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
        
 
       To start the fine-tuning process, hover over the name of your voice in the list in [My Voices,](https://elevenlabs.io/app/voice-lab) and you will see all available models. Models that the voice has already been fine-tuned on will be displayed with a tick icon, and models that are available for fine-tuning will be displayed with a plus icon. To begin fine tuning, just click on the model. 
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/244445ebcacf0185f0cf89fbb06ad9ca34d2376e34c8900cb49de163f2b2226f/assets/images/help-center/product/voices/voice-cloning/how-do-i-add-or-upgrade-the-models-used-to-train-my-professional-voice-clone-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085712Z&X-Amz-Expires=604800&X-Amz-Signature=d9920539f1b6e46ddb562e29f37aca23c90e6f7b1b852b95f196d34e503ad34c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/244445ebcacf0185f0cf89fbb06ad9ca34d2376e34c8900cb49de163f2b2226f/assets/images/help-center/product/voices/voice-cloning/how-do-i-add-or-upgrade-the-models-used-to-train-my-professional-voice-clone-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081220Z&X-Amz-Expires=604800&X-Amz-Signature=4d473644ed8e0ed59de40d8338c0d0dd046dfb332f6776c69a8dfe72737d18c0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       While the voice is fine-tuning, you can hover over the model name to see the progress. Please note that due to voice caching, you may need to refresh the page to see the latest progress. Once the fine-training has been completed, you will be notified both in-app and by email.
     </td>
@@ -238,53 +234,51 @@ Provide at least 30 minutes of high-quality audio that follows the above guideli
 
        
 
-      <strong>Draft:</strong> This status means that your voice is incomplete. Generally this is either
+      **Draft:** This status means that your voice is incomplete. Generally this is either
       because you haven't completed creating the voice, or you haven't verified the voice yet.
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6d3f8b497dcb56c5ac48f87906f196f49fce5518dbe1f3e700df2f91ebbc1378/assets/images/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085712Z&X-Amz-Expires=604800&X-Amz-Signature=f89df65e6c9f9cfc6d7dbfd1f8fb95b7bc430e62abccbd48be0bf8b43830a534&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6d3f8b497dcb56c5ac48f87906f196f49fce5518dbe1f3e700df2f91ebbc1378/assets/images/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081220Z&X-Amz-Expires=604800&X-Amz-Signature=23132f6b7d77da34139442f81e18eb8ff1fddebac08e2ff13cb035b4c5249b3f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       To go through the verification process, click the tick icon.
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5e4e259056fdcee35a751b0d7ca2a463019a47469f95cabc9ed359f7f51fc5fe/assets/images/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085712Z&X-Amz-Expires=604800&X-Amz-Signature=d78bc74612c633d1b55d7ccce413b3c92ee68e9a9b49bf0d5360b0fdcb406bbf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5e4e259056fdcee35a751b0d7ca2a463019a47469f95cabc9ed359f7f51fc5fe/assets/images/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081220Z&X-Amz-Expires=604800&X-Amz-Signature=1cd12b0e5ca01f3d4b38e19091eac6f759a16ccf85c961c56ba99d83749a67a0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-      To go back to the voice creation process, click <strong>More actions</strong> (three dots) and select <strong>Edit voice</strong>.
+      To go back to the voice creation process, click **More actions** (three dots) and select **Edit voice**.
 
        
 
       Once you've verified your voice, it will need to fine-tune on our models before you can use it. You can track this process by hovering over the name of your voice in [My Voices](https://elevenlabs.io/app/voice-lab). You'll see all available models listed here, with an icon to indicate the status for each model. 
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d4820b45f5fb4a89f76d3b5ef5ed2992bbf515eacac039c67596c055f136b67c/assets/images/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085712Z&X-Amz-Expires=604800&X-Amz-Signature=2dca076560dd436f602eafef87658a6d82fa798ca05e0ece4e81ffc5d45959c5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d4820b45f5fb4a89f76d3b5ef5ed2992bbf515eacac039c67596c055f136b67c/assets/images/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081220Z&X-Amz-Expires=604800&X-Amz-Signature=057077633fa02fa2d78fcd7b0827e9c3e9472cfe514c5ba7c36fadd88b428675&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
        
 
       Hover over the name of the model for more information, and you will see one of the following:
 
-      <strong>The training run has been scheduled</strong>: This means that your voice is waiting for a
+      **The training run has been scheduled**: This means that your voice is waiting for a
       slot to open up so it can be trained. The length of time that your voice will be queued will depend
       on how many other voices are also in the queue.
 
-      <strong>Creating dataset</strong> and <strong>Running fine-tuning</strong>: Once a slot opens up, it
+      **Creating dataset** and **Running fine-tuning**: Once a slot opens up, it
       will begin the fine-tuning process. This can take between 6-24 hours. You'll see how far through
       each step in the training process your voice is, indicated by a percentage.
 
-      <strong>
-        We are sorry the training run experienced issues and has been retried. No further action is
-        required
-      </strong>
+      **We are sorry the training run experienced issues and has been retried. No further action is
+      required**
 
       This means that something went wrong, but your voice has been automatically queued to retry the
       fine-tuning process. Your voice should successfully complete the fine-tuning process on the next
       try, but if you experience multiple failures, please contact support by emailing us at
       [team@elevenlabs.io](mailto:team@elevenlabs.io).
 
-      <strong>Voice is ready to be used with the model</strong>: This means that the fine-tuning process
+      **Voice is ready to be used with the model**: This means that the fine-tuning process
       for this model has been completed, and you can now use your voice with this model.
 
-      <strong>Click to start fine-tuning</strong>: Some models do not train automatically, and you will
+      **Click to start fine-tuning**: Some models do not train automatically, and you will
       need to click the model name to begin fine-training. If additional models have become available for
       your voice to fine-tune on, you'll see an exclamation icon next to your voice. 
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7fe7278b67a7f9697c1a6190837fb110fd53e64ddb3513b4cc351292a077740e/assets/images/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085712Z&X-Amz-Expires=604800&X-Amz-Signature=0d49d76573be364a4401f323592298df7c92b6a2afac8f407e6c186fb7b95da7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7fe7278b67a7f9697c1a6190837fb110fd53e64ddb3513b4cc351292a077740e/assets/images/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081220Z&X-Amz-Expires=604800&X-Amz-Signature=4fb3a61fe369f3106fb177ce176ff4d254b866f8fd5c3b8e8d3d609684386fce&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       To begin the fine-tuning process, just hover over your voice's name and click the name of the model.
     </td>
@@ -338,7 +332,7 @@ Provide at least 30 minutes of high-quality audio that follows the above guideli
       * Make sure that your web browser is allowed to use your microphone and that you are not muted.
       * Ensure that the recorded audio from your computer microphone sounds similar to the audio uploaded for cloning, without any background noise or other external audio interference.
       * Try to speak in a similar style to the audio you used to train the voice.
-      * Read each verification line only once, then press <strong>Stop</strong> to stop recording. Reading the line more than once can cause the verification process to fail.
+      * Read each verification line only once, then press **Stop** to stop recording. Reading the line more than once can cause the verification process to fail.
     </td>
   </tr>
 
@@ -507,9 +501,9 @@ Provide at least 30 minutes of high-quality audio that follows the above guideli
 
       When you create a PVC, it needs to go through a number of processes before it becomes available for use.  After you have verified your voice, it will be processed and queued for fine-tuning.   Depending on how many other voices are currently queued for fine-tuning, we estimate that this process will usually take between 3-6, but it can take up to 24 hours.
 
-      You can check the progress of your PVC in My Voices by finding the voice in your list of voices, then clicking <strong>View</strong> to see more details.  You can hover over each model to see the current status.  
+      You can check the progress of your PVC in My Voices by finding the voice in your list of voices, then clicking **View** to see more details.  You can hover over each model to see the current status.  
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec34838a2fd40c5105c9196c356045b2963daf2490fd36c19f42bcb8f5359c86/assets/images/help-center/product/voices/voice-cloning/what-does-the-error-no-model-found-for-this-voice-please-select-another-voice-mean.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085712Z&X-Amz-Expires=604800&X-Amz-Signature=fa1b7afd74f72ef06dd43b0f9e5bac7032de06e332049a0c3e029270ea0b3682&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec34838a2fd40c5105c9196c356045b2963daf2490fd36c19f42bcb8f5359c86/assets/images/help-center/product/voices/voice-cloning/what-does-the-error-no-model-found-for-this-voice-please-select-another-voice-mean.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081220Z&X-Amz-Expires=604800&X-Amz-Signature=42f9691c63cf89bb5744803ec35ada7d973a14e23dec8d44757ecaa6e8c0e334&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       For more detail on what each status means, please see [What does the status of my Professional Voice Clone mean?](/docs/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean)
 

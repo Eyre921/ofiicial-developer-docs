@@ -14,7 +14,7 @@ To assign or change a seat:
 
 Click your profile icon in the top right corner of the website to open your account menu.
 
-Select <strong>Workspace settings</strong>
+Select **Workspace settings**
 
 Go to the [Members](https://elevenlabs.io/app/workspace/members) tab
 
@@ -26,4 +26,4 @@ The available seat types depends on your subscription plan. Additional Full and 
 
 You can also assign the seat type when inviting a new member to your workspace.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f051e400bf855eb868241f39d03470294541917158d48cb1c5a20952a372e7c4/assets/images/help-center/account/workspaces/how-do-i-assign-a-basic-seat.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=deedb1d2522f6a616131557b9a1cccdb70e3d67851015d212020c18ae12cb8ea&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f051e400bf855eb868241f39d03470294541917158d48cb1c5a20952a372e7c4/assets/images/help-center/account/workspaces/how-do-i-assign-a-basic-seat.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T112305Z&X-Amz-Expires=604800&X-Amz-Signature=f1ad07dbf23a7116d4caa3d46d0cdf234aea5f40e060ca18130c39fccd0eaaf1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)

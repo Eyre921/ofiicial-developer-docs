@@ -16,6 +16,6 @@ On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the op
 
 Usage based billing offers a fixed price for each additional 1,000 credits used over your limit. The cost of these credits depends on your plan, and will be displayed when you enable usage based billing for your account, prior to confirmation.
 
-On eligible plans, usage based billing can be enabled from your <a href="https://elevenlabs.io/app/subscription">Subscription</a> page. 
+On eligible plans, usage based billing can be enabled from your [Subscription](https://elevenlabs.io/app/subscription) page. 
 
 Additional credits are billed at the end of the billing cycle, or when the outstanding balance exceeds 2 times the subscription price.

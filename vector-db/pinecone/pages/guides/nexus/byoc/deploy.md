@@ -36,7 +36,7 @@ You also need:
   * **Azure**: a dedicated subscription with `Owner`. The installer creates managed identities and role assignments, so `Contributor` is not sufficient.
 * A **Pinecone API key** from the Pinecone console.
 * A Pinecone **Enterprise plan** (required for BYOC access).
-* A **generation-LLM key**. Every model Nexus uses is BYOM and configurable through the model catalog: generation, embedding, and rerank. The catalog is backed by [LiteLLM](https://docs.litellm.ai/docs/providers), so you can bring any model any LiteLLM-supported provider offers, referenced by its LiteLLM `provider/model` identifier. The shipped defaults route generation to Google Gemini (get a key from [Google AI Studio](https://aistudio.google.com/apikey)) and route embedding and rerank to Pinecone-hosted models (no extra key). You can repoint any tier at a different provider (including endpoints inside your own boundary), each with its own key. Which model each call reaches determines where the content of that call goes. See [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency).
+* A **generation-LLM key** (BYOM). The shipped default is Google Gemini, so get a key from [Google AI Studio](https://aistudio.google.com/apikey). Embedding and rerank run on Pinecone-hosted models by default (no extra key). See [Model guidance](/guides/nexus/models) for the model catalog and how to repoint generation, embedding, or rerank, and [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency) for where each call's content goes.
 * A **Pulumi state backend** (either Pulumi Cloud or local state via `pulumi login --local`).
 * Sufficient cloud quota for the resources (the setup wizard validates this).
 

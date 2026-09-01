@@ -218,8 +218,6 @@ Fill in the following fields for your Salesforce integration:
 }
 ```
 
-{' '}
-
 #### Create auth connection
 
 Click **Create auth connection** to add your configuration.

@@ -14,23 +14,23 @@ For self-serve subscriptions, Pay As You Go is our replacement for usage based b
 
 On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota. 
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656/assets/images/help-center/account/general/how-do-i-change-the-usage-based-billing-threshold-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=15a456a859de19b5868fafff648d047784df754359ee7cf3bf233049b132d35e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656/assets/images/help-center/account/general/how-do-i-change-the-usage-based-billing-threshold-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100020Z&X-Amz-Expires=604800&X-Amz-Signature=a962e0597bc1c4fe2aa28586392e46387f943f483f5385214bdea8c611d32519&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 To allow for more control over charges, usage based billing lets you set a maximum number of additional credits that can be used on your account. You can set this threshold when you enable usage based billing, or adjust it at any time.
 
 Here’s how to change the threshold:
 
-Go to your <strong>Subscription</strong> page.
+Go to your **Subscription** page.
 
-Click <strong>Manage Subscription</strong>.
+Click **Manage Subscription**.
 
-In the <strong>U</strong>
-<strong>sage based billing</strong> section, click <strong>Change threshold.</strong>
+In the **U**
+**sage based billing** section, click **Change threshold.**
 
-A pop-up will appear where you can either enter your preferred maximum, or select{" "}
-<strong>Unlimited</strong>.
+A pop-up will appear where you can either enter your preferred maximum, or select
+**Unlimited**.
 
-Click <strong>Confirm</strong> to save the changes.
+Click **Confirm** to save the changes.
 
 You may be asked to verify your payment card before proceeding, but no charges will be made
 during the verification process.

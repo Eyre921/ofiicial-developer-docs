@@ -83,7 +83,7 @@ For other payment methods, like [ACH](https://docs.stripe.com/payments/ach-direc
 
 > #### Bank debit payment methods
 > 
-> For bank debit payment methods such as [SEPA Direct Debit](https://docs.stripe.com/payments/sepa-debit.md#refunds), [Bacs Direct Debit](https://docs.stripe.com/payments/payment-methods/bacs-debit.md#refunds), [ACH Direct Debit](https://docs.stripe.com/payments/ach-direct-debit.md#refunds), [ACSS (Canadian PADs)](https://docs.stripe.com/payments/acss-debit.md#refunds), [AU BECS Direct Debit](https://docs.stripe.com/payments/au-becs-debit.md#refunds), and [NZ bank account debits](https://docs.stripe.com/payments/nz-bank-account.md#refunds), there’s a risk of double refund. If you proactively issue a refund while the customer’s bank also initiates a dispute, the customer might receive two credits for the same transaction. Refer to the refund guidelines for each payment method to avoid this situation.
+> For bank debit payment methods such as [SEPA Direct Debit](https://docs.stripe.com/payments/sepa-debit.md#refunds), [Bacs Direct Debit](https://docs.stripe.com/payments/bacs-debit.md#refunds), [ACH Direct Debit](https://docs.stripe.com/payments/ach-direct-debit.md#refunds), [ACSS (Canadian PADs)](https://docs.stripe.com/payments/acss-debit.md#refunds), [AU BECS Direct Debit](https://docs.stripe.com/payments/au-becs-debit.md#refunds), and [NZ bank account debits](https://docs.stripe.com/payments/nz-bank-account.md#refunds), there’s a risk of double refund. If you proactively issue a refund while the customer’s bank also initiates a dispute, the customer might receive two credits for the same transaction. Refer to the refund guidelines for each payment method to avoid this situation.
 
 ## Handle failed refunds 
 

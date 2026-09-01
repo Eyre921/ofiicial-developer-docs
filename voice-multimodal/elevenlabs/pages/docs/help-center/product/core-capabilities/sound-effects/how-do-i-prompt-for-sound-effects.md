@@ -10,9 +10,7 @@ path: docs/help-center/product/core-capabilities/sound-effects/how-do-i-prompt-f
 
 The prompt is the piece of text or instruction that tells the AI what kind of output is expected.  The AI understands natural language as well as audio terminology.
 
-<strong>
-  Simple Prompts
-</strong>
+**Simple Prompts**
 
 These are simple prompts that try to get the AI to generate a single sound effect.  Some examples would be "person walking on grass" or "glass breaking".  These types of prompts will generate a single type of sound effect with a few variations.
 
@@ -20,9 +18,7 @@ You can improve these prompts by adding a little more detail, for example, “hi
 
  
 
-<strong>
-  Complex Prompts
-</strong>
+**Complex Prompts**
 
 Complex prompts include multiple sound effects, or a sequence of sound effects happening in a specific order, for example, "A man walks through a hallway and then falls down some stairs".  While the AI does understand these prompts, for the best results, we would recommend generating individual sound effects and then combining them in an audio editor of your choice.
 

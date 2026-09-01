@@ -10,36 +10,18 @@ path: docs/eleven-creative/overview
 
 The ElevenCreative platform transforms text into lifelike audio across 50+ languages with the most advanced voice AI models available. From audiobooks to ads, podcasts to games, create professional voice content at scale with intuitive tools for creators, producers, and developers.
 
-<a href="/docs/eleven-creative/playground/text-to-speech">
-  <h3>
-    Playground
-  </h3>
+### [Playground](/docs/eleven-creative/playground/text-to-speech)
 
-  <p>
-    Test and experiment with text-to-speech, voice changing, and sound effects in real-time
-  </p>
-</a>
+Test and experiment with text-to-speech, voice changing, and sound effects in real-time
 
-<a href="/docs/eleven-creative/products/studio">
-  <h3>
-    Products
-  </h3>
+### [Products](/docs/eleven-creative/products/studio)
 
-  <p>
-    Purpose-built tools that integrate multiple capabilities into streamlined workflows for
-    specific use cases like long-form content, video localization, and music production
-  </p>
-</a>
+Purpose-built tools that integrate multiple capabilities into streamlined workflows for
+specific use cases like long-form content, video localization, and music production
 
-<a href="/docs/eleven-creative/voices/voice-library">
-  <h3>
-    Voices
-  </h3>
+### [Voices](/docs/eleven-creative/voices/voice-library)
 
-  <p>
-    Access 10,000+ pre-made voices or clone your own with instant or professional voice cloning
-  </p>
-</a>
+Access 10,000+ pre-made voices or clone your own with instant or professional voice cloning
 
 ## Platform capabilities
 

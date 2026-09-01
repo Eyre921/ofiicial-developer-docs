@@ -60,13 +60,13 @@ connections are never revealed to the agent.
 
 Parameters are the values the agent supplies when it calls the tool, and they arrive in `ctx.args`. Define them in the **Parameters** section of the tool configuration form, or in the code editor under the **Params** tab, in the **Define Params** sub-tab. Each parameter takes a data type, an identifier, and a description that the agent uses to determine the correct value from the conversation. Your code reads that value under the identifier, such as `ctx.args.appointment_datetime` below.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d492e864ae15f3a355251faae3b719544e1ab56b703c02740b51be6c6769ccf7/assets/images/conversational-ai/code-tool-parameters.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091732Z&X-Amz-Expires=604800&X-Amz-Signature=e3d6a10d93571480b18e35ca3f2a75d593f5c9ab7986ae1d14fbf4dbc489e96f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Defining a code tool parameter" />
+![Defining a code tool parameter](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d492e864ae15f3a355251faae3b719544e1ab56b703c02740b51be6c6769ccf7/assets/images/conversational-ai/code-tool-parameters.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100018Z&X-Amz-Expires=604800&X-Amz-Signature=7888695c8744ff8470ede4d3147e8bbacb4ddc38c9c8d8a7d9e3ab228b073a4d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configuring the context object
 
 Add secrets, config values, and auth connections in the tool's **Context object** section. Each entry takes a type and a name. The panel shows the exact accessor for each entry, such as `ctx.secrets.DEMO_KEY` below.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ad58ee53f3591f447b108191aff760f1134350911933b968b06798fa6d42f438/assets/images/conversational-ai/code-tool-context-object.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091732Z&X-Amz-Expires=604800&X-Amz-Signature=69192e07fedb5d10723931c45a3de33acfbeee7fc83ab0f94ba4a58799c58259&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Mapping a workspace secret into a code tool's context object" />
+![Mapping a workspace secret into a code tool's context object](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ad58ee53f3591f447b108191aff760f1134350911933b968b06798fa6d42f438/assets/images/conversational-ai/code-tool-context-object.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100018Z&X-Amz-Expires=604800&X-Amz-Signature=8db123b70fd876e8df81e1ffa7923750b895c950b2f0badbbbd8c73c8275b5d7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Network access
 
@@ -194,24 +194,17 @@ Map `EXAMPLE_CRM` to a configured [auth connection](/docs/eleven-agents/customiz
 
 ## Best practices
 
-<h4>
-  Name tools intuitively, with detailed descriptions
-</h4>
+#### Name tools intuitively, with detailed descriptions
 
 If you find the assistant does not make calls to the correct tools, you may need to update your tool names and descriptions so the assistant more clearly understands when it should select each tool. Avoid using abbreviations or acronyms to shorten tool and argument names.
 
 You can also include detailed descriptions for when a tool should be called. For complex tools, you should include descriptions for each of the arguments to help the assistant know what it needs to ask the user to collect that argument.
 
-<h4>
-  Name tool parameters intuitively, with detailed descriptions
-</h4>
+#### Name tool parameters intuitively, with detailed descriptions
 
 Use clear and descriptive names for tool parameters. If applicable, specify the expected format for a parameter in the description (e.g., YYYY-mm-dd or dd/mm/yy for a date).
 
-<h4>
-  Consider providing additional information about how and when to call tools in your assistant's
-  system prompt
-</h4>
+#### Consider providing additional information about how and when to call tools in your assistant's&#xA;system prompt
 
 Providing clear instructions in your system prompt can significantly improve the assistant's tool calling accuracy. For example, guide the assistant with instructions like the following:
 
@@ -225,9 +218,7 @@ Provide context for complex scenarios. For example:
 Before scheduling a meeting with `schedule_meeting`, check the user's calendar for availability using check_availability to avoid conflicts.
 ```
 
-<h4>
-  LLM selection
-</h4>
+#### LLM selection
 
 When using tools, we recommend picking high intelligence models like GPT 5.2, Gemini-2.5-Flash, or
 Claude Sonnet 4.5 and avoiding Gemini-2.0-Flash.

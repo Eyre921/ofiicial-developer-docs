@@ -12,9 +12,7 @@ The model IDs follow a fairly simple pattern, and they can be found using the [/
 
 Here is a list of the current models, and you can also find more information about each in their article [here](/docs/help-center/technical/what-models-do-you-offer-and-what-is-the-difference-between-them).
 
-<strong>
-  Flagship Models
-</strong>
+**Flagship Models**
 
 | Model Name                    | Model ID                      |
 | ----------------------------- | ----------------------------- |
@@ -28,9 +26,7 @@ Here is a list of the current models, and you can also find more information abo
 
 ---
 
-<strong>
-  Older Models
-</strong>
+**Older Models**
 
 | Model Name | Model ID             |
 | ---------- | -------------------- |
@@ -39,14 +35,10 @@ Here is a list of the current models, and you can also find more information abo
 
 ---
 
-<strong>
-  Cost when generating via the website:
-</strong>
+**Cost when generating via the website:**
 
 All models cost 1 credit per character. This excludes any credit modifiers that might apply to the voice you're using.
 
-<strong>
-  Cost when generating via API:
-</strong>
+**Cost when generating via API:**
 
-API generations are discounted - for details, see our <a href="https://elevenlabs.io/pricing">API Pricing.</a>
+API generations are discounted - for details, see our [API Pricing.](https://elevenlabs.io/pricing)

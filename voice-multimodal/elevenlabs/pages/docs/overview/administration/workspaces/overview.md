@@ -8,7 +8,7 @@ path: docs/overview/administration/workspaces/overview
 
 # Workspaces
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7623fe79ed73fc788b7814694e0f1e27457878b0f34acb8b3b409d5f257bceae/assets/images/product-guides/administration/workspaces.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=fcefc0a958ea2d80fc5ccc4590193726529cc76d2741a2f04d7fa79182312cf7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Workspaces" />
+![Workspaces](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7623fe79ed73fc788b7814694e0f1e27457878b0f34acb8b3b409d5f257bceae/assets/images/product-guides/administration/workspaces.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100018Z&X-Amz-Expires=604800&X-Amz-Signature=ff80e44be269916716d48840d87ac9de93b65d2dcc7a0c9cc679a1d3646f86ae&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -43,12 +43,12 @@ Users can now accept invitations to multiple workspaces, allowing you to collabo
 
   Copying for Enterprise workspaces is limited to workspaces in the same consolidated billing
   group. Cross-workspace copying is disabled by default, but a workspace owner can enable it in
-  Workspace settings by turning on <strong>Enterprise Copying</strong>. Admins can then grant the{" "}
-  <strong>Copy Resources Between Workspaces</strong> permission to user groups.
+  Workspace settings by turning on **Enterprise Copying**. Admins can then grant the
+  **Copy Resources Between Workspaces** permission to user groups.
 
 * **Switch between workspaces** - Use the workspace switcher in your account menu to quickly navigate between your workspaces.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c85e9460b00a07fb6c09c22cb068dc12c60392ee4da139d985ce32e4577a2a2f/assets/images/product-guides/administration/workspaces-switch.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=fb8ebfc03b54c328efc94b39ebef49168db0626ee10ca5dcf82273bea5ead4c2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Switching between workspaces" />
+![Switching between workspaces](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c85e9460b00a07fb6c09c22cb068dc12c60392ee4da139d985ce32e4577a2a2f/assets/images/product-guides/administration/workspaces-switch.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100018Z&X-Amz-Expires=604800&X-Amz-Signature=651954e7865f4eb04de30ea839906e41779316524670cd46d909ca94c725afb1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Workspace limits
 
@@ -69,7 +69,7 @@ Multi seat workspaces are automatically enabled on all accounts with Scale, Busi
 
 Only administrators can add and remove team members.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5663221cd2bff5a1cd150bdd0a5bdb731ab1c6ee2b82958e4c8c85f33092318b/assets/images/product-guides/workspaces/workspace-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=bfe989051e4adf1251d6abde8473f8783da049568e6562a06541a11ecb989a95&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Workspace domain verification" />
+![Workspace domain verification](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5663221cd2bff5a1cd150bdd0a5bdb731ab1c6ee2b82958e4c8c85f33092318b/assets/images/product-guides/workspaces/workspace-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100018Z&X-Amz-Expires=604800&X-Amz-Signature=c2a62d1fcc1e2fb96cd40ee4cde49be2766dbd5720374d05c4f4d28ff448eeb5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Once you are logged in, select your profile icon in the top right corner of the dashboard, choose **Workspace settings**, then navigate to the **Members** tab. From there you'll be able to add team members, assign roles and remove members from the workspace.
 

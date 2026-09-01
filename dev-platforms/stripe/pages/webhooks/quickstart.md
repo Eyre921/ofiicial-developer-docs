@@ -455,7 +455,7 @@ app.listen(4242, () => console.log('Running on port 4242'));
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "stripe": "^22.4.0"
+    "stripe": "^22.6.0"
   }
 }
 {
@@ -468,7 +468,7 @@ app.listen(4242, () => console.log('Running on port 4242'));
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^3.4.0",
-    "stripe": "22.4.0"
+    "stripe": "22.6.0"
   },
   "devDependencies": {
     "concurrently": "4.1.2"
@@ -617,7 +617,7 @@ itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
 requests==2.32.5
-stripe==15.4.0
+stripe==15.6.0
 toml==0.10.2
 Werkzeug==3.1.5
 $stripe = new \Stripe\StripeClient($stripeSecretKey);
@@ -787,7 +787,7 @@ $stripeSecretKey = '<<YOUR_SECRET_KEY>>';
     fmt.Fprintf(os.Stderr, "Unhandled event type: %s\n", event.Type)
   }
   w.WriteHeader(http.StatusOK)
-require github.com/stripe/stripe-go/v86 v86.2.0
+require github.com/stripe/stripe-go/v86 v86.4.0
         // This is a public sample test API key.
         // Don't submit any personally identifiable information in requests made with this key.
         // Sign in to see your own test API key embedded in code samples.

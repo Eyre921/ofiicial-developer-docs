@@ -11,7 +11,7 @@ path: docs/api-reference/dubbing/source-transcript/batch-update-source-segments
 PATCH https://api.elevenlabs.io/v1/dubbing/project/{project_id}/transcript/segments
 Content-Type: application/json
 
-Enterprise only. Edit several source segments' text, speaker, or timing in one atomic request.
+Enterprise only. Edit several source segments' text, speaker, or timing in one atomic request: every edit applies or none does. Bumps the project's `revision`, discards the affected translations in every language target, and marks any target that had already completed `stale`. No audio changes until you regenerate a target.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/batch-update-source-segments
 
@@ -31,9 +31,9 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/ba
 
 ### Body (application/json)
 
-- `segments` (map from string to object, required) — Map of segment id to the partial update to apply to that segment.
+- `segments` (map from string to object, required) — Map of segment ID to the partial update to apply to that segment. At least one entry and at most 500.
   - `text` (string, optional, nullable) — New text for the segment.
-  - `speaker_id` (string, optional, nullable) — New speaker id for the segment.
+  - `speaker_id` (string, optional, nullable) — New speaker ID for the segment.
   - `start_s` (double, optional, nullable) — New start time, in seconds.
   - `end_s` (double, optional, nullable) — New end time, in seconds.
 
@@ -44,12 +44,12 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/ba
 Successful Response
 
 - `segments` (list of object, required) — The edited segments in their updated state.
-  - `id` (string, required) — Stable identifier of the segment.
+  - `id` (string, required) — Stable identifier of the segment, used to address it in edit requests.
   - `text` (string, required) — The transcribed text of the segment.
   - `speaker_id` (string, required) — Identifier of the segment's speaker.
   - `start_s` (double, required) — Start time of the segment, in seconds.
   - `end_s` (double, required) — End time of the segment, in seconds.
-  - `external_id` (string, optional, nullable) — The caller-supplied external id for this segment, if one was provided.
+  - `external_id` (string, optional, nullable) — The caller-supplied external ID for this segment, if one was provided.
 - `revision` (integer, required) — The project's source-transcript revision after the edits.
 
 ## Examples

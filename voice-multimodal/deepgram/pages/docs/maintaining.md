@@ -40,7 +40,9 @@ Your Deepgram Account Representative provides you with a list of several differe
 
 Putting it all together, the model `nova-3-general.en.streaming.a12b345.dg` will transcribe English with streaming audio input, using the Nova-3 General model.
 
-<h2> Legacy Model File Naming </h2>
+## Legacy Model File Naming
+
+
 Models delivered prior to May 2024 may have different naming conventions for the model architecture. For example, they may read as `2-general-nova` instead of `nova-2-general` in the filename.
 
 The underlying model is identical, and both can be called with `model=nova-2-general` in your API calls.

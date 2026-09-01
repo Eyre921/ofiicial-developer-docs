@@ -11,7 +11,11 @@ path: docs/api-reference/dubbing/language-targets/create-language-target
 POST https://api.elevenlabs.io/v1/dubbing/project/{project_id}/language
 Content-Type: application/json
 
-Queue a language target for a project (starts once the project is ready).
+Add a language to dub a project into, and queue the dub.
+
+This is the call that produces dubbed audio, and it is billed per generation. The target is created `queued` and starts as soon as the project is `ready`, so it can be added at any point after the project is created. It inherits the project's dubbing model and cannot pick another.
+
+A project created with `webhook_ids` sends a `dubbing_language_completed` event carrying the output download URLs, so we recommend subscribing rather than polling this target to completion.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/language-targets/create-language-target
 
@@ -31,10 +35,10 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/language-targets/cre
 
 ### Body (application/json)
 
-- `target_language` (string, required) — BCP-47 language tag to dub the project into (e.g. 'fr', 'es-MX'); must be a language the dubbing model supports. A region-qualified tag must be one of the supported dialects.
-- `voice_settings` (object, optional, nullable) — Voice settings applied to the whole language (e.g. cloning strength).
+- `target_language` (string, required) — BCP-47 language tag to dub the project into (for example, `fr` or `es-MX`). Must be one of the [languages the project's dubbing model supports](https://elevenlabs.io/docs/help-center/product/dubbing/which-languages-are-supported-in-dubbing), and a region-qualified tag must be one of the supported dialects.
+- `voice_settings` (object, optional, nullable) — Voice settings applied to every speaker in this language. Omit to use the defaults.
   - `cloning_strength` (integer, optional, default: 7) — How strongly the dubbed speakers clone the source voices, 0 to 10.
-- `translations` (map from string to string, optional, nullable) — Enterprise only. Optional translations to use instead of machine translation. A map from each source segment's external_id (or its id, if you supplied none) to the translated text; every source segment must be covered exactly once. At most 20000 entries, totalling at most 4 MiB of text.
+- `translations` (map from string to string, optional, nullable) — Enterprise only. Optional translations to use instead of machine translation. A map from each source segment's `external_id` (or its `id`, if you supplied none) to the translated text; every source segment must be covered exactly once. At most 20,000 entries, totaling at most 4 MiB of text. See [Bring your own transcript](https://elevenlabs.io/docs/eleven-api/guides/how-to/dubbing/bring-your-own-transcript).
 
 ## Response
 
@@ -45,24 +49,24 @@ Successful Response
 - `language_id` (string, required) — Unique identifier of the language target.
 - `project_id` (string, required) — Identifier of the parent dubbing project.
 - `target_language` (string, required) — BCP-47 language tag this target is dubbed into.
-- `status` (enum, required) — Lifecycle status: 'queued' (waiting on the project), 'processing', 'completed', 'stale' (source/transcript changed), or 'failed'.
+- `status` (enum, required) — Lifecycle status: `queued` (waiting on the project to be ready, or on a worker), `processing` while it is being dubbed, `completed` once its output is available, `stale` when the transcript changed after the output was produced, or `failed`.
   - Allowed values: `queued`, `processing`, `completed`, `stale`, `failed`
 - `revision` (integer, required) — Monotonic counter incremented whenever this target's transcript changes (a source edit affecting it, or an edit to its translation).
 - `created_at` (string, required) — When the language target was created.
 - `updated_at` (string, required) — When the language target was last updated.
-- `model_id` (string, optional, nullable) — Effective dubbing model id (target override or project default).
-- `voice_settings` (object, optional, nullable) — Voice settings applied to the whole language, or null if unset.
+- `model_id` (string, optional, nullable) — Dubbing model this target is dubbed with, inherited from the project and not selectable per language.
+- `voice_settings` (object, optional, nullable) — Voice settings applied to every speaker in this language, or null if the defaults apply.
   - `cloning_strength` (integer, optional, default: 7) — How strongly the dubbed speakers clone the source voices, 0 to 10.
-- `outputs` (object, optional, nullable) — Signed output URLs; null until the target has produced an output (present once 'completed', and kept while 'stale' -- compare `output_revision` against `revision` to tell whether the output is up to date).
-  - `lossless_audio` (string, optional, nullable) — Signed URL of the dubbed lossless audio track.
-- `output_revision` (integer, optional, nullable) — The `revision` the current dubbed output was generated from; equal to `revision` when up to date, less than it when 'stale'. Null until a generation has completed.
-- `error` (object, optional, nullable) — Why this language failed; null unless `status` is 'failed', and also null for the few languages that failed before failure reporting was introduced. A code of 'project_failed' means the parent project failed, so read the project for the underlying cause.
+- `outputs` (object, optional, nullable) — Signed output URLs; null until the target has produced an output (present once `completed`, and kept while `stale` — compare `output_revision` against `revision` to tell whether the output is up to date).
+  - `lossless_audio` (string, optional, nullable) — Signed URL for the dubbed lossless audio track, in FLAC. The link expires one hour after it is issued; re-read the language target for a fresh one.
+- `output_revision` (integer, optional, nullable) — The `revision` the current dubbed output was generated from; equal to `revision` when up to date, and lower when `stale`. This is null until a generation has completed.
+- `error` (object, optional, nullable) — Why this language failed; null unless `status` is `failed`, and also null for the few languages that failed before failure reporting was introduced. A code of `project_failed` means the parent project failed, so read the project for the underlying cause.
   - `message_type` ("error", required)
   - `error` (string, required)
 - `warnings` (list of object, optional) — Non-fatal conditions raised while dubbing this language, empty when there are none. Reflects the latest generation. Conditions raised while preparing the source are reported on the project instead.
-  - `type` ("voices_not_permitted", required) — Identifies this warning; branch on it to read the fields below.
-  - `speaker_ids` (list of string, required) — Speakers whose voices were not permitted for cloning. The dub used a replacement voice for each of them; the rest of the speakers are unaffected.
-  - `message` (string, required) — Human-readable description of the warning, for display. The wording may change at any time; branch on `type` instead.
+  - `type` ("voices_not_permitted", required) — Identifies this warning; branch on it to read the other fields.
+  - `speaker_ids` (list of string, required) — Speakers whose voices were not permitted for cloning. The dub used a replacement voice for each of them; all other speakers are unaffected.
+  - `message` (string, required) — Human-readable description of the warning, for display. The wording may change at any time, so we recommend branching on `type` instead.
 
 ## Examples
 

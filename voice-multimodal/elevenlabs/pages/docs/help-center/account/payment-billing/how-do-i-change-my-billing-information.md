@@ -12,15 +12,15 @@ You can update your billing information from your [Subscription](https://elevenl
 
 Go to your [Subscription](https://elevenlabs.io/app/subscription) page.
 
-Click <strong>Billing</strong>.
+Click **Billing**.
 
-At the bottom of the pop-up, click <strong>Manage billing information</strong>.
+At the bottom of the pop-up, click **Manage billing information**.
 
-Scroll down to <strong>Billing Information</strong> and click{" "}
-<strong>Update information</strong>.
+Scroll down to **Billing Information** and click
+**Update information**.
 
 Make the necessary changes to your billing information.
 
-If you want to add or edit your Tax ID, you can do this in the <strong>Tax ID</strong> section.
+If you want to add or edit your Tax ID, you can do this in the **Tax ID** section.
 
 The updated details will be applied automatically to all future invoices.

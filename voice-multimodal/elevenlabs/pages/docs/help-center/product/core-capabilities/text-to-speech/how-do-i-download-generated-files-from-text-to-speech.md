@@ -18,7 +18,7 @@ To access your history, log in to your account and select **Text to Speech** in 
 
 From your history, you can click the download icon to see the option to download as either an MP3 (128kbps) or WAV file. 
 
-You can also click <strong>Advanced</strong> to download in additional file formats:
+You can also click **Advanced** to download in additional file formats:
 
 * MP3 (192kbps)
 * MP3 (256kbps)

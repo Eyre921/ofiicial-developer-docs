@@ -16,7 +16,12 @@ If you see the response message `too_many_concurrent_requests`, this means that 
 
 The concurrency limit (concurrent requests running in parallel) depends on the plan you are on. Below are the current rates for each plan, but please note that we will likely revisit them in the future.
 
-> Free: 2<br />Starter: 3<br />Creator: 5<br />Pro: 10<br />Scale: 15<br />Business: 15
+> Free: 2\
+> Starter: 3\
+> Creator: 5\
+> Pro: 10\
+> Scale: 15\
+> Business: 15
 
 ElevenAgents has different concurrency limits. For details, please see [this article.](/docs/help-center/product/eleven-agents/how-many-eleven-agents-requests-can-i-make-and-can-i-increase-it)
 

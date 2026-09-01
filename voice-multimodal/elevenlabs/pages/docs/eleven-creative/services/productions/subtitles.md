@@ -18,9 +18,17 @@ Subtitles and captions ordered from Productions are reviewed and edited by nativ
 
 Captions and subtitles serve different audiences and purposes, although they both display text on screen.
 
-* **Captions** transcribe spoken dialogue and include SDH<a href="#sdh-footnote" aria-label="SDH footnote"><sup>1</sup></a> by default. They are not translated.
+* **Captions** transcribe spoken dialogue and include SDH
 
-* **Subtitles** translate spoken dialogue for viewers who do not understand the source language; SDH<a href="#sdh-footnote" aria-label="SDH footnote"><sup>1</sup></a> can by included upon request.
+  [1](#sdh-footnote)
+
+  &#x20;by default. They are not translated.
+
+* **Subtitles** translate spoken dialogue for viewers who do not understand the source language; SDH
+
+  [1](#sdh-footnote)
+
+  &#x20;can by included upon request.
 
 |                        | **Captions**                                | **Subtitles**                                  |
 | ---------------------- | ------------------------------------------- | ---------------------------------------------- |
@@ -31,7 +39,9 @@ Captions and subtitles serve different audiences and purposes, although they bot
 | Speaker identification | Included by default                         | Not included by default                        |
 | Typical audience       | Deaf/Hard of Hearing; same-language viewers | Hearing viewers who don’t know source language |
 
-<sup>1</sup> SDH (Subtitles for the Deaf and Hard of Hearing) adds essential non‑speech audio cues
+1
+
+&#x20;SDH (Subtitles for the Deaf and Hard of Hearing) adds essential non‑speech audio cues
 (e.g., \[door slams], ♪ music ♪) and speaker identification. Included by default in captions;
 optional for subtitles.
 
@@ -42,7 +52,7 @@ optional for subtitles.
 The easiest way to order new subtitles from Productions is from the
 [Productions](https://elevenlabs.io/app/productions) page in your ElevenLabs account.
 
-![Productions Home Page](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=e3edfca77427bf236a882ab739b30617a050d852e816d655a345706cb4f2554b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Productions Home Page](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T113236Z&X-Amz-Expires=604800&X-Amz-Signature=73fb9d820cfc7453168e0dbbc95abf02a156e6f68813bdde9b759a8be861a99e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Export subtitles and captions
 

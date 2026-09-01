@@ -12764,7 +12764,7 @@ You only need to migrate the routes listed above. The public beta also adds opti
   </Step>
 
   <Step>
-    Rename `thread_id` to `session_id` throughout your code, and handle the session statuses the alpha didn't return: `queued`, `in_progress`, `canceled`, and `terminated`.
+    Rename `thread_id` to `session_id` throughout your code. Handle `queued`, `in_progress`, and `terminated` in addition to the alpha statuses.
   </Step>
 </Steps>
 
@@ -12830,15 +12830,15 @@ A thread is now a session. [Query sessions](/reference/notion-agent-apis/query-s
 
 The objects changed shape along with the name:
 
-| Thread (alpha)                                                | Session (Public beta)                                                                                 |
-| :------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------- |
-| `object: "thread"`                                            | `object: "session"`                                                                                   |
-| `created_time`, `last_edited_time`                            | `created_at`, `updated_at`                                                                            |
-| `status`: `pending`, `requires_action`, `completed`, `failed` | `status`: `queued`, `in_progress`, `requires_action`, `completed`, `failed`, `canceled`, `terminated` |
-| `error` string on failure                                     | `error` object with `code`, `message`, and `retryable`                                                |
-| `sort_by` and `sort_direction` query parameters               | `sorts` array over `created_at` and `updated_at`                                                      |
+| Thread (alpha)                                                            | Session (Public beta)                                                                                 |
+| :------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------- |
+| `object: "thread"`                                                        | `object: "session"`                                                                                   |
+| `created_time`, `last_edited_time`                                        | `created_at`, `updated_at`                                                                            |
+| `status`: `pending`, `requires_action`, `completed`, `canceled`, `failed` | `status`: `queued`, `in_progress`, `requires_action`, `completed`, `failed`, `canceled`, `terminated` |
+| `error` string on failure                                                 | `error` object with `code`, `message`, and `retryable`                                                |
+| `sort_by` and `sort_direction` query parameters                           | `sorts` array over `created_at` and `updated_at`                                                      |
 
-A thread's single `pending` status is now split into `queued` and `in_progress`, and cancellation and termination are reported separately from failure. Treat any status you don't recognize as non-terminal rather than as an error.
+Handle `queued` and `in_progress` as separate session statuses in place of the alpha's `pending` status. Both APIs use `canceled` for a stopped turn. If your client treated stopped turns as `completed`, update that check. Handle `terminated` separately from `failed`, and treat unknown statuses as non-terminal.
 
 ### Step 3: Read events instead of messages
 

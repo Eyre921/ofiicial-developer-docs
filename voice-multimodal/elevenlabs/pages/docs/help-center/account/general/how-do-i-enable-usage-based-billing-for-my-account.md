@@ -12,21 +12,21 @@ Usage based billing is a legacy feature, and is not available on new self-serve 
 
 For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df/assets/images/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=8003d050fc5ae5c5bb335ceddab583c39dc0df74863256bfbec3b7ba150a0f38&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df/assets/images/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T082929Z&X-Amz-Expires=604800&X-Amz-Signature=46261da7fbcd06a63fd040987b08a89bf9b8164d2014472c6cbaf7a40b8d0117&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. If you're on an eligible plan, here’s how to enable usage based billing for your account:
 
 Go to your [Subscription](https://elevenlabs.io/app/subscription) page.
 
-Click <strong>Manage Subscription</strong>.
+Click **Manage Subscription**.
 
-Use the <strong>Usage based billing</strong> toggle to turn usage based billing on or off.
+Use the **Usage based billing** toggle to turn usage based billing on or off.
 
 A pop-up will appear asking you to confirm that you want to enable usage based billing. You can
-either set the number of credits that can be used to <strong>Unlimited</strong>, or enter your
+either set the number of credits that can be used to **Unlimited**, or enter your
 own maximum.
 
-Click <strong>Confirm</strong> to save the changes.
+Click **Confirm** to save the changes.
 
 You may be asked to verify your payment card before proceeding, but no charges will be made
 during the verification process.

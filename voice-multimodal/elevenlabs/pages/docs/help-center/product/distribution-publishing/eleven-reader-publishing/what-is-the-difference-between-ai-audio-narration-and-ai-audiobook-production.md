@@ -8,8 +8,8 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # What is the difference between AI audio narration and AI audiobook production?
 
-* <strong>AI audio narration:</strong> On-demand audio generation; users select voices; no upfront
+* **AI audio narration:** On-demand audio generation; users select voices; no upfront
   production or editing required.
-* <strong>AI audiobook production:</strong> Audio production in a full-control text and audio
+* **AI audiobook production:** Audio production in a full-control text and audio
   editing environment. This provides a high-degree of creative control, as each producer selects
   voice(s) and quality controls for text-to-speech output.

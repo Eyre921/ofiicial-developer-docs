@@ -63,7 +63,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -76,7 +76,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -110,7 +110,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -123,7 +123,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -157,7 +157,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -170,7 +170,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -204,7 +204,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -217,7 +217,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -251,7 +251,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -264,7 +264,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -298,7 +298,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -311,7 +311,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -345,7 +345,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -358,7 +358,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -517,7 +517,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -530,7 +530,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulat
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`

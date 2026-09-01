@@ -16,37 +16,22 @@ If you use the API, Legacy voice IDs will automatically route to their replaceme
 
 While we have replaced Legacy voices with similar voices, the new options may differ slightly in tone and style. We encourage you to explore additional options using these tools:
 
-* <a href="/docs/product-guides/voices/voice-design">
-    <strong>
-      Voice Design
-    </strong>
-  </a>
-  <strong>:</strong> describe the voice you want to create using our voice design prompt.
-* <a href="/docs/capabilities/voice-remixing">
-    <strong>
-      Voice Remixing
-    </strong>
-  </a>
-  <strong>:</strong> edit an existing voice’s style and tone using our best practices guide.
-* <a href="/docs/product-guides/voices/voice-cloning/instant-voice-cloning">
-    <strong>
-      Instant Voice Clone
-    </strong>
-  </a>
-  <strong>:</strong> clone a voice using as little as 10 seconds of audio.
-* <a href="/docs/product-guides/voices/voice-cloning/professional-voice-cloning">
-    <strong>
-      Professional Voice Clone
-    </strong>
-  </a>
-  <strong>:</strong> create a high fidelity clone of your voice with as little as 10 minutes of
+* [**Voice Design**](/docs/product-guides/voices/voice-design)
+
+  **:** describe the voice you want to create using our voice design prompt.
+* [**Voice Remixing**](/docs/capabilities/voice-remixing)
+
+  **:** edit an existing voice’s style and tone using our best practices guide.
+* [**Instant Voice Clone**](/docs/product-guides/voices/voice-cloning/instant-voice-cloning)
+
+  **:** clone a voice using as little as 10 seconds of audio.
+* [**Professional Voice Clone**](/docs/product-guides/voices/voice-cloning/professional-voice-cloning)
+
+  **:** create a high fidelity clone of your voice with as little as 10 minutes of
   audio.
-* <a href="/docs/product-guides/voices/voice-library">
-    <strong>
-      Voice Library
-    </strong>
-  </a>
-  <strong>:</strong> choose from a collection of Professional Voice Clones shared by the ElevenLabs
+* [**Voice Library**](/docs/product-guides/voices/voice-library)
+
+  **:** choose from a collection of Professional Voice Clones shared by the ElevenLabs
   community. You can also search the library using an audio or video clip to find similar voices.
 
 These Legacy voices have now been fully deprecated:

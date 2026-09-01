@@ -10,7 +10,7 @@ path: docs/api-reference/dubbing/list-projects
 
 GET https://api.elevenlabs.io/v1/dubbing/project
 
-List the workspace's dubbing projects (cursor-paginated).
+List the dubbing projects in your workspace that you can access, newest first, cursor-paginated. Listed projects carry no `language_ids`; fetch a project, or list its language targets, to see them.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/list-projects
 
@@ -26,10 +26,10 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/list-projects
 
 ### Query parameters
 
-- `cursor` (string, optional, nullable) — Pagination cursor from a previous response's next_cursor.
-- `page_size` (integer, optional, default: 20) — Number of projects per page (max 100).
-- `status` (string, optional, nullable) — Filter to projects in this status (preparing, ready, failed).
-- `sort_direction` (enum, optional, default: DESCENDING) — Sort by creation time (default 'DESCENDING').
+- `cursor` (string, optional, nullable) — Pass the `next_cursor` from a previous response to fetch the page after it. Omit for the first page.
+- `page_size` (integer, optional, default: 20) — Number of projects per page. Clamped to between 1 and 100 rather than rejected, so a larger value returns a full page.
+- `status` (string, optional, nullable) — Filter to projects in this status: `queued`, `preparing`, `ready`, or `failed`. Omit to return every status.
+- `sort_direction` (enum, optional, default: DESCENDING) — Sort by creation time; newest first by default.
   - Allowed values: `ASCENDING`, `DESCENDING`
 
 ## Response
@@ -40,29 +40,29 @@ Successful Response
 
 - `projects` (list of object, required) — The page of dubbing projects the caller can access.
   - `project_id` (string, required) — Unique identifier of the dubbing project.
-  - `status` (enum, required) — Lifecycle status of the project: 'preparing'/'processing' while it transcribes, 'ready' once transcription is done, or 'failed'.
+  - `status` (enum, required) — Lifecycle status of the project: `queued` before the source is picked up, `preparing` while it is transcribed, `ready` once transcription is done and language targets can start, or `failed`. A project is never reported as `processing` — that value belongs to language targets.
     - Allowed values: `queued`, `preparing`, `processing`, `ready`, `failed`
   - `revision` (integer, required) — Monotonic counter incremented whenever the source transcript is edited (segment add/edit/delete).
   - `created_at` (string, required) — When the project was created.
   - `updated_at` (string, required) — When the project was last updated.
-  - `reference` (string, optional, nullable) — Optional free-form string the customer can provide to identify the project on their end.
+  - `reference` (string, optional, nullable) — The free-form string you supplied as `reference` when creating the project, or null if you supplied none.
   - `source_language` (string, optional, nullable) — BCP-47 language tag of the source media (null if auto-detected).
-  - `model_id` (string, optional, nullable) — Default dubbing model id applied to this project's language targets.
-  - `media` (object, optional, nullable) — Source media metadata; null until the project is ready.
+  - `model_id` (string, optional, nullable) — Dubbing model every language target of this project is dubbed with. Fixed at create time and not selectable per language.
+  - `media` (object, optional, nullable) — Source media metadata, populated once the source has been fetched and decoded (shortly after create, before the project is `ready`); null until then.
     - `filename` (string, optional, nullable) — Original filename of the uploaded source media (null for URL sources).
-    - `duration_s` (double, optional, nullable) — Duration of the source media in seconds.
+    - `duration_s` (double, optional, nullable) — Duration of the source media, in seconds.
     - `has_video` (boolean, optional, nullable) — Whether the source media contains a video stream.
-    - `mime_type` (string, optional, nullable) — MIME type of the uploaded source media.
-  - `language_ids` (list of string, optional, default: []) — Identifiers of the language targets created under this project.
-  - `webhook_ids` (list of string, optional, default: []) — Workspace webhooks notified when this project becomes ready or fails, and when any of its languages completes or fails.
-  - `error` (object, optional, nullable) — Why the project failed; null unless `status` is 'failed'. Also null for the few projects that failed before failure reporting was introduced.
+    - `mime_type` (string, optional, nullable) — MIME type of the uploaded source media (null for URL sources).
+  - `language_ids` (list of string, optional, default: []) — Identifiers of the language targets under this project. Populated when a single project is fetched, and on create when `target_language` creates one. Always empty in list responses — list the project's language targets instead.
+  - `webhook_ids` (list of string, optional, default: []) — IDs of the workspace webhooks notified as this project and its languages reach `ready`, `completed`, or `failed`.
+  - `error` (object, optional, nullable) — Why the project failed; null unless `status` is `failed`. Also null for the few projects that failed before failure reporting was introduced.
     - `message_type` ("error", required)
     - `error` (string, required)
   - `warnings` (list of object, optional) — Non-fatal conditions raised while preparing the source, empty when there are none. Reflects the latest preparation. Conditions raised while dubbing a particular language are reported on that language instead.
-    - `type` ("voices_not_permitted", required) — Identifies this warning; branch on it to read the fields below.
-    - `speaker_ids` (list of string, required) — Speakers whose voices were not permitted for cloning. The dub used a replacement voice for each of them; the rest of the speakers are unaffected.
-    - `message` (string, required) — Human-readable description of the warning, for display. The wording may change at any time; branch on `type` instead.
-- `next_cursor` (string, optional, nullable) — Cursor for the next page, or null when there are no more results.
+    - `type` ("voices_not_permitted", required) — Identifies this warning; branch on it to read the other fields.
+    - `speaker_ids` (list of string, required) — Speakers whose voices were not permitted for cloning. The dub used a replacement voice for each of them; all other speakers are unaffected.
+    - `message` (string, required) — Human-readable description of the warning, for display. The wording may change at any time, so we recommend branching on `type` instead.
+- `next_cursor` (string, optional, nullable) — Opaque cursor to pass back as `cursor` for the next page, or null when there are no more results.
 
 ## Examples
 

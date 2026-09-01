@@ -12,30 +12,26 @@ There are a couple of possible reasons why Payouts are not enabled for your acco
 
  
 
-<strong>
-  You have not completed the process of setting up your Payout account
-</strong>
+**You have not completed the process of setting up your Payout account**
 
 Payouts won't be enabled for your account until you have completed the process of setting up your Payout account, including agreeing to the Terms.
 
-To complete the process, please visit your Payouts page, and click <strong>Complete Account Setup</strong>, and follow the steps. 
+To complete the process, please visit your Payouts page, and click **Complete Account Setup**, and follow the steps. 
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb52e5ffc758de83e815dccbf38f589f443d01943aa46e083839af073a7cd568/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=5c578d79b5684180de487709dedc286f38df903048f6d261fbc019f782c1078b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb52e5ffc758de83e815dccbf38f589f443d01943aa46e083839af073a7cd568/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T112322Z&X-Amz-Expires=604800&X-Amz-Signature=42114e650d469ba5372072ddb7105d5006bb78f142903d99c77d877806b61b6a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-If you still see <strong>Complete Account Setup</strong> after completing all the steps, please contact Support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io).
+If you still see **Complete Account Setup** after completing all the steps, please contact Support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io).
 
  
 
-<strong>
-  You have not completed your W-8/W-9 certification
-</strong>
+**You have not completed your W-8/W-9 certification**
 
-ElevenLabs is required by U.S. tax law to collect W-8/W-9 certification from anyone who receives payments from us and is not a U.S. tax resident. For more information on this, please see our article <a href="/docs/help-center/product/monetization-business/payouts/what-is-w-8-w-9-certification">What is W-8/W-9 certification?</a>
+ElevenLabs is required by U.S. tax law to collect W-8/W-9 certification from anyone who receives payments from us and is not a U.S. tax resident. For more information on this, please see our article [What is W-8/W-9 certification?](/docs/help-center/product/monetization-business/payouts/what-is-w-8-w-9-certification)
 
-Payouts will be disabled for any user who does not have a valid tax form. To resume Payouts, please visit your Payouts page and click <strong>Manage Account</strong>.
+Payouts will be disabled for any user who does not have a valid tax form. To resume Payouts, please visit your Payouts page and click **Manage Account**.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5b05f4b71a2fa97f474b763834ab81479a21e159b7a24753be81adfd0b61db04/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=aa635448a44f64d607879d5c892aec660706fc30aecde12d8089c886ea5a42e2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5b05f4b71a2fa97f474b763834ab81479a21e159b7a24753be81adfd0b61db04/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T112322Z&X-Amz-Expires=604800&X-Amz-Signature=ba4d823b5c0ed0899faf19daf809ce3ee30f2e68e97a040e6d3601be7553bb3e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-You will then see <strong>Missing W-8/W-9 certification</strong>. To complete your certification, click <strong>Update</strong> and answer the questions in the form.
+You will then see **Missing W-8/W-9 certification**. To complete your certification, click **Update** and answer the questions in the form.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=350b0246b82ca97b845e7024f86a5b7c9e0964a71a6758c7130e5a0308c6bb31&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T112322Z&X-Amz-Expires=604800&X-Amz-Signature=c41a6bc9d0f59cc66d8234931bb98164c88e09f1559b37ba53097aeb91cf6325&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)

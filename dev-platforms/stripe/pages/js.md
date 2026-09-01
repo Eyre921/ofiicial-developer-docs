@@ -4192,6 +4192,26 @@ or other and may contain more values in the future.
 * `ready`: The final tax amount is computed, and the session is ready for confirmation.
 * `requires_shipping_address`: A shipping address must be provided to calculate tax.
 * `requires_billing_address`: A billing address must be provided to calculate tax.
+    - `automaticTax`
+      Details about the automatic tax settings of the Checkout Session.
+      - `enabled`
+        Whether automatic tax is enabled on the Checkout Session. The
+other fields in this hash are `null` when automatic tax is
+disabled.
+      - `exempt`
+        One of `none`, `exempt`, or `reverse`. This value is `null` if
+automatic tax is disabled, or if the Customer hasn't provided
+enough address information to determine their tax exemption.
+* `none`: The Customer isn't exempt from tax.
+* `exempt`: The Customer is exempt from tax.
+* `reverse`: The Customer is subject to the [reverse charge mechanism](https://docs.stripe.com/tax/zero-tax.md#reverse-charges), so tax is accounted for by the Customer.
+      - `addressSource`
+        One of `billing`, `shipping`, or `customer`, indicating which
+address is used to calculate tax. This value is `null` if
+automatic tax is disabled.
+* `billing`: Tax is calculated from the billing address collected during this Checkout Session.
+* `shipping`: Tax is calculated from the shipping address collected during this Checkout Session.
+* `customer`: Tax is calculated from the address saved on the Customer.
 
 - `taxAmounts`
   The aggregate amounts calculated per tax rate for all line
@@ -5665,6 +5685,26 @@ or other and may contain more values in the future.
 * `ready`: The final tax amount is computed, and the session is ready for confirmation.
 * `requires_shipping_address`: A shipping address must be provided to calculate tax.
 * `requires_billing_address`: A billing address must be provided to calculate tax.
+    - `automaticTax`
+      Details about the automatic tax settings of the Checkout Session.
+      - `enabled`
+        Whether automatic tax is enabled on the Checkout Session. The
+other fields in this hash are `null` when automatic tax is
+disabled.
+      - `exempt`
+        One of `none`, `exempt`, or `reverse`. This value is `null` if
+automatic tax is disabled, or if the Customer hasn't provided
+enough address information to determine their tax exemption.
+* `none`: The Customer isn't exempt from tax.
+* `exempt`: The Customer is exempt from tax.
+* `reverse`: The Customer is subject to the [reverse charge mechanism](https://docs.stripe.com/tax/zero-tax.md#reverse-charges), so tax is accounted for by the Customer.
+      - `addressSource`
+        One of `billing`, `shipping`, or `customer`, indicating which
+address is used to calculate tax. This value is `null` if
+automatic tax is disabled.
+* `billing`: Tax is calculated from the billing address collected during this Checkout Session.
+* `shipping`: Tax is calculated from the shipping address collected during this Checkout Session.
+* `customer`: Tax is calculated from the address saved on the Customer.
 
 - `taxAmounts`
   The aggregate amounts calculated per tax rate for all line
@@ -6161,6 +6201,26 @@ or other and may contain more values in the future.
 * `ready`: The final tax amount is computed, and the session is ready for confirmation.
 * `requires_shipping_address`: A shipping address must be provided to calculate tax.
 * `requires_billing_address`: A billing address must be provided to calculate tax.
+    - `automaticTax`
+      Details about the automatic tax settings of the Checkout Session.
+      - `enabled`
+        Whether automatic tax is enabled on the Checkout Session. The
+other fields in this hash are `null` when automatic tax is
+disabled.
+      - `exempt`
+        One of `none`, `exempt`, or `reverse`. This value is `null` if
+automatic tax is disabled, or if the Customer hasn't provided
+enough address information to determine their tax exemption.
+* `none`: The Customer isn't exempt from tax.
+* `exempt`: The Customer is exempt from tax.
+* `reverse`: The Customer is subject to the [reverse charge mechanism](https://docs.stripe.com/tax/zero-tax.md#reverse-charges), so tax is accounted for by the Customer.
+      - `addressSource`
+        One of `billing`, `shipping`, or `customer`, indicating which
+address is used to calculate tax. This value is `null` if
+automatic tax is disabled.
+* `billing`: Tax is calculated from the billing address collected during this Checkout Session.
+* `shipping`: Tax is calculated from the shipping address collected during this Checkout Session.
+* `customer`: Tax is calculated from the address saved on the Customer.
 
 - `taxAmounts`
   The aggregate amounts calculated per tax rate for all line
@@ -7664,6 +7724,26 @@ or other and may contain more values in the future.
 * `ready`: The final tax amount is computed, and the session is ready for confirmation.
 * `requires_shipping_address`: A shipping address must be provided to calculate tax.
 * `requires_billing_address`: A billing address must be provided to calculate tax.
+    - `automaticTax`
+      Details about the automatic tax settings of the Checkout Session.
+      - `enabled`
+        Whether automatic tax is enabled on the Checkout Session. The
+other fields in this hash are `null` when automatic tax is
+disabled.
+      - `exempt`
+        One of `none`, `exempt`, or `reverse`. This value is `null` if
+automatic tax is disabled, or if the Customer hasn't provided
+enough address information to determine their tax exemption.
+* `none`: The Customer isn't exempt from tax.
+* `exempt`: The Customer is exempt from tax.
+* `reverse`: The Customer is subject to the [reverse charge mechanism](https://docs.stripe.com/tax/zero-tax.md#reverse-charges), so tax is accounted for by the Customer.
+      - `addressSource`
+        One of `billing`, `shipping`, or `customer`, indicating which
+address is used to calculate tax. This value is `null` if
+automatic tax is disabled.
+* `billing`: Tax is calculated from the billing address collected during this Checkout Session.
+* `shipping`: Tax is calculated from the shipping address collected during this Checkout Session.
+* `customer`: Tax is calculated from the address saved on the Customer.
 
 - `taxAmounts`
   The aggregate amounts calculated per tax rate for all line
@@ -8160,6 +8240,26 @@ or other and may contain more values in the future.
 * `ready`: The final tax amount is computed, and the session is ready for confirmation.
 * `requires_shipping_address`: A shipping address must be provided to calculate tax.
 * `requires_billing_address`: A billing address must be provided to calculate tax.
+    - `automaticTax`
+      Details about the automatic tax settings of the Checkout Session.
+      - `enabled`
+        Whether automatic tax is enabled on the Checkout Session. The
+other fields in this hash are `null` when automatic tax is
+disabled.
+      - `exempt`
+        One of `none`, `exempt`, or `reverse`. This value is `null` if
+automatic tax is disabled, or if the Customer hasn't provided
+enough address information to determine their tax exemption.
+* `none`: The Customer isn't exempt from tax.
+* `exempt`: The Customer is exempt from tax.
+* `reverse`: The Customer is subject to the [reverse charge mechanism](https://docs.stripe.com/tax/zero-tax.md#reverse-charges), so tax is accounted for by the Customer.
+      - `addressSource`
+        One of `billing`, `shipping`, or `customer`, indicating which
+address is used to calculate tax. This value is `null` if
+automatic tax is disabled.
+* `billing`: Tax is calculated from the billing address collected during this Checkout Session.
+* `shipping`: Tax is calculated from the shipping address collected during this Checkout Session.
+* `customer`: Tax is calculated from the address saved on the Customer.
 
 - `taxAmounts`
   The aggregate amounts calculated per tax rate for all line

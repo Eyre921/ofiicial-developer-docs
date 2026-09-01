@@ -12,4 +12,4 @@ Audio Native is an embedded audio player that automatically voices content of a 
 
 Audio Native is available on the Creator plan and above.
 
-For more details, please see our <a href="/docs/creative-platform/audio-tools/audio-native">Audio Native overview.</a>
+For more details, please see our [Audio Native overview.](/docs/creative-platform/audio-tools/audio-native)

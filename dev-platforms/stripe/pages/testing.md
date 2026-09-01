@@ -651,6 +651,7 @@ To simulate a [disputed transaction](https://docs.stripe.com/disputes.md), use t
 | Description | Number | Details |
 | --- | --- | --- |
 | Fraudulent | 4000000000000259 | With default account settings, charge succeeds, only to be disputed as [fraudulent](https://docs.stripe.com/disputes/categories.md). This type of dispute is [protected](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments) after 3D Secure authentication. |
+| Discover fraudulent | 6026507838377928 | With default account settings, charge succeeds, but is disputed as [fraudulent](https://docs.stripe.com/disputes/categories.md). |
 | Not received | 4000000000002685 | With default account settings, charge succeeds, only to be disputed as [product not received](https://docs.stripe.com/disputes/categories.md). This type of dispute [isn’t protected](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments) after 3D Secure authentication. |
 | Inquiry | 4000000000001976 | With default account settings, charge succeeds, only to be disputed as [an inquiry](https://docs.stripe.com/disputes/how-disputes-work.md#inquiries). |
 | Warning | 4000000000005423 | With default account settings, charge succeeds, only to receive [an early fraud warning](https://docs.stripe.com/disputes/how-disputes-work.md#early-fraud-warnings). |
@@ -1268,7 +1269,7 @@ There are several [test bank account numbers](https://docs.stripe.com/keys.md#te
 
 You can test using any of the account numbers provided above. However, because Bacs Direct Debit payments take several days to process, use the test account numbers that operate on a three-minute delay to better simulate the behavior of live payments.
 
-> By default, Stripe automatically sends [emails](https://docs.stripe.com/payments/payment-methods/bacs-debit.md#debit-notifications) to the customer when payment details are initially collected and each time a debit will be made on their account. These notifications aren’t sent in sandboxes.
+> By default, Stripe automatically sends [emails](https://docs.stripe.com/payments/bacs-debit.md#debit-notifications) to the customer when payment details are initially collected and each time a debit will be made on their account. These notifications aren’t sent in sandboxes.
 
 #### AU BECS Direct Debit
 

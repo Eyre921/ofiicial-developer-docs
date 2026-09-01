@@ -31,7 +31,9 @@ The [`gcloud` CLI](https://cloud.google.com/sdk/gcloud) provides programmatic ac
 1. Follow the [installation guide](https://cloud.google.com/sdk/docs/install) to install the CLI locally.
 2. Once installed, run `gcloud init` to configure the CLI with access to your GCP account and project.
 
-<h2> Choosing a Region </h2>
+## Choosing a Region
+
+
 The templates and steps in this guide provision resources in the GCP `us-west1` region.
 
 If you would like to deploy to a different region, make sure to adjust templates and steps in this guide accordingly.
@@ -74,7 +76,9 @@ Google Kubernetes Engine (GKE) is a managed Kubernetes service to run Kubernetes
 
 2. Create separate node pools for each Deepgram component (API, Engine, License Proxy). Adjust the machine types and node counts according to your needs. You may wish to consult your Deepgram Account Representative in planning your cluster's capacity.
 
-   <h2> `num-nodes` Default Behavior</h2>
+   ## `num-nodes` Default Behavior
+
+
    `num-nodes` configures the number of nodes in the node pool ***in each of the cluster's zones***. If your cluster is configured in 3 zones, setting`num-nodes` to 1 will result in 1 node per zone, or 3 nodes across the entire cluster.
 
    We restrict the `engine-pool` to one cluster zone because [you can't use regional persistent disks on VMs that use G2 standard machine types](https://cloud.google.com/compute/docs/accelerator-optimized-machines#g2_standard_limitations). This guide uses a zonal persistent disk as a workaround, which means we must limit the nodes in `engine-pool` to a single zone in order to mount the disk.
@@ -342,7 +346,9 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
    watch kubectl get all
    ```
 
-   <h2> Resource Limits </h2>
+   ## Resource Limits
+
+
    It may take some time for GKE to resize the number of nodes in your cluster to accommodate your deployment.
 
    If you want to monitor the status, or your pods aren't being scheduled as you expect, you can see a pod's scheduling status with `kubectl describe pod <pod-name>`, which may contain details on what is preventing scheduling.

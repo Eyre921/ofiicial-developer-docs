@@ -17,4 +17,4 @@ Here are some recommendations to help you successfully verify your Professional 
 * Make sure that your web browser is allowed to use your microphone and that you are not muted.
 * Ensure that the recorded audio from your computer microphone sounds similar to the audio uploaded for cloning, without any background noise or other external audio interference.
 * Try to speak in a similar style to the audio you used to train the voice.
-* Read each verification line only once, then press <strong>Stop</strong> to stop recording. Reading the line more than once can cause the verification process to fail.
+* Read each verification line only once, then press **Stop** to stop recording. Reading the line more than once can cause the verification process to fail.

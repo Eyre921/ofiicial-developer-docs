@@ -12,8 +12,8 @@ We offer up to two free regenerations in Studio, provided you haven't changed th
 
 To regenerate, either click on the paragraph to regenerate the whole paragraph, or select one or more words that you want to regenerate. For the best results, we recommend regenerating a complete phrase or sentence. 
 
-If the selection is eligible for a free regeneration, you will see that the Generate/Regenerate button in the toolbar says <strong>Regenerate</strong>, and if you hover over it, you will see a notification letting you know how many free regenerations are remaining.  
+If the selection is eligible for a free regeneration, you will see that the Generate/Regenerate button in the toolbar says **Regenerate**, and if you hover over it, you will see a notification letting you know how many free regenerations are remaining.  
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f3af89ec341d3d0e493219796067b35ce8d129e6d51edc70178f6a1ea22d4977/assets/images/help-center/product/studio/does-it-cost-credits-to-regenerate-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=b07bee7e6c6de52027614192b0b8db25e524ac517e7e786b88127b7162ada7dc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f3af89ec341d3d0e493219796067b35ce8d129e6d51edc70178f6a1ea22d4977/assets/images/help-center/product/studio/does-it-cost-credits-to-regenerate-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T112323Z&X-Amz-Expires=604800&X-Amz-Signature=960f8d96d2dd18d37764d22957a5f904b0a6c3aa873d2c3e86b87369524f48ed&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-If your selection isn't eligible for a free regeneration, the button will say <strong>Generate</strong>, and you will be charged for the generation.
+If your selection isn't eligible for a free regeneration, the button will say **Generate**, and you will be charged for the generation.

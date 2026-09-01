@@ -1724,8 +1724,6 @@ You can check the costs for the import, queries, and storage in the Pinecone con
 | Storage   | 4 hours         | \$0.33/GB/month        | \$0.09         |
 | **Total** |                 |                        | **\$90.37**    |
 
-<Note>Standard and Enterprise organizations receive a **one-time 1 TB bulk import credit**, valid through August 30, 2026, so on those plans the import portion of this example would be \$0 and the total would be \$78.17. The figures above assume the standard overage rate.</Note>
-
 <Steps>
   <Step title="Import costs">
     The current price for import is \$0.25/GB. The dataset size for this test is 48.8 GB, so the import cost should be \$12.20.
@@ -4414,16 +4412,16 @@ On-demand indexes and dedicated read nodes are both built on Pinecone's serverle
 
 However, every dedicated read nodes index has isolated hardware for read operations (query, fetch, list), allowing these operations to run on dedicated query executors. This affects performance, cost, and how you scale:
 
-| Feature                 | On-demand                                                                                                                                      | Dedicated read nodes                                                                                                                                               |
-| :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Read infrastructure** | Multi-tenant compute resources shared across customers                                                                                         | Isolated, provisioned query executors dedicated to your index                                                                                                      |
-| **Read costs**          | Pay per [read unit](/guides/manage-cost/understanding-cost#serverless-indexes) (1 RU per 1 GB of namespace size per query, minimum 0.25 RU)    | Fixed hourly rate for read capacity based on node type, shards, and replicas                                                                                       |
-| **Other costs**         | [Storage](/guides/manage-cost/understanding-cost#storage) and [write](/guides/manage-cost/understanding-cost#write-units) costs based on usage | [Storage](/guides/manage-cost/understanding-cost#storage) and [write](/guides/manage-cost/understanding-cost#write-units) costs based on usage (same as on-demand) |
-| **Caching**             | Best-effort; frequently accessed data is cached, but cold queries fetch from object storage                                                    | Guaranteed; all index data always warm in memory and on local SSDs                                                                                                 |
-| **Read rate limits**    | [2,000 RUs/second per index (adjustable)](/reference/api/database-limits#rate-limits)                                                          | No read rate limits (only bounded by CPU capacity)                                                                                                                 |
-| **Scaling**             | Automatic; Pinecone handles capacity                                                                                                           | Manual; add [shards](#shards) for storage, add [replicas](#replicas) for throughput                                                                                |
-| **Query-time tuning**   | Parameters accepted but have no effect                                                                                                         | Optional [`scan_factor` and `max_candidates`](#query-time-search-parameters) to trade recall for lower latency and higher throughput                               |
-| **Best for**            | Variable workloads, multi-tenant applications with many namespaces, low to moderate query rates                                                | Sustained high query rates, large single-namespace workloads, predictable performance and cost                                                                     |
+| Feature                 | On-demand                                                                                                                                                                                                | Dedicated read nodes                                                                                                                                                                                                         |
+| :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Read infrastructure** | Multi-tenant compute resources shared across customers                                                                                                                                                   | Isolated, provisioned query executors dedicated to your index                                                                                                                                                                |
+| **Read costs**          | Pay per [read unit](/guides/manage-cost/understanding-cost#read-units) (1 RU per 1 GB of namespace size per query, minimum 0.25 RU)                                                                      | Fixed hourly rate for read capacity based on node type, shards, and replicas                                                                                                                                                 |
+| **Other costs**         | [Storage](/guides/manage-cost/understanding-cost#storage), [write](/guides/manage-cost/understanding-cost#write-units), and [egress](/guides/manage-cost/understanding-cost#egress) costs based on usage | [Storage](/guides/manage-cost/understanding-cost#storage), [write](/guides/manage-cost/understanding-cost#write-units), and [egress](/guides/manage-cost/understanding-cost#egress) costs based on usage (same as on-demand) |
+| **Caching**             | Best-effort; frequently accessed data is cached, but cold queries fetch from object storage                                                                                                              | Guaranteed; all index data always warm in memory and on local SSDs                                                                                                                                                           |
+| **Read rate limits**    | [2,000 RUs/second per index (adjustable)](/reference/api/database-limits#rate-limits)                                                                                                                    | No read rate limits (only bounded by CPU capacity)                                                                                                                                                                           |
+| **Scaling**             | Automatic; Pinecone handles capacity                                                                                                                                                                     | Manual; add [shards](#shards) for storage, add [replicas](#replicas) for throughput                                                                                                                                          |
+| **Query-time tuning**   | Parameters accepted but have no effect                                                                                                                                                                   | Optional [`scan_factor` and `max_candidates`](#query-time-search-parameters) to trade recall for lower latency and higher throughput                                                                                         |
+| **Best for**            | Variable workloads, multi-tenant applications with many namespaces, low to moderate query rates                                                                                                          | Sustained high query rates, large single-namespace workloads, predictable performance and cost                                                                                                                               |
 
 ## When to use dedicated read nodes
 
@@ -4489,7 +4487,7 @@ There's no universal formula for choosing between on-demand and dedicated read n
   </Accordion>
 
   <Accordion title="Cost considerations">
-    On-demand and dedicated read nodes have different cost structures. The key difference is read costs: on-demand uses usage-based pricing, while dedicated read nodes use a fixed hourly rate based on provisioned hardware. Write and storage costs are usage-based for both modes.
+    On-demand and dedicated read nodes have different cost structures. The key difference is read costs: on-demand uses usage-based pricing, while dedicated read nodes use a fixed hourly rate based on provisioned hardware. Write, storage, and egress costs are usage-based for both modes.
 
     Dedicated read nodes become cost-effective when you have predictable, sustained query volumes that make full use of your provisioned capacity. With unpredictable or low query volumes, you pay hourly rates even when your machines sit idle, making on-demand's usage-based pricing more economical.
 
@@ -5946,15 +5944,16 @@ The following limits apply to dedicated read nodes:
   For the latest pricing information, see the [Pinecone pricing page](https://www.pinecone.io/pricing/).
 </Note>
 
-The cost of an index has three components: read costs, write costs, and storage costs.
+The cost of an index has four components: read costs, write costs, storage costs, and egress costs.
 
-On-demand and dedicated read nodes share infrastructure for writes and storage, so these costs are the same. However, dedicated read nodes provision dedicated hardware for read operations (query, fetch, list), which changes how read costs are calculated.
+On-demand and dedicated read nodes share infrastructure for writes and storage, so these costs are the same. Egress is billed the same way on both, because it depends on the data returned to you rather than on the hardware serving the read. However, dedicated read nodes provision dedicated hardware for read operations (query, fetch, list), which changes how read costs are calculated.
 
-| Cost component    | On-demand                                                                                                | Dedicated read nodes                                                                               |
-| :---------------- | :------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
-| **Read costs**    | [Usage-based](/guides/manage-cost/understanding-cost#read-units): 1 RU per 1 GB namespace size per query | Fixed hourly rate: Based on [node type](#node-types), [shards](#shards), and [replicas](#replicas) |
-| **Write costs**   | [Usage-based](/guides/manage-cost/understanding-cost#write-units)                                        | [Usage-based](/guides/manage-cost/understanding-cost#write-units) (same as on-demand)              |
-| **Storage costs** | [Usage-based](/guides/manage-cost/understanding-cost#storage)                                            | [Usage-based](/guides/manage-cost/understanding-cost#storage) (same as on-demand)                  |
+| Cost component    | On-demand                                                                                                                                                   | Dedicated read nodes                                                                               |
+| :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
+| **Read costs**    | [Usage-based](/guides/manage-cost/understanding-cost#read-units): 1 RU per 1 GB namespace size per query                                                    | Fixed hourly rate: Based on [node type](#node-types), [shards](#shards), and [replicas](#replicas) |
+| **Write costs**   | [Usage-based](/guides/manage-cost/understanding-cost#write-units)                                                                                           | [Usage-based](/guides/manage-cost/understanding-cost#write-units) (same as on-demand)              |
+| **Storage costs** | [Usage-based](/guides/manage-cost/understanding-cost#storage)                                                                                               | [Usage-based](/guides/manage-cost/understanding-cost#storage) (same as on-demand)                  |
+| **Egress costs**  | [Usage-based](/guides/manage-cost/understanding-cost#egress) beyond your plan's [egress allowance](/guides/manage-cost/understanding-cost#egress-allowance) | [Usage-based](/guides/manage-cost/understanding-cost#egress) (same as on-demand)                   |
 
 <Note>
   If you use a hosted model for search or reranking, there are additional [inference costs](https://www.pinecone.io/pricing).
@@ -5965,16 +5964,17 @@ On-demand and dedicated read nodes share infrastructure for writes and storage, 
     To calculate the total cost of a dedicated read nodes index, use this formula:
 
     ```
-    (Node rate × shards × replicas) + storage costs + write costs
+    (Node rate × shards × replicas) + storage costs + write costs + egress costs
     ```
 
-    | Term              | Description                                                                                                                                           |
-    | :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | **Node rate**     | Monthly rate for the [node type](#node-types) (`b1` or `t1`), which varies by cloud region. See [Pinecone pricing](https://www.pinecone.io/pricing/). |
-    | **Shards**        | Number of [shards](#shards) allocated                                                                                                                 |
-    | **Replicas**      | Number of [replicas](#replicas) allocated                                                                                                             |
-    | **Storage costs** | [Usage-based](/guides/manage-cost/understanding-cost#storage), same as on-demand                                                                      |
-    | **Write costs**   | [Usage-based](/guides/manage-cost/understanding-cost#write-units), same as on-demand                                                                  |
+    | Term              | Description                                                                                                                                                                    |
+    | :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | **Node rate**     | Monthly rate for the [node type](#node-types) (`b1` or `t1`), which varies by cloud region. See [Pinecone pricing](https://www.pinecone.io/pricing/).                          |
+    | **Shards**        | Number of [shards](#shards) allocated                                                                                                                                          |
+    | **Replicas**      | Number of [replicas](#replicas) allocated                                                                                                                                      |
+    | **Storage costs** | [Usage-based](/guides/manage-cost/understanding-cost#storage), same as on-demand                                                                                               |
+    | **Write costs**   | [Usage-based](/guides/manage-cost/understanding-cost#write-units), same as on-demand                                                                                           |
+    | **Egress costs**  | [Usage-based](/guides/manage-cost/understanding-cost#egress) beyond your plan's [egress allowance](/guides/manage-cost/understanding-cost#egress-allowance), same as on-demand |
 
     <Tip>
       For help estimating costs, use the [Pinecone pricing calculator](https://www.pinecone.io/pricing/estimate/) or [contact us](https://www.pinecone.io/contact/).
@@ -5983,7 +5983,7 @@ On-demand and dedicated read nodes share infrastructure for writes and storage, 
     **Example:** If the rate for `b1` nodes on `aws-us-east-1` is \$336.42/month (\$0.46/hour), an index with two shards and two replicas would cost:
 
     ```
-    336.42 × 2 × 2 = $1,345.68/month, plus storage and write costs
+    336.42 × 2 × 2 = $1,345.68/month, plus storage, write, and egress costs
     ```
   </Accordion>
 </AccordionGroup>
@@ -13835,12 +13835,6 @@ The response looks like this:
 
 For a more in-depth demonstration of how to use read units to inspect read costs, see [this notebook](https://github.com/pinecone-io/examples/blob/master/docs/read-units-demonstrated.ipynb).
 
-### Egress
-
-[Query](/guides/search/search-overview), [fetch](/guides/manage-data/fetch-data), [list](/guides/manage-data/list-record-ids), and [text search](/reference/api/latest/data-plane/search_records) requests return the [egress](/guides/manage-cost/understanding-cost#egress) consumed by each request in the `usage` object, as `egressBytes` (the total bytes returned by the operation, including IDs, scores, values, and metadata).
-
-Egress is reported only on serverless reads that return record data. It is omitted on empty results and on requests that return no record data (such as index statistics and management requests).
-
 ### Embedding tokens
 
 Requests to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models), either directly via the [`embed` operation](/reference/api/latest/inference/generate-embeddings) or automatically when upserting or querying an [index with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), return a `usage` parameter with the total tokens generated.
@@ -14171,7 +14165,7 @@ The returned object looks like this:
 * [Manage cost](/guides/manage-cost/manage-cost)
 
 
-# Understanding cost
+# Understanding Pinecone cost
 Source: https://docs.pinecone.io/guides/manage-cost/understanding-cost
 
 Understand how costs are incurred in Pinecone, including read units (RUs), write units (WUs), storage, egress, and embedding.
@@ -14184,7 +14178,6 @@ Pinecone serverless is usage-based, so you pay only for the data you store and t
 
 * **Start free.** The Starter plan has no monthly minimum, so you can build and test before committing to any spend.
 * **Prepaid credits and annual commitments.** Committing usage upfront earns discounted rates. See [Prepaid credits](#prepaid-credits).
-* **Bulk import credit.** Standard and Enterprise organizations receive a one-time 1 TB import credit for loading data from object storage. See [Imports](#imports).
 * **Optimize your workload.** Use namespaces and right-size your reads to cut ongoing query cost. See [Save on costs](/guides/optimize/save-on-costs).
 * **Talk to us.** Standard and Enterprise customers can [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to optimize costs and discuss volume discounts.
 
@@ -14491,13 +14484,11 @@ Egress is metered on read requests that return per-record data:
 
 Write requests (upsert, update, delete, import), index statistics (such as `describe_index_stats`), and index management requests are not metered for egress.
 
-<Note>
-  Egress accrues on all bytes returned by in-scope reads, including IDs, scores, and metadata. Setting `include_values=false` on a [fetch](/guides/manage-data/fetch-data#fetch-records) or query lowers egress but does not exempt the request, because IDs and metadata are still returned.
-</Note>
+Egress applies to indexes that use [dedicated read nodes](/guides/index-data/dedicated-read-nodes) as well as on-demand indexes, because it depends on the data returned to you rather than on the hardware serving the read.
 
-<Tip>
-  In-scope read requests return the egress consumed in the response `usage` object. You can use this information to [monitor egress](/guides/manage-cost/monitor-usage-and-costs#egress).
-</Tip>
+<Note>
+  Egress accrues on all bytes returned by in-scope reads, including IDs, scores, and metadata. Leaving vector values out of a [query](/guides/search/search-overview) response (`include_values=false`, the default) lowers egress, but it doesn't exempt the request, because IDs and scores are still returned. `fetch` always returns values, so use `query` when you're searching and only need IDs or metadata.
+</Note>
 
 #### Egress allowance
 
@@ -14505,7 +14496,7 @@ Each plan includes a monthly egress allowance, which resets at the start of each
 
 | Plan       | Monthly egress allowance |
 | :--------- | :----------------------- |
-| Free       | 1 GB                     |
+| Starter    | 1 GB                     |
 | Builder    | 10 GB                    |
 | Standard   | 100 GB                   |
 | Enterprise | 100 GB                   |
@@ -14513,17 +14504,13 @@ Each plan includes a monthly egress allowance, which resets at the start of each
 What happens past the allowance depends on your plan:
 
 * **Usage-based plans (Standard, Enterprise):** egress beyond the allowance is billed at the per-GB overage rate and reads keep serving. For the latest egress rate, see [Pricing](https://www.pinecone.io/pricing/).
-* **Flat-fee plans (Free, Builder):** in-scope reads are blocked with a `RESOURCE_EXHAUSTED` (429) error and an upgrade prompt once the allowance is reached. Index statistics, index management, and write requests remain available, and the allowance resets at the start of the next billing period.
+* **Flat-fee plans (Starter, Builder):** in-scope reads are blocked with a `RESOURCE_EXHAUSTED` (429) error and an upgrade prompt once the allowance is reached. Index statistics, index management, and write requests remain available, and the allowance resets at the start of the next billing period.
 
 ## Imports
 
 [Importing from object storage](/guides/index-data/import-data) is the most efficient and cost-effective method to load large numbers of records into an index. The cost of an import is based on the size of the records read, whether the records were imported successfully or not.
 
 If the import operation fails (e.g., after encountering a vector of the wrong dimension in an import with `on_error="abort"`), you will still be charged for the records read. However, if the import fails because of an internal system error, you will not incur charges. In this case, the import will return the error message `"We were unable to process your request. If the problem persists, please contact us at https://support.pinecone.io"`.
-
-<Note>
-  Standard and Enterprise organizations receive a **one-time 1 TB bulk import credit**, valid through August 30, 2026. Usage beyond the free allotment is billed at the standard import rate. Builder and Starter plans are not eligible.
-</Note>
 
 For the latest import pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
 
@@ -16287,7 +16274,7 @@ To fetch records from a namespace based on their IDs, use the `fetch` operation 
 * `ids`: The IDs of the records to fetch. Maximum of 1000.
 
 <Note>
-  For on-demand indexes, since vector values are retrieved from object storage, fetch operations may have increased latency. If you only need metadata or IDs, consider using the [`query`](/reference/api/latest/data-plane/query) operation with `include_values` set to `false` instead. See [Decrease latency](/guides/optimize/decrease-latency#avoid-including-vector-values-when-not-needed) for more details.
+  For on-demand indexes, since vector values are retrieved from object storage, fetch operations may have increased latency. If you only need metadata or IDs, consider using the [`query`](/reference/api/latest/data-plane/query) operation instead, with `include_values` left at its default of `false`. See [Decrease latency](/guides/optimize/decrease-latency#avoid-including-vector-values-when-not-needed) for more details.
 </Note>
 
 <CodeGroup>
@@ -23193,10 +23180,10 @@ If you're batching queries, try reducing the number of queries per call to a sin
 
 ## Avoid including vector values when not needed
 
-Including vector values increases response size -- especially with higher `top_k` values —- which can elevate round-trip latency. If you don't need the vector values in your response, set `include_values=false` to improve query performance. This applies to [`query`](/reference/api/latest/data-plane/query) and [`fetch`](/reference/api/latest/data-plane/fetch) operations.
+Including vector values increases response size, especially at higher `top_k` values, and larger responses can elevate round-trip latency. If you don't need vector values in your response, leave `include_values` at its default of `false` on [`query`](/reference/api/latest/data-plane/query). [`fetch`](/reference/api/latest/data-plane/fetch) always returns values, so use `query` when you're searching and only need IDs or metadata.
 
 <Note>
-  On-demand indexes retrieve vector values from object storage, so `fetch` operations and queries with `include_values=true` may occasionally experience higher tail latency before values are cached on disk. DRN indexes cache values locally and are not affected.
+  On-demand indexes retrieve vector values from object storage, so `fetch` operations and queries with `include_values=true` may occasionally experience higher tail latency before values are cached on disk. Dedicated read nodes indexes cache values locally and aren't affected.
 </Note>
 
 ## Work with database limits
@@ -23326,7 +23313,7 @@ To quickly ingest data when using the Python SDK, use the [`upsert_from_datafram
 Read more about [high-throughput optimizations](https://www.pinecone.io/blog/working-at-scale/) on our blog.
 
 
-# Save on costs
+# Save on Pinecone costs
 Source: https://docs.pinecone.io/guides/optimize/save-on-costs
 
 Save on Pinecone costs by using bulk import over upsert, namespaces for multitenancy, and query patterns that reduce read unit consumption.
@@ -23336,7 +23323,6 @@ Save on Pinecone costs by using bulk import over upsert, namespaces for multiten
 In addition to the workload optimizations below, you can lower your effective rate:
 
 * **Prepaid credits and annual commitments** earn discounted usage rates. See [Prepaid credits](/guides/manage-cost/understanding-cost#prepaid-credits).
-* **One-time bulk import credit.** Standard and Enterprise organizations receive a one-time 1 TB credit for [importing data from object storage](/guides/manage-cost/understanding-cost#imports).
 * **Dedicated read nodes** can lower cost for sustained, high read throughput when you fully use the provisioned capacity (see [Choose the right index capacity mode](#choose-the-right-index-capacity-mode)).
 * **Volume discounts.** Standard and Enterprise customers can [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to discuss cost optimization and discounts.
 
@@ -23353,7 +23339,7 @@ Partitioning tenants with [namespaces](/guides/index-data/implement-multitenancy
 
 ## Right-size reads and queries
 
-* Avoid returning vector values in read responses when you do not need them (`include_values=false`), especially at high `top_k`. Values are typically the largest part of a response, so omitting them lowers [egress](/guides/manage-cost/understanding-cost#egress) and helps you stay within your plan's egress allowance.
+* Avoid returning vector values from a query when you don't need them (`include_values=false`, the default), especially at high `top_k`. Values are typically the largest part of a response, so leaving them out lowers [egress](/guides/manage-cost/understanding-cost#egress) and helps you stay within your plan's egress allowance.
 * Use [metadata filters](/guides/search/filter-by-metadata) so queries scan fewer records where your workload allows.
 
 <Note>
@@ -35279,7 +35265,7 @@ The following reranking models are hosted by Pinecone.
     <PaidOnly />
 
     <Note>
-      `cohere-rerank-3.5` is deprecated as of July 1, 2026. Starting August 1, 2026, requests to `cohere-rerank-3.5` are automatically served by [`cohere-rerank-4-fast`](#cohere-rerank-4-fast). Migrate your rerank requests to `cohere-rerank-4-fast` before then to control the transition yourself. Because `cohere-rerank-4-fast` returns different relevance scores, re-tune any hard-coded score thresholds before the transition.
+      `cohere-rerank-3.5` is deprecated as of July 1, 2026. Since August 31, 2026, requests to `cohere-rerank-3.5` are served by [`cohere-rerank-4-fast`](#cohere-rerank-4-fast). Update your rerank requests to specify `cohere-rerank-4-fast` directly. Because `cohere-rerank-4-fast` returns different relevance scores, re-tune any hard-coded score thresholds against it.
     </Note>
 
     [`cohere-rerank-3.5`](/models/cohere-rerank-3.5) is Cohere's previous-generation reranking model, balancing performance and latency for a wide range of enterprise search applications.
@@ -72202,7 +72188,7 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
 </CardGroup>
 
 
-# Model Gallery
+# Pinecone model gallery
 Source: https://docs.pinecone.io/models/overview
 
 Browse Pinecone's hosted embedding and reranking model gallery with details on dimensions, sequence length, pricing, and supported tasks.
@@ -72239,7 +72225,7 @@ Browse Pinecone's hosted embedding and reranking model gallery with details on d
 
     <ModelCard description="Cohere's latest reranker, with multilingual capabilities." />
 
-    <ModelCard description="Cohere's previous-generation reranker. Deprecated; migrate to cohere-rerank-4-fast." />
+    <ModelCard description="Cohere's previous-generation reranker. Deprecated; requests are served by cohere-rerank-4-fast." />
 
     <ModelCard description="Sparse-vector encoder for custom lexical retrieval. For general keyword search, use full-text search." />
 
@@ -92994,93 +92980,6 @@ When you publish a new version of a deployment, Marketplace re-runs introspectio
 Sync frequency and connector behavior are governed by the underlying connector adapter.
 
 
-# Consumer authentication
-Source: https://docs.pinecone.io/guides/marketplace/consumer-auth-overview
-
-Configure consumer sign-in for a Pinecone Marketplace deployment using link access or Google sign-in to control who can use your knowledge application.
-
-<Note>
-  This feature is in [public preview](/release-notes/feature-availability).
-</Note>
-
-Consumer authentication controls who can use a published knowledge application. Each deployment configures its own consumer authentication independently.
-
-## Available providers
-
-| Provider                          | Use it for                                                                                |
-| --------------------------------- | ----------------------------------------------------------------------------------------- |
-| [Link access](#link-access)       | Internal pilots, demos, or applications you intend to share with anyone who has the link. |
-| [Google sign-in](#google-sign-in) | Applications used by people in a Google-based organization.                               |
-
-## How to choose
-
-* Pick **link access** when you need the lowest-friction option and the application does not require identifying who asked what.
-* Pick **Google sign-in** when you want interactions tied to a Google account.
-
-You can change the consumer authentication provider from the deployment dashboard. Changing the provider creates a new building version; publish the version to apply the change.
-
-## Link access
-
-Link access is the lowest-friction consumer authentication option. Anyone who has the deployment URL can use the knowledge application without signing in. Use it for internal pilots, demos, and applications where you do not need to identify who is asking questions.
-
-### Configure link access
-
-1. Open the deployment dashboard.
-2. Go to **Access**.
-3. Set the consumer authentication provider to **Link**.
-4. Save the change. Marketplace creates a new building version.
-5. Publish the version. See [Publish a deployment](/guides/marketplace/publish-a-deployment).
-
-### Share the URL
-
-Once a deployment is published, copy its URL from the dashboard and send it to end users. End users open the URL and start using the application immediately.
-
-### What link access does and does not do
-
-| Does                                         | Does not do                      |
-| -------------------------------------------- | -------------------------------- |
-| Let anyone with the link use the application | Identify individual end users    |
-| Log events for every interaction             | Tie events to a user identity    |
-| Apply the deployment's scope and guardrails  | Provide row-level access control |
-
-If you need to know who asked what, use [Google sign-in](#google-sign-in) instead.
-
-## Google sign-in
-
-Google sign-in requires end users to authenticate with Google before using the knowledge application. Use it when you want every interaction tied to a verified Google account.
-
-### Configure Google sign-in
-
-1. Open the deployment dashboard.
-2. Go to **Access**.
-3. Under **Access**, select the Google sign-in option.
-4. Configure the allowed sign-in scope: restrict to one or more email domains, or allow any Google account.
-5. Save the change. Marketplace creates a new building version.
-6. Publish the version.
-
-### Sign-in flow
-
-When end users open the deployment URL, they are prompted to sign in with Google. Marketplace checks the email against the allowed scope. Authorized users land in the application; unauthorized users see a friendly access-denied page. Sessions persist until the end user signs out.
-
-### Revoking access
-
-To revoke an end user's access, update the allowed sign-in scope to exclude their email or domain, then publish the change. Existing sessions for excluded users will fail on next request.
-
-## Sessions and identity
-
-When end users sign in:
-
-* Their session is scoped to the deployment.
-* Their identity is recorded in the [event log](/guides/marketplace/analytics-and-event-logs) for traceability.
-* Their feedback is associated with their identity.
-
-Link access does not establish an end-user identity. Events from link-accessed applications are still logged, without the user attribution.
-
-## Sharing the application
-
-After publishing, copy the deployment URL from the dashboard and share it with end users. The URL is the entry point regardless of which consumer authentication provider is configured.
-
-
 # Create a deployment
 Source: https://docs.pinecone.io/guides/marketplace/create-a-deployment
 
@@ -93924,7 +93823,7 @@ You also need:
   * **Azure**: a dedicated subscription with `Owner`. The installer creates managed identities and role assignments, so `Contributor` is not sufficient.
 * A **Pinecone API key** from the Pinecone console.
 * A Pinecone **Enterprise plan** (required for BYOC access).
-* A **generation-LLM key**. Every model Nexus uses is BYOM and configurable through the model catalog: generation, embedding, and rerank. The catalog is backed by [LiteLLM](https://docs.litellm.ai/docs/providers), so you can bring any model any LiteLLM-supported provider offers, referenced by its LiteLLM `provider/model` identifier. The shipped defaults route generation to Google Gemini (get a key from [Google AI Studio](https://aistudio.google.com/apikey)) and route embedding and rerank to Pinecone-hosted models (no extra key). You can repoint any tier at a different provider (including endpoints inside your own boundary), each with its own key. Which model each call reaches determines where the content of that call goes. See [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency).
+* A **generation-LLM key** (BYOM). The shipped default is Google Gemini, so get a key from [Google AI Studio](https://aistudio.google.com/apikey). Embedding and rerank run on Pinecone-hosted models by default (no extra key). See [Model guidance](/guides/nexus/models) for the model catalog and how to repoint generation, embedding, or rerank, and [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency) for where each call's content goes.
 * A **Pulumi state backend** (either Pulumi Cloud or local state via `pulumi login --local`).
 * Sufficient cloud quota for the resources (the setup wizard validates this).
 
@@ -94267,7 +94166,7 @@ If you want a standalone Pinecone vector database in your own cloud instead, see
 Nexus BYOC uses the core Nexus product terms (context, manifest, KnowQL, and workspace). See [Nexus concepts](/guides/nexus/concepts) for definitions, [Data residency and limits](/guides/nexus/byoc/reference) for the security and operational details, and [Deploy Nexus BYOC](/guides/nexus/byoc/deploy) to install.
 
 
-# Data residency and limits
+# Nexus BYOC data residency and limits
 Source: https://docs.pinecone.io/guides/nexus/byoc/reference
 
 Where your data lives and travels in Nexus BYOC, plus authentication, encryption, cluster footprint, and limitations.
@@ -94295,7 +94194,7 @@ These live in your object storage, database, and metadata store, inside your vir
 * **To Pinecone (control plane and observability):** operational metrics, traces, and cluster and operation status (for example, CPU, memory, and latency). *No customer content.* Customer data is filtered out before transmission.
 * **To the inference models you configure:** the content being processed. Nexus calls models during curation (embedding your source text, and for artifact generation sending source text to the generation model) and during a query (sending the query text and the retrieved passages to the generation model, the query text to the embedding model, and candidate passages to the rerank model). Each such call carries that content to whichever provider serves the model:
   * With the shipped defaults, the generation model is an external provider you bring (Google Gemini by default, using your key), so source text (during artifact generation) and query text plus retrieved passages go to that provider. Embedding and rerank run on Pinecone-hosted models, so the text being embedded or reranked is sent to Pinecone.
-  * **Every model is BYOM and configurable.** You choose the provider (and therefore the destination) for the generation, embedding, and rerank tiers independently. To keep all customer content inside your trust boundary, repoint each tier at a model you host or otherwise control. A residency-strict deployment does not have to use any Pinecone-hosted or third-party model.
+  * **Every model is BYOM and configurable.** You choose the provider (and therefore the destination) for generation, embedding, and rerank independently. To keep all customer content inside your trust boundary, repoint each of these at a model you host or otherwise control. A residency-strict deployment does not have to use any Pinecone-hosted or third-party model.
 
 <Warning>
   This differs from [Database BYOC](/guides/production/bring-your-own-cloud), where [integrated embedding](/guides/production/bring-your-own-cloud#limitations) is unsupported specifically so that document text never leaves your account. Nexus always performs an embedding step, so by default some document and query text is sent to Pinecone.
@@ -94326,7 +94225,7 @@ The cluster comes up small and autoscales with load and with the number of conte
 
 * **The endpoint is public and authenticated.** The Nexus API and console are reached over a public, access-controlled endpoint. Private-only access (PrivateLink, Private Service Connect, or Private Endpoint) for Nexus is not supported. (The Pinecone Database data plane in the same deployment can run privately, but Nexus cannot.)
 * **Domain and TLS are Pinecone-managed.** The endpoint is served on a Pinecone-managed domain (`.byoc.pinecone.io`) with certificates issued and renewed automatically. Custom or customer-owned domains are not supported, so no DNS delegation or certificate handoff is required from you.
-* **Bring your own models.** Generation, embedding, and rerank are all BYOM and configurable. A generation-LLM key is required (default: Google Gemini). Provider quota is your responsibility, so size the tier to your ingest volume. Model configuration determines where content is sent. See [Data flows and residency](#data-flows-and-residency).
+* **Bring your own models.** Generation, embedding, and rerank are all BYOM and configurable. A generation-LLM key is required (default: Google Gemini). Provider quota is your responsibility, so size it to your ingest volume. Model configuration determines where content is sent. See [Data flows and residency](#data-flows-and-residency).
 * **Workspace names are unique per Pinecone project.** When several deployments share one project, give each additional deployment a distinct workspace name via `nexus-default-workspace-name`.
 * **Environment cap.** Each organization can create a limited number of BYOC environments. To request an increase, contact [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
@@ -94639,6 +94538,53 @@ Add this server config to your MCP client. Swap `YOUR_PINECONE_API_KEY` for your
 * `list_contexts`: list the contexts available to your project (each has a `slug`, and only curated contexts are queryable). Takes no arguments and returns an array of context objects, each shaped `{ slug, name, id, description, queryable, is_curating, is_optimizing, last_curated_at, last_optimized_at }`. `queryable` turns true once the context has been curated, `is_curating` and `is_optimizing` flag whether work is running now, and the two timestamps are ISO strings or `null`.
 * `query_context`: submit a question scoped to one context. Args: `context` (slug), `question`. Runs in background mode and returns a `query_id` immediately without waiting for the answer. The return object is `{ query_id, status, model }`. Pass the `query_id` to `get_query` to fetch the result.
 * `get_query`: poll the result of a submitted query. Args: `query_id`. Returns `{ query_id, answer, output_json, citations, model, status, error }`. `answer` is the grounded answer text, or `null` until it is ready. `output_json` holds structured output when the query requested a shape, otherwise `null`. `citations` is an array of source references and `error` is set only when the query failed. Keep polling until `status` is `completed`, `failed`, or `cancelled`.
+
+
+# Nexus model guidance
+Source: https://docs.pinecone.io/guides/nexus/models
+
+Learn how Pinecone Nexus uses models for generation, curation, and retrieval, and how to choose the right one.
+
+Pinecone Nexus uses models at several points, which you select based on your deployment: You bring your own models in BYOC, or use a Pinecone-managed catalog during the invite-only trial. Everything on this page applies to both.
+
+## Where Nexus uses models
+
+* **Generation** composes the answer to a query, using a generation model from the catalog.
+* **Curation** builds artifacts from your sources, using your configured models (covered below).
+* **Embedding and rerank** power retrieval, using Pinecone-hosted models by default.
+
+All are configurable through the model catalog, which is backed by [LiteLLM](https://docs.litellm.ai/docs/providers) and references each model by its `provider/model` identifier. In BYOC, you supply the keys, so see [Deploy Nexus BYOC](/guides/nexus/byoc/deploy).
+
+## Model tiers
+
+Nexus groups generation models into three tiers. Start with the default and adjust from there, matching the tier to the question rather than the size of the context:
+
+* **Standard** is the default, balanced choice. Use it when you're unsure.
+* **Light** is cheaper and faster. Reach for it on simple or high-volume queries where speed and cost matter most.
+* **Pro** is the most capable. Use it for complex, multi-step reasoning.
+
+The tiers are suggested defaults, not the whole catalog. In a context's **Query** tab, the model selector marks one suggested model per tier. Choose a tier to use its suggestion, or select any other model in the catalog instead. The query [trace](/guides/nexus/query-tracing) reports the tokens, latency, and cost behind each answer, so you can compare models on your own questions and settle on the one that fits.
+
+<Note>
+  In the invite-only Nexus trial, Pinecone fills the tiers from its managed catalog:
+
+  * **Standard**: Claude Sonnet 5
+  * **Light**: Gemini 3.5 Flash Lite
+  * **Pro**: Claude Opus 5
+</Note>
+
+## Curation models
+
+Curation runs your configured embedding and generation models across your sources to build artifacts, the same models a query uses. Because it processes every source, curation is the most cost-sensitive step, so weigh curation cost when you choose your generation model. See [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency) for what content each model sees.
+
+## Configure models in BYOC
+
+In your own deployment, you configure the models yourself. You assign your own model to each tier, and generation defaults to Google Gemini. You can bring any model a LiteLLM-supported provider offers, and point generation, embedding, or rerank at a different provider or an endpoint inside your own boundary, each with its own key. Align to your cloud provider where it helps:
+
+* **Azure** deployments typically use Azure OpenAI or AI Foundry models.
+* **AWS** deployments typically use Amazon Bedrock models.
+
+You don't have to stay within one provider. Because the available models depend on your deployment and the keys you provide, model selection for BYOC happens with Pinecone during setup rather than from a fixed published list.
 
 
 # Pinecone Nexus
@@ -94965,6 +94911,93 @@ During a [chat](/guides/assistant/chat-with-assistant), the assistant processes 
 ## Response generation
 
 After retrieving these chunks, the assistant performs a ranking step to determine which information is most relevant. This [context](/guides/assistant/context-snippets-overview), along with the chat history and [assistant instructions](/guides/assistant/manage-assistants#add-instructions-to-an-assistant), is then used by a large language model (LLM) to generate responses that are informed by your documents.
+
+
+# Consumer authentication
+Source: https://docs.pinecone.io/guides/marketplace/consumer-auth-overview
+
+Configure consumer sign-in for a Pinecone Marketplace deployment using link access or Google sign-in to control who can use your knowledge application.
+
+<Note>
+  This feature is in [public preview](/release-notes/feature-availability).
+</Note>
+
+Consumer authentication controls who can use a published knowledge application. Each deployment configures its own consumer authentication independently.
+
+## Available providers
+
+| Provider                          | Use it for                                                                                |
+| --------------------------------- | ----------------------------------------------------------------------------------------- |
+| [Link access](#link-access)       | Internal pilots, demos, or applications you intend to share with anyone who has the link. |
+| [Google sign-in](#google-sign-in) | Applications used by people in a Google-based organization.                               |
+
+## How to choose
+
+* Pick **link access** when you need the lowest-friction option and the application does not require identifying who asked what.
+* Pick **Google sign-in** when you want interactions tied to a Google account.
+
+You can change the consumer authentication provider from the deployment dashboard. Changing the provider creates a new building version; publish the version to apply the change.
+
+## Link access
+
+Link access is the lowest-friction consumer authentication option. Anyone who has the deployment URL can use the knowledge application without signing in. Use it for internal pilots, demos, and applications where you do not need to identify who is asking questions.
+
+### Configure link access
+
+1. Open the deployment dashboard.
+2. Go to **Access**.
+3. Set the consumer authentication provider to **Link**.
+4. Save the change. Marketplace creates a new building version.
+5. Publish the version. See [Publish a deployment](/guides/marketplace/publish-a-deployment).
+
+### Share the URL
+
+Once a deployment is published, copy its URL from the dashboard and send it to end users. End users open the URL and start using the application immediately.
+
+### What link access does and does not do
+
+| Does                                         | Does not do                      |
+| -------------------------------------------- | -------------------------------- |
+| Let anyone with the link use the application | Identify individual end users    |
+| Log events for every interaction             | Tie events to a user identity    |
+| Apply the deployment's scope and guardrails  | Provide row-level access control |
+
+If you need to know who asked what, use [Google sign-in](#google-sign-in) instead.
+
+## Google sign-in
+
+Google sign-in requires end users to authenticate with Google before using the knowledge application. Use it when you want every interaction tied to a verified Google account.
+
+### Configure Google sign-in
+
+1. Open the deployment dashboard.
+2. Go to **Access**.
+3. Under **Access**, select the Google sign-in option.
+4. Configure the allowed sign-in scope: restrict to one or more email domains, or allow any Google account.
+5. Save the change. Marketplace creates a new building version.
+6. Publish the version.
+
+### Sign-in flow
+
+When end users open the deployment URL, they are prompted to sign in with Google. Marketplace checks the email against the allowed scope. Authorized users land in the application; unauthorized users see a friendly access-denied page. Sessions persist until the end user signs out.
+
+### Revoking access
+
+To revoke an end user's access, update the allowed sign-in scope to exclude their email or domain, then publish the change. Existing sessions for excluded users will fail on next request.
+
+## Sessions and identity
+
+When end users sign in:
+
+* Their session is scoped to the deployment.
+* Their identity is recorded in the [event log](/guides/marketplace/analytics-and-event-logs) for traceability.
+* Their feedback is associated with their identity.
+
+Link access does not establish an end-user identity. Events from link-accessed applications are still logged, without the user attribution.
+
+## Sharing the application
+
+After publishing, copy the deployment URL from the dashboard and share it with end users. The URL is the entry point regardless of which consumer authentication provider is configured.
 
 
 # Ask questions
@@ -97055,6 +97088,26 @@ Every change to Pinecone in 2026, including new features, API updates, deprecati
 
 All Pinecone products share this changelog. Use the filters to narrow the list.
 
+<Update label="2026-09-01">
+  ### Bulk import credit is no longer offered
+
+  New Standard and Enterprise subscriptions no longer receive the one-time \$250 bulk import credit (1 TB). [Imports from object storage](/guides/index-data/import-data) are billed at the standard \$0.25/GB rate.
+
+  Credits already granted stay usable until they expire, 60 days after they were granted. The last balances expire by November 1, 2026.
+
+  For details, see [Understanding cost](/guides/manage-cost/understanding-cost#imports).
+</Update>
+
+<Update label="2026-09-01">
+  ### Egress metering and monthly egress allowances
+
+  Pinecone now meters [egress](/guides/manage-cost/understanding-cost#egress), the data returned to you on reads. Each plan includes a [monthly egress allowance](/guides/manage-cost/understanding-cost#egress-allowance): 1 GB on Starter, 10 GB on Builder, and 100 GB on Standard and Enterprise.
+
+  Egress is metered on reads that return record data, such as query, fetch, list, and search. Writes, index statistics, and index management requests aren't metered. Egress applies to indexes that use [dedicated read nodes](/guides/index-data/dedicated-read-nodes) as well as on-demand indexes.
+
+  On Standard and Enterprise, egress beyond the allowance is billed at the rate on the [pricing page](https://www.pinecone.io/pricing/), and reads keep serving. On Starter and Builder, reads that return record data are blocked once the allowance is reached, and the allowance resets at the start of the next billing period.
+</Update>
+
 <Update label="2026-08-25">
   ### General availability: Bring your own cloud (BYOC)
 
@@ -97138,15 +97191,15 @@ All Pinecone products share this changelog. Use the filters to narrow the list.
 
   With this release, [`cohere-rerank-3.5`](/models/cohere-rerank-3.5) is **deprecated**:
 
-  * **Through July 31, 2026**: `cohere-rerank-3.5` continues to serve requests as before.
-  * **August 1, 2026**: requests to `cohere-rerank-3.5` are automatically served by `cohere-rerank-4-fast`.
+  * **Through August 30, 2026**: `cohere-rerank-3.5` continues to serve requests as before.
+  * **August 31, 2026**: requests to `cohere-rerank-3.5` are automatically served by `cohere-rerank-4-fast`.
 
   No code change is required for the transition, but note two differences before you migrate:
 
-  * **Relevance scores differ.** `cohere-rerank-4-fast` returns different scores than `cohere-rerank-3.5`. If your application relies on hard-coded score thresholds, re-tune them against `cohere-rerank-4-fast` before August 1.
+  * **Relevance scores differ.** `cohere-rerank-4-fast` returns different scores than `cohere-rerank-3.5`. If your application relies on hard-coded score thresholds, re-tune them against `cohere-rerank-4-fast` before August 31.
   * **Billing counts units differently.** The per-unit rate is unchanged at \$2.00 per 1,000 rerank units. One rerank unit covers a query plus up to 100 documents, with documents longer than \~500 tokens auto-chunked into \~500-token chunks that each count toward that 100. As a result, `cohere-rerank-4-fast` can bill multiple units for a large request, whereas `cohere-rerank-3.5` billed one unit per request.
 
-  To control the transition yourself, migrate your rerank requests to `cohere-rerank-4-fast` before August 1. For model details and parameters, see [Reranking models](/guides/search/rerank-results#reranking-models).
+  To control the transition yourself, migrate your rerank requests to `cohere-rerank-4-fast` before August 31. For model details and parameters, see [Reranking models](/guides/search/rerank-results#reranking-models).
 </Update>
 
 <Update label="2026-06-03">

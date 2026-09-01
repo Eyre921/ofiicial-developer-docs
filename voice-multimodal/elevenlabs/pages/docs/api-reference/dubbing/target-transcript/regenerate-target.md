@@ -10,7 +10,7 @@ path: docs/api-reference/dubbing/target-transcript/regenerate-target
 
 POST https://api.elevenlabs.io/v1/dubbing/project/{project_id}/language/{language_id}/transcript/regenerate
 
-Enterprise only. Re-dub a target from its edited transcript, re-synthesizing only the edited regions (charged like a generation). Conflicts when the target has no edits to apply -- nothing is dispatched and nothing is charged.
+Enterprise only. Re-dub a target from its edited transcript, re-synthesizing only the edited regions (charged like a generation, less the free-regeneration allowance). Accepted asynchronously: the target returns to `processing` and sends a `dubbing_language_completed` event to the project's `webhook_ids` when the re-dub lands, carrying the new output URLs. Returns a conflict when the target has no edits to apply — nothing is dispatched and nothing is charged.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/regenerate-target
 
@@ -36,8 +36,8 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/re
 Successful Response
 
 - `regenerated_segment_ids` (list of string, required) — The segments this re-dub re-synthesizes: those with edits to apply.
-- `regenerated_seconds` (double, required) — Seconds of audio this re-dub covers -- the edited regions only, never the whole target. `charged_seconds` is the part of it that was billed.
-- `charged_seconds` (double, required) — Seconds actually billed, after the free-regeneration allowance. Zero when the re-dub cost nothing -- the allowance covered all of it, or the project's included generation did.
+- `regenerated_seconds` (double, required) — Seconds of audio this re-dub covers — the edited regions only, never the whole target. `charged_seconds` is the part of it that was billed.
+- `charged_seconds` (double, required) — Seconds actually billed, after the free-regeneration allowance. Zero when the re-dub cost nothing — either the allowance covered all of it, or the project's included generation did.
 - `free_regeneration_seconds_remaining` (double, required) — Free-regeneration seconds left for this language target after this re-dub. The allowance is the source's own duration.
 
 ## Examples

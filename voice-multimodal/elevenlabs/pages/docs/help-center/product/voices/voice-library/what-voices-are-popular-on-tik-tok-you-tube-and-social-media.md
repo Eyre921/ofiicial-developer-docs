@@ -12,17 +12,13 @@ If you’ve seen a clip using AI voices on TikTok, YouTube, Instagram, X, or oth
 
 Some of our most popular voices online today include:
 
-<strong>
-  Male voices
-</strong>
+**Male voices**
 
 * Brian
 * Liam
 * Adam
 
-<strong>
-  Female voices
-</strong>
+**Female voices**
 
 * Jessica
 * Matilda

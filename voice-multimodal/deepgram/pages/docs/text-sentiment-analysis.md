@@ -11,9 +11,12 @@ path: docs/text-sentiment-analysis
 # Sentiment Analysis
 
 Deepgram API Playground
+
+
 Try this feature out in our API Playground.
 
-<br />
+\
+
 
 `sentiment` *boolean*   Default: `false`
 

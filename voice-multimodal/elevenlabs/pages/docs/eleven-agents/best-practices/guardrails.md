@@ -112,10 +112,14 @@ strategy.
 
 **Retry** feedback can contain **any instructions** you want applied on the next turn - it is injected as system guidance before the model regenerates. This includes invoking system tools like `transfer_to_agent` or `transfer_to_number`. Here are some examples on how you can configure retry feedback:
 
-* **Generic refusal** (default) <br /> *Your response was blocked by a guardrail that blocks content that matches this condition/category: '\{\{trigger\_reason}}' During your next turn you must tell the user "I'm sorry but I can't answer that question, would you like to know something else?"*
-* **Retry with corrective instructions**<br /> *Your previous response was blocked by a guardrail. Your blocked response was: '\{\{agent\_message}}'. During your next turn you must provide a new answer and it must not violate: '\{\{trigger\_reason}}'*
-* **Transfer to another agent**<br /> *Your previous response was blocked by the guardrail. During your next turn you must use the transfer\_to\_agent tool and transfer to an agent. Your blocked response was: '\{\{agent\_message}}'. The guardrail blocks content that matches this condition/category: '\{\{trigger\_reason}}'.*
-* **Transfer to a person**<br /> *Your response was blocked by a guardrail that blocks content that matches this condition/category: '\{\{trigger\_reason}}'. During your next turn you MUST transfer the call to a human operator using the transfer\_to\_number tool.*
+* **Generic refusal** (default) \
+  &#x20;*Your response was blocked by a guardrail that blocks content that matches this condition/category: '\{\{trigger\_reason}}' During your next turn you must tell the user "I'm sorry but I can't answer that question, would you like to know something else?"*
+* **Retry with corrective instructions**\
+  &#x20;*Your previous response was blocked by a guardrail. Your blocked response was: '\{\{agent\_message}}'. During your next turn you must provide a new answer and it must not violate: '\{\{trigger\_reason}}'*
+* **Transfer to another agent**\
+  &#x20;*Your previous response was blocked by the guardrail. During your next turn you must use the transfer\_to\_agent tool and transfer to an agent. Your blocked response was: '\{\{agent\_message}}'. The guardrail blocks content that matches this condition/category: '\{\{trigger\_reason}}'.*
+* **Transfer to a person**\
+  &#x20;*Your response was blocked by a guardrail that blocks content that matches this condition/category: '\{\{trigger\_reason}}'. During your next turn you MUST transfer the call to a human operator using the transfer\_to\_number tool.*
 
 To use **system tools** in retry feedback, enable and configure the corresponding tools in the
 agent's settings. Only tools that are set up on the agent can be invoked.
@@ -142,7 +146,7 @@ in the behavior.
 
 You can see an estimated cost (under the prompt) when creating or editing a custom guardrail.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a829a7451a1bb209dcbbe718dc75c3f6a28191f4de8ad6be44da6e0b7d4466ec/assets/images/agents/agents-custom-guardail-prompt-estimated-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=43909e3aa95cc34dc2715744092aed3b8324b2de31dfd7ef8faaa67ae88030f0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Custom guardrail cost estimation" class="fern-card rounded-2 shadow-x" />
+![Custom guardrail cost estimation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a829a7451a1bb209dcbbe718dc75c3f6a28191f4de8ad6be44da6e0b7d4466ec/assets/images/agents/agents-custom-guardail-prompt-estimated-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T085855Z&X-Amz-Expires=604800&X-Amz-Signature=c936e1b7b8f84c93a9b95c4399216737f0fc5b8925ea8253e607b55a5f55742b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 **Retry and cost:** Each attempt is an extra agent generation plus another guardrail evaluation,
 so **retry** increases usage-based billing compared to **end\_call** (up to three attempts per
@@ -168,8 +172,8 @@ For each custom or content guardrail, choose **streaming** or **blocking** execu
 guardrail violation** (maps to **`trigger_action`**): **end call** in any mode, or **retry**
 only when **blocking** is selected (**retry** is not available in **streaming**). If you choose
 **retry**, edit **Feedback to inject when retrying** to steer the model. Use the placeholders
-<code>{'{{trigger_reason}}'}</code> (the custom prompt or content category that caused the
-block) and <code>{'{{agent_message}}'}</code> in the template.
+<code /> (the custom prompt or content category that caused the
+block) and <code /> in the template.
 
 #### Save configuration
 

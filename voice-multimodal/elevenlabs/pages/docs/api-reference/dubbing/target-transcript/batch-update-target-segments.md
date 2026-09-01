@@ -11,7 +11,7 @@ path: docs/api-reference/dubbing/target-transcript/batch-update-target-segments
 PATCH https://api.elevenlabs.io/v1/dubbing/project/{project_id}/language/{language_id}/transcript/segments
 Content-Type: application/json
 
-Enterprise only. Edit several segments' translations for a language target in one atomic request.
+Enterprise only. Edit several segments' translations for a language target in one atomic request: every edit applies or none does. Bumps the target's `revision` and marks it `stale` if it had already completed. The source transcript and the project's other languages are untouched, and no audio changes until you regenerate the target.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/batch-update-target-segments
 
@@ -32,7 +32,7 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/ba
 
 ### Body (application/json)
 
-- `segments` (map from string to object, required) — Map of segment id to the translation edit to apply to that segment.
+- `segments` (map from string to object, required) — Map of segment ID to the translation edit to apply to that segment. At least one entry and at most 500.
   - `translation` (string, optional, nullable) — New translated text, or null to mark the segment for re-translation.
 
 ## Response

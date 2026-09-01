@@ -12,7 +12,7 @@ Voiceover Studio will be sunset on **May 15, 2026**. For all new projects, use [
 Studio](/docs/eleven-creative/products/studio). You can also open Studio directly at
 [elevenlabs.io/app/studio](https://elevenlabs.io/app/studio).
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/051b3139b84d462fcaa5bcf11d7ca2e7be093fa226ac08e7d827c447ee97ae4a/assets/images/product-guides/voiceover-studio/voiceover-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=349cb96613736d9f08fa32cb114d56c62bcbc0197928e97c5d48bc27db69db55&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voiceover studio" />
+![Voiceover studio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/051b3139b84d462fcaa5bcf11d7ca2e7be093fa226ac08e7d827c447ee97ae4a/assets/images/product-guides/voiceover-studio/voiceover-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T113203Z&X-Amz-Expires=604800&X-Amz-Signature=7825d1cf0fce111c749049e05f220f83072f03c30673536f33cc0cad73c80955&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -202,7 +202,7 @@ format you want and either view or download your voiceover.
 
       Our professional end-to-end solution for long-form content, called Studio, is available on all our plans, including our free plan. 
 
-      The exception being the <strong>Create a podcast (GenFM)</strong> feature, which requires a paid subscription to access.
+      The exception being the **Create a podcast (GenFM)** feature, which requires a paid subscription to access.
 
       You can find more information about all our subscription plans on our [Pricing page.](https://elevenlabs.io/pricing)
     </td>

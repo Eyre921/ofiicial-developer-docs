@@ -8,13 +8,13 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # How do I earn money from my books on ElevenReader?
 
-There are <strong>two ways to earn from your books on ElevenReader</strong>
+There are **two ways to earn from your books on ElevenReader**
 
 1. Engagement-Based Payouts (Ultra Subscription)
 
-ElevenReader Ultra subscribers receive <strong>20 hours of listening</strong> bundled into their subscription.
+ElevenReader Ultra subscribers receive **20 hours of listening** bundled into their subscription.
 
-* Books included in the Ultra subscription earn <strong>\$0.20 per hour of verified listening streamed, with a cap of \$2.50 per book.</strong>
+* Books included in the Ultra subscription earn **\$0.20 per hour of verified listening streamed, with a cap of \$2.50 per book.**
 * Listening is calculated based on validated playback
 * Earnings accrue as subscribers engage with your content
 
@@ -22,17 +22,15 @@ This model rewards high quality content and sustained engagement. 
 
 2. Direct Sales
 
-You can list your books for <strong>direct purchase</strong> and choose how they’re made available:
+You can list your books for **direct purchase** and choose how they’re made available:
 
-* <strong>
-    Direct sale to all users (Free & Ultra)
-  </strong>
-  <br />
+* **Direct sale to all users (Free & Ultra)**\
+
+
   All ElevenReader users purchase your book outright, and you earn a 60% revenue share on each sale.
-* <strong>
-    Hybrid: Subscription + Direct Sale
-  </strong>
-  <br />
+* **Hybrid: Subscription + Direct Sale**\
+
+
   Your book is bundled into the Ultra subscription for subscribers (earning engagement-based
   payouts), while free users can purchase the book directly. Simply opt-in to the subscription,
   while also setting a direct sale price to enable this option.

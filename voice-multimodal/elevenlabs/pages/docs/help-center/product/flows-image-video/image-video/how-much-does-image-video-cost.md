@@ -12,7 +12,7 @@ The cost of generating depends on the model you're using and the settings you've
 
 Before you submit your generation, you will be shown the cost based on the model and settings you've chosen. 
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3fe581ba3136d4bd464ded06a391f449c15658bf3f11f7a0b69feaf61d4a0904/assets/images/help-center/product/flows-image-video/image-video/how-much-does-image-video-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=339f3cd3367fd65a0e4b405fa19aa0e932b620cc9c2e5297e53525be2be01fbf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3fe581ba3136d4bd464ded06a391f449c15658bf3f11f7a0b69feaf61d4a0904/assets/images/help-center/product/flows-image-video/image-video/how-much-does-image-video-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100020Z&X-Amz-Expires=604800&X-Amz-Signature=861843c57d1f295fb3cc12e493e47c8a150faf32ca5b94edb45c4a9e2f1886ee&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For more details, see our [Image & Video
 documentation.](/docs/product-guides/playground/image-video)

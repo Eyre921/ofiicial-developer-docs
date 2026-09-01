@@ -20,7 +20,7 @@ confirming this.
 Click your profile icon in the top right corner of the website to open your account menu, then
 click *Subscription*.
 
-Make sure you have monthly billing selected, then select <strong>Subscribe</strong> underneath
+Make sure you have monthly billing selected, then select **Subscribe** underneath
 the plan that your coupon is valid for.
 
 The discount will be applied at checkout. You will see confirmation that it has been applied

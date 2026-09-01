@@ -14,13 +14,13 @@ Here’s how to update your payment method and remove your old card:
 
 Go to your [Subscription](https://elevenlabs.io/app/subscription) page.
 
-Click <strong>Billing</strong>.
+Click **Billing**.
 
-In the pop-up, click <strong>Manage billing information</strong>.
+In the pop-up, click **Manage billing information**.
 
-Scroll down to <strong>Payment Methods</strong>.
+Scroll down to **Payment Methods**.
 
-Click <strong>Add payment method</strong> and enter your new card details.
+Click **Add payment method** and enter your new card details.
 
 Set the new card as the default payment method.
 

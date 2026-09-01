@@ -1234,7 +1234,7 @@ The following reranking models are hosted by Pinecone.
     <PaidOnly />
 
     <Note>
-      `cohere-rerank-3.5` is deprecated as of July 1, 2026. Starting August 1, 2026, requests to `cohere-rerank-3.5` are automatically served by [`cohere-rerank-4-fast`](#cohere-rerank-4-fast). Migrate your rerank requests to `cohere-rerank-4-fast` before then to control the transition yourself. Because `cohere-rerank-4-fast` returns different relevance scores, re-tune any hard-coded score thresholds before the transition.
+      `cohere-rerank-3.5` is deprecated as of July 1, 2026. Since August 31, 2026, requests to `cohere-rerank-3.5` are served by [`cohere-rerank-4-fast`](#cohere-rerank-4-fast). Update your rerank requests to specify `cohere-rerank-4-fast` directly. Because `cohere-rerank-4-fast` returns different relevance scores, re-tune any hard-coded score thresholds against it.
     </Note>
 
     [`cohere-rerank-3.5`](/models/cohere-rerank-3.5) is Cohere's previous-generation reranking model, balancing performance and latency for a wide range of enterprise search applications.

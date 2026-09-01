@@ -8,7 +8,7 @@ path: docs/overview/administration/workspaces/sso
 
 # Single Sign-On (SSO)
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e1575b62be17ed4dbd459539161c7853f9f3e000c8d2eeba01f40e1335d7dad0/assets/images/product-guides/workspaces/workspace-sso.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=fe6d6f37eb9e2b5a017c2d2912c87f43484f38a04fb869d1f599fc706d09ecad&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="SSO" />
+![SSO](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e1575b62be17ed4dbd459539161c7853f9f3e000c8d2eeba01f40e1335d7dad0/assets/images/product-guides/workspaces/workspace-sso.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=cfa69aea91f2ad98116be57caade4ab4ec08e1f9bf8daff518af0b2244389e5e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -37,7 +37,7 @@ Click the **Verify domain** button and enter the domain name you want to verify.
 
 If you want to configure your own SSO provider, select the SSO provider dropdown to select between OIDC (OpenID Connect) and SAML (Security Assertion Markup Language).
 
-**Important:** We do <b>not</b> recommend using Microsoft Entra (formerly Azure AD) with OIDC for SSO. For best compatibility and support, use SAML when integrating with Entra/Azure.
+**Important:** We do **not** recommend using Microsoft Entra (formerly Azure AD) with OIDC for SSO. For best compatibility and support, use SAML when integrating with Entra/Azure.
 
 Only Service Provider (SP) initiated SSO is supported for SAML. To ease the sign in process, you can create a bookmark app in your SSO provider linking to [https://elevenlabs.io/app/sign-in?use\_sso=true](https://elevenlabs.io/app/sign-in?use_sso=true). You can include the user's email as an additional query parameter to pre-fill the field. For example [https://elevenlabs.io/app/sign-in?use\_sso=true\&email=test@test.com](https://elevenlabs.io/app/sign-in?use_sso=true\&email=test@test.com)
 

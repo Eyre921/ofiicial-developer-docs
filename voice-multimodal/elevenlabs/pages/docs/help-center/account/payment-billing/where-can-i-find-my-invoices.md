@@ -13,8 +13,8 @@ We email copies of your invoices and receipts to your account email address. You
 Log into your account, and go to the [Subscription](https://elevenlabs.io/app/subscription)
 page.
 
-Click <strong>Billing</strong>.
+Click **Billing**.
 
-Click <strong>View invoices</strong>.
+Click **View invoices**.
 
 Click any invoice to view and download a PDF of the invoice and receipt.

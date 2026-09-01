@@ -419,7 +419,7 @@ Each condition in the `conditions` array specifies:
 - **`operator`** - The comparison operator
 - **`attribute_value`** - The value to compare against
 
-##### Operators
+#### Operators
 
 | Operator | Description |
 |----------|-------------|
@@ -430,7 +430,7 @@ Each condition in the `conditions` array specifies:
 | `matches` | Glob pattern matching with `*` and `?` wildcards |
 | `not_matches` | Match when value doesn't match glob pattern |
 
-##### `_if_exists` variants
+#### `_if_exists` variants
 
 Each operator has an `_if_exists` variant that matches by default when the tag key is absent, or evaluates the condition normally when the tag exists:
 
@@ -13869,6 +13869,80 @@ If you use self-hosted LangSmith, see the [self-hosted changelog](/langsmith/sel
 <Tabs>
 <Tab title="LangSmith Cloud">
 
+<Update label="August 24-31, 2026" rss={{ title: "2026-08-24 - LangSmith Cloud update" }}>
+
+## Observability and evaluations
+
+### Tracing
+
+- ABAC policies can grant access to matching project traces.
+- Open deployment threads directly in tracing.
+- Clearer Engine issue actions now appear on traces.
+- You can read shared threads through the public API.
+- Trace and tree filters now apply to thread evaluations.
+- Unsupported run filters now return clearer errors.
+- Studio Trace nested run selection now works correctly.
+- The Gateway usage view can open filtered traces.
+
+### Datasets and experiments
+
+- Experiment evaluator column names now use the full column width.
+- You can clone model configurations.
+- Tuned Evaluators are easier to find in tracing projects.
+- Data grids now adapt to enlarged browser fonts.
+- Form errors are announced consistently.
+- The dashboard crosshair stays synchronized across charts.
+- The Engine chat launcher now suggests questions.
+
+### Engine
+
+- Engine now uses application-scoped project counts.
+- Create existing Engine issues in Linear.
+- You can open a pull request for an Engine issue straight from the toolbar.
+- Engine issues stay in sync with Linear.
+- Engine now shows a release announcement in the sidebar.
+- Engine now distinguishes a missing capability from an errored or partially wired tool, reducing false-positive Feature Gap issues.
+- Pull requests for Engine fixes now open automatically.
+- Opening a second linked trace from an Engine issue now works reliably.
+- Open PR also works for fixes that have fallen behind the base branch.
+- Engine usage now costs 40% fewer Usage Credits.
+
+### Gateway
+
+- Newer OpenAI models now route through Amazon Bedrock.
+- Trailing slashes now work on LLM Gateway routes.
+- Recursive LLM Gateway configurations are now prevented.
+- PII redaction is now a separate LLM Gateway entitlement.
+- Claude Max OAuth traffic is now excluded from Gateway spend.
+- Saved model configurations now work on the unified LLM Gateway endpoint.
+- Custom providers now work on the unified LLM Gateway endpoint.
+- Gateway data policies are available by default.
+- You can use saved model configurations in LLM Gateway routing.
+- Vertex AI gateway now supports existing web credentials.
+- OpenAI-compatible API base paths are now respected.
+- Custom provider configurations become available faster.
+- LLM gateway traces no longer capture request and response content by default.
+- Long-lived API keys are now available in the Gateway quickstart.
+
+### Platform and deployment
+
+- Dedicated deployments now run at least two replicas.
+- Run rules now support Redis cluster-safe mode.
+- Thread annotation queues are now available in self-hosted deployments.
+- Thread automations can add to annotation queues in self-hosted deployments.
+- Sandbox execution timeout errors are clearer.
+- Updating a sandbox's proxy config no longer conflicts with a start.
+
+### Fleet
+
+- Fleet sandbox APIs now work with external OIDC auth.
+- Fleet computers keep uploaded Excel workbooks locally.
+- Check Outlook calendar availability.
+
+</Update>
+
+
+
 <Update label="August 17-24, 2026" rss={{ title: "2026-08-17 - LangSmith Cloud update" }}>
 
 ## Observability and evaluations
@@ -15969,6 +16043,16 @@ The experiments table now displays loading progress bars showing the number of r
 </Tab>
 <Tab title="LangSmith Fleet">
 
+
+<Update label="August 24-31, 2026" rss={{ title: "2026-08-24 - Fleet product update" }}>
+
+## Fleet
+
+- Fleet sandbox APIs now work with external OIDC auth.
+- Fleet computers keep uploaded Excel workbooks locally.
+- Check Outlook calendar availability.
+
+</Update>
 
 <Update label="August 17-24, 2026" rss={{ title: "2026-08-17 - Fleet product update" }}>
 
@@ -30122,7 +30206,7 @@ sandboxes:
     name: "sandbox-juicefs"
     storage: "wasb"
     bucket: "https://container-name.core.windows.net"
-    accessKey: "<storage-account-name>" # Account name, not a credential.
+    storageAccountName: "<storage-account-name>"
     redis:
       metaURL: "redis://redis-host:6379/1"
   juicefsFormatJob:
@@ -46919,6 +47003,16 @@ Weekly updates to [LangSmith Fleet](/langsmith/fleet).
 </Callout>
 
 
+<Update label="August 24-31, 2026" rss={{ title: "2026-08-24 - Fleet product update" }}>
+
+## Fleet
+
+- Fleet sandbox APIs now work with external OIDC auth.
+- Fleet computers keep uploaded Excel workbooks locally.
+- Check Outlook calendar availability.
+
+</Update>
+
 <Update label="August 17-24, 2026" rss={{ title: "2026-08-17 - Fleet product update" }}>
 
 ## Fleet
@@ -54230,45 +54324,29 @@ Pass a LangChain chat model instance instead when you need to configure model pa
 
 ### Use LLM Gateway
 
-You can use [LLM Gateway](langsmith/llm-gateway) to control rate limits, fallbacks, and more.
+You can use [LLM Gateway](/langsmith/llm-gateway) to apply rate limits, fallbacks, and other policies to model calls.
 
-In order to use LLM Gateway, you should:
-- Use the ChatOpenAI model directly
-- Set a base url of `https://gateway.smith.langchain.com/v1`
-- Use your `LANGSMITH_API_KEY` for authentication. Set `LANGSMITH_GATEWAY_API_KEY` only if you need a different key for gateway calls.
+Prefix the gateway model ID with `langsmith:`:
 
 
 
 ```ts
 import { defineDeepAgent } from "managed-deepagents";
-import { ChatOpenAI } from "@langchain/openai";
-
-const apiKey =
-  process.env.LANGSMITH_GATEWAY_API_KEY ??
-  process.env.LANGSMITH_API_KEY ??
-  "missing-langsmith-api-key";
-const baseURL = "https://gateway.smith.langchain.com/v1";
 
 export const agent = defineDeepAgent({
   name: "my-agent",
-  model: new ChatOpenAI({
-    model: "moonshotai/Kimi-K3",
-    apiKey,
-    configuration: { baseURL },
-  }),
+  model: "langsmith:moonshotai/kimi-k3",
 });
 ```
 
 
 <Note>
-The model slug should be `provider/model-name` when using Gateway. When NOT using Gateway, it is normally `provider:model-name`
+Gateway model IDs use a slash between provider and model (`langsmith:provider/model-name`). Model strings that call a provider directly use a colon (`provider:model-name`).
 </Note>
 
-In order to scaffold your project to use Gateway from the start, you can pass a `--gateway` flag when initializing your agent:
+The gateway routes each request by model ID. `moonshotai/kimi-k3` is a LangChain-hosted model, so it requires no provider secret and draws on [Gateway Credits](/langsmith/llm-gateway-credits). A model ID that starts with a provider your workspace has configured, such as `anthropic/claude-opus-5`, uses that [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) and bills to your own provider account.
 
-```bash
-mda init my-agent --gateway
-```
+For more information, see [LLM Gateway](/langsmith/llm-gateway).
 
 ## Tools
 
@@ -54362,15 +54440,41 @@ The channel declaration lives at `channels/slack.ts`.
 
 To include Slack when you create a project, pass `--channel slack`:
 
-```bash
-mda init my-agent --channel slack
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx managed-deepagents init my-agent --channel slack
+    ```
+
+    ```bash pnpm
+    pnpm dlx managed-deepagents init my-agent --channel slack
+    ```
+
+    ```bash bun
+    bunx managed-deepagents init my-agent --channel slack
+    ```
+</CodeGroup>
+
 
 To add Slack to an existing project, run the channel initialization command from the project root:
 
-```bash
-mda channel init slack
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda channel init slack
+    ```
+
+    ```bash pnpm
+    pnpm exec mda channel init slack
+    ```
+
+    ```bash bun
+    bunx mda channel init slack
+    ```
+</CodeGroup>
+
 
 
 
@@ -54449,9 +54553,22 @@ During deployment, Managed Deep Agents provisions your agent in Slack from the c
   <Step title="Deploy your agent">
     Run the deployment command from the project root:
 
-    ```bash
-    mda deploy
-    ```
+
+
+    <CodeGroup>
+        ```bash npm
+        npx mda deploy
+        ```
+
+        ```bash pnpm
+        pnpm exec mda deploy
+        ```
+
+        ```bash bun
+        bunx mda deploy
+        ```
+    </CodeGroup>
+
 
     Managed Deep Agents deploys the agent and sets up the resources it needs to appear in Slack.
   </Step>
@@ -54620,15 +54737,32 @@ For the fastest end-to-end path, see the [quickstart](/langsmith/javascript/mana
 
 ## Install
 
-Install the package for the language you use to author your agent. The package exposes the `mda` binary.
+`mda init` declares `managed-deepagents` as a project dependency, so run the `mda` binary from the project.
 
 
 
-For npm, install globally or run the binary with `npm exec`.
+<CodeGroup>
+    ```bash npm
+    npx managed-deepagents init my-agent
+    cd my-agent
+    npm install
+    npx mda --version
+    ```
 
-```bash npm
-npm install managed-deepagents
-```
+    ```bash pnpm
+    pnpm dlx managed-deepagents init my-agent
+    cd my-agent
+    pnpm install
+    pnpm exec mda --version
+    ```
+
+    ```bash bun
+    bunx managed-deepagents init my-agent
+    cd my-agent
+    bun install
+    bunx mda --version
+    ```
+</CodeGroup>
 
 The package provides agent, identity, schedule, and sandbox authoring APIs.
 
@@ -54676,9 +54810,22 @@ The LangSmith API key authenticates the deploy. The agent's model provider also 
 
 Use `mda init` to create a new project directory:
 
-```bash
-mda init my-agent
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx managed-deepagents init my-agent
+    ```
+
+    ```bash pnpm
+    pnpm dlx managed-deepagents init my-agent
+    ```
+
+    ```bash bun
+    bunx managed-deepagents init my-agent
+    ```
+</CodeGroup>
+
 
 | Argument or flag | Use |
 | --- | --- |
@@ -54693,18 +54840,26 @@ mda init my-agent
 
 To include Slack in a new project:
 
-```bash
-mda init my-agent --channel slack
-```
-
-The command detects the language from the current directory:
 
 
+<CodeGroup>
+    ```bash npm
+    npx managed-deepagents init my-agent --channel slack
+    ```
 
-| Current directory contains | Result |
-| --- | --- |
-| `package.json` only | TypeScript scaffold. |
-| Both or neither | Interactive language prompt. |
+    ```bash pnpm
+    pnpm dlx managed-deepagents init my-agent --channel slack
+    ```
+
+    ```bash bun
+    bunx managed-deepagents init my-agent --channel slack
+    ```
+</CodeGroup>
+
+
+
+
+The scaffold language comes from the package you run, not from the current directory: the npm package always writes a TypeScript project. A CLI installed from npm refuses a Python project.
 
 
 The scaffold creates:
@@ -54727,9 +54882,22 @@ Eval tasks are opt-in and are not created by `mda init`. Run `mda evals init -i`
 
 Run the following command from the root of an existing managed deep agent project:
 
-```bash
-mda channel init slack
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda channel init slack
+    ```
+
+    ```bash pnpm
+    pnpm exec mda channel init slack
+    ```
+
+    ```bash bun
+    bunx mda channel init slack
+    ```
+</CodeGroup>
+
 
 The command creates a Slack channel declaration in the `channels/` directory. The next `mda deploy` sets up the resources the agent needs to appear in Slack. For the complete workflow, see [Connect a Managed Deep Agent to Slack](/langsmith/javascript/managed-deep-agents-channels-slack).
 
@@ -54737,9 +54905,22 @@ The command creates a Slack channel declaration in the `channels/` directory. Th
 
 Use `mda build` to compile a project into a managed LangGraph app without deploying it:
 
-```bash
-mda build .
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda build
+    ```
+
+    ```bash pnpm
+    pnpm exec mda build
+    ```
+
+    ```bash bun
+    bunx mda build
+    ```
+</CodeGroup>
+
 
 | Argument or flag | Use |
 | --- | --- |
@@ -54750,9 +54931,22 @@ mda build .
 
 Use `mda evals init` to initialize a Harbor workspace. The command is also available as `mda eval`. Use the interactive handoff to develop complete tasks with a coding agent and the `eval-engineering` skill.
 
-```bash
-mda evals init -i
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda evals init -i
+    ```
+
+    ```bash pnpm
+    pnpm exec mda evals init -i
+    ```
+
+    ```bash bun
+    bunx mda evals init -i
+    ```
+</CodeGroup>
+
 
 | Command or flag | Use |
 | --- | --- |
@@ -54769,9 +54963,22 @@ For workflow guidance, see [Evals](/langsmith/javascript/managed-deep-agents-eva
 
 Use `mda dev` to compile a project and run the local LangGraph dev server:
 
-```bash
-mda dev .
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda dev
+    ```
+
+    ```bash pnpm
+    pnpm exec mda dev
+    ```
+
+    ```bash bun
+    bunx mda dev
+    ```
+</CodeGroup>
+
 
 | Argument or flag | Use |
 | --- | --- |
@@ -54798,9 +55005,22 @@ For local development, `mda dev` stages the project `.env` file into `.mda/build
 
 Use `mda deploy` to compile and deploy a project to LangSmith:
 
-```bash
-mda deploy .
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda deploy
+    ```
+
+    ```bash pnpm
+    pnpm exec mda deploy
+    ```
+
+    ```bash bun
+    bunx mda deploy
+    ```
+</CodeGroup>
+
 
 
 
@@ -54835,9 +55055,22 @@ On success, the CLI prints the LangSmith deployment dashboard URL. For secrets r
 
 Use `mda logs` to tail Agent Server logs for a deployed agent:
 
-```bash
-mda logs .
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda logs
+    ```
+
+    ```bash pnpm
+    pnpm exec mda logs
+    ```
+
+    ```bash bun
+    bunx mda logs
+    ```
+</CodeGroup>
+
 
 | Argument or flag | Use |
 | --- | --- |
@@ -54853,9 +55086,22 @@ mda logs .
 
 Use `mda delete` to delete a deployed Managed Deep Agent and the LangSmith resources it created. `mda destroy` is an alias.
 
-```bash
-mda delete .
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda delete
+    ```
+
+    ```bash pnpm
+    pnpm exec mda delete
+    ```
+
+    ```bash bun
+    bunx mda delete
+    ```
+</CodeGroup>
+
 
 
 
@@ -54925,9 +55171,22 @@ The CLI targets US LangSmith Cloud by default.
 
 Deploy the local project:
 
-```bash
-mda deploy .
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda deploy
+    ```
+
+    ```bash pnpm
+    pnpm exec mda deploy
+    ```
+
+    ```bash bun
+    bunx mda deploy
+    ```
+</CodeGroup>
+
 
 <Tip>
 `mda deploy` routes local project inputs to different managed surfaces:
@@ -54942,21 +55201,60 @@ schedules/**                 -> LangSmith cron jobs after the deployment is live
 
 Set the deployment name explicitly when the directory name is not the name you want:
 
-```bash
-mda deploy . --name research-assistant
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda deploy --name research-assistant
+    ```
+
+    ```bash pnpm
+    pnpm exec mda deploy --name research-assistant
+    ```
+
+    ```bash bun
+    bunx mda deploy --name research-assistant
+    ```
+</CodeGroup>
+
 
 Use `--deployment-type prod` when creating a production deployment:
 
-```bash
-mda deploy . --deployment-type prod
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda deploy --deployment-type prod
+    ```
+
+    ```bash pnpm
+    pnpm exec mda deploy --deployment-type prod
+    ```
+
+    ```bash bun
+    bunx mda deploy --deployment-type prod
+    ```
+</CodeGroup>
+
 
 Use `--no-wait` to trigger the build without polling for completion:
 
-```bash
-mda deploy . --no-wait
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda deploy --no-wait
+    ```
+
+    ```bash pnpm
+    pnpm exec mda deploy --no-wait
+    ```
+
+    ```bash bun
+    bunx mda deploy --no-wait
+    ```
+</CodeGroup>
+
 
 When `--no-wait` is set, schedule reconciliation is skipped for that deploy invocation because the CLI exits before the deployment reaches `DEPLOYED`.
 
@@ -55066,9 +55364,22 @@ See the [Deep Agents Code quickstart](/oss/deepagents/code/quickstart) for provi
 
 From the project root, run:
 
-```bash
-mda evals init -i
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda evals init -i
+    ```
+
+    ```bash pnpm
+    pnpm exec mda evals init -i
+    ```
+
+    ```bash bun
+    bunx mda evals init -i
+    ```
+</CodeGroup>
+
 
 The interactive handoff lists detected coding agents, including Deep Agents Code, Claude Code, Codex, and Cursor. Selecting an agent starts that agent in the project directory and runs the eval-engineering prompt. You can also copy the prompt for another agent, or exit and return later.
 
@@ -55382,9 +55693,22 @@ Install the project dependencies and add the model provider credentials to `.env
 
 From the project root, run:
 
-```bash
-mda dev .
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda dev
+    ```
+
+    ```bash pnpm
+    pnpm exec mda dev
+    ```
+
+    ```bash bun
+    bunx mda dev
+    ```
+</CodeGroup>
+
 
 The CLI prints the local server and Studio URLs and opens Studio in your browser. Send messages in Studio to inspect model responses, tool calls, state, and interrupts.
 
@@ -55989,15 +56313,26 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 <Steps>
   <Step title="Set up the project" id="set-up-the-project">
 
-Install `managed-deepagents`, create a project, and open its directory:
+Create a project and open its directory:
 
 
 
-```bash
-npm install managed-deepagents
-mda init research-assistant
-cd research-assistant
-```
+<CodeGroup>
+    ```bash npm
+    npx managed-deepagents init research-assistant
+    cd research-assistant
+    ```
+
+    ```bash pnpm
+    pnpm dlx managed-deepagents init research-assistant
+    cd research-assistant
+    ```
+
+    ```bash bun
+    bunx managed-deepagents init research-assistant
+    cd research-assistant
+    ```
+</CodeGroup>
 
 
 You now have all the scaffolding for your agent.
@@ -56112,9 +56447,19 @@ Install the Tavily client:
 
 
 
-```bash
-npm install @langchain/tavily
-```
+<CodeGroup>
+    ```bash npm
+    npm install @langchain/tavily
+    ```
+
+    ```bash pnpm
+    pnpm add @langchain/tavily
+    ```
+
+    ```bash bun
+    bun add @langchain/tavily
+    ```
+</CodeGroup>
 
 
 Create a custom `internet_search` tool:
@@ -56177,10 +56522,22 @@ Install the project dependencies and start the agent:
 
 
 
-```bash
-npm install
-mda dev .
-```
+<CodeGroup>
+    ```bash npm
+    npm install
+    npx mda dev
+    ```
+
+    ```bash pnpm
+    pnpm install
+    pnpm exec mda dev
+    ```
+
+    ```bash bun
+    bun install
+    bunx mda dev
+    ```
+</CodeGroup>
 
 
 `mda dev` loads the API keys from `.env`, starts a local Agent Server, and opens the agent in LangSmith Studio.
@@ -56200,9 +56557,22 @@ For more information, see [Develop locally with LangSmith Studio](/langsmith/jav
 
 Deploy the project by running:
 
-```bash
-mda deploy .
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda deploy
+    ```
+
+    ```bash pnpm
+    pnpm exec mda deploy
+    ```
+
+    ```bash bun
+    bunx mda deploy
+    ```
+</CodeGroup>
+
 
 Managed Deep Agents packages the project and runs it as a hosted deployment on [LangSmith Agent Server](/langsmith/agent-server). When deployment finishes, the CLI prints the deployment dashboard URL.
 
@@ -56519,7 +56889,7 @@ Test the project locally with [`mda dev`](/langsmith/javascript/managed-deep-age
 When the deployment reaches `DEPLOYED`, `mda deploy` searches for existing Managed Deep Agents-owned cron jobs on the deployed Agent Server, deletes them, and creates cron jobs for the current `schedules/` declarations. Removing a local schedule file and redeploying removes the corresponding managed cron.
 
 <Warning>
-If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy .` without `--no-wait` when adding, changing, or removing schedules.
+If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy` without `--no-wait` when adding, changing, or removing schedules.
 </Warning>
 
 ## Troubleshoot schedules
@@ -56639,14 +57009,9 @@ For skill authoring patterns and the complete format, see [Skills](/oss/javascri
 # Add custom tools to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tools
 
-Tools add custom capabilities to your agent.
+Tools extend what your agent can do by letting it interact with external systems, such as fetching real-time data, querying databases, executing code, and taking actions. A tool is a callable function with defined inputs and outputs. The model uses the tool's description and the conversation context to decide when to call it and which arguments to provide.
 
-
-
-Define LangChain tools in your project, import them into `agent.ts`, and pass them to `defineDeepAgent`.
-
-
-To load tools from a remote MCP server instead, use an [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors).
+To load tools from a remote MCP server, use an [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors).
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
@@ -56816,9 +57181,19 @@ Install the Tavily client:
 
 
 
-```bash
-npm install @langchain/tavily
-```
+<CodeGroup>
+    ```bash npm
+    npm install @langchain/tavily
+    ```
+
+    ```bash pnpm
+    pnpm add @langchain/tavily
+    ```
+
+    ```bash bun
+    bun add @langchain/tavily
+    ```
+</CodeGroup>
 
 
 Create a custom `internet_search` tool:
@@ -56953,9 +57328,22 @@ For thread behavior and constraints, see [Schedules](/langsmith/javascript/manag
 
 Deploy the project to LangSmith:
 
-```bash
-mda deploy .
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda deploy
+    ```
+
+    ```bash pnpm
+    pnpm exec mda deploy
+    ```
+
+    ```bash bun
+    bunx mda deploy
+    ```
+</CodeGroup>
+
 
 On success, the CLI prints the deployment dashboard URL. The deploy syncs the instructions to Context Hub, uploads the compiled project, and reconciles the daily schedule.
 
@@ -59869,7 +60257,8 @@ Add the following to `commonEnv` in your [LangSmith `values.yaml`](https://githu
 
 ```yaml
 commonEnv:
-  DEFAULT_ORG_FEATURE_CAN_USE_LLM_AUTH_PROXY: "true"
+  - name: DEFAULT_ORG_FEATURE_CAN_USE_LLM_AUTH_PROXY
+    value: "true"
 ```
 
 <Note>
@@ -60447,7 +60836,8 @@ Add the following environment variables to your [LangSmith `values.yaml`](https:
 ```yaml
 # Allow all LLM-calling services to reach the auth proxy on private IPs
 commonEnv:
-  SSRF_ALLOW_K8S_INTERNAL: "true"
+  - name: SSRF_ALLOW_K8S_INTERNAL
+    value: "true"
 
 # Allow the playground service to reach the auth proxy on private IPs
 playground:
@@ -61236,25 +61626,52 @@ export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
 
 ## Claude Code CLI
 
-Choose the authentication method that matches how your organization pays for Anthropic usage.
+Claude Code supports two separate authentication methods. Choose one before configuring:
 
-### Use a workspace provider key
+- **Workspace provider secret**: The organization manages billing and policies through a provider key stored in workspace secrets. Use this method for org-managed usage.
+- **Claude subscription OAuth**: Anthropic bills LLM calls to the user's personal Claude Plus or Max subscription instead of the workspace provider secret, while LangSmith still enforces gateway permissions, policies, and tracing. Use this method when developers have their own subscriptions.
 
-Point Claude Code at the standard Messages endpoint and use a provider-prefixed model ID:
+### Use a workspace provider secret
+
+Set `ANTHROPIC_API_KEY` to your LangSmith API key. Claude Code reads these variables from your shell environment or from the `env` block in `~/.claude/settings.json`.
+
+If your LangSmith deployment is on a regional or self-hosted instance, replace the gateway hostname in the examples below with your [regional gateway](/langsmith/llm-gateway-api-formats#use-a-regional-gateway) hostname.
+
+#### Use Anthropic models only
+
+Set `ANTHROPIC_BASE_URL` to the Anthropic-format gateway endpoint. The gateway infers the `anthropic/` provider prefix from the endpoint:
 
 ```bash
-export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com"
+export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com/anthropic/"
 export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
-export ANTHROPIC_MODEL="anthropic/claude-opus-5"
 
 claude
 ```
 
-Claude Code appends `/v1/messages` to `ANTHROPIC_BASE_URL`. The gateway uses the `anthropic/` prefix to resolve the workspace's Anthropic provider secret.
+#### Route model tiers across providers
 
+Set `ANTHROPIC_BASE_URL` to the gateway root, then map each Claude model tier to a provider-prefixed gateway model ID:
+
+```bash
+export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com"
+export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="anthropic/claude-opus-5"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="openai/gpt-5.6-terra"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="fireworks/accounts/fireworks/models/glm-5p2"
+
+claude
+```
+
+The model IDs are examples. Map each tier to any model configured in your workspace secrets or available through [Gateway Credits](/langsmith/llm-gateway-credits); the gateway handles request translation across providers. For details, see [API formats](/langsmith/llm-gateway-api-formats#understand-translation-behavior).
+
+<a id="use-claude-subscription-oauth"></a>
 ### Use Claude subscription OAuth
 
-Claude Code Plus and Max users can send their saved Anthropic OAuth credential through the gateway. This mode is available to all organizations and does not require an `ANTHROPIC_API_KEY` in workspace provider secrets.
+<Note>
+Claude subscription OAuth requires an active Claude Code Plus or Max subscription. If you are using a workspace Anthropic API key, use the [workspace provider secret](#use-a-workspace-provider-secret) method instead.
+</Note>
+
+Claude Code Plus and Max users can send their saved Anthropic OAuth credential through the gateway. This mode does not require an `ANTHROPIC_API_KEY` in workspace provider secrets.
 
 Log in to Claude Code with your subscription, then configure the gateway:
 
@@ -61265,13 +61682,17 @@ export ANTHROPIC_CUSTOM_HEADERS="X-Api-Key: $LANGSMITH_API_KEY"
 claude
 ```
 
-Claude Code uses and refreshes the OAuth credential from its saved login. It also sends the required OAuth capability in the `anthropic-beta` header automatically.
+Treat the `ANTHROPIC_CUSTOM_HEADERS` value as a secret: it embeds your LangSmith API key, so keep it out of shell history, dotfiles, and shared configuration.
 
-The LangSmith API key authenticates the gateway request and remains subject to gateway permissions and policies. The gateway forwards the OAuth bearer to Anthropic, so Anthropic bills the call to the user's Claude subscription instead of the workspace provider key.
+Claude Code uses and refreshes the OAuth credential from its saved login, including the required OAuth capability in the `anthropic-beta` header.
+
+The LangSmith API key authenticates the gateway request and remains subject to gateway permissions and policies. The gateway forwards the OAuth bearer to Anthropic, so Anthropic bills the call to the user's Claude subscription instead of the workspace provider secret. To confirm calls route through the gateway, check that traces appear in the `gateway` tracing project as described in [Verify the setup](#verify-the-setup).
 
 <Warning>
 Leave `ANTHROPIC_AUTH_TOKEN` and `ANTHROPIC_API_KEY` unset for this mode. Either variable takes precedence over the saved subscription login.
+</Warning>
 
+<Warning>
 Claude Desktop plugins break when the gateway is configured.
 </Warning>
 
@@ -80370,32 +80791,16 @@ Pass a LangChain chat model instance instead when you need to configure model pa
 
 ### Use LLM Gateway
 
-You can use [LLM Gateway](langsmith/llm-gateway) to control rate limits, fallbacks, and more.
+You can use [LLM Gateway](/langsmith/llm-gateway) to apply rate limits, fallbacks, and other policies to model calls.
 
-In order to use LLM Gateway, you should:
-- Use the ChatOpenAI model directly
-- Set a base url of `https://gateway.smith.langchain.com/v1`
-- Use your `LANGSMITH_API_KEY` for authentication. Set `LANGSMITH_GATEWAY_API_KEY` only if you need a different key for gateway calls.
+Prefix the gateway model ID with `langsmith:`:
 
-```py
-import os
-
+```python
 from managed_deepagents import define_deep_agent
-from langchain_openai import ChatOpenAI
-
-api_key = os.environ.get(
-    "LANGSMITH_GATEWAY_API_KEY",
-    os.environ.get("LANGSMITH_API_KEY", "missing-langsmith-api-key"),
-)
-base_url = "https://gateway.smith.langchain.com/v1"
 
 agent = define_deep_agent(
     name="my-agent",
-    model=ChatOpenAI(
-        model="moonshotai/Kimi-K3",
-        api_key=api_key,
-        base_url=base_url,
-    ),
+    model="langsmith:moonshotai/kimi-k3",
 )
 ```
 
@@ -80403,14 +80808,12 @@ agent = define_deep_agent(
 
 
 <Note>
-The model slug should be `provider/model-name` when using Gateway. When NOT using Gateway, it is normally `provider:model-name`
+Gateway model IDs use a slash between provider and model (`langsmith:provider/model-name`). Model strings that call a provider directly use a colon (`provider:model-name`).
 </Note>
 
-In order to scaffold your project to use Gateway from the start, you can pass a `--gateway` flag when initializing your agent:
+The gateway routes each request by model ID. `moonshotai/kimi-k3` is a LangChain-hosted model, so it requires no provider secret and draws on [Gateway Credits](/langsmith/llm-gateway-credits). A model ID that starts with a provider your workspace has configured, such as `anthropic/claude-opus-5`, uses that [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) and bills to your own provider account.
 
-```bash
-mda init my-agent --gateway
-```
+For more information, see [LLM Gateway](/langsmith/llm-gateway).
 
 ## Tools
 
@@ -80505,14 +80908,20 @@ The channel declaration lives at `channels/slack.py`.
 To include Slack when you create a project, pass `--channel slack`:
 
 ```bash
-mda init my-agent --channel slack
+uvx --from managed-deepagents mda init my-agent --channel slack
 ```
+
+
+
 
 To add Slack to an existing project, run the channel initialization command from the project root:
 
 ```bash
-mda channel init slack
+uv run mda channel init slack
 ```
+
+
+
 
 ```python channels/slack.py
 from managed_deepagents import channels
@@ -80592,8 +81001,11 @@ During deployment, Managed Deep Agents provisions your agent in Slack from the c
     Run the deployment command from the project root:
 
     ```bash
-    mda deploy
+    uv run mda deploy
     ```
+
+
+
 
     Managed Deep Agents deploys the agent and sets up the resources it needs to appear in Slack.
   </Step>
@@ -80762,13 +81174,14 @@ For the fastest end-to-end path, see the [quickstart](/langsmith/python/managed-
 
 ## Install
 
-Install the package for the language you use to author your agent. The package exposes the `mda` binary.
+`mda init` declares `managed-deepagents` as a project dependency, so run the `mda` binary from the project.
 
 ```bash uv
-uv tool install managed-deepagents
+uvx --from managed-deepagents mda init my-agent
+cd my-agent
+uv sync
+uv run mda --version
 ```
-
-`uv tool install managed-deepagents` installs the `mda` CLI. A project generated by `mda init` has its own `pyproject.toml`; run `uv sync` inside that project to install project dependencies before local development or deploy.
 
 The package provides agent, identity, schedule, and sandbox authoring APIs with snake-case names, plus the `mda` console script.
 
@@ -80819,8 +81232,11 @@ The LangSmith API key authenticates the deploy. The agent's model provider also 
 Use `mda init` to create a new project directory:
 
 ```bash
-mda init my-agent
+uvx --from managed-deepagents mda init my-agent
 ```
+
+
+
 
 | Argument or flag | Use |
 | --- | --- |
@@ -80836,15 +81252,13 @@ mda init my-agent
 To include Slack in a new project:
 
 ```bash
-mda init my-agent --channel slack
+uvx --from managed-deepagents mda init my-agent --channel slack
 ```
 
-The command detects the language from the current directory:
 
-| Current directory contains | Result |
-| --- | --- |
-| `pyproject.toml` only | Python scaffold. |
-| Both or neither | Interactive language prompt. |
+
+
+The scaffold language comes from the package you run, not from the current directory: the PyPI package always writes a Python project. A CLI installed from PyPI refuses a TypeScript project.
 
 
 
@@ -80870,8 +81284,11 @@ Eval tasks are opt-in and are not created by `mda init`. Run `mda evals init -i`
 Run the following command from the root of an existing managed deep agent project:
 
 ```bash
-mda channel init slack
+uv run mda channel init slack
 ```
+
+
+
 
 The command creates a Slack channel declaration in the `channels/` directory. The next `mda deploy` sets up the resources the agent needs to appear in Slack. For the complete workflow, see [Connect a Managed Deep Agent to Slack](/langsmith/python/managed-deep-agents-channels-slack).
 
@@ -80880,8 +81297,11 @@ The command creates a Slack channel declaration in the `channels/` directory. Th
 Use `mda build` to compile a project into a managed LangGraph app without deploying it:
 
 ```bash
-mda build .
+uv run mda build
 ```
+
+
+
 
 | Argument or flag | Use |
 | --- | --- |
@@ -80893,8 +81313,11 @@ mda build .
 Use `mda evals init` to initialize a Harbor workspace. The command is also available as `mda eval`. Use the interactive handoff to develop complete tasks with a coding agent and the `eval-engineering` skill.
 
 ```bash
-mda evals init -i
+uv run mda evals init -i
 ```
+
+
+
 
 | Command or flag | Use |
 | --- | --- |
@@ -80912,8 +81335,11 @@ For workflow guidance, see [Evals](/langsmith/python/managed-deep-agents-evals).
 Use `mda dev` to compile a project and run the local LangGraph dev server:
 
 ```bash
-mda dev .
+uv run mda dev
 ```
+
+
+
 
 | Argument or flag | Use |
 | --- | --- |
@@ -80943,8 +81369,11 @@ For local development, `mda dev` stages the project `.env` file into `.mda/build
 Use `mda deploy` to compile and deploy a project to LangSmith:
 
 ```bash
-mda deploy .
+uv run mda deploy
 ```
+
+
+
 
 | Argument or flag | Use |
 | --- | --- |
@@ -80980,8 +81409,11 @@ On success, the CLI prints the LangSmith deployment dashboard URL. For secrets r
 Use `mda logs` to tail Agent Server logs for a deployed agent:
 
 ```bash
-mda logs .
+uv run mda logs
 ```
+
+
+
 
 | Argument or flag | Use |
 | --- | --- |
@@ -80998,8 +81430,11 @@ mda logs .
 Use `mda delete` to delete a deployed Managed Deep Agent and the LangSmith resources it created. `mda destroy` is an alias.
 
 ```bash
-mda delete .
+uv run mda delete
 ```
+
+
+
 
 | Argument or flag | Use |
 | --- | --- |
@@ -81069,8 +81504,11 @@ The CLI targets US LangSmith Cloud by default.
 Deploy the local project:
 
 ```bash
-mda deploy .
+uv run mda deploy
 ```
+
+
+
 
 <Tip>
 `mda deploy` routes local project inputs to different managed surfaces:
@@ -81086,20 +81524,29 @@ schedules/**                 -> LangSmith cron jobs after the deployment is live
 Set the deployment name explicitly when the directory name is not the name you want:
 
 ```bash
-mda deploy . --name research-assistant
+uv run mda deploy --name research-assistant
 ```
+
+
+
 
 Use `--deployment-type prod` when creating a production deployment:
 
 ```bash
-mda deploy . --deployment-type prod
+uv run mda deploy --deployment-type prod
 ```
+
+
+
 
 Use `--no-wait` to trigger the build without polling for completion:
 
 ```bash
-mda deploy . --no-wait
+uv run mda deploy --no-wait
 ```
+
+
+
 
 When `--no-wait` is set, schedule reconciliation is skipped for that deploy invocation because the CLI exits before the deployment reaches `DEPLOYED`.
 
@@ -81210,8 +81657,11 @@ See the [Deep Agents Code quickstart](/oss/deepagents/code/quickstart) for provi
 From the project root, run:
 
 ```bash
-mda evals init -i
+uv run mda evals init -i
 ```
+
+
+
 
 The interactive handoff lists detected coding agents, including Deep Agents Code, Claude Code, Codex, and Cursor. Selecting an agent starts that agent in the project directory and runs the eval-engineering prompt. You can also copy the prompt for another agent, or exit and return later.
 
@@ -81527,8 +81977,11 @@ Python projects also require [`uv`](https://docs.astral.sh/uv/).
 From the project root, run:
 
 ```bash
-mda dev .
+uv run mda dev
 ```
+
+
+
 
 The CLI prints the local server and Studio URLs and opens Studio in your browser. Send messages in Studio to inspect model responses, tool calls, state, and interrupts.
 
@@ -82232,11 +82685,10 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 <Steps>
   <Step title="Set up the project" id="set-up-the-project">
 
-Install `managed-deepagents`, create a project, and open its directory:
+Create a project and open its directory:
 
 ```bash
-uv tool install managed-deepagents
-mda init research-assistant
+uvx --from managed-deepagents mda init research-assistant
 cd research-assistant
 ```
 
@@ -82419,7 +82871,7 @@ Install the project dependencies and start the agent:
 
 ```bash
 uv sync
-mda dev .
+uv run mda dev
 ```
 
 
@@ -82443,8 +82895,11 @@ For more information, see [Develop locally with LangSmith Studio](/langsmith/pyt
 Deploy the project by running:
 
 ```bash
-mda deploy .
+uv run mda deploy
 ```
+
+
+
 
 Managed Deep Agents packages the project and runs it as a hosted deployment on [LangSmith Agent Server](/langsmith/agent-server). When deployment finishes, the CLI prints the deployment dashboard URL.
 
@@ -82761,7 +83216,7 @@ Test the project locally with [`mda dev`](/langsmith/python/managed-deep-agents-
 When the deployment reaches `DEPLOYED`, `mda deploy` searches for existing Managed Deep Agents-owned cron jobs on the deployed Agent Server, deletes them, and creates cron jobs for the current `schedules/` declarations. Removing a local schedule file and redeploying removes the corresponding managed cron.
 
 <Warning>
-If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy .` without `--no-wait` when adding, changing, or removing schedules.
+If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy` without `--no-wait` when adding, changing, or removing schedules.
 </Warning>
 
 ## Troubleshoot schedules
@@ -82881,14 +83336,9 @@ For skill authoring patterns and the complete format, see [Skills](/oss/python/d
 # Add custom tools to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-tools
 
-Tools add custom capabilities to your agent.
+Tools extend what your agent can do by letting it interact with external systems, such as fetching real-time data, querying databases, executing code, and taking actions. A tool is a callable function with defined inputs and outputs. The model uses the tool's description and the conversation context to decide when to call it and which arguments to provide.
 
-Define LangChain tools in your project, import them into `agent.py`, and pass them to `define_deep_agent`.
-
-
-
-
-To load tools from a remote MCP server instead, use an [MCP connector](/langsmith/python/managed-deep-agents-mcp-connectors).
+To load tools from a remote MCP server, use an [MCP connector](/langsmith/python/managed-deep-agents-mcp-connectors).
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
@@ -83192,8 +83642,11 @@ For thread behavior and constraints, see [Schedules](/langsmith/python/managed-d
 Deploy the project to LangSmith:
 
 ```bash
-mda deploy .
+uv run mda deploy
 ```
+
+
+
 
 On success, the CLI prints the deployment dashboard URL. The deploy syncs the instructions to Context Hub, uploads the compiled project, and reconciles the daily schedule.
 
@@ -102389,7 +102842,51 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
 
-<Update label="2026-08-27" tags={["self-hosted"]} rss={{ title: "2026-08-27 - self-hosted" }}>
+<Update label="2026-08-31" tags={["Preview"]} rss={{ title: "2026-08-31 - self-hosted" }}>
+## langsmith-0.17.0-rc.16
+
+**LangSmith version:** `0.17.14rc1`
+
+- This release packages the same LangSmith application version as langsmith-0.17.0-rc.13. Refer to the [langsmith-0.17.0-rc.13](#langsmith-0-17-0-rc-13) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.16.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.16/langsmith-0.17.0-rc.16.tgz)
+{/* langsmith-release-image: 0.17.0-rc.16 0.17.14-46e65c1732f0b90c2e392a2be2b720623ac31d3b */}
+</Update>
+
+<Update label="2026-08-28" tags={["Preview"]} rss={{ title: "2026-08-28 - self-hosted" }}>
+## langsmith-0.17.0-rc.15
+
+**LangSmith version:** `0.17.14rc1`
+
+- This release packages the same LangSmith application version as langsmith-0.17.0-rc.13. Refer to the [langsmith-0.17.0-rc.13](#langsmith-0-17-0-rc-13) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.15.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.15/langsmith-0.17.0-rc.15.tgz)
+{/* langsmith-release-image: 0.17.0-rc.15 0.17.14-46e65c1732f0b90c2e392a2be2b720623ac31d3b */}
+</Update>
+
+<Update label="2026-08-28" tags={["Stable"]} rss={{ title: "2026-08-28 - self-hosted" }}>
+## langsmith-0.16.14
+
+**LangSmith version:** `0.16.47`
+
+- This release packages the same LangSmith application version as langsmith-0.16.13. Refer to the [langsmith-0.16.13](#langsmith-0-16-13) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.16.14.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.14/langsmith-0.16.14.tgz)
+{/* langsmith-release-image: 0.16.14 0.16.47 */}
+</Update>
+
+<Update label="2026-08-28" tags={["Preview"]} rss={{ title: "2026-08-28 - self-hosted" }}>
+## langsmith-0.17.0-rc.14
+
+**LangSmith version:** `0.17.14rc1`
+
+- This release packages the same LangSmith application version as langsmith-0.17.0-rc.13. Refer to the [langsmith-0.17.0-rc.13](#langsmith-0-17-0-rc-13) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.14.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.14/langsmith-0.17.0-rc.14.tgz)
+{/* langsmith-release-image: 0.17.0-rc.14 0.17.14-46e65c1732f0b90c2e392a2be2b720623ac31d3b */}
+</Update>
+
+<Update label="2026-08-27" tags={["Stable"]} rss={{ title: "2026-08-27 - self-hosted" }}>
 ## langsmith-0.16.13
 
 **LangSmith version:** `0.16.47`
@@ -124055,7 +124552,7 @@ You should record the agent's audio from the speaker, so that the recording refl
 # Trace OpenAI applications
 Source: https://docs.langchain.com/langsmith/trace-openai
 
-The [`wrap_openai`](https://reference.langchain.com/python/langsmith/wrappers/_openai/wrap_openai) / [`wrapOpenAI`](https://reference.langchain.com/javascript/langsmith/wrappers/wrapOpenAI) methods in Python/TypeScript allow you to wrap your OpenAI client in order to automatically log traces -- no decorator or function wrapping required! Using the wrapper ensures that messages, including tool calls and multimodal content blocks will be rendered nicely in LangSmith. Also note that the wrapper works seamlessly with the [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable) decorator or [`traceable`](https://reference.langchain.com/javascript/functions/langsmith.traceable.traceable.html) function and you can use both in the same application.
+The [`wrap_openai`](https://reference.langchain.com/python/langsmith/wrappers/_openai/wrap_openai) / [`wrapOpenAI`](https://reference.langchain.com/javascript/langsmith/wrappers/wrapOpenAI) methods in Python/TypeScript allow you to wrap your OpenAI client in order to automatically log traces -- no decorator or function wrapping required! Using the wrapper ensures that messages, including tool calls and multimodal content blocks will be rendered nicely in LangSmith. Also note that the wrapper works seamlessly with the [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable) decorator or [`traceable`](https://reference.langchain.com/javascript/langsmith/traceable/traceable) function and you can use both in the same application.
 
 <Note>
 The `LANGSMITH_TRACING` environment variable must be set to `'true'` in order for traces to be logged to LangSmith, even when using [`wrap_openai`](https://reference.langchain.com/python/langsmith/wrappers/_openai/wrap_openai) or [`wrapOpenAI`](https://reference.langchain.com/javascript/langsmith/wrappers/wrapOpenAI). This allows you to toggle tracing on and off without changing your code.
@@ -135950,25 +136447,25 @@ For IdP-specific configuration steps, refer to one of the following:
       - `Default workspace role` and `Default workspaces` are editable. The updated settings will apply to new users only, not existing users.
       - (Coming soon) `SAML metadata URL` and `SAML metadata XML` are editable. This is usually only necessary when cryptographic keys are rotated/expired or the metadata URL has changed but the same IdP is still used.
 
-### Supabase Attribute Mapping
+### SAML Attribute Mapping
 
 <Note>
-Supabase Attribute Mapping is a [cloud-only](/langsmith/cloud) feature. [Self-hosted](/langsmith/self-hosted) deployments configure SAML/OIDC attributes directly with the IdP—see [Set up SSO with OAuth2.0 and OIDC](/langsmith/self-host-sso).
+SAML Attribute Mapping is a [cloud-only](/langsmith/cloud) feature. [Self-hosted](/langsmith/self-hosted) deployments configure SAML/OIDC attributes directly with the IdP—see [Set up SSO with OAuth2.0 and OIDC](/langsmith/self-host-sso).
 </Note>
 
-LangSmith cloud uses [Supabase](/langsmith/cloud) as the SAML SSO backend. Supabase passes a small set of standard SAML attributes (such as `email` and `sub`) onto the user's JWT automatically. Any additional, non-standard SAML attribute your IdP emits (for example, `groups` for [SSO Groups Sync](#sso-groups-sync-alternative)) must be explicitly forwarded through Supabase before LangSmith can read it.
+LangSmith cloud passes a small set of standard SAML attributes (such as `email` and `sub`) onto the user's JWT automatically. Any additional, non-standard SAML attribute your IdP emits (for example, `groups` for [SSO Groups Sync](#sso-groups-sync-alternative)) must be explicitly listed in the SAML Attribute Mapping table before LangSmith can read it.
 
 **Attribute flow (1:1):**
 
 1. **IdP**: emits a SAML attribute with the configured name (e.g., `groups`).
-2. **Supabase**: forwards the attribute onto the user's JWT only if the attribute name appears in the **Supabase Attribute Mapping** table on the SSO provider. Standard attributes are forwarded automatically; non-standard attributes are dropped unless explicitly listed.
+2. **SAML Attribute Mapping**: forwards the attribute onto the user's JWT only if the attribute name appears in the **SAML Attribute Mapping** table on the SSO provider. Standard attributes are forwarded automatically; non-standard attributes are dropped unless explicitly listed.
 3. **LangSmith**: reads the JWT claim by name (e.g., the value of [SSO Groups Sync](#sso-groups-sync-alternative)'s **Groups claim field**).
 
-The attribute name is preserved end-to-end: the IdP attribute name, the Supabase Attribute Mapping entry, and the downstream LangSmith setting all use the same string.
+The attribute name is preserved end-to-end: the IdP attribute name, the SAML Attribute Mapping entry, and the downstream LangSmith setting all use the same string.
 
 #### Configuration
 
-In **Settings** → **Members and roles** → **SSO Configuration**, scroll to the **Supabase Attribute Mapping** section and add one row per non-standard attribute you want to forward:
+In **Settings** → **Members and roles** → **SSO Configuration**, scroll to the **SAML Attribute Mapping** section and add one row per non-standard attribute you want to forward:
 
 | Column | Description |
 | --- | --- |
@@ -136686,11 +137183,11 @@ This section applies to **enterprise cloud** only. Self-hosted customers configu
 To make a user's group memberships visible to LangSmith at login, you need to do two things:
 
 1. Configure your IdP's SAML application to emit a multi-valued group attribute.
-2. Add a matching entry to [Supabase Attribute Mapping](#supabase-attribute-mapping) so the attribute flows through to the JWT (with **Array** checked).
+2. Add a matching entry to [SAML Attribute Mapping](#saml-attribute-mapping) so the attribute flows through to the JWT (with **Array** checked).
 
 **Requirements:**
 
-- The IdP attribute name (e.g., `groups`) must match both the **Supabase Attribute Mapping** entry and the **Groups claim field** value (default `groups`).
+- The IdP attribute name (e.g., `groups`) must match both the **SAML Attribute Mapping** entry and the **Groups claim field** value (default `groups`).
 - The attribute must be **multi-valued** (a list of strings), not a single delimited string. If your IdP only supports single-valued attributes, you'll need to emit one attribute statement per group.
 - Each value must be a group name following the [SCIM naming convention](#group-naming-convention).
 - Only groups whose names match the convention are processed. LangSmith ignores groups that don't match its naming convention, such as org-wide directory groups or app assignment groups. You don't need to filter these out on the IdP side—emit all groups and LangSmith will skip the irrelevant ones.

@@ -11,7 +11,7 @@ path: docs/api-reference/dubbing/target-transcript/update-target-segment
 PATCH https://api.elevenlabs.io/v1/dubbing/project/{project_id}/language/{language_id}/transcript/segment/{segment_id}
 Content-Type: application/json
 
-Enterprise only. Edit a segment's translation for a language target.
+Enterprise only. Edit a segment's translation for a language target. Omitted fields are left unchanged; an explicit null clears the field. Bumps the target's `revision` and marks it `stale` if it had already completed. The source transcript and the project's other languages are untouched, and no audio changes until you regenerate the target.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/update-target-segment
 

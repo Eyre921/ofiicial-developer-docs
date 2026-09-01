@@ -8,10 +8,11 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # What is the difference between revenue and earnings?
 
-<strong>Revenue</strong> is the gross amount generated from book sales on ElevenReader before any
+**Revenue** is the gross amount generated from book sales on ElevenReader before any
 fees, royalties, or taxes.
 
-<br />
+\
 
-<strong>Earnings</strong> are the amount you receive in your payout after all applicable fees,
+
+**Earnings** are the amount you receive in your payout after all applicable fees,
 royalties, and taxes are deducted.

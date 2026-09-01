@@ -10,42 +10,24 @@ path: docs/eleven-agents/overview
 
 Agents accomplish tasks through natural dialogue - from quick requests to complex, open-ended workflows. ElevenLabs provides voice-rich, expressive models, developer tools for building multimodal agents, and tools to monitor and evaluate agent performance at scale.
 
-<a href="/docs/eleven-agents/build/overview">
-  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e/assets/images/agents/agents-overview-build.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085941Z&X-Amz-Expires=604800&X-Amz-Signature=806ef35fa03d1a2d7d41a0eef0d53cc4ec2db225764162f805719e4b7270208f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e/assets/images/agents/agents-overview-build.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081610Z&X-Amz-Expires=604800&X-Amz-Signature=a67c2c8a78f73605eccba53214f4ebea73be97286046f5471df2491518c97d34&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/build/overview)
 
-  <h3>
-    Configure
-  </h3>
+### Configure
 
-  <p>
-    Configure multimodal agents with our developer toolkit, dashboard, or visual workflow
-    builder
-  </p>
-</a>
+Configure multimodal agents with our developer toolkit, dashboard, or visual workflow
+builder
 
-<a href="/docs/eleven-agents/integrate/overview">
-  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085941Z&X-Amz-Expires=604800&X-Amz-Signature=2348763ba20c09a2af36c73d3491ad3be476839988384111afc5bd18715392a7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081610Z&X-Amz-Expires=604800&X-Amz-Signature=3757708a9420b7ba703a9ec3530e8b7e283d8219516dd4009f9e75b3bf208853&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/integrate/overview)
 
-  <h3>
-    Deploy
-  </h3>
+### Deploy
 
-  <p>
-    Integrate multimodal agents across telephony systems, web, and mobile
-  </p>
-</a>
+Integrate multimodal agents across telephony systems, web, and mobile
 
-<a href="/docs/eleven-agents/operate/overview">
-  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2e1cb472973e6328927a6eddfd054e465469bcea3267e27f429ebbe33b8cddf5/assets/images/agents/agents-overview-operate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085941Z&X-Amz-Expires=604800&X-Amz-Signature=3db5921668f24d0dd13deaadb617f96ac5a2966ef63abbb060f9ebe6dfaf7486&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2e1cb472973e6328927a6eddfd054e465469bcea3267e27f429ebbe33b8cddf5/assets/images/agents/agents-overview-operate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081610Z&X-Amz-Expires=604800&X-Amz-Signature=61d176094614acccd6e99bcda09622c250aeaf8cf31e89494f2c45523dc605f4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/operate/overview)
 
-  <h3>
-    Monitor
-  </h3>
+### Monitor
 
-  <p>
-    Evaluate agent performance with built-in testing, evals, and analytics
-  </p>
-</a>
+Evaluate agent performance with built-in testing, evals, and analytics
 
 ## Platform capabilities
 

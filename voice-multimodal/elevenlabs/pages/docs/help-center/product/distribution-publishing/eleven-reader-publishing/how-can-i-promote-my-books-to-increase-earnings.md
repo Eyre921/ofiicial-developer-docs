@@ -10,8 +10,8 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 To grow sales and engagement:
 
-* Share your book’s link from<a href="http://www.elevenreader.io"> <strong>[www.elevenreader.io](http://www.elevenreader.io)</strong></a>
-* Use your book’s <strong>QR code</strong> to deep link directly into the app
+* Share your book’s link from[**[www.elevenreader.io](http://www.elevenreader.io)**](http://www.elevenreader.io)
+* Use your book’s **QR code** to deep link directly into the app
 * Promote your books through social media, newsletters, and author communities
 
 More readers and listeners directly translate to higher earnings.

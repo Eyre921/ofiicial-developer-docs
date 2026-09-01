@@ -10,7 +10,7 @@ path: docs/api-reference/dubbing/source-transcript/delete-source-segment
 
 DELETE https://api.elevenlabs.io/v1/dubbing/project/{project_id}/transcript/segment/{segment_id}
 
-Enterprise only. Remove a source segment from the transcript.
+Enterprise only. Remove a source segment from the transcript so it is no longer dubbed. Bumps the project's `revision`, discards the affected translations in every language target, and marks any target that had already completed `stale`. No audio changes until you regenerate a target.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/delete-source-segment
 

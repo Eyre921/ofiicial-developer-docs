@@ -12,35 +12,35 @@ AI is a highly advanced field of technology and can, at times, be unpredictable 
 
 You can read more in our [guide to troubleshooting.](/docs/creative-platform/troubleshooting)
 
-<strong>Multilingual v2 Model</strong>: This model represents a significant improvement in
+**Multilingual v2 Model**: This model represents a significant improvement in
 predictability and consistency compared to the experimental multilingual v1 model. It has resolved
 many of the issues associated with the v1 model, although some minor issues still exist, such as
 inconsistency and language switching.
 
-* <strong>Inconsistency</strong>: Users have reported occasional inconsistencies between AI
+* **Inconsistency**: Users have reported occasional inconsistencies between AI
   generations, where the output does not fit together perfectly. This issue is being worked on and
   is less prominent in the multilingual v2 model. Cloning the voice with consistent samples is
   recommended to address this.
-* <strong>Language Switching</strong>: A common problem is the AI switching languages or accents
+* **Language Switching**: A common problem is the AI switching languages or accents
   within a single generation, especially in longer texts. This issue is being addressed, but using a
   [properly cloned voice](/docs/voices/voice-lab/instant-voice-cloning) with the Projects feature
   can help mitigate it.
-* <strong>Corrupt Speech</strong>: A rare issue where the AI produces muffled and strange-sounding
+* **Corrupt Speech**: A rare issue where the AI produces muffled and strange-sounding
   speech. There are no specific solutions, but regenerating the section usually resolves it.
 
-<strong>Studio (previously Projects)</strong>: Studio is a workflow for creating long-form content
+**Studio (previously Projects)**: Studio is a workflow for creating long-form content
 using AI. It generally works well with a proper voice choice and model.
 
-* <strong>Import Function</strong>: The import function attempts to import files, but due to the
+* **Import Function**: The import function attempts to import files, but due to the
   number of formatting variables, users should double-check imported content for accuracy. Some
   issues may require manual adjustments.
-* <strong>Glitches between Paragraphs</strong>: Occasionally, glitches or abrupt transitions between
+* **Glitches between Paragraphs**: Occasionally, glitches or abrupt transitions between
   paragraphs may happen. This issue is rare and is being actively worked on. Regenerating the last
   paragraph can often resolve it.
 
-<strong>Factors Affecting Issues</strong>: Several factors affect AI performance, including text
+**Factors Affecting Issues**: Several factors affect AI performance, including text
 chunk length, voice type (pre-made, voice-designed, or cloned), and settings like stability and
 similarity.
 
-<strong>Future Developments</strong>: The team is actively working on improving AI performance and
+**Future Developments**: The team is actively working on improving AI performance and
 developing new features.

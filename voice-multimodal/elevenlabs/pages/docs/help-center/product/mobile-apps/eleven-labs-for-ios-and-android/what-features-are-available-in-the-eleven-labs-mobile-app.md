@@ -12,37 +12,33 @@ The ElevenLabs mobile app brings our most popular voice and creative features st
 
  
 
-<strong>
-  Available now
-</strong>
+**Available now**
 
-<strong>Text to Speech (TTS)</strong>: Instantly convert text into lifelike speech using ElevenLabs’
+**Text to Speech (TTS)**: Instantly convert text into lifelike speech using ElevenLabs’
 latest models.
 
-<strong>Instant Voice Cloning (IVC)</strong>: Create an instant voice clone and use it for your
+**Instant Voice Cloning (IVC)**: Create an instant voice clone and use it for your
 generations.
 
-<strong>Voice Library Access</strong>: Browse and select from a range of available public voices.
+**Voice Library Access**: Browse and select from a range of available public voices.
 
-<strong>Voice Changer</strong>: Transform existing audio into a different voice while preserving the
+**Voice Changer**: Transform existing audio into a different voice while preserving the
 original performance and delivery.
 
-<strong>Voice Isolator</strong>: Clean up audio by reducing background noise and isolating speech
+**Voice Isolator**: Clean up audio by reducing background noise and isolating speech
 for clearer results.
 
-<strong>Image & Video</strong>: Generate and manage AI-powered video creations directly from the
+**Image & Video**: Generate and manage AI-powered video creations directly from the
 app.
 
-<strong>Listening & Playback</strong>: Play generated clips, manage your library, and explore
+**Listening & Playback**: Play generated clips, manage your library, and explore
 creations directly within the app.
 
 Voice Design: Create custom voices from scratch with tonal and stylistic adjustments.
 
  
 
-<strong>
-  Features available only on the web
-</strong>
+**Features available only on the web**
 
 Some advanced ElevenLabs tools are currently only available via elevenlabs.io, including:
 
@@ -50,8 +46,6 @@ Professional Voice Cloning (PVC), Studio, Dubbing, Eleven Music, and the Agents 
 
  
 
-<strong>
-  Why some features aren’t in the app (yet)
-</strong>
+**Why some features aren’t in the app (yet)**
 
 We’re gradually expanding mobile functionality to ensure a smooth experience across all devices. The app will continue to receive updates as new features become available.

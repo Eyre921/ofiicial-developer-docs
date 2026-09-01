@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 569 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 570 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api-reference
@@ -136,7 +136,7 @@
 - `guides/indexes/pods/understanding-pod-based-indexes` — [Understanding pod-based indexes](pages/guides/indexes/pods/understanding-pod-based-indexes.md) · [原文](https://docs.pinecone.io/guides/indexes/pods/understanding-pod-based-indexes)
 - `guides/manage-cost/manage-cost` — [Manage cost](pages/guides/manage-cost/manage-cost.md) · [原文](https://docs.pinecone.io/guides/manage-cost/manage-cost)
 - `guides/manage-cost/monitor-usage-and-costs` — [Monitor usage and costs](pages/guides/manage-cost/monitor-usage-and-costs.md) · [原文](https://docs.pinecone.io/guides/manage-cost/monitor-usage-and-costs)
-- `guides/manage-cost/understanding-cost` — [Understanding cost](pages/guides/manage-cost/understanding-cost.md) · [原文](https://docs.pinecone.io/guides/manage-cost/understanding-cost)
+- `guides/manage-cost/understanding-cost` — [Understanding Pinecone cost](pages/guides/manage-cost/understanding-cost.md) · [原文](https://docs.pinecone.io/guides/manage-cost/understanding-cost)
 - `guides/manage-data/back-up-an-index` — [Back up an index](pages/guides/manage-data/back-up-an-index.md) · [原文](https://docs.pinecone.io/guides/manage-data/back-up-an-index)
 - `guides/manage-data/backups-overview` — [Backups overview](pages/guides/manage-data/backups-overview.md) · [原文](https://docs.pinecone.io/guides/manage-data/backups-overview)
 - `guides/manage-data/delete-data` — [Delete records](pages/guides/manage-data/delete-data.md) · [原文](https://docs.pinecone.io/guides/manage-data/delete-data)
@@ -171,13 +171,14 @@
 - `guides/marketplace/templates-overview` — [Templates overview](pages/guides/marketplace/templates-overview.md) · [原文](https://docs.pinecone.io/guides/marketplace/templates-overview)
 - `guides/nexus/byoc/deploy` — [Deploy Nexus BYOC](pages/guides/nexus/byoc/deploy.md) · [原文](https://docs.pinecone.io/guides/nexus/byoc/deploy)
 - `guides/nexus/byoc/overview` — [Nexus BYOC overview](pages/guides/nexus/byoc/overview.md) · [原文](https://docs.pinecone.io/guides/nexus/byoc/overview)
-- `guides/nexus/byoc/reference` — [Data residency and limits](pages/guides/nexus/byoc/reference.md) · [原文](https://docs.pinecone.io/guides/nexus/byoc/reference)
+- `guides/nexus/byoc/reference` — [Nexus BYOC data residency and limits](pages/guides/nexus/byoc/reference.md) · [原文](https://docs.pinecone.io/guides/nexus/byoc/reference)
 - `guides/nexus/concepts` — [Nexus key concepts](pages/guides/nexus/concepts.md) · [原文](https://docs.pinecone.io/guides/nexus/concepts)
 - `guides/nexus/context-design` — [Context design](pages/guides/nexus/context-design.md) · [原文](https://docs.pinecone.io/guides/nexus/context-design)
 - `guides/nexus/how-curation-works` — [Curation](pages/guides/nexus/how-curation-works.md) · [原文](https://docs.pinecone.io/guides/nexus/how-curation-works)
 - `guides/nexus/how-it-works` — [How Nexus works](pages/guides/nexus/how-it-works.md) · [原文](https://docs.pinecone.io/guides/nexus/how-it-works)
 - `guides/nexus/how-queries-work` — [Queries](pages/guides/nexus/how-queries-work.md) · [原文](https://docs.pinecone.io/guides/nexus/how-queries-work)
 - `guides/nexus/mcp-server` — [MCP server](pages/guides/nexus/mcp-server.md) · [原文](https://docs.pinecone.io/guides/nexus/mcp-server)
+- `guides/nexus/models` — [Nexus model guidance](pages/guides/nexus/models.md) · [原文](https://docs.pinecone.io/guides/nexus/models)
 - `guides/nexus/overview` — [Pinecone Nexus](pages/guides/nexus/overview.md) · [原文](https://docs.pinecone.io/guides/nexus/overview)
 - `guides/nexus/query-tracing` — [Query tracing](pages/guides/nexus/query-tracing.md) · [原文](https://docs.pinecone.io/guides/nexus/query-tracing)
 - `guides/nexus/quickstart` — [Nexus quickstart](pages/guides/nexus/quickstart.md) · [原文](https://docs.pinecone.io/guides/nexus/quickstart)
@@ -190,7 +191,7 @@
 - `guides/optimize/decrease-latency` — [Decrease latency](pages/guides/optimize/decrease-latency.md) · [原文](https://docs.pinecone.io/guides/optimize/decrease-latency)
 - `guides/optimize/increase-relevance` — [Increase search relevance](pages/guides/optimize/increase-relevance.md) · [原文](https://docs.pinecone.io/guides/optimize/increase-relevance)
 - `guides/optimize/increase-throughput` — [Increase throughput](pages/guides/optimize/increase-throughput.md) · [原文](https://docs.pinecone.io/guides/optimize/increase-throughput)
-- `guides/optimize/save-on-costs` — [Save on costs](pages/guides/optimize/save-on-costs.md) · [原文](https://docs.pinecone.io/guides/optimize/save-on-costs)
+- `guides/optimize/save-on-costs` — [Save on Pinecone costs](pages/guides/optimize/save-on-costs.md) · [原文](https://docs.pinecone.io/guides/optimize/save-on-costs)
 - `guides/organizations/manage-billing/access-your-invoices` — [Access your invoices](pages/guides/organizations/manage-billing/access-your-invoices.md) · [原文](https://docs.pinecone.io/guides/organizations/manage-billing/access-your-invoices)
 - `guides/organizations/manage-billing/change-payment-method` — [Change your payment method](pages/guides/organizations/manage-billing/change-payment-method.md) · [原文](https://docs.pinecone.io/guides/organizations/manage-billing/change-payment-method)
 - `guides/organizations/manage-billing/downgrade-billing-plan` — [Downgrade your plan](pages/guides/organizations/manage-billing/downgrade-billing-plan.md) · [原文](https://docs.pinecone.io/guides/organizations/manage-billing/downgrade-billing-plan)
@@ -294,7 +295,7 @@
 
 ## models
 
-- `models/overview` — [Model Gallery](pages/models/overview.md) · [原文](https://docs.pinecone.io/models/overview)
+- `models/overview` — [Pinecone model gallery](pages/models/overview.md) · [原文](https://docs.pinecone.io/models/overview)
 
 ## reference
 

@@ -45,7 +45,7 @@ Successful Response
 - `agent_id` (string, required)
 - `needs_clustering` (boolean, required)
 - `issue_type` (enum, required, nullable)
-  - Allowed values: `knowledge_gap`, `product_feedback`, `tool_issue`, `missing_tool`, `unnecessary_escalation`
+  - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
 - `labels` (list of string, required)
 - `conversation_ids` (list of string, required)
 - `first_seen_unix_secs` (integer, required, nullable)

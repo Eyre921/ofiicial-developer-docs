@@ -104,6 +104,13 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/run-tests
         - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
         - `version_id` (string, required, nullable) — The ID of the version of the pronunciation dictionary
       - `enable_phoneme_tags` (boolean, optional, default: true) — Opt-in to SSML phoneme tag handling for V3 models. When enabled, phoneme tags (inline and from pronunciation dictionaries) are parsed into inline IPA before being sent to the model.
+      - `audio_effects` (object, optional, nullable) — Optional TTS effects spec: filter preset, distance (proximity EQ), and environment (convolution reverb).
+        - `filter_preset_id` (string, optional, nullable)
+        - `distance` (double, optional, default: 0)
+        - `environment_id` (string, optional, nullable)
+        - `background_noise_id` (string, optional, nullable)
+        - `send_level` (double, optional, default: 1)
+        - `seed` (integer, optional, nullable)
     - `conversation` (object, optional) — Configuration for conversational events
       - `text_only` (boolean, optional, default: false) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
       - `max_duration_seconds` (integer, optional, default: 600) — The maximum duration of a conversation in seconds
@@ -969,6 +976,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/run-tests
             - `text_normalisation_type` (enum, optional, nullable, default: system_prompt) — Method for converting numbers to words before converting text to speech. If set to SYSTEM_PROMPT, the system prompt will be updated to include normalization instructions. If set to ELEVENLABS, the text will be normalized after generation, incurring slight additional latency.
             - `pronunciation_dictionary_locators` (list of object, optional, nullable) — The pronunciation dictionary locators
             - `enable_phoneme_tags` (boolean, optional, nullable) — Opt-in to SSML phoneme tag handling for V3 models. When enabled, phoneme tags (inline and from pronunciation dictionaries) are parsed into inline IPA before being sent to the model.
+            - `audio_effects` (object, optional, nullable) — Optional TTS effects spec: filter preset, distance (proximity EQ), and environment (convolution reverb).
           - `conversation` (object, optional, nullable) — Configuration for conversational events
             - `text_only` (boolean, optional, nullable) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
             - `max_duration_seconds` (integer, optional, nullable) — The maximum duration of a conversation in seconds

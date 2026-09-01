@@ -28,16 +28,16 @@ On-demand indexes and dedicated read nodes are both built on Pinecone's serverle
 
 However, every dedicated read nodes index has isolated hardware for read operations (query, fetch, list), allowing these operations to run on dedicated query executors. This affects performance, cost, and how you scale:
 
-| Feature                 | On-demand                                                                                                                                      | Dedicated read nodes                                                                                                                                               |
-| :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Read infrastructure** | Multi-tenant compute resources shared across customers                                                                                         | Isolated, provisioned query executors dedicated to your index                                                                                                      |
-| **Read costs**          | Pay per [read unit](/guides/manage-cost/understanding-cost#serverless-indexes) (1 RU per 1 GB of namespace size per query, minimum 0.25 RU)    | Fixed hourly rate for read capacity based on node type, shards, and replicas                                                                                       |
-| **Other costs**         | [Storage](/guides/manage-cost/understanding-cost#storage) and [write](/guides/manage-cost/understanding-cost#write-units) costs based on usage | [Storage](/guides/manage-cost/understanding-cost#storage) and [write](/guides/manage-cost/understanding-cost#write-units) costs based on usage (same as on-demand) |
-| **Caching**             | Best-effort; frequently accessed data is cached, but cold queries fetch from object storage                                                    | Guaranteed; all index data always warm in memory and on local SSDs                                                                                                 |
-| **Read rate limits**    | [2,000 RUs/second per index (adjustable)](/reference/api/database-limits#rate-limits)                                                          | No read rate limits (only bounded by CPU capacity)                                                                                                                 |
-| **Scaling**             | Automatic; Pinecone handles capacity                                                                                                           | Manual; add [shards](#shards) for storage, add [replicas](#replicas) for throughput                                                                                |
-| **Query-time tuning**   | Parameters accepted but have no effect                                                                                                         | Optional [`scan_factor` and `max_candidates`](#query-time-search-parameters) to trade recall for lower latency and higher throughput                               |
-| **Best for**            | Variable workloads, multi-tenant applications with many namespaces, low to moderate query rates                                                | Sustained high query rates, large single-namespace workloads, predictable performance and cost                                                                     |
+| Feature                 | On-demand                                                                                                                                                                                                | Dedicated read nodes                                                                                                                                                                                                         |
+| :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Read infrastructure** | Multi-tenant compute resources shared across customers                                                                                                                                                   | Isolated, provisioned query executors dedicated to your index                                                                                                                                                                |
+| **Read costs**          | Pay per [read unit](/guides/manage-cost/understanding-cost#read-units) (1 RU per 1 GB of namespace size per query, minimum 0.25 RU)                                                                      | Fixed hourly rate for read capacity based on node type, shards, and replicas                                                                                                                                                 |
+| **Other costs**         | [Storage](/guides/manage-cost/understanding-cost#storage), [write](/guides/manage-cost/understanding-cost#write-units), and [egress](/guides/manage-cost/understanding-cost#egress) costs based on usage | [Storage](/guides/manage-cost/understanding-cost#storage), [write](/guides/manage-cost/understanding-cost#write-units), and [egress](/guides/manage-cost/understanding-cost#egress) costs based on usage (same as on-demand) |
+| **Caching**             | Best-effort; frequently accessed data is cached, but cold queries fetch from object storage                                                                                                              | Guaranteed; all index data always warm in memory and on local SSDs                                                                                                                                                           |
+| **Read rate limits**    | [2,000 RUs/second per index (adjustable)](/reference/api/database-limits#rate-limits)                                                                                                                    | No read rate limits (only bounded by CPU capacity)                                                                                                                                                                           |
+| **Scaling**             | Automatic; Pinecone handles capacity                                                                                                                                                                     | Manual; add [shards](#shards) for storage, add [replicas](#replicas) for throughput                                                                                                                                          |
+| **Query-time tuning**   | Parameters accepted but have no effect                                                                                                                                                                   | Optional [`scan_factor` and `max_candidates`](#query-time-search-parameters) to trade recall for lower latency and higher throughput                                                                                         |
+| **Best for**            | Variable workloads, multi-tenant applications with many namespaces, low to moderate query rates                                                                                                          | Sustained high query rates, large single-namespace workloads, predictable performance and cost                                                                                                                               |
 
 ## When to use dedicated read nodes
 
@@ -103,7 +103,7 @@ There's no universal formula for choosing between on-demand and dedicated read n
   </Accordion>
 
   <Accordion title="Cost considerations">
-    On-demand and dedicated read nodes have different cost structures. The key difference is read costs: on-demand uses usage-based pricing, while dedicated read nodes use a fixed hourly rate based on provisioned hardware. Write and storage costs are usage-based for both modes.
+    On-demand and dedicated read nodes have different cost structures. The key difference is read costs: on-demand uses usage-based pricing, while dedicated read nodes use a fixed hourly rate based on provisioned hardware. Write, storage, and egress costs are usage-based for both modes.
 
     Dedicated read nodes become cost-effective when you have predictable, sustained query volumes that make full use of your provisioned capacity. With unpredictable or low query volumes, you pay hourly rates even when your machines sit idle, making on-demand's usage-based pricing more economical.
 
@@ -1560,15 +1560,16 @@ The following limits apply to dedicated read nodes:
   For the latest pricing information, see the [Pinecone pricing page](https://www.pinecone.io/pricing/).
 </Note>
 
-The cost of an index has three components: read costs, write costs, and storage costs.
+The cost of an index has four components: read costs, write costs, storage costs, and egress costs.
 
-On-demand and dedicated read nodes share infrastructure for writes and storage, so these costs are the same. However, dedicated read nodes provision dedicated hardware for read operations (query, fetch, list), which changes how read costs are calculated.
+On-demand and dedicated read nodes share infrastructure for writes and storage, so these costs are the same. Egress is billed the same way on both, because it depends on the data returned to you rather than on the hardware serving the read. However, dedicated read nodes provision dedicated hardware for read operations (query, fetch, list), which changes how read costs are calculated.
 
-| Cost component    | On-demand                                                                                                | Dedicated read nodes                                                                               |
-| :---------------- | :------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
-| **Read costs**    | [Usage-based](/guides/manage-cost/understanding-cost#read-units): 1 RU per 1 GB namespace size per query | Fixed hourly rate: Based on [node type](#node-types), [shards](#shards), and [replicas](#replicas) |
-| **Write costs**   | [Usage-based](/guides/manage-cost/understanding-cost#write-units)                                        | [Usage-based](/guides/manage-cost/understanding-cost#write-units) (same as on-demand)              |
-| **Storage costs** | [Usage-based](/guides/manage-cost/understanding-cost#storage)                                            | [Usage-based](/guides/manage-cost/understanding-cost#storage) (same as on-demand)                  |
+| Cost component    | On-demand                                                                                                                                                   | Dedicated read nodes                                                                               |
+| :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
+| **Read costs**    | [Usage-based](/guides/manage-cost/understanding-cost#read-units): 1 RU per 1 GB namespace size per query                                                    | Fixed hourly rate: Based on [node type](#node-types), [shards](#shards), and [replicas](#replicas) |
+| **Write costs**   | [Usage-based](/guides/manage-cost/understanding-cost#write-units)                                                                                           | [Usage-based](/guides/manage-cost/understanding-cost#write-units) (same as on-demand)              |
+| **Storage costs** | [Usage-based](/guides/manage-cost/understanding-cost#storage)                                                                                               | [Usage-based](/guides/manage-cost/understanding-cost#storage) (same as on-demand)                  |
+| **Egress costs**  | [Usage-based](/guides/manage-cost/understanding-cost#egress) beyond your plan's [egress allowance](/guides/manage-cost/understanding-cost#egress-allowance) | [Usage-based](/guides/manage-cost/understanding-cost#egress) (same as on-demand)                   |
 
 <Note>
   If you use a hosted model for search or reranking, there are additional [inference costs](https://www.pinecone.io/pricing).
@@ -1579,16 +1580,17 @@ On-demand and dedicated read nodes share infrastructure for writes and storage, 
     To calculate the total cost of a dedicated read nodes index, use this formula:
 
     ```
-    (Node rate × shards × replicas) + storage costs + write costs
+    (Node rate × shards × replicas) + storage costs + write costs + egress costs
     ```
 
-    | Term              | Description                                                                                                                                           |
-    | :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | **Node rate**     | Monthly rate for the [node type](#node-types) (`b1` or `t1`), which varies by cloud region. See [Pinecone pricing](https://www.pinecone.io/pricing/). |
-    | **Shards**        | Number of [shards](#shards) allocated                                                                                                                 |
-    | **Replicas**      | Number of [replicas](#replicas) allocated                                                                                                             |
-    | **Storage costs** | [Usage-based](/guides/manage-cost/understanding-cost#storage), same as on-demand                                                                      |
-    | **Write costs**   | [Usage-based](/guides/manage-cost/understanding-cost#write-units), same as on-demand                                                                  |
+    | Term              | Description                                                                                                                                                                    |
+    | :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | **Node rate**     | Monthly rate for the [node type](#node-types) (`b1` or `t1`), which varies by cloud region. See [Pinecone pricing](https://www.pinecone.io/pricing/).                          |
+    | **Shards**        | Number of [shards](#shards) allocated                                                                                                                                          |
+    | **Replicas**      | Number of [replicas](#replicas) allocated                                                                                                                                      |
+    | **Storage costs** | [Usage-based](/guides/manage-cost/understanding-cost#storage), same as on-demand                                                                                               |
+    | **Write costs**   | [Usage-based](/guides/manage-cost/understanding-cost#write-units), same as on-demand                                                                                           |
+    | **Egress costs**  | [Usage-based](/guides/manage-cost/understanding-cost#egress) beyond your plan's [egress allowance](/guides/manage-cost/understanding-cost#egress-allowance), same as on-demand |
 
     <Tip>
       For help estimating costs, use the [Pinecone pricing calculator](https://www.pinecone.io/pricing/estimate/) or [contact us](https://www.pinecone.io/contact/).
@@ -1597,7 +1599,7 @@ On-demand and dedicated read nodes share infrastructure for writes and storage, 
     **Example:** If the rate for `b1` nodes on `aws-us-east-1` is \$336.42/month (\$0.46/hour), an index with two shards and two replicas would cost:
 
     ```
-    336.42 × 2 × 2 = $1,345.68/month, plus storage and write costs
+    336.42 × 2 × 2 = $1,345.68/month, plus storage, write, and egress costs
     ```
   </Accordion>
 </AccordionGroup>

@@ -10,9 +10,9 @@ path: docs/help-center/product/dubbing/what-is-dubbing
 
 ElevenLabs was founded on the idea of creating amazing dubbing; a tool that would allow you to create a perfect dub in any language you desire, using the original voice of the actors and preserving the original performance, making all content more accessible.
 
-To get started, go to [Dubbing](https://elevenlabs.io/app/dubbing) and upload your audio or video file, or paste a URL to dub a video from YouTube, TikTok or elsewhere online <strong>.</strong>
+To get started, go to [Dubbing](https://elevenlabs.io/app/dubbing) and upload your audio or video file, or paste a URL to dub a video from YouTube, TikTok or elsewhere online **.**
 
-Select the language or languages you want to dub into in the <strong>Choose languages</strong> selector. You'll be charged for each language you select here. 
+Select the language or languages you want to dub into in the **Choose languages** selector. You'll be charged for each language you select here. 
 
 By default, you'll use our latest Dubbing model, v2. Dubs created using the v2 model are completely automatic without any option to edit the content.
 
@@ -22,6 +22,6 @@ If you want a more in-depth explanation and guide on what Dubbing is and how to 
 
  
 
-If you want to create a Dubbing Studio project, so you can edit your dubs, you can also choose <strong>Use legacy v1 dubbing model</strong> in the <strong>Advanced</strong> options. This will allow you to create a Dubbing Studio project by checking the <strong>Create Dubbing project</strong> option. 
+If you want to create a Dubbing Studio project, so you can edit your dubs, you can also choose **Use legacy v1 dubbing model** in the **Advanced** options. This will allow you to create a Dubbing Studio project by checking the **Create Dubbing project** option. 
 
-<strong>Note:</strong> Dubbing Studio is in maintenance mode and receives critical bug fixes only.
+**Note:** Dubbing Studio is in maintenance mode and receives critical bug fixes only.

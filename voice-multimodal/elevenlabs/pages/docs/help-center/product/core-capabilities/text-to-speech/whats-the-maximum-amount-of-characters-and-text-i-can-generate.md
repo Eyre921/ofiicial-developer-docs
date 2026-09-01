@@ -14,9 +14,7 @@ However, if you plan on generating longer-form content of more than a few thousa
 
 If you're generating using the API, the maximum length of input varies depending on which model you're using:
 
-<strong>
-  Text to Speech
-</strong>
+**Text to Speech**
 
 Flash v2.5 - up to 40,000 characters (\~40 minutes of audio)
 
@@ -28,8 +26,6 @@ Turbo v2 - up to 30,000 characters (\~30 minutes of audio)
 
 Multilingual v2 - up to 10,000 characters (\~10 minutes of audio)
 
-<strong>
-  Voice Changer
-</strong>
+**Voice Changer**
 
 Multilingual v2 - up to 10 minutes of audio

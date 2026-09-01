@@ -1,6 +1,6 @@
 # agent-frameworks/mcp 文档索引
 
-> 共 146 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 147 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -19,6 +19,7 @@
 - `community/feature-lifecycle` — [Feature Lifecycle and Deprecation Policy](pages/community/feature-lifecycle.md) · [原文](https://modelcontextprotocol.io/community/feature-lifecycle)
 - `community/governance` — [Governance and Stewardship](pages/community/governance.md) · [原文](https://modelcontextprotocol.io/community/governance)
 - `community/interest-groups/auth` — [Authorization Charter](pages/community/interest-groups/auth.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/auth)
+- `community/interest-groups/enterprise` — [Enterprise Interest Group Charter](pages/community/interest-groups/enterprise.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/enterprise)
 - `community/interest-groups/enterprise-managed-authorization` — [Enterprise-Managed Authorization Charter](pages/community/interest-groups/enterprise-managed-authorization.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/enterprise-managed-authorization)
 - `community/interest-groups/financial-services` — [Financial Services Charter](pages/community/interest-groups/financial-services.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/financial-services)
 - `community/interest-groups/primitive-grouping` — [Primitive Grouping Charter](pages/community/interest-groups/primitive-grouping.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/primitive-grouping)

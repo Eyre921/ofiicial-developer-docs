@@ -90,7 +90,7 @@ Before going live, make sure to [configure your domains list](https://dashboard.
 
 Checkout relies on [Stripe.js](https://docs.stripe.com/payments/elements.md). To get started, include the following script tag on your website—always load it directly from **https://js.stripe.com**:
 
-```javascript
+```bash
 npm install @stripe/stripe-js
 ```
 

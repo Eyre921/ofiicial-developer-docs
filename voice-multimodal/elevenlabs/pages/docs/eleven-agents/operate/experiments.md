@@ -35,13 +35,13 @@ Define what percentage of live conversations should go to your variant. Start sm
 
 Click **Edit traffic split** and set the percentages for each branch. Percentages must total exactly 100%.
 
-![Configuring traffic split between branches](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0d4fd1ae53a2fec09bf7572d4bbf4341c1c183cbf9b3618807f91ede1dd126ee/assets/images/conversational-ai/experiments-traffic-split.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091707Z&X-Amz-Expires=604800&X-Amz-Signature=9233861094566cdf09f7e3b07dc88bad4568717d0dea13a392a296bce813d16e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Configuring traffic split between branches](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0d4fd1ae53a2fec09bf7572d4bbf4341c1c183cbf9b3618807f91ede1dd126ee/assets/images/conversational-ai/experiments-traffic-split.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T111651Z&X-Amz-Expires=604800&X-Amz-Signature=fbb52cf531e5b9453a06dd3e33a1975c28de060abbfa4c229bb8d3e8082ac186&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Measure impact
 
 Compare variant performance against your baseline using the [analytics dashboard](/docs/eleven-agents/dashboard). Click **See analytics** from the branches panel to jump directly to a branch-filtered view.
 
-![Branches panel showing main and variant branches with traffic split and merge options](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/26946acc8b602c4dc66fd1b2312ffbbc09faa83d5b59b6d42ec7538e8ac1d60a/assets/images/conversational-ai/experiments-branches.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091707Z&X-Amz-Expires=604800&X-Amz-Signature=0e5847477f6f2c0650ed32b2c4e8dd8990c9694b6059de2646febc7e9b3c30b0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Branches panel showing main and variant branches with traffic split and merge options](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/26946acc8b602c4dc66fd1b2312ffbbc09faa83d5b59b6d42ec7538e8ac1d60a/assets/images/conversational-ai/experiments-branches.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T111651Z&X-Amz-Expires=604800&X-Amz-Signature=1faa3cb29e9365bc9e21853c4ebfa3fd698f4278fa9e5923bfbe9927b2897f6a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Teams can measure outcomes such as:
 

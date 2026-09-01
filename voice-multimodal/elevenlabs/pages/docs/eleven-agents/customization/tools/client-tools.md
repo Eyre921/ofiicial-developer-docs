@@ -51,7 +51,7 @@ Then create a new parameter `message` with the following configuration:
 | Required    | true                                                                               |
 | Description | The message to log in the console. Ensure the message is informative and relevant. |
 
-![logMessage client-tool setup](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f7ed25d49a2a814b76112f3e385d471e0dc8444705e11f2f6fad0bd23f1eae12/assets/images/conversational-ai/client-tool-example.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091732Z&X-Amz-Expires=604800&X-Amz-Signature=85826a09c44cde7a6389ec97a2112098badfa15e622cb98a38449f0f19d89146&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![logMessage client-tool setup](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f7ed25d49a2a814b76112f3e385d471e0dc8444705e11f2f6fad0bd23f1eae12/assets/images/conversational-ai/client-tool-example.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T112252Z&X-Amz-Expires=604800&X-Amz-Signature=9989df919039f34fc1e2223515943171f39d91b938927864dcabe794615f210e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add via the CLI
 
@@ -235,7 +235,7 @@ Now that you've set up a basic client-side event, you can:
 
 When you want your agent to receive data back from a client tool, ensure that you tick the **Wait for response** option in the tool configuration.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0ecc615fc9f25446b67369fd3e010e34b39549a22146a2483ea17251206caf1e/assets/images/conversational-ai/wait-until-tool-result.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091732Z&X-Amz-Expires=604800&X-Amz-Signature=d29d49ebe829e6f84dee7e47958640dd7da5b3765e980052bebc03020558feae&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Wait for response option in client tool configuration" />
+![Wait for response option in client tool configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0ecc615fc9f25446b67369fd3e010e34b39549a22146a2483ea17251206caf1e/assets/images/conversational-ai/wait-until-tool-result.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T112252Z&X-Amz-Expires=604800&X-Amz-Signature=253cf7ab955dc889edb3200fbb043bccc6af46de4c7e011204767c9c2e87c846&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Once the client tool is added, when the function is called the agent will wait for its response and append the response to the conversation context.
 
@@ -298,24 +298,17 @@ In this example, when the agent calls **getCustomerDetails**, the function will 
 
 ## Best practices
 
-<h4>
-  Name tools intuitively, with detailed descriptions
-</h4>
+#### Name tools intuitively, with detailed descriptions
 
 If you find the assistant does not make calls to the correct tools, you may need to update your tool names and descriptions so the assistant more clearly understands when it should select each tool. Avoid using abbreviations or acronyms to shorten tool and argument names.
 
 You can also include detailed descriptions for when a tool should be called. For complex tools, you should include descriptions for each of the arguments to help the assistant know what it needs to ask the user to collect that argument.
 
-<h4>
-  Name tool parameters intuitively, with detailed descriptions
-</h4>
+#### Name tool parameters intuitively, with detailed descriptions
 
 Use clear and descriptive names for tool parameters. If applicable, specify the expected format for a parameter in the description (e.g., YYYY-mm-dd or dd/mm/yy for a date).
 
-<h4>
-  Consider providing additional information about how and when to call tools in your assistant's
-  system prompt
-</h4>
+#### Consider providing additional information about how and when to call tools in your assistant's&#xA;system prompt
 
 Providing clear instructions in your system prompt can significantly improve the assistant's tool calling accuracy. For example, guide the assistant with instructions like the following:
 
@@ -329,9 +322,7 @@ Provide context for complex scenarios. For example:
 Before scheduling a meeting with `schedule_meeting`, check the user's calendar for availability using check_availability to avoid conflicts.
 ```
 
-<h4>
-  LLM selection
-</h4>
+#### LLM selection
 
 When using tools, we recommend picking high intelligence models like GPT 5.2, Gemini-2.5-Flash, or
 Claude Sonnet 4.5 and avoiding Gemini-2.0-Flash.

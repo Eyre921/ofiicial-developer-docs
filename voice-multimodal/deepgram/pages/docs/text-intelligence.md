@@ -11,9 +11,12 @@ path: docs/text-intelligence
 # Getting Started
 
 Deepgram API Playground
+
+
 Try this feature out in our API Playground.
 
-<br />
+\
+
 
 In this guide, you'll learn how to analyze text using Deepgram's text intelligence features: Summarization, Topic Detection, Intent Recognition, and Sentiment Analysis. The code examples use [Deepgram's SDKs](/home).
 

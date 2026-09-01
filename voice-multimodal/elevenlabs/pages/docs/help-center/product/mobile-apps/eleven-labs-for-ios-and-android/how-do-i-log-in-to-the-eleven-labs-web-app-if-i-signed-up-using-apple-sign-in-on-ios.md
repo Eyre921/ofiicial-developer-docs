@@ -8,6 +8,6 @@ path: docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android/how-d
 
 # How do I log in to the ElevenLabs web app if I signed up using Apple Sign-In on iOS?
 
-You can log into the web app using your Apple Sign-In using the <strong>Sign in with Apple</strong> option on the log in page. 
+You can log into the web app using your Apple Sign-In using the **Sign in with Apple** option on the log in page. 
 
-You can also add a password to your account using the <strong>Forgot password</strong> option, but you will not be able to remove the link to Apple Sign-In or change the email address for your account in the future.
+You can also add a password to your account using the **Forgot password** option, but you will not be able to remove the link to Apple Sign-In or change the email address for your account in the future.

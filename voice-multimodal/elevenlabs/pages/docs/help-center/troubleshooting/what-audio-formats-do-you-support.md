@@ -62,7 +62,8 @@ In Projects, the quality setting affects other aspects the generation in additio
 
 192kbps (Creator, Pro, Scale, Business)
 
-<br />
+\
+
 
 PCM
 

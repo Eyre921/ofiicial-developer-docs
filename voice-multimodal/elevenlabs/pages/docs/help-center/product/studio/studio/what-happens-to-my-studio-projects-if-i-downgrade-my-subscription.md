@@ -14,15 +14,13 @@ However, canceling your subscription will result in the loss of certain paid fea
 
 Additionally, your ability to create new projects will be limited based on your current plan. If you exceed the project limit before downgrading, you will still have access to your existing projects, but you won’t be able to create new ones until you're within the allowed limit.
 
-<strong>
-  Project Limits by Plan:
-</strong>
+**Project Limits by Plan:**
 
-* <strong>Free:</strong> 5 projects
-* <strong>Starter:</strong> 20 projects
-* <strong>Creator:</strong> 1,000 projects
-* <strong>Pro:</strong> 3,000 projects
-* <strong>Scale:</strong> 20,000 projects
-* <strong>Business:</strong> 20,000 projects
+* **Free:** 5 projects
+* **Starter:** 20 projects
+* **Creator:** 1,000 projects
+* **Pro:** 3,000 projects
+* **Scale:** 20,000 projects
+* **Business:** 20,000 projects
 
 Please note that at the time of writing, we do not delete your data. All your content will remain intact and accessible should you choose to upgrade again in the future.

@@ -16,7 +16,7 @@ Enter your prompt in the text box.  There is a maximum length of 450 characters
 
 You can use the settings to control the duration of the sound effect, and how strictly the AI follows your prompt.  If you don't specify the length of the clip, the AI will decide the audio length.
 
-Each time you select <strong>Generate</strong>, the AI will generate full variations of the prompt you've given.
+Each time you select **Generate**, the AI will generate full variations of the prompt you've given.
 
 You can create looping sound effects if you need longer durations. Looping sound effects can be played on repeat without a perceptible start or end point.
 

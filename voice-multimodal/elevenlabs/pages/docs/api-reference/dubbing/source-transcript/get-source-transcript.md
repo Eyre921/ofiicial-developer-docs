@@ -10,7 +10,7 @@ path: docs/api-reference/dubbing/source-transcript/get-source-transcript
 
 GET https://api.elevenlabs.io/v1/dubbing/project/{project_id}/transcript
 
-The project's source transcript, as editable segments.
+The project's source transcript, as editable segments. Available once the project is `ready`.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/get-source-transcript
 
@@ -35,12 +35,12 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/ge
 Successful Response
 
 - `segments` (list of object, required) — The source segments, in playback order.
-  - `id` (string, required) — Stable identifier of the segment.
+  - `id` (string, required) — Stable identifier of the segment, used to address it in edit requests.
   - `text` (string, required) — The transcribed text of the segment.
   - `speaker_id` (string, required) — Identifier of the segment's speaker.
   - `start_s` (double, required) — Start time of the segment, in seconds.
   - `end_s` (double, required) — End time of the segment, in seconds.
-  - `external_id` (string, optional, nullable) — The caller-supplied external id for this segment, if one was provided.
+  - `external_id` (string, optional, nullable) — The caller-supplied external ID for this segment, if one was provided.
 - `revision` (integer, required) — The project's source-transcript revision at read time.
 - `language` (string, optional, nullable) — BCP-47 language tag of the source transcript (null if unknown).
 

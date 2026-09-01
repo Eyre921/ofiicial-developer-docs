@@ -8,7 +8,7 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # How do payouts work?
 
-Payouts are processed through <strong>Stripe</strong>, a secure global payments provider that connects ElevenReader Publishing directly to your bank account.
+Payouts are processed through **Stripe**, a secure global payments provider that connects ElevenReader Publishing directly to your bank account.
 
 * Stripe is free to use and available globally
 * You can track payouts and payment status in your Stripe dashboard

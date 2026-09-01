@@ -8,6 +8,14 @@ Learn how to configure a custom Return Path for your verified domain in Resend.
 
 By default, Resend uses the `send` subdomain for the Return-Path address.
 
+<Info>
+  Domains that show `CNAME` records for sending use your Return-Path subdomain
+  for one record and an `r`-prefixed sibling for the other. With a Return-Path
+  of `outbound`, you'll be shown records for both `outbound.example.com` and
+  `routbound.example.com`, and both need to be added for the domain to fully
+  verify.
+</Info>
+
 You can provide a custom Return-Path address when you [add a new domain in the Dashboard](/docs/add-a-domain) under **Advanced options**, or by setting the optional `custom_return_path` parameter when [creating or updating a domain via the API](/docs/api-reference/domains/create-domain) or with [a domains CLI command](/docs/cli#domains).
 
 <img alt="Custom Return Path" />

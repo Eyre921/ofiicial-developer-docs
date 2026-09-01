@@ -11,9 +11,12 @@ path: docs/summarization
 # Summarization
 
 Deepgram API Playground
+
+
 Try this feature out in our API Playground.
 
-<br />
+\
+
 
 `summarize` *string*.
 

@@ -1,5 +1,5 @@
 ---
-title: "Save on costs"
+title: "Save on Pinecone costs"
 source: https://docs.pinecone.io/guides/optimize/save-on-costs
 path: guides/optimize/save-on-costs
 ---
@@ -11,7 +11,6 @@ Save on Pinecone costs by using bulk import over upsert, namespaces for multiten
 In addition to the workload optimizations below, you can lower your effective rate:
 
 * **Prepaid credits and annual commitments** earn discounted usage rates. See [Prepaid credits](/guides/manage-cost/understanding-cost#prepaid-credits).
-* **One-time bulk import credit.** Standard and Enterprise organizations receive a one-time 1 TB credit for [importing data from object storage](/guides/manage-cost/understanding-cost#imports).
 * **Dedicated read nodes** can lower cost for sustained, high read throughput when you fully use the provisioned capacity (see [Choose the right index capacity mode](#choose-the-right-index-capacity-mode)).
 * **Volume discounts.** Standard and Enterprise customers can [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to discuss cost optimization and discounts.
 
@@ -28,7 +27,7 @@ Partitioning tenants with [namespaces](/guides/index-data/implement-multitenancy
 
 ## Right-size reads and queries
 
-* Avoid returning vector values in read responses when you do not need them (`include_values=false`), especially at high `top_k`. Values are typically the largest part of a response, so omitting them lowers [egress](/guides/manage-cost/understanding-cost#egress) and helps you stay within your plan's egress allowance.
+* Avoid returning vector values from a query when you don't need them (`include_values=false`, the default), especially at high `top_k`. Values are typically the largest part of a response, so leaving them out lowers [egress](/guides/manage-cost/understanding-cost#egress) and helps you stay within your plan's egress allowance.
 * Use [metadata filters](/guides/search/filter-by-metadata) so queries scan fewer records where your workload allows.
 
 <Note>

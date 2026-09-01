@@ -8,9 +8,9 @@ path: docs/help-center/product/monetization-business/music-marketplace/what-am-i
 
 # What am I purchasing on Music Marketplace?
 
-When you purchase a track on Eleven Music Marketplace, you’re buying a <strong>license</strong>, subject to the <a href="http://elevenlabs.io/mma">Music Marketplace Addendum</a>, based on the <a href="/docs/help-center/product/monetization-business/music-marketplace/what-usage-types-exist-in-music-marketplace">usage type</a> you select. This license defines where and how the music can be used.
+When you purchase a track on Eleven Music Marketplace, you’re buying a **license**, subject to the [Music Marketplace Addendum](http://elevenlabs.io/mma), based on the [usage type](/docs/help-center/product/monetization-business/music-marketplace/what-usage-types-exist-in-music-marketplace) you select. This license defines where and how the music can be used.
 
-After purchasing, you can <strong>download and remix the track an unlimited number of times</strong> while your paid ElevenLabs subscription is active.
+After purchasing, you can **download and remix the track an unlimited number of times** while your paid ElevenLabs subscription is active.
 
 If your subscription ends, you may continue using any music you’ve already purchased under the respective usage type. However, you won’t be able to create new remixes or downloads without an active ElevenLabs subscription.
 

@@ -10,7 +10,7 @@ path: docs/help-center/product/core-capabilities/voice-isolator/what-is-voice-is
 
 [Voice Isolator](https://elevenlabs.io/app/voice-isolator) strips background noise from audio files for film, podcast, and interview post production.
 
-To get started, you can either upload an existing audio file or record a new one directly using your device’s microphone. Once uploaded, simply click <strong>Isolate voice</strong> to begin the process.
+To get started, you can either upload an existing audio file or record a new one directly using your device’s microphone. Once uploaded, simply click **Isolate voice** to begin the process.
 
 After the tool finishes processing your audio, it will generate a new file with the voice isolated from the background noise. You can listen to it directly in the app or download the cleaned-up version for your project.
 

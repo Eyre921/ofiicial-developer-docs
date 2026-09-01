@@ -17,4 +17,4 @@ The Ultra plan also includes:
 * Offline downloads, allowing you to save your imported content or premium audiobooks in advance of being without an internet connection
 * Custom voices, which let you design your own narrator voice for your text-to-audio or where selecting a voice is available
 
-You can find all the Ultra features on our <a href="https://elevenreader.io/pricing">ElevenReader pricing page</a>.
+You can find all the Ultra features on our [ElevenReader pricing page](https://elevenreader.io/pricing).

@@ -15,4 +15,5 @@ You can see all workspaces that you're part of, and switch between them, from yo
 Click your profile icon in the top right corner of the website to open your account menu.
 
 Select the workspace you want to switch to in the workspace switcher.
-<br /> <br />
+\
+ \

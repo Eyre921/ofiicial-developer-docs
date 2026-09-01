@@ -10,6 +10,4 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 In order to receive payouts, you will need to connect your account with a Stripe Connect account, and you must be eligible for payouts. Stripe is a trusted, global leader in facilitating secure online payments.
 
-<em>
-  We do not offer payouts on other platforms at this time (PayPal, Zelle, Venmo, etc.)
-</em>
+*We do not offer payouts on other platforms at this time (PayPal, Zelle, Venmo, etc.)*

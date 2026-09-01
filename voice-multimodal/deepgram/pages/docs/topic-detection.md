@@ -11,9 +11,12 @@ path: docs/topic-detection
 # Topic Detection
 
 Deepgram API Playground
+
+
 Try this feature out in our API Playground.
 
-<br />
+\
+
 
 `topics` *boolean*   Default: `false`
 

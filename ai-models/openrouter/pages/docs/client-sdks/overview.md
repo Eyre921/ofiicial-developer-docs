@@ -81,11 +81,17 @@ The Client SDKs are intentionally lean. It mirrors the OpenRouter API surface 1:
   });
 
   const response = await client.chat.send({
-    model: 'openai/gpt-5.2',
-    messages: [
-      { role: 'user', content: 'Explain quantum computing in one sentence.' },
-    ],
+    chatRequest: {
+      model: 'openai/gpt-5.2',
+      messages: [
+        { role: 'user', content: 'Explain quantum computing in one sentence.' },
+      ],
+    },
   });
+
+  if (response instanceof ReadableStream) {
+    throw new Error('Expected a non-streaming response');
+  }
 
   console.log(response.choices[0].message.content);
   ```

@@ -18,6 +18,6 @@ Voices created with Voice Design v3 are fully compatible with our latest model, 
 
 For more tips on writing effective prompts, see our [Voice Design guide.](/docs/creative-platform/voices/voice-design)
 
-<strong>Note:</strong> Voice Design is still experimental. Professional Voice Clones offer the
+**Note:** Voice Design is still experimental. Professional Voice Clones offer the
 highest quality and consistency. If you find a PVC that fits your needs, we recommend using it.
 However, the v3 model does not currently support Professional Voice Clones.

@@ -25,7 +25,7 @@ You can include a variety of characteristics in your prompt, such as:
 
 Two additional controls help shape the output:
 
-* <strong>Loudness</strong> adjusts the volume of both the preview and the saved voice.
-* <strong>Guidance scale</strong> determines how closely the generated voice follows your prompt.
+* **Loudness** adjusts the volume of both the preview and the saved voice.
+* **Guidance scale** determines how closely the generated voice follows your prompt.
 
 For more help crafting prompts, see our [Voice Design guide](/docs/product/voices/voice-lab/voice-design).

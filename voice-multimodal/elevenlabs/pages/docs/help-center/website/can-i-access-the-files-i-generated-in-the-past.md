@@ -10,14 +10,14 @@ path: docs/help-center/website/can-i-access-the-files-i-generated-in-the-past
 
 Yes, previously generated files can be downloaded from your history. To access this, first make sure you're logged into your account.
 
-#### <strong>How to download files generated using Text to Speech</strong>
+#### **How to download files generated using Text to Speech**
 
-Select <strong>Text to Speech</strong> in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the <strong>Generate speech</strong> button.
+Select **Text to Speech** in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the **Generate speech** button.
 
-From your history, you can click the download icon to see the option to download as either an MP3 or WAV file. For more format options, including M4A and FLAC, click <strong>Advanced</strong>.
+From your history, you can click the download icon to see the option to download as either an MP3 or WAV file. For more format options, including M4A and FLAC, click **Advanced**.
 
-#### <strong>How to download files generated using Voice Changer</strong>
+#### **How to download files generated using Voice Changer**
 
-Select <strong>Voice Changer</strong> in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the <strong>Generate speech</strong> button.
+Select **Voice Changer** in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the **Generate speech** button.
 
-You can click the download icon to download any file from your history as either an MP3 or WAV file. For more format options, including M4A and FLAC, click <strong>Advanced</strong>.
+You can click the download icon to download any file from your history as either an MP3 or WAV file. For more format options, including M4A and FLAC, click **Advanced**.

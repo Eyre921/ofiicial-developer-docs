@@ -17,7 +17,7 @@ Prebuilt embedded finance is in private preview. [Request access](https://docs.s
 - You must be a Connect platform using [Accounts v2](https://docs.stripe.com/connect/accounts-v2.md).
   - To enable Treasury for platforms for a v1 Account, you can [specify a v1 Account in a v2 endpoint](https://docs.stripe.com/connect/accounts-v2/migrate-integration.md#use-v2-endpoints-for-all-your-accounts).
 - You must use API version `2026-06-24.preview` or later.
-- You must use a [restricted API key](https://docs.stripe.com/keys/restricted-api-keys.md) with Money Management permissions for live requests for both your platform and your connected accounts. [Create one in the Dashboard](https://dashboard.stripe.com/apikeys/create?permissions%5B0%5D=rak_money_management_financial_account_read&permissions%5B1%5D=rak_money_management_outbound_payment_write&connectPermissions%5B0%5D=rak_money_management_financial_account_read&connectPermissions%5B1%5D=rak_money_management_payout_method_read).
+- You must use a [restricted API key](https://docs.stripe.com/keys/restricted-api-keys.md) with Money Management permissions for live requests for both your platform and your connected accounts. [Create one in the Dashboard](https://dashboard.stripe.com/apikeys/create?permissions%5B0%5D=rak_money_management_financial_account_read&permissions%5B1%5D=rak_money_management_outbound_payment_write&permissions%5B2%5D=rak_money_management_payout_method_write&connectPermissions%5B0%5D=rak_money_management_financial_account_read&connectPermissions%5B1%5D=rak_money_management_payout_method_write&connectPermissions%5B2%5D=rak_money_management_outbound_payment_write).
 
 ## Available components
 

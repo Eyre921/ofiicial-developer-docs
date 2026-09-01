@@ -14,9 +14,7 @@ Credits can be used across our platform. The number of credits used depends on y
 
  
 
-<strong>
-  Credit Allocation and Rollover
-</strong>
+**Credit Allocation and Rollover**
 
 For self-serve monthly and annual plans, and Enterprise monthly plans: you will receive a set amount of credits each month, which reset monthly. Up to two months’ worth of unused credits can roll over to the next month.
 
@@ -26,9 +24,7 @@ If you downgrade or cancel your subscription, this does not take effect until th
 
  
 
-<strong>
-  Pay As You Go
-</strong>
+**Pay As You Go**
 
 Pay As You Go (PAYG) allows you to prepay for credits without committing to a monthly subscription, or buy additional credits if you run out of your subscription credits. For full details, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 

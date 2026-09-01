@@ -12,19 +12,19 @@ Eleven Music is our AI model for generating high-fidelity, studio-grade music fr
 
 Eleven Music offers:
 
-* <strong>Complete Music Tracks</strong> from a single text prompt
-* <strong>Granular Control</strong> of genre, mood, style, structure, and instrumentation
-* <strong>Vocals & Lyrics</strong> across multiple languages, including English, Spanish, German,
+* **Complete Music Tracks** from a single text prompt
+* **Granular Control** of genre, mood, style, structure, and instrumentation
+* **Vocals & Lyrics** across multiple languages, including English, Spanish, German,
   and Japanese, with Music v2 supporting more natural vocal performances and complex delivery
   patterns such as fast rap
-* <strong>Audio Reference</strong> to guide Music v2 generations with a short uploaded track
-* <strong>Post-Generation Editing</strong> to adjust sections and lyrics of those sections via the
+* **Audio Reference** to guide Music v2 generations with a short uploaded track
+* **Post-Generation Editing** to adjust sections and lyrics of those sections via the
   UI
-* <strong>Studio-Ready Exports</strong> in MP3 for professional workflows
+* **Studio-Ready Exports** in MP3 for professional workflows
 
 ### Use Cases & Commercial Use
 
-Created in collaboration with artists, labels, publishers, and artists, Eleven Music is <strong>cleared for broad commercial use</strong>.
+Created in collaboration with artists, labels, publishers, and artists, Eleven Music is **cleared for broad commercial use**.
 
 This model allows users to move beyond stock music libraries and create bespoke audio. For specific details on supported usage per tier, please refer to our [Music Terms](https://elevenlabs.io/music-terms).
 

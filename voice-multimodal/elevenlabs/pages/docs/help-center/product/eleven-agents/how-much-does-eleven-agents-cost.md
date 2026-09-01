@@ -17,9 +17,7 @@ You need to have purchased Pay As You Go credits, or enabled usage based billing
 
  
 
-<strong>
-  Voice only
-</strong>
+**Voice only**
 
 Voice only calls are charged based on the call duration, with a 95% discount for periods of silence longer than 10 seconds. 
 
@@ -29,29 +27,23 @@ The length of the call is measured based on the connection duration. This includ
 
  
 
-<strong>
-  Multimodal
-</strong>
+**Multimodal**
 
-Multimodal calls are charged based on the call duration, with a 95% discount for periods of silence longer than 10 seconds. You're also charged for each text message - for costs, see the table below. LLM costs are passed through separately - for more information, see the following <strong>LLM costs</strong> section.
+Multimodal calls are charged based on the call duration, with a 95% discount for periods of silence longer than 10 seconds. You're also charged for each text message - for costs, see the table below. LLM costs are passed through separately - for more information, see the following **LLM costs** section.
 
  
 
-<strong>
-  Text only
-</strong>
+**Text only**
 
-In text only calls you're charged for each text message - for costs, see [ElevenAgents pricing.](https://elevenlabs.io/pricing/agents) LLM costs are passed through separately - for more information, see the following <strong>LLM costs</strong> section.
+In text only calls you're charged for each text message - for costs, see [ElevenAgents pricing.](https://elevenlabs.io/pricing/agents) LLM costs are passed through separately - for more information, see the following **LLM costs** section.
 
  
 
-<strong>
-  LLM costs
-</strong>
+**LLM costs**
 
-LLM costs are passed through separately - you can access estimated costs for each agent, based on its past behaviour and knowledge base, from the <strong>Detailed costs</strong> button in the <strong>Primary LLM</strong> selector in your agents settings. 
+LLM costs are passed through separately - you can access estimated costs for each agent, based on its past behaviour and knowledge base, from the **Detailed costs** button in the **Primary LLM** selector in your agents settings. 
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/968b67118fb42eb565f35169576761ffc1131c589509a9ae38c4ad6af46a963e/assets/images/help-center/product/eleven-agents/detailedcosts.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=fee21011708d622686e1a3b2baaf9567c1dba1cf54d19bcdfb0876a75f0b1cde&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/968b67118fb42eb565f35169576761ffc1131c589509a9ae38c4ad6af46a963e/assets/images/help-center/product/eleven-agents/detailedcosts.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T111647Z&X-Amz-Expires=604800&X-Amz-Signature=760c362387463550a33272545fcf6c3f095362b49e5918b3337c69cabd085a5b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
  
 

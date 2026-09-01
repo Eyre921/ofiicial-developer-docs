@@ -32,7 +32,7 @@ Domains can have different statuses, including:
 * `not_started`: You've added a domain to Resend, but you haven't clicked on `Verify DNS Records` yet.
 * `pending`: Resend is still trying to verify the domain.
 * `verified`: Your domain is successfully verified for sending in Resend.
-* `partially_verified`: One capability (send or receive) is verified while the other is still pending verification.
+* `partially_verified`: There are two cases in which you'll see a domain being partially verified. One case is when only one capability (send or receive) is verified while the other is still pending verification. The second case is when you are shown two CNAME records for sending, but only one of them is verified while the other is still pending verification, which means you can send normally, but don't have a fallback server in case one of the sending servers is down.
 * `partially_failed`: The domain is verified but one of the features (send or receive) is not verified.
 * `failed`: Resend was unable to detect the DNS records within 72 hours.
 * `temporary_failure`: For a previously verified domain, Resend will periodically check for the DNS record required for verification. If at some point, Resend is unable to detect the record, the status would change to "Temporary Failure". Resend will recheck for the DNS record for 72 hours, and if it's unable to detect the record, the domain status would change to "Failure". If it's able to detect the record, the domain status would change to "Verified".
@@ -100,6 +100,14 @@ All admins on your team can securely access the export for 7 days. Unavailable e
 Sender Policy Framework (SPF) is an email authentication standard that includes all the IP addresses authorized to send email on behalf of your domain.
 
 The SPF configuration is made of a TXT DNS record that lists the IP addresses approved by the domain owner. Resend also generates an MX record that allows the recipient to send bounce and complaint feedback to your domain.
+
+<Tip>
+  SPF-related records are not always shown as TXT and MX records. For domains
+  created after August 2026, Resend may generate CNAME records instead, which
+  point to hosts that carry all the necessary information for SPF-related
+  verification. Therefore, make sure to always add the exact records shown in
+  your domain's **Records** tab within the Resend dashboard.
+</Tip>
 
 <img alt="SPF Records" />
 

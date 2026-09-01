@@ -170135,7 +170135,8 @@ instead of producing a `Response`.
 ```ts
 const { data: ctx, error } = await createSupabaseContext(request, { auth: 'user' })
 if (error) {
-  return Response.json({ message: error.message }, { status: error.status })
+  // `toJSON()` yields { source, code, message, hint, docs, details }
+  return Response.json(error.toJSON(), { status: error.status })
 }
 const { data } = await ctx.supabase.rpc('get_my_items')
 ```
@@ -170564,15 +170565,23 @@ Verifies pre-extracted credentials against one or more allowed auth modes.
 
 Tries each mode in order — first match wins. A mode is only tried when its
 credential is present; a JWT that is present but fails verification
-short-circuits the chain with `InvalidCredentialsError` instead of falling
+short-circuits the chain with InvalidJwtError instead of falling
 through to the next mode. Use verifyAuth to extract and verify in a
 single call.
 
-When `user` is among the allowed modes, a request carries a user token, and
-no JWKS source is configured, the failure is a 500 `ENV_ERROR` rather than
-a 401: the token cannot be verified, and that is a server misconfiguration,
-not a caller error. Another allowed mode matching the request's credentials
-still wins — the 500 is reported only when nothing matched.
+When every mode falls through, the returned error names the actual cause
+rather than a generic failure — MissingCredentialsError when the
+request carried nothing, InvalidApiKeyError when an `apikey` matched
+no configured key, or a `500` (JwksNotConfiguredError,
+NoKeysConfiguredError) when the server is configured such that no
+request could ever have succeeded. Every error carries `hint`, `docs`, and
+non-sensitive `details`.
+
+A misconfiguration `500` is only reported once nothing has matched, so an
+allowed mode that does match the request's credentials still wins — e.g.
+`['user', 'secret']` with no JWKS but a valid apikey authenticates as
+`secret`. `sb_*` values in the Authorization slot are API keys, not user
+tokens, and stay a caller error.
 
 ### Examples
 
@@ -170584,7 +170593,8 @@ const { data: auth, error } = await verifyCredentials(credentials, {
   auth: ['user', 'publishable'],
 })
 if (error) {
-  return Response.json({ message: error.message }, { status: error.status })
+  console.error(error.code, error.message, error.hint)
+  return Response.json(error.toJSON(), { status: error.status })
 }
 ```
 
@@ -170648,29 +170658,37 @@ app.listen(3000)
 
 ## Errors
 
+## ApiKeyFormat
+
+How an `apikey` header value was classified by its public prefix. Used in
+diagnostics so a format mismatch can be reported without echoing the key.
+
 ## AuthError
 
 Thrown when authentication or authorization fails.
 
 Carries an HTTP `status` code suitable for returning directly in a response
-(typically `401` for invalid credentials, `500` for server-side auth failures).
+(`401` when the request's credentials are at fault, `500` when the server is
+misconfigured and could not have authenticated anyone).
 
 ### Examples
 
 #### Catching an AuthError
 
 ```ts
-import { AuthError, createSupabaseContext } from '@supabase/server'
+import { createSupabaseContext } from '@supabase/server'
 
 const { data: ctx, error } = await createSupabaseContext(request, { auth: 'user' })
 if (error) {
-  // error is an AuthError
-  return Response.json(
-    { message: error.message, code: error.code },
-    { status: error.status },
-  )
+  // error is an AuthError — `toJSON()` includes source, code, message, hint, docs, details
+  return Response.json(error.toJSON(), { status: error.status })
 }
 ```
+
+## AuthFailureContext
+
+Everything the auth pipeline knows about a failed attempt, minus anything
+secret. Used to build messages, hints, and `details`.
 
 ## AuthGenericError
 
@@ -170697,8 +170715,9 @@ try {
   const client = createAdminClient()
 } catch (e) {
   if (e instanceof EnvError) {
-    console.error(`Config issue [${e.code}]: ${e.message}`)
-    // → "Config issue [MISSING_SUPABASE_URL]: SUPABASE_URL is required but not set"
+    console.error(`[${e.code}] ${e.message}\n${e.hint}`)
+    // → "[MISSING_SUPABASE_URL] [@supabase/server] SUPABASE_URL is required but not set."
+    //   "Set SUPABASE_URL to your project URL (https://<project-ref>.supabase.co), …"
   }
 }
 ```
@@ -170707,10 +170726,21 @@ try {
 
 Generic environment error code.
 
+## ErrorCodeHeader
+
+Response header withSupabase sets on every error response, carrying
+the error SupabaseServerError.code.
+
+## ErrorPayload
+
+Serializable form of a SupabaseServerError — the exact JSON body
+withSupabase returns on failure.
+
 ## Errors
 
 Factory map for all error types. Keyed by error code constant, each entry
-returns a pre-configured EnvError or AuthError.
+returns a pre-configured EnvError or AuthError complete with
+`hint`, `docs`, and `details`.
 
 ### Examples
 
@@ -170718,16 +170748,70 @@ returns a pre-configured EnvError or AuthError.
 
 ```ts
 throw Errors[MissingSupabaseURLError]()
-throw Errors[MissingPublishableKeyError]('mobile')
+throw Errors[MissingPublishableKeyError]('mobile', ['default', 'web'])
 ```
+
+## ErrorSource
+
+Package identifier stamped on every error this library produces.
+
+Present as `source` on each error instance, as the `source` field of the JSON
+body withSupabase returns, and as a `[@supabase/server]` prefix on
+every `message` — so an error is traceable back here from a log line, a
+response body, or a response header alone.
+
+## InvalidApiKeyError
+
+An `apikey` header was present but matched none of the keys configured for
+the accepted auth modes.
 
 ## InvalidCredentialsError
 
-No credential matched any allowed auth mode.
+Generic credential failure. Retained as the fallback code for cases that
+don't match a more specific one.
+
+Prior to v1.5 this was the only code withSupabase ever
+returned for a failed request. Prefer matching on the specific codes —
+MissingCredentialsError, InvalidApiKeyError,
+InvalidJwtError — which now cover nearly every real failure.
+
+## InvalidJwtError
+
+A JWT was present in the `Authorization` header but failed verification.
+`details.jwt` and the message carry the specific reason (expired, bad
+signature, unknown `kid`, malformed, no `sub`).
+
+## JwksFetchFailedError
+
+The remote JWKS endpoint could not be fetched or returned something
+unusable. Server-side / upstream failure (`status: 500`), not a bad request.
+
+## JwksNotConfiguredError
+
+Auth mode `"user"` was requested and a JWT was supplied, but no JWKS is
+configured — so the token cannot be verified. Server misconfiguration
+(`status: 500`), not a bad request.
+
+## MinimalErrorPayload
+
+Reduced error body produced when `errors: { detailed: false }` is set.
+
+`message` keeps its `[@supabase/server]` prefix, so the error is still
+traceable back here even without the `source` field.
 
 ## MissingAuthorizationServerError
 
 `withOAuthProtectedResource` has no `authorizationServer` and cannot derive one.
+
+## MissingConnectionStringError
+
+No Postgres connection string is configured, so the `withPostgresClient` /
+`withPostgresAdminClient` middleware cannot connect.
+
+## MissingCredentialsError
+
+The request carried no credentials at all — neither an `apikey` header nor
+an `Authorization: Bearer` token — and no accepted auth mode allows that.
 
 ## MissingDefaultPublishableKeyError
 
@@ -170753,12 +170837,63 @@ Named secret key not found in `SUPABASE_SECRET_KEYS`.
 
 `SUPABASE_URL` is not set.
 
+## NoKeysConfiguredError
+
+An `"publishable"` or `"secret"` auth mode was requested but no keys of that
+kind are configured, so the mode could never match. Server
+misconfiguration (`status: 500`).
+
+## ReceivedCredentials
+
+Non-sensitive summary of the credentials a request carried.
+
+## SupabaseServerError
+
+Base class for every error `@supabase/server` produces.
+
+Catch this to handle anything originating from this library, regardless of
+whether it's an EnvError or an AuthError:
+
+### Examples
+
+#### Catching any library error
+
+```ts
+import { SupabaseServerError } from '@supabase/server'
+
+try {
+  const supabase = createAdminClient()
+} catch (e) {
+  if (e instanceof SupabaseServerError) {
+    console.error(e.code, e.message, e.hint, e.docs)
+    return Response.json(e.toJSON(), { status: e.status })
+  }
+  throw e
+}
+```
+
+## SupabaseServerErrorOptions
+
+Optional diagnostics attached to a SupabaseServerError.
+
 ## UnsupportedRoleError
 
 The caller's verified `role` claim names a Postgres role the middleware
 will not assume — either one that would bypass RLS, or one it does not
 support yet. Returned by `withPostgresClient` instead of silently running
 the query as `anon`.
+
+## UnusableCredentialError
+
+A credential *did* arrive, but not one any accepted auth mode can use — an
+`sb_*` API key in the `Authorization` header, or a header this library cannot
+read a bearer token out of (wrong scheme, wrong casing, bare value, empty
+token).
+
+Distinct from MissingCredentialsError on purpose. The two
+partition the "nothing authenticated" space exactly — nothing arrived vs.
+something arrived that could not be used — so the code stays true on its own
+when `errors: { detailed: false }` strips `hint` and `details`.
 
 ## Types
 
@@ -170846,6 +170981,22 @@ Options for core.createContextClient.
 Raw credentials extracted from an incoming HTTP request.
 
 Produced by core.extractCredentials from the `Authorization` and `apikey` headers.
+
+## ErrorResponseConfig
+
+Controls how much of an error withSupabase puts in the response body.
+
+### Examples
+
+#### Trimming the response
+
+```ts
+// Full payload: source, code, message, hint, docs, details
+withSupabase({ auth: 'user' }, handler)
+
+// Trimmed: code and message only
+withSupabase({ auth: 'user', errors: { detailed: false } }, handler)
+```
 
 ## JWTClaims
 

@@ -63,26 +63,18 @@ You can check an agent's current knowledge base size from Claude or another MCP 
 
 ## Best practices
 
-<h4>
-  Content quality
-</h4>
+#### Content quality
 
 Provide clear, well-structured information that is relevant to your agent's purpose.
 
-<h4>
-  Size management
-</h4>
+#### Size management
 
 Break large documents into smaller, focused pieces for better retrieval and processing.
 
-<h4>
-  Regular updates
-</h4>
+#### Regular updates
 
 Review and refresh your knowledge base so information stays current and accurate.
 
-<h4>
-  Identify knowledge gaps
-</h4>
+#### Identify knowledge gaps
 
 Review conversation transcripts to find topics where users struggle to get answers, then add the missing context to the knowledge base.

@@ -8,7 +8,7 @@ path: docs/help-center/legal/do-i-own-the-files-i-upload
 
 # Do I own the files I upload?
 
-<strong>We claim no rights</strong> over the files you upload to the platform, except the rights
+**We claim no rights** over the files you upload to the platform, except the rights
 outlined in the [Terms of Service, ](https://elevenlabs.io/terms-of-use)[Privacy
 Policy](https://elevenlabs.io/privacy-policy) and [Data Processing
 Addendum](https://elevenlabs.io/dpa), and to review said files in accordance with local laws.

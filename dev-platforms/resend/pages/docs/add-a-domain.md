@@ -51,10 +51,10 @@ To add a new domain from the Resend Dashboard:
   <Step title="Update your DNS records with values provided by Resend.">
     View the **Records** tab for your domain to find the records to provide to your DNS host provider. Adding these records will verify that you own the domain and have the correct permissions to send and receive emails.
 
-    Provide the DKIM and SPF configurations (`TXT` and `MX` records) to your DNS provider. These records must match exactly what Resend generated. Copy and paste the records to avoid configuration errors.
+    Provide the DKIM and SPF configurations (`TXT` and `MX` or `CNAME` records) to your DNS provider. These records must match exactly what Resend generated. Copy and paste the records to avoid configuration errors.
 
     <Tip>
-      Consult one of our [DNS provider guides](/docs/knowledge-base/introduction) for specific examples of updating your DNS records with your host.
+      Consult one of our [DNS provider guides](/docs/knowledge-base/introduction) for specific examples of updating your DNS records with your host. Also, when shown a CNAME, make sure *not* to use proxying features (e.g., Cloudflare's orange cloud) for that record, as it will prevent verification from completing.
     </Tip>
   </Step>
 

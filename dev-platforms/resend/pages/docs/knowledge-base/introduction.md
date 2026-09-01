@@ -358,8 +358,12 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
     Learn how to permanently delete your Resend account and data.
   </Card>
 
-  <Card title="How to Handle API Keys" href="/docs/knowledge-base/how-to-handle-api-keys">
+  <Card title="How to handle API keys" href="/docs/knowledge-base/how-to-handle-api-keys">
     Best practices for managing and securing your Resend API keys.
+  </Card>
+
+  <Card title="How to handle a leaked API key" href="/docs/knowledge-base/how-to-handle-a-leaked-api-key">
+    What to do when an API key is exposed or used without authorization.
   </Card>
 
   <Card title="How to add multi-factor authentication to your Resend account" href="/docs/knowledge-base/how-can-i-add-mfa">

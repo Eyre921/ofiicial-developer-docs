@@ -35,12 +35,33 @@ When your domain doesn't verify as expected, it's typically due to DNS configura
 
 Usually when a domain doesn't verify, it's because the DNS records were not added correctly. Here's how to check:
 
-1. Confirm that you've added all required records (DKIM, SPF, and MX)
+1. Confirm that you've added every record shown in your domain's **Records** tab
 2. Verify that the records are added at the correct location (the `send` subdomain, not the root domain)
 3. Check that record values match exactly what Resend generated for you
 4. Look for red wavy underlines on the domain details page (these indicate specific DNS record errors)
 
 <img alt="Check for errors in the domain details page" />
+
+<Info>
+  The exact set of records depends on when your domain was created. Older
+  domains show a `TXT` and an `MX` record for SPF, and both must be correct for
+  SPF to verify at all. Domains created after August 2026 may show `CNAME`
+  records instead. If you are shown two `CNAME` records, each is verified on its
+  own, so one can verify while the other doesn't: your domain then shows as
+  `partially_verified`, and you can still send, but without a fallback sending
+  server.
+</Info>
+
+### Proxied CNAME records
+
+If your domain shows `CNAME` records for sending, check that they're not proxied at your DNS provider. On Cloudflare, this means the cloud icon next to the record must be gray (**DNS only**), not orange. Proxied records don't resolve as `CNAME`s, so verification never completes.
+
+### CNAME records conflicting with existing records
+
+A `CNAME` record can't co-exist with any other record on the same subdomain. If your DNS provider rejects the record, or verification keeps failing on a subdomain that already has an `A`, `TXT`, or `MX` record, you have two options:
+
+1. Remove the existing records from that subdomain
+2. [Configure a different Return-Path subdomain](/docs/dashboard/domains/custom-return-path) (e.g. `bounce.example.com`) and add the records Resend generates for it
 
 ### DNS provider auto-appending domain names
 
@@ -70,6 +91,8 @@ The trailing period tells your DNS provider that this is a fully qualified domai
   region.
 </Tip>
 
+The same applies to the `CNAME` records shown for newer domains: if the value in your DNS provider shows the Resend host followed by your own domain name, add a trailing period to the value.
+
 ### Nameserver conflicts
 
 If your domain's DNS is managed in multiple places (e.g., Vercel, Cloudflare, your domain registrar), you might be adding records in the wrong location.
@@ -90,6 +113,12 @@ If your MX records point to a different AWS region than where your domain is con
 If you have multiple MX records pointing to different AWS regions, you'll see a "multiple-regions" error. All MX records for a domain must point to the same region.
 
 **Solution:** Remove any MX records pointing to incorrect regions, keeping only the one that matches your domain's configured region.
+
+<Info>
+  Both region errors only apply to domains that show an `MX` record for SPF. If
+  your domain shows `CNAME` records instead, the region is handled by the Resend
+  host the record points to, so there's nothing to match.
+</Info>
 
 ### DKIM record value mismatches
 
@@ -151,6 +180,15 @@ Our team will help identify any remaining issues preventing successful verificat
 
     ```
     nslookup -type=MX send.example.com
+    ```
+
+    If your domain shows `CNAME` records for sending instead, check each of the shown CNAME records by name, as shown below:
+
+    ```
+    # If your domain shows two CNAME records, check both
+    # Otherwise, only check the one that is shown in the Resend dashboard
+    nslookup -type=CNAME send.example.com
+    nslookup -type=CNAME rsend.example.com
     ```
 
     <img alt="Check domain records with nslookup" />

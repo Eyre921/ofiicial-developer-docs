@@ -106,6 +106,13 @@ Successful Response
       - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
       - `version_id` (string, optional) — The ID of the version of the pronunciation dictionary
     - `enable_phoneme_tags` (boolean, optional, default: true) — Opt-in to SSML phoneme tag handling for V3 models. When enabled, phoneme tags (inline and from pronunciation dictionaries) are parsed into inline IPA before being sent to the model.
+    - `audio_effects` (object, optional) — Optional TTS effects spec: filter preset, distance (proximity EQ), and environment (convolution reverb).
+      - `distance` (double, required, default: 0)
+      - `send_level` (double, required, default: 1)
+      - `filter_preset_id` (string, optional)
+      - `environment_id` (string, optional)
+      - `background_noise_id` (string, optional)
+      - `seed` (integer, optional)
   - `conversation` (object, optional) — Configuration for conversational events
     - `text_only` (boolean, optional, default: false) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
     - `max_duration_seconds` (integer, optional, default: 600) — The maximum duration of a conversation in seconds
@@ -214,7 +221,7 @@ Successful Response
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -227,7 +234,7 @@ Successful Response
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -261,7 +268,7 @@ Successful Response
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -274,7 +281,7 @@ Successful Response
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -308,7 +315,7 @@ Successful Response
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -321,7 +328,7 @@ Successful Response
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -355,7 +362,7 @@ Successful Response
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -368,7 +375,7 @@ Successful Response
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -402,7 +409,7 @@ Successful Response
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -415,7 +422,7 @@ Successful Response
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -449,7 +456,7 @@ Successful Response
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -462,7 +469,7 @@ Successful Response
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -496,7 +503,7 @@ Successful Response
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -509,7 +516,7 @@ Successful Response
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -668,7 +675,7 @@ Successful Response
           - `params` (object, required)
             - `system_tool_type`: `end_call`
             - `system_tool_type`: `end_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `knowledge_base`
               - `enabled_strategies` (list of enum, optional)
             - `system_tool_type`: `knowledge_base_rag`
@@ -681,7 +688,7 @@ Successful Response
               - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn`
             - `system_tool_type`: `start_procedure`
-              - `procedures` (map from string to object, optional)
+              - `procedures` (map from string to object or object, optional)
             - `system_tool_type`: `transfer_to_agent`
               - `transfers` (list of object, required)
             - `system_tool_type`: `transfer_to_number`
@@ -1440,6 +1447,13 @@ Successful Response
             - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
             - `version_id` (string, optional) — The ID of the version of the pronunciation dictionary
           - `enable_phoneme_tags` (boolean, optional) — Opt-in to SSML phoneme tag handling for V3 models. When enabled, phoneme tags (inline and from pronunciation dictionaries) are parsed into inline IPA before being sent to the model.
+          - `audio_effects` (object, optional) — Optional TTS effects spec: filter preset, distance (proximity EQ), and environment (convolution reverb).
+            - `distance` (double, required, default: 0)
+            - `send_level` (double, required, default: 1)
+            - `filter_preset_id` (string, optional)
+            - `environment_id` (string, optional)
+            - `background_noise_id` (string, optional)
+            - `seed` (integer, optional)
         - `conversation` (object, optional) — Configuration for conversational events
           - `text_only` (boolean, optional) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
           - `max_duration_seconds` (integer, optional) — The maximum duration of a conversation in seconds
@@ -1672,7 +1686,15 @@ Successful Response
           "version_id": null
         }
       ],
-      "enable_phoneme_tags": true
+      "enable_phoneme_tags": true,
+      "audio_effects": {
+        "distance": 1.1,
+        "send_level": 1.1,
+        "filter_preset_id": null,
+        "environment_id": null,
+        "background_noise_id": null,
+        "seed": null
+      }
     },
     "conversation": {
       "text_only": true,

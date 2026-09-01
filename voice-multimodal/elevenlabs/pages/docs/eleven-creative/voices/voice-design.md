@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-design
 
 # Voice Design
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1125280670aac11f82425cb9e04ccba451fb85ac046cff42203b867a82340f43/assets/images/product-guides/voices/voices-voice-design.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T112904Z&X-Amz-Expires=604800&X-Amz-Signature=70912c84f979f59c09737d422ec39d2259030223aa07892ae2cba62f94febdec&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice design" />
+![Voice design](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1125280670aac11f82425cb9e04ccba451fb85ac046cff42203b867a82340f43/assets/images/product-guides/voices/voices-voice-design.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T092309Z&X-Amz-Expires=604800&X-Amz-Signature=01914dddca416b6e376314f5b0b39a1fd912e0f69bebc1a77a3891d4c1b58c1a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -241,7 +241,7 @@ different results!
 
       For more tips on writing effective prompts, see our [Voice Design guide.](/docs/creative-platform/voices/voice-design)
 
-      <strong>Note:</strong> Voice Design is still experimental. Professional Voice Clones offer the
+      **Note:** Voice Design is still experimental. Professional Voice Clones offer the
       highest quality and consistency. If you find a PVC that fits your needs, we recommend using it.
       However, the v3 model does not currently support Professional Voice Clones.
     </td>
@@ -268,8 +268,8 @@ different results!
 
       Two additional controls help shape the output:
 
-      * <strong>Loudness</strong> adjusts the volume of both the preview and the saved voice.
-      * <strong>Guidance scale</strong> determines how closely the generated voice follows your prompt.
+      * **Loudness** adjusts the volume of both the preview and the saved voice.
+      * **Guidance scale** determines how closely the generated voice follows your prompt.
 
       For more help crafting prompts, see our [Voice Design guide](/docs/product/voices/voice-lab/voice-design).
     </td>
@@ -281,9 +281,9 @@ different results!
 
       Voice Design only consumes credits when you generate voices.
 
-      Each time you click <strong>Generate voice</strong>, we create three voice options based on your prompt. You're charged based on the number of characters in your preview text.
+      Each time you click **Generate voice**, we create three voice options based on your prompt. You're charged based on the number of characters in your preview text.
 
-      You can enter your own preview text or use the <strong>Auto-generate</strong> button to create one automatically. Auto-generated previews include relevant audio tags.
+      You can enter your own preview text or use the **Auto-generate** button to create one automatically. Auto-generated previews include relevant audio tags.
 
       For more information, see our [Voice Design guide.](/docs/product-guides/voices/voice-design)
     </td>

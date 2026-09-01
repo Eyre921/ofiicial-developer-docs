@@ -44450,6 +44450,15 @@ const azure = createAzure({
 });
 ```
 
+You can also use a complete [Microsoft Foundry OpenAI v1 base URL](https://learn.microsoft.com/en-us/azure/foundry/openai/api-version-lifecycle#model-support):
+
+```ts
+const azure = createAzure({
+  baseURL: 'https://your-resource.services.ai.azure.com/openai/v1',
+  apiKey: 'your-api-key',
+});
+```
+
 For Microsoft Entra ID authentication, you can provide a token provider.
 Install `@azure/identity` separately if you want to use its credential helpers:
 
@@ -44494,6 +44503,8 @@ You can use the following optional settings to customize the OpenAI provider ins
 
   Sets a custom [api version](https://learn.microsoft.com/en-us/azure/ai-services/openai/api-version-deprecation).
   Defaults to `v1`.
+  This setting is applied when the provider constructs the v1 path or uses
+  deployment-based URLs. Complete v1 base URLs are used as-is.
 
 - **baseURL** _string_
 
@@ -44502,7 +44513,20 @@ You can use the following optional settings to customize the OpenAI provider ins
   Either this or `resourceName` can be used.
   When a baseURL is provided, the resourceName is ignored.
 
-  With a baseURL, the resolved URL is `{baseURL}/v1{path}`.
+  For Azure-hosted URLs ending in `.openai.azure.com`,
+  `.services.ai.azure.com`, or `.cognitiveservices.azure.com`, you can pass
+  either an unversioned OpenAI prefix such as `https://your-resource.services.ai.azure.com/openai`
+  or a complete v1 base URL such as `https://your-resource.services.ai.azure.com/openai/v1`.
+  The provider appends `/v1` and the configured `api-version` to unversioned
+  resource URLs. Complete v1 URLs are used as-is.
+
+  Complete Microsoft Foundry project v1 URLs, such as
+  `https://your-resource.services.ai.azure.com/api/projects/your-project/openai/v1`,
+  are also used as-is. If `/v1` is omitted from a Foundry project URL, the
+  provider appends it without adding an `api-version` query parameter.
+
+  With a non-Azure custom gateway baseURL, the resolved URL is `{baseURL}{path}`;
+  the SDK does not append `/v1` or an `api-version` query parameter in this mode.
 
 - **headers** _Record&lt;string,string&gt;_
 
@@ -57636,6 +57660,108 @@ for await (const message of result.textStream) {
 Heroku language models can also be used in the `generateObject`, and `streamObject` functions.
 
 ---
+title: Synthorai
+description: Use the Synthorai OpenAI compatible API with the AI SDK.
+---
+
+# Synthorai Provider
+
+[Synthorai](https://synthorai.io) is an AI gateway that provides access to models from multiple providers through an OpenAI-compatible API. You can use its Chat Completions endpoint with the AI SDK through the `@ai-sdk/openai-compatible` module.
+
+## Setup
+
+The Synthorai provider is available via the `@ai-sdk/openai-compatible` module as it is compatible with the OpenAI API. You can install it with:
+
+<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
+  <Tab>
+    <Snippet text="pnpm add @ai-sdk/openai-compatible" dark />
+  </Tab>
+  <Tab>
+    <Snippet text="npm install @ai-sdk/openai-compatible" dark />
+  </Tab>
+  <Tab>
+    <Snippet text="yarn add @ai-sdk/openai-compatible" dark />
+  </Tab>
+  <Tab>
+    <Snippet text="bun add @ai-sdk/openai-compatible" dark />
+  </Tab>
+</Tabs>
+
+## Provider Instance
+
+To use Synthorai, create a custom provider instance with the `createOpenAICompatible` function from `@ai-sdk/openai-compatible`:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+
+const synthorai = createOpenAICompatible({
+  name: 'synthorai',
+  baseURL: 'https://synthorai.io/v1',
+  apiKey: process.env.SYNTHORAI_API_KEY,
+});
+```
+
+<Note>
+  Follow the [Synthorai quickstart](https://synthorai.io/docs/quickstart/) to
+  create an API key. Make sure to set the `SYNTHORAI_API_KEY` environment
+  variable with your API key.
+</Note>
+
+## Language Models
+
+You can create Synthorai models using the provider instance. The first argument is a model ID from the [model catalog](https://synthorai.io/models/), for example `claude-fable-5`.
+
+```ts
+const model = synthorai('claude-fable-5');
+```
+
+### Example
+
+You can use Synthorai language models to generate text with the `generateText` function:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { generateText } from 'ai';
+
+const synthorai = createOpenAICompatible({
+  name: 'synthorai',
+  baseURL: 'https://synthorai.io/v1',
+  apiKey: process.env.SYNTHORAI_API_KEY,
+});
+
+const { text } = await generateText({
+  model: synthorai('claude-fable-5'),
+  prompt: 'Tell me about yourself in one sentence.',
+});
+
+console.log(text);
+```
+
+Synthorai language models can also generate text in a streaming fashion with the `streamText` function:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { streamText } from 'ai';
+
+const synthorai = createOpenAICompatible({
+  name: 'synthorai',
+  baseURL: 'https://synthorai.io/v1',
+  apiKey: process.env.SYNTHORAI_API_KEY,
+});
+
+const result = streamText({
+  model: synthorai('claude-fable-5'),
+  prompt: 'Write a short haiku about routing.',
+});
+
+for await (const textPart of result.textStream) {
+  process.stdout.write(textPart);
+}
+```
+
+See the [Synthorai documentation](https://synthorai.io/docs/) for endpoint details and model-specific capabilities.
+
+---
 title: OpenAI Compatible Providers
 description: Use OpenAI compatible providers with the AI SDK.
 ---
@@ -57652,6 +57778,7 @@ We provide detailed documentation for the following OpenAI compatible providers:
 - [NIM](/providers/openai-compatible-providers/nim)
 - [Heroku](/providers/openai-compatible-providers/heroku)
 - [Clarifai](/providers/openai-compatible-providers/clarifai)
+- [Synthorai](/providers/openai-compatible-providers/synthorai)
 
 The general setup and provider instance creation is the same for all of these providers.
 
@@ -68765,6 +68892,30 @@ const paymentTool = tool({
 
 In this example, only transactions over $1000 require approval. Smaller transactions execute automatically.
 
+### Securing Approval Requests
+
+When your application rebuilds a conversation from client-provided messages, a
+client could forge an approval response. For tools that perform sensitive
+operations, set `experimental_toolApprovalSecret` to cryptographically bind
+each approval to the server that issued it:
+
+```ts highlight="7"
+import { ToolLoopAgent } from 'ai';
+
+const agent = new ToolLoopAgent({
+  model: __MODEL__,
+  tools: { runCommand },
+  experimental_toolApprovalSecret: process.env.TOOL_APPROVAL_SECRET,
+});
+
+const result = await agent.generate({ messages });
+```
+
+The server HMAC-signs each approval request and verifies the signature when an
+approval is replayed. A forged or tampered approval is rejected before the tool
+executes. Keep the secret on the server and use the same value on every
+instance that can handle a later approval response.
+
 ### Tool Execution Approval with useChat
 
 When using `useChat`, the approval flow is handled through UI state. See [Chatbot Tool Usage](/docs/ai-sdk-ui/chatbot-tool-usage#tool-execution-approval) for details on handling approvals in your UI with `addToolApprovalResponse`.
@@ -69358,11 +69509,12 @@ async function generateSomething(prompt: string): Promise<{
 
 ## Handling Errors
 
-The AI SDK has three tool-call related errors:
+The AI SDK has four tool-call related errors:
 
 - [`NoSuchToolError`](/docs/reference/ai-sdk-errors/ai-no-such-tool-error): the model tries to call a tool that is not defined in the tools object
 - [`InvalidToolInputError`](/docs/reference/ai-sdk-errors/ai-invalid-tool-input-error): the model calls a tool with inputs that do not match the tool's input schema
 - [`ToolCallRepairError`](/docs/reference/ai-sdk-errors/ai-tool-call-repair-error): an error that occurred during tool call repair
+- [`ToolChoiceViolationError`](/docs/reference/ai-sdk-errors/ai-tool-choice-violation-error): the model response does not satisfy a required or specifically selected tool choice
 
 When tool execution fails (errors thrown by your tool's `execute` function), the AI SDK adds them as `tool-error` content parts to enable automated LLM roundtrips in multi-step scenarios.
 
@@ -80674,6 +80826,45 @@ if (ToolCallRepairError.isInstance(error)) {
 ```
 
 ---
+title: AI_ToolChoiceViolationError
+description: Learn how to handle AI_ToolChoiceViolationError
+---
+
+# AI_ToolChoiceViolationError
+
+This error occurs when a model response does not satisfy an enforced tool
+choice. It is thrown when `toolChoice` is set to `'required'` but the response
+contains no structured tool call, or when a specifically selected tool was not
+called.
+
+The error does not automatically interpret text or reasoning as an executable
+tool call. You can inspect `content` to implement opt-in recovery, including
+schema validation before executing any recovered call.
+
+## Properties
+
+- `toolChoice`: The effective tool choice that the response did not satisfy
+- `finishReason`: The reason why the model finished generating the response
+- `provider`: The provider that returned the response
+- `modelId`: The model that returned the response
+- `content`: The normalized content returned by the model
+- `message`: The error message
+
+## Checking for this Error
+
+You can check if an error is an instance of `AI_ToolChoiceViolationError` using:
+
+```typescript
+import { ToolChoiceViolationError } from 'ai';
+
+if (ToolChoiceViolationError.isInstance(error)) {
+  const serializedCall = error.content.find(part => part.type === 'text')?.text;
+
+  // Parse and validate serializedCall before treating it as a tool call.
+}
+```
+
+---
 title: AI_TypeValidationError
 description: Learn how to fix AI_TypeValidationError
 ---
@@ -86472,6 +86663,15 @@ const azure = createAzure({
 });
 ```
 
+You can also use a complete [Microsoft Foundry OpenAI v1 base URL](https://learn.microsoft.com/en-us/azure/foundry/openai/api-version-lifecycle#model-support):
+
+```ts
+const azure = createAzure({
+  baseURL: 'https://your-resource.services.ai.azure.com/openai/v1',
+  apiKey: 'your-api-key',
+});
+```
+
 For Microsoft Entra ID authentication, you can provide a token provider.
 Install `@azure/identity` separately if you want to use its credential helpers:
 
@@ -86516,6 +86716,8 @@ You can use the following optional settings to customize the OpenAI provider ins
 
   Sets a custom [api version](https://learn.microsoft.com/en-us/azure/ai-services/openai/api-version-deprecation).
   Defaults to `v1`.
+  This setting is applied when the provider constructs the v1 path or uses
+  deployment-based URLs. Complete v1 base URLs are used as-is.
 
 - **baseURL** _string_
 
@@ -86524,7 +86726,18 @@ You can use the following optional settings to customize the OpenAI provider ins
   Either this or `resourceName` can be used.
   When a baseURL is provided, the resourceName is ignored.
 
-  With an Azure OpenAI baseURL, the resolved URL is `{baseURL}/v1{path}`.
+  For Azure-hosted URLs ending in `.openai.azure.com`,
+  `.services.ai.azure.com`, or `.cognitiveservices.azure.com`, you can pass
+  either an unversioned OpenAI prefix such as `https://your-resource.services.ai.azure.com/openai`
+  or a complete v1 base URL such as `https://your-resource.services.ai.azure.com/openai/v1`.
+  The provider appends `/v1` and the configured `api-version` to unversioned
+  resource URLs. Complete v1 URLs are used as-is.
+
+  Complete Microsoft Foundry project v1 URLs, such as
+  `https://your-resource.services.ai.azure.com/api/projects/your-project/openai/v1`,
+  are also used as-is. If `/v1` is omitted from a Foundry project URL, the
+  provider appends it without adding an `api-version` query parameter.
+
   With a non-Azure custom gateway baseURL, the resolved URL is `{baseURL}{path}`;
   the SDK does not append `/v1` or an `api-version` query parameter in this mode.
 
@@ -90460,6 +90673,30 @@ The following provider options are available for Cohere embedding models:
 - **truncate** _string_
 
   Truncation behavior when input exceeds the model's context length. Accepts: `NONE`, `START`, `END`.
+
+### Application Inference Profiles
+
+Application inference profile ARNs do not identify their underlying model. Pass
+the model family when creating an embedding model so the provider can select
+the correct request format and batch size:
+
+```ts
+import {
+  bedrock,
+  type AmazonBedrockEmbeddingModelSettings,
+} from '@ai-sdk/amazon-bedrock';
+import { embedMany } from 'ai';
+
+const profileArn =
+  'arn:aws:bedrock:us-east-1:123456789012:application-inference-profile/qibm5eutlkcy';
+
+const { embeddings } = await embedMany({
+  model: bedrock.embedding(profileArn, {
+    modelFamily: 'cohere',
+  } satisfies AmazonBedrockEmbeddingModelSettings),
+  values: ['hello', 'world'],
+});
+```
 
 ### Model Capabilities
 
@@ -95280,8 +95517,8 @@ The [Gemini Interactions API](https://ai.google.dev/gemini-api/docs/interactions
 (`POST /v1beta/interactions`) is a separate Google endpoint with server-side
 state, unified content blocks, first-class built-in tools, agent presets,
 managed agents that run in a sandboxed Linux environment, and native
-multimodal image output. It is reached via the `google.interactions(...)`
-factory:
+multimodal image and video output. It is reached via the
+`google.interactions(...)` factory:
 
 ```ts
 import { google } from '@ai-sdk/google';
@@ -95371,16 +95608,42 @@ The following optional provider options are available:
   Whether the model returns synthesized thought summaries on reasoning
   parts. Defaults to the API default.
 
-- **responseFormat** _Array\<\{ type: 'text' | 'image' | 'audio'; mimeType?: string; schema?: unknown; aspectRatio?: string; imageSize?: '1K' \| '2K' \| '4K' \| '512' \}\>_
+- **responseFormat** _Array\<ResponseFormatEntry\>_
 
   Output-format entries that map directly to the API's `response_format`
-  array. Use this for fine-grained control over image, audio, or non-JSON
-  text outputs (e.g. `aspectRatio` and `imageSize` for image generation).
+  array. Entries have the following shape:
+
+  ```ts
+  type ResponseFormatEntry =
+    | { type: 'text'; mimeType?: string; schema?: unknown }
+    | {
+        type: 'image';
+        mimeType?: string;
+        aspectRatio?: string;
+        imageSize?: '1K' | '2K' | '4K' | '512';
+      }
+    | { type: 'audio'; mimeType?: string }
+    | {
+        type: 'video';
+        aspectRatio?: '16:9' | '9:16';
+        resolution?: '360p' | '720p' | '1080p' | '4k';
+        duration?: string;
+        delivery?: 'inline' | 'uri';
+        gcsUri?: string;
+      };
+  ```
+
+  Use this for fine-grained control over image, audio, video, or non-JSON
+  text outputs. Video entries can control aspect ratio, resolution, duration,
+  and inline or URI delivery; set `gcsUri` when delivering to Google Cloud
+  Storage. Inline videos are returned in `result.files` by `generateText` and
+  emitted as `file` parts by `streamText`.
   The AI SDK call-level `responseFormat: { type: 'json', schema }` still
   drives JSON-mode automatically and prepends a matching text entry;
   entries listed here are appended.
 
-  `aspectRatio` accepts `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `4:5`, `5:4`,
+  For image entries, `aspectRatio` accepts `1:1`, `2:3`, `3:2`, `3:4`, `4:3`,
+  `4:5`, `5:4`,
   `9:16`, `16:9`, `21:9`, `1:8`, `8:1`, `1:4`, `4:1`.
 
 - **imageConfig** _\{ aspectRatio?: string; imageSize?: '1K' | '2K' | '4K' | '512' \}_ (deprecated)
@@ -103699,9 +103962,10 @@ The following optional provider options are available for MiniMax language model
 
 ## Video Models
 
-You can generate videos with the MiniMax-H3 model using the
-[`experimental_generateVideo`](/docs/reference/ai-sdk-core/generate-video)
-function:
+You can generate videos with the MiniMax-H3 and MiniMax-H3-Max models using
+the [`experimental_generateVideo`](/docs/reference/ai-sdk-core/generate-video)
+function. MiniMax-H3-Max is the faster variant: it renders at lower resolutions
+and serves every mode except reference-to-video.
 
 ```ts
 import { minimax, type MiniMaxVideoModelOptions } from '@ai-sdk/minimax';
@@ -103714,18 +103978,40 @@ const { video } = await generateVideo({
   duration: 5,
   providerOptions: {
     minimax: {
+      resolution: '768P',
       pollTimeoutMs: 600000, // 10 minutes
     } satisfies MiniMaxVideoModelOptions,
   },
 });
 ```
 
-MiniMax-H3 generates one video per call. Generation is asynchronous — the model
+Both models generate one video per call. Generation is asynchronous — the model
 creates a task and polls until it completes, then returns the resulting MP4 URL.
 
-`duration` accepts a whole number of seconds from 5 to 15, and defaults to 5. A
-fractional value is rounded and an out-of-range value is clamped, each with a
-warning. The only supported output resolution is `2K`.
+`duration` accepts a whole number of seconds and defaults to 5. MiniMax-H3
+supports 4 to 15 seconds; MiniMax-H3-Max supports 5 to 15 seconds. A fractional
+value is rounded and an out-of-range value is clamped, each with a warning.
+MiniMax-H3 supports `768P` and `2K` output, while MiniMax-H3-Max supports `480P`
+and `768P`.
+
+The API takes a named tier rather than a frame size, so a top-level `resolution`
+is matched against a fixed table of one frame size per tier per aspect ratio:
+
+| Tier   | Accepted `resolution` values                                                 |
+| ------ | ---------------------------------------------------------------------------- |
+| `480P` | `480x480`, `1120x480`, `854x480`, `640x480`, `480x854`, `480x640`            |
+| `768P` | `768x768`, `1792x768`, `1366x768`, `1024x768`, `768x1366`, `768x1024`        |
+| `2K`   | `2048x2048`, `2560x1080`, `2560x1440`, `2048x1536`, `1440x2560`, `1536x2048` |
+
+Anything outside the table, or a tier the selected model does not support, warns
+and falls back to the model default. `providerOptions.minimax.resolution` names
+the tier exactly and wins over the top-level value, which is reported as ignored.
+
+For **text-to-video**, `aspectRatio` defaults to `16:9` when omitted. The MiniMax
+API requires a concrete ratio for text-only requests and does not accept
+`adaptive`. For **reference-to-video**, the API default is `adaptive` when
+`aspectRatio` is omitted. For **image-to-video** with frame images, the aspect
+ratio follows the input image.
 
 <Note>
   Result URLs are time-limited. Download and persist the video to your own
@@ -103741,9 +104027,10 @@ The generation mode is inferred from the inputs you pass:
   `frameType: 'first_frame'`) to animate a starting image.
 - **First-to-last keyframes** — pass `frameImages` with both a `first_frame` and
   a `last_frame` to control the transition.
-- **Reference-to-video** — pass `inputReferences` (images and/or videos, routed
-  by media type) to keep a subject/style or follow motion. Frame images and
-  references are mutually exclusive.
+- **Reference-to-video (MiniMax-H3 only)** — pass `inputReferences` (images
+  and/or videos, routed by media type) to keep a subject/style or follow motion.
+  Frame images and references are mutually exclusive. MiniMax-H3-Max does not
+  support reference-to-video inputs.
 
 When a frame image is supplied, the aspect ratio follows the image and any
 explicit `aspectRatio` is ignored.
@@ -103752,9 +104039,10 @@ explicit `aspectRatio` is ignored.
 
 The following optional provider options are available for MiniMax video models:
 
-- **resolution** _string_
+- **resolution** _'480P' | '768P' | '2K'_
 
-  Output resolution. MiniMax-H3 currently only supports `'2K'` (the default).
+  Output resolution. MiniMax-H3 supports `'768P'` and `'2K'` (the default).
+  MiniMax-H3-Max supports `'480P'` and `'768P'` (the default).
 
 - **ratio** _'adaptive' | '21:9' | '16:9' | '4:3' | '1:1' | '3:4' | '9:16'_
 
@@ -103762,8 +104050,9 @@ The following optional provider options are available for MiniMax video models:
 
 - **referenceAudioUrls** _string[]_
 
-  Reference audio URLs (or `mm_file://` handles) for reference-to-video
-  generation. Must be paired with at least one reference image or video. Up to 3.
+  Reference audio URLs (or `mm_file://` handles) for MiniMax-H3
+  reference-to-video generation. Must be paired with at least one reference
+  image or video. Up to 3. MiniMax-H3-Max does not support reference audio.
 
 - **aigcWatermark** _boolean_
 
@@ -106819,6 +107108,108 @@ for await (const message of result.textStream) {
 You can use any supported `modelId` from the NEAR AI Cloud model catalog. Model metadata includes context length, modalities, and whether TEE attestation is supported for that model.
 
 ---
+title: Synthorai
+description: Use the Synthorai OpenAI compatible API with the AI SDK.
+---
+
+# Synthorai Provider
+
+[Synthorai](https://synthorai.io) is an AI gateway that provides access to models from multiple providers through an OpenAI-compatible API. You can use its Chat Completions endpoint with the AI SDK through the `@ai-sdk/openai-compatible` module.
+
+## Setup
+
+The Synthorai provider is available via the `@ai-sdk/openai-compatible` module as it is compatible with the OpenAI API. You can install it with:
+
+<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
+  <Tab>
+    <Snippet text="pnpm add @ai-sdk/openai-compatible" dark />
+  </Tab>
+  <Tab>
+    <Snippet text="npm install @ai-sdk/openai-compatible" dark />
+  </Tab>
+  <Tab>
+    <Snippet text="yarn add @ai-sdk/openai-compatible" dark />
+  </Tab>
+  <Tab>
+    <Snippet text="bun add @ai-sdk/openai-compatible" dark />
+  </Tab>
+</Tabs>
+
+## Provider Instance
+
+To use Synthorai, create a custom provider instance with the `createOpenAICompatible` function from `@ai-sdk/openai-compatible`:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+
+const synthorai = createOpenAICompatible({
+  name: 'synthorai',
+  baseURL: 'https://synthorai.io/v1',
+  apiKey: process.env.SYNTHORAI_API_KEY,
+});
+```
+
+<Note>
+  Follow the [Synthorai quickstart](https://synthorai.io/docs/quickstart/) to
+  create an API key. Make sure to set the `SYNTHORAI_API_KEY` environment
+  variable with your API key.
+</Note>
+
+## Language Models
+
+You can create Synthorai models using the provider instance. The first argument is a model ID from the [model catalog](https://synthorai.io/models/), for example `claude-fable-5`.
+
+```ts
+const model = synthorai('claude-fable-5');
+```
+
+### Example
+
+You can use Synthorai language models to generate text with the `generateText` function:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { generateText } from 'ai';
+
+const synthorai = createOpenAICompatible({
+  name: 'synthorai',
+  baseURL: 'https://synthorai.io/v1',
+  apiKey: process.env.SYNTHORAI_API_KEY,
+});
+
+const { text } = await generateText({
+  model: synthorai('claude-fable-5'),
+  prompt: 'Tell me about yourself in one sentence.',
+});
+
+console.log(text);
+```
+
+Synthorai language models can also generate text in a streaming fashion with the `streamText` function:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { streamText } from 'ai';
+
+const synthorai = createOpenAICompatible({
+  name: 'synthorai',
+  baseURL: 'https://synthorai.io/v1',
+  apiKey: process.env.SYNTHORAI_API_KEY,
+});
+
+const result = streamText({
+  model: synthorai('claude-fable-5'),
+  prompt: 'Write a short haiku about routing.',
+});
+
+for await (const textPart of result.textStream) {
+  process.stdout.write(textPart);
+}
+```
+
+See the [Synthorai documentation](https://synthorai.io/docs/) for endpoint details and model-specific capabilities.
+
+---
 title: OpenAI Compatible Providers
 description: Use OpenAI compatible providers with the AI SDK.
 ---
@@ -106836,6 +107227,7 @@ We provide detailed documentation for the following OpenAI compatible providers:
 - [Heroku](/providers/openai-compatible-providers/heroku)
 - [Clarifai](/providers/openai-compatible-providers/clarifai)
 - [NEAR AI Cloud](/providers/openai-compatible-providers/nearai)
+- [Synthorai](/providers/openai-compatible-providers/synthorai)
 
 The general setup and provider instance creation is the same for all of these providers.
 
@@ -118065,9 +118457,12 @@ Every serverless instance that might handle a request needs the same secret, sin
 - The secret is never sent to the client or included in the stream
 
 <Note>
-  `experimental_toolApprovalSecret` is not yet supported on `WorkflowAgent`. For
-  durable workflows, the workflow runtime provides its own persistence layer
-  that can be used to verify approvals.
+  `WorkflowAgent` also supports `experimental_toolApprovalSecret`. It signs in
+  a workflow step before writing the durable approval request. Pass an
+  environment variable reference, such as
+  `{ environmentVariable: 'TOOL_APPROVAL_SECRET' }`, so the raw secret is read
+  only inside signing and verification steps. Only the signature is persisted
+  and sent to the client.
 </Note>
 
 ## Related APIs
@@ -118432,6 +118827,49 @@ const agent = new WorkflowAgent({
 ```
 
 Because the workflow is durable, the approval request survives process restarts — the user can approve hours later and the agent will resume.
+
+### Signed Tool Approvals
+
+Client-supplied message history can be modified before it is replayed to the
+workflow. For tools that perform sensitive operations, configure
+`experimental_toolApprovalSecret` to authenticate approval requests:
+
+```ts highlight="4"
+const agent = new WorkflowAgent({
+  model: 'anthropic/claude-sonnet-4-6',
+  experimental_toolApprovalSecret: {
+    environmentVariable: 'TOOL_APPROVAL_SECRET',
+  },
+  tools: {
+    bookFlight: tool({
+      description: 'Book a flight',
+      inputSchema: z.object({ flightId: z.string() }),
+      needsApproval: true,
+      execute: bookFlightStep,
+    }),
+  },
+});
+```
+
+The agent HMAC-signs the approval ID, tool call ID, tool name, and validated
+input. When approved message history is replayed, a missing or invalid
+signature prevents the tool from executing. The signature is preserved through
+the durable model-call stream, `createModelCallToUIChunkTransform()`,
+`addToolApprovalResponse()`, and `convertToModelMessages()`.
+
+Use a high-entropy secret of at least 32 bytes and make the same secret
+available to every worker that can issue or resume an approval. Keep old keys
+available while approvals signed with them are pending; changing the secret
+invalidates those pending approvals.
+
+`WorkflowAgent` passes only the environment variable name into signing and
+verification steps. Each step reads the secret from its local environment, and
+the raw value is never included in step arguments, durable stream parts,
+callbacks, or telemetry events. Configure the environment variable on every
+worker, and do not put the secret value in `runtimeContext` or `toolsContext`.
+
+You can also provide `experimental_toolApprovalSecret` to `agent.stream()`.
+The stream-level value overrides the constructor default.
 
 ## Loop Control
 
@@ -124569,19 +125007,19 @@ const { image, warnings } = await generateImage({
 });
 ```
 
-### Additional provider-specific meta data
+### Provider metadata
 
-Some providers expose additional meta data for the result overall or per image.
+Some providers expose metadata for an individual image. It is available directly on the generated image:
 
 ```tsx
 const prompt = 'Santa Claus driving a Cadillac';
 
-const { image, providerMetadata } = await generateImage({
+const { image } = await generateImage({
   model: openai.image('dall-e-3'),
   prompt,
 });
 
-const revisedPrompt = providerMetadata.openai.images[0]?.revisedPrompt;
+const revisedPrompt = image.providerMetadata?.openai?.revisedPrompt;
 
 console.log({
   prompt,
@@ -124589,7 +125027,24 @@ console.log({
 });
 ```
 
-The outer key of the returned `providerMetadata` is the provider name. The inner values are the metadata. An `images` key is always present in the metadata and is an array with the same length as the top level `images` key.
+The outer key of `image.providerMetadata` is the provider name. The inner value is the metadata for that image.
+
+### Underlying calls
+
+When a request is split into multiple provider calls, `calls` preserves the images, provider metadata, response metadata, warnings, and usage for each call. `images` and `usage` remain convenient flattened and aggregate views, respectively.
+
+```ts
+const { calls } = await generateImage({
+  model,
+  prompt: 'Santa Claus driving a Cadillac',
+  n: 4,
+  maxImagesPerCall: 1,
+});
+
+for (const call of calls) {
+  console.log(call.providerMetadata, call.usage);
+}
+```
 
 ### Error Handling
 
@@ -130288,6 +130743,7 @@ import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 
 export const agent = new HarnessAgent({
   harness: claudeCode,
+  model: 'claude-sonnet-4-6',
   sandbox: createVercelSandbox({
     runtime: 'node24',
     ports: [4000],
@@ -130299,6 +130755,10 @@ export const agent = new HarnessAgent({
 
 Construct the agent at module scope. It holds configuration, not a live session.
 Live state belongs to `HarnessAgentSession`.
+
+Set `model` to select the model that the harness runtime uses. Model identifiers
+are specific to each harness. When omitted, the harness uses its default model.
+The model is applied per turn, so `prepareCall` can replace it between turns.
 
 To use this agent, ensure environment variables with sandbox and harness credentials
 are set.
@@ -130439,6 +130899,87 @@ End every session explicitly:
 
 Use `destroy()` for one-off scripts and tests. Use `detach()` or `stop()` for
 HTTP routes that need multi-turn continuity.
+
+## Change Settings Between Turns
+
+Use `callOptionsSchema` and `prepareCall` to derive `model`, `skills`,
+`instructions`, and `tools` for each new turn. This follows the same
+call-options pattern as `ToolLoopAgent`:
+
+```ts
+import { HarnessAgent } from '@ai-sdk/harness/agent';
+import { tool } from 'ai';
+import { z } from 'zod';
+
+const getPolicy = tool({
+  description: 'Look up the active project policy.',
+  inputSchema: z.object({}),
+  execute: async () => 'Keep public APIs backward compatible.',
+});
+
+const agent = new HarnessAgent({
+  harness: claudeCode,
+  sandbox,
+  tools: { getPolicy },
+  callOptionsSchema: z.object({
+    area: z.enum(['frontend', 'backend']),
+    enablePolicyTool: z.boolean(),
+    useCheaperModel: z.boolean(),
+  }),
+  prepareCall: ({ options, ...call }) => ({
+    ...call,
+    model: options.useCheaperModel ? 'claude-haiku-4-5' : undefined,
+    instructions: `Work as the ${options.area} specialist.`,
+    skills: [options.area === 'frontend' ? frontendSkill : backendSkill],
+    tools: options.enablePolicyTool ? { getPolicy } : undefined,
+  }),
+});
+
+const session = await agent.createSession();
+try {
+  await agent.generate({
+    session,
+    prompt: 'Review the current implementation.',
+    options: {
+      area: 'frontend',
+      enablePolicyTool: false,
+      useCheaperModel: false,
+    },
+  });
+
+  await agent.generate({
+    session,
+    prompt: 'Now review the API contract.',
+    options: {
+      area: 'backend',
+      enablePolicyTool: true,
+      useCheaperModel: true,
+    },
+  });
+} finally {
+  await session.destroy();
+}
+```
+
+`prepareCall` runs for a new prompt after its custom `options` have been
+validated. Its settings are then fixed for that whole turn. If the turn pauses
+for a tool result, approval, stop condition, or process handoff, its
+continuation reuses the same settings and does not call `prepareCall` again.
+This prevents settings from changing mid-turn.
+
+Changing `model` does not create a new harness session. Each adapter switches or
+reconfigures its runtime before the next prompt while preserving the session's
+conversation history.
+
+The Codex adapter starts a fresh native Codex thread when its skills,
+instructions, or tool catalog changes because `codex exec resume` retains the
+original native thread bootstrap. The harness session remains usable, but prior
+native conversation context does not carry across that settings-change boundary.
+Turns with unchanged settings continue the existing native thread.
+
+Pass `abortSignal` directly to `generate()` or `stream()`; it is already a
+per-call setting and is not part of `prepareCall`. `output` also stays fixed on
+the agent because its response format is tied to the agent's output schema.
 
 When you pass `sandboxSession` to `agent.createSession()`, the caller retains
 ownership of that sandbox. `session.stop()` and `session.destroy()` still end
@@ -130678,10 +131219,14 @@ console.log(preparation.identity);
 `HarnessAgent` accepts these main settings:
 
 - `harness`: the adapter instance.
+- `model`: optional harness-specific model identifier. When omitted, the
+  harness uses its default model.
 - `sandbox`: a `HarnessV1SandboxProvider`.
 - `id`: optional stable agent identifier.
 - `instructions`: instructions appended to the runtime's system or developer
-  prompt when supported, or prepended to the first user prompt otherwise.
+  prompt when supported, or prepended to the user prompt otherwise.
+- `callOptionsSchema` and `prepareCall`: validate custom call options and derive
+  model, skills, instructions, and tools for each new turn.
 - `output`: typed output specification applied to every turn.
 - `stopWhen`: condition(s) for finishing a result slice after a completed
   harness tool step that can continue into another model step.
@@ -130695,6 +131240,10 @@ console.log(preparation.identity);
 - `toolApproval`: approval status map for host-executed tools.
 - `sandboxConfig`: sandbox working-directory and lifecycle hook configuration.
 - `telemetry`, `debug`, and `onLog`: observability and diagnostics.
+
+Telemetry reports each turn's resolved model, instructions, and active
+host-defined tools. Skills are adapter context and do not have a corresponding
+AI SDK telemetry field, so they are not included in standard telemetry events.
 
 Adapter-specific settings belong on the adapter factory, for example
 `createCodex({ reasoningEffort: 'high' })`.
@@ -131095,8 +131644,8 @@ description: Use skills with AI SDK harnesses.
 [Skills](https://agentskills.io/) are reusable instruction bundles that can
 be useful for project conventions, workflow guidance, domain-specific procedures,
 or any other instructions that should be discoverable by the underlying harness
-runtime. You can make skills available to a `HarnessAgent` for the lifetime of a
-session.
+runtime. You can configure skills for a `HarnessAgent` or replace them between
+completed turns.
 
 ## Define Skills
 
@@ -131144,6 +131693,10 @@ Use skills for reusable instructions that should be available on demand, instead
 always being loaded into the agent's context like regular `instructions`.
 
 Use `instructions` for broad agent behavior and current-session priorities.
+
+Skills can be changed between completed turns using `callOptionsSchema` and
+`prepareCall`. See [Change Settings Between Turns](/docs/ai-sdk-harnesses/harness-agent#change-settings-between-turns)
+for details.
 
 ## Related
 
@@ -134993,6 +135546,13 @@ For manual approval requests, the reason for requiring approval is available as
 `part.approval.requestReason`. It remains separate from an optional response
 reason supplied to `addToolApprovalResponse`.
 
+Approval request chunks can also include an `approvalDescriptor` with opaque
+application-specific metadata. UI message processing exposes it as
+`part.approval.descriptor` in the `approval-requested` state and preserves it in
+subsequent approval-bearing states, including `approval-responded`. This lets
+clients render or persist server-computed approval metadata without using it to
+determine whether the tool was approved.
+
 ### Securing Approvals for Sensitive Tools
 
 In the `useChat` pattern, the client sends the full message history to the server each turn. Without additional protection, a modified client could fabricate an approval response. For tools that perform sensitive operations, add `experimental_toolApprovalSecret` to your `streamText` call so the server cryptographically verifies that it issued the approval:
@@ -137437,6 +137997,13 @@ To see `WorkflowAgent` in action, check out [these examples](#examples).
         'Default sandbox session passed to tool descriptions and execution as `experimental_sandbox`, and exposed to `prepareStep`. Per-stream values override this default.',
     },
     {
+      name: 'experimental_toolApprovalSecret',
+      type: 'WorkflowToolApprovalSecret',
+      isOptional: true,
+      description:
+        'Workflow-safe reference to the environment variable containing the secret used to HMAC-sign tool approval requests and verify approved message history before tool execution. Only the environment variable name crosses workflow boundaries; the secret is read inside signing and verification steps. Per-stream values override this default.',
+    },
+    {
       name: 'prepareStep',
       type: 'PrepareStepCallback',
       isOptional: true,
@@ -137860,6 +138427,13 @@ const result = await agent.stream({
         'Sandbox session passed to tool descriptions and execution as `experimental_sandbox`, and exposed to `prepareStep`. Overrides the constructor default.',
     },
     {
+      name: 'experimental_toolApprovalSecret',
+      type: 'WorkflowToolApprovalSecret',
+      isOptional: true,
+      description:
+        'Workflow-safe reference to the environment variable containing the secret used to HMAC-sign tool approval requests and verify approved message history before tool execution. Only the environment variable name crosses workflow boundaries; the secret is read inside signing and verification steps. Overrides the constructor default.',
+    },
+    {
       name: 'telemetry',
       type: 'TelemetryOptions',
       isOptional: true,
@@ -138222,6 +138796,9 @@ import { z } from 'zod';
 
 const agent = new WorkflowAgent({
   model: 'anthropic/claude-sonnet-4-6',
+  experimental_toolApprovalSecret: {
+    environmentVariable: 'TOOL_APPROVAL_SECRET',
+  },
   tools: {
     bookFlight: tool({
       description: 'Book a flight',
@@ -138235,6 +138812,14 @@ const agent = new WorkflowAgent({
   },
 });
 ```
+
+When `experimental_toolApprovalSecret` is configured, each approval request is
+signed over its approval ID, tool call ID, tool name, and validated input.
+Replayed approvals with a missing or invalid signature do not execute the tool.
+The signature is preserved in the durable stream and UI message history, while
+only the environment variable name crosses workflow boundaries. Signing and
+verification steps read the raw secret from their local environment and do not
+serialize it. A stream-level reference overrides the constructor value.
 
 ### Agent with Lifecycle Callbacks
 
@@ -146477,6 +147062,15 @@ const azure = createAzure({
 });
 ```
 
+You can also use a complete [Microsoft Foundry OpenAI v1 base URL](https://learn.microsoft.com/en-us/azure/foundry/openai/api-version-lifecycle#model-support):
+
+```ts
+const azure = createAzure({
+  baseURL: 'https://your-resource.services.ai.azure.com/openai/v1',
+  apiKey: 'your-api-key',
+});
+```
+
 For Microsoft Entra ID authentication, you can provide a token provider.
 Install `@azure/identity` separately if you want to use its credential helpers:
 
@@ -146521,6 +147115,8 @@ You can use the following optional settings to customize the OpenAI provider ins
 
   Sets a custom [api version](https://learn.microsoft.com/en-us/azure/ai-services/openai/api-version-deprecation).
   Defaults to `v1`.
+  This setting is applied when the provider constructs the v1 path or uses
+  deployment-based URLs. Complete v1 base URLs are used as-is.
 
 - **baseURL** _string_
 
@@ -146529,7 +147125,18 @@ You can use the following optional settings to customize the OpenAI provider ins
   Either this or `resourceName` can be used.
   When a baseURL is provided, the resourceName is ignored.
 
-  With an Azure OpenAI baseURL, the resolved URL is `{baseURL}/v1{path}`.
+  For Azure-hosted URLs ending in `.openai.azure.com`,
+  `.services.ai.azure.com`, or `.cognitiveservices.azure.com`, you can pass
+  either an unversioned OpenAI prefix such as `https://your-resource.services.ai.azure.com/openai`
+  or a complete v1 base URL such as `https://your-resource.services.ai.azure.com/openai/v1`.
+  The provider appends `/v1` and the configured `api-version` to unversioned
+  resource URLs. Complete v1 URLs are used as-is.
+
+  Complete Microsoft Foundry project v1 URLs, such as
+  `https://your-resource.services.ai.azure.com/api/projects/your-project/openai/v1`,
+  are also used as-is. If `/v1` is omitted from a Foundry project URL, the
+  provider appends it without adding an `api-version` query parameter.
+
   With a non-Azure custom gateway baseURL, the resolved URL is `{baseURL}{path}`;
   the SDK does not append `/v1` or an `api-version` query parameter in this mode.
 
@@ -149626,13 +150233,127 @@ file's media type. Provider file references, such as OpenAI file IDs, and
 file data in `{ type: 'text', text: '...' }` format are not supported by this
 provider.
 
+## Experimental Extensions
+
+Open Responses implementations can add namespaced tools, items, and streaming
+events. Use `Experimental_OpenResponsesExtension` to encode and decode an
+implementation's extension wire formats. Unregistered provider tools are
+omitted from requests with an `unsupported` warning.
+
+This API is experimental and may change in a future release.
+
+The AI SDK provider-tool ID uses dot notation (`acme.document_search`), while
+Open Responses wire types use colon notation (`acme:document_search`). The
+namespace in `id` must match the namespace in every registered wire type.
+
+```ts
+import {
+  createOpenResponses,
+  type Experimental_OpenResponsesExtension,
+} from '@ai-sdk/open-responses';
+import { generateText, tool } from 'ai';
+import { z } from 'zod';
+
+const documentSearchExtension: Experimental_OpenResponsesExtension = {
+  id: 'acme.document_search',
+  toolType: 'acme:document_search',
+  itemTypes: ['acme:document_search_receipt'],
+  encodeTool: ({ name, args }) => ({
+    name,
+    index: args.index as string,
+  }),
+
+  decodeItem: ({ item }) => [
+    {
+      type: 'tool-call',
+      toolCallId: item.call_id as string,
+      toolName: item.name as string,
+      input: JSON.stringify(item.query),
+      providerExecuted: true,
+    },
+    {
+      type: 'tool-result',
+      toolCallId: item.call_id as string,
+      toolName: item.name as string,
+      result: item.result!,
+    },
+  ],
+};
+
+const acme = createOpenResponses({
+  name: 'acme',
+  url: 'https://api.acme.example/v1/responses',
+  experimental_extensions: [documentSearchExtension],
+});
+
+const documentSearch = tool({
+  type: 'provider',
+  id: 'acme.document_search',
+  args: { index: 'documentation' },
+  isProviderExecuted: true,
+  inputSchema: z.object({ text: z.string() }),
+  outputSchema: z.object({
+    documents: z.array(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+      }),
+    ),
+  }),
+});
+
+const result = await generateText({
+  model: acme('your-model-id'),
+  prompt: 'Find the extension documentation.',
+  tools: { documentSearch },
+});
+```
+
+Set `providerExecuted` on each decoded `tool-call` or `tool-input-start` part.
+It can vary by item or event.
+
+An extension codec can define:
+
+- `encodeTool`: Encodes a provider tool. Returning `undefined` omits the tool
+  with an `unsupported` warning. A `toolChoice` that selects the omitted tool is
+  also omitted.
+- `encodeToolChoice`: Encodes a specific `toolChoice`. The default is
+  `{ type: toolType }`.
+- `decodeItem`: Maps a completed item to AI SDK content parts. `mode` is either
+  `'generate'` or `'stream'`.
+- `encodeInputItem`: Encodes tool-call or tool-result history when the original
+  wire item is unavailable. Returned items must include `id`, `status`, and a
+  registered namespaced `type`.
+- `decodeEvent`: Maps a streaming event to AI SDK stream parts. Its `state` map
+  lasts for one response stream.
+
+Tool, item, and event capabilities are independent. An item-only extension, for
+example, defines `itemTypes` and `decodeItem` without `toolType` or `encodeTool`.
+Capability fields must be provided in pairs.
+
+Each decoded item adds an `open-responses.extension-replay` custom part that
+stores the original JSON in provider metadata. Other decoded parts reference
+that custom part instead of copying the item. Passing `result.response.messages`
+to a later call replays the original item once, including opaque fields. This
+also preserves items that decode only to response-only source parts.
+
+The adapter validates only the extension discriminator fields. Validate other
+item and event fields in the codec before returning AI SDK parts. The original
+item is stored in provider metadata and may appear in persisted messages,
+telemetry, logs, or UI payloads.
+
+Extension callbacks cannot be serialized across workflow step boundaries.
+Create the provider inside the workflow step. Serializing a model configured
+with extensions throws a `SerializationError`.
+
 ## Limitations
 
 - Stop sequences, `topK`, and `seed` are not supported and are ignored with warnings.
 - The provider supports language models only. It does not provide embedding or
   image generation models.
-- AI SDK function tools are supported. Provider-specific built-in tools and
-  options require a dedicated provider implementation.
+- AI SDK function tools and registered Open Responses extensions are supported.
+  Other provider-specific tools and options require a dedicated provider
+  implementation.
 
 ---
 title: Claude Platform on AWS
@@ -150765,6 +151486,30 @@ The following provider options are available for Cohere embedding models:
 - **truncate** _string_
 
   Truncation behavior when input exceeds the model's context length. Accepts: `NONE`, `START`, `END`.
+
+### Application Inference Profiles
+
+Application inference profile ARNs do not identify their underlying model. Pass
+the model family when creating an embedding model so the provider can select
+the correct request format and batch size:
+
+```ts
+import {
+  amazonBedrock,
+  type AmazonBedrockEmbeddingModelSettings,
+} from '@ai-sdk/amazon-bedrock';
+import { embedMany } from 'ai';
+
+const profileArn =
+  'arn:aws:bedrock:us-east-1:123456789012:application-inference-profile/qibm5eutlkcy';
+
+const { embeddings } = await embedMany({
+  model: amazonBedrock.embedding(profileArn, {
+    modelFamily: 'cohere',
+  } satisfies AmazonBedrockEmbeddingModelSettings),
+  values: ['hello', 'world'],
+});
+```
 
 ### Model Capabilities
 
@@ -155702,8 +156447,8 @@ The [Gemini Interactions API](https://ai.google.dev/gemini-api/docs/interactions
 (`POST /v1beta/interactions`) is a separate Google endpoint with server-side
 state, unified content blocks, first-class built-in tools, agent presets,
 managed agents that run in a sandboxed Linux environment, and native
-multimodal image output. It is reached via the `google.interactions(...)`
-factory:
+multimodal image and video output. It is reached via the
+`google.interactions(...)` factory:
 
 ```ts
 import { google } from '@ai-sdk/google';
@@ -155795,17 +156540,42 @@ The following optional provider options are available:
   Whether the model returns synthesized thought summaries on reasoning
   parts. Defaults to the API default.
 
-- **responseFormat** _Array\<\{ type: 'text' | 'image' | 'audio'; mimeType?: string; schema?: unknown; aspectRatio?: string; imageSize?: '1K' \| '2K' \| '4K' \| '512' \}\>_
+- **responseFormat** _Array\<ResponseFormatEntry\>_
 
   Output-format entries that map directly to the API's `response_format`
-  array. Use this for fine-grained control over image, audio, or non-JSON
-  text outputs (e.g. `aspectRatio` and `imageSize` for image generation).
+  array. Entries have the following shape:
+
+  ```ts
+  type ResponseFormatEntry =
+    | { type: 'text'; mimeType?: string; schema?: unknown }
+    | {
+        type: 'image';
+        mimeType?: string;
+        aspectRatio?: string;
+        imageSize?: '1K' | '2K' | '4K' | '512';
+      }
+    | { type: 'audio'; mimeType?: string }
+    | {
+        type: 'video';
+        aspectRatio?: '16:9' | '9:16';
+        resolution?: '360p' | '720p' | '1080p' | '4k';
+        duration?: string;
+        delivery?: 'inline' | 'uri';
+        gcsUri?: string;
+      };
+  ```
+
+  Use this for fine-grained control over image, audio, video, or non-JSON
+  text outputs. Video entries can control aspect ratio, resolution, duration,
+  and inline or URI delivery; set `gcsUri` when delivering to Google Cloud
+  Storage. Inline videos are returned in `result.files` by `generateText` and
+  emitted as `file` parts by `streamText`.
   The AI SDK call-level `responseFormat: { type: 'json', schema }` still
   drives JSON-mode automatically and prepends a matching text entry;
   entries listed here are appended.
 
-  `aspectRatio` accepts `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `4:5`, `5:4`,
-  `9:16`, `16:9`, `21:9`, `1:8`, `8:1`, `1:4`, `4:1`.
+  For image entries, `aspectRatio` accepts `1:1`, `2:3`, `3:2`, `3:4`, `4:3`,
+  `4:5`, `5:4`, `9:16`, `16:9`, `21:9`, `1:8`, `8:1`, `1:4`, `4:1`.
 
 - **imageConfig** _\{ aspectRatio?: string; imageSize?: '1K' | '2K' | '4K' | '512' \}_ (deprecated)
 
@@ -164138,9 +164908,10 @@ The following optional provider options are available for MiniMax language model
 
 ## Video Models
 
-You can generate videos with the MiniMax-H3 model using the
-[`experimental_generateVideo`](/docs/reference/ai-sdk-core/generate-video)
-function:
+You can generate videos with the MiniMax-H3 and MiniMax-H3-Max models using
+the [`experimental_generateVideo`](/docs/reference/ai-sdk-core/generate-video)
+function. MiniMax-H3-Max is the faster variant: it renders at lower resolutions
+and serves every mode except reference-to-video.
 
 ```ts
 import { minimax, type MiniMaxVideoModelOptions } from '@ai-sdk/minimax';
@@ -164153,18 +164924,34 @@ const { video } = await generateVideo({
   duration: 5,
   providerOptions: {
     minimax: {
+      resolution: '768P',
       pollTimeoutMs: 600000, // 10 minutes
     } satisfies MiniMaxVideoModelOptions,
   },
 });
 ```
 
-MiniMax-H3 generates one video per call. Generation is asynchronous — the model
+Both models generate one video per call. Generation is asynchronous — the model
 creates a task and polls until it completes, then returns the resulting MP4 URL.
 
-`duration` accepts a whole number of seconds from 5 to 15, and defaults to 5. A
-fractional value is rounded and an out-of-range value is clamped, each with a
-warning. The only supported output resolution is `2K`.
+`duration` accepts a whole number of seconds and defaults to 5. MiniMax-H3
+supports 4 to 15 seconds; MiniMax-H3-Max supports 5 to 15 seconds. A fractional
+value is rounded and an out-of-range value is clamped, each with a warning.
+MiniMax-H3 supports `768P` and `2K` output, while MiniMax-H3-Max supports `480P`
+and `768P`.
+
+The API takes a named tier rather than a frame size, so a top-level `resolution`
+is matched against a fixed table of one frame size per tier per aspect ratio:
+
+| Tier   | Accepted `resolution` values                                                 |
+| ------ | ---------------------------------------------------------------------------- |
+| `480P` | `480x480`, `1120x480`, `854x480`, `640x480`, `480x854`, `480x640`            |
+| `768P` | `768x768`, `1792x768`, `1366x768`, `1024x768`, `768x1366`, `768x1024`        |
+| `2K`   | `2048x2048`, `2560x1080`, `2560x1440`, `2048x1536`, `1440x2560`, `1536x2048` |
+
+Anything outside the table, or a tier the selected model does not support, warns
+and falls back to the model default. `providerOptions.minimax.resolution` names
+the tier exactly and wins over the top-level value, which is reported as ignored.
 
 For **text-to-video**, `aspectRatio` defaults to `16:9` when omitted. The MiniMax
 API requires a concrete ratio for text-only requests and does not accept
@@ -164186,9 +164973,10 @@ The generation mode is inferred from the inputs you pass:
   `frameType: 'first_frame'`) to animate a starting image.
 - **First-to-last keyframes** — pass `frameImages` with both a `first_frame` and
   a `last_frame` to control the transition.
-- **Reference-to-video** — pass `inputReferences` (images and/or videos, routed
-  by media type) to keep a subject/style or follow motion. Frame images and
-  references are mutually exclusive.
+- **Reference-to-video (MiniMax-H3 only)** — pass `inputReferences` (images
+  and/or videos, routed by media type) to keep a subject/style or follow motion.
+  Frame images and references are mutually exclusive. MiniMax-H3-Max does not
+  support reference-to-video inputs.
 
 When a frame image is supplied, the aspect ratio follows the image and any
 explicit `aspectRatio` is ignored.
@@ -164197,9 +164985,10 @@ explicit `aspectRatio` is ignored.
 
 The following optional provider options are available for MiniMax video models:
 
-- **resolution** _string_
+- **resolution** _'480P' | '768P' | '2K'_
 
-  Output resolution. MiniMax-H3 currently only supports `'2K'` (the default).
+  Output resolution. MiniMax-H3 supports `'768P'` and `'2K'` (the default).
+  MiniMax-H3-Max supports `'480P'` and `'768P'` (the default).
 
 - **ratio** _'adaptive' | '21:9' | '16:9' | '4:3' | '1:1' | '3:4' | '9:16'_
 
@@ -164207,8 +164996,9 @@ The following optional provider options are available for MiniMax video models:
 
 - **referenceAudioUrls** _string[]_
 
-  Reference audio URLs (or `mm_file://` handles) for reference-to-video
-  generation. Must be paired with at least one reference image or video. Up to 3.
+  Reference audio URLs (or `mm_file://` handles) for MiniMax-H3
+  reference-to-video generation. Must be paired with at least one reference
+  image or video. Up to 3. MiniMax-H3-Max does not support reference audio.
 
 - **aigcWatermark** _boolean_
 
@@ -167028,6 +167818,7 @@ import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: claudeCode,
+  model: 'claude-sonnet-4-6',
   sandbox: createVercelSandbox({
     runtime: 'node24',
     ports: [4000],
@@ -167067,7 +167858,6 @@ Use `createClaudeCode()` to configure the runtime:
 
 ```ts
 const harness = createClaudeCode({
-  model: 'claude-sonnet-4-6',
   maxTurns: 10,
   env: {
     DEPLOYMENT_ENV: 'staging',
@@ -167092,7 +167882,6 @@ Settings:
   credentials the harness adapter can discover, read, or otherwise access in
   the host process.
 - `mcpServers`: MCP server definitions keyed by server name.
-- `model`: Anthropic model id passed to the underlying Claude Code runtime.
 - `maxTurns`: maximum internal turns before yielding.
 - `env`: environment variables for the Claude Code process. Values are merged
   over the sandbox bridge process environment and take precedence.
@@ -167232,6 +168021,7 @@ import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: codex,
+  model: 'gpt-5.6-luna',
   sandbox: createVercelSandbox({
     runtime: 'node24',
     ports: [4000],
@@ -167271,7 +168061,6 @@ Use `createCodex()` to configure the runtime:
 
 ```ts
 const harness = createCodex({
-  model: 'gpt-5.5',
   reasoningEffort: 'high',
   webSearch: true,
   codexConfig: {
@@ -167296,8 +168085,7 @@ Settings:
   provided, so use the snake_case keys from Codex's `config.toml` reference.
   The adapter's managed values take precedence over conflicting entries.
 - `mcpServers`: MCP server definitions keyed by server name.
-- `model`: OpenAI model id. If omitted, the adapter uses its pinned default.
-- `reasoningEffort`: `low`, `medium`, or `high`.
+- `reasoningEffort`: `low`, `medium`, `high`, `xhigh`, or `max`.
 - `webSearch`: allow live web search.
 - `port`: bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
@@ -167438,6 +168226,7 @@ import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: pi,
+  model: 'anthropic/claude-sonnet-4.6',
   sandbox: createVercelSandbox({
     runtime: 'node24',
   }),
@@ -167476,7 +168265,6 @@ Use `createPi()` to configure the runtime:
 
 ```ts
 const harness = createPi({
-  model: 'anthropic/claude-sonnet-4.6',
   thinkingLevel: 'medium',
 });
 ```
@@ -167488,8 +168276,8 @@ Settings:
 - `extensionFactories`: trusted inline Pi extension factories that run in the
   host Node.js process.
 - `mcpServers`: MCP server definitions keyed by server name.
-- `model`: Pi model id or model name.
-- `thinkingLevel`: Pi thinking budget level.
+- `thinkingLevel`: Pi thinking level (`off`, `minimal`, `low`, `medium`,
+  `high`, `xhigh`, or `max`).
 
 ## Inline Extensions
 
@@ -167638,6 +168426,7 @@ import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: openCode,
+  model: 'anthropic/claude-sonnet-4-6',
   sandbox: createVercelSandbox({
     runtime: 'node24',
     ports: [4000],
@@ -167677,8 +168466,14 @@ Use `createOpenCode()` to configure the runtime:
 
 ```ts
 const harness = createOpenCode({
-  model: 'anthropic/claude-sonnet-4-6',
   reasoningVariant: 'high',
+  openCodeConfig: {
+    agent: {
+      general: {
+        model: 'openai/gpt-5.4-mini',
+      },
+    },
+  },
 });
 ```
 
@@ -167695,9 +168490,11 @@ Settings:
   credentials the harness adapter can discover, read, or otherwise access in
   the host process.
 - `mcpServers`: MCP server definitions keyed by server name.
-- `model`: OpenCode model id. Provider-prefixed values such as
-  `anthropic/claude-sonnet-4-6` are passed through to OpenCode.
-- `provider`: provider id to use with an unprefixed `model`.
+- `openCodeConfig`: additional native OpenCode configuration. Adapter-managed
+  settings take precedence. Agent-local `permission` and deprecated `tools`
+  settings are ignored so they cannot bypass harness permissions or built-in
+  tool filtering.
+- `provider`: provider id to use when `model` on `HarnessAgent` is unprefixed.
 - `reasoningVariant`: OpenCode reasoning/thinking variant for supported models,
   such as `low`, `medium`, or `high`.
 - `port`: bridge port override.
@@ -167848,6 +168645,7 @@ import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: deepAgents,
+  model: 'anthropic/claude-sonnet-4-6',
   sandbox: createVercelSandbox({
     runtime: 'node24',
     ports: [4000],
@@ -167886,9 +168684,7 @@ Vercel Sandbox, and one of the variables listed under
 Use `createDeepAgents()` to configure the runtime:
 
 ```ts
-const harness = createDeepAgents({
-  model: 'claude-sonnet-4',
-});
+const harness = createDeepAgents({ recursionLimit: 100 });
 ```
 
 Settings:
@@ -167904,9 +168700,6 @@ Settings:
   credentials the harness adapter can discover, read, or otherwise access in
   the host process.
 - `mcpServers`: MCP server definitions keyed by server name.
-- `model`: model id passed to the Deep Agents (LangChain) runtime. Through AI
-  Gateway, use the `creator/model` slug (e.g. `anthropic/claude-sonnet-4-6`,
-  `google/gemini-2.5-flash`, `openai/gpt-4.1-mini`).
 - `port`: bridge port override.
 - `recursionLimit`: maximum LangGraph super-steps per turn. When omitted, the
   Deep Agents default applies.
@@ -167953,9 +168746,11 @@ Supported environment variables:
 To run a non-Anthropic model, select `ai-gateway`:
 
 ```ts
-const harness = createDeepAgents({
+const harness = createDeepAgents({ auth: 'ai-gateway' });
+const agent = new HarnessAgent({
+  harness,
   model: 'google/gemini-2.5-flash',
-  auth: 'ai-gateway',
+  sandbox,
 });
 ```
 
@@ -168123,7 +168918,10 @@ try {
   - An authentication environment: auto-detect from the supplied record
     instead of the host process environment.
 - `providerAuthentication`: declarative runtime-specific Gateway environment.
-- `modelId`: a known implementation model identifier for Harness metadata.
+- `modelMapping`: required static mapping from the `model` supplied to
+  `HarnessAgent` to the ACP operation used by the implementation. Use
+  `session-config-option` with its configuration option ID as `path`, or
+  `session-model` with the `session/set_model` request property as `path`.
 - `skillsDirectory`: native skills directory relative to the implementation's
   effective `$HOME`. It defaults to `.agents/skills`; override it for runtimes
   that use a different location.
@@ -168168,6 +168966,10 @@ const harness = createACP({
     packageName: '@example/acp-agent',
   },
   executable: 'example-acp',
+  modelMapping: {
+    type: 'session-config-option',
+    path: 'model',
+  },
   outputSchemaMapping: {
     type: 'session-prompt-meta',
     path: ['outputSchema'],
@@ -168372,6 +169174,10 @@ export const claudeCodeACPHarness = createACP({
     packageVersion: '0.61.0',
   },
   executable: 'claude-agent-acp',
+  modelMapping: {
+    type: 'session-config-option',
+    path: 'model',
+  },
   skillsDirectory: '.claude/skills',
   credentialEnv: ['ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN'],
   credentialBrokering: ({ env, sandboxEnv }) => {
@@ -168456,6 +169262,10 @@ export const codexACPHarness = createACP({
     packageVersion: '1.1.4',
   },
   executable: 'codex-acp',
+  modelMapping: {
+    type: 'session-config-option',
+    path: 'model',
+  },
   forwardEnv: ['CODEX_CONFIG'],
   credentialEnv: ['CODEX_API_KEY', 'OPENAI_API_KEY'],
   credentialBrokering: ({ env, sandboxEnv }) => {
@@ -168558,6 +169368,13 @@ export const cursorACPHarness = createACP({
   },
   executable: 'agent',
   args: ['--disable-auto-update', 'acp'],
+  modelMapping: {
+    type: 'session-config-option',
+    path: 'model',
+  },
+  clientCapabilities: {
+    _meta: { parameterizedModelPicker: true },
+  },
   credentialEnv: ['CURSOR_API_KEY'],
   credentialBrokering: ({ env, sandboxEnv }) => {
     if (!env.CURSOR_API_KEY || !sandboxEnv?.CURSOR_API_KEY) return [];
@@ -168618,6 +169435,10 @@ export const grokBuildACPHarness = createACP({
   },
   executable: 'grok',
   args: ['agent', 'stdio'],
+  modelMapping: {
+    type: 'session-model',
+    path: 'modelId',
+  },
   credentialEnv: ['XAI_API_KEY'],
   credentialBrokering: ({ env, sandboxEnv }) => {
     if (!env.XAI_API_KEY || !sandboxEnv?.XAI_API_KEY) return [];
@@ -168723,6 +169544,7 @@ import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: grokBuild,
+  model: 'grok-build-0.1',
   sandbox: createVercelSandbox({
     runtime: 'node24',
     ports: [4000],
@@ -168763,7 +169585,7 @@ Use `createGrokBuild()` to configure the runtime:
 ```ts
 const harness = createGrokBuild({
   auth: 'ai-gateway',
-  model: 'grok-code-fast-1',
+  reasoningEffort: 'high',
   port: 4001,
   startupTimeoutMs: 180_000,
 });
@@ -168783,8 +169605,9 @@ Settings:
   value forwarded into the sandbox process. It does not restrict which
   credentials the harness adapter can discover, read, or otherwise access in
   the host process.
-- `model`: Grok model id selected through ACP. When omitted, Grok Build chooses
-  its own default model.
+- `reasoningEffort`: reasoning effort for reasoning-capable models. Supported
+  values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`.
+  When omitted, Grok Build uses its configured default.
 - `mcpServers`: MCP server definitions keyed by server name.
 - `port`: ACP bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the ACP bridge to start.
@@ -168859,7 +169682,7 @@ const sandbox = createVercelSandbox({
 ```
 
 The first session requires network egress so the ACP harness can install
-`@xai-official/grok@0.2.111` inside the sandbox.
+`@xai-official/grok@1.0.5` inside the sandbox.
 
 ## Built-in Tools
 
@@ -168941,6 +169764,7 @@ import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: cline,
+  model: 'anthropic/claude-opus-5',
   sandbox: createVercelSandbox({
     runtime: 'node24',
   }),
@@ -168980,7 +169804,6 @@ Use `createCline()` to configure the runtime:
 ```ts
 const harness = createCline({
   auth: 'direct',
-  modelId: 'anthropic/claude-opus-5',
 });
 ```
 
@@ -168992,8 +169815,6 @@ Settings:
 - `providerId`: Cline LLM provider id (e.g. `anthropic`, `openai`, `gemini`).
   When omitted, direct authentication uses the Cline backend. Explicit custom
   providers apply only to direct authentication.
-- `modelId`: model id for the configured provider. When omitted, the Cline SDK
-  selects the provider's default model.
 - `apiKey`: provider API key. When omitted, the Cline gateway falls back to
   the configured provider's environment variable.
 - `baseUrl`: custom provider endpoint.
@@ -169154,6 +169975,7 @@ import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: cursor,
+  model: 'gpt-5.6-luna',
   sandbox: createVercelSandbox({
     runtime: 'node24',
     ports: [4000],
@@ -169183,7 +170005,6 @@ Use `createCursor()` to configure the runtime:
 ```ts
 const harness = createCursor({
   auth: 'ai-gateway',
-  model: 'cursor-model-id',
   port: 4001,
   startupTimeoutMs: 180_000,
 });
@@ -169204,8 +170025,6 @@ Settings:
   value forwarded into the sandbox process. It does not restrict which
   credentials the harness adapter can discover, read, or otherwise access in
   the host process.
-- `model`: Cursor model id selected through ACP. When omitted, Cursor chooses
-  its own default model.
 - `mcpServers`: MCP server definitions keyed by server name.
 - `port`: ACP bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the ACP bridge to start.
@@ -169342,6 +170161,7 @@ import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: fx,
+  model: 'openai/gpt-5.6-luna',
   sandbox: createVercelSandbox({
     runtime: 'node24',
     ports: [4000],
@@ -169378,7 +170198,6 @@ Use `createFx()` to configure the runtime:
 ```ts
 const harness = createFx({
   auth: 'ai-gateway',
-  model: 'openai/gpt-5.4',
   port: 4001,
   startupTimeoutMs: 180_000,
 });
@@ -169399,8 +170218,6 @@ Settings:
   value forwarded into the sandbox process. It does not restrict which
   credentials the harness adapter can discover, read, or otherwise access in
   the host process.
-- `model`: AI Gateway model id selected through ACP. When omitted, fx chooses
-  its own default model.
 - `mcpServers`: MCP server definitions keyed by server name. fx ACP sessions
   use only the servers supplied by the ACP client.
 - `port`: ACP bridge port override.
@@ -169576,6 +170393,7 @@ import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
 
 const agent = new HarnessAgent({
   harness: codex,
+  model: 'gpt-5.6-luna',
   sandbox: createVercelSandbox({
     runtime: 'node24',
     ports: [4000],
@@ -170139,6 +170957,95 @@ for await (const message of result.textStream) {
 You can use any supported `modelId` from the NEAR AI Cloud model catalog. Model metadata includes context length, modalities, and whether TEE attestation is supported for that model.
 
 ---
+title: Synthorai
+description: Use the Synthorai OpenAI compatible API with the AI SDK.
+---
+
+# Synthorai Provider
+
+[Synthorai](https://synthorai.io) is an AI gateway that provides access to models from multiple providers through an OpenAI-compatible API. You can use its Chat Completions endpoint with the AI SDK through the `@ai-sdk/openai-compatible` module.
+
+## Setup
+
+The Synthorai provider is available via the `@ai-sdk/openai-compatible` module as it is compatible with the OpenAI API. You can install it with:
+
+<InstallPackages packages="@ai-sdk/openai-compatible" />
+
+## Provider Instance
+
+To use Synthorai, create a custom provider instance with the `createOpenAICompatible` function from `@ai-sdk/openai-compatible`:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+
+const synthorai = createOpenAICompatible({
+  name: 'synthorai',
+  baseURL: 'https://synthorai.io/v1',
+  apiKey: process.env.SYNTHORAI_API_KEY,
+});
+```
+
+<Note>
+  Follow the [Synthorai quickstart](https://synthorai.io/docs/quickstart/) to
+  create an API key. Make sure to set the `SYNTHORAI_API_KEY` environment
+  variable with your API key.
+</Note>
+
+## Language Models
+
+You can create Synthorai models using the provider instance. The first argument is a model ID from the [model catalog](https://synthorai.io/models/), for example `claude-fable-5`.
+
+```ts
+const model = synthorai('claude-fable-5');
+```
+
+### Example
+
+You can use Synthorai language models to generate text with the `generateText` function:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { generateText } from 'ai';
+
+const synthorai = createOpenAICompatible({
+  name: 'synthorai',
+  baseURL: 'https://synthorai.io/v1',
+  apiKey: process.env.SYNTHORAI_API_KEY,
+});
+
+const { text } = await generateText({
+  model: synthorai('claude-fable-5'),
+  prompt: 'Tell me about yourself in one sentence.',
+});
+
+console.log(text);
+```
+
+Synthorai language models can also generate text in a streaming fashion with the `streamText` function:
+
+```ts
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { streamText } from 'ai';
+
+const synthorai = createOpenAICompatible({
+  name: 'synthorai',
+  baseURL: 'https://synthorai.io/v1',
+  apiKey: process.env.SYNTHORAI_API_KEY,
+});
+
+const result = streamText({
+  model: synthorai('claude-fable-5'),
+  prompt: 'Write a short haiku about routing.',
+});
+
+for await (const textPart of result.textStream) {
+  process.stdout.write(textPart);
+}
+```
+
+See the [Synthorai documentation](https://synthorai.io/docs/) for endpoint details and model-specific capabilities.
+
+---
 title: OpenAI Compatible Providers
 description: Use OpenAI compatible providers with the AI SDK.
 ---
@@ -170156,6 +171063,7 @@ We provide detailed documentation for the following OpenAI compatible providers:
 - [Heroku](/providers/openai-compatible-providers/heroku)
 - [Clarifai](/providers/openai-compatible-providers/clarifai)
 - [NEAR AI Cloud](/providers/openai-compatible-providers/nearai)
+- [Synthorai](/providers/openai-compatible-providers/synthorai)
 
 The general setup and provider instance creation is the same for all of these providers.
 

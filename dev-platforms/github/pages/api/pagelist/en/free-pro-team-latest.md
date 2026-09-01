@@ -447,7 +447,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/billing/concepts/product-billing/github-packages
 /en/billing/concepts/product-billing/cloud-and-local-sandboxes
 /en/billing/concepts/product-billing/git-lfs
-/en/billing/concepts/product-billing/github-spark
 /en/billing/concepts/third-party-payments
 /en/billing/concepts/third-party-payments/github-sponsors
 /en/billing/concepts/third-party-payments/github-marketplace-apps
@@ -1706,7 +1705,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/agents/enterprise-management
 /en/copilot/concepts/agents/opentelemetry
 /en/copilot/concepts/about-cloud-and-local-sandboxes
-/en/copilot/concepts/spark
 /en/copilot/concepts/copilot-usage-metrics
 /en/copilot/concepts/copilot-usage-metrics/copilot-metrics
 /en/copilot/concepts/prompting
@@ -1998,7 +1996,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/enable-copilot-cloud-agent
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/block-agentic-features
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/enable-copilot-code-review
-/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-spark
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-availability-of-default-models
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/enable-custom-models
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/review-audit-logs
@@ -2015,7 +2012,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/troubleshoot-copilot/view-logs
 /en/copilot/how-tos/troubleshoot-copilot/troubleshoot-firewall-settings
 /en/copilot/how-tos/troubleshoot-copilot/troubleshoot-network-errors
-/en/copilot/how-tos/troubleshoot-copilot/troubleshoot-spark
 /en/copilot/how-tos/troubleshoot-copilot/troubleshoot-copilot-slowness
 /en/copilot/reference
 /en/copilot/reference/chat-cheat-sheet
@@ -2145,11 +2141,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/tutorials/budgets
 /en/copilot/tutorials/budgets/getting-started-with-budget-controls
 /en/copilot/tutorials/budgets/optimizing-your-budget-configuration
-/en/copilot/tutorials/spark
-/en/copilot/tutorials/spark/your-first-spark
-/en/copilot/tutorials/spark/prompt-tips
-/en/copilot/tutorials/spark/build-apps-with-spark
-/en/copilot/tutorials/spark/deploy-from-cli
 /en/copilot/tutorials/customize-code-review
 /en/copilot/tutorials/use-copilot-code-review-across-the-pull-request-lifecycle
 /en/copilot/tutorials/enhance-agent-mode-with-mcp

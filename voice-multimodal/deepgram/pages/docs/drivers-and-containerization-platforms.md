@@ -162,17 +162,11 @@ If you are using Oracle Cloud Infrastructure and you are using a [Shielded insta
 
    With the `--silent` install on Ubuntu and other non-RHEL distros, you will see warnings that are similar to the following (they can be ignored):
 
-   <p>
-     WARNING: Ignoring CC version mismatch:
-   </p>
+   WARNING: Ignoring CC version mismatch:
 
-   <p>
-     The kernel was built with gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0, GNU ld (GNU Binutils for Ubuntu) 2.34, but the current compiler version is cc (Ubuntu 9.4.0-1ubuntu1~20.04) 9.4.0.
-   </p>
+   The kernel was built with gcc (Ubuntu 9.3.0-17ubuntu1\~20.04) 9.3.0, GNU ld (GNU Binutils for Ubuntu) 2.34, but the current compiler version is cc (Ubuntu 9.4.0-1ubuntu1\~20.04) 9.4.0.
 
-   <p>
-     WARNING: nvidia-installer was forced to guess the X library path '/usr/lib64' and X module path '/usr/lib64/xorg/modules'; these paths were not queryable from the system.  If X fails to find the NVIDIA X driver module, please install the `pkg-config` utility and the X.Org SDK/development package for your distribution and reinstall the driver
-   </p>
+   WARNING: nvidia-installer was forced to guess the X library path '/usr/lib64' and X module path '/usr/lib64/xorg/modules'; these paths were not queryable from the system.  If X fails to find the NVIDIA X driver module, please install the \`pkg-config\` utility and the X.Org SDK/development package for your distribution and reinstall the driver
 
 10. Test that the NVIDIA drivers are installed. The following command should produce output describing the available GPU:
 

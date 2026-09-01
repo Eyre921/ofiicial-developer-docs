@@ -14,12 +14,12 @@ Here’s how to set it up:
 
 Go to your [Subscription](https://elevenlabs.io/app/subscription) page.
 
-Click <strong>Manage Subscription</strong>.
+Click **Manage Subscription**.
 
-Use the <strong>Enable credit usage notification</strong> toggle to turn on this feature.
+Use the **Enable credit usage notification** toggle to turn on this feature.
 
 Once enabled, you can adjust the percentage at which the notification is triggered.
 
-Click <strong>Confirm</strong> when you’ve set the slider to your preferred threshold.
+Click **Confirm** when you’ve set the slider to your preferred threshold.
 
 When this feature is active, you’ll receive an email notification when you’ve reached the specified percentage of your total credits. In a multi-seat workspace, all admins will receive the email.

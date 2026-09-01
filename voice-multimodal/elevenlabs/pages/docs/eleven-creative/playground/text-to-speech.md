@@ -16,7 +16,7 @@ To get started generating your first audio using Text to Speech, it's very simpl
 
 ## Guide
 
-![Text to Speech demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/32b6abef4b76c8652b0e55dbb26c9694fdc82e191a062678b93c9a5ca5d80c94/assets/images/product-guides/text-to-speech/text-to-speech-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100019Z&X-Amz-Expires=604800&X-Amz-Signature=4f947fddd9614957861dffb22100d3bbd759974382811c2a049b4c676514a933&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Text to Speech demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/32b6abef4b76c8652b0e55dbb26c9694fdc82e191a062678b93c9a5ca5d80c94/assets/images/product-guides/text-to-speech/text-to-speech-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T093435Z&X-Amz-Expires=604800&X-Amz-Signature=28d30678858e30b27fa2f95f6968f2cd5baf0b7f580371786ab9e0c5207e963c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Adjust settings (optional)
 
@@ -49,7 +49,7 @@ The order of importance goes as follows: **Voice** selection is most important, 
 ### Voices
 
 ![Text to Speech voice
-selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1a2f62118fa246f300c666a5a4f3fbd18cc9bfed023a8c6a010782545da1254/assets/images/product-guides/text-to-speech/text-to-speech-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100019Z&X-Amz-Expires=604800&X-Amz-Signature=547dcaa8ced14c20328df7d7c5fd2d3cf5455d8fcea06a53da24a48839206331&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1a2f62118fa246f300c666a5a4f3fbd18cc9bfed023a8c6a010782545da1254/assets/images/product-guides/text-to-speech/text-to-speech-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T093435Z&X-Amz-Expires=604800&X-Amz-Signature=88924288f9bd587853632928ae8ba2aaaaa33ed2b251c4a97ce123915e50de2f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 We offer many types of voices, including the curated **Default Voices**, our vast **Voices Library&#x20;**&#x77;ith almost any voices you can imagine, completely synthetic voices created using our **Voice Design** tool, and you can create your own collection of cloned voices using our two technologies: **Instant Voice Cloning** and **Professional Voice Cloning**.
 
@@ -72,7 +72,7 @@ Keep in mind, voice remixing only works for specific voices. For example, you ca
 ### Models
 
 ![Text to Speech model
-selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa32e23cc2a196a48ff47650249e612e7e5da023fd2f69244f27c5fea7968b75/assets/images/product-guides/text-to-speech/text-to-speech-models.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100019Z&X-Amz-Expires=604800&X-Amz-Signature=ca4a79bd27a15228e7c3dffd1485c3324e14a635635139e19e6ee6f48e21f768&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa32e23cc2a196a48ff47650249e612e7e5da023fd2f69244f27c5fea7968b75/assets/images/product-guides/text-to-speech/text-to-speech-models.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T093435Z&X-Amz-Expires=604800&X-Amz-Signature=8bca60b86aa6f3b746c490f4d93e63963cc6e3ac21cc114a7cd14db016559799&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 We offer two families of models: **Standard (high-quality)** models and **Flash** models, which are optimized for extremely low latency. Most families include both English-only and multilingual versions.
 
@@ -137,7 +137,7 @@ Faster model, 50% lower price per character for API generations
 ### Voice settings
 
 ![Text to Speech voice
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e08b179bfd640650ca5225b7e2e5b8d9d4c192d63a80d2478e4078e408bf869/assets/images/product-guides/text-to-speech/text-to-speech-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100019Z&X-Amz-Expires=604800&X-Amz-Signature=231fe70e38f69fbfe144d48f53dda72a3367df9d9124af9907f5a11beaa395ad&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e08b179bfd640650ca5225b7e2e5b8d9d4c192d63a80d2478e4078e408bf869/assets/images/product-guides/text-to-speech/text-to-speech-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T093435Z&X-Amz-Expires=604800&X-Amz-Signature=9127fa06ce1b4d45efe4c4a66531415d9d5863bb38c060eb4377b008283e027b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The most common setting is stability around 50, similarity around 75, and keeping style at 0, with minimal changes thereafter. Of course, this all depends on the original voice and the style of performance you're aiming for.
 
@@ -277,7 +277,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       This setting is available for all voices and all models. You can find it in the voice settings.
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1130594e85e35a2a3073530577fd85e902b7886cbf442a18b4422d9084dfcec/assets/images/help-center/product/core-capabilities/text-to-speech/can-i-change-the-pace-of-the-voice.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100019Z&X-Amz-Expires=604800&X-Amz-Signature=02afdbc42f0229645d4c55d7938fbe2c271d622fe367ec8055930d4e55f4f1c3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1130594e85e35a2a3073530577fd85e902b7886cbf442a18b4422d9084dfcec/assets/images/help-center/product/core-capabilities/text-to-speech/can-i-change-the-pace-of-the-voice.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T093435Z&X-Amz-Expires=604800&X-Amz-Signature=e08904c4f419fffaa0820cbbad8144925a9b192cdda2aeffe4c547b6b2b28f04&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       For information on how to control speech when using the API, please see our [API reference.](/docs/api-reference/text-to-speech/convert#request.body.voice_settings.speed)
     </td>
@@ -311,7 +311,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       From your history, you can click the download icon to see the option to download as either an MP3 (128kbps) or WAV file. 
 
-      You can also click <strong>Advanced</strong> to download in additional file formats:
+      You can also click **Advanced** to download in additional file formats:
 
       * MP3 (192kbps)
       * MP3 (256kbps)
@@ -436,17 +436,17 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       Files that you have generated using Text to Speech or Voice Changer can be downloaded as MP3, WAV, M4A or FLAC files. WAV, M4A and FLAC files need to be downloaded from your history.   
 
-      #### <strong>How to download WAV files</strong>
+      #### **How to download WAV files**
 
-      Select either <strong>Text to Speech</strong> or <strong>Voice Changer</strong> in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the <strong>Generate speech</strong> button.
+      Select either **Text to Speech** or **Voice Changer** in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the **Generate speech** button.
 
       From your history, you can click the download icon to see the option to download as either an MP3 or WAV file.
 
-      #### <strong>How to download FLAC or M4A files</strong>
+      #### **How to download FLAC or M4A files**
 
-      Select either <strong>Text to Speech</strong> or <strong>Voice Changer</strong> in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the <strong>Generate speech</strong> button.
+      Select either **Text to Speech** or **Voice Changer** in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the **Generate speech** button.
 
-      From your history, you can click the download icon to see the option to download as either an MP3 or WAV file. To access additional file formats, including FLAC and M4A, click <strong>Advanced</strong> and select your preferred format.
+      From your history, you can click the download icon to see the option to download as either an MP3 or WAV file. To access additional file formats, including FLAC and M4A, click **Advanced** and select your preferred format.
     </td>
   </tr>
 
@@ -454,17 +454,13 @@ We are working on more advanced workflows to allow you to influence the AI's del
     <td>
       #### How do I select the language and accent?
 
-      <strong>
-        Language when generating via the website
-      </strong>
+      **Language when generating via the website**
 
       When you generate audio on the ElevenLabs website, our AI automatically detects the language based on the context of the text of your prompt. This means that it's best to avoid using multiple languages in a single prompt, as this can cause confusion about which language should be used. At the moment, it isn’t possible to specify a language when generating on the website. 
 
        
 
-      <strong>
-        Language when generating via API
-      </strong>
+      **Language when generating via API**
 
       If you generate audio through the API, you can manually specify the language of your prompt using the `language_code` parameter. This is an optional parameter that accepts ISO 639-1 language codes. 
 
@@ -474,9 +470,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
        
 
-      <strong>
-        Accent
-      </strong>
+      **Accent**
 
       The accent that is used for your generation comes from the voice you're using. If you use a voice that hasn’t been trained on the language you’re generating, you may notice a slight accent from the voice’s original language.
 
@@ -486,11 +480,11 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       You can:
 
-      * <strong>Create a cloned voice</strong> using audio in your preferred language and accent.
-      * <strong>Browse the Voice Library</strong> and use the search filters to find suitable voices that
+      * **Create a cloned voice** using audio in your preferred language and accent.
+      * **Browse the Voice Library** and use the search filters to find suitable voices that
         match your needs.
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3e4de803d69ffbd3aed314c2c5f9defa87d3d7fd6fc1931a4a02278041c1c43/assets/images/help-center/product/core-capabilities/text-to-speech/how-do-i-select-the-language-and-accent.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100019Z&X-Amz-Expires=604800&X-Amz-Signature=ae618b3d7e253995533a2f40cd82ec44e5c322b6946069c69dec31185628111a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3e4de803d69ffbd3aed314c2c5f9defa87d3d7fd6fc1931a4a02278041c1c43/assets/images/help-center/product/core-capabilities/text-to-speech/how-do-i-select-the-language-and-accent.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T093435Z&X-Amz-Expires=604800&X-Amz-Signature=9eeda7385ab2170b7a87109b184c4410de0cec667892c56ed7ff36b59a41596f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -552,11 +546,11 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       If this is the case, you will see 'Regenerate speech', and the number of free regenerations remaining will be displayed if you hover over the 'Regenerate speech' button:
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9b75422ebf4bee357d8eb5384d30e03a3c4c5102f422cb87c22ff09c1bfe1c8d/assets/images/help-center/product/core-capabilities/text-to-speech/is-there-a-way-to-preview-audio-without-losing-quota-before-downloading.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100019Z&X-Amz-Expires=604800&X-Amz-Signature=bc24f671375ea9d4f419edb6dd0599def07c22ce4eb6f8670a2ca06a310a6d2d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9b75422ebf4bee357d8eb5384d30e03a3c4c5102f422cb87c22ff09c1bfe1c8d/assets/images/help-center/product/core-capabilities/text-to-speech/is-there-a-way-to-preview-audio-without-losing-quota-before-downloading.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T093435Z&X-Amz-Expires=604800&X-Amz-Signature=0476c77215d3852fe1278b58c58783550898062f4b8221e69462de1888062672&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       Once your free regenerations have been used, the button will return to 'Generate speech', and the number of credits that will be used for the generation will be displayed:
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/72b5058ea9066fbad31cf1a38453ba35947cc7486eb06ded307d1ae13c1011d4/assets/images/help-center/product/core-capabilities/text-to-speech/is-there-a-way-to-preview-audio-without-losing-quota-before-downloading-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100019Z&X-Amz-Expires=604800&X-Amz-Signature=92dd2f0451ccf7632a03c3a7fb925768a3bc2d709112154a5a871fdde9f274ed&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/72b5058ea9066fbad31cf1a38453ba35947cc7486eb06ded307d1ae13c1011d4/assets/images/help-center/product/core-capabilities/text-to-speech/is-there-a-way-to-preview-audio-without-losing-quota-before-downloading-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T093435Z&X-Amz-Expires=604800&X-Amz-Signature=1cf6a9c00913f155234918b17bd5442b7733867d8b2a090337bb501bbb246632&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       Free regenerations are only available in Text to Speech via the website. They are not available via the API.
 
@@ -594,10 +588,8 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       The way the current model works is that you don't select a specific language. Instead, you write in the language you want the AI to speak, and the AI understands automatically. However, since there can be some overlap between different languages where they use similar words and vocabulary but with quite different pronunciations and accents, you should use a cloned voice that was cloned speaking the language with the correct accent as this will ensure the AI has the most context for how to speak something and in what language.
 
-      <strong>
-        The language is determined by the text, while the accent and pronunciation are determined by the
-        voice itself.
-      </strong>
+      **The language is determined by the text, while the accent and pronunciation are determined by the
+      voice itself.**
 
       We are looking into developing new technology to facilitate the selection of language, but the way the AI is built means that all of this is still in progress.
     </td>
@@ -613,9 +605,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       If you're generating using the API, the maximum length of input varies depending on which model you're using:
 
-      <strong>
-        Text to Speech
-      </strong>
+      **Text to Speech**
 
       Flash v2.5 - up to 40,000 characters (\~40 minutes of audio)
 
@@ -627,9 +617,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       Multilingual v2 - up to 10,000 characters (\~10 minutes of audio)
 
-      <strong>
-        Voice Changer
-      </strong>
+      **Voice Changer**
 
       Multilingual v2 - up to 10 minutes of audio
     </td>
@@ -655,25 +643,19 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
        
 
-      <strong>
-        Write out fully, in words
-      </strong>
+      **Write out fully, in words**
 
       For the best results, we recommend writing numbers, acronyms, dates and symbols fully, in words, in the way that you would like the AI to deliver them. This ensures that the AI has the most context so that it will provide the correct output. For example, for “\$100”, we would recommend writing either "a hundred dollars" or "one hundred dollars" to ensure you get the result you would like.  
 
        
 
-      <strong>
-        Using an LLM
-      </strong>
+      **Using an LLM**
 
       If you are using a large language model to generate your text prompts, for example, when using [ElevenAgents](/docs/conversational-ai/overview), you can prompt the model to always write numbers, dates, symbols, and acronyms out in words in whichever way you would prefer them to be delivered by the AI.
 
        
 
-      <strong>
-        Normalization
-      </strong>
+      **Normalization**
 
       If you’re generating via the API, you can specify whether to apply text normalization using the `apply_text_normalization` parameter. Text normalization spells out numbers and dates to ensure better pronunciation  This option does add latency as the normalization process takes additional processing time.
 
@@ -687,11 +669,11 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       This can be useful for short or ambiguous prompts, such as when the text includes only numbers or symbols. Specifying the language ensures the normalizer applies the correct rules for that language.
 
-      For more information, see our <a href="/docs/api-reference/introduction">API reference.</a>
+      For more information, see our [API reference.](/docs/api-reference/introduction)
 
       Normalization is enabled by default when generating using Text to Speech via the website.  
 
-      In Studio, the default is for normalization to be automatically applied, meaning that the AI will decide when to apply text normalization. You can also set normalization to be always applied - this option is in <strong>Project settings</strong> under the <strong>Advanced</strong> tab.
+      In Studio, the default is for normalization to be automatically applied, meaning that the AI will decide when to apply text normalization. You can also set normalization to be always applied - this option is in **Project settings** under the **Advanced** tab.
     </td>
   </tr>
 

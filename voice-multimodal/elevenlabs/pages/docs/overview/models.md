@@ -110,9 +110,7 @@ Multilingual, including English, Spanish, German, Japanese and more
 
 Edit the sound and lyrics of individual sections or the whole song
 
-<a href="https://elevenlabs.io/pricing/api">
-  Pricing
-</a>
+[Pricing](https://elevenlabs.io/pricing/api)
 
 ## Models overview
 
@@ -135,9 +133,7 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 | `music_v2`                   | Studio-grade music generation from text prompts, composition plans and previously generated songs | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
 | `music_v1`                   | Studio-grade music generation from text prompts. Outclassed by `music_v2`                         | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
 
-<small>
-  † Excluding application & network latency
-</small>
+† Excluding application & network latency
 
 ### Deprecated models
 
@@ -229,9 +225,7 @@ Flash v2.5 supports 32 languages - all languages from v2 models plus:
 
 *Hungarian, Norwegian & Vietnamese*
 
-<small>
-  † Excluding application & network latency
-</small>
+† Excluding application & network latency
 
 ### Considerations
 
@@ -386,15 +380,15 @@ Speech to Text has an elevated concurrency limit.
 Once the concurrency limit is met, subsequent requests are processed in a queue alongside lower-priority requests.
 In practice this typically only adds \~50ms of latency.
 
-| Plan       | Concurrency Limit<br /> (Multilingual v2) | Concurrency Limit<br /> (Flash) | STT Concurrency Limit | Realtime STT Concurrency limit | Music Concurrency limit | Priority level |
-| ---------- | ----------------------------------------- | ------------------------------- | --------------------- | ------------------------------ | ----------------------- | -------------- |
-| Free       | 2                                         | 4                               | 8                     | 6                              | 0                       | 3              |
-| Starter    | 3                                         | 6                               | 12                    | 9                              | 2                       | 4              |
-| Creator    | 5                                         | 10                              | 20                    | 15                             | 2                       | 5              |
-| Pro        | 10                                        | 20                              | 40                    | 30                             | 2                       | 5              |
-| Scale      | 15                                        | 30                              | 60                    | 45                             | 5                       | 5              |
-| Business   | 15                                        | 30                              | 60                    | 45                             | 5                       | 5              |
-| Enterprise | Elevated                                  | Elevated                        | Elevated              | Elevated                       | Highest                 | 6              |
+| Plan       | Concurrency Limit  (Multilingual v2) | Concurrency Limit  (Flash) | STT Concurrency Limit | Realtime STT Concurrency limit | Music Concurrency limit | Priority level |
+| ---------- | ------------------------------------ | -------------------------- | --------------------- | ------------------------------ | ----------------------- | -------------- |
+| Free       | 2                                    | 4                          | 8                     | 6                              | 0                       | 3              |
+| Starter    | 3                                    | 6                          | 12                    | 9                              | 2                       | 4              |
+| Creator    | 5                                    | 10                         | 20                    | 15                             | 2                       | 5              |
+| Pro        | 10                                   | 20                         | 40                    | 30                             | 2                       | 5              |
+| Scale      | 15                                   | 30                         | 60                    | 45                             | 5                       | 5              |
+| Business   | 15                                   | 30                         | 60                    | 45                             | 5                       | 5              |
+| Enterprise | Elevated                             | Elevated                   | Elevated              | Elevated                       | Highest                 | 6              |
 
 Startup grants recipients receive Scale level benefits.
 
@@ -430,7 +424,7 @@ As a general rule of thumb, a concurrency limit of 5 can typically support up to
 This is because of the speed it takes for audio to be generated relative to the time it takes for the TTS request to be processed.
 The diagram below is an example of how 4 concurrent calls with different users can be facilitated while only hitting 2 concurrent requests.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T112846Z&X-Amz-Expires=604800&X-Amz-Signature=e344f83738b3eddb405417a6bf365c0a848eb4a0e5802730396ba16c43b44e7b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Concurrency limits" />
+![Concurrency limits](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T081137Z&X-Amz-Expires=604800&X-Amz-Signature=3cdc9db2a29fbba544817456382758e6b1be8f9acf934e31d62ab8b1ce2b91d5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Building AI Voice Agents
 

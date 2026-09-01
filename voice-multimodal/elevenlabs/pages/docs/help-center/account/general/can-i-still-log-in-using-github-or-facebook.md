@@ -8,39 +8,37 @@ path: docs/help-center/account/general/can-i-still-log-in-using-github-or-facebo
 
 # Can I still log in using GitHub or Facebook?
 
-GitHub and Facebook are no longer supported as sign-in options.<br /> 
+GitHub and Facebook are no longer supported as sign-in options.\
+ 
 
-If you previously used GitHub or Facebook to sign in, you’ll need to switch to email and password, or - if your account uses a Gmail address - you can use Google SSO. GitHub and Facebook sign-in options no longer appear on the sign-in page but you can still update your sign-in method at any time.<br /> 
+If you previously used GitHub or Facebook to sign in, you’ll need to switch to email and password, or - if your account uses a Gmail address - you can use Google SSO. GitHub and Facebook sign-in options no longer appear on the sign-in page but you can still update your sign-in method at any time.\
+ 
 
-<strong>
-  Switch to email and password
-</strong>
+**Switch to email and password**
 
 Go to [https://elevenlabs.io/app/sign-in](https://elevenlabs.io/app/sign-in)
 
 Enter your ElevenLabs account email address
 
-Click <strong>Forgot password</strong>
+Click **Forgot password**
 
-Use the <strong>Change password</strong> button in the email we send you
+Use the **Change password** button in the email we send you
 
 You’ll now be able to sign in with your email and password
 
  
 
-<strong>
-  Switch to Google SSO
-</strong>
+**Switch to Google SSO**
 
 Go to [https://elevenlabs.io/app/sign-in](https://elevenlabs.io/app/sign-in)
 
-Click <strong>Sign in with Google</strong>
+Click **Sign in with Google**
 
 Select the Google account you want to link
 
 Confirm that you want to proceed
 
-You’ll now be able to sign in using <strong>Sign in with Google</strong>
+You’ll now be able to sign in using **Sign in with Google**
 
-<strong>Note:</strong> If you use Google SSO, you won’t be able to change the email address linked
+**Note:** If you use Google SSO, you won’t be able to change the email address linked
 to your account in the future.

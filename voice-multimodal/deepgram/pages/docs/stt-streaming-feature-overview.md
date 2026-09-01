@@ -34,11 +34,11 @@ To learn how to get up and running with Streaming Speech-to-Text, read the [Stre
 
 ## Custom Vocabulary
 
-| Feature                                                                                        | Language(s)                                      |
-| ---------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| [Find and Replace](/docs/find-and-replace)                                                     | [All available](/docs/models-languages-overview) |
-| [Keyterm Prompting](/docs/keyterm) <small>(Also see [Legacy Keywords](/docs/keywords))</small> | [All available](/docs/models-languages-overview) |
-| [Search](/docs/search)                                                                         | [All available](/docs/models-languages-overview) |
+| Feature                                                                         | Language(s)                                      |
+| ------------------------------------------------------------------------------- | ------------------------------------------------ |
+| [Find and Replace](/docs/find-and-replace)                                      | [All available](/docs/models-languages-overview) |
+| [Keyterm Prompting](/docs/keyterm) (Also see [Legacy Keywords](/docs/keywords)) | [All available](/docs/models-languages-overview) |
+| [Search](/docs/search)                                                          | [All available](/docs/models-languages-overview) |
 
 ## Intelligence
 

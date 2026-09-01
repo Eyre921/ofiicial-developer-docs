@@ -8,7 +8,7 @@ path: docs/help-center/technical/how-do-i-authorize-myself-using-an-api-key
 
 # How do I authorize myself using an API key?
 
-In order to use our API you need to create your an API key first. [Create an account](https://elevenlabs.io/app/sign-up) and log in, click <strong>Developers</strong> in the left sidebar, then select the <strong>API Keys</strong> tab. 
+In order to use our API you need to create your an API key first. [Create an account](https://elevenlabs.io/app/sign-up) and log in, click **Developers** in the left sidebar, then select the **API Keys** tab. 
 
 You can create multiple API keys, and each key will have its own name for identification purposes. 
 
@@ -16,14 +16,14 @@ You will only be able to see your API key in full when you first create it. Afte
 
 By default, your API key will be restricted, and you will need to select the features you would like to enable access for. You can also set optional credit limits for each API key.
 
-You can turn off all restrictions using the <strong>Restrict Key</strong> toggle, but for security reasons, we recommend implementing restrictions on your API key.
+You can turn off all restrictions using the **Restrict Key** toggle, but for security reasons, we recommend implementing restrictions on your API key.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/447b5f0f47299cddaca0c42dd6519030b8620ab9a6d6bdbf915bec51a99c9fcf/assets/images/help-center/technical/how-do-i-authorize-myself-using-an-api-key.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=0d0043d402fe94d4d0043f1f07fcbd0e9ca95ca668e4a5177b14b7fa8ee7aae0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/447b5f0f47299cddaca0c42dd6519030b8620ab9a6d6bdbf915bec51a99c9fcf/assets/images/help-center/technical/how-do-i-authorize-myself-using-an-api-key.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100019Z&X-Amz-Expires=604800&X-Amz-Signature=c00ef5cfb15b4257cefa6bc84ba1b703fe01c7bb45ed950df33148955f5be133&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-To edit an existing API key, click the <strong>More Actions</strong> (...) icon to the right of the key in the list of API key, then select <strong>Edit.</strong> 
+To edit an existing API key, click the **More Actions** (...) icon to the right of the key in the list of API key, then select **Edit.** 
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/654ef4e7f77ada10a8bee9eba9e4608ae9fe7fc142d60d86ccdd3a58dbafc44e/assets/images/help-center/technical/how-do-i-authorize-myself-using-an-api-key-2.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=a36dee56d5df5110e650c9bdef313ce95871989197ce62bc3fb17fdb07ae8fb8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/654ef4e7f77ada10a8bee9eba9e4608ae9fe7fc142d60d86ccdd3a58dbafc44e/assets/images/help-center/technical/how-do-i-authorize-myself-using-an-api-key-2.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100019Z&X-Amz-Expires=604800&X-Amz-Signature=08d66c258f64cc8c78104c5bebb250f751f89a8a42180f26b36f07eb494b26e8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-To delete an existing API key, click the <strong>More Actions</strong> icon to the right of the key in the list of API key, then select <strong>Delete.</strong> Deleting an API key is irreversible.
+To delete an existing API key, click the **More Actions** icon to the right of the key in the list of API key, then select **Delete.** Deleting an API key is irreversible.
 
 Do not show your API keys to anyone else. If someone gains access to one of your API keys, they can use your account as if they knew your password.

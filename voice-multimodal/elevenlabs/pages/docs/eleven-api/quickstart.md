@@ -88,8 +88,6 @@ and/or [ffmpeg](https://ffmpeg.org/).
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
-{/* This snippet was auto-generated */}
-
 ```python
 from dotenv import load_dotenv
 from elevenlabs.client import ElevenLabs

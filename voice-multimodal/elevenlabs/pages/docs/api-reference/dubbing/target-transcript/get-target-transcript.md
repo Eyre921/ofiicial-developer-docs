@@ -10,7 +10,7 @@ path: docs/api-reference/dubbing/target-transcript/get-target-transcript
 
 GET https://api.elevenlabs.io/v1/dubbing/project/{project_id}/language/{language_id}/transcript
 
-A language target's transcript: source segments with their translations.
+A language target's transcript: source segments with their translations. Available once the target has produced an output. Returns a conflict while the target is still on its first dub, since it has no translations to return yet.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/get-target-transcript
 

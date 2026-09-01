@@ -8,7 +8,7 @@ path: docs/eleven-creative/playground/speech-to-text
 
 # Speech to Text
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0c8dba5ebba5f9a72541640bb4a9c9fac7bd265df0549f80cb5557c022f85b6f/assets/images/product-guides/speech-to-text/speech-to-text-product-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=844333e0cb25ac76c3ff9db0144c9028c081a3d2940455aa82983467dec22e73&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Text to Speech product feature" />
+![Text to Speech product feature](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0c8dba5ebba5f9a72541640bb4a9c9fac7bd265df0549f80cb5557c022f85b6f/assets/images/product-guides/speech-to-text/speech-to-text-product-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T113149Z&X-Amz-Expires=604800&X-Amz-Signature=9f4219b4b6e98a0373eccdb9abe7caf89abcf3e3b790392a5a8073435ae62aa2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -20,7 +20,7 @@ With speech to text, you can transcribe spoken audio into text with state of the
 
 In the ElevenLabs dashboard, navigate to the Speech to Text page and click the "Transcribe files" button. From the modal, you can upload an audio or video file to transcribe.
 
-![Speech to Text upload](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/596c6fceacbe4659b583db3ba6e2ba0c1f55177cf870654ae5ded693f1ffe43b/assets/images/product-guides/speech-to-text/speech-to-text-modal.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=ed81471eb0fbab9f0f4e364be0d1fde57e999bde72d02fd5cf1365a6768aecfd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Speech to Text upload](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/596c6fceacbe4659b583db3ba6e2ba0c1f55177cf870654ae5ded693f1ffe43b/assets/images/product-guides/speech-to-text/speech-to-text-modal.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T113149Z&X-Amz-Expires=604800&X-Amz-Signature=4ec3cfa0fd991eeae2147d9102558642c951a5bc562d0903dfb1bcf9871f29a0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Select options
 
@@ -67,9 +67,9 @@ Once you've created a transcript, you can edit it in our Transcript Editor. Lear
     <td>
       #### What is Speech to Text?
 
-      Speech to Text converts spoken audio into written text. At ElevenLabs, our Speech to Text model is <strong>Scribe</strong>. It allows you to accurately transcribe speech in over 90 languages, making it easy to turn audio into readable, searchable text.
+      Speech to Text converts spoken audio into written text. At ElevenLabs, our Speech to Text model is **Scribe**. It allows you to accurately transcribe speech in over 90 languages, making it easy to turn audio into readable, searchable text.
 
-      #### <strong>Key features of Scribe</strong>
+      #### **Key features of Scribe**
 
       * Industry-leading accuracy, with 98% accuracy in major languages such as English, French, Italian, Portuguese, Spanish, and German.
       * Precise word-level timestamps, so you can see exactly when each word is spoken.
@@ -77,26 +77,28 @@ Once you've created a transcript, you can edit it in our Transcript Editor. Lear
       * Dynamic audio tagging to detect non-speech sounds.
       * Support for up to 32 speakers while maintaining high accuracy.
 
-      ## <strong>What’s new in Scribe v2</strong>
+      ## **What’s new in Scribe v2**
 
       Scribe v2 builds on the core model with additional capabilities designed for more demanding use cases.
 
-      * <strong>Keyterm prompting</strong>. You can provide up to 100 words or phrases to guide the model
+      * **Keyterm prompting**. You can provide up to 100 words or phrases to guide the model
         toward correctly transcribing important terms. Use of keyterm prompting increases the cost by 20%.
-      * <strong>Entity detection</strong>. You can choose specific categories of information to detect in
+      * **Entity detection**. You can choose specific categories of information to detect in
         the transcript, such as credit card numbers, names, or medical conditions. Entity detection is
         only available via API, and increases the cost by 30%
-      * <strong>Smart multi-language support</strong>. You can submit audio containing multiple languages,
+      * **Smart multi-language support**. You can submit audio containing multiple languages,
         and Scribe v2 will automatically detect and transcribe each one correctly.
-      * <strong>Improved stability</strong>. Scribe v2 handles pauses, changes in tone, and long silences
+      * **Improved stability**. Scribe v2 handles pauses, changes in tone, and long silences
         without breaking or losing accuracy.
-        <br />
 
-      #### <strong>Which version should you use?</strong>
+        \
 
-      We recommend <strong>Scribe v2</strong> when high-accuracy transcription is required. It's available through our [website](https://elevenlabs.io/app/speech-to-text) and [API](/docs/api-reference/speech-to-text/convert). When using Speech to Text via our website, Scribe v2 is the default model. 
 
-      For real-time use cases, we recommend <strong>Scribe v2 Realtime</strong>, available through [ElevenAgents](https://elevenlabs.io/app/agents) and via [API](/docs/api-reference/speech-to-text/convert). 
+      #### **Which version should you use?**
+
+      We recommend **Scribe v2** when high-accuracy transcription is required. It's available through our [website](https://elevenlabs.io/app/speech-to-text) and [API](/docs/api-reference/speech-to-text/convert). When using Speech to Text via our website, Scribe v2 is the default model. 
+
+      For real-time use cases, we recommend **Scribe v2 Realtime**, available through [ElevenAgents](https://elevenlabs.io/app/agents) and via [API](/docs/api-reference/speech-to-text/convert). 
 
       For more details, see our [Speech to Text documentation.](/docs/capabilities/speech-to-text)
     </td>

@@ -10,8 +10,8 @@ path: docs/help-center/product/voices/voice-design/how-much-does-voice-design-co
 
 Voice Design only consumes credits when you generate voices.
 
-Each time you click <strong>Generate voice</strong>, we create three voice options based on your prompt. You're charged based on the number of characters in your preview text.
+Each time you click **Generate voice**, we create three voice options based on your prompt. You're charged based on the number of characters in your preview text.
 
-You can enter your own preview text or use the <strong>Auto-generate</strong> button to create one automatically. Auto-generated previews include relevant audio tags.
+You can enter your own preview text or use the **Auto-generate** button to create one automatically. Auto-generated previews include relevant audio tags.
 
 For more information, see our [Voice Design guide.](/docs/product-guides/voices/voice-design)

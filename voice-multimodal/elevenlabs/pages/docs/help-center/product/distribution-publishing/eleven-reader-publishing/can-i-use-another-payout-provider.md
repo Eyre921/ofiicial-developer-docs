@@ -8,4 +8,5 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # Can I use another payout provider?
 
-At this time, ElevenReader only supports payouts via <strong>Stripe</strong>.<br />Alternative payout services such as PayPal or Zelle are not currently supported.
+At this time, ElevenReader only supports payouts via **Stripe**.\
+Alternative payout services such as PayPal or Zelle are not currently supported.

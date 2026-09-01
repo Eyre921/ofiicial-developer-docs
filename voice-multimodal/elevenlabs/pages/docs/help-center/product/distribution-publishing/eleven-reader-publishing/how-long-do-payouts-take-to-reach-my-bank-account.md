@@ -8,6 +8,7 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # How long do payouts take to reach my bank account?
 
-Once initiated, payouts typically take <strong>3–5 business days</strong> to be deposited into your account.<br />Exact timing may vary depending on your bank and country.
+Once initiated, payouts typically take **3–5 business days** to be deposited into your account.\
+Exact timing may vary depending on your bank and country.
 
 ###

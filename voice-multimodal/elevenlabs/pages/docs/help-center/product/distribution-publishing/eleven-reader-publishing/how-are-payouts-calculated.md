@@ -8,18 +8,14 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # How are payouts calculated?
 
-<strong>
-  Direct Sales
-</strong>
+**Direct Sales**
 
-For direct purchases, ElevenReader Publishing pays authors <strong>60% of the revenue collected</strong>, after deducting store fees, in accordance with our standard publishing agreement.
+For direct purchases, ElevenReader Publishing pays authors **60% of the revenue collected**, after deducting store fees, in accordance with our standard publishing agreement.
 
-* Apple App Store and Google Play Store fees are typically <strong>30%</strong> of the in-app purchase price
-* Web purchases are subject to an approximately <strong>3% Stripe processing fee</strong>
+* Apple App Store and Google Play Store fees are typically **30%** of the in-app purchase price
+* Web purchases are subject to an approximately **3% Stripe processing fee**
 * Tax withholdings may apply depending on your country of residence
 
-<strong>
-  Subscription Listening
-</strong>
+**Subscription Listening**
 
-For books included in the Ultra subscription, authors earn <strong>\$0.20 per hour of verified listening streamed, with a cap of \$2.50 per book</strong>.
+For books included in the Ultra subscription, authors earn **\$0.20 per hour of verified listening streamed, with a cap of \$2.50 per book**.

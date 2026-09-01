@@ -20,7 +20,7 @@ Currently, Google Pay is not available in India.
 
 ## Google Chrome browser is required
 
-> Google Pay is not integrated with other web browsers, so the Google Pay button will only show at checkout if you are using Google Chrome. Google Pay is unavailable in Google Chrome for Apple iOS. It will not be possible to add Google Pay as a payment method using an iPhone or iPad (Mac computer is fine). <strong>Do not use an incognito window</strong> By default Google Pay will not be available in an incognito window. It is possible to get it working, but enabling in incognito mode is not covered here.
+> Google Pay is not integrated with other web browsers, so the Google Pay button will only show at checkout if you are using Google Chrome. Google Pay is unavailable in Google Chrome for Apple iOS. It will not be possible to add Google Pay as a payment method using an iPhone or iPad (Mac computer is fine). **Do not use an incognito window** By default Google Pay will not be available in an incognito window. It is possible to get it working, but enabling in incognito mode is not covered here.
 
  
 
@@ -32,7 +32,7 @@ Currently, Google Pay is not available in India.
 
 ## Check payment settings in Google Chrome
 
-> The Google Pay button will not show if certain payment settings are disabled in Chrome. <strong>Chrome for desktop</strong> Open Chrome settings and click Autofill in the menu followed by "Payment methods". Enable both "Save and fill payment methods" and "Allow sites to check if you have payment methods saved" <strong>Chrome for Android phones & tablets</strong> Open Chrome settings and tap on "Payment methods". Enable "Save and fill payment methods".
+> The Google Pay button will not show if certain payment settings are disabled in Chrome. **Chrome for desktop** Open Chrome settings and click Autofill in the menu followed by "Payment methods". Enable both "Save and fill payment methods" and "Allow sites to check if you have payment methods saved" **Chrome for Android phones & tablets** Open Chrome settings and tap on "Payment methods". Enable "Save and fill payment methods".
 
  
 
@@ -48,9 +48,7 @@ Currently, Google Pay is not available in India.
 
  
 
-<strong>
-  Additional Google Pay troubleshooting info
-</strong>
+**Additional Google Pay troubleshooting info**
 
 > Google Pay checkout may not be available or Google may not be able to verify your card if you are connected to a VPN or using a rooted device. If you do not know what "rooted" means, it is safe to say that it does not apply to you.
 
@@ -64,14 +62,14 @@ The screenshots below show the browser payment settings to enable in Chrome for 
 
  
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b4dfe694da01f17db72c894b6fcf7a565de0835f6f2bb743e91e8c578aa99b8/assets/images/help-center/account/payment-billing/elevenlabs-googlepay.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=2b1884d7e81b504ff2d1cbf66c3eba518d7a6ed569130654f97522162c3dbfaf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b4dfe694da01f17db72c894b6fcf7a565de0835f6f2bb743e91e8c578aa99b8/assets/images/help-center/account/payment-billing/elevenlabs-googlepay.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100019Z&X-Amz-Expires=604800&X-Amz-Signature=85049c92389a1ab0d03010e28c3319c0e2c55b95007f948347220e4195af68c2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
  
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa530c55277c6b502d5a8d972c7794ec26d7e6aac1bd43b0691b5bd0b8f55be5/assets/images/help-center/account/payment-billing/elevenlabs-chrome-desktop-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=4c205a3c8fea2a792322de34640a366f5ac2b7b1a36e09ae815302eb5fdfcc25&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa530c55277c6b502d5a8d972c7794ec26d7e6aac1bd43b0691b5bd0b8f55be5/assets/images/help-center/account/payment-billing/elevenlabs-chrome-desktop-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100019Z&X-Amz-Expires=604800&X-Amz-Signature=50564b8b34c4e949d5604d3b69196d6e67c7269708baf5623813e0338e08965f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
  
 
  
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25f3fa160ce62ea0879b21a3e5db0beee14ebb8e5055c74abb0b17e0568dfa6f/assets/images/help-center/account/payment-billing/elevenlabs-chrome-mobile-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=8ce2b50324eb45246d4bfe251acb4486b7b41e8441772c434e006a53655ba1c2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25f3fa160ce62ea0879b21a3e5db0beee14ebb8e5055c74abb0b17e0568dfa6f/assets/images/help-center/account/payment-billing/elevenlabs-chrome-mobile-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100019Z&X-Amz-Expires=604800&X-Amz-Signature=675b3efffda0b82f66fe3405d437f425f2dfe3159f8855a16e87eb9176937e29&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)

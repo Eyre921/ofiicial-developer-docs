@@ -20427,6 +20427,12 @@ Manage API keys.
 | `neon api-keys list`        | List API keys for your account, or for an organization                 |
 | `neon api-keys revoke <id>` | Revoke an API key. Anything using it stops working immediately         |
 
+### ask
+
+Ask a question about Neon.
+
+Usage: `neon ask [options]`
+
 ### auth (alias: `login`)
 
 Authenticate.
@@ -20688,7 +20694,7 @@ Manage organizations.
 | ---------------- | ------------------ |
 | `neon orgs list` | List organizations |
 
-### plugins
+### plugins (alias: `plugin`)
 
 Install the Neon plugin into coding agents.
 
@@ -20740,7 +20746,7 @@ Deprecated: use `neon link`. Set the .neon context (raw write).
 
 Usage: `neon set-context [options]`
 
-### skills
+### skills (alias: `skill`)
 
 Install Neon agent skills into coding agents.
 
@@ -21110,6 +21116,48 @@ Responses print as JSON. Use the global `--output yaml` (`-o yaml`) for YAML:
 
 ```bash
 neon api /projects -Q org_id=org-cool-darkness-12345678 -o yaml
+```
+
+--- [Document source](https://neon.com/docs/cli/ask.md) ---
+
+> Summary: The Neon CLI `ask` command sends a question to the Neon assistant and prints the answer in your terminal. It answers from Neon's documentation and needs no login; use `--output json` for machine-readable output when scripting or calling it from an agent.
+
+# Neon CLI command: ask
+
+Ask the Neon assistant a question from the terminal
+
+The `ask` command sends a question to the Neon assistant and prints the answer to your terminal: `neon ask --prompt "<question>"`. The assistant answers from Neon's documentation, so keep questions scoped to Neon and Lakebase Postgres rather than general chat. No login is required, and it doesn't touch your projects or account.
+
+The answer is natural-language text, not structured data. By default it streams as markdown, use `--output json` to get the answer back as a single `text` field you can parse.
+
+## Usage
+
+```bash
+neon ask --prompt <question>
+```
+
+Pass your question with `--prompt`. It's the only required option.
+
+## Options
+
+| Option     | Description         | Type   | Default | Required |
+| ---------- | ------------------- | ------ | ------- | :------: |
+| `--prompt` | The question to ask | string | —       |    Yes   |
+
+`--output json` and `--output yaml` both return the full answer at once as a single `text` field, instead of streaming markdown.
+
+## Examples
+
+Ask a question:
+
+```bash
+neon ask --prompt "How do schema-only branches work?"
+```
+
+Get the answer as JSON so you can process it in a script:
+
+```bash
+neon ask --prompt "What is a Neon project?" --output json
 ```
 
 --- [Document source](https://neon.com/docs/cli/auth.md) ---
@@ -23081,16 +23129,19 @@ Deploys a function from a local directory or entry file. The `<slug>` is the per
 neon functions deploy <slug> [options]
 ```
 
-| Option         | Description                                                                                           | Type    | Default | Required |
-| -------------- | ----------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--env`        | Environment variable as KEY=VALUE (repeatable)                                                        | string  | —       |    No    |
-| `--runtime`    | Function runtime Possible values: `nodejs24`                                                          | string  | —       |    No    |
-| `--src`        | Function source: a directory containing index.ts, index.mjs, or index.js, or a path to the entry file | string  | —       |    No    |
-| `--wait`       | Wait for the deployment to finish building                                                            | boolean | `true`  |    No    |
-| `--branch`     | Branch ID or name                                                                                     | string  | —       |    No    |
-| `--project-id` | Project ID                                                                                            | string  | —       |    No    |
+| Option         | Description                                                                                                                              | Type    | Default | Required |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--bundle`     | Bundle --src with esbuild. Use --no-bundle to zip a prebuilt directory (root must contain index.mjs or index.js) or a file of that name. | boolean | `true`  |    No    |
+| `--env`        | Environment variable as KEY=VALUE (repeatable)                                                                                           | string  | —       |    No    |
+| `--runtime`    | Function runtime Possible values: `nodejs24`                                                                                             | string  | —       |    No    |
+| `--src`        | Function source: a directory containing index.ts, index.js, or index.mjs (first file match is the entry), or a path to the entry file    | string  | —       |    No    |
+| `--wait`       | Wait for the deployment to finish building                                                                                               | boolean | `true`  |    No    |
+| `--branch`     | Branch ID or name                                                                                                                        | string  | —       |    No    |
+| `--project-id` | Project ID                                                                                                                               | string  | —       |    No    |
 
 By default, `deploy` waits until the deployment finishes building (`--wait=true`), which is the predictable path for scripts and CI. Use `--no-wait` to return immediately after triggering the deployment.
+
+By default, `deploy` bundles your `--src` with esbuild before uploading. Pass `--no-bundle` to skip bundling and deploy a prebuilt source instead: the directory root (or the file you point at) must be named or contain `index.mjs` or `index.js`. This is useful when you run your own build step and want to ship the output as-is.
 
 Deploy a function from an entry file:
 
@@ -30301,19 +30352,20 @@ To deploy one function directly, without a `neon.ts` config:
 neon functions deploy <slug> [--src <dir-or-entry-file>] [--env KEY=VALUE] [--wait]
 ```
 
-The CLI bundles with esbuild, zips the output, and uploads it. The first deploy creates the function; subsequent deploys update it. See the [neon functions reference](https://neon.com/docs/cli/functions) for the full command surface.
+By default, the CLI bundles your source with esbuild, zips the output, and uploads it. Pass `--no-bundle` to skip esbuild and ship a prebuilt source as-is. The first deploy creates the function; subsequent deploys update it. See the [neon functions reference](https://neon.com/docs/cli/functions) for the full command surface.
 
 **Note: esbuild not found**
 
 The `neon` CLI ships `esbuild` for most platforms. If bundling fails with an `esbuild not found` error, install it (`npm install -g esbuild`) or set `NEON_ESBUILD_PATH` to an esbuild binary. `NEON_ESBUILD_PATH` is read by the CLI's own bundler, not by `buildFunctionBundle` in [`@neon/config-runtime`](https://neon.com/docs/reference/config-runtime#function-bundling); when calling that package directly, pass a custom `bundleFunction` instead.
 
-| Flag              | Default       | Description                                                                                                                                   |
-| ----------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--src`           | (none)        | Function source: a directory containing `index.ts`, `index.mjs`, or `index.js`, or a path to the entry file                                   |
-| `--env KEY=VALUE` | (none)        | Set an environment variable. Repeatable. Stored with the deployment. Takes `KEY=VALUE` pairs, not a `.env` file path like `neon deploy --env` |
-| `--runtime`       | `nodejs24`    | Function runtime. `nodejs24` is the only valid value                                                                                          |
-| `--branch`        | linked branch | Target branch. Defaults to the branch in `.neon`                                                                                              |
-| `--wait`          | `true`        | Poll until `completed` or `failed`, up to 10 minutes                                                                                          |
+| Flag              | Default       | Description                                                                                                                                                                                              |
+| ----------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--src`           | (none)        | Function source: a directory containing `index.ts`, `index.js`, or `index.mjs` (the first match is the entry), or a path to the entry file                                                               |
+| `--env KEY=VALUE` | (none)        | Set an environment variable. Repeatable. Stored with the deployment. Takes `KEY=VALUE` pairs, not a `.env` file path like `neon deploy --env`                                                            |
+| `--runtime`       | `nodejs24`    | Function runtime. `nodejs24` is the only valid value                                                                                                                                                     |
+| `--branch`        | linked branch | Target branch. Defaults to the branch in `.neon`                                                                                                                                                         |
+| `--wait`          | `true`        | Poll until `completed` or `failed`, up to 10 minutes                                                                                                                                                     |
+| `--no-bundle`     | off (bundles) | Skip esbuild and zip a prebuilt source as-is. The directory root, or the file you point at, must be `index.mjs` or `index.js` (TypeScript can't ship unbundled). Use it when you run your own build step |
 
 **Examples:**
 
@@ -30473,6 +30525,314 @@ neon functions delete hello
 ```text
 DELETE /projects/{project_id}/branches/{branch_id}/functions/{slug}
 ```
+
+--- [Document source](https://neon.com/docs/compute/functions/discord-bot.md) ---
+
+# How to host a Discord bot on Neon Functions
+
+Receive slash commands at a public function URL with no Gateway connection
+
+**Note: Beta**
+
+The **Neon Functions** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
+
+Discord can deliver slash commands over HTTP. There's no Gateway connection and no discord.js client. Discord POSTs each interaction to the Interactions Endpoint URL on your app. This guide uses a [Neon Function](https://neon.com/docs/compute/functions/overview) as that URL.
+
+The template verifies Discord's request signatures and answers the `PING`/`PONG` handshake. Discord's [Interactions Overview](https://discord.com/developers/docs/interactions/overview) is optional background if you want the crypto details.
+
+**Note: Not for Gateway bots**
+
+Neon Functions are not the right primitive for a Discord Gateway bot yet. Gateway bots need a long-lived, stateful process with session resume, presence and sharding. This guide is HTTP only: Discord POSTs slash commands to your function URL.
+
+## Prerequisites
+
+- A Neon project in AWS US East (Ohio) (`aws-us-east-2`). Functions are available only in this region during beta. See [Get started with Neon Functions](https://neon.com/docs/compute/functions/get-started).
+- The [Neon CLI](https://neon.com/docs/cli), version 2.25.0 or later (`neon --version`). `neon bootstrap` needs that floor. Upgrade with `npm install -g neon@latest` if you're behind, then authenticate ([CLI auth](https://neon.com/docs/cli/auth)).
+- Node.js 24 (`node -v`). Deployed functions run on `nodejs24`. Get Started's Node.js 20+ is the platform floor; this template needs 24.
+- A Discord account.
+- A Discord server you own. Create one if you need to. You often can't add a bot to someone else's server.
+
+This guide's commands are the `pnpm` forms from the template README. The template ships `package-lock.json` and no `pnpm-lock.yaml`, so `neon bootstrap` may use npm. `npm run <script>` runs the same script names.
+
+## Create a Discord application
+
+Open the [Discord Developer Portal](https://discord.com/developers/applications) and click **New Application**. Give it a name (for example `Neon HTTP bot`), accept the Developer Terms, then click **Create**.
+
+![Discord Developer Portal New Application modal](https://neon.com/docs/compute/functions/discord-new-application.png)
+
+On **General Information**, copy the **Application ID** and **Public Key**. Stash them somewhere local. They go into `.env` after you scaffold the project.
+
+![Discord General Information showing Application ID and Public Key](https://neon.com/docs/compute/functions/discord-general-information.png)
+
+Open the **Bot** tab and click **Reset Token**. Copy the token. Discord shows it once. Resetting invalidates any previous token, so if this app already had one, update `.env` after you create it.
+
+![Discord Bot tab showing the Reset Token button](https://neon.com/docs/compute/functions/discord-bot-token.png)
+
+**Warning:** Treat the bot token like a password. Anyone who has it can act as your bot. Never commit it or paste it into screenshots, tickets or chat.
+
+The public key is what the function uses to verify that a POST really came from Discord. The application ID and bot token are what `pnpm register:commands` uses to declare slash commands. `/help` uses the token at request time for command mentions.
+
+### Invite the bot to a test server
+
+Create a Discord server you own if you don't already have one.
+
+This walkthrough uses **OAuth2** → **URL Generator**, not the **Installation** tab.
+
+Under **Scopes**, check `bot` and `applications.commands`.
+
+![Discord OAuth2 URL Generator with bot and applications.commands scopes](https://neon.com/docs/compute/functions/discord-oauth-scopes.png)
+
+Under **Bot Permissions**, check **Send Messages** and **Use Slash Commands**.
+
+![Discord OAuth2 URL Generator with Send Messages and Use Slash Commands](https://neon.com/docs/compute/functions/discord-oauth-url-generator.png)
+
+The screenshots are cropped to the checkboxes. Copy the generated URL at the bottom of **URL Generator**, below **Bot Permissions**. Open it, pick your test server, click **Continue**, then **Authorize**.
+
+Slash commands show up after you [register them](https://neon.com/docs/compute/functions/discord-bot#register-slash-commands).
+
+## Scaffold the project
+
+`neon bootstrap` copies the HTTP example into an empty directory, can install dependencies and can [link](https://neon.com/docs/cli/link) a Neon project. The template id is `discord-bot-http`:
+
+```bash
+neon bootstrap my-discord-bot --template discord-bot-http
+cd my-discord-bot
+```
+
+See [`neon bootstrap`](https://neon.com/docs/cli/bootstrap) for flags. Later commands in this guide assume you're in that directory.
+
+To start from the source instead, copy [bots/discord-bot-http](https://github.com/neondatabase/examples/tree/main/bots/discord-bot-http) from the [examples](https://github.com/neondatabase/examples) repo, `cd` into it, then install dependencies and `neon link`.
+
+`neon.ts` declares the `discord` function, the Discord env vars and a local `dev` port:
+
+```ts filename="neon.ts"
+import { defineConfig } from "@neon/config/v1";
+
+export default defineConfig({
+  preview: {
+    functions: {
+      discord: {
+        name: "Discord interactions",
+        source: "./functions/discord.ts",
+        env: {
+          DISCORD_PUBLIC_KEY: process.env.DISCORD_PUBLIC_KEY,
+          DISCORD_APPLICATION_ID: process.env.DISCORD_APPLICATION_ID,
+          DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN,
+          ...(process.env.DISCORD_GUILD_ID ? { DISCORD_GUILD_ID: process.env.DISCORD_GUILD_ID } : {}),
+        },
+        dev: {
+          port: 8787,
+        },
+      },
+    },
+  },
+});
+```
+
+The key `discord` is the function slug. It's permanent after the first deploy and appears in CLI commands and the invocation URL. See the [neon.ts reference](https://neon.com/docs/reference/neon-ts).
+
+This walkthrough is deploy-only. Discord needs a public HTTPS URL, so we don't use `pnpm dev` here. The scaffold still sets `dev.port` to `8787` to match the template.
+
+## Add Discord secrets
+
+Template scripts read `.env` (`neon deploy --env .env` and `node --env-file=.env`). Don't copy `.env.example` over a `.env` that `neon bootstrap` or `neon link` already wrote. That can wipe `DATABASE_URL`. If `.env` exists, add the Discord keys to it. If it doesn't, copy `.env.example` to `.env`.
+
+```env filename=".env"
+DISCORD_PUBLIC_KEY=
+DISCORD_APPLICATION_ID=
+DISCORD_BOT_TOKEN=
+DISCORD_GUILD_ID=
+
+# Set automatically by Neon when running `pnpm deploy`.
+NEON_BRANCH=
+DATABASE_URL=
+DATABASE_URL_UNPOOLED=
+```
+
+Fill in the four `DISCORD_*` values you stashed. For this guide, set `DISCORD_GUILD_ID` to your test server. In Discord, turn on Developer Mode (User Settings → App Settings → Advanced), right-click the server name in the sidebar and click **Copy Server ID**. A guild is a Discord server.
+
+Don't set `NEON_BRANCH`, `DATABASE_URL` or `DATABASE_URL_UNPOOLED`. Neon writes them on deploy. See [Environment variables](https://neon.com/docs/compute/functions/environment-variables).
+
+If you omit `DISCORD_GUILD_ID`, the register script creates global commands, which can take up to an hour to show up. Skip that until you want a production-wide install.
+
+## Deploy the function
+
+If you used `neon bootstrap` and let it install dependencies, skip that step. If you cloned by hand, install first (`pnpm install` as in the README, or `npm install` from the lockfile).
+
+`pnpm deploy` (or `npm run deploy`) runs `neon deploy --env .env`, which evaluates `neon.ts` with your Discord secrets in `process.env`:
+
+```bash
+pnpm deploy
+```
+
+or `npm run deploy`.
+
+The CLI applies the `neon.ts` policy, bundles the function and waits until that apply finishes. You'll see `Applied changes` and a **Function URLs** list. That list prints the `discord` origin: a URL with a trailing slash and no path. Pasting that origin into Discord fails the handshake. Copy the `discord` URL, strip the trailing slash and append `/api/interactions`. That's the value you paste into the Developer Portal. If the command fails, check [function logs](https://neon.com/docs/compute/functions/logs). Flags are in [Deploy and manage functions](https://neon.com/docs/compute/functions/deploy).
+
+Deployed env is a snapshot of `.env` at apply time. After you fix Discord keys (or if you deployed before filling them in), run `pnpm deploy` again.
+
+The URL looks like:
+
+```text
+https://br-cool-darkness-123456-discord.compute.c-1.us-east-2.aws.neon.tech/api/interactions
+```
+
+Your cell (`c-1`, `c-3`, …) will differ.
+
+If you need the origin again later, `pnpm endpoint` (or `npm run endpoint`) runs `neon functions get discord`. The default table columns are **Slug**, **Name**, **Invocation Url** and **Created At**. Copy **Invocation Url**, strip a trailing slash if there is one, then append `/api/interactions`. Pass `-o yaml` or `-o json` if you want the `invocation_url` key instead of the table.
+
+## Set the Interactions Endpoint URL
+
+In the Developer Portal, open **General Information**. Paste the Neon URL (including `/api/interactions`) into **Interactions Endpoint URL** and save.
+
+Discord immediately POSTs a `PING` (`type: 1`). The handler verifies the signature and returns a `PONG`. If that handshake succeeds, Discord saves the URL (the Developer Portal shows a green success message).
+
+If save fails, retry once. Confirm the public key in `.env` matches General Information, you redeployed after editing `.env` and the path ends with `/api/interactions`. Then open or curl the function URL (the origin from Function URLs, or that URL plus `/api/interactions`). GET returns JSON with these keys:
+
+```json
+{
+  "ok": true,
+  "service": "discord-interactions",
+  "interactionsPath": "/api/interactions",
+  "interactionsUrl": "https://br-cool-darkness-123456-discord.compute.c-1.us-east-2.aws.neon.tech/api/interactions"
+}
+```
+
+`ok: true` only proves the isolate is up and `interactionsUrl` is the value you paste. GET does not use the public key. A wrong key or a stale deploy still fails Discord's `PING`. Confirm `interactionsUrl` matches what you paste, then check [function logs](https://neon.com/docs/compute/functions/logs). Signature failures show up there. Fix `.env` and redeploy. The first PING can miss a cold start.
+
+## Register slash commands
+
+Discord doesn't read commands from your handler. Register them once with the Discord API:
+
+```bash
+pnpm register:commands
+```
+
+or `npm run register:commands`.
+
+That compiles `scripts/registerCommands.ts` and calls Discord's HTTP API with your bot token. It runs locally. It isn't part of the Neon Function. On success it prints the registered command list as JSON.
+
+The hosted function still needs `DISCORD_BOT_TOKEN`, `DISCORD_APPLICATION_ID` and `DISCORD_PUBLIC_KEY` in the deployed env. `/help` uses the token at request time for command mentions. The public key is for request verification.
+
+If it throws, check that `.env` exists and the token is set (Discord returns 401 for a bad token). A wrong `DISCORD_GUILD_ID`, or a bot that isn't in that server, fails with an unknown guild error.
+
+With `DISCORD_GUILD_ID` set, the script registers guild commands on that server.
+
+The template registers `/ping`, `/info`, `/help`, `/buttons`, `/name` and `/profile`. Each command has an optional `ephemeral` boolean in Discord's `/` picker when you invoke it. Set it so only you see the reply. It isn't an env var or a code edit.
+
+Restart the Discord client after registering so the `/` picker picks up the new commands.
+
+## Try /ping
+
+In your test server, type `/` and pick **ping** from Discord's command picker, then send it. The bot should reply with a Pong embed and an estimated interaction latency.
+
+HTTP-only bots stay **offline** in the member list. That's expected. They still handle slash commands.
+
+You must send Discord an initial response within about 3 seconds, or Discord invalidates the interaction token. This template answers in the request.
+
+If nothing appears, or Discord says "The application did not respond":
+
+- The bot is in the server with the `applications.commands` scope.
+- Discord saved the Interactions Endpoint URL after a successful PING/PONG.
+- `pnpm deploy` finished (redeploy after any `.env` change).
+- `pnpm register:commands` printed JSON (then you restarted Discord).
+- `DISCORD_GUILD_ID` is this server.
+- Check [function logs](https://neon.com/docs/compute/functions/logs) for a failed PING or a slow cold start. Try `/ping` again once the branch is warm.
+
+## How it works
+
+`functions/discord.ts` default-exports `async function handler(request: Request)` and returns a `Response`. GET returns `{ ok, service, interactionsPath, interactionsUrl }`. POST reads the raw body, verifies the Discord signature, then dispatches on interaction type.
+
+**Important: Verify the raw body**
+
+Call `request.text()` and verify **before** `JSON.parse`. Discord signs `timestamp + body` as the exact bytes it sent. Parsing JSON first can change whitespace and fail verification. See [Interactions Overview](https://discord.com/developers/docs/interactions/overview).
+
+The GET and POST `PING` path looks like this. ApplicationCommand and MessageComponent dispatch is in the source.
+
+```ts filename="functions/discord.ts"
+import { InteractionResponseType, InteractionType } from "discord-api-types/v10";
+import { DISCORD_INTERACTIONS_PATH } from "../src/constants/discord.js";
+import { getDiscordEnv } from "../src/env.js";
+import { discordInteractionSchema } from "../src/schemas/discord.js";
+import { jsonResponse } from "../src/utils/jsonResponse.js";
+import { verifyDiscordRequest } from "../src/utils/verifyDiscordRequest.js";
+
+export default async function handler(request: Request): Promise<Response> {
+  const url = new URL(request.url);
+
+  switch (request.method) {
+    case "GET":
+      return jsonResponse({
+        ok: true,
+        service: "discord-interactions",
+        interactionsPath: DISCORD_INTERACTIONS_PATH,
+        interactionsUrl: `${url.origin}${DISCORD_INTERACTIONS_PATH}`,
+      });
+    case "POST":
+      break;
+    default:
+      return jsonResponse({ error: "method not allowed" }, { status: 405 });
+  }
+
+  const body = await request.text();
+  const env = getDiscordEnv();
+  const isVerified = verifyDiscordRequest({
+    body,
+    publicKey: env.DISCORD_PUBLIC_KEY,
+    signature: request.headers.get("x-signature-ed25519"),
+    timestamp: request.headers.get("x-signature-timestamp"),
+  });
+
+  if (!isVerified) {
+    return jsonResponse({ error: "invalid request signature" }, { status: 401 });
+  }
+
+  let payloadBody: unknown;
+
+  try {
+    payloadBody = JSON.parse(body);
+  } catch {
+    return jsonResponse({ error: "invalid json" }, { status: 400 });
+  }
+
+  const parsedPayload = discordInteractionSchema.safeParse(payloadBody);
+
+  if (!parsedPayload.success) {
+    return jsonResponse({ error: "invalid interaction payload" }, { status: 400 });
+  }
+
+  const payload = parsedPayload.data;
+
+  if (payload.type === InteractionType.Ping) {
+    return jsonResponse({ type: InteractionResponseType.Pong });
+  }
+
+  // ApplicationCommand and MessageComponent dispatch is in the source.
+}
+```
+
+## Next steps
+
+The template already implements more than `/ping`:
+
+- `/info` and `/help`: [Components v2](https://discord.com/developers/docs/components/overview) panels (Discord's newer message layout) with runtime details and slash-command mentions.
+- `/buttons`: Components v2 buttons (primary, secondary, success and danger).
+- `/name` and `/profile`: Postgres via Drizzle (`profiles` and `command_usage` tables). After the project is linked and deployed so `DATABASE_URL` exists, run `pnpm db:push` once. If you skip that, those commands reply that they could not reach the Neon database. On a cold branch they can also fall back to a warming-up reply; run the command again once the branch is warm.
+
+To add LLM chat and image generation, see the [Community Guide](https://neon.com/guides/discord-bot-on-neon-functions). That's a separate from-scratch walkthrough.
+
+Sibling HTTP bot templates: [Telegram](https://github.com/neondatabase/examples/tree/main/bots/telegram-bot-http) and [WhatsApp](https://github.com/neondatabase/examples/tree/main/bots/whatsapp-bot-http).
+
+## Example
+
+Create a copy of the example with the Neon CLI:
+
+```bash
+neon bootstrap my-discord-bot --template discord-bot-http
+cd my-discord-bot
+```
+
+You can find the example in [`bots/discord-bot-http`](https://github.com/neondatabase/examples/tree/main/bots/discord-bot-http).
 
 --- [Document source](https://neon.com/docs/compute/functions/environment-variables.md) ---
 
@@ -31088,6 +31448,405 @@ Slugs must match `^[a-z0-9]{1,20}$` and are immutable after the first deployment
 
 See [Environment variables](https://neon.com/docs/compute/functions/environment-variables#constraints) for limits on variable count and total size.
 
+--- [Document source](https://neon.com/docs/compute/functions/telegram-bot.md) ---
+
+# How to host a Telegram bot on Neon Functions
+
+Receive Telegram messages, run bot commands and store data in Postgres
+
+**Note: Beta**
+
+The **Neon Functions** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
+
+Telegram can send bot updates to an HTTPS webhook. A [Neon Function](https://neon.com/docs/compute/functions/overview) can receive those updates, run bot commands and query Postgres from the same branch.
+
+The template verifies the secret token on each incoming update, handles messages and processes inline keyboard callbacks. See Telegram's [Bot API](https://core.telegram.org/bots/api) when you add other update types.
+
+**Note: Webhook delivery only**
+
+This guide uses Telegram webhooks. It doesn't run a polling process with `getUpdates`. Telegram disables `getUpdates` while a webhook is active.
+
+## Prerequisites
+
+- A Neon project in AWS US East (Ohio) (`aws-us-east-2`). Functions are available only in this region during beta. See [Get started with Neon Functions](https://neon.com/docs/compute/functions/get-started).
+- The latest [Neon CLI](https://neon.com/docs/cli), installed and authenticated. Upgrade with `npm install -g neon@latest` if needed, then see [CLI auth](https://neon.com/docs/cli/auth).
+- Node.js 24 (`node -v`). Deployed functions run on `nodejs24`.
+- A Telegram account.
+
+The template uses npm. Its scripts load Telegram values from `.env`.
+
+## Create a Telegram bot
+
+Open [BotFather](https://t.me/BotFather) in Telegram and send `/newbot`. BotFather asks for a display name and username. Usernames must be 5 to 32 characters and end in `bot`. They can contain Latin letters, numbers and underscores. For example, use `example_neon_bot`. You can't change the username later.
+
+After you choose a username, BotFather sends you an authentication token and a link to the bot. Save both for later.
+
+**Warning:** Treat the bot token like a password. Anyone who has it can control your bot. Never commit it or paste it into screenshots, tickets or chat. If it leaks, use `/token` in BotFather to replace it.
+
+For more BotFather options, see [Creating a new bot](https://core.telegram.org/bots/features#creating-a-new-bot).
+
+## Scaffold the project
+
+In an interactive terminal, `neon bootstrap` copies the Telegram example into a new directory, then prompts you to install dependencies and [link](https://neon.com/docs/cli/link) a Neon project. The template ID is `telegram-bot-http`:
+
+```bash
+neon bootstrap my-telegram-bot --template telegram-bot-http
+cd my-telegram-bot
+```
+
+Accept both prompts. If you skip either, run `npm install` and `neon link` before continuing.
+
+See [`neon bootstrap`](https://neon.com/docs/cli/bootstrap) for flags. Later commands in this guide assume you're in that directory.
+
+To start from the source instead, copy [bots/telegram-bot-http](https://github.com/neondatabase/examples/tree/main/bots/telegram-bot-http) from the [examples](https://github.com/neondatabase/examples) repo, `cd` into it, then install dependencies and run `neon link`.
+
+`neon.ts` declares the `telegram` function and passes the bot token and webhook secret to it:
+
+```ts filename="neon.ts"
+import { defineConfig } from "@neon/config/v1";
+
+export default defineConfig({
+  preview: {
+    functions: {
+      telegram: {
+        name: "Telegram webhook",
+        source: "./functions/telegram.ts",
+        env: {
+          TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN!,
+          TELEGRAM_WEBHOOK_SECRET: process.env.TELEGRAM_WEBHOOK_SECRET!,
+        },
+        dev: {
+          port: 8787,
+        },
+      },
+    },
+  },
+});
+```
+
+The key `telegram` is the function slug. It's permanent after the first deploy and appears in CLI commands and the invocation URL. See the [neon.ts reference](https://neon.com/docs/reference/neon-ts).
+
+This walkthrough deploys the function before connecting Telegram. Telegram requires a public HTTPS webhook, so it can't reach `localhost` unless you use a tunnel.
+
+## Add Telegram secrets
+
+Don't overwrite an existing `.env`; doing so can remove `DATABASE_URL`. If `.env` doesn't exist, copy the template. Then pull the linked branch's Neon variables into the same file:
+
+```bash
+cp .env.example .env
+neon env pull --file .env
+```
+
+Generate a webhook secret:
+
+```bash
+openssl rand -hex 32
+```
+
+Add the BotFather token and generated secret to `.env`. Leave `TELEGRAM_WEBHOOK_URL` empty until you deploy:
+
+```env filename=".env"
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_WEBHOOK_SECRET=
+TELEGRAM_WEBHOOK_URL=
+
+# Written locally by `neon env pull`; injected into deployed functions by Neon.
+NEON_BRANCH=
+DATABASE_URL=
+DATABASE_URL_UNPOOLED=
+```
+
+The webhook secret can contain 1 to 256 characters from `A-Z`, `a-z`, `0-9`, `_` and `-`. The `openssl` command above produces a valid value.
+
+Don't edit `NEON_BRANCH`, `DATABASE_URL` or `DATABASE_URL_UNPOOLED`. Refresh them with `neon env pull --file .env`. See [Environment variables](https://neon.com/docs/compute/functions/environment-variables).
+
+Only the local webhook setup script reads `TELEGRAM_WEBHOOK_URL`. Neon doesn't pass it to the function.
+
+## Deploy the function
+
+If `neon bootstrap` installed dependencies, you can deploy now. If you copied the source by hand, run `npm install` first.
+
+The `deploy` script runs `neon deploy --env .env`, which evaluates `neon.ts` with your Telegram secrets in `process.env`:
+
+```bash
+npm run deploy
+```
+
+The CLI applies the `neon.ts` policy, bundles the function and waits for the deployment to finish. You'll see `Applied changes` and a **Function URLs** list. Copy the `telegram` URL.
+
+The URL looks like:
+
+```text
+https://br-cool-darkness-123456-telegram.compute.c-1.us-east-2.aws.neon.tech/
+```
+
+Your cell (`c-1`, `c-3`, …) will differ.
+
+If you need the URL later, run:
+
+```bash
+npm run endpoint
+```
+
+This runs `neon functions get telegram`. Copy **Invocation Url** from the output.
+
+## Set the webhook
+
+Telegram sends updates to `/api/webhook`. Remove the trailing slash from the function URL, append `/api/webhook` and add the full URL to `.env`:
+
+```env filename=".env"
+TELEGRAM_WEBHOOK_URL=https://br-cool-darkness-123456-telegram.compute.c-1.us-east-2.aws.neon.tech/api/webhook
+```
+
+Register that URL and your webhook secret with Telegram:
+
+```bash
+npm run set:webhook
+```
+
+The script calls Telegram's [`setWebhook`](https://core.telegram.org/bots/api#setwebhook) method with the URL, webhook secret and the `message` and `callback_query` update types. Telegram returns `true` when it accepts the webhook.
+
+The function URL must use HTTPS. Telegram includes your secret in the `X-Telegram-Bot-Api-Secret-Token` header on every update.
+
+If you change the webhook secret, run `npm run deploy` first so the function has the new value. Then run `npm run set:webhook` again so Telegram sends the same value.
+
+Open the webhook URL in a browser to check that the function is available. A GET request returns:
+
+```json
+{
+  "ok": true,
+  "service": "telegram-webhook",
+  "webhookPath": "/api/webhook",
+  "webhookUrl": "https://br-cool-darkness-123456-telegram.compute.c-1.us-east-2.aws.neon.tech/api/webhook"
+}
+```
+
+`ok: true` confirms only that the function is reachable at that URL. It doesn't verify the webhook secret or confirm webhook registration. A `true` result from `npm run set:webhook` confirms registration. Sending `/ping` verifies end-to-end delivery.
+
+## Register bot commands
+
+Register the command menu with Telegram:
+
+```bash
+npm run register:commands
+```
+
+The script calls Telegram's `setMyCommands` method with `/ping`, `/info`, `/help`, `/buttons`, `/name` and `/profile`. On success it prints `true`.
+
+Run this command again after you change the command list.
+
+## Try `/ping`
+
+Open the bot link that BotFather gave you. If Telegram shows a **Start** button, click it. Then send `/ping`. The bot replies with `Pong` and an estimated webhook latency.
+
+If Telegram replies with `Unknown command` after you click **Start**, send `/ping`. The template doesn't register a `/start` command.
+
+If the bot doesn't reply:
+
+- Confirm that `npm run set:webhook` returned `true`.
+- Check that `TELEGRAM_WEBHOOK_URL` ends with `/api/webhook`.
+- Check that `TELEGRAM_WEBHOOK_SECRET` matches the value used in the latest deployment.
+- Redeploy after changing `TELEGRAM_BOT_TOKEN` or `TELEGRAM_WEBHOOK_SECRET`.
+- Check [function logs](https://neon.com/docs/compute/functions/logs) for an invalid webhook secret, invalid update payload or Telegram API error.
+
+Telegram retries webhook updates when your endpoint doesn't return a `2xx` response.
+
+The template doesn't deduplicate Telegram `update_id` values. If you add a command with side effects, make it safe to run more than once.
+
+## How it works
+
+`functions/telegram.ts` handles GET and POST requests. GET returns the webhook URL. POST checks the secret header, validates the Telegram update and dispatches messages or button callbacks.
+
+**Important: Verify the webhook secret**
+
+Check `X-Telegram-Bot-Api-Secret-Token` before processing an update. The template compares it with `TELEGRAM_WEBHOOK_SECRET` using Node.js `timingSafeEqual`.
+
+The handler verifies the secret before parsing an update. It handles callback queries, tracks recognized commands without delaying replies and sends `Unknown command. Try /help.` for unsupported commands. See the complete handler:
+
+```typescript
+import { TELEGRAM_WEBHOOK_PATH } from "../src/constants/telegram.js";
+import { getTelegramBotToken, getTelegramWebhookSecret } from "../src/env.js";
+import { telegramUpdateSchema } from "../src/schemas/telegram.js";
+import { commandHandlers, trackTelegramCommandRun } from "../src/utils/telegramCommands.js";
+import {
+  createButtonTestClickMessage,
+  parseButtonTestCallbackData,
+} from "../src/utils/generalComponents.js";
+import { jsonResponse } from "../src/utils/jsonResponse.js";
+import {
+  answerTelegramCallbackQuery,
+  editTelegramMessageText,
+  sendTelegramMessage,
+} from "../src/utils/telegramApi.js";
+import { createErrorMessage } from "../src/utils/telegramResponses.js";
+import { parseTelegramCommand } from "../src/utils/telegramText.js";
+import { verifyTelegramRequest } from "../src/utils/verifyTelegramRequest.js";
+
+const handleCallbackQuery = async (
+  botToken: string,
+  update: Awaited<ReturnType<typeof telegramUpdateSchema.parse>>,
+): Promise<Response> => {
+  const callbackQuery = update.callback_query;
+
+  if (!callbackQuery) {
+    return jsonResponse({ ok: true });
+  }
+
+  const action = callbackQuery.data ? parseButtonTestCallbackData(callbackQuery.data) : undefined;
+
+  if (!action) {
+    await answerTelegramCallbackQuery({
+      botToken,
+      callbackQueryId: callbackQuery.id,
+      text: "That button is not handled by this bot.",
+    });
+
+    return jsonResponse({ ok: true });
+  }
+
+  if (!callbackQuery.message) {
+    await answerTelegramCallbackQuery({
+      botToken,
+      callbackQueryId: callbackQuery.id,
+      text: "The original message is not available.",
+    });
+
+    return jsonResponse({ ok: true });
+  }
+
+  const responseMessage = createButtonTestClickMessage(callbackQuery.message.chat.id, action);
+
+  await Promise.all([
+    answerTelegramCallbackQuery({ botToken, callbackQueryId: callbackQuery.id }),
+    editTelegramMessageText({
+      botToken,
+      chatId: responseMessage.chatId,
+      messageId: callbackQuery.message.message_id,
+      replyMarkup: responseMessage.replyMarkup,
+      text: responseMessage.text,
+    }),
+  ]);
+
+  return jsonResponse({ ok: true });
+};
+
+export default async function handler(request: Request): Promise<Response> {
+  const url = new URL(request.url);
+
+  switch (request.method) {
+    case "GET":
+      return jsonResponse({
+        ok: true,
+        service: "telegram-webhook",
+        webhookPath: TELEGRAM_WEBHOOK_PATH,
+        webhookUrl: `${url.origin}${TELEGRAM_WEBHOOK_PATH}`,
+      });
+    case "POST":
+      break;
+    default:
+      return jsonResponse({ error: "method not allowed" }, { status: 405 });
+  }
+
+  const isVerified = verifyTelegramRequest(
+    getTelegramWebhookSecret(),
+    request.headers.get("x-telegram-bot-api-secret-token"),
+  );
+
+  if (!isVerified) {
+    return jsonResponse({ error: "invalid webhook secret" }, { status: 401 });
+  }
+
+  let payloadBody: unknown;
+
+  try {
+    payloadBody = await request.json();
+  } catch {
+    return jsonResponse({ error: "invalid json" }, { status: 400 });
+  }
+
+  const parsedPayload = telegramUpdateSchema.safeParse(payloadBody);
+
+  if (!parsedPayload.success) {
+    return jsonResponse({ error: "invalid telegram update payload" }, { status: 400 });
+  }
+
+  const update = parsedPayload.data;
+  const botToken = getTelegramBotToken();
+
+  if (update.callback_query) {
+    return handleCallbackQuery(botToken, update);
+  }
+
+  const message = update.message;
+  const command = parseTelegramCommand(message?.text);
+
+  if (!message || !command) {
+    return jsonResponse({ ok: true });
+  }
+
+  const commandHandler = commandHandlers[command.name];
+
+  if (commandHandler) {
+    void trackTelegramCommandRun(message, command.name);
+
+    const responseMessage = await commandHandler({
+      args: command.args,
+      botToken,
+      command: command.name,
+      message,
+      request,
+      update,
+      url,
+    });
+
+    await sendTelegramMessage({ botToken, ...responseMessage });
+
+    return jsonResponse({ ok: true });
+  }
+
+  await sendTelegramMessage({
+    botToken,
+    ...createErrorMessage(message.chat.id, "Unknown command. Try /help."),
+  });
+
+  return jsonResponse({ ok: true });
+}
+
+```
+
+## Next steps
+
+The template includes more than `/ping`:
+
+- `/info`: shows the Node.js version, platform, request method, function URL and Neon branch.
+- `/help`: lists the commands defined by the template's shared command list.
+- `/buttons`: shows an inline keyboard with refresh, echo, time and confirm callbacks.
+- `/name <your name>`: stores a display name. `/name` without an argument shows the stored name.
+- `/profile`: shows the stored name, total command count and per-command usage.
+
+The template stores Telegram user IDs, display names and usage counts in the `profiles` and `command_usage` tables. Usage tracking is best-effort and doesn't block replies.
+
+After `neon env pull --file .env` writes `DATABASE_URL`, create the tables:
+
+```bash
+npm run db:push
+```
+
+The template gives `/name` and `/profile` 2.5 seconds for a database response. If a cold Postgres compute misses that deadline, the bot returns **Warming up**. Wait a moment, then run the command again.
+
+Sibling bot templates: [Discord](https://github.com/neondatabase/examples/tree/main/bots/discord-bot-http) and [WhatsApp](https://github.com/neondatabase/examples/tree/main/bots/whatsapp-bot-http).
+
+## Example
+
+Create a copy of the example with the Neon CLI:
+
+```bash
+neon bootstrap my-telegram-bot --template telegram-bot-http
+cd my-telegram-bot
+```
+
+You can find the example in [`bots/telegram-bot-http`](https://github.com/neondatabase/examples/tree/main/bots/telegram-bot-http).
+
 --- [Document source](https://neon.com/docs/compute/functions/websockets.md) ---
 
 > Summary: Neon Functions stay alive while data flows, so they can host real-time backends. Use WebSockets for two-way connections via an upgrade export, or server-sent events for one-way streams, and Postgres LISTEN/NOTIFY to broadcast across isolates.
@@ -31373,6 +32132,306 @@ For a complete example with JWT verification, Managed Better Auth integration, a
 On shutdown the platform sends `SIGINT`, then forcibly stops the function 5 seconds later. You don't need to drain the `pg` pool: when the process exits, the OS closes its sockets and Neon's pooler reclaims those connections. Use a `SIGINT` handler only to flush in-flight work that would otherwise be lost, such as clearing the heartbeat timer above.
 
 See [Runtime limits](https://neon.com/docs/compute/functions/reference/runtime-limits) for eviction and timeout behavior.
+
+--- [Document source](https://neon.com/docs/compute/functions/whatsapp-bot.md) ---
+
+# How to host a WhatsApp bot on Neon Functions
+
+Receive WhatsApp messages and reply through the Graph API
+
+**Note: Beta**
+
+The **Neon Functions** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
+
+WhatsApp Cloud API sends incoming messages to HTTP webhooks. In this guide, you deploy a [Neon Function](https://neon.com/docs/compute/functions/overview) as the webhook endpoint. The function verifies Meta's requests, handles bot commands and sends replies through the Graph API.
+
+The template uses Drizzle to store user names and command usage in Neon Postgres. See Meta's [WhatsApp Cloud API get started guide](https://developers.facebook.com/docs/whatsapp/cloud-api/get-started/) for details about setting up an account and phone number.
+
+**Note: WhatsApp Cloud API only**
+
+This example uses Meta's hosted WhatsApp Cloud API. It doesn't automate a personal WhatsApp account or the WhatsApp Business mobile app.
+
+## Prerequisites
+
+- A Neon project in AWS US East (Ohio) (`aws-us-east-2`). Functions are available only in this region during beta. See [Get started with Neon Functions](https://neon.com/docs/compute/functions/get-started).
+- The latest [Neon CLI](https://neon.com/docs/cli), installed and authenticated. Upgrade with `npm install -g neon@latest`, then follow [CLI authentication](https://neon.com/docs/cli/auth).
+- Node.js 24 (`node -v`). Deployed functions run on `nodejs24`.
+- A Meta developer account.
+- A Meta app connected to a WhatsApp Business Account, with a Cloud API phone number and a test recipient. Meta's get started flow can create test resources for you.
+
+The example's README and package scripts use npm. The commands in this guide do the same.
+
+## Set up WhatsApp Cloud API
+
+In the Meta App Dashboard, create an app. On **App details**, enter an app name such as `Neon Bot` and continue.
+
+![App details with Neon Bot entered as the app name](https://neon.com/docs/compute/functions/whatsapp-create-app.png)
+
+On **Use cases**, select **Connect with customers through WhatsApp**, then continue through the app creation flow.
+
+![Connect with customers through WhatsApp selected as the app use case](https://neon.com/docs/compute/functions/whatsapp-use-case.png)
+
+Follow Meta's [WhatsApp Cloud API get started guide](https://developers.facebook.com/docs/whatsapp/cloud-api/get-started/) to **WhatsApp** > **API Setup**. Generate an access token, select the phone numbers you'll use for testing and send the first test message.
+
+![WhatsApp API Setup with access token and test phone number details](https://neon.com/docs/compute/functions/whatsapp-api-setup.png)
+
+Keep these values:
+
+- **Access token**: authorizes calls from the function to the Graph API.
+- **Phone number ID**: identifies the Cloud API sender used by the function.
+- **App secret**: lets the function verify the `X-Hub-Signature-256` header on incoming webhook POSTs.
+
+The temporary access token from the API setup flow expires quickly. To keep developing the bot, follow Meta's instructions to create a system user and permanent access token.
+
+Create a separate webhook verify token with any strong random value that only you and Meta know:
+
+```bash
+openssl rand -hex 32
+```
+
+Save the output locally. You'll use the same value for `WHATSAPP_VERIFY_TOKEN` and Meta's **Verify token** field.
+
+**Warning:** Treat the access token, app secret and webhook verify token like passwords. Never commit them or paste them into screenshots, tickets or chat.
+
+## Scaffold the project
+
+`neon bootstrap` copies the WhatsApp HTTP example into a new directory, installs its dependencies and links a Neon project. The template ID is `whatsapp-bot-http`:
+
+```bash
+neon bootstrap my-whatsapp-bot --template whatsapp-bot-http
+cd my-whatsapp-bot
+```
+
+See [`neon bootstrap`](https://neon.com/docs/cli/bootstrap) for flags. Run the remaining commands from that directory.
+
+`neon.ts` declares one function named `whatsapp` and passes the four WhatsApp variables into its environment:
+
+```ts filename="neon.ts"
+import { defineConfig } from "@neon/config/v1";
+
+export default defineConfig({
+  preview: {
+    functions: {
+      whatsapp: {
+        name: "WhatsApp webhook",
+        source: "./functions/whatsapp.ts",
+        env: {
+          WHATSAPP_ACCESS_TOKEN: process.env.WHATSAPP_ACCESS_TOKEN!,
+          WHATSAPP_PHONE_NUMBER_ID: process.env.WHATSAPP_PHONE_NUMBER_ID!,
+          WHATSAPP_VERIFY_TOKEN: process.env.WHATSAPP_VERIFY_TOKEN!,
+          WHATSAPP_APP_SECRET: process.env.WHATSAPP_APP_SECRET!,
+        },
+        dev: {
+          port: 8787,
+        },
+      },
+    },
+  },
+});
+```
+
+The `whatsapp` key is the function slug. It appears in CLI commands and the invocation URL. See the [`neon.ts` reference](https://neon.com/docs/reference/neon-ts).
+
+Deploy the function before connecting Meta. Meta needs a public HTTPS callback URL, so you don't need `npm run dev`.
+
+## Add WhatsApp secrets
+
+The deploy script runs `neon deploy --env .env` to read `.env`. Don't replace a `.env` created by `neon bootstrap` because it can contain database variables for the linked project. Add the WhatsApp keys to the existing file. If the file doesn't exist, copy `.env.example` to `.env`.
+
+```env filename=".env"
+WHATSAPP_ACCESS_TOKEN=
+WHATSAPP_PHONE_NUMBER_ID=
+WHATSAPP_VERIFY_TOKEN=
+WHATSAPP_APP_SECRET=
+
+# Set automatically by Neon when running `neon deploy`.
+NEON_BRANCH=
+DATABASE_URL=
+DATABASE_URL_UNPOOLED=
+```
+
+Set `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID` and `WHATSAPP_APP_SECRET` to the values from Meta. Set `WHATSAPP_VERIFY_TOKEN` to the random value you generated.
+
+Leave the Neon variables as written by `neon bootstrap`. Neon also injects them into the deployed function. See [Environment variables](https://neon.com/docs/compute/functions/environment-variables).
+
+## Apply the database schema
+
+The `/name` and `/profile` commands use the `profiles` and `command_usage` tables. Apply the included Drizzle schema to the linked Neon database:
+
+```bash
+npm run db:push
+```
+
+You can deploy and test `/ping` without these tables, but the database-backed commands will return an error until you apply the schema.
+
+## Deploy the function
+
+Deploy the function with the WhatsApp secrets from `.env`:
+
+```bash
+npm run deploy
+```
+
+The script runs `neon deploy --env .env`. The CLI evaluates `neon.ts`, bundles the handler and waits for the deployment to finish. If the deployment fails, check [function logs](https://neon.com/docs/compute/functions/logs) and [Deploy and manage functions](https://neon.com/docs/compute/functions/deploy).
+
+Copy the `whatsapp` invocation URL from the deployment output. Remove its trailing slash, then append `/api/webhook`. The complete callback URL looks like:
+
+```text
+https://br-cool-darkness-123456-whatsapp.compute.c-1.us-east-2.aws.neon.tech/api/webhook
+```
+
+Your branch name, endpoint ID and cell will differ.
+
+To get the invocation URL again, run:
+
+```bash
+npm run endpoint
+```
+
+This script runs `neon functions get whatsapp`. Append `/api/webhook` to the returned invocation URL.
+
+Deployed environment variables are a snapshot of `.env` at deployment time. Run `npm run deploy` again after changing any WhatsApp value.
+
+## Configure the webhook
+
+In the Meta App Dashboard, open **WhatsApp** > **Configuration**. Enter:
+
+- **Callback URL**: the full Neon URL ending in `/api/webhook`
+- **Verify token**: the exact value of `WHATSAPP_VERIFY_TOKEN`
+
+Select **Verify and save**. Meta sends a GET request with `hub.mode`, `hub.verify_token` and `hub.challenge`. The function checks that the mode is `subscribe` and the token matches, then returns the challenge as plain text.
+
+![WhatsApp webhook configuration with callback URL, verify token and Verify and save highlighted](https://neon.com/docs/compute/functions/whatsapp-configuration.png)
+
+Once Meta verifies the webhook, subscribe to the **messages** field. Meta uses this field for incoming messages and outgoing message status updates. See Meta's [webhook setup guide](https://developers.facebook.com/docs/whatsapp/cloud-api/guides/set-up-webhooks/) and [messages webhook reference](https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/components/).
+
+If verification fails:
+
+- Confirm that the callback URL ends in `/api/webhook`.
+- Confirm that Meta's verify token exactly matches `WHATSAPP_VERIFY_TOKEN`.
+- Redeploy after editing `.env`.
+- Check [function logs](https://neon.com/docs/compute/functions/logs).
+
+Opening the callback URL directly in a browser returns `403 invalid verify token`. That's expected because a normal browser request doesn't contain Meta's verification query parameters.
+
+## Try /ping
+
+Use a WhatsApp account registered as a test recipient to send `/ping` to the Cloud API phone number. The bot should reply with `Pong` and an estimated webhook latency.
+
+WhatsApp doesn't need a separate command registration step. The function parses incoming text messages directly.
+
+If the bot doesn't reply:
+
+- Confirm that webhook verification succeeded and the **messages** field is subscribed.
+- Confirm that you sent the message to the phone number associated with `WHATSAPP_PHONE_NUMBER_ID`.
+- Check whether a temporary `WHATSAPP_ACCESS_TOKEN` expired.
+- Confirm that `WHATSAPP_APP_SECRET` matches the Meta app. A mismatch causes POST signature verification to return `401`.
+- Redeploy after changing `.env`, then check [function logs](https://neon.com/docs/compute/functions/logs).
+
+## How it works
+
+`functions/whatsapp.ts` handles GET verification requests and POST webhook deliveries at `/api/webhook`. The GET path compares Meta's verify token with your configured token:
+
+```ts filename="functions/whatsapp.ts"
+export default async function handler(request: Request): Promise<Response> {
+  const url = new URL(request.url);
+
+  if (request.method === "GET") {
+    const isVerified = verifyWhatsAppWebhookChallenge({
+      mode: url.searchParams.get("hub.mode"),
+      token: url.searchParams.get("hub.verify_token"),
+      verifyToken: getWhatsAppVerifyToken(),
+    });
+
+    if (!isVerified) {
+      return new Response("invalid verify token", { status: 403 });
+    }
+
+    return new Response(url.searchParams.get("hub.challenge") ?? "", {
+      headers: { "content-type": "text/plain" },
+    });
+  }
+
+  // POST signature verification and message dispatch follow.
+}
+```
+
+For a POST, the handler reads the raw body, verifies its HMAC signature with the app secret and only then parses the JSON:
+
+```ts filename="functions/whatsapp.ts"
+const body = await request.text();
+const isVerified = verifyWhatsAppRequest({
+  appSecret: getWhatsAppAppSecret(),
+  body,
+  signature: request.headers.get("x-hub-signature-256"),
+});
+
+if (!isVerified) {
+  return jsonResponse({ error: "invalid request signature" }, { status: 401 });
+}
+
+let payloadBody: unknown;
+
+try {
+  payloadBody = JSON.parse(body);
+} catch {
+  return jsonResponse({ error: "invalid json" }, { status: 400 });
+}
+
+const parsedPayload = whatsAppWebhookPayloadSchema.safeParse(payloadBody);
+
+if (!parsedPayload.success) {
+  return jsonResponse({ error: "invalid whatsapp webhook payload" }, { status: 400 });
+}
+```
+
+**Important: Verify the raw body**
+
+Call `request.text()` and verify the signature before `JSON.parse`. Meta computes `X-Hub-Signature-256` from the exact request body with your app secret. Parsing and serializing the payload first can change its bytes and invalidate the signature.
+
+The handler extracts entries that contain a `messages` array. For each incoming message, it:
+
+1. Tries to mark the message as read.
+2. Handles an interactive button reply if one is present.
+3. Parses a text command.
+4. Runs the matching command handler.
+5. Sends the result through the Graph API as a reply to the triggering message.
+
+Read status updates and command usage tracking are best effort. A failure in either task doesn't block the command reply. Valid status webhooks don't contain an incoming `messages` array, so the handler acknowledges them without running a command.
+
+## Commands and callbacks
+
+The template supports:
+
+- `/ping`: returns `Pong` with latency estimated from the incoming message timestamp.
+- `/info`: shows the Node.js version, platform, request method, Neon branch and function URL.
+- `/help`: builds a command list from the template's command definitions.
+- `/buttons`: sends **Refresh**, **Echo** and **Time** interactive reply buttons.
+- `/name Dana Smith`: stores a name for the sender's WhatsApp user ID. `/name` without an argument returns the stored value.
+- `/profile`: shows the stored name, total commands run and per-command usage.
+
+The parser also accepts command names without the leading slash. An unrecognized command returns `Unknown command. Try /help.` The function ignores messages that don't match the command syntax.
+
+The `/buttons` callbacks use the IDs `button-test:refresh`, `button-test:echo` and `button-test:time`. The handler processes `interactive.button_reply` events before text commands:
+
+- **Refresh** sends the button panel again with a UTC timestamp.
+- **Echo** confirms that interactive replies work.
+- **Time** returns the current server time in UTC.
+
+Text responses and button panels are sent through the same Graph API `messages` endpoint. When Meta includes an incoming message ID, the bot adds it as reply context.
+
+The `/name` and `/profile` handlers use a 2.5-second database deadline. If a scaled-to-zero branch is still waking up, the bot returns a warming-up message. Run the command again after the branch is warm.
+
+## Example
+
+Create a copy of the example with the Neon CLI:
+
+```bash
+neon bootstrap my-whatsapp-bot --template whatsapp-bot-http
+cd my-whatsapp-bot
+```
+
+You can find the example in [`bots/whatsapp-bot-http`](https://github.com/neondatabase/examples/tree/main/bots/whatsapp-bot-http).
 
 --- [Document source](https://neon.com/docs/connect/choose-connection.md) ---
 
@@ -41306,7 +42365,7 @@ Move BM25 full-text search from the deprecated pg_search extension to the lakeba
 
 **Warning: pg_search is deprecated**
 
-`pg_search` (ParadeDB) is deprecated on Neon: new installs are blocked, and existing installs will be removed in **September 2026**. [`lakebase_text`](https://neon.com/docs/extensions/lakebase-text) is its replacement for BM25 search.
+`pg_search` (ParadeDB) is deprecated on Neon: new installs are blocked, and existing installs will be removed on **September 21, 2026**. [`lakebase_text`](https://neon.com/docs/extensions/lakebase-text) is its replacement for BM25 search.
 
 This guide migrates your BM25 full-text search from `pg_search` to `lakebase_text`. You map your existing indexes and queries to their `lakebase_text` equivalents, verify the results, then remove `pg_search`. `lakebase_text` runs BM25 search through a `lakebase_bm25` index built on standard Postgres `tsvector` types.
 
@@ -41420,7 +42479,7 @@ Before you drop `pg_search`, confirm the features you rely on carry over. A few 
 
 ## Remove pg_search
 
-Once your queries run on `lakebase_text` and return the results you expect, drop `pg_search` ahead of the September 2026 removal:
+Once your queries run on `lakebase_text` and return the results you expect, drop `pg_search` ahead of the September 21, 2026 removal:
 
 ```sql
 DROP EXTENSION pg_search CASCADE;
@@ -43841,7 +44900,7 @@ An Elasticsearch alternative for full-text search and analytics on Postgres
 
 As of March 19, 2026, `pg_search` is no longer available for new Neon projects.
 
-**If you already use `pg_search`:** you will continue to have access to the extension on existing projects. Our team will contact you to discuss alternative options and deprecation timelines. You do not need to take action before we reach out. When you're ready to move to BM25 search on Neon, see [Migrate from pg_search to lakebase_text](https://neon.com/docs/extensions/migrate-pg-search-to-lakebase-text).
+**If you already use `pg_search`:** you will continue to have access to the extension on existing projects until September 21, 2026, when it will be removed. Our team will contact you to discuss alternative options and timelines. You do not need to take action before we reach out, but we recommend planning your migration ahead of that date. When you're ready to move to BM25 search on Neon, see [Migrate from pg_search to lakebase_text](https://neon.com/docs/extensions/migrate-pg-search-to-lakebase-text).
 
 Depending on your use case, consider these alternatives:
 
@@ -45386,7 +46445,7 @@ Neon supports the Postgres extensions shown below. Extension versions may differ
 | [pgstattuple](https://neon.com/docs/extensions/pgstattuple)                                                    |     1.5 |     1.5 |     1.5 |     1.5 |    1.5 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [pgtap](https://pgtap.org/documentation.html)                                                                  |   1.3.3 |   1.3.3 |   1.3.3 |   1.3.3 |  1.3.3 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [pgvector](https://neon.com/docs/extensions/pgvector)                                                          |   0.8.0 |   0.8.0 |   0.8.0 |   0.8.0 |  0.8.6 | Install with `CREATE EXTENSION vector;`                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| [pg\_search](https://neon.com/docs/extensions/pg_search)                                                       | 0.15.26 | 0.15.26 | 0.15.26 | 0.15.26 |      - | **Deprecated.** Not available for new Neon projects. Existing installs must migrate before June 1, 2026. See [The pg\_search extension](https://neon.com/docs/extensions/pg_search) for details and alternatives.                                                                                                                                                                                                                                              |
+| [pg\_search](https://neon.com/docs/extensions/pg_search)                                                       | 0.15.26 | 0.15.26 | 0.15.26 | 0.15.26 |      - | **Deprecated.** Not available for new Neon projects. Existing installs must migrate before September 21, 2026. See [The pg\_search extension](https://neon.com/docs/extensions/pg_search) for details and alternatives.                                                                                                                                                                                                                                        |
 | [pgx\_ulid](https://github.com/pksunkara/pgx_ulid)                                                             |   0.1.5 |   0.1.5 |   0.1.5 |   0.2.0 |  0.2.2 | Install with `CREATE EXTENSION ulid;` on Postgres 14, 15, 16. Install with `CREATE EXTENSION pgx_ulid;` on Postgres 17 and 18.                                                                                                                                                                                                                                                                                                                                 |
 | [plcoffee](https://coffeescript.org/)                                                                          |  3.1.10 |  3.1.10 |  3.1.10 |       - |      - |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [plls](https://livescript.net/)                                                                                |  3.1.10 |  3.1.10 |  3.1.10 |       - |      - |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
@@ -114275,6 +115334,7 @@ Neon AI chat assistance is available to all Neon users. You can access it from t
 - **Neon Console**: Open the Help menu (`?`) in the top right corner and select **Support**. This opens the **Neon AI Assistant** so you can ask questions about Neon.
 - **Neon documentation**: Toggle **Ask Neon AI** on the [Neon documentation](https://neon.com/docs/introduction) site
 - **Discord**: Join the **#gpt-help** channel on the [Neon Discord server](https://discord.gg/92vNTzKDGp)
+- **Neon CLI**: Run [`neon ask`](https://neon.com/docs/cli/ask) to ask questions about Neon from your terminal
 
 Neon AI Chat assistants are updated regularly and built on various sources including the Neon documentation, the Neon website, the Neon API, and Neon GitHub repositories.
 
@@ -124108,6 +125168,9 @@ Interface-specific indexes:
 - [Update a function](https://neon.com/docs/reference/api/functions/update-project-branch-function.md) `PATCH /projects/{project_id}/branches/{branch_id}/functions/{slug}`
 - [Delete a function on the branch](https://neon.com/docs/reference/api/functions/delete-project-branch-function.md) `DELETE /projects/{project_id}/branches/{branch_id}/functions/{slug}`
 - [Deploy code to a function](https://neon.com/docs/reference/api/functions/create-project-branch-function-deployment.md) `POST /projects/{project_id}/branches/{branch_id}/functions/{slug}/deployments`
+- [List the custom domains on a branch](https://neon.com/docs/reference/api/functions/list-project-branch-custom-domains.md) `GET /projects/{project_id}/branches/{branch_id}/custom-domains`
+- [Register a custom domain on a branch](https://neon.com/docs/reference/api/functions/register-project-branch-custom-domain.md) `POST /projects/{project_id}/branches/{branch_id}/custom-domains`
+- [Delete a custom domain from a branch](https://neon.com/docs/reference/api/functions/delete-project-branch-custom-domain.md) `DELETE /projects/{project_id}/branches/{branch_id}/custom-domains/{domain}`
 
 ## Logs
 
@@ -127474,6 +128537,7 @@ preview: {
       name: string,       // display name shown in neon functions list and the console
       source: string,     // path to entry file, relative to neon.ts
       env?: Record<string, string>,
+      bundler?: "esbuild" | "none",  // default "esbuild"; "none" ships a prebuilt source as-is
       dev?: {
         port?: number,    // local port for neon dev; fails if taken; auto-assigned if omitted
       },
@@ -127493,6 +128557,8 @@ env: {
 ```
 
 Use `neon deploy --env .env.production` to load a `.env` file before evaluation. For typed access to these variables inside your function at runtime, see [Environment variables](https://neon.com/docs/compute/functions/environment-variables).
+
+`bundler` controls how `source` becomes the deployed archive. The default, `"esbuild"`, bundles your source (TypeScript is compiled here). Set `"none"` to ship a prebuilt directory or file as-is, in which case the entry must be named `index.mjs` or `index.js`. This is the config form of the CLI's [`--no-bundle`](https://neon.com/docs/compute/functions/deploy#deploy-with-neon-functions-deploy) flag.
 
 `dev` settings apply only to `neon dev` and never affect deploy.
 

@@ -148,27 +148,10 @@ You have a 1:1 with Sarah at 3:30 PM.
 
 Lightweight markdown renderer for agent text. Handles bold, italic, inline code, code blocks, lists, headings, links, and horizontal rules. Supports streaming — update the `children` string as tokens arrive.
 
-<p>
-  Voice agents combine 
+Voice agents combine **speech-to-text**, an LLM, and *text-to-speech* in a single connection.
 
-  <strong>speech-to-text</strong>
-
-  , an LLM, and 
-
-  <em>text-to-speech</em>
-
-   in a single connection.
-</p>
-
-<ul>
-  <li>
-    Low-latency conversation
-  </li>
-
-  <li>
-    Natural prosody
-  </li>
-</ul>
+* Low-latency conversation
+* Natural prosody
 
 ```tsx
 <Response>{markdownString}</Response>
@@ -191,9 +174,7 @@ Text input field for sending messages to the agent. Submits on Enter (Shift+Ente
 
 <input type="text" placeholder="Type a message…" disabled />
 
-<button disabled>
-  Send
-</button>
+Send
 
 ```tsx
 <AgentTextInput />
@@ -217,9 +198,7 @@ Text input field for sending messages to the agent. Submits on Enter (Shift+Ente
 
 Connect/disconnect toggle button. Reflects the current session state automatically.
 
-<button disabled>
-  Start
-</button>
+Start
 
 ```tsx
 <AgentStartButton />
@@ -372,10 +351,6 @@ The orb reads `getInputVolume()` and `getOutputVolume()` every animation frame w
 ### BarVisualizer
 
 Real-time frequency bar visualization. Renders vertical bars on a canvas that react to audio input or output.
-
-{[40, 70, 30, 90, 60, 80, 45, 65, 55, 75, 35, 70, 50, 60, 40, 25].map((h, i) => (
-    <div key={i} style={{ width: '6px', height: `${h}%`, background: '#13ef93', borderRadius: '2px', opacity: 0.85 }}></div>
-  ))}
 
 ```tsx
 <BarVisualizer source="output" barCount={16} />

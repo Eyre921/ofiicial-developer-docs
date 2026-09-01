@@ -12,10 +12,8 @@ If you signed up using Google Sign-in, it can’t be removed, and you won’t be
 
 You can add a password and log in using your email and password, but your account will still be linked to Google Sign-in.
 
-To do this, select <strong>Forgot password</strong> on the login page and follow the steps to set a password.
+To do this, select **Forgot password** on the login page and follow the steps to set a password.
 
 This doesn’t remove Google Sign-in or change how your account is linked. The original authentication method stays in place.
 
-<strong>
-  If you delete your account, you won’t be able to reuse the same email address to sign up again.
-</strong>
+**If you delete your account, you won’t be able to reuse the same email address to sign up again.**

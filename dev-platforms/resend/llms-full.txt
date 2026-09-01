@@ -48,10 +48,10 @@ To add a new domain from the Resend Dashboard:
   <Step title="Update your DNS records with values provided by Resend.">
     View the **Records** tab for your domain to find the records to provide to your DNS host provider. Adding these records will verify that you own the domain and have the correct permissions to send and receive emails.
 
-    Provide the DKIM and SPF configurations (`TXT` and `MX` records) to your DNS provider. These records must match exactly what Resend generated. Copy and paste the records to avoid configuration errors.
+    Provide the DKIM and SPF configurations (`TXT` and `MX` or `CNAME` records) to your DNS provider. These records must match exactly what Resend generated. Copy and paste the records to avoid configuration errors.
 
     <Tip>
-      Consult one of our [DNS provider guides](/docs/knowledge-base/introduction) for specific examples of updating your DNS records with your host.
+      Consult one of our [DNS provider guides](/docs/knowledge-base/introduction) for specific examples of updating your DNS records with your host. Also, when shown a CNAME, make sure *not* to use proxying features (e.g., Cloudflare's orange cloud) for that record, as it will prevent verification from completing.
     </Tip>
   </Step>
 
@@ -15106,7 +15106,7 @@ Retrieve segment metrics.
   page:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.19.0-preview-headless-dashboard.7
     ```
   </CodeGroup>
@@ -29808,6 +29808,14 @@ Learn how to configure a custom Return Path for your verified domain in Resend.
 
 By default, Resend uses the `send` subdomain for the Return-Path address.
 
+<Info>
+  Domains that show `CNAME` records for sending use your Return-Path subdomain
+  for one record and an `r`-prefixed sibling for the other. With a Return-Path
+  of `outbound`, you'll be shown records for both `outbound.example.com` and
+  `routbound.example.com`, and both need to be added for the domain to fully
+  verify.
+</Info>
+
 You can provide a custom Return-Path address when you [add a new domain in the Dashboard](/docs/add-a-domain) under **Advanced options**, or by setting the optional `custom_return_path` parameter when [creating or updating a domain via the API](/docs/api-reference/domains/create-domain) or with [a domains CLI command](/docs/cli#domains).
 
 <img alt="Custom Return Path" />
@@ -30162,7 +30170,7 @@ Domains can have different statuses, including:
 * `not_started`: You've added a domain to Resend, but you haven't clicked on `Verify DNS Records` yet.
 * `pending`: Resend is still trying to verify the domain.
 * `verified`: Your domain is successfully verified for sending in Resend.
-* `partially_verified`: One capability (send or receive) is verified while the other is still pending verification.
+* `partially_verified`: There are two cases in which you'll see a domain being partially verified. One case is when only one capability (send or receive) is verified while the other is still pending verification. The second case is when you are shown two CNAME records for sending, but only one of them is verified while the other is still pending verification, which means you can send normally, but don't have a fallback server in case one of the sending servers is down.
 * `partially_failed`: The domain is verified but one of the features (send or receive) is not verified.
 * `failed`: Resend was unable to detect the DNS records within 72 hours.
 * `temporary_failure`: For a previously verified domain, Resend will periodically check for the DNS record required for verification. If at some point, Resend is unable to detect the record, the status would change to "Temporary Failure". Resend will recheck for the DNS record for 72 hours, and if it's unable to detect the record, the domain status would change to "Failure". If it's able to detect the record, the domain status would change to "Verified".
@@ -30230,6 +30238,14 @@ All admins on your team can securely access the export for 7 days. Unavailable e
 Sender Policy Framework (SPF) is an email authentication standard that includes all the IP addresses authorized to send email on behalf of your domain.
 
 The SPF configuration is made of a TXT DNS record that lists the IP addresses approved by the domain owner. Resend also generates an MX record that allows the recipient to send bounce and complaint feedback to your domain.
+
+<Tip>
+  SPF-related records are not always shown as TXT and MX records. For domains
+  created after August 2026, Resend may generate CNAME records instead, which
+  point to hosts that carry all the necessary information for SPF-related
+  verification. Therefore, make sure to always add the exact records shown in
+  your domain's **Records** tab within the Resend dashboard.
+</Tip>
 
 <img alt="SPF Records" />
 
@@ -44459,9 +44475,15 @@ Learn how to avoid conflicts with your existing MX records when setting up a Res
 
 MX (Mail Exchanger) records specify where incoming mail is delivered on behalf of a domain. Every MX value has a unique priority (also known as preference) value. The lower the number, the higher the priority.
 
-Resend requires that you setup a MX record on two occasions:
+Resend may require that you setup a MX record on two occasions:
 
 1. **[Enabling your domain to send emails](https://resend.com/docs/dashboard/emails/introduction)**: You need to setup an MX record on `send.example.com` to establish a return-path for bounce/complaint reports from Inbox Providers. This return path is set in the email headers of every email you send through Resend.
+
+<Info>
+  For domains created after August 2026, Resend may generate CNAME records for sending instead of the MX and TXT pair, in which case this occasion doesn't apply to your domain. Always add the exact records shown in your domain's **Records** tab within the Resend dashboard.
+
+  Note that a CNAME record cannot co-exist with any other record on the same subdomain, so if you already have other records set for `send.example.com`, you will need to either configure a different `Return-Path` subdomain (e.g. `bounce.example.com`) or remove the existing records for `send.example.com`.
+</Info>
 
 2. **[Enabling your domain to receive emails](https://resend.com/docs/dashboard/receiving/custom-domains)**: You can setup an MX record on your domain to route all received emails to Resend.
 
@@ -45372,14 +45394,99 @@ You can remove the add-on from the same place: navigate to **Settings** > **Usag
 There is no fixed ceiling on custom domains. If 100 extra domains aren't enough, [chat with support](https://resend.com/help) or email [support@resend.com](mailto:support@resend.com) with your use case and the number of domains you expect to verify.
 
 
-# How to Handle API Keys
+# How to handle a leaked API key
+Source: https://resend.com/docs/knowledge-base/how-to-handle-a-leaked-api-key
+
+Learn what to do when a Resend API key is exposed or used without authorization.
+
+An API key is the only credential needed to send through your account. Anyone holding a leaked key can send from any domain you've verified, spend your monthly quota, and damage the sending reputation you've built.
+
+This guide covers how keys typically leak, what to do, how to review what was sent, and how to limit the damage next time.
+
+## Identify how the key leaked
+
+Replacing a key without closing the leak means the new key is exposed the same way. Common leak sources include:
+
+* A key committed to a Git repository. Search the history rather than only the working tree, because a key stays in history after it's removed from the files.
+* A public or forked repository, a Gist, or a continuous integration log that prints environment variables.
+* A key bundled into client-side or mobile code, where anyone can read it out of the browser or the app package.
+* A key pasted into a screenshot, a chat message, an issue tracker, or a third-party tool.
+* A publicly reachable `.env` file or a framework left in debug mode on a production host.
+
+## Delete the key first
+
+Deleting a key revokes it right away. There's no separate revoke step, and no further requests can authenticate with it once it's gone.
+
+1. Open the [**API keys** Dashboard page](https://resend.com/api-keys).
+2. Find the key you believe was exposed, using the **last used** indicator to narrow it down.
+3. Click the **More options** button, then **Remove API key**.
+4. Create a replacement key and deploy it to your services.
+
+<Warning>
+  Treat the old key as compromised. You can't view an API key after it's
+  created, so a replacement is always a new key rather than a reissue of the old
+  one.
+</Warning>
+
+If your services are still running on the exposed key, follow the [key rotation steps](/docs/knowledge-base/how-to-handle-api-keys#key-rotation) so you don't experience downtime while you swap it out.
+
+## Review what was sent
+
+Two Dashboard pages hold the record of what happened:
+
+* The [**Logs**](https://resend.com/logs) page lists every API request made against your account. Filter by API key and by date range to isolate the window.
+* The [**Emails**](https://resend.com/emails) page lists the messages themselves, so you can see recipients, subjects, and delivery outcomes.
+
+Resend keeps 30 days of activity.
+
+## What Resend logs and what it doesn't
+
+Each log entry records the endpoint, the HTTP method, the response status, and the timestamp. It also holds the User-Agent and the full request and response bodies.
+
+Resend doesn't retain the following, so it isn't available during an investigation:
+
+* Source IP addresses for API or SMTP connections
+* Autonomous System Number (ASN), internet service provider, or geographic data
+* `HELO` or `EHLO` hostnames
+* Transport Layer Security (TLS) connection metadata
+
+There's no separate internal store beyond what the Logs page shows. What you can export is the complete record.
+
+## Recover your sending reputation
+
+Deleting the key stops the unauthorized sending. Inbox providers weigh recent activity most heavily.
+
+Watch your [**Metrics**](https://resend.com/metrics) page over the following weeks. All accounts must stay under a **4%** bounce rate and a **0.08%** spam rate. A rate above either threshold may result in a temporary pause in sending.
+
+Recipients who marked the unauthorized messages as spam are added to your suppression list. That's expected behavior, and it protects you from sending to them again.
+
+## Reduce the damage next time
+
+You can't prevent every leak, but you can limit what one costs you.
+
+* **Give each service its own key.** Per-key logs then show you which integration was abused, and you can delete one key without disrupting the rest.
+* **Prefer "Sending access" over "Full access."** Most applications only need to send, and a "Sending access" key can't read your contacts even if it leaks.
+* **Delete keys you aren't using.** Resend flags keys unused for 30 or more days in the Dashboard.
+
+For the full set of practices, see [API key security](/docs/knowledge-base/how-to-handle-api-keys).
+
+## Get more help
+
+If you've worked through the steps above and still have questions, contact [Resend support](https://resend.com/help) with:
+
+1. The ID of the affected API key.
+2. The window when the unauthorized activity took place.
+3. What you've already done to contain it.
+
+
+# How to handle API keys
 Source: https://resend.com/docs/knowledge-base/how-to-handle-api-keys
 
-Learn our suggested practices for handling API keys securely.
+Learn how to handle API keys securely.
 
 ## Best Practices
 
-It's crucial you handle your API keys securely. Do not share your API key with others or expose it in the browser or other client-side code.
+Handle your API keys securely. Don't share your API key with others or expose it in the browser or other client-side code.
 
 Here are some general guidelines:
 
@@ -45388,32 +45495,36 @@ Here are some general guidelines:
 * Never hard-code API keys in your code or share them publicly.
 * Rotate API keys regularly. If an API key hasn't been used in the last 30 days, consider deleting it to keep your account secure.
 
-<Info>
-  When you create an API key in Resend, you can view the key only once. This
-  practice helps encourage these best practices.
-</Info>
+<Info>You can view an API key only once after you create it.</Info>
+
+<Warning>
+  If a key has already been exposed or used without your authorization, see [how
+  to handle a leaked API key](/docs/knowledge-base/how-to-handle-a-leaked-api-key).
+</Warning>
 
 ## Key Rotation
 
-Resend API keys do not expire automatically. Keys remain valid until you manually delete them. Resend includes no built-in expiration date or automatic rotation mechanism, but it is a good security practice to rotate keys regularly.
+Resend API keys don't expire automatically. Keys remain valid until you manually delete them. Resend includes no built-in expiration date or automatic rotation mechanism, but it's a good security practice to rotate keys regularly.
 
 To rotate an API key:
 
-1. **Create a new key** in the [**API keys** Dashboard page](https://resend.com/api-keys) or [via the API](/docs/api-reference/api-keys/create-api-key) with the same permission level and domain scope as the key you are replacing.
+1. **Create a new key** in the [**API keys** Dashboard page](https://resend.com/api-keys) or [via the API](/docs/api-reference/api-keys/create-api-key) with the same permission level and domain scope as the key you're replacing.
 2. **Update your services** to use the new key. Deploy the change to all environments that reference the old key.
 3. **Verify the new key is working** by [filtering by API key on the **Logs** Dashboard page](https://resend.com/logs) and checking for recent requests.
-4. **Delete the old key** once you have confirmed the new key is active across all services.
+4. **Delete the old key** once you've confirmed the new key is active across all services.
 
 <Warning>
-  Do not delete the old key before the new key is deployed everywhere. Both keys
+  Don't delete the old key before the new key is deployed everywhere. Both keys
   will work simultaneously, so ensure your new key is working before deleting
-  your old key so you do not experience downtime during the transition. You can
+  your old key so you don't experience downtime during the transition. You can
   programmatically [create](/docs/api-reference/api-keys/create-api-key),
   [list](/docs/api-reference/api-keys/list-api-keys), and
   [delete](/docs/api-reference/api-keys/delete-api-key) API keys to rotate keys.
 </Warning>
 
-Rotate keys at least every 90 days, or immediately if you suspect a key has been compromised. Resend flags keys unused for 30+ days in the dashboard to help you identify keys to review or delete.
+Rotate keys at least every 90 days, or immediately if you suspect a key has been compromised. Resend flags keys unused for 30 or more days in the Dashboard to help you identify keys to review or delete.
+
+If you already know a key has leaked, delete it now rather than rotating it on a schedule. The steps to contain the incident are in [how to handle a leaked API key](/docs/knowledge-base/how-to-handle-a-leaked-api-key).
 
 
 # Introduction
@@ -45773,8 +45884,12 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
     Learn how to permanently delete your Resend account and data.
   </Card>
 
-  <Card title="How to Handle API Keys" href="/docs/knowledge-base/how-to-handle-api-keys">
+  <Card title="How to handle API keys" href="/docs/knowledge-base/how-to-handle-api-keys">
     Best practices for managing and securing your Resend API keys.
+  </Card>
+
+  <Card title="How to handle a leaked API key" href="/docs/knowledge-base/how-to-handle-a-leaked-api-key">
+    What to do when an API key is exposed or used without authorization.
   </Card>
 
   <Card title="How to add multi-factor authentication to your Resend account" href="/docs/knowledge-base/how-can-i-add-mfa">
@@ -48035,12 +48150,33 @@ When your domain doesn't verify as expected, it's typically due to DNS configura
 
 Usually when a domain doesn't verify, it's because the DNS records were not added correctly. Here's how to check:
 
-1. Confirm that you've added all required records (DKIM, SPF, and MX)
+1. Confirm that you've added every record shown in your domain's **Records** tab
 2. Verify that the records are added at the correct location (the `send` subdomain, not the root domain)
 3. Check that record values match exactly what Resend generated for you
 4. Look for red wavy underlines on the domain details page (these indicate specific DNS record errors)
 
 <img alt="Check for errors in the domain details page" />
+
+<Info>
+  The exact set of records depends on when your domain was created. Older
+  domains show a `TXT` and an `MX` record for SPF, and both must be correct for
+  SPF to verify at all. Domains created after August 2026 may show `CNAME`
+  records instead. If you are shown two `CNAME` records, each is verified on its
+  own, so one can verify while the other doesn't: your domain then shows as
+  `partially_verified`, and you can still send, but without a fallback sending
+  server.
+</Info>
+
+### Proxied CNAME records
+
+If your domain shows `CNAME` records for sending, check that they're not proxied at your DNS provider. On Cloudflare, this means the cloud icon next to the record must be gray (**DNS only**), not orange. Proxied records don't resolve as `CNAME`s, so verification never completes.
+
+### CNAME records conflicting with existing records
+
+A `CNAME` record can't co-exist with any other record on the same subdomain. If your DNS provider rejects the record, or verification keeps failing on a subdomain that already has an `A`, `TXT`, or `MX` record, you have two options:
+
+1. Remove the existing records from that subdomain
+2. [Configure a different Return-Path subdomain](/docs/dashboard/domains/custom-return-path) (e.g. `bounce.example.com`) and add the records Resend generates for it
 
 ### DNS provider auto-appending domain names
 
@@ -48070,6 +48206,8 @@ The trailing period tells your DNS provider that this is a fully qualified domai
   region.
 </Tip>
 
+The same applies to the `CNAME` records shown for newer domains: if the value in your DNS provider shows the Resend host followed by your own domain name, add a trailing period to the value.
+
 ### Nameserver conflicts
 
 If your domain's DNS is managed in multiple places (e.g., Vercel, Cloudflare, your domain registrar), you might be adding records in the wrong location.
@@ -48090,6 +48228,12 @@ If your MX records point to a different AWS region than where your domain is con
 If you have multiple MX records pointing to different AWS regions, you'll see a "multiple-regions" error. All MX records for a domain must point to the same region.
 
 **Solution:** Remove any MX records pointing to incorrect regions, keeping only the one that matches your domain's configured region.
+
+<Info>
+  Both region errors only apply to domains that show an `MX` record for SPF. If
+  your domain shows `CNAME` records instead, the region is handled by the Resend
+  host the record points to, so there's nothing to match.
+</Info>
 
 ### DKIM record value mismatches
 
@@ -48151,6 +48295,15 @@ Our team will help identify any remaining issues preventing successful verificat
 
     ```
     nslookup -type=MX send.example.com
+    ```
+
+    If your domain shows `CNAME` records for sending instead, check each of the shown CNAME records by name, as shown below:
+
+    ```
+    # If your domain shows two CNAME records, check both
+    # Otherwise, only check the one that is shown in the Resend dashboard
+    nslookup -type=CNAME send.example.com
+    nslookup -type=CNAME rsend.example.com
     ```
 
     <img alt="Check domain records with nslookup" />

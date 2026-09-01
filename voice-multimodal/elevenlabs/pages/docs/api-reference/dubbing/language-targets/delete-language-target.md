@@ -10,7 +10,7 @@ path: docs/api-reference/dubbing/language-targets/delete-language-target
 
 DELETE https://api.elevenlabs.io/v1/dubbing/project/{project_id}/language/{language_id}
 
-Delete a language target.
+Delete a language target and its outputs, leaving the project and its other languages intact. This cannot be undone, and a dub already running is still billed.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/language-targets/delete-language-target
 

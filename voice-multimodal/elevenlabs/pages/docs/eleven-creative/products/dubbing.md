@@ -14,7 +14,7 @@ path: docs/eleven-creative/products/dubbing
 
 Automatic dubbing or video translation is a process for translating and replacing the original audio of a video with a new language, while preserving the unique characteristics of the original speakers' voices.
 
-![Dubbing new project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8c0235c62183be7eabf87a0346600e94e3c5717ecb58f0207715894eb39c9f5e/assets/images/product-guides/dubbing/dubbing-new-project.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T094031Z&X-Amz-Expires=604800&X-Amz-Signature=1ec061783572ac832071870086ea0bc941ee2ea4bbb7120351b5d9fc09eaccd6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing new project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8c0235c62183be7eabf87a0346600e94e3c5717ecb58f0207715894eb39c9f5e/assets/images/product-guides/dubbing/dubbing-new-project.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T082917Z&X-Amz-Expires=604800&X-Amz-Signature=b7c9a35babcaa595aec4ffe01a539a8f06762026e559b0c9b32647486fd07a95&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Guide
 
@@ -34,11 +34,15 @@ your request.
 Once your dub is ready, you'll be able to download it from your list of dubs.
 
 ![Dubbing new project advanced
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9515592460d4e2e6393e657c2743710b201c846ed0894c82343f55bde176b8fd/assets/images/product-guides/dubbing/dubbing-new-advanced.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T094031Z&X-Amz-Expires=604800&X-Amz-Signature=18637234de2d59aa50ca05e9ef47063404b16146666eeedb26c7ddb31a0a3e52&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9515592460d4e2e6393e657c2743710b201c846ed0894c82343f55bde176b8fd/assets/images/product-guides/dubbing/dubbing-new-advanced.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T082917Z&X-Amz-Expires=604800&X-Amz-Signature=8ae5bd1ab48c12b9485bc7b7d22b5e59989dfae6d556fcda154850e3da2cdda1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Cloning strength
 
-Cloning strength is the configurable setting in Automatic Dubbing on the Alpha model. The default value of 7 works well for most content.
+Cloning strength is the configurable setting in Automatic Dubbing on the&#x20;
+
+Alpha
+
+&#x20;model. The default value of 7 works well for most content.
 
 * This is the advanced Dubbing version, which you can access by checking the **Create a Dubbing Studio project** box. Read more about it in the [Dubbing Studio guide](/docs/creative-platform/products/dubbing/dubbing-studio).
 
@@ -51,9 +55,9 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
 
       ElevenLabs was founded on the idea of creating amazing dubbing; a tool that would allow you to create a perfect dub in any language you desire, using the original voice of the actors and preserving the original performance, making all content more accessible.
 
-      To get started, go to [Dubbing](https://elevenlabs.io/app/dubbing) and upload your audio or video file, or paste a URL to dub a video from YouTube, TikTok or elsewhere online <strong>.</strong>
+      To get started, go to [Dubbing](https://elevenlabs.io/app/dubbing) and upload your audio or video file, or paste a URL to dub a video from YouTube, TikTok or elsewhere online **.**
 
-      Select the language or languages you want to dub into in the <strong>Choose languages</strong> selector. You'll be charged for each language you select here. 
+      Select the language or languages you want to dub into in the **Choose languages** selector. You'll be charged for each language you select here. 
 
       By default, you'll use our latest Dubbing model, v2. Dubs created using the v2 model are completely automatic without any option to edit the content.
 
@@ -63,9 +67,9 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
 
        
 
-      If you want to create a Dubbing Studio project, so you can edit your dubs, you can also choose <strong>Use legacy v1 dubbing model</strong> in the <strong>Advanced</strong> options. This will allow you to create a Dubbing Studio project by checking the <strong>Create Dubbing project</strong> option. 
+      If you want to create a Dubbing Studio project, so you can edit your dubs, you can also choose **Use legacy v1 dubbing model** in the **Advanced** options. This will allow you to create a Dubbing Studio project by checking the **Create Dubbing project** option. 
 
-      <strong>Note:</strong> Dubbing Studio is in maintenance mode and receives critical bug fixes only.
+      **Note:** Dubbing Studio is in maintenance mode and receives critical bug fixes only.
     </td>
   </tr>
 
@@ -138,17 +142,17 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
 
       By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are completely automatic without any option to edit the content.
 
-      If you want to use Dubbing Studio, you can do this by selecting <strong>Use legacy v1 Dubbing model</strong> in the <strong>Advanced</strong> options when you create your dub, then check the <strong>Create Dubbing project</strong> option. 
+      If you want to use Dubbing Studio, you can do this by selecting **Use legacy v1 Dubbing model** in the **Advanced** options when you create your dub, then check the **Create Dubbing project** option. 
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9fc196e5c40348615fff7f381e5945b855702f9b0b0cbeb204c565d17d6211f6/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T094031Z&X-Amz-Expires=604800&X-Amz-Signature=843b46412c88bdb3c87725572ddbd55c5dcdd365db5fc89dfd1296acf19ec5ea&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9fc196e5c40348615fff7f381e5945b855702f9b0b0cbeb204c565d17d6211f6/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T082917Z&X-Amz-Expires=604800&X-Amz-Signature=bbf78a611249df03cdfb6d26a530685c8a6cbc9196cef3ed221b6bd44d7491f9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       It's not possible to convert an existing automatic dub to a Dubbing project.
 
       The new dubbing project will appear at the top of your list of dubbing projects, and will go through various stages while generating.
 
-      Once it has completed processing, click the three dots icon and select <strong>Edit</strong> to open your dubbing project.
+      Once it has completed processing, click the three dots icon and select **Edit** to open your dubbing project.
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T094031Z&X-Amz-Expires=604800&X-Amz-Signature=2b6a6eb95eb6fdd2bfb429c10578a8b692cbeb7eb69eca013298d6d64847e5dc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T082917Z&X-Amz-Expires=604800&X-Amz-Signature=42fc2b15fff686b723bcabc767dc710defab8fbab79666a08a37713865b1820f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       For more information about Dubbing Studio, please see our [overview.](/docs/product-guides/products/dubbing/dubbing-studio)
     </td>
@@ -192,9 +196,9 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
 
       By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are completely automatic without any option to edit the content.
 
-      The edit button is only available when using Dubbing Studio, which is only available for our legacy v1 Dubbing model. To use Dubbing Studio, you will need to select <strong>Use legacy v1 Dubbing model</strong> in the <strong>Advanced</strong> options when you create your dub, then check the <strong>Create Dubbing project</strong> option. 
+      The edit button is only available when using Dubbing Studio, which is only available for our legacy v1 Dubbing model. To use Dubbing Studio, you will need to select **Use legacy v1 Dubbing model** in the **Advanced** options when you create your dub, then check the **Create Dubbing project** option. 
 
-      <strong>Note:</strong> Dubbing Studio is in maintenance mode and receives critical bug fixes only.
+      **Note:** Dubbing Studio is in maintenance mode and receives critical bug fixes only.
     </td>
   </tr>
 </tbody>

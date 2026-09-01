@@ -8,8 +8,8 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # How often are payouts made?
 
-Payouts are issued <strong>weekly</strong> once your accrued earnings reach a minimum of <strong>\$10 USD</strong> (the “Payout Threshold”).
+Payouts are issued **weekly** once your accrued earnings reach a minimum of **\$10 USD** (the “Payout Threshold”).
 
 * Earnings below the threshold roll over to the next payout cycle
 
-Any remaining balance below the threshold will be paid out <strong>once per calendar year</strong>
+Any remaining balance below the threshold will be paid out **once per calendar year**

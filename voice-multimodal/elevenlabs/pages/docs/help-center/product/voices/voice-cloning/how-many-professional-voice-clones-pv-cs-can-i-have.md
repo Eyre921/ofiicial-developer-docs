@@ -10,11 +10,8 @@ path: docs/help-center/product/voices/voice-cloning/how-many-professional-voice-
 
 Professional Voice Clone (PVC) slots vary by subscription tier:
 
-<br />
-
-<strong>
-  Base PVC Slots
-</strong>
+\
+**Base PVC Slots**
 
 * Free and Starter plan: No PVC slots available
 * Creator, Pro, and legacy Scale plan: 1 PVC slot
@@ -22,11 +19,8 @@ Professional Voice Clone (PVC) slots vary by subscription tier:
 * Business plan: 10 PVC slots
 * Enterprise plan: Custom number of PVC slots
 
-<br />
-
-<strong>
-  Additional PVC Slots
-</strong>
+\
+**Additional PVC Slots**
 
 You can earn additional PVC slots when a Professional Voice Clone you have shared with the [Voice Library](https://elevenlabs.io/app/voice-library) is marked as Studio Quality.
 
@@ -38,9 +32,7 @@ You can earn additional PVC slots when a Professional Voice Clone you have share
   * Earn extra slots through Studio Quality review of voices shared with the Voice Library
   * Upgrade to Scale or above
 
-<strong>
-  Important Notes
-</strong>
+**Important Notes**
 
 * Professional Voice Clones can only be used to clone your own voice
 * If you downgrade below the Creator tier, your PVC will remain on your account, but you won't be able to use it until you upgrade to Creator or above

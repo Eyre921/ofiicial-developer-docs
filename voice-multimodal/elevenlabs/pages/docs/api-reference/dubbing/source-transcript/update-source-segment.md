@@ -11,7 +11,7 @@ path: docs/api-reference/dubbing/source-transcript/update-source-segment
 PATCH https://api.elevenlabs.io/v1/dubbing/project/{project_id}/transcript/segment/{segment_id}
 Content-Type: application/json
 
-Enterprise only. Edit a source segment's text, speaker, or timing.
+Enterprise only. Edit a source segment's text, speaker, or timing. Omitted fields are left unchanged. Bumps the project's `revision`, discards the affected translations in every language target, and marks any target that had already completed `stale`. No audio changes until you regenerate a target.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/update-source-segment
 
@@ -33,7 +33,7 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/up
 ### Body (application/json)
 
 - `text` (string, optional, nullable) — New text for the segment.
-- `speaker_id` (string, optional, nullable) — New speaker id for the segment.
+- `speaker_id` (string, optional, nullable) — New speaker ID for the segment.
 - `start_s` (double, optional, nullable) — New start time, in seconds.
 - `end_s` (double, optional, nullable) — New end time, in seconds.
 
@@ -44,12 +44,12 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/up
 Successful Response
 
 - `segment` (object, required) — The segment in its updated state.
-  - `id` (string, required) — Stable identifier of the segment.
+  - `id` (string, required) — Stable identifier of the segment, used to address it in edit requests.
   - `text` (string, required) — The transcribed text of the segment.
   - `speaker_id` (string, required) — Identifier of the segment's speaker.
   - `start_s` (double, required) — Start time of the segment, in seconds.
   - `end_s` (double, required) — End time of the segment, in seconds.
-  - `external_id` (string, optional, nullable) — The caller-supplied external id for this segment, if one was provided.
+  - `external_id` (string, optional, nullable) — The caller-supplied external ID for this segment, if one was provided.
 - `revision` (integer, required) — The project's source-transcript revision after this edit.
 
 ## Examples

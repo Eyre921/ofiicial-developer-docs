@@ -1,5 +1,5 @@
 ---
-title: "Understanding cost"
+title: "Understanding Pinecone cost"
 source: https://docs.pinecone.io/guides/manage-cost/understanding-cost
 path: guides/manage-cost/understanding-cost
 ---
@@ -14,7 +14,6 @@ Pinecone serverless is usage-based, so you pay only for the data you store and t
 
 * **Start free.** The Starter plan has no monthly minimum, so you can build and test before committing to any spend.
 * **Prepaid credits and annual commitments.** Committing usage upfront earns discounted rates. See [Prepaid credits](#prepaid-credits).
-* **Bulk import credit.** Standard and Enterprise organizations receive a one-time 1 TB import credit for loading data from object storage. See [Imports](#imports).
 * **Optimize your workload.** Use namespaces and right-size your reads to cut ongoing query cost. See [Save on costs](/guides/optimize/save-on-costs).
 * **Talk to us.** Standard and Enterprise customers can [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to optimize costs and discuss volume discounts.
 
@@ -321,13 +320,11 @@ Egress is metered on read requests that return per-record data:
 
 Write requests (upsert, update, delete, import), index statistics (such as `describe_index_stats`), and index management requests are not metered for egress.
 
-<Note>
-  Egress accrues on all bytes returned by in-scope reads, including IDs, scores, and metadata. Setting `include_values=false` on a [fetch](/guides/manage-data/fetch-data#fetch-records) or query lowers egress but does not exempt the request, because IDs and metadata are still returned.
-</Note>
+Egress applies to indexes that use [dedicated read nodes](/guides/index-data/dedicated-read-nodes) as well as on-demand indexes, because it depends on the data returned to you rather than on the hardware serving the read.
 
-<Tip>
-  In-scope read requests return the egress consumed in the response `usage` object. You can use this information to [monitor egress](/guides/manage-cost/monitor-usage-and-costs#egress).
-</Tip>
+<Note>
+  Egress accrues on all bytes returned by in-scope reads, including IDs, scores, and metadata. Leaving vector values out of a [query](/guides/search/search-overview) response (`include_values=false`, the default) lowers egress, but it doesn't exempt the request, because IDs and scores are still returned. `fetch` always returns values, so use `query` when you're searching and only need IDs or metadata.
+</Note>
 
 #### Egress allowance
 
@@ -335,7 +332,7 @@ Each plan includes a monthly egress allowance, which resets at the start of each
 
 | Plan       | Monthly egress allowance |
 | :--------- | :----------------------- |
-| Free       | 1 GB                     |
+| Starter    | 1 GB                     |
 | Builder    | 10 GB                    |
 | Standard   | 100 GB                   |
 | Enterprise | 100 GB                   |
@@ -343,17 +340,13 @@ Each plan includes a monthly egress allowance, which resets at the start of each
 What happens past the allowance depends on your plan:
 
 * **Usage-based plans (Standard, Enterprise):** egress beyond the allowance is billed at the per-GB overage rate and reads keep serving. For the latest egress rate, see [Pricing](https://www.pinecone.io/pricing/).
-* **Flat-fee plans (Free, Builder):** in-scope reads are blocked with a `RESOURCE_EXHAUSTED` (429) error and an upgrade prompt once the allowance is reached. Index statistics, index management, and write requests remain available, and the allowance resets at the start of the next billing period.
+* **Flat-fee plans (Starter, Builder):** in-scope reads are blocked with a `RESOURCE_EXHAUSTED` (429) error and an upgrade prompt once the allowance is reached. Index statistics, index management, and write requests remain available, and the allowance resets at the start of the next billing period.
 
 ## Imports
 
 [Importing from object storage](/guides/index-data/import-data) is the most efficient and cost-effective method to load large numbers of records into an index. The cost of an import is based on the size of the records read, whether the records were imported successfully or not.
 
 If the import operation fails (e.g., after encountering a vector of the wrong dimension in an import with `on_error="abort"`), you will still be charged for the records read. However, if the import fails because of an internal system error, you will not incur charges. In this case, the import will return the error message `"We were unable to process your request. If the problem persists, please contact us at https://support.pinecone.io"`.
-
-<Note>
-  Standard and Enterprise organizations receive a **one-time 1 TB bulk import credit**, valid through August 30, 2026. Usage beyond the free allotment is billed at the standard import rate. Builder and Starter plans are not eligible.
-</Note>
 
 For the latest import pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
 

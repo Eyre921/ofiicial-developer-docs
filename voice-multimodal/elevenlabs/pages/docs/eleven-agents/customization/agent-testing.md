@@ -32,7 +32,7 @@ The framework includes three complementary test types:
 
 Transform real conversations into test cases when you find an interaction where the agent underperformed.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7b0762965b7edb46ed6b693c126c00e9aa3e7c98dae7aa89a981b5465b949750/assets/images/conversational-ai/agent-test-from-conv.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091731Z&X-Amz-Expires=604800&X-Amz-Signature=77c59f34a7c955f3d06f300128d022148cf4f30f20cb25b140eb927c77ee129f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Creating test from conversation" />
+![Creating test from conversation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7b0762965b7edb46ed6b693c126c00e9aa3e7c98dae7aa89a981b5465b949750/assets/images/conversational-ai/agent-test-from-conv.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T083357Z&X-Amz-Expires=604800&X-Amz-Signature=d3d678bfeb356ad56005c2c69f76e01aad31641ee1a1d2f28261747d54aec026&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 1. Open the conversation in call history
 2. Click **Create test from this conversation**
@@ -45,7 +45,7 @@ Simulation testing evaluates your agent across a full, multi-turn conversation w
 
 ### Creating a Simulation Test
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec2b27db7da62af2d82be756b2f830f0d0257a304d7c5ccb674c0a02ee8854ae/assets/images/conversational-ai/agent-simulation-test.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091731Z&X-Amz-Expires=604800&X-Amz-Signature=6c646639e15dedbfc794c478d697a03484cfab9a57185e5398a70d9bb68ec08b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Simulation test creation UI" />
+![Simulation test creation UI](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec2b27db7da62af2d82be756b2f830f0d0257a304d7c5ccb674c0a02ee8854ae/assets/images/conversational-ai/agent-simulation-test.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T083357Z&X-Amz-Expires=604800&X-Amz-Signature=f59a026017ff0fd7008faa85cfd7b99bd13b4a3063f26e9e7554e7c5d0bfcde0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Define the scenario
 
@@ -116,7 +116,7 @@ For full multi-turn outcomes, use [Simulation Testing](#simulation-testing).
 
 ### Creating a Next Reply Test
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/62de63965584fd1b2368edfb204bd90495d03ba87fe137889a5f396859dc4dbc/assets/images/conversational-ai/agent-llm-eval-test.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091731Z&X-Amz-Expires=604800&X-Amz-Signature=6d3d1f26e6f36301510f1272e87cbed15d424a23cbc1b7652eb9617f3abc5013&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Next Reply (Scenario) Testing Interface" />
+![Next Reply (Scenario) Testing Interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/62de63965584fd1b2368edfb204bd90495d03ba87fe137889a5f396859dc4dbc/assets/images/conversational-ai/agent-llm-eval-test.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T083357Z&X-Amz-Expires=604800&X-Amz-Signature=8a365ba4bf301cf01349f95c5d08ad061c8d5761cf5bf8c4225530e3bec0b2dc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Define the chat history
 
@@ -165,7 +165,7 @@ Tool call testing verifies that your agent correctly uses tools and passes the r
 
 ### Creating a Tool Call Test
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/291c48ac70376efa1991014f7b3ff90eb9910c9adffe250f2bf521c707c5c755/assets/images/conversational-ai/agent-tool-call-test.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091731Z&X-Amz-Expires=604800&X-Amz-Signature=9bd7fcef162c37b1838acfc338a212135b1e0b3be26fe27798affa670ee213c9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Tool Call Testing Interface" />
+![Tool Call Testing Interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/291c48ac70376efa1991014f7b3ff90eb9910c9adffe250f2bf521c707c5c755/assets/images/conversational-ai/agent-tool-call-test.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T083357Z&X-Amz-Expires=604800&X-Amz-Signature=1ad0a3262c09340d3f5dffc0726e9e38e0c944bbe66dd47a1c5fe57c3965fe96&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Select the tool
 
@@ -224,7 +224,7 @@ Write tests for new behavior or known failures, run them while you iterate on pr
 
 Navigate to the Tests tab in your agent's interface. From there, you can run individual tests, select multiple tests from your library as a batch, or execute your entire suite with **Run All Tests**.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b1becf589a1373a780dad1109fd25e0e910d7aa821b09b047133553b1895914b/assets/images/conversational-ai/testrun.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091731Z&X-Amz-Expires=604800&X-Amz-Signature=d55da0fece53e29d835e973bfa80b89579672eaab202eb3fdf013fa1e07769f8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Running tests on an agent" />
+![Running tests on an agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b1becf589a1373a780dad1109fd25e0e910d7aa821b09b047133553b1895914b/assets/images/conversational-ai/testrun.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T083357Z&X-Amz-Expires=604800&X-Amz-Signature=579495814e4201a0b01957d0b86425b17c001414d3bc4c8273121afdac8e7122&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Run via the CLI
 
@@ -275,7 +275,7 @@ Agent outputs can vary between runs. A single pass shows the agent *can* succeed
 
 #### Running a test multiple times
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/15d5a18c384bc193de794bf8cd7bd5803b9543c8a98acac6ecb2f518b9fd1679/assets/images/conversational-ai/agent-test-many-run.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091731Z&X-Amz-Expires=604800&X-Amz-Signature=7173246c0880e67064af37ab2e3ee028435400e12c95d47ec69d5a514744efc4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Split-run control on a test letting you pick how many times to execute it" />
+![Split-run control on a test letting you pick how many times to execute it](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/15d5a18c384bc193de794bf8cd7bd5803b9543c8a98acac6ecb2f518b9fd1679/assets/images/conversational-ai/agent-test-many-run.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T083357Z&X-Amz-Expires=604800&X-Amz-Signature=8cdc43c7e65f61595f2e382837337689918afeb5e7b04627675fa2d23af024c0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 When triggering a test from the dashboard, use the split-run control on the run button to choose how many times to execute it (for example 3×, 5×, or 15×). Each run is independent: the agent receives the same chat history, dynamic variables, and other inputs, but its response is generated fresh every time.
 
@@ -283,7 +283,7 @@ Multi-run works for individual tests, folders, and running the entire test suite
 
 #### Pass rates and result bucketing
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/17b73e8c8170162270519adad3c9d732dfabdafc820e47b4ab274ca5066fd7fc/assets/images/conversational-ai/agent-test-probabilistic-bucketing.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T091731Z&X-Amz-Expires=604800&X-Amz-Signature=f6e8cecd3c5e9691dfb668e298a47795c4365429b2aafeb1d0c30fd5f79de566&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Multi-run results grouped into pass and failure buckets with a pass rate badge" />
+![Multi-run results grouped into pass and failure buckets with a pass rate badge](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/17b73e8c8170162270519adad3c9d732dfabdafc820e47b4ab274ca5066fd7fc/assets/images/conversational-ai/agent-test-probabilistic-bucketing.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T083357Z&X-Amz-Expires=604800&X-Amz-Signature=efee2e3983310b1feda94ada656942e0d77fa0252301060886ece0cc24df2e6a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 After a multi-run finishes, results are summarized as a pass rate (for example, **4/5 passed**) with a colored badge:
 

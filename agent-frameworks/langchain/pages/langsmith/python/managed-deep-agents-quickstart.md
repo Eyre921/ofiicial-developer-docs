@@ -36,11 +36,10 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 <Steps>
   <Step title="Set up the project" id="set-up-the-project">
 
-Install `managed-deepagents`, create a project, and open its directory:
+Create a project and open its directory:
 
 ```bash
-uv tool install managed-deepagents
-mda init research-assistant
+uvx --from managed-deepagents mda init research-assistant
 cd research-assistant
 ```
 
@@ -223,7 +222,7 @@ Install the project dependencies and start the agent:
 
 ```bash
 uv sync
-mda dev .
+uv run mda dev
 ```
 
 
@@ -247,8 +246,11 @@ For more information, see [Develop locally with LangSmith Studio](/langsmith/pyt
 Deploy the project by running:
 
 ```bash
-mda deploy .
+uv run mda deploy
 ```
+
+
+
 
 Managed Deep Agents packages the project and runs it as a hosted deployment on [LangSmith Agent Server](/langsmith/agent-server). When deployment finishes, the CLI prints the deployment dashboard URL.
 

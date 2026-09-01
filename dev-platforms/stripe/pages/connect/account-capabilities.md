@@ -115,9 +115,9 @@ In the following table, the **All business types supported** column indicates th
 Available with `card_payments` | Yes | With Checkout - Yes
 
 With Payment Element—The payment method must be configured on the Dashboard settings page. | No | Connected account must be in a [supported business location](https://docs.stripe.com/connect/account-capabilities.md#apple-pay-country-availability). | Yes |
-| [Bacs Direct Debit](https://docs.stripe.com/payments/payment-methods/bacs-debit.md)
+| [Bacs Direct Debit](https://docs.stripe.com/payments/bacs-debit.md)
 
-`bacs_debit_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/payment-methods/bacs-debit.md?pm-info=business-locations). | Yes |
+`bacs_debit_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bacs-debit.md#bacs_debit-business-locations). | Yes |
 | [Bancontact](https://docs.stripe.com/payments/bancontact.md)
 
 `bancontact_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bancontact.md?pm-info=business-locations). | Yes |
@@ -242,9 +242,9 @@ For connected accounts that don’t have access to the full Stripe Dashboard, wh
 | [Apple Pay](https://docs.stripe.com/apple-pay.md)
 
 Available with `card_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/connect/account-capabilities.md#apple-pay-country-availability). | Yes |
-| [Bacs Direct Debit](https://docs.stripe.com/payments/payment-methods/bacs-debit.md)
+| [Bacs Direct Debit](https://docs.stripe.com/payments/bacs-debit.md)
 
-`bacs_debit_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/payment-methods/bacs-debit.md?pm-info=business-locations). | Yes |
+`bacs_debit_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bacs-debit.md#bacs_debit-business-locations). | Yes |
 | [Bancontact](https://docs.stripe.com/payments/bancontact.md)
 
 `bancontact_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bancontact.md?pm-info=business-locations). | Yes |

@@ -39,7 +39,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets
 - `owner_user_id` (string, optional) — Filter tickets by creator. Use 'agent' for agent-raised tickets.
 - `assignee_user_id` (string, optional) — Filter tickets by assignee. Use 'unassigned' for tickets with no assignee.
 - `issue_type` (enum, optional) — Filter clusters by issue type.
-  - Allowed values: `knowledge_gap`, `product_feedback`, `tool_issue`, `missing_tool`, `unnecessary_escalation`
+  - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
 - `label` (string, optional) — Filter tickets by an exact label.
 - `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
 
@@ -73,7 +73,7 @@ Successful Response
   - `created_at_unix_secs` (integer, required)
   - `updated_at_unix_secs` (integer, required)
   - `issue_type` (enum, optional)
-    - Allowed values: `knowledge_gap`, `product_feedback`, `tool_issue`, `missing_tool`, `unnecessary_escalation`
+    - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
   - `first_seen_unix_secs` (integer, optional)
   - `last_seen_unix_secs` (integer, optional)
   - `qa_comment` (string, optional)

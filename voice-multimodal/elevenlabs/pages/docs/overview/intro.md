@@ -30,41 +30,23 @@ ElevenLabs provides AI voice infrastructure: text-to-speech, speech-to-text, voi
 
 ## Choose your path
 
-<a href="/docs/eleven-creative/overview">
-  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/12097a437e55f60c199946cf59c9528eb8349d110142394833d67fe93b50e68d/assets/images/overview/voice-library-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=00295c7e11d620604f68196b7d1c6d9c6c82fe04e2e609e849fa3e27cf37d4b7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/12097a437e55f60c199946cf59c9528eb8349d110142394833d67fe93b50e68d/assets/images/overview/voice-library-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100019Z&X-Amz-Expires=604800&X-Amz-Signature=f395995739ba5cd0f2f07466424ff474fcc35ab83aae894cf8e752abb145e883&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-creative/overview)
 
-  <h3>
-    ElevenCreative
-  </h3>
+### ElevenCreative
 
-  <p>
-    Learn how to use the ElevenCreative platform with step-by-step guides
-  </p>
-</a>
+Learn how to use the ElevenCreative platform with step-by-step guides
 
-<a href="/docs/eleven-agents/overview">
-  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=bb6a619ee8e3349937717eff8c08e386a5ca9d1b5bfe7a314dafa71eb02bca6d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100019Z&X-Amz-Expires=604800&X-Amz-Signature=2a49a597ccadcafdb07d0924f1e36185d9064169e9557767a8f3ab2b2f5a2112&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/overview)
 
-  <h3>
-    ElevenAgents
-  </h3>
+### ElevenAgents
 
-  <p>
-    Learn how to build, launch, and scale agents with ElevenLabs
-  </p>
-</a>
+Learn how to build, launch, and scale agents with ElevenLabs
 
-<a href="/docs/eleven-api/quickstart">
-  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/002b2432fa6ab18befc9f1a6e7fadf348f46506a5a5a72a2358ba1e7f92d8ded/assets/images/overview/scribe-code-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100018Z&X-Amz-Expires=604800&X-Amz-Signature=507be240e888d78c7a761b1e37dec85ba5ac8eec4cee934e9361cac9e5bcb9d6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/002b2432fa6ab18befc9f1a6e7fadf348f46506a5a5a72a2358ba1e7f92d8ded/assets/images/overview/scribe-code-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100019Z&X-Amz-Expires=604800&X-Amz-Signature=9c02195f29bdf2ca51a062525735db6ae3116085043f8343b3c372eb36a8819c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-api/quickstart)
 
-  <h3>
-    ElevenAPI
-  </h3>
+### ElevenAPI
 
-  <p>
-    Learn how to integrate with the ElevenLabs API with examples and tutorials
-  </p>
-</a>
+Learn how to integrate with the ElevenLabs API with examples and tutorials
 
 ## Meet the models
 
@@ -148,102 +130,68 @@ Precise word-level timestamps
 
 Entity detection, 65 entity types
 
-<a href="/docs/overview/models">
-  Explore all
-</a>
+[Explore all](/docs/overview/models)
 
-<small>
-  † Excluding application & network latency
-</small>
+† Excluding application & network latency
 
 ## Browse by capability
 
 Text to Speech
 
-<p>
-  Convert text into lifelike speech
-</p>
+Convert text into lifelike speech
 
 Speech to Text
 
-<p>
-  Transcribe spoken audio into text
-</p>
+Transcribe spoken audio into text
 
 Music
 
-<p>
-  Generate music from text
-</p>
+Generate music from text
 
 Text to Dialogue
 
-<p>
-  Create natural-sounding dialogue from text
-</p>
+Create natural-sounding dialogue from text
 
 Image & Video
 
-<p>
-  Generate images and videos from text
-</p>
+Generate images and videos from text
 
 Voice changer
 
-<p>
-  Modify and transform voices
-</p>
+Modify and transform voices
 
 Voice isolator
 
-<p>
-  Isolate voices from background noise
-</p>
+Isolate voices from background noise
 
 Dubbing
 
-<p>
-  Dub audio and videos seamlessly
-</p>
+Dub audio and videos seamlessly
 
 Sound effects
 
-<p>
-  Create cinematic sound effects
-</p>
+Create cinematic sound effects
 
 Voices
 
-<p>
-  Clone and design custom voices
-</p>
+Clone and design custom voices
 
 Voice Remixing
 
-<p>
-  Transform and enhance existing voices
-</p>
+Transform and enhance existing voices
 
 Forced Alignment
 
-<p>
-  Align text to audio
-</p>
+Align text to audio
 
 Speech Engine
 
-<p>
-  Add voice to anything
-</p>
+Add voice to anything
 
 ElevenAgents
 
-<p>
-  Deploy intelligent voice agents
-</p>
+Deploy intelligent voice agents
 
 Private deployments
 
-<p>
-  Run ElevenLabs in your own cloud
-</p>
+Run ElevenLabs in your own cloud

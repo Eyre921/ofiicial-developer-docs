@@ -10,7 +10,7 @@ path: docs/api-reference/dubbing/delete-project
 
 DELETE https://api.elevenlabs.io/v1/dubbing/project/{project_id}
 
-Delete a project and its language targets.
+Delete a project, every language target under it, and their stored media and outputs. This cannot be undone, and a dub already running is still billed.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/delete-project
 

@@ -41,13 +41,13 @@ To integrate a custom OpenAI key, update your agent settings in the ElevenLabs d
 
 In your Agent settings in the ElevenLabs dashboard, select "Custom LLM" from the "LLM" dropdown menu on the right.
 
-![Add Secret](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/83c62b81ef04860b9d884e28e1b4ac7bbceaa6e481e72e15ae82a76ec9bbad8e/assets/images/conversational-ai/speech-engine/custom-llm-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T090316Z&X-Amz-Expires=604800&X-Amz-Signature=e80ea8a544ac732e91b407df60e3c1b944d082ee7ec65515f22d3934e8bc3e86&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add Secret](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/83c62b81ef04860b9d884e28e1b4ac7bbceaa6e481e72e15ae82a76ec9bbad8e/assets/images/conversational-ai/speech-engine/custom-llm-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T093600Z&X-Amz-Expires=604800&X-Amz-Signature=6037de50b9e70c93f18ded0760ca1593aa413fd89ddd7485dba0059ef20e89a9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Click on the field under "LLM" and scroll down to select "Custom LLM".
 
 Enter the server URL and the Model ID of your custom LLM server.
 
-![Enter url](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/85ed8154868096a5c8de4c5e1c09d83c861069ea098c7643a960cac1736b67cb/assets/images/conversational-ai/speech-engine/custom-llm-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T090316Z&X-Amz-Expires=604800&X-Amz-Signature=472bfe8e8c31b72965e69ed363cb4c3e823e8ed1e305d2b7174f629de4eb1b99&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enter url](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/85ed8154868096a5c8de4c5e1c09d83c861069ea098c7643a960cac1736b67cb/assets/images/conversational-ai/speech-engine/custom-llm-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T093600Z&X-Amz-Expires=604800&X-Amz-Signature=3ec755ea55b88ca9676152e0cff05ea0f83ae7156cdb6a2f9a5c123c0fdfce2a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Click the dropdown under "API key" and select "Create new secret". Name the key `OPENAI_API_KEY` and add the key to the "value" field and click "Add secret".
 
@@ -271,7 +271,7 @@ app.listen(8013, () => console.log("Server running on port 8013"));
 
 Run this code or your own server code.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8032697eeac9a62bb084feb13ab05294df2fee44f14a97897f0b7c10ffee813c/assets/images/conversational-ai/byollm-5.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T090316Z&X-Amz-Expires=604800&X-Amz-Signature=c45d430a237bc93ffd596ce2278eaa643e5541815e5b37dd6d7af969034c07e6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8032697eeac9a62bb084feb13ab05294df2fee44f14a97897f0b7c10ffee813c/assets/images/conversational-ai/byollm-5.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T093600Z&X-Amz-Expires=604800&X-Amz-Signature=f428585b7d0f2c95bb42be81a578e35fa718ed9aa6239be6fab60943dc975df3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Setting Up a Public URL for Your Server
 
@@ -281,13 +281,13 @@ To make your server accessible, create a public URL using a tunneling tool like 
 ngrok http --url=<Your url>.ngrok.app 8013
 ```
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/16d139cc2889d46e026c8aa7578fcdcd8d228dbe0f4df245091ea6de2ceb345a/assets/images/conversational-ai/byollm-6.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T090316Z&X-Amz-Expires=604800&X-Amz-Signature=6549d4af9047f67cd61e1579bc5a9881807fea97fae1b34e7c1892ee02dbfdfd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/16d139cc2889d46e026c8aa7578fcdcd8d228dbe0f4df245091ea6de2ceb345a/assets/images/conversational-ai/byollm-6.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T093600Z&X-Amz-Expires=604800&X-Amz-Signature=d5ee0de0ea0aa310d3cb7abbb9c52426d92ee320c1f2a5595b224c4ccea3d943&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Configuring ElevenLabs CustomLLM
 
 Next, update your agent settings in the ElevenLabs dashboard to point to your custom LLM server.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d57d81e44dffb7e6f581a4eed449d887f6c365b8ceb4f4f0174bd7e2ffd62537/assets/images/conversational-ai/speech-engine/custom-llm-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T090316Z&X-Amz-Expires=604800&X-Amz-Signature=8866ce338eaf1d04396a37e703aa423f1904bff362ece6a697fef874922b46b4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d57d81e44dffb7e6f581a4eed449d887f6c365b8ceb4f4f0174bd7e2ffd62537/assets/images/conversational-ai/speech-engine/custom-llm-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T093600Z&X-Amz-Expires=604800&X-Amz-Signature=770460754170b08d3aa69bd2ad8169d546f812680317434863cf3ad8ac4bbbb5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Direct your server URL to ngrok endpoint and set "Limit token usage" to 5000.
 

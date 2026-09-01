@@ -62,9 +62,7 @@ Credits can be used across our platform. The number of credits used depends on y
 
  
 
-<strong>
-  Credit Allocation and Rollover
-</strong>
+**Credit Allocation and Rollover**
 
 For self-serve monthly and annual plans, and Enterprise monthly plans: you will receive a set amount of credits each month, which reset monthly. Up to two months’ worth of unused credits can roll over to the next month.
 
@@ -74,9 +72,7 @@ If you downgrade or cancel your subscription, this does not take effect until th
 
  
 
-<strong>
-  Pay As You Go
-</strong>
+**Pay As You Go**
 
 Pay As You Go (PAYG) allows you to prepay for credits without committing to a monthly subscription, or buy additional credits if you run out of your subscription credits. For full details, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
@@ -145,15 +141,15 @@ Log in to your account at [https://elevenlabs.io](https://elevenlabs.io).
 Click your profile icon in the top right corner of the website to open your account menu, then
 select [*Subscription*](https://elevenlabs.io/app/subscription).
 
-Click <strong>Billing</strong>.
+Click **Billing**.
 
-In the <strong>Modify Plan</strong> section, select the plan you would like to downgrade to from
-the <strong>Downgrade</strong> drop down selector.
+In the **Modify Plan** section, select the plan you would like to downgrade to from
+the **Downgrade** drop down selector.
 
 Once you confirm the downgrade, it will be scheduled for the end of your current billing cycle.
 
 You will see confirmation of the scheduled downgrade. At any time before the end of your billing
-cycle, you can click <strong>Cancel downgrade</strong> to remain on your current subscription.
+cycle, you can click **Cancel downgrade** to remain on your current subscription.
 
 Your browser can sometimes block popups from appearing or a button from working. If this happens, try using a different browser. The browsers that generally work best are Chrome, Edge, and Firefox.
 
@@ -173,7 +169,7 @@ Yes, we offer annual plans for all of our subscription tiers. At the moment, we 
 
 On our [pricing page](https://elevenlabs.io/pricing) and [subscription page](https://elevenlabs.io/app/subscription), you can toggle between monthly and annual plans to see the different pricing and options available.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5061fc9c3052f020d44e9760a4887a4bb972e4b02b959d9ad68414cb4a2e1730/assets/images/help-center/account/payment-billing/do-you-offer-annual-or-quarterly-plans.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T092621Z&X-Amz-Expires=604800&X-Amz-Signature=bcb3f801e1d745dbb17d3f237728db289be8d0a68ff1b2750a9b211c49fbde0a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5061fc9c3052f020d44e9760a4887a4bb972e4b02b959d9ad68414cb4a2e1730/assets/images/help-center/account/payment-billing/do-you-offer-annual-or-quarterly-plans.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T082950Z&X-Amz-Expires=604800&X-Amz-Signature=307478583f9196b14fd138476c5fd60ea233c7319ec921eed3971ed15e7fcb4a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Annual plans are billed on an annual cycle and will renew automatically unless cancelled.
 
@@ -217,16 +213,16 @@ You can update your billing information from your [Subscription](https://elevenl
 
 Go to your [Subscription](https://elevenlabs.io/app/subscription) page.
 
-Click <strong>Billing</strong>.
+Click **Billing**.
 
-At the bottom of the pop-up, click <strong>Manage billing information</strong>.
+At the bottom of the pop-up, click **Manage billing information**.
 
-Scroll down to <strong>Billing Information</strong> and click{" "}
-<strong>Update information</strong>.
+Scroll down to **Billing Information** and click
+**Update information**.
 
 Make the necessary changes to your billing information.
 
-If you want to add or edit your Tax ID, you can do this in the <strong>Tax ID</strong> section.
+If you want to add or edit your Tax ID, you can do this in the **Tax ID** section.
 
 The updated details will be applied automatically to all future invoices.
 
@@ -276,7 +272,7 @@ Currently, Google Pay is not available in India.
 
 ## Google Chrome browser is required
 
-> Google Pay is not integrated with other web browsers, so the Google Pay button will only show at checkout if you are using Google Chrome. Google Pay is unavailable in Google Chrome for Apple iOS. It will not be possible to add Google Pay as a payment method using an iPhone or iPad (Mac computer is fine). <strong>Do not use an incognito window</strong> By default Google Pay will not be available in an incognito window. It is possible to get it working, but enabling in incognito mode is not covered here.
+> Google Pay is not integrated with other web browsers, so the Google Pay button will only show at checkout if you are using Google Chrome. Google Pay is unavailable in Google Chrome for Apple iOS. It will not be possible to add Google Pay as a payment method using an iPhone or iPad (Mac computer is fine). **Do not use an incognito window** By default Google Pay will not be available in an incognito window. It is possible to get it working, but enabling in incognito mode is not covered here.
 
  
 
@@ -288,7 +284,7 @@ Currently, Google Pay is not available in India.
 
 ## Check payment settings in Google Chrome
 
-> The Google Pay button will not show if certain payment settings are disabled in Chrome. <strong>Chrome for desktop</strong> Open Chrome settings and click Autofill in the menu followed by "Payment methods". Enable both "Save and fill payment methods" and "Allow sites to check if you have payment methods saved" <strong>Chrome for Android phones & tablets</strong> Open Chrome settings and tap on "Payment methods". Enable "Save and fill payment methods".
+> The Google Pay button will not show if certain payment settings are disabled in Chrome. **Chrome for desktop** Open Chrome settings and click Autofill in the menu followed by "Payment methods". Enable both "Save and fill payment methods" and "Allow sites to check if you have payment methods saved" **Chrome for Android phones & tablets** Open Chrome settings and tap on "Payment methods". Enable "Save and fill payment methods".
 
  
 
@@ -304,9 +300,7 @@ Currently, Google Pay is not available in India.
 
  
 
-<strong>
-  Additional Google Pay troubleshooting info
-</strong>
+**Additional Google Pay troubleshooting info**
 
 > Google Pay checkout may not be available or Google may not be able to verify your card if you are connected to a VPN or using a rooted device. If you do not know what "rooted" means, it is safe to say that it does not apply to you.
 
@@ -320,17 +314,17 @@ The screenshots below show the browser payment settings to enable in Chrome for 
 
  
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b4dfe694da01f17db72c894b6fcf7a565de0835f6f2bb743e91e8c578aa99b8/assets/images/help-center/account/payment-billing/elevenlabs-googlepay.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T092621Z&X-Amz-Expires=604800&X-Amz-Signature=408eb0322fbc029fb376d3c4412989932e9a70bf0ac2654fe03934fe4e42a340&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b4dfe694da01f17db72c894b6fcf7a565de0835f6f2bb743e91e8c578aa99b8/assets/images/help-center/account/payment-billing/elevenlabs-googlepay.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T082950Z&X-Amz-Expires=604800&X-Amz-Signature=f4fae43267cc9d369e6b6f198ad02870e23b92bc3f2cecb6c9df17ae7437e45e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
  
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa530c55277c6b502d5a8d972c7794ec26d7e6aac1bd43b0691b5bd0b8f55be5/assets/images/help-center/account/payment-billing/elevenlabs-chrome-desktop-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T092621Z&X-Amz-Expires=604800&X-Amz-Signature=040071e36180e61f919b8f7baca644fa12a0f5ee8baecf6901118e35af873901&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa530c55277c6b502d5a8d972c7794ec26d7e6aac1bd43b0691b5bd0b8f55be5/assets/images/help-center/account/payment-billing/elevenlabs-chrome-desktop-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T082950Z&X-Amz-Expires=604800&X-Amz-Signature=69c22c050ab1d07cc1475bd814671f69e4e1c8ed22a18257349e6e6b2c95aa1c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
  
 
  
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25f3fa160ce62ea0879b21a3e5db0beee14ebb8e5055c74abb0b17e0568dfa6f/assets/images/help-center/account/payment-billing/elevenlabs-chrome-mobile-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T092621Z&X-Amz-Expires=604800&X-Amz-Signature=038938bf6eee102da14b768b51b8af72db1dd5f4518d026ed21b960ec0d0e6a3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25f3fa160ce62ea0879b21a3e5db0beee14ebb8e5055c74abb0b17e0568dfa6f/assets/images/help-center/account/payment-billing/elevenlabs-chrome-mobile-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T082950Z&X-Amz-Expires=604800&X-Amz-Signature=82b1135c44420e366a20406b58716ab778e6eb12c172d9144604c0ca385b2645&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Can I pay for my ElevenLabs subscription in INR?
 
@@ -366,21 +360,21 @@ Usage based billing is a legacy feature, and is not available on new self-serve 
 
 For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df/assets/images/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T092621Z&X-Amz-Expires=604800&X-Amz-Signature=2622ab625a4b63518715b6c59f3bed096c27817c357c46483f7ea93669193097&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df/assets/images/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T082950Z&X-Amz-Expires=604800&X-Amz-Signature=1af0a0324f25e73c29a57fdfbae8be08af07b153246d01b628f198839ee7e020&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. If you're on an eligible plan, here’s how to enable usage based billing for your account:
 
 Go to your [Subscription](https://elevenlabs.io/app/subscription) page.
 
-Click <strong>Manage Subscription</strong>.
+Click **Manage Subscription**.
 
-Use the <strong>Usage based billing</strong> toggle to turn usage based billing on or off.
+Use the **Usage based billing** toggle to turn usage based billing on or off.
 
 A pop-up will appear asking you to confirm that you want to enable usage based billing. You can
-either set the number of credits that can be used to <strong>Unlimited</strong>, or enter your
+either set the number of credits that can be used to **Unlimited**, or enter your
 own maximum.
 
-Click <strong>Confirm</strong> to save the changes.
+Click **Confirm** to save the changes.
 
 You may be asked to verify your payment card before proceeding, but no charges will be made
 during the verification process.
@@ -398,23 +392,23 @@ For self-serve subscriptions, Pay As You Go is our replacement for usage based b
 
 On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota. 
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656/assets/images/help-center/account/general/how-do-i-change-the-usage-based-billing-threshold-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T092621Z&X-Amz-Expires=604800&X-Amz-Signature=0f8a04f4b45a3f6c982989ca2ac94408c4ef0ed7188d81c8836de4ed586d6758&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656/assets/images/help-center/account/general/how-do-i-change-the-usage-based-billing-threshold-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T082950Z&X-Amz-Expires=604800&X-Amz-Signature=a37dbc4622c1e80228137f843300439b624a5eff04a75ea9b575e678f87b9176&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 To allow for more control over charges, usage based billing lets you set a maximum number of additional credits that can be used on your account. You can set this threshold when you enable usage based billing, or adjust it at any time.
 
 Here’s how to change the threshold:
 
-Go to your <strong>Subscription</strong> page.
+Go to your **Subscription** page.
 
-Click <strong>Manage Subscription</strong>.
+Click **Manage Subscription**.
 
-In the <strong>U</strong>
-<strong>sage based billing</strong> section, click <strong>Change threshold.</strong>
+In the **U**
+**sage based billing** section, click **Change threshold.**
 
-A pop-up will appear where you can either enter your preferred maximum, or select{" "}
-<strong>Unlimited</strong>.
+A pop-up will appear where you can either enter your preferred maximum, or select
+**Unlimited**.
 
-Click <strong>Confirm</strong> to save the changes.
+Click **Confirm** to save the changes.
 
 You may be asked to verify your payment card before proceeding, but no charges will be made
 during the verification process.
@@ -433,9 +427,9 @@ We email copies of your invoices and receipts to your account email address. You
 Log into your account, and go to the [Subscription](https://elevenlabs.io/app/subscription)
 page.
 
-Click <strong>Billing</strong>.
+Click **Billing**.
 
-Click <strong>View invoices</strong>.
+Click **View invoices**.
 
 Click any invoice to view and download a PDF of the invoice and receipt.
 
@@ -487,13 +481,13 @@ Here’s how to update your payment method and remove your old card:
 
 Go to your [Subscription](https://elevenlabs.io/app/subscription) page.
 
-Click <strong>Billing</strong>.
+Click **Billing**.
 
-In the pop-up, click <strong>Manage billing information</strong>.
+In the pop-up, click **Manage billing information**.
 
-Scroll down to <strong>Payment Methods</strong>.
+Scroll down to **Payment Methods**.
 
-Click <strong>Add payment method</strong> and enter your new card details.
+Click **Add payment method** and enter your new card details.
 
 Set the new card as the default payment method.
 
@@ -517,7 +511,7 @@ confirming this.
 Click your profile icon in the top right corner of the website to open your account menu, then
 click *Subscription*.
 
-Make sure you have monthly billing selected, then select <strong>Subscribe</strong> underneath
+Make sure you have monthly billing selected, then select **Subscribe** underneath
 the plan that your coupon is valid for.
 
 The discount will be applied at checkout. You will see confirmation that it has been applied

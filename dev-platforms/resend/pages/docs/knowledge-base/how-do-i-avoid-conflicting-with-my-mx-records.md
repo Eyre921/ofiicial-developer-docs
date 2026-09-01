@@ -10,9 +10,15 @@ Learn how to avoid conflicts with your existing MX records when setting up a Res
 
 MX (Mail Exchanger) records specify where incoming mail is delivered on behalf of a domain. Every MX value has a unique priority (also known as preference) value. The lower the number, the higher the priority.
 
-Resend requires that you setup a MX record on two occasions:
+Resend may require that you setup a MX record on two occasions:
 
 1. **[Enabling your domain to send emails](https://resend.com/docs/dashboard/emails/introduction)**: You need to setup an MX record on `send.example.com` to establish a return-path for bounce/complaint reports from Inbox Providers. This return path is set in the email headers of every email you send through Resend.
+
+<Info>
+  For domains created after August 2026, Resend may generate CNAME records for sending instead of the MX and TXT pair, in which case this occasion doesn't apply to your domain. Always add the exact records shown in your domain's **Records** tab within the Resend dashboard.
+
+  Note that a CNAME record cannot co-exist with any other record on the same subdomain, so if you already have other records set for `send.example.com`, you will need to either configure a different `Return-Path` subdomain (e.g. `bounce.example.com`) or remove the existing records for `send.example.com`.
+</Info>
 
 2. **[Enabling your domain to receive emails](https://resend.com/docs/dashboard/receiving/custom-domains)**: You can setup an MX record on your domain to route all received emails to Resend.
 

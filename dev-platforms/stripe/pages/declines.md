@@ -124,11 +124,11 @@ As you develop your Stripe integration, continuously [test](https://docs.stripe.
 
 ```json
 ...
-outcome: {
-  network_decline_code: null,
-  network_advice_code: null,
-  network_status: "not_sent_to_network",
-  type: "invalid"
+"outcome": {
+  "network_decline_code": null,
+  "network_advice_code": null,
+  "network_status": "not_sent_to_network",
+  "type": "invalid"
 },
 ...
 ```

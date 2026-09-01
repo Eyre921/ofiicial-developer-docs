@@ -11,7 +11,11 @@ path: docs/api-reference/dubbing/create-project
 POST https://api.elevenlabs.io/v1/dubbing/project
 Content-Type: multipart/form-data
 
-Create a dubbing project from an uploaded file or a source URL.
+Create a dubbing project from an uploaded file (`file`) or a source URL (`source_url`).
+
+Returns as soon as the project record exists, before the source has been fetched: the project starts `queued` and reaches `ready` once its source has been transcribed. Creating a project does not dub anything — add a language target to it for each language you want, or pass `target_language` to queue the first one here.
+
+Preparation can take minutes on a long source, so we recommend passing `webhook_ids` to be notified when the project turns `ready` or `failed`, rather than polling for it.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/create-project
 
@@ -27,15 +31,15 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/create-project
 
 ### Body (multipart/form-data)
 
-- `file` (file, optional) — The source media file to dub. Provide this or source_url.
-- `source_url` (string, optional) — Public URL to fetch the source media from. Provide this or file.
-- `reference` (string, optional) — Optional free-form string (max 500 characters) to identify the project on your end.
+- `file` (file, optional) — The source media file to dub: an audio or video file of at most 3 GiB. Provide this or `source_url`, not both.
+- `source_url` (string, optional) — Public HTTP(S) URL the source media is fetched from server-side, subject to the same size and format limits as an upload. Provide this or `file`, not both.
+- `reference` (string, optional) — Optional free-form string (at most 500 characters) to identify the project on your end. Stored and echoed back verbatim; it does not affect the dub.
 - `source_language` (string, optional) — BCP-47 language tag of the source media; must be a language the transcription model supports. Any region or script subtag is ignored, since transcription is per-language. Omit to auto-detect.
-- `model_id` (enum or string, optional) — Default dubbing model id ('dubbing_v1' or 'dubbing_v2') for the project's language targets; a target may override it. Omit to use the system default.
-- `keyterms` (list of string, optional) — Key terms to bias transcription/translation toward (e.g. product or brand names). At most 1000 terms; each term at most 50 characters and 5 words; the characters `<>{}[]\` are not allowed.
-- `webhook_ids` (list of string, optional) — Ids of workspace webhooks to notify when this project becomes ready or fails, and when any of its languages completes or fails. At most 3; each must be a webhook configured in your workspace.
-- `target_language` (string, optional) — Optional shortcut: also create a language target in this BCP-47 language, queued to start once the project is ready. Must be a language the dubbing model supports, and a region-qualified tag must be one of the supported dialects.
-- `transcript` (file, optional) — Enterprise only. Optional JSON transcript to use instead of automatic transcription. When provided, source_language is required. Segments may include an optional external_id and an optional translation; if any segment includes a translation, target_language is required and every segment must include one (used to seed the target created via target_language).
+- `model_id` (enum or string, optional) — Dubbing model (`dubbing_v1` or `dubbing_v2`) every language target of this project is dubbed with. Defaults to `dubbing_v2`. Fixed at create time — the source is prepared for this model, so neither the project nor an individual target can change it later.
+- `keyterms` (list of string, optional) — Key terms to bias transcription and translation toward (for example, product or brand names). At most 1,000 terms; each term at most 50 characters and 5 words; the characters `<>{}[]\` are not allowed. Terms are trimmed and deduplicated.
+- `webhook_ids` (list of string, optional) — IDs of workspace webhooks to notify as this project progresses — the alternative to polling, and what we recommend. Each receives a `dubbing_project_ready` or `dubbing_project_failed` event for the project, and a `dubbing_language_completed` or `dubbing_language_failed` event for every language under it; `dubbing_language_completed` carries the output download URLs. At most 3 IDs, each already configured in your workspace — see [Webhooks](https://elevenlabs.io/docs/eleven-api/resources/webhooks) for how to create one and verify its signature. Delivery is best-effort and can repeat, so we recommend handling events idempotently.
+- `target_language` (string, optional) — Optional shortcut: also create a language target in this BCP-47 language, queued to start once the project is ready — equivalent to creating the project and then creating one language target. Must be one of the [languages the dubbing model supports](https://elevenlabs.io/docs/help-center/product/dubbing/which-languages-are-supported-in-dubbing), and a region-qualified tag must be one of the supported dialects. Its ID is returned in `language_ids`.
+- `transcript` (file, optional) — Enterprise only. Optional JSON transcript to use instead of transcribing the source: a `{"segments": [...]}` document, at most 20,000 segments and 4 MiB. See [Bring your own transcript](https://elevenlabs.io/docs/eleven-api/guides/how-to/dubbing/bring-your-own-transcript) for the segment fields and their constraints. `source_language` is required whenever a transcript is provided. If any segment carries a `translation`, `target_language` is required and every segment must carry one; those translations seed the target created via `target_language`, which then skips machine translation.
 
 ## Response
 
@@ -44,28 +48,28 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/create-project
 Successful Response
 
 - `project_id` (string, required) — Unique identifier of the dubbing project.
-- `status` (enum, required) — Lifecycle status of the project: 'preparing'/'processing' while it transcribes, 'ready' once transcription is done, or 'failed'.
+- `status` (enum, required) — Lifecycle status of the project: `queued` before the source is picked up, `preparing` while it is transcribed, `ready` once transcription is done and language targets can start, or `failed`. A project is never reported as `processing` — that value belongs to language targets.
   - Allowed values: `queued`, `preparing`, `processing`, `ready`, `failed`
 - `revision` (integer, required) — Monotonic counter incremented whenever the source transcript is edited (segment add/edit/delete).
 - `created_at` (string, required) — When the project was created.
 - `updated_at` (string, required) — When the project was last updated.
-- `reference` (string, optional, nullable) — Optional free-form string the customer can provide to identify the project on their end.
+- `reference` (string, optional, nullable) — The free-form string you supplied as `reference` when creating the project, or null if you supplied none.
 - `source_language` (string, optional, nullable) — BCP-47 language tag of the source media (null if auto-detected).
-- `model_id` (string, optional, nullable) — Default dubbing model id applied to this project's language targets.
-- `media` (object, optional, nullable) — Source media metadata; null until the project is ready.
+- `model_id` (string, optional, nullable) — Dubbing model every language target of this project is dubbed with. Fixed at create time and not selectable per language.
+- `media` (object, optional, nullable) — Source media metadata, populated once the source has been fetched and decoded (shortly after create, before the project is `ready`); null until then.
   - `filename` (string, optional, nullable) — Original filename of the uploaded source media (null for URL sources).
-  - `duration_s` (double, optional, nullable) — Duration of the source media in seconds.
+  - `duration_s` (double, optional, nullable) — Duration of the source media, in seconds.
   - `has_video` (boolean, optional, nullable) — Whether the source media contains a video stream.
-  - `mime_type` (string, optional, nullable) — MIME type of the uploaded source media.
-- `language_ids` (list of string, optional, default: []) — Identifiers of the language targets created under this project.
-- `webhook_ids` (list of string, optional, default: []) — Workspace webhooks notified when this project becomes ready or fails, and when any of its languages completes or fails.
-- `error` (object, optional, nullable) — Why the project failed; null unless `status` is 'failed'. Also null for the few projects that failed before failure reporting was introduced.
+  - `mime_type` (string, optional, nullable) — MIME type of the uploaded source media (null for URL sources).
+- `language_ids` (list of string, optional, default: []) — Identifiers of the language targets under this project. Populated when a single project is fetched, and on create when `target_language` creates one. Always empty in list responses — list the project's language targets instead.
+- `webhook_ids` (list of string, optional, default: []) — IDs of the workspace webhooks notified as this project and its languages reach `ready`, `completed`, or `failed`.
+- `error` (object, optional, nullable) — Why the project failed; null unless `status` is `failed`. Also null for the few projects that failed before failure reporting was introduced.
   - `message_type` ("error", required)
   - `error` (string, required)
 - `warnings` (list of object, optional) — Non-fatal conditions raised while preparing the source, empty when there are none. Reflects the latest preparation. Conditions raised while dubbing a particular language are reported on that language instead.
-  - `type` ("voices_not_permitted", required) — Identifies this warning; branch on it to read the fields below.
-  - `speaker_ids` (list of string, required) — Speakers whose voices were not permitted for cloning. The dub used a replacement voice for each of them; the rest of the speakers are unaffected.
-  - `message` (string, required) — Human-readable description of the warning, for display. The wording may change at any time; branch on `type` instead.
+  - `type` ("voices_not_permitted", required) — Identifies this warning; branch on it to read the other fields.
+  - `speaker_ids` (list of string, required) — Speakers whose voices were not permitted for cloning. The dub used a replacement voice for each of them; all other speakers are unaffected.
+  - `message` (string, required) — Human-readable description of the warning, for display. The wording may change at any time, so we recommend branching on `type` instead.
 
 ## Examples
 

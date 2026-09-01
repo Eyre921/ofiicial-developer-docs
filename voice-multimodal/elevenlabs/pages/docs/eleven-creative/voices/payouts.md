@@ -8,11 +8,11 @@ path: docs/eleven-creative/voices/payouts
 
 # Payouts
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2827fdd8be3ad39ff50a5fe9b0a5d4d7a2dcf4aa7f1fc6a8406d451c1dd3d30d/assets/images/product-guides/voices/payouts-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085944Z&X-Amz-Expires=604800&X-Amz-Signature=c38b587d1b9abc5cc92704f34a22c1e7676c93510f6c18f2b47b510d7ef684d0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Payouts" />
+![Payouts](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2827fdd8be3ad39ff50a5fe9b0a5d4d7a2dcf4aa7f1fc6a8406d451c1dd3d30d/assets/images/product-guides/voices/payouts-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100016Z&X-Amz-Expires=604800&X-Amz-Signature=c5484ac3969b7b6fccedd388dcdc4c24240c0ac4e18a79201eeaeb121a6bada9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
-The [Payouts](https://elevenlabs.io/payouts) system allows you to earn rewards for sharing voices in the [Voice library](/docs/eleven-creative/voices/voice-library). ElevenLabs uses <a href="https://stripe.com/connect">Stripe Connect</a> to process reward payouts.
+The [Payouts](https://elevenlabs.io/payouts) system allows you to earn rewards for sharing voices in the [Voice library](/docs/eleven-creative/voices/voice-library). ElevenLabs uses [Stripe Connect](https://stripe.com/connect) to process reward payouts.
 
 ## Account setup
 
@@ -20,7 +20,7 @@ To set up your Payouts account:
 
 * Click on your profile icon in the top right corner and select ["Payouts"](https://elevenlabs.io/app/payouts).
 
-![Payouts overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a8a2f7f41a9d548644fbd90d54d416e1d1811c358c8a46f8b64f78b818af63d9/assets/images/product-guides/voices/payouts-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085944Z&X-Amz-Expires=604800&X-Amz-Signature=bc903b9f30a850af7319b094729e63af284634e7dce92f4574d9a007355f218a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Payouts overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a8a2f7f41a9d548644fbd90d54d416e1d1811c358c8a46f8b64f78b818af63d9/assets/images/product-guides/voices/payouts-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100016Z&X-Amz-Expires=604800&X-Amz-Signature=a637ed20edc3d7187673735f42927ecb5265216fb69d37fd3c09174500b6eb59&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * Follow the prompts from Stripe Connect to complete the account setup.
 
@@ -116,9 +116,7 @@ To set up your Payouts account:
     <td>
       #### What is W-8/W-9 certification?
 
-      <strong>
-        Why do I have to complete this form?
-      </strong>
+      **Why do I have to complete this form?**
 
       ElevenLabs is required by U.S. tax law to collect W-8/W-9 certification from anyone who receives payments from us. If you're a U.S. tax resident, you're required to submit W-9 certification. If you're not a U.S. tax resident, you're required to submit W-8 certification.
 
@@ -126,17 +124,13 @@ To set up your Payouts account:
 
        
 
-      <strong>
-        How do I complete the form?
-      </strong>
+      **How do I complete the form?**
 
       The form is processed via Stripe, which walks you through the steps. We also have a detailed guide available [here](/docs/help-center/product/monetization-business/payouts/how-do-i-complete-my-w-8-w-9-certification).
 
        
 
-      <strong>
-        Why are you withholding tax on payments to me?
-      </strong>
+      **Why are you withholding tax on payments to me?**
 
       By default, the U.S. requires a 30% withholding tax on certain types of payments to non-U.S. persons — including royalties. However, if your country has a tax treaty with the U.S., you may be eligible for a reduced withholding rate, which you can claim on the W-8 form. If you do not claim a treaty benefit, the 30% default rate applies.
 
@@ -146,41 +140,31 @@ To set up your Payouts account:
 
        
 
-      <strong>
-        What will I receive from you?
-      </strong>
+      **What will I receive from you?**
 
-      Each year, we will issue a <strong>Form 1042-S</strong> showing the total amount we paid you and any U.S. tax we withheld. This form is sent by <strong>March 15 of the following calendar year</strong> and can be used when filing a U.S. tax return, if needed.
+      Each year, we will issue a **Form 1042-S** showing the total amount we paid you and any U.S. tax we withheld. This form is sent by **March 15 of the following calendar year** and can be used when filing a U.S. tax return, if needed.
 
        
 
-      <strong>
-        I already pay taxes in my own country why should I also pay U.S. tax?
-      </strong>
+      **I already pay taxes in my own country why should I also pay U.S. tax?**
 
-      Because the income you're earning is <strong>U.S.-sourced</strong> (we are a U.S.-based company), we’re required to apply U.S. tax rules. You may still be able to <strong>claim a credit or deduction</strong> in your own country for the tax paid to the U.S., depending on your local laws.
+      Because the income you're earning is **U.S.-sourced** (we are a U.S.-based company), we’re required to apply U.S. tax rules. You may still be able to **claim a credit or deduction** in your own country for the tax paid to the U.S., depending on your local laws.
 
        
 
-      <strong>
-        Can I skip the form if I don’t live in the U.S?
-      </strong>
+      **Can I skip the form if I don’t live in the U.S?**
 
       No — if you're receiving payments from us and you're not a U.S. tax resident, we are still required to collect this form to properly apply U.S. tax rules. If we don’t receive a completed W-8, we may not be able to pay you or may have to apply maximum withholding (30%).
 
        
 
-      <strong>
-        How do I know if my country has a tax treaty with the U.S.?
-      </strong>
+      **How do I know if my country has a tax treaty with the U.S.?**
 
       Stripe may also help you identify treaty eligibility as you complete the form, but you are responsible for verifying that you meet the conditions via the IRS website or a tax professional. 
 
        
 
-      <strong>
-        What happens if I don’t complete the form?
-      </strong>
+      **What happens if I don’t complete the form?**
 
       If you don’t submit a completed W-8 form, we may be required to withhold the full 30% of your earnings from US customer usage until the form is received.
     </td>
@@ -192,13 +176,13 @@ To set up your Payouts account:
 
       Voice Actor Payouts let you earn cash rewards when paid users generate audio with your Professional Voice Clone shared in the Voice Library. Earnings are calculated based on usage by paid users and exclude use by free users. Your default rate is determined by your selected notice period, and payouts are processed automatically through Stripe.
 
-      * To get started, create a <strong>Professional Voice Clone</strong> of your voice. This feature is available on the Creator plan and above. We recommend uploading around 2 hours of clear, high-quality recordings containing only your voice, with consistent tone and no background noise, music, or effects. For detailed guidance, see our [Professional Voice Cloning guide](/docs/product-guides/voices/voice-cloning).
+      * To get started, create a **Professional Voice Clone** of your voice. This feature is available on the Creator plan and above. We recommend uploading around 2 hours of clear, high-quality recordings containing only your voice, with consistent tone and no background noise, music, or effects. For detailed guidance, see our [Professional Voice Cloning guide](/docs/product-guides/voices/voice-cloning).
       * After uploading your samples, you’ll complete a Voice Captcha verification by reading a short text prompt within a set timeframe. Once verified, your voice will be added to the training queue. The process typically takes a few hours but may take longer at peak times.
       * Once training is complete, you can [share your voice in the Voice Library.](/docs/product-guides/voices/voice-library#how-to-share-a-voice-model-in-the-voice-library) After a brief review by our team, your voice will become visible to other users who can save and use it to generate audio.
-      * You can choose how long your voice remains available after you decide to withdraw it by setting a <strong>notice period</strong>. This ranges from immediate removal up to a two-year period. This flexibility lets you balance earning potential with personal preference while giving other users clarity on when they’ll need to transition away from your voice.
-      * You can enable <strong>live moderation</strong> for your voice to prevent it from being used in restricted or sensitive content categories.
+      * You can choose how long your voice remains available after you decide to withdraw it by setting a **notice period**. This ranges from immediate removal up to a two-year period. This flexibility lets you balance earning potential with personal preference while giving other users clarity on when they’ll need to transition away from your voice.
+      * You can enable **live moderation** for your voice to prevent it from being used in restricted or sensitive content categories.
       * Your default payout rate is determined by the notice period you select for your voice.
-      * To receive payments, you’ll need to set up a <strong>Stripe Connect</strong> account and maintain an active paid subscription (Starter plan or above). Payouts are processed automatically every 6–8 days once your earnings exceed the minimum threshold. In most cases, the threshold is \$10, though some countries may have higher limits due to local regulations or payment provider requirements.
+      * To receive payments, you’ll need to set up a **Stripe Connect** account and maintain an active paid subscription (Starter plan or above). Payouts are processed automatically every 6–8 days once your earnings exceed the minimum threshold. In most cases, the threshold is \$10, though some countries may have higher limits due to local regulations or payment provider requirements.
 
       For more information, refer to our [Terms of Service](https://elevenlabs.io/terms-of-use) and [Voice Library Addendum](https://elevenlabs.io/vla).
     </td>
@@ -212,33 +196,29 @@ To set up your Payouts account:
 
        
 
-      <strong>
-        You have not completed the process of setting up your Payout account
-      </strong>
+      **You have not completed the process of setting up your Payout account**
 
       Payouts won't be enabled for your account until you have completed the process of setting up your Payout account, including agreeing to the Terms.
 
-      To complete the process, please visit your Payouts page, and click <strong>Complete Account Setup</strong>, and follow the steps. 
+      To complete the process, please visit your Payouts page, and click **Complete Account Setup**, and follow the steps. 
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb52e5ffc758de83e815dccbf38f589f443d01943aa46e083839af073a7cd568/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085944Z&X-Amz-Expires=604800&X-Amz-Signature=cba042a8e7ed6e3179e7c931bb2ec21183d4778ba0f256a640b09a102b259c77&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb52e5ffc758de83e815dccbf38f589f443d01943aa46e083839af073a7cd568/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100016Z&X-Amz-Expires=604800&X-Amz-Signature=7c3967fe78129db714aceca76119edebaac8a8120e0995e12aada866bdb9de60&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-      If you still see <strong>Complete Account Setup</strong> after completing all the steps, please contact Support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io).
+      If you still see **Complete Account Setup** after completing all the steps, please contact Support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io).
 
        
 
-      <strong>
-        You have not completed your W-8/W-9 certification
-      </strong>
+      **You have not completed your W-8/W-9 certification**
 
-      ElevenLabs is required by U.S. tax law to collect W-8/W-9 certification from anyone who receives payments from us and is not a U.S. tax resident. For more information on this, please see our article <a href="/docs/help-center/product/monetization-business/payouts/what-is-w-8-w-9-certification">What is W-8/W-9 certification?</a>
+      ElevenLabs is required by U.S. tax law to collect W-8/W-9 certification from anyone who receives payments from us and is not a U.S. tax resident. For more information on this, please see our article [What is W-8/W-9 certification?](/docs/help-center/product/monetization-business/payouts/what-is-w-8-w-9-certification)
 
-      Payouts will be disabled for any user who does not have a valid tax form. To resume Payouts, please visit your Payouts page and click <strong>Manage Account</strong>.
+      Payouts will be disabled for any user who does not have a valid tax form. To resume Payouts, please visit your Payouts page and click **Manage Account**.
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5b05f4b71a2fa97f474b763834ab81479a21e159b7a24753be81adfd0b61db04/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085944Z&X-Amz-Expires=604800&X-Amz-Signature=520502fe0868682fa425a6833c8d0d18f902cce5d48d12d0905b4b5d83909101&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5b05f4b71a2fa97f474b763834ab81479a21e159b7a24753be81adfd0b61db04/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100016Z&X-Amz-Expires=604800&X-Amz-Signature=d9c223ce6c35f743aba9e9b0f926b7c7b10ba37e3865cf095a4711d135686c1d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-      You will then see <strong>Missing W-8/W-9 certification</strong>. To complete your certification, click <strong>Update</strong> and answer the questions in the form.
+      You will then see **Missing W-8/W-9 certification**. To complete your certification, click **Update** and answer the questions in the form.
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085944Z&X-Amz-Expires=604800&X-Amz-Signature=624346c70b787d560b5f050c16ceec7b820ffcae3d350207f5e3868430551a65&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100016Z&X-Amz-Expires=604800&X-Amz-Signature=3d16e92440189d09324130f3161c3be57fa2dec9fdee1928a58907606386bdc0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -308,7 +288,9 @@ To set up your Payouts account:
       * United Kingdom
       * United States
       * Uruguay
-      * Vietnam<br /><br />
+      * Vietnam\
+        \
+
     </td>
   </tr>
 
@@ -318,19 +300,18 @@ To set up your Payouts account:
 
       The W-8/W-9 certification will be requested when your first payout is processed. At this point, you will be notified that you need to complete the certification before you can receive your payouts.
 
-      To do this, click <strong>My Account</strong> and select <strong>Payouts</strong> to go to your Payouts page. Then click <strong>Manage Account.</strong>
+      To do this, click **My Account** and select **Payouts** to go to your Payouts page. Then click **Manage Account.**
 
-      You will see a section for W-8/W-9 certification, which will be marked <strong>Incomplete</strong>. Click <strong>Update</strong> to open the form<br />
+      You will see a section for W-8/W-9 certification, which will be marked **Incomplete**. Click **Update** to open the form\
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/how-do-i-complete-my-w-8w-9-certification.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T085944Z&X-Amz-Expires=604800&X-Amz-Signature=c1a4474adefedbe1422c12e89fdb57e76a99dc9bbb9fa7bb31b2b033c6bb7cfa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/how-do-i-complete-my-w-8w-9-certification.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100016Z&X-Amz-Expires=604800&X-Amz-Signature=0b497ec5de98ca82b947679abe35549e33e0cdc462fcc938eecd48a2e06a4e9e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       Answer the questions on screen. The first question, "Are you considered a U.S. person for Federal Tax Purpose?", will determine whether you complete Form W-9 or Form W-8.
 
        
 
-      <strong>
-        Are you considered a U.S. person for Federal Tax Purpose?
-      </strong>
+      **Are you considered a U.S. person for Federal Tax Purpose?**
 
       If yes, you will be prompted to complete Form W-9:
 
@@ -338,9 +319,9 @@ To set up your Payouts account:
 
       Certify the statement is accurate by signing.
 
-      Click <strong>Submit.</strong>
+      Click **Submit.**
 
-      Click <strong>Confirm</strong> after you have reviewed your details.
+      Click **Confirm** after you have reviewed your details.
 
       If no, you will be prompted to complete Form W-8:
 
@@ -358,13 +339,13 @@ To set up your Payouts account:
 
       Check the box if non-U.S. Taxpayer Identification number not legally required, for example, if your country does not issue Tax IDs.
 
-      <strong>Tax Treaty Claims</strong> - if you would like to claim reduced rate of withholding tax, complete this section. This will allow Eleven Labs to apply a lower rate or 0% rate (depending on your country of residence) on the payments it remits to you. 
+      **Tax Treaty Claims** - if you would like to claim reduced rate of withholding tax, complete this section. This will allow Eleven Labs to apply a lower rate or 0% rate (depending on your country of residence) on the payments it remits to you. 
 
       Are you claiming a reduced rate of withholding under a tax treaty? 
 
-      Select <strong>Yes</strong> to claim treaty benefits or <strong>No</strong> if you do not want to claim reduced rate of withholding. 
+      Select **Yes** to claim treaty benefits or **No** if you do not want to claim reduced rate of withholding. 
 
-      Type of income: select <strong>Royalties - Copyrights.</strong>
+      Type of income: select **Royalties - Copyrights.**
 
       Country of residence: select from the drop-down menu.
 
@@ -376,7 +357,7 @@ To set up your Payouts account:
 
       Read through and agree to the certification by checking the box and typing your name in the signature field.
 
-      Click <strong>Submit</strong> to submit your form.
+      Click **Submit** to submit your form.
     </td>
   </tr>
 

@@ -70,4 +70,5 @@ We are constantly working to expand our reach for our Voice Actor Payouts. Curre
 * United Kingdom
 * United States
 * Uruguay
-* Vietnam<br /><br />
+* Vietnam\
+  \

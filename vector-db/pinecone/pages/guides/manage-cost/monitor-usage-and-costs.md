@@ -267,12 +267,6 @@ The response looks like this:
 
 For a more in-depth demonstration of how to use read units to inspect read costs, see [this notebook](https://github.com/pinecone-io/examples/blob/master/docs/read-units-demonstrated.ipynb).
 
-### Egress
-
-[Query](/guides/search/search-overview), [fetch](/guides/manage-data/fetch-data), [list](/guides/manage-data/list-record-ids), and [text search](/reference/api/latest/data-plane/search_records) requests return the [egress](/guides/manage-cost/understanding-cost#egress) consumed by each request in the `usage` object, as `egressBytes` (the total bytes returned by the operation, including IDs, scores, values, and metadata).
-
-Egress is reported only on serverless reads that return record data. It is omitted on empty results and on requests that return no record data (such as index statistics and management requests).
-
 ### Embedding tokens
 
 Requests to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models), either directly via the [`embed` operation](/reference/api/latest/inference/generate-embeddings) or automatically when upserting or querying an [index with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), return a `usage` parameter with the total tokens generated.

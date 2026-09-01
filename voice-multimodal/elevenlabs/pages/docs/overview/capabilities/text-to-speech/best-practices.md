@@ -297,21 +297,11 @@ Pacing can also be controlled by writing in a natural, narrative style.
 
 #### Common Issues
 
-<ul>
-  <li>
-    Inconsistent pauses: Ensure <code>\<break time="x.xs" /></code> syntax is used for
-    pauses.
-  </li>
-
-  <li>
-    Pronunciation errors: Use CMU Arpabet or IPA phoneme tags for precise pronunciation.
-  </li>
-
-  <li>
-    Emotion mismatch: Add narrative context or explicit tags to guide emotion.{" "}
-    <strong>Remember to remove any emotional guidance text in post-production.</strong>
-  </li>
-</ul>
+* Inconsistent pauses: Ensure `<break time="x.xs" />` syntax is used for
+  pauses.
+* Pronunciation errors: Use CMU Arpabet or IPA phoneme tags for precise pronunciation.
+* Emotion mismatch: Add narrative context or explicit tags to guide emotion.
+  **Remember to remove any emotional guidance text in post-production.**
 
 #### Tips for Improving Output
 
@@ -603,7 +593,7 @@ to use v3 features.
 The stability slider is the most important setting in v3, controlling how closely the generated voice adheres to the original reference audio.
 
 ![Stability settings in Eleven
-v3](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/291b91ec752d09b8c87004ae7091811eb8b5996c349288c88ed0c7afa1272999/assets/images/product-guides/text-to-speech/text-to-speech-v3-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T112904Z&X-Amz-Expires=604800&X-Amz-Signature=dff1e7e05782f964845b66fe2aeaeb213a0a0590a070dcb43803b676bb8dedb4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+v3](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/291b91ec752d09b8c87004ae7091811eb8b5996c349288c88ed0c7afa1272999/assets/images/product-guides/text-to-speech/text-to-speech-v3-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T090100Z&X-Amz-Expires=604800&X-Amz-Signature=61d37df1541ec9636a7f3dc67236caf2a48385e2b22bb22696959f090d57f136&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * **Creative:** More emotional and expressive, but prone to hallucinations.
 * **Natural:** Closest to the original voice recording—balanced and neutral.

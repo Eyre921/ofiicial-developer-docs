@@ -44,6 +44,7 @@ Deepgram's APIs allows you to interact with Deepgram programmatically.  You can 
   * Manage [API keys ](/reference/manage/keys/list)
   * Manage [self-hosted distribution credentials](/reference/self-hosted/distribution-credentials/list)
 
-<br />
+\
+
 
 To create your first API key refer to our Guide [Creating API Keys](/docs/create-additional-api-keys).

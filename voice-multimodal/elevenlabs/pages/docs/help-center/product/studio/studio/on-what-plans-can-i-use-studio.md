@@ -10,6 +10,6 @@ path: docs/help-center/product/studio/studio/on-what-plans-can-i-use-studio
 
 Our professional end-to-end solution for long-form content, called Studio, is available on all our plans, including our free plan. 
 
-The exception being the <strong>Create a podcast (GenFM)</strong> feature, which requires a paid subscription to access.
+The exception being the **Create a podcast (GenFM)** feature, which requires a paid subscription to access.
 
 You can find more information about all our subscription plans on our [Pricing page.](https://elevenlabs.io/pricing)

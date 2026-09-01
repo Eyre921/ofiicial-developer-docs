@@ -27,24 +27,14 @@ grass").
 #### Adjust settings
 
 ![Sound effects
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3b14346a7ee375acc01d11b4ebb0ec0127a4a65bfab8e708d77ae5e639e64f38/assets/images/product-guides/sound-effects/sound-effects-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=cb7f140eead9aaa043cc695cc81f47c8a4449d6b6c512b95bbbfe71e96d62875&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3b14346a7ee375acc01d11b4ebb0ec0127a4a65bfab8e708d77ae5e639e64f38/assets/images/product-guides/sound-effects/sound-effects-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100016Z&X-Amz-Expires=604800&X-Amz-Signature=59cf48094edce4e593819a6886ca2b12b17843162b8dcffc7e68e4a7e1a98faf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-<ul>
-  <li>
-    Set the duration for the sound, or choose auto to let the AI decide. The maximum length is
-    30 seconds.
-  </li>
-
-  <li>
-    Turn <strong>Looping</strong> on to create a seamless loop. The ending will blend into the
-    beginning without a noticeable gap.
-  </li>
-
-  <li>
-    Adjust the prompt influence setting to control how closely the output should match the
-    prompt. By default, this is set to 30%.
-  </li>
-</ul>
+* Set the duration for the sound, or choose auto to let the AI decide. The maximum length is
+  30 seconds.
+* Turn **Looping** on to create a seamless loop. The ending will blend into the
+  beginning without a noticeable gap.
+* Adjust the prompt influence setting to control how closely the output should match the
+  prompt. By default, this is set to 30%.
 
 #### Generate sound
 
@@ -62,7 +52,7 @@ a vinyl sample, stem, 88 bpm in F# minor.
 
 ## Explore the library
 
-![Sound effects explore](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d8d7c3cca84e6acb0dfc419aed291be764794f299b2c7c478a9efc3f8f6e25ef/assets/images/product-guides/sound-effects/sound-effects-explore.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100015Z&X-Amz-Expires=604800&X-Amz-Signature=b440637c2310e9428b3edf4943e083b389bfda91284cfd1ecfdea1e1d6248889&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Sound effects explore](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d8d7c3cca84e6acb0dfc419aed291be764794f299b2c7c478a9efc3f8f6e25ef/assets/images/product-guides/sound-effects/sound-effects-explore.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100016Z&X-Amz-Expires=604800&X-Amz-Signature=167ace013deb5a92df988691addd199acd3f2655d4b41462ecfee0304f527496&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Browse community-made sound effects in the **Explore** tab.
 
@@ -83,7 +73,7 @@ For more on prompting and how sound effects work, visit our [overview page](/doc
 
       You can use the settings to control the duration of the sound effect, and how strictly the AI follows your prompt.  If you don't specify the length of the clip, the AI will decide the audio length.
 
-      Each time you select <strong>Generate</strong>, the AI will generate full variations of the prompt you've given.
+      Each time you select **Generate**, the AI will generate full variations of the prompt you've given.
 
       You can create looping sound effects if you need longer durations. Looping sound effects can be played on repeat without a perceptible start or end point.
 
@@ -109,9 +99,7 @@ For more on prompting and how sound effects work, visit our [overview page](/doc
 
       The prompt is the piece of text or instruction that tells the AI what kind of output is expected.  The AI understands natural language as well as audio terminology.
 
-      <strong>
-        Simple Prompts
-      </strong>
+      **Simple Prompts**
 
       These are simple prompts that try to get the AI to generate a single sound effect.  Some examples would be "person walking on grass" or "glass breaking".  These types of prompts will generate a single type of sound effect with a few variations.
 
@@ -119,9 +107,7 @@ For more on prompting and how sound effects work, visit our [overview page](/doc
 
        
 
-      <strong>
-        Complex Prompts
-      </strong>
+      **Complex Prompts**
 
       Complex prompts include multiple sound effects, or a sequence of sound effects happening in a specific order, for example, "A man walks through a hallway and then falls down some stairs".  While the AI does understand these prompts, for the best results, we would recommend generating individual sound effects and then combining them in an audio editor of your choice.
 

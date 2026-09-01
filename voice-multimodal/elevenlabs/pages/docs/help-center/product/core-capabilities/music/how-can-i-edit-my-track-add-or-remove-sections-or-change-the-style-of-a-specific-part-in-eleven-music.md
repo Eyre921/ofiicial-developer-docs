@@ -12,74 +12,68 @@ Eleven Music gives you granular control to edit your song composition without ha
 
 Here’s a step-by-step guide to editing your track:
 
-<strong>
-  1\. Adding a New Section
-</strong>
+**1. Adding a New Section**
 
 To add a new part to your song (like a bridge, a solo, or a second verse):
 
 * To add a new section, there are two ways to achieve this:
 
-* In the song structure, find the section you want the new section to follow. On the left-hand side of that section, you'll see a "+" symbol that will say "Add section below" when you hover over.<br />
+* In the song structure, find the section you want the new section to follow. On the left-hand side of that section, you'll see a "+" symbol that will say "Add section below" when you hover over.\
 
-  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6c23aeecbe607b133b6940ae30a60ba168772a8c351f68cfa42cec1f8705c95c/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=e2b91704e57578b4f5099192b5474a4713777873dae4b41ff1f94cc1de499350&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
 
-* In the timeline, scroll to the end of your song structure and click the "+" sign, which will add a new empty section at the end.<br />
+  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6c23aeecbe607b133b6940ae30a60ba168772a8c351f68cfa42cec1f8705c95c/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=3df0b59da9998cd1dc71948a9bc64c1928c14add43f6abeac8dc53a23aa3eb5c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/071d9a8998758844dd15d1c512c5bbd3d335950c7b4ca784604182042eb14c80/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=c867b330ddd239809693469ba8d6ead61322546a81d852fd313fb9b1f2710011&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+* In the timeline, scroll to the end of your song structure and click the "+" sign, which will add a new empty section at the end.\
+
+
+  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/071d9a8998758844dd15d1c512c5bbd3d335950c7b4ca784604182042eb14c80/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=0315363e5d34c51330d5af86a94c803bc5b22c94d733af1de1feb1e2c92b88f4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * Once you've added this new empty section, you can drag it to extend the duration, add lyrics, or a descriptive prompt (e.g., "\[energetic guitar solo]").
 
-<strong>
-  2\. Editing Lyrics or Prompts
-</strong>
+**2. Editing Lyrics or Prompts**
 
 To change the lyrics or the instrumental prompt of any existing section:
 
 * Simply click inside the text box for that section (e.g., Main Groove 1, Breakdown).
 * Type your new lyrics or edit the existing prompt.
 
-<strong>
-  3\. Modifying the Style of a Section
-</strong>
+**3. Modifying the Style of a Section**
 
 For more advanced control, you can define specific musical elements to include or exclude from a section.
 
-* Hover over the section you want to edit and click the <strong>"Edit styles of this section"</strong> link.<br />
+* Hover over the section you want to edit and click the **"Edit styles of this section"** link.\
 
-  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c9086f7935759344e852854e10af5a38b27760359897a7c315824c1c6e2ef124/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=28d67910f991658f34578a938efb0152b1b447737a17cd4671e6d6c6ce4c060b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+
+  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c9086f7935759344e852854e10af5a38b27760359897a7c315824c1c6e2ef124/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=0e51bc04a3a422b27bc52cc6109daac778e866dbd3530ad29cd40193f6f2fbfc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * A "Section styles" window will pop up. Here you can:
 
-* <strong>Include styles:</strong> Add specific musical characteristics or production details. For
+* **Include styles:** Add specific musical characteristics or production details. For
   example: gradual filter cutoff, hi-hats fade out, long delay feedback on vocalise.
 
-* <strong>Exclude styles:</strong> Prevent certain elements from appearing. For example: abrupt
+* **Exclude styles:** Prevent certain elements from appearing. For example: abrupt
   ending, new elements.
 
-* Click <strong>Save</strong> to apply these style rules to that specific section.
+* Click **Save** to apply these style rules to that specific section.
 
-<strong>
-  4\. Deleting a Section
-</strong>
+**4. Deleting a Section**
 
 If you want to remove a part of your song entirely:
 
-* Hover over the section you wish to remove in the timeline.<br />
+* Hover over the section you wish to remove in the timeline.\
 
-  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c8506897c18519729967118d2d2f1136f302023a890685b8aba786d1034c8943/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=27711ca2b2b925ee70420c53094f2fe413d9289344d624219e1c6a5de29ab2d8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+
+  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c8506897c18519729967118d2d2f1136f302023a890685b8aba786d1034c8943/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T100017Z&X-Amz-Expires=604800&X-Amz-Signature=a7d13feaacf40efdb2b95ae7b68e9c3168e5fa2991a8929d50edc5bd27549967&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * Click the delete icon, the "X", in the upper left corner of the section.
 
 * The section will be removed from the structure, and a notification like "Outro deleted" will briefly appear.
 
-<strong>
-  5\. Generating Your Changes
-</strong>
+**5. Generating Your Changes**
 
-After you have made any edits—whether adding, deleting, or modifying a section—you will see a notice at the bottom that says <strong>"Song composition has changed."</strong>
+After you have made any edits—whether adding, deleting, or modifying a section—you will see a notice at the bottom that says **"Song composition has changed."**
 
-* Your edits will <strong>not</strong> take effect until you click the <strong>Generate</strong> button.
-* Once you click <strong>Generate</strong>, the model will create a new version of your track that incorporates all of your changes.
+* Your edits will **not** take effect until you click the **Generate** button.
+* Once you click **Generate**, the model will create a new version of your track that incorporates all of your changes.
 
 Feel free to experiment with different combinations of lyrics, styles, and structures to craft your perfect track

@@ -334,19 +334,19 @@ start creating.
 
       Eleven Music offers:
 
-      * <strong>Complete Music Tracks</strong> from a single text prompt
-      * <strong>Granular Control</strong> of genre, mood, style, structure, and instrumentation
-      * <strong>Vocals & Lyrics</strong> across multiple languages, including English, Spanish, German,
+      * **Complete Music Tracks** from a single text prompt
+      * **Granular Control** of genre, mood, style, structure, and instrumentation
+      * **Vocals & Lyrics** across multiple languages, including English, Spanish, German,
         and Japanese, with Music v2 supporting more natural vocal performances and complex delivery
         patterns such as fast rap
-      * <strong>Audio Reference</strong> to guide Music v2 generations with a short uploaded track
-      * <strong>Post-Generation Editing</strong> to adjust sections and lyrics of those sections via the
+      * **Audio Reference** to guide Music v2 generations with a short uploaded track
+      * **Post-Generation Editing** to adjust sections and lyrics of those sections via the
         UI
-      * <strong>Studio-Ready Exports</strong> in MP3 for professional workflows
+      * **Studio-Ready Exports** in MP3 for professional workflows
 
       ### Use Cases & Commercial Use
 
-      Created in collaboration with artists, labels, publishers, and artists, Eleven Music is <strong>cleared for broad commercial use</strong>.
+      Created in collaboration with artists, labels, publishers, and artists, Eleven Music is **cleared for broad commercial use**.
 
       This model allows users to move beyond stock music libraries and create bespoke audio. For specific details on supported usage per tier, please refer to our [Music Terms](https://elevenlabs.io/music-terms).
 
@@ -370,16 +370,16 @@ start creating.
 
       Eleven Music is a versatile model that gives you control over many aspects of audio creation. You can generate:
 
-      * <strong>Full Songs with Vocals:</strong> Create complete tracks with AI-generated lyrics and
+      * **Full Songs with Vocals:** Create complete tracks with AI-generated lyrics and
         vocals in a variety of languages. Music v2 supports more natural vocal performances and more
         complex delivery patterns, including fast rap and dense lyrical phrasing.
-      * <strong>Instrumental Tracks:</strong> Generate purely instrumental music across any genre, from
+      * **Instrumental Tracks:** Generate purely instrumental music across any genre, from
         cinematic scores to ambient lo-fi beats.
-      * <strong>Specific Song Structures:</strong> Use sectional generation to build a song piece by
+      * **Specific Song Structures:** Use sectional generation to build a song piece by
         piece, defining the Intro, Verse, Chorus, Breakdown, and Outro.
-      * <strong>Music for Media:</strong> Design custom soundtracks for videos, ads, or games by
+      * **Music for Media:** Design custom soundtracks for videos, ads, or games by
         describing the scene or mood (e.g., "A high-intensity orchestral track for an epic battle scene").
-      * <strong>Genre-Specific Music:</strong> Generate highly specific styles by including detailed
+      * **Genre-Specific Music:** Generate highly specific styles by including detailed
         prompts, such as "Traditional Spanish flamenco with palmas, nylon guitar, and Spanish-language
         vocals."
     </td>
@@ -389,7 +389,7 @@ start creating.
     <td>
       #### How much does Eleven Music cost?
 
-      The cost of Eleven Music depends on the length of your track and how many variants you're generating. You can see how much each generation will cost before you click <strong>Generate</strong> by hovering over the number of <strong>credits remaining</strong> for your account. 
+      The cost of Eleven Music depends on the length of your track and how many variants you're generating. You can see how much each generation will cost before you click **Generate** by hovering over the number of **credits remaining** for your account. 
 
       For a breakdown of how many minutes of Music each of our subscription plans can generate with the included credit quota, see the Music table on our [Pricing page. ](https://elevenlabs.io/pricing)
     </td>
@@ -401,20 +401,20 @@ start creating.
 
       The key to great results is a descriptive and detailed prompt. The model understands nuance, so the more information you provide, the closer the output will be to your vision. Here are some best practices:
 
-      * <strong>Be Specific with Genre and Style:</strong> Instead of `rock music`, try `energetic 1980s
+      * **Be Specific with Genre and Style:** Instead of `rock music`, try `energetic 1980s
         synth-pop with a driving drum machine beat and male vocals`.
-      * <strong>Layer Multiple Descriptors:</strong> Combine mood, instrumentation, tempo, and use case.
+      * **Layer Multiple Descriptors:** Combine mood, instrumentation, tempo, and use case.
       * Example: `A slow, melancholic piano melody over ambient synth textures, suitable for a tragic film scene`.
-      * <strong>Define Instrumentation:</strong> Call out the specific instruments you want to hear.
+      * **Define Instrumentation:** Call out the specific instruments you want to hear.
       * Example: `Upbeat funk track with a prominent slap bass line, funky rhythm guitar, and a horn section`.
-      * <strong>Use the "Include/Exclude Styles" Feature:</strong> Refine your output by explicitly
+      * **Use the "Include/Exclude Styles" Feature:** Refine your output by explicitly
         including or excluding certain tags like acoustic, repetitive structure, or four-on-the-floor
         kick.
-      * <strong>Build Section by Section:</strong> To have the most control when creating a full song,
+      * **Build Section by Section:** To have the most control when creating a full song,
         generate the Intro first. Once you're happy with that first section, you can click the "+" sign
         and specify the style for the next part. Then, use the "Continue the conversation..." prompt box
         to generate the Main Groove or Chorus, building your track piece by piece.
-      * <strong>Iterate and Refine:</strong> If the first generation isn't perfect, don't start over!
+      * **Iterate and Refine:** If the first generation isn't perfect, don't start over!
         Adjust your prompt and regenerate. Small changes can have a big impact.
 
       For a complete list of tips and examples, please see our official [Prompting Guide](/docs/overview/capabilities/music/best-practices).
@@ -429,75 +429,69 @@ start creating.
 
       Here’s a step-by-step guide to editing your track:
 
-      <strong>
-        1\. Adding a New Section
-      </strong>
+      **1. Adding a New Section**
 
       To add a new part to your song (like a bridge, a solo, or a second verse):
 
       * To add a new section, there are two ways to achieve this:
 
-      * In the song structure, find the section you want the new section to follow. On the left-hand side of that section, you'll see a "+" symbol that will say "Add section below" when you hover over.<br />
+      * In the song structure, find the section you want the new section to follow. On the left-hand side of that section, you'll see a "+" symbol that will say "Add section below" when you hover over.\
 
-        <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6c23aeecbe607b133b6940ae30a60ba168772a8c351f68cfa42cec1f8705c95c/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=e2b91704e57578b4f5099192b5474a4713777873dae4b41ff1f94cc1de499350&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
 
-      * In the timeline, scroll to the end of your song structure and click the "+" sign, which will add a new empty section at the end.<br />
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6c23aeecbe607b133b6940ae30a60ba168772a8c351f68cfa42cec1f8705c95c/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T092946Z&X-Amz-Expires=604800&X-Amz-Signature=940f8b7e6554036e022b82a7a8cef794c13329023df1da8ee75a9eb0e45cfb21&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-        <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/071d9a8998758844dd15d1c512c5bbd3d335950c7b4ca784604182042eb14c80/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=c867b330ddd239809693469ba8d6ead61322546a81d852fd313fb9b1f2710011&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      * In the timeline, scroll to the end of your song structure and click the "+" sign, which will add a new empty section at the end.\
+
+
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/071d9a8998758844dd15d1c512c5bbd3d335950c7b4ca784604182042eb14c80/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T092946Z&X-Amz-Expires=604800&X-Amz-Signature=ee3c5ab687357e023a02eb88d298e637dbe29a9bc8394a43153302b57b43ed7b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       * Once you've added this new empty section, you can drag it to extend the duration, add lyrics, or a descriptive prompt (e.g., "\[energetic guitar solo]").
 
-      <strong>
-        2\. Editing Lyrics or Prompts
-      </strong>
+      **2. Editing Lyrics or Prompts**
 
       To change the lyrics or the instrumental prompt of any existing section:
 
       * Simply click inside the text box for that section (e.g., Main Groove 1, Breakdown).
       * Type your new lyrics or edit the existing prompt.
 
-      <strong>
-        3\. Modifying the Style of a Section
-      </strong>
+      **3. Modifying the Style of a Section**
 
       For more advanced control, you can define specific musical elements to include or exclude from a section.
 
-      * Hover over the section you want to edit and click the <strong>"Edit styles of this section"</strong> link.<br />
+      * Hover over the section you want to edit and click the **"Edit styles of this section"** link.\
 
-        <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c9086f7935759344e852854e10af5a38b27760359897a7c315824c1c6e2ef124/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=28d67910f991658f34578a938efb0152b1b447737a17cd4671e6d6c6ce4c060b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c9086f7935759344e852854e10af5a38b27760359897a7c315824c1c6e2ef124/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T092946Z&X-Amz-Expires=604800&X-Amz-Signature=83962fe228ec85835419da146c4d01e9e723f8071fb449f8c171c48baf57d9b4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       * A "Section styles" window will pop up. Here you can:
 
-      * <strong>Include styles:</strong> Add specific musical characteristics or production details. For
+      * **Include styles:** Add specific musical characteristics or production details. For
         example: gradual filter cutoff, hi-hats fade out, long delay feedback on vocalise.
 
-      * <strong>Exclude styles:</strong> Prevent certain elements from appearing. For example: abrupt
+      * **Exclude styles:** Prevent certain elements from appearing. For example: abrupt
         ending, new elements.
 
-      * Click <strong>Save</strong> to apply these style rules to that specific section.
+      * Click **Save** to apply these style rules to that specific section.
 
-      <strong>
-        4\. Deleting a Section
-      </strong>
+      **4. Deleting a Section**
 
       If you want to remove a part of your song entirely:
 
-      * Hover over the section you wish to remove in the timeline.<br />
+      * Hover over the section you wish to remove in the timeline.\
 
-        <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c8506897c18519729967118d2d2f1136f302023a890685b8aba786d1034c8943/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100016Z&X-Amz-Expires=604800&X-Amz-Signature=27711ca2b2b925ee70420c53094f2fe413d9289344d624219e1c6a5de29ab2d8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c8506897c18519729967118d2d2f1136f302023a890685b8aba786d1034c8943/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T092946Z&X-Amz-Expires=604800&X-Amz-Signature=89b84d9e23dc864a7a1951befb16a05d0cf5f35f677baa1451305dae161b2f3c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       * Click the delete icon, the "X", in the upper left corner of the section.
 
       * The section will be removed from the structure, and a notification like "Outro deleted" will briefly appear.
 
-      <strong>
-        5\. Generating Your Changes
-      </strong>
+      **5. Generating Your Changes**
 
-      After you have made any edits—whether adding, deleting, or modifying a section—you will see a notice at the bottom that says <strong>"Song composition has changed."</strong>
+      After you have made any edits—whether adding, deleting, or modifying a section—you will see a notice at the bottom that says **"Song composition has changed."**
 
-      * Your edits will <strong>not</strong> take effect until you click the <strong>Generate</strong> button.
-      * Once you click <strong>Generate</strong>, the model will create a new version of your track that incorporates all of your changes.
+      * Your edits will **not** take effect until you click the **Generate** button.
+      * Once you click **Generate**, the model will create a new version of your track that incorporates all of your changes.
 
       Feel free to experiment with different combinations of lyrics, styles, and structures to craft your perfect track
     </td>

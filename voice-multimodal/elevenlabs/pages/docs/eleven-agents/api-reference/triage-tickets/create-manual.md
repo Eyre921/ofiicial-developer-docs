@@ -62,7 +62,7 @@ Successful Response
 - `created_at_unix_secs` (integer, required)
 - `updated_at_unix_secs` (integer, required)
 - `issue_type` (enum, optional)
-  - Allowed values: `knowledge_gap`, `product_feedback`, `tool_issue`, `missing_tool`, `unnecessary_escalation`
+  - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
 - `first_seen_unix_secs` (integer, optional)
 - `last_seen_unix_secs` (integer, optional)
 - `qa_comment` (string, optional)

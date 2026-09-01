@@ -608,6 +608,7 @@ These providers co-designed the integration protocol with Stripe. The protocol s
 | Firecrawl | Search |
 | Fly.io | Hosting, database |
 | GitLab | CI/CD, observability, storage |
+| Here.now | Hosting |
 | HeyGen | AI |
 | Hugging Face | AI, hosting, storage |
 | Inngest | Queue |

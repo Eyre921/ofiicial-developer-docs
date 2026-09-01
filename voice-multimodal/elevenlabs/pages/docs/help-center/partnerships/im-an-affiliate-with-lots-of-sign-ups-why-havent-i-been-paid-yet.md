@@ -10,7 +10,7 @@ path: docs/help-center/partnerships/im-an-affiliate-with-lots-of-sign-ups-why-ha
 
 You are rewarded for every paid signup through your referral link.
 
-Once someone signs up for a paid subscription, the respective commission fee we owe you becomes active <strong>90 days later</strong>. This is due to our customers' credit card dispute rights. - we want to avoid unnecessary refunds.
+Once someone signs up for a paid subscription, the respective commission fee we owe you becomes active **90 days later**. This is due to our customers' credit card dispute rights. - we want to avoid unnecessary refunds.
 
 Once that period is over, the respective amount in 'Revenue' will then turn to 'Pending'.  There is a minimum payment threshold of \$5, but once you've crossed that threshold, you will be paid the pending amount in the next payment period, which is between the 1st and 15th of each month.
 

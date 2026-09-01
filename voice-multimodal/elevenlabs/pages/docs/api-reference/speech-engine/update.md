@@ -80,6 +80,13 @@ Reference: https://elevenlabs.io/docs/api-reference/speech-engine/update
     - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
     - `version_id` (string, required, nullable) — The ID of the version of the pronunciation dictionary
   - `enable_phoneme_tags` (boolean, optional, default: true) — Opt-in to SSML phoneme tag handling for V3 models. When enabled, phoneme tags (inline and from pronunciation dictionaries) are parsed into inline IPA before being sent to the model.
+  - `audio_effects` (object, optional, nullable) — Optional TTS effects spec: filter preset, distance (proximity EQ), and environment (convolution reverb).
+    - `filter_preset_id` (string, optional, nullable)
+    - `distance` (double, optional, default: 0)
+    - `environment_id` (string, optional, nullable)
+    - `background_noise_id` (string, optional, nullable)
+    - `send_level` (double, optional, default: 1)
+    - `seed` (integer, optional, nullable)
 - `turn` (object, optional, nullable)
   - `turn_timeout` (double, optional, default: 7) — Maximum wait time for the user's reply before re-engaging the user
   - `initial_wait_time` (double, optional, nullable) — How long the agent will wait for the user to start the conversation if the first message is empty. If not set, uses the regular turn_timeout.
@@ -197,6 +204,13 @@ Successful Response
     - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
     - `version_id` (string, required, nullable) — The ID of the version of the pronunciation dictionary
   - `enable_phoneme_tags` (boolean, optional, default: true) — Opt-in to SSML phoneme tag handling for V3 models. When enabled, phoneme tags (inline and from pronunciation dictionaries) are parsed into inline IPA before being sent to the model.
+  - `audio_effects` (object, optional, nullable) — Optional TTS effects spec: filter preset, distance (proximity EQ), and environment (convolution reverb).
+    - `filter_preset_id` (string, required, nullable)
+    - `distance` (double, required, default: 0)
+    - `environment_id` (string, required, nullable)
+    - `background_noise_id` (string, required, nullable)
+    - `send_level` (double, required, default: 1)
+    - `seed` (integer, required, nullable)
 - `turn` (object, required) — Turn detection configuration
   - `turn_timeout` (double, optional, default: 7) — Maximum wait time for the user's reply before re-engaging the user
   - `initial_wait_time` (double, optional, nullable) — How long the agent will wait for the user to start the conversation if the first message is empty. If not set, uses the regular turn_timeout.

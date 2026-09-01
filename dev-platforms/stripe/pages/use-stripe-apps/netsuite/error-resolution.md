@@ -294,6 +294,10 @@ The following table describes errors you might encounter when attempting to load
 | `scn_no_payment_methods_available` | There are no valid payment method types for the Checkout session. |
 | `scn_no_resource_lock` | A resource lock couldn’t be acquired, the resource is likely currently being modified by another process. Try again later. |
 | `scn_ns_concurrent_request_limit_exceeded` | All NetSuite connections are being used and the request was limited. Try again later. |
+| `scn_ns_customer_subsidiary_permission` | The connector can’t access the subsidiary assigned to the NetSuite customer. Update the `Stripe Limited Access` role in NetSuite:
+- For **Accessible Subsidiaries**, select **All Subsidiaries** or grant access to every subsidiary used by the connector.
+- Enable **Allow Cross-Subsidiary Record Viewing**.
+- Under **Permissions** > **Lists**, grant View permission for **Subsidiaries**. |
 | `scn_ns_data_center_not_found` | A NetSuite connection URL wasn’t found. Check your account configuration and try again. |
 | `scn_ns_insufficient_permission` | The connector doesn’t have the required permissions in NetSuite to perform this action. Grant the necessary permissions to the **Stripe Limited Access** role in NetSuite. |
 | `scn_ns_invalid_login_attempt` | Failed to connect to NetSuite. Check your account credentials and try again. This error can also occur intermittently with correct credentials. |

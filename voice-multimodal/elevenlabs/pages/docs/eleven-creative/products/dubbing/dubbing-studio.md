@@ -15,7 +15,7 @@ feature work is planned. Existing Dubbing Studio customers keep uninterrupted ac
 
 1. Check the 'Create Dubbing Studio' box when creating a dub.
 
-![Create Dubbing Studio Project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c334b44ee4e91578c7be68c2bec87f88500b32ee3d79238c8719a1b102744941/assets/images/product-guides/dubbing/dubbing-studio-create.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=b41c90e87b19e22d5f0a6172f7254a99cd1ce290380ddc54eb9260a72ad59be7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Create Dubbing Studio Project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c334b44ee4e91578c7be68c2bec87f88500b32ee3d79238c8719a1b102744941/assets/images/product-guides/dubbing/dubbing-studio-create.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T090656Z&X-Amz-Expires=604800&X-Amz-Signature=4ceb30674c1cecc36cb2a22ddc59b432c2fe593e20fab9f04a65a0aa3c63a307&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 2. Click on **Create Dub**. Once the Dubbing Studio project is created, you will be able to open it.
 
@@ -25,7 +25,7 @@ feature work is planned. Existing Dubbing Studio customers keep uninterrupted ac
 
 ## Speaker Cards
 
-![Dubbing Studio Speaker Cards](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c6be1de4bd0554d29e1e8c64623d047724294b0ba4afac818c4a067f5d423465/assets/images/product-guides/dubbing/dubbing-studio-edits.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=017b0a3d1e8339ac9702dc4663e89bd516c47a42445975e6287bc28472b5c309&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing Studio Speaker Cards](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c6be1de4bd0554d29e1e8c64623d047724294b0ba4afac818c4a067f5d423465/assets/images/product-guides/dubbing/dubbing-studio-edits.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T090656Z&X-Amz-Expires=604800&X-Amz-Signature=30f7fbc03c4fec1f797d43a672b9a36868d7d84d15674d033b1b53584eaa1726&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Speaker cards show the original transcription and translation (if you add one) of dialogue from the source video. You can click 'Transcribe Audio' to retranscribe
 the original speech, or click the arrow to re-translate an existing transcription.
@@ -58,24 +58,24 @@ There are 3 main ways to navigate the timeline:
 1. Drag the handles on the left or right side of a clip to adjust its length.
 2. Click the refresh icon to regenerate the audio for that clip.
 
-![Dubbing Studio Adjust and Regenerate](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3320cc4f5d628066da8d168fcfe0d1586d8a57e618a786fd5e5839ae487642f0/assets/images/product-guides/dubbing/dubbing-studio-adjust-regenerate.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=a63b99af64e1e6b5a9ad489724213c8bf91e0d1608dce7521f5e6bd56979a9bf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing Studio Adjust and Regenerate](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3320cc4f5d628066da8d168fcfe0d1586d8a57e618a786fd5e5839ae487642f0/assets/images/product-guides/dubbing/dubbing-studio-adjust-regenerate.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T090656Z&X-Amz-Expires=604800&X-Amz-Signature=a128390b6665bd689bf547c9d1a6cd63d04a941e30c6c6a7a76a517b1b2c24bf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ##### Dynamic vs. Fixed Generations
 
-NOTE: By default, all regenerations in Dubbing Studio are <i>Fixed Generations</i>, which means that the system will keep the duration of the clip fixed regardless
+NOTE: By default, all regenerations in Dubbing Studio are *Fixed Generations*, which means that the system will keep the duration of the clip fixed regardless
 of how much text it contains. This can lead to speech speeding up or slowing down significantly if you adjust the length of a clip without changing the text, or if you add/remove
 a large number of words to a clip.
 
 Consider a clip with the phrase 'I'm doing well.' If that clip were set to last 10 seconds and the audio were generated using Fixed Generations, the speech would sound
 slow and drawn out.
 
-Alternatively, you can use <i>Dynamic Generations</i> by right clicking a segment and selecting it from the options. This will attempt to adjust the
+Alternatively, you can use *Dynamic Generations* by right clicking a segment and selecting it from the options. This will attempt to adjust the
 length of the clip to the length of the text and make the audio sound more natural.
 
 But be careful – using Dynamic Generations could affect sync and timing in your videos. If, for example, you select Dynamic Generation for a clip with many words in it,
 and there is not enough room before the next clip for it to properly expand, the audio may not generate properly.
 
-![Dubbing Studio Dynamic Generation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25222c5ca2adb6d17899d1949bd07b4c4b3249f59da4f08d77b9525a572e8721/assets/images/product-guides/dubbing/dubbing-studio-dynamic.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=8a8685176eadf5374504bc4df9a670afb91659b5f850f1cb1ec2a82a21bee74f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing Studio Dynamic Generation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25222c5ca2adb6d17899d1949bd07b4c4b3249f59da4f08d77b9525a572e8721/assets/images/product-guides/dubbing/dubbing-studio-dynamic.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T090656Z&X-Amz-Expires=604800&X-Amz-Signature=524c0ce9d32b816f5cd0e8860acc5405115091e93fc0bf1bd4eafa19bff1ca97&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ##### Stale Audio
 
@@ -91,7 +91,7 @@ You can right click a clip and select 'Clip History' to view previous generation
 1. To split a clip, move the cursor to a specific timecode and click 'Split'.
 2. To merge two clips, drag the ends of the clips together and click 'Merge.'
 
-![Dubbing Studio Merge](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/44afe6659b3ea14d9baa16e735725759ced84469ed8d66a5a708f33950363a8f/assets/images/product-guides/dubbing/dubbing-studio-split-merge.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=50899ef15e2af36fb84bfe14f5697490c45b5339eca652f71cec09ae09bb0409&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing Studio Merge](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/44afe6659b3ea14d9baa16e735725759ced84469ed8d66a5a708f33950363a8f/assets/images/product-guides/dubbing/dubbing-studio-split-merge.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T090656Z&X-Amz-Expires=604800&X-Amz-Signature=83819dd0e074d8fb9741a9ab406f51deb37e597e69259e52365aa5ba592d42f6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 As you split and merge clips, the speaker cards above the timeline will update to reflect these changes.
 
@@ -99,13 +99,13 @@ As you split and merge clips, the speaker cards above the timeline will update t
 
 To reassign a clips to a different speaker, click the segment and drag it to another track.
 
-![Dubbing Studio Reassign Clips](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/93fc997eba2a8a3e7ec831731cae6a20d3c55df45e5818b9629bb1dcf4d3b519/assets/images/product-guides/dubbing/dubbing-studio-reassign.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=78b1d12554aa8aa365272a1497dd81ea20dfafc617af741c8f799ba6f37843b9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing Studio Reassign Clips](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/93fc997eba2a8a3e7ec831731cae6a20d3c55df45e5818b9629bb1dcf4d3b519/assets/images/product-guides/dubbing/dubbing-studio-reassign.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T090656Z&X-Amz-Expires=604800&X-Amz-Signature=33fcea92a0791ec1f054b039d57f490691378a9a219365888c210113765b85a1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Add additional audio tracks
 
 Use the action buttons at the bottom of the timeline to add new audio tracks
 
-![Dubbing Studio Add Tracks](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6144bb02bb8a9da95cd4fbf76d9df479b2174e83fb8569bdeaf9b14743d19cdf/assets/images/product-guides/dubbing/dubbing-studio-add-tracks.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=ba59f5241a7943870625e01736f3cd29c3c78e8012eaa4af157b3fd7b5e9915d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing Studio Add Tracks](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6144bb02bb8a9da95cd4fbf76d9df479b2174e83fb8569bdeaf9b14743d19cdf/assets/images/product-guides/dubbing/dubbing-studio-add-tracks.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T090656Z&X-Amz-Expires=604800&X-Amz-Signature=352e6b465351080fe6ca4d4de71c1e926cbe2b49eef269cb09b1387746185b85&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Voice Settings
 
@@ -133,7 +133,7 @@ You can set voice settings at two levels:
    Disable the 'inherit track settings' toggle and configure your desired settings.
 
 ![Dubbing Studio Voice
-Settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b4d2221711308a019b150e06634b62a9d9161ac9f51662d0aa3aaeb95e623b81/assets/images/product-guides/dubbing/dubbing-studio-clip-settings.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=9b398d29ed4b947d0a29478e6696c8ed3386df934ef621603cc34304f7e0991f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+Settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b4d2221711308a019b150e06634b62a9d9161ac9f51662d0aa3aaeb95e623b81/assets/images/product-guides/dubbing/dubbing-studio-clip-settings.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T090656Z&X-Amz-Expires=604800&X-Amz-Signature=7f28d4b7ccc9a9632d1440af43934a0e2ad6553cb152f28ca8cb31f2e0da9f52&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Exports
 
@@ -152,7 +152,7 @@ Dubbing Studio currently supports the following export formats:
 * SRT (subtitles/captions)
 * CSV (speaker, start\_time, end\_time, transcription, translation)
 
-<b>Make sure you select the correct language</b> when exporting.
+**Make sure you select the correct language** when exporting.
 
 ## Additional Features
 
@@ -163,7 +163,7 @@ Dubbing Studio currently supports the following export formats:
 ## Manual Dub
 
 In cases where you already have an accurate dubbing script prepared and want to ensure your Dubbing Studio project sticks to your
-exact clips and speaker assignment, you can use the <b>Manual Dub</b> option during creation.
+exact clips and speaker assignment, you can use the **Manual Dub** option during creation.
 
 To create a Manual Dub, you'll need:
 
@@ -234,17 +234,17 @@ Adam,"0:00:06,000","0:00:10,000","I'm fine, thank you.","Estoy bien, gracias."
 
       By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are completely automatic without any option to edit the content.
 
-      If you want to use Dubbing Studio, you can do this by selecting <strong>Use legacy v1 Dubbing model</strong> in the <strong>Advanced</strong> options when you create your dub, then check the <strong>Create Dubbing project</strong> option. 
+      If you want to use Dubbing Studio, you can do this by selecting **Use legacy v1 Dubbing model** in the **Advanced** options when you create your dub, then check the **Create Dubbing project** option. 
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9fc196e5c40348615fff7f381e5945b855702f9b0b0cbeb204c565d17d6211f6/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=269495492844809c17072566d61995edae1f38e695c949120ca939ec72b147e4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9fc196e5c40348615fff7f381e5945b855702f9b0b0cbeb204c565d17d6211f6/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T090656Z&X-Amz-Expires=604800&X-Amz-Signature=109a46537d8b17825bb10fa3faea001ad613d41fd88929571ad440c1b540845e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       It's not possible to convert an existing automatic dub to a Dubbing project.
 
       The new dubbing project will appear at the top of your list of dubbing projects, and will go through various stages while generating.
 
-      Once it has completed processing, click the three dots icon and select <strong>Edit</strong> to open your dubbing project.
+      Once it has completed processing, click the three dots icon and select **Edit** to open your dubbing project.
 
-      <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260831T100017Z&X-Amz-Expires=604800&X-Amz-Signature=8b2f953854008d0fd1ebbaf2e968732a11baf97e5d9ca1f0a07d72024a2d2bff&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T090656Z&X-Amz-Expires=604800&X-Amz-Signature=537d95769040305099cf9935c0e0e0e105a1c8049a41902efb910140ae088953&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       For more information about Dubbing Studio, please see our [overview.](/docs/product-guides/products/dubbing/dubbing-studio)
     </td>
@@ -256,9 +256,9 @@ Adam,"0:00:06,000","0:00:10,000","I'm fine, thank you.","Estoy bien, gracias."
 
       By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are completely automatic without any option to edit the content.
 
-      The edit button is only available when using Dubbing Studio, which is only available for our legacy v1 Dubbing model. To use Dubbing Studio, you will need to select <strong>Use legacy v1 Dubbing model</strong> in the <strong>Advanced</strong> options when you create your dub, then check the <strong>Create Dubbing project</strong> option. 
+      The edit button is only available when using Dubbing Studio, which is only available for our legacy v1 Dubbing model. To use Dubbing Studio, you will need to select **Use legacy v1 Dubbing model** in the **Advanced** options when you create your dub, then check the **Create Dubbing project** option. 
 
-      <strong>Note:</strong> Dubbing Studio is in maintenance mode and receives critical bug fixes only.
+      **Note:** Dubbing Studio is in maintenance mode and receives critical bug fixes only.
     </td>
   </tr>
 
@@ -310,9 +310,9 @@ Adam,"0:00:06,000","0:00:10,000","I'm fine, thank you.","Estoy bien, gracias."
 
       ElevenLabs was founded on the idea of creating amazing dubbing; a tool that would allow you to create a perfect dub in any language you desire, using the original voice of the actors and preserving the original performance, making all content more accessible.
 
-      To get started, go to [Dubbing](https://elevenlabs.io/app/dubbing) and upload your audio or video file, or paste a URL to dub a video from YouTube, TikTok or elsewhere online <strong>.</strong>
+      To get started, go to [Dubbing](https://elevenlabs.io/app/dubbing) and upload your audio or video file, or paste a URL to dub a video from YouTube, TikTok or elsewhere online **.**
 
-      Select the language or languages you want to dub into in the <strong>Choose languages</strong> selector. You'll be charged for each language you select here. 
+      Select the language or languages you want to dub into in the **Choose languages** selector. You'll be charged for each language you select here. 
 
       By default, you'll use our latest Dubbing model, v2. Dubs created using the v2 model are completely automatic without any option to edit the content.
 
@@ -322,9 +322,9 @@ Adam,"0:00:06,000","0:00:10,000","I'm fine, thank you.","Estoy bien, gracias."
 
        
 
-      If you want to create a Dubbing Studio project, so you can edit your dubs, you can also choose <strong>Use legacy v1 dubbing model</strong> in the <strong>Advanced</strong> options. This will allow you to create a Dubbing Studio project by checking the <strong>Create Dubbing project</strong> option. 
+      If you want to create a Dubbing Studio project, so you can edit your dubs, you can also choose **Use legacy v1 dubbing model** in the **Advanced** options. This will allow you to create a Dubbing Studio project by checking the **Create Dubbing project** option. 
 
-      <strong>Note:</strong> Dubbing Studio is in maintenance mode and receives critical bug fixes only.
+      **Note:** Dubbing Studio is in maintenance mode and receives critical bug fixes only.
     </td>
   </tr>
 

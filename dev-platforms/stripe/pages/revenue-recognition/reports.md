@@ -48,7 +48,7 @@ You can add any of the following additional charts to your overview:
 
 The value shown under each chart title reflects the most recent period in the selected range.
 
-Monthly and daily charts use color to differentiate between open and closed accounting periods. Figures in open periods continue to change until the period closes. Daily view shows a day-by-day breakdown of revenue for the selected month. Additional charts listed above don’t support daily data.
+Monthly charts use color to differentiate between open and closed accounting periods. Figures in open periods continue to change until the period closes.
 
 > Revenue from usage-based billing is recognized in full when invoices finalize or when the accounting period closes.
 

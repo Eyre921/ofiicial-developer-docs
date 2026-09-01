@@ -8,7 +8,9 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # What formats are supported for publication?
 
-Supported manuscript formats include EPUB, PDF, TXT, DOCX, and HTML. To retain images, please upload your manuscript as EPUB. It’s not currently possible to add images within the publishing editor. <br /><br />The publishing editor allows for basic text formatting:
+Supported manuscript formats include EPUB, PDF, TXT, DOCX, and HTML. To retain images, please upload your manuscript as EPUB. It’s not currently possible to add images within the publishing editor. \
+\
+The publishing editor allows for basic text formatting:
 
 * Paragraph
 * Chapters

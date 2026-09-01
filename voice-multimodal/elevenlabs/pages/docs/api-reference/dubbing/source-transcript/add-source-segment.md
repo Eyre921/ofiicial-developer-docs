@@ -11,7 +11,7 @@ path: docs/api-reference/dubbing/source-transcript/add-source-segment
 POST https://api.elevenlabs.io/v1/dubbing/project/{project_id}/transcript/segment
 Content-Type: application/json
 
-Enterprise only. Add a new source segment to the transcript.
+Enterprise only. Add a new source segment to the transcript. Its span must lie within the source media, last between 0.1 and 25 seconds, and not overlap another segment by the same speaker. Bumps the project's `revision`, discards the affected translations in every language target, and marks any target that had already completed `stale`. No audio changes until you regenerate a target.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/add-source-segment
 
@@ -43,12 +43,12 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/ad
 Successful Response
 
 - `segment` (object, required) — The segment in its updated state.
-  - `id` (string, required) — Stable identifier of the segment.
+  - `id` (string, required) — Stable identifier of the segment, used to address it in edit requests.
   - `text` (string, required) — The transcribed text of the segment.
   - `speaker_id` (string, required) — Identifier of the segment's speaker.
   - `start_s` (double, required) — Start time of the segment, in seconds.
   - `end_s` (double, required) — End time of the segment, in seconds.
-  - `external_id` (string, optional, nullable) — The caller-supplied external id for this segment, if one was provided.
+  - `external_id` (string, optional, nullable) — The caller-supplied external ID for this segment, if one was provided.
 - `revision` (integer, required) — The project's source-transcript revision after this edit.
 
 ## Examples

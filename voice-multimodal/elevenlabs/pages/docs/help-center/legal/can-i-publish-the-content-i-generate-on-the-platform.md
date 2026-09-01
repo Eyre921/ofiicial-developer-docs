@@ -8,7 +8,7 @@ path: docs/help-center/legal/can-i-publish-the-content-i-generate-on-the-platfor
 
 # Can I publish the content I generate on the platform?
 
-The free plan does <strong>not</strong> include a commercial license and cannot be used for any commercial purpose. If you publish content generated using our Services on a free plan or without being signed-in to your account, you must attribute it to ElevenLabs by including "elevenlabs.io" or "11.ai" in the title (except in the case where your content is generated using Eleven Music on a free plan or without being signed-in to your account, you must attribute it to ElevenLabs by referencing "Eleven Music" when distributing such content).
+The free plan does **not** include a commercial license and cannot be used for any commercial purpose. If you publish content generated using our Services on a free plan or without being signed-in to your account, you must attribute it to ElevenLabs by including "elevenlabs.io" or "11.ai" in the title (except in the case where your content is generated using Eleven Music on a free plan or without being signed-in to your account, you must attribute it to ElevenLabs by referencing "Eleven Music" when distributing such content).
 
 All paid plans include a commercial license, provided you're not using Beta Services. As long as you hold the necessary intellectual property rights to your generated content, and it complies with applicable laws, our [Terms of Service](https://elevenlabs.io/terms) and [Prohibited Use Policy](https://elevenlabs.io/use-policy), you may use it commercially.
 

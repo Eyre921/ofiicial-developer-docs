@@ -245,6 +245,13 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/drafts/
             - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
             - `version_id` (string, optional) — The ID of the version of the pronunciation dictionary
           - `enable_phoneme_tags` (boolean, optional) — Opt-in to SSML phoneme tag handling for V3 models. When enabled, phoneme tags (inline and from pronunciation dictionaries) are parsed into inline IPA before being sent to the model.
+          - `audio_effects` (object, optional) — Optional TTS effects spec: filter preset, distance (proximity EQ), and environment (convolution reverb).
+            - `filter_preset_id` (string, optional)
+            - `distance` (double, optional, default: 0)
+            - `environment_id` (string, optional)
+            - `background_noise_id` (string, optional)
+            - `send_level` (double, optional, default: 1)
+            - `seed` (integer, optional)
         - `conversation` (object, optional) — Configuration for conversational events
           - `text_only` (boolean, optional) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
           - `max_duration_seconds` (integer, optional) — The maximum duration of a conversation in seconds

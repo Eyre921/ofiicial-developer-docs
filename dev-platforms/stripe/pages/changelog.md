@@ -113,7 +113,6 @@ Keep track of changes and upgrades to the Stripe API.
 | [Adds CHAPS as a supported network for funding instructions](https://docs.stripe.com/changelog/dahlia/2026-07-29/chaps-as-supported-networks.md) | Payments | Non-breaking | api |
 | [Adds the allowed payment method types parameter to Payment Intents and Setup Intents](https://docs.stripe.com/changelog/dahlia/2026-07-29/allowed-payment-method-types-parameter.md) | Payments | Non-breaking | api |
 | [Adds MB WAY support to the Hosted Invoice Page](https://docs.stripe.com/changelog/dahlia/2026-07-29/hosted-invoice-page-mb-way-support.md) | Payments | Non-breaking | api |
-| [Adds data share only as a 3D Secure authentication result](https://docs.stripe.com/changelog/dahlia/2026-07-29/3d-secure-data-share-only.md) | Payments | Non-breaking | api |
 | [Adds card network details to the Dispute object](https://docs.stripe.com/changelog/dahlia/2026-07-29/dispute-payment-method-details-card-network.md) | Payments | Non-breaking | api |
 | [Adds the ability to list Payment Records](https://docs.stripe.com/changelog/dahlia/2026-07-29/list-payment-records.md) | Payments | Non-breaking | api |
 
@@ -2357,7 +2356,7 @@ Keep track of changes and upgrades to the Stripe API.
 
 | Title | Affected Products | Breaking change? | Category |
 | --- | --- | --- | --- |
-| [Invoices now include a sublist of refunds through the `refunds` field](https://docs.stripe.com/changelog/2014-06-17/invoices-include-refunds-sublist-refunds-field.md) | Invoicing, Billing | Breaking | api |
+| [Charges now include a sublist of refunds through the `refunds` field](https://docs.stripe.com/changelog/2014-06-17/invoices-include-refunds-sublist-refunds-field.md) | Payments | Breaking | api |
 
 ## 2014-06-13
 

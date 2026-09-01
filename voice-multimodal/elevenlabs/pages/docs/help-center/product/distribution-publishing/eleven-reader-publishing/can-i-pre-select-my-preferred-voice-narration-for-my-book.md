@@ -8,4 +8,4 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # Can I pre-select my preferred voice narration for my book?
 
-No, at this time you cannot pre-select an AI voice narration for your book. Each user will have the option to choose their own AI voice narration from the voice library. If you would like to recommend a voice, we suggest adding a text note at the beginning of your book. For example: <em>“The author recommends listening to this book using the voice Lily.”</em>
+No, at this time you cannot pre-select an AI voice narration for your book. Each user will have the option to choose their own AI voice narration from the voice library. If you would like to recommend a voice, we suggest adding a text note at the beginning of your book. For example: *“The author recommends listening to this book using the voice Lily.”*
