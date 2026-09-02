@@ -132,8 +132,7 @@ The default response format is `mp3`, but other formats like `pcm` and `ulaw` ar
   * Sample rate: 48kHz
   * Bitrates: 32kbps - 192kbps
 
-Higher quality audio options are only available on paid tiers - see our [pricing
-page](https://elevenlabs.io/pricing/api) for details.
+Higher quality audio options are only available on paid tiers - see our [pricing page](https://elevenlabs.io/pricing/api) for details.
 
 ## Supported languages
 
@@ -169,8 +168,7 @@ There is no limit to the number of speakers in a dialogue.
 
 #### Why is my output sometimes inconsistent?
 
-The models are nondeterministic. For consistency, use the optional [seed
-parameter](/docs/api-reference/text-to-speech/convert#request.body.seed), though subtle
+The models are nondeterministic. For consistency, use the optional [seed parameter](/docs/api-reference/text-to-speech/convert#request.body.seed), though subtle
 differences may still occur.
 
 #### What's the best practice for large text conversions?

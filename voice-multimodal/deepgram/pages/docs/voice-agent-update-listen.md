@@ -10,7 +10,7 @@ path: docs/voice-agent-update-listen
 
 # Update Listen
 
-&#x20;Voice Agent
+Voice Agent
 
 The `UpdateListen` message is a JSON message that updates the speech-to-text configuration during a conversation.
 

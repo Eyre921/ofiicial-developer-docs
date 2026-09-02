@@ -10,7 +10,7 @@ path: docs/finalize
 
 # Finalize
 
-&#x20;Streaming:Nova
+Streaming:Nova
 
 Use the `Finalize` message to flush the WebSocket stream. This forces the server to immediately process any unprocessed audio data and return the final transcription results.
 

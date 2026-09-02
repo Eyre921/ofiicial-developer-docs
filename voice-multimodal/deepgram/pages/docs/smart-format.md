@@ -14,13 +14,7 @@ path: docs/smart-format
 
 `smart_format` *boolean* Default: `false`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming: Flux
-
-&#x20;All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
 
 Deepgram's Smart Format feature applies additional formatting to transcripts to optimize them for human readability.
 

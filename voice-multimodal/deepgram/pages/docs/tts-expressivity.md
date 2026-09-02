@@ -111,7 +111,7 @@ See [Configure the Voice Agent](/docs/configure-voice-agent#agent---speak-settin
 ## Behavior notes
 
 * **The register shift is intentional behavior.** Moving away from `0` changes pitch range, pacing variation, overall pitch, and timbre (the voice's tonal color) together, so the voice's character audibly changes toward the ends of the range. This is the parameter working as designed, not a side effect.
-* **It is not a speed or pitch-shift control.** Negative values do not slow the voice down, and positive values do not speed it up. For speaking rate, use `speed` (on Flux TTS, `0.85` to `1.15` in `0.05` increments).
+* **It is not a speed or pitch-shift control.** Negative values do not slow the voice down, and positive values do not speed it up. For speaking rate, use `speed` (on Flux TTS, `0.5` to `1.5` in `0.05` increments).
 * **Animated delivery naturally varies more.** At higher values, delivery tends to vary more between generations of the same text; that variation is part of what makes speech sound animated and human. Deepgram's output-consistency characteristics for Flux TTS are measured at the default (`expressivity` omitted or `0`).
 * **Effect and risk grow with magnitude.** The further from `0`, the stronger the shift, and the higher the chance of hallucinations or pronunciation errors. The range is kept narrow during beta for this reason; audition any non-default value before production.
 * **Comparing text-to-speech providers?** Evaluate Flux TTS at the default (`0`) or above. The calm end deliberately narrows delivery for production contexts like support and IVR, so it does not showcase the model's expressive range.

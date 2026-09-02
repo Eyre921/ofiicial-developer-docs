@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 406 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 407 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -336,6 +336,7 @@
 - `docs/guides/features/guardrails/prompt-injection/allowlist` — [Allowlist](pages/docs/guides/features/guardrails/prompt-injection/allowlist.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails/prompt-injection/allowlist.md)
 - `docs/guides/features/guardrails/secret-formats` — [Detected Secret Formats](pages/docs/guides/features/guardrails/secret-formats.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails/secret-formats.md)
 - `docs/guides/features/guardrails/sensitive-info` — [Sensitive Info Guardrail](pages/docs/guides/features/guardrails/sensitive-info.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails/sensitive-info.md)
+- `docs/guides/features/in-region-routing` — [In-Region Routing](pages/docs/guides/features/in-region-routing.md) · [原文](https://openrouter.ai/docs/guides/features/in-region-routing.md)
 - `docs/guides/features/input-output-logging` — [Input & Output Logging](pages/docs/guides/features/input-output-logging.md) · [原文](https://openrouter.ai/docs/guides/features/input-output-logging.md)
 - `docs/guides/features/message-transforms` — [Message Transforms](pages/docs/guides/features/message-transforms.md) · [原文](https://openrouter.ai/docs/guides/features/message-transforms.md)
 - `docs/guides/features/notifications` — [Notifications](pages/docs/guides/features/notifications.md) · [原文](https://openrouter.ai/docs/guides/features/notifications.md)

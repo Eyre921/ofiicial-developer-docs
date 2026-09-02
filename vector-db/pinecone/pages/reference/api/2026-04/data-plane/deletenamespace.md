@@ -22,5 +22,3 @@ For guidance and examples, see [Manage namespaces](https://docs.pinecone.io/guid
       -H "X-Pinecone-Api-Version: 2026-04"
   ```
 </RequestExample>
-
-<ResponseExample />

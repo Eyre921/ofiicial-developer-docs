@@ -16,8 +16,7 @@ This feature is currently available to select enterprise clients only. Contact
 Conversation history redaction significantly reduces sensitive entity exposure, but as with any
 detection service operating on dynamic user data, the detection rate is not 100%. Therefore,
 enabling this feature alone **does not guarantee compliance** with strict regulations such as
-[HIPAA](/docs/eleven-agents/legal/hipaa). For full compliance, enable [Zero Retention
-Mode](/docs/eleven-api/resources/zero-retention-mode).
+[HIPAA](/docs/eleven-agents/legal/hipaa). For full compliance, enable [Zero Retention Mode](/docs/eleven-api/resources/zero-retention-mode).
 
 ## Overview
 
@@ -27,8 +26,7 @@ When a conversation ends, a post-processing step scans the transcript and audio 
 * **Audio**: Entity instances are replaced with a bleep sound.
 * **Webhooks**: Transcript and audio webhooks also contain redacted data.
 
-To redact caller keypad entries without entity detection, enable [DTMF
-input](/docs/eleven-agents/customization/multimodal-input#dtmf-input) redaction on the agent.
+To redact caller keypad entries without entity detection, enable [DTMF input](/docs/eleven-agents/customization/multimodal-input#dtmf-input) redaction on the agent.
 
 Because post-processing runs after the conversation ends, there will be a short delay before the
 conversation appears in your history.
@@ -202,15 +200,13 @@ Conversation history redaction and [Zero Retention Mode](/docs/eleven-api/resour
 
 #### What happens if entity detection fails?
 
-If an error occurs during entity detection, the system falls back to [Zero Retention
-Mode](/docs/eleven-api/resources/zero-retention-mode) behavior, where no conversation data is
+If an error occurs during entity detection, the system falls back to [Zero Retention Mode](/docs/eleven-api/resources/zero-retention-mode) behavior, where no conversation data is
 stored.
 
 #### Does redaction prevent ElevenLabs from accessing conversation data?
 
 No. Redaction applies to stored conversation history visible to you. ElevenLabs may still have
-access to conversation data through internal logs. To prevent this, enable [Zero Retention
-Mode](/docs/eleven-api/resources/zero-retention-mode).
+access to conversation data through internal logs. To prevent this, enable [Zero Retention Mode](/docs/eleven-api/resources/zero-retention-mode).
 
 #### Why is there a delay before my conversation appears?
 
@@ -236,6 +232,5 @@ iterate without sacrificing privacy controls entirely.
 
 #### Can I enable Zero Retention Mode and conversation history redaction at the same time?
 
-Yes. When both are enabled, conversation data is not stored, but your [post-call transcript and
-audio webhooks](/docs/eleven-agents/workflows/post-call-webhooks) will have sensitive entities
+Yes. When both are enabled, conversation data is not stored, but your [post-call transcript and audio webhooks](/docs/eleven-agents/workflows/post-call-webhooks) will have sensitive entities
 redacted from them.

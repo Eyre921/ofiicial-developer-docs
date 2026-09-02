@@ -10,7 +10,7 @@ path: docs/voice-agent-function-call-context
 
 # Function Call Context
 
-&#x20;Voice Agent
+Voice Agent
 
 When starting a new conversation session with the Voice Agent, you can provide historical context about previous function calls using the `agent.context` parameter. This allows the agent to maintain awareness of past function executions, enabling more coherent and contextual conversations.
 

@@ -115,8 +115,7 @@ existing dynamic variables, the function call takes no parameters.
 #### Where can I use the dynamic variables this tool sets?
 
 Anywhere you can use a dynamic variable: system prompts, first messages, tool parameters and
-headers, and overrides. See [Dynamic
-variables](/docs/eleven-agents/customization/personalization/dynamic-variables) for details.
+headers, and overrides. See [Dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables) for details.
 
 #### Can I configure this tool through the API?
 

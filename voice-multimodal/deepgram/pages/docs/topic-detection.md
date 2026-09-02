@@ -12,7 +12,6 @@ path: docs/topic-detection
 
 Deepgram API Playground
 
-
 Try this feature out in our API Playground.
 
 \
@@ -20,11 +19,7 @@ Try this feature out in our API Playground.
 
 `topics` *boolean*   Default: `false`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-&#x20;English (all available regions)
+Pre-recorded  Streaming:Nova  English (all available regions)
 
 Deepgram’s Topic Detection feature identifies key topics within the transcript, returning a list of text segments and the topics found within each segment.
 

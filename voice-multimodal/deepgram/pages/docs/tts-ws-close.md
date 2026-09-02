@@ -10,7 +10,7 @@ path: docs/tts-ws-close
 
 # Close
 
-&#x20;Text to Speech Stream
+Text to Speech Stream
 
 To close the websocket connection, you can either send an websocket `Close` frame, or send the optional `close` message.
 

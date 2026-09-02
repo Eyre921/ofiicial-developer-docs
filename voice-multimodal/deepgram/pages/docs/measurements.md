@@ -12,13 +12,7 @@ path: docs/measurements
 
 `measurements` *boolean*Default: `false`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming: Flux
-
-&#x20;English (all available regions)
+Pre-recorded  Streaming:Nova Streaming: Flux  English (all available regions)
 
 The Measurements feature in Deepgram's Speech-to-Text API allows for the automatic conversion of spoken measurement units into their respective abbreviations.
 

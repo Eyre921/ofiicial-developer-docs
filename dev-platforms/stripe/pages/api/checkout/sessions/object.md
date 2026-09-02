@@ -104,6 +104,9 @@ path: api/checkout/sessions/object
 - `allow_promotion_codes` (boolean, nullable)
   Enables user redeemable promotion codes.
 
+- `allowed_payment_method_types` (array of strings, nullable)
+  A list of the types of payment methods (e.g., `card`) this Checkout Session can accept.
+
 - `amount_subtotal` (integer, nullable)
   Total of all items before discounts or taxes are applied.
 

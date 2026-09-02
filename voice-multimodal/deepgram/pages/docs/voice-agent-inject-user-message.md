@@ -10,7 +10,7 @@ path: docs/voice-agent-inject-user-message
 
 # Inject User
 
-&#x20;Voice Agent
+Voice Agent
 
 The `InjectUserMessage` is a JSON message you can send to the agent to interact with the agent using text. This is useful when you need to trigger an agent response from text input.
 

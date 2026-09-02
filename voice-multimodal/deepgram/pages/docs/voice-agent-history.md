@@ -10,7 +10,7 @@ path: docs/voice-agent-history
 
 # History
 
-&#x20;Voice Agent
+Voice Agent
 
 When starting a new conversation session with the Voice Agent, you can provide historical context about previous conversations and function calls using the `agent.context` parameter. This allows the agent to maintain awareness of prior interactions, enabling more coherent and contextual conversations.
 

@@ -14,13 +14,7 @@ path: docs/redaction
 
 `redact` *string* Default: `False`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming:Flux
-
-&#x20;Specific languages only
+Pre-recorded  Streaming:Nova Streaming:Flux  Specific languages only
 
 ## Redaction options
 

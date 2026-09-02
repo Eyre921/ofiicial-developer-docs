@@ -10,7 +10,7 @@ path: docs/audio-keep-alive
 
 # Audio Keep Alive
 
-&#x20;Streaming:Nova
+Streaming:Nova
 
 Use the `KeepAlive` message to keep your WebSocket connection open during periods of silence, preventing timeouts and optimizing costs.
 

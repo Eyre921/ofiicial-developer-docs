@@ -10,7 +10,7 @@ path: docs/voice-agent-update-think
 
 # Update Think
 
-&#x20;Voice Agent
+Voice Agent
 
 The `UpdateThink` message is a JSON message that you can use to replace the Think provider in the middle of a conversation.
 

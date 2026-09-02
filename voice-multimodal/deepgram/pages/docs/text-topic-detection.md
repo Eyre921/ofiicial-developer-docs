@@ -12,7 +12,6 @@ path: docs/text-topic-detection
 
 Deepgram API Playground
 
-
 Try this feature out in our API Playground.
 
 \
@@ -20,7 +19,7 @@ Try this feature out in our API Playground.
 
 `topics` *boolean*   Default: `false`
 
-&#x20;English (all available regions)
+English (all available regions)
 
 Topic Detection accepts an input text, divides it into a list of segments comprised of sections of the text, and identifies key topics found within each segment.
 

@@ -8,11 +8,10 @@ path: docs/eleven-creative/audio-tools/voiceover-studio
 
 # Voiceover studio
 
-Voiceover Studio will be sunset on **May 15, 2026**. For all new projects, use [ElevenCreative
-Studio](/docs/eleven-creative/products/studio). You can also open Studio directly at
+Voiceover Studio will be sunset on **May 15, 2026**. For all new projects, use [ElevenCreative Studio](/docs/eleven-creative/products/studio). You can also open Studio directly at
 [elevenlabs.io/app/studio](https://elevenlabs.io/app/studio).
 
-![Voiceover studio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/051b3139b84d462fcaa5bcf11d7ca2e7be093fa226ac08e7d827c447ee97ae4a/assets/images/product-guides/voiceover-studio/voiceover-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233156Z&X-Amz-Expires=604800&X-Amz-Signature=7f58774ae50352d70325a9d77e2bea6c64c26708530898e16ec57c23a683f7cb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voiceover studio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/051b3139b84d462fcaa5bcf11d7ca2e7be093fa226ac08e7d827c447ee97ae4a/assets/images/product-guides/voiceover-studio/voiceover-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T113206Z&X-Amz-Expires=604800&X-Amz-Signature=8a4eb49453b310f4a9537c89a329208f7a8037b028edcd024fb701fb4394e9de&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -200,7 +199,7 @@ format you want and either view or download your voiceover.
     <td>
       #### On what plans can I use Studio?
 
-      Our professional end-to-end solution for long-form content, called Studio, is available on all our plans, including our free plan. 
+      Our professional end-to-end solution for long-form content, called Studio, is available on all our plans, including our free plan.
 
       The exception being the **Create a podcast (GenFM)** feature, which requires a paid subscription to access.
 

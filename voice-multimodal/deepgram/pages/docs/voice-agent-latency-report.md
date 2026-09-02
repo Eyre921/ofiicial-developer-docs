@@ -10,7 +10,7 @@ path: docs/voice-agent-latency-report
 
 # Latency Report
 
-&#x20;Voice Agent
+Voice Agent
 
 The `LatencyReport` message is the richest latency signal the Agent API emits. The server sends it after each turn with a breakdown of latency across the full STT → LLM → TTS pipeline.
 

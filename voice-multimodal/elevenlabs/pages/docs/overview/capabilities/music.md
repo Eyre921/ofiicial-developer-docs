@@ -138,8 +138,7 @@ information.
 
 Yes, Eleven Music is cleared for nearly all commercial uses, from film and television to
 podcasts and social media videos, and from advertisements to gaming. For more information on
-supported usage across our different plans, [see our music
-terms](https://elevenlabs.io/music-terms).
+supported usage across our different plans, [see our music terms](https://elevenlabs.io/music-terms).
 
 #### What audio formats are supported?
 

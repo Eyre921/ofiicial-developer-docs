@@ -50,7 +50,7 @@ channels:
               $ref: '#/components/schemas/SpeakV2SampleRate'
             speed:
               $ref: '#/components/schemas/SpeakV2Speed'
-              default: '1.00'
+              default: 1
             expressivity:
               $ref: '#/components/schemas/SpeakV2Expressivity'
               default: 0
@@ -255,23 +255,19 @@ components:
         sample rate.
       title: SpeakV2SampleRate
     SpeakV2Speed:
-      type: string
-      enum:
-        - '0.85'
-        - '0.90'
-        - '0.95'
-        - '1.00'
-        - '1.05'
-        - '1.10'
-        - '1.15'
-      default: '1.00'
+      type: number
+      format: double
+      minimum: 0.5
+      maximum: 1.5
+      multipleOf: 0.05
+      default: 1
       description: >-
-        Speech-rate multiplier. `1.00` is the model's nominal rate; lower is
-        slower. Accepted values: `0.85`, `0.90`, `0.95`, `1.00`, `1.05`, `1.10`,
-        `1.15`. A value outside that range is rejected with
-        `SPEED_OUT_OF_RANGE`; a value inside it but off the `0.05` increment
-        with `SPEED_INCREMENT_INVALID`. Models and languages without runtime
-        speed control reject any value with `SPEED_NOT_SUPPORTED`.
+        Speech-rate multiplier. `1.0` is the model's nominal rate; lower is
+        slower. Accepted values run `0.5` to `1.5` in `0.05` increments. A value
+        outside that range is rejected with `SPEED_OUT_OF_RANGE`; a value inside
+        it but off the `0.05` increment with `SPEED_INCREMENT_INVALID`. Models
+        and languages without runtime speed control reject any value with
+        `SPEED_NOT_SUPPORTED`.
       title: SpeakV2Speed
     SpeakV2Expressivity:
       type: string
@@ -561,16 +557,16 @@ components:
     SpeakV2SpeedValue:
       type: number
       format: double
-      minimum: 0.85
-      maximum: 1.15
+      minimum: 0.5
+      maximum: 1.5
       multipleOf: 0.05
       default: 1
       description: >-
         Speech-rate multiplier. `1.0` is the model's nominal rate; lower is
-        slower. Accepted values run `0.85` to `1.15` in `0.05` increments. A
-        value outside that range is rejected with `SPEED_OUT_OF_RANGE`; a value
-        inside it but off the `0.05` increment with `SPEED_INCREMENT_INVALID`.
-        Models and languages without runtime speed control reject any value with
+        slower. Accepted values run `0.5` to `1.5` in `0.05` increments. A value
+        outside that range is rejected with `SPEED_OUT_OF_RANGE`; a value inside
+        it but off the `0.05` increment with `SPEED_INCREMENT_INVALID`. Models
+        and languages without runtime speed control reject any value with
         `SPEED_NOT_SUPPORTED`.
       title: SpeakV2SpeedValue
     ChannelsSpeakV2MessagesSpeakV2ConfigureSuccessApplied:
@@ -610,12 +606,12 @@ components:
         - INTERNAL_ERROR
       description: >-
         Failure code, in `SCREAMING_SNAKE_CASE`. `SPEED_OUT_OF_RANGE`: outside
-        the multipliers the model publishes. `SPEED_INCREMENT_INVALID`: inside
-        the published range but not one of the multipliers.
-        `SPEED_NOT_SUPPORTED`: this model or language has no runtime speed
-        control at all. `INTERNAL_ERROR`: the configuration was acceptable but
-        the server could not apply it — unlike the others, a server-side failure
-        rather than a statement about the request.
+        the range the model publishes. `SPEED_INCREMENT_INVALID`: inside the
+        published range but off the `0.05` increment. `SPEED_NOT_SUPPORTED`:
+        this model or language has no runtime speed control at all.
+        `INTERNAL_ERROR`: the configuration was acceptable but the server could
+        not apply it — unlike the others, a server-side failure rather than a
+        statement about the request.
       title: ChannelsSpeakV2MessagesSpeakV2ConfigureFailureCode
     ChannelsSpeakV2MessagesSpeakV2ConfigureFailureField:
       type: string
@@ -638,13 +634,12 @@ components:
             #/components/schemas/ChannelsSpeakV2MessagesSpeakV2ConfigureFailureCode
           description: >-
             Failure code, in `SCREAMING_SNAKE_CASE`. `SPEED_OUT_OF_RANGE`:
-            outside the multipliers the model publishes.
-            `SPEED_INCREMENT_INVALID`: inside the published range but not one of
-            the multipliers. `SPEED_NOT_SUPPORTED`: this model or language has
-            no runtime speed control at all. `INTERNAL_ERROR`: the configuration
-            was acceptable but the server could not apply it — unlike the
-            others, a server-side failure rather than a statement about the
-            request.
+            outside the range the model publishes. `SPEED_INCREMENT_INVALID`:
+            inside the published range but off the `0.05` increment.
+            `SPEED_NOT_SUPPORTED`: this model or language has no runtime speed
+            control at all. `INTERNAL_ERROR`: the configuration was acceptable
+            but the server could not apply it — unlike the others, a server-side
+            failure rather than a statement about the request.
         field:
           $ref: >-
             #/components/schemas/ChannelsSpeakV2MessagesSpeakV2ConfigureFailureField

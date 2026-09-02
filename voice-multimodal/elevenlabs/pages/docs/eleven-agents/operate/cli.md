@@ -22,8 +22,7 @@ Find the [complete source code and contribute on GitHub](https://github.com/elev
 
 #### No install required
 
-If you work from Claude or another MCP client, the [hosted MCP
-server](/docs/eleven-agents/operate/hosted-mcp) offers agent management tools with no local
+If you work from Claude or another MCP client, the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) offers agent management tools with no local
 installation. Use the CLI when you want agents in version control; use the hosted MCP server for
 conversational management.
 

@@ -128,8 +128,7 @@ The default response format is `mp3`, but other formats like `pcm` and `ulaw` ar
   * Sample rate: 48kHz
   * Bitrates: 32kbps - 192kbps
 
-Higher quality audio options are only available on paid tiers - see our [pricing
-page](https://elevenlabs.io/pricing/api) for details.
+Higher quality audio options are only available on paid tiers - see our [pricing page](https://elevenlabs.io/pricing/api) for details.
 
 ### Supported languages
 
@@ -160,8 +159,7 @@ audio if desired.
 #### Can I clone my own voice?
 
 Yes, you can create [instant voice clones](/docs/overview/capabilities/voices#cloned) of your own voice
-from short audio clips. For high-fidelity clones, check out our [professional voice
-cloning](/docs/overview/capabilities/voices#cloned) feature.
+from short audio clips. For high-fidelity clones, check out our [professional voice cloning](/docs/overview/capabilities/voices#cloned) feature.
 
 #### Do I own the audio output?
 
@@ -181,20 +179,17 @@ Free regenerations are useful in case there is a slight distortion in the audio 
 #### How do I reduce latency for real-time cases?
 
 Use the low-latency Flash [models](/docs/overview/models) (Flash v2 or v2.5) optimized for near real-time
-conversational or interactive scenarios. See our [latency optimization
-guide](/docs/eleven-api/guides/how-to/best-practices/latency-optimization) for more details.
+conversational or interactive scenarios. See our [latency optimization guide](/docs/eleven-api/guides/how-to/best-practices/latency-optimization) for more details.
 
 #### Why is my output sometimes inconsistent?
 
-The models are nondeterministic. For consistency, use the optional [seed
-parameter](/docs/api-reference/text-to-speech/convert#request.body.seed), though subtle
+The models are nondeterministic. For consistency, use the optional [seed parameter](/docs/api-reference/text-to-speech/convert#request.body.seed), though subtle
 differences may still occur.
 
 #### What's the best practice for large text conversions?
 
 Split long text into segments and use streaming for real-time playback and efficient processing.
-To maintain natural prosody flow between chunks, include [previous/next text or previous/next
-request id parameters](/docs/api-reference/text-to-speech/convert#request.body.previous_text).
+To maintain natural prosody flow between chunks, include [previous/next text or previous/next request id parameters](/docs/api-reference/text-to-speech/convert#request.body.previous_text).
 
 ## Key facts
 

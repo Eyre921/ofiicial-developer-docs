@@ -12,7 +12,6 @@ path: docs/text-summarization
 
 Deepgram API Playground
 
-
 Try this feature out in our API Playground.
 
 \
@@ -20,9 +19,7 @@ Try this feature out in our API Playground.
 
 `summarize` *boolean*   Default: `false`
 
-&#x20;Text Intelligence
-
-&#x20;English (all available regions)
+Text Intelligence  English (all available regions)
 
 Summarization accepts an input text and analyzes the text. It then summarizes the content of the submitted text and returns a brief summary in the JSON response.
 

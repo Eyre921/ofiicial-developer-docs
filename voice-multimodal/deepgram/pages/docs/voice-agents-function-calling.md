@@ -10,7 +10,7 @@ path: docs/voice-agents-function-calling
 
 # Function Calling
 
-&#x20;Voice Agent
+Voice Agent
 
 Function calling gives Large Language Models (LLMs) the power to interact with the real world. While LLMs excel at generating text and maintaining conversation, they cannot natively check your database, book a flight, or fetch live weather data. Function calling bridges this gap by allowing the model to describe an action and its required parameters, which your application then executes.
 

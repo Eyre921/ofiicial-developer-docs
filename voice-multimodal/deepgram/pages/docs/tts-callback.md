@@ -12,11 +12,7 @@ path: docs/tts-callback
 
 `callback` *string*
 
-&#x20;Text to Speech Request
-
-&#x20;Text to Speech Stream
-
-&#x20;English Only
+Text to Speech Request  Text to Speech Stream  English Only
 
 Deepgram’s Callback feature allows you to supply a callback URL to which generated text-to-speech audio can be returned. When passed, Deepgram will immediately respond with a `request_id` before processing your text asynchronously.
 

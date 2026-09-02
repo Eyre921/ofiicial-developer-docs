@@ -38,8 +38,7 @@ Reference: https://developers.deepgram.com/reference/speak/v-2/audio/generate
   - Allowed values: `-2`, `-1`, `0`, `1`, `2`
 - `model` (string, required) — Flux TTS model used to synthesize the submitted text, in the form `flux-{voice}-{language}` (for example, `flux-alexis-en`). Required; unlike the v1 (Aura) endpoint there is no default and only flux models are accepted. English-only at launch.
 - `sample_rate` (enum or enum or enum or enum, optional, default: 24000) — Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable
-- `speed` (enum, optional, default: 1) — Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and voice quality. Accepted values run `0.85` to `1.15` in `0.05` increments. Not yet supported in all languages.
-  - Allowed values: `0.85`, `0.9`, `0.95`, `1`, `1.05`, `1.1`, `1.15`
+- `speed` (double, optional, default: 1) — Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and voice quality. Accepted values run `0.5` to `1.5` in `0.05` increments. Not yet supported in all languages.
 - `priority` (enum, optional) — Processing priority for asynchronous (callback) requests. The only supported value is low.
   - Allowed values: `low`
 

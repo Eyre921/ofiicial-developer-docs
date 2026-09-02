@@ -14,13 +14,7 @@ path: docs/filler-words
 
 `filler_words` *boolean* Default: `false`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming: Flux
-
-&#x20;English (all available regions)
+Pre-recorded  Streaming:Nova Streaming: Flux  English (all available regions)
 
 Deepgram is capable of transcribing the following filler words:
 

@@ -28,8 +28,7 @@ Learn how to transcribe audio with ElevenLabs in realtime with WebSockets.
 
 Full API reference for the Speech to Text endpoint.
 
-Companies requiring HIPAA compliance must contact [ElevenLabs
-Sales](https://elevenlabs.io/contact-sales) to sign a Business Associate Agreement (BAA)
+Companies requiring HIPAA compliance must contact [ElevenLabs Sales](https://elevenlabs.io/contact-sales) to sign a Business Associate Agreement (BAA)
 agreement. Please ensure this step is completed before proceeding with any HIPAA-related
 integrations or deployments.
 
@@ -469,8 +468,7 @@ The above calculation is only applicable to Scribe v2. For Scribe v2 Realtime, s
 
 ## Advanced features
 
-Keyterm prompting and entity detection come at an additional cost. See the [API pricing
-page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
+Keyterm prompting and entity detection come at an additional cost. See the [API pricing page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
 for detailed pricing information.
 
 ### Keyterm prompting

@@ -10,7 +10,7 @@ path: docs/tts-ws-flush
 
 # Flush
 
-&#x20;Text to Speech Stream
+Text to Speech Stream
 
 When you are sending text to our TTS websocket from an LLM, you will need to send a Flush message whenever the LLM finishes a response to indicate the end of the conversation. This allows Deepgram to generate the audio from its existing text buffer without waiting for additional text.
 

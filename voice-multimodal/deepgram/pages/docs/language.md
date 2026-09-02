@@ -12,9 +12,7 @@ path: docs/language
 
 `language` *string* Default: `en`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
+Pre-recorded  Streaming:Nova
 
 ## Enable Feature
 

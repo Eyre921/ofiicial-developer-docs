@@ -12,11 +12,7 @@ path: docs/detect-entities
 
 `detect_entities` *boolean*. Default: `false`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-&#x20;English (all available regions)
+Pre-recorded  Streaming:Nova  English (all available regions)
 
 # Entity Detection
 

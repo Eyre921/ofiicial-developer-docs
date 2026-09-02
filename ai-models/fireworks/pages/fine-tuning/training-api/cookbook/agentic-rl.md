@@ -4,174 +4,132 @@ source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/agentic-rl
 path: fine-tuning/training-api/cookbook/agentic-rl
 ---
 
-Run tool-using agents with environment-local TITO sidecars and return exact-token trajectories to async RL.
+Preserve exact token evidence when tool-using agents cross the token/message boundary.
 
-Agentic RL adds a rollout adapter around either the dedicated
-[`async_rl_loop`](/fine-tuning/training-api/cookbook/rl) or its experimental
-`async_rl_loop_serverless` sibling. The adapter runs an agent in an environment,
-records its policy turns, applies the environment reward, and returns one
-`RolloutRun`. The selected async loop still owns scheduling, GRPO grouping,
-advantages, optimization, evaluation, and policy publication.
+Agentic RL uses the same rollout and optimization contract described in
+[Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl).
+The async RL recipe still owns scheduling, GRPO grouping, advantages, training,
+and policy publication. The agentic adapter runs the multi-turn harness and
+returns exact, loss-aligned rollout data.
 
-The Harbor/TITO stack below is the Cookbook's structured agentic integration,
-not a requirement of the async loop. You can supply another rollout adapter as
-long as it returns the same aligned `RolloutRun` contract.
+## Why multi-turn RL needs TITO
 
-<Note>
-  `TITOSidecar` requires `fireworks-ai[training]>=1.2.11` and a compatible
-  Cookbook revision. Pin the Cookbook commit and SDK version for a production
-  run.
-</Note>
+An agent harness operates on messages: it reads an assistant tool call,
+executes the tool, appends the result, and submits the next request. RL trains
+on the exact token IDs and rollout-policy log probabilities used by inference.
 
-## Architecture
-
-The Cookbook's production integration uses one SDK `TITOSidecar` inside each
-agent environment:
+For each policy turn, TITO (token-in/token-out) records:
 
 ```text theme={null}
-async_rl_loop or async_rl_loop_serverless
-  -> rollout_fn
-    -> Harbor trial (local Docker or E2B)
-      -> Pi, OpenCode, or Mini-SWE-Agent
-        -> loopback TITOSidecar
-          -> Fireworks sampler
+exact prompt IDs + exact sampled action IDs + aligned logprobs + loss mask
 ```
 
-The harness sends OpenAI-compatible messages and tools only to the loopback
-endpoint. The sidecar applies the certified model renderer, sends exact prompt
-token IDs through the sampler supplied by the selected loop, and records exact
-completion IDs, aligned log probabilities, and optional Router Replay data.
-Because it is colocated with the harness, local Docker and E2B use the same
-protocol and E2B needs no callback URL, public tunnel, or Fireworks-hosted
-stateful gateway.
+The boundary matters because a sampled action must become a message before the
+harness can continue. Rendering that message on the next turn is not guaranteed
+to reproduce the same token IDs. Tool-argument JSON may be reserialized,
+empty content may change representation, model-specific stop/message boundaries
+may overlap, or the harness may compact or rewrite its history.
 
-The sidecar is harness-neutral. Harbor owns the trial and verifier; the harness
-adapter owns agent-specific commands, events, timeouts, and call
-classification; the renderer owns chat-template and assistant/tool parsing;
-the async loop owns training. One sidecar may host multiple independent linear
-trajectory engines, but V1 does not model branches or a shared trajectory tree.
+Messages alone cannot prove what the rollout policy sampled. If an exact prompt
+diverges from the previous exact checkpoint, TITO keeps both sides valid by
+closing the old training segment and starting a new one from the prompt that
+actually produced the next action. The new prompt is masked context; the exact
+sampled action remains trainable. All segments from one rollout keep the same
+reward, GRPO group membership, and advantage.
 
-## Dedicated and serverless execution
+## Choose whether online behavior may change
 
-Both loops use the same `rollout_fn_factory(setup) -> rollout_fn` boundary and
-can run Harbor/TITO trajectories:
+Fireworks supports two TITO behaviors. The meaningful distinction is whether
+TITO changes the prompt used to sample the next trainable action.
 
-| Path                       | Sampling and publication                                               | DABstep example                                                  |
-| -------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `async_rl_loop`            | SDK-managed trainer plus a hot-load deployment                         | `harbor/recipes/train_pi.py` with Pi and E2B; DABstep by default |
-| `async_rl_loop_serverless` | Shared serverless training/sampling pool with session-scoped snapshots | `harbor/recipes/dabstep/train.py` with OpenCode                  |
+| Mode                     | Effect on online inference                                                                                                                                              | Continuity check                                                                                                                                                                                                   | Trade-off                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `full_history` (default) | None. The harness sends its ordinary full-history prompt. With exact per-call token and logprob capture, TITO can materialize the trajectory offline.                   | Apply the chat template to the full message history and require the result to extend the previously recorded exact tokens. Try a bounded realignment of the latest action; split when it cannot be aligned safely. | Easier to support across renderers, and the full-render comparison guarantees that token drift is not silently treated as exact continuity. Re-rendering more history can expose more drift, causing more splits or masked spans and a lower trainable-token ratio. [slime's coding-agent trajectory manager](https://github.com/THUDM/slime/tree/main/examples/coding_agent_rl) is one public reference. |
+| `incremental` (opt-in)   | Online only. The next inference prompt is the previous exact checkpoint joined with the newly rendered message suffix, so it can differ from the harness's full replay. | Render only the new suffix and validate its junction with the exact checkpoint. Split when the junction cannot be certified.                                                                                       | Usually retains more exact continuity because it does not re-render the preserved prefix, but every model/template junction needs explicit implementation and verification. [Miles session v2](https://github.com/radixark/miles/tree/main/miles/rollout/session/v2) is one public reference.                                                                                                             |
 
-The serverless adapter is experimental and remains separate pending a shared
-weight-publication contract. TITO captures the same exact-token evidence in
-either path; only trainer, sampler, and publication lifecycle differ.
+`full_history` continuity handling may run after the rollout if every call
+already recorded its actual prompt IDs, sampled IDs, and logprobs. Re-rendering
+messages later is not sufficient. `incremental` must run before inference
+because constructing a different prompt after an action was sampled cannot
+change what the model saw.
 
-## Exact-token trajectory rules
+Neither mode makes a genuine history rewrite—such as compaction, pruning, or a
+subagent handoff—continuous without changing its meaning.
 
-For every policy turn, TITO preserves the exact token arrays observed at
-inference. Prompt, system, user, tool-result, and repaired-context tokens are
-masked; only sampled policy completion tokens are trainable. Token IDs,
-log probabilities, loss masks, and requested routing data must stay aligned.
-The adapter never decodes and retokenizes a sampled completion to manufacture
-training data.
+## Fireworks support
 
-Full-history prompt construction is the default:
+The public [Fireworks Cookbook](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor)
+separates the environment, harness, and task recipe. They are independent
+parts of one rollout rather than one Harbor integration.
 
-1. Render the incoming messages and tools with the certified chat template.
-2. If the prompt exactly extends the active segment, append the new completion.
-3. If a small, semantically equivalent rewrite starts inside the latest
-   assistant response, the configured drift policy may replace and mask that
-   tail (`realign`).
-4. Otherwise, close the valid segment and start a new segment from the incoming
-   full render (`new_segment`).
+### Overall RL environment: Harbor
 
-Segmentation does not create another rollout or another GRPO completion. Every
-segment from one `rollout_fn` call stays in the same `RolloutRun`, receives the
-same verifier reward, and shares one group membership and advantage. This is
-the same loss-preserving split/realign tradeoff used by
-[Slime's coding-agent RL example](https://github.com/THUDM/slime/tree/main/examples/coding_agent_rl),
-adapted to an environment-local sidecar.
+[Harbor](https://harborframework.com/) is the trial and environment layer. It
+loads a task, starts its Docker container or E2B sandbox, runs the verifier,
+produces the reward and artifacts, and tears the environment down. In the
+reference integration, the TITO sidecar runs inside that sandbox beside the
+agent harness.
 
-An experimental `incremental` prompt mode follows the linear construction in
-[Miles Session v2](https://github.com/radixark/miles/tree/main/miles/rollout/session/v2):
-it joins the previous exact checkpoint to a renderer-certified suffix instead
-of replaying the entire history. It intentionally does not include Miles's
-central service placement or session tree. Incremental mode is opt-in and
-requires separate suffix-and-junction certification; it does not change the
-default full-history path.
+```text theme={null}
+task dataset -> Harbor trial -> Docker or E2B sandbox
+                                |- agent harness -> TITO sidecar -> inference
+                                `- verifier -> reward and artifacts
+```
 
-## Length, identity, and retries
+### Supported harness adapters
 
-Use `max_completion_tokens` to cap one assistant turn and `max_seq_len` for the
-total prompt-plus-output window and training-retention boundary. Evaluation
-inherits both values from the same rollout setup.
+The reference adapters support
+[OpenCode](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/opencode),
+[Pi](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/pi),
+and [Mini-SWE-Agent](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/mini_swe)
+over the same Harbor/TITO contract.
 
-Keep these identities distinct:
+### Supported task datasets
 
-| Identity             | Purpose                                                                |
-| -------------------- | ---------------------------------------------------------------------- |
-| `RolloutRun.run_id`  | Reward, metrics, and GRPO group membership                             |
-| Harbor trial ID      | Environment and verifier lifecycle                                     |
-| TITO trajectory ID   | Selects one linear engine inside the sidecar                           |
-| Serving-affinity key | Routes policy calls from one attempt to a compatible inference replica |
-| Attempt ID           | Prevents retry state from leaking into a fresh environment             |
+The Cookbook includes support for DABstep, Terminal-Bench 2.0, and DeepSWE.
 
-A retry creates a fresh Harbor trial, TITO trajectory, credential, and
-serving-affinity key. Transient environment or transport failures may retry the
-whole attempt within a bounded budget. After exhaustion, return `None` so the
-async loop drops that draw. A valid timeout, agent exit, malformed model tool
-call, or other terminal task outcome may still carry the verifier's numeric
-reward; a broken or misaligned trace must never be converted into a synthetic
-zero reward.
+### Example: Pi with DABstep
 
-## Artifacts and debugging
+Use the [Pi+DABstep training script](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/harbor/recipes/dabstep/train_pi.py)
+as the complete reference entrypoint. The Cookbook also provides task
+preparation scripts for [Terminal-Bench](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/harbor/opencode/prepare_tasks.py)
+and [DeepSWE](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/harbor/recipes/deep_swe/prepare_tasks.py).
 
-Every trial retains a compact `.tito` artifact as the authoritative record for
-training and routine analysis. It contains trajectory status, segments, exact
-turn data, prompt dispositions, call outcomes, and reducible metrics. Optional
-debug mode adds plain JSONL events for troubleshooting; debug logs supplement
-the compact artifact and are not a second training-data path. Credentials and
-authorization headers are not persisted.
+These task entrypoints plug into the async RL lifecycles described in
+[Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl); this
+page does not repeat the dedicated and serverless execution choices.
 
-Before training, run sampling-only calibration and inspect long, tool-heavy,
-retried, high-reward, low-reward, realigned, and split traces. Confirm that
-array lengths align, split segments retain one logical reward and advantage,
-and low-frequency valid task failures are distinguishable from systemic
-renderer or infrastructure failures.
+Both prompt-construction modes use the same TITO engine, exact-token sampler
+boundary, artifact format, and `RolloutRun` materializer. Prompt construction
+defaults to `full_history`; select `incremental` explicitly with
+`--tito-prompt-mode incremental` only for a renderer/tokenizer contract that
+qualifies the additional suffix and junction behavior. An ordinary SFT/DPO
+renderer does not automatically qualify a model for agentic TITO.
 
-## Start from an example
+## The sidecar is a reference placement
 
-The
-[Harbor RL directory](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor)
-is the out-of-the-box starting point for agentic RL and separates four layers:
+The Cookbook starts one lightweight TITO sidecar inside every agent sandbox:
 
-| Layer                 | Cookbook location                                                                                | Responsibility                                                         |
-| --------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| Task recipe           | `harbor/recipes/`                                                                                | Dataset preparation, task selection, and training configuration        |
-| Harness adapter       | `harbor/pi/`, `harbor/opencode/`, `harbor/mini_swe/`                                             | Agent-specific lifecycle and semantics                                 |
-| Harbor + TITO adapter | `harbor/tito/`                                                                                   | Trial, sidecar bundle, exact-token artifact, reward, and cleanup       |
-| Async RL recipe       | `training/recipes/async_rl_loop.py` or `training/recipes/experiment/async_rl_loop_serverless.py` | Fan-out, grouping, loss, optimizer, evaluation, and weight publication |
+```text theme={null}
+agent in a Docker container or E2B sandbox
+  -> loopback OpenAI-compatible endpoint
+  -> TITO sidecar
+  -> Fireworks inference over HTTP
+```
 
-Start with
-[Terminal-Bench](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/recipes/terminal_bench)
-for a coding/tool-use OpenCode workflow, or the
-[DABstep recipes](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/recipes/dabstep)
-for managed Pi on E2B and experimental serverless OpenCode. If your tasks are
-already in Harbor format, keep their environment and verifier configuration:
-choose the
-[OpenCode](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/opencode)
-or [Pi](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/pi)
-adapter, prepare the task images with the pinned harness, run sampling-only
-calibration, then use the same rollout function for training.
+This placement requires no user-operated middleware fleet, public callback, or
+central stateful gateway. It also keeps each trajectory's state and failure
+domain with its sandbox.
 
-Pi is the default reference harness for DeepSWE and for the managed DABstep
-recipe. OpenCode drives the existing DABstep serverless recipe; Mini-SWE-Agent
-is another adapter over the same Harbor/TITO boundary. Local Docker and E2B are
-environment choices, not separate rollout implementations. The shipped sidecar
-support is narrower than the general SFT/DPO renderer registry; use only
-model/renderer pairs explicitly certified by the integration. A chat template
-or offline renderer alone is not TITO certification.
+The TITO invariants do not require this placement:
 
-For operational details and the full validation checklist, read the
-[agentic RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-agentic.md).
-For scheduling, failure classification, metrics, and resume semantics, read
-the [async RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-async.md).
+| Placement                      | Supported behavior                                                 | Main trade-off                                                                                  |
+| ------------------------------ | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| Per-sandbox sidecar            | `full_history` and `incremental`                                   | Simple isolation and startup; the sidecar process must be reliable in every sandbox.            |
+| Centralized long-lived gateway | `full_history` and `incremental`                                   | Shared lifecycle and observability; adds stateful routing, scaling, and a wider failure domain. |
+| Offline materializer           | `full_history` only, with exact per-call token and logprob capture | No online middleware; cannot replace a prompt after inference has occurred.                     |
+
+The Cookbook sidecar is the maintained reference implementation, not the only
+valid TITO architecture. A custom integration may use offline materialization
+or a centralized gateway as long as it preserves the exact prompt, action,
+logprob, loss-mask, and rollout-identity contracts.

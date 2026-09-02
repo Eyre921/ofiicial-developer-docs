@@ -32,5 +32,3 @@ For guidance, examples, and limits, see [Upsert data](https://docs.pinecone.io/g
         {"_id": "rec4", "chunk_text": "The high fiber content in apples can also help regulate blood sugar levels, making them a favorable snack for people with diabetes.", "category": "endocrine system"}'
   ```
 </RequestExample>
-
-<ResponseExample />

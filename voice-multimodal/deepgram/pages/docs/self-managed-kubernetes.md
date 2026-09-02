@@ -20,14 +20,13 @@ Prior to deploying Kubernetes you will need to ensure you have a suitable enviro
 
 * Node: A physical computer or virtual machine used to host workloads.
 * Pod: A single container running on a node. One node can host many pods.
-* Cluster: A group of nodes and their associated pods. ​ 
+* Cluster: A group of nodes and their associated pods. ​
 
 Additionally this guide refers frequently to `kubectl`, the [command line tool](https://kubernetes.io/docs/reference/kubectl/) for interacting with the Kubernetes clusters, `kubeadm`, the [cluster administration](https://kubernetes.io/docs/reference/setup-tools/kubeadm/) tool, and the `kubelet` [node agent](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/). ​
 
 ## Installing Kubernetes
 
 ## Managed Kubernetes
-
 
 If you are operating in a VPC, you should use a managed Kubernetes service instead of installing your own. For example, you can use [EKS in AWS](/docs/aws-k8s) as an alternative to the following manual installation.
 
@@ -65,7 +64,6 @@ sudo apt-mark hold kubelet kubeadm kubectl
 ​
 
 ## Kubernetes Versions
-
 
 When updating tooling you must use a kubectl version that is within one minor version difference of your cluster. For example, a v1.27 client can communicate with v1.26, v1.27, and v1.28 control planes. You must keep all tooling versions in sync manually. If you wish to pin the versions you can do so with `apt-mark` as follows:
 
@@ -223,7 +221,6 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
    ```
 
    ## Pod Scheduling Failures Limits
-
 
    Resource limits, taints, and other constraints may limit Pod scheduling. If a Pod is not able to be scheduled, you can see its status and a list of associated events with `kubectl describe pod <pod-name>`.
 

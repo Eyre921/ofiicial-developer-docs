@@ -10,7 +10,7 @@ path: docs/tts-voice-controls
 
 # Speed, Pause, Pronunciation
 
-**This page covers Aura-2 (`/v1/speak`) controls.** Flux TTS (`/v2/speak`) supports `speed` (`0.85`–`1.15` in `0.05` steps) and beta [Expressivity](/docs/tts-expressivity); pause and pronunciation are coming soon.
+**This page covers Aura-2 (`/v1/speak`) controls.** Flux TTS (`/v2/speak`) supports `speed` (`0.5`–`1.5` in `0.05` steps) and beta [Expressivity](/docs/tts-expressivity); pause and pronunciation are coming soon.
 
 Aura-2 Controls enable fine-grained adjustments to speech output, allowing you to modify speaking speed and override pronunciation for specific words. These controls are designed for enterprise use cases requiring precise voice quality for industry-specific terminology, brand names, and complex content.
 

@@ -10,13 +10,7 @@ path: docs/dictation
 
 # Dictation
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming: Flux
-
-&#x20;English (all available regions)
+Pre-recorded  Streaming:Nova Streaming: Flux  English (all available regions)
 
 Dictation is a feature of Deepgram’s Speech-to-Text API that converts spoken dictation commands into their corresponding punctuation marks.
 

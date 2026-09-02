@@ -22,10 +22,8 @@ A code tool is a JavaScript function that runs when the agent calls it. You writ
 * **Conditional branching**: run different logic depending on the tool-call parameters, without needing a separate tool per branch.
 * **Reshaping data**: return exactly the structure you want the agent to see, rather than a raw upstream response.
 
-For a single external API call with no custom logic, [webhook
-tools](/docs/eleven-agents/customization/tools/webhook-tools) are usually simpler to set up. To
-trigger actions in a user's browser or app, use [client
-tools](/docs/eleven-agents/customization/tools/client-tools) instead.
+For a single external API call with no custom logic, [webhook tools](/docs/eleven-agents/customization/tools/webhook-tools) are usually simpler to set up. To
+trigger actions in a user's browser or app, use [client tools](/docs/eleven-agents/customization/tools/client-tools) instead.
 
 ## How it works
 
@@ -60,13 +58,13 @@ connections are never revealed to the agent.
 
 Parameters are the values the agent supplies when it calls the tool, and they arrive in `ctx.args`. Define them in the **Parameters** section of the tool configuration form, or in the code editor under the **Params** tab, in the **Define Params** sub-tab. Each parameter takes a data type, an identifier, and a description that the agent uses to determine the correct value from the conversation. Your code reads that value under the identifier, such as `ctx.args.appointment_datetime` below.
 
-![Defining a code tool parameter](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d492e864ae15f3a355251faae3b719544e1ab56b703c02740b51be6c6769ccf7/assets/images/conversational-ai/code-tool-parameters.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233218Z&X-Amz-Expires=604800&X-Amz-Signature=10c2621064443d7f1065b3c6fbf2892c79ccd1c4d158f77ddf1dfc17e1f9009c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Defining a code tool parameter](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d492e864ae15f3a355251faae3b719544e1ab56b703c02740b51be6c6769ccf7/assets/images/conversational-ai/code-tool-parameters.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T070934Z&X-Amz-Expires=604800&X-Amz-Signature=5a297f02fac4db66c066b9e71c91a5c5f508f1bd417d038528c5ed4a4b5618f0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configuring the context object
 
 Add secrets, config values, and auth connections in the tool's **Context object** section. Each entry takes a type and a name. The panel shows the exact accessor for each entry, such as `ctx.secrets.DEMO_KEY` below.
 
-![Mapping a workspace secret into a code tool's context object](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ad58ee53f3591f447b108191aff760f1134350911933b968b06798fa6d42f438/assets/images/conversational-ai/code-tool-context-object.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233218Z&X-Amz-Expires=604800&X-Amz-Signature=5af34aeaa8960b5cec6b4f8fde26d3b74d65d46636553d2707b12f66b6a8b9ff&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Mapping a workspace secret into a code tool's context object](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ad58ee53f3591f447b108191aff760f1134350911933b968b06798fa6d42f438/assets/images/conversational-ai/code-tool-context-object.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T070934Z&X-Amz-Expires=604800&X-Amz-Signature=03598108fbcb732784139199b7e8aad0896dabd6b6b87f3c4a0e0e2ecee61257&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Network access
 

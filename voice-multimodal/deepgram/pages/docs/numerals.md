@@ -12,13 +12,7 @@ path: docs/numerals
 
 `numerals` *boolean* Default: `false`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming:Flux
-
-&#x20;Specific languages only
+Pre-recorded  Streaming:Nova Streaming:Flux  Specific languages only
 
 Deepgram’s Numerals feature converts numbers from written format to numerical format. For example, the cardinal number "nine hundred" would appear in your transcript as "900", and the ordinal number "nine hundredth" would appear in your transcript as "900th".
 

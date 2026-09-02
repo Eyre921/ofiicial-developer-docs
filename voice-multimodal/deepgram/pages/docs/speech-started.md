@@ -12,11 +12,7 @@ path: docs/speech-started
 
 `vad_events` *boolean*.
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-&#x20;All available languages
+Pre-recorded  Streaming:Nova  All available languages
 
 Deepgram's Speech Started feature can be used for speech detection and can be used to detect the start of speech while transcribing live streaming audio.
 

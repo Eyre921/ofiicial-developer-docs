@@ -14,13 +14,7 @@ path: docs/punctuation
 
 `punctuate` *boolean* Default: `false`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming: Flux
-
-&#x20;All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
 
 ## Enable Feature
 

@@ -12,9 +12,7 @@ path: docs/language-detection
 
 `detect_language` *boolean* Default: `false`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
+Pre-recorded  Streaming:Nova
 
 Deepgram’s Language Detection feature identifies the dominant language spoken in submitted audio, transcribes the audio in the identified language, and returns the detected language code in the JSON response.
 

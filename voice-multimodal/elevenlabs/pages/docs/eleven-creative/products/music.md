@@ -22,8 +22,7 @@ your track as a high-quality audio file or share it using a customizable visuali
 
 #### Create a new song
 
-Describe your song using natural language prompts. Refer to our [Prompting
-Guide](/docs/overview/capabilities/music/best-practices) for best practices on style and lyrics.
+Describe your song using natural language prompts. Refer to our [Prompting Guide](/docs/overview/capabilities/music/best-practices) for best practices on style and lyrics.
 
 #### Add an Audio Reference (optional)
 
@@ -242,8 +241,7 @@ Created in collaboration with artists, labels, and publishers, Eleven Music is, 
 **cleared for broad commercial use**. This model allows users to move beyond stock music libraries and create bespoke audio
 tailored to their specific needs.
 
-For specific details on supported usage per tier, please refer to our [Music
-Terms](https://elevenlabs.io/music-terms).
+For specific details on supported usage per tier, please refer to our [Music Terms](https://elevenlabs.io/music-terms).
 
 ## Export and Quality
 
@@ -354,7 +352,7 @@ start creating.
 
       Eleven Music is available today for all users on the ElevenLabs website.
 
-      API access is available for all users on paid subscription plans. See our [API documentation](/docs/cookbooks/music/quickstart) for more information. 
+      API access is available for all users on paid subscription plans. See our [API documentation](/docs/cookbooks/music/quickstart) for more information.
 
       Visit the following resources for more information:
 
@@ -389,9 +387,9 @@ start creating.
     <td>
       #### How much does Eleven Music cost?
 
-      The cost of Eleven Music depends on the length of your track and how many variants you're generating. You can see how much each generation will cost before you click **Generate** by hovering over the number of **credits remaining** for your account. 
+      The cost of Eleven Music depends on the length of your track and how many variants you're generating. You can see how much each generation will cost before you click **Generate** by hovering over the number of **credits remaining** for your account.
 
-      For a breakdown of how many minutes of Music each of our subscription plans can generate with the included credit quota, see the Music table on our [Pricing page. ](https://elevenlabs.io/pricing)
+      For a breakdown of how many minutes of Music each of our subscription plans can generate with the included credit quota, see the Music table on our [Pricing page. ](https://elevenlabs.io/pricing)
     </td>
   </tr>
 
@@ -438,12 +436,12 @@ start creating.
       * In the song structure, find the section you want the new section to follow. On the left-hand side of that section, you'll see a "+" symbol that will say "Add section below" when you hover over.\
 
 
-        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6c23aeecbe607b133b6940ae30a60ba168772a8c351f68cfa42cec1f8705c95c/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233146Z&X-Amz-Expires=604800&X-Amz-Signature=3e02b97022f2bb2746b6bb6aa10e3c7dbbc8cd508eb8819c79000c8487e0f8de&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6c23aeecbe607b133b6940ae30a60ba168772a8c351f68cfa42cec1f8705c95c/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T112742Z&X-Amz-Expires=604800&X-Amz-Signature=b3934246acfb245f414cae9349e6440f8357e33e8ea642a192e98cb49fc0917a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       * In the timeline, scroll to the end of your song structure and click the "+" sign, which will add a new empty section at the end.\
 
 
-        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/071d9a8998758844dd15d1c512c5bbd3d335950c7b4ca784604182042eb14c80/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233146Z&X-Amz-Expires=604800&X-Amz-Signature=773313e9cdd1284314a21cd05f0b7af817f23fc050596d06ed31103f49448cf6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/071d9a8998758844dd15d1c512c5bbd3d335950c7b4ca784604182042eb14c80/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T112742Z&X-Amz-Expires=604800&X-Amz-Signature=f1a17a7e28815a4816a883a57347312f5da2453898bc84a20187894f249a0e8b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       * Once you've added this new empty section, you can drag it to extend the duration, add lyrics, or a descriptive prompt (e.g., "\[energetic guitar solo]").
 
@@ -461,7 +459,7 @@ start creating.
       * Hover over the section you want to edit and click the **"Edit styles of this section"** link.\
 
 
-        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c9086f7935759344e852854e10af5a38b27760359897a7c315824c1c6e2ef124/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233146Z&X-Amz-Expires=604800&X-Amz-Signature=616d83946a0fe815b88a1fbf395bd3970120b7ad1286921aa67d7e4838597924&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c9086f7935759344e852854e10af5a38b27760359897a7c315824c1c6e2ef124/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T112742Z&X-Amz-Expires=604800&X-Amz-Signature=f2a572621c44d12e6c80a8611a4a442b596b27f6530db3e4e1684b5bfc86fb42&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       * A "Section styles" window will pop up. Here you can:
 
@@ -480,7 +478,7 @@ start creating.
       * Hover over the section you wish to remove in the timeline.\
 
 
-        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c8506897c18519729967118d2d2f1136f302023a890685b8aba786d1034c8943/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233146Z&X-Amz-Expires=604800&X-Amz-Signature=693833bb579e0bccb86edbd7971107ff4b868021d4989e0faa14884b598e3c2b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+        ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c8506897c18519729967118d2d2f1136f302023a890685b8aba786d1034c8943/assets/images/help-center/product/core-capabilities/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T112742Z&X-Amz-Expires=604800&X-Amz-Signature=5800cbb150c5d7a171b10da08fb1fe5ea354882a80d5ff23d4dd1e533b585a56&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       * Click the delete icon, the "X", in the upper left corner of the section.
 

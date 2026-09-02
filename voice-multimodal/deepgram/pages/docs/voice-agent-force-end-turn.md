@@ -10,7 +10,7 @@ path: docs/voice-agent-force-end-turn
 
 # Force End Turn
 
-&#x20;Voice Agent
+Voice Agent
 
 The `ForceEndTurn` message is a JSON message that ends the current turn immediately.
 

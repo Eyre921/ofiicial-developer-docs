@@ -12,7 +12,6 @@ path: docs/text-intention-recognition
 
 Deepgram API Playground
 
-
 Try this feature out in our API Playground.
 
 \
@@ -20,9 +19,7 @@ Try this feature out in our API Playground.
 
 `intents` *boolean*   Default: `false`
 
-&#x20;Text Intelligence
-
-&#x20;English (all available regions)
+Text Intelligence  English (all available regions)
 
 Intent Recognition accepts an input text, divides it into a list of segments comprised of sections of the text, and assigns a description of intent to each text segment.
 

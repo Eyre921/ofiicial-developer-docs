@@ -12,7 +12,6 @@ path: docs/text-intelligence
 
 Deepgram API Playground
 
-
 Try this feature out in our API Playground.
 
 \

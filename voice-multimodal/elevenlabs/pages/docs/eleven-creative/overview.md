@@ -16,8 +16,7 @@ Test and experiment with text-to-speech, voice changing, and sound effects in re
 
 ### [Products](/docs/eleven-creative/products/studio)
 
-Purpose-built tools that integrate multiple capabilities into streamlined workflows for
-specific use cases like long-form content, video localization, and music production
+Purpose-built tools that integrate multiple capabilities into streamlined workflows for specific use cases like long-form content, video localization, and music production
 
 ### [Voices](/docs/eleven-creative/voices/voice-library)
 

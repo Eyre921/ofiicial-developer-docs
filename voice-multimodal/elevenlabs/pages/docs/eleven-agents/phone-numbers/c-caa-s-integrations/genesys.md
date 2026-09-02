@@ -60,8 +60,7 @@ Go to Admin → Integrations in the Genesys Cloud interface.
    | Data residency             | `wss://api.<region>.residency.elevenlabs.io/v1/convai/conversation/genesys` |
 
    If your ElevenLabs account is on an isolated residency environment, replace `<region>` with your
-   region code. Using the wrong URL will result in authentication failures. See [data
-   residency](/docs/overview/administration/data-residency) for the list of available regions and
+   region code. Using the wrong URL will result in authentication failures. See [data residency](/docs/overview/administration/data-residency) for the list of available regions and
    their URLs.
 
 3. In Credentials, enter your ElevenLabs API key in the authentication configuration

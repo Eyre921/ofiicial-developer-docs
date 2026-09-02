@@ -27,7 +27,7 @@ grass").
 #### Adjust settings
 
 ![Sound effects
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3b14346a7ee375acc01d11b4ebb0ec0127a4a65bfab8e708d77ae5e639e64f38/assets/images/product-guides/sound-effects/sound-effects-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233144Z&X-Amz-Expires=604800&X-Amz-Signature=0197d9a0078481c1781307c12c22ebf535ba016b5f8653f88d3df03bfe8d4732&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3b14346a7ee375acc01d11b4ebb0ec0127a4a65bfab8e708d77ae5e639e64f38/assets/images/product-guides/sound-effects/sound-effects-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T071055Z&X-Amz-Expires=604800&X-Amz-Signature=c962a1713b38ca8cba03839bfc7d28ec94ed51a4e83551f918efc6da91afb7e9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * Set the duration for the sound, or choose auto to let the AI decide. The maximum length is
   30 seconds.
@@ -52,7 +52,7 @@ a vinyl sample, stem, 88 bpm in F# minor.
 
 ## Explore the library
 
-![Sound effects explore](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d8d7c3cca84e6acb0dfc419aed291be764794f299b2c7c478a9efc3f8f6e25ef/assets/images/product-guides/sound-effects/sound-effects-explore.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T233144Z&X-Amz-Expires=604800&X-Amz-Signature=90577baa3eab2e8e2ed3ce6a1819530d521305380c4c0c078b8080f376193535&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Sound effects explore](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d8d7c3cca84e6acb0dfc419aed291be764794f299b2c7c478a9efc3f8f6e25ef/assets/images/product-guides/sound-effects/sound-effects-explore.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T071055Z&X-Amz-Expires=604800&X-Amz-Signature=dce7a57d25d4af1f8842704f2aeaa46f79132e0c31749f56756d12b755bc3aa8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Browse community-made sound effects in the **Explore** tab.
 
@@ -67,9 +67,9 @@ For more on prompting and how sound effects work, visit our [overview page](/doc
 
       Our sound effects generator allows you to generate any sound imaginable by inputting a prompt.  Create anything from blockbuster sound design for films, to everyday sounds for your video game.
 
-      To get started, visit [Sound Effects](https://elevenlabs.io/app/sound-effects) or select **Sound Effects** in the sidebar on the left while logged into your account. 
+      To get started, visit [Sound Effects](https://elevenlabs.io/app/sound-effects) or select **Sound Effects** in the sidebar on the left while logged into your account.
 
-      Enter your prompt in the text box.  There is a maximum length of 450 characters for your prompt.  
+      Enter your prompt in the text box.  There is a maximum length of 450 characters for your prompt.
 
       You can use the settings to control the duration of the sound effect, and how strictly the AI follows your prompt.  If you don't specify the length of the clip, the AI will decide the audio length.
 
@@ -105,13 +105,13 @@ For more on prompting and how sound effects work, visit our [overview page](/doc
 
       You can improve these prompts by adding a little more detail, for example, “high-quality, professionally recorded footsteps on grass, sound effects foley.” It can require some experimentation to find a good balance between being descriptive and keeping it brief enough to have AI understand the prompt.
 
-       
+
 
       **Complex Prompts**
 
       Complex prompts include multiple sound effects, or a sequence of sound effects happening in a specific order, for example, "A man walks through a hallway and then falls down some stairs".  While the AI does understand these prompts, for the best results, we would recommend generating individual sound effects and then combining them in an audio editor of your choice.
 
-       
+
 
       For more details on how to prompt for sound effects, along with examples and audio terminology that might be useful for writing prompts, please see our full [overview of Sound Effects.](/docs/capabilities/sound-effects)
     </td>

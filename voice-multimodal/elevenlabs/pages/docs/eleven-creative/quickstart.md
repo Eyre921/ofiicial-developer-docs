@@ -98,11 +98,8 @@ The platform supports 50+ languages and offers thousands of voices to choose fro
 #### Do I need coding skills to use ElevenCreative?
 
 No. ElevenCreative is designed for creators of all skill levels. Use our visual tools and
-playground to create audio without any coding. If you're a developer, check out our [API
-documentation](/docs/eleven-api/quickstart).
+playground to create audio without any coding. If you're a developer, check out our [API documentation](/docs/eleven-api/quickstart).
 
 #### Can I use my generated audio commercially?
 
-Yes, with a paid plan. Free tier is limited to personal, non-commercial use. See our [pricing
-page](https://elevenlabs.io/pricing) for plan details and our [terms of
-service](https://elevenlabs.io/terms-of-use) to ensure you comply with all usage requirements.
+Yes, with a paid plan. Free tier is limited to personal, non-commercial use. See our [pricing page](https://elevenlabs.io/pricing) for plan details and our [terms of service](https://elevenlabs.io/terms-of-use) to ensure you comply with all usage requirements.

@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1162 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1163 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -1168,6 +1168,7 @@
 - `oss/openwiki/cli-reference` — [Command reference](pages/oss/openwiki/cli-reference.md) · [原文](https://docs.langchain.com/oss/openwiki/cli-reference)
 - `oss/openwiki/code-mode` — [Code mode](pages/oss/openwiki/code-mode.md) · [原文](https://docs.langchain.com/oss/openwiki/code-mode)
 - `oss/openwiki/customize` — [Customize OpenWiki](pages/oss/openwiki/customize.md) · [原文](https://docs.langchain.com/oss/openwiki/customize)
+- `oss/openwiki/integrations` — [Coding-agent integrations](pages/oss/openwiki/integrations.md) · [原文](https://docs.langchain.com/oss/openwiki/integrations)
 - `oss/openwiki/overview` — [OpenWiki](pages/oss/openwiki/overview.md) · [原文](https://docs.langchain.com/oss/openwiki/overview)
 - `oss/openwiki/personal-mode` — [Personal mode](pages/oss/openwiki/personal-mode.md) · [原文](https://docs.langchain.com/oss/openwiki/personal-mode)
 - `oss/openwiki/providers` — [Model providers](pages/oss/openwiki/providers.md) · [原文](https://docs.langchain.com/oss/openwiki/providers)

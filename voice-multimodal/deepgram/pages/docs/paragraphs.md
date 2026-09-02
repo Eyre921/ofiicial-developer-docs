@@ -14,13 +14,7 @@ path: docs/paragraphs
 
 `paragraphs` *boolean* Default: `false`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming: Flux
-
-&#x20;Space-delimited words
+Pre-recorded  Streaming:Nova Streaming: Flux  Space-delimited words
 
 * When Paragraphs is enabled, [Punctuation](/docs/punctuation/) feature is enabled by default, and paragraphs are identified based on the transcript's punctuation.
 * When the Diarization feature is enabled and multiple speakers are present, paragraphs breaks are influenced by speaker changes.

@@ -12,13 +12,7 @@ path: docs/channels
 
 `channels` *int32* Default: `1`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming: Flux
-
-&#x20;All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
 
 The default value is `1`.
 

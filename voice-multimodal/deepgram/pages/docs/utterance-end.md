@@ -12,11 +12,7 @@ path: docs/utterance-end
 
 `utterance_end_ms` *string*
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-&#x20;All available languages
+Pre-recorded  Streaming:Nova  All available languages
 
 The utterance end feature can be used for speech detection and can be enabled to help detect the end of speech while transcribing live streaming audio.
 

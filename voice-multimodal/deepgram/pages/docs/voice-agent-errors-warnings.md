@@ -10,7 +10,7 @@ path: docs/voice-agent-errors-warnings
 
 # Errors & Warnings
 
-&#x20;Voice Agent
+Voice Agent
 
 The server sends two diagnostic event types when something goes wrong:
 

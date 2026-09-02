@@ -12,11 +12,7 @@ path: docs/tts-container
 
 `container` *string*
 
-&#x20;Text to Speech Request
-
-&#x20;Text to Speech Stream
-
-&#x20;English Only
+Text to Speech Request  Text to Speech Stream  English Only
 
 The Container feature allows users to specify the desired file format wrapper for the output audio generated through text-to-speech synthesis.
 

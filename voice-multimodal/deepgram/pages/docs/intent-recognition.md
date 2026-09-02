@@ -12,7 +12,6 @@ path: docs/intent-recognition
 
 Deepgram API Playground
 
-
 Try this feature out in our API Playground.
 
 \
@@ -20,11 +19,7 @@ Try this feature out in our API Playground.
 
 `intents` *boolean*   Default: `false`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-&#x20;All available languages
+Pre-recorded  Streaming:Nova  All available languages
 
 Deepgram's Intent Recognition feature recognizes speaker intent throughout an entire transcript, returning a list of text segments and the intents found within each segment.
 

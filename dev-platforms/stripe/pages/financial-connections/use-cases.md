@@ -27,6 +27,8 @@ How you integrate Financial Connections depends on your desired use cases.
 | [Building financial products](https://docs.stripe.com/financial-connections/use-cases.md#building-other-products) | - Financial management application
 - Wealth management application
 - Loan underwriting | [Financial Connections Sessions](https://docs.stripe.com/api/financial_connections/sessions/object.md) |
+| [Financial insights for agents](https://docs.stripe.com/financial-connections/use-cases.md#agents) | - Agent-powered spending analysis
+- Balance and transaction monitoring | [Link CLI](https://docs.stripe.com/financial-connections/agents/financial-insights.md) |
 
 To process ACH payments or facilitate Connect payouts, use a recommended payments integration in the table above, such as Setup Intents. This makes sure that the collected accounts are compatible with [ACH transfers](https://docs.stripe.com/payments/ach-direct-debit.md).
 
@@ -91,4 +93,21 @@ Learn how to [collect an account to access data](https://docs.stripe.com/financi
 Manual account entry and microdeposit verification aren’t available in the authentication flow for this use case because the primary goal of collecting an account is data accessibility.
 
 You can [convert most previously linked Financial Connections accounts to Payment Methods](https://docs.stripe.com/financial-connections/other-data-powered-products.md?platform=web#accept-ach-direct-debit). However, if your integration uses the Sessions API, the linked account might not be compatible with ACH.
+
+## Financial insights for agents 
+
+- [Balances](https://docs.stripe.com/financial-connections/balances.md)
+- [Transactions](https://docs.stripe.com/financial-connections/transactions.md)
+
+Use Financial Connections with Link CLI to give hosted agents read-only access to permissioned financial data. Your agent can answer questions about spending, track trends, and provide personalized financial insights using data from connected bank accounts and credit cards.
+
+Common agent use cases include:
+
+- Spending analysis and categorization across connected accounts.
+- Balance monitoring and alerts.
+- Personalized financial recommendations based on transaction history.
+
+Because your agent operates as a hosted service on behalf of your customers, your company registers as a data recipient with financial institutions.
+
+Learn how to [add financial insights to your agent](https://docs.stripe.com/financial-connections/agents/financial-insights.md) using Link CLI. Financial insights commands and endpoints are built to be agent-optimized, reducing token spend and streamlining data sharing between your agents and your customers.
 

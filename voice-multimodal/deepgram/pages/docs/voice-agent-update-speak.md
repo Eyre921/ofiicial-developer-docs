@@ -10,7 +10,7 @@ path: docs/voice-agent-update-speak
 
 # Update Speak
 
-&#x20;Voice Agent
+Voice Agent
 
 The `UpdateSpeak` message is a JSON message that you can use to change the Speak model in the middle of a conversation.
 

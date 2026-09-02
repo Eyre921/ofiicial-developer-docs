@@ -16,5 +16,3 @@ Delete an existing index.
     -H "X-Pinecone-Api-Version: 2026-04"
   ```
 </RequestExample>
-
-<ResponseExample />

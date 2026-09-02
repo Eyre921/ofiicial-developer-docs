@@ -10,7 +10,7 @@ path: docs/voice-agent-setting-applied-message
 
 # Settings Applied
 
-&#x20;Voice Agent
+Voice Agent
 
 The `SettingsApplied` message is a JSON message that confirms the server has successfully received and applied the `Settings` message.
 

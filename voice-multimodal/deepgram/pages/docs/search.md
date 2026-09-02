@@ -14,13 +14,7 @@ path: docs/search
 
 `search` *string*
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming: Flux
-
-&#x20;All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
 
 Deepgram’s Search feature searches for terms or phrases by matching acoustic patterns in audio (which we have found is more accurate than matching for text patterns in transcripts) and returns results in the response JSON object. This allows you to accurately identify whether a phrase was uttered in submitted audio by letting Deepgram "hear" whether the phrase was uttered rather than by trying to look for sufficiently close matches in the text transcript.
 

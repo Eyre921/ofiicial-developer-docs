@@ -2055,10 +2055,12 @@ components:
       properties:
         prefix_mismatch_behavior:
           enum:
+            - error
             - drop_block
-          type: string
-      required:
-        - prefix_mismatch_behavior
+            - null
+          type:
+            - string
+            - 'null'
       type:
         - object
         - 'null'
@@ -2487,6 +2489,7 @@ components:
     AnthropicSystemClearAt:
       enum:
         - next_user_message
+        - never
         - null
       example: next_user_message
       type:

@@ -13,8 +13,7 @@ path: docs/eleven-agents/customization/llm/optimizing-costs
 Managing Large Language Model (LLM) inference costs is essential for developing sustainable AI applications. This guide outlines key strategies to optimize expenditure on the ElevenLabs platform by effectively utilizing its features. For detailed model capabilities and pricing, refer to our main [LLM documentation](/docs/eleven-agents/customization/llm).
 
 ElevenLabs supports reducing costs by reducing inference of the models during periods of silence.
-These periods are billed at 5% of the usual per minute rate. See [the ElevenAgents overview
-page](/docs/eleven-agents/overview#pricing-during-silent-periods) for more details.
+These periods are billed at 5% of the usual per minute rate. See [the ElevenAgents overview page](/docs/eleven-agents/overview#pricing-during-silent-periods) for more details.
 
 ## Understanding inference costs
 

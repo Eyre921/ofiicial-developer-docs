@@ -10,7 +10,7 @@ path: docs/voice-agent-agent-audio-done
 
 # Agent Audio Done
 
-&#x20;Voice Agent
+Voice Agent
 
 The server sends `AgentAudioDone` immediately after the last audio chunk for an agent utterance. Use this event to mark the end of a server-side stream so you can synchronize follow-up actions with the agent finishing.
 

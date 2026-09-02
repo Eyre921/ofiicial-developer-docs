@@ -71,8 +71,7 @@ Post-processing models require an existing generated output, though you can also
 
 Enterprise workspace admins can control which image and video generation models are available to
 workspace members. By default, all models are disabled for Enterprise workspaces and must be
-explicitly enabled by admins. Learn more about [Model
-approvals](/docs/overview/administration/workspaces/model-approvals).
+explicitly enabled by admins. Learn more about [Model approvals](/docs/overview/administration/workspaces/model-approvals).
 
 For API requests, ByteDance models are disabled by default and require explicit approval before
 use. Enterprise customers can contact support to request access.

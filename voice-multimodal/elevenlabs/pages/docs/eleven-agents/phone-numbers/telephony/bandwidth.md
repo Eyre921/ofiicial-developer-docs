@@ -8,8 +8,7 @@ path: docs/eleven-agents/phone-numbers/telephony/bandwidth
 
 # Bandwidth SIP trunking
 
-Before following this guide, consider reading the [SIP trunking
-guide](/docs/eleven-agents/phone-numbers/sip-trunking) to understand how ElevenLabs supports SIP
+Before following this guide, consider reading the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) to understand how ElevenLabs supports SIP
 trunks.
 
 ## Overview
@@ -52,8 +51,7 @@ Log in to the [Bandwidth App](https://app.bandwidth.com/).
 6. Enter the FQDN provided by ElevenLabs in the field provided. This is typically `sip.rtc.elevenlabs.io`. If your ElevenLabs account uses an isolated data residency region or uses the static SIP infrastructure, use the corresponding SIP endpoint instead. See [data residency](/docs/overview/administration/data-residency) for available regions.
 7. Click **Save** to finish creating the Voice Configuration Package.
 
-Please refer to the [Bandwidth VCP
-documentation](https://dev.bandwidth.com/docs/universal-platform/create-a-vcp) for additional
+Please refer to the [Bandwidth VCP documentation](https://dev.bandwidth.com/docs/universal-platform/create-a-vcp) for additional
 details.
 
 #### Verify E.164 formatting
@@ -113,8 +111,7 @@ Follow the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) 
 
 After importing, assign an agent to the phone number in the [Phone Numbers dashboard](https://elevenlabs.io/app/agents/phone-numbers).
 
-After setting up your Bandwidth SIP trunk, follow the [SIP trunking
-guide](/docs/eleven-agents/phone-numbers/sip-trunking) to complete the configuration in
+After setting up your Bandwidth SIP trunk, follow the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) to complete the configuration in
 ElevenLabs.
 
 ## Troubleshooting

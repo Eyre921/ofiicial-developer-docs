@@ -122,6 +122,11 @@ Returns a Checkout Session object.
 - `allow_promotion_codes` (boolean, optional)
   Enables user redeemable promotion codes.
 
+- `allowed_payment_method_types` (array of enums, optional)
+  A list of the types of payment methods (e.g., `card`) this Checkout Session can accept.
+
+  Unlike `payment_method_types`, this acts as a filter on the dynamically computed set of eligible payment methods rather than an explicit static list. Only payment methods that are both dynamically eligible and present in this list will be offered to the customer.
+
 - [`automatic_tax`](https://docs.stripe.com/api/checkout/sessions/create.md?query=automatic_tax) (object, optional)
   Settings for automatic tax lookup for this session and resulting payments, invoices, and subscriptions.
 

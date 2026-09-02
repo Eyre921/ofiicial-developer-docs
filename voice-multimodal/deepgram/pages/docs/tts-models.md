@@ -12,9 +12,7 @@ path: docs/tts-models
 
 `model` *string*
 
-&#x20;Text to Speech Request
-
-&#x20;Text to Speech Stream
+Text to Speech Request  Text to Speech Stream
 
 Deepgram offers a range of voices for its Aura text-to-speech API, each identified by a unique model name following the format `[modelname]-[voicename]-[language]`.
 

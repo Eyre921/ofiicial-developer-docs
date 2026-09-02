@@ -12,7 +12,6 @@ path: docs/flux/quickstart
 
 Deepgram API Playground
 
-
 Try this feature out in our API Playground.
 
 Flux tackles the most critical challenges for voice agents today: knowing when to listen, when to think, and when to speak. The model features first-of-its-kind model-integrated end-of-turn detection, configurable turn-taking dynamics, and ultra-low latency optimized for voice agent pipelines, all with Nova-3 level accuracy.

@@ -12,13 +12,7 @@ path: docs/stt-tagging
 
 `tag` *string*
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming:Flux
-
-&#x20;All available languages
+Pre-recorded  Streaming:Nova Streaming:Flux  All available languages
 
 Deepgram’s Tagging feature allows you to label your API requests for the purpose of identification during usage reporting. You can also apply tags to API Keys; if you do, any tags applied to the API Key running the API request will also be applied to the request itself.
 

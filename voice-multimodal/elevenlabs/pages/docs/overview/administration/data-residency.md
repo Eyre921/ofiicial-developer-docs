@@ -139,8 +139,7 @@ Data residency is an exclusive feature available to ElevenLabs' Enterprise custo
 #### Can I run my isolated environment in parallel with the non-isolated one?
 
 Yes, it is possible to do this and to bill the usage for both of them on the same invoice. For
-more details on unified billing across multiple workspaces, see [consolidated
-billing](/docs/overview/administration/consolidated-billing).
+more details on unified billing across multiple workspaces, see [consolidated billing](/docs/overview/administration/consolidated-billing).
 
 #### How does this relate to GDPR compliance?
 
@@ -169,8 +168,7 @@ isolated environment.
 #### How do I use an isolated environment in the SDK?
 
 When you create the ElevenLabs client object, it takes an environment parameter which is by
-default US but you can set it to your desired environment. See the [SDK
-configuration](#sdk-configuration) section above for code examples in Python, TypeScript,
+default US but you can set it to your desired environment. See the [SDK configuration](#sdk-configuration) section above for code examples in Python, TypeScript,
 JavaScript, and React.
 
 #### How do I share a PVC from a non-isolated environment to an isolated environment?

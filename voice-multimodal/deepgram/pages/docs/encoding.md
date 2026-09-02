@@ -12,13 +12,7 @@ path: docs/encoding
 
 `encoding` *string*
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming:Flux
-
-&#x20;All available languages
+Pre-recorded  Streaming:Nova Streaming:Flux  All available languages
 
 Encoding is required when raw, headerless audio packets are sent to the streaming service. If containerized audio packets are sent to the streaming service, this feature should not be used.
 

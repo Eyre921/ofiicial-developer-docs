@@ -14,13 +14,7 @@ path: docs/keywords
 
 `keywords` *string*
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming: Flux
-
-&#x20;All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
 
 When using Deepgram’s API to transcribe audio with specialized terminology or uncommon proper nouns, you can provide those words to the model for it to incorporate as possible predictions. This is known as keyword boosting.
 

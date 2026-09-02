@@ -12,12 +12,9 @@ path: docs/text-to-speech
 
 Deepgram API Playground
 
-
 Try this feature out in our API Playground.
 
 \
-
-
 &#x20;Text to Speech Request
 
 This guide will walk you through how to turn text into speech with Deepgram's text-to-speech REST API.

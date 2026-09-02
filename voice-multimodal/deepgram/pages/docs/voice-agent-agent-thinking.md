@@ -10,7 +10,7 @@ path: docs/voice-agent-agent-thinking
 
 # Agent Thinking
 
-&#x20;Voice Agent
+Voice Agent
 
 The `AgentThinking` message is used to inform the client the agent is processing information.
 

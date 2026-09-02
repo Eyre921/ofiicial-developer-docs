@@ -17,5 +17,3 @@ Delete a backup.
       -H "X-Pinecone-Api-Version: 2026-04"
   ```
 </RequestExample>
-
-<ResponseExample />

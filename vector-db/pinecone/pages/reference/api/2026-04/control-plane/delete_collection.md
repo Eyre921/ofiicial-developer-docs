@@ -18,5 +18,3 @@ Serverless indexes do not support collections.
     -H "X-Pinecone-Api-Version: 2026-04"
   ```
 </RequestExample>
-
-<ResponseExample />

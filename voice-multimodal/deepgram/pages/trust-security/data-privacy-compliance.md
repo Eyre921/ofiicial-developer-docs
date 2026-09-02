@@ -18,7 +18,6 @@ Deepgram has achieved SOC 2 Type 1 and Type 2 certification. An independent audi
 
 ## SOC 2 Certificates
 
-
 For access to SOC 2 certificates, please [contact us](https://deepgram.com/contact-us).
 
 ## GDPR
@@ -46,7 +45,6 @@ Deepgram is considered a Business Associate as defined by the US [HIPAA](https:/
 For Deepgram customers who qualify as a Covered Entity under US HIPAA legislation and related legislation and regulations and who provide ePHI (electronic Protected Health Information) to us, Deepgram may qualify as a business associate. We can provide our Business Associate Agreement to such customers upon request.
 
 ## Business Associate Agreement
-
 
 To secure a BAA (Business Associate Agreement) with Deepgram, please [contact us](https://deepgram.com/contact-us).
 

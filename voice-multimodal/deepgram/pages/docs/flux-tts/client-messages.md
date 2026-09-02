@@ -104,12 +104,12 @@ Update synthesis configuration mid-conversation without reconnecting.
 }
 ```
 
-| Field   | Type          | Required | Description                                                                                                                                                                                                         |
-| ------- | ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`  | `"Configure"` | yes      | Message type identifier.                                                                                                                                                                                            |
-| `speed` | enum (number) | no       | Speech-rate multiplier. One of `0.85`, `0.9`, `0.95`, `1.0` (default), `1.05`, `1.1`, `1.15` — `0.05` increments. Not supported for every language; an unsupported model or language returns `SPEED_NOT_SUPPORTED`. |
+| Field   | Type          | Required | Description                                                                                                                                                                         |
+| ------- | ------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`  | `"Configure"` | yes      | Message type identifier.                                                                                                                                                            |
+| `speed` | number        | no       | Speech-rate multiplier. `0.5` to `1.5` in `0.05` increments, defaulting to `1.0`. Not supported for every language; an unsupported model or language returns `SPEED_NOT_SUPPORTED`. |
 
-Updates apply at the **next segment boundary** — the active segment finishes under the prior configuration, and audio already synthesized is never re-generated. The server replies with [`ConfigureSuccess`](/docs/flux-tts/server-messages#configuresuccess--configurefailure) on receipt and validation (not on application), or [`ConfigureFailure`](/docs/flux-tts/server-messages#configuresuccess--configurefailure) (`SPEED_OUT_OF_RANGE` / `SPEED_NOT_SUPPORTED`), which leaves the prior configuration active. Omitted fields keep their current values.
+Updates apply at the **next segment boundary** — the active segment finishes under the prior configuration, and audio already synthesized is never re-generated. The server replies with [`ConfigureSuccess`](/docs/flux-tts/server-messages#configuresuccess--configurefailure) on receipt and validation (not on application), or [`ConfigureFailure`](/docs/flux-tts/server-messages#configuresuccess--configurefailure) (`SPEED_OUT_OF_RANGE` / `SPEED_INCREMENT_INVALID` / `SPEED_NOT_SUPPORTED`), which leaves the prior configuration active. Omitted fields keep their current values.
 
 ## Close
 

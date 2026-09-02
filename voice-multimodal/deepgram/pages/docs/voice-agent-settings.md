@@ -10,7 +10,7 @@ path: docs/voice-agent-settings
 
 # Settings
 
-&#x20;Voice Agent
+Voice Agent
 
 The `Settings` message is a JSON command that serves as an initialization step, setting up both the behavior of the voice agent.
 

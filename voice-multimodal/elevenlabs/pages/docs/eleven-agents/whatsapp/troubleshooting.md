@@ -24,8 +24,7 @@ A `200` response from the outbound message endpoint means ElevenLabs accepted an
 * **Your WABA doesn't appear in the import flow** — confirm you are logged into a Facebook account with admin access to the business portfolio that owns the WABA, then retry the import.
 * **WABAs created under a Meta developer app** cannot be imported through the standard flow.
 
-To check whether another partner already controls your number, open [WhatsApp accounts in Meta
-Business settings](https://business.facebook.com/latest/settings/whatsapp_account), select the
+To check whether another partner already controls your number, open [WhatsApp accounts in Meta Business settings](https://business.facebook.com/latest/settings/whatsapp_account), select the
 WhatsApp account that contains your number, and review its partners. A partner listed there with
 control over the number explains both a failed import and a missing WABA — remove the partner or
 use a different number.
@@ -85,16 +84,14 @@ text-to-speech for voice notes, and LLM usage — through your plan's credits, f
 **Meta** charges separately for WhatsApp fees such as template messages, outbound calls, and
 call permission requests, billed through the payment method in WhatsApp Manager. Rates vary by
 message category and country, and Meta has announced pricing updates taking effect on
-October 1, 2026 — see [Meta's WhatsApp
-pricing](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing) for
+October 1, 2026 — see [Meta's WhatsApp pricing](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing) for
 the rates that apply to your markets.
 
 #### Can I use ElevenLabs alongside another WhatsApp provider?
 
 A number can currently be registered with only one messaging provider. If a third-party
 provider (for example Gupshup) manages your account, it cannot also be imported into
-ElevenLabs. We are working with Meta to enable [Multi-Solution
-Conversations](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/multi-solution-conversations),
+ElevenLabs. We are working with Meta to enable [Multi-Solution Conversations](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/multi-solution-conversations),
 which allows multiple providers on one number.
 
 **Voice through SIP.** If your goal is to keep messaging with your current provider and use an
@@ -102,8 +99,7 @@ ElevenLabs agent for voice, there is a path available today: WhatsApp Business C
 SIP, so a provider that exposes SIP configuration can route your number's WhatsApp calls to an
 ElevenLabs [SIP trunk](/docs/eleven-agents/phone-numbers/sip-trunking). Your provider keeps
 handling messages on the number; calls are answered by your agent over SIP. Whether this works
-depends on your provider supporting SIP call routing — [contact
-us](https://elevenlabs.io/contact-sales) and we can evaluate your setup.
+depends on your provider supporting SIP call routing — [contact us](https://elevenlabs.io/contact-sales) and we can evaluate your setup.
 
 If you run your own WhatsApp app on the same account (rather than a third-party provider), you
 can already configure ElevenLabs to handle calls only: turn off the ***Enable messaging***
@@ -129,8 +125,7 @@ attribution matters for your use case, [contact us](https://elevenlabs.io/contac
 
 #### How do I send verification codes (OTP)?
 
-Use a Utility template with the code as a body parameter, sent through the [outbound message
-endpoint](/docs/eleven-agents/whatsapp/outbound). Meta's Authentication template category
+Use a Utility template with the code as a body parameter, sent through the [outbound message endpoint](/docs/eleven-agents/whatsapp/outbound). Meta's Authentication template category
 (with copy-code buttons) is not yet specially supported.
 
 #### Who is the technology provider for my WhatsApp account?

@@ -133,8 +133,7 @@ DTMF input lets callers enter digits on their phone keypad during a call. Use it
 This is the inverse of the [play keypad touch tone](/docs/eleven-agents/customization/tools/system-tools/play-keypad-touch-tone) system tool, which sends tones from the agent.
 
 Only out-of-band DTMF from
-[Twilio](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration), [SIP
-trunking](/docs/eleven-agents/phone-numbers/sip-trunking) (Telephony), or
+[Twilio](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration), [SIP trunking](/docs/eleven-agents/phone-numbers/sip-trunking) (Telephony), or
 [Genesys](/docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys) is supported. In-band
 tones in the audio stream are ignored. The web widget and chat channels cannot send DTMF.
 

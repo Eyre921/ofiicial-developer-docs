@@ -12,11 +12,7 @@ path: docs/tts-encoding
 
 `encoding` *string*Default: `mp3`
 
-&#x20;Text to Speech Request
-
-&#x20;Text to Speech Stream
-
-&#x20;English Only
+Text to Speech Request  Text to Speech Stream  English Only
 
 The Encoding feature gives users the ability to specify the desired format of the resulting text-to-speech audio output.
 

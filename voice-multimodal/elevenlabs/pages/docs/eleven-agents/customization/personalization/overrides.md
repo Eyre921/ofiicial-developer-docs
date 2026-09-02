@@ -9,8 +9,7 @@ path: docs/eleven-agents/customization/personalization/overrides
 # Overrides
 
 While overrides are still supported for completely replacing system prompts or first messages, we
-recommend using [Dynamic
-Variables](/docs/eleven-agents/customization/personalization/dynamic-variables) as the preferred
+recommend using [Dynamic Variables](/docs/eleven-agents/customization/personalization/dynamic-variables) as the preferred
 way to customize your agent's responses and inject real-time data. Dynamic Variables offer better
 maintainability and a more structured approach to personalization.
 
@@ -70,7 +69,7 @@ For security reasons, overrides are disabled by default. Enable the fields you w
 
 Navigate to your agent's settings and select the **Security** tab. Enable the `First message`, `System prompt`, `Tools`, `Knowledge base`, `ASR keywords`, and any other overrides you need, such as `LLM`.
 
-![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779/assets/images/conversational-ai/enable-overrides.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T222154Z&X-Amz-Expires=604800&X-Amz-Signature=eb7ce71f4f495e23d41c6fdc545781167eb24499cb37f701ea06954c85d0d7c3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779/assets/images/conversational-ai/enable-overrides.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T070932Z&X-Amz-Expires=604800&X-Amz-Signature=ae790dc195021ad7a9baf4873180f7d581adc526db5cbbf1dda6815868e8522f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 

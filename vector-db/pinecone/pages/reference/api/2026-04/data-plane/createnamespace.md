@@ -37,31 +37,3 @@ For guidance and examples, see [Manage namespaces](https://docs.pinecone.io/guid
         }'
   ```
 </RequestExample>
-
-<ResponseExample>
-  ```json curl theme={null}
-  {
-      "name": "example-namespace",
-      "record_count": "0",
-      "schema": {
-          "fields": {
-              "document_title": {
-                  "filterable": true
-              },
-              "document_url": {
-                  "filterable": true
-              },
-              "chunk_number": {
-                  "filterable": true
-              },
-              "document_id": {
-                  "filterable": true
-              },
-              "created_at": {
-                  "filterable": true
-              }
-          }
-      }
-  }
-  ```
-</ResponseExample>

@@ -18,8 +18,7 @@ These techniques provide a practical way to achieve nuanced results until advanc
 
 ### Pauses
 
-Eleven v3 does not support SSML break tags. Use the techniques described in the [Prompting Eleven
-v3](#prompting-eleven-v3) section for controlling pauses with v3.
+Eleven v3 does not support SSML break tags. Use the techniques described in the [Prompting Eleven v3](#prompting-eleven-v3) section for controlling pauses with v3.
 
 Use `<break time="x.xs" />` for natural pauses up to 3 seconds.
 
@@ -593,7 +592,7 @@ to use v3 features.
 The stability slider is the most important setting in v3, controlling how closely the generated voice adheres to the original reference audio.
 
 ![Stability settings in Eleven
-v3](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/291b91ec752d09b8c87004ae7091811eb8b5996c349288c88ed0c7afa1272999/assets/images/product-guides/text-to-speech/text-to-speech-v3-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T082952Z&X-Amz-Expires=604800&X-Amz-Signature=efb09bb99b19aede19f7ca53c750de5b957f9b7ad3dd566e797a649414d39cc1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+v3](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/291b91ec752d09b8c87004ae7091811eb8b5996c349288c88ed0c7afa1272999/assets/images/product-guides/text-to-speech/text-to-speech-v3-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T112939Z&X-Amz-Expires=604800&X-Amz-Signature=30d83f5c25d0eff3ad68febce13c15c8b26604222c4e4a6966c150c6afa3c376&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * **Creative:** More emotional and expressive, but prone to hallucinations.
 * **Natural:** Closest to the original voice recording—balanced and neutral.

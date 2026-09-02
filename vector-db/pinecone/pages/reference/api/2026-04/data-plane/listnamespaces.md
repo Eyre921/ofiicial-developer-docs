@@ -25,24 +25,3 @@ For guidance and examples, see [Manage namespaces](https://docs.pinecone.io/guid
       -H "X-Pinecone-Api-Version: 2026-04"
   ```
 </RequestExample>
-
-<ResponseExample>
-  ```json curl theme={null}
-  {
-    "namespaces": [
-      {
-        "name": "example-namespace",
-        "record_count": 20000
-      },
-      {
-        "name": "example-namespace2",
-        "record_count": 10500
-      },
-      ...
-    ],
-    "pagination": {
-      "next": "Tm90aGluZyB0byBzZWUgaGVyZQo="
-    }
-  }
-  ```
-</ResponseExample>

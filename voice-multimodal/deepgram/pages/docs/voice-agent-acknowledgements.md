@@ -10,7 +10,7 @@ path: docs/voice-agent-acknowledgements
 
 # Acknowledgements
 
-&#x20;Voice Agent
+Voice Agent
 
 When the client sends an [`UpdateListen`](/docs/voice-agent-update-listen), [`UpdateThink`](/docs/voice-agent-update-think), [`UpdateSpeak`](/docs/voice-agent-update-speak), or [`UpdatePrompt`](/docs/voice-agent-update-prompt) message, the server applies the change and replies with a corresponding acknowledgement event. The new configuration takes effect immediately and applies to every subsequent request.
 

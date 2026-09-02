@@ -66,8 +66,7 @@ Using your own custom LLM is supported by specifying the endpoint we should make
 
 With EU data residency enabled, a small number of older Gemini and Claude LLMs are not available
 in ElevenLabs Agents to maintain compliance with EU data residency. Custom LLMs and OpenAI LLMs
-remain fully available. For more information please see [GDPR and data
-residency](/docs/overview/administration/data-residency).
+remain fully available. For more information please see [GDPR and data residency](/docs/overview/administration/data-residency).
 
 ## Choosing a model
 

@@ -10,7 +10,7 @@ path: docs/voice-agent-function-call-request
 
 # Function Call Request
 
-&#x20;Voice Agent
+Voice Agent
 
 The Voice Agent server sends `FunctionCallRequest` to request a function call. The `client_side` flag determines whether the server executes the function or expects the client to.
 

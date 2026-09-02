@@ -10,7 +10,7 @@ path: docs/voice-agent-conversation-text
 
 # Conversation Text
 
-&#x20;Voice Agent
+Voice Agent
 
 The `ConversationText` message is a JSON message that will be sent as a user interacts with the agent.
 

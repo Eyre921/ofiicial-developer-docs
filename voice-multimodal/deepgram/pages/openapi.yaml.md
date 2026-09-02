@@ -611,7 +611,9 @@ paths:
               type: string
         - name: keywords
           in: query
-          description: Keywords can boost or suppress specialized terminology and brands
+          description: >-
+            Keywords can boost or suppress specialized terminology and brands. `keywords` is not supported with Nova-3
+            models; use `keyterm` instead.
           required: false
           schema:
             $ref: '#/components/schemas/V1ListenPostParametersKeywords'
@@ -3158,11 +3160,14 @@ paths:
           in: query
           description: >-
             Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and
-            voice quality. Accepted values run `0.85` to `1.15` in `0.05` increments. Not yet supported in all
-            languages.
+            voice quality. Accepted values run `0.5` to `1.5` in `0.05` increments. Not yet supported in all languages.
           required: false
           schema:
-            $ref: '#/components/schemas/V2SpeakPostParametersSpeed'
+            type: number
+            format: double
+            minimum: 0.5
+            maximum: 1.5
+            multipleOf: 0.05
             default: 1
         - name: priority
           in: query
@@ -6136,17 +6141,6 @@ components:
         - $ref: '#/components/schemas/V2SpeakPostParametersSampleRate2'
         - $ref: '#/components/schemas/V2SpeakPostParametersSampleRate3'
       title: V2SpeakPostParametersSampleRate
-    V2SpeakPostParametersSpeed:
-      type: string
-      enum:
-        - '0.85'
-        - '0.9'
-        - '0.95'
-        - '1'
-        - '1.05'
-        - '1.1'
-        - '1.15'
-      title: V2SpeakPostParametersSpeed
     V2SpeakPostParametersPriority:
       type: string
       enum:

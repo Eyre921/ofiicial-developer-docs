@@ -12,11 +12,7 @@ path: docs/endpointing
 
 `endpointing` *string*.
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-&#x20;All available languages
+Pre-recorded  Streaming:Nova  All available languages
 
 Deepgram’s Endpointing feature can be used for speech detection by monitoring incoming streaming audio and relies on a Voice Activity Detector (VAD), which monitors the incoming audio and triggers when a sufficiently long pause is detected.
 

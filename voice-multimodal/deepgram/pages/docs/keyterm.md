@@ -12,11 +12,7 @@ path: docs/keyterm
 
 `keyterm` *string*
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming:Flux
+Pre-recorded  Streaming:Nova Streaming:Flux
 
 Instantly increase accuracy and recognition of up to 100 important terminology, product and company names, industry jargon, phrases and more.
 

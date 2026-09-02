@@ -12,11 +12,7 @@ path: docs/interim-results
 
 `interim_results` *boolean*. Default: `false`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-&#x20;All available languages
+Pre-recorded  Streaming:Nova  All available languages
 
 Deepgram’s Interim Results monitors streaming audio and provides interim transcripts, which are preliminary results provided during the real-time streaming process which can help with speech detection.
 

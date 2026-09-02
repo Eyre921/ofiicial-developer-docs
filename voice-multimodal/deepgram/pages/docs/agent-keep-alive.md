@@ -10,7 +10,7 @@ path: docs/agent-keep-alive
 
 # Agent Keep Alive
 
-&#x20;Voice Agent
+Voice Agent
 
 `KeepAlive` is a JSON message you send to the server to keep an idle WebSocket open. The server closes connections that go silent, so when you stop streaming audio for an extended period, send `KeepAlive` to hold the session.
 

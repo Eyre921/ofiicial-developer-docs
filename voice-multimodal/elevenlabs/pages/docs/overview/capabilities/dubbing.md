@@ -20,11 +20,7 @@ We also offer a [fully managed dubbing service](https://elevenlabs.io/elevenstud
 
 ## Usage
 
-* **[Automatic Dubbing](https://elevenlabs.io/app/dubbing)** — Dub content from one language into another with a few clicks, powered by the latest Dubbing v2&#x20;
-
-  Alpha
-
-  &#x20;model.
+* **[Automatic Dubbing](https://elevenlabs.io/app/dubbing)** — Dub content from one language into another with a few clicks, powered by the latest Dubbing v2 Alpha model.
   * **Upload limits:** Up to 1 GB and 180 minutes in the app, or 3 GB per source file via the API
 * **[Dubbing Studio](/docs/eleven-creative/products/dubbing/dubbing-studio)** — Granular control over your dubs, including transcript editing, speaker reassignment, and per-clip regeneration. Only available via the v1 model.
   * **Upload limits:** Up to 1 GB and 45 minutes
@@ -41,11 +37,7 @@ Learn how to integrate dubbing into your application.
 
 ### Cloning strength
 
-Cloning strength is the configurable setting in Automatic Dubbing on the Dubbing v2&#x20;
-
-Alpha
-
-&#x20;model, on a scale of 0 to 10. In the app it appears as **Speaker similarity** under **Advanced**. The default value of 7 works well for most content. Higher values prioritize voice similarity to the original speaker, which can sound less natural across languages with very different phonetic characteristics. A higher setting can also carry over more of the original accent into the dubbed output. Lower values give the model more freedom for natural delivery in the target language at the cost of resemblance to the original voice.
+Cloning strength is the configurable setting in Automatic Dubbing on the Dubbing v2 Alpha model, on a scale of 0 to 10. In the app it appears as **Speaker similarity** under **Advanced**. The default value of 7 works well for most content. Higher values prioritize voice similarity to the original speaker, which can sound less natural across languages with very different phonetic characteristics. A higher setting can also carry over more of the original accent into the dubbed output. Lower values give the model more freedom for natural delivery in the target language at the cost of resemblance to the original voice.
 
 ### Key features
 
@@ -261,11 +253,7 @@ Dubbing v1 supports the same languages as the Eleven v3 model. Region-qualified 
 
 ## Key facts
 
-* **Dubbing v2**&#x20;
-
-  Alpha
-
-  &#x20;— Dubbing v2 is currently in alpha. You may encounter occasional rough edges as we continue to improve the model.
+* **Dubbing v2** Alpha — Dubbing v2 is currently in alpha. You may encounter occasional rough edges as we continue to improve the model.
 * **Content types:** All audio and video content types are supported, with up to 32 unique speakers per file.
 * **Speaker preservation:** Each speaker's tone, pace, and style is preserved in the target language.
 * **Concurrency:** All self-serve plans (Free, Starter, Creator, Pro, Scale, Business) allow up to 3 concurrent dubbing jobs, and Enterprise plans default to 10. Limits are applied per workspace and counted per model, so v1 and v2 jobs do not share a pool. If you hit a limit, you will receive a `too_many_concurrent_requests` error and should wait for existing jobs to complete before starting new ones.

@@ -63,5 +63,4 @@ Deepgram calculates usage based on WebSocket connection time. One hour of connec
 
 Deepgram API Playground
 
-
 Try this feature out in our API Playground.

@@ -12,7 +12,7 @@ path: docs/text-intelligence-callback
 
 `callback` *string*
 
-&#x20;Text Intelligence
+Text Intelligence
 
 Deepgram’s Callback feature allows you to supply a callback URL to which text can be returned. When passed, Deepgram will immediately respond with a `request_id` before processing your text asynchronously.
 

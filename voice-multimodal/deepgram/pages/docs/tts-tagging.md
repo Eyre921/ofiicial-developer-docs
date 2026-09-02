@@ -12,11 +12,7 @@ path: docs/tts-tagging
 
 `tag` *string*
 
-&#x20;Text to Speech Request
-
-&#x20;Text to Speech Stream
-
-&#x20;All available languages
+Text to Speech Request  Text to Speech Stream  All available languages
 
 Deepgram's Tagging feature allows you to label your Text-to-Speech API requests for the purpose of identification during usage reporting. You can also apply tags to API Keys; if you do, any tags applied to the API Key running the API request will also be applied to the request itself.
 

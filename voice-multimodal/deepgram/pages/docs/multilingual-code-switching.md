@@ -12,11 +12,7 @@ path: docs/multilingual-code-switching
 
 `language` *string* Option: `multi`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-&#x20;Specific languages only
+Pre-recorded  Streaming:Nova  Specific languages only
 
 The Multilingual Codeswitching feature in Deepgram's API allows you to transcribe conversations where speakers switch between multiple languages. This guide will walk you through enabling this feature, how to use it with cURL, and how to analyze and interpret the response.
 

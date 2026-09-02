@@ -9,10 +9,10 @@ Create, describe, list, and delete namespaces in Pinecone serverless indexes, in
 ## Create a namespace
 
 <Note>
-  This feature is available only on the `2025-10` version of the API.
+  This feature requires the `2025-10` version of the API or later.
 </Note>
 
-Namespaces are created automatically as you [upsert](/guides/index-data/upsert-data) records. However, you can also create namespaces ahead of time using the [`create_namespace`](/reference/api/2025-10/data-plane/createnamespace) operation. Specify a name for the namespace and, optionally, the [metadata fields to index](/guides/index-data/create-an-index#metadata-indexing).
+Namespaces are created automatically as you [upsert](/guides/index-data/upsert-data) records. However, you can also create namespaces ahead of time using the [`create_namespace`](/reference/api/latest/data-plane/createnamespace) operation. Specify a name for the namespace and, optionally, the [metadata fields to index](/guides/index-data/create-an-index#metadata-indexing).
 
 <CodeGroup>
   ```python Python theme={null}
@@ -165,7 +165,7 @@ Namespaces are created automatically as you [upsert](/guides/index-data/upsert-d
     -H "Accept: application/json" \
     -H "Content-Type: application/json" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-04" \
     -d '{
           "name": "example-namespace",
           "schema": {
@@ -183,31 +183,38 @@ Namespaces are created automatically as you [upsert](/guides/index-data/upsert-d
 
 The response will look like the following:
 
-```json theme={null}
-{
-    "name": "example-namespace",
-    "record_count": "0",
-    "schema": {
-        "fields": {
-            "document_title": {
-                "filterable": true
-            },
-            "document_url": {
-                "filterable": true
-            },
-            "chunk_number": {
-                "filterable": true
-            },
-            "document_id": {
-                "filterable": true
-            },
-            "created_at": {
-                "filterable": true
-            }
-        }
-    }
-}
-```
+<CodeGroup>
+  ```json curl theme={null}
+  {
+      "name": "example-namespace",
+      "record_count": "0",
+      "size_bytes": "0",
+      "schema": {
+          "fields": {
+              "document_title": {
+                  "filterable": true
+              },
+              "document_url": {
+                  "filterable": true
+              },
+              "chunk_number": {
+                  "filterable": true
+              },
+              "document_id": {
+                  "filterable": true
+              },
+              "created_at": {
+                  "filterable": true
+              }
+          }
+      }
+  }
+  ```
+</CodeGroup>
+
+<Note>
+  `size_bytes` is approximate, so a value of `0` doesn't always mean the namespace is empty. Data written before size tracking reads as `0`, and recently deleted data can still be counted until compaction rewrites the underlying files.
+</Note>
 
 ## List all namespaces in an index
 
@@ -334,7 +341,7 @@ Up to 100 namespaces are returned at a time by default, in sorted order (bitwise
 
   curl -X GET "https://$INDEX_HOST/namespaces" \
       -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2025-10"
+      -H "X-Pinecone-Api-Version: 2026-04"
   ```
 </CodeGroup>
 
@@ -361,8 +368,8 @@ The response will look like the following:
   ```javascript JavaScript theme={null}
   {
     namespaces: [
-      { name: 'example-namespace', recordCount: '20000' },
-      { name: 'example-namespace2', recordCount: '10500' },
+      { name: 'example-namespace', recordCount: '20000', sizeBytes: '1048576' },
+      { name: 'example-namespace2', recordCount: '10500', sizeBytes: '550502' },
       ...
     ],
     pagination: "Tm90aGluZyB0byBzZWUgaGVyZQo="
@@ -407,11 +414,13 @@ The response will look like the following:
     "namespaces": [
       {
         "name": "example-namespace",
-        "record_count": 20000
+        "record_count": "20000",
+        "size_bytes": "1048576"
       },
       {
         "name": "example-namespace2",
-        "record_count": 10500
+        "record_count": "10500",
+        "size_bytes": "550502"
       },
       ...
     ],
@@ -526,7 +535,7 @@ Use the [`describe_namespace`](/reference/api/latest/data-plane/describenamespac
 
   curl -X GET "https://$INDEX_HOST/namespaces/$NAMESPACE" \
       -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2025-10"
+      -H "X-Pinecone-Api-Version: 2026-04"
   ```
 </CodeGroup>
 
@@ -541,7 +550,7 @@ The response will look like the following:
   ```
 
   ```javascript JavaScript theme={null}
-  { name: 'example-namespace', recordCount: '20000' }
+  { name: 'example-namespace', recordCount: '20000', sizeBytes: '1048576' }
   ```
 
   ```java Java theme={null}
@@ -559,10 +568,15 @@ The response will look like the following:
   ```json curl theme={null}
   {
     "name": "example-namespace",
-    "record_count": 20000
+    "record_count": "20000",
+    "size_bytes": "1048576"
   }
   ```
 </CodeGroup>
+
+<Note>
+  The Python, Java, and Go SDKs don't return `size_bytes` yet, so it appears in the curl and JavaScript responses only.
+</Note>
 
 ## Delete a namespace
 
@@ -666,7 +680,7 @@ Use the [`delete_namespace`](/reference/api/latest/data-plane/deletenamespace) o
 
   curl -X DELETE "https://$INDEX_HOST/namespaces/$NAMESPACE" \
       -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2025-10"
+      -H "X-Pinecone-Api-Version: 2026-04"
   ```
 </CodeGroup>
 

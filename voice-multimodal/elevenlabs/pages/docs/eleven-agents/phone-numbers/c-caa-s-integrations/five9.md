@@ -8,8 +8,7 @@ path: docs/eleven-agents/phone-numbers/c-caa-s-integrations/five9
 
 # Five9
 
-Before following this guide, consider reading the [SIP trunking
-guide](/docs/eleven-agents/phone-numbers/sip-trunking) to understand how ElevenLabs supports SIP
+Before following this guide, consider reading the [SIP trunking guide](/docs/eleven-agents/phone-numbers/sip-trunking) to understand how ElevenLabs supports SIP
 trunks and custom SIP headers.
 
 ## Overview
@@ -86,8 +85,7 @@ Five9 can send call metadata as SIP `X-` headers on the INVITE. Header names are
 Use these variables in agent prompts, first messages, and tools to personalize the conversation.
 
 The reserved headers `X-Call-ID` and `X-Caller-ID` map to the `system__call_sid` and
-`system__caller_id` [system dynamic
-variables](/docs/eleven-agents/customization/personalization/dynamic-variables#system-dynamic-variables).
+`system__caller_id` [system dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables#system-dynamic-variables).
 Five9 sends the unhyphenated `X-CallID` and `X-CallANI`, which normalize to `sip_callid` and
 `sip_callani` instead. Confirm which variables are populated during test calls before referencing
 them in prompts.

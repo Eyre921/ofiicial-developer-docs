@@ -58,9 +58,9 @@ For more information on payment methods, please refer to the [Help Center](/docs
 
 Credits were previously referred to as "characters." We updated this terminology to streamline pricing and make it easier to understand, though the value remains unchanged.
 
-Credits can be used across our platform. The number of credits used depends on your plan, whether you're generating via the website or API, the product you’re using, and the model. For full details, see our[ Pricing page. ](https://elevenlabs.io/pricing)
+Credits can be used across our platform. The number of credits used depends on your plan, whether you're generating via the website or API, the product you’re using, and the model. For full details, see our[ Pricing page. ](https://elevenlabs.io/pricing)
 
- 
+
 
 **Credit Allocation and Rollover**
 
@@ -70,23 +70,21 @@ For enterprise annual plans, you will receive a yearly credit allocation upfront
 
 If you downgrade or cancel your subscription, this does not take effect until the end of your current billing cycle, and unused credits are not rolled over.
 
- 
+
 
 **Pay As You Go**
 
-Pay As You Go (PAYG) allows you to prepay for credits without committing to a monthly subscription, or buy additional credits if you run out of your subscription credits. For full details, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
+Pay As You Go (PAYG) allows you to prepay for credits without committing to a monthly subscription, or buy additional credits if you run out of your subscription credits. For full details, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
 If you change subscription plans, your PAYG credit balance may be adjusted because credits are
-stored as a dollar value and converted at your current plan's rate. See [What happens to my PAYG
-credits if I change subscription
-plans?](/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans)
+stored as a dollar value and converted at your current plan's rate. See [What happens to my PAYG credits if I change subscription plans?](/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans)
 for details.
 
 #### What happens when I run out of credits?
 
-New subscriptions have the option of purchasing Pay As You Go credits. These credits last for 12 months, and will be used if you run out of credits from your monthly quota. 
+New subscriptions have the option of purchasing Pay As You Go credits. These credits last for 12 months, and will be used if you run out of credits from your monthly quota.
 
-Pay As You Go is not available on Enterprise and legacy subscriptions. If you run out of credits on a legacy Starter plan, you’ll need to wait until your current billing cycle renews for your credits to reset. Alternatively, you can upgrade to a higher plan at any time. You can also set your subscription to cancel - when the cancellation takes effect at the end of your current billing cycle, you'll be able to resubscribe to our new Starter subscription with the option of Pay As You Go. 
+Pay As You Go is not available on Enterprise and legacy subscriptions. If you run out of credits on a legacy Starter plan, you’ll need to wait until your current billing cycle renews for your credits to reset. Alternatively, you can upgrade to a higher plan at any time. You can also set your subscription to cancel - when the cancellation takes effect at the end of your current billing cycle, you'll be able to resubscribe to our new Starter subscription with the option of Pay As You Go.
 
 On Enterprise and legacy Creator, Pro, Scale, and Business plans, you can enable usage based billing. This allows you to pay for additional credits once you've used all of your included monthly credits. Usage based billing is typically charged at the end of each billing cycle. However, if your usage based charges exceed twice your monthly subscription fee, we will charge you immediately for the outstanding balance.
 
@@ -157,9 +155,9 @@ If you still have issues, please contact Support by emailing [team@elevenlabs.io
 
 #### Can I pause my subscription?
 
-It's not possible to pause your paid subscription, but when you cancel your paid subscription, your account will be transferred to the free plan at the end of your current billing cycle.    
+It's not possible to pause your paid subscription, but when you cancel your paid subscription, your account will be transferred to the free plan at the end of your current billing cycle.
 
-While you're on the free plan, you will not have access to certain features such as voice cloning, but nothing will be deleted from your account unless you choose to remove it yourself.  
+While you're on the free plan, you will not have access to certain features such as voice cloning, but nothing will be deleted from your account unless you choose to remove it yourself.
 
 You can resubscribe at any time any time from your [Subscription](https://elevenlabs.io/app/subscription) page.  Once you resubscribe, you will regain access to the features available to your new plan, including any content saved on your account.
 
@@ -169,7 +167,7 @@ Yes, we offer annual plans for all of our subscription tiers. At the moment, we 
 
 On our [pricing page](https://elevenlabs.io/pricing) and [subscription page](https://elevenlabs.io/app/subscription), you can toggle between monthly and annual plans to see the different pricing and options available.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5061fc9c3052f020d44e9760a4887a4bb972e4b02b959d9ad68414cb4a2e1730/assets/images/help-center/account/payment-billing/do-you-offer-annual-or-quarterly-plans.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T155947Z&X-Amz-Expires=604800&X-Amz-Signature=40a182965c031f15f0d1b8a852fe13d2e6b288b360a064250680540bdc54a074&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5061fc9c3052f020d44e9760a4887a4bb972e4b02b959d9ad68414cb4a2e1730/assets/images/help-center/account/payment-billing/do-you-offer-annual-or-quarterly-plans.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T102253Z&X-Amz-Expires=604800&X-Amz-Signature=1c31ae9730073109380b276af1387a86641d9a105a2f7670d652fc64feb8a6c5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Annual plans are billed on an annual cycle and will renew automatically unless cancelled.
 
@@ -232,23 +230,23 @@ The updated details will be applied automatically to all future invoices.
 
 ElevenLabs accepts Apple Pay, but there are a few requirements for it to show at checkout.
 
-##  
+##
 
 ## Apple Pay is only available in certain countries
 
-##  
+##
 
 ## Safari browser on an Apple Device is required
 
 > The one browser exception is, starting with iOS 16, it's also possible to checkout with Apple Pay on Chrome and Firefox. On iOS other browsers still use Safari's WebKit rendering engine This is not true on Mac, so Safari is the only way to checkout with Apple Pay on Mac computers. It is not possible to add Apple Pay as a payment method on Windows, Android, or Linux operating systems. Apple devices only.
 
-##  
+##
 
 ## Ensure that a valid card is added to Apple Pay
 
 > Apple Pay checkout will not be available unless a valid card is already saved to your Apple Pay account. The device you are paying from must be using the same Apple ID as the Apple Pay account. You won't be able to use your Apple Pay account from someone's else's device.
 
-##  
+##
 
 ## Apple Pay may not be available on older devices
 
@@ -262,69 +260,69 @@ ElevenLabs accepts Apple Pay, but there are a few requirements for it to show at
 
 ElevenLabs accepts Google Pay, but there are a few requirements for it to show at checkout.
 
- 
+
 
 ## Google Pay is only available in certain countries
 
 Currently, Google Pay is not available in India.
 
-##  
+##
 
 ## Google Chrome browser is required
 
 > Google Pay is not integrated with other web browsers, so the Google Pay button will only show at checkout if you are using Google Chrome. Google Pay is unavailable in Google Chrome for Apple iOS. It will not be possible to add Google Pay as a payment method using an iPhone or iPad (Mac computer is fine). **Do not use an incognito window** By default Google Pay will not be available in an incognito window. It is possible to get it working, but enabling in incognito mode is not covered here.
 
- 
+
 
 ## Sign in with the correct Google Account
 
 > Prior to checking out, log in to the Google account that is associated with the Google Pay account you intend to use for the transaction.
 
- 
+
 
 ## Check payment settings in Google Chrome
 
 > The Google Pay button will not show if certain payment settings are disabled in Chrome. **Chrome for desktop** Open Chrome settings and click Autofill in the menu followed by "Payment methods". Enable both "Save and fill payment methods" and "Allow sites to check if you have payment methods saved" **Chrome for Android phones & tablets** Open Chrome settings and tap on "Payment methods". Enable "Save and fill payment methods".
 
- 
+
 
 ## Ensure that a valid card is added to Google Pay
 
 > Google Pay checkout will not be available unless a valid card is already saved to your Google Pay account.
 
- 
+
 
 ## Google Pay may not be available on older devices
 
 > If your device and/or Google Chrome are not on the latest update available, updating might allow you to checkout with Google Pay.
 
- 
+
 
 **Additional Google Pay troubleshooting info**
 
 > Google Pay checkout may not be available or Google may not be able to verify your card if you are connected to a VPN or using a rooted device. If you do not know what "rooted" means, it is safe to say that it does not apply to you.
 
- 
+
 
 ### It may take up to 5 minutes for Google Pay checkout to become available after meeting the requirements listed above.
 
 The screenshots below show the browser payment settings to enable in Chrome for desktop & mobile as well as how the Google Chrome button will appear at checkout when all requirements have been met.
 
- 
 
- 
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b4dfe694da01f17db72c894b6fcf7a565de0835f6f2bb743e91e8c578aa99b8/assets/images/help-center/account/payment-billing/elevenlabs-googlepay.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T155947Z&X-Amz-Expires=604800&X-Amz-Signature=cb7820ee093aff9555cc157d5368dc44b1120f6dba1676a323abfe2b06c8bebd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
- 
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa530c55277c6b502d5a8d972c7794ec26d7e6aac1bd43b0691b5bd0b8f55be5/assets/images/help-center/account/payment-billing/elevenlabs-chrome-desktop-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T155947Z&X-Amz-Expires=604800&X-Amz-Signature=516f423f5fbc24c9430901dcdcd986efaa48dfd21351b11f15f904a8b1379de8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b4dfe694da01f17db72c894b6fcf7a565de0835f6f2bb743e91e8c578aa99b8/assets/images/help-center/account/payment-billing/elevenlabs-googlepay.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T102253Z&X-Amz-Expires=604800&X-Amz-Signature=00ce137f16550c6ad15e666697465f458960d823ab374b946ded4edbe7fb3fea&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
- 
 
- 
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25f3fa160ce62ea0879b21a3e5db0beee14ebb8e5055c74abb0b17e0568dfa6f/assets/images/help-center/account/payment-billing/elevenlabs-chrome-mobile-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T155947Z&X-Amz-Expires=604800&X-Amz-Signature=f75aa6c8458711f0d77b3b49567eb2266e8c3e2f757e626d1120bad4e75be80f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa530c55277c6b502d5a8d972c7794ec26d7e6aac1bd43b0691b5bd0b8f55be5/assets/images/help-center/account/payment-billing/elevenlabs-chrome-desktop-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T102253Z&X-Amz-Expires=604800&X-Amz-Signature=01f7661b646a799968ccc55fb020862d0eaf2d84b484cb13a1b185f254e7e2c3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+
+
+
+
+
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25f3fa160ce62ea0879b21a3e5db0beee14ebb8e5055c74abb0b17e0568dfa6f/assets/images/help-center/account/payment-billing/elevenlabs-chrome-mobile-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T102253Z&X-Amz-Expires=604800&X-Amz-Signature=aa6bdc85b09aa74c4cc5690cf7f9c9590b73cebae65cc0812f33aa0bdc276e8e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Can I pay for my ElevenLabs subscription in INR?
 
@@ -342,9 +340,9 @@ There’s no difference in pricing structure or available plans - only the billi
 
 Usage based billing is a legacy feature, and is not available on new self-serve subscriptions. Enterprise contracts remain on overage-based billing and are not affected by this change.
 
-For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
+For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
-On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota. For full details on how to enable this feature, please see [How do I enable usage based billing for my account?](/docs/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account) 
+On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota. For full details on how to enable this feature, please see [How do I enable usage based billing for my account?](/docs/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account)
 
 To allow for more control over charges, usage based billing has a maximum number of credits that can be used. You can set this threshold yourself when you enable usage based billing. For a guide on how to do this, please see [How do I change the usage based billing threshold for my account?](/docs/help-center/account/general/how-do-i-change-the-usage-based-billing-threshold-for-my-account)
 
@@ -358,9 +356,9 @@ Usage based billing offers a fixed price for each additional 1,000 credits used 
 
 Usage based billing is a legacy feature, and is not available on new self-serve subscriptions. Enterprise contracts remain on overage-based billing and are not affected by this change.
 
-For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
+For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df/assets/images/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T155947Z&X-Amz-Expires=604800&X-Amz-Signature=a48d038fd602e36e7ac9417fd3e8c8dc04a24d776ed8d71d68147cb2b3a27a9a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df/assets/images/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T102253Z&X-Amz-Expires=604800&X-Amz-Signature=aa05927aa1f9e66a4bfeb54447da35e592e55bcccb00fe232ae90045895598b1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. If you're on an eligible plan, here’s how to enable usage based billing for your account:
 
@@ -388,11 +386,11 @@ For more information about usage based billing, please see:
 
 Usage based billing is a legacy feature, and is not available on new self-serve subscriptions. Enterprise contracts remain on overage-based billing and are not affected by this change.
 
-For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
+For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
-On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota. 
+On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656/assets/images/help-center/account/general/how-do-i-change-the-usage-based-billing-threshold-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260901%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260901T155947Z&X-Amz-Expires=604800&X-Amz-Signature=e769d99b555c245218945677bd51da42c7fca2480736f02ea185d8ceae80383f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656/assets/images/help-center/account/general/how-do-i-change-the-usage-based-billing-threshold-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T102253Z&X-Amz-Expires=604800&X-Amz-Signature=eed48805628f59b2a5871c811c86015dec221416490bd4bc866841e94aaf1c43&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 To allow for more control over charges, usage based billing lets you set a maximum number of additional credits that can be used on your account. You can set this threshold when you enable usage based billing, or adjust it at any time.
 

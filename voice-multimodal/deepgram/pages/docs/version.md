@@ -12,9 +12,7 @@ path: docs/version
 
 `version` *string* Default: `latest`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
+Pre-recorded  Streaming:Nova
 
 Deepgram’s Version feature allows you to specify the version of the model you want to use to process your submitted audio.
 

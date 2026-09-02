@@ -12,7 +12,6 @@ path: docs/sentiment-analysis
 
 Deepgram API Playground
 
-
 Try this feature out in our API Playground.
 
 \
@@ -20,11 +19,7 @@ Try this feature out in our API Playground.
 
 `sentiment` *boolean*   Default: `false`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-&#x20;English (all available regions)
+Pre-recorded  Streaming:Nova  English (all available regions)
 
 Deepgram's Sentiment Analysis feature recognizes the sentiment of the entire transcript and detects shifts in sentiment throughout the transcript.
 

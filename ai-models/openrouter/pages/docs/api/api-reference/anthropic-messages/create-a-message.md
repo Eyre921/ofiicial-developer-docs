@@ -2127,10 +2127,12 @@ components:
       properties:
         prefix_mismatch_behavior:
           enum:
+            - error
             - drop_block
-          type: string
-      required:
-        - prefix_mismatch_behavior
+            - null
+          type:
+            - string
+            - 'null'
       type:
         - object
         - 'null'
@@ -2705,7 +2707,6 @@ components:
     CostDetails:
       description: Breakdown of upstream inference costs
       example:
-        server_tool_cost: null
         upstream_inference_completions_cost: 0.0004
         upstream_inference_cost: null
         upstream_inference_prompt_cost: 0.0008
@@ -2714,7 +2715,8 @@ components:
           description: >-
             Metered server-tool execution cost (for example, shell sandbox time)
             billed for this request, in USD. Matches the billed checkpoint and
-            settlement amounts exactly.
+            settlement amounts exactly. 0 when a metered server tool ran but
+            settled at zero dollars; absent when no metered server tool ran.
           format: double
           type:
             - number
@@ -2847,6 +2849,7 @@ components:
     AnthropicSystemClearAt:
       enum:
         - next_user_message
+        - never
         - null
       example: next_user_message
       type:
@@ -3827,11 +3830,19 @@ components:
       example:
         expires_at: '2026-04-08T00:00:00Z'
         id: ctr_01abc
+        skills: null
       properties:
         expires_at:
           type: string
         id:
           type: string
+        skills:
+          default: null
+          items:
+            $ref: '#/components/schemas/AnthropicContainerSkill'
+          type:
+            - array
+            - 'null'
       required:
         - id
         - expires_at
@@ -5170,6 +5181,26 @@ components:
       oneOf:
         - $ref: '#/components/schemas/ContainerAutoEnvironment'
         - $ref: '#/components/schemas/ContainerReferenceEnvironment'
+    AnthropicContainerSkill:
+      example:
+        skill_id: pdf
+        type: anthropic
+        version: latest
+      properties:
+        skill_id:
+          type: string
+        type:
+          enum:
+            - anthropic
+            - custom
+          type: string
+        version:
+          type: string
+      required:
+        - skill_id
+        - type
+        - version
+      type: object
     AnthropicAdvisorToolResult:
       example:
         content:

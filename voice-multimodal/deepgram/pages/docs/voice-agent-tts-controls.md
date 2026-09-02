@@ -58,9 +58,9 @@ Speed is a session-level setting on the agent's `speak` provider, and both Deepg
 }
 ```
 
-Each family accepts a different set of values, and the default is `1.0` for both:
+Each family accepts a different range, and the default is `1.0` for both:
 
-* **Flux TTS** accepts `0.85`, `0.9`, `0.95`, `1.0`, `1.05`, `1.1`, or `1.15`.
+* **Flux TTS** accepts `0.5` to `1.5` in `0.05` increments.
 * **Aura** accepts any float between `0.7` and `1.5`. For Spanish voices the recommended range is `0.9`–`1.5`; values below `0.9` may introduce disfluencies.
 
 See [TTS Models](/docs/voice-agent-tts-models#deepgram-tts-models) for the full parameter reference and [TTS Voice Controls](/docs/tts-voice-controls#speed-control) for the underlying behavior.

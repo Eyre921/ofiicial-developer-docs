@@ -10,7 +10,7 @@ path: docs/voice-agent-inject-agent-message
 
 # Inject Agent
 
-&#x20;Voice Agent
+Voice Agent
 
 The `InjectAgentMessage` message is a JSON message you can send to immediately trigger an agent statement.
 

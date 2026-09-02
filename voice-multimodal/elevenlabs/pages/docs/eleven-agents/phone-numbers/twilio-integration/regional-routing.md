@@ -90,8 +90,7 @@ When you import or configure a Twilio phone number in the ElevenLabs [Phone Numb
 
    If you're using regional routing, you must use a **regional API key** from Twilio that
    corresponds to your routing region. Your standard US API key will not work for non-US regions
-   and will result in authentication errors. Generate a region-specific API key in your [Twilio
-   Console](https://console.twilio.com/).
+   and will result in authentication errors. Generate a region-specific API key in your [Twilio Console](https://console.twilio.com/).
 
 ## Verifying your configuration
 
@@ -101,8 +100,7 @@ To verify that regional routing is configured correctly:
 2. **Check ElevenLabs Platform**: Verify the routing region setting matches your Twilio configuration
 3. **Test call operations**: Make a test call and verify that operations like call transfer work correctly
 
-Monitor your first few calls in the [Calls History
-dashboard](https://elevenlabs.io/app/agents/history) after configuring regional routing to ensure
+Monitor your first few calls in the [Calls History dashboard](https://elevenlabs.io/app/agents/history) after configuring regional routing to ensure
 everything works as expected.
 
 ## Common issues

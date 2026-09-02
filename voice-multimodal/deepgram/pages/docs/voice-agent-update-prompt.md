@@ -10,7 +10,7 @@ path: docs/voice-agent-update-prompt
 
 # Update Prompt
 
-&#x20;Voice Agent
+Voice Agent
 
 The `UpdatePrompt` message is a JSON message that you can use to update the system prompt of the agent.
 

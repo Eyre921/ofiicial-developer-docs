@@ -33,7 +33,6 @@ The [`gcloud` CLI](https://cloud.google.com/sdk/gcloud) provides programmatic ac
 
 ## Choosing a Region
 
-
 The templates and steps in this guide provision resources in the GCP `us-west1` region.
 
 If you would like to deploy to a different region, make sure to adjust templates and steps in this guide accordingly.
@@ -77,7 +76,6 @@ Google Kubernetes Engine (GKE) is a managed Kubernetes service to run Kubernetes
 2. Create separate node pools for each Deepgram component (API, Engine, License Proxy). Adjust the machine types and node counts according to your needs. You may wish to consult your Deepgram Account Representative in planning your cluster's capacity.
 
    ## `num-nodes` Default Behavior
-
 
    `num-nodes` configures the number of nodes in the node pool ***in each of the cluster's zones***. If your cluster is configured in 3 zones, setting`num-nodes` to 1 will result in 1 node per zone, or 3 nodes across the entire cluster.
 
@@ -147,7 +145,7 @@ spec:
       values: ["system-node-critical", "system-cluster-critical"]
 ```
 
-&#x20;Without this quota, pods that require these priority classes may remain unscheduled.&#x20;
+Without this quota, pods that require these priority classes may remain unscheduled.
 
 # Configure Persistent Storage
 
@@ -347,7 +345,6 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
    ```
 
    ## Resource Limits
-
 
    It may take some time for GKE to resize the number of nodes in your cluster to accommodate your deployment.
 

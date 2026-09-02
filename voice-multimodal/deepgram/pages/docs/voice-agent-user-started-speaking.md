@@ -10,7 +10,7 @@ path: docs/voice-agent-user-started-speaking
 
 # User Started Speaking
 
-&#x20;Voice Agent
+Voice Agent
 
 The `userStartedSpeaking` message confirms when a user begins to speak.
 

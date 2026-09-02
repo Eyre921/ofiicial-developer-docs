@@ -12,7 +12,6 @@ path: docs/summarization
 
 Deepgram API Playground
 
-
 Try this feature out in our API Playground.
 
 \
@@ -20,11 +19,7 @@ Try this feature out in our API Playground.
 
 `summarize` *string*.
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-&#x20;English (all available regions)
+Pre-recorded  Streaming:Nova  English (all available regions)
 
 Deepgram’s Summarization feature summarizes the content of the submitted audio and returns a brief summary in the JSON response.
 

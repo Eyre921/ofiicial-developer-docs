@@ -28,15 +28,13 @@ For dispute-related fees, responsibility depends on your connected account optio
 - `stripe`
 - `application_custom`
 - `application_express` | Connected account |
-| v2 `Account` with [defaults.responsibilities.fees_collector](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-defaults-responsibilities-fees_collector) = `application_unified_accounts_beta` and without [Smart Disputes fee passthrough](https://docs.stripe.com/connect/smart-disputes-fee-passthrough.md#eligibility) enabled | Connected account |
-| v2 `Account` with [defaults.responsibilities.fees_collector](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-defaults-responsibilities-fees_collector) = `application_unified_accounts_beta` and with [Smart Disputes fee passthrough](https://docs.stripe.com/connect/smart-disputes-fee-passthrough.md#eligibility) enabled | Platform |
+| v2 `Account` with [defaults.responsibilities.fees_collector](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-defaults-responsibilities-fees_collector) = `application_unified_accounts_beta` | Connected account (for information about changing the payer to your platform, [contact Stripe Support](https://support.stripe.com/)) |
 | v1 `Account` with [controller.fees.payer](https://docs.stripe.com/api/accounts/create.md#create_account-controller-fees-payer) = `application` | Platform |
 | v1 `Account` with [controller.fees.payer](https://docs.stripe.com/api/accounts/create.md#create_account-controller-fees-payer) = any of the following values, including legacy Standard, Express, and Custom accounts:
 - `account`
 - `application_custom`
 - `application_express` | Connected account |
-| v1 `Account` with [controller.fees.payer](https://docs.stripe.com/api/accounts/create.md#create_account-controller-fees-payer) = `application_unified_accounts_beta` and without [Smart Disputes fee passthrough](https://docs.stripe.com/connect/smart-disputes-fee-passthrough.md#eligibility) enabled | Connected account |
-| v1 `Account` with [controller.fees.payer](https://docs.stripe.com/api/accounts/create.md#create_account-controller-fees-payer) = `application_unified_accounts_beta` and with [Smart Disputes fee passthrough](https://docs.stripe.com/connect/smart-disputes-fee-passthrough.md#eligibility) enabled | Platform |
+| v1 `Account` with [controller.fees.payer](https://docs.stripe.com/api/accounts/create.md#create_account-controller-fees-payer) = `application_unified_accounts_beta` | Connected account (for information about changing the payer to your platform, [contact Stripe Support](https://support.stripe.com/)) |
 
 ## Destination and separate charges and transfers
 

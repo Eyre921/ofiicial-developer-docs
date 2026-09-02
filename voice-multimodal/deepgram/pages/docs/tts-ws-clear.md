@@ -10,7 +10,7 @@ path: docs/tts-ws-clear
 
 # Clear
 
-&#x20;Text to Speech Stream
+Text to Speech Stream
 
 If you're working on a conversational AI use case between a human and a TTS agent, the human may interrupt the Agent at any time, and you may want to clear (or reset) the internal text buffer. This is useful because the TTS websocket will stop sending audio, allowing your LLM to generate a new response. The TTS websocket will then produce audio only based on the new text provided.
 

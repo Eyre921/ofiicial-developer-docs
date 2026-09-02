@@ -10,9 +10,7 @@ path: docs/deepgram-whisper-cloud
 
 # Getting Started with Deepgram Whisper Cloud
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
+Pre-recorded  Streaming:Nova
 
 Using Deepgram's fully hosted Whisper Cloud instead of running your own version provides many benefits. Some of these benefits include:
 

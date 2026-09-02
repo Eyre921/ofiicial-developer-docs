@@ -60,22 +60,11 @@ main(cfg, rollout_fn_factory=make_rollout_fn, rows=rows)
 
 The example rollout above expects rows with `prompt_token_ids`. Fork the
 [single-turn example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/single_turn_token_in)
-for a minimal adapter. For multi-turn agents, you can start from the structured
-[Harbor recipe set](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor),
-which supports Pi, OpenCode, and Mini-SWE-Agent in local Docker or E2B.
-
-For multi-turn agents, tools, sandboxes, token ancestry, and session design, read
+for a minimal adapter. For multi-turn harnesses, tools, sandboxes, and exact
+token ancestry, read
 [Cookbook: Agentic Reinforcement Learning](/fine-tuning/training-api/cookbook/agentic-rl).
-Agentic RL is a rollout integration concern; it does not change the async
-loop's scheduling contract. The
-[Terminal-Bench recipe](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/recipes/terminal_bench)
-shows Harbor-managed environments, OpenCode tool use, verifier rewards, and
-multi-segment logical rollouts.
-
-The [DABstep recipes](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/recipes/dabstep)
-show both execution paths: `train.py` keeps the OpenCode
-`async_rl_loop_serverless` integration, while `train_pi.py` uses Pi, E2B, and
-SDK-managed dedicated resources.
+Agentic RL changes the rollout adapter, not this async scheduling and training
+contract.
 
 ## Rollout contract
 
@@ -149,35 +138,6 @@ trainer logprobs and applies TIS against rollout behavior logprobs;
 `anchor_logp="rollout"` reuses aligned rollout logprobs and makes the TIS ratio
 identity. Set `kl_beta=0` to disable reference-policy KL and reference
 provisioning.
-
-## TITO sidecars for multi-turn agents
-
-TITO (token-in/token-out) preserves the exact prompt tokens, sampled completion
-tokens, log probabilities, and optional Router Replay data from every policy
-turn. The Cookbook's Harbor integrations run one SDK `TITOSidecar` inside each
-Docker container or E2B sandbox. Pi, OpenCode, or Mini-SWE-Agent talks to its
-environment-local OpenAI-compatible loopback endpoint; the sidecar renders the
-complete conversation, calls the recipe-owned `DeploymentSampler`, and returns
-a compact exact-token trajectory artifact. No centralized gateway, callback,
-or public tunnel is required.
-
-This integration requires `fireworks-ai[training]>=1.2.11`. It can use the
-sampler supplied by either `async_rl_loop` or `async_rl_loop_serverless`; TITO
-does not require the dedicated deployment lifecycle.
-
-Full-history rendering is the default. Exact-prefix turns append to the active
-training segment. A bounded, renderer-safe drift in the latest assistant
-response may be realigned with the replaced span masked; an incompatible
-history closes the valid segment and starts another from the current full
-render. All segments remain one `RolloutRun`, so they share one reward, one
-GRPO group membership, and one advantage. The Miles-style incremental prompt
-mode is available only as an experimental opt-in for separately certified
-renderers; it does not change the full-history default.
-
-Use `max_completion_tokens` for one assistant turn and `max_seq_len` for the
-total prompt-plus-output and training-retention boundary. Start with
-[Cookbook: Agentic Reinforcement Learning](/fine-tuning/training-api/cookbook/agentic-rl)
-for the layer boundaries, supported harnesses, artifacts, and failure policy.
 
 ## Evaluation
 

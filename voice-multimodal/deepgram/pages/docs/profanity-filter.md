@@ -14,13 +14,7 @@ path: docs/profanity-filter
 
 `profanity_filter` *boolean* Default: `false`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming:Flux
-
-&#x20;Specific languages only
+Pre-recorded  Streaming:Nova Streaming:Flux  Specific languages only
 
 Deepgram’s profanity filtering feature masks offensive language in transcripts using asterisks. Profanity filtering is available for the following languages:
 

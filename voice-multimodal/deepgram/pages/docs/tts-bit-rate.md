@@ -12,11 +12,7 @@ path: docs/tts-bit-rate
 
 `bit_rate` *string*
 
-&#x20;Text to Speech Request
-
-&#x20;Text to Speech Stream
-
-&#x20;English Only
+Text to Speech Request  Text to Speech Stream  English Only
 
 The Bit Rate feature gives users the ability to specify the desired bitrate of the resulting text-to-speech audio output.
 

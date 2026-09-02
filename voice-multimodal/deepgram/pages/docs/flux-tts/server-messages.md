@@ -165,7 +165,7 @@ Sent when a `Configure` message is rejected. The failing message has no effect �
   "code": "SPEED_OUT_OF_RANGE",
   "field": "speed",
   "value": 3.5,
-  "description": "speed must be between 0.85 and 1.15 in 0.05 increments"
+  "description": "speed must be between 0.5 and 1.5 in 0.05 increments"
 }
 ```
 
@@ -233,10 +233,11 @@ All warning codes follow Deepgram's `SCREAMING_SNAKE_CASE` convention; the sessi
 
 ## ConfigureFailure codes
 
-| Code                  | Trigger                                                                                                 |
-| --------------------- | ------------------------------------------------------------------------------------------------------- |
-| `SPEED_OUT_OF_RANGE`  | `speed` is not one of the published multipliers (`0.85`–`1.15` in `0.05` steps). Prior config retained. |
-| `SPEED_NOT_SUPPORTED` | `speed` sent on a model/language that does not support runtime speed control.                           |
+| Code                      | Trigger                                                                          |
+| ------------------------- | -------------------------------------------------------------------------------- |
+| `SPEED_OUT_OF_RANGE`      | `speed` is outside the supported range (`0.5`–`1.5`). Prior config retained.     |
+| `SPEED_INCREMENT_INVALID` | `speed` is inside the range but off the `0.05` increment. Prior config retained. |
+| `SPEED_NOT_SUPPORTED`     | `speed` sent on a model/language that does not support runtime speed control.    |
 
 ## Connection rejection codes
 

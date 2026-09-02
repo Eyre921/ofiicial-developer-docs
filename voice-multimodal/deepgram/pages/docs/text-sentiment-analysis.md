@@ -12,7 +12,6 @@ path: docs/text-sentiment-analysis
 
 Deepgram API Playground
 
-
 Try this feature out in our API Playground.
 
 \
@@ -20,9 +19,7 @@ Try this feature out in our API Playground.
 
 `sentiment` *boolean*   Default: `false`
 
-&#x20;Text Intelligence
-
-&#x20;English (all available regions)
+Text Intelligence  English (all available regions)
 
 Sentiment Analysis accepts an input text, divides it into a list of segments comprised of sections of the text, and identifies the sentiment of each segment. It also assigns an average sentiment to the entire text.
 

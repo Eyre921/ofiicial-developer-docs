@@ -10,7 +10,7 @@ path: docs/voice-agent-conversation-context
 
 # Maintaining Context
 
-&#x20;Voice Agent
+Voice Agent
 
 A voice agent's behavior on any call is the sum of a few moving parts: the prompt that shaped it, the history you handed it on connect, anything either side has injected during the call, and any function results it has gathered. This page covers every lever the API gives you for managing that context.
 

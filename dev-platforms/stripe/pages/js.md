@@ -10368,85 +10368,6 @@ Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_
 Render IbanElement
 ```
 
-## PaymentRequestButtonElement
-
-Use the `PaymentRequestButtonElement` from `@stripe/react-stripe-js` to display Apple Pay, Google Pay,
-Link (also known as Onelink in the UK), and browser-based payment request buttons powered by the Payment Request API.
-
-### Props
-
-- `id`
-  Sets the DOM `id` attribute on the rendered Element container. Use this to
-target the Element for styling or testing.
-
-- `className`
-  Applies custom CSS classes to the Element container.
-
-- `options`
-  Options for creating a `paymentRequestButton` element.
-    - `classes`
-      Set custom class names on the container DOM element when the Stripe element is in a particular state.
-      - `base`
-        The base class applied to the container.
-Defaults to `StripeElement`.
-      - `complete`
-        The class name to apply when the `Element` is complete.
-Defaults to `StripeElement--complete`.
-      - `empty`
-        The class name to apply when the `Element` is empty.
-Defaults to `StripeElement--empty`.
-      - `focus`
-        The class name to apply when the `Element` is focused.
-Defaults to `StripeElement--focus`.
-      - `invalid`
-        The class name to apply when the `Element` is invalid.
-Defaults to `StripeElement--invalid`.
-      - `webkitAutofill`
-        The class name to apply when the `Element` has its value autofilled by the browser (only on Chrome and Safari).
-Defaults to `StripeElement--webkit-autofill`.
-    - `style`
-      An object used to customize the appearance of the Payment Request Button.
-The object must have a single `paymentRequestButton` field, containing any of the following sub-fields:
-      - `type`
-        Preferred button type to display. Available types, by wallet:
-
-
-Browser card: `default`, `book`, `buy`, or `donate`.
-
-Google Pay: `default`, `buy`, or `donate`.
-
-Apple Pay: `default`, `book`, `buy`, `donate`, `check-out`, `subscribe`, `reload`, `add-money`, `top-up`, `order`, `rent`, `support`, `contribute`, `tip`
-
-
-When a wallet does not support the provided value, `default` is used as a fallback.
-      - `theme`
-        One of `dark`, `light`, or `light-outline`.
-The default is `dark`.
-      - `height`
-        The height of the Payment Request Button. Accepts `px` unit values.
-    - `paymentRequest`
-      A [PaymentRequest](https://docs.stripe.com/js/payment_request.md) object used to configure the element.
-
-- `onClick`
-  Callback called when the customer clicks the Element.
-Receives the [click event payload](https://docs.stripe.com/js/element/events/on_click?type=expressCheckoutElement.md#element_on_click-handler).
-
-- `onReady`
-  Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
-
-- `onBlur`
-  Callback called when the Element loses focus.
-
-- `onFocus`
-  Callback called when the Element receives focus.
-
-### Example
-
-```title
-Render PaymentRequestButtonElement
-```
-
 ## PaymentMethodMessagingElement
 
 Use the `PaymentMethodMessagingElement` from `@stripe/react-stripe-js` to inform a customer about available buy-now-pay-later plans.
@@ -15267,434 +15188,6 @@ When called, it will automatically load an on-page modal UI to collect bank acco
 Collect bank account details for setup
 ```
 
-## The Payment Request object
-
-A `PaymentRequest` object is used to collect payment information through an interface controlled and styled by the browser itself (i.e., not by you or your page).
-
-See the [Payment Request Button Element quickstart](https://docs.stripe.com/stripe-js/elements/payment-request-button.md) for a high-level overview of when you’d want to do this.
-
-## Create a PaymentRequestObject
-
-`stripe.paymentRequest(options: object)`
-
-Use `stripe.paymentRequest` to create a `PaymentRequest` object.
-Creating a `PaymentRequest` requires that you configure it with an `options` object.
-
-In Safari, `stripe.paymentRequest` uses Apple Pay, and in other browsers it uses the [Payment Request API standard](https://www.w3.org/TR/payment-request/).
-
-> `stripe.paymentRequest` abstracts over a number of implementation
-> details to work uniformly across Apple Pay and the Payment Request
-> browser standard. In particular, under the hood we set `supportedNetworks`
-> to its most permissive setting, dynamically accounting for country
-> and platform. It is currently not possible to override this and make
-> `supportedNetworks` be more restrictive.
-
-- `options`
-  A set of options to create this `PaymentRequest` instance with.
-These options can be updated using [`paymentRequest.update`](https://docs.stripe.com/js/payment_request/update.md).
-    - `country`
-      The two-letter country code of your Stripe account (e.g., `US`).
-    - `currency`
-      Three character currency code (e.g., `usd`).
-    - `total`
-      A [PaymentItem](#payment_item_object) object.
-This `PaymentItem` is shown to the customer in the browser’s payment interface.
-    - `displayItems`
-      An array of [PaymentItem](#payment_item_object) objects.
-These objects are shown as line items in the browser’s payment interface.
-Note that the sum of the line item amounts does not need to add up to the `total` amount above.
-    - `requestPayerName`
-      By default, the browser‘s payment interface only asks the customer for actual payment information.
-A customer name can be collected by setting this option to `true`.
-This collected name will appears in the [PaymentResponse](https://docs.stripe.com/js/appendix/payment_response.md) object.
-
-We highly recommend you collect name as this also results in collection of billing address for Apple Pay.
-The billing address can be used to perform address verification and block fraudulent payments.
-For all other payment methods, the billing address is automatically collected when available.
-    - `requestPayerEmail`
-      See the [`requestPayerName`](#payment_request_create-options-requestPayerName) option.
-    - `requestPayerPhone`
-      See the [`requestPayerName`](#payment_request_create-options-requestPayerName) option.
-    - `requestShipping`
-      Collect shipping address by setting this option to `true`.
-The address appears in the [PaymentResponse](https://docs.stripe.com/js/appendix/payment_response.md).
-
-You must also supply a valid [ShippingOptions] to the `shippingOptions` property.
-This can be up front at the time `stripe.paymentRequest` is called, or in response to a `shippingaddresschange` event using the `updateWith` callback.
-    - `shippingOptions`
-      An array of [ShippingOption](https://docs.stripe.com/js/appendix/shipping_option.md) objects.
-The first shipping option listed appears in the browser payment interface as the default option.
-    - `disableWallets`
-      An array of wallet strings.
-Can be one or more of `applePay`, `googlePay`, `link`, and `browserCard`.
-Use this option to disable Apple Pay, Google Pay, Link (also known as Onelink in the UK), and/or browser-saved cards.
-    - `applePay`
-      Specify Apple Pay specific options. These are passed through to the Apple Pay API.
-      - `recurringPaymentRequest`
-        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
-        - `paymentDescription`
-        - `managementURL`
-        - `regularBilling`
-          - `amount`
-          - `label`
-          - `recurringPaymentStartDate`
-          - `recurringPaymentEndDate`
-          - `recurringPaymentIntervalUnit`
-          - `recurringPaymentIntervalCount`
-        - `trialBilling`
-          - `amount`
-          - `label`
-          - `recurringPaymentStartDate`
-          - `recurringPaymentEndDate`
-          - `recurringPaymentIntervalUnit`
-          - `recurringPaymentIntervalCount`
-        - `billingAgreement`
-      - `deferredPaymentRequest`
-        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaydeferredpaymentrequest) for more details.
-        - `paymentDescription`
-        - `managementURL`
-        - `deferredBilling`
-          - `amount`
-          - `amountType`
-            Indicates whether the billing amount is known at request time. When set to 'final', the Apple Pay payment sheet shows the configured amount.
-          - `label`
-          - `deferredPaymentDate`
-        - `billingAgreement`
-        - `freeCancellationDate`
-          If set, you must also supply a freeCancellationDateTimeZone.
-        - `freeCancellationDateTimeZone`
-          If set, you must also supply a freeCancellationDate.
-
-These are [tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) timezones such as `America/Los_Angeles`, `Europe/Dublin`, and `Asia/Singapore`.
-      - `automaticReloadPaymentRequest`
-        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
-        - `paymentDescription`
-        - `managementURL`
-        - `automaticReloadBilling`
-          - `amount`
-          - `label`
-          - `automaticReloadPaymentThresholdAmount`
-        - `billingAgreement`
-      - `cardFunding`
-        By default, Apple Pay allows both credit and debit cards.
-
-You can specify if you only want to support one type of card with either 'supportsDebit' or 'supportsCredit'.
-    - `onBehalfOf`
-      The Stripe account ID which is the business of record. See [use cases](https://docs.stripe.com/connect/charges.md) to determine if this option is relevant for your integration. This should match the [on_behalf_of](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-on_behalf_of) provided on the Intent used when confirming payment.
-
-### Example
-
-```title
-Create a PaymentRequestObject
-```
-
-## Check if a payment can be made
-
-`paymentRequest.canMakePayment()`
-
-Returns a `Promise` that resolves with an object detailing if an
-enabled wallet is ready to pay. If no wallet is available, it
-resolves with `null`. The resolution object has the properties
-in the table below.
-
-**NOTE**: The `paymentRequestButton` element automatically shows the correct wallet branding.
-You shouldn't need to inspect the return object's properties unless you are building your own custom button.
-
-> `canMakePayment` resolves to `null` outside the following supported cases:
-> 
-> * Safari 10.1+ (desktop and mobile)
->   * with a saved Apple Pay card
->   * or when in a Private Browsing window
->   * or when the “Allow websites to check if Apple Pay is set up” preference is disabled
-> * Chrome 61+ (desktop and mobile)
->   * with a saved Google Pay card
->   * or when the browser has a saved card (i.e. autofill)
-> 
-> For more information, see [Testing your integration](https://docs.stripe.com/stripe-js/elements/payment-request-button.md#testing).
-
-### Return object properties
-
-- `applePay`
-  `true` if Apple Pay wallet is ready to pay.
-In this case:
-  - `paymentRequestButton` Element will show as a branded Apple Pay button automatically.
-  - When using a custom button, you‘ll want to show a button that conforms to the Apple Pay [Human Interface Guidelines](https://developer.apple.com/apple-pay/web-human-interface-guidelines/).
-
-- `googlePay`
-  `true` if Google Pay wallet is ready to pay.
-In this case:
-  - `paymentRequestButton` Element will show as a branded Google Pay button automatically.
-  - When using a custom button, you'll want to show a button that conforms to the Google Pay [Brand Guidelines](https://developers.google.com/pay/api/web/guides/brand-guidelines).
-
-- `link`
-  `true` if Link wallet is ready to pay (Link is also known as Onelink in the UK).
-In this case:
-  - `paymentRequestButton` Element will show as a branded Link button automatically.
-  - Link is not supported in custom button configurations.
-
-### Example
-
-```title
-paymentRequest.canMakePayment
-```
-
-## Show the payment request interface
-
-`paymentRequest.show()`
-
-Shows the browser’s payment interface.
-When using the `paymentRequestButton` [Element](https://docs.stripe.com/js/element.md), this is called for you automatically.
-This method must be called as the result of a user interaction (for example, in a click handler).
-
-### Example
-
-```title
-Show the payment request interface
-```
-
-## Update a PaymentRequest object
-
-`paymentRequest.update(options: object)`
-
-`PaymentRequest` instances can be updated with an options object.
-Available options are documented below.
-
-`paymentRequest.update` can only be called when the browser payment interface is not showing.
-Listen to the [click](https://docs.stripe.com/js/element/events.md) and [cancel](https://docs.stripe.com/js/element/events.md) events to detect if the payment interface has been initiated.
-To update the `PaymentRequest` right before the payment interface is initiated, call `paymentRequest.update` in your click event handler.
-
-- `options`
-  A set of options to update this PaymentRequest instance with.
-    - `currency`
-      Three character currency code (e.g., `usd`).
-    - `total`
-      A [PaymentItem](#payment_item_object) object.
-This `PaymentItem` is shown to the customer in the browser’s payment interface.
-    - `displayItems`
-      An array of [PaymentItem](#payment_item_object) objects.
-These payment items are shown as line items in the browser’s payment interface.
-Note that the sum of the line item amounts does not need to add up to the `total` amount above.
-    - `shippingOptions`
-      An array of [ShippingOption](https://docs.stripe.com/js/appendix/shipping_option.md) objects.
-The first shipping option listed appears in the browser payment interface as the default option.
-    - `applePay`
-      Specify Apple Pay specific options. These are passed through to the Apple Pay API.
-      - `recurringPaymentRequest`
-        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
-        - `paymentDescription`
-        - `managementURL`
-        - `regularBilling`
-          - `amount`
-          - `label`
-          - `recurringPaymentStartDate`
-          - `recurringPaymentEndDate`
-          - `recurringPaymentIntervalUnit`
-          - `recurringPaymentIntervalCount`
-        - `trialBilling`
-          - `amount`
-          - `label`
-          - `recurringPaymentStartDate`
-          - `recurringPaymentEndDate`
-          - `recurringPaymentIntervalUnit`
-          - `recurringPaymentIntervalCount`
-        - `billingAgreement`
-      - `deferredPaymentRequest`
-        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaydeferredpaymentrequest) for more details.
-        - `paymentDescription`
-        - `managementURL`
-        - `deferredBilling`
-          - `amount`
-          - `amountType`
-            Indicates whether the billing amount is known at request time. When set to 'final', the Apple Pay payment sheet shows the configured amount.
-          - `label`
-          - `deferredPaymentDate`
-        - `billingAgreement`
-        - `freeCancellationDate`
-          If set, you must also supply a freeCancellationDateTimeZone.
-        - `freeCancellationDateTimeZone`
-          If set, you must also supply a freeCancellationDate.
-
-These are [tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) timezones such as `America/Los_Angeles`, `Europe/Dublin`, and `Asia/Singapore`.
-      - `automaticReloadPaymentRequest`
-        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
-        - `paymentDescription`
-        - `managementURL`
-        - `automaticReloadBilling`
-          - `amount`
-          - `label`
-          - `automaticReloadPaymentThresholdAmount`
-        - `billingAgreement`
-      - `cardFunding`
-        By default, Apple Pay allows both credit and debit cards.
-
-You can specify if you only want to support one type of card with either 'supportsDebit' or 'supportsCredit'.
-
-### Example
-
-```title
-Update a PaymentRequest
-```
-
-## PaymentRequest events
-
-`PaymentRequest` instances emit several different types of events.
-
-## Token event
-
-`paymentRequest.on(event: string, handler: function)`
-
-Stripe.js automatically creates a [Token](https://docs.stripe.com/api/tokens.md) after the customer is done interacting with the browser’s payment interface.
-To access the created `Token`, listen for this event.
-
-- `event`
-  The name of the event. In this case, `token`.
-
-- `handler`
-  A callback function that will be called with a [PaymentResponse](https://docs.stripe.com/js/appendix/payment_response.md) object when the event is fired.
-The `PaymentResponse` object will contain a `token` field.
-
-### Example
-
-```title
-Handle 'token' event
-```
-
-## PaymentMethod event
-
-`paymentRequest.on(event: string, handler: function)`
-
-Stripe.js automatically creates a [PaymentMethod](https://docs.stripe.com/api/payment_methods.md) after the customer is done interacting with the browser’s payment interface.
-To access the created `PaymentMethod`, listen for this event.
-
-- `event`
-  The name of the event. In this case, `paymentmethod`.
-
-- `handler`
-  A callback function that will be called with a [PaymentResponse](https://docs.stripe.com/js/appendix/payment_response.md) object when the event is fired.
-The `PaymentResponse` object will contain a `paymentMethod` field.
-
-### Example
-
-```title
-Handle 'paymentmethod' event
-```
-
-## Source event
-
-`paymentRequest.on(event: string, handler: function)`
-
-Stripe.js automatically creates a [Source](https://docs.stripe.com/api/sources.md) after the customer is done interacting with the browser’s payment interface.
-To access the created source, listen for this event.
-
-- `event`
-  The name of the event. In this case, `source`.
-
-- `handler`
-  A callback function that will be called with a [PaymentResponse](https://docs.stripe.com/js/appendix/payment_response.md) object when the event is fired.
-The `PaymentResponse` object will contain a `source` field.
-
-### Example
-
-```title
-Handle 'source' event
-```
-
-## Cancel event
-
-`paymentRequest.on(event: string, handler: function)`
-
-The `cancel` event is emitted from a [PaymentRequest](https://docs.stripe.com/js/payment_request.md) when the browser‘s payment interface is dismissed.
-
-Note that in some browsers, the payment interface may be dismissed by the customer even after they authorize the payment.
-This means that you may receive a `cancel` event on your PaymentRequest object after receiving a `token`, `paymentmethod`, or `source` event.
-If you’re using the `cancel` event as a hook for canceling the customer’s order, make sure you also refund the payment that you just created.
-
-- `event`
-  The name of the event.
-In this case, `cancel`.
-
-- `handler`
-  A callback function that you will provide that will be called when the event is fired.
-
-### Example
-
-```title
-Handle 'cancel' event
-```
-
-## Shipping address change event
-
-`paymentRequest.on(event: string, handler: function)`
-
-The `shippingaddresschange` event is emitted from a [PaymentRequest](https://docs.stripe.com/js/payment_request.md) whenever the customer selects a new address in the browser's payment interface.
-
-- `event`
-  The name of the event. In this case, `shippingaddresschange`.
-
-- `handler`
-  `handler(event) => void` is a **callback function** that you provide that will be called when the event is fired.
-
-When called it will be passed an event object with the following properties:
-    - `updateWith`
-      `updateWith(updateDetails) => void` is a Stripe.js provided function that is called with an [UpdateDetails](https://docs.stripe.com/js/appendix/update_details.md) object to merge your updates into the current `PaymentRequest` object.
-Note that if you subscribe to `shippingaddresschange` events, then you must call `updateWith` within 30 seconds.
-    - `shippingAddress`
-      The customer's selected shipping address.
-
-To maintain privacy, browsers may anonymize the shipping address by removing sensitive information that is not necessary to calculate shipping costs.
-Depending on the country, some fields can be missing or partially redacted.
-For example, the shipping address in the U.S. may only contain a city, state, and ZIP code.
-The full shipping address appears in the [PaymentResponse](https://docs.stripe.com/js/appendix/payment_response.md) object after the purchase is confirmed in the browser’s payment interface
-      - `country`
-        Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
-      - `addressLine`
-        An array of address line items. For example, `185 Berry St.`, `Suite 500`, `P.O. Box 12345`, etc.
-      - `region`
-        The most coarse subdivision of a country. Depending on the country, this might correspond to a state, a province, an oblast, a prefecture, or something else along these lines.
-      - `city`
-        The name of a city, town, village, etc.
-      - `postalCode`
-        The postal code or ZIP code, also known as PIN code in India.
-      - `recipient`
-        The name of the recipient. This might be a person, a business name, or contain "care of" (c/o) instructions.
-      - `phone`
-        The phone number of the recipient. Note that this might be different from any phone number you collect with [`requestPayerPhone`](#payment_request_create-options-requestPayerPhone).
-      - `sortingCode`
-        The sorting code as used in, for example, France. Not present on Apple platforms.
-      - `dependentLocality`
-        A logical subdivision of a city. Can be used for things like neighborhoods, boroughs, districts, or UK dependent localities. Not present on Apple platforms.
-
-### Example
-
-```title
-Handle 'shippingaddresschange' event
-```
-
-## Shipping option change event
-
-`paymentRequest.on(event: string, handler: function)`
-
-The `shippingoptionchange` event is emitted from a [PaymentRequest](https://docs.stripe.com/js/payment_request.md) whenever the customer selects a new shipping option in the browser's payment interface.
-
-- `event`
-  The name of the event. In this case, `shippingoptionchange`.
-
-- `handler`
-  `handler(event) => void` is a **callback function** that you provide that will be called when the event is fired.
-
-When called it will be passed an event object with the following properties:
-    - `updateWith`
-      `updateWith(updateDetails) => void` is a Stripe.js provided function that is called with an [UpdateDetails](https://docs.stripe.com/js/appendix/update_details.md) object to merge your updates into the current `PaymentRequest` object.
-Note that if you subscribe to `shippingoptionchange` events, then you must call `updateWith` within 30 seconds.
-    - `shippingOption`
-      The customer's selected [ShippingOption](https://docs.stripe.com/js/appendix/shipping_option.md).
-
-### Example
-
-```title
-Handle 'shippingoptionchange' event
-```
-
 ## Confirmation Tokens
 
 ConfirmationTokens transport client-side data collected by Stripe.js to your server. You can use them to confirm a PaymentIntent or SetupIntent on your server.
@@ -16754,6 +16247,539 @@ Use `stripe.handleFpxPayment` in the [FPX payment method creation](https://docs.
 
 ```title
 Handle a FPX payment
+```
+
+## PaymentRequestButtonElement
+
+*The payment request button and `stripe.paymentRequest()` are deprecated. [Migrate to the express checkout element](https://docs.stripe.com/elements/express-checkout-element/migration.md).*
+
+Use the `PaymentRequestButtonElement` from `@stripe/react-stripe-js` to display Apple Pay, Google Pay,
+Link (also known as Onelink in the UK), and browser-based payment request buttons powered by the Payment Request API.
+
+### Props
+
+- `id`
+  Sets the DOM `id` attribute on the rendered Element container. Use this to
+target the Element for styling or testing.
+
+- `className`
+  Applies custom CSS classes to the Element container.
+
+- `options`
+  Options for creating a `paymentRequestButton` element.
+    - `classes`
+      Set custom class names on the container DOM element when the Stripe element is in a particular state.
+      - `base`
+        The base class applied to the container.
+Defaults to `StripeElement`.
+      - `complete`
+        The class name to apply when the `Element` is complete.
+Defaults to `StripeElement--complete`.
+      - `empty`
+        The class name to apply when the `Element` is empty.
+Defaults to `StripeElement--empty`.
+      - `focus`
+        The class name to apply when the `Element` is focused.
+Defaults to `StripeElement--focus`.
+      - `invalid`
+        The class name to apply when the `Element` is invalid.
+Defaults to `StripeElement--invalid`.
+      - `webkitAutofill`
+        The class name to apply when the `Element` has its value autofilled by the browser (only on Chrome and Safari).
+Defaults to `StripeElement--webkit-autofill`.
+    - `style`
+      An object used to customize the appearance of the payment request button.
+The object must have a single `paymentRequestButton` field, containing any of the following sub-fields:
+      - `type`
+        Preferred button type to display. Available types, by wallet:
+
+
+Browser card: `default`, `book`, `buy`, or `donate`.
+
+Google Pay: `default`, `buy`, or `donate`.
+
+Apple Pay: `default`, `book`, `buy`, `donate`, `check-out`, `subscribe`, `reload`, `add-money`, `top-up`, `order`, `rent`, `support`, `contribute`, `tip`
+
+
+When a wallet does not support the provided value, `default` is used as a fallback.
+      - `theme`
+        One of `dark`, `light`, or `light-outline`.
+The default is `dark`.
+      - `height`
+        The height of the payment request button. Accepts `px` unit values.
+    - `paymentRequest`
+      A [PaymentRequest](https://docs.stripe.com/js/payment_request.md) object used to configure the element.
+
+- `onClick`
+  Callback called when the customer clicks the Element.
+Receives the [click event payload](https://docs.stripe.com/js/element/events/on_click?type=expressCheckoutElement.md#element_on_click-handler).
+
+- `onReady`
+  Callback called once the Element is fully rendered.
+Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+
+- `onBlur`
+  Callback called when the Element loses focus.
+
+- `onFocus`
+  Callback called when the Element receives focus.
+
+### Example
+
+```title
+Render PaymentRequestButtonElement
+```
+
+## The Payment Request object
+
+*The payment request button and `stripe.paymentRequest()` are deprecated. [Migrate to the express checkout element](https://docs.stripe.com/elements/express-checkout-element/migration.md).*
+
+A `PaymentRequest` object is used to collect payment information through an interface controlled and styled by the browser itself (i.e., not by you or your page).
+
+See the [payment request button element quickstart](https://docs.stripe.com/stripe-js/elements/payment-request-button.md) for a high-level overview of when you’d want to do this.
+
+## Create a PaymentRequestObject
+
+`stripe.paymentRequest(options: object)`
+
+*The payment request button and `stripe.paymentRequest()` are deprecated. [Migrate to the express checkout element](https://docs.stripe.com/elements/express-checkout-element/migration.md).*
+
+Use `stripe.paymentRequest` to create a `PaymentRequest` object.
+Creating a `PaymentRequest` requires that you configure it with an `options` object.
+
+In Safari, `stripe.paymentRequest` uses Apple Pay, and in other browsers it uses the [Payment Request API standard](https://www.w3.org/TR/payment-request/).
+
+> `stripe.paymentRequest` abstracts over a number of implementation
+> details to work uniformly across Apple Pay and the Payment Request
+> browser standard. In particular, under the hood we set `supportedNetworks`
+> to its most permissive setting, dynamically accounting for country
+> and platform. It is currently not possible to override this and make
+> `supportedNetworks` be more restrictive.
+
+- `options`
+  A set of options to create this `PaymentRequest` instance with.
+These options can be updated using [`paymentRequest.update`](https://docs.stripe.com/js/payment_request/update.md).
+    - `country`
+      The two-letter country code of your Stripe account (e.g., `US`).
+    - `currency`
+      Three character currency code (e.g., `usd`).
+    - `total`
+      A [PaymentItem](#payment_item_object) object.
+This `PaymentItem` is shown to the customer in the browser’s payment interface.
+    - `displayItems`
+      An array of [PaymentItem](#payment_item_object) objects.
+These objects are shown as line items in the browser’s payment interface.
+Note that the sum of the line item amounts does not need to add up to the `total` amount above.
+    - `requestPayerName`
+      By default, the browser‘s payment interface only asks the customer for actual payment information.
+A customer name can be collected by setting this option to `true`.
+This collected name will appears in the [PaymentResponse](https://docs.stripe.com/js/appendix/payment_response.md) object.
+
+We highly recommend you collect name as this also results in collection of billing address for Apple Pay.
+The billing address can be used to perform address verification and block fraudulent payments.
+For all other payment methods, the billing address is automatically collected when available.
+    - `requestPayerEmail`
+      See the [`requestPayerName`](#payment_request_create-options-requestPayerName) option.
+    - `requestPayerPhone`
+      See the [`requestPayerName`](#payment_request_create-options-requestPayerName) option.
+    - `requestShipping`
+      Collect shipping address by setting this option to `true`.
+The address appears in the [PaymentResponse](https://docs.stripe.com/js/appendix/payment_response.md).
+
+You must also supply a valid [ShippingOptions] to the `shippingOptions` property.
+This can be up front at the time `stripe.paymentRequest` is called, or in response to a `shippingaddresschange` event using the `updateWith` callback.
+    - `shippingOptions`
+      An array of [ShippingOption](https://docs.stripe.com/js/appendix/shipping_option.md) objects.
+The first shipping option listed appears in the browser payment interface as the default option.
+    - `disableWallets`
+      An array of wallet strings.
+Can be one or more of `applePay`, `googlePay`, `link`, and `browserCard`.
+Use this option to disable Apple Pay, Google Pay, Link (also known as Onelink in the UK), and/or browser-saved cards.
+    - `applePay`
+      Specify Apple Pay specific options. These are passed through to the Apple Pay API.
+      - `recurringPaymentRequest`
+        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
+        - `paymentDescription`
+        - `managementURL`
+        - `regularBilling`
+          - `amount`
+          - `label`
+          - `recurringPaymentStartDate`
+          - `recurringPaymentEndDate`
+          - `recurringPaymentIntervalUnit`
+          - `recurringPaymentIntervalCount`
+        - `trialBilling`
+          - `amount`
+          - `label`
+          - `recurringPaymentStartDate`
+          - `recurringPaymentEndDate`
+          - `recurringPaymentIntervalUnit`
+          - `recurringPaymentIntervalCount`
+        - `billingAgreement`
+      - `deferredPaymentRequest`
+        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaydeferredpaymentrequest) for more details.
+        - `paymentDescription`
+        - `managementURL`
+        - `deferredBilling`
+          - `amount`
+          - `amountType`
+            Indicates whether the billing amount is known at request time. When set to 'final', the Apple Pay payment sheet shows the configured amount.
+          - `label`
+          - `deferredPaymentDate`
+        - `billingAgreement`
+        - `freeCancellationDate`
+          If set, you must also supply a freeCancellationDateTimeZone.
+        - `freeCancellationDateTimeZone`
+          If set, you must also supply a freeCancellationDate.
+
+These are [tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) timezones such as `America/Los_Angeles`, `Europe/Dublin`, and `Asia/Singapore`.
+      - `automaticReloadPaymentRequest`
+        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
+        - `paymentDescription`
+        - `managementURL`
+        - `automaticReloadBilling`
+          - `amount`
+          - `label`
+          - `automaticReloadPaymentThresholdAmount`
+        - `billingAgreement`
+      - `cardFunding`
+        By default, Apple Pay allows both credit and debit cards.
+
+You can specify if you only want to support one type of card with either 'supportsDebit' or 'supportsCredit'.
+    - `onBehalfOf`
+      The Stripe account ID which is the business of record. See [use cases](https://docs.stripe.com/connect/charges.md) to determine if this option is relevant for your integration. This should match the [on_behalf_of](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-on_behalf_of) provided on the Intent used when confirming payment.
+
+### Example
+
+```title
+Create a PaymentRequestObject
+```
+
+## Check if a payment can be made
+
+`paymentRequest.canMakePayment()`
+
+*The payment request button and `stripe.paymentRequest()` are deprecated. [Migrate to the express checkout element](https://docs.stripe.com/elements/express-checkout-element/migration.md).*
+
+Returns a `Promise` that resolves with an object detailing if an
+enabled wallet is ready to pay. If no wallet is available, it
+resolves with `null`. The resolution object has the properties
+in the table below.
+
+**NOTE**: The `paymentRequestButton` element automatically shows the correct wallet branding.
+You shouldn't need to inspect the return object's properties unless you are building your own custom button.
+
+> `canMakePayment` resolves to `null` outside the following supported cases:
+> 
+> * Safari 10.1+ (desktop and mobile)
+>   * with a saved Apple Pay card
+>   * or when in a Private Browsing window
+>   * or when the “Allow websites to check if Apple Pay is set up” preference is disabled
+> * Chrome 61+ (desktop and mobile)
+>   * with a saved Google Pay card
+>   * or when the browser has a saved card (i.e. autofill)
+> 
+> For more information, see [Testing your integration](https://docs.stripe.com/stripe-js/elements/payment-request-button.md#testing).
+
+### Return object properties
+
+- `applePay`
+  `true` if Apple Pay wallet is ready to pay.
+In this case:
+  - `paymentRequestButton` Element will show as a branded Apple Pay button automatically.
+  - When using a custom button, you‘ll want to show a button that conforms to the Apple Pay [Human Interface Guidelines](https://developer.apple.com/apple-pay/web-human-interface-guidelines/).
+
+- `googlePay`
+  `true` if Google Pay wallet is ready to pay.
+In this case:
+  - `paymentRequestButton` Element will show as a branded Google Pay button automatically.
+  - When using a custom button, you'll want to show a button that conforms to the Google Pay [Brand Guidelines](https://developers.google.com/pay/api/web/guides/brand-guidelines).
+
+- `link`
+  `true` if Link wallet is ready to pay (Link is also known as Onelink in the UK).
+In this case:
+  - `paymentRequestButton` Element will show as a branded Link button automatically.
+  - Link is not supported in custom button configurations.
+
+### Example
+
+```title
+paymentRequest.canMakePayment
+```
+
+## Show the payment request interface
+
+`paymentRequest.show()`
+
+*The payment request button and `stripe.paymentRequest()` are deprecated. [Migrate to the express checkout element](https://docs.stripe.com/elements/express-checkout-element/migration.md).*
+
+Shows the browser’s payment interface.
+When using the `paymentRequestButton` [Element](https://docs.stripe.com/js/element.md), this is called for you automatically.
+This method must be called as the result of a user interaction (for example, in a click handler).
+
+### Example
+
+```title
+Show the payment request interface
+```
+
+## Update a PaymentRequest object
+
+`paymentRequest.update(options: object)`
+
+*The payment request button and `stripe.paymentRequest()` are deprecated. [Migrate to the express checkout element](https://docs.stripe.com/elements/express-checkout-element/migration.md).*
+
+`PaymentRequest` instances can be updated with an options object.
+Available options are documented below.
+
+`paymentRequest.update` can only be called when the browser payment interface is not showing.
+Listen to the [click](https://docs.stripe.com/js/element/events.md) and [cancel](https://docs.stripe.com/js/element/events.md) events to detect if the payment interface has been initiated.
+To update the `PaymentRequest` right before the payment interface is initiated, call `paymentRequest.update` in your click event handler.
+
+- `options`
+  A set of options to update this PaymentRequest instance with.
+    - `currency`
+      Three character currency code (e.g., `usd`).
+    - `total`
+      A [PaymentItem](#payment_item_object) object.
+This `PaymentItem` is shown to the customer in the browser’s payment interface.
+    - `displayItems`
+      An array of [PaymentItem](#payment_item_object) objects.
+These payment items are shown as line items in the browser’s payment interface.
+Note that the sum of the line item amounts does not need to add up to the `total` amount above.
+    - `shippingOptions`
+      An array of [ShippingOption](https://docs.stripe.com/js/appendix/shipping_option.md) objects.
+The first shipping option listed appears in the browser payment interface as the default option.
+    - `applePay`
+      Specify Apple Pay specific options. These are passed through to the Apple Pay API.
+      - `recurringPaymentRequest`
+        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
+        - `paymentDescription`
+        - `managementURL`
+        - `regularBilling`
+          - `amount`
+          - `label`
+          - `recurringPaymentStartDate`
+          - `recurringPaymentEndDate`
+          - `recurringPaymentIntervalUnit`
+          - `recurringPaymentIntervalCount`
+        - `trialBilling`
+          - `amount`
+          - `label`
+          - `recurringPaymentStartDate`
+          - `recurringPaymentEndDate`
+          - `recurringPaymentIntervalUnit`
+          - `recurringPaymentIntervalCount`
+        - `billingAgreement`
+      - `deferredPaymentRequest`
+        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaydeferredpaymentrequest) for more details.
+        - `paymentDescription`
+        - `managementURL`
+        - `deferredBilling`
+          - `amount`
+          - `amountType`
+            Indicates whether the billing amount is known at request time. When set to 'final', the Apple Pay payment sheet shows the configured amount.
+          - `label`
+          - `deferredPaymentDate`
+        - `billingAgreement`
+        - `freeCancellationDate`
+          If set, you must also supply a freeCancellationDateTimeZone.
+        - `freeCancellationDateTimeZone`
+          If set, you must also supply a freeCancellationDate.
+
+These are [tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) timezones such as `America/Los_Angeles`, `Europe/Dublin`, and `Asia/Singapore`.
+      - `automaticReloadPaymentRequest`
+        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
+        - `paymentDescription`
+        - `managementURL`
+        - `automaticReloadBilling`
+          - `amount`
+          - `label`
+          - `automaticReloadPaymentThresholdAmount`
+        - `billingAgreement`
+      - `cardFunding`
+        By default, Apple Pay allows both credit and debit cards.
+
+You can specify if you only want to support one type of card with either 'supportsDebit' or 'supportsCredit'.
+
+### Example
+
+```title
+Update a PaymentRequest
+```
+
+## PaymentRequest events
+
+*The payment request button and `stripe.paymentRequest()` are deprecated. [Migrate to the express checkout element](https://docs.stripe.com/elements/express-checkout-element/migration.md).*
+
+`PaymentRequest` instances emit several different types of events.
+
+## Token event
+
+`paymentRequest.on(event: string, handler: function)`
+
+*The payment request button and `stripe.paymentRequest()` are deprecated. [Migrate to the express checkout element](https://docs.stripe.com/elements/express-checkout-element/migration.md).*
+
+Stripe.js automatically creates a [Token](https://docs.stripe.com/api/tokens.md) after the customer is done interacting with the browser’s payment interface.
+To access the created `Token`, listen for this event.
+
+- `event`
+  The name of the event. In this case, `token`.
+
+- `handler`
+  A callback function that will be called with a [PaymentResponse](https://docs.stripe.com/js/appendix/payment_response.md) object when the event is fired.
+The `PaymentResponse` object will contain a `token` field.
+
+### Example
+
+```title
+Handle 'token' event
+```
+
+## PaymentMethod event
+
+`paymentRequest.on(event: string, handler: function)`
+
+*The payment request button and `stripe.paymentRequest()` are deprecated. [Migrate to the express checkout element](https://docs.stripe.com/elements/express-checkout-element/migration.md).*
+
+Stripe.js automatically creates a [PaymentMethod](https://docs.stripe.com/api/payment_methods.md) after the customer is done interacting with the browser’s payment interface.
+To access the created `PaymentMethod`, listen for this event.
+
+- `event`
+  The name of the event. In this case, `paymentmethod`.
+
+- `handler`
+  A callback function that will be called with a [PaymentResponse](https://docs.stripe.com/js/appendix/payment_response.md) object when the event is fired.
+The `PaymentResponse` object will contain a `paymentMethod` field.
+
+### Example
+
+```title
+Handle 'paymentmethod' event
+```
+
+## Source event
+
+`paymentRequest.on(event: string, handler: function)`
+
+*The payment request button and `stripe.paymentRequest()` are deprecated. [Migrate to the express checkout element](https://docs.stripe.com/elements/express-checkout-element/migration.md).*
+
+Stripe.js automatically creates a [Source](https://docs.stripe.com/api/sources.md) after the customer is done interacting with the browser’s payment interface.
+To access the created source, listen for this event.
+
+- `event`
+  The name of the event. In this case, `source`.
+
+- `handler`
+  A callback function that will be called with a [PaymentResponse](https://docs.stripe.com/js/appendix/payment_response.md) object when the event is fired.
+The `PaymentResponse` object will contain a `source` field.
+
+### Example
+
+```title
+Handle 'source' event
+```
+
+## Cancel event
+
+`paymentRequest.on(event: string, handler: function)`
+
+*The payment request button and `stripe.paymentRequest()` are deprecated. [Migrate to the express checkout element](https://docs.stripe.com/elements/express-checkout-element/migration.md).*
+
+The `cancel` event is emitted from a [PaymentRequest](https://docs.stripe.com/js/payment_request.md) when the browser‘s payment interface is dismissed.
+
+Note that in some browsers, the payment interface may be dismissed by the customer even after they authorize the payment.
+This means that you may receive a `cancel` event on your PaymentRequest object after receiving a `token`, `paymentmethod`, or `source` event.
+If you’re using the `cancel` event as a hook for canceling the customer’s order, make sure you also refund the payment that you just created.
+
+- `event`
+  The name of the event.
+In this case, `cancel`.
+
+- `handler`
+  A callback function that you will provide that will be called when the event is fired.
+
+### Example
+
+```title
+Handle 'cancel' event
+```
+
+## Shipping address change event
+
+`paymentRequest.on(event: string, handler: function)`
+
+*The payment request button and `stripe.paymentRequest()` are deprecated. [Migrate to the express checkout element](https://docs.stripe.com/elements/express-checkout-element/migration.md).*
+
+The `shippingaddresschange` event is emitted from a [PaymentRequest](https://docs.stripe.com/js/payment_request.md) whenever the customer selects a new address in the browser's payment interface.
+
+- `event`
+  The name of the event. In this case, `shippingaddresschange`.
+
+- `handler`
+  `handler(event) => void` is a **callback function** that you provide that will be called when the event is fired.
+
+When called it will be passed an event object with the following properties:
+    - `updateWith`
+      `updateWith(updateDetails) => void` is a Stripe.js provided function that is called with an [UpdateDetails](https://docs.stripe.com/js/appendix/update_details.md) object to merge your updates into the current `PaymentRequest` object.
+Note that if you subscribe to `shippingaddresschange` events, then you must call `updateWith` within 30 seconds.
+    - `shippingAddress`
+      The customer's selected shipping address.
+
+To maintain privacy, browsers may anonymize the shipping address by removing sensitive information that is not necessary to calculate shipping costs.
+Depending on the country, some fields can be missing or partially redacted.
+For example, the shipping address in the U.S. may only contain a city, state, and ZIP code.
+The full shipping address appears in the [PaymentResponse](https://docs.stripe.com/js/appendix/payment_response.md) object after the purchase is confirmed in the browser’s payment interface
+      - `country`
+        Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
+      - `addressLine`
+        An array of address line items. For example, `185 Berry St.`, `Suite 500`, `P.O. Box 12345`, etc.
+      - `region`
+        The most coarse subdivision of a country. Depending on the country, this might correspond to a state, a province, an oblast, a prefecture, or something else along these lines.
+      - `city`
+        The name of a city, town, village, etc.
+      - `postalCode`
+        The postal code or ZIP code, also known as PIN code in India.
+      - `recipient`
+        The name of the recipient. This might be a person, a business name, or contain "care of" (c/o) instructions.
+      - `phone`
+        The phone number of the recipient. Note that this might be different from any phone number you collect with [`requestPayerPhone`](#payment_request_create-options-requestPayerPhone).
+      - `sortingCode`
+        The sorting code as used in, for example, France. Not present on Apple platforms.
+      - `dependentLocality`
+        A logical subdivision of a city. Can be used for things like neighborhoods, boroughs, districts, or UK dependent localities. Not present on Apple platforms.
+
+### Example
+
+```title
+Handle 'shippingaddresschange' event
+```
+
+## Shipping option change event
+
+`paymentRequest.on(event: string, handler: function)`
+
+*The payment request button and `stripe.paymentRequest()` are deprecated. [Migrate to the express checkout element](https://docs.stripe.com/elements/express-checkout-element/migration.md).*
+
+The `shippingoptionchange` event is emitted from a [PaymentRequest](https://docs.stripe.com/js/payment_request.md) whenever the customer selects a new shipping option in the browser's payment interface.
+
+- `event`
+  The name of the event. In this case, `shippingoptionchange`.
+
+- `handler`
+  `handler(event) => void` is a **callback function** that you provide that will be called when the event is fired.
+
+When called it will be passed an event object with the following properties:
+    - `updateWith`
+      `updateWith(updateDetails) => void` is a Stripe.js provided function that is called with an [UpdateDetails](https://docs.stripe.com/js/appendix/update_details.md) object to merge your updates into the current `PaymentRequest` object.
+Note that if you subscribe to `shippingoptionchange` events, then you must call `updateWith` within 30 seconds.
+    - `shippingOption`
+      The customer's selected [ShippingOption](https://docs.stripe.com/js/appendix/shipping_option.md).
+
+### Example
+
+```title
+Handle 'shippingoptionchange' event
 ```
 
 ## Sources

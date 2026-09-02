@@ -10,7 +10,7 @@ path: docs/voice-agent-welcome-message
 
 # Welcome
 
-&#x20;Voice Agent
+Voice Agent
 
 The welcome message confirms there has been a successful connection to the websocket.
 

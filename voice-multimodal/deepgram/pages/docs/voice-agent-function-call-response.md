@@ -10,7 +10,7 @@ path: docs/voice-agent-function-call-response
 
 # Function Call Response
 
-&#x20;Voice Agent
+Voice Agent
 
 The `FunctionCallResponse` message contains the result of a function call. It is usually sent by the client in response to a `FunctionCallRequest`, but may also be sent by the server if the function was handled internally (When a request contained `client_side: false`).
 

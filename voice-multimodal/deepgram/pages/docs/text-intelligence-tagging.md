@@ -12,7 +12,7 @@ path: docs/text-intelligence-tagging
 
 `tag` *string*
 
-&#x20;Text Intelligence
+Text Intelligence
 
 Deepgram's Tagging feature allows you to label your Text Intelligence API requests for the purpose of identification during usage reporting. You can also apply tags to API Keys; if you do, any tags applied to the API Key running the API request will also be applied to the request itself.
 

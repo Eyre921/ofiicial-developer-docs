@@ -12,11 +12,7 @@ path: docs/model
 
 `model` *string* Default: `base-general`
 
-&#x20;Pre-recorded
-
-&#x20;Streaming:Nova
-
-Streaming:Flux
+Pre-recorded  Streaming:Nova Streaming:Flux
 
 Deepgram’s Model feature allows you to supply a model to use when processing submitted audio. To learn more about the pricing for our different models, see [Deepgram Pricing & Plans](https://deepgram.com/pricing/).
 

@@ -14,8 +14,7 @@ You can customize various aspects of your AI agent's voice to create a more natu
 
 #### Manage agents from your AI assistant
 
-You can also make these changes conversationally. The [hosted MCP
-server](/docs/eleven-agents/operate/hosted-mcp) lets Claude and other MCP clients create,
+You can also make these changes conversationally. The [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) lets Claude and other MCP clients create,
 configure, and manage your agents through natural language.
 
 ## Available customizations

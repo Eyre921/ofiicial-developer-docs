@@ -41,8 +41,3 @@ For guidance, examples, and limits, see [Upsert data](https://docs.pinecone.io/g
     }'
   ```
 </RequestExample>
-
-<ResponseExample />
-
-```
-```

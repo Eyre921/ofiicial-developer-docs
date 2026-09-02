@@ -27,27 +27,30 @@ Embeddings are billed only on input tokens.
 
 Per-model pricing for headline models. Fast variants appear as adjacent rows. In each **Standard** or **Priority** cell, prices are **input / cached input / output** (USD per 1M tokens), in that order.
 
-| Model                                                                                                             | Standard                  | Priority                      |
-| ----------------------------------------------------------------------------------------------------------------- | ------------------------- | ----------------------------- |
-| [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                      | \$3.00 / \$0.30 / \$15.00 | \$3.75 / \$0.375 / \$18.75    |
-| [Kimi K3 Fast](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                 | \$4.50 / \$0.45 / \$22.50 | —                             |
-| [Kimi K3 US](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                   | \$3.30 / \$0.33 / \$16.50 | \$4.125 / \$0.4125 / \$20.625 |
-| [Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)                                        | \$0.95 / \$0.19 / \$4.00  | \$1.425 / \$0.285 / \$6.00    |
-| [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                                  | \$0.95 / \$0.16 / \$4.00  | \$1.50 / \$0.22 / \$6.00      |
-| [DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)                          | \$1.32 / \$0.044 / \$3.96 | \$1.65 / \$0.055 / \$4.95     |
-| [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)                      | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 |
-| [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash)                                          | \$0.15 / \$0.03 / \$0.50  | —                             |
-| [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                      | \$1.40 / \$0.26 / \$4.40  | \$1.75 / \$0.325 / \$5.50     |
-| [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                      | \$1.40 / \$0.14 / \$4.40  | \$1.75 / \$0.18 / \$5.50      |
-| [GLM 5.2 Fast](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                 | \$2.10 / \$0.21 / \$6.60  | —                             |
-| [GLM 5.2 Fast US](https://app.fireworks.ai/models/fireworks/glm-5p2)                                              | \$2.10 / \$0.21 / \$6.60  | —                             |
-| [Qwen 3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)                                           | \$0.40 / \$0.08 / \$1.60  | —                             |
-| [Qwen 3.8 Max](https://app.fireworks.ai/models/fireworks/qwen3p8-max)                                             | \$2.00 / \$0.25 / \$6.00  | \$3.00 / \$0.375 / \$9.00     |
-| [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)                                                | \$0.30 / \$0.06 / \$1.20  | \$0.45 / \$0.09 / \$1.80      |
-| [OpenAI GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)                                     | \$0.15 / \$0.015 / \$0.60 | \$0.18 / \$0.018 / \$0.72     |
-| [Muse Glimmer 30B](https://app.fireworks.ai/models/fireworks/muse-glimmer-30b)                                    | \$0.35 / \$0.04 / \$1.50  | \$0.525 / \$0.06 / \$2.25     |
-| [NVIDIA Nemotron 3.5 Lightning 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b) | \$0.05 / \$0.01 / \$0.20  | —                             |
-| [NVIDIA Nemotron 3 Ultra (Preview)](https://app.fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4)             | \$0.60 / \$0.12 / \$2.40  | —                             |
+Reserved Throughput comes with SLAs and is only available on certain models. Pricing is the same as standard unless otherwise specified. For access to Reserved Throughput, please reach out to [sales](mailto:sales@fireworks.ai).
+
+| Model                                                                                                             | Standard                  | Priority                      | Reserved Throughput |
+| ----------------------------------------------------------------------------------------------------------------- | ------------------------- | ----------------------------- | ------------------- |
+| [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                      | \$3.00 / \$0.30 / \$15.00 | \$3.75 / \$0.375 / \$18.75    | ✓                   |
+| [Kimi K3 Fast](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                 | \$4.50 / \$0.45 / \$22.50 | —                             | ✓                   |
+| [Kimi K3 US](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                   | \$3.30 / \$0.33 / \$16.50 | \$4.125 / \$0.4125 / \$20.625 |                     |
+| [Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)                                        | \$0.95 / \$0.19 / \$4.00  | \$1.425 / \$0.285 / \$6.00    |                     |
+| [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                                  | \$0.95 / \$0.16 / \$4.00  | \$1.50 / \$0.22 / \$6.00      |                     |
+| [DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)                          | \$1.32 / \$0.044 / \$3.96 | \$1.65 / \$0.055 / \$4.95     |                     |
+| [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)                      | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 |                     |
+| [DeepSeek V4 Flash Vision Exp](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-vision-exp)            | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 |                     |
+| [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash)                                          | \$0.15 / \$0.03 / \$0.50  | —                             |                     |
+| [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                      | \$1.40 / \$0.26 / \$4.40  | \$1.75 / \$0.325 / \$5.50     | ✓                   |
+| [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                      | \$1.40 / \$0.14 / \$4.40  | \$1.75 / \$0.18 / \$5.50      |                     |
+| [GLM 5.2 Fast](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                 | \$2.10 / \$0.21 / \$6.60  | —                             |                     |
+| [GLM 5.2 Fast US](https://app.fireworks.ai/models/fireworks/glm-5p2)                                              | \$2.10 / \$0.21 / \$6.60  | —                             |                     |
+| [Qwen 3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)                                           | \$0.40 / \$0.08 / \$1.60  | —                             |                     |
+| [Qwen 3.8 Max](https://app.fireworks.ai/models/fireworks/qwen3p8-max)                                             | \$2.00 / \$0.25 / \$6.00  | \$3.00 / \$0.375 / \$9.00     |                     |
+| [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)                                                | \$0.30 / \$0.06 / \$1.20  | \$0.45 / \$0.09 / \$1.80      |                     |
+| [OpenAI GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)                                     | \$0.15 / \$0.015 / \$0.60 | \$0.18 / \$0.018 / \$0.72     |                     |
+| [Muse Glimmer 30B](https://app.fireworks.ai/models/fireworks/muse-glimmer-30b)                                    | \$0.35 / \$0.04 / \$1.50  | \$0.525 / \$0.06 / \$2.25     |                     |
+| [NVIDIA Nemotron 3.5 Lightning 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b) | \$0.05 / \$0.01 / \$0.20  | —                             |                     |
+| [NVIDIA Nemotron 3 Ultra (Preview)](https://app.fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4)             | \$0.60 / \$0.12 / \$2.40  | —                             |                     |
 
 **—** in the Priority column means Priority is not available for that model. This pricing table is the source of truth for Priority availability.
 
