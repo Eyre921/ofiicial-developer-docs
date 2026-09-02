@@ -105,7 +105,7 @@ Because the default pass-through target is Claude Opus 5, supply an Anthropic AP
 
 ### Choose different models
 
-Use a slash-delimited FireRouter slug to change the models available to the router. The first model is the primary; the remaining models are alternatives that FireRouter ranks for each request. Each member must be an exact deployed model ID or a unique model alias, and a slug can contain up to eight distinct models.
+Use a slash-delimited FireRouter slug to change the models available to the router. The first model is the primary; the remaining models are alternatives that FireRouter ranks for each request. Each member must be an exact deployed model ID or a unique model alias.
 
 Examples:
 

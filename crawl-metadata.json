@@ -3,7 +3,7 @@
     "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
-    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
   },
   "ai-models/cohere": {
     "pages": 2,
@@ -23,7 +23,7 @@
     "status": "error: curl failed (22) for https://developers.openai.com/api/docs/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/together": {
-    "pages": 338,
+    "pages": 339,
     "status": "ok"
   },
   "ai-models/fireworks": {
@@ -82,7 +82,8 @@
     "status": "ok"
   },
   "dev-platforms/supabase": {
-    "status": "error: curl failed (16) for https://supabase.com/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 3635033 bytes received\ncurl: (16) Error in the HTTP2 framing layer\n"
+    "pages": 0,
+    "status": "ok"
   },
   "dev-platforms/prisma": {
     "pages": 0,
@@ -97,11 +98,11 @@
     "status": "ok"
   },
   "dev-platforms/resend": {
-    "pages": 358,
+    "pages": 360,
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -151,7 +152,7 @@
     "status": "ok"
   },
   "dev-platforms/notion": {
-    "pages": 239,
+    "pages": 240,
     "status": "ok"
   },
   "dev-platforms/twilio": {
@@ -186,7 +187,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 98,
+    "pages": 100,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -194,7 +195,7 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 407,
+    "pages": 408,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
@@ -202,8 +203,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1296,
+    "pages": 1298,
     "status": "ok"
   },
-  "_last_crawl": "2026-09-02T11:31:14Z"
+  "_last_crawl": "2026-09-02T23:30:58Z"
 }

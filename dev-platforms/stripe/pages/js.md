@@ -273,12 +273,6 @@ Additional payment-method-specific options for configuring behavior when initial
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
           - `off_session`
             Use `off_session` if your customer may or may not be present in your checkout flow.
-      - `alma`
-        If this is an `alma` PaymentMethod, this sub-hash contains details about the Alma payment method options.
-        - `setup_future_usage`
-          Indicates that you intend to make future payments with the payment details collected by the Payment Element.
-          - `none`
-            Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
       - `amazon_pay`
         If this is an `amazon_pay` PaymentMethod, this sub-hash contains details about the Amazon Pay payment method options.
         - `setup_future_usage`
@@ -315,12 +309,6 @@ Additional payment-method-specific options for configuring behavior when initial
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
           - `off_session`
             Use `off_session` if your customer may or may not be present in your checkout flow.
-      - `billie`
-        If this is a `billie` PaymentMethod, this sub-hash contains details about the Billie payment method options.
-        - `setup_future_usage`
-          Indicates that you intend to make future payments with the payment details collected by the Payment Element.
-          - `none`
-            Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
       - `blik`
         If this is a `blik` PaymentMethod, this sub-hash contains details about the BLIK payment method options.
         - `setup_future_usage`
@@ -476,12 +464,6 @@ When providing a `customerSessionClientSecret` and using the Payment Element, th
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
           - `off_session`
             Use `off_session` if your customer may or may not be present in your checkout flow.
-      - `netbanking`
-        If this is a `netbanking` PaymentMethod, this sub-hash contains details about the NetBanking payment method options.
-        - `setup_future_usage`
-          Indicates that you intend to make future payments with the payment details collected by the Payment Element.
-          - `none`
-            Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
       - `nz_bank_account`
         If this is a `nz_bank_account` PaymentMethod, this sub-hash contains details about the New Zealand bank account payment method options.
         - `setup_future_usage`
@@ -546,6 +528,10 @@ When providing a `customerSessionClientSecret` and using the Payment Element, th
           Indicates that you intend to make future payments with the payment details collected by the Payment Element.
           - `none`
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
+          - `off_session`
+            Use `off_session` if your customer may or may not be present in your checkout flow.
+          - `on_session`
+            Use `on_session` if you intend to only reuse the payment method when your customer is present in your checkout flow.
       - `sepa_debit`
         If this is a `sepa_debit` PaymentMethod, this sub-hash contains details about the SEPA Debit payment method options.
         - `setup_future_usage`
@@ -594,6 +580,10 @@ When providing a `customerSessionClientSecret` and using the Payment Element, th
           Indicates that you intend to make future payments with the payment details collected by the Payment Element.
           - `none`
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
+          - `off_session`
+            Use `off_session` if your customer may or may not be present in your checkout flow.
+          - `on_session`
+            Use `on_session` if you intend to only reuse the payment method when your customer is present in your checkout flow.
       - `us_bank_account`
         If this is a `us_bank_account` PaymentMethod, this sub-hash contains details about the US bank account payment method options.
         - `verification_method`
@@ -1355,7 +1345,7 @@ Link makes a best effort to return the phone number registered to the wallet, bu
     - `applePay`
       Specify Apple Pay specific options. These are passed through to the Apple Pay API.
       - `recurringPaymentRequest`
-        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
+        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayrecurringpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `regularBilling`
@@ -1374,7 +1364,7 @@ Link makes a best effort to return the phone number registered to the wallet, bu
           - `recurringPaymentIntervalCount`
         - `billingAgreement`
       - `deferredPaymentRequest`
-        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaydeferredpaymentrequest) for more details.
+        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepaydeferredpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `deferredBilling`
@@ -1389,7 +1379,7 @@ Link makes a best effort to return the phone number registered to the wallet, bu
         - `freeCancellationDateTimeZone`
           "If set, you must also supply a freeCancellationDate.,
       - `automaticReloadPaymentRequest`
-        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
+        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayautomaticreloadpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `automaticReloadBilling`
@@ -1635,7 +1625,7 @@ Link makes a best effort to return the phone number registered to the wallet, bu
     - `applePay`
       Specify Apple Pay specific options. These are passed through to the Apple Pay API.
       - `recurringPaymentRequest`
-        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
+        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayrecurringpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `regularBilling`
@@ -1654,7 +1644,7 @@ Link makes a best effort to return the phone number registered to the wallet, bu
           - `recurringPaymentIntervalCount`
         - `billingAgreement`
       - `deferredPaymentRequest`
-        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaydeferredpaymentrequest) for more details.
+        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepaydeferredpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `deferredBilling`
@@ -1671,7 +1661,7 @@ Link makes a best effort to return the phone number registered to the wallet, bu
 
 These are [tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) timezones such as `America/Los_Angeles`, `Europe/Dublin`, and `Asia/Singapore`.
       - `automaticReloadPaymentRequest`
-        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
+        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayautomaticreloadpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `automaticReloadBilling`
@@ -1760,7 +1750,7 @@ You can specify which countries are allowed for shipping in the Express Checkout
     - `applePay`
       Specify Apple Pay specific options. These are passed through to the Apple Pay API.
       - `recurringPaymentRequest`
-        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
+        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayrecurringpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `regularBilling`
@@ -1779,7 +1769,7 @@ You can specify which countries are allowed for shipping in the Express Checkout
           - `recurringPaymentIntervalCount`
         - `billingAgreement`
       - `deferredPaymentRequest`
-        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaydeferredpaymentrequest) for more details.
+        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepaydeferredpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `deferredBilling`
@@ -1796,7 +1786,7 @@ You can specify which countries are allowed for shipping in the Express Checkout
 
 These are [tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) timezones such as `America/Los_Angeles`, `Europe/Dublin`, and `Asia/Singapore`.
       - `automaticReloadPaymentRequest`
-        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
+        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayautomaticreloadpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `automaticReloadBilling`
@@ -2037,7 +2027,7 @@ You can specify which countries are allowed for shipping in the Express Checkout
       - `applePay`
         Specify Apple Pay specific options. These are passed through to the Apple Pay API.
         - `recurringPaymentRequest`
-          Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
+          Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayrecurringpaymentrequest) for more details.
           - `paymentDescription`
           - `managementURL`
           - `regularBilling`
@@ -2056,7 +2046,7 @@ You can specify which countries are allowed for shipping in the Express Checkout
             - `recurringPaymentIntervalCount`
           - `billingAgreement`
         - `deferredPaymentRequest`
-          Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaydeferredpaymentrequest) for more details.
+          Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepaydeferredpaymentrequest) for more details.
           - `paymentDescription`
           - `managementURL`
           - `deferredBilling`
@@ -2073,7 +2063,7 @@ You can specify which countries are allowed for shipping in the Express Checkout
 
 These are [tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) timezones such as `America/Los_Angeles`, `Europe/Dublin`, and `Asia/Singapore`.
         - `automaticReloadPaymentRequest`
-          Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
+          Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayautomaticreloadpaymentrequest) for more details.
           - `paymentDescription`
           - `managementURL`
           - `automaticReloadBilling`
@@ -2321,7 +2311,7 @@ with the following properties:
       - `applePay`
         Specify Apple Pay specific options. These are passed through to the Apple Pay API.
         - `recurringPaymentRequest`
-          Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
+          Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayrecurringpaymentrequest) for more details.
           - `paymentDescription`
           - `managementURL`
           - `regularBilling`
@@ -2339,7 +2329,7 @@ with the following properties:
             - `recurringPaymentIntervalUnit`
             - `recurringPaymentIntervalCount`
         - `automaticReloadPaymentRequest`
-          Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
+          Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayautomaticreloadpaymentrequest) for more details.
           - `paymentDescription`
           - `managementURL`
           - `automaticReloadBilling`
@@ -2420,7 +2410,7 @@ with the following properties:
       - `applePay`
         Specify Apple Pay specific options. These are passed through to the Apple Pay API.
         - `recurringPaymentRequest`
-          Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
+          Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayrecurringpaymentrequest) for more details.
           - `paymentDescription`
           - `managementURL`
           - `regularBilling`
@@ -2438,7 +2428,7 @@ with the following properties:
             - `recurringPaymentIntervalUnit`
             - `recurringPaymentIntervalCount`
         - `automaticReloadPaymentRequest`
-          Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
+          Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayautomaticreloadpaymentrequest) for more details.
           - `paymentDescription`
           - `managementURL`
           - `automaticReloadBilling`
@@ -8646,12 +8636,6 @@ Additional payment-method-specific options for configuring behavior when initial
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
           - `off_session`
             Use `off_session` if your customer may or may not be present in your checkout flow.
-      - `alma`
-        If this is an `alma` PaymentMethod, this sub-hash contains details about the Alma payment method options.
-        - `setup_future_usage`
-          Indicates that you intend to make future payments with the payment details collected by the Payment Element.
-          - `none`
-            Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
       - `amazon_pay`
         If this is an `amazon_pay` PaymentMethod, this sub-hash contains details about the Amazon Pay payment method options.
         - `setup_future_usage`
@@ -8688,12 +8672,6 @@ Additional payment-method-specific options for configuring behavior when initial
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
           - `off_session`
             Use `off_session` if your customer may or may not be present in your checkout flow.
-      - `billie`
-        If this is a `billie` PaymentMethod, this sub-hash contains details about the Billie payment method options.
-        - `setup_future_usage`
-          Indicates that you intend to make future payments with the payment details collected by the Payment Element.
-          - `none`
-            Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
       - `blik`
         If this is a `blik` PaymentMethod, this sub-hash contains details about the BLIK payment method options.
         - `setup_future_usage`
@@ -8849,12 +8827,6 @@ When providing a `customerSessionClientSecret` and using the Payment Element, th
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
           - `off_session`
             Use `off_session` if your customer may or may not be present in your checkout flow.
-      - `netbanking`
-        If this is a `netbanking` PaymentMethod, this sub-hash contains details about the NetBanking payment method options.
-        - `setup_future_usage`
-          Indicates that you intend to make future payments with the payment details collected by the Payment Element.
-          - `none`
-            Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
       - `nz_bank_account`
         If this is a `nz_bank_account` PaymentMethod, this sub-hash contains details about the New Zealand bank account payment method options.
         - `setup_future_usage`
@@ -8919,6 +8891,10 @@ When providing a `customerSessionClientSecret` and using the Payment Element, th
           Indicates that you intend to make future payments with the payment details collected by the Payment Element.
           - `none`
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
+          - `off_session`
+            Use `off_session` if your customer may or may not be present in your checkout flow.
+          - `on_session`
+            Use `on_session` if you intend to only reuse the payment method when your customer is present in your checkout flow.
       - `sepa_debit`
         If this is a `sepa_debit` PaymentMethod, this sub-hash contains details about the SEPA Debit payment method options.
         - `setup_future_usage`
@@ -8967,6 +8943,10 @@ When providing a `customerSessionClientSecret` and using the Payment Element, th
           Indicates that you intend to make future payments with the payment details collected by the Payment Element.
           - `none`
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
+          - `off_session`
+            Use `off_session` if your customer may or may not be present in your checkout flow.
+          - `on_session`
+            Use `on_session` if you intend to only reuse the payment method when your customer is present in your checkout flow.
       - `us_bank_account`
         If this is a `us_bank_account` PaymentMethod, this sub-hash contains details about the US bank account payment method options.
         - `verification_method`
@@ -9308,7 +9288,7 @@ Link makes a best effort to return the phone number registered to the wallet, bu
     - `applePay`
       Specify Apple Pay specific options. These are passed through to the Apple Pay API.
       - `recurringPaymentRequest`
-        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
+        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayrecurringpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `regularBilling`
@@ -9327,7 +9307,7 @@ Link makes a best effort to return the phone number registered to the wallet, bu
           - `recurringPaymentIntervalCount`
         - `billingAgreement`
       - `deferredPaymentRequest`
-        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaydeferredpaymentrequest) for more details.
+        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepaydeferredpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `deferredBilling`
@@ -9342,7 +9322,7 @@ Link makes a best effort to return the phone number registered to the wallet, bu
         - `freeCancellationDateTimeZone`
           "If set, you must also supply a freeCancellationDate.,
       - `automaticReloadPaymentRequest`
-        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
+        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayautomaticreloadpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `automaticReloadBilling`
@@ -9404,7 +9384,7 @@ You can specify which countries are allowed for shipping in the Express Checkout
     - `applePay`
       Specify Apple Pay specific options. These are passed through to the Apple Pay API.
       - `recurringPaymentRequest`
-        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
+        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayrecurringpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `regularBilling`
@@ -9423,7 +9403,7 @@ You can specify which countries are allowed for shipping in the Express Checkout
           - `recurringPaymentIntervalCount`
         - `billingAgreement`
       - `deferredPaymentRequest`
-        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaydeferredpaymentrequest) for more details.
+        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepaydeferredpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `deferredBilling`
@@ -9440,7 +9420,7 @@ You can specify which countries are allowed for shipping in the Express Checkout
 
 These are [tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) timezones such as `America/Los_Angeles`, `Europe/Dublin`, and `Asia/Singapore`.
       - `automaticReloadPaymentRequest`
-        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
+        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayautomaticreloadpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `automaticReloadBilling`
@@ -15716,7 +15696,7 @@ The first shipping option listed appears in the browser payment interface as the
 - `applePay`
   Specify Apple Pay specific options. These are passed through to the Apple Pay API.
     - `recurringPaymentRequest`
-      Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
+      Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayrecurringpaymentrequest) for more details.
       - `paymentDescription`
       - `managementURL`
       - `regularBilling`
@@ -15734,7 +15714,7 @@ The first shipping option listed appears in the browser payment interface as the
         - `recurringPaymentIntervalUnit`
         - `recurringPaymentIntervalCount`
     - `automaticReloadPaymentRequest`
-      Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
+      Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayautomaticreloadpaymentrequest) for more details.
       - `paymentDescription`
       - `managementURL`
       - `automaticReloadBilling`
@@ -16398,7 +16378,7 @@ Use this option to disable Apple Pay, Google Pay, Link (also known as Onelink in
     - `applePay`
       Specify Apple Pay specific options. These are passed through to the Apple Pay API.
       - `recurringPaymentRequest`
-        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
+        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayrecurringpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `regularBilling`
@@ -16417,7 +16397,7 @@ Use this option to disable Apple Pay, Google Pay, Link (also known as Onelink in
           - `recurringPaymentIntervalCount`
         - `billingAgreement`
       - `deferredPaymentRequest`
-        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaydeferredpaymentrequest) for more details.
+        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepaydeferredpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `deferredBilling`
@@ -16434,7 +16414,7 @@ Use this option to disable Apple Pay, Google Pay, Link (also known as Onelink in
 
 These are [tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) timezones such as `America/Los_Angeles`, `Europe/Dublin`, and `Asia/Singapore`.
       - `automaticReloadPaymentRequest`
-        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
+        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayautomaticreloadpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `automaticReloadBilling`
@@ -16553,7 +16533,7 @@ The first shipping option listed appears in the browser payment interface as the
     - `applePay`
       Specify Apple Pay specific options. These are passed through to the Apple Pay API.
       - `recurringPaymentRequest`
-        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayrecurringpaymentrequest) for more details.
+        Specify a request to set up a recurring payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayrecurringpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `regularBilling`
@@ -16572,7 +16552,7 @@ The first shipping option listed appears in the browser payment interface as the
           - `recurringPaymentIntervalCount`
         - `billingAgreement`
       - `deferredPaymentRequest`
-        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaydeferredpaymentrequest) for more details.
+        Specify a request to set up a deferred payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepaydeferredpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `deferredBilling`
@@ -16589,7 +16569,7 @@ The first shipping option listed appears in the browser payment interface as the
 
 These are [tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) timezones such as `America/Los_Angeles`, `Europe/Dublin`, and `Asia/Singapore`.
       - `automaticReloadPaymentRequest`
-        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/apple_pay_on_the_web/applepayautomaticreloadpaymentrequest) for more details.
+        Specify a request to set up an automatic reload payment. See the [Apple Pay documentation](https://developer.apple.com/documentation/applepayontheweb/applepayautomaticreloadpaymentrequest) for more details.
         - `paymentDescription`
         - `managementURL`
         - `automaticReloadBilling`

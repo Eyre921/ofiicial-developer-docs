@@ -16,10 +16,10 @@ Most of the models below are for instant [serverless inference](/docs/serverless
 | :--------------------------- | :---------------- | :----------------------------------- | :--------------------------------------------------------------- | :------------------------------------------------------------ |
 | **Chat**                     | Kimi K3           | `moonshotai/Kimi-K3`                 | `Qwen3.8-2.4T-A95B`                                              | [Chat completions](/docs/inference/chat/overview)             |
 | **Reasoning**                | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Pro-0813`                               | [Reasoning](/docs/inference/chat/reasoning)                   |
-| **Coding agents**            | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Flash-0731`, `zai-org/GLM-5.2`          | [Build coding agents](/docs/how-to-build-coding-agents)       |
+| **Coding agents**            | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Flash-0731`, `zai-org/GLM-5.3`          | [Build coding agents](/docs/how-to-build-coding-agents)       |
 | **Small and fast**           | Qwen3.8 27B       | `Qwen/Qwen3.8-27B`                   | `google/gemma-4-31B-it`, `openai/gpt-oss-20b`, `Qwen/Qwen3.5-9B` | -                                                             |
 | **Mid-size general purpose** | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `MiniMaxAI/MiniMax-M3`                                           | -                                                             |
-| **Function calling**         | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `zai-org/GLM-5.2`                                                | [Function calling](/docs/inference/function-calling/overview) |
+| **Function calling**         | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `zai-org/GLM-5.3`                                                | [Function calling](/docs/inference/function-calling/overview) |
 
 ## Vision
 

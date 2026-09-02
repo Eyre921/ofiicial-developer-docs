@@ -65,7 +65,7 @@ Use Together models with Mastra.
          You are a helpful weather assistant that provides accurate weather information and can help planning activities based on the weather.
          Use the weatherTool to fetch current weather data.
    `,
-      model: together("zai-org/GLM-5"),
+      model: together("zai-org/GLM-5.3"),
      tools: { weatherTool },
     // ... other configuration
    });

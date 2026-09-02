@@ -3236,6 +3236,7 @@ components:
               provider: OpenAI
               selected: true
           total: 1
+        generation_time: 2016
         is_byok: false
         region: iad
         requested: openai/gpt-4o
@@ -3250,6 +3251,14 @@ components:
           type: array
         endpoints:
           $ref: '#/components/schemas/EndpointsMetadata'
+        generation_time:
+          description: >-
+            Milliseconds measured for the generation, from dispatching the
+            upstream request until its response body ended. Divide the
+            completion token count by this for throughput. Absent when no
+            upstream request was dispatched.
+          example: 2016
+          type: integer
         is_byok:
           type: boolean
         params:
@@ -8974,6 +8983,16 @@ components:
         type: input_video
         video_url: https://example.com/video.mp4
       properties:
+        processing:
+          description: >-
+            Video processing mode. `agentic` enables agentic video processing
+            and `static` forces fixed-rate frame sampling on providers that
+            support it (currently Google Gemini).
+          enum:
+            - agentic
+            - static
+          example: agentic
+          type: string
         type:
           enum:
             - input_video

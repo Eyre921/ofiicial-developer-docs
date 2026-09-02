@@ -4,21 +4,21 @@ source: https://resend.com/docs/dashboard/templates/version-history
 path: docs/dashboard/templates/version-history
 ---
 
-Best practices for using templates in production environments.
+Edit Templates safely in production environments with version history.
 
 Templates in production require a workflow that lets you make changes safely without disrupting active emails. As you build your Template, your entire team can collaborate on the content and design in real-time with full version history.
 
 ## Draft vs Published
 
-Templates start in a **draft** state and must be published before they can be used to send emails.
+Templates start in a draft state and must be published before they can be used to send emails.
 
 This separation allows you to:
 
-* Test templates thoroughly before going live
+* Test Templates thoroughly before going live
 * Make changes without affecting active emails
 * Maintain version control over your email content
 
-Once you **publish** a template, this published version will be used to send emails until you publish again. You can continue to work on a template in draft state without affecting the published version and the editor will automaticalyl save your progress.
+Once you [publish a Template](/docs/dashboard/templates/create-template#publish-a-template), this published version will be used to send emails until you publish again. You can continue to work on a production Template in draft state without affecting the published version, and the editor will automatically save your progress.
 
 <CodeGroup>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -305,22 +305,28 @@ Once you **publish** a template, this published version will be used to send ema
   ```
 </CodeGroup>
 
-After you publish a template, you can freely work on it through the editor or [via the API](/docs/api-reference/templates/update-template) without affecting the published version. This allows you to test and validate new edits before sending them to users.
+After you publish a Template, you can freely work on it through the editor or update it [via the Templates API](/docs/api-reference/templates/update-template) without affecting the published version. This allows you to test and validate new edits before sending them to users.
 
 ## Version History
 
-As you work on a Template, your changes are saved as a draft, although you can also manually save drafts by pressing <kbd>Cmd</kbd> + <kbd>S</kbd> (Mac) or <kbd>Ctrl</kbd> + <kbd>S</kbd> (Windows). Only after publishing again will the changes be reflected in emails using the Template.
+Each Template contains a version history that helps you track changes your team has made over time. You can view the version history by clicking the three dots in the top right corner of the Template editor and selecting **Version History**.
 
-Each template contains a version history that helps you track changes your team has made over time. You can view the version history by clicking the three dots in the top right corner of the template editor and selecting **Version History**.
+As you work on a Template in the editor, your changes are saved as a draft, although you can also manually save drafts by pressing <kbd>Cmd</kbd> + <kbd>S</kbd> (Mac) or <kbd>Ctrl</kbd> + <kbd>S</kbd> (Windows). Only after publishing again will the changes be reflected in emails using the Template.
 
 Through the version history, you can preview each version, who made them, and when they were made. You can also revert to a previous version if needed.
 
 <video />
 
-Reverting creates a new draft based on the selected version's content, without affecting the published template.
+Reverting creates a new draft based on the selected version's content, without affecting the published Template.
 
-## Iterating on a template
+## Edit a Template
 
-You can work on a new draft version of your published template, update the design and messaging, then test it thoroughly before publishing it again. Your email sending will continue to use the current published version until you're ready to make the switch, without the need to create a new separate template or risk leaking your new logo.
+You can work on a new draft version of your published Template, update the design and messaging, then test it thoroughly before publishing it again.
 
-This behavior is also useful to avoid breaking changes when you need to edit a template that's in production. Add or remove variables, update the design, and more without affecting your existing emails or raising validation errors.
+Your email sending will continue to use the current published version until you're ready to make the switch, without the need to create a new separate Template or risk leaking information like your new logo.
+
+This behavior is also useful to avoid breaking changes when you need to edit a Template that's in production. Add or remove variables, update the design, and more without affecting your existing emails or raising validation errors.
+
+## API reference
+
+For complete API documentation, see the [updating Templates API reference](/docs/api-reference/templates/update-template).

@@ -101,6 +101,17 @@ When a model is deprecated on the serverless platform, you have three options:
   During a transition, a model can still appear in catalog listings while its route-level availability changes. If a listed model returns unavailable or disabled errors, treat the runtime API behavior and this page as the source of truth.
 </Note>
 
+## Scheduled deprecations
+
+The following models are deprecated and will be removed from serverless inference on the date listed. Migrate to the recommended replacement or a [dedicated endpoint](/docs/dedicated-endpoints) before that date.
+
+| Removal date | Model                                     | Recommended replacement | Supported by on-demand dedicated endpoints |
+| :----------- | :---------------------------------------- | :---------------------- | :----------------------------------------- |
+| 2026-09-14   | `openai/gpt-oss-20b`                      | `Qwen/Qwen3.5-9B`       | Yes                                        |
+| 2026-09-14   | `google/gemma-4-31B-it`                   | `zai-org/GLM-5.3-Flash` | Yes                                        |
+| 2026-09-14   | `thinkingmachines/Inkling-Small`          | `zai-org/GLM-5.3-Flash` | Yes                                        |
+| 2026-09-14   | `intfloat/multilingual-e5-large-instruct` |                         | No                                         |
+
 ## Deprecation history
 
 ### Inference

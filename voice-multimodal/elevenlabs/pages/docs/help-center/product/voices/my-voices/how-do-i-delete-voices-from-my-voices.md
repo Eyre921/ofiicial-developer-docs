@@ -10,7 +10,7 @@ path: docs/help-center/product/voices/my-voices/how-do-i-delete-voices-from-my-v
 
 To delete a voice from [My Voices](https://elevenlabs.io/app/voice-lab), first find it in your list of voices, click the **More actions** (three dots) button, then select **Delete voice.**
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ee3031105ec93f8664704768ad3802973e91cba07922c854dda7ccf1c87a5586/assets/images/help-center/product/voices/my-voices/how-do-i-delete-voices-from-my-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T071333Z&X-Amz-Expires=604800&X-Amz-Signature=0280ed5b06b6d8c59988a4c64242fb2f4bdf6b00c068ac102738e2b147267393&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ee3031105ec93f8664704768ad3802973e91cba07922c854dda7ccf1c87a5586/assets/images/help-center/product/voices/my-voices/how-do-i-delete-voices-from-my-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T233352Z&X-Amz-Expires=604800&X-Amz-Signature=70523b9db7074001028e40623817903a87e2004ea25e9961bee36d35d5258add&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Deleting a voice cannot be undone, and you will be asked to confirm the deletion.
 

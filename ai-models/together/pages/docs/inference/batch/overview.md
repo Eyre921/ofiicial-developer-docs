@@ -45,17 +45,6 @@ Selected serverless models run at 50% off batch rates:
 
 Models not listed run at standard rates.
 
-### Models not available for batch
-
-The following serverless models are not currently available for batch processing. Batch jobs that target these models will fail:
-
-| Model ID                    |
-| --------------------------- |
-| `deepseek-ai/DeepSeek-R1`   |
-| `deepseek-ai/DeepSeek-V3.1` |
-| `moonshotai/Kimi-K2.5`      |
-| `moonshotai/Kimi-K2.6`      |
-
 ## Run your first batch job
 
 Follow the [batch tutorial](/docs/inference/batch/tutorial) for an end-to-end walkthrough: prepare a JSONL file, upload it, create the batch, poll until it finishes, and download the results.

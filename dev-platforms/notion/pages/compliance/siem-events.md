@@ -210,6 +210,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.scim\_token\_revoked**: A workspace owner revoked a SCIM API token.
 * **workspace.search\_performed**: A search was performed in the workspace.
 * **workspace.settings.agent\_creation\_policy\_updated**: The agent creation policy setting was updated.
+* **workspace.settings.agent\_model\_policy\_updated**: The list of AI models an agent is allowed to use was updated. `agent_type` names which allowed model list changed, and the model and provider lists are sent both before and after the change. `allowed_restricted_access_models` runs the other way from the restricted lists: a restricted-access model is off until an admin names it there, so a model entering that list was allowed and a model leaving it was restricted.
 * **workspace.settings.ai\_leap\_toggled**: A workspace owner enabled or disabled the Notion AI LEAP (Learning & Early Access Program) setting.
 * **workspace.settings.ai\_legal\_terms\_setting\_updated**: A user enabled or disabled Notion AI in the workspace by accepting or revoking AI legal terms.
 * **workspace.settings.ai\_meeting\_notes\_availability\_updated**: The AI meeting notes availability setting was updated.

@@ -534,11 +534,11 @@ The following example scenarios demonstrate how the minimum payment process work
 
 | Example scenario | Minimum payment process |
 | --- | --- |
-| You successfully meet your minimum through daily sales deductions. | - Your minimum amount is 2,000 AUD for the 60-day period ending on March 1.
+| You successfully meet your minimum through daily sales deductions. | - Your minimum amount is 2,000 AUD for the 30-day period ending on March 1.
 - In that period, you repaid 2,500 AUD of your loan balance through Stripe deducting a fixed percentage of your sales volume (the repayment rate).
 - You’ve met your minimum and paid an additional 500 AUD toward your total balance for this payment period.
-- In the next 60-day period, you still must meet the 2,000 AUD minimum. |
-| You don’t meet your minimum through daily sales deductions. | - Your minimum is 2,000 AUD for the 60-day period ending on March 1.
+- In the next 30-day period, you still must meet the 2,000 AUD minimum. |
+| You don’t meet your minimum through daily sales deductions. | - Your minimum is 2,000 AUD for the 30-day period ending on March 1.
 - In that period, you repaid 1,500 AUD of your loan balance through Stripe deducting a fixed percentage of your sales volume (the repayment rate).
 - On March 1, you still owe 500 AUD toward your minimum (2,000 AUD minus 1,500 AUD). You must pay the remaining balance of your minimum.
 - On March 1, Stripe automatically debits 500 AUD from your bank account or account balance to meet your minimum. |
@@ -619,8 +619,6 @@ Your offer is available for 30 days. After 30 days, we automatically re-evaluate
 ## Apply for financing
 
 After you accept an offer, we and our financing partner review your application. If you’re approved, the funds are transferred to your linked bank account, typically within 1 business day. To make sure you receive the funds, you must set a valid bank account as your primary payout method.
-
-If you’re a director or a beneficial owner of the business, you must provide a personal guarantee as part of the application for financing.
 
 ## Loan payment
 

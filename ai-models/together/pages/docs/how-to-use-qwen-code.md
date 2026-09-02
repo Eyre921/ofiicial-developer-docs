@@ -8,14 +8,14 @@ Learn how to power Qwen Code with Together AI models.
 
 Qwen Code is a powerful command-line AI workflow tool specifically optimized for code understanding, automated tasks, and intelligent development assistance. While it comes with built-in Qwen OAuth support, you can also configure it to use Together AI's extensive model selection for even more flexibility and control over your AI coding experience.
 
-This guide shows you how to set up Qwen Code with Together AI's powerful models like Kimi K2.7 Code, GLM 5.2, and specialized coding models to enhance your development workflow beyond traditional context window limits.
+This guide shows you how to set up Qwen Code with Together AI's powerful models like Kimi K3, GLM 5.3, and specialized coding models to enhance your development workflow beyond traditional context window limits.
 
 ## Why use Qwen Code with Together AI?
 
 * **Model Choice**: Access to a wide variety of models beyond Qwen models
 * **Transparent Pricing**: Clear token-based pricing with no surprises
 * **Enterprise Control**: Use your own API keys and have full control over usage
-* **Specialized Models**: Access to coding-specific models like Kimi K2.7 Code and Qwen3 Coder Next
+* **Specialized Models**: Access to coding-specific models like Kimi K3 and DeepSeek V4 Flash
 
 ## 1. Install Qwen Code
 
@@ -72,11 +72,11 @@ Select from Together AI's powerful model selection:
 **For General Development:**
 
 * `moonshotai/Kimi-K3` - Top pick for coding agents.
-* `Qwen/Qwen3-Coder-Next-FP8` - Fast, cost-effective coding model.
+* `deepseek-ai/DeepSeek-V4-Flash-0731` - Fast, cost-effective coding model.
 
 **For Advanced Coding Tasks:**
 
-* `zai-org/GLM-5.2` - Strong all-rounder with a large context window.
+* `zai-org/GLM-5.3` - Strong all-rounder with a large context window.
 * `deepseek-ai/DeepSeek-V4-Pro-0813` - Advanced reasoning capabilities.
 
 See the [pricing page](https://www.together.ai/pricing) for current per-token rates.
@@ -110,9 +110,9 @@ You're now ready to use Qwen Code with Together AI models!
 
 ### Model selection strategy
 
-* Use **Kimi K2.7 Code** for general coding tasks.
-* Switch to **GLM 5.2** or **DeepSeek V4 Pro** for complex reasoning.
-* Use **Qwen3 Coder Next** for faster, cost-effective operations.
+* Use **Kimi K3** for general coding tasks.
+* Switch to **GLM 5.3** or **DeepSeek V4 Pro** for complex reasoning.
+* Use **DeepSeek V4 Flash** for faster, cost-effective operations.
 
 ### Context window management
 

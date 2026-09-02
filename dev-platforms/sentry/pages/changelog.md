@@ -23,7 +23,7 @@ url: https://docs.sentry.io/changelog/
 * [Tracing](https://docs.sentry.io/concepts/key-terms/tracing.md)
 * [Set Up Tracing](https://docs.sentry.io/platforms/dotnet/tracing.md)
 * [Instrument Agents](https://docs.sentry.io/platforms/dotnet/tracing/instrumentation/ai-agents-module.md)
-* [Browser AI Tracing](https://docs.sentry.io/platforms/javascript/agent-tracing-browser.md)
+* [Browser AI Tracing](https://docs.sentry.io/platforms/javascript/agent-tracing.md)
 * [Set Up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing.md)
 * [Manual Instrumentation](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing/manual-instrumentation.md)
 * [LangChain](https://docs.sentry.io/platforms/javascript/guides/node/configuration/integrations/langchain.md)

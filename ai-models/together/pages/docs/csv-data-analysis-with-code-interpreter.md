@@ -105,7 +105,7 @@ export const generateAnalysisCode = (
   csvFileUrl: string,
   csvHeaders: string[],
   csvRows: { [key: string]: string }[],
-  model: string = "zai-org/GLM-5.2",
+  model: string = "zai-org/GLM-5.3",
 ) => {
   const result = streamText({
     model: togetherai(model),
@@ -182,7 +182,7 @@ export const analyzeCsv = async (
 ) => {
   // 1. Generate analysis code
   const result = streamText({
-    model: togetherai("zai-org/GLM-5.2"),
+    model: togetherai("zai-org/GLM-5.3"),
     system: generateCodePrompt({ csvFileUrl, csvHeaders, csvRows }),
     messages: [{ role: "user", content: question }],
   });
@@ -200,7 +200,7 @@ export const analyzeCsv = async (
 
 CSVToChat lets users pick from several Together AI models depending on the complexity of the analysis:
 
-* [**GLM-5.2**](https://api.together.ai/models/zai-org/GLM-5.2) (default): Fast, reliable code generation.
+* [**GLM-5.3**](https://api.together.ai/models/zai-org/GLM-5.3) (default): Fast, reliable code generation.
 * [**DeepSeek V4 Pro 0813**](https://api.together.ai/models/deepseek-ai/DeepSeek-V4-Pro-0813): Complex analysis tasks that benefit from more reasoning.
 * [**GPT-OSS 120B**](https://api.together.ai/models/openai/gpt-oss-120b): Low-cost code generation for shorter questions.
 * [**Llama 3.3 70B Instruct Turbo**](https://api.together.ai/models/meta-llama/Llama-3.3-70B-Instruct-Turbo): Balanced performance and cost.

@@ -68,12 +68,12 @@ To change the name of a database property, indicate the new name in the `name` p
 
 ## Update property type
 
-To update the property type, the property schema object should contain the key of the type. This type contains behavior of this property. Possible values of this key are `"title"`, `"rich_text"`, `"number"`, `"select"`, `"multi_select"`, `"status"`, `"date"`, `"people"`, `"files"`, `"checkbox"`, `"url"`, `"email"`, `"phone_number"`, `"formula"`, `"relation"`, `"rollup"`, `"created_time"`, `"created_by"`, `"last_edited_time"`, `"last_edited_by"`. Within this property, the configuration is a [property schema object](/reference/property-schema-object).
+To update the property type, the property schema object should contain the key of the type. This type contains behavior of this property. Possible values of this key are `"rich_text"`, `"number"`, `"select"`, `"multi_select"`, `"status"`, `"date"`, `"people"`, `"files"`, `"checkbox"`, `"url"`, `"email"`, `"phone_number"`, `"formula"`, `"relation"`, `"rollup"`, `"created_time"`, `"created_by"`, `"last_edited_time"`, `"last_edited_by"`. Within this property, the configuration is a [property schema object](/reference/property-schema-object).
 
 <Danger>
   **Limitations**
 
-  Note that the property type of the `title` cannot be changed.
+  Every data source has exactly one `title` property. Its type cannot be changed to something else, and no other property can be changed to `title`.
 </Danger>
 
 ### Select configuration updates

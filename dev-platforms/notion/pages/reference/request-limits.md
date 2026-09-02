@@ -6,6 +6,8 @@ path: reference/request-limits
 
 To ensure a consistent developer experience for all API users, the Notion API is rate limited and basic size limits apply to request parameters.
 
+Workspace plan limits are separate from request limits. See [Workspace block limits](/reference/workspace-block-limits) for the Free workspace limit that takes effect on September 8, 2026.
+
 ## Rate limits
 
 The Notion API enforces two rate limits:
@@ -26,7 +28,7 @@ Put outgoing requests through a queue so a burst from one job does not consume t
 3. If another 429 or 529 arrives, increase the delay with exponential backoff and jitter.
 4. Set a retry limit. Log or surface the final error when the limit is reached.
 
-Do not retry every error. Retry 429 and 529 responses. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. Fix the request before retrying most 400 responses. Treat 401 and 403 responses as authentication or authorization failures.
+Do not retry every error. Retry 429 and 529 responses. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. Fix the request before retrying most 400 responses. A 401 means authentication failed. A 403 can mean a permission failure or a [workspace block limit](/reference/workspace-block-limits); check the error message before retrying.
 
 The JavaScript SDK retries 429 responses for every method. It also retries 500 and 503 responses for GET and DELETE requests. It respects `Retry-After`, uses exponential backoff with jitter, and limits retries. If you call the REST API directly, use the same safeguards and add explicit handling for 529 responses. These examples show the same policy in several common HTTP clients:
 

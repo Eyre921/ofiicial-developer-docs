@@ -419,7 +419,7 @@ Multi-turn function calling maintains context across multiple conversation turns
 
       # 4. Get model response with tools
       response = client.chat.completions.create(
-          model="zai-org/GLM-5.2",
+          model="zai-org/GLM-5.3",
           messages=messages,
           tools=tools,
       )
@@ -470,7 +470,7 @@ Multi-turn function calling maintains context across multiple conversation turns
 
           # 8. Get final response with function results
           final_response = client.chat.completions.create(
-              model="zai-org/GLM-5.2",
+              model="zai-org/GLM-5.3",
               messages=messages,
           )
 

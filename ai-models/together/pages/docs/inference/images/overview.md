@@ -145,16 +145,15 @@ For the current list of image-generation models, see the [serverless catalog](/d
 
 The table below shows the most commonly used serverless image models.
 
-| Model              | API string                             | Serverless | Notes                                          |
-| ------------------ | -------------------------------------- | :--------: | ---------------------------------------------- |
-| FLUX.1 Schnell     | `black-forest-labs/FLUX.1-schnell`     |      ✓     | Fastest; default 4 steps. Good starting point. |
-| FLUX.1.1 Pro       | `black-forest-labs/FLUX.1.1-pro`       |      ✓     | Higher quality than Schnell.                   |
-| FLUX.2 Pro         | `black-forest-labs/FLUX.2-pro`         |      ✓     | High fidelity; supports reference images.      |
-| FLUX.2 Dev         | `black-forest-labs/FLUX.2-dev`         |      ✓     | Supports `guidance`, `steps`, and LoRAs.       |
-| FLUX.2 Flex        | `black-forest-labs/FLUX.2-flex`        |      ✓     | Adjustable steps/guidance; best typography.    |
-| FLUX.1 Kontext Pro | `black-forest-labs/FLUX.1-kontext-pro` |      ✓     | Image editing via `image_url`.                 |
-| FLUX.2 Max         | `black-forest-labs/FLUX.2-max`         |      ✓     | Highest fidelity FLUX.2 variant.               |
-| FLUX.1 Kontext Max | `black-forest-labs/FLUX.1-kontext-max` |      ✓     | Highest-quality image editing.                 |
+| Model              | API string                             | Serverless | Notes                                       |
+| ------------------ | -------------------------------------- | :--------: | ------------------------------------------- |
+| FLUX.1.1 Pro       | `black-forest-labs/FLUX.1.1-pro`       |      ✓     | High quality; good starting point.          |
+| FLUX.2 Pro         | `black-forest-labs/FLUX.2-pro`         |      ✓     | High fidelity; supports reference images.   |
+| FLUX.2 Dev         | `black-forest-labs/FLUX.2-dev`         |      ✓     | Supports `guidance`, `steps`, and LoRAs.    |
+| FLUX.2 Flex        | `black-forest-labs/FLUX.2-flex`        |      ✓     | Adjustable steps/guidance; best typography. |
+| FLUX.1 Kontext Pro | `black-forest-labs/FLUX.1-kontext-pro` |      ✓     | Image editing via `image_url`.              |
+| FLUX.2 Max         | `black-forest-labs/FLUX.2-max`         |      ✓     | Highest fidelity FLUX.2 variant.            |
+| FLUX.1 Kontext Max | `black-forest-labs/FLUX.1-kontext-max` |      ✓     | Highest-quality image editing.              |
 
 ## Parameters
 

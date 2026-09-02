@@ -175,7 +175,7 @@ Teams on Vercel let you collaborate with other members on projects and access ad
 
 ### Creating a team
 
-#### \['Dashboard'
+#### Dashboard
 
 1. Click on the team switcher at the top left of the nav bar
 2. Choose to create a new team
@@ -184,7 +184,7 @@ Teams on Vercel let you collaborate with other members on projects and access ad
 
 ![Image](https://vercel.com/docs-assets/static/docs/concepts/teams/new-team-light.png)
 
-#### 'cURL'
+#### cURL
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -199,7 +199,7 @@ curl --request POST \
 }'
 ```
 
-#### 'SDK']
+#### SDK
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -6317,7 +6317,7 @@ You can set these headers directly in your server-side requests to AI Gateway.
 
 ## Examples
 
-#### \[&#xA;    'TypeScript (AI SDK)'
+#### TypeScript (AI SDK)
 
 ```typescript filename="ai-sdk.ts"
 import { streamText } from 'ai';
@@ -6336,7 +6336,7 @@ for await (const part of result.textStream) {
 }
 ```
 
-#### 'TypeScript (OpenAI)'
+#### TypeScript (OpenAI)
 
 ```typescript filename="openai.ts"
 import OpenAI from 'openai';
@@ -6367,7 +6367,7 @@ const response = await openai.chat.completions.create(
 console.log(response.choices[0].message.content);
 ```
 
-#### 'Python (OpenAI)'
+#### Python (OpenAI)
 
 ```python filename="openai.py"
 import os
@@ -7527,7 +7527,7 @@ Both headers must be present for meter events to fire. If either is missing, the
 
 ## Examples
 
-#### \[&#xA;    'AI SDK'
+#### AI SDK
 
 You can pass Stripe headers at the gateway level (applies to all requests) or per-request.
 
@@ -7577,7 +7577,7 @@ const result = streamText({
 });
 ```
 
-#### 'TypeScript (OpenAI Chat Completions)'
+#### TypeScript (OpenAI Chat Completions)
 
 ```typescript filename="openai.ts"
 import OpenAI from 'openai';
@@ -7599,7 +7599,7 @@ const completion = await openai.chat.completions.create({
 console.log(completion.choices[0].message.content);
 ```
 
-#### 'TypeScript (Anthropic Messages API)'
+#### TypeScript (Anthropic Messages API)
 
 ```typescript filename="anthropic.ts"
 import Anthropic from '@anthropic-ai/sdk';
@@ -7622,7 +7622,7 @@ const message = await anthropic.messages.create({
 console.log(message.content);
 ```
 
-#### 'Python (OpenAI Chat Completions)'
+#### Python (OpenAI Chat Completions)
 
 ```python filename="openai_billing.py"
 import os
@@ -7645,7 +7645,7 @@ completion = client.chat.completions.create(
 print(completion.choices[0].message.content)
 ```
 
-#### 'Python (Anthropic Messages API)'
+#### Python (Anthropic Messages API)
 
 ```python filename="anthropic_billing.py"
 import os
@@ -7711,6 +7711,94 @@ AI Gateway handles Stripe meter events with the following guarantees:
 
 
 --------------------------------------------------------------------------------
+title: "AI Gateway FAQ"
+description: "Answers to common questions about AI Gateway, including pricing and markup, SDK and API compatibility, model availability, uptime, data handling, spend tracking, and rate limits."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/ai-gateway/faq"
+--------------------------------------------------------------------------------
+
+# AI Gateway FAQ
+
+Answers to common questions about AI Gateway, including pricing, compatibility, model availability, and data handling.
+
+## Does AI Gateway mark up token prices?
+
+No. AI Gateway charges the provider's list price with no platform markup on tokens, on both the free and paid tiers. The same zero-markup pricing applies to [BYOK](/docs/ai-gateway/authentication-and-byok/byok) requests. See [AI Gateway Pricing](/docs/ai-gateway/pricing).
+
+## Is AI Gateway expensive?
+
+Token prices match provider list rates, and two mechanisms bring them below list. Some models are [priced below provider list](/ai-gateway/models?discount=true) for every team, and volume commitments can negotiate [custom discounts](/docs/ai-gateway/pricing/discounts) with invoice payment. A monthly free credit covers smaller workloads, and [budgets](/docs/ai-gateway/observability-and-spend/budgets) cap spend per team, project, API key, or team member. Requests that hit a provider's prompt cache are billed at that provider's reduced cache-read rate, which the model catalog's per-endpoint pricing shows separately.
+
+## How do I track what I spend?
+
+The AI Gateway Overview charts usage and spend by model, and [Logs](/docs/ai-gateway/observability-and-spend/logs) shows the cost of every request. Two REST endpoints cover the same ground without the dashboard. `GET /v1/credits` returns your credit balance and lifetime spend, and `GET /v1/generation` returns the cost of one request. For aggregates grouped by model, user, tag, provider, or credential type, use [Custom Reporting](/docs/ai-gateway/observability-and-spend/custom-reporting), and set [budgets](/docs/ai-gateway/observability-and-spend/budgets) with spend alerts to hear about usage before it grows.
+
+## Does AI Gateway only work with the AI SDK?
+
+No. The [AI SDK](/docs/ai-gateway/sdks-and-apis/ai-sdk) is one path among several. You can keep an existing OpenAI or Anthropic SDK and change its base URL, call the [OpenResponses](/docs/ai-gateway/sdks-and-apis/openresponses) HTTP API, send requests to the [REST endpoints](/docs/ai-gateway/sdks-and-apis/rest-api) directly, use the [AI SDK for Python](/docs/ai-gateway/sdks-and-apis/ai-sdk-python), or go through a [framework integration](/docs/ai-gateway/ecosystem/framework-integrations) such as LangChain, LiteLLM, or Pydantic AI. [Coding agents](/docs/ai-gateway/coding-agents) and [chat platforms](/docs/ai-gateway/chat-platforms) connect the same way.
+
+## Does AI Gateway get new models?
+
+Yes. New models land in the catalog continuously, and you can verify freshness instead of taking a claim for it. Every model entry in `GET /v1/models` carries its provider release date in `released`:
+
+```bash filename="Terminal"
+curl -fsSL https://ai-gateway.vercel.sh/v1/models | jq '.data | sort_by(.released) | reverse | .[0:5][] | .id'
+```
+
+You can also browse the [model list](/ai-gateway/models), which shows the same catalog with pricing and capabilities.
+
+## What is a `-fast` model variant?
+
+A slug that *ends* in `-fast`, such as `anthropic/claude-opus-5-fast`, is [fast mode](/docs/ai-gateway/models-and-providers/fast-mode): the same model on a faster serving path at a higher per-token cost, with fallback to the base model when the fast path is unavailable. Using the fast slug is equivalent to setting the `speed` option on the base model.
+
+Only the suffix carries that meaning. A provider's own model name can contain "fast" elsewhere without being a fast-mode variant, such as `google/veo-3.1-fast-generate-001` or `spacexai/grok-voice-think-fast-2.0`. Those are separate models with their own pricing, which can be lower than the model they are named after rather than higher.
+
+## Does AI Gateway only work on Vercel?
+
+No. An [AI Gateway API key](/docs/ai-gateway/authentication-and-byok/api-keys) authenticates requests from any environment, including local development, CI, and other cloud providers. Applications deployed on Vercel can authenticate with [OIDC tokens](/docs/ai-gateway/authentication-and-byok/oidc) instead of managing a key, but nothing about AI Gateway requires deploying to Vercel.
+
+## Is the free tier a time-limited trial?
+
+No. The free tier is a monthly included credit, not an expiring trial. It covers a [subset of models](/ai-gateway/models?freeTier=true) with lower per-model rate limits. Purchasing AI Gateway Credits moves your team to the paid tier, and the monthly free credit no longer applies. See [Free and paid tiers](/docs/ai-gateway/pricing#free-and-paid-tiers).
+
+## Do AI Gateway Credits expire?
+
+Yes. Purchased credits expire one year after purchase, as stated in the purchase flow.
+
+## Does Vercel train on my prompts or store my data?
+
+No. Vercel does not train on your prompts, and AI Gateway itself does not retain prompt or response content: it is deleted once the request completes.
+
+What the upstream provider does with your traffic is a separate question, and AI Gateway gives you governance controls for the provider path, including per-request [Zero Data Retention](/docs/ai-gateway/security-and-compliance/zdr) routing, [prompt-training disallowance](/docs/ai-gateway/security-and-compliance/disallow-prompt-training), [provider](/docs/ai-gateway/security-and-compliance/provider-allowlist) and [model](/docs/ai-gateway/security-and-compliance/model-allowlist) allowlists, [regional inference](/docs/ai-gateway/security-and-compliance/regional-inference), and [safety identifiers](/docs/ai-gateway/security-and-compliance/safety-identifiers) that isolate end users for provider-side abuse action. Vercel's own retention policy does not constrain providers, so enable these controls when you need a guarantee that covers the whole path. See [Security and Compliance](/docs/ai-gateway/security-and-compliance) for availability and plan requirements per control.
+
+## What does AI Gateway log about my requests?
+
+AI Gateway does not log the prompts or responses in your requests. That content is not retained after the request completes. What AI Gateway records is each request's metadata, including its status, model, provider, token usage, cost, duration, authentication method, and every routing attempt. Inspect this metadata in [Logs](/docs/ai-gateway/observability-and-spend/logs), where routing attempt details are kept for 30 days, or export it to your own observability tool with [Trace Drains](/docs/ai-gateway/observability-and-spend/trace-drains).
+
+## What happens when a provider has an outage?
+
+AI Gateway retries a failed request across the model's other eligible providers, and you can configure [model fallbacks](/docs/ai-gateway/models-and-providers/model-fallbacks) to reach a different model entirely. Every routing attempt, including recovered failures, appears in [Logs](/docs/ai-gateway/observability-and-spend/logs), and [Uptime and Status](/docs/ai-gateway/models-and-providers/uptime) explains how provider health is tracked.
+
+## What uptime does AI Gateway have?
+
+Uptime is measured from live traffic and published per model and provider, not promised as a single fleet-wide number. Each model page has **Uptime** and **Status** views, also reachable at `vercel.com/ai-gateway/models/<model-id>/uptime`, and the endpoints API exposes rolling `uptime_last_15m`, `uptime_last_1h`, and `uptime_last_1d` windows per provider.
+
+AI Gateway reports two different numbers. Provider uptime is the success rate of each provider's attempts. AI Gateway uptime counts only the final attempt of each request, so a request recovered by fallback counts as successful, and AI Gateway uptime can be higher than any single provider's. BYOK requests and `4xx` responses are excluded from both.
+
+## How much latency does AI Gateway add?
+
+AI Gateway measures and publishes per-provider latency, throughput, and uptime for every model endpoint. The `GET /v1/models/{creator}/{model}/endpoints` response includes `latency_last_1h`, `throughput_last_1h`, and uptime figures measured through the gateway, so the numbers you see include any routing overhead. For latency-sensitive workloads, [fast mode](/docs/ai-gateway/models-and-providers/fast-mode) requests the fastest serving path for supported models. See [Metrics](/docs/ai-gateway/models-and-providers/metrics) for how these measurements are made.
+
+## How do rate limits work?
+
+The free tier applies lower per-model limits. The paid tier removes them, and a `429` may come from the upstream provider instead. See [Rate Limits](/docs/ai-gateway/rate-limits) for the response shape, retry guidance, and the difference between rate limits and budgets.
+
+## How do I get help with AI Gateway?
+
+Open your dashboard's **Support** entry for technical and billing questions. For custom rate limits, volume discounts, or invoice payment, [contact sales](/contact/sales).
+
+
+--------------------------------------------------------------------------------
 title: "Image Generation Quickstart"
 description: "Generate images from text prompts using AI Gateway."
 last_updated: "2018-10-20T01:46:40.000Z"
@@ -7721,13 +7809,51 @@ source: "https://vercel.com/docs/ai-gateway/getting-started/image"
 
 This quickstart walks you through generating your first image with AI Gateway.
 
+## Prerequisites
+
+Before you begin, you need:
+
+- A Vercel account with a valid payment method to unlock free AI Gateway Credits
+- Node.js 22 or later
+- An AI Gateway API key or a Vercel OIDC token
+
+### Set up your API key
+
+Open the [Create API Key dialog](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fapi-keys%3FshowCreateKeyModal%3Dtrue\&title=AI+Gateway+API+Keys) in the Vercel dashboard, enter a name, and create the key.
+
+After you create your project in the next section, add a `.env.local` file to the project root and save your API key:
+
+```bash filename=".env.local"
+AI_GATEWAY_API_KEY=your_ai_gateway_api_key
+```
+
+> **💡 Note:** Instead of using an API key, you can use [OIDC
+> tokens](/docs/ai-gateway/authentication-and-byok/oidc) to authenticate your
+> requests.
+
+## Generate your first image
+
+Install Vercel's focused AI Gateway skill before delegating this setup:
+
+```bash filename="Terminal"
+npx skills add vercel/vercel-plugin --skill ai-gateway
+```
+
+**Agent prompt**
+
+```text
+Use the AI Gateway skill to add image generation to this project. Read AI_GATEWAY_API_KEY from the environment or .env.local, and stop and tell me to create a key if it is not set anywhere. Choose a current image model such as openai/gpt-image-2 from the live AI Gateway model list, save the generated image to a file, run the result, and run the project's type checker. Report the files changed and command output.
+```
+
 - ### Set up your project
   Create a new directory and initialize a Node.js project:
   ```bash filename="Terminal"
   mkdir ai-image-demo
   cd ai-image-demo
   pnpm init
+  pnpm pkg set type=module
   ```
+  Setting the project to ESM lets the examples below use top-level `await`.
 
 - ### Install dependencies
   Install the AI SDK and development dependencies:
@@ -7748,37 +7874,26 @@ This quickstart walks you through generating your first image with AI Gateway.
   bun add ai@latest dotenv @types/node tsx typescript
   ```
 
-- ### Set up your API key
-  Go to the [AI Gateway API Keys page](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fapi-keys\&title=AI+Gateway+API+Keys) in your Vercel dashboard and click **Create key** to generate a new API key.
-
-  Create a `.env.local` file and save your API key:
-  ```bash filename=".env.local"
-  AI_GATEWAY_API_KEY=your_ai_gateway_api_key
-  ```
-
 - ### Generate an image
-  Create an `index.ts` file. This example uses Nano Banana Pro (`google/gemini-3-pro-image`), a multimodal model that generates high-quality images:
+  Create an `index.ts` file. This example uses GPT Image 2 (`openai/gpt-image-2`), OpenAI's image-only model for high-fidelity generation:
   ```typescript filename="index.ts"
-  import { generateText } from 'ai';
+  import { generateImage } from 'ai';
   import fs from 'node:fs';
-  import 'dotenv/config';
+  import { config } from 'dotenv';
+
+  config({ path: '.env.local' });
 
   async function main() {
-    const result = await generateText({
-      model: 'google/gemini-3-pro-image',
+    const result = await generateImage({
+      model: 'openai/gpt-image-2',
       prompt: 'A serene mountain landscape at sunset with a calm lake reflection',
+      size: '1536x1024',
     });
 
-    // Nano Banana models return images in result.files with uint8Array
-    const imageFiles = result.files.filter((f) =>
-      f.mediaType?.startsWith('image/'),
-    );
-
-    if (imageFiles.length > 0) {
-      const extension = imageFiles[0].mediaType?.split('/')[1] || 'png';
-      fs.writeFileSync(`output.${extension}`, imageFiles[0].uint8Array);
-      console.log(`Image saved to output.${extension}`);
-    }
+    // Image-only models return images in result.images as base64
+    const buffer = Buffer.from(result.images[0].base64, 'base64');
+    fs.writeFileSync('output.png', buffer);
+    console.log('Image saved to output.png');
   }
 
   main().catch(console.error);
@@ -7789,12 +7904,40 @@ This quickstart walks you through generating your first image with AI Gateway.
   ```
   The generated image will be saved in your project directory.
 
-- ### Next steps
-  - See [supported image generation models](/ai-gateway/models?type=image)
-  - Learn about [multimodal LLMs](/docs/ai-gateway/modalities/image-generation/ai-sdk#multimodal-llms) that can generate images alongside text
-  - Explore [image editing capabilities](/docs/ai-gateway/modalities/image-generation/openai#editing-images) with OpenAI models
+## Next steps
+
+- See [supported image generation models](/ai-gateway/models?type=image)
+- Learn about [multimodal LLMs](/docs/ai-gateway/modalities/image-generation/ai-sdk#multimodal-llms) that can generate images alongside text
+- Explore [image editing capabilities](/docs/ai-gateway/modalities/image-generation/openai#editing-images) with OpenAI models
 
 ## Alternative models
+
+### Nano Banana Pro (`google/gemini-3-pro-image`)
+
+Google's multimodal model, which generates images alongside text. Multimodal models use `generateText` and return images in `result.files`:
+
+```typescript filename="nano-banana-pro.ts"
+import { generateText } from 'ai';
+import fs from 'node:fs';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
+
+const result = await generateText({
+  model: 'google/gemini-3-pro-image',
+  prompt: 'A serene mountain landscape at sunset with a calm lake reflection',
+});
+
+// Nano Banana models return images in result.files with uint8Array
+const imageFiles = result.files.filter((f) =>
+  f.mediaType?.startsWith('image/'),
+);
+
+if (imageFiles.length > 0) {
+  const extension = imageFiles[0].mediaType?.split('/')[1] || 'png';
+  fs.writeFileSync(`output.${extension}`, imageFiles[0].uint8Array);
+}
+```
 
 ### Nano Banana 2 (`google/gemini-3.1-flash-image`)
 
@@ -7803,7 +7946,9 @@ The second-generation Gemini 3.1 Flash image variant. Uses the same `generateTex
 ```typescript filename="nano-banana-2.ts"
 import { generateText } from 'ai';
 import fs from 'node:fs';
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 const result = await generateText({
   model: 'google/gemini-3.1-flash-image',
@@ -7827,7 +7972,9 @@ The original Nano Banana model — Gemini 2.5's flash image variant. Still avail
 ```typescript filename="nano-banana.ts"
 import { generateText } from 'ai';
 import fs from 'node:fs';
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 const result = await generateText({
   model: 'google/gemini-2.5-flash-image',
@@ -7850,7 +7997,9 @@ Fast, high-quality image generation from Black Forest Labs. Image-only models us
 ```typescript filename="flux-example.ts"
 import { generateImage } from 'ai';
 import fs from 'node:fs';
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 const result = await generateImage({
   model: 'bfl/flux-2-flex',
@@ -7871,30 +8020,13 @@ Professional-grade image generation. Same pattern as Flux:
 ```typescript filename="recraft-example.ts"
 import { generateImage } from 'ai';
 import fs from 'node:fs';
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 const result = await generateImage({
   model: 'recraft/recraft-v4.1',
   prompt: 'A minimalist logo design for a tech startup',
-});
-
-const buffer = Buffer.from(result.images[0].base64, 'base64');
-fs.writeFileSync('output.png', buffer);
-```
-
-### GPT Image 2 (`openai/gpt-image-2`)
-
-OpenAI's image-only model for high-fidelity generation:
-
-```typescript filename="gpt-image-2-example.ts"
-import { generateImage } from 'ai';
-import fs from 'node:fs';
-import 'dotenv/config';
-
-const result = await generateImage({
-  model: 'openai/gpt-image-2',
-  prompt: 'A photorealistic image of a mountain landscape at golden hour',
-  aspectRatio: '16:9',
 });
 
 const buffer = Buffer.from(result.images[0].base64, 'base64');
@@ -7925,6 +8057,12 @@ source: "https://vercel.com/docs/ai-gateway/getting-started/migrate-to-ai-gatewa
 AI Gateway puts one endpoint and one API key in front of hundreds of models, and layers on automatic provider fallbacks, per-request observability, spend limits, and pricing with no token markup. It speaks the [AI SDK](/docs/ai-gateway/sdks-and-apis/ai-sdk) natively and treats every model as a `creator/model` string, so it stays provider-neutral: switching providers becomes a one-line string change instead of an integration rewrite.
 
 Rather than make those edits by hand, you hand the job to your coding agent. It reads the whole project, finds every place you call a model, including the background jobs and summary generators that are easy to forget, and reroutes each one through AI Gateway without changing what your app does. Your framework, streaming, tool schemas, and response shapes all stay put.
+
+**Agent prompt**
+
+```text
+MIGRATION_PROMPT
+```
 
 ## What it migrates
 
@@ -7961,6 +8099,11 @@ If your app calls video or realtime models from Python, the agent reports it rat
 - ### Paste the prompt and review the plan
   Drop the prompt into your agent. It runs read-only first: it takes inventory of your model calls and lays out a migration plan before touching anything. Approve the plan, then follow the diff as it works. The agent keeps your framework in place and edits only the model-call boundary. It stops to ask when a call site has no supported path for its language, and it leaves embeddings on their current provider unless you tell it otherwise.
 
+  **Agent prompt**
+  ```text
+  MIGRATION_PROMPT
+  ```
+
 - ### Verify the migration
   When the agent finishes, confirm your app behaves exactly as before, both in the code and in your Vercel dashboard.
 
@@ -7989,14 +8132,261 @@ See [Coding agents](/docs/ai-gateway/coding-agents) to set it up.
 
 --------------------------------------------------------------------------------
 title: "Getting Started with AI Gateway"
-description: "Get started with AI Gateway by generating text, images, video, speech, or transcriptions, or by building realtime voice agents."
+description: "Create an AI Gateway API key, make your first request with TypeScript, Python, or cURL, and verify how the request was routed."
 last_updated: "2018-10-20T01:46:40.000Z"
 source: "https://vercel.com/docs/ai-gateway/getting-started"
 --------------------------------------------------------------------------------
 
 # Getting Started with AI Gateway
 
-Choose a quickstart to set up a project and make your first request:
+Make your first AI Gateway request, then verify its model, provider, usage, cost, and routing in the Vercel dashboard. You can start with the AI SDK for TypeScript or Python, send raw HTTP with cURL, use an existing compatible client, or connect a coding agent.
+
+## Prerequisites
+
+### Set up your API key
+
+You need a [Vercel account](https://vercel.com/signup) and a team with a valid payment method, which unlocks free AI Gateway Credits. The TypeScript path needs [Node.js 22 or later](https://nodejs.org/), the Python path needs Python 3.12 or later, and the cURL path needs neither.
+
+1. If your team does not have a valid payment method, [add one to unlock free credits](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card).
+2. Open the [Create API Key dialog](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fapi-keys%3FshowCreateKeyModal%3Dtrue\&title=AI+Gateway+API+Keys), enter a name, and create the key.
+3. Copy the key immediately. You cannot retrieve its value again.
+4. Export the key in the terminal where you will run the example:
+
+```bash filename="Terminal"
+export AI_GATEWAY_API_KEY="your_ai_gateway_api_key"
+```
+
+Keep this terminal open so the example can read `AI_GATEWAY_API_KEY`.
+
+> **💡 Note:** Applications deployed on Vercel can use an [OIDC
+> token](/docs/ai-gateway/authentication-and-byok/oidc) instead of a long-lived
+> API key. This tutorial uses an API key so the same examples work locally and
+> outside Vercel.
+
+## Choose how to start
+
+| What you want to do                      | Start here                                                                      |
+| ---------------------------------------- | ------------------------------------------------------------------------------- |
+| Make a request with TypeScript, Python, or cURL | [Make your first request](#make-your-first-request)                      |
+| Use the OpenAI or Anthropic API          | [Use an existing client](#use-an-existing-client)                               |
+| Move an existing provider integration    | [Migrate to AI Gateway](/docs/ai-gateway/getting-started/migrate-to-ai-gateway) |
+| Build an agent application               | [Build an agent](#build-an-agent-application)                                   |
+| Route a coding agent through AI Gateway  | [Connect a coding agent](#connect-a-coding-agent)                               |
+
+## Getting started with your first request
+
+### Make your first request
+
+These examples use `openai/gpt-5.6-sol` and consume [AI Gateway Credits](/docs/ai-gateway/pricing). You can replace the model slug with any model your team can access. The free tier covers a subset of the catalog, so if your team has not purchased credits, start from a [free-tier model](/ai-gateway/models?freeTier=true): any other model returns a `403` until you [add credits](/docs/ai-gateway/pricing#top-up-your-ai-gateway-credits).
+
+#### TypeScript
+
+Create a project and install the AI SDK:
+
+```bash filename="Terminal"
+mkdir ai-gateway-quickstart
+cd ai-gateway-quickstart
+pnpm init
+pnpm add ai@latest tsx typescript @types/node
+```
+
+Create `index.ts`:
+
+```typescript filename="index.ts"
+import { generateText } from 'ai';
+
+async function main() {
+  const { text } = await generateText({
+    model: 'openai/gpt-5.6-sol',
+    prompt: 'Invent a new holiday and describe its traditions.',
+  });
+
+  console.log(text);
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
+```
+
+Run the script:
+
+```bash filename="Terminal"
+pnpm tsx index.ts
+```
+
+#### Python
+
+Create a project with [uv](https://docs.astral.sh/uv/) and install the AI SDK for Python:
+
+```bash filename="Terminal"
+mkdir ai-gateway-python-quickstart
+cd ai-gateway-python-quickstart
+uv init
+uv add ai
+```
+
+Create `quickstart.py`:
+
+```python filename="quickstart.py"
+import asyncio
+import ai
+
+
+async def main() -> None:
+    model = ai.get_model('openai/gpt-5.6-sol')
+    messages = [
+        ai.user_message('Invent a new holiday and describe its traditions.')
+    ]
+
+    async with ai.stream(model, messages) as stream:
+        async for event in stream:
+            if isinstance(event, ai.events.TextDelta):
+                print(event.chunk, end='', flush=True)
+
+    print()
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
+```
+
+Run the script:
+
+```bash filename="Terminal"
+uv run python quickstart.py
+```
+
+#### cURL
+
+Send a Chat Completions request directly to AI Gateway:
+
+```bash filename="Terminal"
+curl https://ai-gateway.vercel.sh/v1/chat/completions \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-5.6-sol",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Invent a new holiday and describe its traditions."
+      }
+    ]
+  }'
+```
+
+The response is a Chat Completions JSON object. The generated text is in `choices[0].message.content`.
+
+A successful request prints or returns the model's description of a new holiday.
+
+### Verify the request
+
+Open [AI Gateway Logs](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Flogs\&title=AI+Gateway+Logs) and select the newest request. The log shows:
+
+- The HTTP status and model
+- The provider that served the request
+- Input and output token usage
+- Cost and total duration
+- Every routing attempt, including recovered failures
+
+Request logs take about 90 seconds to fully ingest. If the request does not appear immediately, wait and refresh the page.
+
+### Troubleshoot your first request
+
+Match the response to its cause below. A `403` has three different causes, so read the error message rather than assuming the first one.
+
+| Response or symptom                                 | What it means                                                                                       | What to do                                                                                                                                                                                             |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `401`                                               | The API key or OIDC token is missing, invalid, or revoked                                            | Export a current AI Gateway key and retry                                                                                                                                                              |
+| `402` whose `type` is not `quota_for_entity_exceeded` | The team does not have a positive credit balance                                                    | [Add AI Gateway Credits](/docs/ai-gateway/pricing#top-up-your-ai-gateway-credits)                                                                                                                      |
+| `402` with `quota_for_entity_exceeded`              | A team, project, API key, or user budget has reached its limit                                       | Wait for the budget to refresh or [raise its limit](/docs/ai-gateway/observability-and-spend/budgets)                                                                                                  |
+| `403` with `customer_verification_required`          | The team must add a valid payment method before it can use free credits                             | Add a payment method from the link in the error response                                                                                                                                               |
+| `403` whose message names the free tier             | The model is not in the free-tier subset, so it needs purchased credits                             | Pick a [free-tier model](/ai-gateway/models?freeTier=true) or [add AI Gateway Credits](/docs/ai-gateway/pricing#top-up-your-ai-gateway-credits)                                                        |
+| `403` whose message names team restrictions         | A [model](/docs/ai-gateway/security-and-compliance/model-allowlist) or [provider](/docs/ai-gateway/security-and-compliance/provider-allowlist) allowlist blocks the request | Choose an allowed model, or ask a team owner to update the allowlist                                                            |
+| `429`                                               | A [rate limit](/docs/ai-gateway/rate-limits) was exceeded, from AI Gateway or the upstream provider  | Retry after a short wait; the paid tier removes AI Gateway's rate limits                                                                                                                          |
+
+## Find an AI model
+
+AI Gateway model IDs use a `provider/model` format, such as `openai/gpt-5.6-sol` or `anthropic/claude-opus-5`. A provider's own model name needs its prefix to route, and you should use IDs exactly as the catalog returns them rather than constructing variants by analogy.
+
+Find the current ID for a model in two places:
+
+- The [model list](/ai-gateway/models), with filters for modality, capability, provider, price, and free-tier eligibility
+- [`GET /v1/models`](/docs/ai-gateway/sdks-and-apis/rest-api#list-models), which returns every model's ID, modalities, capability tags, context window, and pricing, without authentication
+
+For per-provider pricing, regional availability, and live performance on one model, query [`GET /v1/models/{creator}/{model}/endpoints`](/docs/ai-gateway/sdks-and-apis/rest-api#get-model-endpoints).
+
+## Use an existing client
+
+AI Gateway supports several API shapes. Point an existing client at the matching base URL and keep using the same `provider/model` slugs.
+
+| Client or API                                            | AI Gateway URL                              | Guide                                                                                                                                              |
+| -------------------------------------------------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AI SDK                                                   | No base URL needed for string model IDs     | [AI SDK](/docs/ai-gateway/sdks-and-apis/ai-sdk)                                                                                                    |
+| AI SDK for Python                                        | No base URL needed for string model IDs     | [AI SDK for Python](/docs/ai-gateway/sdks-and-apis/ai-sdk-python)                                                                                  |
+| OpenAI Chat Completions or Responses                     | `https://ai-gateway.vercel.sh/v1`           | [OpenAI Chat Completions](/docs/ai-gateway/sdks-and-apis/openai-chat-completions) and [OpenAI Responses](/docs/ai-gateway/sdks-and-apis/responses) |
+| Anthropic Messages                                       | `https://ai-gateway.vercel.sh`              | [Anthropic Messages](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api)                                                                        |
+| OpenResponses                                            | `https://ai-gateway.vercel.sh/v1`           | [OpenResponses](/docs/ai-gateway/sdks-and-apis/openresponses)                                                                                      |
+| LangChain, LlamaIndex, Pydantic AI, and other frameworks | Varies by integration                       | [Framework integrations](/docs/ai-gateway/ecosystem/framework-integrations)                                                                        |
+
+Authentication, model IDs, provider routing, fallbacks, billing, and observability work across these API shapes.
+
+## Build or connect an agent
+
+### Add AI Gateway with a coding assistant
+
+Install Vercel's focused AI Gateway skill. The skill covers current authentication, model discovery, compatible clients, routing, budgets, observability, and verification:
+
+```bash filename="Terminal"
+npx skills add vercel/vercel-plugin --skill ai-gateway
+```
+
+Then copy the prompt below into a coding assistant with access to your project:
+
+**Agent prompt**
+
+```text
+Use the AI Gateway skill to add text generation to this project. Read AI_GATEWAY_API_KEY from the environment or .env.local, and stop and tell me to create a key if it is not set anywhere. Choose a current text model such as openai/gpt-5.6-sol from the live AI Gateway model list, print the generated text, run the result, and run the project's type checker. Report the files changed and command output.
+```
+
+When the task moves into SDK-specific implementation, the skill can chain to Vercel's AI SDK skill. You can also [install the Vercel Plugin](https://github.com/vercel/vercel-plugin) with `npx plugins add vercel/vercel-plugin` for skills across the rest of the Vercel platform.
+
+### Build an agent application
+
+The AI SDK includes `ToolLoopAgent` for applications that need model-driven loops and tools, built on the same setup and API key as your first request. See [Build agents with the AI SDK](https://ai-sdk.dev/docs/agents/building-agents). Python applications can use [`ai.Agent`](/docs/ai-gateway/sdks-and-apis/ai-sdk-python#tool-calling-with-agents).
+
+### Connect a coding agent
+
+The Vercel CLI can configure supported coding agents to route their model requests through AI Gateway. Install the latest CLI and sign in if needed:
+
+```bash filename="Terminal"
+npm i -g vercel@latest
+vercel login
+```
+
+Run the interactive setup:
+
+```bash filename="Terminal"
+vercel ai-gateway coding-agents setup
+```
+
+The command detects installed agents, provisions or reuses an AI Gateway API key, previews every planned configuration change, and asks for confirmation before writing. On macOS, it stores the key in your login Keychain by default rather than in plaintext configuration.
+
+The command configures Claude Code, Cline, Codex, Cursor, Hermes, Kilo Code, omp, OpenClaw, OpenCode, and Pi. To connect specific agents, pass one or more `--agent` values. For example:
+
+```bash filename="Terminal"
+vercel ai-gateway coding-agents setup --agent claude-code --agent codex
+```
+
+For every `--agent` value, along with `--all`, `--yes`, custom paths, Keychain storage, and desktop session migration, see the [`vercel ai-gateway` CLI reference](/docs/cli/ai-gateway#setup). The [coding agents guide](/docs/ai-gateway/coding-agents) covers manual configuration, including agents the command does not handle.
+
+### Give an AI agent the docs
+
+Every docs page ships in agent-readable forms: append `.md` for Markdown or `.graph.md` for the cross-link map, and browse [llms.txt](/llms.txt) or the [semantic sitemap](https://vercel.com/docs/sitemap.md) for the full index.
+
+## Choose what to build next
 
 **Text Generation**: Generate and stream text with GPT 5.6 Sol, Claude Opus 5, Gemini 3.7 Flash, Llama 4 Maverick, and 350+ more models. [Learn more →](/docs/ai-gateway/getting-started/text)
 
@@ -8007,6 +8397,13 @@ Choose a quickstart to set up a project and make your first request:
 **Realtime**: Build low-latency, speech-to-speech voice agents that listen and respond over WebSockets. [Learn more →](/docs/ai-gateway/getting-started/realtime)
 
 **Speech**: Generate spoken audio from text and transcribe audio back to text with TTS-1, Whisper, and more. [Learn more →](/docs/ai-gateway/getting-started/speech)
+
+## Next steps
+
+- [Browse models](/ai-gateway/models) by capability, provider, price, and free-tier availability, or query [`GET /v1/models`](/docs/ai-gateway/sdks-and-apis/rest-api#list-models)
+- [Migrate an existing application](/docs/ai-gateway/getting-started/migrate-to-ai-gateway)
+- Configure [provider routing](/docs/ai-gateway/models-and-providers/provider-options) and [model fallbacks](/docs/ai-gateway/models-and-providers/model-fallbacks)
+- Read the [FAQ](/docs/ai-gateway/faq) for pricing, compatibility, and data-handling questions
 
 
 --------------------------------------------------------------------------------
@@ -8025,9 +8422,43 @@ This quickstart gets you to a working realtime session two ways with the AI SDK:
 
 The script below uses `spacexai/grok-voice-think-fast-2.0` and the browser agent uses `openai/gpt-realtime-2.1`. Both are realtime speech-to-speech models, so swap the model ID to switch between them. `spacexai/grok-voice-think-fast-2.0` supports speech-to-speech only, so it does not handle transcription or translation.
 
+## Prerequisites
+
+Before you begin, you need:
+
+- A Vercel account with a valid payment method to unlock free AI Gateway Credits
+- Node.js 22 or later
+- An AI Gateway API key or a Vercel OIDC token
+
+### Set up your API key
+
+Open the [Create API Key dialog](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fapi-keys%3FshowCreateKeyModal%3Dtrue\&title=AI+Gateway+API+Keys) in the Vercel dashboard, enter a name, and create the key.
+
+After you create your project in the next section, add a `.env.local` file to the project root and save your API key:
+
+```bash filename=".env.local"
+AI_GATEWAY_API_KEY=your_ai_gateway_api_key
+```
+
+> **💡 Note:** Instead of using an API key, you can use [OIDC
+> tokens](/docs/ai-gateway/authentication-and-byok/oidc) to authenticate your
+> requests.
+
 ## Run a script
 
 The fastest way to try realtime is a Node.js script, no framework and no browser. It uses the AI Gateway provider's realtime model as a codec: the model builds the WebSocket connection and translates between the normalized AI SDK events you send and the provider's wire format. The script sends a text prompt, prints the spoken reply's transcript as it streams, and saves the audio to a file.
+
+Install Vercel's focused AI Gateway skill before delegating this setup:
+
+```bash filename="Terminal"
+npx skills add vercel/vercel-plugin --skill ai-gateway
+```
+
+**Agent prompt**
+
+```text
+Use the AI Gateway skill to add a realtime speech-to-speech session to this project. Read AI_GATEWAY_API_KEY from the environment or .env.local, and stop and tell me to create a key if it is not set anywhere. Choose a current realtime model such as spacexai/grok-voice-think-fast-2.0 from the live AI Gateway model list, print the transcript and save the audio to a file, run the result, and run the project's type checker. Report the files changed and command output.
+```
 
 - ### Set up your project
   Create a new directory and initialize a Node.js project:
@@ -8035,6 +8466,7 @@ The fastest way to try realtime is a Node.js script, no framework and no browser
   mkdir ai-realtime-demo
   cd ai-realtime-demo
   pnpm init
+  pnpm pkg set type=module
   ```
 
 - ### Install dependencies
@@ -8056,21 +8488,15 @@ The fastest way to try realtime is a Node.js script, no framework and no browser
   bun add @ai-sdk/gateway@latest ws dotenv tsx typescript @types/ws @types/node
   ```
 
-- ### Set up your API key
-  Go to the [AI Gateway API Keys page](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fapi-keys\&title=AI+Gateway+API+Keys) in your Vercel dashboard and click **Create key** to generate a new API key.
-
-  Create a `.env.local` file and save your API key:
-  ```bash filename=".env.local"
-  AI_GATEWAY_API_KEY=your_ai_gateway_api_key
-  ```
-
 - ### Create and run the script
   Create a `realtime.ts` file:
   ```typescript filename="realtime.ts"
   import { gateway } from '@ai-sdk/gateway';
   import WebSocket from 'ws';
   import { writeFileSync } from 'node:fs';
-  import 'dotenv/config';
+  import { config } from 'dotenv';
+
+  config({ path: '.env.local' });
 
   const modelId = 'spacexai/grok-voice-think-fast-2.0';
 
@@ -8282,12 +8708,49 @@ Text to speech and speech to text are two halves of the same workflow: one turns
 > **💡 Note:** Speech and transcription support ships in the stable AI SDK releases. Install
 > them with `pnpm add ai@latest @ai-sdk/gateway@latest`.
 
+## Prerequisites
+
+Before you begin, you need:
+
+- A Vercel account with a valid payment method to unlock free AI Gateway Credits
+- Node.js 22 or later
+- An AI Gateway API key or a Vercel OIDC token
+
+### Set up your API key
+
+Open the [Create API Key dialog](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fapi-keys%3FshowCreateKeyModal%3Dtrue\&title=AI+Gateway+API+Keys) in the Vercel dashboard, enter a name, and create the key.
+
+After you create your project in the next section, add a `.env.local` file to the project root and save your API key:
+
+```bash filename=".env.local"
+AI_GATEWAY_API_KEY=your_ai_gateway_api_key
+```
+
+> **💡 Note:** Instead of using an API key, you can use [OIDC
+> tokens](/docs/ai-gateway/authentication-and-byok/oidc) to authenticate your
+> requests.
+
+## Generate and transcribe speech
+
+Install Vercel's focused AI Gateway skill before delegating this setup:
+
+```bash filename="Terminal"
+npx skills add vercel/vercel-plugin --skill ai-gateway
+```
+
+**Agent prompt**
+
+```text
+Use the AI Gateway skill to add a text-to-speech and speech-to-text round trip to this project. Read AI_GATEWAY_API_KEY from the environment or .env.local, and stop and tell me to create a key if it is not set anywhere. Choose current speech and transcription models such as openai/tts-1 and openai/whisper-1 from the live AI Gateway model list, save the audio and print the transcript, run the result, and run the project's type checker. Report the files changed and command output.
+```
+
 - ### Set up your project
   Create a new directory and initialize a Node.js project:
   ```bash filename="Terminal"
   mkdir ai-speech-demo
   cd ai-speech-demo
   pnpm init
+  pnpm pkg set type=module
   ```
 
 - ### Install dependencies
@@ -8309,17 +8772,6 @@ Text to speech and speech to text are two halves of the same workflow: one turns
   bun add ai@latest @ai-sdk/gateway@latest dotenv @types/node tsx typescript
   ```
 
-- ### Set up your API key
-  Go to the [AI Gateway API Keys page](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fapi-keys\&title=AI+Gateway+API+Keys) in your Vercel dashboard and click **Create key** to generate a new API key.
-
-  Create a `.env.local` file and save your API key:
-  ```bash filename=".env.local"
-  AI_GATEWAY_API_KEY=your_ai_gateway_api_key
-  ```
-  > **💡 Note:** Instead of using an API key, you can use [OIDC
-  > tokens](/docs/ai-gateway/authentication-and-byok#oidc-token-authentication) to
-  > authenticate your requests.
-
 - ### Run the round-trip
   Create an `index.ts` file. It generates speech from a sentence, saves the audio, then transcribes that same audio back to text:
   ```typescript filename="index.ts"
@@ -8329,7 +8781,9 @@ Text to speech and speech to text are two halves of the same workflow: one turns
   } from 'ai';
   import { gateway } from '@ai-sdk/gateway';
   import { writeFile } from 'node:fs/promises';
-  import 'dotenv/config';
+  import { config } from 'dotenv';
+
+  config({ path: '.env.local' });
 
   async function main() {
     const text = 'Thanks for trying out AI Gateway.';
@@ -8360,10 +8814,11 @@ Text to speech and speech to text are two halves of the same workflow: one turns
   ```
   You get `speech.mp3` with the spoken sentence, and the transcript prints back the text you started with.
 
-- ### Next steps
-  - Read the [Text to Speech reference](/docs/ai-gateway/modalities/text-to-speech) for voices, formats, and the full list of request options
-  - Read the [Speech to Text reference](/docs/ai-gateway/modalities/speech-to-text) for segments, timestamps, and provider options
-  - For live, two-way voice conversations, follow the [Realtime quickstart](/docs/ai-gateway/getting-started/realtime)
+## Next steps
+
+- Read the [Text to Speech reference](/docs/ai-gateway/modalities/text-to-speech) for voices, formats, and the full list of request options
+- Read the [Speech to Text reference](/docs/ai-gateway/modalities/speech-to-text) for segments, timestamps, and provider options
+- For live, two-way voice conversations, follow the [Realtime quickstart](/docs/ai-gateway/getting-started/realtime)
 
 ## Use each on its own
 
@@ -8379,7 +8834,43 @@ source: "https://vercel.com/docs/ai-gateway/getting-started/text"
 
 # Text Generation Quickstart
 
-This quickstart walks you through making your first text generation request with AI Gateway.
+Generate and stream a text response through AI Gateway, then inspect the token usage and finish reason.
+
+## Prerequisites
+
+Before you begin, you need:
+
+- A Vercel account with a valid payment method to unlock free AI Gateway Credits
+- Node.js 22 or later
+- An AI Gateway API key or a Vercel OIDC token
+
+### Set up your API key
+
+Open the [Create API Key dialog](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fapi-keys%3FshowCreateKeyModal%3Dtrue\&title=AI+Gateway+API+Keys) in the Vercel dashboard, enter a name, and create the key.
+
+After you create your project in the next section, add a `.env.local` file to the project root and save your API key:
+
+```bash filename=".env.local"
+AI_GATEWAY_API_KEY=your_ai_gateway_api_key
+```
+
+> **💡 Note:** Instead of using an API key, you can use [OIDC
+> tokens](/docs/ai-gateway/authentication-and-byok/oidc) to authenticate your
+> requests.
+
+## Generate your first text response
+
+Install Vercel's focused AI Gateway skill before delegating this setup:
+
+```bash filename="Terminal"
+npx skills add vercel/vercel-plugin --skill ai-gateway
+```
+
+**Agent prompt**
+
+```text
+Use the AI Gateway skill to add streaming text generation to this project. Read AI_GATEWAY_API_KEY from the environment or .env.local, and stop and tell me to create a key if it is not set anywhere. Choose a current text model such as openai/gpt-5.6-sol from the live AI Gateway model list, stream the response, print token usage and the finish reason, run the result, and run the project's type checker. Report the files changed and command output.
+```
 
 - ### Set up your project
   Create a new directory and initialize a Node.js project:
@@ -8387,6 +8878,7 @@ This quickstart walks you through making your first text generation request with
   mkdir ai-text-demo
   cd ai-text-demo
   pnpm init
+  pnpm pkg set type=module
   ```
 
 - ### Install dependencies
@@ -8408,22 +8900,13 @@ This quickstart walks you through making your first text generation request with
   bun add ai@latest dotenv @types/node tsx typescript
   ```
 
-- ### Set up your API key
-  Go to the [AI Gateway API Keys page](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fapi-keys\&title=AI+Gateway+API+Keys) in your Vercel dashboard and click **Create key** to generate a new API key.
-
-  Create a `.env.local` file and save your API key:
-  ```bash filename=".env.local"
-  AI_GATEWAY_API_KEY=your_ai_gateway_api_key
-  ```
-  > **💡 Note:** Instead of using an API key, you can use [OIDC
-  > tokens](/docs/ai-gateway/authentication-and-byok#oidc-token-authentication) to
-  > authenticate your requests.
-
 - ### Create and run your script
   Create an `index.ts` file:
   ```typescript filename="index.ts"
   import { streamText } from 'ai';
-  import 'dotenv/config';
+  import { config } from 'dotenv';
+
+  config({ path: '.env.local' });
 
   async function main() {
     const result = streamText({
@@ -8448,10 +8931,11 @@ This quickstart walks you through making your first text generation request with
   ```
   You should see the AI model's response stream to your terminal.
 
-- ### Next steps
-  - Learn about [provider and model routing with fallbacks](/docs/ai-gateway/models-and-providers/provider-options)
-  - Explore the [AI SDK documentation](https://ai-sdk.dev/getting-started) for more configuration options
-  - Try other APIs: [OpenAI Chat Completions](/docs/ai-gateway/sdks-and-apis/openai-chat-completions), [OpenAI Responses](/docs/ai-gateway/sdks-and-apis/responses), [Anthropic Messages](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api), or [OpenResponses](/docs/ai-gateway/sdks-and-apis/openresponses)
+## Next steps
+
+- Learn about [provider and model routing with fallbacks](/docs/ai-gateway/models-and-providers/provider-options)
+- Explore the [AI SDK documentation](https://ai-sdk.dev/getting-started) for more configuration options
+- Try other APIs: [OpenAI Chat Completions](/docs/ai-gateway/sdks-and-apis/openai-chat-completions), [OpenAI Responses](/docs/ai-gateway/sdks-and-apis/responses), [Anthropic Messages](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api), or [OpenResponses](/docs/ai-gateway/sdks-and-apis/openresponses)
 
 ## Compatible APIs
 
@@ -8465,7 +8949,9 @@ Use any OpenAI SDK or HTTP client with AI Gateway:
 
 ```typescript filename="index.ts"
 import OpenAI from 'openai';
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 const client = new OpenAI({
   apiKey: process.env.AI_GATEWAY_API_KEY,
@@ -8496,7 +8982,7 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv('.env.local')
 
 client = OpenAI(
     api_key=os.getenv('AI_GATEWAY_API_KEY'),
@@ -8526,7 +9012,9 @@ Use any Anthropic SDK or HTTP client with AI Gateway:
 
 ```typescript filename="index.ts"
 import Anthropic from '@anthropic-ai/sdk';
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 const client = new Anthropic({
   apiKey: process.env.AI_GATEWAY_API_KEY,
@@ -8536,7 +9024,7 @@ const client = new Anthropic({
 async function main() {
   const message = await client.messages.create({
     model: 'anthropic/claude-opus-5',
-    max_tokens: 1024,
+    max_tokens: 4096,
     messages: [
       {
         role: 'user',
@@ -8545,11 +9033,14 @@ async function main() {
     ],
   });
 
-  console.log(message.content[0].text);
+  const textBlock = message.content.find((block) => block.type === 'text');
+  console.log(textBlock?.text);
 }
 
 main().catch(console.error);
 ```
+
+Thinking models return `thinking` blocks before the text, and thinking tokens count toward `max_tokens`. Give the request room for both, and select the first `text` block rather than indexing into position 0.
 
 #### Python
 
@@ -8558,7 +9049,7 @@ import os
 import anthropic
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv('.env.local')
 
 client = anthropic.Anthropic(
     api_key=os.getenv('AI_GATEWAY_API_KEY'),
@@ -8567,7 +9058,7 @@ client = anthropic.Anthropic(
 
 message = client.messages.create(
     model='anthropic/claude-opus-5',
-    max_tokens=1024,
+    max_tokens=4096,
     messages=[
         {
             'role': 'user',
@@ -8576,7 +9067,8 @@ message = client.messages.create(
     ],
 )
 
-print(message.content[0].text)
+text_block = next(block for block in message.content if block.type == 'text')
+print(text_block.text)
 ```
 
 Learn more in the [Anthropic Messages API docs](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api).
@@ -8588,7 +9080,9 @@ Use the [OpenResponses API](https://openresponses.org), an open standard for AI 
 #### TypeScript
 
 ```typescript filename="index.ts"
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 async function main() {
   const response = await fetch('https://ai-gateway.vercel.sh/v1/responses', {
@@ -8610,11 +9104,14 @@ async function main() {
   });
 
   const result = await response.json();
-  console.log(result.output[0].content[0].text);
+  const message = result.output.find((item) => item.type === 'message');
+  console.log(message?.content.find((part) => part.type === 'output_text')?.text);
 }
 
 main().catch(console.error);
 ```
+
+A reasoning model's `output` array can start with a `reasoning` item, so find the `message` item rather than indexing into position 0.
 
 #### Python
 
@@ -8623,7 +9120,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv('.env.local')
 
 response = requests.post(
     'https://ai-gateway.vercel.sh/v1/responses',
@@ -8644,7 +9141,8 @@ response = requests.post(
 )
 
 result = response.json()
-print(result['output'][0]['content'][0]['text'])
+message = next(item for item in result['output'] if item['type'] == 'message')
+print(next(part['text'] for part in message['content'] if part['type'] == 'output_text'))
 ```
 
 #### cURL
@@ -8683,13 +9181,51 @@ Generations can take minutes. The quickstart below holds one request to AI Gatew
 
 > **💡 Note:** Video generation requires AI SDK 6 or later. Check your `ai` package version with `npm list ai`.
 
+## Prerequisites
+
+Before you begin, you need:
+
+- A Vercel account with a valid payment method to unlock free AI Gateway Credits
+- Node.js 22 or later
+- An AI Gateway API key or a Vercel OIDC token
+
+### Set up your API key
+
+Open the [Create API Key dialog](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fapi-keys%3FshowCreateKeyModal%3Dtrue\&title=AI+Gateway+API+Keys) in the Vercel dashboard, enter a name, and create the key.
+
+After you create your project in the next section, add a `.env.local` file to the project root and save your API key:
+
+```bash filename=".env.local"
+AI_GATEWAY_API_KEY=your_ai_gateway_api_key
+```
+
+> **💡 Note:** Instead of using an API key, you can use [OIDC
+> tokens](/docs/ai-gateway/authentication-and-byok/oidc) to authenticate your
+> requests.
+
+## Generate your first video
+
+Install Vercel's focused AI Gateway skill before delegating this setup:
+
+```bash filename="Terminal"
+npx skills add vercel/vercel-plugin --skill ai-gateway
+```
+
+**Agent prompt**
+
+```text
+Use the AI Gateway skill to add video generation to this project. Read AI_GATEWAY_API_KEY from the environment or .env.local, and stop and tell me to create a key if it is not set anywhere. Choose a current video model such as google/veo-3.1-fast-generate-001 from the live AI Gateway model list, save the generated video to a file, run the result, and run the project's type checker. Report the files changed and command output.
+```
+
 - ### Set up your project
   Create a new directory and initialize a Node.js project:
   ```bash filename="Terminal"
   mkdir ai-video-demo
   cd ai-video-demo
   pnpm init
+  pnpm pkg set type=module
   ```
+  Setting the project to ESM lets the examples below use top-level `await`.
 
 - ### Install dependencies
   Install the AI SDK and development dependencies:
@@ -8715,24 +9251,18 @@ Generations can take minutes. The quickstart below holds one request to AI Gatew
   ```
   The `@latest` forces an upgrade even if your package.json has an older version like `^5.0.0`.
 
-- ### Set up your API key
-  Go to the [AI Gateway API Keys page](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fapi-keys\&title=AI+Gateway+API+Keys) in your Vercel dashboard and click **Create key** to generate a new API key.
-
-  Create a `.env.local` file and save your API key:
-  ```bash filename=".env.local"
-  AI_GATEWAY_API_KEY=your_ai_gateway_api_key
-  ```
-
 - ### Generate a video
   Create an `index.ts` file:
   ```typescript filename="index.ts"
   import { experimental_generateVideo as generateVideo } from 'ai';
   import fs from 'node:fs';
-  import 'dotenv/config';
+  import { config } from 'dotenv';
+
+  config({ path: '.env.local' });
 
   async function main() {
     const result = await generateVideo({
-      model: 'google/veo-3.1-generate-001',
+      model: 'google/veo-3.1-fast-generate-001',
       prompt: 'A serene mountain landscape at sunset with clouds drifting by',
       aspectRatio: '16:9',
       duration: 8,
@@ -8754,11 +9284,12 @@ Generations can take minutes. The quickstart below holds one request to AI Gatew
   > If you hit timeout issues, see [extending timeouts for Node.js](/docs/ai-gateway/modalities/video-generation#extending-timeouts-for-nodejs), or switch to [asynchronous video generation](#asynchronous-video-generation) so no single request stays open.
   The generated video will be saved as `output.mp4` in your project directory.
 
-- ### Next steps
-  - See [supported video generation models](/ai-gateway/models?capabilities=video-generation)
-  - Learn about [image-to-video generation](/docs/ai-gateway/modalities/video-generation/image-to-video) to animate images
-  - Explore [KlingAI motion control](/docs/ai-gateway/modalities/video-generation/motion-control) for character animation
-  - Run generations as background jobs with [asynchronous video generation](#asynchronous-video-generation)
+## Next steps
+
+- See [supported video generation models](/ai-gateway/models?capabilities=video-generation)
+- Learn about [image-to-video generation](/docs/ai-gateway/modalities/video-generation/image-to-video) to animate images
+- Explore [KlingAI motion control](/docs/ai-gateway/modalities/video-generation/motion-control) for character animation
+- Run generations as background jobs with [asynchronous video generation](#asynchronous-video-generation)
 
 ## Asynchronous video generation
 
@@ -8775,7 +9306,9 @@ Passing the `poll` option is what opts you into the asynchronous flow. The same 
 ```typescript filename="async-video.ts"
 import { experimental_generateVideo as generateVideo } from 'ai';
 import fs from 'node:fs';
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 async function main() {
   const result = await generateVideo({
@@ -8831,7 +9364,9 @@ import {
   experimental_startVideo as startVideo,
 } from 'ai';
 import fs from 'node:fs';
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 const model = 'google/veo-3.1-generate-001';
 
@@ -8992,7 +9527,9 @@ Transform a single image into a video by adding motion. The image becomes the vi
 ```typescript filename="image-to-video.ts"
 import { experimental_generateVideo as generateVideo } from 'ai';
 import fs from 'node:fs';
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 const result = await generateVideo({
   model: 'alibaba/wan-v2.6-i2v',
@@ -9013,7 +9550,9 @@ Generate a video that transitions between a starting and ending image. The model
 ```typescript filename="first-last-frame.ts"
 import { experimental_generateVideo as generateVideo } from 'ai';
 import fs from 'node:fs';
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 const firstFrame = fs.readFileSync('start.png');
 const lastFrame = fs.readFileSync('end.png');
@@ -9042,7 +9581,9 @@ Transfer motion from a reference video onto a character image. The character per
 ```typescript filename="motion-control.ts"
 import { experimental_generateVideo as generateVideo } from 'ai';
 import fs from 'node:fs';
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 const result = await generateVideo({
   model: 'klingai/kling-v3.0-motion-control',
@@ -9068,7 +9609,9 @@ Generate a new video scene featuring characters or content from reference media.
 ```typescript filename="reference-to-video.ts"
 import { experimental_generateVideo as generateVideo } from 'ai';
 import fs from 'node:fs';
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 const result = await generateVideo({
   model: 'alibaba/wan-v2.6-r2v',
@@ -9120,7 +9663,9 @@ pnpm add @vercel/blob
 import { experimental_generateVideo as generateVideo } from 'ai';
 import { put } from '@vercel/blob';
 import fs from 'node:fs';
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({ path: '.env.local' });
 
 // Upload image to Vercel Blob
 const imageBuffer = fs.readFileSync('input.png');
@@ -20992,6 +21537,68 @@ source: "https://vercel.com/docs/ai-gateway"
 
 # AI Gateway
 
+## AI Gateway
+
+
+&#x20;   <>
+&#x20;     The \<Link href="https://vercel.com/ai-gateway" variant="blend">AI Gateway\</Link> provides a unified API to access{' '}
+&#x20;     \<Link href="/ai-gateway/models" variant="blend">hundreds of models\</Link> through a single endpoint.
+&#x20;     It gives you the ability to set budgets, monitor usage, load-balance requests, and manage fallbacks.
+&#x20;   \</>
+&#x20;&#x20;
+
+#### TypeScript
+
+```typescript filename="index.ts" {4}
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: 'anthropic/claude-opus-5',
+  prompt: 'What is the capital of France?',
+});
+
+```
+
+#### Python
+
+```python filename="index.py" {10}
+import os
+from openai import OpenAI
+
+client = OpenAI(
+  api_key=os.getenv('AI_GATEWAY_API_KEY'),
+  base_url='https://ai-gateway.vercel.sh/v1'
+)
+
+response = client.chat.completions.create(
+  model='spacexai/grok-4.5',
+  messages=[
+    {
+      'role': 'user',
+      'content': 'Why is the sky blue?'
+    }
+  ]
+)
+```
+
+#### cURL
+
+```bash filename="index.sh" {5}
+curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
+-H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+-H "Content-Type: application/json" \
+-d '{
+  "model": "openai/gpt-5.6-sol",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Why is the sky blue?"
+    }
+  ],
+  "stream": false
+}'
+```
+
 > **🔒 Permissions Required**: AI Gateway
 
 AI Gateway works with the [AI SDK](/docs/ai-gateway/getting-started), [OpenAI Chat Completions](/docs/ai-gateway/sdks-and-apis/openai-chat-completions), [OpenAI Responses](/docs/ai-gateway/sdks-and-apis/responses), [Anthropic Messages](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api), or your [preferred framework](/docs/ai-gateway/ecosystem/framework-integrations).
@@ -21051,7 +21658,7 @@ Discounts on [AI Gateway](/docs/ai-gateway) token spend come in two forms: model
 
 ## Discounted models
 
-AI Gateway frequently offers models that cost less through AI Gateway than the provider's list price. These discounts apply automatically to all users when using the respective model-slug. [Browse the discounted models](/ai-gateway/models?discount=true) to see which models are discounted today.
+AI Gateway frequently offers models that cost less through AI Gateway than the provider's list price. These discounts apply automatically to all users when using the respective model-slug. [Browse the current promos](/ai-gateway/models?promo=true) to see which models are discounted or free today.
 
 ## Volume discounts
 
@@ -21079,7 +21686,7 @@ Every Vercel team account gets access to both a free tier and a paid tier for AI
 
 The free tier includes a subset of models, not the full catalog. To see which models you can use with free credits, [browse the Free Tier models](/ai-gateway/models?freeTier=true). To use any other model, purchase AI Gateway Credits.
 
-Free tier requests are also rate limited per model, with lower limits than the paid tier. If you exceed a limit, AI Gateway returns a `429` error and you can retry after a short wait. Purchasing AI Gateway Credits moves your team to the paid tier, which raises your rate limits.
+Free tier requests are also rate limited per model, with lower limits than the paid tier. If you exceed a limit, AI Gateway returns a `429` error and you can retry after a short wait. Purchasing AI Gateway Credits moves your team to the paid tier, which raises your rate limits. See [Rate Limits](/docs/ai-gateway/rate-limits) for the `429` response shape and retry guidance.
 
 Your free credits start when you make your first AI Gateway request. To run larger workloads, you can purchase AI Gateway Credits at any time with no obligation to renew. Once you purchase credits, your account transitions to the paid tier and the monthly free credit no longer applies.
 
@@ -21184,6 +21791,133 @@ To enable auto top-up:
 5. Click **Save** to apply your settings.
 
 When your balance drops below the threshold, AI Gateway automatically charges your payment method and adds the configured amount to your balance.
+
+
+--------------------------------------------------------------------------------
+title: "AI Gateway Rate Limits"
+description: "Learn how AI Gateway rate limits work on the free and paid tiers, what the 429 response looks like, and how to retry a rate-limited request."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/ai-gateway/rate-limits"
+--------------------------------------------------------------------------------
+
+# AI Gateway Rate Limits
+
+AI Gateway does not rate limit paid-tier requests. The free tier applies lower per-model limits, and a `429` on either tier may come from the upstream provider rather than from AI Gateway.
+
+## How rate limits work
+
+On the free tier, AI Gateway enforces a lower limit per model, and exceeding it rejects further requests to that model until your request rate drops. The paid tier removes AI Gateway's limits entirely, so the only limits left are the upstream provider's, whether the request uses AI Gateway credentials or your own provider keys.
+
+Whether a `429` comes from AI Gateway or the provider, the retry behavior below is the same. A provider's `429` can carry that provider's own error body instead of the AI Gateway error shape.
+
+Limits can change, so this page describes behavior rather than fixed numbers. To confirm the current limit for a model, contact Vercel from your dashboard's **Support** entry.
+
+## Free tier and paid tier
+
+|                | Free tier                                                    | Paid tier                            |
+| -------------- | ----------------------------------------------------------- | ------------------------------------ |
+| Model access   | [Free-tier-eligible models](/ai-gateway/models?freeTier=true) | All available models                 |
+| Rate limits    | Lower limit per model                                       | None from AI Gateway; provider limits still apply |
+| Custom limits  | Not available                                               | Available on request                 |
+| Credit basis   | Monthly included credit                                     | Purchased AI Gateway Credits         |
+
+Purchasing AI Gateway Credits moves your team to the paid tier, which raises your rate limits. See [AI Gateway Pricing](/docs/ai-gateway/pricing) for tiers, credits, and model rates.
+
+## When a request exceeds a limit
+
+A rate-limited request gets an HTTP `429` response. From AI Gateway, the body is a JSON error:
+
+```json filename="Error response"
+{
+  "error": {
+    "message": "Rate limit exceeded",
+    "type": "rate_limit_exceeded"
+  }
+}
+```
+
+Some `429` responses include a `retry-after` header with the number of seconds to wait. Honor it when it is present.
+
+A `429` response is not a failure of your request. The same request can succeed later without changes, so retry it rather than editing it.
+
+## Retry a rate-limited request
+
+The AI SDK retries failed requests automatically with exponential backoff, and its `maxRetries` option defaults to `2`. For a direct HTTP client, honor `retry-after` when it is present and parseable, and back off exponentially otherwise:
+
+```typescript filename="retry.ts"
+// `retry-after` is either a number of seconds or an HTTP date. Anything that
+// doesn't parse falls through to exponential backoff, so a malformed header
+// can't collapse the wait to zero and turn the loop into a burst of requests.
+function retryAfterMs(header: string | null): number | null {
+  if (!header) return null;
+
+  const seconds = Number(header);
+  if (Number.isFinite(seconds) && seconds >= 0) return seconds * 1000;
+
+  const date = Date.parse(header);
+  if (Number.isNaN(date)) return null;
+
+  return Math.max(0, date - Date.now());
+}
+
+async function chatWithRetry(body: string, maxAttempts = 4): Promise<Response> {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const response = await fetch(
+      'https://ai-gateway.vercel.sh/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${process.env.AI_GATEWAY_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body,
+      },
+    );
+
+    if (response.status !== 429) {
+      return response;
+    }
+
+    // Don't sleep after the final attempt.
+    if (attempt === maxAttempts - 1) break;
+
+    const delayMs =
+      retryAfterMs(response.headers.get('retry-after')) ?? 2 ** attempt * 1000;
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+  }
+
+  throw new Error('Request still rate limited after all retries');
+}
+```
+
+Keep retries bounded. If a workload hits a limit regularly, raise the limit instead of lengthening the backoff.
+
+## Rate limits versus budgets
+
+Rate limits and budgets both reject requests, but for different reasons:
+
+|                      | Rate limit                   | Budget                                            |
+| -------------------- | ---------------------------- | ------------------------------------------------- |
+| What it caps         | Request rate for a model     | Spend in dollars                                  |
+| Who sets it          | Vercel, per tier             | You, per team, project, API key, or user          |
+| Response when hit    | `429`                        | `402` with `quota_for_entity_exceeded`            |
+| Recovery             | Retry after a short wait     | Wait for the refresh period or raise the limit    |
+
+To cap spend instead of request rate, set a [budget](/docs/ai-gateway/observability-and-spend/budgets).
+
+## Rate limits with BYOK
+
+[BYOK](/docs/ai-gateway/authentication-and-byok/byok) requests use your own provider credentials, so the provider's own rate limits apply to them. When a BYOK request fails and falls back to AI Gateway system credentials, the fallback attempt is subject to AI Gateway rate limits, and its usage is billed to your AI Gateway Credits.
+
+## Raise a limit
+
+Purchase [AI Gateway Credits](/docs/ai-gateway/pricing#top-up-your-ai-gateway-credits) to move your team to the paid tier, which removes AI Gateway's rate limits. If a provider-side limit still constrains a workload, paid-tier teams can request custom arrangements. [Contact sales](/contact/sales) to discuss custom limits.
+
+## Next steps
+
+- [AI Gateway Pricing](/docs/ai-gateway/pricing) for tiers, credits, and model rates
+- [Budgets](/docs/ai-gateway/observability-and-spend/budgets) to cap spend by team, project, API key, or team member
+- [Troubleshoot your first request](/docs/ai-gateway/getting-started#troubleshoot-your-first-request) for the other first-run errors
 
 
 --------------------------------------------------------------------------------
@@ -27853,7 +28587,7 @@ source: "https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/images"
 
 The [OpenResponses API](/docs/ai-gateway/sdks-and-apis/openresponses) accepts images and PDFs alongside text. Replace the plain string in a message's `content` with an array of parts: `input_text` for the prompt, `input_image` for an image, `input_file` for a document.
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="image-input.sh"
 IMAGE_B64=$(base64 -i diagram.png)
@@ -27880,7 +28614,7 @@ curl https://ai-gateway.vercel.sh/v1/responses \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="image-input.ts"
 import fs from 'node:fs';
@@ -27918,7 +28652,7 @@ const message = result.output.find((item) => item.type === 'message');
 console.log(message.content[0].text);
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="image_input.py"
 import base64
@@ -27973,7 +28707,7 @@ If the host blocks the request, the gateway returns a 400 naming the upstream st
 
 Send a PDF with an `input_file` part. The document is passed to the model as a document, not rasterized, so the model reads its text directly:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="pdf-input.sh"
 PDF_B64=$(base64 -i report.pdf)
@@ -28000,7 +28734,7 @@ curl https://ai-gateway.vercel.sh/v1/responses \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="pdf-input.ts"
 import fs from 'node:fs';
@@ -28037,7 +28771,7 @@ const message = result.output.find((item) => item.type === 'message');
 console.log(message.content[0].text);
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="pdf_input.py"
 import base64
@@ -28132,7 +28866,7 @@ The OpenResponses API supports the following features:
 
 Here's a simple example to generate a text response:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="quickstart.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
@@ -28150,7 +28884,7 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="quickstart.ts"
 const apiKey = process.env.AI_GATEWAY_API_KEY;
@@ -28178,7 +28912,7 @@ const message = result.output.find((item) => item.type === 'message');
 console.log(message.content[0].text);
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="quickstart.py"
 import os
@@ -28296,7 +29030,7 @@ source: "https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/reasonin
 
 Reasoning models work through a problem before answering. With the [OpenResponses API](/docs/ai-gateway/sdks-and-apis/openresponses), set the `reasoning` object to control how much thinking the model does. AI Gateway translates it to each provider's native reasoning configuration, so the same request shape works across providers.
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="reasoning.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
@@ -28317,7 +29051,7 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="reasoning.ts" {17-19}
 const apiKey = process.env.AI_GATEWAY_API_KEY;
@@ -28347,7 +29081,7 @@ const result = await response.json();
 console.log(result.usage.output_tokens_details.reasoning_tokens);
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="reasoning.py" {19-21}
 import os
@@ -28443,7 +29177,7 @@ source: "https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/streamin
 
 The [OpenResponses API](/docs/ai-gateway/sdks-and-apis/openresponses) supports streaming to receive tokens as they're generated instead of waiting for the complete response. Set `stream: true` in your request, then read the response body as a stream of server-sent events. Each event contains a response chunk that you can display incrementally.
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="stream.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
@@ -28462,7 +29196,7 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="stream.ts"
 const apiKey = process.env.AI_GATEWAY_API_KEY;
@@ -28514,7 +29248,7 @@ while (true) {
 }
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="stream.py"
 import os
@@ -28561,7 +29295,7 @@ source: "https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/structur
 
 The [OpenResponses API](/docs/ai-gateway/sdks-and-apis/openresponses) can constrain a response to a JSON schema, so you get parseable data instead of prose you have to extract from. Set `text.format` to a `json_schema` object with your schema, and the model returns JSON matching it.
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="structured-outputs.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
@@ -28605,7 +29339,7 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="structured.ts"
 const apiKey = process.env.AI_GATEWAY_API_KEY;
@@ -28650,7 +29384,7 @@ console.log(JSON.parse(message.content[0].text));
 // { name: 'John', age: 30, city: 'NYC' }
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="structured.py"
 import json
@@ -28741,7 +29475,7 @@ source: "https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/text-gen
 
 Use the [OpenResponses API](/docs/ai-gateway/sdks-and-apis/openresponses) to generate text responses from AI models. The `input` array contains message objects with a `role` (user or assistant) and `content` field. The model processes the input and returns a response with the generated text.
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="text-generation.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
@@ -28759,7 +29493,7 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="generate.ts"
 const apiKey = process.env.AI_GATEWAY_API_KEY;
@@ -28785,7 +29519,7 @@ const response = await fetch('https://ai-gateway.vercel.sh/v1/responses', {
 const result = await response.json();
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="generate.py"
 import os
@@ -28851,7 +29585,7 @@ source: "https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/tool-cal
 
 The [OpenResponses API](/docs/ai-gateway/sdks-and-apis/openresponses) supports tool calling to give models access to external functions. Define tools in your request with a name, description, and JSON schema for parameters. When the model determines it needs a tool to answer the user's question, it returns a `function_call` output with the tool name and arguments for you to execute.
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="tool-calls.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
@@ -28889,7 +29623,7 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="tool-calls.ts"
 const apiKey = process.env.AI_GATEWAY_API_KEY;
@@ -28931,7 +29665,7 @@ const response = await fetch('https://ai-gateway.vercel.sh/v1/responses', {
 });
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="tool-calls.py"
 import os
@@ -29822,7 +30556,7 @@ source: "https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/images"
 
 Vision-capable models accept images and PDFs alongside your prompt. Replace the plain string in `input` with an array of content parts: `input_text` for the prompt, `input_image` for an image, `input_file` for a document.
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="image-input.sh"
 curl https://ai-gateway.vercel.sh/v1/responses \
@@ -29846,7 +30580,7 @@ curl https://ai-gateway.vercel.sh/v1/responses \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="image-input.ts"
 import OpenAI from 'openai';
@@ -29877,7 +30611,7 @@ const response = await client.responses.create({
 console.log(response.output_text);
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="image_input.py"
 import os
@@ -29947,7 +30681,7 @@ A URL source must be reachable without authentication. If the host blocks the re
 
 Send a PDF with an `input_file` part. The model reads the document's text directly rather than working from a rasterized page:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="pdf-input.sh"
 PDF_B64=$(base64 -i report.pdf)
@@ -29973,7 +30707,7 @@ curl https://ai-gateway.vercel.sh/v1/responses \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="pdf-input.ts"
 import fs from 'node:fs';
@@ -30006,7 +30740,7 @@ const response = await client.responses.create({
 console.log(response.output_text);
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="pdf_input.py"
 import base64
@@ -30187,7 +30921,7 @@ source: "https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/reasoning"
 
 For models that support reasoning, set the `reasoning` parameter to control how much effort the model spends thinking:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="reasoning.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
@@ -30203,7 +30937,7 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="reasoning.ts"
 import OpenAI from 'openai';
@@ -30225,7 +30959,7 @@ const response = await client.responses.create({
 console.log(response.output_text);
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="reasoning.py"
 import os
@@ -30262,7 +30996,7 @@ source: "https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/streaming"
 
 Set `stream: true` to receive tokens as they're generated. The SDK returns an async iterator of server-sent events:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="stream.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
@@ -30275,7 +31009,7 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="stream.ts"
 import OpenAI from 'openai';
@@ -30298,7 +31032,7 @@ for await (const event of stream) {
 }
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="stream.py"
 import os
@@ -30332,7 +31066,7 @@ source: "https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/structured-o
 
 Use `text.format` to constrain the model's output to a JSON schema:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="structured-output.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
@@ -30379,7 +31113,7 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="structured.ts"
 import OpenAI from 'openai';
@@ -30424,7 +31158,7 @@ const data = JSON.parse(response.output_text);
 console.log(data.colors);
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="structured.py"
 import os
@@ -30483,7 +31217,7 @@ source: "https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/text-generat
 
 Set your SDK's base URL to AI Gateway and use your API key for authentication:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="basic.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
@@ -30495,7 +31229,7 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="basic.ts"
 import OpenAI from 'openai';
@@ -30513,7 +31247,7 @@ const response = await client.responses.create({
 console.log(response.output_text);
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="basic.py"
 import os
@@ -30544,7 +31278,7 @@ source: "https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/tool-calling
 
 Define tools with JSON Schema parameters. The model can call them, and you can feed the results back in a follow-up request:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="tool-calls.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
@@ -30576,7 +31310,7 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="tools.ts"
 import OpenAI from 'openai';
@@ -30615,7 +31349,7 @@ for (const item of response.output) {
 }
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="tools.py"
 import os
@@ -30655,7 +31389,7 @@ for item in response.output:
 
 To continue the conversation with tool results, include the function call and its output in the next request's `input` array:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="tool-followup.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
@@ -30694,7 +31428,7 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
   }'
 ```
 
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript
 const functionCall = response.output.find(
@@ -30726,7 +31460,7 @@ const followup = await client.responses.create({
 console.log(followup.output_text);
 ```
 
-#### 'Python']
+#### Python
 
 ```python
 import json
@@ -33393,6 +34127,23 @@ source: "https://vercel.com/docs/ai-sdk"
 
 # AI SDK
 
+## AI SDK
+
+
+&#x20;   <>
+&#x20;     The \<a href="https://ai-sdk.dev">AI SDK\</a> is the TypeScript toolkit for building AI-powered apps with Next.js, Vue, Svelte, Node.js, and more. It abstracts the differences between providers and removes boilerplate for chatbots and agents.
+&#x20;   \</>
+&#x20;&#x20;
+
+```typescript filename="index.ts"
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: 'openai/gpt-5.2',
+  prompt: 'Explain quantum entanglement.',
+});
+```
+
 ## What the AI SDK provides
 
 - **Unified provider API.** Switch between models by changing two lines of code
@@ -33554,11 +34305,16 @@ Built-in alert rules use Vercel-defined detections for Error anomaly and Usage a
 5. Click **Next**.
 6. In **Configure alert rule**, enter a rule name. This name appears in the **Alert Rules** table and notifications.
 7. Choose the project scope for the rule. You can apply the rule to all projects, specific projects, or all projects except selected projects.
-8. Select one or more severity levels that should trigger notifications: **High**, **Medium**, or **Low**. Vercel calculates error anomaly severity automatically. **High** and **Medium** are selected by default; select **Low** to receive low-severity notifications.
 
-9) Click **Create Alert Rule**.
-10) In **Configure notifications**, choose the notification destinations for the rule.
-11) Click **Done**.
+8) Select one or more severity levels that should trigger notifications.
+
+9. Click **Create Alert Rule**.
+10. In **Configure notifications**, choose the notification destinations for the rule.
+11. Click **Done**.
+
+### Severity levels
+
+Vercel calculates alert severity automatically from multiple signals, for example z-score and error-rate impact.
 
 ### Configure 4xx error detections
 
@@ -35739,6 +36495,12 @@ source: "https://vercel.com/docs/analytics/quickstart"
 This guide will help you get started with using Vercel Web Analytics on your project, showing you how to enable it, add the package to your project, deploy your app to Vercel, and view your data in the dashboard.
 
 **Select your framework to view instructions on using the Vercel Web Analytics in your project**.
+
+**Agent prompt**
+
+```text
+Help me add Vercel Web Analytics to this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Install @vercel/analytics. 2. Add the Analytics component to my root layout. 3. Deploy with `vercel --prod` and verify analytics data appears in the Vercel dashboard.
+```
 
 ## Prerequisites
 
@@ -40621,7 +41383,7 @@ When you enable on-demand build concurrency at the level of a project, any queue
 
 You can configure this on the project's [**Build and Deployment Settings**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fbuild-and-deployment\&title=Go+to+Build+and+Deployment+Settings) page:
 
-#### \['Dashboard'
+#### Dashboard
 
 1. From your Vercel dashboard, select the project you wish to enable it for.
 2. Open **Settings** in the sidebar, and go to the **Build and Deployment** section of your [Project Settings](/docs/projects#project-settings).
@@ -40630,7 +41392,7 @@ You can configure this on the project's [**Build and Deployment Settings**](http
    - **Run up to one build per branch**: Limit to one active build per branch
 4. Click **Save**.
 
-#### 'cURL'
+#### cURL
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -40654,7 +41416,7 @@ Set `configuration` to one of:
 - `SKIP_NAMESPACE_QUEUE`: Run all builds immediately
 - `WAIT_FOR_NAMESPACE_QUEUE`: Limit to one active build per branch
 
-#### 'SDK']
+#### SDK
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -58809,6 +59571,12 @@ To [set up Code Owners](#setting-up-code-owners-in-your-repository) in your repo
 
 If you've already set up Conformance, you may have already completed some of these steps.
 
+**Agent prompt**
+
+```text
+Help me set up Code Owners for this Vercel project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Run `vercel link` to connect the project. 2. Configure code ownership rules using the Vercel CLI so the right team members are assigned to review changes.
+```
+
 ## Prerequisites
 
 ### Get access to Code Owners
@@ -61002,6 +61770,12 @@ To [set up Conformance](#setting-up-conformance-in-your-repository) in your repo
 - [Install and initialize](/docs/conformance/getting-started#setting-up-conformance-in-your-repository) Conformance in your repository
 
 If you've already set up Code Owners, you may have already completed some of these steps.
+
+**Agent prompt**
+
+```text
+Help me set up Conformance for this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Run `vercel link` to connect the project. 2. Enable conformance by adding the conformance configuration to the project. Set up rules to enforce code quality and best practices across the codebase.
+```
 
 ## Prerequisites
 
@@ -64772,7 +65546,7 @@ source: "https://vercel.com/docs/conformance/rules"
 This page lists all the built-in rules that Conformance will check for by
 default in your application.
 
-#### \['Next.js'
+#### Next.js
 
 These Conformance rules catch common issues that can happen in Next.js
 applications.
@@ -64807,7 +65581,7 @@ applications.
 | [NO\_FETCH\_FROM\_MIDDLEWARE](/docs/conformance/rules/NO_FETCH_FROM_MIDDLEWARE)                                   | Requires that any `fetch` call that is depended on transitively by Next.js middleware be reviewed and approved before use for performance reasons.                                 |
 | [REACT\_NO\_STATIC\_IMPORTS\_IN\_EVENT\_HANDLERS](/docs/conformance/rules/REACT_NO_STATIC_IMPORTS_IN_EVENT_HANDLERS) | Prevent static imports that are referenced only in React event handlers from being eagerly loaded in React components.                                                             |
 
-#### 'Performance'
+#### Performance
 
 These Conformance rules catch issues that negatively affect the performance
 of your website.
@@ -64837,7 +65611,7 @@ of your website.
 | [REACT\_NO\_STATIC\_IMPORTS\_IN\_EVENT\_HANDLERS](/docs/conformance/rules/REACT_NO_STATIC_IMPORTS_IN_EVENT_HANDLERS)       | Prevent static imports that are referenced only in React event handlers from being eagerly loaded in React components.                                                             |
 | [REACT\_STABLE\_CONTEXT\_PROVIDER\_VALUE](/docs/conformance/rules/REACT_STABLE_CONTEXT_PROVIDER_VALUE)                   | Prevent non-stable values from being used in React Context providers that could cause unnecessary re-renders.                                                                      |
 
-#### 'Security'
+#### Security
 
 These Conformance rules catch issues that could become security vulnerabilities
 in your application.
@@ -64858,7 +65632,7 @@ in your application.
 | [REQUIRE\_CARET\_DEPENDENCIES](/docs/conformance/rules/REQUIRE_CARET_DEPENDENCIES)               | Prevent the use of dependencies without a caret ("^") as a prefix.                                                                       |
 | [SET\_COOKIE\_VALIDATION](/docs/conformance/rules/SET_COOKIE_VALIDATION)                         | Prevents usage of cookies that do not conform to the allowed cookie policy.                                                              |
 
-#### 'Code Health']
+#### Code Health
 
 These Conformance rules catch issues that can negatively affect your codebase
 or code health.
@@ -70024,6 +70798,12 @@ source: "https://vercel.com/docs/cron-jobs/quickstart"
 
 This guide will help you get started with using cron jobs on Vercel. Cron jobs are scheduled tasks that run at specific times or intervals. They are useful for automating tasks. You will learn how to create a cron job that runs every day at 5 am UTC by creating a Vercel Function and configuring it in your `vercel.json` file.
 
+**Agent prompt**
+
+```text
+Help me set up a Cron Job in this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Create a Vercel Function at app/api/cron/route.ts that runs a scheduled task. 2. Add a cron schedule to vercel.json that triggers this function on a recurring schedule. 3. Run `vercel env pull` to sync environment variables locally. 4. Deploy with `vercel --prod` and use `vercel inspect` to verify the cron job is configured.
+```
+
 ## Prerequisites
 
 - [A Vercel account](/signup)
@@ -73302,7 +74082,7 @@ Team owners and project admins can create, update, or remove custom environments
 
 ### Creating a custom environment
 
-#### \['Dashboard'
+#### Dashboard
 
 1. Go to your project's [**Environments**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fenvironments\&title=Go+to+Environments+settings) settings in the Vercel Dashboard
 2. Click **Create Environment**
@@ -73311,7 +74091,7 @@ Team owners and project admins can create, update, or remove custom environments
    - **Attach a Domain** to give a persistent URL to your environment
    - **Import variables** from another environment to seed this environment with existing environment variables
 
-#### 'cURL'
+#### cURL
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -73326,7 +74106,7 @@ curl --request POST \
   }'
 ```
 
-#### 'SDK']
+#### SDK
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -73568,7 +74348,7 @@ You can filter your deployments based on branch, status, and deployment environm
 
 ## Delete a deployment
 
-#### \['Dashboard'
+#### Dashboard
 
 If you no longer need a specific deployment of your app, you can delete it from your project with the following steps:
 
@@ -73578,7 +74358,7 @@ If you no longer need a specific deployment of your app, you can delete it from 
 4. Click the ... button.
 5. From the context menu, select **Delete**.
 
-#### 'cURL'
+#### cURL
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -73588,7 +74368,7 @@ curl --request DELETE \
   --header "Authorization: Bearer $VERCEL_TOKEN"
 ```
 
-#### 'SDK']
+#### SDK
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -73742,6 +74522,30 @@ source: "https://vercel.com/docs/deployments"
 --------------------------------------------------------------------------------
 
 # Deploying to Vercel
+
+## Deploying to Vercel
+
+Every time your project builds successfully, Vercel creates a deployment with its own URL. Push code, run a CLI command, call the API, or drag a folder into your browser — you choose how to ship.
+
+```bash filename="Terminal" package-manager="npm"
+npm i -g vercel
+vercel --prod
+```
+
+```bash filename="Terminal" package-manager="bun"
+bun i -g vercel
+vercel --prod
+```
+
+```bash filename="Terminal" package-manager="yarn"
+yarn global add vercel
+vercel --prod
+```
+
+```bash filename="Terminal" package-manager="pnpm"
+pnpm i -g vercel
+vercel --prod
+```
 
 A **deployment** on Vercel is the result of a successful build of your project. Each time you deploy, Vercel generates a unique URL so you and your team can preview changes in a live [environment](/docs/deployments/environments).
 
@@ -75288,6 +76092,8 @@ Every paid Pro team gets one free first-year custom domain. You choose an [eligi
 
 The offer only covers these top-level domains (TLDs):
 
+- `.app`
+- `.dev`
 - `.online`
 - `.site`
 - `.space`
@@ -75320,10 +76126,6 @@ Vercel covers the first year of registration. After the first year, the domain r
 ## Am I eligible if I'm already on Pro or on a Pro trial?
 
 Existing Pro teams may be eligible for this offer while the promotion is available. Pro trials are not eligible until the team upgrades to Pro. To check eligibility, visit your dashboard or search for a domain at [vercel.com/domains](https://vercel.com/domains). Eligible domains will show **Free With Pro**.
-
-## What happens to the domain if I downgrade or cancel Pro?
-
-The domain registration is yours and is managed like any other [Vercel-registered domain](/docs/domains/working-with-domains). The free first year is a billing benefit of the offer. After the first year, the regular renewal rate applies, which you pay. See [Managing domain renewals and redemptions](/docs/domains/working-with-domains/renew-a-domain).
 
 ## Related
 
@@ -76453,8 +77255,8 @@ More often than not, you will want to assign a domain to a project that reflects
 When you buy a domain through Vercel, we configure and set the nameservers, which means you do not need to set any DNS records or make any configurations. It just works. In addition, if you choose to make configurations, such as setting up email, it's all maintained from the [**Domains** section in your team dashboard sidebar](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains\&title=Go+to+team%27s+domains+page). Finally, all renewals, including domain and SSL certificate renewals are automatically handled by Vercel. To review renewal dates or renew a domain manually, see [Managing domain renewals](/docs/domains/working-with-domains/renew-a-domain).
 
 > **💡 Note:** Paid Pro teams include one free first-year domain on an eligible TLD
-> (`.online`, `.site`, `.space`, `.store`, `.tech`, or `.website`). The offer
-> covers one domain per team and excludes teams on a
+> (`.app`, `.dev`, `.online`, `.site`, `.space`, `.store`, `.tech`, or
+> `.website`). The offer covers one domain per team and excludes teams on a
 > [Pro trial](/docs/plans/pro-plan/trials). After the first year, the domain
 > renews at the standard rate. See
 > [eligibility details](/docs/plans/pro-plan#free-first-year-domain-with-pro).
@@ -77258,7 +78060,7 @@ The S3 bucket and IAM role must be in the same AWS account.
   Test deliveries write objects under `test/`. If the `endpoint` is `s3://<bucket-name>`, your IAM role must allow `s3:PutObject` on `arn:aws:s3:::<bucket-name>/*` so test and production objects can be written.
 
   If you set **Object ACL** in Vercel, add `s3:PutObjectAcl` to the same S3 statement. Amazon S3 requires `s3:PutObjectAcl` when a `PutObject` request includes an ACL header.
-  #### \['S3 or AWS managed key'
+  #### S3 or AWS managed key
   Use this option when the bucket uses SSE-S3, or SSE-KMS with the AWS managed `aws/s3` key.
 
   The following example allows writes to `s3://<bucket-name>/audit-logs`:
@@ -77279,7 +78081,7 @@ The S3 bucket and IAM role must be in the same AWS account.
     ]
   }
   ```
-  #### 'Customer managed KMS key']
+  #### Customer managed KMS key
   Use this option when the bucket uses SSE-KMS or DSSE-KMS with an AWS KMS key that you manage. This includes buckets whose default encryption uses a customer managed AWS KMS key.
 
   The identity-based IAM policy must allow `s3:PutObject` on the destination path and `kms:GenerateDataKey` for the customer managed key through S3 in the bucket region.
@@ -81491,25 +82293,25 @@ To declare an Environment Variable for your deployment:
 
 3. Enter the desired **Name** for your Environment Variable. For example, if you are using Node.js and you create an Environment Variable named `API_URL`, it will be available under `process.env.API_URL` in your code.
 
-   #### \['Node.js'
+   #### Node.js
 
    ```js
    process.env.API_URL;
    ```
 
-   #### 'Go'
+   #### Go
 
    ```go
    os.Getenv("API_URL")
    ```
 
-   #### 'Python'
+   #### Python
 
    ```py
    os.environ.get('API_URL')
    ```
 
-   #### 'Ruby']
+   #### Ruby
 
    ```ruby
    ENV['API_URL']
@@ -81799,7 +82601,7 @@ When Vercel redacts a sensitive environment variable value, Vercel records an [A
 > **💡 Note:** You can only create sensitive environment variables in the preview and
 > production environments.
 
-#### \['Dashboard'
+#### Dashboard
 
 Sensitive environment variables can be created at the project or team level:
 
@@ -81810,7 +82612,7 @@ Sensitive environment variables can be created at the project or team level:
 
 ![Image](`/docs-assets/static/docs/concepts/projects/environment-variables/listed-sev.png`)
 
-#### 'cURL'
+#### cURL
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -81832,7 +82634,7 @@ curl --request POST \
   ]'
 ```
 
-#### 'SDK']
+#### SDK
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -85302,6 +86104,12 @@ source: "https://vercel.com/docs/flags/flags-explorer/getting-started"
 
 This guide walks you through connecting your application to the Flags Explorer, so you can use it to view and override your application's feature flags. This works with any framework, any feature flag provider and even custom setups.
 
+**Agent prompt**
+
+```text
+Help me set up Flags Explorer for this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Run `vercel link` and `vercel env pull` to sync flag configuration. 2. Configure the Flags SDK to report flag evaluations to Flags Explorer. Use `vercel flags` to verify flags are connected.
+```
+
 ## Prerequisites
 
 - Set up the [Vercel Toolbar](/docs/vercel-toolbar) for development by following [adding the Vercel Toolbar to local and production environments](/docs/vercel-toolbar/in-production-and-localhost#)
@@ -88301,6 +89109,12 @@ source: "https://vercel.com/docs/flags/vercel-flags/quickstart"
 
 This guide walks you through creating a feature flag in the Vercel Dashboard and evaluating it in your application. By the end you'll have a working flag that you can toggle from the dashboard.
 
+**Agent prompt**
+
+```text
+Help me set up Vercel Flags in this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Run `vercel link` and `vercel env pull` to get OpenID Connect (OIDC) credentials locally. 2. Use `vercel flags` to create a feature flag for the project. Install the flags SDK and configure it to evaluate the flag. 3. Use the flag to conditionally render content in a page. 4. Deploy with `vercel --prod`.
+```
+
 ## Prerequisites
 
 - A [Next.js](/docs/frameworks/full-stack/nextjs) project connected to Vercel.
@@ -90201,7 +91015,7 @@ When using [`app.frontend()`](https://fastapi.tiangolo.com/tutorial/frontend/) o
 [`app.mount()`](https://fastapi.tiangolo.com/advanced/sub-applications/) with [`StaticFiles`](https://fastapi.tiangolo.com/tutorial/static-files/),
 files are promoted to the CDN at build time:
 
-#### \['app.frontend'
+#### app.frontend
 
 ```py filename="app.py"
 from fastapi import FastAPI
@@ -90215,7 +91029,7 @@ def hello():
 app.frontend("/", directory="dist")
 ```
 
-#### 'app.mount']
+#### app.mount
 
 ```py filename="app.py"
 from fastapi import FastAPI
@@ -91253,7 +92067,7 @@ To deploy a server-rendered Astro app, or a static Astro site with Vercel featur
 
 2) Configure your project. In your  file, import either the `serverless` or `static` plugin, and set the output to `server` or `static` respectively:
 
-   #### \['Serverless SSR'
+   #### Serverless SSR
 
    ```js filename="astro.config.mjs" framework=all
    import { defineConfig } from 'astro/config';
@@ -91277,7 +92091,7 @@ To deploy a server-rendered Astro app, or a static Astro site with Vercel featur
    });
    ```
 
-   #### 'Static']
+   #### Static
 
    ```js filename="astro.config.mjs" framework=all
    import { defineConfig } from 'astro/config';
@@ -96103,7 +96917,7 @@ With Nitro on Vercel, you get:
 
 Nitro enables SSR for any Vite app with minimal configuration. The setup varies by UI framework.
 
-#### \['React'
+#### React
 
 1. Install the required dependencies:
 
@@ -96220,7 +97034,7 @@ export default {
 }
 ```
 
-#### 'Vue'
+#### Vue
 
 1. Install the required dependencies:
 
@@ -96339,7 +97153,7 @@ export default {
 }
 ```
 
-#### 'Preact'
+#### Preact
 
 1. Install the required dependencies:
 
@@ -96454,7 +97268,7 @@ export default {
 }
 ```
 
-#### 'Solid'
+#### Solid
 
 1. Install the required dependencies:
 
@@ -96576,7 +97390,7 @@ function Root(props: { appHTML?: string }) {
 }
 ```
 
-#### 'HTML']
+#### HTML
 
 ### HTML SSR setup
 
@@ -98073,7 +98887,7 @@ Vercel Functions can run Open Container Initiative (OCI) compatible container im
 
 Get started by creating a `Dockerfile.vercel` (or `Containerfile.vercel`) file placed at the root of your project. Vercel automatically detects these files and adds a rewrite rule to route all traffic to the container image:
 
-#### \['Node.js and srvx dynamic server'
+#### Node.js and srvx dynamic server
 
 ```docker filename="Dockerfile.vercel"
 FROM node:26-alpine
@@ -98094,7 +98908,7 @@ export default {
 }
 ```
 
-#### 'Nginx static server']
+#### Nginx static server
 
 ```docker filename="Dockerfile.vercel"
 FROM nginx:alpine
@@ -99755,6 +100569,30 @@ source: "https://vercel.com/docs/functions"
 
 # Vercel Functions
 
+## Vercel Functions
+
+
+&#x20;   <>
+&#x20;     Run server-side code without managing servers. Functions adapt automatically to user demand, handle connections to APIs and databases, and offer enhanced concurrency through \<a href="/docs/fluid-compute">fluid compute\</a> — well suited for AI workloads or any I/O-bound tasks.
+&#x20;   \</>
+&#x20;&#x20;
+
+```ts filename="api/hello.ts" framework=all
+export default {
+  fetch(request: Request) {
+    return new Response('Hello from Vercel!');
+  },
+};
+```
+
+```js filename="api/hello.js" framework=all
+export default {
+  fetch(request) {
+    return new Response('Hello from Vercel!');
+  },
+};
+```
+
 When you deploy your application, Vercel automatically sets up the tools and optimizations for your chosen [framework](/docs/frameworks). It ensures low latency by routing traffic through Vercel's [CDN](/docs/cdn), and placing your functions in a specific region when you need more control over [data locality](/docs/functions#functions-and-your-data-source).
 
 ![Image](https://vercel.com/front/docs/vercel-functions/first_image_light.png)
@@ -99891,6 +100729,12 @@ source: "https://vercel.com/docs/functions/quickstart"
 # Getting started with Vercel Functions
 
 In this guide, you'll learn how to get started with Vercel Functions using your favorite [frontend framework](/docs/frameworks) (or no framework).
+
+**Agent prompt**
+
+```text
+Help me create a Vercel Function in this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Run `vercel link` to connect the project. 2. Create an API route handler at app/api/hello/route.ts that fetches data from https://api.vercel.app/products and returns it as JSON. Use the standard Web API Request/Response objects. 3. Test locally with `vercel dev`, then deploy with `vercel --prod`.
+```
 
 ## Prerequisites
 
@@ -102956,6 +103800,12 @@ source: "https://vercel.com/docs/getting-started-with-vercel"
 
 Deploy your app on Vercel in three steps: install the CLI, add agent support if you use an AI coding agent, and deploy.
 
+**Agent prompt**
+
+```text
+Help me get set up with Vercel. Based on my project, do the following: 1. Install the Vercel CLI globally (npm i -g vercel), log in with `vercel login`, and deploy my project with `vercel`. 2. If I'm using Claude Code or Cursor, install the Vercel Plugin with `npx plugins add vercel/vercel-plugin`. If I'm using another AI coding agent (Cline, Windsurf, GitHub Copilot, etc.), install Vercel Skills instead with `npx skills add vercel-labs/agent-skills`. 3. After deploying, suggest relevant next steps based on my project, such as adding a custom domain, setting up environment variables, or configuring Vercel Functions.
+```
+
 ## Prerequisites
 
 - A [Vercel account](/signup)
@@ -104765,6 +105615,12 @@ source: "https://vercel.com/docs/global-config/get-started"
 Global Config is a distributed key-value store that allows you to store and retrieve data on Vercel's global network, close to your users. It is designed for high performance and low latency, making it ideal for use cases such as feature flags, A/B testing, and dynamic configuration.
 
 This guide will help you create a Global Config called `hello_world_store` at the project-level, through the Vercel [dashboard](/dashboard). A token and environment variable `GLOBAL_CONFIG`, that stores the connection string, will be automatically created for you. You'll update the store with a key-value data pair and read the value of `"greeting"` from a local Next.js project.
+
+**Agent prompt**
+
+```text
+Help me set up Global Config in this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Install @vercel/global-config. 2. Run `vercel link` and `vercel env pull` to get the Global Config connection string. 3. Create a route or page that reads a value from Global Config. 4. Test it locally with `vercel dev`.
+```
 
 ## Prerequisites
 
@@ -107372,7 +108228,7 @@ Then you can send a `POST` request to the `/global-config/<globalConfigId>/token
 > This is the only time Vercel returns the full token value. Later requests
 > return only a truncated preview.
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="cURL"
 curl -X 'POST' 'https://api.vercel.com/v1/global-config/my_global_config_id/token' \
@@ -107382,7 +108238,7 @@ curl -X 'POST' 'https://api.vercel.com/v1/global-config/my_global_config_id/toke
 
 ```
 
-#### 'fetch']
+#### fetch
 
 ```javascript filename="fetch"
 try {
@@ -107486,7 +108342,7 @@ The request body should be a JSON object containing a `"slug"` with the name you
 
 See the example below:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="cURL"
 curl  -X 'POST' 'https://api.vercel.com/v1/global-config' \
@@ -107495,7 +108351,7 @@ curl  -X 'POST' 'https://api.vercel.com/v1/global-config' \
       -d $'{ "slug": "your_global_config_name_here" }'
 ```
 
-#### 'fetch']
+#### fetch
 
 ```javascript filename="fetch"
 try {
@@ -107584,7 +108440,7 @@ The following example demonstrates a request body that creates an `"example_key_
 
 The following is an API call that sends the above request body to your Global Config:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="cURL"
 curl -X 'PATCH' 'https://api.vercel.com/v1/global-config/your_global_config_id_here/items' \
@@ -107593,7 +108449,7 @@ curl -X 'PATCH' 'https://api.vercel.com/v1/global-config/your_global_config_id_h
      -d $'{ "items": [ { "operation": "create", "key": "example_key_1", "value": "example_value_1" }, { "operation": "update", "key": "example_key_2", "value": "new_value" } ] }'
 ```
 
-#### 'fetch']
+#### fetch
 
 ```javascript filename="fetch"
 try {
@@ -107660,14 +108516,14 @@ Your URL should look like this:
 
 The following is an example of a request that fetches a Global Config's items with the Vercel REST API:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="request"
 curl "https://api.vercel.com/v1/global-config/your_global_config_id_here/items?teamId=your_team_id_here" \
      -H 'Authorization: Bearer your_vercel_api_token_here'
 ```
 
-#### 'fetch']
+#### fetch
 
 ```javascript filename="fetch"
 try {
@@ -107693,14 +108549,14 @@ You can read your Global Config's metadata (but not its key-value pair contents)
 
 The following is an example `GET` request that fetches metadata about a Global Config associated with a Vercel Team.
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="request"
 curl "https://api.vercel.com/v1/global-config/your_global_config_id_here?teamId=your_team_id_here" \
      -H 'Authorization: Bearer your_vercel_api_token_here'
 ```
 
-#### 'fetch']
+#### fetch
 
 ```javascript filename="fetch"
 try {
@@ -107739,14 +108595,14 @@ If the Global Config exists, the response will be the same JSON object you recei
 
 You can list all of your Global Configs in a specific Hobby team or team with a `GET` request to the `global-config` API endpoint. For example:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="request"
 curl "https://api.vercel.com/v1/global-config?teamId=your_team_id_here" \
      -H 'Authorization: Bearer your_vercel_api_token_here'
 ```
 
-#### 'fetch']
+#### fetch
 
 ```javascript filename="fetch"
 try {
@@ -107805,13 +108661,13 @@ The Global Config endpoint used in the connection string is distinct from a Verc
 
 To read all of your Global Config's items, send a `GET` request to the appropriate Global Config endpoint by adding your Global Config's ID and Global Config read access token in the appropriate places in the below URL:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="cURL"
 curl 'https://global-config.vercel.com/your_global_config_id_here/items?token=your_global_config_read_access_token_here'
 ```
 
-#### 'fetch']
+#### fetch
 
 ```javascript filename="fetch"
 try {
@@ -107827,14 +108683,14 @@ try {
 
 You can also send your Global Config read access token in an Authorization header rather than as a query param.
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="request"
 curl "https://global-config.vercel.com/your_global_config_id_here/items" \
      -H 'Authorization: Bearer your_global_config_read_access_token_here'
 ```
 
-#### 'fetch']
+#### fetch
 
 ```javascript filename="fetch"
 try {
@@ -107868,13 +108724,13 @@ The response will be a JSON object containing all key-value pairs in the Global 
 
 To request a single item, you can use the `/item` path instead of `/items`, then add the key of the item you want as the final path as shown below:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="request"
 curl "https://global-config.vercel.com/your_global_config_id_here/item/example_key_1?token=your_global_config_read_access_token_here" \
 ```
 
-#### 'fetch']
+#### fetch
 
 ```javascript filename="fetch"
 try {
@@ -107890,14 +108746,14 @@ try {
 
 You can also send your Global Config read access token in an Authorization header rather than as a query param.
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="request"
 curl -X 'https://global-config.vercel.com/your_global_config_id_here/item/example_key_1' \
      -H 'Authorization: Bearer your_global_config_read_access_token_here'
 ```
 
-#### 'fetch']
+#### fetch
 
 ```javascript filename="fetch"
 try {
@@ -107929,13 +108785,13 @@ When you create a Global Config, a hash string called a digest is generated and 
 
 To fetch a Global Config's digest, send a `GET` request to your Global Config endpoint, as shown below:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="request"
 curl "https://global-config.vercel.com/your_global_config_id_here/digest?teamId=your_team_id_here&token=your_global_config_read_access_token_here"
 ```
 
-#### 'fetch']
+#### fetch
 
 ```javascript filename="fetch"
 try {
@@ -107951,14 +108807,14 @@ try {
 
 You can also send the Global Config read access token in the `Authorization` header of your request using the `Bearer token` format:
 
-#### \['cURL'
+#### cURL
 
 ```bash filename="request"
 curl  -X 'GET' 'https://global-config.vercel.com/your_global_config_id_here/digest?teamId=your_team_id_here' \
       -H 'Authorization: Bearer your_global_config_read_access_token_here
 ```
 
-#### 'fetch']
+#### fetch
 
 ```javascript filename="fetch"
 try {
@@ -110309,6 +111165,12 @@ source: "https://vercel.com/docs/image-optimization/quickstart"
 
 This guide will help you get started with using Vercel Image Optimization in your project, showing you how to import images, add the required props, and deploy your app to Vercel. Vercel Image Optimization works out of the box with Next.js, Nuxt, SvelteKit, and Astro.
 
+**Agent prompt**
+
+```text
+Help me set up image optimization in this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Use the next/image component (or Vercel image optimization for other frameworks) to serve optimized images with automatic format conversion and resizing. 2. Deploy with `vercel --prod` to verify images are optimized.
+```
+
 ## Prerequisites
 
 - A Vercel account. If you don't have one, you can [sign up for free](https://vercel.com/signup).
@@ -111299,6 +112161,12 @@ You also control when pages are first cached:
 - **Generate on first request**: Skip the build step and let the first visitor trigger generation at runtime. This keeps builds fast but means the first request for each page is slower (a cache miss).
 
 A common pattern is to pre-render popular pages at build time and let the rest generate on demand.
+
+**Agent prompt**
+
+```text
+Help me set up Incremental Static Regeneration (ISR) in this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Add time-based revalidation to a page using the revalidate option. 2. Show me how to trigger on-demand revalidation with revalidatePath or revalidateTag. 3. Deploy with `vercel --prod` to test ISR behavior.
+```
 
 ## Prerequisites
 
@@ -117731,6 +118599,7 @@ The following table lists all API rate limits that apply when using the [Vercel 
 | Store get retrieval per minute. | 400 | 60 | `user` |
 | Access credentials per minute. | 1000 | 60 | `user` |
 | Blob stores create per minute. | 100 | 60 | `user` |
+| Blob stores create per minute for Hobby teams. | 10 | 60 | `user` |
 | Blob stores update per minute. | 100 | 60 | `user` |
 | Blob stores delete per minute. | 100 | 60 | `user` |
 | Postgres stores create per minute. | 100 | 60 | `user` |
@@ -119547,6 +120416,12 @@ source: "https://vercel.com/docs/microfrontends/quickstart"
 
 This quickstart guide will help you set up microfrontends on Vercel. Microfrontends can be used with different frameworks, and separate frameworks can be combined in a single microfrontends group.
 
+**Agent prompt**
+
+```text
+Help me set up microfrontends on Vercel. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Configure multi-zone routing with `vercel microfrontends` so multiple applications can be composed under a single domain. 2. Use `vercel link` on each project and deploy with `vercel --prod`.
+```
+
 ## Prerequisites
 
 - Have at least two [Vercel projects](/docs/projects#creating-a-project) created on Vercel that will be part of the same microfrontends group.
@@ -120673,7 +121548,7 @@ Follow the steps below to set it up.
   > censor your team name in log output.
 
 - ### Exchange the OIDC token in your job and set the environment variable
-  #### \['GitHub'
+  #### GitHub
   Add [`vercel/setup-turborepo-remote-cache-action`](https://github.com/vercel/setup-turborepo-remote-cache-action) before any step that runs `turbo`. The action needs the [`id-token: write` permission](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect) so it can request a GitHub OIDC token, exchange it for a short-lived Turborepo access token, and set `TURBO_TOKEN` and `TURBO_TEAM` for later steps.
   ```yaml filename=".github/workflows/ci.yml" {8-10,18-21}
   # ...
@@ -120703,7 +121578,7 @@ Follow the steps below to set it up.
   > your GitHub OIDC token against each of them. If more than one policy matches,
   > then you will need to pass the ID of the OIDC policy you intend to use in the
   > `policy` input; otherwise, you will receive an error.
-  #### 'Other']
+  #### Other
   For any other provider, request an OIDC token from it with the audience your policy expects, then exchange that token for a short-lived Turborepo access token. Set the result as `TURBO_TOKEN` and your team slug as `TURBO_TEAM` before running `turbo`:
   ```bash filename="exchange-oidc-token.sh"
   # $OIDC_TOKEN: the OIDC token issued by your CI/CD provider
@@ -121684,6 +122559,12 @@ source: "https://vercel.com/docs/networking/static-ips/getting-started"
 
 This guide walks you through setting up Static IPs so you can access backend services that require IP allowlisting.
 
+**Agent prompt**
+
+```text
+Help me set up Static IPs for this Vercel project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Run `vercel link` to connect the project. 2. Enable static IP addresses for outbound connections using the Vercel CLI so I can allowlist them in my database or API firewall.
+```
+
 ## Prerequisites
 
 Before you dive in, make sure you have:
@@ -122634,6 +123515,10 @@ source: "https://vercel.com/docs/observability"
 --------------------------------------------------------------------------------
 
 # Observability
+
+## Observability
+
+Monitor and analyze the performance and traffic of your projects on Vercel with framework-aware insights aligned to your app's architecture.
 
 > **🔒 Permissions Required**: Observability
 
@@ -124799,91 +125684,119 @@ source: "https://vercel.com/docs"
 
 # Vercel Documentation
 
-Connect your [Git repository](/docs/git) to deploy on every push, with [automatic preview environments](/docs/deployments/environments#preview-environment-pre-production) for testing changes before production.
+## Ship anything with Vercel
+
+Deploy your first app, call any AI model through AI Gateway, or set up your coding agent to build and deploy on Vercel.
+
+#### Deploy an app
+
+```bash
+npm i -g vercel
+vercel login
+vercel
+```
+
+#### Call a model
+
+```typescript filename="index.ts"
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: 'anthropic/claude-opus-5',
+  prompt: 'What is the capital of France?',
+});
+```
+
+#### Set up your agent
+
+```bash
+# Teach your agent how to build and deploy on Vercel
+npx skills add vercel-labs/agent-skills
+
+# Let your agent manage projects, deployments, and logs
+npx -y add-mcp https://mcp.vercel.com -g
+```
+
+## Set up your coding agent
+
+Give your agent Vercel context before you start building. This prompt installs the Vercel Plugin or Agent Skills, connects the Vercel MCP server, and deploys your project:
+
+**Agent prompt**
+
+```text
+Help me set up this project on Vercel. Read https://vercel.com/docs/getting-started-with-vercel.md first. Then: 1. Install the Vercel CLI globally (`npm i -g vercel`) and log in with `vercel login`. 2. If you are Claude Code, OpenAI Codex, Grok Build, Cursor, GitHub Copilot, or Kimi Code, install the Vercel Plugin with `npx plugins add vercel/vercel-plugin`. Otherwise, install Vercel Skills with `npx skills add vercel-labs/agent-skills`. 3. Connect the Vercel MCP server with `npx -y add-mcp https://mcp.vercel.com -g`. 4. Deploy with `vercel` and share the preview URL. 5. Suggest next steps based on my project, such as adding a custom domain, setting environment variables, or configuring Vercel Functions.
+```
+
+**Vercel Plugin**: Give your coding agent deployment skills, framework best practices, and slash commands. Works with Claude Code, OpenAI Codex, Grok Build, Cursor, GitHub Copilot, and Kimi Code. [Learn more →](/docs/agent-resources/vercel-plugin)
+
+**Agent Skills**: Install skills for any agent that supports them, covering Next.js, the AI SDK, Turborepo, and deploying to Vercel. [Learn more →](/docs/agent-resources/skills)
+
+**Vercel MCP**: Let your agent search the docs, manage projects and deployments, and query Web Analytics through the Vercel MCP server. [Learn more →](/docs/agent-resources/vercel-mcp)
+
+## What's new
+
+The latest changes across the Vercel platform. Browse the full [changelog](https://vercel.com/changelog) for everything that shipped.
+
+- Sep 2, 2026: [Free domain with Pro offer now includes .app and .dev](https://vercel.com/changelog/app-and-dev-domains-included-with-free-domain-for-pro). The free domain with Pro offer now covers .app and .dev, bringing the eligible TLDs to eight. Every Pro team can claim one domain, free for the first year.
+- Sep 2, 2026: [Muse Spark 1.3 now available on AI Gateway](https://vercel.com/changelog/muse-spark-1-3-now-available-on-ai-gateway). Call Meta's Muse Spark 1.3 through Vercel AI Gateway with one API key: no provider account, fallbacks, spend tracking, and traces on every request.
+- Sep 2, 2026: [GLM-5.3 is 50% off through DigitalOcean on AI Gateway](https://vercel.com/changelog/glm-5-3-is-50-off-through-digitalocean-on-ai-gateway). GLM-5.3 served by DigitalOcean is 50% off on Vercel AI Gateway through September 7. Call the promo model name or use provider options to get the discounted rate.
+- Sep 2, 2026: [Gemini 3.8 Flash now available on AI Gateway](https://vercel.com/changelog/gemini-3-8-flash-now-available-on-ai-gateway). Call Google's Gemini 3.8 Flash through Vercel AI Gateway with one API key: no provider account, fallbacks, spend tracking, and traces on every request.
 
 ## Build with AI
 
-**AI Gateway**: Access hundreds of models through one endpoint with budgets, fallbacks, and monitoring. [Learn more →](/docs/ai-gateway)
+**AI Gateway**: Call hundreds of models through one endpoint with the AI SDK, any OpenAI-compatible SDK, or cURL, with budgets, fallbacks, and usage monitoring. [Learn more →](/docs/ai-gateway)
 
-**eve**: eve is a filesystem-first framework for building durable backend AI agents. [Learn more →](/docs/eve)
+**AI SDK**: Build chat, agents, and structured output in TypeScript with streaming and tool calling across React, Next.js, Vue, Svelte, and Node.js. [Learn more →](/docs/ai-sdk)
 
-**Agents**: Build autonomous workflows and conversational interfaces with the AI SDK. [Learn more →](/kb/guide/how-to-build-ai-agents-with-vercel-and-the-ai-sdk)
+**eve**: Deploy and run durable backend AI agents built with eve, an open-source, filesystem-first agent framework. [Learn more →](/docs/eve)
 
-**Sandbox**: Run untrusted code in secure, ephemeral execution environments. [Learn more →](/docs/sandbox)
+**Sandbox**: Run untrusted or agent-generated code in isolated, ephemeral execution environments. [Learn more →](/docs/sandbox)
 
-## Build your applications
+**Workflows**: Build durable, observable applications and AI agents with the Workflow SDK on a fully managed platform. [Learn more →](/docs/workflows)
 
-Use one or more of the following tools to build your application depending on your needs:
+**MCP Servers**: Build and deploy Model Context Protocol servers so agents can call your APIs and systems as tools. [Learn more →](/docs/mcp)
 
-**Next.js**: Build full-stack applications with Next.js or any of our supported frameworks. [Learn more →](/docs/frameworks/nextjs)
+## Build your app
 
-**Functions**: API routes with Fluid compute, active CPU, and provisioned memory — perfect for AI workloads. [Learn more →](/docs/functions)
+**Next.js**: Deploy Next.js with zero configuration, or bring one of 40+ supported frameworks. [Learn more →](/docs/frameworks/nextjs)
 
-**Routing Middleware**: Customize your application's behavior with code that runs before a request is processed. [Learn more →](/docs/routing-middleware)
+**Functions**: Run server-side code on demand with Fluid compute, which scales concurrency for AI and I/O-heavy workloads. [Learn more →](/docs/functions)
 
-**Incremental Static Regeneration**: Automatically regenerate your pages on a schedule or when a request is made. [Learn more →](/docs/incremental-static-regeneration)
+**Routing Middleware**: Run code before a request completes to rewrite, redirect, or personalize responses. [Learn more →](/docs/routing-middleware)
 
-**Image Optimization**: Optimize your images for the web. [Learn more →](/docs/image-optimization)
+**Incremental Static Regeneration**: Regenerate static pages on a schedule or on demand without rebuilding your whole site. [Learn more →](/docs/incremental-static-regeneration)
 
-**Manage Environments**: Local, preview, production, and custom environments. [Learn more →](/docs/deployments/environments)
+**Image Optimization**: Resize and convert images on demand and serve them from the CDN in modern formats. [Learn more →](/docs/image-optimization)
 
-## Use Vercel's AI infrastructure
+**Environments**: Manage local, preview, production, and custom environments and the variables each one uses. [Learn more →](/docs/deployments/environments)
 
-Add intelligence to your applications with Vercel's AI-first infrastructure:
+## Secure your app
 
-**v0**: Iterate on ideas with Vercel's AI-powered development assistant. [Learn more →](https://v0.app/docs/introduction)
+**Web Application Firewall**: Block attacks, scrapers, and unwanted traffic with custom rules, IP blocking, and managed rulesets. [Learn more →](/docs/vercel-firewall/vercel-waf)
 
-**AI SDK**: Integrate language models with streaming and tool calling. [Learn more →](/docs/ai-sdk)
+**Bot Management**: Detect automated traffic and decide which bots can reach your app. [Learn more →](/docs/bot-management)
 
-**AI Gateway**: Route to any AI provider with automatic failover. [Learn more →](/docs/ai-gateway)
+**BotID**: Protect sensitive routes from sophisticated bots with an invisible check instead of a CAPTCHA. [Learn more →](/docs/botid)
 
-**MCP Servers**: Create tools for AI agents to interact with your systems. [Learn more →](/docs/mcp)
+**Deployment Protection**: Control who can open your preview and production URLs with Vercel Authentication, passwords, or trusted IPs. [Learn more →](/docs/deployment-protection)
 
-**Agent Resources**: Access documentation for AI tools, MCP servers, agent skills, and more. [Learn more →](/docs/agent-resources)
+## Deploy and operate
 
-**Claim Deployments**: Allow AI agents to deploy a project and let a human take over. [Learn more →](/docs/deployments/claim-deployments)
+**Deploy from Git**: Connect GitHub, GitLab, or Bitbucket to deploy on every push, with a preview URL for every branch. [Learn more →](/docs/git)
 
-## Secure your applications
+**Domains**: Add a custom domain, manage DNS records, and get SSL certificates automatically. [Learn more →](/docs/domains)
 
-Secure your applications with the following tools:
+**CDN**: Cache responses close to your users and control routing, compression, and revalidation for every deployment. [Learn more →](/docs/cdn)
 
-**Deployment Protection**: Protect your applications from unauthorized access. [Learn more →](/docs/deployment-protection)
+**Rolling Releases**: Send a new deployment to a percentage of traffic first, then promote it or roll back. [Learn more →](/docs/rolling-releases)
 
-**RBAC**: Role-based access control for your applications. [Learn more →](/docs/rbac)
+**Instant Rollback**: Revert production to a previous deployment without a rebuild when something breaks. [Learn more →](/docs/instant-rollback)
 
-**Configurable WAF**: Customizable rules to protect against attacks, scrapers, and unwanted traffic. [Learn more →](/docs/vercel-firewall/vercel-waf)
-
-**Bot Management**: Protect your applications from bots and automated traffic. [Learn more →](/docs/bot-management)
-
-**BotID**: An invisible CAPTCHA that protects against sophisticated bots without challenges. [Learn more →](/docs/botid)
-
-**Platform DDoS Mitigation**: Protect your applications from DDoS attacks. [Learn more →](/docs/security/ddos-mitigation)
-
-## Collaborate with your team
-
-Collaborate with your team using the following tools:
-
-**Toolbar**: An in-browser toolbar to leave feedback, manage flags, preview drafts, and inspect performance. [Learn more →](/docs/vercel-toolbar)
-
-**Comments**: Let teams and invited collaborators comment on your preview and production environments. [Learn more →](/docs/comments)
-
-**Draft Mode**: View your unpublished headless CMS content on your site. [Learn more →](/docs/draft-mode)
-
-## Deploy and scale
-
-Vercel handles infrastructure automatically and provides these tools to help you deploy and scale:
-
-**Vercel Delivery Network**: Fast, globally distributed execution. [Learn more →](/docs/cdn)
-
-**Rolling Releases**: Roll out new deployments in increments. [Learn more →](/docs/rolling-releases)
-
-**Rollback Deployments**: Roll back to a previous deployment for swift recovery from production incidents. [Learn more →](/docs/instant-rollback)
-
-**Observability Suite**: Monitor performance and debug your AI workflows and apps. [Learn more →](/docs/observability)
+**Observability**: Monitor traffic, function performance, and errors with framework-aware insights across your apps and AI workflows. [Learn more →](/docs/observability)
 
 ## Guides and tutorials
 
-Extend your knowledge with in-depth guides, videos, and tutorials on the [Vercel Knowledge Base](/kb):
+Go deeper with guides, videos, and tutorials from the [Vercel Knowledge Base](/kb):
 
 **Agent Stack**: Build AI agents, integrate language models, and deploy AI-powered apps. [Learn more →](/kb/agent-stack)
 
@@ -124891,15 +125804,11 @@ Extend your knowledge with in-depth guides, videos, and tutorials on the [Vercel
 
 **Services**: Deploy multiple frontends and backends within a single Vercel project. [Learn more →](/kb/vercel-services)
 
-**Domains**: Manage domains and DNS records for your Vercel projects. [Learn more →](/kb/domains)
-
 **Security**: Protect your apps with authentication, firewall rules, and compliance guides. [Learn more →](/kb/security)
-
-**CDN**: Cache content globally, route requests, and run compute close to your data. [Learn more →](/kb/cdn)
 
 **Integrations**: Connect third-party tools, CMSs, and services to your Vercel project. [Learn more →](/kb/integrations)
 
-**Migrations**: Bring your existing apps, agents, and workflows to Vercel's agentic infrastructure. [Learn more →](/kb/migrations)
+**Migrations**: Bring your existing apps, agents, and workflows to Vercel. [Learn more →](/kb/migrations)
 
 
 --------------------------------------------------------------------------------
@@ -126597,13 +127506,13 @@ The Vercel Pro plan is designed for professional developers, freelancers, and bu
 - **[Free viewer seats](#viewer-team-seat)**: Unlimited read-only access to the Vercel dashboard so that project collaborators can view deployments, check analytics, and comment on previews
 - **[Elastic build machines](/docs/builds/managing-builds#elastic-build-machines)**: New teams use Elastic build machines by default. Elastic automatically selects a machine for each project based on its build workload
 - **[Paid add-ons](#paid-add-ons)**: Additional enterprise-grade features are available as add-ons
-- **[Free first-year domain with Pro](#free-first-year-domain-with-pro)**: One eligible TLD domain (`.online`, `.site`, `.space`, `.store`, `.tech`, or `.website`) per paid Pro team. Renews at the standard rate after year one
+- **[Free first-year domain with Pro](#free-first-year-domain-with-pro)**: One eligible TLD domain (`.app`, `.dev`, `.online`, `.site`, `.space`, `.store`, `.tech`, or `.website`) per paid Pro team. Renews at the standard rate after year one
 
 For a full breakdown of the features included in the Pro plan, see the [pricing page](https://vercel.com/pricing).
 
 ## Free first-year domain with Pro
 
-All paid Pro teams include one free first-year domain on an eligible TLD (`.online`, `.site`, `.space`, `.store`, `.tech`, or `.website`). New Pro subscriptions can claim the domain at checkout during the upgrade. Existing Pro teams claim from domain search in the dashboard at [vercel.com/domains](https://vercel.com/domains). After the first year, the domain renews at the standard rate.
+All paid Pro teams include one free first-year domain on an eligible TLD (`.app`, `.dev`, `.online`, `.site`, `.space`, `.store`, `.tech`, or `.website`). New Pro subscriptions can claim the domain at checkout during the upgrade. Existing Pro teams claim from domain search in the dashboard at [vercel.com/domains](https://vercel.com/domains). After the first year, the domain renews at the standard rate.
 
 The offer is limited to one domain per team and excludes:
 
@@ -129684,6 +130593,31 @@ source: "https://vercel.com/docs/platforms"
 --------------------------------------------------------------------------------
 
 # Vercel for Platforms
+
+## Vercel for Platforms
+
+
+&#x20;   <>
+&#x20;     Build platforms that serve multiple customers from a single codebase. Each
+&#x20;     customer gets its own domain or subdomain, while you keep one deployment,
+&#x20;     one set of branding, and one place to ship updates.
+&#x20;   \</>
+&#x20;&#x20;
+
+```ts filename="proxy.ts"
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function proxy(req: NextRequest) {
+  // Route each tenant's subdomain to a shared dynamic segment
+  const host = req.headers.get('host') ?? '';
+  const tenant = host.split('.')[0];
+
+  return NextResponse.rewrite(
+    new URL(`/tenants/${tenant}${req.nextUrl.pathname}`, req.url),
+  );
+}
+```
 
 ## Choosing an architecture
 
@@ -133299,7 +134233,7 @@ The following configuration options can be used through a `vercel.json` file via
 
 Specify branches that should not trigger a deployment upon commits. By default, any unspecified branch is set to `true`.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -133312,7 +134246,7 @@ Specify branches that should not trigger a deployment upon commits. By default, 
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -133332,7 +134266,7 @@ Use [minimatch syntax](https://github.com/isaacs/minimatch) to define behavior f
 
 The example below prevents automated deployments for any branch that starts with `internal-`.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -133345,7 +134279,7 @@ The example below prevents automated deployments for any branch that starts with
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -133363,7 +134297,7 @@ export const config: VercelConfig = {
 
 If a branch matches multiple rules and at least one rule is `true`, a deployment will occur.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -133377,7 +134311,7 @@ If a branch matches multiple rules and at least one rule is `true`, a deployment
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -133398,7 +134332,7 @@ A branch named `experiment-my-branch-dev` will create a deployment.
 
 To turn off automatic deployments for all branches, set the property value to `false`.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -133409,7 +134343,7 @@ To turn off automatic deployments for all branches, set the property value to `f
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -133431,7 +134365,7 @@ When set to `false`, [Vercel for GitHub](/docs/git/vercel-for-github) will creat
 > build](/docs/deployments/promoting-a-deployment#staging-and-promoting-a-production-deployment)
 > workflow instead of this setting.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -133442,7 +134376,7 @@ When set to `false`, [Vercel for GitHub](/docs/git/vercel-for-github) will creat
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -133460,7 +134394,7 @@ export const config: VercelConfig = {
 
 When set to false, [Vercel for GitHub](/docs/git/vercel-for-github) will always build pushes in sequence without cancelling a build for the most recent commit.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -133471,7 +134405,7 @@ When set to false, [Vercel for GitHub](/docs/git/vercel-for-github) will always 
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -133493,7 +134427,7 @@ The `github.silent` property has been deprecated in favor of the new settings in
 
 When set to `true`, [Vercel for GitHub](/docs/git/vercel-for-github) will stop commenting on pull requests and commits.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -133504,7 +134438,7 @@ When set to `true`, [Vercel for GitHub](/docs/git/vercel-for-github) will stop c
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -133524,7 +134458,7 @@ The `github.enabled` property has been deprecated in favor of [git.deploymentEna
 
 When set to `false`, [Vercel for GitHub](/docs/git/vercel-for-github) will not deploy the given project regardless of the GitHub app being installed.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -133535,7 +134469,7 @@ When set to `false`, [Vercel for GitHub](/docs/git/vercel-for-github) will not d
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -135754,7 +136688,7 @@ Create `vercel.toml` in your project root and commit it with your code. Use only
 
 Set top-level properties using TOML key-value pairs. This example configures the build command, output directory, and clean URLs:
 
-#### \['vercel.toml'
+#### vercel.toml
 
 ```toml filename="vercel.toml"
 "$schema" = "https://openapi.vercel.sh/vercel.json"
@@ -135763,7 +136697,7 @@ outputDirectory = "dist"
 cleanUrls = true
 ```
 
-#### 'vercel.json']
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -135776,7 +136710,7 @@ cleanUrls = true
 
 TOML is a good fit for configuring [Services](/docs/services), which let you deploy multiple applications within one Vercel project. This example deploys a frontend and backend service, routing `/api` requests to the backend and all other requests to the frontend:
 
-#### \['vercel.toml'
+#### vercel.toml
 
 ```toml filename="vercel.toml"
 "$schema" = "https://openapi.vercel.sh/vercel.json"
@@ -135799,7 +136733,7 @@ source = "/(.*)"
 destination = { service = "frontend" }
 ```
 
-#### 'vercel.json']
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -137152,7 +138086,7 @@ You can manage your project on Vercel in your project's dashboard. To learn more
 
 > **💡 Note:** To create a project, you need an [Owner](/docs/rbac/access-roles#owner-role) or [Member](/docs/rbac/access-roles#member-role) role. If you have a [Developer](/docs/rbac/access-roles#developer-role) role, you'll need the [Create Project](/docs/rbac/access-roles/extended-permissions#create-project) extended permission. For more information, see [Access Roles](/docs/rbac/access-roles).
 
-#### \['Dashboard'
+#### Dashboard
 
 To create a [new](/new) project:
 
@@ -137166,7 +138100,7 @@ To create a [new](/new) project:
 5. Configure your project settings, such as the name, [framework](/docs/frameworks), [environment variables](/docs/environment-variables), and [build and output settings](/docs/builds/configure-a-build#configuring-a-build).
 6. If you're importing from a monorepo, select the **Edit** button to select the project from the repository you want to deploy. For more information, see [Monorepos](/docs/monorepos#add-a-monorepo-through-the-vercel-dashboard).
 
-#### 'cURL'
+#### cURL
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -137196,7 +138130,7 @@ curl --request POST \
   }'
 ```
 
-#### 'SDK']
+#### SDK
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -137773,6 +138707,12 @@ source: "https://vercel.com/docs/query/monitoring/quickstart"
 --------------------------------------------------------------------------------
 
 # Monitoring Quickstart
+
+**Agent prompt**
+
+```text
+Help me set up Vercel Monitoring in this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Run `vercel link` to connect the project. 2. Set up observability by configuring `vercel logs` for runtime logs and adding instrumentation for custom metrics.
+```
 
 ## Prerequisites
 
@@ -139645,6 +140585,12 @@ source: "https://vercel.com/docs/queues/quickstart"
 # Quickstart
 
 This guide shows how to send your first queue message and process it with the Vercel Queues SDK.
+
+**Agent prompt**
+
+```text
+Help me set up Vercel Queues in this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Detect whether this is a JavaScript/TypeScript or Python project. Then: 1. Install @vercel/queue for JavaScript/TypeScript or vercel-queue for Python. 2. Run `vercel link` and `vercel env pull` to get OIDC credentials. 3. Create a producer that sends messages to an 'orders' topic using send. 4. For JavaScript/TypeScript, create a consumer route using handleCallback and configure its queue trigger in vercel.json. For Python, create a function decorated with @subscribe and declare its dotted Python module path, such as queues.orders, as the entrypoint in [[tool.vercel.subscribers]] in pyproject.toml. 5. Test locally with `vercel dev`.
+```
 
 In this quickstart:
 
@@ -141845,6 +142791,12 @@ Bulk redirects can be specified either as part of a Vercel deployment or updated
 - [Deployment-time redirects](#deployment-time-redirects)
 - [Project-level redirects](#project-redirects)
 
+**Agent prompt**
+
+```text
+Help me set up Bulk Redirects for this Vercel project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Run `vercel link` to connect the project. 2. Use `vercel redirects` to upload redirect rules for large-scale URL migrations without redeploying.
+```
+
 ## Deployment-time redirects
 
 Bulk redirects in deployments are specified in the `bulkRedirectsPath` field in `vercel.json`. `bulkRedirectsPath` can point to either a single file or a folder with up to 100 files. Vercel supports any combination of CSV, JSON, and JSONL files containing redirects, and they can be generated at build time.
@@ -143873,6 +144825,12 @@ source: "https://vercel.com/docs/routing-middleware/getting-started"
 
 Routing Middleware lets you to run code before your pages load, giving you control over incoming requests. It runs close to your users for fast response times and are perfect for redirects, authentication, and request modification.
 
+**Agent prompt**
+
+```text
+Help me set up Routing Middleware in this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Create a middleware file (middleware.ts at the project root, or proxy.ts if using Next.js 16+). 2. Add a redirect from /old-blog to /blog using a permanent redirect. 3. Configure the matcher to run on all paths except static files and images. 4. Test locally with `vercel dev`, then deploy with `vercel --prod`.
+```
+
 Routing Middleware is available on the [Node.js](/docs/functions/runtimes/node-js), [Bun](/docs/functions/runtimes/bun), and [Edge](/docs/functions/runtimes/edge) runtimes. Edge is the default runtime for Routing Middleware. To use Node.js, configure the `runtime` in your middleware config. To use Bun, set [`bunVersion`](/docs/project-configuration/vercel-json#bunversion) in your `vercel.json` file.
 
 > For \['nextjs', 'nextjs-app']:
@@ -145639,7 +146597,7 @@ Drives are ideal for caching purposes and storing large amounts of data. Snapsho
 | ---------------------- | -------------------------------------------------------------- | ------------------------------------------------------------- |
 | Storage type           | Single directory mounted on a sandbox                          | Full sandbox filesystem                                       |
 | Read/Write performance | NVMe speed writes and cache hit reads, slower cache miss reads | NVMe speed reads and writes                                   |
-| Storage size           | Up to 1 TiB per drive                                          | 32 GB (filesystem size)                                       |
+| Storage size           | Up to 1 TiB per drive                                          | 64 GB (filesystem size)                                       |
 | Expiration             | Persists until manually deleted                                | Expires after 30 days by default, can be extended to infinity |
 | Use cases              | Agent output, caching, shared data                             | Agent state, temporary data, base filesystem                  |
 | Price                  | Free during private beta                                       | $0.08/GB-month                                                |
@@ -148617,13 +149575,13 @@ Sandbox creation costs are minimal at $0.60 per million creations ($0.0000006 pe
 
 ### Resource limits
 
-Each sandbox is automatically provisioned 32 GB of ephemeral NVMe storage. You can use [persistent sandboxes](/docs/sandbox/concepts/persistent-sandboxes) or manually create [snapshots](/docs/sandbox/concepts/snapshots) to persist data across sandboxes.
+Each sandbox created with Sandbox SDK 3.0.0 or above, or from a [custom image](/docs/sandbox/concepts/images#custom-images), is automatically provisioned 64 GB of ephemeral NVMe storage. Sandboxes created with [runtimes](/docs/sandbox/concepts/runtimes) (deprecated) receive 32 GB. You can use [persistent sandboxes](/docs/sandbox/concepts/persistent-sandboxes) or manually create [snapshots](/docs/sandbox/concepts/snapshots) to persist data across sandboxes.
 
 | Plan       | Maximum vCPUs | Maximum memory | Maximum open ports | Disk size |
 | ---------- | ------------- | -------------- | ------------------ | --------- |
-| Hobby      | 4             | 8GB            | 15                 | 32 GB     |
-| Pro        | 8             | 16GB           | 15                 | 32 GB     |
-| Enterprise | 32            | 64GB           | 15                 | 32 GB     |
+| Hobby      | 4             | 8GB            | 15                 | 64 GB     |
+| Pro        | 8             | 16GB           | 15                 | 64 GB     |
+| Enterprise | 32            | 64GB           | 15                 | 64 GB     |
 
 ### Runtime limits
 
@@ -149688,6 +150646,12 @@ source: "https://vercel.com/docs/sandbox/quickstart"
 # Quickstart
 
 This guide shows you how to run your first code in a Vercel Sandbox.
+
+**Agent prompt**
+
+```text
+Help me set up Vercel Sandbox in this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Install the @vercel/sandbox SDK. 2. Run `vercel link` and `vercel env pull` to get credentials. 3. Create a script that spins up a sandbox, runs code inside it, and captures the output. 4. Run it to verify the sandbox works.
+```
 
 ## Prerequisites
 
@@ -151990,6 +152954,8 @@ sandbox remove my-sandbox
 **Run OpenClaw in Vercel Sandbox**: Learn how to run OpenClaw in Vercel Sandbox for secure and isolated execution. [Learn more →](/kb/guide/running-openclaw-in-vercel-sandbox)
 
 **Run OpenCode securely with the Vercel Sandbox**: Learn how to run OpenCode securely with the Vercel Sandbox to build your own background coding agent [Learn more →](/kb/guide/running-opencode-securely-with-the-vercel-sandbox)
+
+**Run Cursor Cloud Agents in Vercel Sandbox**: Learn how to run Cursor Cloud Agents in Vercel Sandbox instead of Cursor's hosted machines. [Learn more →](/kb/guide/cursor-vercel-sandbox)
 
 
 --------------------------------------------------------------------------------
@@ -154398,6 +155364,12 @@ source: "https://vercel.com/docs/sign-in-with-vercel/getting-started"
 # Getting started with Sign in with Vercel
 
 This guide uses Next.js App Router. You'll create a Sign in with Vercel button that redirects to the authorization endpoint, add a callback route to exchange the authorization code for tokens, and set authentication cookies.
+
+**Agent prompt**
+
+```text
+Add Sign in with Vercel to this Next.js App Router project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). My client ID and secret are in .env.local as NEXT_PUBLIC_VERCEL_APP_CLIENT_ID and VERCEL_APP_CLIENT_SECRET. Create API routes for authorize (PKCE S256), callback (exchange code for tokens), and signout (revoke token). Create a profile page at app/profile that fetches user info from the Vercel userinfo endpoint, and SignInWithVercel and SignOut button components. Use state and nonce parameters for CSRF and replay protection. Deploy with `vercel --prod`.
+```
 
 > **💡 Note:**&#x20;
 
@@ -156827,6 +157799,12 @@ This guide will help you get started with using Vercel Speed Insights on your pr
 
 To view instructions on using the Vercel Speed Insights in your project for your framework, use the **Choose a framework** dropdown on the right (at the bottom in mobile view).
 
+**Agent prompt**
+
+```text
+Help me add Vercel Speed Insights to this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Install @vercel/speed-insights. 2. Add the SpeedInsights component to my root layout. 3. Deploy with `vercel --prod` and verify Core Web Vitals data appears in the Vercel dashboard.
+```
+
 ## Prerequisites
 
 - A Vercel account. If you don't have one, you can [sign up for free](https://vercel.com/signup).
@@ -157398,6 +158376,17 @@ source: "https://vercel.com/docs/storage"
 --------------------------------------------------------------------------------
 
 # Vercel Storage overview
+
+## Vercel Storage
+
+A suite of managed, serverless storage products that integrate with your frontend framework. Choose Blob for files, Global Config for low-latency config, or a Marketplace database for everything else.
+
+```bash filename="terminal"
+# Provision a database in one command
+vercel install neon
+vercel install upstash
+vercel install supabase
+```
 
 Vercel offers a suite of managed, serverless storage products that integrate with your frontend framework.
 
@@ -176669,6 +177658,91 @@ source: "https://vercel.com/docs/rest-api/networking/read-a-secure-compute-netwo
 Allows to read a Secure Compute network.
 
 Full reference: https://vercel.com/docs/md/rest-api/networking/read-a-secure-compute-network
+
+--------------------------------------------------------------------------------
+title: "Create a PrivateLink endpoint"
+description: "POST /v1/networking/privatelink/endpoints — Creates a PrivateLink endpoint for a project."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/rest-api/networking/create-a-private-link-endpoint"
+--------------------------------------------------------------------------------
+
+# Create a PrivateLink endpoint
+
+`POST /v1/networking/privatelink/endpoints`
+
+**Authentication**: Bearer token
+
+Creates a PrivateLink endpoint for a project.
+
+Full reference: https://vercel.com/docs/md/rest-api/networking/create-a-private-link-endpoint
+
+--------------------------------------------------------------------------------
+title: "List PrivateLink endpoints"
+description: "GET /v1/networking/privatelink/endpoints — Lists all PrivateLink endpoints for a project."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/rest-api/networking/list-private-link-endpoints"
+--------------------------------------------------------------------------------
+
+# List PrivateLink endpoints
+
+`GET /v1/networking/privatelink/endpoints`
+
+**Authentication**: Bearer token
+
+Lists all PrivateLink endpoints for a project.
+
+Full reference: https://vercel.com/docs/md/rest-api/networking/list-private-link-endpoints
+
+--------------------------------------------------------------------------------
+title: "Read a PrivateLink endpoint"
+description: "GET /v1/networking/privatelink/endpoints/{endpointId} — Reads a single PrivateLink endpoint."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/rest-api/networking/read-a-private-link-endpoint"
+--------------------------------------------------------------------------------
+
+# Read a PrivateLink endpoint
+
+`GET /v1/networking/privatelink/endpoints/{endpointId}`
+
+**Authentication**: Bearer token
+
+Reads a single PrivateLink endpoint.
+
+Full reference: https://vercel.com/docs/md/rest-api/networking/read-a-private-link-endpoint
+
+--------------------------------------------------------------------------------
+title: "Delete a PrivateLink endpoint"
+description: "DELETE /v1/networking/privatelink/endpoints/{endpointId} — Deletes a PrivateLink endpoint."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/rest-api/networking/delete-a-private-link-endpoint"
+--------------------------------------------------------------------------------
+
+# Delete a PrivateLink endpoint
+
+`DELETE /v1/networking/privatelink/endpoints/{endpointId}`
+
+**Authentication**: Bearer token
+
+Deletes a PrivateLink endpoint.
+
+Full reference: https://vercel.com/docs/md/rest-api/networking/delete-a-private-link-endpoint
+
+--------------------------------------------------------------------------------
+title: "Update a PrivateLink endpoint"
+description: "PATCH /v1/networking/privatelink/endpoints/{endpointId} — Updates a PrivateLink endpoint (name, privateDns)."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/rest-api/networking/update-a-private-link-endpoint"
+--------------------------------------------------------------------------------
+
+# Update a PrivateLink endpoint
+
+`PATCH /v1/networking/privatelink/endpoints/{endpointId}`
+
+**Authentication**: Bearer token
+
+Updates a PrivateLink endpoint (name, privateDns).
+
+Full reference: https://vercel.com/docs/md/rest-api/networking/update-a-private-link-endpoint
 
 --------------------------------------------------------------------------------
 title: "List connectors"

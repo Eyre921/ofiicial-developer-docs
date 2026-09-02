@@ -826,7 +826,7 @@ Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon -s n
 
 ## Get access
 
-You need a project in the AWS us-east-2 region. Foundation model access requires a paid Neon plan, and it's enabled automatically once you're on one, no separate sign-up step needed.
+You need a project in AWS US East (Ohio) (`aws-us-east-2`) or AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions. Foundation model access requires a paid Neon plan, and it's enabled automatically once you're on one, no separate sign-up step needed.
 
 ## Create a credential
 
@@ -9374,7 +9374,7 @@ Open-weight models are available to every project right away. Frontier models fr
 
 Neon AI Gateway is the LLM inference layer built into the Neon backend. It lets you call models from OpenAI, Google, and other providers using your Neon credential, without setting up separate provider accounts. Your existing OpenAI SDK works without code changes. Just point it at your branch endpoint.
 
-> AI Gateway is in beta and available only in **AWS US East (Ohio) (`aws-us-east-2`)**, so create your project there to use it. It requires a paid Neon plan. Inference is free for paid plans during beta. See [Pricing](https://neon.com/docs/ai-gateway/overview#pricing) for what to expect when billing begins.
+> AI Gateway is in beta and currently available in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`). Create your project in one of these regions to use it. Support is expanding toward all regions. It requires a paid Neon plan. Inference is free for paid plans during beta. See [Pricing](https://neon.com/docs/ai-gateway/overview#pricing) for what to expect when billing begins.
 
 **Important:** Participation in this Beta is subject to our Terms of Service. Access is not available to users, organizations, or entities located in or operating from regions restricted by Anthropic's [Supported Regions Policy](https://www.anthropic.com/supported-countries). This restriction also applies to entities that are majority owned, directly or indirectly, by companies headquartered in unsupported regions.
 
@@ -12817,7 +12817,7 @@ Schema tools accept schema-qualified table names, such as `crm.contacts`. An unq
 
 The `querying` category includes `inspect_database`, which runs the same 15 read-only checks as [`neon inspect db`](https://neon.com/docs/cli/inspect): relation and index sizes, unused indexes, sequential scans, active queries and locks, stalled queries running longer than 30 seconds, heavy and frequent statements, cache hit rate and working set, autovacuum and bloat, and replication state. Some checks need [`pg_stat_statements`](https://neon.com/docs/extensions/pg_stat_statements) or the [`neon`](https://neon.com/docs/extensions/neon) extension; the tool asks before suggesting `CREATE EXTENSION`.
 
-**Note:** The `observability` tools query [Neon Functions logs](https://neon.com/docs/compute/functions/logs) and [object storage logs](https://neon.com/docs/storage/logs), which are part of the Neon backend beta, currently available in AWS `us-east-2` only. Log querying returns results only for projects in a supported region. Database diagnostics via `inspect_database` are under `querying`, not `observability`.
+**Note:** The `observability` tools query [Neon Functions logs](https://neon.com/docs/compute/functions/logs) and [object storage logs](https://neon.com/docs/storage/logs), which are part of the Neon backend beta, currently available in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions. Log querying returns results only for projects in a supported region. Database diagnostics via `inspect_database` are under `querying`, not `observability`.
 
 ## Troubleshooting
 
@@ -13253,7 +13253,7 @@ Production Branch              Preview Branch
     (production endpoint)          (preview endpoint)
 ```
 
-**Note:** Managed Better Auth works with your branch's **default** database (typically `neondb`) and read-write endpoint only. You cannot use Managed Better Auth with other databases in the same branch. This aligns with our recommended pattern of one database per branch.
+**Note:** Managed Better Auth uses your branch's default database, typically `neondb`, when you don't specify a database. You can select another database in the same branch when you enable Auth through the API by setting `database_name`. Managed Better Auth requires a read-write endpoint.
 
 ## Session management details
 
@@ -22121,12 +22121,15 @@ The branch argument is optional. Run `neon checkout` with no branch in an intera
 
 ## Options
 
-| Option         | Description                                                                                                                                                                                                                      | Type    | Default | Required |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--env-pull`   | Pull the branch's Neon env vars (DATABASE\_URL, ...) into a local .env after checkout. On by default; use --no-env-pull to skip, for example when injecting env at runtime with `neon-env run` (from `@neon/env`) or `neon dev`. | boolean | `true`  |    No    |
-| `--project-id` | Project ID                                                                                                                                                                                                                       | string  | —       |    No    |
+| Option         | Description                                                                                                                                                                                                                                                                                                                            | Type    | Default | Required |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--env`        | Path to a .env file to load into the environment before evaluating neon.ts so Function env values resolve from it. Existing env vars are not overridden. Function env values that read process.env must be set in this file or the environment. Used when this checkout creates a branch from neon.ts; ignored for an existing branch. | string  | —       |    No    |
+| `--env-pull`   | Pull the branch's Neon env vars (DATABASE\_URL, ...) into a local .env after checkout. On by default; use --no-env-pull to skip, for example when injecting env at runtime with `neon-env run` (from `@neon/env`) or `neon dev`.                                                                                                       | boolean | `true`  |    No    |
+| `--project-id` | Project ID                                                                                                                                                                                                                                                                                                                             | string  | —       |    No    |
 
 By default, `checkout` pulls environment variables into a `.env` file after checking out the branch; use `--no-env-pull` to skip this.
+
+Creating a branch from a [`neon.ts`](https://neon.com/docs/reference/neon-ts) policy evaluates that policy, resolving any `process.env` values it references (such as a function's secrets) from your environment. Pass `--env <file>` to load those values from `<file>` first, so they resolve during the checkout. Checking out an existing branch doesn't re-evaluate the policy, so `--env` is ignored there.
 
 ## Branch ID vs name
 
@@ -22519,12 +22522,12 @@ Shows what `config apply` would change, as a dry run. Nothing is modified.
 neon config plan [options]
 ```
 
-| Option         | Description                                                                                                                                                | Type   | Default | Required |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
-| `--config`     | Path to a neon.ts policy (defaults to walking up from cwd)                                                                                                 | string | —       |    No    |
-| `--env`        | Path to a .env file to load into the environment before evaluating neon.ts (so function env values resolve from it). Existing env vars are not overridden. | string | —       |    No    |
-| `--branch`     | Branch ID or name                                                                                                                                          | string | —       |    No    |
-| `--project-id` | Project ID                                                                                                                                                 | string | —       |    No    |
+| Option         | Description                                                                                                                                                                                                                                     | Type   | Default | Required |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--config`     | Path to a neon.ts policy (defaults to walking up from cwd)                                                                                                                                                                                      | string | —       |    No    |
+| `--env`        | Path to a .env file to load into the environment before evaluating neon.ts so Function env values resolve from it. Existing env vars are not overridden. Function env values that read process.env must be set in this file or the environment. | string | —       |    No    |
+| `--branch`     | Branch ID or name                                                                                                                                                                                                                               | string | —       |    No    |
+| `--project-id` | Project ID                                                                                                                                                                                                                                      | string | —       |    No    |
 
 ```bash
 neon config plan --config ./neon.ts --env .env.local
@@ -22538,15 +22541,15 @@ Applies a `neon.ts` policy to the branch.
 neon config apply [options]
 ```
 
-| Option              | Description                                                                                                                                                                                                    | Type    | Default | Required |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--allow-protected` | Auto-confirm applying to a branch marked protected on Neon                                                                                                                                                     | boolean | `false` |    No    |
-| `--config`          | Path to a neon.ts policy (defaults to walking up from cwd)                                                                                                                                                     | string  | —       |    No    |
-| `--env`             | Path to a .env file to load into the environment before evaluating neon.ts (so function env values resolve from it). Existing env vars are not overridden.                                                     | string  | —       |    No    |
-| `--env-pull`        | Pull the branch's Neon env vars (DATABASE\_URL, …) into a local .env after a successful apply. On by default; use --no-env-pull to skip (e.g. when injecting env at runtime with `neon-env run` / `neon dev`). | boolean | `true`  |    No    |
-| `--update-existing` | Auto-confirm overriding existing remote settings on the branch                                                                                                                                                 | boolean | `false` |    No    |
-| `--branch`          | Branch ID or name                                                                                                                                                                                              | string  | —       |    No    |
-| `--project-id`      | Project ID                                                                                                                                                                                                     | string  | —       |    No    |
+| Option              | Description                                                                                                                                                                                                                                     | Type    | Default | Required |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--allow-protected` | Auto-confirm applying to a branch marked protected on Neon                                                                                                                                                                                      | boolean | `false` |    No    |
+| `--config`          | Path to a neon.ts policy (defaults to walking up from cwd)                                                                                                                                                                                      | string  | —       |    No    |
+| `--env`             | Path to a .env file to load into the environment before evaluating neon.ts so Function env values resolve from it. Existing env vars are not overridden. Function env values that read process.env must be set in this file or the environment. | string  | —       |    No    |
+| `--env-pull`        | Pull the branch's Neon env vars (DATABASE\_URL, …) into a local .env after a successful apply. On by default; use --no-env-pull to skip (e.g. when injecting env at runtime with `neon-env run` / `neon dev`).                                  | boolean | `true`  |    No    |
+| `--update-existing` | Auto-confirm overriding existing remote settings on the branch                                                                                                                                                                                  | boolean | `false` |    No    |
+| `--branch`          | Branch ID or name                                                                                                                                                                                                                               | string  | —       |    No    |
+| `--project-id`      | Project ID                                                                                                                                                                                                                                      | string  | —       |    No    |
 
 For non-interactive use (scripts, CI, agents), pass `--update-existing` and `--allow-protected` to auto-confirm the corresponding prompts.
 
@@ -22907,15 +22910,15 @@ The `deploy` command applies a `neon.ts` policy to a branch. It is a top-level a
 neon deploy [options]
 ```
 
-| Option              | Description                                                                                                                                                                                                    | Type    | Default | Required |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--allow-protected` | Auto-confirm applying to a branch marked protected on Neon                                                                                                                                                     | boolean | `false` |    No    |
-| `--branch`          | Branch ID or name                                                                                                                                                                                              | string  | —       |    No    |
-| `--config`          | Path to a neon.ts policy (defaults to walking up from cwd)                                                                                                                                                     | string  | —       |    No    |
-| `--env`             | Path to a .env file to load into the environment before evaluating neon.ts (so function env values resolve from it). Existing env vars are not overridden.                                                     | string  | —       |    No    |
-| `--env-pull`        | Pull the branch's Neon env vars (DATABASE\_URL, …) into a local .env after a successful apply. On by default; use --no-env-pull to skip (e.g. when injecting env at runtime with `neon-env run` / `neon dev`). | boolean | `true`  |    No    |
-| `--project-id`      | Project ID                                                                                                                                                                                                     | string  | —       |    No    |
-| `--update-existing` | Auto-confirm overriding existing remote settings on the branch                                                                                                                                                 | boolean | `false` |    No    |
+| Option              | Description                                                                                                                                                                                                                                     | Type    | Default | Required |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--allow-protected` | Auto-confirm applying to a branch marked protected on Neon                                                                                                                                                                                      | boolean | `false` |    No    |
+| `--branch`          | Branch ID or name                                                                                                                                                                                                                               | string  | —       |    No    |
+| `--config`          | Path to a neon.ts policy (defaults to walking up from cwd)                                                                                                                                                                                      | string  | —       |    No    |
+| `--env`             | Path to a .env file to load into the environment before evaluating neon.ts so Function env values resolve from it. Existing env vars are not overridden. Function env values that read process.env must be set in this file or the environment. | string  | —       |    No    |
+| `--env-pull`        | Pull the branch's Neon env vars (DATABASE\_URL, …) into a local .env after a successful apply. On by default; use --no-env-pull to skip (e.g. when injecting env at runtime with `neon-env run` / `neon dev`).                                  | boolean | `true`  |    No    |
+| `--project-id`      | Project ID                                                                                                                                                                                                                                      | string  | —       |    No    |
+| `--update-existing` | Auto-confirm overriding existing remote settings on the branch                                                                                                                                                                                  | boolean | `false` |    No    |
 
 For non-interactive use (scripts, CI, agents), pass `--update-existing` and `--allow-protected` to auto-confirm the corresponding prompts.
 
@@ -23075,17 +23078,21 @@ Writes the branch's Neon environment variables to a local `.env` file.
 
 `neon env pull` works with or without a [`neon.ts`](https://neon.com/docs/reference/neon-ts) configuration file. Without one, it writes the branch's core variables (`DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEON_BRANCH`). With a `neon.ts`, it also writes credentials for each service you declare (Managed Better Auth, Data API, AI Gateway, Object Storage).
 
+When your `neon.ts` declares functions, `neon env pull` also writes each one's invocation URL as `NEON_FUNCTION_<SLUG>_BASE_URL` (for example, `NEON_FUNCTION_DISCORD_BASE_URL`). The URL is derived from the branch, so the function doesn't have to be deployed yet; the value is the address it will answer at once you deploy it to that branch. Scoping the pull with `--service functions` instead writes URLs only for functions that are already deployed, so a declared-but-undeployed function appears in the default `neon.ts` pull but not with `--service functions`.
+
+Unset function env vars don't block a pull. If a declared function reads a `process.env.*` value that isn't set, `neon env pull` (and the pull that [`neon link`](https://neon.com/docs/cli/link) and [`neon checkout`](https://neon.com/docs/cli/checkout) run) skips that value and writes everything else instead of failing. The commands that actually build or run your functions still require every declared value: `neon deploy`, `neon dev`, and `neon-env run`.
+
 ```bash
 neon env pull [options]
 ```
 
-| Option         | Description                                                                                                                                                                                    | Type   | Default | Required |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
-| `--env`, `-e`  |                                                                                                                                                                                                | array  | —       |    No    |
-| `--file`       | Target .env file to write. Defaults to an existing .env, otherwise .env.local. Only Neon variables are updated; other lines are preserved.                                                     | string | —       |    No    |
-| `--service`    | Pull only these services' variables: postgres, auth, data-api, object-storage, ai-gateway. Repeat the flag or comma-separate. Overrides neon.ts, and prunes only within the services you name. | array  | —       |    No    |
-| `--branch`     | Branch ID or name                                                                                                                                                                              | string | —       |    No    |
-| `--project-id` | Project ID                                                                                                                                                                                     | string | —       |    No    |
+| Option         | Description                                                                                                                                                                                               | Type   | Default | Required |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--env`, `-e`  |                                                                                                                                                                                                           | array  | —       |    No    |
+| `--file`       | Target .env file to write. Defaults to an existing .env, otherwise .env.local. Only Neon variables are updated; other lines are preserved.                                                                | string | —       |    No    |
+| `--service`    | Pull only these services' variables: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. Overrides neon.ts, and prunes only within the services you name. | array  | —       |    No    |
+| `--branch`     | Branch ID or name                                                                                                                                                                                         | string | —       |    No    |
+| `--project-id` | Project ID                                                                                                                                                                                                | string | —       |    No    |
 
 Write the linked branch's Neon variables into `.env.local` (or `.env` if present):
 
@@ -23099,7 +23106,7 @@ Pull a specific branch into a specific file:
 neon env pull --branch preview --file .env.preview
 ```
 
-Pull only the variables for the services you name, ignoring `neon.ts`. Repeat `--service` or comma-separate the values (`postgres`, `auth`, `data-api`, `object-storage`, `ai-gateway`):
+Pull only the variables for the services you name, ignoring `neon.ts`. Repeat `--service` or comma-separate the values (`postgres`, `auth`, `data-api`, `functions`, `object-storage`, `ai-gateway`):
 
 ```bash
 neon env pull --service ai-gateway --service postgres
@@ -24060,7 +24067,7 @@ Organization-scoped API keys (those created at the organization level rather tha
 
 --- [Document source](https://neon.com/docs/cli/logs.md) ---
 
-> Summary: The Neon CLI `neon logs` command reads the logs a branch's services emit. Today that covers Neon Functions and Object Storage; Postgres compute logs are coming. Query records over a time window, filter by source, severity, or OpenTelemetry attributes, run raw LogQL, and list which fields and values a branch reports. Logs are in beta and available only in AWS US East (Ohio) (aws-us-east-2).
+> Summary: The Neon CLI `neon logs` command reads the logs a branch's services emit. Today that covers Neon Functions and Object Storage; Postgres compute logs are coming. Query records over a time window, filter by source, severity, or OpenTelemetry attributes, run raw LogQL, and list which fields and values a branch reports. Logs are in beta and available in AWS US East (Ohio) (aws-us-east-2) and AWS Europe (Frankfurt) (aws-eu-central-1).
 
 # Neon CLI command: logs
 
@@ -24072,7 +24079,7 @@ This feature is in Beta. Please give us [Feedback](https://console.neon.tech/app
 
 The `logs` command reads the logs a branch's services emit. Today that covers Neon Functions and Object Storage; Postgres compute logs are coming. Query records over a time window, filter by source, severity, or OpenTelemetry attribute, and list which fields and values a branch reports so you can build precise filters.
 
-Logs are in beta and available only in **AWS US East (Ohio) (`aws-us-east-2`)**, so your project must be in that region to use them.
+Logs are in beta and currently available in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`), so your project must be in one of these regions to use them. Support is expanding toward all regions.
 
 Every subcommand resolves the project and branch from your [context](https://neon.com/docs/cli/set-context). Pass `--project-id` and `--branch` to target a specific branch instead.
 
@@ -24189,7 +24196,7 @@ curl "https://console.neon.tech/telemetry/v1/projects/$PROJECT_ID/branches/$BRAN
 
 The stream label is `entity_type` (not `--source`), so a LogQL selector reads `{entity_type="function"}`. This is a read-only subset, not a push endpoint or a complete Loki deployment. A Loki client that builds its own paths may need a different root: a Grafana data source, for example, appends `/loki/api/v1` to whatever URL it is given. Confirm the data-source URL against this base rather than pasting it verbatim.
 
-Like the CLI, this API reads logs only on branches in **AWS US East (Ohio) (`aws-us-east-2`)**, the only region where branch logs are available during the beta period. A branch in any other region returns `404`.
+Like the CLI, this API reads logs only on branches in a supported region: AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`) during the beta period. Support is expanding toward all regions. A branch in any other region returns `404`.
 
 --- [Document source](https://neon.com/docs/cli/mcp.md) ---
 
@@ -28863,7 +28870,7 @@ Schema tools accept schema-qualified table names, such as `crm.contacts`. An unq
 
 The `querying` category includes `inspect_database`, which runs the same 15 read-only checks as [`neon inspect db`](https://neon.com/docs/cli/inspect): relation and index sizes, unused indexes, sequential scans, active queries and locks, stalled queries running longer than 30 seconds, heavy and frequent statements, cache hit rate and working set, autovacuum and bloat, and replication state. Some checks need [`pg_stat_statements`](https://neon.com/docs/extensions/pg_stat_statements) or the [`neon`](https://neon.com/docs/extensions/neon) extension; the tool asks before suggesting `CREATE EXTENSION`.
 
-**Note:** The `observability` tools query [Neon Functions logs](https://neon.com/docs/compute/functions/logs) and [object storage logs](https://neon.com/docs/storage/logs), which are part of the Neon backend beta, currently available in AWS `us-east-2` only. Log querying returns results only for projects in a supported region. Database diagnostics via `inspect_database` are under `querying`, not `observability`.
+**Note:** The `observability` tools query [Neon Functions logs](https://neon.com/docs/compute/functions/logs) and [object storage logs](https://neon.com/docs/storage/logs), which are part of the Neon backend beta, currently available in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions. Log querying returns results only for projects in a supported region. Database diagnostics via `inspect_database` are under `querying`, not `observability`.
 
 ---
 
@@ -30528,6 +30535,8 @@ DELETE /projects/{project_id}/branches/{branch_id}/functions/{slug}
 
 --- [Document source](https://neon.com/docs/compute/functions/discord-bot.md) ---
 
+> Summary: Host a Discord interactions bot on Neon Functions. Receive slash commands over HTTP at a public function URL, verify Discord's Ed25519 request signatures, and store data in Postgres on the same branch.
+
 # How to host a Discord bot on Neon Functions
 
 Receive slash commands at a public function URL with no Gateway connection
@@ -30546,13 +30555,13 @@ Neon Functions are not the right primitive for a Discord Gateway bot yet. Gatewa
 
 ## Prerequisites
 
-- A Neon project in AWS US East (Ohio) (`aws-us-east-2`). Functions are available only in this region during beta. See [Get started with Neon Functions](https://neon.com/docs/compute/functions/get-started).
-- The [Neon CLI](https://neon.com/docs/cli), version 2.25.0 or later (`neon --version`). `neon bootstrap` needs that floor. Upgrade with `npm install -g neon@latest` if you're behind, then authenticate ([CLI auth](https://neon.com/docs/cli/auth)).
-- Node.js 24 (`node -v`). Deployed functions run on `nodejs24`. Get Started's Node.js 20+ is the platform floor; this template needs 24.
+- A Neon project in AWS US East (Ohio) (`aws-us-east-2`) or AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions. See [Get started with Neon Functions](https://neon.com/docs/compute/functions/get-started).
+- The latest [Neon CLI](https://neon.com/docs/cli), installed and authenticated. Upgrade with `npm install -g neon@latest`, then see [CLI auth](https://neon.com/docs/cli/auth).
+- Node.js 24 (`node -v`). Deployed functions run on `nodejs24`, so 24 locally is the closest match. Node.js 20+ works.
 - A Discord account.
 - A Discord server you own. Create one if you need to. You often can't add a bot to someone else's server.
 
-This guide's commands are the `pnpm` forms from the template README. The template ships `package-lock.json` and no `pnpm-lock.yaml`, so `neon bootstrap` may use npm. `npm run <script>` runs the same script names.
+This guide uses npm commands, matching the template.
 
 ## Create a Discord application
 
@@ -30560,17 +30569,17 @@ Open the [Discord Developer Portal](https://discord.com/developers/applications)
 
 ![Discord Developer Portal New Application modal](https://neon.com/docs/compute/functions/discord-new-application.png)
 
-On **General Information**, copy the **Application ID** and **Public Key**. Stash them somewhere local. They go into `.env` after you scaffold the project.
+On **General Information**, copy the **Application ID** and **Public Key**. Stash them somewhere local. They go into `.env.local` after you scaffold the project.
 
 ![Discord General Information showing Application ID and Public Key](https://neon.com/docs/compute/functions/discord-general-information.png)
 
-Open the **Bot** tab and click **Reset Token**. Copy the token. Discord shows it once. Resetting invalidates any previous token, so if this app already had one, update `.env` after you create it.
+Open the **Bot** tab and click **Reset Token**. Copy the token. Discord shows it once. Resetting invalidates any previous token, so if this app already had one, update `.env.local` after you create it.
 
 ![Discord Bot tab showing the Reset Token button](https://neon.com/docs/compute/functions/discord-bot-token.png)
 
 **Warning:** Treat the bot token like a password. Anyone who has it can act as your bot. Never commit it or paste it into screenshots, tickets or chat.
 
-The public key is what the function uses to verify that a POST really came from Discord. The application ID and bot token are what `pnpm register:commands` uses to declare slash commands. `/help` uses the token at request time for command mentions.
+The public key is what the function uses to verify that a POST really came from Discord. The application ID and bot token are what `npm run register:commands` uses to declare slash commands. `/help` uses the token at request time for command mentions.
 
 ### Invite the bot to a test server
 
@@ -30592,10 +30601,10 @@ Slash commands show up after you [register them](https://neon.com/docs/compute/f
 
 ## Scaffold the project
 
-`neon bootstrap` copies the HTTP example into an empty directory, can install dependencies and can [link](https://neon.com/docs/cli/link) a Neon project. The template id is `discord-bot-http`:
+`neon bootstrap` copies the HTTP example into an empty directory and prompts you to install dependencies and set up the project. Accept the prompts. Pass `--no-link` to skip linking for now; you'll [link](https://neon.com/docs/cli/link) in the next step, after creating `.env.local`, so Neon writes its variables straight into that file. The template id is `discord-bot-http`:
 
 ```bash
-neon bootstrap my-discord-bot --template discord-bot-http
+neon bootstrap my-discord-bot --template discord-bot-http --no-link
 cd my-discord-bot
 ```
 
@@ -30615,9 +30624,9 @@ export default defineConfig({
         name: "Discord interactions",
         source: "./functions/discord.ts",
         env: {
-          DISCORD_PUBLIC_KEY: process.env.DISCORD_PUBLIC_KEY,
-          DISCORD_APPLICATION_ID: process.env.DISCORD_APPLICATION_ID,
-          DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN,
+          DISCORD_PUBLIC_KEY: process.env.DISCORD_PUBLIC_KEY!,
+          DISCORD_APPLICATION_ID: process.env.DISCORD_APPLICATION_ID!,
+          DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN!,
           ...(process.env.DISCORD_GUILD_ID ? { DISCORD_GUILD_ID: process.env.DISCORD_GUILD_ID } : {}),
         },
         dev: {
@@ -30631,90 +30640,95 @@ export default defineConfig({
 
 The key `discord` is the function slug. It's permanent after the first deploy and appears in CLI commands and the invocation URL. See the [neon.ts reference](https://neon.com/docs/reference/neon-ts).
 
-This walkthrough is deploy-only. Discord needs a public HTTPS URL, so we don't use `pnpm dev` here. The scaffold still sets `dev.port` to `8787` to match the template.
+This walkthrough is deploy-only. Discord needs a public HTTPS URL, so we don't use `npm run dev` here. The scaffold still sets `dev.port` to `8787` to match the template.
 
 ## Add Discord secrets
 
-Template scripts read `.env` (`neon deploy --env .env` and `node --env-file=.env`). Don't copy `.env.example` over a `.env` that `neon bootstrap` or `neon link` already wrote. That can wipe `DATABASE_URL`. If `.env` exists, add the Discord keys to it. If it doesn't, copy `.env.example` to `.env`.
+Template scripts read `.env.local` (for example `neon deploy --env .env.local` and `node --env-file=.env.local`), the same convention as Next.js and `vercel env pull`. Bootstrap scaffolds a `.env.example` but no `.env.local` yet. Copy the example first, then link so Neon merges the branch's variables into it:
 
-```env filename=".env"
-DISCORD_PUBLIC_KEY=
-DISCORD_APPLICATION_ID=
-DISCORD_BOT_TOKEN=
+```bash
+cp .env.example .env.local
+neon link
+```
+
+Linking merges `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEON_BRANCH`, and `NEON_FUNCTION_DISCORD_BASE_URL` (your function's public URL, ready before you deploy) into `.env.local`, leaving the Discord keys untouched. Uncomment and fill the three required `DISCORD_*` keys:
+
+```env filename=".env.local"
+# Required. Add real values before deploying; a missing key throws at deploy, an empty one uploads "".
+# DISCORD_PUBLIC_KEY=
+# DISCORD_APPLICATION_ID=
+# DISCORD_BOT_TOKEN=
+
+# Optional: your test server's ID for fast guild commands; blank registers global commands.
 DISCORD_GUILD_ID=
 
-# Set automatically by Neon when running `pnpm deploy`.
+# Written into `.env.local` by `neon link`.
 NEON_BRANCH=
 DATABASE_URL=
 DATABASE_URL_UNPOOLED=
+NEON_FUNCTION_DISCORD_BASE_URL=
 ```
 
-Fill in the four `DISCORD_*` values you stashed. For this guide, set `DISCORD_GUILD_ID` to your test server. In Discord, turn on Developer Mode (User Settings → App Settings → Advanced), right-click the server name in the sidebar and click **Copy Server ID**. A guild is a Discord server.
+For this guide, also set `DISCORD_GUILD_ID` to your test server. In Discord, turn on Developer Mode (User Settings → App Settings → Advanced), right-click the server name in the sidebar and click **Copy Server ID**. A guild is a Discord server.
 
-Don't set `NEON_BRANCH`, `DATABASE_URL` or `DATABASE_URL_UNPOOLED`. Neon writes them on deploy. See [Environment variables](https://neon.com/docs/compute/functions/environment-variables).
+Leave the pulled `NEON_*` and `DATABASE_URL*` values as written. See [Environment variables](https://neon.com/docs/compute/functions/environment-variables).
 
 If you omit `DISCORD_GUILD_ID`, the register script creates global commands, which can take up to an hour to show up. Skip that until you want a production-wide install.
 
 ## Deploy the function
 
-If you used `neon bootstrap` and let it install dependencies, skip that step. If you cloned by hand, install first (`pnpm install` as in the README, or `npm install` from the lockfile).
+If you used `neon bootstrap` and let it install dependencies, skip that step. If you cloned by hand, run `npm install` first.
 
-`pnpm deploy` (or `npm run deploy`) runs `neon deploy --env .env`, which evaluates `neon.ts` with your Discord secrets in `process.env`:
+`npm run deploy` runs `neon deploy --env .env.local`, which evaluates `neon.ts` with your Discord secrets in `process.env`:
 
 ```bash
-pnpm deploy
+npm run deploy
 ```
 
-or `npm run deploy`.
+The CLI applies the `neon.ts` policy, bundles the function and waits until that apply finishes. You'll see `Applied changes` and a **Function URLs** list. If the command fails, check [function logs](https://neon.com/docs/compute/functions/logs). Flags are in [Deploy and manage functions](https://neon.com/docs/compute/functions/deploy).
 
-The CLI applies the `neon.ts` policy, bundles the function and waits until that apply finishes. You'll see `Applied changes` and a **Function URLs** list. That list prints the `discord` origin: a URL with a trailing slash and no path. Pasting that origin into Discord fails the handshake. Copy the `discord` URL, strip the trailing slash and append `/api/interactions`. That's the value you paste into the Developer Portal. If the command fails, check [function logs](https://neon.com/docs/compute/functions/logs). Flags are in [Deploy and manage functions](https://neon.com/docs/compute/functions/deploy).
-
-Deployed env is a snapshot of `.env` at apply time. After you fix Discord keys (or if you deployed before filling them in), run `pnpm deploy` again.
-
-The URL looks like:
-
-```text
-https://br-cool-darkness-123456-discord.compute.c-1.us-east-2.aws.neon.tech/api/interactions
-```
-
-Your cell (`c-1`, `c-3`, …) will differ.
-
-If you need the origin again later, `pnpm endpoint` (or `npm run endpoint`) runs `neon functions get discord`. The default table columns are **Slug**, **Name**, **Invocation Url** and **Created At**. Copy **Invocation Url**, strip a trailing slash if there is one, then append `/api/interactions`. Pass `-o yaml` or `-o json` if you want the `invocation_url` key instead of the table.
+Deployed env is a snapshot of `.env.local` at apply time. Run `npm run deploy` again after any change to `.env.local`.
 
 ## Set the Interactions Endpoint URL
 
-In the Developer Portal, open **General Information**. Paste the Neon URL (including `/api/interactions`) into **Interactions Endpoint URL** and save.
+Your interactions endpoint is `NEON_FUNCTION_DISCORD_BASE_URL` (from `.env.local`) with `/api/interactions` appended:
+
+```text
+https://br-cool-darkness-123456-discord.compute.us-east-2.aws.neon.tech/api/interactions
+```
+
+Your URL will differ. Use the exact `NEON_FUNCTION_DISCORD_BASE_URL` value from `.env.local`, with `/api/interactions` appended; the host is specific to your branch.
+
+In the Developer Portal, open **General Information**. Paste that URL into **Interactions Endpoint URL** and save.
 
 Discord immediately POSTs a `PING` (`type: 1`). The handler verifies the signature and returns a `PONG`. If that handshake succeeds, Discord saves the URL (the Developer Portal shows a green success message).
 
-If save fails, retry once. Confirm the public key in `.env` matches General Information, you redeployed after editing `.env` and the path ends with `/api/interactions`. Then open or curl the function URL (the origin from Function URLs, or that URL plus `/api/interactions`). GET returns JSON with these keys:
+If save fails, retry once. Confirm the public key in `.env.local` matches General Information, you redeployed after editing `.env.local` and the path ends with `/api/interactions`. Then open or curl the function URL (`NEON_FUNCTION_DISCORD_BASE_URL`, or that URL plus `/api/interactions`). GET returns JSON with these keys:
 
 ```json
 {
   "ok": true,
   "service": "discord-interactions",
   "interactionsPath": "/api/interactions",
-  "interactionsUrl": "https://br-cool-darkness-123456-discord.compute.c-1.us-east-2.aws.neon.tech/api/interactions"
+  "interactionsUrl": "https://br-cool-darkness-123456-discord.compute.us-east-2.aws.neon.tech/api/interactions"
 }
 ```
 
-`ok: true` only proves the isolate is up and `interactionsUrl` is the value you paste. GET does not use the public key. A wrong key or a stale deploy still fails Discord's `PING`. Confirm `interactionsUrl` matches what you paste, then check [function logs](https://neon.com/docs/compute/functions/logs). Signature failures show up there. Fix `.env` and redeploy. The first PING can miss a cold start.
+`ok: true` proves the isolate is up, and `interactionsUrl` echoes the public endpoint you paste into Discord, so it should match the URL you saved. GET does not use the public key, so a wrong key or a stale deploy still fails Discord's `PING`. Check [function logs](https://neon.com/docs/compute/functions/logs); signature failures show up there. Fix `.env.local` and redeploy. The first PING can miss a cold start.
 
 ## Register slash commands
 
 Discord doesn't read commands from your handler. Register them once with the Discord API:
 
 ```bash
-pnpm register:commands
+npm run register:commands
 ```
-
-or `npm run register:commands`.
 
 That compiles `scripts/registerCommands.ts` and calls Discord's HTTP API with your bot token. It runs locally. It isn't part of the Neon Function. On success it prints the registered command list as JSON.
 
 The hosted function still needs `DISCORD_BOT_TOKEN`, `DISCORD_APPLICATION_ID` and `DISCORD_PUBLIC_KEY` in the deployed env. `/help` uses the token at request time for command mentions. The public key is for request verification.
 
-If it throws, check that `.env` exists and the token is set (Discord returns 401 for a bad token). A wrong `DISCORD_GUILD_ID`, or a bot that isn't in that server, fails with an unknown guild error.
+If it throws, check that `.env.local` exists and the token is set (Discord returns `401 Unauthorized` for a bad token). If the bot isn't in the target server, Discord returns `403 Missing Access`; invite it first (see [Invite the bot to a test server](https://neon.com/docs/compute/functions/discord-bot#invite-the-bot-to-a-test-server)). A wrong `DISCORD_GUILD_ID` returns `404 Unknown Guild`.
 
 With `DISCORD_GUILD_ID` set, the script registers guild commands on that server.
 
@@ -30734,8 +30748,8 @@ If nothing appears, or Discord says "The application did not respond":
 
 - The bot is in the server with the `applications.commands` scope.
 - Discord saved the Interactions Endpoint URL after a successful PING/PONG.
-- `pnpm deploy` finished (redeploy after any `.env` change).
-- `pnpm register:commands` printed JSON (then you restarted Discord).
+- `npm run deploy` finished (redeploy after any `.env.local` change).
+- `npm run register:commands` printed JSON (then you restarted Discord).
 - `DISCORD_GUILD_ID` is this server.
 - Check [function logs](https://neon.com/docs/compute/functions/logs) for a failed PING or a slow cold start. Try `/ping` again once the branch is warm.
 
@@ -30817,7 +30831,7 @@ The template already implements more than `/ping`:
 
 - `/info` and `/help`: [Components v2](https://discord.com/developers/docs/components/overview) panels (Discord's newer message layout) with runtime details and slash-command mentions.
 - `/buttons`: Components v2 buttons (primary, secondary, success and danger).
-- `/name` and `/profile`: Postgres via Drizzle (`profiles` and `command_usage` tables). After the project is linked and deployed so `DATABASE_URL` exists, run `pnpm db:push` once. If you skip that, those commands reply that they could not reach the Neon database. On a cold branch they can also fall back to a warming-up reply; run the command again once the branch is warm.
+- `/name` and `/profile`: Postgres via Drizzle (`profiles` and `command_usage` tables). After the project is linked and deployed so `DATABASE_URL` exists, run `npm run db:push` once. If you skip that, those commands reply that they could not reach the Neon database. On a cold branch they can also fall back to a warming-up reply; run the command again once the branch is warm.
 
 To add LLM chat and image generation, see the [Community Guide](https://neon.com/guides/discord-bot-on-neon-functions). That's a separate from-scratch walkthrough.
 
@@ -31026,7 +31040,7 @@ That's a deployed function in three commands. The rest of this guide builds a mo
 
 ## Prerequisites
 
-- A Neon project in AWS US East (Ohio) (`aws-us-east-2`), the only region where Functions are available during beta.
+- A Neon project in AWS US East (Ohio) (`aws-us-east-2`) or AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions.
 - The latest `neon`, installed and authenticated. Functions commands are new and change often, so upgrade before you start (`npm install -g neon@latest`).
 - Node.js 20 or later. Deployed functions run on Node.js 24, so use 24 locally for the closest match.
 
@@ -31305,7 +31319,7 @@ What makes Neon Functions different from lambda-style serverless?
 
 Functions run on Neon's own compute platform, the same infrastructure that runs your Postgres, so they sit in the same region as your data.
 
-> Functions are in beta and available only in **AWS US East (Ohio) (`aws-us-east-2`)**, so create your project there to use them. Functions are free to use during beta, subject to [usage limits](https://neon.com/docs/compute/functions/reference/runtime-limits), on any plan. See [plans and pricing](https://neon.com/docs/introduction/plans#functions) for the rates that apply when billing begins.
+> Functions are in beta and currently available in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`). Create your project in one of these regions to use them. Support is expanding toward all regions. Functions are free to use during beta, subject to [usage limits](https://neon.com/docs/compute/functions/reference/runtime-limits), on any plan. See [plans and pricing](https://neon.com/docs/introduction/plans#functions) for the rates that apply when billing begins.
 
 **Important: JavaScript and TypeScript only**
 
@@ -31450,6 +31464,8 @@ See [Environment variables](https://neon.com/docs/compute/functions/environment-
 
 --- [Document source](https://neon.com/docs/compute/functions/telegram-bot.md) ---
 
+> Summary: Host a Telegram bot on Neon Functions. Receive webhook updates, run bot commands, verify the webhook secret token, and store data in Postgres on the same branch.
+
 # How to host a Telegram bot on Neon Functions
 
 Receive Telegram messages, run bot commands and store data in Postgres
@@ -31468,12 +31484,12 @@ This guide uses Telegram webhooks. It doesn't run a polling process with `getUpd
 
 ## Prerequisites
 
-- A Neon project in AWS US East (Ohio) (`aws-us-east-2`). Functions are available only in this region during beta. See [Get started with Neon Functions](https://neon.com/docs/compute/functions/get-started).
-- The latest [Neon CLI](https://neon.com/docs/cli), installed and authenticated. Upgrade with `npm install -g neon@latest` if needed, then see [CLI auth](https://neon.com/docs/cli/auth).
-- Node.js 24 (`node -v`). Deployed functions run on `nodejs24`.
+- A Neon project in AWS US East (Ohio) (`aws-us-east-2`) or AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions. See [Get started with Neon Functions](https://neon.com/docs/compute/functions/get-started).
+- The latest [Neon CLI](https://neon.com/docs/cli), installed and authenticated. Upgrade with `npm install -g neon@latest`, then see [CLI auth](https://neon.com/docs/cli/auth).
+- Node.js 24 (`node -v`). Deployed functions run on `nodejs24`, so 24 locally is the closest match. Node.js 20+ works.
 - A Telegram account.
 
-The template uses npm. Its scripts load Telegram values from `.env`.
+The template uses npm. Its scripts load Telegram values from `.env.local`, the same convention as Next.js and `vercel env pull`.
 
 ## Create a Telegram bot
 
@@ -31487,14 +31503,12 @@ For more BotFather options, see [Creating a new bot](https://core.telegram.org/b
 
 ## Scaffold the project
 
-In an interactive terminal, `neon bootstrap` copies the Telegram example into a new directory, then prompts you to install dependencies and [link](https://neon.com/docs/cli/link) a Neon project. The template ID is `telegram-bot-http`:
+`neon bootstrap` copies the Telegram example into a new directory and prompts you to install dependencies and set up the project. Accept the prompts. Pass `--no-link` to skip linking for now; you'll [link](https://neon.com/docs/cli/link) in the next step, after creating `.env.local`, so Neon writes its variables straight into that file. The template ID is `telegram-bot-http`:
 
 ```bash
-neon bootstrap my-telegram-bot --template telegram-bot-http
+neon bootstrap my-telegram-bot --template telegram-bot-http --no-link
 cd my-telegram-bot
 ```
-
-Accept both prompts. If you skip either, run `npm install` and `neon link` before continuing.
 
 See [`neon bootstrap`](https://neon.com/docs/cli/bootstrap) for flags. Later commands in this guide assume you're in that directory.
 
@@ -31530,12 +31544,14 @@ This walkthrough deploys the function before connecting Telegram. Telegram requi
 
 ## Add Telegram secrets
 
-Don't overwrite an existing `.env`; doing so can remove `DATABASE_URL`. If `.env` doesn't exist, copy the template. Then pull the linked branch's Neon variables into the same file:
+Bootstrap scaffolds a `.env.example` but no `.env.local`. Copy the example first, then link so Neon merges the branch's variables into it:
 
 ```bash
-cp .env.example .env
-neon env pull --file .env
+cp .env.example .env.local
+neon link
 ```
+
+Linking merges `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEON_BRANCH`, and `NEON_FUNCTION_TELEGRAM_BASE_URL` (your function's public URL, ready before you deploy) into `.env.local`, leaving the Telegram keys untouched.
 
 Generate a webhook secret:
 
@@ -31543,22 +31559,26 @@ Generate a webhook secret:
 openssl rand -hex 32
 ```
 
-Add the BotFather token and generated secret to `.env`. Leave `TELEGRAM_WEBHOOK_URL` empty until you deploy:
+Uncomment and set `TELEGRAM_BOT_TOKEN` (the BotFather token) and `TELEGRAM_WEBHOOK_SECRET` (the value you just generated). Leave `TELEGRAM_WEBHOOK_URL` empty until you deploy:
 
-```env filename=".env"
-TELEGRAM_BOT_TOKEN=
-TELEGRAM_WEBHOOK_SECRET=
+```env filename=".env.local"
+# Required. Add real values before deploying; a missing key throws at deploy, an empty one uploads "".
+# TELEGRAM_BOT_TOKEN=
+# TELEGRAM_WEBHOOK_SECRET=
+
+# Local only, used by the set:webhook script. Set after you deploy.
 TELEGRAM_WEBHOOK_URL=
 
-# Written locally by `neon env pull`; injected into deployed functions by Neon.
+# Written into `.env.local` by `neon link`.
 NEON_BRANCH=
 DATABASE_URL=
 DATABASE_URL_UNPOOLED=
+NEON_FUNCTION_TELEGRAM_BASE_URL=
 ```
 
 The webhook secret can contain 1 to 256 characters from `A-Z`, `a-z`, `0-9`, `_` and `-`. The `openssl` command above produces a valid value.
 
-Don't edit `NEON_BRANCH`, `DATABASE_URL` or `DATABASE_URL_UNPOOLED`. Refresh them with `neon env pull --file .env`. See [Environment variables](https://neon.com/docs/compute/functions/environment-variables).
+Leave the pulled `NEON_*` and `DATABASE_URL*` values as written. See [Environment variables](https://neon.com/docs/compute/functions/environment-variables).
 
 Only the local webhook setup script reads `TELEGRAM_WEBHOOK_URL`. Neon doesn't pass it to the function.
 
@@ -31566,36 +31586,20 @@ Only the local webhook setup script reads `TELEGRAM_WEBHOOK_URL`. Neon doesn't p
 
 If `neon bootstrap` installed dependencies, you can deploy now. If you copied the source by hand, run `npm install` first.
 
-The `deploy` script runs `neon deploy --env .env`, which evaluates `neon.ts` with your Telegram secrets in `process.env`:
+The `deploy` script runs `neon deploy --env .env.local`, which evaluates `neon.ts` with your Telegram secrets in `process.env`:
 
 ```bash
 npm run deploy
 ```
 
-The CLI applies the `neon.ts` policy, bundles the function and waits for the deployment to finish. You'll see `Applied changes` and a **Function URLs** list. Copy the `telegram` URL.
-
-The URL looks like:
-
-```text
-https://br-cool-darkness-123456-telegram.compute.c-1.us-east-2.aws.neon.tech/
-```
-
-Your cell (`c-1`, `c-3`, …) will differ.
-
-If you need the URL later, run:
-
-```bash
-npm run endpoint
-```
-
-This runs `neon functions get telegram`. Copy **Invocation Url** from the output.
+The CLI applies the `neon.ts` policy, bundles the function and waits for the deployment to finish. You'll see `Applied changes` and a **Function URLs** list. If the deployment fails, check [function logs](https://neon.com/docs/compute/functions/logs) and [Deploy and manage functions](https://neon.com/docs/compute/functions/deploy).
 
 ## Set the webhook
 
-Telegram sends updates to `/api/webhook`. Remove the trailing slash from the function URL, append `/api/webhook` and add the full URL to `.env`:
+Telegram sends updates to `/api/webhook`. Your webhook URL is `NEON_FUNCTION_TELEGRAM_BASE_URL` (from `.env.local`) with `/api/webhook` appended. Set `TELEGRAM_WEBHOOK_URL` to it:
 
-```env filename=".env"
-TELEGRAM_WEBHOOK_URL=https://br-cool-darkness-123456-telegram.compute.c-1.us-east-2.aws.neon.tech/api/webhook
+```env filename=".env.local"
+TELEGRAM_WEBHOOK_URL=https://br-cool-darkness-123456-telegram.compute.us-east-2.aws.neon.tech/api/webhook
 ```
 
 Register that URL and your webhook secret with Telegram:
@@ -31617,11 +31621,11 @@ Open the webhook URL in a browser to check that the function is available. A GET
   "ok": true,
   "service": "telegram-webhook",
   "webhookPath": "/api/webhook",
-  "webhookUrl": "https://br-cool-darkness-123456-telegram.compute.c-1.us-east-2.aws.neon.tech/api/webhook"
+  "webhookUrl": "https://br-cool-darkness-123456-telegram.compute.us-east-2.aws.neon.tech/api/webhook"
 }
 ```
 
-`ok: true` confirms only that the function is reachable at that URL. It doesn't verify the webhook secret or confirm webhook registration. A `true` result from `npm run set:webhook` confirms registration. Sending `/ping` verifies end-to-end delivery.
+`ok: true` confirms only that the function is reachable at that URL. `webhookUrl` echoes the public URL you requested; registering it with Telegram is still a separate step (`npm run set:webhook`). This GET doesn't verify the webhook secret or confirm webhook registration. A `true` result from `npm run set:webhook` confirms registration. Sending `/ping` verifies end-to-end delivery.
 
 ## Register bot commands
 
@@ -31639,7 +31643,7 @@ Run this command again after you change the command list.
 
 Open the bot link that BotFather gave you. If Telegram shows a **Start** button, click it. Then send `/ping`. The bot replies with `Pong` and an estimated webhook latency.
 
-If Telegram replies with `Unknown command` after you click **Start**, send `/ping`. The template doesn't register a `/start` command.
+The template doesn't register a `/start` command, so tapping **Start** may return `Unknown command`. Send `/ping` instead.
 
 If the bot doesn't reply:
 
@@ -31826,7 +31830,7 @@ The template includes more than `/ping`:
 
 The template stores Telegram user IDs, display names and usage counts in the `profiles` and `command_usage` tables. Usage tracking is best-effort and doesn't block replies.
 
-After `neon env pull --file .env` writes `DATABASE_URL`, create the tables:
+`neon link` wrote `DATABASE_URL` into `.env.local`, so create the tables any time after that:
 
 ```bash
 npm run db:push
@@ -31885,7 +31889,7 @@ export default {
 };
 ```
 
-**Note:** `neon dev` returns `200 OK` instead of `101 Switching Protocols` for WebSocket upgrade requests during beta. Test WebSocket behavior against a deployed function (`neon deploy`).
+**Note:** With `neon` CLI 2.45.0 or later, you can test WebSocket behavior locally with `neon dev` or against a deployed function after running `neon deploy`. With an earlier CLI version, `neon dev` returns `200 OK` instead of `101 Switching Protocols` for WebSocket upgrade requests, so test against a deployed function or upgrade the CLI.
 
 ## Simple echo server
 
@@ -32135,6 +32139,8 @@ See [Runtime limits](https://neon.com/docs/compute/functions/reference/runtime-l
 
 --- [Document source](https://neon.com/docs/compute/functions/whatsapp-bot.md) ---
 
+> Summary: Host a WhatsApp bot on Neon Functions. Receive WhatsApp Cloud API webhooks, verify Meta's request signatures, reply through the Graph API, and store data in Postgres on the same branch.
+
 # How to host a WhatsApp bot on Neon Functions
 
 Receive WhatsApp messages and reply through the Graph API
@@ -32153,9 +32159,9 @@ This example uses Meta's hosted WhatsApp Cloud API. It doesn't automate a person
 
 ## Prerequisites
 
-- A Neon project in AWS US East (Ohio) (`aws-us-east-2`). Functions are available only in this region during beta. See [Get started with Neon Functions](https://neon.com/docs/compute/functions/get-started).
-- The latest [Neon CLI](https://neon.com/docs/cli), installed and authenticated. Upgrade with `npm install -g neon@latest`, then follow [CLI authentication](https://neon.com/docs/cli/auth).
-- Node.js 24 (`node -v`). Deployed functions run on `nodejs24`.
+- A Neon project in AWS US East (Ohio) (`aws-us-east-2`) or AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions. See [Get started with Neon Functions](https://neon.com/docs/compute/functions/get-started).
+- The latest [Neon CLI](https://neon.com/docs/cli), installed and authenticated. Upgrade with `npm install -g neon@latest`, then see [CLI auth](https://neon.com/docs/cli/auth).
+- Node.js 24 (`node -v`). Deployed functions run on `nodejs24`, so 24 locally is the closest match. Node.js 20+ works.
 - A Meta developer account.
 - A Meta app connected to a WhatsApp Business Account, with a Cloud API phone number and a test recipient. Meta's get started flow can create test resources for you.
 
@@ -32195,10 +32201,10 @@ Save the output locally. You'll use the same value for `WHATSAPP_VERIFY_TOKEN` a
 
 ## Scaffold the project
 
-`neon bootstrap` copies the WhatsApp HTTP example into a new directory, installs its dependencies and links a Neon project. The template ID is `whatsapp-bot-http`:
+`neon bootstrap` copies the WhatsApp HTTP example into a new directory and prompts you to install dependencies and set up the project. Accept the prompts. Pass `--no-link` to skip linking for now; you'll [link](https://neon.com/docs/cli/link) in the next step, after creating `.env.local`, so Neon writes its variables straight into that file. The template ID is `whatsapp-bot-http`:
 
 ```bash
-neon bootstrap my-whatsapp-bot --template whatsapp-bot-http
+neon bootstrap my-whatsapp-bot --template whatsapp-bot-http --no-link
 cd my-whatsapp-bot
 ```
 
@@ -32236,61 +32242,62 @@ Deploy the function before connecting Meta. Meta needs a public HTTPS callback U
 
 ## Add WhatsApp secrets
 
-The deploy script runs `neon deploy --env .env` to read `.env`. Don't replace a `.env` created by `neon bootstrap` because it can contain database variables for the linked project. Add the WhatsApp keys to the existing file. If the file doesn't exist, copy `.env.example` to `.env`.
+The deploy script runs `neon deploy --env .env.local`, the same convention as Next.js and `vercel env pull`. Bootstrap scaffolds a `.env.example` but no `.env.local`. Copy the example first, then link so Neon merges the branch's variables into it:
 
-```env filename=".env"
-WHATSAPP_ACCESS_TOKEN=
-WHATSAPP_PHONE_NUMBER_ID=
-WHATSAPP_VERIFY_TOKEN=
-WHATSAPP_APP_SECRET=
+```bash
+cp .env.example .env.local
+neon link
+```
 
-# Set automatically by Neon when running `neon deploy`.
+Linking merges `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEON_BRANCH`, and `NEON_FUNCTION_WHATSAPP_BASE_URL` (your function's public URL, ready before you deploy) into `.env.local`, leaving the WhatsApp keys untouched. Uncomment and add them:
+
+```env filename=".env.local"
+# Required. Add real values before deploying; a missing key throws at deploy, an empty one uploads "".
+# WHATSAPP_ACCESS_TOKEN=
+# WHATSAPP_PHONE_NUMBER_ID=
+# WHATSAPP_VERIFY_TOKEN=
+# WHATSAPP_APP_SECRET=
+
+# Written into `.env.local` by `neon link`.
 NEON_BRANCH=
 DATABASE_URL=
 DATABASE_URL_UNPOOLED=
+NEON_FUNCTION_WHATSAPP_BASE_URL=
 ```
 
 Set `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID` and `WHATSAPP_APP_SECRET` to the values from Meta. Set `WHATSAPP_VERIFY_TOKEN` to the random value you generated.
 
-Leave the Neon variables as written by `neon bootstrap`. Neon also injects them into the deployed function. See [Environment variables](https://neon.com/docs/compute/functions/environment-variables).
-
-## Apply the database schema
-
-The `/name` and `/profile` commands use the `profiles` and `command_usage` tables. Apply the included Drizzle schema to the linked Neon database:
-
-```bash
-npm run db:push
-```
-
-You can deploy and test `/ping` without these tables, but the database-backed commands will return an error until you apply the schema.
+Leave the pulled `NEON_*` and `DATABASE_URL*` values as written. Neon also injects them into the deployed function. See [Environment variables](https://neon.com/docs/compute/functions/environment-variables).
 
 ## Deploy the function
 
-Deploy the function with the WhatsApp secrets from `.env`:
+Deploy the function with the WhatsApp secrets from `.env.local`:
 
 ```bash
 npm run deploy
 ```
 
-The script runs `neon deploy --env .env`. The CLI evaluates `neon.ts`, bundles the handler and waits for the deployment to finish. If the deployment fails, check [function logs](https://neon.com/docs/compute/functions/logs) and [Deploy and manage functions](https://neon.com/docs/compute/functions/deploy).
+The script runs `neon deploy --env .env.local`. The CLI evaluates `neon.ts`, bundles the handler and waits for the deployment to finish. If the deployment fails, check [function logs](https://neon.com/docs/compute/functions/logs) and [Deploy and manage functions](https://neon.com/docs/compute/functions/deploy).
 
-Copy the `whatsapp` invocation URL from the deployment output. Remove its trailing slash, then append `/api/webhook`. The complete callback URL looks like:
+Your callback URL is `NEON_FUNCTION_WHATSAPP_BASE_URL` (from `.env.local`) with `/api/webhook` appended:
 
 ```text
-https://br-cool-darkness-123456-whatsapp.compute.c-1.us-east-2.aws.neon.tech/api/webhook
+https://br-cool-darkness-123456-whatsapp.compute.us-east-2.aws.neon.tech/api/webhook
 ```
 
-Your branch name, endpoint ID and cell will differ.
+Your URL will differ. Use the exact `NEON_FUNCTION_WHATSAPP_BASE_URL` value from `.env.local`, with `/api/webhook` appended; the host is specific to your branch.
 
-To get the invocation URL again, run:
+Deployed environment variables are a snapshot of `.env.local` at deployment time. Run `npm run deploy` again after changing any WhatsApp value.
+
+## Apply the database schema
+
+The `/name` and `/profile` commands use the `profiles` and `command_usage` tables. `neon link` wrote `DATABASE_URL` into `.env.local`, so apply the included Drizzle schema to the linked Neon database:
 
 ```bash
-npm run endpoint
+npm run db:push
 ```
 
-This script runs `neon functions get whatsapp`. Append `/api/webhook` to the returned invocation URL.
-
-Deployed environment variables are a snapshot of `.env` at deployment time. Run `npm run deploy` again after changing any WhatsApp value.
+You can test `/ping` without these tables, but the database-backed commands return an error until you apply the schema.
 
 ## Configure the webhook
 
@@ -32309,7 +32316,7 @@ If verification fails:
 
 - Confirm that the callback URL ends in `/api/webhook`.
 - Confirm that Meta's verify token exactly matches `WHATSAPP_VERIFY_TOKEN`.
-- Redeploy after editing `.env`.
+- Redeploy after editing `.env.local`.
 - Check [function logs](https://neon.com/docs/compute/functions/logs).
 
 Opening the callback URL directly in a browser returns `403 invalid verify token`. That's expected because a normal browser request doesn't contain Meta's verification query parameters.
@@ -32326,7 +32333,7 @@ If the bot doesn't reply:
 - Confirm that you sent the message to the phone number associated with `WHATSAPP_PHONE_NUMBER_ID`.
 - Check whether a temporary `WHATSAPP_ACCESS_TOKEN` expired.
 - Confirm that `WHATSAPP_APP_SECRET` matches the Meta app. A mismatch causes POST signature verification to return `401`.
-- Redeploy after changing `.env`, then check [function logs](https://neon.com/docs/compute/functions/logs).
+- Redeploy after changing `.env.local`, then check [function logs](https://neon.com/docs/compute/functions/logs).
 
 ## How it works
 
@@ -34420,9 +34427,9 @@ const client = createClient(import.meta.env.VITE_NEON_DATABASE_URL, {
 const { data, error } = await client.from('public_items').select('*');
 ```
 
-**Warning: Not yet on npm**
+**Note: Version compatibility**
 
-The single-URL form shown above, `createClient(url)`, requires a version of `@neondatabase/neon-js` that has not been published to npm as of this writing. The latest published version, `0.6.2-beta`, only accepts the two-URL object form. If `npm install @neondatabase/neon-js` installs `0.6.2-beta` or earlier for you, use the [object-form alternative](https://neon.com/docs/reference/javascript-sdk#initializing) in the JavaScript SDK reference instead.
+The single-URL form, `createClient(url)`, requires `@neondatabase/neon-js` 0.7.0-beta or later. With 0.6.2-beta or earlier, use the [object form](https://neon.com/docs/reference/javascript-sdk#initializing).
 
 **With a third-party provider:** Check whether your provider supports issuing anonymous or guest tokens. If it does, obtain the token using your provider's method and include it in the `Authorization: Bearer <token>` header on each request.
 
@@ -36516,9 +36523,9 @@ const { data, error } = await client
 console.log(data);
 ```
 
-**Warning: Not yet on npm**
+**Note: Version compatibility**
 
-The single-URL form shown above, `createClient(url)`, requires a version of `@neondatabase/neon-js` that has not been published to npm as of this writing. The latest published version, `0.6.2-beta`, only accepts the two-URL object form. If `npm install @neondatabase/neon-js` installs `0.6.2-beta` or earlier for you, use the [object-form alternative](https://neon.com/docs/reference/javascript-sdk#initializing) in the JavaScript SDK reference instead.
+The single-URL form, `createClient(url)`, requires `@neondatabase/neon-js` 0.7.0-beta or later. With 0.6.2-beta or earlier, use the [object form](https://neon.com/docs/reference/javascript-sdk#initializing).
 
 **Note:** This client runs in the browser. Environment variable syntax depends on your framework: `import.meta.env.VITE_*` for Vite-based projects (Vite, SvelteKit, Astro), `process.env.NEXT_PUBLIC_*` for Next.js. The `VITE_NEON_DATABASE_URL` value is not your Postgres connection string; use the HTTPS Neon database URL shown in the example above. You can find the matching Data API URL on the **Data API** page in the Neon Console or with `neon data-api get`; to get the single database URL, remove the `.apirest` hostname label and trailing `/rest/v1` path. If you start from a Neon Auth URL instead, remove the `.neonauth` hostname label and trailing `/auth` path. The cell label (if present), region, and database path stay the same.
 
@@ -61110,7 +61117,7 @@ Get started with Neon Functions, Object Storage, and AI Gateway
 
 **Info: Beta**
 
-Functions, Object Storage, and the AI Gateway are in beta and not yet recommended for production workloads. They're available to every Neon account, no invite required, on new or existing projects in **AWS US East (Ohio) (`aws-us-east-2`)**.
+Functions, Object Storage, and the AI Gateway are in beta and not yet recommended for production workloads. They're available to every Neon account, no invite required, on new or existing projects in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions.
 
 Functions and Object Storage are free on any plan during the beta, subject to usage limits. The AI Gateway requires a paid plan (Launch or Scale), with inference free during the beta. Build something and help us refine them by sharing your feedback in Discord.
 
@@ -61126,9 +61133,9 @@ You declare all of it in one `neon.ts` file, and it branches together: fork a br
 
 ## Check your access
 
-To confirm access, go to [console.neon.tech](https://console.neon.tech), open a project in **US East (Ohio)**, and check the left navigation for **Object storage**, **Credentials**, **AI Gateway**, and **Functions**. For what AI Gateway costs once billing begins, see [AI Gateway pricing](https://neon.com/docs/ai-gateway/overview#pricing).
+To confirm access, go to [console.neon.tech](https://console.neon.tech), open a project in **US East (Ohio)** or **Europe (Frankfurt)**, and check the left navigation for **Object storage**, **Credentials**, **AI Gateway**, and **Functions**. For what AI Gateway costs once billing begins, see [AI Gateway pricing](https://neon.com/docs/ai-gateway/overview#pricing).
 
-Not seeing the services? The most common reason is region: the project isn't in `us-east-2`. Create a new project in **US East (Ohio)**, or switch to an existing one there. If AI Gateway is the only thing missing, check your plan, it requires Launch or Scale. If a service is still missing after that, post in [#neon-platform-beta](https://discord.com/channels/1176467419317940276/1525919714541437058) on Discord.
+Not seeing the services? The most common reason is region: the project isn't in a supported region. Create a new project in **US East (Ohio)** or **Europe (Frankfurt)**, or switch to an existing one there. If AI Gateway is the only thing missing, check your plan, it requires Launch or Scale. If a service is still missing after that, post in [#neon-platform-beta](https://discord.com/channels/1176467419317940276/1525919714541437058) on Discord.
 
 Using the CLI? Keep it current, the beta CLI updates frequently. Run `npm i -g neon@latest` before each session and before reporting a bug.
 
@@ -61173,13 +61180,13 @@ Tell us what you build. We'd love to feature it.
 
 --- [Document source](https://neon.com/docs/get-started/backend-overview.md) ---
 
-> Summary: A tour of the Neon backend, using one example app, a notes app you can chat with, to show how the pieces fit. A single neon.ts declares Postgres, Object Storage, Functions, the AI Gateway, and Auth; each is a toggle (Postgres is on by default) plus neon deploy, which injects standard environment variables. Branch your project and the database, buckets, and functions fork copy-on-write together. Each section covers what a capability is, when to use it, and the Neon-specific part you write, and links to that capability's own quickstart for the full setup.
+> Summary: A tour of the Neon backend, using one example app, a notes app you can chat with, to show how the pieces fit. A single neon.ts declares Postgres, Object Storage, Functions, the AI Gateway, Auth, and the Data API; each is a toggle (Postgres is on by default) plus neon deploy, which injects standard environment variables. Branch your project and the whole backend follows it through service-specific lifecycle mechanics. Each section covers what a capability is, when to use it, and the Neon-specific part you write, and links to that capability's own quickstart for the full setup.
 
 # How a Neon backend fits together
 
-Postgres, Object Storage, Functions, the AI Gateway, and Auth, declared in one neon.ts and branched together
+Postgres, Object Storage, Functions, the AI Gateway, Auth, and the Data API, declared in one neon.ts and branched together
 
-On Neon, a single [`neon.ts`](https://neon.com/docs/reference/neon-ts) file declares your whole backend: a **Postgres database**, S3-compatible **Object Storage**, long-running **Functions**, an **AI Gateway** for calling LLMs through one credential, and managed **Auth**. Each capability is a toggle, or on by default for Postgres, plus [`neon deploy`](https://neon.com/docs/cli/deploy), which provisions it and injects standard environment variables into your app. Branch your project and the whole backend forks with your data.
+On Neon, a single [`neon.ts`](https://neon.com/docs/reference/neon-ts) file declares your whole backend: a **Postgres database**, S3-compatible **Object Storage**, long-running **Functions**, an **AI Gateway** for calling LLMs through one credential, managed **Auth**, and the **Data API**. Each capability is a toggle, or on by default for Postgres, plus [`neon deploy`](https://neon.com/docs/cli/deploy), which provisions it and injects standard environment variables into your app. Branch your project and the whole backend follows it through service-specific lifecycle mechanics.
 
 **Note: This is an orientation page**
 
@@ -61189,7 +61196,7 @@ Hand this to your AI assistant to set up Neon: skills, project, and all capabili
 
 ## What you'll build
 
-The running example is a **notes app you can chat with**. Signed-in users write notes, attach files to them, and ask an AI questions about their own notes. That one app touches all five capabilities:
+The running example is a **notes app you can chat with**. Signed-in users write notes, attach files to them, and ask an AI questions about their own notes. That one app uses five of Neon's six backend capabilities:
 
 ```
 Browser  ──request + auth token──▶  Function (chat)
@@ -61203,9 +61210,11 @@ Function  ──streams the answer──▶  Browser
 
 So when you see a `notes` table, an `attachments` bucket, or a `chat` function below, they're all parts of this same app. Postgres is the system of record for notes; Storage holds the files that are too big for a row; the Function is the long-running piece that handles a chat request; the AI Gateway is the single credential for the model call; and Auth decides whose notes a request may read.
 
+The sixth capability is the [Data API](https://neon.com/docs/data-api/overview), which exposes Postgres through a PostgREST-compatible HTTPS endpoint. This example doesn't enable it because the `chat` Function queries Postgres directly.
+
 **Info: Region and access requirements**
 
-Object Storage, Functions, and the AI Gateway are in beta and available only in **AWS US East (Ohio) (`aws-us-east-2`)**, on new or existing projects in that region, so use a project there to try them. Postgres and Managed Better Auth work in any region. The three new beta services are free to use during beta, subject to usage limits. The AI Gateway is only available on paid plans; the other two are on any plan.
+Object Storage, Functions, and the AI Gateway are in beta and currently available in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`), on new or existing projects in those regions, so use a project in one of them to try them. Support is expanding toward all regions. Postgres and Managed Better Auth work in any region. The three new beta services are free to use during beta, subject to usage limits. The AI Gateway is only available on paid plans; the other two are on any plan.
 
 ## The shape of a Neon backend
 
@@ -61218,7 +61227,7 @@ npm i -g neon
 neon auth
 ```
 
-Then create the project. Create it in `aws-us-east-2` so the beta services are available:
+Then create the project. Create it in `aws-us-east-2` or `aws-eu-central-1` so the beta services are available:
 
 ```bash
 neon link --project-name notes-app --region-id aws-us-east-2
@@ -61263,11 +61272,11 @@ This creates `neon.ts` and installs the `@neon/config` and `@neon/env` packages.
 
 ## How it works
 
-Every capability follows the same three steps: **enable it in `neon.ts`, [`neon deploy`](https://neon.com/docs/cli/deploy), then read the injected environment variables.** The same steps apply to all five.
+For capabilities declared in `neon.ts`, the setup follows the same three steps: **enable the service, run [`neon deploy`](https://neon.com/docs/cli/deploy), then read the injected environment variables.**
 
 - **`neon.ts` is your backend as code.** One file declares Auth and any beta services; Postgres is on by default.
 - **`neon deploy` reconciles that file** against your branch, provisions each service, and writes its credentials to your env file.
-- **Branching forks the whole backend together.** A new branch gets its own database, bucket, and function, copy-on-write from the parent. See [Branch your whole backend](https://neon.com/docs/get-started/backend-overview#branch-your-whole-backend).
+- **Branching forks the whole backend together through service-specific mechanics.** Postgres and Object Storage create copy-on-write state. Each branch runs its own Functions at their own URLs and gets its own Auth environment, Data API endpoint, and AI Gateway endpoint. AI Gateway credentials work on the branch where they're issued and its descendants. See [Branch your whole backend](https://neon.com/docs/get-started/backend-overview#branch-your-whole-backend).
 
 | Capability              | Enable in `neon.ts`  | Injected env vars                                                                 | You use it with                                   |
 | ----------------------- | -------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------- |
@@ -61276,10 +61285,11 @@ Every capability follows the same three steps: **enable it in `neon.ts`, [`neon 
 | **Functions**           | `functions: { ... }` | `DATABASE_URL` and more, inside the function                                      | Hono (any web framework)                          |
 | **AI Gateway**          | `aiGateway: true`    | `NEON_AI_GATEWAY_BASE_URL`, `NEON_AI_GATEWAY_TOKEN`                               | `@neon/ai-sdk-provider`                           |
 | **Managed Better Auth** | `auth: true`         | `NEON_AUTH_BASE_URL`, `NEON_AUTH_JWKS_URL`                                        | `@neondatabase/auth`                              |
+| **Data API**            | `dataApi: true`      | `NEON_DATA_API_URL`                                                               | `@neondatabase/neon-js`                           |
 
 **Note: Reading the snippets**
 
-The `neon.ts` fragments below show only the key being added. `auth` goes at the top level of `defineConfig({ ... })`; the beta features marked `// inside preview` all go inside a single `preview` block. The [complete file](https://neon.com/docs/get-started/backend-overview#where-to-build-it) shows them assembled. Credentials are written to `.env` if you have one, otherwise `.env.local`; this page writes `.env` for whichever is yours.
+The `neon.ts` fragments below show only the key being added. `auth` and `dataApi` go at the top level of `defineConfig({ ... })`; the beta features marked `// inside preview` all go inside a single `preview` block. The [complete file](https://neon.com/docs/get-started/backend-overview#where-to-build-it) shows the five services this example uses assembled. Credentials are written to `.env` if you have one, otherwise `.env.local`; this page writes `.env` for whichever is yours.
 
 ## Postgres: the notes
 
@@ -61423,14 +61433,16 @@ const userId = String(payload.sub);
 
 ## Branch your whole backend
 
-A branch forks the whole backend, its own database, buckets, and functions, copy-on-write from the parent. To try a change to the notes app safely, switch to a new branch with [`neon checkout`](https://neon.com/docs/cli/checkout), which offers to create the branch if it doesn't exist:
+A branch forks the whole backend through service-specific mechanics. Postgres and Object Storage branch their state copy-on-write. Each branch runs its own Functions at their own URLs and gets its own Managed Better Auth environment, Data API endpoint, and AI Gateway endpoint. AI Gateway credentials work on the branch where they're issued and its descendants.
+
+To try a change to the notes app safely, switch to a new branch with [`neon checkout`](https://neon.com/docs/cli/checkout), which offers to create the branch if it doesn't exist:
 
 ```bash
 neon checkout my-feature      # switch to my-feature (offers to create it if new)
 neon deploy                   # provisions that branch's services
 ```
 
-`neon deploy` writes the new branch's credentials into `.env`, so the same code now runs against isolated infrastructure, a different database, an isolated `attachments` bucket, its own `chat` URL. A note you write on the branch never appears on `main`.
+`neon deploy` writes the new branch's credentials into `.env`, so the same code now runs against branch-specific infrastructure: a different database, an isolated `attachments` bucket, and its own `chat` URL. A note you write on the branch never appears on `main`.
 
 The `branch` function in `neon.ts` sets per-branch policy, for example auto-expiring non-default branches:
 
@@ -61446,7 +61458,7 @@ branch: (branch) => {
 
 ## Where to build it
 
-Here is the complete `neon.ts` for the notes app, every capability the sections above added, in one file:
+Here is the complete `neon.ts` for the notes app, with the five capabilities used by this example in one file. The Data API remains disabled because the Function queries Postgres directly.
 
 ```typescript filename="neon.ts"
 import { defineConfig } from "@neon/config/v1";
@@ -62051,15 +62063,15 @@ You'll need [Node.js 20.19+](https://nodejs.org/) and the [Neon CLI](https://neo
 npm i -g neon
 ```
 
-**Important: Create your project in AWS US East (Ohio)**
+**Important: Create your project in a supported region**
 
-Object Storage, Functions, and the AI Gateway are in beta and available only in **AWS US East (Ohio) (`aws-us-east-2`)**, on new or existing projects in that region, so use a project there to follow this guide. Postgres works in any region. The three beta services are free to use during beta, subject to usage limits. The AI Gateway requires a paid plan; Object Storage and Functions work on any plan.
+Object Storage, Functions, and the AI Gateway are in beta and currently available in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`), on new or existing projects in those regions, so use a project in one of them to follow this guide. Support is expanding toward all regions. Postgres works in any region. The three beta services are free to use during beta, subject to usage limits. The AI Gateway requires a paid plan; Object Storage and Functions work on any plan.
 
 ## Create a Neon project
 
 If you don't have a Neon account, sign up at [console.neon.tech](https://console.neon.tech/signup).
 
-Create your project in **AWS US East (Ohio)**. Any path below works; the rest of this guide uses the Neon CLI, which you'll also use in step 3 to link the project and pull its credentials automatically.
+Create your project in **AWS US East (Ohio)** or **AWS Europe (Frankfurt)**. Any path below works; the rest of this guide uses the Neon CLI, which you'll also use in step 3 to link the project and pull its credentials automatically.
 
 **Neon CLI**
 
@@ -63970,12 +63982,12 @@ For detailed quota examples and consumption limits, see [Configure consumption l
 
 For free-tier users, create projects in your Free organization (sponsored by Neon) with resource quotas matching (or within) Neon's Free plan limits using the [Create project](https://neon.com/docs/reference/api/projects/create-project) API:
 
-| Resource          | Free Tier Quota    | Description                             |
-| ----------------- | ------------------ | --------------------------------------- |
-| **Compute**       | 0.25 / 2 CU        | Autoscales from 0.25 to 2 compute units |
-| **Active time**   | `360000` seconds   | 100 hours of compute activity per month |
-| **Storage**       | `536870912` bytes  | 512 MB total storage limit              |
-| **Data transfer** | `5368709120` bytes | 5 GB data transfer per month            |
+| Resource          | Free Tier Quota    | Description                              |
+| ----------------- | ------------------ | ---------------------------------------- |
+| **Compute**       | 0.25 / 2 CU        | Autoscales from 0.25 to 2 compute units  |
+| **Active time**   | `360000` seconds   | 100 hours of compute activity per month  |
+| **Storage**       | `536870912` bytes  | 512 MB total storage limit               |
+| **Data transfer** | `5368709120` bytes | 5 GB data transfer per project per month |
 
 Example API request:
 
@@ -112255,7 +112267,7 @@ Extra branches beyond your plan's allowance are billed at $1.50/branch-month, pr
 
 ## Public data transfer
 
-Public network transfer (egress) is the data sent from your databases over the public internet. Free plans include 5 GB/month. On paid plans, the first 500 GB per project per month is included, then $0.10/GB. You see no data transfer cost until a project exceeds that allowance, so the charge might show up unexpectedly if you're not monitoring data transfer. For a deeper look at what causes high network transfer and how to monitor it, see [Network transfer](https://neon.com/docs/introduction/network-transfer).
+Public network transfer (egress) is the data sent from your databases over the public internet. Free plans include 5 GB per project per month. On paid plans, the first 500 GB per project per month is included, then $0.10/GB. You see no data transfer cost until a project exceeds that allowance, so the charge might show up unexpectedly if you're not monitoring data transfer. For a deeper look at what causes high network transfer and how to monitor it, see [Network transfer](https://neon.com/docs/introduction/network-transfer).
 
 **Optimization strategies:**
 
@@ -113216,7 +113228,7 @@ Neon measures data sent from your databases through the [Neon proxy](https://neo
 There are two types of network transfer:
 
 - **Public network transfer**: Data sent over the public internet. [Logical replication](https://neon.com/docs/guides/logical-replication-neon) to any destination counts as public network transfer.
-  - **Free plan**: 5 GB/month included. Exceeding this suspends your compute until the next billing cycle or you upgrade.
+  - **Free plan**: 5 GB per project per month included. Exceeding this suspends your compute until the next billing cycle or you upgrade.
   - **Launch / Scale plans**: 500 GB per project per month included, then $0.10/GB.
 - **Private network transfer**: Traffic routed over AWS PrivateLink. Available on the Scale plan only. Billed at $0.01/GB, bi-directional. Unlike public network transfer, which only counts outbound data, private network transfer counts traffic in both directions: data sent from your database to clients and data sent from clients to your database.
 
@@ -113513,7 +113525,7 @@ For AI agent platforms that provision thousands of databases, Neon offers an **A
 | [Autoscaling](https://neon.com/docs/introduction/plans#autoscaling)                           | Up to 2 CU (8 GB RAM)                                                               | Up to 16 CU (64 GB RAM)                                                             | Up to 16 CU autoscaling, or fixed sizes up to 56 CU (224 GB RAM)                                                  |
 | [Scale to zero](https://neon.com/docs/introduction/plans#scale-to-zero)                       | After 5 min                                                                         | After 5 min, can be disabled                                                        | Configurable (1 minute to always on)                                                                              |
 | [Storage](https://neon.com/docs/introduction/plans#storage)                                   | 0.5 GB/project                                                                      | $0.35/GB-month                                                                      | $0.35/GB-month                                                                                                    |
-| [Public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer)   | 5 GB included                                                                       | 500 GB per project included, then $0.10/GB                                          | 500 GB per project included, then $0.10/GB                                                                        |
+| [Public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer)   | 5 GB per project included                                                           | 500 GB per project included, then $0.10/GB                                          | 500 GB per project included, then $0.10/GB                                                                        |
 | [Monitoring](https://neon.com/docs/introduction/plans#monitoring)                             | 1 day                                                                               | 3 days                                                                              | 14 days                                                                                                           |
 | [Metrics/logs export](https://neon.com/docs/introduction/plans#metricslogs-export)            | —                                                                                   | —                                                                                   | ✅                                                                                                                 |
 | [Spending notifications](https://neon.com/docs/introduction/plans#spending-notifications)     | —                                                                                   | ✅                                                                                   | ✅                                                                                                                 |
@@ -113549,7 +113561,7 @@ On the **Free** plan, there is no monthly cost. You get usage allowances for pro
 
 ### Who it's for
 
-- **Free**: Prototypes, side projects, and small teams. Includes 100 projects, 100 CU-hours/project, 0.5 GB storage per project, and 5 GB of egress. Upgrade if you need more resources or features.
+- **Free**: Prototypes, side projects, and small teams. Includes 100 projects, 100 CU-hours/project, 0.5 GB storage per project, and 5 GB of egress per project. Upgrade if you need more resources or features.
 - **Launch**: Startups and growing teams needing more resources, features, and flexibility. Pay only for what you use.
 - **Scale**: Production-grade workloads and large teams. Higher limits, advanced features, full support, compliance, additional security, and SLAs. Pay only for what you use.
 
@@ -113705,11 +113717,11 @@ Public network transfer (egress) is the total volume of data sent from your data
 
 Allowances per plan:
 
-- **Free**: 5 GB/month
+- **Free**: 5 GB per project per month
 - **Launch**: 500 GB per project per month, then $0.10/GB
 - **Scale**: 500 GB per project per month, then $0.10/GB
 
-> On the **Free** plan, the 5 GB allowance is a single account-wide pool shared across all products, including Postgres, [Object Storage](https://neon.com/docs/introduction/plans#object-storage), and [Functions](https://neon.com/docs/introduction/plans#functions). On paid plans, the 500 GB allowance is per project and also shared across products.
+> On all plans, the network transfer allowance is per project and shared across all products in that project, including Postgres, [Object Storage](https://neon.com/docs/introduction/plans#object-storage), and [Functions](https://neon.com/docs/introduction/plans#functions).
 
 ### Monitoring
 
@@ -113801,7 +113813,7 @@ There's no charge for Object Storage during the beta, but [usage limits](https:/
 - **Storage**: $0.023/GB-month. Only stored volume is metered; there's no per-operation charge.
 - **Egress**: Data transferred out counts toward your [public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer) allowance, which is shared across all products, and is billed at the same rate once you exceed it.
 
-On the **Free** plan, you get 5 GB of Object Storage, measured across your whole account rather than per project.
+On the **Free** plan, you get 5 GB of Object Storage per project.
 
 See [Neon Object Storage](https://neon.com/docs/storage/overview) for more information.
 
@@ -114052,7 +114064,7 @@ Only available on Scale: $0.01/GB, bidirectional, between Neon and private netwo
 
 ### What are the limits and quotas for the Free plan?
 
-The Free plan costs $0/month and includes 100 projects, 10 branches per project, 100 CU-hours of compute per project per month, autoscaling up to 2 CU (≈8 GB RAM), 0.5 GB of storage per project, and 5 GB of public network transfer per month. It also includes a 6-hour instant restore history (capped at 1 GB-month of changes), 1 manual snapshot, up to 60,000 Managed Better Auth MAU, 1 day of monitoring history, and community support. Scale to zero is always enabled (computes suspend after 5 minutes of inactivity) and can't be disabled. Compute (CU-hours) and network transfer reset each monthly billing period; projects, branches, and storage are continuous limits. For the full row-by-row breakdown, see the [Plan overview](https://neon.com/docs/introduction/plans#plan-overview) table.
+The Free plan costs $0/month and includes 100 projects, 10 branches per project, 100 CU-hours of compute per project per month, autoscaling up to 2 CU (≈8 GB RAM), 0.5 GB of storage per project, and 5 GB of public network transfer per project per month. It also includes a 6-hour instant restore history (capped at 1 GB-month of changes), 1 manual snapshot, up to 60,000 Managed Better Auth MAU, 1 day of monitoring history, and community support. Scale to zero is always enabled (computes suspend after 5 minutes of inactivity) and can't be disabled. Compute (CU-hours) and network transfer reset each monthly billing period; projects, branches, and storage are continuous limits. For the full row-by-row breakdown, see the [Plan overview](https://neon.com/docs/introduction/plans#plan-overview) table.
 
 ### What happens if I exceed my Free plan limits?
 
@@ -114189,11 +114201,11 @@ To get started with read replicas, refer to our guides:
 
 --- [Document source](https://neon.com/docs/introduction/regions.md) ---
 
-> Summary: Neon projects deploy to multiple AWS and Azure regions. The region is fixed at project creation and cannot be changed afterward. Use this page to choose a region close to your application server, or to find NAT gateway IP addresses for outbound connection allowlists. To move data to a different region, create a new project there and migrate.
+> Summary: Neon projects deploy to AWS regions. The region is fixed at project creation and cannot be changed afterward. Use this page to choose a region close to your application server, or to find NAT gateway IP addresses for outbound connection allowlists. To move data to a different region, create a new project there and migrate.
 
 # Regions
 
-Neon offers project deployment in multiple AWS and Azure regions. To minimize latency between your Neon database and application, we recommend choosing the region closest to your application server.
+Neon offers project deployment in multiple AWS regions. To minimize latency between your Neon database and application, we recommend choosing the region closest to your application server.
 
 Each Neon **project** exists in exactly one region. Your database runs in that region. **You cannot change the region** for an existing project. If you need your **data** in a different region, you **create a new Neon project** in that region and **migrate your database** there. You are not moving the project; region is fixed when the project is created.
 
@@ -114363,7 +114375,7 @@ We're accelerating work on improving and scaling the core database on Neon as we
 - **Debug Postgres from the CLI with `neon inspect db`**: Run read-only Postgres diagnostics (table sizes, bloat, unused indexes, long-running queries, locks, and more) straight from the Neon CLI, safe to hand to an agent. [Learn more](https://neon.com/docs/cli/inspect).
 - **Snapshots in the Neon CLI**: The new `neon snapshots` command group manages the full snapshot lifecycle (list, create, restore, and schedule) from your terminal. [Learn more](https://neon.com/docs/cli/snapshots).
 - **Query Functions and Storage logs from the Neon MCP server**: New read-only `query_logs`, `list_log_fields`, and `list_log_field_values` tools let your AI assistant investigate Functions and Object Storage failures without leaving your editor. [Learn more](https://neon.com/docs/ai/neon-mcp-server).
-- **Neon backend services in beta**: Object Storage, Functions, and AI Gateway have graduated from private preview to beta and are available to everyone in AWS US East (Ohio). Declare your whole backend in one `neon.ts` file and it branches with your data. [Read the announcement](https://neon.com/blog/neon-backend-is-beta).
+- **Neon backend services in beta**: Object Storage, Functions, and AI Gateway have graduated from private preview to beta and are available in AWS US East (Ohio) and AWS Europe (Frankfurt). Support is expanding toward all regions. Declare your whole backend in one `neon.ts` file and it branches with your data. [Read the announcement](https://neon.com/blog/neon-backend-is-beta).
 - **New TypeScript SDK for the Neon API**: `@neon/sdk` is a fetch-based, zero-dependency client that covers the full Neon Platform API, including the new backend services, and replaces `@neondatabase/api-client` as the recommended client. [Learn more](https://neon.com/docs/reference/typescript-sdk).
 - **Passkey support**: Sign in to Neon with a passkey using device biometrics or a security key. Passkeys satisfy organization-level 2FA requirements. [Learn more](https://neon.com/docs/manage/accounts#passkeys).
 - **Git-style diffs in the Neon CLI**: The new `neon diff` command shows schema changes between your current branch and any other branch, and the config commands now report their changes as a git diff. [Learn more](https://neon.com/docs/cli).
@@ -118970,7 +118982,7 @@ For both types of updates, we strive to minimize disruption to database operatio
 
 --- [Document source](https://neon.com/docs/manage/operations.md) ---
 
-> Summary: Neon Control Plane system operations are discrete, trackable actions that the control plane records for every user-initiated or system-initiated change to a project. Use this page to view operation history via the Console, CLI, or API; poll operation status before issuing the next API call to prevent race conditions; and recover from 423 Locked responses using exponential backoff. Terminal statuses are finished, skipped, and cancelled; failed is non-terminal and can be retried.
+> Summary: Neon Control Plane system operations are discrete, trackable actions that the control plane records for every user-initiated or system-initiated change to a project. Use this page to view operation history via the Console, CLI, or API; poll operation status before issuing the next API call to prevent race conditions; and recover from 423 Locked responses using exponential backoff. Terminal statuses are finished and skipped for successful completion, and failed, error, and cancelled for unsuccessful completion.
 
 # System operations
 
@@ -119295,7 +119307,7 @@ For attribute definitions, find the [Get operation details](https://neon.com/doc
 
 </details>
 
-Possible operation `status` values include: `scheduling`, `running`, `finished`, `failed`, `cancelling`, `cancelled`, and `skipped`. Only `finished`, `skipped`, and `cancelled` are **terminal statuses**, meaning the operation will not proceed further from these states. Note that `failed` is **not** terminal, as an operation in a `failed` state can still be retried.
+Possible operation `status` values include: `scheduling`, `running`, `finished`, `failed`, `error`, `cancelling`, `cancelled`, and `skipped`. The successful terminal statuses are `finished` and `skipped`; the unsuccessful terminal statuses are `failed`, `error`, and `cancelled`. The remaining statuses are nonterminal. A failed operation can include retry history in `failures_count` and `retry_at`.
 
 ## Handle concurrent operation errors
 
@@ -120695,7 +120707,7 @@ The **Settings** page includes these sub-pages:
 - **RLS**: Configure Neon Row-Level Security (RLS) to apply row-level security policies to your Neon project.
 - **Logical replication**: Enable logical replication to replicate data from your Neon project to external data services and platforms.
 - **Transfer**: Transfer your project from the current organization to another organization you belong to. Transferring a project out of an organization requires the **Admin** organization role.
-- **Delete**: Use with care! This action deletes your entire project and all its objects, and is irreversible.
+- **Delete**: Use with care. This action deletes your entire project and all its objects. You can recover it within seven days; after that, deletion is permanent.
 
 ### General project settings
 
@@ -121007,7 +121019,7 @@ After enabling logical replication, the next steps involve creating publications
 
 ### Delete a project
 
-Deleting a project is a permanent action, which also deletes any computes, branches, databases, and roles that belong to the project.
+Deleting a project also deletes any computes, branches, databases, and roles that belong to the project. You can recover the project within seven days. After the recovery period ends, deletion is permanent.
 
 Deleting a project requires **Admin** access on that project, which every organization Admin has. A member granted Admin on a single project can delete that project. See [Per-project permissions](https://neon.com/docs/manage/user-permissions#per-project-permissions).
 
@@ -121509,7 +121521,7 @@ For attribute definitions, find the [Delete project](https://neon.com/docs/refer
 
 ## Recover a deleted project
 
-If you accidentally delete a project, you can recover it within 7 days. This **deletion recovery period** allows you to restore deleted projects with all their data and configuration intact.
+If you accidentally delete a project, you can recover it within 7 days. This **deletion recovery period** restores the resources and settings listed below. Some integrations and Data API configuration require setup again after recovery.
 
 **Note:** The deletion recovery period is different from the [history window](https://neon.com/docs/introduction/history-window) used for **instant restore** on branch data. The history window enables point-in-time recovery (PITR) for branch data, while the deletion recovery period allows you to recover (undelete) an entire deleted project.
 
@@ -125186,6 +125198,8 @@ Interface-specific indexes:
 - [List credentials on the branch](https://neon.com/docs/reference/api/credentials/list-credentials.md) `GET /projects/{project_id}/branches/{branch_id}/credentials`
 - [Issue a scoped credential on the branch](https://neon.com/docs/reference/api/credentials/create-credential.md) `POST /projects/{project_id}/branches/{branch_id}/credentials`
 - [Revoke a credential](https://neon.com/docs/reference/api/credentials/revoke-credential.md) `DELETE /projects/{project_id}/branches/{branch_id}/credentials/{token_id}`
+- [Reveal a credential's secrets](https://neon.com/docs/reference/api/credentials/reveal-credential.md) `POST /projects/{project_id}/branches/{branch_id}/credentials/{token_id}/reveal`
+- [Rotate a credential's secrets](https://neon.com/docs/reference/api/credentials/rotate-credential.md) `POST /projects/{project_id}/branches/{branch_id}/credentials/{token_id}/rotate`
 
 ## Functions
 
@@ -125781,7 +125795,7 @@ If you are a Neon [Scale plan](https://neon.com/docs/introduction/plans) user an
 | `shared_buffers`                      | 128MB         | In Neon, up to 75% of your compute's RAM is used for data caching. The value differs by compute size. See [below](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size). |
 | `superuser_reserved_connections`      | 7             |                                                                                                                                                                                                                  |
 | `synchronous_standby_names`           | 'walproposer' |                                                                                                                                                                                                                  |
-| `wal_level`                           | replica       | Support for `wal_level=logical` is coming soon. See [logical replication](https://neon.com/docs/introduction/logical-replication).                                                                               |
+| `wal_level`                           | replica       | Defaults to `replica`. When you [enable logical replication](https://neon.com/docs/guides/logical-replication-neon#enable-logical-replication), Neon changes it to `logical`.                                    |
 | `wal_log_hints`                       | off           |                                                                                                                                                                                                                  |
 | `wal_sender_timeout`                  | 10000         |                                                                                                                                                                                                                  |
 
@@ -126029,7 +126043,7 @@ Programmatic API for running a neon.ts policy from your own scripts and CI.
 
 If you just want to run `neon.ts` from the command line, use the [`neon config` / `neon deploy` commands](https://neon.com/docs/cli/config) instead. Reach for this package only when you need to call the same logic from your own Node.js code.
 
-**Note:** `@neon/config-runtime` is filesystem- and env-agnostic: it never reads a `.neon` context file or `NEON_*` environment variables (except the `NEON_API_KEY` / `NEON_API_HOST` fallbacks documented under [Authentication](https://neon.com/docs/reference/config-runtime#authentication)). You resolve `projectId` and `branchId` yourself and pass them in explicitly. This is different from the `neon` CLI, which resolves both from `.neon` / `NEON_*` for you.
+**Note:** `@neon/config-runtime` doesn't read a `.neon` context file, `NEON_*` environment variables, or CLI credential files. Resolve `projectId` and `branchId` yourself, then pass either an API key or a custom `api` adapter. This is different from the `neon` CLI, which resolves project context and credentials for you.
 
 ## Install
 
@@ -126061,7 +126075,11 @@ Passing a branch name where an id is expected fails with a `PLATFORM_BRANCH_NOT_
 import config from "../neon";
 import { apply, inspect, plan } from "@neon/config-runtime/v1";
 
-const target = { projectId: "solitary-fog-12345678", branchId: "br-cool-forest-12345678" };
+const target = {
+  projectId: "solitary-fog-12345678",
+  branchId: "br-cool-forest-12345678",
+  apiKey: process.env.NEON_API_KEY!,
+};
 
 const live = await inspect(target); // read the branch's current live state
 const diff = await plan(config, target); // dry-run: what would apply change?
@@ -126072,15 +126090,11 @@ const result = await apply(config, target); // apply the policy for real
 
 ## Authentication
 
-None of the functions on this page take a Neon session or browser login. They authenticate with a Neon API key, resolved in this order:
+None of the functions on this page take a Neon session or browser login. [Create a Neon API key in the Console](https://console.neon.tech/app/settings/api-keys), then pass it in the `apiKey` option, or inject your own `NeonApi` adapter with `api`. The package doesn't read `NEON_API_KEY` or the credentials written by `neon auth`. If you omit both `apiKey` and `api`, the operation throws a `PlatformError` with code `PLATFORM_MISSING_API_KEY`.
 
-1. The `apiKey` option, if you pass one.
-2. The `NEON_API_KEY` environment variable.
-3. `~/.config/neonctl/credentials.json`, written after running `neon auth` (or `npx neonctl auth`): the same file the CLI itself uses.
+For `inspect`, `plan`, `apply`, `pullConfig`, and `pushConfig`, the optional `apiHost` selects a non-production API host. If you omit it, the package uses Neon's production API. The package doesn't read `NEON_API_HOST`. `CreateBranchOptions` has no `apiHost` field, so you can't override the host per call to `createBranch`.
 
-If none of these resolve, every function throws a `PlatformError` with code `PLATFORM_MISSING_API_KEY` and a message pointing you to [console.neon.tech/app/settings/api-keys](https://console.neon.tech/app/settings/api-keys) to generate a key. `apiHost` follows the same pattern for `inspect`, `plan`, `apply`, `pullConfig`, and `pushConfig`: pass it explicitly, or let it fall back to `NEON_API_HOST` and then Neon's production API. `createBranch` is the exception: `CreateBranchOptions` has no `apiHost` field, so you can't override the host per call there. It still honors `NEON_API_HOST` from the environment if you set it.
-
-For CI, don't rely on the local CLI credentials fallback. A script that works on a developer machine because `neon auth` wrote `~/.config/neonctl/credentials.json` will fail in a clean CI runner. Pass `apiKey` explicitly or set `NEON_API_KEY` in the job environment.
+In CI, read the secret from your CI environment and pass its value as `apiKey`, as shown in [A custom CI step](https://neon.com/docs/reference/config-runtime#a-custom-ci-step).
 
 Pass `api` instead to inject your own `NeonApi` adapter (used internally for tests; most callers don't need this).
 
@@ -126096,13 +126110,13 @@ function inspect(options: ConfigOperationOptions): Promise<PulledBranchConfig>;
 
 Reads a branch's live Neon state and reverse-engineers it into a `neon.ts`-shaped `Config`, plus raw project/branch metadata. Read-only, and never mutates anything.
 
-| `ConfigOperationOptions` field | Type       | Description                                                                          |
-| ------------------------------ | ---------- | ------------------------------------------------------------------------------------ |
-| `projectId`                    | `string`   | Required.                                                                            |
-| `branchId`                     | `string`   | Required. Must already exist on the project; `inspect` never creates one.            |
-| `apiKey`                       | `string?`  | See [Authentication](https://neon.com/docs/reference/config-runtime#authentication). |
-| `apiHost`                      | `string?`  | See [Authentication](https://neon.com/docs/reference/config-runtime#authentication). |
-| `api`                          | `NeonApi?` | Inject a custom adapter (mainly for tests).                                          |
+| `ConfigOperationOptions` field | Type       | Description                                                               |
+| ------------------------------ | ---------- | ------------------------------------------------------------------------- |
+| `projectId`                    | `string`   | Required.                                                                 |
+| `branchId`                     | `string`   | Required. Must already exist on the project; `inspect` never creates one. |
+| `apiKey`                       | `string?`  | Required unless you pass `api`.                                           |
+| `apiHost`                      | `string?`  | Optional non-production API host. Defaults to Neon's production API.      |
+| `api`                          | `NeonApi?` | Inject a custom adapter (mainly for tests).                               |
 
 Returns a `PulledBranchConfig`:
 
@@ -126165,7 +126179,7 @@ Creates a branch **from** a `neon.ts` policy and brings it up with its declared 
 | --------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------- |
 | `projectId`                 | `string`           | Required.                                                                                                  |
 | `branchName`                | `string`           | Required. Must not already exist on the project.                                                           |
-| `apiKey`                    | `string?`          | See [Authentication](https://neon.com/docs/reference/config-runtime#authentication).                       |
+| `apiKey`                    | `string?`          | Required unless you pass `api`.                                                                            |
 | `api`                       | `NeonApi?`         | Inject a custom adapter.                                                                                   |
 | `bundleFunction`            | `FunctionBundler?` | Custom bundler. See [Function bundling](https://neon.com/docs/reference/config-runtime#function-bundling). |
 
@@ -126250,18 +126264,19 @@ Putting the pieces together: a script that plans and applies a policy against a 
 ```ts filename="scripts/deploy-branch.ts"
 import { loadConfigFromFile, plan, apply } from "@neon/config-runtime/v1";
 
-// Resolve these yourself: from CI variables you set, `neon branches list --output json`,
-// or the Neon API. This package never reads `.neon` or `NEON_*` (besides NEON_API_KEY / NEON_API_HOST).
+// Resolve these yourself from CI variables, `neon branches list --output json`,
+// or the Neon API. This package never reads `.neon` or `NEON_*`.
 const projectId = process.env.NEON_PROJECT_ID!;
 const branchId = process.env.NEON_BRANCH_ID!;
+const apiKey = process.env.NEON_API_KEY!;
 const shouldApply = process.env.NEON_APPLY === "true";
 
 const { config } = await loadConfigFromFile();
 
-// NEON_API_KEY in the environment is picked up automatically, so there's no need to pass apiKey.
 const target = {
   projectId,
   branchId,
+  apiKey,
   updateExisting: true,
   allowProtectedBranch: true,
 };
@@ -126296,7 +126311,7 @@ The subclasses relevant to programmatic use:
 | `PushConflictError`                                   | `PLATFORM_PUSH_CONFLICT`      | `apply`, `pushConfig` | Local policy conflicts with remote state and you didn't pass `updateExisting`. Carries a `conflicts: ConflictReport[]` array.                                                                                                |
 | `PushAbortedError`                                    | `PLATFORM_PUSH_ABORTED`       | `pushConfig`          | Your `confirm` callback returned `false`. Carries `branchName` and `reasons`.                                                                                                                                                |
 | `ConfigLoadError`                                     | `PLATFORM_CONFIG_LOAD_FAILED` | `loadConfigFromFile`  | No config file found, or it failed to evaluate.                                                                                                                                                                              |
-| `PlatformError` with code `PLATFORM_MISSING_API_KEY`  | `PLATFORM_MISSING_API_KEY`    | any operation         | No `apiKey` could be resolved. See [Authentication](https://neon.com/docs/reference/config-runtime#authentication).                                                                                                          |
+| `PlatformError` with code `PLATFORM_MISSING_API_KEY`  | `PLATFORM_MISSING_API_KEY`    | any operation         | You passed neither `apiKey` nor an `api` adapter. See [Authentication](https://neon.com/docs/reference/config-runtime#authentication).                                                                                       |
 | `PlatformError` with code `PLATFORM_BRANCH_NOT_FOUND` | `PLATFORM_BRANCH_NOT_FOUND`   | any operation         | `branchId` doesn't exist on the project (see [Resolving project and branch ids](https://neon.com/docs/reference/config-runtime#resolving-project-and-branch-ids)), or a policy's `parent` names a branch that doesn't exist. |
 
 A `ConflictReport` (on `PushConflictError.conflicts` and `PushResult.conflicts`) has `kind`, `identifier`, `field`, `current`, `desired`, and a human-readable `reason`.
@@ -126568,7 +126583,7 @@ A method of storing inactive data that converts plaintext data into a coded form
 
 ## Data transfer
 
-A usage metric that measures the total volume of data transferred out of Neon (egress) during a billing period. Egress also includes data transferred from Neon via Postgres logical replication to any destination, including Neon itself. Free plan projects are limited to 5 GB per month.
+A usage metric that measures the total volume of data transferred out of Neon (egress) during a billing period. Egress also includes data transferred from Neon via Postgres logical replication to any destination, including Neon itself. Each Free plan project is limited to 5 GB per month.
 
 ## Database
 
@@ -127124,9 +127139,9 @@ const client = createClient(import.meta.env.VITE_NEON_DATABASE_URL, {
 });
 ```
 
-**Warning: Not yet on npm**
+**Note: Version compatibility**
 
-The single-URL form shown above, `createClient(url)`, requires a version of `@neondatabase/neon-js` that has not been published to npm as of this writing. The latest published version, `0.6.2-beta`, only accepts the two-URL object form below. If `npm install @neondatabase/neon-js` installs `0.6.2-beta` or earlier for you, use the object form instead.
+The single-URL form, `createClient(url)`, requires `@neondatabase/neon-js` 0.7.0-beta or later. With 0.6.2-beta or earlier, use the object form below.
 
 The object form remains available for custom endpoint layouts or local development setups where the Auth and Data API URLs cannot be derived from the same Neon database URL:
 
@@ -128544,7 +128559,7 @@ env.postgres.databaseUrl;
 
 **Info: Beta**
 
-Functions, Storage, and AI Gateway are in beta and available only in AWS US East (Ohio) (`aws-us-east-2`), so create your project there to use them.
+Functions, Storage, and AI Gateway are in beta and currently available in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`). Create your project in one of these regions to use them. Support is expanding toward all regions.
 
 Preview services are declared under the `preview` block. All three are optional and independent:
 
@@ -128688,6 +128703,18 @@ Programmatically manage Neon projects, branches, databases, and other platform r
 
 Neon supports the [neon-api - Python client for the Neon API](https://pypi.org/project/neon-api/), a wrapper for the [Neon API](https://neon.com/docs/reference/api). This SDK simplifies integration of Python applications with the Neon platform, providing methods to programmatically manage API keys, Neon projects, branches, databases, endpoints, roles, and operations.
 
+**Warning: Compatibility limits in version 0.3.0**
+
+The published Python SDK does not yet support all Neon API routes. Use the [Neon REST API](https://neon.com/docs/reference/api) or [Neon TypeScript SDK](https://neon.com/docs/reference/typescript-sdk) for the operations below.
+
+| Python SDK method            | SDK request                                  | Current API contract                     |
+| ---------------------------- | -------------------------------------------- | ---------------------------------------- |
+| `branch_set_as_primary`      | `POST .../set_as_primary`                    | `POST .../set_as_default`                |
+| `project_permissions_revoke` | `DELETE .../permissions` with a request body | `DELETE .../permissions/{permission_id}` |
+| `role_password_reveal`       | `POST .../reveal_password`                   | `GET .../reveal_password`                |
+
+The current API contract doesn't document compatibility aliases for the outdated requests.
+
 **Tip: AI assistant support**
 
 Neon's [Agent Skills](https://neon.com/docs/ai/agent-skills) give AI coding assistants context about the Neon Python SDK for managing resources programmatically and other Neon features. Install them for more accurate code suggestions.
@@ -128714,6 +128741,8 @@ neon = NeonAPI(api_key='your_api_key')
 Documentation for the `neon-api - Python SDK`, including a [Quickstart](https://neon-api-python.readthedocs.io/en/latest/#quickstart), can be found on **Read the Docs**. See [neon-api: Python client for the Neon API](https://neon-api-python.readthedocs.io/en/latest/#neon-api-python-client-for-the-neon-api).
 
 ## Methods of the `NeonAPI` Class
+
+The following list describes the methods exposed by the published Python package. The compatibility warning above identifies methods whose requests don't match the current API contract.
 
 - `me()`: Returns the current user.
 - `current_user_organizations()`: Returns the current user's organizations.
@@ -129873,7 +129902,6 @@ Branch a project's data and schema; optionally attach compute in one workflow. R
 | `delete(projectId, branchId)`                  | `void`                                                                                            |                                                                                                                        |
 | `getDefault(projectId)`                        | `Branch`                                                                                          | Resolve the project's default branch by flag, not by name                                                              |
 | `setDefault(projectId, branchId)`              | `Branch`                                                                                          |                                                                                                                        |
-| `recover(projectId, branchId)`                 | `Branch`                                                                                          | Recover a soft-deleted branch within the 7-day window                                                                  |
 | `finalizeRestore(projectId, branchId, input?)` | `void`                                                                                            | Commit a restore previewed with `snapshots.restore({ finalize: false })`                                               |
 
 ```ts
@@ -131810,7 +131838,7 @@ Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon -s n
 
 To follow this guide, you need:
 
-- A Neon project in the AWS `us-east-2` region
+- A Neon project in AWS US East (Ohio) (`aws-us-east-2`) or AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions.
 - The Neon CLI installed and authenticated if you use the recommended `neon.ts` flow
 - A Neon API key in `NEON_API_KEY` if you use the manual API flow
 
@@ -131880,7 +131908,7 @@ export AWS_ENDPOINT_URL_S3=https://br-winter-pond-aptw82ef.storage.c-2.us-east-2
 export AWS_REGION=us-east-2
 ```
 
-A `404` response means object storage is not available for that branch. There is no separate manual enable API call: use the recommended `neon.ts` flow above, or make sure your project is in the AWS `us-east-2` region.
+A `404` response means object storage is not available for that branch. There is no separate manual enable API call: use the recommended `neon.ts` flow above, or make sure your project is in a supported region: AWS US East (Ohio) (`aws-us-east-2`) or AWS Europe (Frankfurt) (`aws-eu-central-1`).
 
 ## Create a credential
 
@@ -132149,11 +132177,11 @@ Expand a row to see its full context: `timestamp`, `severity`, `entity_type` (`s
 
 A bucket's log level comes from the HTTP status code of the request, not from anything the client sets:
 
-| Level   | HTTP status                           |
-| ------- | ------------------------------------- |
-| `INFO`  | Everything else (successful requests) |
-| `WARN`  | 4xx                                   |
-| `ERROR` | 5xx                                   |
+| Level   | HTTP status                                                |
+| ------- | ---------------------------------------------------------- |
+| `INFO`  | Everything else (successful requests)                      |
+| `WARN`  | 4xx, plus `501 Not Implemented` for unsupported operations |
+| `ERROR` | Other 5xx responses                                        |
 
 `DEBUG`, `NOTICE`, and `FATAL` also appear as filters in the log viewer but aren't currently emitted by Object Storage; they're part of the console's shared log-level set.
 
@@ -132658,7 +132686,7 @@ S3-compatible object storage that branches with your database
 
 Neon Object Storage is S3-compatible object storage built into the Neon backend for apps and agents. Every branch gets its own isolated storage namespace. Use any AWS S3-compatible SDK or tool. Point it at your branch endpoint and authenticate with your Neon credential. No separate storage account or cloud credentials required.
 
-> During the beta, object storage is available in the **AWS us-east-2** region only and is free to use, subject to usage limits. See [plans and pricing](https://neon.com/docs/introduction/plans#object-storage) for storage and egress rates.
+> During the beta, object storage is currently available in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`), and is free to use, subject to usage limits. Support is expanding toward all regions. See [plans and pricing](https://neon.com/docs/introduction/plans#object-storage) for storage and egress rates.
 
 - **Branches with your database.** Each branch has its own view of storage. Test file uploads and deletions in preview branches without touching production data.
 - **Standard S3 SDKs.** The AWS SDK for JavaScript, boto3, the AWS CLI, the [Files SDK](https://files-sdk.dev), and any other S3-compatible tool works out of the box.
@@ -132693,8 +132721,8 @@ neon bootstrap --template ai-sdk
 
 During the beta, the following usage limits apply:
 
-- **Region**: object storage is available in AWS us-east-2 only.
-- **Free storage**: the Free plan includes 5 GB, measured across your whole account rather than per project. See [plans and pricing](https://neon.com/docs/introduction/plans#object-storage) for storage and egress rates.
+- **Region**: object storage is available in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions.
+- **Free object storage**: the Free plan includes 5 GB of object storage per project. See [plans and pricing](https://neon.com/docs/introduction/plans#object-storage) for storage and egress rates.
 - **Object size**: objects can be up to 5 GiB, whether uploaded in a single request or with [multipart upload](https://neon.com/docs/storage/objects#multipart-upload). [Contact support](https://neon.com/docs/introduction/support) if you need to store larger objects.
 - **Rate limiting**: requests may be throttled during heavy use, returning a `503 SlowDown` response. Back off and retry. See [Connection and performance errors](https://neon.com/docs/storage/troubleshooting#connection-and-performance-errors).
 

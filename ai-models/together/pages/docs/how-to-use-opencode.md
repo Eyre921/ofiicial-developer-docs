@@ -6,7 +6,7 @@ path: docs/how-to-use-opencode
 
 Learn how to power OpenCode (a powerful terminal-based AI coding agent) with Together AI models.
 
-OpenCode is a powerful AI coding agent built specifically for the terminal, offering a native TUI experience with LSP support and multi-session capabilities. This guide shows you how to combine OpenCode with powerful open source models on Together AI like Kimi K2.7 Code and GLM 5.2 to supercharge your development workflow directly from your terminal.
+OpenCode is a powerful AI coding agent built specifically for the terminal, offering a native TUI experience with LSP support and multi-session capabilities. This guide shows you how to combine OpenCode with powerful open source models on Together AI like Kimi K3 and GLM 5.3 to supercharge your development workflow directly from your terminal.
 
 With OpenCode's agent, you can ask it to build features, fix bugs, explain codebases, and start new projects – all while maintaining full transparency in terms of cost and token usage. Here's how you can start using it with Together AI's models:
 
@@ -47,9 +47,9 @@ When you first run OpenCode, you'll need to configure it to use Together AI as y
 * **Add your API key**: Get your [Together AI API key](https://api.together.ai/settings/projects/~current/api-keys) and paste it into the opencode terminal
 * **Select a model**: Choose from powerful models like:
   * `moonshotai/Kimi-K3` - Top pick for coding agents.
-  * `zai-org/GLM-5.2` - Strong coding and agentic all-rounder.
+  * `zai-org/GLM-5.3` - Strong coding and agentic all-rounder.
   * `deepseek-ai/DeepSeek-V4-Pro-0813` - Advanced reasoning capabilities.
-  * `Qwen/Qwen3-Coder-Next-FP8` - Fast, cost-effective coding model.
+  * `deepseek-ai/DeepSeek-V4-Flash-0731` - Fast, cost-effective coding model.
 
 ## 4. Bonus: install the opencode vs-code extension
 
@@ -111,7 +111,7 @@ That looks good, but let's also add input validation and rate limiting
 ## Model recommendations
 
 * **Kimi K3** (`moonshotai/Kimi-K3`): Top pick for coding agents, with a 1M context window.
-* **GLM 5.2** (`zai-org/GLM-5.2`): Strong all-rounder for coding and agentic tasks.
+* **GLM 5.3** (`zai-org/GLM-5.3`): Strong all-rounder for coding and agentic tasks.
 * **DeepSeek V4 Pro 0813** (`deepseek-ai/DeepSeek-V4-Pro-0813`): Advanced reasoning for complex problems.
 
 See the [pricing page](https://www.together.ai/pricing) for current per-token rates.

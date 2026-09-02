@@ -120,7 +120,7 @@ These capabilities work without code changes beyond the API key and base URL. Ea
 
 ### Model identifiers
 
-Together model IDs are namespaced (`openai/gpt-oss-20b`, `meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8`, `black-forest-labs/FLUX.2-dev`). OpenAI model strings like `gpt-4o` or `text-embedding-3-large` return a 404. Browse the full list at [Available models](/docs/serverless/models).
+Together model IDs are namespaced (`openai/gpt-oss-20b`, `meta-llama/Llama-3.3-70B-Instruct-Turbo`, `black-forest-labs/FLUX.2-dev`). OpenAI model strings like `gpt-4o` or `text-embedding-3-large` return a 404. Browse the full list at [Available models](/docs/serverless/models).
 
 ### Endpoints not implemented
 

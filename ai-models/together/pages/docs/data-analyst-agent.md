@@ -53,10 +53,10 @@ E2B_API_KEY = os.getenv("E2B_API_KEY")
 
 # Choose from the codegen models:
 
-MODEL_NAME = "deepseek-ai/DeepSeek-V3.1"
+MODEL_NAME = "deepseek-ai/DeepSeek-V4-Pro-0813"
 # MODEL_NAME = "meta-llama/Llama-3.3-70B-Instruct-Turbo"
 # MODEL_NAME = "Qwen/Qwen3.5-9B"
-# MODEL_NAME = "Qwen/Qwen3-Coder-Next-FP8"
+# MODEL_NAME = "deepseek-ai/DeepSeek-V4-Flash-0731"
 # See the complete list of Together AI models here: https://api.together.ai/models.
 
 SYSTEM_PROMPT = """You're a Python data scientist. You are given tasks to complete and you run Python code to solve them.

@@ -6,7 +6,7 @@ path: docs/inference/function-calling/best-practices
 
 Design tools, write descriptions, and control tool selection so Together models call functions reliably.
 
-The quality of your tool definitions, system prompt, and selection controls determines how reliably a model calls functions. These practices apply to every function-calling model on Together AI. Examples use GLM-5.2 (`zai-org/GLM-5.2`), the recommended function-calling model, but the same patterns work across the [serverless](/docs/serverless/models) and [dedicated model inference](/docs/dedicated-endpoints/models) catalogs.
+The quality of your tool definitions, system prompt, and selection controls determines how reliably a model calls functions. These practices apply to every function-calling model on Together AI. Examples use GLM-5.3 (`zai-org/GLM-5.3`), the recommended function-calling model, but the same patterns work across the [serverless](/docs/serverless/models) and [dedicated model inference](/docs/dedicated-endpoints/models) catalogs.
 
 ## Write clear descriptions
 

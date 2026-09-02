@@ -6,19 +6,22 @@ path: docs/dashboard/templates/template-variables
 
 How to work with custom variables in Templates.
 
+## Template Variables
+
 Custom Template variables provide your team flexibility when sending emails. Define custom variables for your Template with optional fallback values which will be replaced with the actual values when sending the email.
+
+Each Template may contain up to 50 variables. You can define and then reference these variables in your Template to send emails with personalized content.
 
 ## Create custom variables
 
-Each Template may contain up to 50 variables.
-
-To add a custom variable, select **Variable** in the commands palette or type `{{` in the editor. Define the `name`, `type`, and `fallback_value` (optional).
+To add a custom variable to your Template, select **Variable** in the commands palette or type `{{` in the Dashboard editor. Define the `name`, `type`, and `fallback_value` (optional).
 
 <img alt="variable dropdown" />
 
 <p>
-  You can also define custom variables via the API. The payload can optionally
-  include variables to be used in the Template.
+  You can also define custom variables when you [create a Template via the
+  API](/docs/dashboard/templates/create-template#add-a-template-with-the-api). The
+  payload can optionally include variables to be used in the Template.
 </p>
 
 <CodeGroup>
@@ -250,7 +253,7 @@ Each variable is an object with the following properties:
 
 * `key`: The key of the variable, commonly uppercase (e.g., `PRODUCT_NAME`).
 * `type`: The type of the variable (`'string'` or `'number'`).
-* `fallback_value`: The fallback value of the variable. If no fallback value is provided, you must provide a value for the variable when sending an email using the template.
+* `fallback_value`: The fallback value of the variable. If no fallback value is provided, you must provide a value for the variable when sending an email using the Template.
 
 [See the API reference for more details](/docs/api-reference/templates/create-template).
 
@@ -260,9 +263,9 @@ When you define a variable, you can optionally define a fallback value. This val
 
 <video />
 
-In the editor, if you fail to provide a fallback value, a warning sign will show for the variable. To edit a variable's fallback value, click on the variable chip in your template and use the Inspector sidebar on the right to update the fallback value.
+In the editor, if you fail to provide a fallback value, a warning sign will show for the variable. To edit a variable's fallback value, click on the variable chip in your Template and use the Inspector sidebar on the right to update the fallback value.
 
-[As shown above](#create-custom-variables), you can also include fallback values when creating a Template via the API.
+You can also include fallback values when [creating a Template via the API](#create-template-with-variables).
 
 ## Send Test Emails
 
@@ -274,7 +277,7 @@ You can send test emails to your inbox to preview your Template before sending i
 
 When sending a transactional email, you can reference your Template and include your variables in the call. The Template variables will be replaced with the actual values.
 
-* `id`: id of the published template
+* `id`: id of the published Template
 * `variables`: array of variable objects (if applicable)
 
 Both the `/emails` and `/emails/batch` endpoints support Templates.
@@ -471,7 +474,17 @@ Both the `/emails` and `/emails/batch` endpoints support Templates.
 <Info>
   If a `template` is provided, you cannot send `html`, `text`, or `react` in the payload, otherwise the API will return a validation error.
 
-  When sending a template, the payload for `from`, `subject`, and `reply_to` take precedence over the template's defaults for these fields. If the template does not provide a default value for these fields, you must provide them in the payload.
+  When sending a Template, the payload for `from`, `subject`, and `reply_to` take precedence over the Template's defaults for these fields. If the Template does not provide a default value for these fields, you must provide them in the payload.
 </Info>
 
 Learn more about [sending emails](/docs/api-reference/emails/send-email) or sending [batch emails](/docs/api-reference/emails/send-batch-emails) with Templates via the API.
+
+## Validation errors
+
+When sending an email using a Template, the Template variables will be replaced with the actual values. If a variable is not provided, the fallback value will be used.
+
+If no fallback value is provided, the email will not be sent and a [validation error](/docs/api-reference/errors) will be returned.
+
+## API Reference
+
+For complete API documentation, see the [Templates API reference](/docs/api-reference/templates/create-template) and the [`template` parameter of the Sending API](/docs/api-reference/emails/send-email#param-template).

@@ -38,7 +38,7 @@ const together = createTogetherAI({
 
 async function main() {
   const { text } = await generateText({
-    model: together("moonshotai/Kimi-K2.5"),
+    model: together("moonshotai/Kimi-K3"),
     prompt: "Write a vegetarian lasagna recipe for 4 people.",
   });
 
@@ -120,7 +120,7 @@ const together = createTogetherAI({
 
 async function main() {
   const result = await streamText({
-    model: together("moonshotai/Kimi-K2.5"),
+    model: together("moonshotai/Kimi-K3"),
     prompt: "Invent a new holiday and describe its traditions.",
   });
 
@@ -217,7 +217,6 @@ Available Models:
 * `black-forest-labs/FLUX.1.1-pro`
 * `black-forest-labs/FLUX.1-kontext-pro`
 * `black-forest-labs/FLUX.1-kontext-max`
-* `black-forest-labs/FLUX.1-krea-dev`
 
 See the [Together AI models page](https://docs.together.ai/docs/serverless/models#image-models) for a full list of available image models and their capabilities.
 

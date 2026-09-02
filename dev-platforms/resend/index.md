@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 358 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 360 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -196,7 +196,9 @@
 - `docs/dashboard/settings/sso` — [Single Sign-On](pages/docs/dashboard/settings/sso.md) · [原文](https://resend.com/docs/dashboard/settings/sso)
 - `docs/dashboard/settings/team` — [Managing Teams](pages/docs/dashboard/settings/team.md) · [原文](https://resend.com/docs/dashboard/settings/team)
 - `docs/dashboard/settings/unsubscribe-page` — [Custom Unsubscribe Page](pages/docs/dashboard/settings/unsubscribe-page.md) · [原文](https://resend.com/docs/dashboard/settings/unsubscribe-page)
+- `docs/dashboard/templates/create-template` — [Create a Template](pages/docs/dashboard/templates/create-template.md) · [原文](https://resend.com/docs/dashboard/templates/create-template)
 - `docs/dashboard/templates/introduction` — [Using Templates](pages/docs/dashboard/templates/introduction.md) · [原文](https://resend.com/docs/dashboard/templates/introduction)
+- `docs/dashboard/templates/template-editor` — [Compose with the Template editor](pages/docs/dashboard/templates/template-editor.md) · [原文](https://resend.com/docs/dashboard/templates/template-editor)
 - `docs/dashboard/templates/template-variables` — [Working with Variables](pages/docs/dashboard/templates/template-variables.md) · [原文](https://resend.com/docs/dashboard/templates/template-variables)
 - `docs/dashboard/templates/version-history` — [Version History](pages/docs/dashboard/templates/version-history.md) · [原文](https://resend.com/docs/dashboard/templates/version-history)
 - `docs/dashboard/topics/introduction` — [Topics](pages/docs/dashboard/topics/introduction.md) · [原文](https://resend.com/docs/dashboard/topics/introduction)

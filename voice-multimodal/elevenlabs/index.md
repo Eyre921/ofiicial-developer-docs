@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1296 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1298 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -309,6 +309,7 @@
 - `docs/api-reference/triage-tickets/get` — [Get ticket](pages/docs/api-reference/triage-tickets/get.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/get.md)
 - `docs/api-reference/triage-tickets/list` — [List tickets](pages/docs/api-reference/triage-tickets/list.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/list.md)
 - `docs/api-reference/triage-tickets/list-assignable-users` — [List assignable users](pages/docs/api-reference/triage-tickets/list-assignable-users.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/list-assignable-users.md)
+- `docs/api-reference/triage-tickets/list-for-workspace` — [List workspace tickets](pages/docs/api-reference/triage-tickets/list-for-workspace.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/list-for-workspace.md)
 - `docs/api-reference/triage-tickets/update` — [Update ticket](pages/docs/api-reference/triage-tickets/update.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/update.md)
 - `docs/api-reference/user/get` — [Get user](pages/docs/api-reference/user/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/get.md)
 - `docs/api-reference/user/subscription/get` — [Get user subscription](pages/docs/api-reference/user/subscription/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/subscription/get.md)
@@ -537,6 +538,7 @@
 - `docs/eleven-agents/api-reference/triage-tickets/get` — [Get ticket](pages/docs/eleven-agents/api-reference/triage-tickets/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/get.md)
 - `docs/eleven-agents/api-reference/triage-tickets/list` — [List tickets](pages/docs/eleven-agents/api-reference/triage-tickets/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list.md)
 - `docs/eleven-agents/api-reference/triage-tickets/list-assignable-users` — [List assignable users](pages/docs/eleven-agents/api-reference/triage-tickets/list-assignable-users.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list-assignable-users.md)
+- `docs/eleven-agents/api-reference/triage-tickets/list-for-workspace` — [List workspace tickets](pages/docs/eleven-agents/api-reference/triage-tickets/list-for-workspace.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list-for-workspace.md)
 - `docs/eleven-agents/api-reference/triage-tickets/update` — [Update ticket](pages/docs/eleven-agents/api-reference/triage-tickets/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/update.md)
 - `docs/eleven-agents/api-reference/users/list` — [List users](pages/docs/eleven-agents/api-reference/users/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/users/list.md)
 - `docs/eleven-agents/api-reference/widget/create` — [Create widget avatar](pages/docs/eleven-agents/api-reference/widget/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/widget/create.md)

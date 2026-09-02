@@ -37,7 +37,7 @@ Reserved Throughput comes with SLAs and is only available on certain models. Pri
 | [Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)                                        | \$0.95 / \$0.19 / \$4.00  | \$1.425 / \$0.285 / \$6.00    |                     |
 | [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                                  | \$0.95 / \$0.16 / \$4.00  | \$1.50 / \$0.22 / \$6.00      |                     |
 | [DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)                          | \$1.32 / \$0.044 / \$3.96 | \$1.65 / \$0.055 / \$4.95     |                     |
-| [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)                      | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 |                     |
+| [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)                      | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 | ✓                   |
 | [DeepSeek V4 Flash Vision Exp](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-vision-exp)            | \$0.22 / \$0.007 / \$0.66 | \$0.275 / \$0.00875 / \$0.825 |                     |
 | [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash)                                          | \$0.15 / \$0.03 / \$0.50  | —                             |                     |
 | [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)                                                      | \$1.40 / \$0.26 / \$4.40  | \$1.75 / \$0.325 / \$5.50     | ✓                   |

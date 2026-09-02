@@ -60557,6 +60557,11 @@ Original: Yes, I would appreciate it if you could call me back. My phone number 
 Formatted: Yes, I would appreciate it if you could call me back. My phone number is (555)679-3466. Also, my cell phone number is (555)679-8244. Once again, if you could call me back, I'd appreciate it. My phone number is (555)679-3466. Thanks.
 ```
 
+## Billing
+
+If a transcript has nothing matching your configured patterns, the request still succeeds and you're still charged
+for the processing on our part.
+
 ## Output format
 
 Data from the Custom Formatting API will be returned in the `custom_formatted` object, which is contained in the `speech_understanding` object. The `formatted_text` key will included a formatted version of the transcript text.
@@ -60651,6 +60656,11 @@ When you include this configuration in your transcription request, the API will 
 
 ### Date formats
 
+To format dates, include every date pattern you want to match, separated by commas. The process is tuned to ignore partial matches to
+avoid hallucinating dates. For example, January 1st will not be formatted if you only request `yyyy-mm-dd`,
+because the year is unknown and the process will not guess it. In this case, we recommend setting the format to
+`yyyy-mm-dd,mm-dd`.
+
 | Pattern      | Example Output | Description                      |
 | ------------ | -------------- | -------------------------------- |
 | `mm/dd/yyyy` | 09/19/1991     | US format (month/day/year)       |
@@ -60658,6 +60668,10 @@ When you include this configuration in your transcription request, the API will 
 | `yyyy-mm-dd` | 1991-09-19     | ISO 8601 format                  |
 | `mm-dd-yyyy` | 09-19-1991     | US format with dashes            |
 | `dd.mm.yyyy` | 19.09.1991     | European format with dots        |
+| `mm/dd`      | 09/19          | US format (month/day)            |
+| `dd/mm`      | 19/09          | European format (day/month)      |
+| `mm-dd`      | 09-19          | US format with dashes            |
+| `dd.mm`      | 19.09          | European format with dots        |
 
 ### Phone number formats
 

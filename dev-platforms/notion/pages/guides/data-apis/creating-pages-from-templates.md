@@ -154,6 +154,14 @@ Putting the above flow together, your webhook handler can implement logic as fol
     * If the page contents have been populated, you know the template has finished applying, and can proceed to any further steps your connection needs to take ✅,
     * Otherwise, stop processing and wait for a `page.content_updated` event signaling the completion of applying the template ⏳.
 
+<Info>
+  **Give the wait a timeout**
+
+  For connections covered by the [Free workspace block limit](/reference/workspace-block-limits), page creation and the background template job check the limit separately. If the background job is blocked, it stops and keeps the page, which may be blank or partially populated even after a successful request.
+
+  There is no template-failure webhook or public job-status endpoint. Set a timeout rather than waiting indefinitely, then use [Retrieve block children](/reference/get-block-children) to check the result. Avoid automatically reapplying the template: content already copied can be duplicated. Ask a workspace owner to check [block usage](https://www.notion.com/help/understanding-block-usage) before retrying.
+</Info>
+
 ## Frequently asked questions
 
 <AccordionGroup>

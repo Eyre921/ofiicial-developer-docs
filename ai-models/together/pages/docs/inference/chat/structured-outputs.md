@@ -313,6 +313,6 @@ If your generated JSON gets cut off, contains stray characters, or fails to pars
 
 ## Test schemas in the Together playground
 
-Test variations on your schema and prompts in the [Together model playground](https://api.together.ai/playground/chat/Qwen/Qwen3-VL-8B-Instruct):
+Test variations on your schema and prompts in the [Together model playground](https://api.together.ai/playground/chat/moonshotai/Kimi-K3):
 
 Open the **Response format** dropdown in the right sidebar, choose JSON, select **Add schema**, then paste in your schema.

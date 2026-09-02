@@ -155,9 +155,7 @@ Build an agent that iteratively improves responses.
           else f"{generator_prompt}\nTask: {task}"
       )
 
-      response = run_llm(
-          full_prompt, model="Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8"
-      )
+      response = run_llm(full_prompt, model="moonshotai/Kimi-K3")
 
       print("\n## Generation start")
       print(f"Output:\n{response}\n")
@@ -267,7 +265,7 @@ Build an agent that iteratively improves responses.
       ${context}
     `;
 
-    const response = await runLLM(fullPrompt, "Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8");
+    const response = await runLLM(fullPrompt, "moonshotai/Kimi-K3");
     console.log(dedent`
       ## Generation start
 

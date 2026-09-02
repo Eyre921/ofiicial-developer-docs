@@ -92,6 +92,7 @@ Events are split into the following categories:
 * **AI Meeting Notes availability updated**: That the AI meeting notes availability setting was updated.
 * **All managed users logged out**: That an admin has logged out every managed user account.
 * **All managed users’ passwords cleared**: That an admin has cleared all managed user accounts' passwords.
+* **Allowed model list updated**: That the list of AI models an agent is allowed to use was updated.
 * **Asana data fetched**: That a Notion admin fetched Asana data on behalf of a workspace user for Asana data importer triage/debugging.
 * **Audit Log exported**: That the audit log was exported.
 * **Auto-create accounts on sign-in toggled**: That a workspace owner has enabled automatically creating accounts on sign-in.

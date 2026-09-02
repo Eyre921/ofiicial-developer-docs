@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 239 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 240 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -244,6 +244,7 @@
 - `reference/webhooks/view-created` — [View created](pages/reference/webhooks/view-created.md) · [原文](https://developers.notion.com/reference/webhooks/view-created)
 - `reference/webhooks/view-deleted` — [View deleted](pages/reference/webhooks/view-deleted.md) · [原文](https://developers.notion.com/reference/webhooks/view-deleted)
 - `reference/webhooks/view-updated` — [View updated](pages/reference/webhooks/view-updated.md) · [原文](https://developers.notion.com/reference/webhooks/view-updated)
+- `reference/workspace-block-limits` — [Workspace block limits](pages/reference/workspace-block-limits.md) · [原文](https://developers.notion.com/reference/workspace-block-limits)
 
 ## workers
 

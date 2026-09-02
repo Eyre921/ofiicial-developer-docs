@@ -34,7 +34,7 @@ Use Together AI as a provider for [Hugging Face Inference](https://huggingface.c
   )
 
   completion = client.chat.completions.create(
-      model="deepseek-ai/DeepSeek-R1",
+      model="deepseek-ai/DeepSeek-V4-Pro-0813",
       messages=[{"role": "user", "content": "What is the capital of France?"}],
       max_tokens=500,
   )
@@ -48,7 +48,7 @@ Use Together AI as a provider for [Hugging Face Inference](https://huggingface.c
   const client = new HfInference("<your_api_key>");
 
   const chatCompletion = await client.chatCompletion({
-    model: "deepseek-ai/DeepSeek-R1",
+    model: "deepseek-ai/DeepSeek-V4-Pro-0813",
     messages: [{ role: "user", content: "What is the capital of France?" }],
     provider: "together",
     max_tokens: 500,
@@ -73,7 +73,7 @@ import { togetherai } from "@ai-sdk/togetherai";
 import { generateText } from "ai";
 
 const { text } = await generateText({
-  model: togetherai("moonshotai/Kimi-K2.5"),
+  model: togetherai("moonshotai/Kimi-K3"),
   prompt: "Write a vegetarian lasagna recipe for 4 people.",
 });
 

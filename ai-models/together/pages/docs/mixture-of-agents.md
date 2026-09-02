@@ -51,7 +51,7 @@ async_client = AsyncTogether()
 
 user_prompt = "What are some fun things to do in SF?"
 reference_models = [
-    "zai-org/GLM-5.2",
+    "zai-org/GLM-5.3",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
     "moonshotai/Kimi-K3",
     "MiniMaxAI/MiniMax-M3",
@@ -119,7 +119,7 @@ async_client = AsyncTogether()
 
 user_prompt = "What are 3 fun things to do in SF?"
 reference_models = [
-    "zai-org/GLM-5.2",
+    "zai-org/GLM-5.3",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
     "moonshotai/Kimi-K3",
     "MiniMaxAI/MiniMax-M3",

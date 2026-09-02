@@ -152,7 +152,7 @@
 - `docs/devops/terraform/resources/upstash_redis_database` — [upstash_redis_database](pages/docs/devops/terraform/resources/upstash_redis_database.md) · [原文](https://upstash.com/docs/devops/terraform/resources/upstash_redis_database)
 - `docs/devops/terraform/resources/upstash_team` — [upstash_team](pages/docs/devops/terraform/resources/upstash_team.md) · [原文](https://upstash.com/docs/devops/terraform/resources/upstash_team)
 - `docs/img/bg-color-codes` — [Bg color codes](pages/docs/img/bg-color-codes.md) · [原文](https://upstash.com/docs/img/bg-color-codes)
-- `docs/introduction` — [Get Started](pages/docs/introduction.md) · [原文](https://upstash.com/docs/introduction)
+- `docs/introduction` — [Overview](pages/docs/introduction.md) · [原文](https://upstash.com/docs/introduction)
 - `docs/qstash/api-reference/dlq/bulk-delete-dlq-messages` — [Bulk Delete DLQ messages](pages/docs/qstash/api-reference/dlq/bulk-delete-dlq-messages.md) · [原文](https://upstash.com/docs/qstash/api-reference/dlq/bulk-delete-dlq-messages)
 - `docs/qstash/api-reference/dlq/bulk-retry-dlq-messages` — [Bulk Retry DLQ messages](pages/docs/qstash/api-reference/dlq/bulk-retry-dlq-messages.md) · [原文](https://upstash.com/docs/qstash/api-reference/dlq/bulk-retry-dlq-messages)
 - `docs/qstash/api-reference/dlq/delete-a-dlq-message` — [Delete a DLQ message](pages/docs/qstash/api-reference/dlq/delete-a-dlq-message.md) · [原文](https://upstash.com/docs/qstash/api-reference/dlq/delete-a-dlq-message)

@@ -24,10 +24,17 @@ A `200` response from the outbound message endpoint means ElevenLabs accepted an
 * **Your WABA doesn't appear in the import flow** — confirm you are logged into a Facebook account with admin access to the business portfolio that owns the WABA, then retry the import.
 * **WABAs created under a Meta developer app** cannot be imported through the standard flow.
 
-To check whether another partner already controls your number, open [WhatsApp accounts in Meta Business settings](https://business.facebook.com/latest/settings/whatsapp_account), select the
-WhatsApp account that contains your number, and review its partners. A partner listed there with
-control over the number explains both a failed import and a missing WABA — remove the partner or
-use a different number.
+### Check whether another partner manages the number
+
+A number that appears ineligible, is missing from the import flow, or errors on import is often
+still registered with a previous provider. A partner with control over the number explains both a
+failed import and a missing WABA.
+
+1. Go to [business.facebook.com](https://business.facebook.com) and select the business portfolio.
+2. Open **Business Settings** > **WhatsApp accounts**.
+3. Check **Phone numbers** on each WhatsApp account until you find the one that contains your number.
+4. Open **Partners**.
+5. Disconnect the number from that partner (or remove the entire business portfolio), then retry the import a few minutes later.
 
 ## The agent doesn't respond to inbound messages
 

@@ -65,7 +65,7 @@ When you configure an invoice to use customer-level numbering, each invoice numb
 
 For example, if one of your customers is a business named Typographic, you might set the prefix to `TYPGRA`. The first invoice number for Typographic would be `TYPGRA-0001`, the second would be `TYPGRA-0002` and so on.
 
-Prefixes must be between 3 and 12 characters and can’t match any other customer prefix, including prefixes that are no longer in use.
+Prefixes must be between 1 and 12 uppercase letters or numbers and can’t match any other customer prefix, including prefixes that are no longer in use.
 
 You can set prefixes on the [Customers page](https://dashboard.stripe.com/customers) in the Dashboard or using the API. If you represent customers as customer-configured `Account` objects, use the [configuration.customer.billing.invoice.prefix](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-configuration-customer-billing-invoice-prefix) parameter. If you represent customers as `Customer` objects, use the [invoice_prefix](https://docs.stripe.com/api/customers/create.md#create_customer-invoice_prefix) parameter.
 
@@ -75,7 +75,7 @@ When you configure an invoice to use account-level numbering, each invoice numbe
 
 For example, if your business is named Rocket Rides, you might set the prefix to `RKTRIDE`. Your first invoice would be `RKTRIDE-0001`, a second invoice to a different customer would be `RKTRIDE-0002`, another invoice to the first customer would be `RKTRIDE-0003`, and so on.
 
-Stripe automatically assigns the account-wide prefix, but you can override it to make it clearer that these invoices come from you. If you want to modify the prefix for your account, you can change it in [Invoice settings](https://dashboard.stripe.com/settings/billing/invoice). This requires that your account’s default API version is at least [2020-03-02](https://docs.stripe.com/upgrades.md#2020-03-02). Prefixes have to be between 3 and 12 characters and they can’t match any customer prefix, including prefixes that are no longer in use.
+Stripe automatically assigns the account-wide prefix, but you can override it to make it clearer that these invoices come from you. If you want to modify the prefix for your account, you can change it in [Invoice settings](https://dashboard.stripe.com/settings/billing/invoice). This requires that your account’s default API version is at least [2020-03-02](https://docs.stripe.com/upgrades.md#2020-03-02). Prefixes must be between 1 and 12 uppercase letters or numbers and can’t match any customer prefix, including prefixes that are no longer in use.
 
 ### Connect account prefixes 
 

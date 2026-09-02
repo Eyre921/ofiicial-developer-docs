@@ -4,6 +4,30 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="September 2, 2026">
+  ### Page covers and icons in `notion-fetch` responses
+
+  The [`notion-fetch`](/guides/mcp/mcp-supported-tools) MCP tool now returns `cover` and `icon` metadata for pages and database items. Both use the same shapes as the REST API, so clients can inspect the current cover or icon before deciding whether to replace it.
+
+  ### Rich text in data source queries
+
+  The [`notion-query-data-sources`](/guides/mcp/mcp-supported-tools) MCP tool now supports `mode: "rows"` to keep rich text in data source results. This mode preserves mentions and link targets that SQL output can omit.
+</Update>
+
+<Update label="September 1, 2026">
+  ### Free workspace block limits now apply to the REST API
+
+  Starting today, the REST API enforces the [existing Free workspace block limit](https://www.notion.com/help/understanding-block-usage) for internal connections and OAuth connections restricted to selected workspaces. This is not a new workspace limit. See [Workspace block limits](/reference/workspace-block-limits) for the grace period, HTTP 403 response, and background template behavior.
+
+  ### Upgrade prompts for Custom Agent tools in Notion MCP
+
+  Notion MCP's [Custom Agent tools](/guides/mcp/mcp-supported-tools) — `notion-list-agents`, `notion-search-agents`, and the session tools — now return a prompt with a recovery link when the workspace doesn't have access to Notion AI and Custom Agents. They previously returned a generic permission error with no recovery link. `notion-fetch` with the id `self` also reports these tools as `upgrade_required` with an `upgrade_url`, or as `plan_required` with a `landing_page_url` and `landing_page_action` when Notion routes the user through a plan landing page. Clients can use this status to route around unavailable tools before calling.
+
+  Workspaces with a billing restriction, such as an unpaid invoice, are treated separately: the tools return a permission error that asks a workspace owner to manage billing, and `current_tool_access` reports them as `not_enabled` rather than `upgrade_required`.
+
+  A connection that lacks the "View threads and interact with agents" capability does not advertise these tools and must reconnect or re-authorize.
+</Update>
+
 <Update label="August 31, 2026">
   ### Capture ideas and draft content in Notion
 

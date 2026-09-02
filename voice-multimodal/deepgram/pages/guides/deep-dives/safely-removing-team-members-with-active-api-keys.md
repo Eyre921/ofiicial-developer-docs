@@ -39,7 +39,7 @@ A key's effective permissions are also limited by its creator's role. If a user 
 
 When you attempt to remove a team member in Console, you'll see a warning if they have active API keys.
 
-![Warning dialog when removing a team member with active API keys](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/2dce634f18b359ebbe04f297648f29617b9b27905e442af6ff9062e8d8746726/images/jane_doe.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T113208Z&X-Amz-Expires=604800&X-Amz-Signature=92ad8aa9c9667dd7b2610926a26d7ad42a2cdd32fb2fac8db6d94124c2580262&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Warning dialog when removing a team member with active API keys](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/2dce634f18b359ebbe04f297648f29617b9b27905e442af6ff9062e8d8746726/images/jane_doe.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T233125Z&X-Amz-Expires=604800&X-Amz-Signature=87025cde910ee53dcd536396f45e6cbb9eeb5e3d33b82b8d64f27b9567c95f66&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The warning shows:
 
@@ -71,7 +71,7 @@ For each active key that needs to be replaced:
 1. Go to **API Keys** in your project.
 2. Click **Create a New API Key**.
 3. Give it a clear, descriptive name (e.g., "Production - Main Application").
-   ![Create a New API Key dialog in Deepgram Console with fields for name, role, expiration, and tags](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/f663f53b06fa7bfbf208f5fb5feed0ff7ea9d5d2d8d1881b6c7e75dd42145bf4/images/Create_API_Key.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T113208Z&X-Amz-Expires=604800&X-Amz-Signature=7aba06d504a99bbb3110d8619c600c8921464cb4ee48a46e980d72e9e927427f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   ![Create a New API Key dialog in Deepgram Console with fields for name, role, expiration, and tags](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/f663f53b06fa7bfbf208f5fb5feed0ff7ea9d5d2d8d1881b6c7e75dd42145bf4/images/Create_API_Key.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T233125Z&X-Amz-Expires=604800&X-Amz-Signature=d3b141a8414db5196f2fc37d8f3e8e34d8ad9d403dd2630a59ca711a69cd9653&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 4. Match the role of the key you're replacing:
    * If the old key had no role (default), leave the new one as default.
    * If the old key had a role like Member, Admin, or Owner, select the same role.
@@ -105,7 +105,7 @@ Deploy these changes to all environments before proceeding.
 Before removing the user, confirm that traffic has moved to the new keys:
 
 1. Go to the **API Keys** page and expand the old key to copy its **Key ID**.
-   ![Expanded API key row showing the Key ID field available to copy](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/9ee8fed2db7874f1693e98dab3e2820e86bebcca5f2065dda8c0367627f585ed/images/API_Key_Identifier.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T113208Z&X-Amz-Expires=604800&X-Amz-Signature=cd6fabd69aa34b00160cfd5b0e9fc8aeac44a4a0b23341b7baa976202d809f07&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   ![Expanded API key row showing the Key ID field available to copy](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/9ee8fed2db7874f1693e98dab3e2820e86bebcca5f2065dda8c0367627f585ed/images/API_Key_Identifier.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T233125Z&X-Amz-Expires=604800&X-Amz-Signature=c86c277f1c9d35cfa65aea7d8e5fe67eb7f7419fe48456b622f0c62911770a43&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 2. Go to **Usage > Logs**.
 3. Paste the Key ID into the **API Key ID** filter.
 4. Set the date range to the **last 7 days**.

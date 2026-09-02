@@ -12,7 +12,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Start your journey](/en/get-started/start-your-journey)
 
-  Brand new to GitHub? Learn the basics here.
+  <p>Brand new to GitHub? Learn the basics here.</p>
 
 * [Learn to code with GitHub Copilot](/en/get-started/learning-to-code)
 
@@ -20,7 +20,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Set up Git](/en/get-started/git-basics/set-up-git)
 
-  At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.
+  <p>At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.</p>
 
 * [Hello World](/en/get-started/using-github/hello-world)
 
@@ -28,11 +28,11 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Getting started with your GitHub account](/en/get-started/onboarding/getting-started-with-your-github-account)
 
-  With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.
+  <p>With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.</p>
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 
-  An overview of GitHub's pricing plans.
+  <p>An overview of GitHub's pricing plans.</p>
 
 * [Quickstart for writing on GitHub](/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/quickstart-for-writing-on-github)
 

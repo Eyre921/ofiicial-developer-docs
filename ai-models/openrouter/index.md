@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 407 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 408 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -391,6 +391,7 @@
 - `docs/guides/overview/principles` — [Principles](pages/docs/guides/overview/principles.md) · [原文](https://openrouter.ai/docs/guides/overview/principles.md)
 - `docs/guides/overview/report-feedback` — [Report Feedback](pages/docs/guides/overview/report-feedback.md) · [原文](https://openrouter.ai/docs/guides/overview/report-feedback.md)
 - `docs/guides/overview/stripe-projects` — [Stripe Projects](pages/docs/guides/overview/stripe-projects.md) · [原文](https://openrouter.ai/docs/guides/overview/stripe-projects.md)
+- `docs/guides/overview/terraform` — [Terraform Provider](pages/docs/guides/overview/terraform.md) · [原文](https://openrouter.ai/docs/guides/overview/terraform.md)
 - `docs/guides/privacy/data-collection` — [Data Collection](pages/docs/guides/privacy/data-collection.md) · [原文](https://openrouter.ai/docs/guides/privacy/data-collection.md)
 - `docs/guides/privacy/provider-logging` — [Provider Logging](pages/docs/guides/privacy/provider-logging.md) · [原文](https://openrouter.ai/docs/guides/privacy/provider-logging.md)
 - `docs/guides/privacy/provider-logging` — [privacy settings](pages/docs/guides/privacy/provider-logging-2.md) · [原文](https://openrouter.ai/docs/guides/privacy/provider-logging.md)

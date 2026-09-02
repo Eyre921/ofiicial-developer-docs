@@ -52,6 +52,14 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Fetched pages include `path`, `page_last_edited_at`, and, when available, `verification.state` and `verification.expires_at`. These fields help distinguish pages with similar titles and identify sources that Notion marks as verified.
 
+    Fetched pages, including database items, include `cover` separately from database properties. It is `null` when there is no cover. Otherwise, it uses the REST API's [file object](/reference/file-object) shape: `type: "external"` with `external.url` for linked or Notion gallery images, or `type: "file"` with `file.url` and `file.expiry_time` for uploaded images.
+
+    MCP's signed cover URLs expire after five minutes; the REST API uses one hour. Re-fetching the page returns a fresh URL. An omitted `cover` means the metadata is unavailable or not applicable, not that the page has no cover.
+
+    Fetched pages, including database items, also include `icon`. It is `null` when there is no icon. Otherwise, it uses the REST API's [emoji and icon object](/reference/emoji-and-icon) shapes: `type: "emoji"` with `emoji`, `type: "custom_emoji"` with `custom_emoji.id`, `custom_emoji.name`, and `custom_emoji.url`, or `type: "icon"` with `icon.name` and `icon.color` for a [native Notion icon](/reference/emoji-and-icon#icon). Image icons use the [file object](/reference/file-object) shape: `type: "external"` with `external.url`, or `type: "file"` with `file.url` and `file.expiry_time` for an image uploaded to Notion.
+
+    Signed icon URLs expire after five minutes, the same as cover URLs, and re-fetching the page returns a fresh URL. An omitted `icon` means the metadata is unavailable or not applicable, not that the page has no icon. The `icon` field is read-only. To set or change an icon, pass the icon string that `notion-create-pages` and `notion-update-page` accept.
+
     Pass a `view://` URL from a database response to read a saved view's filters, sorts, and display settings. A database URL with a `?v=` parameter still returns the database. To read the rows shown by a view, use `notion-query-data-sources` with `mode: "view"`.
 
     Pass the special id `self` to retrieve the connected workspace and user identity instead of an entity. The response includes a `self` object with the workspace's ID and name, and the authenticated user's ID, name, type, and email — useful for labeling a connection after OAuth.
@@ -248,16 +256,29 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Query across data sources">
     `notion-query-data-sources`
 
-    Query Notion data sources with SQL, or run an existing view, with structured summaries, grouping, and filters. Returns organized results with counts and rollups for quick scanning.
+    Query Notion data sources with SQL, read rows from one data source, or run a saved view.
+
+    Pass `mode: "rows"` and `data_source_url` to read one data source. Rich-text properties use [Notion markdown](/guides/data-apis/enhanced-markdown) strings to preserve page and user mentions, link targets, formatting, inline dates, and equations.
+
+    Rows mode accepts optional `filter` and `sort` fields. A filter supports two levels of `and` or `or` groups. Sorts run in listed order. `limit` defaults to 50 and has a maximum of 100.
+
+    The response contains `results` and `has_more`. Each result uses property names as keys. Results include only rows and properties that the connected user can read. Rows mode does not return a cursor.
+
+    A query can resolve up to 1,000 distinct mention targets. A query over this limit returns an error instead of partial rich text.
+
+    <Warning>
+      SQL output can omit mention text, link targets, and formatting. Their absence in SQL output does not mean that a rich-text property is damaged. Read the property with rows mode or `notion-fetch` before changing it.
+    </Warning>
 
     <Note>
-      View mode is available on every plan without a tool-specific quota. SQL across one or more data sources is unlimited on Business and Enterprise plans with Notion AI. Other plans share a per-workspace usage limit for single-data-source SQL and receive an upgrade prompt after the allowance is exhausted.
+      View mode is available on every plan without a tool-specific quota. SQL across one or more data sources is unlimited on Business and Enterprise plans with Notion AI. Other plans share a per-workspace usage limit for single-data-source SQL and receive an upgrade prompt after the allowance is exhausted. Rows mode uses the same allowance as single-data-source SQL.
     </Note>
 
     **Example prompts:**
 
     * "What's due for me this week across all tasks and meeting note action items? Group by priority."
     * "Show all risks from Engineering and Product databases this month, grouped by owner."
+    * "Read the in-progress rows from the Specs data source. Keep mentions and links in Notes."
   </Accordion>
 
   <Accordion title="Query meeting notes">
@@ -295,9 +316,31 @@ An MCP client can call several tools in one task. For example, it can search for
     Search results include up to 20 matches. Each title is limited to 150
     characters, and each matching text span is limited to 300 characters.
 
+    `notion-search-sessions` returns no matches and a `warning` when the
+    workspace's search index is missing or not ready. Use
+    `notion-query-sessions` to list sessions while search is unavailable.
+
+    `notion-query-sessions` can return an empty page with a cursor. The same is
+    true for `notion-search-agents` when it is called without a `query`. Keep
+    following the cursor until the response stops returning one. A
+    `notion-search-agents` call with a `query` returns one page without a cursor.
+
     <Note>
-      These tools require access to Custom Agents and may not appear until they
-      are enabled for your workspace.
+      Plan eligibility and tool discovery are separate. When Notion MCP advertises
+      these tools, calling them requires Notion AI access and access to Custom
+      Agents. Without that access, calls return a prompt with a recovery link. When
+      a direct upgrade is available, `current_tool_access` reports the tools as
+      `upgrade_required` with an `upgrade_url`. When Notion routes the user through
+      a plan landing page instead, it reports them as `plan_required` with a
+      `landing_page_url` and `landing_page_action`. If the workspace has a billing
+      restriction, such as an unpaid invoice, calls return a permission error that
+      asks a workspace owner to manage billing, and `current_tool_access` reports
+      the tools as `not_enabled`.
+
+      A connection that lacks the "View threads and interact with agents"
+      capability does not advertise these tools or include them in
+      `current_tool_access`. Disconnect and reconnect Notion, or enable the
+      capability in the integration's settings and re-authorize.
     </Note>
 
     **Example prompts:**

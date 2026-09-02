@@ -21,7 +21,7 @@ The following table lists the available hardware types. Where a single-GPU per-h
 
 | GPU         | Hardware ID            | Cost/hour                                              |
 | ----------- | ---------------------- | ------------------------------------------------------ |
-| H100 80GB   | `1xnvidia-h100-80gb`   | \$5.49                                                 |
+| H100 80GB   | `1xnvidia-h100-80gb`   | \$3.99                                                 |
 | H200 141GB  | `1xnvidia-h200-141gb`  | [Contact sales](https://www.together.ai/contact-sales) |
 | B200 180GB  | `1xnvidia-b200-180gb`  | \$8.99                                                 |
 | GB300 280GB | `1xnvidia-gb300-280gb` | [Contact sales](https://www.together.ai/contact-sales) |

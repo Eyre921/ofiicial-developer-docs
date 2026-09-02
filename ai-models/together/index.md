@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 338 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 339 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -97,6 +97,7 @@
 - `docs/how-to-implement-contextual-rag-from-anthropic` — [Implement contextual RAG from Anthropic](pages/docs/how-to-implement-contextual-rag-from-anthropic.md) · [原文](https://docs.together.ai/docs/how-to-implement-contextual-rag-from-anthropic)
 - `docs/how-to-improve-search-with-rerankers` — [Improve search with rerankers](pages/docs/how-to-improve-search-with-rerankers.md) · [原文](https://docs.together.ai/docs/how-to-improve-search-with-rerankers)
 - `docs/how-to-use-cline` — [Configure Cline with Together AI models](pages/docs/how-to-use-cline.md) · [原文](https://docs.together.ai/docs/how-to-use-cline)
+- `docs/how-to-use-kimi-code` — [Configure Kimi Code with Together AI models](pages/docs/how-to-use-kimi-code.md) · [原文](https://docs.together.ai/docs/how-to-use-kimi-code)
 - `docs/how-to-use-openclaw` — [Configure OpenClaw with Together AI models](pages/docs/how-to-use-openclaw.md) · [原文](https://docs.together.ai/docs/how-to-use-openclaw)
 - `docs/how-to-use-opencode` — [Configure OpenCode with Together AI models](pages/docs/how-to-use-opencode.md) · [原文](https://docs.together.ai/docs/how-to-use-opencode)
 - `docs/how-to-use-qwen-code` — [Configure Qwen Code with Together AI models](pages/docs/how-to-use-qwen-code.md) · [原文](https://docs.together.ai/docs/how-to-use-qwen-code)

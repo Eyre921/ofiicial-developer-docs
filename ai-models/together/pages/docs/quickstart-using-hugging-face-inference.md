@@ -64,7 +64,7 @@ First, ensure you have the `huggingface_hub` library installed (version v0.29.0 
   # Generate a chat completion
 
   completion = client.chat.completions.create(
-      model="deepseek-ai/DeepSeek-R1",
+      model="deepseek-ai/DeepSeek-V4-Pro-0813",
       messages=messages,
       max_tokens=500,
   )
@@ -82,7 +82,7 @@ First, ensure you have the `huggingface_hub` library installed (version v0.29.0 
 
   // Generate a chat completion
   const chatCompletion = await client.chatCompletion({
-      model: "deepseek-ai/DeepSeek-R1",  // Replace with your desired model
+      model: "deepseek-ai/DeepSeek-V4-Pro-0813",  // Replace with your desired model
       messages: [
           {
               role: "user",
@@ -104,7 +104,7 @@ You can swap this for any compatible LLM from Together AI, here’s a handy [URL
 
 You can also call inference providers via the [OpenAI python client](https://github.com/openai/openai-python). You will need to specify the `base_url` and `model` parameters in the client and call respectively.
 
-The easiest way is to go to [a model’s page](https://huggingface.co/deepseek-ai/DeepSeek-R1?inference_api=true\&inference_provider=together\&language=python) on the hub and copy the snippet.
+The easiest way is to go to [a model’s page](https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813?inference_api=true\&inference_provider=together\&language=python) on the hub and copy the snippet.
 
 ```py Python theme={null}
 from openai import OpenAI
@@ -117,7 +117,7 @@ client = OpenAI(
 messages = [{"role": "user", "content": "What is the capital of France?"}]
 
 completion = client.chat.completions.create(
-    model="deepseek-ai/DeepSeek-R1",
+    model="deepseek-ai/DeepSeek-V4-Pro-0813",
     messages=messages,
     max_tokens=500,
 )

@@ -60,7 +60,6 @@
 - [Configure assistant-based warm transfer](https://docs.vapi.ai/calls/assistant-based-warm-transfer.md): Configure an assistant-based warm transfer in the Vapi Dashboard or API, including operator prompts, fallback behavior, summaries, custom audio, and testing.
 - [Voicemail Tool](https://docs.vapi.ai/tools/voicemail-tool.md): Learn how to use the assistant-controlled voicemail tool for flexible voicemail handling
 - [Custom (Function) Tools](https://docs.vapi.ai/tools/custom-tools.md): Create custom tools, including Function Tools that connect your assistant to server-side logic.
-- [Code Tool](https://docs.vapi.ai/tools/code-tool.md): Execute custom TypeScript code directly within your assistant without setting up a server.
 - [Client-side Tools (Web SDK)](https://docs.vapi.ai/tools/client-side-websdk.md): Handle tool-calls in the browser without a server URL
 - [Tool rejection plan](https://docs.vapi.ai/tools/tool-rejection-plan.md): Prevent unintended tool calls using conditions based on conversation state
 - [Static variables and aliases](https://docs.vapi.ai/tools/static-variables-and-aliases.md): Inject server-controlled values into tool calls without LLM involvement, and chain values across tool calls deterministically.

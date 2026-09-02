@@ -244,7 +244,6 @@ These are our featured Italian voices, selected for their versatility and qualit
 | `aura-2-cinzia-it`   | cinzia   |        | feminine         | Mature      | it-it    | Italian | Approachable, Friendly, Smooth, Trustworthy, Warm      | Customer Service, Interview, Narration        |
 | `aura-2-cesare-it`   | cesare   |        | masculine        | Adult       | it-it    | Italian | Clear, Empathetic, Knowledgeable, Natural, Smooth      | Casual Chat, Customer Service, Interview, IVR |
 | `aura-2-livia-it`    | livia    |        | feminine         | Adult       | it-it    | Italian | Approachable, Cheerful, Clear, Engaging, Expressive    | Customer Service, Interview, Audiobook        |
-| `aura-2-perseo-it`   | perseo   |        | masculine        | Young Adult | it-it    | Italian | Casual, Clear, Natural, Polite, Smooth                 | Casual Chat, Customer Service                 |
 | `aura-2-dionisio-it` | dionisio |        | masculine        | Adult       | it-it    | Italian | Confident, Engaging, Friendly, Melodic, Positive       | Interview, Casual Chat, Customer Service      |
 | `aura-2-demetra-it`  | demetra  |        | feminine         | Adult       | it-it    | Italian | Calm, Comfortable, Patient                             | Casual Chat, Interview, Narration             |
 

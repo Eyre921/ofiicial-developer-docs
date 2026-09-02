@@ -1164,6 +1164,7 @@ Events are split into the following categories:
 * **AI Meeting Notes availability updated**: That the AI meeting notes availability setting was updated.
 * **All managed users logged out**: That an admin has logged out every managed user account.
 * **All managed users’ passwords cleared**: That an admin has cleared all managed user accounts' passwords.
+* **Allowed model list updated**: That the list of AI models an agent is allowed to use was updated.
 * **Asana data fetched**: That a Notion admin fetched Asana data on behalf of a workspace user for Asana data importer triage/debugging.
 * **Audit Log exported**: That the audit log was exported.
 * **Auto-create accounts on sign-in toggled**: That a workspace owner has enabled automatically creating accounts on sign-in.
@@ -1659,6 +1660,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.scim\_token\_revoked**: A workspace owner revoked a SCIM API token.
 * **workspace.search\_performed**: A search was performed in the workspace.
 * **workspace.settings.agent\_creation\_policy\_updated**: The agent creation policy setting was updated.
+* **workspace.settings.agent\_model\_policy\_updated**: The list of AI models an agent is allowed to use was updated. `agent_type` names which allowed model list changed, and the model and provider lists are sent both before and after the change. `allowed_restricted_access_models` runs the other way from the restricted lists: a restricted-access model is off until an admin names it there, so a model entering that list was allowed and a model leaving it was restricted.
 * **workspace.settings.ai\_leap\_toggled**: A workspace owner enabled or disabled the Notion AI LEAP (Learning & Early Access Program) setting.
 * **workspace.settings.ai\_legal\_terms\_setting\_updated**: A user enabled or disabled Notion AI in the workspace by accepting or revoking AI legal terms.
 * **workspace.settings.ai\_meeting\_notes\_availability\_updated**: The AI meeting notes availability setting was updated.
@@ -1917,6 +1919,14 @@ Putting the above flow together, your webhook handler can implement logic as fol
 
     * If the page contents have been populated, you know the template has finished applying, and can proceed to any further steps your connection needs to take ✅,
     * Otherwise, stop processing and wait for a `page.content_updated` event signaling the completion of applying the template ⏳.
+
+<Info>
+  **Give the wait a timeout**
+
+  For connections covered by the [Free workspace block limit](/reference/workspace-block-limits), page creation and the background template job check the limit separately. If the background job is blocked, it stops and keeps the page, which may be blank or partially populated even after a successful request.
+
+  There is no template-failure webhook or public job-status endpoint. Set a timeout rather than waiting indefinitely, then use [Retrieve block children](/reference/get-block-children) to check the result. Avoid automatically reapplying the template: content already copied can be duplicated. Ask a workspace owner to check [block usage](https://www.notion.com/help/understanding-block-usage) before retrying.
+</Info>
 
 ## Frequently asked questions
 
@@ -11934,6 +11944,14 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Fetched pages include `path`, `page_last_edited_at`, and, when available, `verification.state` and `verification.expires_at`. These fields help distinguish pages with similar titles and identify sources that Notion marks as verified.
 
+    Fetched pages, including database items, include `cover` separately from database properties. It is `null` when there is no cover. Otherwise, it uses the REST API's [file object](/reference/file-object) shape: `type: "external"` with `external.url` for linked or Notion gallery images, or `type: "file"` with `file.url` and `file.expiry_time` for uploaded images.
+
+    MCP's signed cover URLs expire after five minutes; the REST API uses one hour. Re-fetching the page returns a fresh URL. An omitted `cover` means the metadata is unavailable or not applicable, not that the page has no cover.
+
+    Fetched pages, including database items, also include `icon`. It is `null` when there is no icon. Otherwise, it uses the REST API's [emoji and icon object](/reference/emoji-and-icon) shapes: `type: "emoji"` with `emoji`, `type: "custom_emoji"` with `custom_emoji.id`, `custom_emoji.name`, and `custom_emoji.url`, or `type: "icon"` with `icon.name` and `icon.color` for a [native Notion icon](/reference/emoji-and-icon#icon). Image icons use the [file object](/reference/file-object) shape: `type: "external"` with `external.url`, or `type: "file"` with `file.url` and `file.expiry_time` for an image uploaded to Notion.
+
+    Signed icon URLs expire after five minutes, the same as cover URLs, and re-fetching the page returns a fresh URL. An omitted `icon` means the metadata is unavailable or not applicable, not that the page has no icon. The `icon` field is read-only. To set or change an icon, pass the icon string that `notion-create-pages` and `notion-update-page` accept.
+
     Pass a `view://` URL from a database response to read a saved view's filters, sorts, and display settings. A database URL with a `?v=` parameter still returns the database. To read the rows shown by a view, use `notion-query-data-sources` with `mode: "view"`.
 
     Pass the special id `self` to retrieve the connected workspace and user identity instead of an entity. The response includes a `self` object with the workspace's ID and name, and the authenticated user's ID, name, type, and email — useful for labeling a connection after OAuth.
@@ -12130,16 +12148,29 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Query across data sources">
     `notion-query-data-sources`
 
-    Query Notion data sources with SQL, or run an existing view, with structured summaries, grouping, and filters. Returns organized results with counts and rollups for quick scanning.
+    Query Notion data sources with SQL, read rows from one data source, or run a saved view.
+
+    Pass `mode: "rows"` and `data_source_url` to read one data source. Rich-text properties use [Notion markdown](/guides/data-apis/enhanced-markdown) strings to preserve page and user mentions, link targets, formatting, inline dates, and equations.
+
+    Rows mode accepts optional `filter` and `sort` fields. A filter supports two levels of `and` or `or` groups. Sorts run in listed order. `limit` defaults to 50 and has a maximum of 100.
+
+    The response contains `results` and `has_more`. Each result uses property names as keys. Results include only rows and properties that the connected user can read. Rows mode does not return a cursor.
+
+    A query can resolve up to 1,000 distinct mention targets. A query over this limit returns an error instead of partial rich text.
+
+    <Warning>
+      SQL output can omit mention text, link targets, and formatting. Their absence in SQL output does not mean that a rich-text property is damaged. Read the property with rows mode or `notion-fetch` before changing it.
+    </Warning>
 
     <Note>
-      View mode is available on every plan without a tool-specific quota. SQL across one or more data sources is unlimited on Business and Enterprise plans with Notion AI. Other plans share a per-workspace usage limit for single-data-source SQL and receive an upgrade prompt after the allowance is exhausted.
+      View mode is available on every plan without a tool-specific quota. SQL across one or more data sources is unlimited on Business and Enterprise plans with Notion AI. Other plans share a per-workspace usage limit for single-data-source SQL and receive an upgrade prompt after the allowance is exhausted. Rows mode uses the same allowance as single-data-source SQL.
     </Note>
 
     **Example prompts:**
 
     * "What's due for me this week across all tasks and meeting note action items? Group by priority."
     * "Show all risks from Engineering and Product databases this month, grouped by owner."
+    * "Read the in-progress rows from the Specs data source. Keep mentions and links in Notes."
   </Accordion>
 
   <Accordion title="Query meeting notes">
@@ -12177,9 +12208,31 @@ An MCP client can call several tools in one task. For example, it can search for
     Search results include up to 20 matches. Each title is limited to 150
     characters, and each matching text span is limited to 300 characters.
 
+    `notion-search-sessions` returns no matches and a `warning` when the
+    workspace's search index is missing or not ready. Use
+    `notion-query-sessions` to list sessions while search is unavailable.
+
+    `notion-query-sessions` can return an empty page with a cursor. The same is
+    true for `notion-search-agents` when it is called without a `query`. Keep
+    following the cursor until the response stops returning one. A
+    `notion-search-agents` call with a `query` returns one page without a cursor.
+
     <Note>
-      These tools require access to Custom Agents and may not appear until they
-      are enabled for your workspace.
+      Plan eligibility and tool discovery are separate. When Notion MCP advertises
+      these tools, calling them requires Notion AI access and access to Custom
+      Agents. Without that access, calls return a prompt with a recovery link. When
+      a direct upgrade is available, `current_tool_access` reports the tools as
+      `upgrade_required` with an `upgrade_url`. When Notion routes the user through
+      a plan landing page instead, it reports them as `plan_required` with a
+      `landing_page_url` and `landing_page_action`. If the workspace has a billing
+      restriction, such as an unpaid invoice, calls return a permission error that
+      asks a workspace owner to manage billing, and `current_tool_access` reports
+      the tools as `not_enabled`.
+
+      A connection that lacks the "View threads and interact with agents"
+      capability does not advertise these tools or include them in
+      `current_tool_access`. Disconnect and reconnect Notion, or enable the
+      capability in the integration's settings and re-authorize.
     </Note>
 
     **Example prompts:**
@@ -17169,6 +17222,30 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 Source: https://developers.notion.com/page/changelog
 
 
+
+<Update label="September 2, 2026">
+  ### Page covers and icons in `notion-fetch` responses
+
+  The [`notion-fetch`](/guides/mcp/mcp-supported-tools) MCP tool now returns `cover` and `icon` metadata for pages and database items. Both use the same shapes as the REST API, so clients can inspect the current cover or icon before deciding whether to replace it.
+
+  ### Rich text in data source queries
+
+  The [`notion-query-data-sources`](/guides/mcp/mcp-supported-tools) MCP tool now supports `mode: "rows"` to keep rich text in data source results. This mode preserves mentions and link targets that SQL output can omit.
+</Update>
+
+<Update label="September 1, 2026">
+  ### Free workspace block limits now apply to the REST API
+
+  Starting today, the REST API enforces the [existing Free workspace block limit](https://www.notion.com/help/understanding-block-usage) for internal connections and OAuth connections restricted to selected workspaces. This is not a new workspace limit. See [Workspace block limits](/reference/workspace-block-limits) for the grace period, HTTP 403 response, and background template behavior.
+
+  ### Upgrade prompts for Custom Agent tools in Notion MCP
+
+  Notion MCP's [Custom Agent tools](/guides/mcp/mcp-supported-tools) — `notion-list-agents`, `notion-search-agents`, and the session tools — now return a prompt with a recovery link when the workspace doesn't have access to Notion AI and Custom Agents. They previously returned a generic permission error with no recovery link. `notion-fetch` with the id `self` also reports these tools as `upgrade_required` with an `upgrade_url`, or as `plan_required` with a `landing_page_url` and `landing_page_action` when Notion routes the user through a plan landing page. Clients can use this status to route around unavailable tools before calling.
+
+  Workspaces with a billing restriction, such as an unpaid invoice, are treated separately: the tools return a permission error that asks a workspace owner to manage billing, and `current_tool_access` reports them as `not_enabled` rather than `upgrade_required`.
+
+  A connection that lacks the "View threads and interact with agents" capability does not advertise these tools and must reconnect or re-authorize.
+</Update>
 
 <Update label="August 31, 2026">
   ### Capture ideas and draft content in Notion
@@ -22682,7 +22759,7 @@ Source: https://developers.notion.com/reference/notion-agent-apis/query-sessions
 post /v1/sessions/query
 Find agent sessions that an integration can access.
 
-Use `filter`, `sorts`, and `query` to narrow the list. Follow `next_cursor` until `has_more` is `false`.
+Use `filter`, `sorts`, and `query` to narrow the list. Pass each `next_cursor` as `start_cursor` until `has_more` is `false`, even when `results` is empty.
 
 
 # Retrieve an agent
@@ -27576,6 +27653,8 @@ Source: https://developers.notion.com/reference/request-limits
 
 To ensure a consistent developer experience for all API users, the Notion API is rate limited and basic size limits apply to request parameters.
 
+Workspace plan limits are separate from request limits. See [Workspace block limits](/reference/workspace-block-limits) for the Free workspace limit that takes effect on September 8, 2026.
+
 ## Rate limits
 
 The Notion API enforces two rate limits:
@@ -27596,7 +27675,7 @@ Put outgoing requests through a queue so a burst from one job does not consume t
 3. If another 429 or 529 arrives, increase the delay with exponential backoff and jitter.
 4. Set a retry limit. Log or surface the final error when the limit is reached.
 
-Do not retry every error. Retry 429 and 529 responses. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. Fix the request before retrying most 400 responses. Treat 401 and 403 responses as authentication or authorization failures.
+Do not retry every error. Retry 429 and 529 responses. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. Fix the request before retrying most 400 responses. A 401 means authentication failed. A 403 can mean a permission failure or a [workspace block limit](/reference/workspace-block-limits); check the error message before retrying.
 
 The JavaScript SDK retries 429 responses for every method. It also retries 500 and 503 responses for GET and DELETE requests. It respects `Retry-After`, uses exponential backoff with jitter, and limits retries. If you call the REST API directly, use the same safeguards and add explicit handling for 529 responses. These examples show the same policy in several common HTTP clients:
 
@@ -28839,7 +28918,7 @@ Error responses contain more detail about the error in the response body, in the
 | 400              | `"missing_version"`                 | The request is missing the required `Notion-Version` header. See [Versioning](/reference/versioning).                                                                                                                                                                                                                                                                  | `"Notion-Version header failed validation: Notion-Version header should be defined, instead was undefined."`                                                             |
 | 400              | `"invalid_beta"`                    | The `Notion-Beta` header is malformed, names an unknown beta, uses an unsupported revision, or is missing from an endpoint that requires it. See [Versioning](/reference/versioning#beta-versions).                                                                                                                                                                    | `"Beta \"notion-as-code\" revision 2026-07-01 is no longer supported. Send Notion-Beta: notion-as-code-2026-07-31."`                                                     |
 | 401              | `"unauthorized"`                    | The bearer token is not valid.                                                                                                                                                                                                                                                                                                                                         | `"API token is invalid."`                                                                                                                                                |
-| 403              | `"restricted_resource"`             | Given the bearer token used, the client doesn't have permission to perform this operation.                                                                                                                                                                                                                                                                             | `"API token does not have access to this resource."`                                                                                                                     |
+| 403              | `"restricted_resource"`             | The token lacks permission, or the request exceeds a [workspace block limit](/reference/workspace-block-limits). The message explains the cause.                                                                                                                                                                                                                       | `"API token does not have access to this resource."`                                                                                                                     |
 | 404              | `"object_not_found"`                | Given the bearer token used, the resource does not exist. This error can also indicate that the resource has not been shared with owner of the bearer token. If the connection name is available, it will be included in the error message.                                                                                                                            | `"Could not find database with ID: be907abe-510e-4116-a3d1-7ea71018c06f. Make sure the relevant pages and databases are shared with your connection \"My Connection\"."` |
 | 409              | `"conflict_error"`                  | The transaction could not be completed, potentially due to a data collision. Make sure the parameters are up to date and try again.      We also use this HTTP status code in rare cases when our [File Upload](/reference/file-upload) third-party data storage provider has downtime and sending file contents failed. In this case, please retry the request later. | `"Conflict occurred while saving. Please try again."`                                                                                                                    |
 | 429              | `"rate_limited"`                    | This request exceeds the number of requests allowed. Slow down and try again. [More details on rate limits](/reference/request-limits).                                                                                                                                                                                                                                | `"You have been rate limited. Please try again in a few minutes."`                                                                                                       |
@@ -29558,12 +29637,12 @@ To change the name of a data source property, indicate the new name in the `name
 
 ## Update property type
 
-To update the property type, the property schema object should contain the key of the type. This type contains behavior of this property. Possible values of this key are `"title"`, `"rich_text"`, `"number"`, `"select"`, `"multi_select"`, `"status"`, `"date"`, `"people"`, `"files"`, `"checkbox"`, `"url"`, `"email"`, `"phone_number"`, `"formula"`, `"relation"`, `"rollup"`, `"created_time"`, `"created_by"`, `"last_edited_time"`, `"last_edited_by"`. Within this property, the configuration is a [property schema object](/reference/property-schema-object).
+To update the property type, the property schema object should contain the key of the type. This type contains behavior of this property. Possible values of this key are `"rich_text"`, `"number"`, `"select"`, `"multi_select"`, `"status"`, `"date"`, `"people"`, `"files"`, `"checkbox"`, `"url"`, `"email"`, `"phone_number"`, `"formula"`, `"relation"`, `"rollup"`, `"created_time"`, `"created_by"`, `"last_edited_time"`, `"last_edited_by"`. Within this property, the configuration is a [property schema object](/reference/property-schema-object).
 
 <Danger>
   **Limitations**
 
-  Note that the property type of the `title` cannot be changed.
+  Every data source has exactly one `title` property. Its type cannot be changed to something else, and no other property can be changed to `title`.
 </Danger>
 
 ### Select configuration updates
@@ -29791,12 +29870,12 @@ To change the name of a database property, indicate the new name in the `name` p
 
 ## Update property type
 
-To update the property type, the property schema object should contain the key of the type. This type contains behavior of this property. Possible values of this key are `"title"`, `"rich_text"`, `"number"`, `"select"`, `"multi_select"`, `"status"`, `"date"`, `"people"`, `"files"`, `"checkbox"`, `"url"`, `"email"`, `"phone_number"`, `"formula"`, `"relation"`, `"rollup"`, `"created_time"`, `"created_by"`, `"last_edited_time"`, `"last_edited_by"`. Within this property, the configuration is a [property schema object](/reference/property-schema-object).
+To update the property type, the property schema object should contain the key of the type. This type contains behavior of this property. Possible values of this key are `"rich_text"`, `"number"`, `"select"`, `"multi_select"`, `"status"`, `"date"`, `"people"`, `"files"`, `"checkbox"`, `"url"`, `"email"`, `"phone_number"`, `"formula"`, `"relation"`, `"rollup"`, `"created_time"`, `"created_by"`, `"last_edited_time"`, `"last_edited_by"`. Within this property, the configuration is a [property schema object](/reference/property-schema-object).
 
 <Danger>
   **Limitations**
 
-  Note that the property type of the `title` cannot be changed.
+  Every data source has exactly one `title` property. Its type cannot be changed to something else, and no other property can be changed to `title`.
 </Danger>
 
 ### Select configuration updates
@@ -31991,6 +32070,72 @@ Source: https://developers.notion.com/reference/webhooks/view-updated
 openapi.json webhook viewUpdated
 Webhook event for view updated in a workspace
 
+
+
+# Workspace block limits
+Source: https://developers.notion.com/reference/workspace-block-limits
+
+Learn when the Free workspace block limit blocks an API write and how to handle the error.
+
+<Note>
+  The REST API now enforces the [existing Free workspace block limit](https://www.notion.com/help/understanding-block-usage) for the connections described below.
+</Note>
+
+## Scope
+
+Free workspaces with more than one member have a limit of 1,000 lifetime blocks. Paid workspaces and single-member Free workspaces have unlimited blocks. Guests do not count as members. Deleting blocks does not restore capacity. See [Understanding block usage](https://www.notion.com/help/understanding-block-usage).
+
+The limit applies to internal connections and OAuth connections restricted to selected workspaces. It does not apply to [personal access tokens](/guides/get-started/personal-access-tokens) or OAuth connections that can be installed in any workspace. Notion MCP has a separate enforcement policy.
+
+## Creation and grace period
+
+The limit is shared across the workspace, not assigned to each connection. The write that first reaches the limit succeeds and starts the existing three-day grace period. Creation remains available during grace. API enforcement does not restart an expired grace period.
+
+After grace expires, requests that create blocks fail. Reads, deletes, and edits that do not create blocks remain available. Template jobs check the limit again when they run, so a queued template can fail after the request that scheduled it returned a success.
+
+## Background templates
+
+A successful create or update response does not guarantee that a queued template will finish. The job checks the limit again before copying content and before each content write. If the workspace becomes blocked, the job stops without retrying the plan restriction. The target page is kept, but it may be blank or contain only part of the template. When replacing content, the original content is removed only after the template succeeds.
+
+There is no template-failure webhook or public job-status endpoint. Set a timeout when waiting for template content, then [retrieve the page's block children](/reference/get-block-children) to check the result. Do not automatically reapply a template to a partially populated page: that can duplicate content. Ask a workspace owner to check [block usage](https://www.notion.com/help/understanding-block-usage) before retrying.
+
+## Affected endpoints
+
+A request fails if it would create blocks. Requests that do not create blocks remain available.
+
+| Endpoint                                                       | Behavior after grace expires                                                                                         |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| [Create a page](/reference/post-page)                          | Fails. The page itself is a block.                                                                                   |
+| [Create a meeting note](/reference/create-meeting-note)        | Fails. Creates a meeting notes block and its child blocks.                                                           |
+| [Create a database](/reference/create-database)                | Fails. The database is a block.                                                                                      |
+| [Create a database (deprecated)](/reference/create-a-database) | Fails. API versions before `2025-09-03` create a database block with its data source.                                |
+| [Create a data source](/reference/create-a-data-source)        | Still works. API versions `2025-09-03` and later add a data source to an existing database without creating a block. |
+| [Append block children](/reference/patch-block-children)       | Fails. Every appended child is a block.                                                                              |
+| [Update page markdown](/reference/update-page-markdown)        | Fails when the markdown adds blocks.                                                                                 |
+| [Update a page](/reference/patch-page)                         | Fails when the update adds blocks, such as applying a template. Title and property edits still work.                 |
+| [Update a block](/reference/update-a-block)                    | Fails when the update adds blocks.                                                                                   |
+| [Create a view](/reference/create-view)                        | Fails when `create_database` adds a linked database block. A new view tab on an existing database still works.       |
+| [Create a comment](/reference/create-a-comment)                | Fails when an attachment adds a block. A comment without attachments still works.                                    |
+
+## Error response
+
+Blocked writes return HTTP 403 with the `restricted_resource` code:
+
+```json theme={null}
+{
+  "object": "error",
+  "status": 403,
+  "code": "restricted_resource",
+  "message": "This workspace has used all of its free blocks. Upgrade its plan in Notion to create more content. Learn more: https://www.notion.com/help/understanding-block-usage",
+  "additional_data": {
+    "block_limit": "block_creation"
+  }
+}
+```
+
+This is a plan limit, not a request rate limit. Retrying the same write without a workspace change will not resolve it. A workspace owner can upgrade in Notion. Creation is also available when the Free workspace has only one member.
+
+Other permission failures also use `restricted_resource`. The `additional_data.block_limit` field identifies this limit without relying on message text. See [Status codes](/reference/status-codes) and [Request limits](/reference/request-limits).
 
 
 # What are Notion Workers?
