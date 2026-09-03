@@ -109,7 +109,7 @@ Learn more about [stablecoin-backed Issuing cards](https://docs.stripe.com/issui
 
 ### Connected accounts
 
-Connected accounts are businesses, sellers, or service providers that use a platform. For example, as an expense management platform, you provide software that small businesses can leverage to manage and control their business spend. Each digital store owner that uses the storefront platform to collect payments is a connected account.
+Connected accounts are businesses, sellers, or service providers that use a platform. For example, as an expense management platform, you provide software that small businesses can use to manage and control their business spend. Each digital store owner that uses the storefront platform to collect payments is a connected account.
 
 Treasury for platforms only supports connected accounts that don’t use a Stripe-hosted Dashboard, and where your platform is responsible for requirements collection and loss liability, also known as a Custom connected account. Learn how to [create connected accounts](https://docs.stripe.com/connect/interactive-platform-guide.md?connect-charge-type=direct&connect-loss-liability-owner=platform) that work with Treasury for platforms.
 

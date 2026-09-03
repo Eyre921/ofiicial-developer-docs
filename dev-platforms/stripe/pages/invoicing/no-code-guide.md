@@ -11,9 +11,9 @@ Get started with Stripe Invoicing—no code required.
 Stripe Invoicing can help you get paid and save time using the Dashboard. Automatically charge your customer’s payment method on file, or email them the *invoice* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice) with or without a link to a payment page. You can also send the invoice or payment page link manually.
 
 > If you’re interested in managing subscriptions and recurring revenue, see [Subscriptions](https://docs.stripe.com/billing.md).
-![Hosted Invoice Page](https://b.stripecdn.com/docs-statics-srv/assets/hosted-invoice-page-guide.df3cc5a1e4180c338269aacdfa792180.png)
+![Hosted invoice page](https://b.stripecdn.com/docs-statics-srv/assets/hosted-invoice-page-guide.df3cc5a1e4180c338269aacdfa792180.png)
 
-Hosted Invoice Page
+Hosted invoice page
 ![Invoice PDF](https://b.stripecdn.com/docs-statics-srv/assets/invoice-pdf-guide.d79c407ca08ee4b14dc0519fb3772309.png)
 
 Invoice PDF

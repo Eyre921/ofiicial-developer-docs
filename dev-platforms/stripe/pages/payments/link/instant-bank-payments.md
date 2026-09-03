@@ -126,7 +126,7 @@ To learn about using Link with dynamic payment methods and other integrations, s
 
 - [Checkout](https://docs.stripe.com/payments/checkout.md)
 - [Payment Links](https://docs.stripe.com/payment-links.md)
-- [Hosted Invoice Page](https://docs.stripe.com/invoicing/hosted-invoice-page.md)
+- [Hosted invoice page](https://docs.stripe.com/invoicing/hosted-invoice-page.md)
 - [Payment Element](https://docs.stripe.com/payments/elements.md)
 - [Mobile Payment Element](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=mobile&platform=ios)
 

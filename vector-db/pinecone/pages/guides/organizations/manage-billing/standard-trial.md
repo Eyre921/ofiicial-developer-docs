@@ -6,7 +6,7 @@ path: guides/organizations/manage-billing/standard-trial
 
 Evaluate the Pinecone Standard plan with $300 in credits over 21 days, including bulk import, backup and restore, RBAC, and higher scale limits.
 
-The Standard trial lets you evaluate Pinecone without requiring any up-front payment. You get \$300 in credits over 21 days with access to Standard plan [features](https://www.pinecone.io/pricing/) and [limits](/reference/api/database-limits) that are suitable for testing Pinecone at scale.
+The Standard trial lets you evaluate Pinecone without requiring any up-front payment. You get \$300 in credits over 21 days with access to Standard plan [features](https://www.pinecone.io/pricing/) and [limits](/reference/api/database-limits/object-limits) that are suitable for testing Pinecone at scale.
 
 <Note>
   If you're building a small or personal project, consider the free [Starter plan](https://www.pinecone.io/pricing/) or the flat-rate [Builder plan](https://www.pinecone.io/pricing/) instead.
@@ -19,7 +19,7 @@ The Standard trial lets you evaluate Pinecone without requiring any up-front pay
   * [Bulk import](/guides/index-data/import-data)
   * [Backup and restore](/guides/manage-data/backups-overview)
   * [RBAC (role-based access control)](/guides/production/security-overview#role-based-access-controls-rbac)
-* [Higher limits](/reference/api/database-limits) for testing at scale
+* [Higher limits](/reference/api/database-limits/object-limits) for testing at scale
 * Access to all [cloud regions](/guides/index-data/create-an-index#cloud-regions)
 * Access to [Developer Support](https://www.pinecone.io/pricing/?plans=support)
 
@@ -41,7 +41,7 @@ If you started the trial from the Builder plan, you aren't charged the \$20/mont
 
 You can downgrade from a Standard trial to the Starter plan at any time.
 
-When you downgrade to the Starter plan in the Pinecone console, you choose which projects, indexes, assistants, and members to keep, up to the [Starter plan limits](/reference/api/database-limits): 1 project, 5 serverless indexes in the `us-east-1` region of AWS, 5 assistants, and 2 members. Pinecone deletes everything you don't keep, along with all backups, backup schedules, and collections.
+When you downgrade to the Starter plan in the Pinecone console, you choose which projects, indexes, assistants, and members to keep, up to the [Starter plan limits](/reference/api/database-limits/object-limits): 1 project, 5 serverless indexes in the `us-east-1` region of AWS, 5 assistants, and 2 members. Pinecone deletes everything you don't keep, along with all backups, backup schedules, and collections.
 
 The downgrade doesn't reduce your data or change your configuration, so do this first:
 
@@ -58,7 +58,7 @@ The downgrade doesn't reduce your data or change your configuration, so do this 
 </Note>
 
 <Note>
-  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits), backups must be deleted, and any features not available on Builder, such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO, must be removed or stopped.
+  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits/object-limits), backups must be deleted, and any features not available on Builder, such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO, must be removed or stopped.
 </Note>
 
 ## Limits

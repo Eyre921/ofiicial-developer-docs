@@ -1215,7 +1215,7 @@ Field-name rules:
 
 Document upsert limits:
 
-* Each upsert request can contain up to 1000 documents and must be no larger than 2 MB.
+* Each upsert request can contain up to 1,000 documents and must be no larger than 2 MB.
 * Each document can be no larger than 2 MB.
 * Each `full_text_search` string field can be no larger than 100 KB and can contain up to 10,000 tokens.
 * Each token can be no larger than 256 bytes before analyzer truncation.
@@ -1231,13 +1231,13 @@ For the full upsert reference (SDK examples, batching, and the response schema),
 
 Send upserts in batches to help increase throughput.
 
-* When upserting records with vectors, a batch should be as large as possible (up to 1000 records) without exceeding the [max request size of 2 MB](#upsert-limits).
+* When upserting records with vectors, a batch should be as large as possible (up to 1,000 records) without exceeding the [max request size of 2 MB](#upsert-limits).
 
   To understand the number of records you can fit into one batch based on the vector dimensions and metadata size, see the following table:
 
   | Dimension | Metadata (bytes) | Max batch size |
   | :-------- | :--------------- | :------------- |
-  | 386       | 0                | 1000           |
+  | 386       | 0                | 1,000          |
   | 768       | 500              | 559            |
   | 1536      | 2000             | 245            |
 
@@ -1776,20 +1776,23 @@ async_results = [
 
 ## Upsert limits
 
-| Metric                                                             | Limit                                                         |
-| :----------------------------------------------------------------- | :------------------------------------------------------------ |
-| Max [batch size](/guides/index-data/upsert-data#upsert-in-batches) | 2 MB or 1000 records with vectors <br /> 96 records with text |
-| Max documents per upsert request                                   | 1000                                                          |
-| Max document upsert request size                                   | 2 MB                                                          |
-| Max document size                                                  | 2 MB                                                          |
-| Max `full_text_search` string fields per schema                    | 100                                                           |
-| Max size per `full_text_search` string field                       | 100 KB                                                        |
-| Max tokens per `full_text_search` string field                     | 10,000                                                        |
-| Max bytes per token                                                | 256 bytes                                                     |
-| Max filterable metadata size per document                          | 40 KB                                                         |
-| Max length for a record ID                                         | 512 characters                                                |
-| Max dimensionality for dense vectors                               | 20,000                                                        |
-| Max non-zero values for sparse vectors                             | 2048                                                          |
-| Max dimensionality for sparse vectors                              | 4.2 billion                                                   |
+| Metric                                                                                      | Limit                           |
+| :------------------------------------------------------------------------------------------ | :------------------------------ |
+| Max [batch size](/guides/index-data/upsert-data#upsert-in-batches) for records with vectors | 1,000 records, up to 2 MB total |
+| Max batch size for records with text                                                        | 96 records                      |
+| Max documents per upsert request                                                            | 1,000                           |
+| Max document upsert request size                                                            | 2 MB                            |
+| Max document size                                                                           | 2 MB                            |
+| Max `full_text_search` string fields per schema                                             | 100                             |
+| Max size per `full_text_search` string field                                                | 100 KB                          |
+| Max tokens per `full_text_search` string field                                              | 10,000                          |
+| Max bytes per token                                                                         | 256 bytes                       |
+| Max filterable metadata size per document                                                   | 40 KB                           |
+| Max length for a record ID                                                                  | 512 characters                  |
+| Max dimensionality for dense vectors                                                        | 20,000                          |
+| Max non-zero values for sparse vectors                                                      | 2048                            |
+| Max dimensionality for sparse vectors                                                       | 4.2 billion                     |
 
-The 40 KB filterable metadata limit does not apply to `full_text_search` text fields.
+The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) doing the conversion.
+
+The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.

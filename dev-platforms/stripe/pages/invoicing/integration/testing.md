@@ -48,7 +48,7 @@ To test manual payments on invoices through bank transfers:
 
 2. Find the invoice in the Dashboard and click **Send**. This generates a unique virtual bank account number for your customer.
 
-3. Retrieve your customer’s unique virtual bank account number using the [Customer Balance Funding Instructions API](https://docs.stripe.com/payments/customer-balance/funding-instructions.md#create-funding-instructions). You can also find your customer’s virtual banking details in the Hosted Invoice Page and PDF.
+3. Retrieve your customer’s unique virtual bank account number using the [Customer Balance Funding Instructions API](https://docs.stripe.com/payments/customer-balance/funding-instructions.md#create-funding-instructions). You can also find your customer’s virtual banking details in the hosted invoice page and PDF.
 
 ## Test customer tax ID verification 
 

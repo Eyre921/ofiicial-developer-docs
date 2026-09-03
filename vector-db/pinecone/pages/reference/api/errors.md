@@ -36,7 +36,7 @@ The request failed due to delinquent payment or account deactivation for non-pay
 
 ## 403 - FORBIDDEN
 
-The request failed due to an exceeded [quota](/reference/api/database-limits#object-limits) or [index deletion protection](/guides/manage-data/manage-indexes#configure-deletion-protection).
+The request failed due to an exceeded [quota](/reference/api/database-limits/object-limits) or [index deletion protection](/guides/manage-data/manage-indexes#configure-deletion-protection).
 
 ## 404 - NOT FOUND
 
@@ -56,7 +56,7 @@ The request failed because the server was unable to process the contained instru
 
 ## 429 - TOO MANY REQUESTS
 
-The request was [rate-limited](/reference/api/database-limits#rate-limits). [Implement retry logic with exponential backoff](/guides/production/error-handling#handle-rate-limits-429) to handle this error.
+The request was [rate-limited](/reference/api/database-limits/rate-limits). [Implement retry logic with exponential backoff](/guides/production/error-handling#handle-rate-limits-429) to handle this error.
 
 ## 500 - UNKNOWN
 

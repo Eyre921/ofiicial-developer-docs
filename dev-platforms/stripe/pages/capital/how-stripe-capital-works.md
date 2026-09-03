@@ -511,8 +511,6 @@ Your offer is available for 30 days. After 30 days, we automatically re-evaluate
 
 After you accept an offer, we and our financing partner review your application. If you’re approved, the funds are transferred to your linked bank account, typically within 1 business day. To make sure you receive the funds, you must set a valid bank account as your primary payout method.
 
-If you’re a director or a beneficial owner of the business, you must provide a personal guarantee as part of the application for financing.
-
 ## Choose your payout destination
 
 When you apply for your Capital financing offer, you can choose where to receive your funds during the application:

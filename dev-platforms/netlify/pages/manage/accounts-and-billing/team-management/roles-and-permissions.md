@@ -250,17 +250,29 @@ Reference the [Billing FAQ](/manage/accounts-and-billing/billing/billing-for-leg
 
 ### Reviewer
 
-Once a Team Owner or Developer [approves](/manage/accounts-and-billing/team-management/manage-team-members#approve-or-block-reviewers) a Reviewer, that person can access Deploy Preview and branch deploy links across sites in the team so they can [share site feedback on Deploy Previews](/deploy/review-deploys/netlify-drawer-for-feedback/overview) or on [branch deploys](/deploy/review-deploys/netlify-drawer-for-feedback/overview#configure-the-netlify-drawer).
+The official Reviewer role allows a person to access preview URLs for your project to give feedback. 
 
-A Team Owner can add an unlimited number of Reviewers [to your team for free](https://www.netlify.com/pricing/?category=developer#features-reviewers). Reviewers do not contribute to your total member count, and are not included on your bill.
+Reviewers and other team members can give visual feedback on your Deploy Previews and branch deploys through the [Netlify Drawer](/deploy/review-deploys/netlify-drawer-for-feedback/overview). The Netlify Drawer also allows you to log feedback in popular project tracking tools or in pull/merge requests alongside code changes so that your cross-functional collaborators can find and act on your feedback in the workflows they already use.
+
+To learn how to give site feedback as a Reviewer, check out our [Reviewers quickstart](/deploy/review-deploys/netlify-drawer-for-feedback/netlify-reviewer-quickstart).
+
+#### Reviewers on Credit plans 
+
+If you have a [Credit plan](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/) with Netlify, you must have a Pro plan or higher to invite someone with the Reviewer role to your plan.
+
+You can invite a person to a Reviewer role when you [share](/manage/accounts-and-billing/team-management/manage-project-access#share-a-private-project) a project or when you [add a member](/manage/accounts-and-billing/team-management/manage-team-members#add-new-team-members).
+
+#### Reviewers on Legacy plans
+
+If you have a [Legacy plan](/manage/accounts-and-billing/billing/billing-for-legacy-plans/legacy-pricing-plans/) with Netlify, a Team Owner can add an unlimited number of Reviewers to your team. Reviewers will not contribute to your total member count, and are not included on your bill.
+
+Once a Team Owner or Developer [approves](/manage/accounts-and-billing/team-management/manage-team-members#approve-or-block-reviewers) a Reviewer, that person can access Deploy Preview and branch deploy links across sites in the team so they can [share site feedback on Deploy Previews](/deploy/review-deploys/netlify-drawer-for-feedback/overview) or on [branch deploys](/deploy/review-deploys/netlify-drawer-for-feedback/overview#configure-the-netlify-drawer).
 
 Reviewers can also access read-only Deploy Preview and branch deploy links from Visual Editor, as well as [Preview Server](/manage/preview-servers/overview) URLs.
 
 ### Note - Reviewers and Preview Servers
 
 Reviewers can access [Preview Server](/manage/preview-servers/overview) URLs to preview content and code updates, but they cannot manage Preview Servers. Preview Server management is restricted to Owners and Developers.
-
-To learn how to give site feedback as a Reviewer, check out our [Reviewers quickstart](/deploy/review-deploys/netlify-drawer-for-feedback/netlify-reviewer-quickstart).
 
 ### Billing Admin
 

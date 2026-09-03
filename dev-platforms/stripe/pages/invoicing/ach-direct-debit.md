@@ -26,7 +26,7 @@ To set ACH Direct Debit as a default payment method type:
 1. On the [Billing settings](https://dashboard.stripe.com/settings/billing/invoice) page, under **Invoicing settings** > **Default payment methods**, click **Edit payment methods**.
 2. On the **Billing Payments** page, under **Bank debits**, click **Turn on** to enable **ACH Direct Debit** as a default payment method.
 
-Your customers can pay an invoice by using the [Hosted Invoice Page](https://docs.stripe.com/invoicing/hosted-invoice-page.md) to enter their bank account information or select the default payment method. If there isn’t a default payment method, the invoice includes all available payment methods.
+Your customers can pay an invoice by using the [hosted invoice page](https://docs.stripe.com/invoicing/hosted-invoice-page.md) to enter their bank account information or select the default payment method. If there isn’t a default payment method, the invoice includes all available payment methods.
 
 ## Pre-collected bank information 
 
@@ -49,11 +49,11 @@ Every finalized invoice has an associated payment intent. You can [confirm a Pay
 
 ## Payment completions 
 
-For any invoice with ACH Direct Debit enabled as a payment method, your customer can enter their bank account information on the Hosted Invoice Page to start a debit payment.
+For any invoice with ACH Direct Debit enabled as a payment method, your customer can enter their bank account information on the hosted invoice page to start a debit payment.
 
 Your customer must do the following to complete payment:
 
-1. On the Hosted Invoice Page, select **US bank account**.
+1. On the hosted invoice page, select **US bank account**.
 2. Search for and select the bank.
 3. Initiate login with the bank and agree to the terms of service.
 4. Select the bank account and click **Connect account**.
@@ -77,7 +77,7 @@ You can instantly verify a bank account in a *sandbox* (A sandbox is an isolated
 3. In the **Payment methods for this invoice** dialog, enable **ACH direct debit**, and click **Save**.
 4. Enter the invoice details, and click **Send invoice**.
 5. On the invoice details page, under **Details**, click the **Payment page** link.
-6. On the Hosted Invoice Page, select **US bank account** > **Test Institution**.
+6. On the hosted invoice page, select **US bank account** > **Test Institution**.
 7. Initiate login with the bank and agree to the terms of service.
 8. Select the bank account and click **Connect account**.
 9. After successfully connecting the account, click **Back** to go to the invoice.
@@ -92,7 +92,7 @@ You can manually verify bank accounts using microdeposits. In live mode, it take
 3. In the **Payment methods for this invoice** dialog, enable **ACH Direct Debit**, and click **Save**.
 4. Enter the invoice details, and click **Send invoice**.
 5. On the invoice details page, under **Details**, click the **Payment page** link.
-6. On the Hosted Invoice Page, select **US bank account**, and then click **Pay**.
+6. On the hosted invoice page, select **US bank account**, and then click **Pay**.
 7. Click **Enter bank details manually instead** to verify the bank account with microdeposits.
 8. In the **Enter bank details** dialog, click **Use test account** to use a [test routing number and bank account](https://docs.stripe.com/payments/ach-direct-debit/accept-a-payment.md#test-account-numbers).
 9. After successfully adding the account, click **Back** to go to the invoice.

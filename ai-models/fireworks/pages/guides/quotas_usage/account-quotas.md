@@ -120,17 +120,18 @@ When usage reaches 100% of the limit, all API requests pause automatically acros
 
 ### On-demand deployment quotas
 
-On-demand deployments have GPU quotas instead of rate limits:
+On-demand deployments have GPU quotas instead of rate limits. GPU quota is scoped per placement (multi-region or single region). The defaults below apply to the **GLOBAL** multi-region only. For other placements, see [Regions](/deployments/regions).
 
-| GPU Type            | Default Quota |
-| ------------------- | ------------- |
-| Nvidia A100         | 8 GPUs        |
-| Nvidia H100         | 8 GPUs        |
-| Nvidia H200         | 8 GPUs        |
-| Nvidia B200         | 8 GPUs        |
-| Nvidia B300         | 8 GPUs        |
-| AMD MI325X / MI350X | 8 GPUs        |
-| LoRAs (on-demand)   | 100           |
+| GPU Type            | Default Quota (GLOBAL) |
+| ------------------- | ---------------------- |
+| Nvidia H100         | 16 GPUs                |
+| Nvidia H200         | 16 GPUs                |
+| Nvidia B200         | 16 GPUs                |
+| Nvidia B300         | 16 GPUs                |
+| Nvidia GB300        | 0 GPUs                 |
+| Nvidia A100         | 0 GPUs                 |
+| AMD MI325X / MI350X | 0 GPUs                 |
+| LoRAs (on-demand)   | 100                    |
 
 <Tip>
   Need more GPUs? [Contact us](https://fireworks.ai/company/contact-us) to request a quota increase.

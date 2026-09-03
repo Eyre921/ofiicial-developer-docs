@@ -184,7 +184,7 @@ Send the invoice to the email address associated with the customer and redirect 
 
 As soon as you send an invoice, Stripe finalizes it. Many jurisdictions consider finalized invoices a legal document making certain fields unalterable. If you send invoices that have already been paid, there’s no reference to the payment in the email.
 
-With any finalized invoice, you can either download and send a [PDF](https://docs.stripe.com/api/invoices/object.md#invoice_object-invoice_pdf) or [link](https://docs.stripe.com/api/invoices/object.md#invoice_object-hosted_invoice_url) to the associated [Hosted Invoice Page](https://docs.stripe.com/invoicing/hosted-invoice-page.md).
+With any finalized invoice, you can either download and send a [PDF](https://docs.stripe.com/api/invoices/object.md#invoice_object-invoice_pdf) or [link](https://docs.stripe.com/api/invoices/object.md#invoice_object-hosted_invoice_url) to the associated [hosted invoice page](https://docs.stripe.com/invoicing/hosted-invoice-page.md).
 
 ### Create a Checkout Session
 

@@ -256,7 +256,7 @@ The response includes the ID of the financial address and the US bank credential
     }
   },
   "status": "active",
-  "financial_account": identifier("financialAccountId"),
+  "financial_account": "fa_12345",
   "created": "2023-03-30T17:32:06.665Z",
   "currency": "usd"
 }

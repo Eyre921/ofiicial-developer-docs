@@ -86,7 +86,7 @@ Within an index, records are partitioned into namespaces, and all [upserts](/gui
 Namespaces are created automatically during [upsert](/guides/index-data/upsert-data). If a namespace doesn't exist, it is created implicitly.
 
 <Note>
-  [Namespaces per serverless index](/reference/api/database-limits#namespaces-per-serverless-index) vary by plan. On the Standard and Enterprise plans, Pinecone can accommodate million-scale namespaces and beyond for specific use cases. If your application requires more than 100,000 namespaces, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+  [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan. On the Standard and Enterprise plans, Pinecone can accommodate million-scale namespaces and beyond for specific use cases. If your application requires more than 100,000 namespaces, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 </Note>
 
 <img />
@@ -202,7 +202,7 @@ Pinecone's filtering language supports the following operators:
 </Note>
 
 <Note>
-  Each `$in` or `$nin` operator accepts a maximum of 10,000 values. Exceeding this limit will cause the request to fail. For more information, see [Metadata filter limits](/reference/api/database-limits#metadata-filter-limits).
+  Each `$in` or `$nin` operator accepts a maximum of 10,000 values. Exceeding this limit will cause the request to fail. For more information, see [Metadata filter limits](/reference/api/database-limits/operation-limits#metadata-filter-limits).
 </Note>
 
 For example, the following has a `"genre"` metadata field with a list of strings:

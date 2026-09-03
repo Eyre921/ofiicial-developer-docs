@@ -237,6 +237,24 @@ components:
         name: My New Guardrail
         reset_interval: monthly
       properties:
+        allowed_data_regions:
+          description: >-
+            Data regions through which requests governed by this guardrail must
+            arrive. `global` is https://openrouter.ai, `europe` is
+            https://eu.openrouter.ai, and `us` is https://us.openrouter.ai.
+            Requests arriving through any other region are rejected. `null`
+            leaves the ingress region unrestricted. When several guardrails
+            apply (workspace default, member, API key), the effective regions
+            are the intersection of every non-null value. An empty array is
+            rejected.
+          example:
+            - europe
+          items:
+            $ref: '#/components/schemas/GuardrailDataRegion'
+          minItems: 1
+          type:
+            - array
+            - 'null'
         allowed_models:
           description: Array of model identifiers (slug or canonical_slug accepted)
           example:
@@ -553,6 +571,16 @@ components:
       required:
         - error
       type: object
+    GuardrailDataRegion:
+      description: >-
+        An OpenRouter data region: `global` (https://openrouter.ai), `europe`
+        (https://eu.openrouter.ai), or `us` (https://us.openrouter.ai)
+      enum:
+        - global
+        - europe
+        - us
+      example: europe
+      type: string
     ContentFilterBuiltinEntryInput:
       description: >-
         A builtin content filter entry for create/update requests. Labels are
@@ -618,6 +646,7 @@ components:
         - 'null'
     Guardrail:
       example:
+        allowed_data_regions: null
         allowed_models: null
         allowed_providers:
           - openai
@@ -649,6 +678,22 @@ components:
         updated_at: '2025-08-24T15:45:00Z'
         workspace_id: 0df9e665-d932-5740-b2c7-b52af166bc11
       properties:
+        allowed_data_regions:
+          description: >-
+            Data regions through which requests governed by this guardrail must
+            arrive. `global` is https://openrouter.ai, `europe` is
+            https://eu.openrouter.ai, and `us` is https://us.openrouter.ai.
+            Requests arriving through any other region are rejected. `null`
+            leaves the ingress region unrestricted. When several guardrails
+            apply (workspace default, member, API key), the effective regions
+            are the intersection of every non-null value.
+          example:
+            - europe
+          items:
+            $ref: '#/components/schemas/GuardrailDataRegion'
+          type:
+            - array
+            - 'null'
         allowed_models:
           description: Array of model canonical_slugs (immutable identifiers)
           example:

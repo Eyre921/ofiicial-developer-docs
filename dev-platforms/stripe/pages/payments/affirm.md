@@ -192,21 +192,21 @@ Maximum amount: 30,000.00 USD
 | Payment option | Description | Amount range |
 | --- | --- | --- |
 | Pay in 30 | Single payment in 30 days, interest-free | USD&nbsp;35–USD&nbsp;50 |
-| Pay in 4 | 4 interest-free biweekly payments | USD&nbsp;50–USD&nbsp;700 |
+| Pay in 4 | 4 interest-free biweekly payments | USD&nbsp;50–USD&nbsp;500 |
 | Monthly installments | 3 to 36 months, which might include interest | USD&nbsp;100–USD&nbsp;30,000 |
 
 ### GB
 
 | Payment option | Description | Amount range |
 | --- | --- | --- |
-| Pay in 3 | 3 interest-free biweekly payments | GBP&nbsp;50–GBP&nbsp;700 |
+| Pay in 3 | 3 interest-free biweekly payments | GBP&nbsp;50–GBP&nbsp;500 |
 | Monthly installments | 3 to 36 months, which might include interest | GBP&nbsp;100–GBP&nbsp;30,000 |
 
 ### CA
 
 | Payment option | Description | Amount range |
 | --- | --- | --- |
-| Pay in 4 | 4 interest-free biweekly payments | CAD&nbsp;50–CAD&nbsp;700 |
+| Pay in 4 | 4 interest-free biweekly payments | CAD&nbsp;50–CAD&nbsp;500 |
 | Monthly installments | 3 to 36 months, which might include interest | CAD&nbsp;100–CAD&nbsp;30,000 |
 
 ### Financing packages 

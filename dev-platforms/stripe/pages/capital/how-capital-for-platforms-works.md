@@ -85,7 +85,6 @@ curl https://docs.stripe.com/preview/register \
 ### Additional eligibility considerations
 
 - The person applying and guaranteeing the offer must be a representative, controller, or director with at least 25% ownership, be at least 18 years old, and be able to provide an address in Australia.
-- Applicants who are directors and beneficial owners of the business must provide a personal guarantee as part of the financing application.
 - Capital isn’t available to connected accounts based in New Zealand.
 
 ### Types of financing offers

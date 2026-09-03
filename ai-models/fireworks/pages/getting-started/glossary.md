@@ -41,10 +41,10 @@ Pay-per-token inference with no deployment management. Requests are routed globa
 A deployment you provision and manage, with reserved GPU capacity. Gives you control over model, hardware, placement, autoscaling, and addon support. Created with `firectl deployment create`.
 
 **Multi-region deployment**\
-A dedicated deployment configured to run replicas across multiple datacenters. Enabled with `--region GLOBAL` (or a specific mega-region: `US`, `EUROPE`, `APAC`) on `firectl deployment create`. Increases availability and throughput.
+A dedicated deployment configured to run replicas across multiple datacenters. Enabled with `--region GLOBAL` (or a specific mega-region: `US`, `EUROPE`, `APAC`) on `firectl deployment create`. Increases availability and throughput. New accounts receive quota for **GLOBAL** only; other placements require quota granted by Fireworks.
 
 **Placement**\
-Controls which regions a dedicated deployment is allowed to schedule replicas in. On the CLI, set at creation time with **`--region`** (`GLOBAL`, `US`, `EUROPE`, `APAC`, or a specific region id). Cannot be changed after deployment creation — recreate the deployment to change placement. If not specified, the deployment pins to a single datacenter at creation time.
+Controls which regions a dedicated deployment is allowed to schedule replicas in. On the CLI, set at creation time with **`--region`** (`GLOBAL`, `US`, `EUROPE`, `APAC`, or a specific region id). Cannot be changed after deployment creation — recreate the deployment to change placement. If not specified, the deployment pins to a single datacenter at creation time. Only **GLOBAL** has default quota; non-GLOBAL placements require quota granted by Fireworks.
 
 **Deployment shape**\
 The hardware and precision configuration used when creating a dedicated deployment. Shapes encode GPU type, count, precision (BF16, FP8, FP4), and other settings. Specified with `--deployment-shape`. Some shapes do not support LoRA addons.

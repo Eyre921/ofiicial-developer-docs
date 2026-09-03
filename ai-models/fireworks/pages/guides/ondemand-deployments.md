@@ -42,6 +42,8 @@ firectl deployment create accounts/fireworks/models/<MODEL_NAME> --wait
   firectl deployment create accounts/fireworks/models/<MODEL_NAME> --region EUROPE
   firectl deployment create accounts/fireworks/models/<MODEL_NAME> --region APAC
   ```
+
+  Only **GLOBAL** is available by default. Quota for **US**, **EUROPE**, **APAC**, and single regions must be granted by Fireworks — contact [sales@fireworks.ai](mailto:sales@fireworks.ai). Deploying with a region you have no quota for is rejected at creation. See [Regions](/deployments/regions#quotas) for details.
 </Warning>
 
 ### Check current placement

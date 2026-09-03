@@ -2931,7 +2931,7 @@ Supported multi-regions: `GLOBAL`, `US`, `EUROPE`, `APAC`.
 
 ## Single region availability
 
-Single regions are concrete locations (e.g. `US_IOWA_1`, `EU_FRANKFURT_1`) where your deployment can run. We have the single regions listed below available; we recommend multi-region for most users because of its advantages (elastic scaling, higher reliability). If you have a specific need for a single region, contact [Fireworks](mailto:inquiries@fireworks.ai) to request it. The table below shows which **Fireworks-managed** single regions are available and what hardware is offered in each.
+Single regions are concrete locations (e.g. `US_IOWA_1`, `EU_FRANKFURT_1`) where your deployment can run. We have the single regions listed below available; we recommend multi-region for most users because of its advantages (elastic scaling, higher reliability). If you have a specific need for a single region, contact [Fireworks](mailto:sales@fireworks.ai) to request it. The table below shows which **Fireworks-managed** single regions are available and what hardware is offered in each.
 
 | **Region**             | **Accelerator Type(s)**                                                           |
 | ---------------------- | --------------------------------------------------------------------------------- |
@@ -2977,13 +2977,15 @@ Updating the single region for a deployment in-place is not supported. To move a
 
 ## Quotas
 
-Quota is granted at the **multi-region** level for new users. By default, all users receive quota for **GLOBAL** multi-region. For specific single region quota, please contact Fireworks. To view your current quotas, run:
+New accounts receive GPU quota for the **GLOBAL** multi-region only. Quota is scoped per placement (multi-region or single region). The **US**, **EUROPE**, and **APAC** multi-regions and all single regions start at zero quota and must be granted by Fireworks. If you deploy with a `--region` you have no quota for, creation is rejected even though that region is generally available.
+
+To view your current quotas, run:
 
 ```
 firectl quota list
 ```
 
-To use single regions that are not generally available (see the table above), or to request additional multi-region quota, contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai). To discuss Bring Your Own Cluster (BYOC) deployments, see the [BYOC overview](/ecosystem/integrations/byoc/overview).
+To use single regions that are not generally available (see the table above), or to request quota for additional placements (multi-region or single region), contact [sales@fireworks.ai](mailto:sales@fireworks.ai). To discuss Bring Your Own Cluster (BYOC) deployments, see the [BYOC overview](/ecosystem/integrations/byoc/overview).
 
 
 # Reserved capacity
@@ -11051,11 +11053,38 @@ ready = (
 
 ### Checkpoint swap behavior
 
+When you signal a new snapshot, Fireworks has to eventually swap weights on every replica. What happens to **in-flight** and **new** requests during the swap depends on which transition mode the deployment is configured with.
+
+<Info>
+  Both modes behave the same way for checkpoint download — it always starts immediately after the signal, in parallel with ongoing inference. The modes differ in how they handle the actual weight-swap moment.
+
+  Set the mode at deployment create time with `--hot-load-transition-type ASYNC` or `SYNC` (default `ASYNC`). See [Create a hot-load deployment](#1-create-a-hot-load-deployment).
+</Info>
+
 A swap changes which policy serves new rollout work. Wait for every replica to report the requested identity for strict on-policy collection. For bounded off-policy collection, record the policy version returned by inference and apply the reviewed admission rule before training on that rollout.
 
-#### Async transition (recommended default for RL)
+#### Async transition (recommended, default for RL)
 
-Async transition keeps rollout capacity available while replicas adopt the new snapshot. Existing generations may finish across the transition, so preserve policy-version metadata and validate trainer/inference numerics. Use a synchronized transition only when the workflow requires every in-flight generation to finish on one policy version.
+This mode is similar in spirit to [PipelineRL](https://arxiv.org/pdf/2509.19128):
+
+* **In-flight requests**: paused for the duration of the swap, then resumed on the same HTTP connection. The active turn keeps its current KV state, so the request continues streaming instead of restarting.
+* **New requests**: queued until the swap finishes. Clients observe this as elevated time-to-first-token (TTFT).
+* **No 4xx or 5xx** is returned for the swap itself. Specify the `x-fireworks-hot-load-drain-timeout` request header in seconds (default `90`) to receive HTTP `425 Too Early` once the timeout expires.
+
+<img />
+
+<img />
+
+Use a synchronized transition only when the workflow requires every in-flight generation to finish on one policy version.
+
+#### Synchronous transition
+
+* **In-flight requests**: the server waits for them to complete on the *old* weights before swapping.
+* **New requests** arriving during the swap are rejected with HTTP `425 Too Early`. Your rollout client should back off and retry, ideally using the same session-affinity key so it lands on a replica that has already finished the swap.
+
+<img />
+
+<img />
 
 ### When to start rollouts
 
@@ -15651,10 +15680,10 @@ Pay-per-token inference with no deployment management. Requests are routed globa
 A deployment you provision and manage, with reserved GPU capacity. Gives you control over model, hardware, placement, autoscaling, and addon support. Created with `firectl deployment create`.
 
 **Multi-region deployment**\
-A dedicated deployment configured to run replicas across multiple datacenters. Enabled with `--region GLOBAL` (or a specific mega-region: `US`, `EUROPE`, `APAC`) on `firectl deployment create`. Increases availability and throughput.
+A dedicated deployment configured to run replicas across multiple datacenters. Enabled with `--region GLOBAL` (or a specific mega-region: `US`, `EUROPE`, `APAC`) on `firectl deployment create`. Increases availability and throughput. New accounts receive quota for **GLOBAL** only; other placements require quota granted by Fireworks.
 
 **Placement**\
-Controls which regions a dedicated deployment is allowed to schedule replicas in. On the CLI, set at creation time with **`--region`** (`GLOBAL`, `US`, `EUROPE`, `APAC`, or a specific region id). Cannot be changed after deployment creation — recreate the deployment to change placement. If not specified, the deployment pins to a single datacenter at creation time.
+Controls which regions a dedicated deployment is allowed to schedule replicas in. On the CLI, set at creation time with **`--region`** (`GLOBAL`, `US`, `EUROPE`, `APAC`, or a specific region id). Cannot be changed after deployment creation — recreate the deployment to change placement. If not specified, the deployment pins to a single datacenter at creation time. Only **GLOBAL** has default quota; non-GLOBAL placements require quota granted by Fireworks.
 
 **Deployment shape**\
 The hardware and precision configuration used when creating a dedicated deployment. Shapes encode GPU type, count, precision (BF16, FP8, FP4), and other settings. Specified with `--deployment-shape`. Some shapes do not support LoRA addons.
@@ -18469,6 +18498,8 @@ firectl deployment create accounts/fireworks/models/<MODEL_NAME> --wait
   firectl deployment create accounts/fireworks/models/<MODEL_NAME> --region EUROPE
   firectl deployment create accounts/fireworks/models/<MODEL_NAME> --region APAC
   ```
+
+  Only **GLOBAL** is available by default. Quota for **US**, **EUROPE**, **APAC**, and single regions must be granted by Fireworks — contact [sales@fireworks.ai](mailto:sales@fireworks.ai). Deploying with a region you have no quota for is rejected at creation. See [Regions](/deployments/regions#quotas) for details.
 </Warning>
 
 ### Check current placement
@@ -20835,17 +20866,18 @@ When usage reaches 100% of the limit, all API requests pause automatically acros
 
 ### On-demand deployment quotas
 
-On-demand deployments have GPU quotas instead of rate limits:
+On-demand deployments have GPU quotas instead of rate limits. GPU quota is scoped per placement (multi-region or single region). The defaults below apply to the **GLOBAL** multi-region only. For other placements, see [Regions](/deployments/regions).
 
-| GPU Type            | Default Quota |
-| ------------------- | ------------- |
-| Nvidia A100         | 8 GPUs        |
-| Nvidia H100         | 8 GPUs        |
-| Nvidia H200         | 8 GPUs        |
-| Nvidia B200         | 8 GPUs        |
-| Nvidia B300         | 8 GPUs        |
-| AMD MI325X / MI350X | 8 GPUs        |
-| LoRAs (on-demand)   | 100           |
+| GPU Type            | Default Quota (GLOBAL) |
+| ------------------- | ---------------------- |
+| Nvidia H100         | 16 GPUs                |
+| Nvidia H200         | 16 GPUs                |
+| Nvidia B200         | 16 GPUs                |
+| Nvidia B300         | 16 GPUs                |
+| Nvidia GB300        | 0 GPUs                 |
+| Nvidia A100         | 0 GPUs                 |
+| AMD MI325X / MI350X | 0 GPUs                 |
+| LoRAs (on-demand)   | 100                    |
 
 <Tip>
   Need more GPUs? [Contact us](https://fireworks.ai/company/contact-us) to request a quota increase.
@@ -22507,7 +22539,7 @@ Within one already-running HTTP stream, the session ID is not what preserves act
 
 If your rollout traffic hits a hot-load deployment, a new checkpoint can arrive mid-rollout. What happens to your requests depends on the deployment's configured transition mode:
 
-* **Async transition (recommended for RL):** in-flight requests pause then resume on the same HTTP connection using the new weights. The active turn keeps its current KV state, so it continues rather than restarting. New requests queue up. You see elevated TTFT but no errors.
+* **Async transition (recommended for RL):** in-flight requests pause then resume on the same HTTP connection using the new weights. The active turn keeps its current KV state, so it continues rather than restarting. New requests queue up. You see elevated TTFT and no swap errors unless `x-fireworks-hot-load-drain-timeout` expires (HTTP `425 Too Early`, default 90s).
 * **Synchronous transition:** in-flight requests finish on the old weights; new requests get HTTP `425 Too Early` until the swap is done. Your client should retry with back-off, ideally keeping the same session-affinity key so it lands on a replica that has already finished the swap.
 
 See [Checkpoint-swap behavior](/fine-tuning/rl-rollout-integration#checkpoint-swap-behavior) for the full hot-load reference.

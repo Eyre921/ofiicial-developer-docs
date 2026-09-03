@@ -71,11 +71,11 @@ To get started, you'll need a Pinecone account and API key.
 
 If you're new to Pinecone, sign up at [app.pinecone.io](https://app.pinecone.io) and choose a plan:
 
-* [Starter plan](https://pinecone.io/pricing/) (free): Free access to most features, but you're limited to one cloud region and need to stay under Starter plan [limits](/reference/api/database-limits).
+* [Starter plan](https://pinecone.io/pricing/) (free): Free access to most features, but you're limited to one cloud region and need to stay under Starter plan [limits](/reference/api/database-limits/object-limits).
 
 * [Builder plan](https://pinecone.io/pricing/) (\$20/month): Higher quotas than Starter and predictable flat pricing with no usage overages, plus the ability to create indexes in any supported cloud region. Ideal for small production apps.
 
-* [Standard plan trial](/guides/organizations/manage-billing/standard-trial): 21 days and \$300 in credits with access to Standard plan [features](https://www.pinecone.io/pricing/) and [higher limits](/reference/api/database-limits) that let you test Pinecone at scale.
+* [Standard plan trial](/guides/organizations/manage-billing/standard-trial): 21 days and \$300 in credits with access to Standard plan [features](https://www.pinecone.io/pricing/) and [higher limits](/reference/api/database-limits/object-limits) that let you test Pinecone at scale.
 
 <Note>
   If you're already on a Starter or Builder plan, you can activate a Standard plan trial at any time (one trial per organization). From Starter, you can also [upgrade to Builder](/guides/organizations/manage-billing/upgrade-billing-plan).

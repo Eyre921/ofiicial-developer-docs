@@ -28,7 +28,7 @@ The Builder, Standard, and Enterprise [pricing plans](https://www.pinecone.io/pr
 | Standard   | \$50/month        |
 | Enterprise | \$500/month       |
 
-On the Builder plan, the monthly minimum is a flat fee that covers included usage; additional usage beyond [Builder limits](/reference/api/database-limits) is blocked rather than billed. On the Standard and Enterprise plans, customers are charged for what they use each month beyond the monthly minimum.
+On the Builder plan, the monthly minimum is a flat fee that covers included usage; additional usage beyond [Builder limits](/reference/api/database-limits/rate-limits#monthly-usage-limits) is blocked rather than billed. On the Standard and Enterprise plans, customers are charged for what they use each month beyond the monthly minimum.
 
 The minimum is a commitment you grow into rather than an extra charge. Once your usage exceeds the minimum, you pay only for what you use.
 

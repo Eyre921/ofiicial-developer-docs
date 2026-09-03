@@ -12,7 +12,7 @@ The **End Call** tool is added to agents created in the ElevenLabs dashboard by 
 agents created via API or SDK, if you would like to enable the End Call tool, you must add it
 manually as a system tool in your agent configuration. [See API Implementation below](#api-implementation) for details.
 
-![End call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f260bfd4e43f7fb0374ce12d2ed984efb946a8ca9ebaa1c2d4b3e6d5f52a7851/assets/images/conversational-ai/end-call-tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T233205Z&X-Amz-Expires=604800&X-Amz-Signature=0e7d8e8e8f9c443d51ea518394a36bcde21fcb635794208b5b9b3d8b24b6a370&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![End call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f260bfd4e43f7fb0374ce12d2ed984efb946a8ca9ebaa1c2d4b3e6d5f52a7851/assets/images/conversational-ai/end-call-tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260903%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260903T110415Z&X-Amz-Expires=604800&X-Amz-Signature=0c2e0650bc2bac951c708dab08ecc47b42ec9734afd7f4e0dd52c5c052b938d9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 

@@ -73,13 +73,6 @@ import * as Sentry from "<sdk-package-name>";
 Sentry.init({
   dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
 
-  dataCollection: {
-    // To disable sending user data and HTTP bodies, uncomment the lines below. For more info visit:
-    // https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection
-    // userInfo: false,
-    // httpBodies: [],
-  },
-
   // Alternatively, use `process.env.npm_package_version` for a dynamic release version
   // if your build tool supports it.
   release: "my-project-name@2.3.12",
@@ -133,13 +126,6 @@ Sentry.init({
   window.sentryOnLoad = function () {
     Sentry.init({
       dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-
-      dataCollection: {
-        // To disable sending user data and HTTP bodies, uncomment the lines below. For more info visit:
-        // https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection
-        // userInfo: false,
-        // httpBodies: [],
-      },
 
       // Alternatively, use `process.env.npm_package_version` for a dynamic release version
       // if your build tool supports it.
@@ -199,13 +185,6 @@ Sentry.init({
 <script>
   Sentry.init({
     dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-
-    dataCollection: {
-      // To disable sending user data and HTTP bodies, uncomment the lines below. For more info visit:
-      // https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection
-      // userInfo: false,
-      // httpBodies: [],
-    },
 
     // Alternatively, use `process.env.npm_package_version` for a dynamic release version
     // if your build tool supports it.
@@ -269,6 +248,24 @@ This will send all events to the `tunnel` endpoint. However, the events need to 
 Sentry.init({
   dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
   tunnel: "/tunnel",
+});
+```
+
+### [Control the Data You Send to Sentry (Optional)](https://docs.sentry.io/platforms/javascript.md#control-the-data-you-send-to-sentry-optional)
+
+By default, the SDK sends user identity data (IP address, ID, and similar) and other data like HTTP bodies and URL query parameters. This will give you rich debugging context.
+
+The SDK always filters sensitive values whose keys match a built-in denylist, such as `auth` or `password`, and sends `[Filtered]` instead.
+
+To send less data, turn off the categories you don't need in the `dataCollection` option. For the full list of categories and their defaults, [see the `dataCollection` options](https://docs.sentry.io/platforms/javascript/configuration/options.md#dataCollection).
+
+```javascript
+Sentry.init({
+  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+  dataCollection: {
+    userInfo: false,
+    // other categories
+  },
 });
 ```
 

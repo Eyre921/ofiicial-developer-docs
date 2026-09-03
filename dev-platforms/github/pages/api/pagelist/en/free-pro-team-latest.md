@@ -1808,6 +1808,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/delegate-tasks-to-cca
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/browse-issues-prs-gists
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/roll-back-changes
+/en/copilot/how-tos/copilot-cli/use-copilot-cli/work-with-multiple-sessions
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/invoke-custom-agents
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/steer-agents
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/steer-remotely

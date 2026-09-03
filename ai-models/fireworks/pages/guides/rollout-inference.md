@@ -141,7 +141,7 @@ Within one already-running HTTP stream, the session ID is not what preserves act
 
 If your rollout traffic hits a hot-load deployment, a new checkpoint can arrive mid-rollout. What happens to your requests depends on the deployment's configured transition mode:
 
-* **Async transition (recommended for RL):** in-flight requests pause then resume on the same HTTP connection using the new weights. The active turn keeps its current KV state, so it continues rather than restarting. New requests queue up. You see elevated TTFT but no errors.
+* **Async transition (recommended for RL):** in-flight requests pause then resume on the same HTTP connection using the new weights. The active turn keeps its current KV state, so it continues rather than restarting. New requests queue up. You see elevated TTFT and no swap errors unless `x-fireworks-hot-load-drain-timeout` expires (HTTP `425 Too Early`, default 90s).
 * **Synchronous transition:** in-flight requests finish on the old weights; new requests get HTTP `425 Too Early` until the swap is done. Your client should retry with back-off, ideally keeping the same session-affinity key so it lands on a replica that has already finished the swap.
 
 See [Checkpoint-swap behavior](/fine-tuning/rl-rollout-integration#checkpoint-swap-behavior) for the full hot-load reference.

@@ -1,13 +1,15 @@
 # dev-platforms/upstash 文档索引
 
-> 共 910 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 912 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
 
 - `docs/agent-resources/cli` — [CLI](pages/docs/agent-resources/cli.md) · [原文](https://upstash.com/docs/agent-resources/cli)
+- `docs/agent-resources/clients` — [Install by agent](pages/docs/agent-resources/clients.md) · [原文](https://upstash.com/docs/agent-resources/clients)
 - `docs/agent-resources/llms-txt` — [llms.txt](pages/docs/agent-resources/llms-txt.md) · [原文](https://upstash.com/docs/agent-resources/llms-txt)
 - `docs/agent-resources/mcp` — [MCP Server](pages/docs/agent-resources/mcp.md) · [原文](https://upstash.com/docs/agent-resources/mcp)
+- `docs/agent-resources/overview` — [AI Tools](pages/docs/agent-resources/overview.md) · [原文](https://upstash.com/docs/agent-resources/overview)
 - `docs/agent-resources/skills` — [Skills](pages/docs/agent-resources/skills.md) · [原文](https://upstash.com/docs/agent-resources/skills)
 - `docs/api-reference/qstash/disable-production-pack` — [Disable Production Pack](pages/docs/api-reference/qstash/disable-production-pack.md) · [原文](https://upstash.com/docs/api-reference/qstash/disable-production-pack)
 - `docs/api-reference/qstash/enable-production-pack` — [Enable Production Pack](pages/docs/api-reference/qstash/enable-production-pack.md) · [原文](https://upstash.com/docs/api-reference/qstash/enable-production-pack)

@@ -212,7 +212,7 @@ ngrok http 5000
 
 Copy the ngrok domain (without https\://) to use in your environment variables.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/830a701ecee4b2bd32f44a891806a91e00f27dcf263c5917fa20a91a3353d6a1/assets/images/cookbooks/ngrok.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T233247Z&X-Amz-Expires=604800&X-Amz-Signature=853fda05beb41980d0142ce80901cc265958a06aa8390bf16bcfeea8ac555874&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/830a701ecee4b2bd32f44a891806a91e00f27dcf263c5917fa20a91a3353d6a1/assets/images/cookbooks/ngrok.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260903%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260903T100019Z&X-Amz-Expires=604800&X-Amz-Signature=bbfc526eda29bff60640246ba34557e381f1ef2d787ec9833a2452f8ca6d588f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Update your environment variables
 
@@ -240,7 +240,7 @@ In the "A call comes in" section, enter the full URL to your application (make s
 
 E.g. https\://**\*\*\***&#x6E;grok.app/call/incoming
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8f57f550bca8ac451980d98482ff5877c4f8fac30035e712cd0375a6527686ff/assets/images/cookbooks/twilio.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260902%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260902T233247Z&X-Amz-Expires=604800&X-Amz-Signature=20c310d5470f66189ed7b7a4b663af2bad248770409b550ccfff1241c15a0f68&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8f57f550bca8ac451980d98482ff5877c4f8fac30035e712cd0375a6527686ff/assets/images/cookbooks/twilio.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260903%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260903T100019Z&X-Amz-Expires=604800&X-Amz-Signature=a9594335aea80938c106d6eb902aae6f943e32aafcb13d31c20904f7a24d603d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Make a phone call
 

@@ -53997,6 +53997,50 @@ Call the number.
 
 ## Next steps
 
+Every call is stored as a **session**. List them, newest first:
+
+```bash
+curl "https://agents.assemblyai.com/v1/sessions?limit=5" \
+  -H "Authorization: $ASSEMBLYAI_API_KEY"
+```
+
+```json
+{
+  "sessions": [
+    {
+      "id": "sess_9a648a2ab75747a9a597ba046ced3e13",
+      "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
+      "status": "completed",
+      "duration_seconds": 42.6,
+      "created_at": "2026-07-14T18:04:27.607110Z",
+      "ended_at": "2026-07-14T18:05:10.204981Z"
+    }
+  ],
+  "has_more": false
+}
+```
+
+Fetch one by `id` to get its `artifacts`: pre-signed download URLs for the **audio** recording (OGG/Opus), the **timeline** (the conversation as JSON, each turn pairing `user_transcript` with `agent_text`), and recording **metadata**:
+
+```bash
+curl "https://agents.assemblyai.com/v1/sessions/$SESSION_ID" \
+  -H "Authorization: $ASSEMBLYAI_API_KEY"
+```
+
+```json
+{
+  "id": "sess_9a648a2ab75747a9a597ba046ced3e13",
+  "status": "completed",
+  "artifacts": [
+    { "type": "audio", "url": "https://s3.amazonaws.com/...", "content_type": "audio/ogg" },
+    { "type": "timeline", "url": "https://s3.amazonaws.com/...", "content_type": "application/json" },
+    { "type": "metadata", "url": "https://s3.amazonaws.com/...", "content_type": "application/json" }
+  ]
+}
+```
+
+Download each artifact straight from its `url` with no `Authorization` header. The URLs expire after a short TTL, so store the session `id` and re-fetch for fresh links. See [Recordings & transcripts](/voice-agents/voice-agent-api/session-history) for pagination, the full timeline schema, and parsing code.
+
 Every file in `agents/` is the request body for [`POST /v1/agents`](/voice-agents/voice-agent-api/api-spec/create-agent), sent unchanged. The starter agent is four fields:
 
 ```json agents/minimal.jsonc
@@ -57306,7 +57350,7 @@ console.log(data);
 | Field                         | Type   | Required | Notes                                                                       |
 | ----------------------------- | ------ | -------- | --------------------------------------------------------------------------- |
 | `input.voice_focus`           | string | No       | `near-field` (default) or `far-field`.                                      |
-| `input.voice_focus_threshold` | number | No       | `0.0` to `1.0`, default `0.7`. Higher suppresses more aggressively. Requires `voice_focus`. |
+| `input.voice_focus_threshold` | number | No       | `0.0` to `1.0`, default `0.85`. Higher suppresses more aggressively. Requires `voice_focus`. |
 
 Voice Focus is applied when the speech-to-text connection opens, so set it at agent-create or connect time. For how the models and threshold behave under the hood, see [Voice Focus](/streaming/voice-focus) in the Streaming docs.
 
@@ -58635,7 +58679,7 @@ The `session` object carries the same fields as a stored agent. Each has a dedic
 - **`input.transcription_mode`**: speech-to-text speed vs. accuracy: `balanced` (default), `min_latency`, or `max_accuracy`. Updatable mid-session. See [Turn-taking & interruptions](/voice-agents/voice-agent-api/turn-detection-and-interruptions#transcription-mode).
 - **`input.transcription_prompt`**: a prompt that biases transcription toward expected vocabulary (max 1750 characters). Updatable mid-session.
 - **`input.language_codes`**: declare the spoken language(s); omit for automatic detection. Applied on the next speech-to-text connect.
-- **`input.voice_focus` / `input.voice_focus_threshold`**: noise-suppression model (`near-field`, the default, or `far-field`) and strength (`0.0` to `1.0`, default `0.7`, requires `voice_focus`). Set at connect.
+- **`input.voice_focus` / `input.voice_focus_threshold`**: noise-suppression model (`near-field`, the default, or `far-field`) and strength (`0.0` to `1.0`, default `0.85`, requires `voice_focus`). Set at connect.
 - **`tools`**: actions the agent can call, each optionally with `response_instructions` (`success`/`error` guidance the agent follows after the call). See [Add tools](/voice-agents/voice-agent-api/tools/overview).
 
 ---
@@ -58761,7 +58805,7 @@ All fields are optional. Include only what you want to set or change. After `ses
 | `session.input.transcription_prompt`   | string  | Prompt that biases transcription (max 1750 chars). Mutable. |
 | `session.input.language_codes`         | array   | Declare the spoken language(s); omit for automatic detection. Applied on the next STT connect. |
 | `session.input.voice_focus`            | string  | Noise-suppression model: `near-field` (default) or `far-field`. Set at connect. |
-| `session.input.voice_focus_threshold`  | number  | Noise-suppression strength, `0.0` to `1.0` (default `0.7`); requires `voice_focus`. Set at connect. |
+| `session.input.voice_focus_threshold`  | number  | Noise-suppression strength, `0.0` to `1.0` (default `0.85`); requires `voice_focus`. Set at connect. |
 | `session.output.voice`                 | string  | The voice used for the agent's speech. Immutable after the first update. See [Voices](/voice-agents/voice-agent-api/voices) |
 | `session.output.format`                | object  | Output audio format (`encoding`). Immutable after the first update. See [Audio format](/voice-agents/voice-agent-api/audio-format) |
 | `session.output.volume`                | number  | Playback volume, `0` (silent) to `100` (loudest). Mutable mid-session. See [Output volume](/voice-agents/voice-agent-api/volume) |

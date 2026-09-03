@@ -957,10 +957,10 @@ client = stripe.StripeClient('<<YOUR_SECRET_KEY>>')
         'customer': checkout_session.customer,
         'return_url': return_url,
     })
-    portalSession = stripe.billing_portal.Session.create(
-        customer_account=checkout_session.customer_account,
-        return_url=return_url,
-    )
+    portalSession = client.v1.billing_portal.sessions.create(params={
+        'customer_account': checkout_session.customer_account,
+        'return_url': return_url,
+    })
     return redirect(portalSession.url, code=303)
 @app.route('/webhook', methods=['POST'])
 def webhook_received():

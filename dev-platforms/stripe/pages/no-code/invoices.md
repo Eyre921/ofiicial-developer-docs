@@ -8,7 +8,7 @@ path: no-code/invoices
 
 Send an invoice your customers can pay online.
 
-- **Compatible with:** Customer portal, Hosted Invoice Page
+- **Compatible with:** Customer portal, hosted invoice page
 - **Requires:** Stripe account
 - **Good for:** Professional services, e-commerce businesses, B2B businesses
 - **Pricing:** [Pay-as-you-go](https://stripe.com/pricing), [Stripe Billing pricing](https://stripe.com/billing/pricing) for recurring payments
@@ -16,9 +16,9 @@ Send an invoice your customers can pay online.
 Automatically charge your customer’s payment method on file, or email them the *invoice* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice) with or without a link to a payment page. You can also send the invoice or payment page link manually.
 
 > To learn about managing subscriptions and recurring revenue, see the [Subscriptions](https://docs.stripe.com/billing.md) docs.
-![Hosted Invoice Page](https://b.stripecdn.com/docs-statics-srv/assets/hosted-invoice-page-guide.df3cc5a1e4180c338269aacdfa792180.png)
+![Hosted invoice page](https://b.stripecdn.com/docs-statics-srv/assets/hosted-invoice-page-guide.df3cc5a1e4180c338269aacdfa792180.png)
 
-Hosted Invoice Page
+Hosted invoice page
 ![Invoice PDF](https://b.stripecdn.com/docs-statics-srv/assets/invoice-pdf-guide.d79c407ca08ee4b14dc0519fb3772309.png)
 
 Invoice PDF
@@ -27,7 +27,7 @@ Invoice PDF
 
 Before you start using Stripe Invoicing, help your future customers understand your products and terms of service by [adding your business details](https://dashboard.stripe.com/settings/account?support_details) and [customizing how your brand appears](https://dashboard.stripe.com/settings/branding).
 
-Customers see these business and branding details on the [Hosted Invoice Page](https://docs.stripe.com/invoicing/hosted-invoice-page.md) when they pay an invoice online. To let customers manage past invoices and their own billing information, set up the [customer portal](https://docs.stripe.com/no-code/customer-portal.md).
+Customers see these business and branding details on the [hosted invoice page](https://docs.stripe.com/invoicing/hosted-invoice-page.md) when they pay an invoice online. To let customers manage past invoices and their own billing information, set up the [customer portal](https://docs.stripe.com/no-code/customer-portal.md).
 ![Brand your business](https://b.stripecdn.com/docs-statics-srv/assets/hosted-invoice-page.79b4c18913fe9fb30f47ad8a5f062b6f.png)
 
 Brand your business

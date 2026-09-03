@@ -112,7 +112,7 @@ Keep track of changes and upgrades to the Stripe API.
 | [Adds support for new banks to FPX payments](https://docs.stripe.com/changelog/dahlia/2026-07-29/fpx-payments-new-banks.md) | Payments, Elements, Checkout | Non-breaking | api |
 | [Adds CHAPS as a supported network for funding instructions](https://docs.stripe.com/changelog/dahlia/2026-07-29/chaps-as-supported-networks.md) | Payments | Non-breaking | api |
 | [Adds the allowed payment method types parameter to Payment Intents and Setup Intents](https://docs.stripe.com/changelog/dahlia/2026-07-29/allowed-payment-method-types-parameter.md) | Payments | Non-breaking | api |
-| [Adds MB WAY support to the Hosted Invoice Page](https://docs.stripe.com/changelog/dahlia/2026-07-29/hosted-invoice-page-mb-way-support.md) | Payments | Non-breaking | api |
+| [Adds MB WAY support to the hosted invoice page](https://docs.stripe.com/changelog/dahlia/2026-07-29/hosted-invoice-page-mb-way-support.md) | Payments | Non-breaking | api |
 | [Adds card network details to the Dispute object](https://docs.stripe.com/changelog/dahlia/2026-07-29/dispute-payment-method-details-card-network.md) | Payments | Non-breaking | api |
 | [Adds the ability to list Payment Records](https://docs.stripe.com/changelog/dahlia/2026-07-29/list-payment-records.md) | Payments | Non-breaking | api |
 
@@ -1262,8 +1262,8 @@ Keep track of changes and upgrades to the Stripe API.
 | [Removes manual capture method for Interac cards](https://docs.stripe.com/changelog/basil/2025-03-31/deprecate-interac-present-manual-capture-method.md) | Payments, Terminal | Breaking | api |
 | [Payment Methods won’t allow modifying fields for Naver Pay after the object is first created](https://docs.stripe.com/changelog/basil/2025-03-31/naver-pay-payment-method.md) | Payments | Breaking | api |
 | [Partially capturing or canceling payments no longer creates a Refund](https://docs.stripe.com/changelog/basil/2025-03-31/remove-refund-from-partial-capture-and-payment-cancellation-flow.md) | Payments | Breaking | api |
-| [Adds support for Klarna in the Hosted Invoice Page](https://docs.stripe.com/changelog/basil/2025-03-31/klarna-send-invoice.md) | Billing | Non-breaking | api |
-| [Adds ability to configure saved payment methods for one-time payments on the Hosted Invoice Page](https://docs.stripe.com/changelog/basil/2025-03-31/hosted-payment-method-save.md) | Connect, Invoicing | Non-breaking | api |
+| [Adds support for Klarna in the hosted invoice page](https://docs.stripe.com/changelog/basil/2025-03-31/klarna-send-invoice.md) | Billing | Non-breaking | api |
+| [Adds ability to configure saved payment methods for one-time payments on the hosted invoice page](https://docs.stripe.com/changelog/basil/2025-03-31/hosted-payment-method-save.md) | Connect, Invoicing | Non-breaking | api |
 | [Adds support for saving and reusing Naver Pay payment methods](https://docs.stripe.com/changelog/basil/2025-03-31/naver-pay-recurring.md) | Billing, Checkout, Elements, Paymentlinks, Payments | Non-breaking | api |
 | [Adds support for the Billie local payment method](https://docs.stripe.com/changelog/basil/2025-03-31/add-billie.md) | Checkout, Connect, Elements, Paymentlinks, Payments, Sigma | Non-breaking | api |
 | [Adds support for the Satispay local payment method](https://docs.stripe.com/changelog/basil/2025-03-31/satispay-lpm.md) | Checkout, Connect, Elements, Paymentlinks, Payments, Sigma | Non-breaking | api |

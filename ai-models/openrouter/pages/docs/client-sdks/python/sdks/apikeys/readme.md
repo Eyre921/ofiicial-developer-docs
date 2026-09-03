@@ -124,7 +124,7 @@ with OpenRouter(
 
 ## create
 
-Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. Authenticate with a [management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys), or with a Connect client secret.
+Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. Authenticate with a [management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys). The optional `external` object associates the key with a partner-defined user and lookup key.
 
 ### Example Usage
 
@@ -158,6 +158,7 @@ with OpenRouter(
 | `x_open_router_categories` | *Optional\[str]*                                                                                 | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                           |                                      |
 | `creator_user_id`          | *OptionalNullable\[str]*                                                                         | :heavy\_minus\_sign: | Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific member is creating the key.                                         | user\_2dHFtVWx2n56w6HkM0000000000    |
 | `expires_at`               | [date](https://docs.python.org/3/library/datetime.html#date-objects)                             | :heavy\_minus\_sign: | Optional ISO 8601 UTC expiration timestamp. Must include seconds (YYYY-MM-DDTHH:MM:SSZ; fractional seconds allowed); minute-precision timestamps are rejected.        | 2027-12-31T23:59:59Z                 |
+| `external`                 | [Optional\[operations.External\]](../../operations/external.mdx)                                 | :heavy\_minus\_sign: | Optional partner-defined identity associated with the created API key.                                                                                                |                                      |
 | `include_byok_in_limit`    | *Optional\[bool]*                                                                                | :heavy\_minus\_sign: | Whether to include BYOK usage in the limit                                                                                                                            | true                                 |
 | `limit`                    | *OptionalNullable\[float]*                                                                       | :heavy\_minus\_sign: | Optional spending limit for the API key in USD                                                                                                                        | 50                                   |
 | `limit_reset`              | [OptionalNullable\[operations.CreateKeysLimitReset\]](../../operations/createkeyslimitreset.mdx) | :heavy\_minus\_sign: | Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday. | monthly                              |
@@ -181,7 +182,7 @@ with OpenRouter(
 
 ## delete
 
-Delete an existing API key. Authenticate with a [management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys), or with a Connect client secret. A client secret reaches only the keys that same client created; any other key responds as if it does not exist.
+Delete an existing API key. Authenticate with a [management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys).
 
 ### Example Usage
 
@@ -279,7 +280,7 @@ with OpenRouter(
 
 ## update
 
-Update an existing API key. Authenticate with a [management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys), or with a Connect client secret. A client secret reaches only the keys that same client created; any other key responds as if it does not exist.
+Update an existing API key. Authenticate with a [management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys).
 
 ### Example Usage
 

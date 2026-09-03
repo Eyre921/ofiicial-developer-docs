@@ -80,7 +80,7 @@ curl https://api.stripe.com/v1/issuing/cardholders \
   -d "billing[address][postal_code]=94111"
 ```
 
-In the US, Stripe also supports authentication through a native iOS and Android application. If you want to use this functionality, [please reach out to support](https://support.stripe.com/contact).
+In the US, Stripe also supports authentication through a native iOS and Android application. To use this functionality, [contact support](https://support.stripe.com/contact).
 
 Regardless of the authentication method used, if a cardholder can’t complete three consecutive 3DS attempts in a short period of time, it disables 3DS on their cards for 60 minutes.
 

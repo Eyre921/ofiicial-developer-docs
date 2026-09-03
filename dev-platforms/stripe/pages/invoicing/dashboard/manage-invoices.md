@@ -41,5 +41,5 @@ Under **Pending invoice items**, you can also choose to create a new invoice ite
 ## See also
 
 - [Use the Dashboard](https://docs.stripe.com/invoicing/dashboard.md)
-- [Hosted Invoice Page](https://docs.stripe.com/invoicing/hosted-invoice-page.md)
+- [Hosted invoice page](https://docs.stripe.com/invoicing/hosted-invoice-page.md)
 

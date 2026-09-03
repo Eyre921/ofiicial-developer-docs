@@ -237,7 +237,7 @@ For more information on automatic tax calculation, see [Automatically collect ta
 
 ## Net prices and taxes  
 
-You can issue invoices with line item prices that exclude inclusive tax. Tax-exclusive prices are only shown in the invoice PDF. That means, when using inclusive tax, the Hosted Invoice Page and invoice emails show tax-inclusive prices. You can define the settings for net prices in the Dashboard or API.
+You can issue invoices with line item prices that exclude inclusive tax. Tax-exclusive prices are only shown in the invoice PDF. That means, when using inclusive tax, the hosted invoice page and invoice emails show tax-inclusive prices. You can define the settings for net prices in the Dashboard or API.
 
 - **Include inclusive tax**—The invoice PDF displays line item prices including the inclusive tax. (This is the default.)
 - **Exclude tax**—The invoice PDF displays line item prices excluding tax.

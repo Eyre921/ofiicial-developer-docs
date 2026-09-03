@@ -962,7 +962,7 @@ When configuring an index, you can tag the index to help with index organization
 
 ### Set a project pod limit
 
-To control costs, [project owners](/guides/projects/understanding-projects#project-roles) can [set the maximum total number of pods](/reference/api/database-limits#pods-per-project) allowed across all pod-based indexes in a project. The default pod limit is 5.
+To control costs, [project owners](/guides/projects/understanding-projects#project-roles) can set the maximum total number of pods allowed across all pod-based indexes in a project. The default pod limit is 5.
 
 <Tabs>
   <Tab title="Pinecone console">
@@ -1012,7 +1012,7 @@ For each pod-based index, billing is determined by the per-minute price per pod 
 Pod sizes are designed for different applications, and some are more expensive than others. [Choose the appropriate pod type and size](/guides/indexes/pods/choose-a-pod-type-and-size), so you pay for the resources you need. For example, the `s1` pod type provides large storage capacity and lower overall costs with slightly higher query latencies than `p1` pods. By switching to a different pod type, you may be able to reduce costs while still getting the performance your application needs.
 
 <Note>
-  For pod-based indexes, project owners can [set limits for the total number of pods](/reference/api/database-limits#pods-per-project) across all indexes in the project. The default pod limit is 5.
+  For pod-based indexes, project owners can [set limits for the total number of pods](/guides/indexes/pods/manage-pod-based-indexes#set-a-project-pod-limit) across all indexes in the project. The default pod limit is 5.
 </Note>
 
 ## Monitor performance

@@ -29,7 +29,7 @@ The Builder plan is a flat \$20/month plan with higher quotas than Starter and n
 3. Enter your credit/debit card information.
 4. Click **Upgrade**.
 
-After upgrading, your organization is immediately on the Builder plan with the higher [Builder plan quotas](/reference/api/database-limits). If you need additional capacity or features not included in Builder, you can [upgrade to Standard or Enterprise](#upgrade-to-the-standard-or-enterprise-plan) at any time.
+After upgrading, your organization is immediately on the Builder plan with the higher [Builder plan quotas](/reference/api/database-limits/object-limits). If you need additional capacity or features not included in Builder, you can [upgrade to Standard or Enterprise](#upgrade-to-the-standard-or-enterprise-plan) at any time.
 
 <Note>
   The [Builder plan](https://www.pinecone.io/pricing/) is available with credit/debit card billing only and is not supported through cloud marketplaces.

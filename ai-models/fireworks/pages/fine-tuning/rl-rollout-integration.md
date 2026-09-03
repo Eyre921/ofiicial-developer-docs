@@ -356,11 +356,38 @@ ready = (
 
 ### Checkpoint swap behavior
 
+When you signal a new snapshot, Fireworks has to eventually swap weights on every replica. What happens to **in-flight** and **new** requests during the swap depends on which transition mode the deployment is configured with.
+
+<Info>
+  Both modes behave the same way for checkpoint download — it always starts immediately after the signal, in parallel with ongoing inference. The modes differ in how they handle the actual weight-swap moment.
+
+  Set the mode at deployment create time with `--hot-load-transition-type ASYNC` or `SYNC` (default `ASYNC`). See [Create a hot-load deployment](#1-create-a-hot-load-deployment).
+</Info>
+
 A swap changes which policy serves new rollout work. Wait for every replica to report the requested identity for strict on-policy collection. For bounded off-policy collection, record the policy version returned by inference and apply the reviewed admission rule before training on that rollout.
 
-#### Async transition (recommended default for RL)
+#### Async transition (recommended, default for RL)
 
-Async transition keeps rollout capacity available while replicas adopt the new snapshot. Existing generations may finish across the transition, so preserve policy-version metadata and validate trainer/inference numerics. Use a synchronized transition only when the workflow requires every in-flight generation to finish on one policy version.
+This mode is similar in spirit to [PipelineRL](https://arxiv.org/pdf/2509.19128):
+
+* **In-flight requests**: paused for the duration of the swap, then resumed on the same HTTP connection. The active turn keeps its current KV state, so the request continues streaming instead of restarting.
+* **New requests**: queued until the swap finishes. Clients observe this as elevated time-to-first-token (TTFT).
+* **No 4xx or 5xx** is returned for the swap itself. Specify the `x-fireworks-hot-load-drain-timeout` request header in seconds (default `90`) to receive HTTP `425 Too Early` once the timeout expires.
+
+<img />
+
+<img />
+
+Use a synchronized transition only when the workflow requires every in-flight generation to finish on one policy version.
+
+#### Synchronous transition
+
+* **In-flight requests**: the server waits for them to complete on the *old* weights before swapping.
+* **New requests** arriving during the swap are rejected with HTTP `425 Too Early`. Your rollout client should back off and retry, ideally using the same session-affinity key so it lands on a replica that has already finished the swap.
+
+<img />
+
+<img />
 
 ### When to start rollouts
 

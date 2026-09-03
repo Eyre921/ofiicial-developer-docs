@@ -19,7 +19,7 @@ If you are an [organization owner or organization manager](/guides/assistant/adm
     3. Enter a **Name**.
 
        <Note>
-         A project name can contain up to 512 characters. For more information, see [Object identifiers](/reference/api/database-limits#identifier-limits).
+         A project name can contain up to 512 characters. For more information, see [Object identifiers](/reference/api/database-limits/identifier-limits).
        </Note>
 
     4. (Optional) Tags are key-value pairs that you can use to categorize and identify the project. To add a tag, click **+ Add tag** and enter a tag key and value.
@@ -31,7 +31,7 @@ If you are an [organization owner or organization manager](/guides/assistant/adm
        To load an index with a [sample dataset](/guides/data/use-sample-datasets), click **Load sample data** and follow the prompts.
 
     <Note>
-      The number of projects per organization varies by plan—see [Projects per organization](/reference/api/database-limits#projects-per-organization). To create additional projects, [upgrade your plan](/guides/organizations/manage-billing/upgrade-billing-plan).
+      The number of projects per organization varies by plan—see [Projects per organization](/reference/api/database-limits/object-limits). To create additional projects, [upgrade your plan](/guides/organizations/manage-billing/upgrade-billing-plan).
     </Note>
   </Tab>
 

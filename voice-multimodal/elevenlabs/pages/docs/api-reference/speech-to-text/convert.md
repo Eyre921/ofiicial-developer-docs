@@ -142,7 +142,7 @@ Asynchronous request accepted
 
 ## Examples
 
-### Single channel response
+### Example_0
 
 **Request**
 
@@ -175,29 +175,38 @@ Asynchronous request accepted
 
 **SDK Code**
 
-```typescript Single channel response
+```typescript Example_0
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
-    const client = new ElevenLabsClient();
-    await client.speechToText.convert({});
+    const client = new ElevenLabsClient({
+        apiKey: "xi-api-key",
+    });
+    await client.speechToText.convert({
+        enableLogging: true,
+        token: "token",
+    });
 }
 main();
 
 ```
 
-```python Single channel response
+```python Example_0
 from elevenlabs import ElevenLabs
 
-client = ElevenLabs()
+client = ElevenLabs(
+    api_key="xi-api-key",
+)
 
 client.speech_to_text.convert(
+    enable_logging=True,
+    token="token",
     file="example_file",
 )
 
 ```
 
-```go Single channel response
+```go Example_0
 package main
 
 import (
@@ -209,12 +218,13 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/speech-to-text"
+	url := "https://api.elevenlabs.io/v1/speech-to-text?enable_logging=true&token=token"
 
 	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"additional_formats\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"cloud_storage_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"detect_speaker_roles\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarization_threshold\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarize\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_detection\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction_mode\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"keyterms\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"language_code\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nscribe_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"multichannel_output_style\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"no_verbatim\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"num_speakers\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"source_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tag_audio_events\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"temperature\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"timestamps_granularity\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_multi_channel\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_speaker_library\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_metadata\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
+	req.Header.Add("xi-api-key", "xi-api-key")
 	req.Header.Add("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
 
 	res, _ := http.DefaultClient.Do(req)
@@ -228,16 +238,17 @@ func main() {
 }
 ```
 
-```ruby Single channel response
+```ruby Example_0
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/speech-to-text")
+url = URI("https://api.elevenlabs.io/v1/speech-to-text?enable_logging=true&token=token")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
+request["xi-api-key"] = 'xi-api-key'
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
 request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"additional_formats\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"cloud_storage_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"detect_speaker_roles\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarization_threshold\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarize\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_detection\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction_mode\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"keyterms\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"language_code\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nscribe_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"multichannel_output_style\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"no_verbatim\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"num_speakers\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"source_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tag_audio_events\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"temperature\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"timestamps_granularity\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_multi_channel\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_speaker_library\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_metadata\"\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
@@ -245,23 +256,24 @@ response = http.request(request)
 puts response.read_body
 ```
 
-```java Single channel response
+```java Example_0
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/speech-to-text")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/speech-to-text?enable_logging=true&token=token")
+  .header("xi-api-key", "xi-api-key")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
   .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"additional_formats\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"cloud_storage_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"detect_speaker_roles\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarization_threshold\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarize\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_detection\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction_mode\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"keyterms\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"language_code\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nscribe_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"multichannel_output_style\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"no_verbatim\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"num_speakers\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"source_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tag_audio_events\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"temperature\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"timestamps_granularity\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_multi_channel\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_speaker_library\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_metadata\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
-```php Single channel response
+```php Example_0
 <?php
 require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/speech-to-text', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/speech-to-text?enable_logging=true&token=token', [
   'multipart' => [
     [
         'name' => 'file',
@@ -273,24 +285,31 @@ $response = $client->request('POST', 'https://api.elevenlabs.io/v1/speech-to-tex
         'contents' => 'scribe_v2'
     ]
   ]
+  'headers' => [
+    'xi-api-key' => 'xi-api-key',
+  ],
 ]);
 
 echo $response->getBody();
 ```
 
-```csharp Single channel response
+```csharp Example_0
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/speech-to-text");
+var client = new RestClient("https://api.elevenlabs.io/v1/speech-to-text?enable_logging=true&token=token");
 var request = new RestRequest(Method.POST);
+request.AddHeader("xi-api-key", "xi-api-key");
 request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"additional_formats\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"cloud_storage_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"detect_speaker_roles\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarization_threshold\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarize\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_detection\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction_mode\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"keyterms\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"language_code\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nscribe_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"multichannel_output_style\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"no_verbatim\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"num_speakers\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"source_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tag_audio_events\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"temperature\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"timestamps_granularity\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_multi_channel\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_speaker_library\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_metadata\"\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
-```swift Single channel response
+```swift Example_0
 import Foundation
 
-let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000001101001"]
+let headers = [
+  "xi-api-key": "xi-api-key",
+  "Content-Type": "multipart/form-data; boundary=---011000010111000001101001"
+]
 let parameters = [
   [
     "name": "additional_formats",
@@ -420,7 +439,7 @@ for param in parameters {
   }
 }
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/speech-to-text")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/speech-to-text?enable_logging=true&token=token")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"
@@ -440,7 +459,7 @@ let dataTask = session.dataTask(with: request as URLRequest, completionHandler: 
 dataTask.resume()
 ```
 
-### Multichannel response
+### Example_1
 
 **Request**
 
@@ -494,29 +513,38 @@ dataTask.resume()
 
 **SDK Code**
 
-```typescript Multichannel response
+```typescript Example_1
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
-    const client = new ElevenLabsClient();
-    await client.speechToText.convert({});
+    const client = new ElevenLabsClient({
+        apiKey: "xi-api-key",
+    });
+    await client.speechToText.convert({
+        enableLogging: true,
+        token: "token",
+    });
 }
 main();
 
 ```
 
-```python Multichannel response
+```python Example_1
 from elevenlabs import ElevenLabs
 
-client = ElevenLabs()
+client = ElevenLabs(
+    api_key="xi-api-key",
+)
 
 client.speech_to_text.convert(
+    enable_logging=True,
+    token="token",
     file="example_file",
 )
 
 ```
 
-```go Multichannel response
+```go Example_1
 package main
 
 import (
@@ -528,12 +556,13 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/speech-to-text"
+	url := "https://api.elevenlabs.io/v1/speech-to-text?enable_logging=true&token=token"
 
 	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"additional_formats\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"cloud_storage_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"detect_speaker_roles\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarization_threshold\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarize\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_detection\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction_mode\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"keyterms\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"language_code\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nscribe_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"multichannel_output_style\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"no_verbatim\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"num_speakers\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"source_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tag_audio_events\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"temperature\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"timestamps_granularity\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_multi_channel\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_speaker_library\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_metadata\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
+	req.Header.Add("xi-api-key", "xi-api-key")
 	req.Header.Add("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
 
 	res, _ := http.DefaultClient.Do(req)
@@ -547,16 +576,17 @@ func main() {
 }
 ```
 
-```ruby Multichannel response
+```ruby Example_1
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/speech-to-text")
+url = URI("https://api.elevenlabs.io/v1/speech-to-text?enable_logging=true&token=token")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
+request["xi-api-key"] = 'xi-api-key'
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
 request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"additional_formats\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"cloud_storage_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"detect_speaker_roles\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarization_threshold\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarize\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_detection\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction_mode\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"keyterms\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"language_code\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nscribe_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"multichannel_output_style\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"no_verbatim\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"num_speakers\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"source_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tag_audio_events\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"temperature\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"timestamps_granularity\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_multi_channel\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_speaker_library\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_metadata\"\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
@@ -564,23 +594,24 @@ response = http.request(request)
 puts response.read_body
 ```
 
-```java Multichannel response
+```java Example_1
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/speech-to-text")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/speech-to-text?enable_logging=true&token=token")
+  .header("xi-api-key", "xi-api-key")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
   .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"additional_formats\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"cloud_storage_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"detect_speaker_roles\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarization_threshold\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarize\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_detection\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction_mode\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"keyterms\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"language_code\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nscribe_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"multichannel_output_style\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"no_verbatim\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"num_speakers\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"source_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tag_audio_events\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"temperature\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"timestamps_granularity\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_multi_channel\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_speaker_library\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_metadata\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
-```php Multichannel response
+```php Example_1
 <?php
 require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/speech-to-text', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/speech-to-text?enable_logging=true&token=token', [
   'multipart' => [
     [
         'name' => 'file',
@@ -592,24 +623,31 @@ $response = $client->request('POST', 'https://api.elevenlabs.io/v1/speech-to-tex
         'contents' => 'scribe_v2'
     ]
   ]
+  'headers' => [
+    'xi-api-key' => 'xi-api-key',
+  ],
 ]);
 
 echo $response->getBody();
 ```
 
-```csharp Multichannel response
+```csharp Example_1
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/speech-to-text");
+var client = new RestClient("https://api.elevenlabs.io/v1/speech-to-text?enable_logging=true&token=token");
 var request = new RestRequest(Method.POST);
+request.AddHeader("xi-api-key", "xi-api-key");
 request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"additional_formats\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"cloud_storage_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"detect_speaker_roles\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarization_threshold\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarize\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_detection\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction_mode\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"keyterms\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"language_code\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nscribe_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"multichannel_output_style\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"no_verbatim\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"num_speakers\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"source_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tag_audio_events\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"temperature\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"timestamps_granularity\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_multi_channel\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_speaker_library\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_metadata\"\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
-```swift Multichannel response
+```swift Example_1
 import Foundation
 
-let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000001101001"]
+let headers = [
+  "xi-api-key": "xi-api-key",
+  "Content-Type": "multipart/form-data; boundary=---011000010111000001101001"
+]
 let parameters = [
   [
     "name": "additional_formats",
@@ -739,294 +777,7 @@ for param in parameters {
   }
 }
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/speech-to-text")! as URL,
-                                        cachePolicy: .useProtocolCachePolicy,
-                                    timeoutInterval: 10.0)
-request.httpMethod = "POST"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
-
-let session = URLSession.shared
-let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
-  if (error != nil) {
-    print(error as Any)
-  } else {
-    let httpResponse = response as? HTTPURLResponse
-    print(httpResponse)
-  }
-})
-
-dataTask.resume()
-```
-
-### speech_to_text_convert_example
-
-**Request**
-
-```json
-{
-  "file": "<file: <file1>>",
-  "model_id": "scribe_v2"
-}
-```
-
-**Response**
-
-```json
-{
-  "message": "Request accepted. Transcription result will be sent to the webhook.",
-  "request_id": "abc123"
-}
-```
-
-**SDK Code**
-
-```typescript speech_to_text_convert_example
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
-
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.speechToText.convert({});
-}
-main();
-
-```
-
-```python speech_to_text_convert_example
-from elevenlabs import ElevenLabs
-
-client = ElevenLabs()
-
-client.speech_to_text.convert(
-    file="example_file",
-)
-
-```
-
-```go speech_to_text_convert_example
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io"
-)
-
-func main() {
-
-	url := "https://api.elevenlabs.io/v1/speech-to-text"
-
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"additional_formats\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"cloud_storage_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"detect_speaker_roles\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarization_threshold\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarize\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_detection\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction_mode\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"keyterms\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"language_code\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nscribe_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"multichannel_output_style\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"no_verbatim\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"num_speakers\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"source_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tag_audio_events\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"temperature\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"timestamps_granularity\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_multi_channel\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_speaker_library\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_metadata\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := io.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
-
-```ruby speech_to_text_convert_example
-require 'uri'
-require 'net/http'
-
-url = URI("https://api.elevenlabs.io/v1/speech-to-text")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-
-request = Net::HTTP::Post.new(url)
-request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"additional_formats\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"cloud_storage_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"detect_speaker_roles\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarization_threshold\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarize\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_detection\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction_mode\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"keyterms\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"language_code\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nscribe_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"multichannel_output_style\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"no_verbatim\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"num_speakers\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"source_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tag_audio_events\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"temperature\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"timestamps_granularity\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_multi_channel\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_speaker_library\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_metadata\"\r\n\r\n\r\n-----011000010111000001101001--\r\n"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```java speech_to_text_convert_example
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/speech-to-text")
-  .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"additional_formats\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"cloud_storage_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"detect_speaker_roles\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarization_threshold\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarize\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_detection\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction_mode\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"keyterms\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"language_code\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nscribe_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"multichannel_output_style\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"no_verbatim\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"num_speakers\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"source_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tag_audio_events\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"temperature\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"timestamps_granularity\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_multi_channel\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_speaker_library\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_metadata\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
-  .asString();
-```
-
-```php speech_to_text_convert_example
-<?php
-require_once('vendor/autoload.php');
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/speech-to-text', [
-  'multipart' => [
-    [
-        'name' => 'file',
-        'filename' => '<file1>',
-        'contents' => null
-    ],
-    [
-        'name' => 'model_id',
-        'contents' => 'scribe_v2'
-    ]
-  ]
-]);
-
-echo $response->getBody();
-```
-
-```csharp speech_to_text_convert_example
-using RestSharp;
-
-var client = new RestClient("https://api.elevenlabs.io/v1/speech-to-text");
-var request = new RestRequest(Method.POST);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"additional_formats\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"cloud_storage_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"detect_speaker_roles\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarization_threshold\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"diarize\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_detection\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"entity_redaction_mode\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"keyterms\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"language_code\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nscribe_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"multichannel_output_style\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"no_verbatim\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"num_speakers\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"source_url\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tag_audio_events\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"temperature\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"timestamps_granularity\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_multi_channel\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_speaker_library\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"webhook_metadata\"\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
-IRestResponse response = client.Execute(request);
-```
-
-```swift speech_to_text_convert_example
-import Foundation
-
-let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000001101001"]
-let parameters = [
-  [
-    "name": "additional_formats",
-    "value": 
-  ],
-  [
-    "name": "cloud_storage_url",
-    "value": 
-  ],
-  [
-    "name": "detect_speaker_roles",
-    "value": 
-  ],
-  [
-    "name": "diarization_threshold",
-    "value": 
-  ],
-  [
-    "name": "diarize",
-    "value": 
-  ],
-  [
-    "name": "entity_detection",
-    "value": 
-  ],
-  [
-    "name": "entity_redaction",
-    "value": 
-  ],
-  [
-    "name": "entity_redaction_mode",
-    "value": 
-  ],
-  [
-    "name": "file",
-    "fileName": "<file1>"
-  ],
-  [
-    "name": "file_format",
-    "value": 
-  ],
-  [
-    "name": "keyterms",
-    "value": 
-  ],
-  [
-    "name": "language_code",
-    "value": 
-  ],
-  [
-    "name": "model_id",
-    "value": "scribe_v2"
-  ],
-  [
-    "name": "multichannel_output_style",
-    "value": 
-  ],
-  [
-    "name": "no_verbatim",
-    "value": 
-  ],
-  [
-    "name": "num_speakers",
-    "value": 
-  ],
-  [
-    "name": "seed",
-    "value": 
-  ],
-  [
-    "name": "source_url",
-    "value": 
-  ],
-  [
-    "name": "tag_audio_events",
-    "value": 
-  ],
-  [
-    "name": "temperature",
-    "value": 
-  ],
-  [
-    "name": "timestamps_granularity",
-    "value": 
-  ],
-  [
-    "name": "use_multi_channel",
-    "value": 
-  ],
-  [
-    "name": "use_speaker_library",
-    "value": 
-  ],
-  [
-    "name": "webhook",
-    "value": 
-  ],
-  [
-    "name": "webhook_id",
-    "value": 
-  ],
-  [
-    "name": "webhook_metadata",
-    "value": 
-  ]
-]
-
-let boundary = "---011000010111000001101001"
-
-var body = ""
-var error: NSError? = nil
-for param in parameters {
-  let paramName = param["name"]!
-  body += "--\(boundary)\r\n"
-  body += "Content-Disposition:form-data; name=\"\(paramName)\""
-  if let filename = param["fileName"] {
-    let contentType = param["content-type"]!
-    let fileContent = String(contentsOfFile: filename, encoding: String.Encoding.utf8)
-    if (error != nil) {
-      print(error as Any)
-    }
-    body += "; filename=\"\(filename)\"\r\n"
-    body += "Content-Type: \(contentType)\r\n\r\n"
-    body += fileContent
-  } else if let paramValue = param["value"] {
-    body += "\r\n\r\n\(paramValue)"
-  }
-}
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/speech-to-text")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/speech-to-text?enable_logging=true&token=token")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

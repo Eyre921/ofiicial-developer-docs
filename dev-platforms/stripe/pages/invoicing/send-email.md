@@ -76,9 +76,9 @@ To send a one-time invoice email reminder:
 
 1. Navigate to the [Invoices page](https://dashboard.stripe.com/test/invoices).
 2. Click the customer’s invoice > **Send invoice**. Before you resend an invoice, Stripe shows you a preview of the [hosted invoice page](https://docs.stripe.com/invoicing/hosted-invoice-page.md). To download the associated invoice PDF, click **Invoice PDF** on the **Invoice details** page.
-![Hosted Invoice Page](https://b.stripecdn.com/docs-statics-srv/assets/hosted-invoice-page-guide.df3cc5a1e4180c338269aacdfa792180.png)
+![Hosted invoice page](https://b.stripecdn.com/docs-statics-srv/assets/hosted-invoice-page-guide.df3cc5a1e4180c338269aacdfa792180.png)
 
-Hosted Invoice Page
+Hosted invoice page
 ![Invoice PDF](https://b.stripecdn.com/docs-statics-srv/assets/invoice-pdf-guide.d79c407ca08ee4b14dc0519fb3772309.png)
 
 Invoice PDF
@@ -157,6 +157,6 @@ For the customer emails sent within the last 60 days, their logs are available t
 
 - [Use the Dashboard](https://docs.stripe.com/invoicing/dashboard.md)
 - [Customize invoices](https://docs.stripe.com/invoicing/customize.md)
-- [Hosted Invoice Page](https://docs.stripe.com/invoicing/hosted-invoice-page.md)
+- [Hosted invoice page](https://docs.stripe.com/invoicing/hosted-invoice-page.md)
 - [Automate customer emails](https://docs.stripe.com/billing/revenue-recovery/customer-emails.md)
 

@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 408 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 411 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -86,7 +86,9 @@
 - `docs/api/api-reference/models/list-all-models-and-their-properties` — [List all models and their properties](pages/docs/api/api-reference/models/list-all-models-and-their-properties.md) · [原文](https://openrouter.ai/docs/api/api-reference/models/list-all-models-and-their-properties.md)
 - `docs/api/api-reference/models/list-models-filtered-by-user-provider-preferences-privacy-settings-and-guardrails` — [List models filtered by user provider preferences, privacy settings, and guardrails](pages/docs/api/api-reference/models/list-models-filtered-by-user-provider-preferences-privacy-settings-and-guardrails.md) · [原文](https://openrouter.ai/docs/api/api-reference/models/list-models-filtered-by-user-provider-preferences-privacy-settings-and-guardrails.md)
 - `docs/api/api-reference/oauth/create-authorization-code` — [Create authorization code](pages/docs/api/api-reference/oauth/create-authorization-code.md) · [原文](https://openrouter.ai/docs/api/api-reference/oauth/create-authorization-code.md)
+- `docs/api/api-reference/oauth/exchange-a-workload-identity-token` — [Exchange a workload identity token](pages/docs/api/api-reference/oauth/exchange-a-workload-identity-token.md) · [原文](https://openrouter.ai/docs/api/api-reference/oauth/exchange-a-workload-identity-token.md)
 - `docs/api/api-reference/oauth/exchange-authorization-code-for-api-key` — [Exchange authorization code for API key](pages/docs/api/api-reference/oauth/exchange-authorization-code-for-api-key.md) · [原文](https://openrouter.ai/docs/api/api-reference/oauth/exchange-authorization-code-for-api-key.md)
+- `docs/api/api-reference/oauth/openrouter-access-token-signing-keys` — [OpenRouter access token signing keys](pages/docs/api/api-reference/oauth/openrouter-access-token-signing-keys.md) · [原文](https://openrouter.ai/docs/api/api-reference/oauth/openrouter-access-token-signing-keys.md)
 - `docs/api/api-reference/observability/create-an-observability-destination` — [Create an observability destination](pages/docs/api/api-reference/observability/create-an-observability-destination.md) · [原文](https://openrouter.ai/docs/api/api-reference/observability/create-an-observability-destination.md)
 - `docs/api/api-reference/observability/delete-an-observability-destination` — [Delete an observability destination](pages/docs/api/api-reference/observability/delete-an-observability-destination.md) · [原文](https://openrouter.ai/docs/api/api-reference/observability/delete-an-observability-destination.md)
 - `docs/api/api-reference/observability/get-an-observability-destination` — [Get an observability destination](pages/docs/api/api-reference/observability/get-an-observability-destination.md) · [原文](https://openrouter.ai/docs/api/api-reference/observability/get-an-observability-destination.md)
@@ -377,6 +379,7 @@
 - `docs/guides/overview/auth/byok` — [BYOK](pages/docs/guides/overview/auth/byok.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/byok.md)
 - `docs/guides/overview/auth/management-api-keys` — [Management API Keys](pages/docs/guides/overview/auth/management-api-keys.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md)
 - `docs/guides/overview/auth/oauth` — [OAuth PKCE](pages/docs/guides/overview/auth/oauth.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/oauth.md)
+- `docs/guides/overview/auth/workload-identity-federation` — [Workload Identity Federation](pages/docs/guides/overview/auth/workload-identity-federation.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/workload-identity-federation.md)
 - `docs/guides/overview/mcp-server` — [MCP](pages/docs/guides/overview/mcp-server.md) · [原文](https://openrouter.ai/docs/guides/overview/mcp-server.md)
 - `docs/guides/overview/models` — [Models](pages/docs/guides/overview/models.md) · [原文](https://openrouter.ai/docs/guides/overview/models.md)
 - `docs/guides/overview/multimodal/audio` — [Audio](pages/docs/guides/overview/multimodal/audio.md) · [原文](https://openrouter.ai/docs/guides/overview/multimodal/audio.md)

@@ -988,7 +988,7 @@ A common anti-pattern is storing all data in a single namespace and using metada
 This approach has several drawbacks:
 
 * **Performance degradation**: Large `$in` filters increase network payload size and query latency.
-* **Hard limits**: Each `$in` or `$nin` operator is limited to 10,000 values. Exceeding this limit will cause the request to fail. See [Metadata filter limits](/reference/api/database-limits#metadata-filter-limits).
+* **Hard limits**: Each `$in` or `$nin` operator is limited to 10,000 values. Exceeding this limit will cause the request to fail. See [Metadata filter limits](/reference/api/database-limits/operation-limits#metadata-filter-limits).
 
 ### Use access control groups instead of individual IDs
 

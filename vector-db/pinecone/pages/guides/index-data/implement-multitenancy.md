@@ -15,7 +15,7 @@ This page shows you how to implement multitenancy in Pinecone using a **serverle
 </Note>
 
 <Note>
-  [Namespaces per serverless index](/reference/api/database-limits#namespaces-per-serverless-index) vary by plan. On the Standard and Enterprise plans, Pinecone can accommodate million-scale namespaces and beyond for specific use cases. If your application requires more than 100,000 namespaces, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+  [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan. On the Standard and Enterprise plans, Pinecone can accommodate million-scale namespaces and beyond for specific use cases. If your application requires more than 100,000 namespaces, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 </Note>
 
 ## How it works
@@ -810,7 +810,7 @@ When tenant isolation is not a strict requirement, or when you need to query acr
 
   * Higher query costs: Queries scan the entire namespace regardless of filters, so you pay for scanning all tenants' data even though results are filtered to one tenant.
   * Slower performance: Large namespaces increase query latency, and large filters add network overhead on the request side.
-  * Filter size limits: Each `$in` or `$nin` operator is limited to 10,000 values. Exceeding this limit will cause requests to fail. See [Metadata filter limits](/reference/api/database-limits#metadata-filter-limits).
+  * Filter size limits: Each `$in` or `$nin` operator is limited to 10,000 values. Exceeding this limit will cause requests to fail. See [Metadata filter limits](/reference/api/database-limits/operation-limits#metadata-filter-limits).
 
   Anti-pattern: Avoid filtering by large lists of individual user IDs. Instead, use access control groups (organization, project, role), namespaces, or post-filter client-side (for semantic search).
 

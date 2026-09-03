@@ -28,7 +28,7 @@ Supported multi-regions: `GLOBAL`, `US`, `EUROPE`, `APAC`.
 
 ## Single region availability
 
-Single regions are concrete locations (e.g. `US_IOWA_1`, `EU_FRANKFURT_1`) where your deployment can run. We have the single regions listed below available; we recommend multi-region for most users because of its advantages (elastic scaling, higher reliability). If you have a specific need for a single region, contact [Fireworks](mailto:inquiries@fireworks.ai) to request it. The table below shows which **Fireworks-managed** single regions are available and what hardware is offered in each.
+Single regions are concrete locations (e.g. `US_IOWA_1`, `EU_FRANKFURT_1`) where your deployment can run. We have the single regions listed below available; we recommend multi-region for most users because of its advantages (elastic scaling, higher reliability). If you have a specific need for a single region, contact [Fireworks](mailto:sales@fireworks.ai) to request it. The table below shows which **Fireworks-managed** single regions are available and what hardware is offered in each.
 
 | **Region**             | **Accelerator Type(s)**                                                           |
 | ---------------------- | --------------------------------------------------------------------------------- |
@@ -74,10 +74,12 @@ Updating the single region for a deployment in-place is not supported. To move a
 
 ## Quotas
 
-Quota is granted at the **multi-region** level for new users. By default, all users receive quota for **GLOBAL** multi-region. For specific single region quota, please contact Fireworks. To view your current quotas, run:
+New accounts receive GPU quota for the **GLOBAL** multi-region only. Quota is scoped per placement (multi-region or single region). The **US**, **EUROPE**, and **APAC** multi-regions and all single regions start at zero quota and must be granted by Fireworks. If you deploy with a `--region` you have no quota for, creation is rejected even though that region is generally available.
+
+To view your current quotas, run:
 
 ```
 firectl quota list
 ```
 
-To use single regions that are not generally available (see the table above), or to request additional multi-region quota, contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai). To discuss Bring Your Own Cluster (BYOC) deployments, see the [BYOC overview](/ecosystem/integrations/byoc/overview).
+To use single regions that are not generally available (see the table above), or to request quota for additional placements (multi-region or single region), contact [sales@fireworks.ai](mailto:sales@fireworks.ai). To discuss Bring Your Own Cluster (BYOC) deployments, see the [BYOC overview](/ecosystem/integrations/byoc/overview).

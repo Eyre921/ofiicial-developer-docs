@@ -16,7 +16,7 @@ Downgrade your Pinecone organization from a paid plan to the free Starter plan, 
 
 ## Before you downgrade
 
-When you downgrade to the Starter plan in the Pinecone console, you choose which projects, indexes, assistants, and members to keep, up to the [Starter plan limits](/reference/api/database-limits): 1 project, 5 serverless indexes in the `us-east-1` region of AWS, 5 assistants, and 2 members. Pinecone deletes everything you don't keep, along with all backups, backup schedules, and collections.
+When you downgrade to the Starter plan in the Pinecone console, you choose which projects, indexes, assistants, and members to keep, up to the [Starter plan limits](/reference/api/database-limits/object-limits): 1 project, 5 serverless indexes in the `us-east-1` region of AWS, 5 assistants, and 2 members. Pinecone deletes everything you don't keep, along with all backups, backup schedules, and collections.
 
 The downgrade doesn't reduce your data or change your configuration, so do this first:
 
@@ -33,7 +33,7 @@ The downgrade doesn't reduce your data or change your configuration, so do this 
 </Note>
 
 <Note>
-  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits), backups must be deleted, and any features not available on Builder, such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO, must be removed or stopped.
+  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits/object-limits), backups must be deleted, and any features not available on Builder, such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO, must be removed or stopped.
 </Note>
 
 ## Downgrade to the Starter plan
@@ -99,7 +99,7 @@ The downgrade process is different depending on how you are paying for Pinecone.
 
 ## Switch from Standard to Builder
 
-If you are on the **Standard plan** with credit/debit card billing and would like to switch to the [Builder plan](/reference/api/database-limits) (flat \$20/month), do the following:
+If you are on the **Standard plan** with credit/debit card billing and would like to switch to the [Builder plan](/reference/api/database-limits/object-limits) (flat \$20/month), do the following:
 
 1. Bring your organization under the [Builder plan quotas](/reference/api/database-limits). In particular, you must be within the Builder plan limits for projects, indexes, namespaces, storage, users, and monthly usage units.
 2. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).

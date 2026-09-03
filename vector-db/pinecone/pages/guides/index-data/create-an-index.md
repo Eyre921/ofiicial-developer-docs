@@ -1030,7 +1030,7 @@ The following embedding models are hosted by Pinecone.
 * Max sequence length: 507 tokens
 * Max batch size: 96 sequences
 
-For rate limits, see [Embedding tokens per minute](/reference/api/database-limits#embedding-tokens-per-minute-per-model) and [Embedding tokens per month](/reference/api/database-limits#embedding-tokens-per-month-per-model).
+For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
 
 **Parameters**
 
@@ -1054,7 +1054,7 @@ The `multilingual-e5-large` model supports the following parameters:
 * Max sequence length: 2048 tokens
 * Max batch size: 96 sequences
 
-For rate limits, see [Embedding tokens per minute](/reference/api/database-limits#embedding-tokens-per-minute-per-model) and [Embedding tokens per month](/reference/api/database-limits#embedding-tokens-per-month-per-model).
+For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
 
 **Parameters**
 
@@ -1078,7 +1078,7 @@ The `llama-text-embed-v2` model supports the following parameters:
 * Max sequence length: 512 or 2048
 * Max batch size: 96 sequences
 
-For rate limits, see [Embedding tokens per minute](/reference/api/database-limits#embedding-tokens-per-minute-per-model) and [Embedding tokens per month](/reference/api/database-limits#embedding-tokens-per-month-per-model).
+For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
 
 **Parameters**
 

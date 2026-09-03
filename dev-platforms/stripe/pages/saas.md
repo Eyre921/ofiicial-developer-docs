@@ -106,9 +106,9 @@ Customer portal
 ## Set up invoices 
 
 Invoices represent how much money a customer owes, and Stripe automatically generates one for every subscription billing period. You can also create an invoice manually for custom deals or one-time payments. When an invoice is due, Stripe tries to collect payment by either automatically charging the payment method on file, or emailing the invoice. Learn more about [invoices](https://docs.stripe.com/invoicing.md).
-![Hosted Invoice Page](https://b.stripecdn.com/docs-statics-srv/assets/hosted-invoice-page-guide.df3cc5a1e4180c338269aacdfa792180.png)
+![Hosted invoice page](https://b.stripecdn.com/docs-statics-srv/assets/hosted-invoice-page-guide.df3cc5a1e4180c338269aacdfa792180.png)
 
-Hosted Invoice Page
+Hosted invoice page
 
 ## Monitor subscription activity
 

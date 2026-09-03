@@ -41,7 +41,7 @@ Icons and logos must be in JPG or PNG format, less than 512kb in size, and equal
 
 Brand settings apply to your whole account and take effect in many places.
 
-| Setting | Emails | Checkout & Payment Links | Customer portal | Hosted Invoice Page | Invoice PDFs |
+| Setting | Emails | Checkout & Payment Links | Customer portal | Hosted invoice page | Invoice PDFs |
 | --- | --- | --- | --- | --- | --- |
 | **Icon** | Yes | Yes | Yes | Yes | Yes |
 | **Logo** | No | Yes | No | No | Yes |
@@ -101,7 +101,7 @@ Learn more about the different Invoice fields, including memo, footer, and custo
 
 ### Default memo 
 
-A memo is included in invoice PDFs, invoice emails, and the [Hosted Invoice Page](https://docs.stripe.com/invoicing/hosted-invoice-page.md). Memos are commonly used as a notes section, thanking the invoiced customer for their business, or giving more context around the invoice (such as a note from the salesperson who talked to the customer).
+A memo is included in invoice PDFs, invoice emails, and the [hosted invoice page](https://docs.stripe.com/invoicing/hosted-invoice-page.md). Memos are commonly used as a notes section, thanking the invoiced customer for their business, or giving more context around the invoice (such as a note from the salesperson who talked to the customer).
 
 You can set a default memo field for your account in [Invoice settings](https://dashboard.stripe.com/settings/billing/invoice). ​​Any new invoices use this value. You can also specify the memo on [Invoice Templates](https://docs.stripe.com/invoicing/invoice-rendering-template.md), which replaces the default memo on invoices using a template.
 
@@ -115,7 +115,7 @@ Like the memo field, you can set the default footer value in [Invoice settings](
 
 ### Default item prices 
 
-You can issue invoices with line item prices that exclude inclusive tax. Tax-exclusive prices are only shown in the invoice PDF. That means, when using inclusive tax, the Hosted Invoice Page and invoice emails show tax-inclusive prices. You can define the settings for net prices in the Dashboard or API.
+You can issue invoices with line item prices that exclude inclusive tax. Tax-exclusive prices are only shown in the invoice PDF. That means, when using inclusive tax, the hosted invoice page and invoice emails show tax-inclusive prices. You can define the settings for net prices in the Dashboard or API.
 
 - **Include inclusive tax**—The invoice PDF displays line item prices including the inclusive tax. (This is the default.)
 - **Exclude tax**—The invoice PDF displays line item prices excluding tax.
@@ -182,7 +182,7 @@ curl https://api.stripe.com/v1/invoices \
 
 ## Group line items 
 
-To help your customers better understand your invoices (including PDFs, Hosted Invoice Page, and invoice emails), categorize, and display invoice line items under different groups. You can also hide groups of line items. If some line items are excessively detailed, you can configure it so that only their group-level subtotal is visible to your customers.
+To help your customers better understand your invoices (including PDFs, hosted invoice page, and invoice emails), categorize, and display invoice line items under different groups. You can also hide groups of line items. If some line items are excessively detailed, you can configure it so that only their group-level subtotal is visible to your customers.
 
 ## Default payment terms 
 
@@ -257,6 +257,6 @@ Invoices include any public information that you specified under [Public busines
 ## See also
 
 - [Use the Dashboard](https://docs.stripe.com/invoicing/dashboard.md)
-- [Hosted Invoice Page](https://docs.stripe.com/invoicing/hosted-invoice-page.md)
+- [Hosted invoice page](https://docs.stripe.com/invoicing/hosted-invoice-page.md)
 - [Send customer emails](https://docs.stripe.com/invoicing/send-email.md)
 

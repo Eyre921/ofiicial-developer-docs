@@ -49,7 +49,7 @@ The response includes information about the initiating party. If the third party
   "id": "rdm_1234",
   "object": "v2.money_management.received_debit_mandate",
   "livemode": false,
-  "financial_account": identifier("financialAccountId"),
+  "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
   "type": "bank_transfer",
   "currency": "gbp",
   "bank_transfer": {
@@ -112,7 +112,7 @@ The result includes information about each mandate’s originator and when they 
       },
       "created": "2026-06-30T09:14:00.475Z",
       "currency": "gbp",
-      "financial_account": identifier("financialAccountId"),
+      "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
       "status": "active",
       "status_details": null,
       "status_transitions": {
@@ -168,7 +168,7 @@ curl https://api.stripe.com/v2/money_management/received_debits/{{RECEIVED_DEBIT
     "debit_dispute": null,
     "dispute_window_closes_at": "2026-05-30T01:45:00.000Z"
   },
-  "financial_account": identifier("financialAccountId"),
+  "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
   "receipt_url": "https://payments.stripe.com/transaction_receipt/session_123",
   "status": "succeeded",
   "status_details": null,

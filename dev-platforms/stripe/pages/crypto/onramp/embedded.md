@@ -183,7 +183,7 @@ onrampSession.setAppearance({
 });
 ```
 
-## Optional: Pre-populate paramaters
+## Optional: Pre-populate parameters
 
 You can pre-populate some of the parameters of the onramp session.
 
