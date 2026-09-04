@@ -12,6 +12,13 @@ path: docs/eleven-agents/customization/integrations/parallel
 
 Connect your ElevenLabs AI agents with [Parallel](https://parallel.ai) to perform web searches during conversations. Your agents can search the web, retrieve relevant content with excerpts, and ground their responses with up-to-date information.
 
+## Capabilities
+
+| Capability                | Support                                    |
+| ------------------------- | ------------------------------------------ |
+| Zero retention mode (ZRM) | Not supported                              |
+| Attachments in tools      | Not supported — tools operate on text only |
+
 ## Setup
 
 This integration uses a **Parallel API key** for authentication.

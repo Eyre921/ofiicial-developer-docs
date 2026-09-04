@@ -12,6 +12,13 @@ path: docs/eleven-agents/customization/integrations/calcom
 
 Connect your ElevenLabs AI agents with [Cal.com](https://cal.com) to manage scheduling and calendar bookings. This integration enables your agents to check availability, book appointments, cancel or reschedule meetings, and look up existing bookings through natural conversation.
 
+## Capabilities
+
+| Capability                | Support                                    |
+| ------------------------- | ------------------------------------------ |
+| Zero retention mode (ZRM) | Not supported                              |
+| Attachments in tools      | Not supported — tools operate on text only |
+
 ## Setup
 
 This integration uses a **Cal.com API key** for authentication (not an OAuth app).
@@ -126,7 +133,7 @@ Store the key in the agent's secret storage to keep it secure and accessible whe
 
 To match the expected authentication structure of Cal.com, remember to prepend the API key with `Bearer ` when creating the secret.
 
-![Tool secrets](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630/agents-platform/pages/customization/integrations/calcom/tool-secrets.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260903%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260903T113206Z&X-Amz-Expires=604800&X-Amz-Signature=f969c05bb7c128780b57d73e74d05da1ad92a074f67e3b2f5c37a59f628bd51e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Tool secrets](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630/agents-platform/pages/customization/integrations/calcom/tool-secrets.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260904%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260904T113208Z&X-Amz-Expires=604800&X-Amz-Signature=db5353fab71cf160d8096e382ef48967f2d50502eb36ef4072259969b79d72bb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add tools to the agent
 

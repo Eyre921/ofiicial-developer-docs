@@ -87,7 +87,7 @@ If you're using Laravel's Forge platform to provision and deploy your PHP applic
 
 ## [Next Steps](https://docs.sentry.io/platforms/php.md#next-steps)
 
-* Explore [practical guides](https://docs.sentry.io/guides.md) on what to monitor, log, track, and investigate after setup
+* Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 
 ## Frameworks
 

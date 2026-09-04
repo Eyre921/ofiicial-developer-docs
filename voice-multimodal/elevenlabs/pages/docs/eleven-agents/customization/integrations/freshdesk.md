@@ -15,6 +15,14 @@ Connect your ElevenLabs AI agents with Freshdesk to drive customer support workf
 * **Tools**: let an agent look up tickets and contacts, search the helpdesk, post replies and internal notes, and create new tickets while a conversation is running.
 * **Triggers**: have an agent automatically respond to new tickets or customer replies on existing tickets. Replies post back as an admin reply through the Freshdesk Conversations API, or as a private note when shadow mode is enabled.
 
+## Capabilities
+
+| Capability                | Support                                                                                    |
+| ------------------------- | ------------------------------------------------------------------------------------------ |
+| Zero retention mode (ZRM) | Not supported                                                                              |
+| Attachments in triggers   | Not supported — attachments on incoming tickets and replies are not forwarded to the agent |
+| Attachments in tools      | Not supported — tools operate on text only                                                 |
+
 ## Setup
 
 #### Get your Freshdesk API key

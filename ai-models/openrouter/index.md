@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 411 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 412 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -373,6 +373,7 @@
 - `docs/guides/features/zdr` — [Zero Data Retention](pages/docs/guides/features/zdr.md) · [原文](https://openrouter.ai/docs/guides/features/zdr.md)
 - `docs/guides/features/zero-completion-insurance` — [Zero Completion Insurance](pages/docs/guides/features/zero-completion-insurance.md) · [原文](https://openrouter.ai/docs/guides/features/zero-completion-insurance.md)
 - `docs/guides/ori/changelog` — [Changelog](pages/docs/guides/ori/changelog.md) · [原文](https://openrouter.ai/docs/guides/ori/changelog.md)
+- `docs/guides/ori/env-vars` — [Ori environment variables](pages/docs/guides/ori/env-vars.md) · [原文](https://openrouter.ai/docs/guides/ori/env-vars.md)
 - `docs/guides/ori/eval` — [Ori Eval](pages/docs/guides/ori/eval.md) · [原文](https://openrouter.ai/docs/guides/ori/eval.md)
 - `docs/guides/ori/files` — [Where Ori writes files](pages/docs/guides/ori/files.md) · [原文](https://openrouter.ai/docs/guides/ori/files.md)
 - `docs/guides/ori/harness` — [Ori Harness](pages/docs/guides/ori/harness.md) · [原文](https://openrouter.ai/docs/guides/ori/harness.md)

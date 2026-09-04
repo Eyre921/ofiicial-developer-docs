@@ -12,6 +12,21 @@ Run asynchronous batch workloads at up to 50% lower cost.
 
 The batch API runs many independent inference requests asynchronously from a single uploaded JSONL file. You get up to 50% off serverless rates and a separate rate limit pool, in exchange for a job-shaped (rather than request-shaped) workflow.
 
+You can start a batch job from the console, through the API/SDK, or with the CLI:
+
+```bash theme={null}
+# upload the file and create the batch
+tg batches submit batch_input.jsonl --api chat.completions
+
+# poll until COMPLETED
+tg batches get <BATCH_ID>
+
+# save the results
+tg batches download <BATCH_ID> --output batch_output.jsonl
+```
+
+The [batch tutorial](/docs/inference/batch/tutorial) breaks down this flow and walks through the SDK and REST equivalents.
+
 ## When to use it
 
 Consider using batch jobs when latency is not your primary concern. For example, when you want to classify a large dataset, run evaluations, generate synthetic data, or offline summarizations. The 24-hour completion window is a maximum, not a typical wait time. Small batches (under 1,000 requests) typically finish in minutes.

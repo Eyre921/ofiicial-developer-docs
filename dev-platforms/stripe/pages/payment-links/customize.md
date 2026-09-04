@@ -307,6 +307,9 @@ We recommend [encoding](https://en.wikipedia.org/wiki/Percent-encoding) email ad
 | `prefilled_promo_code` | Use `prefilled_promo_code` to enter a [promotion code](https://docs.stripe.com/api/promotion_codes.md) on the payment page automatically. Your customer can still edit this field, so the promotion code you pass in for `prefilled_promo_code` might not be the same promotion code that your customer uses to complete the payment.
 
 You must also [enable promotion codes](https://docs.stripe.com/payment-links/promotions.md) on your payment link, or this parameter has no effect. | `prefilled_promo_code` must be composed of alphanumeric characters and can’t use any special characters. Promotion codes are case insensitive. Invalid values are disregarded and your payment page continues to work as expected. |
+| `prefilled_amount` | Use `prefilled_amount` to set the initial amount on a pay-what-you-want payment link. Your customer can still edit this amount before completing the payment. This parameter has no effect on fixed-price payment links. | `prefilled_amount` must be a positive integer in the custom price currency’s smallest unit. For example, to preset 20.00 USD, pass `prefilled_amount=2000`. The value must also satisfy the custom price’s configured minimum and maximum amounts.
+
+Invalid values are disregarded. Checkout uses the payment link’s stored preset amount as the fallback, or displays the default empty state if the link has no stored preset. |
 | `locale` | Use `locale` to display your payment link in a specific language for your customers regardless of their location. | View the complete list of all [supported languages](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-locale). |
 
 You can also use URL parameters to [track payment links and related campaigns](https://docs.stripe.com/payment-links/url-parameters.md).

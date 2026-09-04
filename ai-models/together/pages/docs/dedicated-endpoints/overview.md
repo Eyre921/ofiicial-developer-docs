@@ -23,6 +23,21 @@ Dedicated model inference uses the same [inference APIs](/docs/inference/overvie
   If you're running a stock model in production and want a defined SLA without managing hardware, contact sales for [provisioned throughput](/docs/inference/provisioned-throughput).
 </Tip>
 
+You can deploy an endpoint from the console, through the API, or with the CLI:
+
+```bash theme={null}
+# deploy a model to a new endpoint
+tg beta endpoints deploy google/gemma-4-E4B-it --endpoint my-endpoint
+
+# check the status until it's READY
+tg beta endpoints get <ENDPOINT_ID>
+
+# delete the endpoint when you're done
+tg beta endpoints rm <ENDPOINT_ID> --force
+```
+
+The [quickstart](/docs/dedicated-endpoints/quickstart) breaks down this flow and shows how to run inference against the endpoint.
+
 ## Get started
 
 <CardGroup>

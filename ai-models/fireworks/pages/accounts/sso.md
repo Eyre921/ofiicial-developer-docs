@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/accounts/sso
 path: accounts/sso
 ---
 
-Set up custom Single Sign-On (SSO) authentication and SCIM user provisioning for Fireworks AI
+Set up custom Single Sign-On (SSO) authentication and SCIM user and group provisioning for Fireworks AI
 
 Fireworks uses single sign-on (SSO) as the primary mechanism to authenticate with the platform.
 By default, Fireworks supports Google SSO.
@@ -101,9 +101,9 @@ JIT user provisioning automatically creates user accounts when they sign in thro
 
 To enable JIT user provisioning, use the [`--enable-jit-user-provisioning`](/tools-sdks/firectl/commands/identity-provider-create) flag when creating your identity provider with firectl.
 
-## SCIM user provisioning
+## SCIM provisioning
 
-System for Cross-domain Identity Management (SCIM) provisioning synchronizes the user lifecycle between your identity provider and Fireworks. Users assigned to Fireworks in your directory are added to your Fireworks account, and users are removed when they are deactivated or unassigned in the directory.
+System for Cross-domain Identity Management (SCIM) provisioning synchronizes the user and group lifecycle between your identity provider and Fireworks. Users assigned to Fireworks in your directory are added to your Fireworks account, and users are removed when they are deactivated or unassigned in the directory.
 
 SCIM provisioning is available for enterprise accounts and works with supported directory providers, including Okta, Microsoft Entra ID, and Google Workspace. Fireworks uses [WorkOS Directory Sync](https://workos.com/docs/directory-sync) to connect to your directory.
 
@@ -130,16 +130,27 @@ SCIM provisioning is available for enterprise accounts and works with supported 
     provider-specific instructions to authorize the connection.
   </Step>
 
-  <Step title="Assign users">
+  <Step title="Assign users and groups">
     In your identity provider, assign the users who should have access to
-    Fireworks. Confirm that they appear in the [Users
+    Fireworks, plus any groups you want mirrored into Fireworks. Confirm that
+    they appear on the **Users** and **Groups** tabs of the [Users
     page](https://app.fireworks.ai/account/users).
   </Step>
 </Steps>
 
+### Group provisioning
+
+Directory groups assigned to Fireworks are synced alongside your users. Creating, renaming, or deleting a group in your directory creates, updates, or deletes the matching Fireworks group, and adding or removing someone from a directory group changes their Fireworks group membership. Deleting a group removes its memberships; the users themselves are unaffected.
+
+Synced groups appear on the **Groups** tab of the [Users page](https://app.fireworks.ai/account/users), marked `SCIM-synced`, with their member count and the time of the last sync. Directory sync is the only way to create a Fireworks group, and groups are read-only in Fireworks — your directory is the source of truth for both the group and its membership.
+
+Synced groups have one use in Fireworks today: assigning them a [group limit](/fireworks-nexus/usage-limits#group-limits), which caps serverless spend for each of the group's members. That is a **Fireworks Nexus** feature and is enabled separately — syncing groups does not by itself give your account spend limits.
+
 <Warning>
-  SCIM group synchronization and group-to-role mappings are not currently
-  supported. Provisioned users receive the `User` role by default.
+  Group-to-role mappings are not currently supported: a group's members do not
+  inherit a role from the group, and provisioned users receive the `User` role
+  by default. Set roles per user as described in [Managing
+  users](/accounts/users#updating-a-users-role).
 </Warning>
 
 We recommend disabling JIT provisioning when SCIM is enabled so that your directory remains the source of truth for account membership. SSO enforcement is also recommended to prevent access outside your configured identity provider.

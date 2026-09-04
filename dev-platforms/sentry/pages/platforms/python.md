@@ -192,7 +192,7 @@ At this point, you should have integrated Sentry into your Python application an
 
 Now's a good time to customize your setup and look into more advanced topics. Our next recommended steps for you are:
 
-* Explore [practical guides](https://docs.sentry.io/guides.md) on what to monitor, log, track, and investigate after setup
+* Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 * Continue to [customize your configuration](https://docs.sentry.io/platforms/python/configuration.md)
 * Learn more about [manually capturing errors or messages](https://docs.sentry.io/platforms/python/usage.md)
 * Dive straight into the API with our [API docs](https://getsentry.github.io/sentry-python/)

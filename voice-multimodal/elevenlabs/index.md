@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1298 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1296 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -662,7 +662,6 @@
 - `docs/eleven-agents/guides/quickstarts/next-js` — [Next.JS](pages/docs/eleven-agents/guides/quickstarts/next-js.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/quickstarts/next-js.md)
 - `docs/eleven-agents/guides/realtime-monitoring` — [Real-time monitoring](pages/docs/eleven-agents/guides/realtime-monitoring.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/realtime-monitoring.md)
 - `docs/eleven-agents/guides/simulate-conversation` — [Simulate Conversations](pages/docs/eleven-agents/guides/simulate-conversation.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/simulate-conversation.md)
-- `docs/eleven-agents/guides/user-interviews-agent` — [Building the ElevenLabs customer interview agent](pages/docs/eleven-agents/guides/user-interviews-agent.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/user-interviews-agent.md)
 - `docs/eleven-agents/integrate/environment-variables` — [Environment variables](pages/docs/eleven-agents/integrate/environment-variables.md) · [原文](https://elevenlabs.io/docs/eleven-agents/integrate/environment-variables.md)
 - `docs/eleven-agents/integrate/overview` — [Integrate](pages/docs/eleven-agents/integrate/overview.md) · [原文](https://elevenlabs.io/docs/eleven-agents/integrate/overview.md)
 - `docs/eleven-agents/legal/disclosure-requirement` — [Disclosure requirements](pages/docs/eleven-agents/legal/disclosure-requirement.md) · [原文](https://elevenlabs.io/docs/eleven-agents/legal/disclosure-requirement.md)
@@ -1104,7 +1103,6 @@
 - `docs/help-center/product/mobile-apps/eleven-reader/i-subscribed-but-the-eleven-reader-app-still-says-im-on-the-free-version` — [I subscribed, but the ElevenReader app still says I’m on the free version](pages/docs/help-center/product/mobile-apps/eleven-reader/i-subscribed-but-the-eleven-reader-app-still-says-im-on-the-free-version.md) · [原文](https://elevenlabs.io/docs/help-center/product/mobile-apps/eleven-reader/i-subscribed-but-the-eleven-reader-app-still-says-im-on-the-free-version.md)
 - `docs/help-center/product/mobile-apps/eleven-reader/if-i-subscribe-at-a-discounted-price-will-it-renew-at-the-same-price` — [If I subscribe at a discounted price, will it renew at the same price?](pages/docs/help-center/product/mobile-apps/eleven-reader/if-i-subscribe-at-a-discounted-price-will-it-renew-at-the-same-price.md) · [原文](https://elevenlabs.io/docs/help-center/product/mobile-apps/eleven-reader/if-i-subscribe-at-a-discounted-price-will-it-renew-at-the-same-price.md)
 - `docs/help-center/product/mobile-apps/eleven-reader/if-i-uninstall-the-eleven-reader-app-will-i-still-be-charged` — [If I uninstall the ElevenReader app, will I still be charged?](pages/docs/help-center/product/mobile-apps/eleven-reader/if-i-uninstall-the-eleven-reader-app-will-i-still-be-charged.md) · [原文](https://elevenlabs.io/docs/help-center/product/mobile-apps/eleven-reader/if-i-uninstall-the-eleven-reader-app-will-i-still-be-charged.md)
-- `docs/help-center/product/mobile-apps/eleven-reader/is-content-between-eleven-reader-and-the-website-shared` — [Is content between ElevenReader and the website shared?](pages/docs/help-center/product/mobile-apps/eleven-reader/is-content-between-eleven-reader-and-the-website-shared.md) · [原文](https://elevenlabs.io/docs/help-center/product/mobile-apps/eleven-reader/is-content-between-eleven-reader-and-the-website-shared.md)
 - `docs/help-center/product/mobile-apps/eleven-reader/is-eleven-reader-available-for-desktop-or-web` — [Is ElevenReader available for Desktop or Web?](pages/docs/help-center/product/mobile-apps/eleven-reader/is-eleven-reader-available-for-desktop-or-web.md) · [原文](https://elevenlabs.io/docs/help-center/product/mobile-apps/eleven-reader/is-eleven-reader-available-for-desktop-or-web.md)
 - `docs/help-center/product/mobile-apps/eleven-reader/what-is-eleven-reader` — [What is ElevenReader?](pages/docs/help-center/product/mobile-apps/eleven-reader/what-is-eleven-reader.md) · [原文](https://elevenlabs.io/docs/help-center/product/mobile-apps/eleven-reader/what-is-eleven-reader.md)
 - `docs/help-center/product/mobile-apps/eleven-reader/what-is-the-maximum-file-length-supported-in-eleven-reader` — [What is the maximum file length supported in ElevenReader?](pages/docs/help-center/product/mobile-apps/eleven-reader/what-is-the-maximum-file-length-supported-in-eleven-reader.md) · [原文](https://elevenlabs.io/docs/help-center/product/mobile-apps/eleven-reader/what-is-the-maximum-file-length-supported-in-eleven-reader.md)

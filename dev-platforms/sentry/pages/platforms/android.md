@@ -178,7 +178,7 @@ public class MyActivity extends AppCompatActivity {
 
 ## [Next Steps](https://docs.sentry.io/platforms/android.md#next-steps)
 
-* Explore [practical guides](https://docs.sentry.io/guides.md) on what to monitor, log, track, and investigate after setup
+* Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 * [Learn about the features of Sentry's Android SDK](https://docs.sentry.io/platforms/android/features.md)
 * [Learn how to enhance stack traces of your Sentry errors](https://docs.sentry.io/platforms/android/enhance-errors.md)
 * [Enrich events with additional context to make debugging simpler](https://docs.sentry.io/platforms/android/enriching-events.md)

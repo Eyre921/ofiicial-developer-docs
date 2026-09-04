@@ -458,9 +458,13 @@ Acceptable forms of legal entity verification for sole proprietorships and indiv
 
 Acceptable forms of annual turnover verification:
 
-- Annual GST return
-- Annual Income Tax Return
-- Audited Financial Statements which reflect the Annual Turnover declared
+- Annual ITR (Income Tax Return)
+  - Sole proprietor or Individual: ITR 3 or ITR 4
+  - LLPs: ITR 4 or ITR 5
+  - Company: ITR 6
+- Annual GST Return
+  - Form GSTR-9 or Form GSTR-4
+- Audited Financial Statements
 
 Required information:
 

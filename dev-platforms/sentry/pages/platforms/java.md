@@ -35,7 +35,7 @@ Error Monitoring\[ ]Tracing\[ ]Profiling\[ ]Logs\[x]OpenTelemetry
 
 ```groovy
 plugins {
-  id "io.sentry.jvm.gradle" version "6.20.0"
+  id "io.sentry.jvm.gradle" version "6.21.0"
 }
 // ___PRODUCT_OPTION_START___ profiling
 dependencies {
@@ -202,7 +202,7 @@ To view and resolve the recorded error, log into [sentry.io](https://sentry.io) 
 
 ## [Next Steps](https://docs.sentry.io/platforms/java.md#next-steps)
 
-* Explore [practical guides](https://docs.sentry.io/guides.md) on what to monitor, log, track, and investigate after setup
+* Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 
 ## Frameworks
 

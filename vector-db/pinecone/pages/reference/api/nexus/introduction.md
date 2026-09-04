@@ -4,13 +4,28 @@ source: https://docs.pinecone.io/reference/api/nexus/introduction
 path: reference/api/nexus/introduction
 ---
 
-Programmatic access to Nexus: manage contexts and sources, curate, and query with KnowQL.
+Programmatic access to Nexus workspaces, contexts, sources, curation, and KnowQL queries.
 
-The Pinecone Nexus API gives you programmatic access to the same operations available in the Nexus console: managing contexts and sources, curating, and querying with KnowQL. Anything you can do in the console you can do through the API.
+The Pinecone Nexus API gives you programmatic access to the same operations available in the Nexus console: managing contexts and sources, running curation, and querying with KnowQL. Anything you can do in the console you can do through the API. It also covers workspace lifecycle, which you otherwise manage in the Pinecone console.
 
-## Base URL
+The API spans two planes, each with its own base URL and authentication:
 
-Your deployment's workspace host, from the `nexus_default_workspace_data_console_url` output of the [install](/guides/nexus/byoc/deploy), with the `/api` path:
+* **Control plane** manages workspace lifecycle and is served by Pinecone globally.
+* **Data plane** handles contexts, sources, curation, and KnowQL queries, and is served by your deployment's workspace host.
+
+## Base URLs
+
+### Control plane
+
+Workspace management is served by Pinecone globally:
+
+```
+https://api.pinecone.io
+```
+
+### Data plane
+
+Contexts, curation, and queries are served by your deployment's workspace host, from the `nexus_default_workspace_data_console_url` output of the [install](/guides/nexus/byoc/deploy), with the `/api` path:
 
 ```
 https://YOUR_WORKSPACE_HOST/api

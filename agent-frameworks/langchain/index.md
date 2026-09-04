@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1166 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1165 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -852,7 +852,6 @@
 - `langsmith/smith-api/prompt-webhooks/test-prompt-webhook` — [Test prompt webhook](pages/langsmith/smith-api/prompt-webhooks/test-prompt-webhook.md) · [原文](https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/test-prompt-webhook)
 - `langsmith/smith-api/prompt-webhooks/update-prompt-webhook` — [Update prompt webhook](pages/langsmith/smith-api/prompt-webhooks/update-prompt-webhook.md) · [原文](https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/update-prompt-webhook)
 - `langsmith/smith-api/prompts/invoke-prompt` — [Invoke prompt](pages/langsmith/smith-api/prompts/invoke-prompt.md) · [原文](https://docs.langchain.com/langsmith/smith-api/prompts/invoke-prompt)
-- `langsmith/smith-api/prompts/prompt-canvas` — [Prompt canvas](pages/langsmith/smith-api/prompts/prompt-canvas.md) · [原文](https://docs.langchain.com/langsmith/smith-api/prompts/prompt-canvas)
 - `langsmith/smith-api/public/count-shared-examples` — [Count shared examples](pages/langsmith/smith-api/public/count-shared-examples.md) · [原文](https://docs.langchain.com/langsmith/smith-api/public/count-shared-examples)
 - `langsmith/smith-api/public/generate-query-for-shared-dataset-runs` — [Generate query for shared dataset runs](pages/langsmith/smith-api/public/generate-query-for-shared-dataset-runs.md) · [原文](https://docs.langchain.com/langsmith/smith-api/public/generate-query-for-shared-dataset-runs)
 - `langsmith/smith-api/public/get-message-json-schema` — [Get message JSON schema](pages/langsmith/smith-api/public/get-message-json-schema.md) · [原文](https://docs.langchain.com/langsmith/smith-api/public/get-message-json-schema)

@@ -4,5 +4,5 @@ source: https://docs.pinecone.io/api-reference/contexts/run-the-design-flow-expl
 path: api-reference/contexts/run-the-design-flow-explore-agent-propose-a-manifest
 ---
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_2026-07.oas.yaml post /contexts/{slug}/explore
-Inspects the uploaded source and proposes manifest-template matches, returned in the task's `output` (see `ExploreOutput`). Persists nothing on the index — review the proposal, then apply it via the manifest update + a forced curate. Body is optional.
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/explore
+Inspects the uploaded source and proposes manifest-template matches in the task's `output` (see `ExploreOutput`). Persists nothing — review the proposal, then apply it with a manifest update and a forced curate. Body is optional.

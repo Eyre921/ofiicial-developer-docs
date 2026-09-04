@@ -12,6 +12,13 @@ path: docs/eleven-agents/customization/integrations/servicenow
 
 Connect your ElevenLabs AI agents with ServiceNow to manage incidents, cases, tasks, and knowledge articles. This integration enables your agents to create and update IT service management records, search the knowledge base, and automate IT support workflows during conversations.
 
+## Capabilities
+
+| Capability                | Support                                    |
+| ------------------------- | ------------------------------------------ |
+| Zero retention mode (ZRM) | Not supported                              |
+| Attachments in tools      | Not supported — tools operate on text only |
+
 ## Setup
 
 This integration uses **Basic Authentication** with a ServiceNow instance username and password.

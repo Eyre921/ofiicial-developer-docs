@@ -48,7 +48,7 @@ Successful Response
 
 ```json
 {
-  "text": "string"
+  "text": "ElevenLabs provides advanced AI-driven text-to-speech and voice synthesis services to enhance conversational applications."
 }
 ```
 
@@ -56,11 +56,11 @@ Successful Response
 
 ```json
 {
-  "id": "string",
-  "name": "string",
+  "id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
+  "name": "ElevenLabs AI Voice Tech Overview",
   "folder_path": [
     {
-      "id": "string"
+      "id": "folder1234abcd5678ef"
     }
   ]
 }
@@ -74,7 +74,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.knowledgeBase.documents.createFromText({
-        text: "string",
+        text: "ElevenLabs provides advanced AI-driven text-to-speech and voice synthesis services to enhance conversational applications.",
     });
 }
 main();
@@ -87,7 +87,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.knowledge_base.documents.create_from_text(
-    text="string",
+    text="ElevenLabs provides advanced AI-driven text-to-speech and voice synthesis services to enhance conversational applications.",
 )
 
 ```
@@ -106,7 +106,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/text"
 
-	payload := strings.NewReader("{\n  \"text\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"text\": \"ElevenLabs provides advanced AI-driven text-to-speech and voice synthesis services to enhance conversational applications.\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -134,7 +134,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"text\": \"string\"\n}"
+request.body = "{\n  \"text\": \"ElevenLabs provides advanced AI-driven text-to-speech and voice synthesis services to enhance conversational applications.\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -146,7 +146,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/knowledge-base/text")
   .header("Content-Type", "application/json")
-  .body("{\n  \"text\": \"string\"\n}")
+  .body("{\n  \"text\": \"ElevenLabs provides advanced AI-driven text-to-speech and voice synthesis services to enhance conversational applications.\"\n}")
   .asString();
 ```
 
@@ -158,7 +158,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/knowledge-base/text', [
   'body' => '{
-  "text": "string"
+  "text": "ElevenLabs provides advanced AI-driven text-to-speech and voice synthesis services to enhance conversational applications."
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -174,7 +174,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/text");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"text\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"text\": \"ElevenLabs provides advanced AI-driven text-to-speech and voice synthesis services to enhance conversational applications.\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -182,7 +182,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["text": "string"] as [String : Any]
+let parameters = ["text": "ElevenLabs provides advanced AI-driven text-to-speech and voice synthesis services to enhance conversational applications."] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

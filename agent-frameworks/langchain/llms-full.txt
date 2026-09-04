@@ -32533,14 +32533,12 @@ For more troubleshooting information, refer to:
 
 ## Support
 
-If you have followed these diagnostic steps and still need assistance, gather the following information before contacting support:
+If you have followed these diagnostic steps and still need assistance, gather the following information and contact [Technical Support](https://support.langchain.com/):
 
-- Output from the [diagnostic steps](#step-1-understand-your-deployment).
-- Your Helm chart configuration.
-- Relevant error messages and logs.
+- Capture the [diagnostic bundle](https://support.langchain.com/articles/2087799075-how-to-share-diags).
 - Description of what you were trying to do when the issue occurred.
 
-Having this information ready will help the [support](https://support.langchain.com) team diagnose and resolve your issue more quickly.
+Having this information in the ticket will help the [support](https://support.langchain.com/) team diagnose and resolve your issue more quickly.
 
 ---
 
@@ -33287,6 +33285,10 @@ To connect your repositories:
 For the access and retention model of the managed app, see [Engine security](/langsmith/engine-security#github-integration).
 
 ## Self-hosted
+
+<Note>
+Engine connects to `github.com` only. GitHub Enterprise Server is not supported: Engine's sandboxes reach `github.com` and `api.github.com`, and the sandbox auth proxy injects repository credentials for those hosts alone. A GitHub App created on a GitHub Enterprise Server instance cannot be used.
+</Note>
 
 To create and configure a GitHub App for a self-hosted deployment:
 
@@ -34547,7 +34549,12 @@ Organization Admins can set spend limits at two levels:
 
 You can enter limits in LCU or USD (1 LCU = $1.50). When a limit is reached, LangSmith pauses new Engine runs until the limit is raised or the next monthly billing period begins.
 
-Leave the limit blank to allow unlimited Engine spend. To stop Engine entirely, use the **Enable Engine** toggle in **Settings > Engine enablement**.
+The two levels default differently:
+
+- **Org-wide limit**: Choose **Default**, **No limit**, or a custom cap. Until an admin chooses, the default applies (500 LCU per month, about $750), so Engine spend is capped even though no one has set a limit. The **Engine enablement** page names the enforced limit and its source.
+- **Per-project limit**: Leave the field blank for no limit. Use **Remove limit** to clear a cap you set earlier.
+
+To stop Engine entirely, use the **Enable Engine** toggle in **Settings > Engine enablement**.
 
 To monitor usage, you can view your organization's monthly LCU spend on the **Engine enablement** page in **Settings**, or view per-project spend in the [**Engine Settings**](#configure-engine) panel for each tracing project.
 
@@ -139005,9 +139012,19 @@ flowchart TD
 
 ### Select a classifier model
 
-By default, the Auto classifier uses the same model as the main agent. You can point it at a different (typically cheaper and faster) model to reduce cost and latency during Auto review.
+When you do not configure an Auto classifier, Deep Agents Code selects a lower-latency default based on the main model's provider:
 
-Set the classifier model through any of these source:
+| Main model provider | Default classifier |
+|---|---|
+| Anthropic | `anthropic:claude-sonnet-5` |
+| Google AI | `google_genai:gemini-3.8-flash` |
+| Google Vertex AI | `google_vertexai:gemini-3.8-flash` |
+| OpenAI | `openai:gpt-5.6-luna` |
+| OpenAI Codex | `openai_codex:gpt-5.6-luna` |
+
+For other providers, the classifier uses the main agent model. You can select a different model to control cost and latency during Auto review.
+
+Set the classifier model through any of these sources:
 
 <Tabs>
     <Tab title="TUI command">
@@ -139049,9 +139066,10 @@ Set the classifier model through any of these source:
     2. **`--auto-classifier-model` flag**: sets the classifier on launch (interactive TUI sessions only).
     3. **`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL` environment variable**: applies at startup.
     4. **`[models].auto_classifier` in `config.toml`**: your persistent default.
-    5. **Inherit**: uses the main agent model (the default when nothing is configured).
+    5. **Provider default**: uses the lower-latency model listed above when the main model uses a supported provider.
+    6. **Inherit**: uses the main agent model for providers without a built-in default.
 
-    A blank value at any level means "inherit from the next source". For example, an unset env var falls through to `config.toml`.
+    An unset value falls through to the next source. Explicitly clearing the classifier with `/auto model clear` or an empty CLI flag selects the main agent model instead of the provider default.
 </Accordion>
 
 The TUI displays which model is reviewing when Auto turns on and inside `/auto model` output.
@@ -139715,7 +139733,7 @@ auto_classifier = "openai:gpt-5.6-luna"  # optional: cheaper model for Auto appr
 
 `[models].default` always takes priority over `[models].recent`. The `/model` command only writes to `[models].recent`, so your configured default is never overwritten by mid-session switches. To remove the default, use `/model --default --clear` or delete the `default` key from the config file.
 
-`[models].auto_classifier` sets the model used by the [Auto approval classifier](/oss/deepagents/code/approval-modes#select-a-classifier-model) to review gated tool calls. When unset, the classifier inherits the main agent model. You can override this at runtime with `--auto-classifier-model` or `/auto model`. See [Select a classifier model](/oss/deepagents/code/approval-modes#select-a-classifier-model) for full precedence and security notes.
+`[models].auto_classifier` sets the model used by the [Auto approval classifier](/oss/deepagents/code/approval-modes#select-a-classifier-model) to review gated tool calls. When unset, Deep Agents Code selects a lower-latency default for supported main-model providers: Claude Sonnet for Anthropic, Gemini Flash for Google, and GPT Luna for OpenAI. Other providers inherit the main agent model. You can override this at runtime with `--auto-classifier-model` or `/auto model`. See [Select a classifier model](/oss/deepagents/code/approval-modes#select-a-classifier-model) for exact model specifications, full precedence, and security notes.
 
 ## Set a summarization model
 
@@ -140508,7 +140526,7 @@ Deep Agents Code ignores environment variables that could alter executable looku
     - Git config/exec injection: `GIT_DIR`, `GIT_WORK_TREE`, `GIT_OBJECT_DIRECTORY`, `GIT_EXEC_PATH`, `GIT_EDITOR`, `GIT_PAGER`, `GIT_SSH`, `GIT_SSH_COMMAND`, plus the prefix families `GIT_CONFIG_COUNT`, `GIT_CONFIG_KEY_*`, `GIT_CONFIG_VALUE_*`, `GIT_CONFIG_PARAMETERS`, `GIT_CONFIG_SYSTEM`, and `GIT_CONFIG_GLOBAL`
     - Windows process variables: `COMSPEC`, `SYSTEMROOT`, `WINDIR`
 
-    A project `.env` also cannot set `DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS`, `DEEPAGENTS_CODE_DISABLED_PROJECT_MCP_SERVERS`, `DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`, `DEEPAGENTS_CODE_AUTO_CLASSIFIER_TIMEOUT`, or `TERM_PROGRAM`. Set these in your shell or the global `~/.deepagents/.env` instead.
+    A project `.env` also cannot set `DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS`, `DEEPAGENTS_CODE_DISABLED_PROJECT_MCP_SERVERS`, `DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`, `DEEPAGENTS_CODE_AUTO_CLASSIFIER_TIMEOUT`, `DEEPAGENTS_CODE_FORKED_SUBAGENTS`, or `TERM_PROGRAM`. Set these in your shell or the global `~/.deepagents/.env` instead.
 </Accordion>
 
 <Warning>
@@ -141070,6 +141088,10 @@ All Deep Agents Code-specific environment variables use the `DEEPAGENTS_CODE_` p
 
 <ResponseField name="DEEPAGENTS_CODE_EXTRA_SKILLS_DIRS" type="string" post={["optional"]}>
     Colon-separated paths added to the [skill containment allowlist](#skill-directory-allowlist).
+</ResponseField>
+
+<ResponseField name="DEEPAGENTS_CODE_FORKED_SUBAGENTS" type="string" default="true" post={["optional"]}>
+    Let the built-in `general-purpose` subagent inherit the parent conversation and system prompt. Set to `0`, `false`, `no`, or `off` (or an empty value) to use isolated mode. Set this variable in your shell or global `~/.deepagents/.env`; Deep Agents Code ignores it in project `.env` files because inheritance can include private parent state. See [Continue the parent conversation](/oss/deepagents/code/subagents#continue-the-parent-conversation).
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_HISTORY_RETENTION_DAYS" type="integer" default="30" post={["optional"]}>
@@ -142891,7 +142913,7 @@ Connected MCP servers and their tools are automatically listed in the agent's sy
 ## Further reading
 
 - [LangSmith Remote MCP](/langsmith/langsmith-remote-mcp): connect Deep Agents Code to LangSmith tools over OAuth
-- [LangChain MCP guide](/oss/python/langchain/mcp): protocol details, building custom servers, and using `langchain-mcp-adapters` programmatically
+- [LangChain MCP guide](/oss/python/langchain/mcp): connecting agents to MCP servers with the `MCPAdapter`
 - [MCP specification](https://modelcontextprotocol.io/): the official protocol spec and server registry
 
 ---
@@ -144712,6 +144734,16 @@ Each subagent lives in its own folder with an `AGENTS.md` file:
 ```
 
 Project subagents override user subagents with the same name (see [precedence rules](/oss/deepagents/code/configuration#subagents)).
+
+## Continue the parent conversation
+
+The built-in `general-purpose` subagent inherits the parent agent's conversation and system prompt. This context lets delegated work continue without repeating the investigation, decisions, or other details already established in the parent conversation.
+
+To run the built-in `general-purpose` subagent in isolated mode instead, set the following variable in your shell or global `~/.deepagents/.env`:
+
+```bash
+export DEEPAGENTS_CODE_FORKED_SUBAGENTS=false
+```
 
 The frontmatter requires `name` and `description` (same as the [`SubAgent` dictionary spec](/oss/python/deepagents/subagents#subagent-dictionary-based)). The markdown body becomes the subagent's `system_prompt`. In addition to the base spec, `AGENTS.md` files support an optional `model` frontmatter field that overrides the main agent's model for this subagent. Use the `provider:model-name` format (e.g., `anthropic:claude-opus-4-8`, `openai:gpt-5.5`). Omit it to inherit the main agent's model.
 
@@ -147158,10 +147190,6 @@ Source: https://docs.langchain.com/langsmith/smith-api/model-price-map/delete-mo
 
 # Invoke prompt
 Source: https://docs.langchain.com/langsmith/smith-api/prompts/invoke-prompt
-
-
-# Prompt canvas
-Source: https://docs.langchain.com/langsmith/smith-api/prompts/prompt-canvas
 
 
 # List prompt webhooks

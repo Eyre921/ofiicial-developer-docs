@@ -12,6 +12,14 @@ path: docs/eleven-agents/customization/integrations/zendesk
 
 Connect your ElevenLabs AI agents with [Zendesk](https://www.zendesk.com/) to manage support tickets, users, and organizations. This integration enables your agents to create and update tickets, search for existing records, manage users, and respond to incoming ticket comments.
 
+## Capabilities
+
+| Capability                | Support                                                                                                                                                                                        |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Zero retention mode (ZRM) | Not supported                                                                                                                                                                                  |
+| Attachments in triggers   | Images (PNG, JPEG, GIF, WebP) and PDF files on incoming ticket comments, when **Allow file attachments** is enabled in the agent settings and the agent's LLM supports image or document input |
+| Attachments in tools      | Not supported — tools such as `zendesk_show_ticket` and `zendesk_list_ticket_comments` return text fields and do not download attachments                                                      |
+
 ## Setup
 
 This integration supports two authentication methods: API token and OAuth client.
@@ -127,13 +135,13 @@ Retrieves a user's profile so the agent can greet callers by name or verify thei
 
 On your agent's configuration page, click **Add tool** and select **Add integration tool**.
 
-![Add integration tool](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ef3a82e0747f1b1da18fb6b4755812abe161d436582312e47836e621a44d83c7/agents-platform/pages/customization/integrations/zendesk/zendesk_add_tool_step_1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260903%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260903T113215Z&X-Amz-Expires=604800&X-Amz-Signature=cf64f411c0c60288fe6d2913f708ec3152ffb4d8182455878bcde07a502a611b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add integration tool](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ef3a82e0747f1b1da18fb6b4755812abe161d436582312e47836e621a44d83c7/agents-platform/pages/customization/integrations/zendesk/zendesk_add_tool_step_1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260904%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260904T100020Z&X-Amz-Expires=604800&X-Amz-Signature=dc3c8ea34cd03baf2ac0a77f26bf7b46dcff9d261fb765f7d1c21a33a1a4e734&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Select Zendesk tools
 
 Choose your Zendesk connection and toggle the tools you want the agent to use. You can enable as many or as few as needed — for example, a read-only triage agent might only need search and list tools, while a full-service agent might also create and update tickets.
 
-![Select Zendesk tools](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9161ae75a4c514d477174622bd4857d6faf62a11825bc7d4d191176e52a72f91/agents-platform/pages/customization/integrations/zendesk/zendesk_add_tool_step_2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260903%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260903T113215Z&X-Amz-Expires=604800&X-Amz-Signature=c90bf27aa35bb4e92f1faafab173c08c31ff406a0b54ead7a6089e3628dea1ac&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Select Zendesk tools](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9161ae75a4c514d477174622bd4857d6faf62a11825bc7d4d191176e52a72f91/agents-platform/pages/customization/integrations/zendesk/zendesk_add_tool_step_2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260904%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260904T100020Z&X-Amz-Expires=604800&X-Amz-Signature=1952b5ffc9ea7f9c724fba4dcbfe87a889802cc52efe7a62a907f034110e0adf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### (Optional) Provide parameters
 

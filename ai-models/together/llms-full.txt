@@ -1016,6 +1016,19 @@ You build and push a Docker image using the [Jig CLI](/docs/deployments-jig). In
 
 ## Quickstart
 
+With the [Jig CLI](/docs/deployments-jig), a first deployment is three commands:
+
+```bash theme={null}
+# scaffold the jig config next to your inference code
+tg beta jig init
+
+# build, push, and deploy the container in one step
+tg beta jig deploy
+
+# watch the deployment come up
+tg beta jig status
+```
+
 <Card title="Deploy Your First Container" icon="rocket" href="/docs/containers-quickstart">
   Deploy your first container from the command line
 </Card>
@@ -2587,6 +2600,21 @@ Dedicated model inference uses the same [inference APIs](/docs/inference/overvie
 <Tip>
   If you're running a stock model in production and want a defined SLA without managing hardware, contact sales for [provisioned throughput](/docs/inference/provisioned-throughput).
 </Tip>
+
+You can deploy an endpoint from the console, through the API, or with the CLI:
+
+```bash theme={null}
+# deploy a model to a new endpoint
+tg beta endpoints deploy google/gemma-4-E4B-it --endpoint my-endpoint
+
+# check the status until it's READY
+tg beta endpoints get <ENDPOINT_ID>
+
+# delete the endpoint when you're done
+tg beta endpoints rm <ENDPOINT_ID> --force
+```
+
+The [quickstart](/docs/dedicated-endpoints/quickstart) breaks down this flow and shows how to run inference against the endpoint.
 
 ## Get started
 
@@ -5796,6 +5824,21 @@ Together AI currently supports two fine-tuning approaches:
 
 See [LoRA vs. full fine-tuning](/docs/fine-tuning/lora-vs-full) to choose between them. This choice is separate from the training method you pick below.
 
+You can launch a fine-tuning job from the console, through the API/SDK, or with the CLI:
+
+```bash theme={null}
+# upload your training data
+tg files upload train.jsonl
+
+# start a LoRA fine-tuning job
+tg fine-tuning create --training-file <FILE_ID> --model Qwen/Qwen3.5-9B --lora
+
+# check progress
+tg fine-tuning retrieve <JOB_ID>
+```
+
+The [fine-tuning quickstart](/docs/fine-tuning/quickstart) breaks down this flow and shows the SDK equivalents.
+
 ## Get started
 
 <CardGroup>
@@ -8548,6 +8591,21 @@ High-performance GPU clusters for training, fine-tuning, and large-scale AI work
 
 Together GPU Clusters provide on-demand access to high-performance GPU infrastructure for training, fine-tuning, and running large-scale AI workloads. Create clusters in minutes with features like real-time scaling, persistent storage, and support for both Kubernetes and Slurm workload managers.
 
+You can create a cluster from the [GPU clusters console](https://api.together.ai/clusters) or with the CLI:
+
+```bash theme={null}
+# create a cluster (an interactive prompt walks through the options)
+tg beta clusters create
+
+# check the status until the cluster is ready
+tg beta clusters get <CLUSTER_ID>
+
+# write a kubeconfig for kubectl access
+tg beta clusters get-credentials <CLUSTER_ID>
+```
+
+The [GPU clusters quickstart](/docs/gpu-clusters-quickstart) breaks down this flow, including Slurm cluster access.
+
 ## Concepts
 
 ### Kubernetes Cluster Architecture
@@ -9431,6 +9489,21 @@ Run asynchronous batch workloads at up to 50% lower cost.
 
 The batch API runs many independent inference requests asynchronously from a single uploaded JSONL file. You get up to 50% off serverless rates and a separate rate limit pool, in exchange for a job-shaped (rather than request-shaped) workflow.
 
+You can start a batch job from the console, through the API/SDK, or with the CLI:
+
+```bash theme={null}
+# upload the file and create the batch
+tg batches submit batch_input.jsonl --api chat.completions
+
+# poll until COMPLETED
+tg batches get <BATCH_ID>
+
+# save the results
+tg batches download <BATCH_ID> --output batch_output.jsonl
+```
+
+The [batch tutorial](/docs/inference/batch/tutorial) breaks down this flow and walks through the SDK and REST equivalents.
+
 ## When to use it
 
 Consider using batch jobs when latency is not your primary concern. For example, when you want to classify a large dataset, run evaluations, generate synthetic data, or offline summarizations. The 24-hour completion window is a maximum, not a typical wait time. Small batches (under 1,000 requests) typically finish in minutes.
@@ -9496,20 +9569,36 @@ Source: https://docs.together.ai/docs/inference/batch/tutorial
 
 Prepare a JSONL file, upload it, start a batch job, poll until it finishes, and retrieve results.
 
-This tutorial walks through a complete batch inference job from start to finish. By the end you'll have uploaded a JSONL file of chat completion requests, run them as a single job at up to 50% off serverless rates, and reconciled the responses with your original inputs.
+In this tutorial you'll upload a JSONL file of chat completion requests, run it as a single batch job, and match the responses back to your inputs. With the CLI, the whole flow takes three commands:
+
+```bash theme={null}
+# upload the file and create the batch
+tg batches submit batch_input.jsonl --api chat.completions
+
+# poll until COMPLETED
+tg batches get <BATCH_ID>
+
+# save the results
+tg batches download <BATCH_ID> --output batch_output.jsonl
+```
+
+The steps below break down this flow and show the SDK and REST equivalents for each part.
 
 ## Requirements
 
 Before you begin, make sure you have:
 
 * [Created an account](https://api.together.ai/settings/projects/~first/api-keys) and generated an API key.
-* Set `TOGETHER_API_KEY` as an environment variable: `export TOGETHER_API_KEY=<your-key>`. See [API keys and authentication](/docs/api-keys-authentication) for details.
+* Set `TOGETHER_API_KEY` as an environment variable:
+  ```bash theme={null}
+  export TOGETHER_API_KEY=<your_key>
+  ```
 * [Installed the Python or TypeScript SDK](/docs/quickstart#step-2-install-the-sdk). Python examples require `together>=2.0.0`.
-* [Installed the Together CLI](/reference/cli/getting-started) to follow the CLI examples. The `tg batches` commands require version 2.32.0 or later (check with `tg --version`).
+* [Installed the Together CLI](/reference/cli/getting-started), version 2.32.0 or later (check with `tg --version`), to follow the CLI examples.
 
 ## Step 1: Prepare a JSONL input file
 
-Each request lives on its own line in a JSONL file. A request has two fields: a `custom_id` you choose, and a `body` matching the schema of the endpoint you're calling. The Batch API runs every line independently and stamps each output with the same `custom_id`, so this is how you'll map results back to inputs at the end.
+Each line of the JSONL file is one request with two fields: a unique `custom_id` you choose (up to 64 characters), and a `body` matching the schema of the endpoint you're calling. Every line runs independently, and its output carries the same `custom_id`, which is how you'll match results to inputs at the end.
 
 Save the following as `batch_input.jsonl`:
 
@@ -9518,21 +9607,19 @@ Save the following as `batch_input.jsonl`:
 {"custom_id": "request-2", "body": {"model": "meta-llama/Llama-3.3-70B-Instruct-Turbo", "messages": [{"role": "user", "content": "Explain quantum computing."}], "max_tokens": 200}}
 ```
 
-| Field       | Type   | Required    | Description                                                                                                                                                                                                                                                       |
-| ----------- | ------ | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `custom_id` | string | Yes         | Unique identifier for tracking (max 64 chars).                                                                                                                                                                                                                    |
-| `method`    | string | Conditional | Set to `"FILE"` when batching `/v1/audio/transcriptions` or `/v1/audio/translations` so the worker dispatches each request as `multipart/form-data`. Omit for chat completion batches. See [Run an audio transcription batch](#run-an-audio-transcription-batch). |
-| `body`      | object | Yes         | Request body matching the endpoint's schema.                                                                                                                                                                                                                      |
+Audio requests add a third field, `method`. See [Run an audio transcription batch](#run-an-audio-transcription-batch).
 
 <Warning>
-  Each line must be under 10 MB. The limit applies to the full serialized line, so inline base64 payloads count toward it (e.g. a single high-resolution image embedded as a `data:image/...;base64,` URL). Oversized lines aren't caught during validation, and will fail with `error reading input file`. To stay under the limit, reference images by hosted URL instead of inlining them, or resize and compress images before encoding.
+  Each line must be under 10 MB, including any inline base64 payloads (a single high-resolution image embedded as a `data:image/...;base64,` URL can exceed it). Oversized lines aren't caught during validation and fail with `error reading input file`. Reference images by hosted URL instead of inlining them, or resize and compress them before encoding.
 </Warning>
 
 ## Step 2: Upload the file
 
-Upload the JSONL file with `purpose="batch-api"`. The upload returns a file object whose `id` you'll pass to the batch job in the next step. If you're using the CLI, you can skip this step entirely: `tg batches submit` accepts a local file path and uploads it for you (see the next step).
+Upload the JSONL file with `purpose="batch-api"`. The response includes the file `id` you'll pass to the batch job in the next step. CLI users can skip this step: `tg batches submit` accepts a local file path and uploads it for you (see the next step).
 
-Pass `check=False` (`--no-check` in the CLI) to skip client-side validation. The server still validates the file during the `VALIDATING` phase, and skipping the client check is faster for large files without changing the error surface. With `check=True` (default), the SDK parses each JSONL line locally and raises `TogetherException` before uploading if a line is malformed.
+<Visibility>
+  Pass `check=False` (`--no-check` in the CLI) to skip client-side validation. The server still validates the file during the `VALIDATING` phase, and skipping the client check is faster for large files without changing the error surface. With `check=True` (default), the SDK parses each JSONL line locally and raises `TogetherException` before uploading if a line is malformed.
+</Visibility>
 
 <CodeGroup>
   ```bash CLI theme={null}
@@ -9584,7 +9671,7 @@ Pass `check=False` (`--no-check` in the CLI) to skip client-side validation. The
 
 ## Step 3: Create the batch
 
-Now hand the uploaded file's `id` to the batch endpoint, along with the API endpoint each request should run against. For chat completion requests, that's `/v1/chat/completions`. Audio batches use `/v1/audio/transcriptions` or `/v1/audio/translations` — see [Run an audio transcription batch](#run-an-audio-transcription-batch).
+Create the batch by passing the file `id` from step 2 and the endpoint each request runs against: `/v1/chat/completions` for chat completions, or `--api chat.completions` in the CLI. For audio, see [Run an audio transcription batch](#run-an-audio-transcription-batch).
 
 <CodeGroup>
   ```bash CLI theme={null}
@@ -9624,12 +9711,12 @@ Now hand the uploaded file's `id` to the batch endpoint, along with the API endp
 </CodeGroup>
 
 <Note>
-  `batches.create()` returns a wrapper; the batch object lives at `.job`. `batches.retrieve()` (used in the next step) returns the batch object directly.
+  In the SDKs, `batches.create()` returns a wrapper with the batch object at `.job`. `batches.retrieve()` (used in the next step) returns the batch object directly.
 </Note>
 
 ## Step 4: Poll for completion
 
-The job moves through `VALIDATING`, then `IN_PROGRESS`, then a terminal status: `COMPLETED`, `FAILED`, `EXPIRED`, or `CANCELLED`. Poll every 30 to 60 seconds until you hit a terminal status. Tighter loops will hit rate limits without giving the server time to make progress.
+The job moves through `VALIDATING` and `IN_PROGRESS`, and finally to a terminal state: `COMPLETED`, `FAILED`, `EXPIRED`, or `CANCELLED`. Poll every 30 to 60 seconds (tighter loops will likely cause you to hit rate limits).
 
 <CodeGroup>
   ```bash CLI theme={null}
@@ -9667,17 +9754,23 @@ The job moves through `VALIDATING`, then `IN_PROGRESS`, then a terminal status: 
     await new Promise((r) => setTimeout(r, 30_000));
   }
   ```
+
+  ```bash cURL theme={null}
+  # Returns the batch object. Re-run until status reaches a terminal state.
+  curl -X GET "https://api.together.ai/v1/batches/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d" \
+    -H "Authorization: Bearer $TOGETHER_API_KEY"
+  ```
 </CodeGroup>
 
 <Note>
-  `progress` is a float from 0 to 100 representing the percentage of requests completed. It is present on all batch objects but may remain 0 while the job is in `VALIDATING`.
+  `progress` tracks the percentage of requests completed, from 0 to 100. It may stay at 0 while the job is in `VALIDATING`.
 </Note>
 
 Most batches under 1,000 requests finish in minutes. The 24-hour completion window is a maximum, not a typical wait.
 
 ## Step 5: Retrieve the results
 
-When the job reaches `COMPLETED`, the batch object carries an `output_file_id`. Download that file and you'll get one JSON object per line, each keyed by the `custom_id` from your input. Output line order does not match input line order, so use `custom_id` to reconcile.
+When the job reaches `COMPLETED`, the batch object includes an `output_file_id`. Download that file to get one JSON result per line. Results aren't guaranteed to be in input order, so match them to inputs using the `custom_id` field.
 
 <CodeGroup>
   ```bash CLI theme={null}
@@ -9728,20 +9821,20 @@ A successful output line looks like:
 }
 ```
 
-Per-request failures land in a separate file referenced by `error_file_id`. Always check it: a batch can be `COMPLETED` and still contain individual request failures. The CLI's `download` saves the error file automatically (as `batch_output.errors.jsonl` in this example) whenever the job produced one. See [retrieve results and error files](/docs/inference/batch/manage#retrieve-results) on the manage page.
+Failed requests land in a separate file referenced by `error_file_id`. Always check it: a batch can be `COMPLETED` and still contain failures. The CLI's `download` saves the error file automatically (here as `batch_output.errors.jsonl`). See [retrieve results and error files](/docs/inference/batch/manage#retrieve-results).
 
 ## Run an audio transcription batch
 
-The Batch API also supports `/v1/audio/transcriptions` and `/v1/audio/translations` for audio workloads (for example, `openai/whisper-large-v3`). The upload, poll, and retrieve steps above are identical. Two things change:
+The batch API also supports `/v1/audio/transcriptions` and `/v1/audio/translations` (for example, with `openai/whisper-large-v3`). Upload, poll, and retrieve work exactly as above. Two things change:
 
-**1. Each JSONL line must include `"method": "FILE"`.** The audio endpoints expect `multipart/form-data` requests, so the worker uses the `method` field to choose its dispatch mode. Omitting it causes every line to fail with `Content-Type must be multipart/form-data` in the error file.
+**1. Each JSONL line must include `"method": "FILE"`.** This tells the worker to send the request as `multipart/form-data`, which the audio endpoints require. Without it, every line fails with `Content-Type must be multipart/form-data` in the error file.
 
 ```json audio_batch.jsonl theme={null}
 {"custom_id": "transcription-1", "method": "FILE", "body": {"file": "https://example.com/clip-1.wav", "model": "openai/whisper-large-v3"}}
 {"custom_id": "transcription-2", "method": "FILE", "body": {"file": "https://example.com/clip-2.wav", "model": "openai/whisper-large-v3"}}
 ```
 
-`body.file` is the publicly-reachable URL of the audio clip; the worker fetches the audio at execution time. Optional fields such as `response_format`, `language`, and `prompt` pass through to the underlying API — see the [audio transcriptions reference](/reference/audio-transcriptions) for the full schema.
+`body.file` is a publicly reachable URL for the audio clip. The worker fetches it at run time. Optional fields such as `response_format`, `language`, and `prompt` pass through to the underlying API. See the [audio transcriptions reference](/reference/audio-transcriptions) for the full schema.
 
 **2. Pass the audio endpoint when creating the batch.**
 
@@ -9794,11 +9887,11 @@ A successful output line looks like:
 }
 ```
 
-For `/v1/audio/translations`, swap the endpoint and use a translation-capable model — the JSONL line shape is the same.
+For `/v1/audio/translations`, swap the endpoint and use a translation-capable model. The JSONL line shape is the same.
 
 ## Complete script
 
-The full flow combining all steps above, as a CLI session or a Python program:
+The full flow as a CLI session or a Python program:
 
 <CodeGroup>
   ```bash CLI theme={null}
@@ -21714,16 +21807,16 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | :---------------- | :--------------------------- | :-------------------------------------- | :------------- | :---------------------------- | :----------------------------------- | :----------------------------- | :----------- | :--------------- | :----------------- |
 | Thinking Machines | Inkling                      | thinkingmachines/Inkling                | 524288         | \$1.00                        | \$0.17                               | \$4.05                         | NVFP4        | Yes              | Yes                |
 | Minimax           | Minimax M3                   | MiniMaxAI/MiniMax-M3                    | 524288         | \$0.30                        | \$0.06                               | \$1.20                         | FP4          | Yes              | Yes                |
-| Qwen              | Qwen3.8-2.4T-A95B            | Qwen/Qwen3.8-2.4T-A95B                  | -              | \$2.50                        | \$0.50                               | \$6.25                         | FP4          | -                | -                  |
-| Qwen              | Qwen3.7 Max                  | Qwen/Qwen3.7-Max                        | -              | \$2.50                        | -                                    | \$7.50                         | -            | -                | -                  |
+| Qwen              | Qwen3.8-2.4T-A95B            | Qwen/Qwen3.8-2.4T-A95B                  | -              | \$2.00                        | \$0.50                               | \$6.00                         | FP4          | -                | -                  |
+| Qwen              | Qwen3.7 Max                  | Qwen/Qwen3.7-Max                        | -              | \$2.50                        | \$0.50                               | \$7.50                         | -            | -                | -                  |
 | Qwen              | Qwen3.6 Plus                 | Qwen/Qwen3.6-Plus                       | 1000000        | \$0.50                        | -                                    | \$3.00                         | -            | -                | -                  |
 | Qwen              | Qwen3.5 9B                   | Qwen/Qwen3.5-9B                         | 262144         | \$0.17                        | -                                    | \$0.25                         | FP8          | Yes              | Yes                |
 | Moonshot          | Kimi K3                      | moonshotai/Kimi-K3                      | 1048576        | \$3.00                        | \$0.30                               | \$15.00                        | -            | Yes              | Yes                |
-| Z.ai              | GLM-5.3                      | zai-org/GLM-5.3                         | 1000000        | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
-| Z.ai              | GLM-5.3 Flash                | zai-org/GLM-5.3-Flash                   | 1000000        | \$0.15                        | \$0.03                               | \$0.50                         | FP8          | Yes              | Yes                |
-| Z.ai              | GLM-5.2                      | zai-org/GLM-5.2                         | 1000000        | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
-| OpenAI            | GPT-OSS 120B                 | openai/gpt-oss-120b                     | 128000         | \$0.15                        | -                                    | \$0.60                         | MXFP4        | Yes              | Yes                |
-| DeepSeek          | DeepSeek-V4-Flash-0731       | deepseek-ai/DeepSeek-V4-Flash-0731      | 1000000        | \$0.14                        | \$0.03                               | \$0.28                         | FP4          | Yes              | Yes                |
+| Z.ai              | GLM-5.3                      | zai-org/GLM-5.3                         | 1048575        | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
+| Z.ai              | GLM-5.3 Flash                | zai-org/GLM-5.3-Flash                   | 1048575        | \$0.15                        | \$0.03                               | \$0.50                         | FP8          | Yes              | Yes                |
+| Z.ai              | GLM-5.2                      | zai-org/GLM-5.2                         | 1048575        | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
+| OpenAI            | GPT-OSS 120B                 | openai/gpt-oss-120b                     | 131072         | \$0.15                        | -                                    | \$0.60                         | MXFP4        | Yes              | Yes                |
+| DeepSeek          | DeepSeek-V4-Flash-0731       | deepseek-ai/DeepSeek-V4-Flash-0731      | 1048576        | \$0.14                        | \$0.03                               | \$0.28                         | FP4          | Yes              | Yes                |
 | DeepSeek          | DeepSeek V4 Pro 0813         | deepseek-ai/DeepSeek-V4-Pro-0813        | 1048576        | \$1.32                        | \$0.13                               | \$3.96                         | NVFP4        | Yes              | Yes                |
 | Meta              | Llama 3.3 70B Instruct Turbo | meta-llama/Llama-3.3-70B-Instruct-Turbo | 131072         | \$1.04                        | -                                    | \$1.04                         | FP8          | Yes              | Yes                |
 | Qwen              | Qwen3.7 Plus                 | Qwen/Qwen3.7-Plus                       | 1000000        | \$0.32                        | -                                    | \$1.28                         | -            | -                | -                  |
@@ -21834,44 +21927,45 @@ If you're not sure which vision model to use, we currently recommend **Qwen3.5 9
 
 ## Video models
 
-| Organization      | Model name             | Model string for API       | Price per video | Resolution / duration |
-| :---------------- | :--------------------- | :------------------------- | :-------------- | :-------------------- |
-| MiniMax           | MiniMax 01 Director    | minimax/video-01-director  | \$0.28          | 720p / 5s             |
-| MiniMax           | MiniMax Hailuo 02      | minimax/hailuo-02          | \$0.49          | 768p / 10s            |
-| Google            | Veo 2.0                | google/veo-2.0             | \$2.50          | 720p / 5s             |
-| Google            | Veo 3.0                | google/veo-3.0             | \$1.60          | 720p / 8s             |
-| Google            | Veo 3.0 + Audio        | google/veo-3.0-audio       | \$3.20          | 720p / 8s             |
-| Google            | Veo 3.0 Fast           | google/veo-3.0-fast        | \$0.80          | 1080p / 8s            |
-| Google            | Veo 3.0 Fast + Audio   | google/veo-3.0-fast-audio  | \$1.20          | 1080p / 8s            |
-| ByteDance         | Seedance 1.0 Pro       | ByteDance/Seedance-1.0-pro | \$0.57          | 1080p / 5s            |
-| PixVerse          | PixVerse v5            | pixverse/pixverse-v5       | \$0.30          | 1080p / 5s            |
-| Kuaishou          | Kling 2.1 Master       | kwaivgI/kling-2.1-master   | \$0.92          | 1080p / 5s            |
-| Kuaishou          | Kling 2.1 Standard     | kwaivgI/kling-2.1-standard | \$0.18          | 720p / 5s             |
-| Kuaishou          | Kling 2.1 Pro          | kwaivgI/kling-2.1-pro      | \$0.32          | 1080p / 5s            |
-| Kuaishou          | Kling 1.6 Standard     | kwaivgI/kling-1.6-standard | \$0.19          | 720p / 5s             |
-| Vidu              | Vidu 2.0               | vidu/vidu-2.0              | \$0.80          | 720p / 8s             |
-| Vidu              | Vidu Q1                | vidu/vidu-q1               | \$0.22          | 1080p / 5s            |
-| OpenAI            | Sora 2                 | openai/sora-2              | \$0.80          | 720p / 8s             |
-| OpenAI            | Sora 2 Pro             | openai/sora-2-pro          | \$2.40          | 1080p / 8s            |
-| PixVerse          | PixVerse v5.6          | pixverse/pixverse-v5.6     | \$0.1326        | -                     |
-| Wan-AI            | Wan 2.7 T2V            | Wan-AI/wan2.7-t2v          | \$0.10          | -                     |
-| Google            | Veo 3.1 Debug Test     | google/veo-3.1-test-debug  | \$0.08          | -                     |
-| Vidu              | Vidu Q3                | vidu/vidu-q3               | \$0.0975        | -                     |
-| Vidu              | Vidu Q3 Turbo          | vidu/vidu-q3-turbo         | \$0.195         | -                     |
-| Wan-AI            | Wan 2.7 I2V            | Wan-AI/wan2.7-i2v          | \$0.10          | -                     |
-| Wan-AI            | Wan 2.7 R2V            | Wan-AI/wan2.7-r2v          | \$0.10          | -                     |
-| PixVerse          | PixVerse v6            | pixverse/pixverse-v6       | \$0.09          | -                     |
-| Alibaba           | HappyHorse 1.0 T2V     | alibaba/happyhorse-1.0-t2v | \$0.24          | -                     |
-| ByteDance         | ByteDance Seedance 2.0 | ByteDance/Seedance-2.0     | \$0.16          | -                     |
-| Alibaba           | HappyHorse 1.0 I2V     | alibaba/happyhorse-1.0-i2v | \$0.24          | -                     |
-| Alibaba           | HappyHorse 1.0 R2V     | alibaba/happyhorse-1.0-r2v | \$0.24          | -                     |
-| Google            | Veo 3.1                | google/veo-3.1             | \$0.08          | -                     |
-| Google            | Veo 3.1 Lite           | google/veo-3.1-lite        | \$0.05          | -                     |
-| Alibaba           | HappyHorse 1.1 I2V     | alibaba/happyhorse-1.1-i2v | \$0.14          | -                     |
-| Alibaba           | HappyHorse 1.1 R2V     | alibaba/happyhorse-1.1-r2v | \$0.14          | -                     |
-| Alibaba           | HappyHorse 1.1 T2V     | alibaba/happyhorse-1.1-t2v | \$0.14          | -                     |
-| Black Forest Labs | FLUX 3                 | black-forest-labs/FLUX-3   | \$0.17          | -                     |
-| ByteDance         | ByteDance Seedance 2.5 | ByteDance/Seedance-2.5     | \$0.115         | -                     |
+| Organization      | Model name           | Model string for API        | Price per video | Resolution / duration |
+| :---------------- | :------------------- | :-------------------------- | :-------------- | :-------------------- |
+| MiniMax           | MiniMax 01 Director  | minimax/video-01-director   | \$0.28          | 720p / 5s             |
+| MiniMax           | MiniMax Hailuo 02    | minimax/hailuo-02           | \$0.49          | 768p / 10s            |
+| Google            | Veo 2.0              | google/veo-2.0              | \$2.50          | 720p / 5s             |
+| Google            | Veo 3.0              | google/veo-3.0              | \$1.60          | 720p / 8s             |
+| Google            | Veo 3.0 + Audio      | google/veo-3.0-audio        | \$3.20          | 720p / 8s             |
+| Google            | Veo 3.0 Fast         | google/veo-3.0-fast         | \$0.80          | 1080p / 8s            |
+| Google            | Veo 3.0 Fast + Audio | google/veo-3.0-fast-audio   | \$1.20          | 1080p / 8s            |
+| ByteDance         | Seedance 1.0 Pro     | ByteDance/Seedance-1.0-pro  | \$0.57          | 1080p / 5s            |
+| PixVerse          | PixVerse v5          | pixverse/pixverse-v5        | \$0.30          | 1080p / 5s            |
+| Kuaishou          | Kling 2.1 Master     | kwaivgI/kling-2.1-master    | \$0.92          | 1080p / 5s            |
+| Kuaishou          | Kling 2.1 Standard   | kwaivgI/kling-2.1-standard  | \$0.18          | 720p / 5s             |
+| Kuaishou          | Kling 2.1 Pro        | kwaivgI/kling-2.1-pro       | \$0.32          | 1080p / 5s            |
+| Kuaishou          | Kling 1.6 Standard   | kwaivgI/kling-1.6-standard  | \$0.19          | 720p / 5s             |
+| Vidu              | Vidu 2.0             | vidu/vidu-2.0               | \$0.80          | 720p / 8s             |
+| Vidu              | Vidu Q1              | vidu/vidu-q1                | \$0.22          | 1080p / 5s            |
+| OpenAI            | Sora 2               | openai/sora-2               | \$0.80          | 720p / 8s             |
+| OpenAI            | Sora 2 Pro           | openai/sora-2-pro           | \$2.40          | 1080p / 8s            |
+| PixVerse          | PixVerse v5.6        | pixverse/pixverse-v5.6      | \$0.1326        | -                     |
+| Wan-AI            | Wan 2.7 T2V          | Wan-AI/wan2.7-t2v           | \$0.10          | -                     |
+| Google            | Veo 3.1 Debug Test   | google/veo-3.1-test-debug   | \$0.08          | -                     |
+| Vidu              | Vidu Q3              | vidu/vidu-q3                | \$0.0975        | -                     |
+| Vidu              | Vidu Q3 Turbo        | vidu/vidu-q3-turbo          | \$0.195         | -                     |
+| Wan-AI            | Wan 2.7 I2V          | Wan-AI/wan2.7-i2v           | \$0.10          | -                     |
+| Wan-AI            | Wan 2.7 R2V          | Wan-AI/wan2.7-r2v           | \$0.10          | -                     |
+| PixVerse          | PixVerse v6          | pixverse/pixverse-v6        | \$0.09          | -                     |
+| Alibaba           | HappyHorse 1.0 T2V   | alibaba/happyhorse-1.0-t2v  | \$0.24          | -                     |
+| ByteDance         | Seedance 2.0         | ByteDance/Seedance-2.0      | \$0.16          | -                     |
+| Alibaba           | HappyHorse 1.0 I2V   | alibaba/happyhorse-1.0-i2v  | \$0.24          | -                     |
+| Alibaba           | HappyHorse 1.0 R2V   | alibaba/happyhorse-1.0-r2v  | \$0.24          | -                     |
+| Google            | Veo 3.1              | google/veo-3.1              | \$0.08          | -                     |
+| Google            | Veo 3.1 Lite         | google/veo-3.1-lite         | \$0.05          | -                     |
+| Alibaba           | HappyHorse 1.1 I2V   | alibaba/happyhorse-1.1-i2v  | \$0.14          | -                     |
+| Alibaba           | HappyHorse 1.1 R2V   | alibaba/happyhorse-1.1-r2v  | \$0.14          | -                     |
+| Alibaba           | HappyHorse 1.1 T2V   | alibaba/happyhorse-1.1-t2v  | \$0.14          | -                     |
+| Black Forest Labs | FLUX 3               | black-forest-labs/FLUX-3    | \$0.17          | -                     |
+| ByteDance         | Seedance 2.5         | ByteDance/Seedance-2.5      | \$0.115         | -                     |
+| ByteDance         | Seedance 1.0 Lite    | ByteDance/Seedance-1.0-lite | \$0.143         | 720p / 5s             |
 
 ## Audio models
 

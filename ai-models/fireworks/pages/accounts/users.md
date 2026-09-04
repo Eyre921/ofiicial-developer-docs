@@ -74,3 +74,11 @@ You can remove a user from your account by running:
 ```bash theme={null}
 firectl user delete <USER_ID>
 ```
+
+## Groups
+
+Users can be organized into groups. A group is a named set of users in your account; the **Groups** tab on the [Users page](https://app.fireworks.ai/account/users) lists each group with its member count and source, and the **Group** column on the Users tab shows which groups a user belongs to.
+
+Groups are provisioned from your identity provider through [SCIM group provisioning](/accounts/sso#group-provisioning), which is the only way to create one. They are read-only in Fireworks: create, rename, delete, and populate groups in your directory.
+
+Groups do not confer roles — roles are set per user. What a group can carry is a [group limit](/fireworks-nexus/usage-limits#group-limits), which caps serverless spend for each of its members. That is a **Fireworks Nexus** feature, enabled separately from group sync.

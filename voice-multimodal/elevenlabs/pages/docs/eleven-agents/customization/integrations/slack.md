@@ -12,6 +12,14 @@ path: docs/eleven-agents/customization/integrations/slack
 
 The Slack integration lets an ElevenLabs agent send and receive messages in Slack. Once connected, the agent replies in a thread when mentioned in a channel and maintains separate conversation context per thread.
 
+## Capabilities
+
+| Capability                | Support                                                                                                                                                                                 |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Zero retention mode (ZRM) | Not supported                                                                                                                                                                           |
+| Attachments in triggers   | Images (PNG, JPEG, GIF, WebP) and PDF files on incoming messages, when **Allow file attachments** is enabled in the agent settings and the agent's LLM supports image or document input |
+| Attachments in tools      | Not supported — tools operate on text only                                                                                                                                              |
+
 ## Setup
 
 The integration offers two ways to connect:

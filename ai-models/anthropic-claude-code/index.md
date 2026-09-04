@@ -81,7 +81,7 @@
 - `legal-and-compliance` — [Legal and compliance](pages/legal-and-compliance.md) · [原文](https://code.claude.com/docs/en/legal-and-compliance)
 - `llm-gateway` — [Other LLM gateways](pages/llm-gateway.md) · [原文](https://code.claude.com/docs/en/llm-gateway)
 - `llm-gateway-connect` — [Connect Claude Code to an LLM gateway](pages/llm-gateway-connect.md) · [原文](https://code.claude.com/docs/en/llm-gateway-connect)
-- `llm-gateway-protocol` — [Gateway protocol reference](pages/llm-gateway-protocol.md) · [原文](https://code.claude.com/docs/en/llm-gateway-protocol)
+- `llm-gateway-protocol` — [Claude Code gateway compatibility guide](pages/llm-gateway-protocol.md) · [原文](https://code.claude.com/docs/en/llm-gateway-protocol)
 - `llm-gateway-rollout` — [Roll out an LLM gateway for your organization](pages/llm-gateway-rollout.md) · [原文](https://code.claude.com/docs/en/llm-gateway-rollout)
 - `managed-mcp` — [Control MCP server access for your organization](pages/managed-mcp.md) · [原文](https://code.claude.com/docs/en/managed-mcp)
 - `managed-settings` — [Deploy managed settings](pages/managed-settings.md) · [原文](https://code.claude.com/docs/en/managed-settings)

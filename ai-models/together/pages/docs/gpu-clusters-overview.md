@@ -12,6 +12,21 @@ High-performance GPU clusters for training, fine-tuning, and large-scale AI work
 
 Together GPU Clusters provide on-demand access to high-performance GPU infrastructure for training, fine-tuning, and running large-scale AI workloads. Create clusters in minutes with features like real-time scaling, persistent storage, and support for both Kubernetes and Slurm workload managers.
 
+You can create a cluster from the [GPU clusters console](https://api.together.ai/clusters) or with the CLI:
+
+```bash theme={null}
+# create a cluster (an interactive prompt walks through the options)
+tg beta clusters create
+
+# check the status until the cluster is ready
+tg beta clusters get <CLUSTER_ID>
+
+# write a kubeconfig for kubectl access
+tg beta clusters get-credentials <CLUSTER_ID>
+```
+
+The [GPU clusters quickstart](/docs/gpu-clusters-quickstart) breaks down this flow, including Slurm cluster access.
+
 ## Concepts
 
 ### Kubernetes Cluster Architecture

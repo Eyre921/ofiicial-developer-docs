@@ -45477,9 +45477,14 @@ const result = streamText({
 
 Without this header, tool inputs and structured outputs may arrive all at once after a delay instead of streaming incrementally.
 
+For `claude-fable-5-1`, the default `"auto"` mode uses native structured
+outputs through `output_config.format`. Fable 5.1 rejects forced tool use, so
+do not use `"jsonTool"` or a required or named tool choice to implement
+structured output with this model.
+
 ### Effort
 
-Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-5`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
+Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-fable-5`, `claude-fable-5-1`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
 
 On `claude-opus-5`, thinking can only be disabled at effort levels up to and including `high`. When you combine `thinking: { type: 'disabled' }` with `effort: 'xhigh'` or `effort: 'max'`, the AI SDK lowers the effort to `high` and emits a warning instead of sending a request that the API would reject.
 
@@ -45724,6 +45729,55 @@ console.log(text);
   cause a long pause before output begins. Set `display: "summarized"` to restore visible
   progress during thinking.
 </Note>
+
+##### Thinking Updates
+
+Use `display: 'updates'` with `claude-fable-5-1` to stream thinking summaries
+between tool calls:
+
+```ts highlight="12-16"
+import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
+import { streamText, tool } from 'ai';
+import { z } from 'zod';
+
+const result = streamText({
+  model: anthropic('claude-fable-5-1'),
+  tools: {
+    weather: tool({
+      inputSchema: z.object({ city: z.string() }),
+    }),
+  },
+  providerOptions: {
+    anthropic: {
+      thinking: { type: 'adaptive', display: 'updates' },
+    } satisfies AnthropicLanguageModelOptions,
+  },
+  prompt: 'Compare the weather in San Francisco and New York.',
+});
+```
+
+##### Thinking Block Binding
+
+Fable 5.1 can recover from a thinking-block prefix mismatch by dropping the
+mismatched block. Set `blockBinding.prefixMismatchBehavior` to `drop_block`.
+You can provide block binding by itself to preserve the model's default
+thinking mode, or combine it with adaptive thinking.
+
+```ts highlight="7-11"
+const { text } = await generateText({
+  model: anthropic('claude-fable-5-1'),
+  prompt: 'Continue from this conversation.',
+  providerOptions: {
+    anthropic: {
+      thinking: {
+        blockBinding: {
+          prefixMismatchBehavior: 'drop_block',
+        },
+      },
+    } satisfies AnthropicLanguageModelOptions,
+  },
+});
+```
 
 #### Budget-Based Thinking
 
@@ -46178,6 +46232,59 @@ for await (const part of result.textStream) {
 }
 ```
 
+### Mid-Conversation System Controls
+
+With `claude-fable-5-1`, a mid-conversation system message can be cleared
+before the next user message with `clearAt: 'next_user_message'`, or set the
+effort for the next turn. The provider adds the required
+`mid-conversation-system-clear-at-2026-08-21` and
+`mid-conversation-effort-2026-08-01` beta headers automatically.
+
+```ts highlight="17-25"
+import { anthropic } from '@ai-sdk/anthropic';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: anthropic('claude-fable-5-1'),
+  allowSystemInMessages: true,
+  messages: [
+    {
+      role: 'user',
+      content: 'Draft a migration plan.',
+    },
+    {
+      role: 'assistant',
+      content: 'First, inventory the public API.',
+    },
+    {
+      role: 'system',
+      content: 'For the next turn, verify every compatibility claim.',
+      providerOptions: {
+        anthropic: {
+          clearAt: 'next_user_message',
+          effort: 'high',
+        },
+      },
+    },
+    {
+      role: 'user',
+      content: 'Complete the plan.',
+    },
+  ],
+});
+```
+
+An effort-only system message can use an empty content array at the API level;
+in an AI SDK prompt, set `content: ''`. The provider serializes it as
+`content: []`.
+
+<Note>
+  `clearAt` and per-message `effort` apply only to mid-conversation system
+  messages. When used on the initial system message, the provider ignores them
+  and emits a warning. Use the top-level `effort` provider option to configure
+  effort for the full request.
+</Note>
+
 ### Mid-Conversation Tool Changes
 
 With `claude-opus-4-8`, you can add or remove tools between turns of a conversation without invalidating the prompt cache. Attach `toolChanges` to a system message that appears mid-conversation (right before an assistant message or at the end of the messages). The required `mid-conversation-tool-changes-2026-07-01` beta header is added automatically.
@@ -46544,6 +46651,7 @@ and the `mediaType` should be set to `'application/pdf'`.
 | -------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
 | `claude-opus-5`            | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-sonnet-5`          | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `claude-fable-5-1`         | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-fable-5`           | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-opus-4-8`          | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-opus-4-7`          | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -51168,6 +51276,7 @@ The following Zod features are known to not work with Google Generative AI:
 
 | Model                                 | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Google Search       | URL Context         |
 | ------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gemini-3.8-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.7-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.6-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -52129,6 +52238,7 @@ The following Zod features are known to not work with Google Vertex:
 
 | Model                   | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
 | ----------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gemini-3.8-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.7-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.6-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -88056,9 +88166,14 @@ const result = streamText({
 });
 ```
 
+For `claude-fable-5-1`, the default `"auto"` mode uses native structured
+outputs through `output_config.format`. Fable 5.1 rejects forced tool use, so
+do not use `"jsonTool"` or a required or named tool choice to implement
+structured output with this model.
+
 ### Effort
 
-Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-5`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
+Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-fable-5`, `claude-fable-5-1`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
 
 On `claude-opus-5`, thinking can only be disabled at effort levels up to and including `high`. When you combine `thinking: { type: 'disabled' }` with `effort: 'xhigh'` or `effort: 'max'`, the AI SDK lowers the effort to `high` and emits a warning instead of sending a request that the API would reject.
 
@@ -88305,6 +88420,55 @@ console.log(text);
   cause a long pause before output begins. Set `display: "summarized"` to restore visible
   progress during thinking.
 </Note>
+
+##### Thinking Updates
+
+Use `display: 'updates'` with `claude-fable-5-1` to stream thinking summaries
+between tool calls:
+
+```ts highlight="12-16"
+import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
+import { streamText, tool } from 'ai';
+import { z } from 'zod';
+
+const result = streamText({
+  model: anthropic('claude-fable-5-1'),
+  tools: {
+    weather: tool({
+      inputSchema: z.object({ city: z.string() }),
+    }),
+  },
+  providerOptions: {
+    anthropic: {
+      thinking: { type: 'adaptive', display: 'updates' },
+    } satisfies AnthropicLanguageModelOptions,
+  },
+  prompt: 'Compare the weather in San Francisco and New York.',
+});
+```
+
+##### Thinking Block Binding
+
+Fable 5.1 can recover from a thinking-block prefix mismatch by dropping the
+mismatched block. Set `blockBinding.prefixMismatchBehavior` to `drop_block`.
+You can provide block binding by itself to preserve the model's default
+thinking mode, or combine it with adaptive thinking.
+
+```ts highlight="7-11"
+const { text } = await generateText({
+  model: anthropic('claude-fable-5-1'),
+  prompt: 'Continue from this conversation.',
+  providerOptions: {
+    anthropic: {
+      thinking: {
+        blockBinding: {
+          prefixMismatchBehavior: 'drop_block',
+        },
+      },
+    } satisfies AnthropicLanguageModelOptions,
+  },
+});
+```
 
 #### Budget-Based Thinking
 
@@ -89070,6 +89234,59 @@ const result = await generateText({
 
 This sends `tool_reference` blocks to Anthropic, which loads the corresponding deferred tool schemas into Claude's context.
 
+### Mid-Conversation System Controls
+
+With `claude-fable-5-1`, a mid-conversation system message can be cleared
+before the next user message with `clearAt: 'next_user_message'`, or set the
+effort for the next turn. The provider adds the required
+`mid-conversation-system-clear-at-2026-08-21` and
+`mid-conversation-effort-2026-08-01` beta headers automatically.
+
+```ts highlight="17-25"
+import { anthropic } from '@ai-sdk/anthropic';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: anthropic('claude-fable-5-1'),
+  allowSystemInMessages: true,
+  messages: [
+    {
+      role: 'user',
+      content: 'Draft a migration plan.',
+    },
+    {
+      role: 'assistant',
+      content: 'First, inventory the public API.',
+    },
+    {
+      role: 'system',
+      content: 'For the next turn, verify every compatibility claim.',
+      providerOptions: {
+        anthropic: {
+          clearAt: 'next_user_message',
+          effort: 'high',
+        },
+      },
+    },
+    {
+      role: 'user',
+      content: 'Complete the plan.',
+    },
+  ],
+});
+```
+
+An effort-only system message can use an empty content array at the API level;
+in an AI SDK prompt, set `content: ''`. The provider serializes it as
+`content: []`.
+
+<Note>
+  `clearAt` and per-message `effort` apply only to mid-conversation system
+  messages. When used on the initial system message, the provider ignores them
+  and emits a warning. Use the top-level `effort` provider option to configure
+  effort for the full request.
+</Note>
+
 ### Mid-Conversation Tool Changes
 
 With `claude-opus-4-8`, you can add or remove tools between turns of a conversation without invalidating the prompt cache. Attach `toolChanges` to a system message that appears mid-conversation (right before an assistant message or at the end of the messages). The required `mid-conversation-tool-changes-2026-07-01` beta header is added automatically.
@@ -89507,6 +89724,7 @@ and the `mediaType` should be set to `'application/pdf'`.
 
 | Model               | Image Input         | Object Generation   | Tool Usage          | Computer Use        | Web Search          | Tool Search         | Compaction          |
 | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `claude-fable-5-1`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-opus-5`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-sonnet-5`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-fable-5`    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -95583,6 +95801,7 @@ The following Zod features are known to not work with Google Generative AI:
 
 | Model                                 | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Google Search       | URL Context         |
 | ------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gemini-3.8-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.7-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.6-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -97538,6 +97757,7 @@ The following Zod features are known to not work with Google Vertex:
 
 | Model                   | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
 | ----------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gemini-3.8-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.7-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.6-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -117611,9 +117831,10 @@ Run with `opa test policy.rego policy_test.rego`.
 ### Errors fail closed
 
 - If the backend errors (server unreachable, WASM fault, misbuilt bundle), `opaPolicy` returns `denied` with the error message as the reason.
+- If the backend returns a present but unrecognized decision, such as an unknown `decision` value or a non-boolean legacy `allow` value, `opaPolicy` returns `denied`.
 - The error never rejects out of the callback and never aborts the run.
 - A backend outage blocks the affected call rather than silently allowing it.
-- This is distinct from a rule that returns no match, which normalizes to `not-applicable` (allow). Use a `default ... deny` rule if you want unmatched calls denied too.
+- This is distinct from a rule that returns no match: `null` or `undefined` normalizes to `not-applicable` (allow). Use a `default ... deny` rule if you want unmatched calls denied too.
 
 ## Loading the policy
 
@@ -118517,14 +118738,17 @@ If your tools perform sensitive operations (modifying data, spending money, call
 
 ### Signing approvals with `experimental_toolApprovalSecret`
 
-When you provide a secret, the server HMAC-signs each approval request at issuance and verifies the signature when the approval is replayed. A forged or tampered approval is rejected before the tool executes.
+When you provide a secret, the server HMAC-signs each approval request at issuance and verifies the signature when the approval is replayed. A forged or tampered approval is rejected before the tool executes. Configure the secret on `ToolLoopAgent` (or pass it directly to `generateText` or `streamText`).
 
-```ts highlight="5"
-const result = await streamText({
+```ts highlight="6"
+const agent = new ToolLoopAgent({
   model: __MODEL__,
   tools: { deleteFile, runQuery },
   toolApproval: { deleteFile: 'user-approval', runQuery: 'user-approval' },
   experimental_toolApprovalSecret: process.env.TOOL_APPROVAL_SECRET,
+});
+
+const result = await agent.generate({
   messages,
 });
 ```
@@ -118541,7 +118765,7 @@ The signature binds the approval to the exact tool name, tool call ID, and input
    ```
    TOOL_APPROVAL_SECRET=your-generated-secret-here
    ```
-3. Pass it to `generateText` or `streamText` via `experimental_toolApprovalSecret`.
+3. Pass it to `ToolLoopAgent`, `generateText`, or `streamText` via `experimental_toolApprovalSecret`.
 
 Every serverless instance that might handle a request needs the same secret, since one instance signs the approval and a different instance may verify it on the next turn.
 
@@ -119181,6 +119405,21 @@ const agent = new WorkflowAgent({
   },
 });
 ```
+
+Tool input callbacks (`onInputStart`, `onInputDelta`, and
+`onInputAvailable`) are also preserved by `WorkflowAgent`. The model call runs
+inside a durable step, while callback functions remain in the workflow
+context because arbitrary functions cannot cross the step boundary. As a
+result, `WorkflowAgent` records the callback events during the model step and
+replays them in order immediately after that step completes, before tool
+execution and step lifecycle callbacks. They do not run concurrently with
+model generation and cannot provide in-flight cancellation or backpressure.
+Each callback receives its tool's `toolsContext` entry after
+`contextSchema` validation.
+
+For highly fragmented tool inputs, `onInputDelta` replay data is part of the
+durable model-step result. Only configure `onInputDelta` when each generated
+delta is needed; omit it to avoid retaining delta replay data.
 
 The deprecated `experimental_onStart` and `experimental_onStepStart` names
 remain available for backwards compatibility. When both the stable and
@@ -128251,12 +128490,89 @@ try {
 }
 ```
 
-Well-formed provider error events that arrive after streaming starts are
-normalized into [`StreamProviderError`](/docs/reference/ai-sdk-errors/ai-stream-provider-error)
-instances. The same instance is supplied to callbacks such as `onError` and to
-the `error` part in the full stream. The SDK does not automatically restart a
-partially consumed stream; use `isRetryable` to implement application-managed
-retries and decide how to handle any partial output.
+## Retrying provider errors after streaming starts
+
+`maxRetries` retries failures that happen while starting a model call. To retry
+well-formed provider error events received after response streaming has begun,
+set `streamRetries`:
+
+```ts highlight="7"
+import { streamText } from 'ai';
+__PROVIDER_IMPORT__;
+
+const { textStream } = streamText({
+  model: __MODEL__,
+  prompt: 'Write a vegetarian lasagna recipe for 4 people.',
+  streamRetries: 2,
+});
+
+for await (const textPart of textStream) {
+  process.stdout.write(textPart);
+}
+```
+
+Stream retries rerun only the failed model step with the same accumulated
+conversation and generation context. Earlier completed steps, including their
+tool calls and tool results, are not replayed. Tool input, tool calls, approval
+requests, tool callbacks, and client-side tool execution from a failed attempt
+are discarded. They are only exposed or executed after an attempt reaches a
+successful model-call finish.
+
+Well-formed provider error events are normalized into
+[`StreamProviderError`](/docs/reference/ai-sdk-errors/ai-stream-provider-error)
+instances. The same instance is supplied to `onError` and, if recovery is not
+requested or retries are exhausted, to the `error` part in the full stream. Use
+its `isRetryable` metadata when deciding whether to request recovery.
+
+A retry remains part of the same logical step. `onStepStart` runs once for that
+step. `onLanguageModelCallStart` runs for each provider call attempt, while
+`onLanguageModelCallEnd` runs only for attempts that reach a model-call finish.
+
+You can also decide dynamically in `onError`. Set `streamRetries` explicitly to
+enable stream recovery; use `0` when a single retry should only be
+callback-directed:
+
+```ts highlight="7-12"
+const result = streamText({
+  model: __MODEL__,
+  prompt: 'Write a vegetarian lasagna recipe for 4 people.',
+  streamRetries: 0,
+  onError: ({ error }) => {
+    if (isTransientProviderError(error)) {
+      return { retry: true };
+    }
+  },
+});
+```
+
+Callback-directed recovery is limited to one retry per logical step. When
+automatic retries are configured, `onError` can request one additional retry
+after the automatic retry budget is exhausted. This bounds the total number of
+recovery calls for a step to `streamRetries + 1`.
+
+When `streamRetries` is omitted, all stream retry behavior is disabled and an
+existing logging-only `onError` callback retains incremental tool streaming.
+An `onError` return value other than `{ retry: true }` keeps its previous
+behavior and does not request recovery. Provider error events that are
+recovered are not emitted as final `error` parts.
+
+<Note type="warning">
+  Non-tool output emitted before a provider error cannot be retracted. A retried
+  model step may therefore append repeated or divergent partial text, reasoning,
+  files, or sources to consumer streams. Open text and reasoning parts are ended
+  before recovered output begins so UI consumers do not retain them in a
+  streaming state. Failed-attempt output is excluded from the recovered step
+  result, structured output parsing, response messages, and subsequent model
+  steps. Final request and response metadata come from the recovered attempt.
+  Retries also add latency and may incur additional provider usage and cost.
+</Note>
+
+<Note type="warning">
+  Failed-attempt isolation prevents AI SDK client-side tools from executing, but
+  it cannot undo work already performed by provider-executed tools. Retrying a
+  step after provider-side work may repeat that work or its cost. Use
+  idempotency controls for provider-executed side effects.
+</Note>
 
 ## Handling stream aborts
 
@@ -144271,12 +144587,13 @@ The following provider options are available:
   `.nullable()`.
 </Note>
 
-- **serviceTier** _'auto' | 'flex' | 'priority' | 'fast' | 'default'_
+- **serviceTier** _'auto' | 'flex' | 'priority' | 'fast' | 'ultrafast' | 'default'_
   Service tier for the request. Set to 'flex' for 50% cheaper processing
   at the cost of increased latency (available for o3, o4-mini, and gpt-5 models).
   Set to 'priority' for faster processing with Enterprise access (available for gpt-4, gpt-5, gpt-5-mini, o3, o4-mini; gpt-5-nano is not supported).
   'fast' is OpenAI's newer name for the 'priority' tier; the two are interchangeable, and responses from
   gpt-5.6 and earlier report `serviceTier: 'priority'` for either.
+  Set to 'ultrafast' for access-controlled Ultrafast processing (available only for gpt-5.6-sol).
 
   Defaults to 'auto'.
 
@@ -146160,13 +146477,14 @@ The following optional provider options are available for OpenAI chat models:
 
   Parameters for prediction mode.
 
-- **serviceTier** _'auto' | 'flex' | 'priority' | 'fast' | 'default'_
+- **serviceTier** _'auto' | 'flex' | 'priority' | 'fast' | 'ultrafast' | 'default'_
 
   Service tier for the request. Set to 'flex' for 50% cheaper processing
   at the cost of increased latency (available for o3, o4-mini, and gpt-5 models).
   Set to 'priority' for faster processing with Enterprise access (available for gpt-4, gpt-5, gpt-5-mini, o3, o4-mini; gpt-5-nano is not supported).
   'fast' is OpenAI's newer name for the 'priority' tier; the two are interchangeable, and responses from
   gpt-5.6 and earlier report `serviceTier: 'priority'` for either.
+  Set to 'ultrafast' for access-controlled Ultrafast processing (available only for gpt-5.6-sol).
 
   Defaults to 'auto'.
 
@@ -148639,9 +148957,14 @@ const result = streamText({
 });
 ```
 
+For `claude-fable-5-1`, the default `"auto"` mode uses native structured
+outputs through `output_config.format`. Fable 5.1 rejects forced tool use, so
+do not use `"jsonTool"` or a required or named tool choice to implement
+structured output with this model.
+
 ### Effort
 
-Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-fable-5`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
+Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-fable-5`, `claude-fable-5-1`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
 
 On `claude-opus-5`, thinking can only be disabled at effort levels up to and including `high`. When you combine `thinking: { type: 'disabled' }` with `effort: 'xhigh'` or `effort: 'max'`, the AI SDK lowers the effort to `high` and emits a warning instead of sending a request that the API would reject.
 
@@ -148889,6 +149212,56 @@ console.log(text);
   `"omitted"` display will cause a long pause before output begins. Set
   `display: "summarized"` to restore visible progress during thinking.
 </Note>
+
+##### Thinking Updates
+
+Use `display: 'updates'` with `claude-fable-5-1` to stream thinking summaries
+between tool calls. The provider adds the required
+`thinking-display-updates-2026-08-18` beta header automatically:
+
+```ts highlight="12-16"
+import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
+import { streamText, tool } from 'ai';
+import { z } from 'zod';
+
+const result = streamText({
+  model: anthropic('claude-fable-5-1'),
+  tools: {
+    weather: tool({
+      inputSchema: z.object({ city: z.string() }),
+    }),
+  },
+  providerOptions: {
+    anthropic: {
+      thinking: { type: 'adaptive', display: 'updates' },
+    } satisfies AnthropicLanguageModelOptions,
+  },
+  prompt: 'Compare the weather in San Francisco and New York.',
+});
+```
+
+##### Thinking Binding Controls
+
+Fable 5.1 can recover from a thinking-block prefix mismatch by dropping the
+mismatched block. Set `blockBinding.prefixMismatchBehavior` to `drop_block`.
+You can provide block binding by itself to preserve the model's default
+thinking mode, or combine it with adaptive thinking.
+
+```ts highlight="7-11"
+const { text } = await generateText({
+  model: anthropic('claude-fable-5-1'),
+  prompt: 'Continue from this conversation.',
+  providerOptions: {
+    anthropic: {
+      thinking: {
+        blockBinding: {
+          prefixMismatchBehavior: 'drop_block',
+        },
+      },
+    } satisfies AnthropicLanguageModelOptions,
+  },
+});
+```
 
 #### Budget-Based Thinking
 
@@ -149685,6 +150058,59 @@ const result = await generateText({
 
 This sends `tool_reference` blocks to Anthropic, which loads the corresponding deferred tool schemas into Claude's context.
 
+### Mid-Conversation System Controls
+
+With `claude-fable-5-1`, a mid-conversation system message can be cleared
+before the next user message with `clearAt: 'next_user_message'`, or set the
+effort for the next turn. The provider adds the required
+`mid-conversation-system-clear-at-2026-08-21` and
+`mid-conversation-effort-2026-08-01` beta headers automatically.
+
+```ts highlight="17-25"
+import { anthropic } from '@ai-sdk/anthropic';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: anthropic('claude-fable-5-1'),
+  allowSystemInMessages: true,
+  messages: [
+    {
+      role: 'user',
+      content: 'Draft a migration plan.',
+    },
+    {
+      role: 'assistant',
+      content: 'First, inventory the public API.',
+    },
+    {
+      role: 'system',
+      content: 'For the next turn, verify every compatibility claim.',
+      providerOptions: {
+        anthropic: {
+          clearAt: 'next_user_message',
+          effort: 'high',
+        },
+      },
+    },
+    {
+      role: 'user',
+      content: 'Complete the plan.',
+    },
+  ],
+});
+```
+
+An effort-only system message can use an empty content array at the API level;
+in an AI SDK prompt, set `content: ''`. The provider serializes it as
+`content: []`.
+
+<Note>
+  `clearAt` and per-message `effort` apply only to mid-conversation system
+  messages. When used on the initial system message, the provider ignores them
+  and emits a warning. Use the top-level `effort` provider option to configure
+  effort for the full request.
+</Note>
+
 ### Mid-Conversation Tool Changes
 
 With `claude-opus-4-8`, you can add or remove tools between turns of a conversation without invalidating the prompt cache. Attach `toolChanges` to a system message that appears mid-conversation (right before an assistant message or at the end of the messages). The required `mid-conversation-tool-changes-2026-07-01` beta header is added automatically.
@@ -150166,6 +150592,7 @@ and the `mediaType` should be set to `'application/pdf'`.
 | ------------------- | ----------- | ----------------- | ---------- | ------------ | ---------- | ----------- | ---------- |
 | `claude-opus-5`     | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
 | `claude-sonnet-5`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
+| `claude-fable-5-1`  | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
 | `claude-fable-5`    | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
 | `claude-opus-4-8`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
 | `claude-opus-4-7`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
@@ -155492,11 +155919,11 @@ You can use the following optional settings to customize the Google provider ins
 ## Language Models
 
 You can create models that call the [Google Generative AI API](https://ai.google.dev/api/rest) using the provider instance.
-The first argument is the model id, e.g. `gemini-3.7-flash`.
+The first argument is the model id, e.g. `gemini-3.8-flash`.
 The models support tool calls and some have multi-modal capabilities.
 
 ```ts
-const model = google('gemini-3.7-flash');
+const model = google('gemini-3.8-flash');
 ```
 
 You can use Google language models to generate text with the `generateText` function:
@@ -155506,7 +155933,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: google('gemini-3.7-flash'),
+  model: google('gemini-3.8-flash'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -155531,7 +155958,7 @@ You can pass them as an options argument:
 ```ts
 import { google, type GoogleLanguageModelOptions } from '@ai-sdk/google';
 
-const model = google('gemini-3.7-flash');
+const model = google('gemini-3.8-flash');
 
 await generateText({
   model,
@@ -155686,7 +156113,7 @@ For Gemini 3 and later models, use the `thinkingLevel` parameter to control the 
 import { google, GoogleLanguageModelOptions } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
-const model = google('gemini-3.7-flash');
+const model = google('gemini-3.8-flash');
 
 const { text, reasoning } = await generateText({
   model: model,
@@ -155743,7 +156170,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: google('gemini-3.7-flash'),
+  model: google('gemini-3.8-flash'),
   messages: [
     {
       role: 'user',
@@ -155770,7 +156197,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: google('gemini-3.7-flash'),
+  model: google('gemini-3.8-flash'),
   messages: [
     {
       role: 'user',
@@ -155825,13 +156252,13 @@ const baseContext =
   'You are a cooking assistant with expertise in Italian cuisine. Here are 1000 lasagna recipes for reference...';
 
 const { text: veggieLasagna } = await generateText({
-  model: google('gemini-3.7-flash'),
+  model: google('gemini-3.8-flash'),
   prompt: `${baseContext}\n\nWrite a vegetarian lasagna recipe for 4 people.`,
 });
 
 // Second request with same prefix - eligible for cache hit
 const { text: meatLasagna, providerMetadata } = await generateText({
-  model: google('gemini-3.7-flash'),
+  model: google('gemini-3.8-flash'),
   prompt: `${baseContext}\n\nWrite a meat lasagna recipe for 12 people.`,
 });
 
@@ -155870,7 +156297,7 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
 });
 
-const model = 'gemini-3.7-flash';
+const model = 'gemini-3.8-flash';
 
 // Create a cache with the content you want to reuse
 const cache = await ai.caches.create({
@@ -155919,7 +156346,7 @@ import { googleTools } from '@ai-sdk/google/internal';
 import { generateText } from 'ai';
 
 const { text, toolCalls, toolResults } = await generateText({
-  model: google('gemini-3.7-flash'),
+  model: google('gemini-3.8-flash'),
   tools: { code_execution: google.tools.codeExecution({}) },
   prompt: 'Use python to calculate the 20th fibonacci number.',
 });
@@ -155938,7 +156365,7 @@ import { GoogleProviderMetadata } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text, sources, providerMetadata } = await generateText({
-  model: google('gemini-3.7-flash'),
+  model: google('gemini-3.8-flash'),
   tools: {
     google_search: google.tools.googleSearch({}),
   },
@@ -156046,7 +156473,7 @@ const vertex = createGoogleVertex({
 });
 
 const { text, sources, providerMetadata } = await generateText({
-  model: vertex('gemini-3.7-flash'),
+  model: vertex('gemini-3.8-flash'),
   tools: {
     enterprise_web_search: vertex.tools.enterpriseWebSearch({}),
   },
@@ -156069,7 +156496,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text, sources } = await generateText({
-  model: google('gemini-3.7-flash'),
+  model: google('gemini-3.8-flash'),
   tools: {
     file_search: google.tools.fileSearch({
       fileSearchStoreNames: [
@@ -156096,7 +156523,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text, sources, providerMetadata } = await generateText({
-  model: google('gemini-3.7-flash'),
+  model: google('gemini-3.8-flash'),
   prompt: `Based on the document: https://ai.google.dev/gemini-api/docs/url-context.
           Answer this question: How many links we can consume in one request?`,
   tools: {
@@ -156174,7 +156601,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text, sources, providerMetadata } = await generateText({
-  model: google('gemini-3.7-flash'),
+  model: google('gemini-3.8-flash'),
   prompt: `Based on this context: https://ai-sdk.dev/providers/ai-sdk-providers/google, tell me how to use Gemini with AI SDK.
     Also, provide the latest news about AI SDK V5.`,
   tools: {
@@ -156199,7 +156626,7 @@ import { GoogleProviderMetadata } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text, sources, providerMetadata } = await generateText({
-  model: google('gemini-3.7-flash'),
+  model: google('gemini-3.8-flash'),
   tools: {
     google_maps: google.tools.googleMaps({}),
   },
@@ -156263,7 +156690,7 @@ const vertex = createGoogleVertex({
 });
 
 const { text, sources, providerMetadata } = await generateText({
-  model: vertex('gemini-3.7-flash'),
+  model: vertex('gemini-3.8-flash'),
   tools: {
     vertex_rag_store: vertex.tools.vertexRagStore({
       ragCorpus:
@@ -156430,7 +156857,7 @@ You can disable structured outputs for object generation as a workaround:
 
 ```ts highlight="3,8"
 const { output } = await generateText({
-  model: google('gemini-3.7-flash'),
+  model: google('gemini-3.8-flash'),
   providerOptions: {
     google: {
       structuredOutputs: false,
@@ -156465,6 +156892,7 @@ The following Zod features are known to not work with Google:
 
 | Model                                 | Image Input | Object Generation | Tool Usage | Tool Streaming | Google Search | URL Context |
 | ------------------------------------- | ----------- | ----------------- | ---------- | -------------- | ------------- | ----------- |
+| `gemini-3.8-flash`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
 | `gemini-3.7-flash`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
 | `gemini-3.6-flash`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
 | `gemini-3.5-flash`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
@@ -156694,13 +157122,13 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: google.interactions('gemini-3.7-flash'),
+  model: google.interactions('gemini-3.8-flash'),
   prompt: 'Hello, how are you?',
 });
 ```
 
 `google.interactions(...)` accepts a model ID string (e.g.
-`'gemini-3.7-flash'`, `'gemini-3.1-pro-preview'`), `{ agent: <name> }` to use
+`'gemini-3.8-flash'`, `'gemini-3.1-pro-preview'`), `{ agent: <name> }` to use
 a Gemini [agent preset](#agent-presets), or `{ managedAgent: <name> }` to
 invoke a [managed agent](#managed-agents) you created on Google's side.
 The returned model can be passed to `generateText` and `streamText` like
@@ -156727,7 +157155,7 @@ import {
 import { generateText } from 'ai';
 
 await generateText({
-  model: google.interactions('gemini-3.7-flash'),
+  model: google.interactions('gemini-3.8-flash'),
   prompt: 'What color is the sky in one word?',
   providerOptions: {
     google: {
@@ -156876,7 +157304,20 @@ exposes:
 - **signature** _string_
 
   Per-block signature hash, set by the SDK on output reasoning and
-  tool-call parts. Round-tripped automatically on the next turn.
+  tool-call or agentic video processing parts. Round-tripped automatically on
+  the next turn.
+
+Agentic video custom parts additionally expose:
+
+- **processingId** _string_
+
+  ID of an agentic video `processing_call`. Present on
+  `google.processing_call` custom parts.
+
+- **processingCallId** _string_
+
+  ID of the matching agentic video processing call. Present on
+  `google.processing_result` custom parts.
 
 ### Stateful chaining
 
@@ -156892,7 +157333,7 @@ import {
 import { generateText } from 'ai';
 
 const turn1 = await generateText({
-  model: google.interactions('gemini-3.7-flash'),
+  model: google.interactions('gemini-3.8-flash'),
   prompt: 'What are the three largest cities in Spain?',
 });
 
@@ -156901,7 +157342,7 @@ const interactionId = turn1.providerMetadata?.google?.interactionId as
   | undefined;
 
 const turn2 = await generateText({
-  model: google.interactions('gemini-3.7-flash'),
+  model: google.interactions('gemini-3.8-flash'),
   prompt: 'What is the most famous landmark in the second one?',
   providerOptions: {
     google: {
@@ -156926,7 +157367,7 @@ const messages: Array<ModelMessage> = [
 ];
 
 const turn1 = await generateText({
-  model: google.interactions('gemini-3.7-flash'),
+  model: google.interactions('gemini-3.8-flash'),
   messages,
   providerOptions: {
     google: { store: false } satisfies GoogleLanguageModelInteractionsOptions,
@@ -156940,13 +157381,104 @@ messages.push({
 });
 
 const turn2 = await generateText({
-  model: google.interactions('gemini-3.7-flash'),
+  model: google.interactions('gemini-3.8-flash'),
   messages,
   providerOptions: {
     google: { store: false } satisfies GoogleLanguageModelInteractionsOptions,
   },
 });
 ```
+
+### Agentic video understanding
+
+Gemini 3.7 Flash, 3.6 Flash, and 3.5 Flash Lite support agentic video
+understanding through the Interactions API. Instead of sampling the entire
+video at a fixed frame rate, the model dynamically navigates the timeline and
+loads the transcripts, frames, or audio needed for the prompt.
+
+Set `processing: 'agentic'` in the Google provider options of an individual
+video file part. You can validate the per-file options with
+`GoogleInteractionsVideoOptions`:
+
+```ts
+import { google, type GoogleInteractionsVideoOptions } from '@ai-sdk/google';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: google.interactions('gemini-3.7-flash'),
+  messages: [
+    {
+      role: 'user',
+      content: [
+        {
+          type: 'file',
+          data: 'https://www.youtube.com/watch?v=9hE5-98ZeCg',
+          mediaType: 'video',
+          providerOptions: {
+            google: {
+              processing: 'agentic',
+            } satisfies GoogleInteractionsVideoOptions,
+          },
+        },
+        {
+          type: 'text',
+          text: 'Identify the three most important moments and include timestamps.',
+        },
+      ],
+    },
+  ],
+  providerOptions: {
+    google: {
+      thinkingSummaries: 'auto',
+    },
+  },
+});
+
+const processingSteps = result.content.filter(
+  part =>
+    part.type === 'custom' &&
+    (part.kind === 'google.processing_call' ||
+      part.kind === 'google.processing_result'),
+);
+```
+
+Agentic navigation is exposed as `custom` content parts:
+
+- `google.processing_call` marks a request by the model to inspect part of the
+  video. Its `providerMetadata.google.processingId` contains the processing ID.
+- `google.processing_result` marks completion of that request. Its
+  `providerMetadata.google.processingCallId` links it to the processing call.
+
+These parts are informational and do not require a tool response. They are
+available from both `generateText` and `streamText`.
+
+For static processing, use `'static'` or provide clipping and frame-rate
+options:
+
+```ts
+const video = {
+  type: 'file' as const,
+  data: videoBytes,
+  mediaType: 'video/mp4',
+  providerOptions: {
+    google: {
+      processing: {
+        type: 'static',
+        startOffset: 1200,
+        endOffset: 1500,
+        fps: 0.5,
+      },
+    } satisfies GoogleInteractionsVideoOptions,
+  },
+};
+```
+
+With stateful conversations, pass the returned `interactionId` as
+`previousInteractionId`; Gemini retains the video context server-side. With
+`store: false`, append `result.responseMessages` and re-send the full history.
+The processing custom parts and their signatures are then round-tripped as
+native `processing_call` and `processing_result` steps so the video context is
+preserved.
 
 ### Built-in Tools
 
@@ -156973,7 +157505,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text, sources } = await generateText({
-  model: google.interactions('gemini-3.7-flash'),
+  model: google.interactions('gemini-3.8-flash'),
   tools: {
     google_search: google.tools.googleSearch({}),
   },
@@ -156997,7 +157529,7 @@ const weatherTool = tool({
 });
 
 const { text, toolCalls } = await generateText({
-  model: google.interactions('gemini-3.7-flash'),
+  model: google.interactions('gemini-3.8-flash'),
   tools: { getWeather: weatherTool },
   stopWhen: isStepCount(5),
   prompt: 'What is the weather in San Francisco right now?',
@@ -157296,7 +157828,7 @@ import { google } from '@ai-sdk/google';
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: google.interactions('gemini-3.7-flash'),
+  model: google.interactions('gemini-3.8-flash'),
   prompt: 'Hello, how are you?',
 });
 
@@ -157987,10 +158519,10 @@ const googleVertex = createGoogleVertex({
 ### Language Models
 
 You can create models that call the Vertex API using the provider instance.
-The first argument is the model id, e.g. `gemini-3.7-flash`.
+The first argument is the model id, e.g. `gemini-3.8-flash`.
 
 ```ts
-const model = googleVertex('gemini-3.7-flash');
+const model = googleVertex('gemini-3.8-flash');
 ```
 
 <Note>
@@ -158265,7 +158797,7 @@ import { googleVertex } from '@ai-sdk/google-vertex';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: googleVertex('gemini-3.7-flash'),
+  model: googleVertex('gemini-3.8-flash'),
   tools: {
     enterprise_web_search: googleVertex.tools.enterpriseWebSearch({}),
   },
@@ -158283,7 +158815,7 @@ import { type GoogleLanguageModelOptions } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: googleVertex('gemini-3.7-flash'),
+  model: googleVertex('gemini-3.8-flash'),
   tools: {
     google_maps: googleVertex.tools.googleMaps({}),
   },
@@ -158656,6 +159188,7 @@ The following Zod features are known to not work with Google Vertex:
 
 | Model                   | Image Input | Object Generation | Tool Usage | Tool Streaming |
 | ----------------------- | ----------- | ----------------- | ---------- | -------------- |
+| `gemini-3.8-flash`      | <Check />   | <Check />         | <Check />  | <Check />      |
 | `gemini-3.7-flash`      | <Check />   | <Check />         | <Check />  | <Check />      |
 | `gemini-3.6-flash`      | <Check />   | <Check />         | <Check />  | <Check />      |
 | `gemini-3.5-flash`      | <Check />   | <Check />         | <Check />  | <Check />      |
@@ -165172,6 +165705,8 @@ const { video } = await generateVideo({
 
 Both models generate one video per call. Generation is asynchronous — the model
 creates a task and polls until it completes, then returns the resulting MP4 URL.
+Status polls trust the configured MiniMax API origin for the first request and
+validate every redirect to another origin before following it.
 
 `duration` accepts a whole number of seconds and defaults to 5. MiniMax-H3
 supports 4 to 15 seconds; MiniMax-H3-Max supports 5 to 15 seconds. A fractional
@@ -166941,6 +167476,9 @@ ByteDance video generation is task-based: the provider creates a task and the AI
 SDK polls it until it completes. Configure polling with the top-level `poll`
 option of [`generateVideo()`](/docs/reference/ai-sdk-core/generate-video):
 
+The configured ByteDance API origin is trusted for the first status request,
+while every redirect to another origin is validated before it is followed.
+
 ```ts
 const { video } = await generateVideo({
   model: byteDance.video('seedance-1-0-pro-250528'),
@@ -167315,7 +167853,9 @@ The following provider options are available via `providerOptions.klingai`. Opti
 <Note>
   Video generation is an asynchronous process that can take several minutes.
   Consider setting `pollTimeoutMs` to at least 10 minutes (600000ms) for
-  reliable operation.
+  reliable operation. Status polls trust the configured Kling AI API origin for
+  the first request and validate every redirect to another origin before
+  following it.
 </Note>
 
 ### Video Model Capabilities
@@ -169173,6 +169713,10 @@ try {
   structured output JSON Schema to a path below the ACP `session/prompt`
   request's `_meta` field. ACP does not standardize structured output, so omit
   this unless the selected implementation documents that private extension.
+- `askUserQuestions`: optional translation between an implementation-specific
+  ACP client request for questions and the Harness `askUserQuestions` tool.
+  Configure it only when the ACP implementation exposes a native request that
+  waits for the client's response.
 - `permissionModeMapping`: mappings from all three Harness permission modes to
   advertised ACP session modes or configuration options. Set an entry to
   `null` when the ACP implementation does not support that mode. When omitted,

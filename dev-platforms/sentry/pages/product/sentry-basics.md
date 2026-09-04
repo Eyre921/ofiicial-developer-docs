@@ -50,7 +50,7 @@ After basic error monitoring, these features add the debugging context that will
 | **[Application Metrics](https://docs.sentry.io/product/metrics.md)**   | Custom counters, gauges, distributions                      | Add metric calls to your code                                                                                    |
 | **[User Feedback](https://docs.sentry.io/product/user-feedback.md)**   | Collect bug reports from users, linked to errors            | Add the feedback widget                                                                                          |
 
-Check out Sentry's [cookbooks](https://sentry.io/cookbook/) to learn more about how others use Sentry, and how to go deeper with each of Sentry's tools.
+Check out Sentry's [cookbooks](https://docs.sentry.io/get-started/cookbook.md) to learn more about how others use Sentry, and how to go deeper with each of Sentry's tools.
 
 ## [Step 4: Explore Your Data](https://docs.sentry.io/product/sentry-basics.md#step-4-explore-your-data)
 
@@ -64,18 +64,18 @@ Once data is flowing, use these tools to understand your application's health:
 
 ### [Practical Guides](https://docs.sentry.io/product/sentry-basics.md#practical-guides)
 
-Our **[Guides](https://docs.sentry.io/guides.md)** cover real-world patterns for each feature:
+Our **[Guides](https://docs.sentry.io/get-started/guides.md)** cover real-world patterns for each feature:
 
-* [What to Prioritize](https://docs.sentry.io/guides/issues-errors.md) — error handling and triage strategies
-* [What to Log](https://docs.sentry.io/guides/logs.md) — structured logging patterns
-* [What to Track](https://docs.sentry.io/guides/metrics.md) — choosing the right metrics
-* [Querying Traces](https://docs.sentry.io/guides/querying-traces.md) — finding slow pages and bottlenecks
-* [Adding Custom Spans](https://docs.sentry.io/guides/custom-spans.md) — instrumenting your own code
-* [Using Session Replay](https://docs.sentry.io/guides/session-replay.md) — debugging workflows with replays
+* [What to Prioritize](https://docs.sentry.io/get-started/guides/issues-errors.md) — error handling and triage strategies
+* [What to Log](https://docs.sentry.io/get-started/guides/logs.md) — structured logging patterns
+* [What to Track](https://docs.sentry.io/get-started/guides/metrics.md) — choosing the right metrics
+* [Querying Traces](https://docs.sentry.io/get-started/guides/querying-traces.md) — finding slow pages and bottlenecks
+* [Adding Custom Spans](https://docs.sentry.io/get-started/guides/custom-spans.md) — instrumenting your own code
+* [Using Session Replay](https://docs.sentry.io/get-started/guides/session-replay.md) — debugging workflows with replays
 
 ### [Cookbook](https://docs.sentry.io/product/sentry-basics.md#cookbook)
 
-The **[Sentry Cookbook](https://sentry.io/cookbook/)** has step-by-step recipes for common workflows, including debugging with MCP + Cursor, setting up AI observability, creating dashboards with agents, and more.
+The **[Sentry Cookbook](https://docs.sentry.io/get-started/cookbook.md)** has step-by-step recipes for common workflows, including debugging with MCP + Cursor, setting up AI observability, creating dashboards with agents, and more. Full recipes live on [sentry.io/cookbook](https://sentry.io/cookbook/).
 
 ### [Interactive Resources](https://docs.sentry.io/product/sentry-basics.md#interactive-resources)
 

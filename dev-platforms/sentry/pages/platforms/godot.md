@@ -109,7 +109,7 @@ To view and resolve the recorded error, log into [sentry.io](https://sentry.io) 
 
 ## [Next Steps](https://docs.sentry.io/platforms/godot.md#next-steps)
 
-* Explore [practical guides](https://docs.sentry.io/guides.md) on what to monitor, log, track, and investigate after setup
+* Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 
 ## Topics
 

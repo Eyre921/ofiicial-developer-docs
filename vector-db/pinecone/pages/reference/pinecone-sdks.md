@@ -26,12 +26,12 @@ SDK versions are pinned to specific [API versions](/reference/api/versioning). W
 
 The mappings between API versions and SDK versions are as follows:
 
-|                                               | `2026-04`   | `2025-10` | `2025-04` | `2025-01` | `2024-10` | `2024-07`     | `2024-04` |
-| --------------------------------------------- | :---------- | :-------- | :-------- | :-------- | :-------- | :------------ | :-------- |
-| [Python SDK](/reference/sdks/python/overview) | v9.x        | v8.x      | v7.x      | v6.x      | v5.3.x    | v5.0.x-v5.2.x | v4.x      |
-| [Node.js SDK](/reference/sdks/node/overview)  | v8.x        | v7.x      | v6.x      | v5.x      | v4.x      | v3.x          | v2.x      |
-| [Java SDK](/reference/sdks/java/overview)     | Coming soon | v6.x      | v5.x      | v4.x      | v3.x      | v2.x          | v1.x      |
-| [Go SDK](/reference/sdks/go/overview)         | v6.x        | v5.x      | v4.x      | v3.x      | v2.x      | v1.x          | v0.x      |
+|                                               | `2026-07`   | `2026-04`   | `2025-10` | `2025-04` | `2025-01` | `2024-10` | `2024-07`     | `2024-04` |
+| --------------------------------------------- | :---------- | :---------- | :-------- | :-------- | :-------- | :-------- | :------------ | :-------- |
+| [Python SDK](/reference/sdks/python/overview) | v10.x       | v9.x        | v8.x      | v7.x      | v6.x      | v5.3.x    | v5.0.x-v5.2.x | v4.x      |
+| [Node.js SDK](/reference/sdks/node/overview)  | Coming soon | v8.x        | v7.x      | v6.x      | v5.x      | v4.x      | v3.x          | v2.x      |
+| [Java SDK](/reference/sdks/java/overview)     | Coming soon | Coming soon | v6.x      | v5.x      | v4.x      | v3.x      | v2.x          | v1.x      |
+| [Go SDK](/reference/sdks/go/overview)         | Coming soon | v6.x        | v5.x      | v4.x      | v3.x      | v2.x      | v1.x          | v0.x      |
 
 When a new stable API version is released, you should upgrade your SDK to the latest version to ensure compatibility with the latest API changes.
 

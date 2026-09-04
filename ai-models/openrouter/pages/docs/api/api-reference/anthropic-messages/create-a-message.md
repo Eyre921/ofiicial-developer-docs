@@ -2633,6 +2633,7 @@ components:
         - OpenInference
         - Parasail
         - Poolside
+        - PrimeIntellect
         - Perceptron
         - Perplexity
         - Phala
@@ -4656,6 +4657,7 @@ components:
                 - OpenInference
                 - Parasail
                 - Poolside
+                - PrimeIntellect
                 - Perceptron
                 - Perplexity
                 - Phala

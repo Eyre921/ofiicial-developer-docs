@@ -15,6 +15,7 @@ You have the following options to fund a financial account:
 | [Send funds from a Stripe payments balance](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#payments-balance) | Instant | Stripe API |
 | [Send funds from your external bank account to a FinancialAddress](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#external-account) | 1 business day (7 days initially for the first 5000 GBP in funding) | From your bank |
 | [Use inbound transfers from a linked external bank account](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#inbound-transfer) | 2-6 business days | Stripe API |
+| [Submit a check using remote capture](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#remote-capture) | 2–6 business days | Stripe API |
 | [Send funds from an existing financial account](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#existing-financial-account) | Instant | Stripe API |
 | [Simulate a received credit](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#testingrc) (Sandbox only) | Instant | Stripe API |
 | [Use automatic transfer rules](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#automatic-transfer-rules) | Instant (when rule triggers) | Stripe API |
@@ -267,6 +268,36 @@ After creation, an inbound transfer moves through various states. Listen for and
 | `available` | Funds available in the financial account. |
 | `bank_debit_failed` | Debit failed, possibly because of insufficient funds or an invalid account. |
 | `bank_debit_returned` | The bank returned the debit after initial success (can occur days later). |
+
+## Submit a check using remote capture  (Private preview)
+Available in: US
+> #### Request access
+> 
+> Check acceptance requires separate access in addition to Treasury for platforms. If you already use Treasury for platforms, contact your Stripe representative to request this feature.
+
+Platforms in the US can use Check Scan to fund their connected accounts’ financial accounts. Capture images of an endorsed check to create a [US Paper Check](https://docs.stripe.com/api/us-paper-check.md) object that you can include in a PaymentIntent. Payment funds become available in the connected account’s `payments` financial account.
+
+Your connected account must have the `money_manager` configuration and the `merchant` configuration with an active `us_paper_check_payments` capability.
+
+```curl
+curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-06-24.preview" \
+  --json '{
+    "include": [
+        "configuration.merchant"
+    ],
+    "configuration": {
+        "merchant": {
+            "capabilities": {
+                "us_paper_check_payments": {
+                    "requested": true
+                }
+            }
+        }
+    }
+  }'
+```
 
 ## Send funds from an existing financial account 
 

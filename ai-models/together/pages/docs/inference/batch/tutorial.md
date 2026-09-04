@@ -6,20 +6,36 @@ path: docs/inference/batch/tutorial
 
 Prepare a JSONL file, upload it, start a batch job, poll until it finishes, and retrieve results.
 
-This tutorial walks through a complete batch inference job from start to finish. By the end you'll have uploaded a JSONL file of chat completion requests, run them as a single job at up to 50% off serverless rates, and reconciled the responses with your original inputs.
+In this tutorial you'll upload a JSONL file of chat completion requests, run it as a single batch job, and match the responses back to your inputs. With the CLI, the whole flow takes three commands:
+
+```bash theme={null}
+# upload the file and create the batch
+tg batches submit batch_input.jsonl --api chat.completions
+
+# poll until COMPLETED
+tg batches get <BATCH_ID>
+
+# save the results
+tg batches download <BATCH_ID> --output batch_output.jsonl
+```
+
+The steps below break down this flow and show the SDK and REST equivalents for each part.
 
 ## Requirements
 
 Before you begin, make sure you have:
 
 * [Created an account](https://api.together.ai/settings/projects/~first/api-keys) and generated an API key.
-* Set `TOGETHER_API_KEY` as an environment variable: `export TOGETHER_API_KEY=<your-key>`. See [API keys and authentication](/docs/api-keys-authentication) for details.
+* Set `TOGETHER_API_KEY` as an environment variable:
+  ```bash theme={null}
+  export TOGETHER_API_KEY=<your_key>
+  ```
 * [Installed the Python or TypeScript SDK](/docs/quickstart#step-2-install-the-sdk). Python examples require `together>=2.0.0`.
-* [Installed the Together CLI](/reference/cli/getting-started) to follow the CLI examples. The `tg batches` commands require version 2.32.0 or later (check with `tg --version`).
+* [Installed the Together CLI](/reference/cli/getting-started), version 2.32.0 or later (check with `tg --version`), to follow the CLI examples.
 
 ## Step 1: Prepare a JSONL input file
 
-Each request lives on its own line in a JSONL file. A request has two fields: a `custom_id` you choose, and a `body` matching the schema of the endpoint you're calling. The Batch API runs every line independently and stamps each output with the same `custom_id`, so this is how you'll map results back to inputs at the end.
+Each line of the JSONL file is one request with two fields: a unique `custom_id` you choose (up to 64 characters), and a `body` matching the schema of the endpoint you're calling. Every line runs independently, and its output carries the same `custom_id`, which is how you'll match results to inputs at the end.
 
 Save the following as `batch_input.jsonl`:
 
@@ -28,21 +44,19 @@ Save the following as `batch_input.jsonl`:
 {"custom_id": "request-2", "body": {"model": "meta-llama/Llama-3.3-70B-Instruct-Turbo", "messages": [{"role": "user", "content": "Explain quantum computing."}], "max_tokens": 200}}
 ```
 
-| Field       | Type   | Required    | Description                                                                                                                                                                                                                                                       |
-| ----------- | ------ | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `custom_id` | string | Yes         | Unique identifier for tracking (max 64 chars).                                                                                                                                                                                                                    |
-| `method`    | string | Conditional | Set to `"FILE"` when batching `/v1/audio/transcriptions` or `/v1/audio/translations` so the worker dispatches each request as `multipart/form-data`. Omit for chat completion batches. See [Run an audio transcription batch](#run-an-audio-transcription-batch). |
-| `body`      | object | Yes         | Request body matching the endpoint's schema.                                                                                                                                                                                                                      |
+Audio requests add a third field, `method`. See [Run an audio transcription batch](#run-an-audio-transcription-batch).
 
 <Warning>
-  Each line must be under 10 MB. The limit applies to the full serialized line, so inline base64 payloads count toward it (e.g. a single high-resolution image embedded as a `data:image/...;base64,` URL). Oversized lines aren't caught during validation, and will fail with `error reading input file`. To stay under the limit, reference images by hosted URL instead of inlining them, or resize and compress images before encoding.
+  Each line must be under 10 MB, including any inline base64 payloads (a single high-resolution image embedded as a `data:image/...;base64,` URL can exceed it). Oversized lines aren't caught during validation and fail with `error reading input file`. Reference images by hosted URL instead of inlining them, or resize and compress them before encoding.
 </Warning>
 
 ## Step 2: Upload the file
 
-Upload the JSONL file with `purpose="batch-api"`. The upload returns a file object whose `id` you'll pass to the batch job in the next step. If you're using the CLI, you can skip this step entirely: `tg batches submit` accepts a local file path and uploads it for you (see the next step).
+Upload the JSONL file with `purpose="batch-api"`. The response includes the file `id` you'll pass to the batch job in the next step. CLI users can skip this step: `tg batches submit` accepts a local file path and uploads it for you (see the next step).
 
-Pass `check=False` (`--no-check` in the CLI) to skip client-side validation. The server still validates the file during the `VALIDATING` phase, and skipping the client check is faster for large files without changing the error surface. With `check=True` (default), the SDK parses each JSONL line locally and raises `TogetherException` before uploading if a line is malformed.
+<Visibility>
+  Pass `check=False` (`--no-check` in the CLI) to skip client-side validation. The server still validates the file during the `VALIDATING` phase, and skipping the client check is faster for large files without changing the error surface. With `check=True` (default), the SDK parses each JSONL line locally and raises `TogetherException` before uploading if a line is malformed.
+</Visibility>
 
 <CodeGroup>
   ```bash CLI theme={null}
@@ -94,7 +108,7 @@ Pass `check=False` (`--no-check` in the CLI) to skip client-side validation. The
 
 ## Step 3: Create the batch
 
-Now hand the uploaded file's `id` to the batch endpoint, along with the API endpoint each request should run against. For chat completion requests, that's `/v1/chat/completions`. Audio batches use `/v1/audio/transcriptions` or `/v1/audio/translations` — see [Run an audio transcription batch](#run-an-audio-transcription-batch).
+Create the batch by passing the file `id` from step 2 and the endpoint each request runs against: `/v1/chat/completions` for chat completions, or `--api chat.completions` in the CLI. For audio, see [Run an audio transcription batch](#run-an-audio-transcription-batch).
 
 <CodeGroup>
   ```bash CLI theme={null}
@@ -134,12 +148,12 @@ Now hand the uploaded file's `id` to the batch endpoint, along with the API endp
 </CodeGroup>
 
 <Note>
-  `batches.create()` returns a wrapper; the batch object lives at `.job`. `batches.retrieve()` (used in the next step) returns the batch object directly.
+  In the SDKs, `batches.create()` returns a wrapper with the batch object at `.job`. `batches.retrieve()` (used in the next step) returns the batch object directly.
 </Note>
 
 ## Step 4: Poll for completion
 
-The job moves through `VALIDATING`, then `IN_PROGRESS`, then a terminal status: `COMPLETED`, `FAILED`, `EXPIRED`, or `CANCELLED`. Poll every 30 to 60 seconds until you hit a terminal status. Tighter loops will hit rate limits without giving the server time to make progress.
+The job moves through `VALIDATING` and `IN_PROGRESS`, and finally to a terminal state: `COMPLETED`, `FAILED`, `EXPIRED`, or `CANCELLED`. Poll every 30 to 60 seconds (tighter loops will likely cause you to hit rate limits).
 
 <CodeGroup>
   ```bash CLI theme={null}
@@ -177,17 +191,23 @@ The job moves through `VALIDATING`, then `IN_PROGRESS`, then a terminal status: 
     await new Promise((r) => setTimeout(r, 30_000));
   }
   ```
+
+  ```bash cURL theme={null}
+  # Returns the batch object. Re-run until status reaches a terminal state.
+  curl -X GET "https://api.together.ai/v1/batches/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d" \
+    -H "Authorization: Bearer $TOGETHER_API_KEY"
+  ```
 </CodeGroup>
 
 <Note>
-  `progress` is a float from 0 to 100 representing the percentage of requests completed. It is present on all batch objects but may remain 0 while the job is in `VALIDATING`.
+  `progress` tracks the percentage of requests completed, from 0 to 100. It may stay at 0 while the job is in `VALIDATING`.
 </Note>
 
 Most batches under 1,000 requests finish in minutes. The 24-hour completion window is a maximum, not a typical wait.
 
 ## Step 5: Retrieve the results
 
-When the job reaches `COMPLETED`, the batch object carries an `output_file_id`. Download that file and you'll get one JSON object per line, each keyed by the `custom_id` from your input. Output line order does not match input line order, so use `custom_id` to reconcile.
+When the job reaches `COMPLETED`, the batch object includes an `output_file_id`. Download that file to get one JSON result per line. Results aren't guaranteed to be in input order, so match them to inputs using the `custom_id` field.
 
 <CodeGroup>
   ```bash CLI theme={null}
@@ -238,20 +258,20 @@ A successful output line looks like:
 }
 ```
 
-Per-request failures land in a separate file referenced by `error_file_id`. Always check it: a batch can be `COMPLETED` and still contain individual request failures. The CLI's `download` saves the error file automatically (as `batch_output.errors.jsonl` in this example) whenever the job produced one. See [retrieve results and error files](/docs/inference/batch/manage#retrieve-results) on the manage page.
+Failed requests land in a separate file referenced by `error_file_id`. Always check it: a batch can be `COMPLETED` and still contain failures. The CLI's `download` saves the error file automatically (here as `batch_output.errors.jsonl`). See [retrieve results and error files](/docs/inference/batch/manage#retrieve-results).
 
 ## Run an audio transcription batch
 
-The Batch API also supports `/v1/audio/transcriptions` and `/v1/audio/translations` for audio workloads (for example, `openai/whisper-large-v3`). The upload, poll, and retrieve steps above are identical. Two things change:
+The batch API also supports `/v1/audio/transcriptions` and `/v1/audio/translations` (for example, with `openai/whisper-large-v3`). Upload, poll, and retrieve work exactly as above. Two things change:
 
-**1. Each JSONL line must include `"method": "FILE"`.** The audio endpoints expect `multipart/form-data` requests, so the worker uses the `method` field to choose its dispatch mode. Omitting it causes every line to fail with `Content-Type must be multipart/form-data` in the error file.
+**1. Each JSONL line must include `"method": "FILE"`.** This tells the worker to send the request as `multipart/form-data`, which the audio endpoints require. Without it, every line fails with `Content-Type must be multipart/form-data` in the error file.
 
 ```json audio_batch.jsonl theme={null}
 {"custom_id": "transcription-1", "method": "FILE", "body": {"file": "https://example.com/clip-1.wav", "model": "openai/whisper-large-v3"}}
 {"custom_id": "transcription-2", "method": "FILE", "body": {"file": "https://example.com/clip-2.wav", "model": "openai/whisper-large-v3"}}
 ```
 
-`body.file` is the publicly-reachable URL of the audio clip; the worker fetches the audio at execution time. Optional fields such as `response_format`, `language`, and `prompt` pass through to the underlying API — see the [audio transcriptions reference](/reference/audio-transcriptions) for the full schema.
+`body.file` is a publicly reachable URL for the audio clip. The worker fetches it at run time. Optional fields such as `response_format`, `language`, and `prompt` pass through to the underlying API. See the [audio transcriptions reference](/reference/audio-transcriptions) for the full schema.
 
 **2. Pass the audio endpoint when creating the batch.**
 
@@ -304,11 +324,11 @@ A successful output line looks like:
 }
 ```
 
-For `/v1/audio/translations`, swap the endpoint and use a translation-capable model — the JSONL line shape is the same.
+For `/v1/audio/translations`, swap the endpoint and use a translation-capable model. The JSONL line shape is the same.
 
 ## Complete script
 
-The full flow combining all steps above, as a CLI session or a Python program:
+The full flow as a CLI session or a Python program:
 
 <CodeGroup>
   ```bash CLI theme={null}

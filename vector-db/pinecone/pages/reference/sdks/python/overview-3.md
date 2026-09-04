@@ -28,6 +28,9 @@ The mappings between API versions and Python SDK versions are as follows:
 
 | API version | SDK version   |
 | :---------- | :------------ |
+| `2026-07`   | v10.x         |
+| `2026-04`   | v9.x          |
+| `2025-10`   | v8.x          |
 | `2025-04`   | v7.x          |
 | `2025-01`   | v6.x          |
 | `2024-10`   | v5.3.x        |

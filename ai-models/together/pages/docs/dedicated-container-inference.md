@@ -26,6 +26,19 @@ You build and push a Docker image using the [Jig CLI](/docs/deployments-jig). In
 
 ## Quickstart
 
+With the [Jig CLI](/docs/deployments-jig), a first deployment is three commands:
+
+```bash theme={null}
+# scaffold the jig config next to your inference code
+tg beta jig init
+
+# build, push, and deploy the container in one step
+tg beta jig deploy
+
+# watch the deployment come up
+tg beta jig status
+```
+
 <Card title="Deploy Your First Container" icon="rocket" href="/docs/containers-quickstart">
   Deploy your first container from the command line
 </Card>

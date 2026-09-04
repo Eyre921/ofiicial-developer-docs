@@ -126,7 +126,7 @@ Alternatively, you can use the [Sentry Playground](https://docs.sentry.io/platfo
 
 ## [Next Steps](https://docs.sentry.io/platforms/react-native.md#next-steps)
 
-* Explore [practical guides](https://docs.sentry.io/guides.md) on what to monitor, log, track, and investigate after setup
+* Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 * [Learn about the features of Sentry's React Native SDK](https://docs.sentry.io/platforms/react-native/features.md)
 * [Add readable stack traces to errors](https://docs.sentry.io/platforms/react-native/sourcemaps.md)
 * [Add Apple Privacy manifest](https://docs.sentry.io/platforms/react-native/data-management/apple-privacy-manifest.md)

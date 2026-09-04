@@ -12,6 +12,14 @@ path: docs/eleven-agents/customization/integrations/salesforce
 
 Connect your ElevenLabs AI agents with Salesforce CRM to access customer data, manage leads, and create opportunities. This integration enables your agents to retrieve existing customer records, create new leads and contacts, and query Salesforce objects during conversations.
 
+## Capabilities
+
+| Capability                | Support                                                                                         |
+| ------------------------- | ----------------------------------------------------------------------------------------------- |
+| Zero retention mode (ZRM) | Not supported                                                                                   |
+| Attachments in triggers   | Not supported — attachments on incoming case comments and emails are not forwarded to the agent |
+| Attachments in tools      | Not supported — tools operate on text only                                                      |
+
 ## Setup
 
 This integration uses **Salesforce OAuth 2.0 Client Credentials** for authentication. You will need to create an External Client App in Salesforce.

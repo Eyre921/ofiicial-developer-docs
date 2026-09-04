@@ -1,0 +1,15 @@
+---
+title: "Turso Examples (Ruby)"
+source: https://docs.turso.tech/sdk/ruby/examples
+path: sdk/ruby/examples
+---
+
+| Example                                                                                        | Description                                                                             |
+| ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| [local](https://github.com/tursodatabase/libsql-ruby/tree/master/examples/local)               | Uses libsql with a local SQLite file. Creates database, inserts data, and queries.      |
+| [remote](https://github.com/tursodatabase/libsql-ruby/tree/master/examples/remote)             | Connects to a remote database. Requires environment variables for URL and auth token.   |
+| [sync](https://github.com/tursodatabase/libsql-ruby/tree/master/examples/sync)                 | Demonstrates synchronization between local and remote databases.                        |
+| [transactions](https://github.com/tursodatabase/libsql-ruby/tree/master/examples/transactions) | Shows transaction usage: starting, performing operations, and committing/rolling back.  |
+| [memory](https://github.com/tursodatabase/libsql-ruby/tree/master/examples/memory)             | Uses an in-memory SQLite database for temporary storage or fast access.                 |
+| [vector](https://github.com/tursodatabase/libsql-ruby/tree/master/examples/vector)             | Works with vector embeddings, storing and querying for similarity search.               |
+| [encryption](https://github.com/tursodatabase/libsql-ruby/tree/master/examples/encryption)     | Creates and uses an encrypted SQLite database, demonstrating setup and data operations. |

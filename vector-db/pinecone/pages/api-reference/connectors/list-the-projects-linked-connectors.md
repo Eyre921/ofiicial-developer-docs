@@ -4,4 +4,5 @@ source: https://docs.pinecone.io/api-reference/connectors/list-the-projects-link
 path: api-reference/connectors/list-the-projects-linked-connectors
 ---
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_2026-07.oas.yaml get /connectors
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /connectors
+The project's linked source providers. Filter by `kind` to those valid for a context kind.

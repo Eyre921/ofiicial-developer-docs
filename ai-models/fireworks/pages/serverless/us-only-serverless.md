@@ -17,6 +17,7 @@ US-only Serverless serves inference exclusively from the US, making it a good fi
 | GLM 5.2                  | `accounts/fireworks/routers/glm-5p2-us`                |
 | GLM 5.2 Fast             | `accounts/fireworks/routers/glm-5p2-fast-us`           |
 | GLM 5.3                  | `accounts/fireworks/routers/glm-5p3-us`                |
+| GLM 5.3 Flash            | `accounts/fireworks/routers/glm-5p3-flash-us`          |
 
 ## How to use it
 

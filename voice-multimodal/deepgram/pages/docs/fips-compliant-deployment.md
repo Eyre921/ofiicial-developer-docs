@@ -37,7 +37,11 @@ Set it in each of:
 * `license-proxy.toml` (License Proxy)
 * `billing.toml` (Billing — airgapped deployments only)
 
-The FIPS images do not enable FIPS mode on their own. A service whose configuration omits this block runs OpenSSL in standard (non-FIPS) mode, even on a FIPS image. Confirm each service logs `openssl_fips_enabled=true` at startup.
+The FIPS images do not enable FIPS mode on their own. A service whose configuration omits this block runs OpenSSL in standard (non-FIPS) mode, even on a FIPS image.
+
+Confirm each service logs both `openssl_fips_enabled=true` and `has_fips_encryption=true` at startup. `openssl_fips_enabled` reports only that FIPS mode was requested and the OpenSSL FIPS provider loaded, so on its own it does not establish that a service is running FIPS-validated cryptography.
+
+On Kubernetes, the [Deepgram self-hosted Helm chart](https://github.com/deepgram/self-hosted-resources/tree/main/charts/deepgram-self-hosted) renders these configuration files, so set `global.fips.enabled: true` (chart `0.43.0` or later) instead of editing them directly. The chart requires a `-fips` image tag on every deployed component when that value is set.
 
 ### Engine Environment Variables
 

@@ -91,7 +91,7 @@ catch (Exception ex)
 
 ## [Next Steps](https://docs.sentry.io/platforms/dotnet.md#next-steps)
 
-* Explore [practical guides](https://docs.sentry.io/guides.md) on what to monitor, log, track, and investigate after setup
+* Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 
 ## Frameworks
 

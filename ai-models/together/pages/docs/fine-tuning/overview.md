@@ -15,6 +15,21 @@ Together AI currently supports two fine-tuning approaches:
 
 See [LoRA vs. full fine-tuning](/docs/fine-tuning/lora-vs-full) to choose between them. This choice is separate from the training method you pick below.
 
+You can launch a fine-tuning job from the console, through the API/SDK, or with the CLI:
+
+```bash theme={null}
+# upload your training data
+tg files upload train.jsonl
+
+# start a LoRA fine-tuning job
+tg fine-tuning create --training-file <FILE_ID> --model Qwen/Qwen3.5-9B --lora
+
+# check progress
+tg fine-tuning retrieve <JOB_ID>
+```
+
+The [fine-tuning quickstart](/docs/fine-tuning/quickstart) breaks down this flow and shows the SDK equivalents.
+
 ## Get started
 
 <CardGroup>

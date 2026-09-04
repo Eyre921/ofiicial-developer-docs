@@ -12,6 +12,13 @@ path: docs/eleven-agents/customization/integrations/calendly
 
 Connect your ElevenLabs AI agents with Calendly to manage scheduling and calendar automation. This integration enables your agents to check availability, book meetings, list scheduled events, and cancel appointments through natural conversation.
 
+## Capabilities
+
+| Capability                | Support                                    |
+| ------------------------- | ------------------------------------------ |
+| Zero retention mode (ZRM) | Not supported                              |
+| Attachments in tools      | Not supported — tools operate on text only |
+
 ## Setup
 
 This integration uses a **Calendly Personal Access Token** for authentication.

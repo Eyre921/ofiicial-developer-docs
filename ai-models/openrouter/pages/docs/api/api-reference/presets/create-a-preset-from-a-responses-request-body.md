@@ -5034,6 +5034,7 @@ components:
         - OpenInference
         - Parasail
         - Poolside
+        - PrimeIntellect
         - Perceptron
         - Perplexity
         - Phala

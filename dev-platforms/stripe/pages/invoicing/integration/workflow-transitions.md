@@ -59,7 +59,7 @@ Finalizing an invoice does the following:
 
 ### Finalized invoice restrictions 
 
-After you finalize an invoice, you can’t change certain fields that pertain to the amount and customer. This is to satisfy the common tax-compliance requirement that finalized invoices be retained—as they were finalized—for a legally required minimum time period.
+After you finalize an invoice, you can’t change most of its details, including fields related to the amount or customer. For most invoices, this also includes the `description` field. This is to satisfy the common tax-compliance requirement that finalized invoices be retained—as they were finalized—for a legally required minimum time period.
 
 In some jurisdictions, editing fields that modify the total amount due on an invoice could render the invoice invalid. These are typically fields associated with your account, customer, line items, or taxes. It’s your responsibility to make sure that the invoices you create comply with all applicable laws.
 

@@ -12,6 +12,13 @@ path: docs/eleven-agents/customization/integrations/exa
 
 Connect your ElevenLabs AI agents with Exa to perform semantic web searches during conversations. Your agents can find relevant web content, research topics, and retrieve up-to-date information — with optional filtering by category (news, research papers, companies, GitHub, LinkedIn, and more), domain, and date range.
 
+## Capabilities
+
+| Capability                | Support                                    |
+| ------------------------- | ------------------------------------------ |
+| Zero retention mode (ZRM) | Not supported                              |
+| Attachments in tools      | Not supported — tools operate on text only |
+
 ## Setup
 
 This integration uses an **Exa API key** for authentication.

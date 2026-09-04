@@ -12,6 +12,13 @@ path: docs/eleven-agents/customization/integrations/hubspot
 
 Connect your ElevenLabs AI agents with [HubSpot](https://www.hubspot.com/) CRM to manage contacts, companies, and deals. This integration enables your agents to create and update CRM records, search for existing data, and automate sales and marketing workflows.
 
+## Capabilities
+
+| Capability                | Support                                    |
+| ------------------------- | ------------------------------------------ |
+| Zero retention mode (ZRM) | Not supported                              |
+| Attachments in tools      | Not supported — tools operate on text only |
+
 ## Setup
 
 This integration uses a **HubSpot Private App** token for authentication.

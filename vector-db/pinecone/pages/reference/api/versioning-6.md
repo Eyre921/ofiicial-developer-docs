@@ -30,14 +30,14 @@ Below is an example of Pinecone's release schedule:
 
 To specify an API version, set the `X-Pinecone-Api-Version` header to the version name.
 
-For example, to use the latest stable version (`2026-04`) to describe an index, set the `X-Pinecone-Api-Version` header:
+For example, to use the latest stable version (`2026-07`) to describe an index, set the `X-Pinecone-Api-Version` header:
 
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 
 curl -i -X GET "https://api.pinecone.io/indexes/movie-recommendations" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04"
+    -H "X-Pinecone-Api-Version: 2026-07"
 ```
 
 To use an older version, specify that version instead.

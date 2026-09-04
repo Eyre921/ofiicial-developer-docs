@@ -68,7 +68,7 @@ Event triggered when a **domain was successfully deleted**.
     Array of DNS record objects required for domain verification
 
     <Expandable title="record object">
-      <ParamField type="SPF | DKIM | Receiving MX | Tracking">
+      <ParamField type="SPF | DKIM | Receiving MX | Tracking | TrackingCAA">
         Record type purpose. Learn more about [domain verification records](/docs/dashboard/domains/introduction).
       </ParamField>
 
@@ -76,7 +76,7 @@ Event triggered when a **domain was successfully deleted**.
         DNS record name/subdomain
       </ParamField>
 
-      <ParamField type="MX | TXT | CNAME">
+      <ParamField type="MX | TXT | CNAME | CAA">
         DNS record type
       </ParamField>
 

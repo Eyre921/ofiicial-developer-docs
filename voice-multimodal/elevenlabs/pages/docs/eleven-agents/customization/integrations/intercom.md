@@ -15,6 +15,14 @@ Connect your ElevenLabs AI agents with Intercom to manage contacts, conversation
 * **Tools**: let an agent look up and update contacts, search and reply to conversations, manage conversation lifecycle (close, reopen, assign), tag conversations, create and reply to tickets, and add internal notes — all from inside a running ElevenLabs conversation.
 * **Triggers**: have an agent automatically respond to new Intercom conversations and replies from contacts, posting back as an Intercom admin.
 
+## Capabilities
+
+| Capability                | Support                                                                                         |
+| ------------------------- | ----------------------------------------------------------------------------------------------- |
+| Zero retention mode (ZRM) | Not supported                                                                                   |
+| Attachments in triggers   | Not supported — attachments and images in incoming conversations are not forwarded to the agent |
+| Attachments in tools      | Not supported — tools operate on text only                                                      |
+
 ## How the trigger works
 
 When you enable the **Intercom Conversation** trigger, ElevenLabs subscribes to two Intercom webhook topics — one for new conversations created by a contact, and one for follow-up replies from a contact. Whenever Intercom delivers a notification:

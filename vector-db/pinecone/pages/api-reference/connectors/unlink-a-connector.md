@@ -4,4 +4,5 @@ source: https://docs.pinecone.io/api-reference/connectors/unlink-a-connector
 path: api-reference/connectors/unlink-a-connector
 ---
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_2026-07.oas.yaml delete /connectors/{id}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml delete /connectors/{id}
+Unlink the connector from the project. Sources it already imported stay in place.

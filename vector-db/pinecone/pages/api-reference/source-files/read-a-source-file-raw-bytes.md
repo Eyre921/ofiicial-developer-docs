@@ -4,4 +4,5 @@ source: https://docs.pinecone.io/api-reference/source-files/read-a-source-file-r
 path: api-reference/source-files/read-a-source-file-raw-bytes
 ---
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_2026-07.oas.yaml get /contexts/{slug}/source/read/{path}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/source/read/{path}
+The raw bytes of one staged source file.

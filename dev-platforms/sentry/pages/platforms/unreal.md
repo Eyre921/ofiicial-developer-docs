@@ -123,7 +123,7 @@ If you set a limit per issue, as in the example above, a limit of 5, Sentry will
 
 ## [Next Steps](https://docs.sentry.io/platforms/unreal.md#next-steps)
 
-* Explore [practical guides](https://docs.sentry.io/guides.md) on what to monitor, log, track, and investigate after setup
+* Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 
 ## Topics
 

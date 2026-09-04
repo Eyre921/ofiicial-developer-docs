@@ -6,7 +6,10 @@ path: reference/api/nexus/authentication
 
 Authenticate to the Nexus API with your Pinecone API key, sent directly or exchanged for a short-lived session token.
 
-All requests to the [Pinecone Nexus API](/reference/api/nexus/introduction) authenticate with a valid [Pinecone API key](/guides/production/security-overview#api-keys) for the target project. The Pinecone project is the tenancy boundary.
+All requests to the [Pinecone Nexus API](/reference/api/nexus/introduction) authenticate with a valid [Pinecone API key](/guides/production/security-overview#api-keys) for the target project. The Pinecone project is the tenancy boundary. How you send the key depends on the plane:
+
+* **Control plane** (workspace management, `https://api.pinecone.io`): send the key directly in the `Api-Key` header.
+* **Data plane** (contexts, curation, and queries, your workspace host): exchange the key for a short-lived session token with `POST /auth/login`, or send it directly in the `Api-Key` header.
 
 ## Get an API key
 
@@ -14,14 +17,29 @@ All requests to the [Pinecone Nexus API](/reference/api/nexus/introduction) auth
 
 ```bash theme={null}
 export PINECONE_API_KEY="YOUR_API_KEY"
+```
+
+## Control plane
+
+The control plane is served at `https://api.pinecone.io`. Send your Pinecone API key directly in the `Api-Key` header, with no login exchange.
+
+```bash curl theme={null}
+curl -fsS "https://api.pinecone.io/workspaces" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H 'X-Pinecone-Api-Version: 2026-07'
+```
+
+## Data plane
+
+The data plane is served at your deployment's workspace host, from the `nexus_default_workspace_data_console_url` output of the [install](/guides/nexus/byoc/deploy):
+
+```bash theme={null}
 export NEXUS_BASE_URL="https://YOUR_WORKSPACE_HOST/api"
 ```
 
-`YOUR_WORKSPACE_HOST` is your deployment's workspace host, from the `nexus_default_workspace_data_console_url` output of the [install](/guides/nexus/byoc/deploy).
+### Session token
 
-## Session token
-
-The primary method. Exchange your API key for a short-lived bearer token with `POST /auth/login`, then send that token as `Authorization: Bearer <token>` on every request.
+The primary method for data-plane requests. Exchange your API key for a short-lived bearer token with `POST /auth/login`, then send that token as `Authorization: Bearer <token>` on every request.
 
 ```bash curl theme={null}
 export NEXUS_TOKEN="$(
@@ -37,12 +55,12 @@ curl -fsS "$NEXUS_BASE_URL/contexts" \
   -H 'X-Pinecone-Api-Version: 2026-07'
 ```
 
-## API key
+### API key
 
-Alternatively, send your Pinecone API key directly in the `X-Pinecone-Api-Key` header, with no login exchange.
+Alternatively, send your Pinecone API key directly in the `Api-Key` header, with no login exchange.
 
 ```bash curl theme={null}
 curl -fsS "$NEXUS_BASE_URL/contexts" \
-  -H "X-Pinecone-Api-Key: $PINECONE_API_KEY" \
+  -H "Api-Key: $PINECONE_API_KEY" \
   -H 'X-Pinecone-Api-Version: 2026-07'
 ```

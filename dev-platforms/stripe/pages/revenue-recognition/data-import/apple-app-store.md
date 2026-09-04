@@ -87,15 +87,3 @@ To view account balances for an Apple subscriber:
 1. Click a number in the [Period summary](https://docs.stripe.com/revenue-recognition/reports/period-summary.md) section to view a list of customers. Apple subscribers have names that consist solely of numbers.
 2. Click any Apple subscriber to enter the audit view.
 
-### Request to join the preview for the Stripe Connector for the Apple App Store.
-
-Enter your email to request access.
-
-```bash
-curl https://docs.stripe.com/preview/register \
-  -X POST \
-  -H "Content-Type: application/json" \
-  -H "Referer: https://docs.stripe.com/revenue-recognition/data-import/apple-app-store" \
-  -d '{"email": "EMAIL", "preview": "apple_app_store_connector_preview"}'
-```
-

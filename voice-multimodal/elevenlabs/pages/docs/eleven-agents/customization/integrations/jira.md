@@ -12,6 +12,13 @@ path: docs/eleven-agents/customization/integrations/jira
 
 Connect your ElevenLabs AI agents with Jira Cloud to manage issues, track projects, and automate support workflows. This integration enables your agents to create and update issues, transition issues through workflows, link related tickets for escalation, and search across projects.
 
+## Capabilities
+
+| Capability                | Support                                    |
+| ------------------------- | ------------------------------------------ |
+| Zero retention mode (ZRM) | Not supported                              |
+| Attachments in tools      | Not supported — tools operate on text only |
+
 ## Setup
 
 This integration uses a **Jira API token** with Basic authentication. You need your Atlassian account email, an API token, and your Jira Cloud subdomain.

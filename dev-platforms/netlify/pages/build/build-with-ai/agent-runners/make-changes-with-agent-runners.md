@@ -64,7 +64,11 @@ To start an agent run to make changes to your project, follow these steps:
 2. Add your prompt. For examples of prompts, check out our [prompt examples](/build/build-with-ai/agent-runners/prompt-examples-for-agent-runners). You can optionally add more context as a file or image. Or you can add project context that applies to all agent runs, such as project-specific prompt guidelines or a link to a publicly available design system or style guide. 
 3. Select a mode from the mode dropdown. To make changes, use the default **Build** mode so your agent can make code or file changes. To get answers or make plans without changing your project, use  **Ask** mode. For details, see [Agent run modes](#agent-run-modes).
 4. Choose **Run task**. 
-5. Your chosen AI agent will complete the task asynchronously and notify you when it's done. At this point, you can wait or take care of other tasks. If your agent needs a decision from you before it can continue, it will pause and ask you a question. For details, see [Respond to any questions from your agent](#2-respond-to-any-questions-from-your-agent).
+5. Your chosen AI agent will complete the task asynchronously and notify you when it's done. At this point, you can wait or take care of other tasks. If your agent needs a decision from you before it can continue, it will pause and ask you a question. For details, see [Respond to any questions from your agent](#2-respond-to-any-questions-from-your-agent). 
+
+### Note - Completely new project?
+
+If you're prompting a new project, your agent can help you scope your project within your available budget. When the full project cannot be completed in one run, it will deliver a reviewable portion of the work along with a clear plan for completing the remainder.
 
 ### Note
 
@@ -86,7 +90,7 @@ An agent run that is waiting for answers is still active, so it holds one of you
 
 To check the status of your agent run, go to the **Agent Runs** tab in your Netlify project dashboard. Then choose your agent run and check the log for the current status.
 
-You can expand a task within your agent run to view its credit usage. Note that credit usage for a run may take a brief moment to appear after the run begins. Learn more in [how agent runs consume credits](/build/build-with-ai/agent-runners/overview/#how-agent-runs-consume-credits).
+You can expand a task within your agent run to view its credit usage. Note that credit usage for a run may take a brief moment to appear after the run begins. Learn more about [agent run statuses](#statuses-for-agent-runs) or [how agent runs consume credits](/build/build-with-ai/agent-runners/overview/#how-agent-runs-consume-credits).
 
 If you change your mind about a run that's still going, you can stop it and take a different approach. For details, see [Stop an agent run](#stop-an-agent-run).
 
@@ -105,6 +109,20 @@ If your project is connected to a GitHub repository, then you can optionally ope
 To ship your agent run updates, you have two options: 
    - **For projects using Git & GitHub:** Open a pull request or update an existing pull request with your updates from your agent run. When you merge your pull request into your production branch, Netlify publishes your changes to your production site for you.
    - **For projects without Git:** If you have publishing permission, you'll find a **Publish** button on your Netlify project's Agent Runs dashboard. Select **Publish** to make your agent run updates go live in the latest production version of your project.
+
+## Statuses for agent runs
+
+To help you understand and manage your agent runs, here is a summary of agent run statuses.
+
+| Status | Description | 
+|----|----|
+| Active | An active agent run means that your agent run is in progress and has not yet completed. Your active agent run may also appear with a `Waiting for answers` badge  if your agent pauses to ask you follow-up questions before resuming its work. | 
+| Cancelled | A cancelled agent run means that your agent run has stopped because someone manually stopped an agent run (perhaps to take a different approach) or your team is low on available credits to continue the agent run. For new projects, instead of stalling out before you get a preview of your project, your agent run can give you a smaller scope of updates with a plan for next steps. If you have a paid plan, you can add more credits through buying a [one-time credit pack](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/buy-credit-packs/) or setting up [auto recharge](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/configure-auto-recharge/). 
+| Done | A done agent run means that your agent run is no longer active and it has completed. From here, you can prompt a new task or start a whole new agent run series of tasks. | 
+| Published | When changes from an agent run are published from the Netlify dashboard, they appear in your agent runs list with the `published` badge. If your project is connected to a GitHub repository, then changes are published through pull requests so agent runs published will show up in your agent runs list with  `PR Merged` instead. 
+| PR Open | The changes proposed in the agent run have been pushed to a pull request which is still open. |
+| PR Merged | The changes proposed in the agent run have been pushed to a pull request and merged. |
+| PR Closed | The changes proposed in the agent run were pushed to a pull request that has since been closed|
 
 ## Stop an agent run
 

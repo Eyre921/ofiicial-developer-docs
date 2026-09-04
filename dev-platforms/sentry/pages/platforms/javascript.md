@@ -316,7 +316,7 @@ Open the page in a browser and click the button to throw an error and create a t
 <button onclick="triggerError()">Break the World</button>
 ```
 
-### [Logs NEW](https://docs.sentry.io/platforms/javascript.md#logs-)
+### [Logs](https://docs.sentry.io/platforms/javascript.md#logs)
 
 To verify that Sentry catches your logs, add some log statements to your application:
 
@@ -352,7 +352,7 @@ At this point, you should have integrated Sentry into your JavaScript applicatio
 
 Now's a good time to customize your setup and look into more advanced topics. Our next recommended steps for you are:
 
-* Explore [practical guides](https://docs.sentry.io/guides.md) on what to monitor, log, track, and investigate after setup
+* Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 * Extend Sentry to your backend using one of our [SDKs](https://docs.sentry.io/.md)
 * Learn how to [manually capture errors](https://docs.sentry.io/platforms/javascript/usage.md)
 * Continue to [customize your configuration](https://docs.sentry.io/platforms/javascript/configuration.md)
@@ -387,6 +387,7 @@ Are you having problems setting up the SDK?
 - [Hapi](https://docs.sentry.io/platforms/javascript/guides/hapi.md)
 - [Hono](https://docs.sentry.io/platforms/javascript/guides/hono.md)
 - [Koa](https://docs.sentry.io/platforms/javascript/guides/koa.md)
+- [Mastra](https://docs.sentry.io/platforms/javascript/guides/mastra.md)
 - [Nest.js](https://docs.sentry.io/platforms/javascript/guides/nestjs.md)
 - [Next.js](https://docs.sentry.io/platforms/javascript/guides/nextjs.md)
 - [Nitro](https://docs.sentry.io/platforms/javascript/guides/nitro.md)

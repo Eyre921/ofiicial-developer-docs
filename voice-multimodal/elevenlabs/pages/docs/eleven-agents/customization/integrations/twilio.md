@@ -12,6 +12,13 @@ path: docs/eleven-agents/customization/integrations/twilio
 
 Connect your ElevenLabs AI agents with Twilio to send SMS and MMS messages, and look up message and call history. This integration enables your agents to communicate with customers via text during or after a conversation, and retrieve previous interaction records for context.
 
+## Capabilities
+
+| Capability                | Support                                                                                                                |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Zero retention mode (ZRM) | Not supported                                                                                                          |
+| Attachments in tools      | Not supported — `twilio_send_message` can attach MMS media by URL, but agents do not download or analyze media content |
+
 ## Setup
 
 This integration uses your **Twilio Account SID** and **Auth Token** for authentication.

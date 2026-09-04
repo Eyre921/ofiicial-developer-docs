@@ -12,6 +12,13 @@ path: docs/eleven-agents/customization/integrations/cursor
 
 Connect your ElevenLabs AI agents with [Cursor](https://www.cursor.com/) to launch and manage background coding agents that work on your [GitHub](https://github.com) repositories. Your agents can start coding tasks, create pull requests, check agent progress, and send follow-up instructions through the available tools.
 
+## Capabilities
+
+| Capability                | Support                                    |
+| ------------------------- | ------------------------------------------ |
+| Zero retention mode (ZRM) | Not supported                              |
+| Attachments in tools      | Not supported — tools operate on text only |
+
 ## Setup
 
 This integration uses a **Cursor API key** for authentication.

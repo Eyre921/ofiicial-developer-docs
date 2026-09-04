@@ -12,6 +12,13 @@ path: docs/eleven-agents/customization/integrations/tavily
 
 Connect your ElevenLabs AI agents with Tavily to search the web during conversations. Tavily is a search API built for AI applications, enabling agents to ground responses with up-to-date information across general topics, news, and financial data.
 
+## Capabilities
+
+| Capability                | Support                                    |
+| ------------------------- | ------------------------------------------ |
+| Zero retention mode (ZRM) | Not supported                              |
+| Attachments in tools      | Not supported — tools operate on text only |
+
 ## Setup
 
 This integration uses a **Tavily API key** for authentication.

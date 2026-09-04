@@ -49,9 +49,9 @@ Successful Response
 ```json
 {
   "settings": {
-    "auth_type": "string",
-    "name": "string",
-    "webhook_url": "string"
+    "auth_type": "hmac",
+    "name": "Order Processing Webhook",
+    "webhook_url": "https://webhooks.example.com/order-processing"
   }
 }
 ```
@@ -60,8 +60,8 @@ Successful Response
 
 ```json
 {
-  "webhook_id": "string",
-  "webhook_secret": "string"
+  "webhook_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
+  "webhook_secret": "9f8e7d6c5b4a3210fedcba9876543210"
 }
 ```
 
@@ -74,9 +74,9 @@ async function main() {
     const client = new ElevenLabsClient();
     await client.webhooks.create({
         settings: {
-            authType: "string",
-            name: "string",
-            webhookUrl: "string",
+            authType: "hmac",
+            name: "Order Processing Webhook",
+            webhookUrl: "https://webhooks.example.com/order-processing",
         },
     });
 }
@@ -91,9 +91,9 @@ client = ElevenLabs()
 
 client.webhooks.create(
     settings=WebhookHmacSettings(
-        auth_type="string",
-        name="string",
-        webhook_url="string",
+        auth_type="hmac",
+        name="Order Processing Webhook",
+        webhook_url="https://webhooks.example.com/order-processing",
     ),
 )
 
@@ -113,7 +113,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/workspace/webhooks"
 
-	payload := strings.NewReader("{\n  \"settings\": {\n    \"auth_type\": \"string\",\n    \"name\": \"string\",\n    \"webhook_url\": \"string\"\n  }\n}")
+	payload := strings.NewReader("{\n  \"settings\": {\n    \"auth_type\": \"hmac\",\n    \"name\": \"Order Processing Webhook\",\n    \"webhook_url\": \"https://webhooks.example.com/order-processing\"\n  }\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -141,7 +141,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"settings\": {\n    \"auth_type\": \"string\",\n    \"name\": \"string\",\n    \"webhook_url\": \"string\"\n  }\n}"
+request.body = "{\n  \"settings\": {\n    \"auth_type\": \"hmac\",\n    \"name\": \"Order Processing Webhook\",\n    \"webhook_url\": \"https://webhooks.example.com/order-processing\"\n  }\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -153,7 +153,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/workspace/webhooks")
   .header("Content-Type", "application/json")
-  .body("{\n  \"settings\": {\n    \"auth_type\": \"string\",\n    \"name\": \"string\",\n    \"webhook_url\": \"string\"\n  }\n}")
+  .body("{\n  \"settings\": {\n    \"auth_type\": \"hmac\",\n    \"name\": \"Order Processing Webhook\",\n    \"webhook_url\": \"https://webhooks.example.com/order-processing\"\n  }\n}")
   .asString();
 ```
 
@@ -166,9 +166,9 @@ $client = new \GuzzleHttp\Client();
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/workspace/webhooks', [
   'body' => '{
   "settings": {
-    "auth_type": "string",
-    "name": "string",
-    "webhook_url": "string"
+    "auth_type": "hmac",
+    "name": "Order Processing Webhook",
+    "webhook_url": "https://webhooks.example.com/order-processing"
   }
 }',
   'headers' => [
@@ -185,7 +185,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/workspace/webhooks");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"settings\": {\n    \"auth_type\": \"string\",\n    \"name\": \"string\",\n    \"webhook_url\": \"string\"\n  }\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"settings\": {\n    \"auth_type\": \"hmac\",\n    \"name\": \"Order Processing Webhook\",\n    \"webhook_url\": \"https://webhooks.example.com/order-processing\"\n  }\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -194,9 +194,9 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = ["settings": [
-    "auth_type": "string",
-    "name": "string",
-    "webhook_url": "string"
+    "auth_type": "hmac",
+    "name": "Order Processing Webhook",
+    "webhook_url": "https://webhooks.example.com/order-processing"
   ]] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

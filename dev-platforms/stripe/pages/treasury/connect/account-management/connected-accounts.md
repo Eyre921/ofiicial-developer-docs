@@ -112,11 +112,6 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
                     "bank_accounts": {
                         "requested": true
                     }
-                },
-                "received_debits": {
-                    "bank_accounts": {
-                        "requested": true
-                    }
                 }
             }
         }
@@ -231,18 +226,6 @@ The response includes the connected account ID.
           }
         },
         "inbound_transfers": {
-          "bank_accounts": {
-            "requested": true,
-            "status": "restricted",
-            "status_details": [
-              {
-                "code": "requirements_past_due",
-                "resolution": "provide_info"
-              }
-            ]
-          }
-        },
-        "received_debits": {
           "bank_accounts": {
             "requested": true,
             "status": "restricted",

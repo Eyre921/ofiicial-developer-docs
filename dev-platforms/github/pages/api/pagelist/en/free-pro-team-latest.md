@@ -1728,9 +1728,10 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/usage-limits
 /en/copilot/concepts/billing
 /en/copilot/concepts/billing/usage-based-billing-for-individuals
-/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises
-/en/copilot/concepts/billing/budgets-for-usage-based-billing
 /en/copilot/concepts/billing/organizations-and-enterprises
+/en/copilot/concepts/billing/organizations-and-enterprises/fundamentals
+/en/copilot/concepts/billing/organizations-and-enterprises/usage-based-billing
+/en/copilot/concepts/billing/budgets-for-usage-based-billing
 /en/copilot/concepts/about-enterprise-accounts-for-copilot-business
 /en/copilot/concepts/policies
 /en/copilot/concepts/mcp-management
@@ -1963,6 +1964,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/administer-copilot
 /en/copilot/how-tos/administer-copilot/manage-for-organization
 /en/copilot/how-tos/administer-copilot/manage-for-organization/manage-plan
+/en/copilot/how-tos/administer-copilot/manage-for-organization/manage-plan/subscribe
 /en/copilot/how-tos/administer-copilot/manage-for-organization/manage-plan/cancel
 /en/copilot/how-tos/administer-copilot/manage-for-organization/manage-access
 /en/copilot/how-tos/administer-copilot/manage-for-organization/manage-access/grant-access

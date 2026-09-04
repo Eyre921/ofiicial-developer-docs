@@ -16,6 +16,13 @@ Custom Channel is in alpha.
 
 Custom Channel is unavailable for agents or workspaces using zero-retention mode.
 
+## Capabilities
+
+| Capability                | Support                                                       |
+| ------------------------- | ------------------------------------------------------------- |
+| Zero retention mode (ZRM) | Not supported — unavailable for ZRM workspaces and ZRM agents |
+| Attachments in messages   | Not supported — messages are text only                        |
+
 ## Setup
 
 #### Open Custom Channel

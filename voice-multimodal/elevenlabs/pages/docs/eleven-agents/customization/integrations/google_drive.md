@@ -16,6 +16,12 @@ The connection uses the narrow `drive.file` scope. ElevenLabs only sees the file
 
 After the initial sync, ElevenLabs detects changes and re-syncs incrementally without re-processing unchanged documents.
 
+## Capabilities
+
+| Capability                | Support       |
+| ------------------------- | ------------- |
+| Zero retention mode (ZRM) | Not supported |
+
 ## Setup
 
 #### Connect your Google account

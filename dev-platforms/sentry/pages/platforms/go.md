@@ -99,13 +99,14 @@ To view and resolve the recorded error, log into [sentry.io](https://sentry.io) 
 ## [Next Steps](https://docs.sentry.io/platforms/go.md#next-steps)
 
 * Learn how to set up [Source Context](https://docs.sentry.io/platforms/go/source-context.md) for readable stack traces
-* Explore [practical guides](https://docs.sentry.io/guides.md) on what to monitor, log, track, and investigate after setup
+* Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 
 ## Frameworks
 
 - [Echo](https://docs.sentry.io/platforms/go/guides/echo.md)
 - [FastHTTP](https://docs.sentry.io/platforms/go/guides/fasthttp.md)
 - [Fiber](https://docs.sentry.io/platforms/go/guides/fiber.md)
+- [Fiber v3](https://docs.sentry.io/platforms/go/guides/fiberv3.md)
 - [Gin](https://docs.sentry.io/platforms/go/guides/gin.md)
 - [gRPC](https://docs.sentry.io/platforms/go/guides/grpc.md)
 - [Iris](https://docs.sentry.io/platforms/go/guides/iris.md)

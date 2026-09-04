@@ -4,4 +4,5 @@ source: https://docs.pinecone.io/api-reference/contexts/delete-a-context-and-its
 path: api-reference/contexts/delete-a-context-and-its-pinecone-indexes
 ---
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_2026-07.oas.yaml delete /contexts/{slug}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml delete /contexts/{slug}
+Delete the context, its sources, its curated knowledge, and its Pinecone indexes. Not reversible.

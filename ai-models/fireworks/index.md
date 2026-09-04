@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 380 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 381 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -250,6 +250,7 @@
 
 ## fireworks-nexus
 
+- `fireworks-nexus/provider-keys` — [Provider Keys (Bring Your Own)](pages/fireworks-nexus/provider-keys.md) · [原文](https://docs.fireworks.ai/fireworks-nexus/provider-keys)
 - `fireworks-nexus/usage-limits` — [Per-User Usage Limits](pages/fireworks-nexus/usage-limits.md) · [原文](https://docs.fireworks.ai/fireworks-nexus/usage-limits)
 
 ## getting-started

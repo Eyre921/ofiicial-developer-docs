@@ -12,6 +12,13 @@ path: docs/eleven-agents/customization/integrations/google_calendar
 
 Connect your ElevenLabs AI agents with [Google Calendar](https://calendar.google.com) to manage scheduling and calendar appointments. This integration enables your agents to check availability, create events with attendees and optional Google Meet conferencing, list upcoming events, and discover accessible calendars through natural conversation.
 
+## Capabilities
+
+| Capability                | Support                                    |
+| ------------------------- | ------------------------------------------ |
+| Zero retention mode (ZRM) | Not supported                              |
+| Attachments in tools      | Not supported — tools operate on text only |
+
 ## Setup
 
 This integration uses **Google OAuth 2.0** for authentication. You authorize ElevenLabs to access your Google Calendar on your behalf.

@@ -179,8 +179,8 @@
 - [Chat Testing](https://docs.vapi.ai/test/chat-testing.md): Automated text-based testing for AI agents
 - [Voice Testing](https://docs.vapi.ai/test/voice-testing.md): Automated voice call testing for AI voice agents
 - [Frequently Asked Questions](https://docs.vapi.ai/faq.md): Frequently asked questions about Vapi.
-- [Manage pay-as-you-go billing and credits](https://docs.vapi.ai/billing/manage-billing-and-credits.md): Manage pay-as-you-go billing in the Vapi Dashboard: add a payment method, buy credits, configure auto reload, and download PDF statements and invoices.
-- [Purchase call concurrency](https://docs.vapi.ai/billing/purchase-call-concurrency.md): Purchase call concurrency from Billing & Add-Ons to increase the number of simultaneous calls available to your Vapi organization.
+- [Manage pay-as-you-go billing and credits](https://docs.vapi.ai/billing/manage-billing-and-credits.md): Manage pay-as-you-go billing in the Vapi Dashboard: add a payment method, buy credits, configure auto reload, and download PDF statements and invoices. See Vapi pricing for rates.
+- [Purchase call concurrency](https://docs.vapi.ai/billing/purchase-call-concurrency.md): Purchase call concurrency from Billing & Add-Ons to increase the number of simultaneous calls available to your Vapi organization. See Vapi pricing for rates.
 - [Core Models](https://docs.vapi.ai/quickstart.md): Learn about the three core components to Vapi's voice AI pipeline.
 - [Integrations](https://docs.vapi.ai/providers/integrations.md): Integrations let you connect your own provider accounts to Vapi. Learn what an integration is, when you need one, and how to add provider credentials in the dashboard.
 - [Transcribers (Speech-to-text)](https://docs.vapi.ai/providers/transcriber/overview.md): Reference of every speech-to-text provider Vapi supports, including provider IDs and where to configure each one.
@@ -365,6 +365,7 @@
 - API reference > Simulation Runs [Generate Improvement Suggestions](https://docs.vapi.ai/api-reference/simulation-runs/simulation-run-controller-generate-suggestions.md)
 - API reference > Simulation Suites [List Simulation Suites](https://docs.vapi.ai/api-reference/simulation-suites/simulation-suite-controller-find-all.md)
 - API reference > Simulation Suites [Create Simulation Suite](https://docs.vapi.ai/api-reference/simulation-suites/simulation-suite-controller-create.md)
+- API reference > Simulation Suites [Duplicate simulation suite](https://docs.vapi.ai/api-reference/simulation-suites/simulation-suite-controller-duplicate.md)
 - API reference > Simulation Suites [Get Simulation Suite](https://docs.vapi.ai/api-reference/simulation-suites/simulation-suite-controller-find-one.md)
 - API reference > Simulation Suites [Delete Simulation Suite](https://docs.vapi.ai/api-reference/simulation-suites/simulation-suite-controller-remove.md)
 - API reference > Simulation Suites [Update Simulation Suite](https://docs.vapi.ai/api-reference/simulation-suites/simulation-suite-controller-update.md)

@@ -139,7 +139,7 @@ Conflicts could lead to UI warning messages in Sentry, as it can be interpreted 
 
 ## [Next Steps](https://docs.sentry.io/platforms/rust.md#next-steps)
 
-* Explore [practical guides](https://docs.sentry.io/guides.md) on what to monitor, log, track, and investigate after setup
+* Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 
 ## Frameworks
 

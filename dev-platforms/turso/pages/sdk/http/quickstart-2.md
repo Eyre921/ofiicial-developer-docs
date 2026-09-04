@@ -1,0 +1,292 @@
+---
+title: "Turso Quickstart (SQL over HTTP)"
+source: https://docs.turso.tech/sdk/http/quickstart
+path: sdk/http/quickstart
+---
+
+Get started with SQL over HTTP for Turso in a few simple steps.
+
+In this quickstart we will learn how to:
+
+* Connect to a remote Turso database
+* Execute SQL queries using [SQL over HTTP](https://github.com/tursodatabase/libsql/blob/main/docs/HRANA_3_SPEC.md#hrana-over-http)
+
+|                  | `@tursodatabase/serverless`                  | `@libsql/client`                   | Raw HTTP               |
+| ---------------- | -------------------------------------------- | ---------------------------------- | ---------------------- |
+| **Use with**     | [Turso](/tursodb/quickstart) databases       | [libSQL](/libsql) databases        | Any database           |
+| **Dependencies** | Uses only `fetch` — zero native dependencies | Requires Node.js or `/web` subpath | None (any HTTP client) |
+| **ORM support**  | Not yet supported                            | Drizzle, Prisma, and others        | N/A                    |
+
+Match the driver to your database engine: **`@tursodatabase/serverless`** for [Turso](/tursodb/quickstart) databases, **`@libsql/client`** for [libSQL](/libsql) databases.
+
+<Tabs>
+  <Tab title="@tursodatabase/serverless">
+    The `@tursodatabase/serverless` package connects to Turso using only the `fetch` API — no native dependencies, making it the smallest option for edge and serverless runtimes.
+
+    <Steps>
+      <Step title="Install">
+        ```bash theme={null}
+        npm install @tursodatabase/serverless
+        ```
+      </Step>
+
+      <Step title="Connect and query">
+        ```typescript theme={null}
+        import { connect } from "@tursodatabase/serverless";
+
+        const conn = connect({
+          url: process.env.TURSO_DATABASE_URL,
+          authToken: process.env.TURSO_AUTH_TOKEN,
+        });
+
+        const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
+        const row = await stmt.get([123]);
+        ```
+      </Step>
+    </Steps>
+
+    For compatibility with the libSQL client API, use the compat module:
+
+    ```typescript theme={null}
+    import { createClient } from "@tursodatabase/serverless/compat";
+
+    const client = createClient({
+      url: process.env.TURSO_DATABASE_URL,
+      authToken: process.env.TURSO_AUTH_TOKEN,
+    });
+
+    const result = await client.execute("SELECT * FROM users WHERE id = ?", [123]);
+    ```
+  </Tab>
+
+  <Tab title="@libsql/client">
+    The `@libsql/client` package is the production-ready libSQL driver used across the Turso ecosystem. Use the `/web` import for serverless and edge runtimes.
+
+    <Steps>
+      <Step title="Install">
+        ```bash theme={null}
+        npm install @libsql/client
+        ```
+      </Step>
+
+      <Step title="Connect and query">
+        ```typescript theme={null}
+        import { createClient } from "@libsql/client/web";
+
+        const client = createClient({
+          url: process.env.TURSO_DATABASE_URL!,
+          authToken: process.env.TURSO_AUTH_TOKEN!,
+        });
+
+        const result = await client.execute({
+          sql: "SELECT * FROM users WHERE id = ?",
+          args: [123],
+        });
+        ```
+      </Step>
+    </Steps>
+
+    <Note>
+      Use `@libsql/client/web` instead of `@libsql/client` for edge and serverless runtimes. The `/web` import uses the HTTP protocol.
+    </Note>
+  </Tab>
+
+  <Tab title="Raw HTTP">
+    You can also send queries directly over HTTP using any HTTP client.
+
+    <Steps>
+      <Step title="Create HTTP Database URL">
+        Using the [Turso CLI](/cli) or [Platform API](/api-reference), fetch your database URL:
+
+        ```bash theme={null}
+        turso db show <database-name> --http-url
+        ```
+
+        <Info>
+          Append `/v2/pipeline` to the URL and continue.
+        </Info>
+      </Step>
+
+      <Step title="Create Database Auth Token">
+        Using the Turso CLI or Platform API, create a new auth token for your database:
+
+        ```bash theme={null}
+        turso db tokens create <database-name>
+        ```
+      </Step>
+
+      <Step title="Create JSON Request Payload">
+        We'll be sending the query using JSON, so let's create a JSON payload that executes a SQL statement and closes the connection immediately:
+
+        ```json theme={null}
+        {
+          "requests": [
+            { "type": "execute", "stmt": { "sql": "SELECT * FROM users" } },
+            { "type": "close" }
+          ]
+        }
+        ```
+
+        <Info>
+          Make sure to update the `stmt.sql` to select from a table you already have.
+
+          Bound parameter examples included on the [Reference Page](/sdk/http/reference#parameter-binding),
+        </Info>
+      </Step>
+
+      <Step title="Execute HTTP Request">
+        Depending on your language, you can use a HTTP client library to send the request to the URL you created as well as the `Authorization` header set to the token you created, and the request body as JSON with your SQL statement.
+
+        You must append to the Base URL the actual pipeline URL that accepts requests — `/v2/pipeline`.
+
+        <CodeGroup>
+          ```ts JavaScript (Fetch) theme={null}
+          const url = "https://[databaseName]-[organizationSlug].turso.io/v2/pipeline";
+          const authToken = "...";
+
+          fetch(url, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              requests: [
+                { type: "execute", stmt: { sql: "SELECT * FROM users" } },
+                { type: "close" },
+              ],
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((err) => console.log(err));
+          ```
+
+          ```ruby Ruby theme={null}
+          require 'net/http'
+          require 'json'
+          require 'uri'
+
+          url = "https://[databaseName]-[organizationSlug].turso.io/v2/pipeline"
+          auth_token = "..."
+
+          uri = URI(url)
+          request = Net::HTTP::Post.new(uri)
+          request["Authorization"] = "Bearer #{auth_token}"
+          request["Content-Type"] = "application/json"
+          request.body = JSON.generate({
+            "requests": [
+              { "type": "execute", "stmt": { "sql": "SELECT * FROM users" } },
+              { "type": "close" }
+            ]
+          })
+
+          begin
+            response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
+              http.request(request)
+            end
+
+            puts JSON.parse(response.body)
+          rescue => e
+            puts e.message
+          end
+          ```
+        </CodeGroup>
+
+        <br />
+
+        <Accordion title="Response">
+          The response will be a JSON object with a `results` array containing the results of your query that looks something like this:
+
+          ```json theme={null}
+          {
+            "baton": null,
+            "base_url": null,
+            "results": [
+              {
+                "type": "ok",
+                "response": {
+                  "type": "execute",
+                  "result": {
+                    "cols": [],
+                    "rows": [],
+                    "affected_row_count": 0,
+                    "last_insert_rowid": null,
+                    "replication_index": "1"
+                  }
+                }
+              },
+              {
+                "type": "ok",
+                "response": {
+                  "type": "close"
+                }
+              }
+            ]
+          }
+          ```
+        </Accordion>
+
+        If you need to use placeholders for values, you can do that:
+
+        <CodeGroup>
+          ```json Positional theme={null}
+          {
+            "type": "execute",
+            "stmt": {
+              "sql": "SELECT * FROM users WHERE id = ?",
+              "args": [
+                {
+                  "type": "integer",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+          ```
+
+          ```json Named theme={null}
+          {
+            "type": "execute",
+            "stmt": {
+              "sql": "SELECT * FROM users WHERE name = :name OR name = $second_name OR name = @third_name",
+              "named_args": [
+                {
+                  "name": "name",
+                  "value": {
+                    "type": "text",
+                    "value": "Turso"
+                  }
+                },
+                {
+                  "name": "second_name",
+                  "value": {
+                    "type": "text",
+                    "value": "Not Turso"
+                  }
+                },
+                {
+                  "name": "third_name",
+                  "value": {
+                    "type": "text",
+                    "value": "Maybe Turso"
+                  }
+                }
+              ]
+            }
+          }
+          ```
+        </CodeGroup>
+
+        <Info>
+          The `type` field within each arg corresponds to the column datatype and can be one of the following: `null`, `integer`, `float`, `text`, or `blob`.
+        </Info>
+
+        <Note>
+          In JSON, the `value` is a `String` to avoid losing precision, because some
+          JSON implementations treat all numbers as 64-bit floats.
+        </Note>
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>

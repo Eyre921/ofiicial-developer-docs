@@ -65,38 +65,44 @@ Successful Response
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
-  "id": "string",
-  "phone_number_id": "string",
+  "id": "b7f3c9d2-8a4e-4f3a-9c1e-2d5a7b8e9f01",
+  "phone_number_id": "pn_987654321",
   "phone_provider": "twilio",
   "whatsapp_params": {
-    "whatsapp_call_permission_request_template_name": "string",
-    "whatsapp_call_permission_request_template_language_code": "string",
-    "whatsapp_phone_number_id": "string"
+    "whatsapp_call_permission_request_template_name": "customer_permission_request",
+    "whatsapp_call_permission_request_template_language_code": "en_US",
+    "whatsapp_phone_number_id": "wa_123456789"
   },
-  "name": "string",
-  "agent_id": "string",
-  "branch_id": "string",
-  "environment": "string",
-  "created_at_unix": 1,
-  "scheduled_time_unix": 1,
-  "timezone": "string",
-  "total_calls_dispatched": 0,
-  "total_calls_scheduled": 0,
-  "total_calls_finished": 0,
-  "last_updated_at_unix": 1,
-  "status": "pending",
-  "retry_count": 0,
+  "name": "April Marketing Campaign",
+  "agent_id": "agent_42",
+  "branch_id": "branch_nyc_01",
+  "environment": "production",
+  "created_at_unix": 1712000000,
+  "scheduled_time_unix": 1712604800,
+  "timezone": "America/New_York",
+  "total_calls_dispatched": 150,
+  "total_calls_scheduled": 200,
+  "total_calls_finished": 120,
+  "last_updated_at_unix": 1712650000,
+  "status": "cancelled",
+  "retry_count": 2,
   "telephony_call_config": {
-    "ringing_timeout_secs": 60,
-    "twilio_call_recording_enabled": false
+    "ringing_timeout_secs": 45,
+    "twilio_call_recording_enabled": true
   },
-  "target_concurrency_limit": 1,
-  "agent_name": "string",
-  "branch_name": "string"
+  "target_concurrency_limit": 10,
+  "agent_name": "Support Agent Alpha",
+  "branch_name": "New York Downtown"
 }
 ```
 
@@ -129,6 +135,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -137,7 +144,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel"
 
-	req, _ := http.NewRequest("POST", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -160,6 +171,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -170,6 +183,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -179,7 +194,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel');
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -189,16 +209,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel");
 var request = new RestRequest(Method.POST);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

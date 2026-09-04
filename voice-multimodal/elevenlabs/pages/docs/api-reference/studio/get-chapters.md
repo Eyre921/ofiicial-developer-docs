@@ -61,45 +61,52 @@ Successful Response
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
   "chapters": [
     {
-      "chapter_id": "string",
-      "name": "string",
+      "chapter_id": "chp9X7b2Lq4V8mN1aZ0Y",
+      "name": "Introduction to AI",
       "can_be_downloaded": true,
-      "state": "default",
-      "last_conversion_date_unix": 1,
-      "conversion_progress": 1.1,
+      "state": "converting",
+      "last_conversion_date_unix": 1714204800,
+      "conversion_progress": 0.75,
       "has_video": true,
       "has_visual_content": true,
       "voice_ids": [
-        "string"
+        "voice789",
+        "voice321"
       ],
       "statistics": {
-        "characters_unconverted": 1000,
-        "characters_converted": 500,
-        "paragraphs_converted": 20,
-        "paragraphs_unconverted": 10,
-        "credits_needed_to_convert": 1000,
+        "characters_unconverted": 1200,
+        "characters_converted": 4800,
+        "paragraphs_converted": 45,
+        "paragraphs_unconverted": 5,
+        "credits_needed_to_convert": 1500,
         "voice_statistics": [
           {
-            "project_voice_ref_id": "voice123",
-            "characters_unconverted": 600,
-            "characters_converted": 300,
-            "voice_id": "voice123"
+            "project_voice_ref_id": "voice789",
+            "characters_unconverted": 700,
+            "characters_converted": 3000,
+            "voice_id": "voice789"
           },
           {
-            "project_voice_ref_id": "voice456",
-            "characters_unconverted": 400,
-            "characters_converted": 200,
-            "voice_id": "voice456"
+            "project_voice_ref_id": "voice321",
+            "characters_unconverted": 500,
+            "characters_converted": 1800,
+            "voice_id": "voice321"
           }
         ]
       },
-      "last_conversion_error": "string"
+      "last_conversion_error": null
     }
   ]
 }
@@ -134,6 +141,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -142,7 +150,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/studio/projects/project_id/chapters"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -165,6 +177,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -175,6 +189,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/studio/projects/project_id/chapters")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -184,7 +200,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/studio/projects/project_id/chapters');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/studio/projects/project_id/chapters', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -194,16 +215,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/studio/projects/project_id/chapters");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/studio/projects/project_id/chapters")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

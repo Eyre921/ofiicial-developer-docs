@@ -53,13 +53,19 @@ Successful Response
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 [
   {
-    "model_id": "string",
-    "name": "string",
+    "model_id": "eleven_multilingual_v2",
+    "name": "Eleven Multilingual v2",
     "can_be_finetuned": true,
     "can_do_text_to_speech": true,
     "can_do_voice_conversion": true,
@@ -67,22 +73,22 @@ Successful Response
     "can_use_speaker_boost": true,
     "serves_pro_voices": true,
     "token_cost_factor": 1.1,
-    "description": "string",
+    "description": "Our state-of-the-art multilingual speech synthesis model, capable of generating life-like speech in 29 languages.",
     "requires_alpha_access": true,
-    "max_characters_request_free_user": 1,
-    "max_characters_request_subscribed_user": 1,
-    "maximum_text_length_per_request": 1,
+    "max_characters_request_free_user": 2500,
+    "max_characters_request_subscribed_user": 10000,
+    "maximum_text_length_per_request": 1000000,
     "languages": [
       {
-        "language_id": "string",
-        "name": "string"
+        "language_id": "en",
+        "name": "English"
       }
     ],
     "model_rates": {
       "character_cost_multiplier": 1,
       "cost_discount_multiplier": 1
     },
-    "concurrency_group": "string"
+    "concurrency_group": "standard_eleven_multilingual_v2"
   }
 ]
 ```
@@ -114,6 +120,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -122,7 +129,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/models"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -145,6 +156,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -155,6 +168,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/models")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -164,7 +179,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/models');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/models', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -174,16 +194,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/models");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/models")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

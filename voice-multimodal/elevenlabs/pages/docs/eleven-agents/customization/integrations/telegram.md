@@ -12,6 +12,14 @@ path: docs/eleven-agents/customization/integrations/telegram
 
 Connect your ElevenLabs AI agents with Telegram to respond to messages sent to your bot. This integration enables your agents to receive incoming messages in private chats and groups, look up chat information, send replies, and react to messages through the Telegram Bot API.
 
+## Capabilities
+
+| Capability                | Support                                                                                            |
+| ------------------------- | -------------------------------------------------------------------------------------------------- |
+| Zero retention mode (ZRM) | Not supported                                                                                      |
+| Attachments in triggers   | Not supported — photos, files, and other media in incoming messages are not forwarded to the agent |
+| Attachments in tools      | Not supported — tools operate on text only                                                         |
+
 ## Setup
 
 #### Create a Telegram bot

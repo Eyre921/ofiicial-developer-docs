@@ -16,5 +16,6 @@ path: docs/help-center/legal
 | [How do I make a Data Subject Request?](/docs/help-center/legal/how-do-i-make-a-data-subject-request)                                                                                   |
 | [How do I opt out of the sale or sharing of my Personal Data?](/docs/help-center/legal/how-do-i-opt-out-of-the-sale-or-sharing-of-my-personal-data)                                     |
 | [Is my data used to improve ElevenLabs’ AI models?](/docs/help-center/legal/is-my-data-used-to-improve-eleven-labs-ai-models)                                                           |
+| [U.S. State Privacy Laws](/docs/help-center/legal/us-state-privacy-laws)                                                                                                                |
 | [What are No-Go Voices?](/docs/help-center/legal/what-are-no-go-voices)                                                                                                                 |
 | [What is your billing address and VAT/EIN number?](/docs/help-center/legal/what-is-your-billing-address-and-vat-ein-number)                                                             |
