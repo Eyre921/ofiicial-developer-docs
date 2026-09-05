@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1298 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1297 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -618,7 +618,6 @@
 - `docs/eleven-agents/customization/tools/agent-tools-deprecation` — [Agent tools deprecation](pages/docs/eleven-agents/customization/tools/agent-tools-deprecation.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/agent-tools-deprecation.md)
 - `docs/eleven-agents/customization/tools/client-tools` — [Client tools](pages/docs/eleven-agents/customization/tools/client-tools.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/client-tools.md)
 - `docs/eleven-agents/customization/tools/code-tools` — [Code tools](pages/docs/eleven-agents/customization/tools/code-tools.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/code-tools.md)
-- `docs/eleven-agents/customization/tools/mcp` — [Model Context Protocol](pages/docs/eleven-agents/customization/tools/mcp.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/mcp.md)
 - `docs/eleven-agents/customization/tools/mcp/security` — [MCP integration security](pages/docs/eleven-agents/customization/tools/mcp/security.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/mcp/security.md)
 - `docs/eleven-agents/customization/tools/system-tools` — [System tools](pages/docs/eleven-agents/customization/tools/system-tools.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools.md)
 - `docs/eleven-agents/customization/tools/system-tools/agent-transfer` — [Agent transfer](pages/docs/eleven-agents/customization/tools/system-tools/agent-transfer.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/agent-transfer.md)

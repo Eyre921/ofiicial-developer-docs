@@ -1094,6 +1094,7 @@ Browse the full catalog below. Switch between the **Text** and **Image** tabs, f
 
 | Model                                                                     | Model ID        | Inputs           | Context | Reasoning | Input /M | Output /M | Endpoints                           | License      |
 | ------------------------------------------------------------------------- | --------------- | ---------------- | ------- | --------- | -------- | --------- | ----------------------------------- | ------------ |
+| [GPT-6 Astra](https://neon.com/docs/ai-gateway/models/gpt-6-astra.md)     | `gpt-6-astra`   | text, image, pdf | 1.1M    | Yes       | $10      | $50       | chat/completions · openai/responses | Proprietary  |
 | [GPT-5.6 Luna](https://neon.com/docs/ai-gateway/models/gpt-5-6-luna.md)   | `gpt-5-6-luna`  | text, image, pdf | 1.1M    | Yes       | $0.20    | $1.20     | chat/completions · openai/responses | Proprietary  |
 | [GPT-5.6 Sol](https://neon.com/docs/ai-gateway/models/gpt-5-6-sol.md)     | `gpt-5-6-sol`   | text, image, pdf | 1.1M    | Yes       | $5       | $30       | chat/completions · openai/responses | Proprietary  |
 | [GPT-5.6 Terra](https://neon.com/docs/ai-gateway/models/gpt-5-6-terra.md) | `gpt-5-6-terra` | text, image, pdf | 1.1M    | Yes       | $2       | $12       | chat/completions · openai/responses | Proprietary  |
@@ -1173,6 +1174,7 @@ These models support image generation through the Responses API (base URL `/open
 
 | Model                                                                     | Model ID        | Inputs           | Context | Reasoning | Input /M | Output /M | Endpoints                           | License     |
 | ------------------------------------------------------------------------- | --------------- | ---------------- | ------- | --------- | -------- | --------- | ----------------------------------- | ----------- |
+| [GPT-6 Astra](https://neon.com/docs/ai-gateway/models/gpt-6-astra.md)     | `gpt-6-astra`   | text, image, pdf | 1.1M    | Yes       | $10      | $50       | chat/completions · openai/responses | Proprietary |
 | [GPT-5.6 Luna](https://neon.com/docs/ai-gateway/models/gpt-5-6-luna.md)   | `gpt-5-6-luna`  | text, image, pdf | 1.1M    | Yes       | $0.20    | $1.20     | chat/completions · openai/responses | Proprietary |
 | [GPT-5.6 Sol](https://neon.com/docs/ai-gateway/models/gpt-5-6-sol.md)     | `gpt-5-6-sol`   | text, image, pdf | 1.1M    | Yes       | $5       | $30       | chat/completions · openai/responses | Proprietary |
 | [GPT-5.6 Terra](https://neon.com/docs/ai-gateway/models/gpt-5-6-terra.md) | `gpt-5-6-terra` | text, image, pdf | 1.1M    | Yes       | $2       | $12       | chat/completions · openai/responses | Proprietary |
@@ -8066,6 +8068,281 @@ $1.25
 
 $10
 
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-6-astra.md) ---
+
+# GPT-6 Astra
+
+## About
+
+Neon AI Gateway provides GPT-6 Astra by OpenAI. The model supports text, image, pdf inputs and a 1.1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-6-astra"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gpt-6-astra",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-6-astra",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-6-astra",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-6-astra",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-6-astra"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-6-astra",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-6-astra",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-6-astra",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-6-astra
+
+## Provider
+
+OpenAI provides GPT-6 Astra. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1.1M
+
+## Released
+
+Sep 2026
+
+## Input /M
+
+$10
+
+## Output /M
+
+$50
+
 --- [Document source](https://neon.com/docs/ai-gateway/models/gpt-oss-120b.md) ---
 
 # GPT OSS 120B
@@ -9673,6 +9950,7 @@ This endpoint accepts OpenAI models only:
 
 | Model ID        | Notes                  |
 | --------------- | ---------------------- |
+| `gpt-6-astra`   |                        |
 | `gpt-5-6-sol`   |                        |
 | `gpt-5-6-terra` |                        |
 | `gpt-5-6-luna`  |                        |
