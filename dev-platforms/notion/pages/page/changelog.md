@@ -5,6 +5,14 @@ path: page/changelog
 ---
 
 <Update label="September 2, 2026">
+  ### Notion MCP splits keyword search and AI search
+
+  [`notion-search`](/guides/mcp/mcp-supported-tools) is now keyword-only. It matches short, specific terms in Notion and no longer searches connected apps like Slack, Google Drive, and Jira. Use it for content search only when `notion-fetch` with the id `self` reports that `current_tool_access.ai_search.status` is not `available`. It remains the tool for user lookup by name or email.
+
+  Semantic search moved to a new `notion-ai-search` tool. Use it for every content search when `current_tool_access.ai_search.status` is `available`, including searches that include specific terms. It takes one concise natural-language query and searches sources connected to the workspace, such as Slack, Mail, and Calendar, when they are available to the caller. Using it requires Notion AI; without it, calls return a prompt with a recovery link, and `notion-fetch` with the id `self` reports `ai_search` in `current_tool_access` so clients can route to `notion-search`. `notion-ai-search` does not accept the exact filters, the sort options, or the user lookup that `notion-search` accepts.
+
+  Clients that still send the old `content_search_mode` parameter on `notion-search` keep working: `workspace_search` behaves like `notion-search`, and `ai_search` behaves like `notion-ai-search`. The parameter is no longer advertised, so call the tool you want directly.
+
   ### Page covers and icons in `notion-fetch` responses
 
   The [`notion-fetch`](/guides/mcp/mcp-supported-tools) MCP tool now returns `cover` and `icon` metadata for pages and database items. Both use the same shapes as the REST API, so clients can inspect the current cover or icon before deciding whether to replace it.

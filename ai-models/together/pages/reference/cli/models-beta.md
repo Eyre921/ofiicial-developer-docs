@@ -28,15 +28,17 @@ tg beta models create my-custom-glm \
   --base-model zai-org/GLM-5.2
 ```
 
+You can also pass a base model ID (`ml_...`). Values that do not start with `ml_` are treated as a deploy model name: the CLI searches [public supported models](#list-public-models) and requires an exact match on a deployment profile's `modelName`. If the name is missing or matches more than one profile, the CLI prints the candidate model names and ids and asks you to re-run with an exact name or `ml_...` id.
+
 Alias: `tg beta models -c`.
 
 ### Parameters
 
-| Flag                        | Description                                                                                                                                                                                         |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NAME`                      | (**required**) The inference-addressable name for the model.                                                                                                                                        |
-| `--type [model \| adapter]` | Whether the record holds full weights (`model`) or a LoRA adapter (`adapter`). Set once at create time. File operations derive the type from the record. Default: `model`.                          |
-| `--base-model [string]`     | (**required**) The supported base model this model derives from. Accepts a base model ID (`ml_...`) or a deploy model name (for example `zai-org/GLM-5.2`). Run `tg beta models public` to find it. |
+| Flag                        | Description                                                                                                                                                                                                                           |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NAME`                      | (**required**) The inference-addressable name for the model.                                                                                                                                                                          |
+| `--type [model \| adapter]` | Whether the record holds full weights (`model`) or a LoRA adapter (`adapter`). Set once at create time. File operations derive the type from the record. Default: `model`.                                                            |
+| `--base-model [string]`     | (**required**) The supported base model this model derives from. Accepts a base model ID (`ml_...`) or an exact deployment profile `modelName` (for example `Qwen/Qwen3.5-9B-FP8`). Run `tg beta models public` to find either value. |
 
 ## Upload
 
@@ -114,7 +116,11 @@ List the deployable configs for a model. Pass a config ID to `tg beta endpoints 
 
 ```bash Shell theme={null}
 tg beta models configs ml_abc123
+tg beta models configs projects/proj_abc123/models/ml_abc123
+tg beta models configs Qwen/Qwen3.5-9B
 ```
+
+Pass a bare model ID (`ml_...`), a resource path (`projects/{project_id}/models/{model_id}`), or a model name. Names with a `/` resolve through the private models list when the prefix matches your project slug, or through [public supported models](#list-public-models) otherwise. Ambiguous public names print a short error that points you at `tg beta models public --search`.
 
 ### Parameters
 
@@ -173,7 +179,7 @@ tg beta models download ml_abc123 ./local-dir
 
 ## List public models
 
-List the publicly visible models across all projects. Use this to find a base model ID or name for [`create`](#create) or a model name for [`tg beta endpoints deploy`](/reference/cli/endpoints-beta#deploy).
+List the publicly visible models across all projects. Use this to find a base model ID or deployment profile `modelName` for [`create`](#create) and [`tg beta endpoints deploy`](/reference/cli/endpoints-beta#deploy).
 
 ```bash Shell theme={null}
 tg beta models public \
@@ -181,7 +187,9 @@ tg beta models public \
   --modality text
 ```
 
-Add `--json` to see each model's full record, including its `id` (which subsequent operations require) and its `deploymentProfiles` array. A model can expose more than one profile, each pairing a certified config with a hardware and parallelism choice, so read the `id`, `config`, `gpuType`, and `gpuCount` of the profile you want before deploying. See [Choose a hardware config](/docs/dedicated-endpoints/configs).
+The human-readable table prints one row per [deployment profile](/docs/dedicated-endpoints/concepts#deployment-profile), with columns for **Model** (the profile's `modelName`, such as `Qwen/Qwen3.5-9B-FP8`), **GPUs**, and **Parallelism**. Pass that **Model** value as the `MODEL` argument to `tg beta endpoints deploy` when you want that specific profile.
+
+Add `--json` to see each architecture's full record, including its `id` (which subsequent operations require) and its `deploymentProfiles` array. A model can expose more than one profile, each pairing a certified config with a hardware and parallelism choice, so read the profile's `modelName`, `config`, `gpuType`, and `gpuCount` before deploying. See [Choose a hardware config](/docs/dedicated-endpoints/configs).
 
 ### Parameters
 

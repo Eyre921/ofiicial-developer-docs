@@ -173,7 +173,7 @@
 - `agent-sdk/subagents` — [Subagents in the SDK](pages/agent-sdk/subagents.md) · [原文](https://code.claude.com/docs/en/agent-sdk/subagents)
 - `agent-sdk/todo-tracking` — [Track todos](pages/agent-sdk/todo-tracking.md) · [原文](https://code.claude.com/docs/en/agent-sdk/todo-tracking)
 - `agent-sdk/tool-search` — [Scale to many tools with tool search](pages/agent-sdk/tool-search.md) · [原文](https://code.claude.com/docs/en/agent-sdk/tool-search)
-- `agent-sdk/troubleshooting` — [Troubleshooting](pages/agent-sdk/troubleshooting.md) · [原文](https://code.claude.com/docs/en/agent-sdk/troubleshooting)
+- `agent-sdk/troubleshooting` — [Troubleshoot the Agent SDK](pages/agent-sdk/troubleshooting.md) · [原文](https://code.claude.com/docs/en/agent-sdk/troubleshooting)
 - `agent-sdk/typescript` — [Agent SDK reference - TypeScript](pages/agent-sdk/typescript.md) · [原文](https://code.claude.com/docs/en/agent-sdk/typescript)
 - `agent-sdk/typescript-v2-preview` — [TypeScript SDK V2 session API (removed)](pages/agent-sdk/typescript-v2-preview.md) · [原文](https://code.claude.com/docs/en/agent-sdk/typescript-v2-preview)
 - `agent-sdk/user-input` — [Handle approvals and user input](pages/agent-sdk/user-input.md) · [原文](https://code.claude.com/docs/en/agent-sdk/user-input)

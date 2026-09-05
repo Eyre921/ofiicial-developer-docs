@@ -8,7 +8,7 @@ How Together handles your inputs, outputs, and account data, plus enterprise opt
 
 ## What Together stores
 
-Together does not store inputs or outputs by default, i.e. it supports zero data retention (ZDR). Temporary caching may be used to improve performance unless otherwise configured.
+By default, Together stores the prompts you send and the responses models return, and may use them for product improvements. This data is not shared with third parties, and you can delete it at any time. Organization admins can turn storage off in privacy settings, which enables zero data retention (ZDR): request content is then not persisted or used for any secondary purpose. See [zero data retention](/docs/zero-data-retention) for what ZDR covers, how to enable it, and what Together retains.
 
 ## Training opt-in
 
@@ -18,9 +18,9 @@ Data sharing for training other models is **opt-in and not enabled by default**.
 
 Organization-level privacy toggles live on the main [Organization Settings](https://api.together.ai/settings/organization/~current) page under **Privacy**. Only organization admins can change them:
 
-* **Store prompts and model responses**: opt in to storing prompts and outputs for product improvements. Required before you can enable passthrough models.
-* **Allow organization's data for training**: opt in to using your organization's data for training models released by Together AI and partners.
-* **Allow passthrough models**: opt in to models that forward prompts and responses to third-party providers (see below).
+* **Store prompts and model responses**: on by default. Stores prompts and outputs for product improvements. Turn it off to enable [zero data retention](/docs/zero-data-retention), which also turns off passthrough models because they require prompt storage.
+* **Allow organization's data for training**: off by default. Opt in to using your organization's data for training models released by Together AI and partners.
+* **Allow passthrough models**: on by default. Allows models that forward prompts and responses to third-party providers (see below).
 
 If your organization is on the Limited tier, add a payment method before updating these settings.
 
@@ -35,7 +35,7 @@ When a request uses an organization's API key, the **organization setting is wha
 
 ## Passthrough third-party models
 
-Some models are offered as **passthrough**, meaning that Together forwards your prompts and responses directly to the upstream provider, and data is handled under that provider's own data policy. Passthrough is controlled by a separate organization-level toggle ("Allow my organization to use passthrough models…") and is independent of the training opt-in above. If you do not want any traffic leaving Together's infrastructure, leave that toggle off, and non-passthrough models will continue to work as normal.
+Some models are offered as **passthrough**, meaning that Together forwards your prompts and responses directly to the upstream provider, and data is handled under that provider's own data policy. Passthrough is controlled by a separate organization-level toggle ("Allow my organization to use passthrough models…") and is independent of the training opt-in above. If you do not want any traffic leaving Together's infrastructure, turn that toggle off, and non-passthrough models will continue to work as normal.
 
 ## Enterprise data residency and private networking
 

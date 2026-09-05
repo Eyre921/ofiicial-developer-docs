@@ -14,7 +14,7 @@ path: docs/eleven-creative/products/dubbing
 
 Automatic dubbing or video translation is a process for translating and replacing the original audio of a video with a new language, while preserving the unique characteristics of the original speakers' voices.
 
-![Dubbing new project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8c0235c62183be7eabf87a0346600e94e3c5717ecb58f0207715894eb39c9f5e/assets/images/product-guides/dubbing/dubbing-new-project.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260904%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260904T080504Z&X-Amz-Expires=604800&X-Amz-Signature=7f9bf960b05db2d0ad71af90aa4aad0d9445bd78eeccf049fb1e7b68d4dd586a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing new project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8c0235c62183be7eabf87a0346600e94e3c5717ecb58f0207715894eb39c9f5e/assets/images/product-guides/dubbing/dubbing-new-project.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T064539Z&X-Amz-Expires=604800&X-Amz-Signature=afff3341764ff97a0cfc36abcdb874b8fcc56e8bbbdf49964e6138880419e1e5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Guide
 
@@ -34,7 +34,7 @@ your request.
 Once your dub is ready, you'll be able to download it from your list of dubs.
 
 ![Dubbing new project advanced
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9515592460d4e2e6393e657c2743710b201c846ed0894c82343f55bde176b8fd/assets/images/product-guides/dubbing/dubbing-new-advanced.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260904%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260904T080504Z&X-Amz-Expires=604800&X-Amz-Signature=857dbf270855cbb560ab5fdcb067c16020f6fd348b852e902a5e7288606c569e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9515592460d4e2e6393e657c2743710b201c846ed0894c82343f55bde176b8fd/assets/images/product-guides/dubbing/dubbing-new-advanced.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T064539Z&X-Amz-Expires=604800&X-Amz-Signature=2fba7fce052741c463627fadbe579227757639ffdf9ef6b7996a4c2c7d24e4f4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Cloning strength
 
@@ -53,7 +53,7 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
 
       To get started, go to [Dubbing](https://elevenlabs.io/app/dubbing) and upload your audio or video file, or paste a URL to dub a video from YouTube, TikTok or elsewhere online **.**
 
-      Select the language or languages you want to dub into in the **Choose languages** selector. You'll be charged for each language you select here.
+      Select the language or languages you want to dub into in the **Choose languages** selector. You'll be charged for each language you select here. See [How much does Dubbing cost?](/docs/help-center/product/dubbing/how-much-does-dubbing-cost) for a full breakdown.
 
       By default, you'll use our latest Dubbing model, v2. Dubs created using the v2 model are completely automatic without any option to edit the content.
 
@@ -81,7 +81,20 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
     <td>
       #### How much does Dubbing cost?
 
-      The cost for dubbing depends on the dubbing model you’re using, the duration of your dub, and the number of languages you’re dubbing into. The total cost will be displayed before you confirm your request.
+      Dubbing is charged per minute of source media, for each language you dub into. The exact rate depends on the dubbing model you’re using — see the [pricing page](https://elevenlabs.io/pricing) for details. In the app, the total cost is shown for you to confirm before a dub starts.
+
+      A dubbing project created with the [Dubbing API](/docs/eleven-api/guides/cookbooks/dubbing) has a minimum charge of one language. Creating a project charges you for one language’s dub up front, based on the duration of the source, and that charge prepays your first language target:
+
+      * The charge is applied when you create the project, while its source is being prepared — not when you add the first language.
+      * The first language you add (or the one you queue with `target_language` when creating the project) uses this prepaid charge rather than adding to it.
+      * Each additional language you add is charged separately when you queue it.
+
+      ## Handling failures
+
+      * If a project fails to prepare — for example, its source cannot be transcribed — the creation charge is refunded.
+      * If an additional language fails to generate, its charge is refunded.
+      * The first language is prepaid by the project’s creation charge. If it fails to generate, the creation charge is not refunded, but the prepayment is not lost: it stays available, so retrying that language on the same project incurs no additional charge.
+      * Deleting a project or language does not refund a dub that is already running.
     </td>
   </tr>
 
@@ -140,7 +153,7 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
 
       If you want to use Dubbing Studio, you can do this by selecting **Use legacy v1 Dubbing model** in the **Advanced** options when you create your dub, then check the **Create Dubbing project** option.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9fc196e5c40348615fff7f381e5945b855702f9b0b0cbeb204c565d17d6211f6/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260904%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260904T080504Z&X-Amz-Expires=604800&X-Amz-Signature=951861d8892f36d643f8623426da7dc6a5ff764c9d7a64dfbcefa9b31224ae87&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9fc196e5c40348615fff7f381e5945b855702f9b0b0cbeb204c565d17d6211f6/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T064539Z&X-Amz-Expires=604800&X-Amz-Signature=ff0ec3cecc5ecd91e9c345c1c2e3fbafda7c3546d00bb51c1bae1b4abe817805&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       It's not possible to convert an existing automatic dub to a Dubbing project.
 
@@ -148,7 +161,7 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
 
       Once it has completed processing, click the three dots icon and select **Edit** to open your dubbing project.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260904%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260904T080504Z&X-Amz-Expires=604800&X-Amz-Signature=0d7485c5c6afc53edbe6d99917adfbf20ffaa65114e3b9ae36acb41629f4ce2c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T064539Z&X-Amz-Expires=604800&X-Amz-Signature=bb37c34dc250b21fe57931cb7cfe62750487eafd06d27192f5236cb894d566f1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       For more information about Dubbing Studio, please see our [overview.](/docs/product-guides/products/dubbing/dubbing-studio)
     </td>

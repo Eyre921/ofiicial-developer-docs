@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1165 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1166 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -441,6 +441,7 @@
 - `langsmith/sample-traces` — [Set a sampling rate for traces](pages/langsmith/sample-traces.md) · [原文](https://docs.langchain.com/langsmith/sample-traces)
 - `langsmith/sandbox-auth-proxy` — [Sandbox auth proxy](pages/langsmith/sandbox-auth-proxy.md) · [原文](https://docs.langchain.com/langsmith/sandbox-auth-proxy)
 - `langsmith/sandbox-cli` — [Sandbox CLI](pages/langsmith/sandbox-cli.md) · [原文](https://docs.langchain.com/langsmith/sandbox-cli)
+- `langsmith/sandbox-download-links` — [Sandbox download links](pages/langsmith/sandbox-download-links.md) · [原文](https://docs.langchain.com/langsmith/sandbox-download-links)
 - `langsmith/sandbox-mounts` — [Sandbox mounts](pages/langsmith/sandbox-mounts.md) · [原文](https://docs.langchain.com/langsmith/sandbox-mounts)
 - `langsmith/sandbox-permissions` — [Sandbox access permissions](pages/langsmith/sandbox-permissions.md) · [原文](https://docs.langchain.com/langsmith/sandbox-permissions)
 - `langsmith/sandbox-sdk` — [Sandbox SDK usage](pages/langsmith/sandbox-sdk.md) · [原文](https://docs.langchain.com/langsmith/sandbox-sdk)

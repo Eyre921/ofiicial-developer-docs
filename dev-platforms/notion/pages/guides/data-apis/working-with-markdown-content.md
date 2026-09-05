@@ -690,7 +690,7 @@ For the full status resource, see [Retrieve an async task](/reference/retrieve-a
 
 ### MCP async examples
 
-For Notion MCP, pass `allow_async: true` to `create_pages` or `update_page`. The tools keep their normal synchronous behavior when `allow_async` is omitted.
+For Notion MCP, pass `allow_async: true` to `create_pages` or `update_page`. The tool descriptions recommend this for most page writes unless the next step needs the created or updated page right away, or the async attempt is rejected as too large to queue. This is guidance to assistants, not a request default. When `allow_async` is omitted, `create_pages` keeps its synchronous behavior, and `update_page` waits for a synchronous result when it can but can still return an `async_task` if the work runs past the synchronous wait deadline.
 
 ```json theme={null}
 {
@@ -731,7 +731,7 @@ Poll the task with `notion-get-async-task`:
 }
 ```
 
-The MCP status values are the same as REST: `queued`, `running`, `retrying`, `succeeded`, and `failed`. When the task succeeds, the response includes the create or update result. When it fails, the response includes an error object.
+The MCP status values are the same as REST: `queued`, `running`, `retrying`, `succeeded`, and `failed`. When the task succeeds, the response includes the create or update result. When it fails, the response includes an error object. Wait for `succeeded` before any step that depends on the new content.
 
 ## Access control summary
 

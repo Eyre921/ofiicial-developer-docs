@@ -12,10 +12,11 @@ Together publishes one or more profiles per model. You select one by its config 
 
 ## List a model's profiles
 
-Each profile is anchored by a config revision (`cr_...`). List the configs published for a model with the CLI. For a public-catalog model, the [supported-models catalog](/docs/dedicated-endpoints/models#list-supported-models-programmatically) also shows each profile's quantization alongside its config:
+Each profile is anchored by a config revision (`cr_...`). List the configs published for a model with the CLI, passing a model ID (`ml_...`) or a model name. For a public-catalog model, the [supported-models catalog](/docs/dedicated-endpoints/models#list-supported-models-programmatically) also shows each profile's quantization alongside its config:
 
 ```bash CLI theme={null}
 tg beta models configs ml_CbJNwQC2ZqCU2iFT3mrCh
+tg beta models configs Qwen/Qwen3.5-9B
 ```
 
 Response example:

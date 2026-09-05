@@ -4,13 +4,13 @@ source: https://docs.pinecone.io/guides/nexus/byoc/overview
 path: guides/nexus/byoc/overview
 ---
 
-What Nexus bring your own cloud is, how it relates to Database BYOC, and its architecture.
+What Nexus BYOC is, how it relates to Database BYOC, and its architecture.
 
 <Note>
   Nexus BYOC is available only on [Enterprise plans](https://www.pinecone.io/pricing/).
 </Note>
 
-Pinecone Nexus compiles your enterprise data into queryable knowledge that AI agents retrieve with a single [KnowQL](/guides/nexus/concepts#knowql) query. Nexus BYOC (bring your own cloud) is a single installer that deploys both Nexus and the Pinecone Database data plane it runs on, entirely inside your own cloud account (AWS, GCP, or Azure). You do not install Database BYOC separately. Nexus BYOC includes it (see [how the two relate](#how-nexus-byoc-relates-to-database-byoc)).
+Pinecone Nexus compiles your enterprise data into queryable knowledge that AI agents retrieve with a single [KnowQL](/guides/nexus/concepts#knowql) query. Nexus BYOC (Bring Your Own Cloud) is a single installer that deploys both Nexus and the Pinecone Database data plane it runs on, entirely inside your own cloud account (AWS, GCP, or Azure). You do not install Database BYOC separately. Nexus BYOC includes it (see [how the two relate](#how-nexus-byoc-relates-to-database-byoc)).
 
 Nexus BYOC is designed for organizations with strict requirements around data sovereignty, network isolation, and data residency. You get the benefits of a managed service (upgrades, scaling, and maintenance) without giving up control of your data or infrastructure.
 

@@ -1210,6 +1210,7 @@ components:
               - $ref: '#/components/schemas/ItemReferenceItem'
               - $ref: '#/components/schemas/AdditionalToolsItem'
               - $ref: '#/components/schemas/AgentMessageItem'
+              - $ref: '#/components/schemas/ConfigurationUpdateItem'
           type: array
       description: Input for a response request - can be a string or array of items
       example:
@@ -5654,9 +5655,7 @@ components:
         arguments:
           type: string
         error:
-          type:
-            - string
-            - 'null'
+          $ref: '#/components/schemas/McpToolCallError'
         id:
           type: string
         name:
@@ -5957,6 +5956,33 @@ components:
         - author
         - recipient
         - content
+      type: object
+    ConfigurationUpdateItem:
+      description: >-
+        Changes reasoning effort from this point in the conversation onward
+        without invalidating the prompt cache for the preceding items. Place it
+        before the user message it should apply to; it stays in effect until
+        another configuration update. Two adjacent configuration updates are
+        rejected. Only supported by models that accept mid-conversation effort
+        changes.
+      example:
+        reasoning:
+          effort: low
+        type: configuration_update
+      properties:
+        id:
+          type:
+            - string
+            - 'null'
+        reasoning:
+          $ref: '#/components/schemas/ConfigurationUpdateReasoning'
+        type:
+          enum:
+            - configuration_update
+          type: string
+      required:
+        - type
+        - reasoning
       type: object
     ContextCompressionEngine:
       description: The compression engine to use. Defaults to "middle-out".
@@ -7041,6 +7067,7 @@ components:
             - failed_to_download_image
             - image_file_not_found
             - bio_policy
+            - misalignment_policy_violation
             - data_residency_mismatch
           type: string
         message:
@@ -7130,6 +7157,7 @@ components:
               - $ref: '#/components/schemas/OpenAIResponseCustomToolCallOutput'
               - $ref: '#/components/schemas/ApplyPatchCallItem'
               - $ref: '#/components/schemas/ApplyPatchCallOutputItem'
+              - $ref: '#/components/schemas/ConfigurationUpdateItem'
           type: array
         - type: 'null'
       example:
@@ -9328,6 +9356,20 @@ components:
         - stderr
         - outcome
       type: object
+    McpToolCallError:
+      anyOf:
+        - type: string
+        - $ref: '#/components/schemas/McpProtocolError'
+        - $ref: '#/components/schemas/McpToolExecutionError'
+        - $ref: '#/components/schemas/McpHttpError'
+        - type: 'null'
+      description: >-
+        Error from an MCP tool call, either a plain message or a structured
+        error
+      example:
+        code: 503
+        message: Service Unavailable
+        type: http_error
     OpenAIResponseCustomToolCall:
       example:
         call_id: call-abc123
@@ -9397,6 +9439,27 @@ components:
         - type
         - call_id
         - output
+      type: object
+    ConfigurationUpdateReasoning:
+      additionalProperties: false
+      description: Reasoning settings applied from this point in the conversation onward
+      example:
+        effort: low
+      properties:
+        effort:
+          description: Reasoning effort to apply from this point in the conversation onward
+          enum:
+            - max
+            - xhigh
+            - high
+            - medium
+            - low
+            - minimal
+            - none
+          example: low
+          type: string
+      required:
+        - effort
       type: object
     PDFParserEngine:
       anyOf:
@@ -9816,9 +9879,9 @@ components:
       description: >-
         How long (in seconds) the container stays warm after its last command
         before sleeping, freeing its capacity slot. Idle-based: each command
-        renews the timer. Defaults to 900 (15 minutes); capped at 14400 (4
+        renews the timer. Defaults to 300 (5 minutes); capped at 14400 (4
         hours).
-      example: 900
+      example: 300
       type: integer
     ShellServerToolEngine:
       description: >-
@@ -11430,6 +11493,60 @@ components:
         - type
         - file_id
         - index
+      type: object
+    McpProtocolError:
+      description: The MCP server returned a protocol-level error
+      example:
+        code: -32601
+        message: Method not found
+        type: mcp_protocol_error
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        type:
+          enum:
+            - mcp_protocol_error
+          type: string
+      required:
+        - type
+        - code
+        - message
+      type: object
+    McpToolExecutionError:
+      description: The MCP tool ran but reported a failure
+      example:
+        content: Connection refused
+        type: mcp_tool_execution_error
+      properties:
+        content: {}
+        type:
+          enum:
+            - mcp_tool_execution_error
+          type: string
+      required:
+        - type
+      type: object
+    McpHttpError:
+      description: The MCP server request failed at the HTTP layer
+      example:
+        code: 503
+        message: Service Unavailable
+        type: http_error
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        type:
+          enum:
+            - http_error
+          type: string
+      required:
+        - type
+        - code
+        - message
       type: object
     FormatTextConfig:
       description: Plain text response format

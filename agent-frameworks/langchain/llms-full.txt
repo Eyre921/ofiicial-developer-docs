@@ -1987,7 +1987,7 @@ LangSmith has two tiers of traces based on Data Retention with the following cha
 |                      | Base             | Extended       |
 | -------------------- | ---------------- | -------------- |
 | **Price**            | [See pricing page](https://www.langchain.com/pricing-langsmith) | [See pricing page](https://www.langchain.com/pricing-langsmith) |
-| **Retention Period** | 14 days          | 400 days       |
+| **Retention Period** | 14 days          | 180 days       |
 
 <Note>
 Enterprise customers can customize the extended retention period per workspace. Changes apply to new traces only—existing traces are unaffected. See [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
@@ -8679,24 +8679,27 @@ Because of these settings, the number of items visible to each reviewer can diff
 
 There are several ways to populate a single-run queue with items:
 
-- **From the Details view**: In a [tracing project](/langsmith/observability-concepts#projects), click into any row to open the side panel in the [Details view](/langsmith/view-traces#details-view). Click **+ Add**, then **Add to Annotation Queue** in the top-right. In the popover, under **What to add**, choose **Selected run** (the current run) or **Entire thread** (the full conversation that run belongs to).
+- **From the Details view**: In a [tracing project](/langsmith/observability-concepts#projects), click into any row to open the side panel in the [Details view](/langsmith/view-traces#details-view). The panel offers two actions, each with a fixed scope:
 
-    You can add any intermediate [run](/langsmith/observability-concepts#runs) as a run item, but not the root run. **Entire thread** requires the run to be part of a thread (instrumented with `thread_id` / `session_id` metadata).
+    - **Add to** <Icon icon="plus"/>: In the run header, open this menu and select **Add to Annotation Queue**. This adds the run you have selected as a run item.
+    - **Add thread to annotation queue** <Icon icon="pencil"/>: Next to the **Messages**, **Turns**, and **Details** tabs, click the icon. This adds the whole thread as a thread item.
+
+    Both actions open a popover where you select an existing queue or create a new one.
 
     <img
       className="block dark:hidden"
-      src="/langsmith/images/add-to-annotation-queue-what-to-add-light.png"
-      alt="Add to Annotation Queue popover with What to add tabs for Selected run and Entire thread, and a queue picker."
+      src="/langsmith/images/details-view-add-to-annotation-queue-light.png"
+      alt="Details view side panel showing the Add to icon in the run header with its menu open, and the Add thread to annotation queue icon next to the view tabs."
     />
 
     <img
       className="hidden dark:block"
-      src="/langsmith/images/add-to-annotation-queue-what-to-add-dark.png"
-      alt="Add to Annotation Queue popover with What to add tabs for Selected run and Entire thread, and a queue picker."
+      src="/langsmith/images/details-view-add-to-annotation-queue-dark.png"
+      alt="Details view side panel showing the Add to icon in the run header with its menu open, and the Add thread to annotation queue icon next to the view tabs."
     />
 
     <Note>
-    If the **Entire thread** option is unavailable or the **Threads** tab is empty, the runs are not instrumented with `thread_id` / `session_id` metadata.
+    The thread action appears only for runs instrumented with `thread_id` / `session_id` metadata. Without that metadata, the panel opens the run on its own and only the run action is available.
     </Note>
 
 - **From the Traces or Runs tab**: In a tracing project, select either the **Traces** or **Runs** tab. Use the row checkboxes to select one or more items. Click **Add to Annotation Queue** at the bottom of the page. Use **What to add** to enqueue each selection as a **Selected run** or as its **Entire thread**.
@@ -11898,7 +11901,7 @@ For organizations with **multiple workspaces only**: For simplicity, LangSmith i
 
 #### Configure trace tier distribution
 
-LangSmith has two trace tiers: base traces and extended traces. Base traces have the base retention and are short-lived (14 days), while extended traces have extended retention and are long-lived (400 days by default, [customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)). For more information, refer to the [data retention conceptual docs](/langsmith/usage-and-billing#data-retention).
+LangSmith has two trace tiers: base traces and extended traces. Base traces have the base retention and are short-lived (14 days), while extended traces have extended retention and are long-lived (180 days by default, [customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)). For more information, refer to the [data retention conceptual docs](/langsmith/usage-and-billing#data-retention).
 
 Set the desired default trace tier by selecting an option below the **Default data retention** label. All traces will have this tier by default when they are registered. Note that because extended traces cost more than base traces, selecting **Extended** as your default data retention option will result in less overall traces allowed in the billing period. By default, updating this setting will only apply to future incoming traces. To apply to all existing traces in the workspace, select the checkbox.
 
@@ -11913,11 +11916,11 @@ The extended data retention limit can cause features other than tracing to stop 
 
 #### Customize extended retention period ([Enterprise](/langsmith/pricing-plans) only)
 
-[Enterprise](/langsmith/pricing-plans) customers can customize the extended data retention period at the workspace level to meet compliance requirements. The default is 400 days, but this can be adjusted based on your organization's needs. For more information, refer to [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
+[Enterprise](/langsmith/pricing-plans) customers can customize the extended data retention period at the workspace level to meet compliance requirements. The default is 180 days, but this can be adjusted based on your organization's needs. For more information, refer to [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
 
 #### Change project-level default retention
 
-Data retention settings are adjustable per tracing project. At the project level, you choose between two tiers: base (14 days) or extended (400 days). To customize the extended duration beyond 400 days, use [workspace-level configuration](/langsmith/data-purging-compliance#customize-extended-retention-policy) (Enterprise only).
+Data retention settings are adjustable per tracing project. At the project level, you choose between two tiers: base (14 days) or extended (180 days). To customize the extended duration up to the 180-day maximum, use [workspace-level configuration](/langsmith/data-purging-compliance#customize-extended-retention-policy) (Enterprise only).
 
 Navigate to **Projects** > ***Your project name*** > Select **Retention** and select the desired default retention. This will only affect retention (and pricing) for **traces going forward**.
 
@@ -11937,14 +11940,14 @@ To configure this:
 2. Name your rule and optionally apply filters or a sample rate. For more information on configuring filters, refer to [filtering techniques](/langsmith/filter-traces-in-application#filter-operators).
 
 <Note>
-When an automation rule matches any [run](/langsmith/observability-concepts#runs) within a [trace](/langsmith/observability-concepts#traces), then all runs within the trace are upgraded to extended data retention (400 days by default, [customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)).
+When an automation rule matches any [run](/langsmith/observability-concepts#runs) within a [trace](/langsmith/observability-concepts#traces), then all runs within the trace are upgraded to extended data retention (180 days by default, [customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)).
 </Note>
 
 For example, this is the expected configuration to keep 10% of all traces for extended data retention:
 
 ![P2sampletraces](/langsmith/images/P2SampleTraces.png)
 
-If you want to keep a subset of traces for **longer than 400 days** for data collection purposes, you can create another run rule that sends some runs to a dataset of your choosing. A dataset allows you to store the trace inputs and outputs (e.g., as a key-value dataset), and will persist indefinitely, even after the trace gets deleted.
+If you want to keep a subset of traces for **longer than 180 days** for data collection purposes, you can create another run rule that sends some runs to a dataset of your choosing. A dataset allows you to store the trace inputs and outputs (e.g., as a key-value dataset), and will persist indefinitely, even after the trace gets deleted.
 
 ### LangSmith Deployment billing
 
@@ -13927,7 +13930,7 @@ If you use self-hosted LangSmith, see the [self-hosted changelog](/langsmith/sel
 - Custom providers now work on the unified LLM Gateway endpoint.
 - Gateway data policies are available by default.
 - You can use saved model configurations in LLM Gateway routing.
-- Vertex AI gateway now supports existing web credentials.
+- Gemini Enterprise Agent Platform gateway now supports existing web credentials.
 - OpenAI-compatible API base paths are now respected.
 - Custom provider configurations become available faster.
 - LLM gateway traces no longer capture request and response content by default.
@@ -14228,7 +14231,7 @@ If you use self-hosted LangSmith, see the [self-hosted changelog](/langsmith/sel
 - Self-hosted Playground and evaluator outbound model calls now honor proxy environment variables while preserving SSRF validation on every request.
 - When you save a prompt to an application from the playground, LangSmith keeps the workspace application filter on All Applications instead of switching the rest of the UI to that application.
 - Typing a workspace member's name or email in the Context Hub search box now also returns the prompts and resources they created.
-- The playground now includes Claude Sonnet 5, Claude Fable 5, and Claude Opus 4.8 in the Anthropic, Bedrock, and Vertex AI model selectors. New Anthropic playground sessions default to Claude Sonnet 5.
+- The playground now includes Claude Sonnet 5, Claude Fable 5, and Claude Opus 4.8 in the Anthropic, Bedrock, and Gemini Enterprise Agent Platform model selectors. New Anthropic playground sessions default to Claude Sonnet 5.
 - Playground and evaluator calls to Amazon Bedrock using IAM Trusted Entity now resolve the correct LangSmith AWS credentials before assuming customer roles in AWS-hosted LangSmith. This fixes failures that reported "Failed to assume role" before the customer role was assumed.
 - Playground runs now retain evaluator scores and reasoning while backend feedback updates are polled, preventing completed results from appearing blank.
 - Outbound model calls that route through a forward proxy now send the original hostname in the proxy CONNECT tunnel instead of a resolved IP, so proxies that allowlist tunnel targets by domain no longer reject them. This fixes self-hosted Playground and evaluator calls to internal OpenAI-compatible endpoints reachable only through such a proxy.
@@ -14252,9 +14255,9 @@ If you use self-hosted LangSmith, see the [self-hosted changelog](/langsmith/sel
 - Disabled Create Agent and Create Skill buttons now explain which required details need to be added.
 - Playground batch and invoke endpoints now sanitize buffered run trees into JSON-safe payloads before responding, so online evaluations no longer fail with opaque 500s when a run graph cannot be serialized.
 - The prompts list no longer displays a persistent LangChain Hub banner at the bottom of the page.
-- Claude models on Vertex AI now load successfully in the Playground when no credentials secret is configured, matching existing Gemini behavior under GCP Workload Identity or AWS IRSA.
+- Claude models on Gemini Enterprise Agent Platform now load successfully in the Playground when no credentials secret is configured, matching existing Gemini behavior under GCP Workload Identity or AWS IRSA.
 - The Prompts page now supports filtering by prompt type, prompt tags, and commit tags, so you can quickly narrow the list down to the prompts you're looking for.
-- Model configurations now show an inline error, instead of a silent save, when a required Bedrock, Azure OpenAI, or Vertex AI provider field is left blank.
+- Model configurations now show an inline error, instead of a silent save, when a required Bedrock, Azure OpenAI, or Gemini Enterprise Agent Platform provider field is left blank.
 - The Playground now reports missing AWS credentials and other Bedrock rejections as request errors with the provider's own message, instead of a generic server error.
 - Context Hub and Fleet now reject noncanonical, nonportable, or conflicting file trees before saving changes. Existing malformed repositories remain readable and accept only changes that repair the complete resulting tree; they may also be deleted as a whole.
 - Context Hub repositories containing legacy files beneath linked directories can now be read, materialized, cloned, and edited. Reads use the linked directory contents, and the next successful edit removes conflicting legacy entries without changing linked repositories.
@@ -14718,9 +14721,9 @@ If you use self-hosted LangSmith, see the [self-hosted changelog](/langsmith/sel
 
 ## Prompts and playground
 
-- Claude models on Vertex AI now load successfully in the Playground when no credentials secret is configured, matching existing Gemini behavior under GCP Workload Identity or AWS IRSA.
+- Claude models on Gemini Enterprise Agent Platform now load successfully in the Playground when no credentials secret is configured, matching existing Gemini behavior under GCP Workload Identity or AWS IRSA.
 - The Prompts page now supports filtering by prompt type, prompt tags, and commit tags, so you can quickly narrow the list down to the prompts you're looking for.
-- Model configurations now show an inline error, instead of a silent save, when a required Bedrock, Azure OpenAI, or Vertex AI provider field is left blank.
+- Model configurations now show an inline error, instead of a silent save, when a required Bedrock, Azure OpenAI, or Gemini Enterprise Agent Platform provider field is left blank.
 - Studio's chat pane no longer shows a 'No data' placeholder between sending a message and the first streamed token. The assistant message now appears once it has content to show.
 - The Playground now reports missing AWS credentials and other Bedrock rejections as request errors with the provider's own message, instead of a generic server error.
 - Studio chat now shows elapsed response status, preserves complete streamed responses, and follows new output without interrupting readers who scroll up.
@@ -15085,7 +15088,7 @@ If you use self-hosted LangSmith, see the [self-hosted changelog](/langsmith/sel
 - Self-hosted Playground and evaluator outbound model calls now honor proxy environment variables while preserving SSRF validation on every request.
 - When you save a prompt to an application from the playground, LangSmith keeps the workspace application filter on All Applications instead of switching the rest of the UI to that application.
 - Typing a workspace member's name or email in the [Context Hub](/langsmith/prompt-context-hub#context-hub) search box now also returns the prompts and resources they created.
-- The playground now includes Claude Sonnet 5, Claude Fable 5, and Claude Opus 4.8 in the Anthropic, Bedrock, and Vertex AI model selectors. New Anthropic playground sessions default to Claude Sonnet 5.
+- The playground now includes Claude Sonnet 5, Claude Fable 5, and Claude Opus 4.8 in the Anthropic, Bedrock, and Gemini Enterprise Agent Platform model selectors. New Anthropic playground sessions default to Claude Sonnet 5.
 - Playground and evaluator calls to Amazon Bedrock using IAM Trusted Entity now resolve the correct LangSmith AWS credentials before assuming customer roles in AWS-hosted LangSmith. This fixes failures that reported "Failed to assume role" before the customer role was assumed.
 - Playground runs now retain evaluator scores and reasoning while backend feedback updates are polled, preventing completed results from appearing blank.
 - Outbound model calls that route through a forward proxy now send the original hostname in the proxy CONNECT tunnel instead of a resolved IP, so proxies that allowlist tunnel targets by domain no longer reject them. This fixes self-hosted Playground and evaluator calls to internal OpenAI-compatible endpoints reachable only through such a proxy.
@@ -15293,7 +15296,7 @@ If you use self-hosted LangSmith, see the [self-hosted changelog](/langsmith/sel
 - Self-hosted Playground and evaluator outbound model calls now honor proxy environment variables while preserving SSRF validation on every request.
 - When you save a prompt to an application from the playground, LangSmith keeps the workspace application filter on All Applications instead of switching the rest of the UI to that application.
 - Typing a workspace member's name or email in the Context Hub search box now also returns the prompts and resources they created.
-- The playground now includes Claude Sonnet 5, Claude Fable 5, and Claude Opus 4.8 in the Anthropic, Bedrock, and Vertex AI model selectors. New Anthropic playground sessions default to Claude Sonnet 5.
+- The playground now includes Claude Sonnet 5, Claude Fable 5, and Claude Opus 4.8 in the Anthropic, Bedrock, and Gemini Enterprise Agent Platform model selectors. New Anthropic playground sessions default to Claude Sonnet 5.
 - Playground and evaluator calls to Amazon Bedrock using IAM Trusted Entity now resolve the correct LangSmith AWS credentials before assuming customer roles in AWS-hosted LangSmith. This fixes failures that reported "Failed to assume role" before the customer role was assumed.
 - Outbound model calls that route through a forward proxy now send the original hostname in the proxy CONNECT tunnel instead of a resolved IP, so proxies that allowlist tunnel targets by domain no longer reject them. This fixes self-hosted Playground and evaluator calls to internal OpenAI-compatible endpoints reachable only through such a proxy.
 - Reviewing a prompt commit now displays every extra parameter (such as verbosity) set on the model, not just a fixed subset.
@@ -15445,7 +15448,7 @@ If you use self-hosted LangSmith, see the [self-hosted changelog](/langsmith/sel
 - Self-hosted [Playground](/langsmith/playground-model-providers) and evaluator outbound model calls now honor proxy environment variables while preserving SSRF validation on every request.
 - When you save a prompt to an application from the playground, LangSmith keeps the workspace application filter on All Applications instead of switching the rest of the UI to that application.
 - Typing a workspace member's name or email in the [Context Hub](/langsmith/prompt-context-hub#context-hub) search box now also returns the prompts and resources they created.
-- The playground now includes Claude Sonnet 5, Claude Fable 5, and Claude Opus 4.8 in the Anthropic, Bedrock, and Vertex AI model selectors. New Anthropic playground sessions default to Claude Sonnet 5.
+- The playground now includes Claude Sonnet 5, Claude Fable 5, and Claude Opus 4.8 in the Anthropic, Bedrock, and Gemini Enterprise Agent Platform model selectors. New Anthropic playground sessions default to Claude Sonnet 5.
 
 ### Feedback
 
@@ -15571,7 +15574,7 @@ If you use self-hosted LangSmith, see the [self-hosted changelog](/langsmith/sel
 
 ### LLM Gateway
 
-- The [LLM gateway](/langsmith/llm-gateway) now supports native Gemini routes for Vertex AI and the OpenAI embeddings endpoint.
+- The [LLM gateway](/langsmith/llm-gateway) now supports native Gemini routes for Gemini Enterprise Agent Platform and the OpenAI embeddings endpoint.
 - [Gateway guard](/langsmith/llm-gateway) policies now accept a granular PII configuration and a configurable timeout action.
 
 ### Usage and billing
@@ -26470,8 +26473,8 @@ This guide covers the various features available after data reaches LangSmith Cl
 
 LangSmith provides automatic data retention capabilities to help with compliance and storage management. Data retention policies can be configured at two levels:
 
-- **Workspace level**: Enterprise customers with the required permissions can set extended retention as the workspace default and customize the retention duration (up to 400 days). See [Customize extended retention policy](#customize-extended-retention-policy).
-- **Project level**: Customers with the required permissions can set the default retention tier per tracing project, choosing between base (14 days) or extended retention (400 days). See [Change project-level default retention](/langsmith/billing#change-project-level-default-retention).
+- **Workspace level**: Enterprise customers with the required permissions can set extended retention as the workspace default and customize the retention duration (up to 180 days as of September 14, 2026). See [Customize extended retention policy](#customize-extended-retention-policy).
+- **Project level**: Customers with the required permissions can set the default retention tier per tracing project, choosing between base (14 days) or extended retention (180 days). See [Change project-level default retention](/langsmith/billing#change-project-level-default-retention).
 
 For detailed information about data retention configuration and management, please refer to the [Data Retention concepts](/langsmith/usage-and-billing#data-retention) documentation.
 
@@ -26481,7 +26484,7 @@ For detailed information about data retention configuration and management, plea
 This feature is available for [Enterprise](/langsmith/pricing-plans) plan customers. For [self-hosted](/langsmith/self-hosted) Enterprise customers, refer to the [workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted).
 </Note>
 
-[Enterprise](/langsmith/pricing-plans) customers can customize the extended data retention period for traces at the [workspace](/langsmith/administration-overview#workspaces) level to meet specific compliance requirements. By default, extended retention is set to 400 days, but you can adjust this based on your organization's needs. Changes to the retention period apply to new traces only.
+[Enterprise](/langsmith/pricing-plans) customers can customize the extended data retention period for traces at the [workspace](/langsmith/administration-overview#workspaces) level to meet specific compliance requirements. By default, extended retention is set to 180 days, but you can adjust this based on your organization's needs. Changes to the retention period apply to new traces only.
 
 <Note>
 Changes to the retention period apply to new traces only. Existing traces are not affected.
@@ -26519,7 +26522,7 @@ Organization Admins and Operators (`organization:manage`) can configure retentio
       -H "x-api-key: YOUR_API_KEY"
     ```
 
-    To update the retention period, set `resource_type` to `"run"` for traces and `ttl_days` to your desired duration. Available durations are: 30, 60, 90, 120, 150, 180, 240, 300, 365, and 400 days.
+    To update the retention period, set `resource_type` to `"run"` for traces and `ttl_days` to your desired duration. Available durations for SaaS customers are: 30, 60, 90, 120, 150, and 180 days (maximum as of September 14, 2026).
 
     **Organization level** (`organization:manage`)
 
@@ -33633,7 +33636,7 @@ Engine operates on data you have already chosen to share with LangChain: the tra
 
 | **Data source** | **What Engine reads** | **Storage and persistence** | **Enables** |
 |---|---|---|---|
-| LangSmith workspace content | Trace data and other workspace content you have stored in LangSmith, such as prompts and evaluators. | Within your LangSmith tenant. [Trace retention](/langsmith/usage-and-billing#data-retention) is 14 days (base) or 400 days (extended), chosen per project. The durations are not configurable. | Issue detection, prioritization, and evaluation proposals. |
+| LangSmith workspace content | Trace data and other workspace content you have stored in LangSmith, such as prompts and evaluators. | Within your LangSmith tenant. [Trace retention](/langsmith/usage-and-billing#data-retention) is 14 days (base) or up to 180 days (extended) for SaaS customers as of September 14, 2026, chosen per project. | Issue detection, prioritization, and evaluation proposals. |
 | GitHub repository | Source code and repository context from the repositories you connect (see [GitHub integration](#github-integration)). | Processed inside an isolated, LangChain-managed sandbox for the duration of each analysis run, then discarded. | Pull request authoring with proposed code fixes. |
 | Model provider (inference) | Only the content required for each analysis task. | Zero data retention with every Engine model provider (see [Model subprocessors](#model-subprocessors)). | Engine reasoning and generation. |
 
@@ -50979,7 +50982,7 @@ We recommend leveraging GCP's managed services to provide a scalable, secure, an
     - ClickHouse is not required for hybrid deployments.
   - [Cloud Storage](https://cloud.google.com/storage): object storage for trace artifacts and telemetry.
 
-- <Icon icon="sparkles" /> **LLM integration:** Optionally proxy requests to [Vertex AI](https://cloud.google.com/vertex-ai) for LLM inference.
+- <Icon icon="sparkles" /> **LLM integration:** Optionally proxy requests to [Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform) for LLM inference.
 - <Icon icon="chart-line" /> **Monitoring & observability:** Integrate with [Cloud Monitoring](https://cloud.google.com/monitoring) and [Cloud Logging](https://cloud.google.com/logging)
 
 
@@ -51046,7 +51049,7 @@ Customers can deploy in [Assured Workloads](https://cloud.google.com/assured-wor
 
 Use LangSmith to:
 
-- Capture traces from LLM apps running on [Vertex AI](https://cloud.google.com/vertex-ai).
+- Capture traces from LLM apps running on [Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform).
 - Evaluate model outputs via [LangSmith datasets](/langsmith/manage-datasets).
 - Track latency, token usage, and success rates.
 
@@ -61156,7 +61159,7 @@ Go to **Settings → Integrations → Provider Secrets** and add the keys for th
 | `FIREWORKS_API_KEY` | Fireworks |
 | `GOOGLE_API_KEY` | Google Gemini |
 | `OPENAI_API_KEY` | OpenAI |
-| `VERTEX_SERVICE_ACCOUNT_JSON` | Google Vertex AI |
+| `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini Enterprise Agent Platform |
 
 Add only the providers your organization uses. The gateway will return an error if a user tries to call a provider whose key hasn't been added.
 
@@ -62286,7 +62289,7 @@ Append a provider path to your regional gateway base URL:
 | Baseten | `/baseten` | `BASETEN_API_KEY` |
 | Fireworks | `/fireworks` | `FIREWORKS_API_KEY` |
 | Google Gemini | `/gemini` | `GOOGLE_API_KEY` |
-| Google Vertex AI | `/vertex` | `VERTEX_SERVICE_ACCOUNT_JSON` |
+| Gemini Enterprise Agent Platform | `/vertex` | `VERTEX_SERVICE_ACCOUNT_JSON` |
 | OpenAI | `/openai` | `OPENAI_API_KEY` |
 
 [Gateway Credits models](/langsmith/llm-gateway-credits) use the standard endpoint rather than a provider-specific path. These hosted models require no provider secret of your own.
@@ -72348,7 +72351,7 @@ OAuth client credentials are available on LangSmith [Cloud](/langsmith/cloud) an
 
 When a model configuration sits behind an OAuth2 gateway, you can store the OAuth `client_credentials` directly on the configuration instead of distributing a static API key. LangSmith exchanges those credentials for a short-lived bearer token at request time, attaches it as `Authorization: Bearer <token>` on the outbound LLM call, and refreshes the token before it expires. This is a per-configuration self-service alternative to routing the workspace through the [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted); the two are mutually exclusive per configuration.
 
-OAuth client credentials are available on every [plan](/langsmith/pricing-plans) that supports custom model configurations. The **Use Custom OAuth** toggle applies to bearer-token providers (OpenAI, Anthropic, OpenAI-compatible endpoints, and similar) and is not supported for Bedrock, Google Vertex AI, or Google GenAI, which authenticate with native cloud identity. The toggle is also hidden for the **LangServe (Deprecated)** preset.
+OAuth client credentials are available on every [plan](/langsmith/pricing-plans) that supports custom model configurations. The **Use Custom OAuth** toggle applies to bearer-token providers (OpenAI, Anthropic, OpenAI-compatible endpoints, and similar) and is not supported for Bedrock, Gemini Enterprise Agent Platform, or Google GenAI, which authenticate with native cloud identity. The toggle is also hidden for the **LangServe (Deprecated)** preset.
 
 ### Configure OAuth on a model configuration
 
@@ -75164,7 +75167,7 @@ Before running an experiment, ensure you have the following:
   - A locally running application started via the [langgraph-cli](/langsmith/local-dev-testing).
 
 <Note>
-Studio experiments follow the same [data retention](/langsmith/usage-and-billing#data-retention) rules as other experiments. By default, traces have base tier retention (14 days). However, traces will automatically upgrade to extended tier retention (400 days) if feedback is added to them. Feedback can be added in one of two ways:
+Studio experiments follow the same [data retention](/langsmith/usage-and-billing#data-retention) rules as other experiments. By default, traces have base tier retention (14 days). However, traces will automatically upgrade to extended tier retention (180 days as of September 14, 2026) if feedback is added to them. Feedback can be added in one of two ways:
 
 - The [dataset has evaluators configured](/langsmith/bind-evaluator-to-dataset).
 - [Feedback](/langsmith/observability-concepts#feedback) is manually added to a trace.
@@ -77369,10 +77372,10 @@ Use this page for a list of the available providers and their configuration opti
         <span className="font-semibold">Google Gemini</span>
     </a>
 
-    <a href="#google-vertex-ai" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+    <a href="#gemini-enterprise-agent-platform" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
         <img className="block dark:hidden w-5 h-5" src="/images/providers/light/gemini.svg" alt="" noZoom />
         <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/gemini.svg" alt="" noZoom />
-        <span className="font-semibold">Google Vertex AI</span>
+        <span className="font-semibold">Gemini Enterprise Agent Platform</span>
     </a>
 
     <a href="#groq" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
@@ -77679,13 +77682,13 @@ For the current list of available models, refer to [Google's Gemini documentatio
 - **Supported Tool Choices:** `auto`, `any`, `none`.
 - **Parallel Execution:** No.
 
-## Google Vertex AI
+## Gemini Enterprise Agent Platform
 
-Before you use this model, ensure you have a [Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) with the [Vertex AI API enabled](https://cloud.google.com/vertex-ai/docs/start/client-libraries).
+Before you use this model, ensure you have a [Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) with the [Gemini Enterprise Agent Platform API enabled](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/start/client-libraries).
 
 ### Authentication
 
-Google Vertex AI uses a **service account JSON key** for authentication in the LangSmith Playground. This is a JSON file you download from the Google Cloud Console that contains credentials for a service account with Vertex AI access.
+Gemini Enterprise Agent Platform uses a **service account JSON key** for authentication in the LangSmith Playground. This is a JSON file you download from the Google Cloud Console that contains credentials for a service account with Gemini Enterprise Agent Platform access.
 
 #### Step 1: Create a service account
 
@@ -77717,7 +77720,7 @@ The downloaded file looks like this:
 
 #### Step 3: Configure in the LangSmith Playground
 
-In the LangSmith Playground, open the Google Vertex AI provider configuration and paste the **entire contents** of the downloaded JSON key file into the **Service Account JSON** field.
+In the LangSmith Playground, open the Gemini Enterprise Agent Platform provider configuration and paste the **entire contents** of the downloaded JSON key file into the **Service Account JSON** field.
 
 <Warning>
 Treat your service account JSON key like a password. Do not share it or commit it to source control. If a key is compromised, revoke it immediately from the [Google Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts) and create a new one.
@@ -77725,9 +77728,9 @@ Treat your service account JSON key like a password. Do not share it or commit i
 
 ### Available models
 
-Google offers Gemini models in multiple tiers (Ultra, Pro, Flash) optimized for different use cases, plus other models available through Vertex AI.
+Google offers Gemini models in multiple tiers (Ultra, Pro, Flash) optimized for different use cases, plus other models available through Gemini Enterprise Agent Platform.
 
-For the current list of available models, refer to the [Vertex AI documentation](https://cloud.google.com/vertex-ai/docs/generative-ai/models).
+For the current list of available models, refer to the [Gemini Enterprise Agent Platform documentation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/google-models).
 
 ### Configuration parameters
 
@@ -88539,6 +88542,16 @@ langsmith sandbox console my-vm --forward-ssh-agent
 
 `--forward-ssh-agent` requires `SSH_AUTH_SOCK` to be set locally. Interactive console sessions are not supported on Windows; use SSH access instead.
 
+## Share a file as a link
+
+Mint a link that downloads a single file from the sandbox with no LangSmith credential, for a browser tab or anything else that cannot send an API key:
+
+```bash
+langsmith sandbox generate-download-url my-vm --path /app/report.csv
+```
+
+Without `--expires-in-seconds` the link never expires. Add `--content-type` and `--content-disposition inline` to have the browser render the file instead of downloading it. Do not modify the file afterwards: a link is pinned to a path, not to a snapshot of the contents, so a later write may or may not be reflected in what the link serves. See [Sandbox download links](/langsmith/sandbox-download-links).
+
 ## Tunnel TCP ports
 
 Use `sandbox tunnel` when you need a local TCP port that forwards to a service listening inside the sandbox. This is useful for databases, language servers, custom protocols, or local tools that expect `localhost`.
@@ -88616,6 +88629,7 @@ The sandbox image must run `sshd` on port `22`. If `sshd` is not running, `ssh-s
 | `langsmith sandbox delete <name>` | Delete a sandbox. |
 | `langsmith sandbox exec <name> -- <command>` | Run a one-off command inside a sandbox. |
 | `langsmith sandbox console <name>` | Open an interactive shell inside a sandbox. |
+| `langsmith sandbox generate-download-url <name> --path <path>` | Mint a link that downloads one sandbox file with no credential. |
 | `langsmith sandbox tunnel <name> --remote-port <port>` | Forward a local TCP port to a sandbox port. |
 | `langsmith sandbox ssh-setup <name>` | Configure local SSH access through `sandbox tunnel --stdio`. |
 
@@ -88627,6 +88641,199 @@ The sandbox image must run `sshd` on port `22`. If `sshd` is not running, `ssh-s
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-cli.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+</Callout>
+</div>
+
+
+# Sandbox download links
+Source: https://docs.langchain.com/langsmith/sandbox-download-links
+
+A download link hands one sandbox file to something that cannot carry a LangSmith credential: a browser tab, an `<a href>` in an email, a webhook consumer, or a third-party service that fetches a URL you give it.
+
+The link carries its own token. Reading a file with the SDK's `read()` needs a workspace API key on every request; a download link needs nothing beyond the URL itself.
+
+## Quick start
+
+```python
+from langsmith.sandbox import SandboxClient
+
+client = SandboxClient()
+
+with client.sandbox() as sb:
+    sb.run("python -c \"open('/app/report.csv','w').write('a,b\\n1,2\\n')\"")
+
+    link = sb.generate_download_url("/app/report.csv")
+    print(link.download_url)
+```
+
+Anyone can then fetch it with no credential:
+
+```bash
+curl -LO "<download_url>"
+```
+
+## What a link is pinned to
+
+The token encodes the sandbox, the tenant, the exact file path, and the response headers, so a link cannot be edited to point at a different file or a different sandbox. Each link serves exactly one path.
+
+A link is pinned to that path, not to a snapshot of the file. The file itself is not captured or copied when the link is minted.
+
+<Warning>
+Do not modify a file after minting a link for it. A later write to that path may or may not be reflected in what the link serves, so treat the file as immutable for the life of the link. When the contents change, write a new file and mint a new link for it.
+</Warning>
+
+Links are served from the sandbox service domain, on the sandbox's own host, never from the LangSmith API host. Downloaded content is therefore isolated from your LangSmith session.
+
+## Create a link
+
+<CodeGroup>
+
+```python Python
+# Never expires
+link = sb.generate_download_url("/app/report.csv")
+
+# Expires in an hour
+link = sb.generate_download_url("/app/report.csv", expires_in_seconds=3600)
+
+# Rendered in the browser instead of downloaded
+link = sb.generate_download_url(
+    "/app/page.html",
+    content_type="text/html",
+    content_disposition="inline",
+)
+
+print(link.download_url)
+print(link.expires_at)  # None when the link never expires
+```
+
+```ts TypeScript
+// Never expires
+let link = await sandbox.generateDownloadURL("/app/report.csv");
+
+// Expires in an hour
+link = await sandbox.generateDownloadURL("/app/report.csv", {
+  expiresInSeconds: 3600,
+});
+
+// Rendered in the browser instead of downloaded
+link = await sandbox.generateDownloadURL("/app/page.html", {
+  contentType: "text/html",
+  contentDisposition: "inline",
+});
+
+console.log(link.download_url);
+console.log(link.expires_at); // null when the link never expires
+```
+
+</CodeGroup>
+
+Call it on the client instead of a sandbox instance to mint a link by sandbox name:
+
+<CodeGroup>
+
+```python Python
+link = client.generate_download_url("my-sandbox", "/app/report.csv")
+```
+
+```ts TypeScript
+const link = await client.generateDownloadURL("my-sandbox", "/app/report.csv");
+```
+
+</CodeGroup>
+
+### Options
+
+| Option | Default | Effect |
+|--------|---------|--------|
+| `expires_in_seconds` | Omitted, so the link never expires | Link lifetime in seconds |
+| `content_type` | inferred from the file extension | `Content-Type` the link responds with |
+| `content_disposition` | `attachment` | `attachment` downloads the file; `inline` renders it in the browser |
+
+## Create a link from the CLI
+
+```bash
+langsmith sandbox generate-download-url my-sandbox --path /app/report.csv
+```
+
+```bash
+langsmith sandbox generate-download-url my-sandbox \
+  --path /app/page.html \
+  --expires-in-seconds 3600 \
+  --content-disposition inline
+```
+
+## Create a link via the REST API
+
+```bash
+curl -X POST \
+  "$LANGSMITH_ENDPOINT/api/v2/sandboxes/boxes/{sandbox_name}/download-url" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"path": "/app/report.csv", "expires_in_seconds": 3600}'
+```
+
+Response:
+
+```json
+{
+  "download_url": "https://{sandbox-id}--dl.smithbox.dev/ey...",
+  "token": "ey...",
+  "expires_at": "2026-04-08T15:30:00Z"
+}
+```
+
+`expires_at` is `null` when `expires_in_seconds` was omitted.
+
+Minting a link requires the `sandboxes:exec` permission, the same access a credentialed download needs. See [Sandbox permissions](/langsmith/sandbox-permissions).
+
+## Fetch a link
+
+`GET` and `HEAD` are supported, along with `Range` (for resumable and partial downloads), `If-Range`, and `If-None-Match`. No headers, query string, or body are needed or accepted.
+
+Fetching a link **wakes a stopped sandbox**, so the first request after an idle stop takes as long as a start. The sandbox does not need to be running when you mint the link.
+
+## Security considerations
+
+<Warning>
+A download link is a bearer credential embedded in a URL. Anyone who obtains it can read that one file until it expires. Treat a link like a password: send it over a channel you trust, and prefer a short `expires_in_seconds` for anything sensitive.
+</Warning>
+
+- **Links cannot be revoked.** A minted link stays valid until it expires, even if the API key that created it is deleted or loses `sandboxes:exec`. Set an expiry when that matters.
+- **Links die with the sandbox.** Deleting the sandbox invalidates every link into it.
+- **The file must not change.** A link is pinned to a path, so a write to that path after minting may or may not be reflected in what the link serves.
+- **Guest headers are dropped.** The response is rebuilt from an allowlist of content, range, and validator headers. Cookies or other headers set by code inside the sandbox are never forwarded.
+- **Rendered content is sandboxed.** Every response carries `X-Content-Type-Options: nosniff` and `Content-Security-Policy: sandbox`, so a file served with `content_disposition=inline` renders with no capabilities and no access to your LangSmith session.
+
+## Download links vs other file access
+
+| | Download links | `read()` | [Service URLs](/langsmith/sandbox-service-urls) |
+|---|---|---|---|
+| **Credential needed** | None | Workspace API key | Service token or browser cookie |
+| **Scope** | One file, one path | Any file | Any HTTP service in the sandbox |
+| **Sandbox must be running** | No (fetching wakes it) | No (waking on demand) | No (fetching wakes it) |
+| **Shareable** | Yes | No | Yes |
+| **Revocable before expiry** | No | Yes (rotate the key) | No |
+
+Use a download link to hand one file to an outside consumer. Use `read()` to pull file bytes into your own code. Use a service URL to reach an HTTP server running inside the sandbox.
+
+## Troubleshoot
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| **`501` on mint** | Download links are not configured for this deployment | Self-hosted deployments need a sandbox service domain configured; see [Sandbox service URLs](/langsmith/sandbox-service-urls) |
+| **`403` on fetch** | The link expired, was altered, or was presented on the wrong host | Mint a fresh link; copy the URL verbatim |
+| **`404` on fetch** | The file no longer exists at that path | Links are pinned to a path, not to file contents. Mint a link for a path that exists |
+| **Browser downloads instead of rendering** | Default disposition is `attachment` | Mint with `content_disposition="inline"` and an explicit `content_type` |
+| **Stale or partial contents** | The file was written or replaced after the link was minted | Do not modify a file that a link points at. Write a new file and mint a new link |
+
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+</Callout>
+<Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-download-links.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 </Callout>
 </div>
 
@@ -89470,6 +89677,28 @@ try {
 
 </CodeGroup>
 
+### Share a file as a link
+
+To hand one file to something that cannot send an API key, such as a browser tab, an `<a href>`, or a webhook consumer, mint a download link instead of reading the bytes yourself:
+
+<CodeGroup>
+
+```python Python
+link = sb.generate_download_url("/app/report.csv", expires_in_seconds=3600)
+print(link.download_url)
+```
+
+```ts TypeScript
+const link = await sandbox.generateDownloadURL("/app/report.csv", {
+  expiresInSeconds: 3600,
+});
+console.log(link.download_url);
+```
+
+</CodeGroup>
+
+Omit the expiry for a link that never expires. Do not modify the file afterwards: a link is pinned to a path, not to a snapshot of the contents, so a later write may or may not be reflected in what the link serves. See [Sandbox download links](/langsmith/sandbox-download-links) for options and security considerations.
+
 ## Mount a Context Hub repo
 
 Mount a [Context Hub](/langsmith/use-the-context-hub) repo to give sandbox code filesystem access to your agents and skills. The repo's latest commit tree is mirrored into the mount path and kept in sync for the sandbox's lifetime, so a new commit shows up in the running sandbox without a restart.
@@ -89538,7 +89767,7 @@ try {
 
 `repo` is the repo handle, optionally qualified as `owner/repo`, where `-` is the current workspace.
 
-`mount_path` must be an absolute, clean path, and cannot be the filesystem root or sit at or under a system directory such as `/etc` or `/usr`. Any other path works — unlike bucket and Git mounts, Context Hub mounts are not restricted to `/mnt/mounts`.
+`mount_path` must be an absolute, clean path, and cannot be the filesystem root or sit at or under a system directory such as `/etc` or `/usr`. Any other path works—unlike bucket and Git mounts, Context Hub mounts are not restricted to `/mnt/mounts`.
 
 Pass `initial_pull_only` / `initialPullOnly` to sync once at startup instead of polling for repo updates.
 
@@ -89851,7 +90080,7 @@ try {
 Inside the sandbox, any LangSmith-instrumented code (`@traceable`, LangChain, LangGraph) automatically picks up the tracing configuration from the injected environment variables.
 
 <Warning>
-Always call `flush()` before the sandbox process exits — `langsmith.Client().flush()` in Python or `await new Client().flush()` in TypeScript. Without it, traces may be lost because the container is destroyed when the command finishes.
+Always call `flush()` before the sandbox process exits—`langsmith.Client().flush()` in Python or `await new Client().flush()` in TypeScript. Without it, traces may be lost because the container is destroyed when the command finishes.
 </Warning>
 
 ## Error handling
@@ -90111,13 +90340,15 @@ def create_item(item: dict):
 | | Service URLs | TCP tunnels |
 |---|---|---|
 | **Protocol** | HTTP | Any TCP (databases, Redis, SSH, HTTP) |
-| **Setup** | Zero — just a URL | Requires SDK or CLI |
+| **Setup** | Zero—just a URL | Requires SDK or CLI |
 | **Access from** | Browser, scripts, CI, anywhere | Local machine only |
 | **Sharing** | Copy the URL and send it | Not shareable |
 | **Multi-page web apps** | Full support (subdomain routing) | Full support (local port) |
 | **Non-HTTP services** | Not supported | Full support |
 
 Use **service URLs** for HTTP services you want to access from a browser or share with others. Use **[TCP tunnels](/langsmith/sandbox-sdk#tcp-tunnels-python)** for non-HTTP protocols (like `psql` or `redis-cli`) or when you need local-only access.
+
+To share a single file rather than a running service, use a **[download link](/langsmith/sandbox-download-links)**.
 
 ## Troubleshoot
 
@@ -95276,13 +95507,13 @@ playground:
       eks.amazonaws.com/role-arn: <your_role_arn>
 ```
 
-## VertexAI configuration
+## Gemini Enterprise Agent Platform configuration
 
-You can configure VertexAI credentials for the playground service using either environment variables with secrets or workload identity (GCP Workload Identity for GKE or AWS IRSA for EKS).
+You can configure Gemini Enterprise Agent Platform credentials for the playground service using either environment variables with secrets or workload identity (GCP Workload Identity for GKE or AWS IRSA for EKS).
 
 ### Using secrets
 
-Configure VertexAI credentials using Kubernetes secrets:
+Configure Gemini Enterprise Agent Platform credentials using Kubernetes secrets:
 
 ```yaml Helm
 playground:
@@ -95346,7 +95577,7 @@ playground:
 </CodeGroup>
 
 <Note>
-When using GCP Workload Identity, ensure the GCP service account has the required VertexAI permissions (e.g., `roles/aiplatform.user`).
+When using GCP Workload Identity, ensure the GCP service account has the required Gemini Enterprise Agent Platform permissions (e.g., `roles/aiplatform.user`).
 </Note>
 
 #### AWS IRSA (EKS)
@@ -95376,7 +95607,7 @@ playground:
 </CodeGroup>
 
 <Note>
-When using AWS IRSA, ensure your AWS IAM role has the necessary permissions to assume the GCP service account role, and that the GCP service account has the required VertexAI permissions.
+When using AWS IRSA, ensure your AWS IAM role has the necessary permissions to assume the GCP service account role, and that the GCP service account has the required Gemini Enterprise Agent Platform permissions.
 </Note>
 
 ---
@@ -103259,7 +103490,7 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 - New connections to the hosted LangSmith MCP server failed to register when the client requested a confidential authentication method; dynamic client registration now issued a public client in that case instead of returning an error, so connecting from Claude and other MCP clients worked again.
 - Requests to moonshotai/kimi-k3 and moonshotai/kimi-k2.6 through gateway credit models in the LLM gateway were now matched against a price map when sent in user-traced code.
 - Self-hosted deployment forms now supported Redis CPU and memory requests and limits, and the configured values were applied to the Redis workload managed by the Kubernetes operator.
-- Claude models on Vertex AI now loaded successfully in the Playground when no credentials secret was configured, matching existing Gemini behavior under GCP Workload Identity or AWS IRSA.
+- Claude models on Gemini Enterprise Agent Platform now loaded successfully in the Playground when no credentials secret was configured, matching existing Gemini behavior under GCP Workload Identity or AWS IRSA.
 - Set a resource tag key or value description to `null` to clear it through the PATCH API.
 - Insights reports only analyzed traces, so the "Is Trace" condition in a report's filter was now fixed; setting it to false previously produced a report that ran successfully but never found any insights.
 - Large PDF, JSON, and CSV previews on a message now rendered instead of showing an empty frame, and PDF and JSON previews gained an open-in-new-tab control next to the expand control.
@@ -104818,7 +105049,7 @@ These updates focus on improving user experience, performance, security, and fea
 <Update label="2026-04-20" tags={["Stable"]}>
 ## langsmith-0.14.0
 
-LangSmith Self-Hosted v0.14 brings **Chat** (our in-product chat for traces and runs) to self-hosted, takes **ABAC and audit logs** GA (on by default), and enables the **LLM Auth Proxy** by default with URL allowlisting and richer JWT claims. Admins get **unified model configurations** shared across Agent Builder, Chat, Insights, Playground, and Evaluators, and fine-grained **Prompt Owners** for locking down who can promote or delete individual prompts. Evaluators gain **multi-modal support** and workspaces can now set **cost alerts** on tracing projects. Playground model support expands (Anthropic via Vertex AI, custom Azure models, Bedrock inference profiles, Gemini 3.1 Pro, GPT-5.3 / 5.4, Baseten + GLM-5), and new agent tools and triggers land for Google Sheets & Docs, Outlook, Teams, and Salesforce SOQL. On the infrastructure side, v0.14 adds **GCS Workload Identity** support for blob storage, **Valkey** as a drop-in Redis replacement, and a pre-upgrade migration hook for safer rollouts.
+LangSmith Self-Hosted v0.14 brings **Chat** (our in-product chat for traces and runs) to self-hosted, takes **ABAC and audit logs** GA (on by default), and enables the **LLM Auth Proxy** by default with URL allowlisting and richer JWT claims. Admins get **unified model configurations** shared across Agent Builder, Chat, Insights, Playground, and Evaluators, and fine-grained **Prompt Owners** for locking down who can promote or delete individual prompts. Evaluators gain **multi-modal support** and workspaces can now set **cost alerts** on tracing projects. Playground model support expands (Anthropic via Gemini Enterprise Agent Platform, custom Azure models, Bedrock inference profiles, Gemini 3.1 Pro, GPT-5.3 / 5.4, Baseten + GLM-5), and new agent tools and triggers land for Google Sheets & Docs, Outlook, Teams, and Salesforce SOQL. On the infrastructure side, v0.14 adds **GCS Workload Identity** support for blob storage, **Valkey** as a drop-in Redis replacement, and a pre-upgrade migration hook for safer rollouts.
 
 Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access to everything. To book time with LangChain support for your upgrade, contact the team via the [Support Portal](https://support.langchain.com).
 
@@ -104841,7 +105072,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 - **Prompt Owners**—designate a specific group of users with fine-grained permission to promote or delete individual prompts, without granting broader org access.
 - **Multi-modal evaluators**—pass attachments and base64 content (images, audio, PDFs) directly into evaluators.
 - **Cost alerts on tracing projects**—set alerts on tracing project-level costs alongside existing LangSmith alerts.
-- **Expanded playground model support**—Anthropic via Vertex AI, custom Azure models, Bedrock inference profiles and configurable base URLs, Gemini 3.1 Pro, GPT-5.3 / 5.4 (now default), and Baseten + GLM-5.
+- **Expanded playground model support**—Anthropic via Gemini Enterprise Agent Platform, custom Azure models, Bedrock inference profiles and configurable base URLs, Gemini 3.1 Pro, GPT-5.3 / 5.4 (now default), and Baseten + GLM-5.
 - **New agent tools and triggers**—Google Sheets and Docs, Outlook mail and calendar, Microsoft Teams, Salesforce SOQL, Gmail OAuth v2 with refresh tokens, and an Outlook Trigger.
 - **Insights enhancements**—scheduled Insights reports, categories trending over time, full feedback comments in analysis, and a lower minimum job interval (6h → 1h).
 - **Annotation and review upgrades**—required reviewers per queue, pairwise queues that honor `reviewer_access_mode`, an "Assigned to me" filter, per-annotator CSV export, and bulk table actions.
@@ -134437,7 +134668,7 @@ LangSmith has two tiers of traces based on Data Retention with the following cha
 |                      | Base             | Extended       |
 | -------------------- | ---------------- | -------------- |
 | **Price**            | [See pricing page](https://www.langchain.com/pricing-langsmith) | [See pricing page](https://www.langchain.com/pricing-langsmith) |
-| **Retention Period** | 14 days          | 400 days       |
+| **Retention Period** | 14 days          | 180 days       |
 
 <Note>
 Enterprise customers can customize the extended retention period per workspace. Changes apply to new traces only—existing traces are unaffected. See [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
@@ -137553,7 +137784,7 @@ Navigate to **Settings** → **Billing and Usage** → **Usage Graph**.
 | Metric | What it counts |
 |--------|----------------|
 | **LangSmith Traces (Base Charge)** | Every trace sent to LangSmith during the billing period, regardless of data retention tier. |
-| **LangSmith Traces (Extended Data Retention Upgrades)** | Traces upgraded to extended retention (400 days by default, [customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)). These are charged in addition to the base charge. |
+| **LangSmith Traces (Extended Data Retention Upgrades)** | Traces upgraded to extended retention (180 days by default as of September 14, 2026, [customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)). These are charged in addition to the base charge. |
 | **LangSmith Deployment Runs** | End-to-end invocations of deployed LangGraph agents. See [LangSmith Deployment billing](/langsmith/billing#langsmith-deployment-billing) for pricing details. |
 | **LangSmith Fleet Runs** | End-to-end invocations of [Fleet](/langsmith/fleet) agents. Tracked separately for Cloud-hosted and Self-hosted deployments. |
 | **LangSmith Deployment Nodes Executed** | Individual LangGraph node executions across deployed agents. Each step in a deployed agent's graph counts as one node execution. Tracked separately for Cloud-hosted and Self-hosted deployments. |
@@ -139171,7 +139402,7 @@ When Deep Agents Code starts without `--model`, it resolves the model in this or
 1. **`--model` flag** when provided.
 2. **`[models].default`** in `~/.deepagents/config.toml`.
 3. **`[models].recent`** in `~/.deepagents/config.toml` (written automatically when you switch models in a session).
-4. **Environment auto-detection**: the first available credential among `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_API_KEY`, and `GOOGLE_CLOUD_PROJECT` (Vertex AI).
+4. **Environment auto-detection**: the first available credential among `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_API_KEY`, and `GOOGLE_CLOUD_PROJECT` (Gemini Enterprise Agent Platform).
 
 Other providers (for example, Groq or Fireworks) are still available via `--model` or saved defaults even though they are not part of the startup auto-detection list. See [Model providers](/oss/deepagents/code/providers) for the full provider list and credential setup.
 
@@ -143574,8 +143805,8 @@ Using a provider not listed here? See [Arbitrary providers](/oss/deepagents/code
 | Azure OpenAI | [`langchain-openai`](/oss/python/integrations/chat/azure_chat_openai) | `AZURE_OPENAI_API_KEY` | ✅ |
 | Anthropic | [`langchain-anthropic`](/oss/python/integrations/chat/anthropic) | `ANTHROPIC_API_KEY` | ✅ |
 | Google Gemini API | [`langchain-google-genai`](/oss/python/integrations/chat/google_generative_ai) | `GOOGLE_API_KEY` | ✅ |
-| Google Vertex AI | [`langchain-google-genai`](/oss/python/integrations/chat/google_generative_ai#credentials) | `GOOGLE_CLOUD_PROJECT` | ✅ |
-| Google Vertex AI (Anthropic) | [`langchain-google-vertexai`](/oss/python/integrations/chat/google_anthropic_vertex) | `GOOGLE_CLOUD_PROJECT`, `GOOGLE_CLOUD_LOCATION` | ✅ |
+| Gemini Enterprise Agent Platform | [`langchain-google-genai`](/oss/python/integrations/chat/google_generative_ai#credentials) | `GOOGLE_CLOUD_PROJECT` | ✅ |
+| Gemini Enterprise Agent Platform (Anthropic) | [`langchain-google-vertexai`](/oss/python/integrations/chat/google_anthropic_vertex) | `GOOGLE_CLOUD_PROJECT`, `GOOGLE_CLOUD_LOCATION` | ✅ |
 | Baseten | [`langchain-baseten`](https://github.com/basetenlabs/langchain-baseten) | `BASETEN_API_KEY` | ✅ |
 | AWS Bedrock | [`langchain-aws`](/oss/python/integrations/chat/bedrock) | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | ✅ |
 | AWS Bedrock Converse | [`langchain-aws`](/oss/python/integrations/chat/bedrock) | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | ✅ |
@@ -143595,12 +143826,12 @@ Using a provider not listed here? See [Arbitrary providers](/oss/deepagents/code
 | OpenRouter | [`langchain-openrouter`](/oss/python/integrations/chat/openrouter) | `OPENROUTER_API_KEY` | ✅ |
 | LiteLLM | [`langchain-litellm`](/oss/python/integrations/chat/litellm) | Per-provider (see [docs](https://docs.litellm.ai/)) | ❌ |
 
-<Accordion title="Configure Anthropic models on Vertex AI" icon="brand-google">
-    The `google_anthropic_vertex` provider runs Claude through Anthropic's Messages API on Vertex AI. It uses Google Cloud Application Default Credentials (ADC) instead of an Anthropic API key.
+<Accordion title="Configure Anthropic models on Gemini Enterprise Agent Platform" icon="brand-google">
+    The `google_anthropic_vertex` provider runs Claude through Anthropic's Messages API on Gemini Enterprise Agent Platform. It uses Google Cloud Application Default Credentials (ADC) instead of an Anthropic API key.
 
     To use the provider:
 
-    1. Install the Vertex AI extra:
+    1. Install the Gemini Enterprise Agent Platform extra:
 
         <CodeGroup>
             ```txt In session
@@ -143612,7 +143843,7 @@ Using a provider not listed here? See [Arbitrary providers](/oss/deepagents/code
             ```
         </CodeGroup>
 
-    2. [Enable a Claude model in your Google Cloud project](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude), then configure ADC:
+    2. [Enable a Claude model in your Google Cloud project](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude), then configure ADC:
 
         ```bash
         gcloud auth application-default login
@@ -143739,7 +143970,7 @@ To switch models in Deep Agents Code, either:
     1. **`--model` flag** always wins when provided.
     2. **`[models].default`** in `~/.deepagents/config.toml`—the user's intentional long-term preference.
     3. **`[models].recent`** in `~/.deepagents/config.toml`—the last model switched to via `/model`. Written automatically; never overwrites `[models].default`.
-    4. **Environment auto-detection**: falls back to the first available startup credential, checked in order: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_API_KEY`, `GOOGLE_CLOUD_PROJECT` (Vertex AI).
+    4. **Environment auto-detection**: falls back to the first available startup credential, checked in order: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_API_KEY`, `GOOGLE_CLOUD_PROJECT` (Gemini Enterprise Agent Platform).
 
     This startup fallback intentionally checks only those four credentials. Other supported providers (for example, Groq) are still available via `--model`, `/model`, and saved defaults (`[models].default` / `[models].recent`).
 </Accordion>
@@ -145685,7 +145916,7 @@ OPENWIKI_PROVIDER=openai-chatgpt openwiki code --init
 
 The wizard opens the OpenAI auth page in your browser (and prints the URL for headless use). After sign-in, OpenWiki stores managed OAuth tokens in `~/.openwiki/.env` and refreshes the access token automatically. Treat the refresh token like a password.
 
-## Gemini Enterprise (Vertex AI)
+## Gemini Enterprise Agent Platform
 
 The `gemini-enterprise` provider uses Google Application Default Credentials. No API key is required:
 
@@ -145695,7 +145926,7 @@ GOOGLE_CLOUD_PROJECT=your-gcp-project
 GOOGLE_CLOUD_LOCATION=global
 ```
 
-The credentials need Vertex AI access (`roles/aiplatform.user`), and the models you use must be enabled in Model Garden. Partner/open-weight (MaaS) models are region-specific, so set `GOOGLE_CLOUD_LOCATION` explicitly when using them.
+The credentials need Gemini Enterprise Agent Platform access (`roles/aiplatform.user`), and the models you use must be enabled in Model Garden. Partner/open-weight (MaaS) models are region-specific, so set `GOOGLE_CLOUD_LOCATION` explicitly when using them.
 
 ## AWS Bedrock
 

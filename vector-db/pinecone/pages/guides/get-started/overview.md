@@ -20,10 +20,6 @@ Pinecone is the vector database for AI agents and applications, built for semant
   <Card title="Nexus quickstart" icon="brain-circuit" href="/guides/nexus/quickstart">
     Compile your data into a context and query it for grounded, cited answers
   </Card>
-
-  <Card title="Marketplace quickstart" icon="store" href="/guides/marketplace/quickstart">
-    Publish a no-code knowledge app from a template (public preview)
-  </Card>
 </CardGroup>
 
 ## Build

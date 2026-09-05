@@ -6,7 +6,7 @@ path: fireworks-nexus/usage-limits
 
 Set per-user spending limits on serverless inference — account defaults, group limits, and per-user overrides
 
-Set spending limits for individual users in your account on serverless (per-token) inference. Nexus accounts start with a **\$100 per-user default** limit. You can change the account-wide default cap, cap everyone in a group at a shared amount with a **group limit**, and override the limit for specific users. When a user reaches their limit, their further serverless requests are blocked until the billing period resets.
+Set spending limits for individual users in your account on serverless (per-token) inference. You can change the account-wide default cap, cap everyone in a group at a shared amount with a **group limit**, and override the limit for specific users.
 
 <Note>
   Per-user usage limits are available on request. Reach out to your Fireworks
@@ -17,9 +17,9 @@ Set spending limits for individual users in your account on serverless (per-toke
 
 ## Concepts
 
-* **Account default cap** — the per-user spending limit applied to every user who has neither an override nor a group cap. Nexus accounts start with a **\$100** default.
-* **Group limit** — a named, reusable cap you define once and assign to one or more [groups](#group-limits). Every member of an assigned group is capped at that amount.
-* **Per-user override** — a specific user's own cap. Takes precedence over both group caps and the account default.
+* **Account default cap** — the per-user limit applied to anyone with no override and no group cap. Nexus accounts start at **\$100**.
+* **Group limit** — a named, reusable cap you define once and assign to one or more [groups](#group-limits). The User Limits page calls these **limit options**.
+* **Per-user override** — a cap set on one specific user.
 * **Effective limit** — the limit actually applied to a user, resolved by the precedence below.
 * **Current-period usage** — how much a user (and the account overall) has spent in the current billing period.
 
@@ -35,11 +35,66 @@ A user's effective limit is resolved in this order:
 
 A user with no override, no group limit, and no account default has no cap. Use a per-user override when someone needs a cap their group membership won't produce.
 
+## How to
+
+These tasks are done by account admins on the [User Limits](https://app.fireworks.ai/settings/user-limits) page under **Settings**.
+
+### Set a group's limit
+
+Assign a limit option to a group, creating one first if you need it.
+
+<Frame>
+  <img alt="Assigning a limit option to a group from the dropdown on the Groups tab" />
+</Frame>
+
+1. Open the **Groups** tab.
+2. Click the limit dropdown on the group's row.
+3. Pick an existing limit option, or choose **+ New limit** to create one.
+
+The limit applies to each member individually — it is not a shared budget for the group.
+
+### Edit a limit option
+
+Change the amount on a limit option.
+
+<Frame>
+  <img alt="Editing the amount on an existing limit option" />
+</Frame>
+
+1. Open the **Groups** tab.
+2. Edit the limit option's amount.
+
+Every group assigned to that option moves to the new amount.
+
+### Delete a limit option
+
+Remove a limit option you no longer need.
+
+<Frame>
+  <img alt="Deleting a limit option from the Groups tab" />
+</Frame>
+
+1. Open the **Groups** tab.
+2. Delete the limit option.
+
+Groups assigned to it fall back to the org default automatically. Only the User Limits page does this — `firectl` and the REST API reject the delete instead. User overrides are unaffected.
+
+### Override a specific user's limit
+
+Give one user a cap of their own.
+
+<Frame>
+  <img alt="Setting a custom limit on a single user from the Usage tab" />
+</Frame>
+
+1. Open the **Usage** tab and select the user.
+2. Set a custom limit.
+
+The override takes precedence over the user's group limit and the account default.
+
 ## Group limits
 
-A group limit is just a named amount. You define a handful of them for the account, then point groups at them. Editing a group limit's amount moves the cap for every group assigned to it. (`firectl` and the REST API call this resource a *group usage limit tier*.)
-
-A group limit caps **each member individually** — it is not a shared budget for the group. Ten members on a \$500 limit can spend up to \$500 each.
+A group limit is a reusable spending cap. Create a few amounts, assign one to each group. It caps **every member individually**, not the group as a whole, so on a \$500 limit, each member can spend up to \$500, not \$500 shared. (`firectl` and the REST API call this resource a *group usage limit tier*.)
 
 ### Where groups come from
 
@@ -47,12 +102,12 @@ Groups come from your identity provider through [SCIM group sync](/accounts/sso#
 
 ### Rules and limits
 
-* An account may define **at most 9 group limits**.
+* An account may define **at most 9 group limits**. The User Limits page counts these against a total of 10, because the org default occupies one of the slots.
 * **Each group limit must hold a distinct amount.** Creating or updating one to an amount another already holds is rejected. A group limit *may* equal the account default.
 * Amounts are **USD and non-negative**. A **`$0`** group limit is a real cap — its members are blocked from serverless spend immediately.
 * A group limit sets an **amount only**. Reaching any cap blocks the user, so someone in several groups has one unambiguous outcome.
 * An **unassigned group contributes no cap**; its members fall back to another of their groups or to the account default.
-* **Deleting a group limit that groups are still assigned to is rejected** by `firectl` and the REST API — clear those assignments first. In the web app, deleting a limit option reassigns its groups to the org default for you.
+* **Deleting a group limit that groups are still assigned to is rejected** by `firectl` and the REST API — clear those assignments first. On the User Limits page, deleting a limit option reassigns its groups to the org default for you.
 
 ## Supported models
 
@@ -65,17 +120,19 @@ Per-user metering applies to **all serverless models** except **[MiniMax M2.7](h
 
 Each command below is annotated with who can run it.
 
-## In the web app
+## On the User Limits page
 
-Account admins manage limits on the [User Limits](https://app.fireworks.ai/settings/user-limits) page under **Settings** in the Fireworks web app. Members see their own usage and limit there, and can request an increase.
+Account admins manage limits on the [User Limits](https://app.fireworks.ai/settings/user-limits) page under **Settings**. Members see their own usage and limit there, and can request an increase.
 
 The page has three tabs — **Groups** appears once group limits are enabled for your account:
 
 * **Usage** — every user's current-period spend against their effective limit, with the source of that limit and, for a group-derived cap, which group it came from.
-* **Groups** — each group with its assigned limit and member count. The web app calls group limits **limit options**: pick one from the dropdown on a group's row to assign it, or choose **Org default** to clear the assignment and fall back to the account default. Create, edit, and delete limit options from the same tab.
+* **Groups** — each group with its assigned limit option and member count. Choose **Org default** on a group's row to clear its assignment and fall back to the account default.
 * **Increase Request** — pending per-user increase requests to approve or reject.
 
 Group rows show a **SCIM-synced** source and the time of the last directory sync. Membership changes belong in your identity provider; only the limit assignment is editable here.
+
+***
 
 ## Using `firectl`
 
@@ -287,7 +344,7 @@ curl -X PATCH \
   </Accordion>
 
   <Accordion title="What happens to a group's members when I remove its limit?">
-    Clearing a group's assignment (or deleting a limit option in the web app,
+    Clearing a group's assignment (or deleting a limit option on the User Limits page,
     which clears the assignments for you) drops that group's contribution, and
     its members fall back to another of their groups or to the account default.
   </Accordion>

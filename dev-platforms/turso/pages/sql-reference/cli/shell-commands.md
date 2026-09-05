@@ -232,3 +232,261 @@ Toggle echo mode. When on, each SQL statement is printed before execution.
 ```
 tursodb> .echo on
 tursodb> SELECT 42;
+SELECT 42;
+┌────┐
+│ 42 │
+├────┤
+│ 42 │
+└────┘
+```
+
+### .show
+
+Display current shell settings.
+
+```
+tursodb> .show
+Settings:
+Output mode: pretty
+DB: mydata.db
+Output: STDOUT
+Null value:
+CWD: /home/user
+Echo: off
+Headers: off
+```
+
+## Performance & Diagnostics
+
+### .timer
+
+Toggle query timing. When on, shows execution time and I/O statistics after each query.
+
+```
+.timer <on|off>
+```
+
+```
+tursodb> .timer on
+tursodb> SELECT 42;
+42
+Command stats:
+----------------------------
+total: 442 us (this includes parsing/coloring of cli app)
+
+query execution stats:
+----------------------------
+Execution: avg=4 us, total=8 us
+I/O: No samples available
+```
+
+### .stats
+
+Display database statistics. Use `on`/`off` to toggle automatic display after every query, or `--reset` to clear counters.
+
+```
+.stats [on|off] [--reset]
+```
+
+```
+tursodb> .stats
+Connection Metrics:
+  Total statements:     3
+  High-water marks:
+    Max VM steps:       19
+    Max rows read:      1
+
+Aggregate Statistics:
+Statement Metrics:
+  Row Operations:
+    Rows read:        1
+    Rows written:     2
+  Execution:
+    VM steps:         48
+    Instructions:     47
+  ...
+```
+
+### .opcodes
+
+Show VDBE (Virtual Database Engine) opcodes with descriptions. Optionally filter by opcode name.
+
+```
+.opcodes [OPCODE]
+```
+
+```
+tursodb> .opcodes Integer
+Integer
+-------
+The 64-bit integer value P1 is written into register P2. This is different
+from SQLite, where this opcode is used for 32-bit integers
+```
+
+### .vfslist
+
+List available Virtual File System modules.
+
+```
+tursodb> .vfslist
+Available VFS modules:
+memory
+syscall
+```
+
+## Data Import & Export
+
+### .dump
+
+Output the entire database as SQL statements that can recreate it.
+
+```
+tursodb> .dump
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE employees (id INTEGER PRIMARY KEY, name TEXT);
+INSERT INTO "employees" VALUES(1,'Alice');
+INSERT INTO "employees" VALUES(2,'Bob');
+COMMIT;
+```
+
+<Info>
+  The output of `.dump` can be piped into another Turso instance to recreate the database:
+
+  ```bash theme={null}
+  tursodb original.db ".dump" | tursodb -q clone.db
+  ```
+</Info>
+
+### .import
+
+Import data from a file into a table.
+
+```
+.import [--csv] [--skip N] [--verbose] <FILE> <TABLE>
+```
+
+| Option      | Default | Description                                                  |
+| ----------- | ------- | ------------------------------------------------------------ |
+| `--csv`     | on      | Use comma as field separator and newline as record separator |
+| `--skip N`  | 0       | Skip the first N rows (useful for skipping a header row)     |
+| `--verbose` | off     | Print progress information during import                     |
+
+```
+tursodb> CREATE TABLE people (name TEXT, age INTEGER);
+tursodb> .import --csv --skip 1 data.csv people
+tursodb> SELECT * FROM people;
+┌─────────┬─────┐
+│ name    │ age │
+├─────────┼─────┤
+│ Alice   │  30 │
+├─────────┼─────┤
+│ Bob     │  25 │
+├─────────┼─────┤
+│ Charlie │  35 │
+└─────────┴─────┘
+```
+
+Given a CSV file `data.csv`:
+
+```csv theme={null}
+name,age
+Alice,30
+Bob,25
+Charlie,35
+```
+
+### .clone
+
+Clone the current database to a new file.
+
+```
+.clone <OUTPUT_FILE>
+```
+
+```
+tursodb> .clone backup.db
+employees... done
+```
+
+### .read
+
+Execute SQL statements from a file.
+
+```
+.read <PATH>
+```
+
+```
+tursodb> .read setup.sql
+```
+
+### .load
+
+Load an extension library.
+
+```
+.load <PATH>
+```
+
+```
+tursodb> .load ./liblimbo_regexp
+```
+
+<Info>
+  Only Turso-native extensions can be loaded. SQLite `.so`/`.dll` loadable extensions are not supported. See the [Extensions](/sql-reference/extensions) documentation for available extensions.
+</Info>
+
+## Debugging
+
+### .dbtotxt
+
+Display raw database page contents in hex format. Useful for debugging storage-level issues.
+
+```
+.dbtotxt [--page PAGE_NO]
+```
+
+```
+tursodb> .dbtotxt --page 1
+| size 8192 pagesize 4096 filename :memory:
+| page 1 offset 0
+|      0: 53 51 4c 69 74 65 20 66 6f 72 6d 61 74 20 33 00   SQLite format 3.
+|     16: 10 00 02 02 00 40 20 20 00 00 00 01 00 00 00 02   .....@  ........
+...
+```
+
+### .dbconfig
+
+Print or set database configuration flags. Currently a no-op in Turso.
+
+```
+.dbconfig [CONFIG] [on|off]
+```
+
+## Documentation
+
+### .manual
+
+Display built-in manual pages for Turso features. Call with no argument to list all available manuals.
+
+```
+.manual [PAGE]
+```
+
+Aliases: `.man`.
+
+```
+tursodb> .manual
+# Turso Manual Pages
+
+Available manuals:
+  custom-types    Custom Types for STRICT Tables
+  cdc             Change Data Capture
+  encryption      At-Rest Database Encryption
+  vector          Vector Search
+  materialized-views  Live Materialized Views
+  mcp             Model Context Protocol server
+
+tursodb> .manual vector
+```

@@ -32,86 +32,91 @@ Write rules using these attributes to evaluate transactions from any [supported 
 
 ### Risk scores and levels
 
-| **Attribute** | **Type** | **Example value** | **Description** |
+For new rules, use the fraudulent payment, fraudulent dispute, and early fraud warning scores. These scores use Stripe’s current models and perform better than the risk score and risk level, which remain supported. To learn how each score is calculated, see [Radar scores](https://docs.stripe.com/radar/risk-settings.md#radar-scores).
+
+| Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| **risk\_level** | *Case-insensitive string* | normal | The risk level of a given payment, as determined by Stripe. The supported values are: **normal**, **elevated**, **highest**, **not\_assessed**. |
-| **risk\_score** | *Numeric* | 50 | The risk score of a given payment, as determined by Stripe. The values range between 0 (least risky) and 100 (riskiest). By default, a risk score of 65 or above corresponds to a risk level of **elevated**, while a risk score of 75 or above corresponds to a risk level of **highest**. You can adjust the thresholds at [Risk Settings](https://docs.stripe.com/radar/risk-settings.md). |
+| `fraudulent_dispute_score` (Recommended) | *Numeric* | 50 | The likelihood that a payment results in a fraudulent dispute. The values range between 0 (least likely) and 99 (most likely). Applies to card, ACH Direct Debit, and SEPA Direct Debit payments. |
+| `early_fraud_warning_score` (Recommended) | *Numeric* | 50 | The likelihood that a cardholder reports a payment as fraudulent to their card issuer, which Stripe receives as an [early fraud warning](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings). The values range between 0 (least likely) and 99 (most likely). Applies to card payments only. |
+| `fraudulent_payment_score` (Recommended) | *Numeric* | 50 | The likelihood that a payment is fraudulent, including fraud that’s never disputed or reported to the card network. The values range between 0 (least likely) and 99 (most likely). Applies to card payments only. |
+| `risk_level` | *Case-insensitive string* | normal | The risk level of a given payment, as determined by Stripe. The supported values are: **normal**, **elevated**, **highest**, **not\_assessed**. |
+| `risk_score` | *Numeric* | 50 | The risk score of a given payment, as determined by Stripe. The values range between 0 (least risky) and 100 (riskiest). By default, a risk score of 65 or above corresponds to a risk level of **elevated**, while a risk score of 75 or above corresponds to a risk level of **highest**. You can adjust the thresholds at [Risk Settings](https://docs.stripe.com/radar/risk-settings.md). |
 
 ### Address
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **billing\_address** | *Case-insensitive string* | 1234 Main St #2A Brooklyn, NY 10022 US | The full provided billing address. |
-| **billing\_address\_line1** | *Case-insensitive string* | 1234 Main St | The first line of the provided billing address (typically a street name and number). |
-| **billing\_address\_line2** | *Case-insensitive string* | #2A | The second line of the provided billing address (typically an apartment or unit number). |
-| **billing\_address\_postal\_code** | *Case-insensitive string* | 10022 | The postal code (ZIP) of the provided billing address. |
-| **billing\_address\_city** | *Case-insensitive string* | Brooklyn | The city of the provided billing address. |
-| **billing\_address\_state** | *Case-insensitive string* | NY | The state of the provided billing address. |
-| **billing\_address\_country** | *Case-insensitive country* | US | The two-letter code corresponding to the country of the provided billing address. |
-| **shipping\_address** | *Case-insensitive string* | 1234 Main St #2A Brooklyn, NY 10022 US | The full provided shipping address. |
-| **shipping\_address\_line1** | *Case-insensitive string* | 1234 Main St | The first line of the provided shipping address (typically a street name and number). |
-| **shipping\_address\_line2** | *Case-insensitive string* | #2A | The second line of the provided shipping address (typically an apartment or unit number). |
-| **shipping\_address\_postal\_code** | *Case-insensitive string* | 10022 | The postal code (ZIP) of the provided shipping address. |
-| **shipping\_address\_city** | *Case-insensitive string* | Brooklyn | The city of the provided shipping address. |
-| **shipping\_address\_state** | *Case-insensitive string* | NY | The state of the provided shipping address. |
-| **shipping\_address\_country** | *Case-insensitive country* | US | The two-letter code corresponding to the country of the provided shipping address. |
+| `billing_address` | *Case-insensitive string* | 1234 Main St #2A Brooklyn, NY 10022 US | The full provided billing address. |
+| `billing_address_line1` | *Case-insensitive string* | 1234 Main St | The first line of the provided billing address (typically a street name and number). |
+| `billing_address_line2` | *Case-insensitive string* | #2A | The second line of the provided billing address (typically an apartment or unit number). |
+| `billing_address_postal_code` | *Case-insensitive string* | 10022 | The postal code (ZIP) of the provided billing address. |
+| `billing_address_city` | *Case-insensitive string* | Brooklyn | The city of the provided billing address. |
+| `billing_address_state` | *Case-insensitive string* | NY | The state of the provided billing address. |
+| `billing_address_country` | *Case-insensitive country* | US | The two-letter code corresponding to the country of the provided billing address. |
+| `shipping_address` | *Case-insensitive string* | 1234 Main St #2A Brooklyn, NY 10022 US | The full provided shipping address. |
+| `shipping_address_line1` | *Case-insensitive string* | 1234 Main St | The first line of the provided shipping address (typically a street name and number). |
+| `shipping_address_line2` | *Case-insensitive string* | #2A | The second line of the provided shipping address (typically an apartment or unit number). |
+| `shipping_address_postal_code` | *Case-insensitive string* | 10022 | The postal code (ZIP) of the provided shipping address. |
+| `shipping_address_city` | *Case-insensitive string* | Brooklyn | The city of the provided shipping address. |
+| `shipping_address_state` | *Case-insensitive string* | NY | The state of the provided shipping address. |
+| `shipping_address_country` | *Case-insensitive country* | US | The two-letter code corresponding to the country of the provided shipping address. |
 
 ### Amount
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **amount\_in\_xyz** | *Numeric* | 50 | The amount of the payment, converted to the currency specified by **xyz** (for example, **amount\_in\_usd**). Specify one of the following supported currencies and Stripe automatically calculates a [converted amount](https://docs.stripe.com/radar/rules/supported-attributes.md#card-amount) to use: **aed**, **ars**, **aud**, **brl**, **cad**, **chf**, **clp**, **cop**, **czk**, **dkk**, **eur**, **gbp**, **hkd**, **huf**, **idr**, **ils**, **inr**, **jpy**, **khr**, **krw**, **mxn**, **myr**, **nok**, **nzd**, **php**, **pln**, **ron**, **rub**, **sek**, **sgd**, **thb**, **try**, **twd**, or **usd**. For decimal currencies (for example, **usd**), rules use the base currency unit rather than sub units (for example, dollars, not cents). |
-| **average\_usd\_amount\_attempted\_on\_customer\_all\_time** | *Numeric* | 50 | The average amount (in USD) of attempted transactions (charges) for the [Customer](https://docs.stripe.com/api/customers.md) object on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **average\_usd\_amount\_successful\_on\_customer\_all\_time** | *Numeric* | 50 | The average amount (in USD) of charges that resulted in an authorization for the [Customer](https://docs.stripe.com/api/customers.md) object on your account. This value includes payments from 2020 onward. |
-| **total\_usd\_amount\_charged\_on\_customer\_all\_time** | *Numeric* | 50 | The total amount (in USD) of charges from the [Customer](https://docs.stripe.com/api/customers.md) object that were attempted on your account. This value includes payments from 2020 onward. |
-| **total\_usd\_amount\_failed\_on\_customer\_all\_time** | *Numeric* | 50 | The total amount (in USD) of charges from the [Customer](https://docs.stripe.com/api/customers.md) object that failed (blocked or declined) on your account. This value includes payments from 2020 onward. |
-| **total\_usd\_amount\_successful\_on\_customer\_all\_time** | *Numeric* | 50 | The total amount (in USD) of charges that resulted in an authorization for the [Customer](https://docs.stripe.com/api/customers.md) object on your account. This value includes payments from 2020 onward. |
+| `amount_in_xyz` | *Numeric* | 50 | The amount of the payment, converted to the currency specified by **xyz** (for example, **amount\_in\_usd**). Specify one of the following supported currencies and Stripe automatically calculates a [converted amount](https://docs.stripe.com/radar/rules/supported-attributes.md#card-amount) to use: **aed**, **ars**, **aud**, **brl**, **cad**, **chf**, **clp**, **cop**, **czk**, **dkk**, **eur**, **gbp**, **hkd**, **huf**, **idr**, **ils**, **inr**, **jpy**, **khr**, **krw**, **mxn**, **myr**, **nok**, **nzd**, **php**, **pln**, **ron**, **rub**, **sek**, **sgd**, **thb**, **try**, **twd**, or **usd**. For decimal currencies (for example, **usd**), rules use the base currency unit rather than sub units (for example, dollars, not cents). |
+| `average_usd_amount_attempted_on_customer_all_time` | *Numeric* | 50 | The average amount (in USD) of attempted transactions (charges) for the [Customer](https://docs.stripe.com/api/customers.md) object on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `average_usd_amount_successful_on_customer_all_time` | *Numeric* | 50 | The average amount (in USD) of charges that resulted in an authorization for the [Customer](https://docs.stripe.com/api/customers.md) object on your account. This value includes payments from 2020 onward. |
+| `total_usd_amount_charged_on_customer_all_time` | *Numeric* | 50 | The total amount (in USD) of charges from the [Customer](https://docs.stripe.com/api/customers.md) object that were attempted on your account. This value includes payments from 2020 onward. |
+| `total_usd_amount_failed_on_customer_all_time` | *Numeric* | 50 | The total amount (in USD) of charges from the [Customer](https://docs.stripe.com/api/customers.md) object that failed (blocked or declined) on your account. This value includes payments from 2020 onward. |
+| `total_usd_amount_successful_on_customer_all_time` | *Numeric* | 50 | The total amount (in USD) of charges that resulted in an authorization for the [Customer](https://docs.stripe.com/api/customers.md) object on your account. This value includes payments from 2020 onward. |
 
 ### Client information
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **browser** | *Case-insensitive string* | Chrome 103.0.0 | The customer’s browser name and version. |
-| **isp** | *Case-insensitive string* | Cactus Practice ISP | The customer’s Internet Service Provider (ISP) name. |
-| **operating\_system** | *Case-insensitive string* | Mac OS X 10.15.7 | The customer’s operating system name and version. |
-| **user\_agent** | *Case-insensitive string* | mozilla/5.0 (macintosh; intel mac os x 10_15_7) applewebkit/537.36 (khtml, like gecko) chrome/103.0.0.0 safari/537.36 | The customer’s user agent. |
+| `browser` | *Case-insensitive string* | Chrome 103.0.0 | The customer’s browser name and version. |
+| `isp` | *Case-insensitive string* | Cactus Practice ISP | The customer’s Internet Service Provider (ISP) name. |
+| `operating_system` | *Case-insensitive string* | Mac OS X 10.15.7 | The customer’s operating system name and version. |
+| `user_agent` | *Case-insensitive string* | mozilla/5.0 (macintosh; intel mac os x 10_15_7) applewebkit/537.36 (khtml, like gecko) chrome/103.0.0.0 safari/537.36 | The customer’s user agent. |
 
 ### Customers
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **customer** | *Case-sensitive string* | cus_AeFLnRaI51AbRi | The [Customer](https://docs.stripe.com/api/customers.md) object ID supplied with the payment. |
-| **total\_customers\_for\_email\_yearly** | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this email on your account. This attribute only includes live mode Customer objects that interacted with your account in the past year. This data updates at most every 72 hours. |
-| **total\_customers\_for\_email\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this email on your account. This attribute only includes live mode Customer objects that interacted with your account in the past week. This data updates at most every 72 hours. |
-| **total\_customers\_for\_email\_transactions\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this email from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account. This attribute only includes live mode Customer objects that interacted with your account in the past week. This data updates at most every 72 hours. |
-| **total\_customers\_with\_prior\_fraud\_activity\_for\_email\_yearly** | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this email that have fraud activity on your account. Fraud activity includes fraud disputes, early fraud warnings, and high risk Radar blocks. This attribute only includes live mode Customer objects that interacted with your account in the past year. This data updates at most every 72 hours. |
-| **total\_customers\_with\_prior\_fraud\_activity\_for\_email\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this email that have fraud activity on your account. Fraud activity includes fraud disputes, early fraud warnings, and high risk Radar blocks. This attribute only includes live mode Customer objects that interacted with your account in the past week. This data updates at most every 72 hours. |
+| `customer` | *Case-sensitive string* | cus_AeFLnRaI51AbRi | The [Customer](https://docs.stripe.com/api/customers.md) object ID supplied with the payment. |
+| `total_customers_for_email_yearly` | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this email on your account. This attribute only includes live mode Customer objects that interacted with your account in the past year. This data updates at most every 72 hours. |
+| `total_customers_for_email_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this email on your account. This attribute only includes live mode Customer objects that interacted with your account in the past week. This data updates at most every 72 hours. |
+| `total_customers_for_email_transactions_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this email from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account. This attribute only includes live mode Customer objects that interacted with your account in the past week. This data updates at most every 72 hours. |
+| `total_customers_with_prior_fraud_activity_for_email_yearly` | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this email that have fraud activity on your account. Fraud activity includes fraud disputes, early fraud warnings, and high risk Radar blocks. This attribute only includes live mode Customer objects that interacted with your account in the past year. This data updates at most every 72 hours. |
+| `total_customers_with_prior_fraud_activity_for_email_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this email that have fraud activity on your account. Fraud activity includes fraud disputes, early fraud warnings, and high risk Radar blocks. This attribute only includes live mode Customer objects that interacted with your account in the past week. This data updates at most every 72 hours. |
 
 ### Distance
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **distance\_between\_billing\_and\_shipping\_address** | *Numeric* | 50 | The distance (in km) between the provided billing address and the provided shipping address. |
-| **distance\_between\_ip\_and\_billing\_address** | *Numeric* | 50 | The distance (in km) between the IP address from which the payment originates and the provided billing address. |
-| **distance\_between\_ip\_and\_shipping\_address** | *Numeric* | 50 | The distance (in km) between the IP address from which the payment originates and the provided shipping address. |
+| `distance_between_billing_and_shipping_address` | *Numeric* | 50 | The distance (in km) between the provided billing address and the provided shipping address. |
+| `distance_between_ip_and_billing_address` | *Numeric* | 50 | The distance (in km) between the IP address from which the payment originates and the provided billing address. |
+| `distance_between_ip_and_shipping_address` | *Numeric* | 50 | The distance (in km) between the IP address from which the payment originates and the provided shipping address. |
 
 ### Disputes
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **dispute\_count\_on\_ip\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The count of fraudulent disputes associated with charges from this IP address on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **dispute\_count\_on\_ip\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The count of fraudulent disputes associated with charges from this IP address on your account in the past week. |
-| **dispute\_count\_on\_ip\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The count of fraudulent disputes associated with charges from this IP address on your account in the past day. |
-| **dispute\_count\_on\_ip\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The count of fraudulent disputes associated with charges from this IP address on your account in the past hour. |
+| `dispute_count_on_ip_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The count of fraudulent disputes associated with charges from this IP address on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `dispute_count_on_ip_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The count of fraudulent disputes associated with charges from this IP address on your account in the past week. |
+| `dispute_count_on_ip_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The count of fraudulent disputes associated with charges from this IP address on your account in the past day. |
+| `dispute_count_on_ip_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The count of fraudulent disputes associated with charges from this IP address on your account in the past hour. |
 
 ### Email
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **email** | *Case-insensitive string* | user@example.com | The email address supplied with the payment. |
-| **email\_commonality** (early access) | *Case-insensitive string* | uncommon | A determination of how common an email address is by comparing it with other email addresses that Stripe has seen. The supported values are **common**, **uncommon**, and **rare**. Given that some good customers might have uncommon or rare email addresses, we recommend that you use this attribute in manual review rules rather than block rules to avoid rejecting legitimate transactions. |
-| **email\_domain** | *Case-insensitive string* | example.com | The domain of the email address supplied with the payment. |
-| **is\_disposable\_email** | *Boolean* | true | Identifies if the email address supplied with the payment uses a known throwaway email address provider. Stripe maintains a list of domains corresponding to throwaway email addresses. |
+| `email` | *Case-insensitive string* | user@example.com | The email address supplied with the payment. |
+| `email_commonality` (early access) | *Case-insensitive string* | uncommon | A determination of how common an email address is by comparing it with other email addresses that Stripe has seen. The supported values are **common**, **uncommon**, and **rare**. Given that some good customers might have uncommon or rare email addresses, we recommend that you use this attribute in manual review rules rather than block rules to avoid rejecting legitimate transactions. |
+| `email_domain` | *Case-insensitive string* | example.com | The domain of the email address supplied with the payment. |
+| `is_disposable_email` | *Boolean* | true | Identifies if the email address supplied with the payment uses a known throwaway email address provider. Stripe maintains a list of domains corresponding to throwaway email addresses. |
 
 The **email\_domain** and **is\_disposable\_email** attributes use the email address found in any of the following fields:
 
@@ -125,79 +130,79 @@ The **email\_domain** and **is\_disposable\_email** attributes use the email add
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **email\_count\_for\_billing\_address\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **email\_count\_for\_billing\_address\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from charges on your account in the past week. |
-| **email\_count\_for\_billing\_address\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from charges on your account in the past day. |
-| **email\_count\_for\_billing\_address\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from charges on your account in the past hour. |
-| **email\_count\_for\_billing\_address\_transactions\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past day. |
-| **email\_count\_for\_billing\_address\_transactions\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past hour. |
-| **email\_count\_for\_billing\_address\_transactions\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past week. |
-| **email\_count\_for\_ip\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **email\_count\_for\_ip\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from charges on your account in the past week. |
-| **email\_count\_for\_ip\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from charges on your account in the past day. |
-| **email\_count\_for\_ip\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from charges on your account in the past hour. |
-| **email\_count\_for\_ip\_transactions\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past day. |
-| **email\_count\_for\_ip\_transactions\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past hour. |
-| **email\_count\_for\_ip\_transactions\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past week. |
-| **email\_count\_for\_shipping\_address\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **email\_count\_for\_shipping\_address\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from charges on your account in the past week. |
-| **email\_count\_for\_shipping\_address\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from charges on your account in the past day. |
-| **email\_count\_for\_shipping\_address\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from charges on your account in the past hour. |
-| **email\_count\_for\_shipping\_address\_transactions\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past day. |
-| **email\_count\_for\_shipping\_address\_transactions\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past hour. |
-| **email\_count\_for\_shipping\_address\_transactions\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past week. |
+| `email_count_for_billing_address_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `email_count_for_billing_address_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from charges on your account in the past week. |
+| `email_count_for_billing_address_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from charges on your account in the past day. |
+| `email_count_for_billing_address_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from charges on your account in the past hour. |
+| `email_count_for_billing_address_transactions_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past day. |
+| `email_count_for_billing_address_transactions_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past hour. |
+| `email_count_for_billing_address_transactions_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this billing address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past week. |
+| `email_count_for_ip_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `email_count_for_ip_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from charges on your account in the past week. |
+| `email_count_for_ip_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from charges on your account in the past day. |
+| `email_count_for_ip_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from charges on your account in the past hour. |
+| `email_count_for_ip_transactions_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past day. |
+| `email_count_for_ip_transactions_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past hour. |
+| `email_count_for_ip_transactions_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this IP address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past week. |
+| `email_count_for_shipping_address_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `email_count_for_shipping_address_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from charges on your account in the past week. |
+| `email_count_for_shipping_address_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from charges on your account in the past day. |
+| `email_count_for_shipping_address_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from charges on your account in the past hour. |
+| `email_count_for_shipping_address_transactions_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past day. |
+| `email_count_for_shipping_address_transactions_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past hour. |
+| `email_count_for_shipping_address_transactions_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this shipping address from transactions (charges, supported LPM payment attempts, and SetupIntents) on your account in the past week. |
 
 ### IP address
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **ip\_address** | *Case-insensitive string* | 192.168.1.1 | The IP address from which the payment originates. If payment is made with **digital\_wallet**, the IP address might be missing due to obfuscation of the payment’s originating IP address. |
-| **ip\_address\_connection\_type** | *Case-insensitive string* | cellular | The connection type of the IP address from which the payment originates. We identify the following types of connections: **cable/dsl**, **cellular**, **corporate**, **dialup**. |
-| **ip\_country** | *Case-insensitive country* | US | The two-letter code corresponding to the country-level geolocation of the IP address that the payment originates from. |
-| **ip\_state** | *Case-insensitive state* | CA | The ISO code corresponding to the state-level geolocation of the IP address that the payment originates from. If the country doesn’t have a state, this attribute populates with the country’s closest version of a state. |
-| **is\_anonymous\_ip** | *Boolean* | true | Identifies if the IP address from which the payment originates is a known proxy or Tor exit node. This information updates daily. |
-| **is\_my\_login\_ip** | *Boolean* | true | Identifies if the IP address from which the payment originates has been used to log into your Stripe account. You can use this attribute as a proxy for “is my IP address.” |
+| `ip_address` | *Case-insensitive string* | 192.168.1.1 | The IP address from which the payment originates. If payment is made with **digital\_wallet**, the IP address might be missing due to obfuscation of the payment’s originating IP address. |
+| `ip_address_connection_type` | *Case-insensitive string* | cellular | The connection type of the IP address from which the payment originates. We identify the following types of connections: **cable/dsl**, **cellular**, **corporate**, **dialup**. |
+| `ip_country` | *Case-insensitive country* | US | The two-letter code corresponding to the country-level geolocation of the IP address that the payment originates from. |
+| `ip_state` | *Case-insensitive state* | CA | The ISO code corresponding to the state-level geolocation of the IP address that the payment originates from. If the country doesn’t have a state, this attribute populates with the country’s closest version of a state. |
+| `is_anonymous_ip` | *Boolean* | true | Identifies if the IP address from which the payment originates is a known proxy or Tor exit node. This information updates daily. |
+| `is_my_login_ip` | *Boolean* | true | Identifies if the IP address from which the payment originates has been used to log into your Stripe account. You can use this attribute as a proxy for “is my IP address.” |
 
 ### Other payment details
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **payment\_method\_type** | *Case-insensitive string* | us_bank_account | The payment method used on the payment. The supported values are: **card**, **sepa\_debit**, and **us\_bank\_account** (ACH direct debit) |
-| **charge\_description** | *Case-insensitive string* | payment for order #12 | The description supplied with the payment. |
-| **crypto\_fingerprint** (early access) | *Case-sensitive string* | 424242TPSa0L4242 | The unique fingerprint of the crypto wallet used to make the payment. |
-| **crypto\_payins\_network** (early access) | *Case-insensitive string* | ethereum | The blockchain network used for a crypto payment. |
-| **crypto\_payins\_token\_currency** (early access) | *Case-insensitive string* | USDC | The token currency used for a crypto payment. |
-| **currency** | *Case-insensitive string* | usd | The 3-digit currency code representing the currency in which the customer paid for the transaction. |
-| **destination** | *Case-sensitive string* | acct_19KCB9AlaaEw6AgR | For Connect users creating [destination charges](https://docs.stripe.com/connect/destination-charges.md), the destination account on whose behalf the charge is made. |
-| **is\_checkout** | *Boolean* | true | Identifies if the payment is processed through [Checkout](https://docs.stripe.com/payments/checkout.md). (This attribute only applies to payments processed through the current version of [Checkout](https://docs.stripe.com/payments/checkout.md) and doesn’t capture payments through legacy Checkout.) |
-| **is\_free\_trial\_transaction** | *Boolean* | true | Identifies if Stripe determines that the transaction is from a free trial, primarily for transactions created through Checkout or Billing. |
-| **is\_off\_session** | *Boolean* | true | Indicates when a Stripe Billing payment isn’t triggered by direct user action, or when the off_session flag is set at PaymentIntent confirmation. |
-| **is\_recurring** | *Boolean* | true | Identifies if the payment is recurring, for example, from subscriptions. |
-| **is\_setup\_intent** | *Boolean* | true | Identifies if the transaction is a SetupIntent. |
-| **transaction\_type** | *String* | charge | (DEPRECATED: use **is\_setup\_intent** where possible) The type of the transaction. The supported values are: **charge**, **payment\_intent**, **setup\_intent**. The **payment\_intent** value is only supported for Request Credentials rules. In that case, any Allow, Block, or Review rules run against the charge attempts created when confirming the payment. |
+| `payment_method_type` | *Case-insensitive string* | us_bank_account | The payment method used on the payment. The supported values are: **card**, **sepa\_debit**, and **us\_bank\_account** (ACH direct debit) |
+| `charge_description` | *Case-insensitive string* | payment for order #12 | The description supplied with the payment. |
+| `crypto_fingerprint` (early access) | *Case-sensitive string* | 424242TPSa0L4242 | The unique fingerprint of the crypto wallet used to make the payment. |
+| `crypto_payins_network` (early access) | *Case-insensitive string* | ethereum | The blockchain network used for a crypto payment. |
+| `crypto_payins_token_currency` (early access) | *Case-insensitive string* | USDC | The token currency used for a crypto payment. |
+| `currency` | *Case-insensitive string* | usd | The 3-digit currency code representing the currency in which the customer paid for the transaction. |
+| `destination` | *Case-sensitive string* | acct_19KCB9AlaaEw6AgR | For Connect users creating [destination charges](https://docs.stripe.com/connect/destination-charges.md), the destination account on whose behalf the charge is made. |
+| `is_checkout` | *Boolean* | true | Identifies if the payment is processed through [Checkout](https://docs.stripe.com/payments/checkout.md). (This attribute only applies to payments processed through the current version of [Checkout](https://docs.stripe.com/payments/checkout.md) and doesn’t capture payments through legacy Checkout.) |
+| `is_free_trial_transaction` | *Boolean* | true | Identifies if Stripe determines that the transaction is from a free trial, primarily for transactions created through Checkout or Billing. |
+| `is_off_session` | *Boolean* | true | Indicates when a Stripe Billing payment isn’t triggered by direct user action, or when the off_session flag is set at PaymentIntent confirmation. |
+| `is_recurring` | *Boolean* | true | Identifies if the payment is recurring, for example, from subscriptions. |
+| `is_setup_intent` | *Boolean* | true | Identifies if the transaction is a SetupIntent. |
+| `transaction_type` | *String* | charge | (DEPRECATED: use **is\_setup\_intent** where possible) The type of the transaction. The supported values are: **charge**, **payment\_intent**, **setup\_intent**. The **payment\_intent** value is only supported for Request Credentials rules. In that case, any Allow, Block, or Review rules run against the charge attempts created when confirming the payment. |
 
 ### Time
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **hours\_since\_customer\_was\_created** | *Numeric* | 50 | The number of hours since the [Customer](https://docs.stripe.com/api/customers.md) object making the payment was created on your account. |
-| **hours\_since\_email\_first\_seen** | *Numeric* | 50 | The number of hours (up to five years) since the email address supplied with the payment first appeared on your account. This value includes payments from 2020 onward. |
-| **hours\_since\_email\_first\_seen\_on\_stripe** | *Numeric* | 50 | The number of hours (up to five years) since the email address supplied with the payment first appeared on Stripe overall. This value includes payments from 2020 onward. |
-| **minutes\_since\_customer\_was\_created** | *Numeric* | 50 | The number of minutes since the [Customer](https://docs.stripe.com/api/customers.md) object making the payment was created on your account. |
-| **minutes\_since\_email\_first\_seen** | *Numeric* | 50 | The number of minutes (up to five years) since the email address supplied with the payment first appeared on your account. This value includes payments from 2020 onward. |
-| **minutes\_since\_email\_first\_seen\_on\_stripe** | *Numeric* | 50 | The number of minutes (up to five years) since the email address supplied with the payment first appeared on Stripe overall. This value includes payments from 2020 onward. |
-| **seconds\_since\_customer\_was\_created** | *Numeric* | 50 | The number of seconds since the [Customer](https://docs.stripe.com/api/customers.md) object making the payment was created on your account. |
-| **seconds\_since\_email\_first\_seen** | *Numeric* | 50 | The number of seconds (up to five years) since the email address supplied with the payment first appeared on your account. This value includes payments from 2020 onward. |
-| **seconds\_since\_email\_first\_seen\_on\_stripe** | *Numeric* | 50 | The number of seconds (up to five years) since the email address supplied with the payment first appeared on Stripe overall. This value includes payments from 2020 onward. |
-| **hours\_since\_customer\_was\_created\_on\_transactions** | *Numeric* | 50 | The number of hours since the [Customer](https://docs.stripe.com/api/customers.md) object making the transaction (charge, supported LPM payment attempt, or SetupIntent) was created on your account. |
-| **hours\_since\_email\_first\_seen\_on\_transactions** | *Numeric* | 50 | The number of hours (up to five years) since the email address supplied with the transaction (charge, supported LPM payment attempt, or SetupIntent) first appeared on your account. This value includes payments from 2020 onward. |
-| **hours\_since\_email\_first\_seen\_on\_stripe\_on\_transactions** | *Numeric* | 50 | The number of hours (up to five years) since the email address supplied with the transaction (charge, supported LPM payment attempt, or SetupIntent) first appeared on Stripe overall. This value includes payments from 2020 onward. |
-| **minutes\_since\_customer\_was\_created\_on\_transactions** | *Numeric* | 50 | The number of minutes since the [Customer](https://docs.stripe.com/api/customers.md) object making the transaction (charge, supported LPM payment attempt, or SetupIntent) was created on your account. |
-| **minutes\_since\_email\_first\_seen\_on\_transactions** | *Numeric* | 50 | The number of minutes (up to five years) since the email address supplied with the transaction (charge, supported LPM payment attempt, or SetupIntent) first appeared on your account. This value includes payments from 2020 onward. |
-| **minutes\_since\_email\_first\_seen\_on\_stripe\_on\_transactions** | *Numeric* | 50 | The number of minutes (up to five years) since the email address supplied with the transaction (charge, supported LPM payment attempt, or SetupIntent) first appeared on Stripe overall. This value includes payments from 2020 onward. |
-| **seconds\_since\_customer\_was\_created\_on\_transactions** | *Numeric* | 50 | The number of seconds since the [Customer](https://docs.stripe.com/api/customers.md) object making the transaction (charge, supported LPM payment attempt, or SetupIntent) was created on your account. |
-| **seconds\_since\_email\_first\_seen\_on\_transactions** | *Numeric* | 50 | The number of seconds (up to five years) since the email address supplied with the transaction (charge, supported LPM payment attempt, or SetupIntent) first appeared on your account. This value includes payments from 2020 onward. |
-| **seconds\_since\_email\_first\_seen\_on\_stripe\_on\_transactions** | *Numeric* | 50 | The number of seconds (up to five years) since the email address supplied with the transaction (charge, supported LPM payment attempt, or SetupIntent) first appeared on Stripe overall. This value includes payments from 2020 onward. |
+| `hours_since_customer_was_created` | *Numeric* | 50 | The number of hours since the [Customer](https://docs.stripe.com/api/customers.md) object making the payment was created on your account. |
+| `hours_since_email_first_seen` | *Numeric* | 50 | The number of hours (up to five years) since the email address supplied with the payment first appeared on your account. This value includes payments from 2020 onward. |
+| `hours_since_email_first_seen_on_stripe` | *Numeric* | 50 | The number of hours (up to five years) since the email address supplied with the payment first appeared on Stripe overall. This value includes payments from 2020 onward. |
+| `minutes_since_customer_was_created` | *Numeric* | 50 | The number of minutes since the [Customer](https://docs.stripe.com/api/customers.md) object making the payment was created on your account. |
+| `minutes_since_email_first_seen` | *Numeric* | 50 | The number of minutes (up to five years) since the email address supplied with the payment first appeared on your account. This value includes payments from 2020 onward. |
+| `minutes_since_email_first_seen_on_stripe` | *Numeric* | 50 | The number of minutes (up to five years) since the email address supplied with the payment first appeared on Stripe overall. This value includes payments from 2020 onward. |
+| `seconds_since_customer_was_created` | *Numeric* | 50 | The number of seconds since the [Customer](https://docs.stripe.com/api/customers.md) object making the payment was created on your account. |
+| `seconds_since_email_first_seen` | *Numeric* | 50 | The number of seconds (up to five years) since the email address supplied with the payment first appeared on your account. This value includes payments from 2020 onward. |
+| `seconds_since_email_first_seen_on_stripe` | *Numeric* | 50 | The number of seconds (up to five years) since the email address supplied with the payment first appeared on Stripe overall. This value includes payments from 2020 onward. |
+| `hours_since_customer_was_created_on_transactions` | *Numeric* | 50 | The number of hours since the [Customer](https://docs.stripe.com/api/customers.md) object making the transaction (charge, supported LPM payment attempt, or SetupIntent) was created on your account. |
+| `hours_since_email_first_seen_on_transactions` | *Numeric* | 50 | The number of hours (up to five years) since the email address supplied with the transaction (charge, supported LPM payment attempt, or SetupIntent) first appeared on your account. This value includes payments from 2020 onward. |
+| `hours_since_email_first_seen_on_stripe_on_transactions` | *Numeric* | 50 | The number of hours (up to five years) since the email address supplied with the transaction (charge, supported LPM payment attempt, or SetupIntent) first appeared on Stripe overall. This value includes payments from 2020 onward. |
+| `minutes_since_customer_was_created_on_transactions` | *Numeric* | 50 | The number of minutes since the [Customer](https://docs.stripe.com/api/customers.md) object making the transaction (charge, supported LPM payment attempt, or SetupIntent) was created on your account. |
+| `minutes_since_email_first_seen_on_transactions` | *Numeric* | 50 | The number of minutes (up to five years) since the email address supplied with the transaction (charge, supported LPM payment attempt, or SetupIntent) first appeared on your account. This value includes payments from 2020 onward. |
+| `minutes_since_email_first_seen_on_stripe_on_transactions` | *Numeric* | 50 | The number of minutes (up to five years) since the email address supplied with the transaction (charge, supported LPM payment attempt, or SetupIntent) first appeared on Stripe overall. This value includes payments from 2020 onward. |
+| `seconds_since_customer_was_created_on_transactions` | *Numeric* | 50 | The number of seconds since the [Customer](https://docs.stripe.com/api/customers.md) object making the transaction (charge, supported LPM payment attempt, or SetupIntent) was created on your account. |
+| `seconds_since_email_first_seen_on_transactions` | *Numeric* | 50 | The number of seconds (up to five years) since the email address supplied with the transaction (charge, supported LPM payment attempt, or SetupIntent) first appeared on your account. This value includes payments from 2020 onward. |
+| `seconds_since_email_first_seen_on_stripe_on_transactions` | *Numeric* | 50 | The number of seconds (up to five years) since the email address supplied with the transaction (charge, supported LPM payment attempt, or SetupIntent) first appeared on Stripe overall. This value includes payments from 2020 onward. |
 
 ## Cross-payment-method attributes 
 
@@ -209,29 +214,29 @@ Payment instrument fingerprint attributes work with the unique identifier for pa
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **authorized\_transactions\_per\_payment\_instrument\_fingerprint\_daily** | *Numeric* | 10 | The number of transactions (charges and SetupIntents) that resulted in a successful authorization on this payment instrument (card, ACH, or SEPA) in the past day on your account. |
-| **authorized\_transactions\_per\_payment\_instrument\_fingerprint\_hourly** | *Numeric* | 10 | The number of transactions (charges and SetupIntents) that resulted in a successful authorization on this payment instrument (card, ACH, or SEPA) in the past hour on your account. |
-| **authorized\_transactions\_per\_payment\_instrument\_fingerprint\_weekly** | *Numeric* | 10 | The number of transactions (charges and SetupIntents) that resulted in a successful authorization on this payment instrument (card, ACH, or SEPA) in the past week on your account. |
-| **average\_usd\_amount\_attempted\_on\_payment\_instrument\_fingerprint\_all\_time** | *Numeric* | 50 | The average amount (in USD) of attempted transactions (charges and SetupIntents) for the payment instrument (card, ACH, or SEPA) on your account within the past 5 years. |
-| **average\_usd\_amount\_successful\_on\_payment\_instrument\_fingerprint\_all\_time** | *Numeric* | 50 | The average amount (in USD) of transactions that resulted in an authorization for the payment instrument (card, ACH, or SEPA) on your account within the past 5 years. |
-| **blocked\_transactions\_per\_payment\_instrument\_fingerprint\_daily** | *Numeric* | 10 | The number of transactions (charges and SetupIntents) blocked on this payment instrument (card, ACH, or SEPA) in the past day on your account. |
-| **blocked\_transactions\_per\_payment\_instrument\_fingerprint\_hourly** | *Numeric* | 10 | The number of transactions (charges and SetupIntents) blocked on this payment instrument (card, ACH, or SEPA) in the past hour on your account. |
-| **blocked\_transactions\_per\_payment\_instrument\_fingerprint\_weekly** | *Numeric* | 10 | The number of transactions (charges and SetupIntents) blocked on this payment instrument (card, ACH, or SEPA) in the past week on your account. |
-| **declined\_transactions\_per\_payment\_instrument\_fingerprint\_daily** | *Numeric* | 10 | The number of transactions (charges and SetupIntents) declined on this payment instrument (card, ACH, or SEPA) in the past day on your account. |
-| **declined\_transactions\_per\_payment\_instrument\_fingerprint\_hourly** | *Numeric* | 10 | The number of transactions (charges and SetupIntents) declined on this payment instrument (card, ACH, or SEPA) in the past hour on your account. |
-| **declined\_transactions\_per\_payment\_instrument\_fingerprint\_weekly** | *Numeric* | 10 | The number of transactions (charges and SetupIntents) declined on this payment instrument (card, ACH, or SEPA) in the past week on your account. |
-| **hours\_since\_per\_payment\_instrument\_fingerprint\_first\_seen** | *Numeric* | 50 | The number of hours (up to five years) since the payment instrument (card, ACH, or SEPA) first appeared on your account. |
-| **hours\_since\_first\_successful\_auth\_on\_payment\_instrument\_fingerprint** | *Numeric* | 50 | The number of hours since the first successful authorization for the payment instrument (card, ACH, or SEPA) happened on your account. |
-| **minutes\_since\_per\_payment\_instrument\_fingerprint\_first\_seen** | *Numeric* | 50 | The number of minutes (up to five years) since the payment instrument (card, ACH, or SEPA) first appeared on your account. |
-| **minutes\_since\_first\_successful\_auth\_on\_payment\_instrument\_fingerprint** | *Numeric* | 50 | The number of minutes since the first successful authorization for the payment instrument (card, ACH, or SEPA) happened on your account. |
-| **seconds\_since\_per\_payment\_instrument\_fingerprint\_first\_seen** | *Numeric* | 50 | The number of seconds (up to five years) since the payment instrument (card, ACH, or SEPA) first appeared on your account. |
-| **seconds\_since\_first\_successful\_auth\_on\_payment\_instrument\_fingerprint** | *Numeric* | 50 | The number of seconds since the first successful authorization for the payment instrument (card, ACH, or SEPA) happened on your account. |
-| **total\_transactions\_per\_payment\_instrument\_fingerprint\_all\_time** | *Numeric* | 10 | The total number of transactions (charges and SetupIntents) on this payment instrument (card, ACH, or SEPA) on your account within the past 5 years. |
-| **total\_transactions\_per\_payment\_instrument\_fingerprint\_daily** | *Numeric* | 10 | The total number of transactions (charges and SetupIntents) on this payment instrument (card, ACH, or SEPA) in the past day on your account. |
-| **total\_transactions\_per\_payment\_instrument\_fingerprint\_hourly** | *Numeric* | 10 | The total number of transactions (charges and SetupIntents) on this payment instrument (card, ACH, or SEPA) in the past hour on your account. |
-| **total\_transactions\_per\_payment\_instrument\_fingerprint\_weekly** | *Numeric* | 10 | The total number of transactions (charges and SetupIntents) on this payment instrument (card, ACH, or SEPA) in the past week on your account. |
-| **total\_usd\_amount\_attempted\_on\_payment\_instrument\_fingerprint\_all\_time** | *Numeric* | 50 | The total amount (in USD) of transactions from this payment instrument (card, ACH, or SEPA) that were attempted on your account within the past 5 years. |
-| **total\_usd\_amount\_successful\_on\_payment\_instrument\_fingerprint\_all\_time** | *Numeric* | 50 | The total amount (in USD) of transactions that resulted in an authorization for the payment instrument (card, ACH, or SEPA) on your account within the past 5 years. |
+| `authorized_transactions_per_payment_instrument_fingerprint_daily` | *Numeric* | 10 | The number of transactions (charges and SetupIntents) that resulted in a successful authorization on this payment instrument (card, ACH, or SEPA) in the past day on your account. |
+| `authorized_transactions_per_payment_instrument_fingerprint_hourly` | *Numeric* | 10 | The number of transactions (charges and SetupIntents) that resulted in a successful authorization on this payment instrument (card, ACH, or SEPA) in the past hour on your account. |
+| `authorized_transactions_per_payment_instrument_fingerprint_weekly` | *Numeric* | 10 | The number of transactions (charges and SetupIntents) that resulted in a successful authorization on this payment instrument (card, ACH, or SEPA) in the past week on your account. |
+| `average_usd_amount_attempted_on_payment_instrument_fingerprint_all_time` | *Numeric* | 50 | The average amount (in USD) of attempted transactions (charges and SetupIntents) for the payment instrument (card, ACH, or SEPA) on your account within the past 5 years. |
+| `average_usd_amount_successful_on_payment_instrument_fingerprint_all_time` | *Numeric* | 50 | The average amount (in USD) of transactions that resulted in an authorization for the payment instrument (card, ACH, or SEPA) on your account within the past 5 years. |
+| `blocked_transactions_per_payment_instrument_fingerprint_daily` | *Numeric* | 10 | The number of transactions (charges and SetupIntents) blocked on this payment instrument (card, ACH, or SEPA) in the past day on your account. |
+| `blocked_transactions_per_payment_instrument_fingerprint_hourly` | *Numeric* | 10 | The number of transactions (charges and SetupIntents) blocked on this payment instrument (card, ACH, or SEPA) in the past hour on your account. |
+| `blocked_transactions_per_payment_instrument_fingerprint_weekly` | *Numeric* | 10 | The number of transactions (charges and SetupIntents) blocked on this payment instrument (card, ACH, or SEPA) in the past week on your account. |
+| `declined_transactions_per_payment_instrument_fingerprint_daily` | *Numeric* | 10 | The number of transactions (charges and SetupIntents) declined on this payment instrument (card, ACH, or SEPA) in the past day on your account. |
+| `declined_transactions_per_payment_instrument_fingerprint_hourly` | *Numeric* | 10 | The number of transactions (charges and SetupIntents) declined on this payment instrument (card, ACH, or SEPA) in the past hour on your account. |
+| `declined_transactions_per_payment_instrument_fingerprint_weekly` | *Numeric* | 10 | The number of transactions (charges and SetupIntents) declined on this payment instrument (card, ACH, or SEPA) in the past week on your account. |
+| `hours_since_per_payment_instrument_fingerprint_first_seen` | *Numeric* | 50 | The number of hours (up to five years) since the payment instrument (card, ACH, or SEPA) first appeared on your account. |
+| `hours_since_first_successful_auth_on_payment_instrument_fingerprint` | *Numeric* | 50 | The number of hours since the first successful authorization for the payment instrument (card, ACH, or SEPA) happened on your account. |
+| `minutes_since_per_payment_instrument_fingerprint_first_seen` | *Numeric* | 50 | The number of minutes (up to five years) since the payment instrument (card, ACH, or SEPA) first appeared on your account. |
+| `minutes_since_first_successful_auth_on_payment_instrument_fingerprint` | *Numeric* | 50 | The number of minutes since the first successful authorization for the payment instrument (card, ACH, or SEPA) happened on your account. |
+| `seconds_since_per_payment_instrument_fingerprint_first_seen` | *Numeric* | 50 | The number of seconds (up to five years) since the payment instrument (card, ACH, or SEPA) first appeared on your account. |
+| `seconds_since_first_successful_auth_on_payment_instrument_fingerprint` | *Numeric* | 50 | The number of seconds since the first successful authorization for the payment instrument (card, ACH, or SEPA) happened on your account. |
+| `total_transactions_per_payment_instrument_fingerprint_all_time` | *Numeric* | 10 | The total number of transactions (charges and SetupIntents) on this payment instrument (card, ACH, or SEPA) on your account within the past 5 years. |
+| `total_transactions_per_payment_instrument_fingerprint_daily` | *Numeric* | 10 | The total number of transactions (charges and SetupIntents) on this payment instrument (card, ACH, or SEPA) in the past day on your account. |
+| `total_transactions_per_payment_instrument_fingerprint_hourly` | *Numeric* | 10 | The total number of transactions (charges and SetupIntents) on this payment instrument (card, ACH, or SEPA) in the past hour on your account. |
+| `total_transactions_per_payment_instrument_fingerprint_weekly` | *Numeric* | 10 | The total number of transactions (charges and SetupIntents) on this payment instrument (card, ACH, or SEPA) in the past week on your account. |
+| `total_usd_amount_attempted_on_payment_instrument_fingerprint_all_time` | *Numeric* | 50 | The total amount (in USD) of transactions from this payment instrument (card, ACH, or SEPA) that were attempted on your account within the past 5 years. |
+| `total_usd_amount_successful_on_payment_instrument_fingerprint_all_time` | *Numeric* | 50 | The total amount (in USD) of transactions that resulted in an authorization for the payment instrument (card, ACH, or SEPA) on your account within the past 5 years. |
 
 ## Payment method–specific attributes 
 
@@ -243,172 +248,172 @@ Rules that evaluate attributes that are specific to a given [supported payment m
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **is\_3d\_secure** | *Boolean* | true | Identifies if the payment uses a 3D Secure source. |
-| **is\_3d\_secure\_authenticated** | *Boolean* | true | Identifies if the payment was authenticated after a successfully completed 3D Secure verification (either risk-based or challenge-based). |
-| **has\_liability\_shift** | *Boolean* | true | A rough approximation whether the payment might have liability shift, in which case the [liability shift rule](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments) might apply for this payment. True if a non-wallet card payment had liability shift prior to authorization, but the gateway might downgrade liability shift due to network rules, making `has_liability_shift` inaccurate. Conversely, `has_liability_shift` might be false for certain digital wallets that actually have liability shift. |
+| `is_3d_secure` | *Boolean* | true | Identifies if the payment uses a 3D Secure source. |
+| `is_3d_secure_authenticated` | *Boolean* | true | Identifies if the payment was authenticated after a successfully completed 3D Secure verification (either risk-based or challenge-based). |
+| `has_liability_shift` | *Boolean* | true | A rough approximation whether the payment might have liability shift, in which case the [liability shift rule](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments) might apply for this payment. True if a non-wallet card payment had liability shift prior to authorization, but the gateway might downgrade liability shift due to network rules, making `has_liability_shift` inaccurate. Conversely, `has_liability_shift` might be false for certain digital wallets that actually have liability shift. |
 
 #### Amount 
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **average\_usd\_amount\_attempted\_on\_card\_all\_time** | *Numeric* | 50 | The average amount (in USD) of attempted transactions (charges) for the card on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **average\_usd\_amount\_successful\_on\_card\_all\_time** | *Numeric* | 50 | The average amount (in USD) of charges that resulted in an authorization for the card on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **total\_usd\_amount\_charged\_on\_card\_all\_time** | *Numeric* | 50 | The total amount (in USD) of charges from this card that were attempted on your account. This value includes payments from 2020 onward. |
-| **total\_usd\_amount\_failed\_on\_card\_all\_time** | *Numeric* | 50 | The total amount (in USD) of charges from this card that failed (blocked or declined) on your account. This value includes payments from 2020 onward. |
-| **total\_usd\_amount\_successful\_on\_card\_all\_time** | *Numeric* | 50 | The total amount (in USD) of charges that resulted in an authorization for the card on your account. This value includes payments from 2020 onward. |
+| `average_usd_amount_attempted_on_card_all_time` | *Numeric* | 50 | The average amount (in USD) of attempted transactions (charges) for the card on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `average_usd_amount_successful_on_card_all_time` | *Numeric* | 50 | The average amount (in USD) of charges that resulted in an authorization for the card on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `total_usd_amount_charged_on_card_all_time` | *Numeric* | 50 | The total amount (in USD) of charges from this card that were attempted on your account. This value includes payments from 2020 onward. |
+| `total_usd_amount_failed_on_card_all_time` | *Numeric* | 50 | The total amount (in USD) of charges from this card that failed (blocked or declined) on your account. This value includes payments from 2020 onward. |
+| `total_usd_amount_successful_on_card_all_time` | *Numeric* | 50 | The total amount (in USD) of charges that resulted in an authorization for the card on your account. This value includes payments from 2020 onward. |
 
 #### Card info
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **card\_bin** | *Case-insensitive string* | 483312 | The Bank Identification Number (BIN) of the card used to make the payment. The BIN is the first six digits of the card number. |
-| **card\_brand** | *Case-insensitive string* | visa | The brand of the card used to make the payment. The supported values are: **amex** (American Express), **visa** (Visa), **mc** (Mastercard), **dscvr** (Discover), **diners** (Diners Club), **interac** (Interac), **jcb** (JCB), and **cup** (UnionPay). |
-| **card\_country** | *Case-insensitive country* | US | The two-letter code corresponding to the country where the card was issued. |
-| **card\_fingerprint** | *Case-sensitive string* | example_fingerprint | The fingerprint of the card used to make the payment. The card fingerprint is a unique identifier of a particular card number. |
-| **card\_funding** | *Case-insensitive string* | credit | Whether the card is a prepaid, debit, or credit card. The supported values are: **credit**, **debit**, **prepaid**, **unknown**. |
-| **card\_description** (Public preview) | *Case-insensitive string* | Visa Classic | A high-level description of the type of cards issued in this range. This attribute isn’t case sensitive, but it’s punctuation sensitive. |
-| **card\_issuer** (Public preview) | *Case-insensitive string* | JP Morgan Chase | The name of the card’s issuing bank. This attribute isn’t case sensitive, but it’s punctuation sensitive. |
-| **card\_3d\_secure\_result** (Public preview) | *Case-insensitive string* | authenticated | The [3D Secure](https://docs.stripe.com/payments/3d-secure.md) result for the card used to make the payment. The supported values are: **authenticated**, **attempt\_acknowledged**, **processing\_error**, **exempted**. This attribute is only accurate for transactions where 3DS didn’t error. |
-| **card\_3d\_secure\_support** | *Case-insensitive string* | required | The level of [3D Secure](https://docs.stripe.com/payments/3d-secure.md) support for the card used to make the payment. The supported values are: **required**, **recommended**, **optional**, and **not\_supported**. |
-| **charge\_description** | *Case-insensitive string* | payment for order #12 | The description supplied with the payment. |
-| **statement\_descriptor** | *Case-insensitive string* | example descriptor | The [statement descriptor](https://docs.stripe.com/get-started/account/statement-descriptors.md) provided on a payment. |
+| `card_bin` | *Case-insensitive string* | 483312 | The Bank Identification Number (BIN) of the card used to make the payment. The BIN is the first six digits of the card number. |
+| `card_brand` | *Case-insensitive string* | visa | The brand of the card used to make the payment. The supported values are: **amex** (American Express), **visa** (Visa), **mc** (Mastercard), **dscvr** (Discover), **diners** (Diners Club), **interac** (Interac), **jcb** (JCB), and **cup** (UnionPay). |
+| `card_country` | *Case-insensitive country* | US | The two-letter code corresponding to the country where the card was issued. |
+| `card_fingerprint` | *Case-sensitive string* | example_fingerprint | The fingerprint of the card used to make the payment. The card fingerprint is a unique identifier of a particular card number. |
+| `card_funding` | *Case-insensitive string* | credit | Whether the card is a prepaid, debit, or credit card. The supported values are: **credit**, **debit**, **prepaid**, **unknown**. |
+| `card_description` (Public preview) | *Case-insensitive string* | Visa Classic | A high-level description of the type of cards issued in this range. This attribute isn’t case sensitive, but it’s punctuation sensitive. |
+| `card_issuer` (Public preview) | *Case-insensitive string* | JP Morgan Chase | The name of the card’s issuing bank. This attribute isn’t case sensitive, but it’s punctuation sensitive. |
+| `card_3d_secure_result` (Public preview) | *Case-insensitive string* | authenticated | The [3D Secure](https://docs.stripe.com/payments/3d-secure.md) result for the card used to make the payment. The supported values are: **authenticated**, **attempt\_acknowledged**, **processing\_error**, **exempted**. This attribute is only accurate for transactions where 3DS didn’t error. |
+| `card_3d_secure_support` | *Case-insensitive string* | required | The level of [3D Secure](https://docs.stripe.com/payments/3d-secure.md) support for the card used to make the payment. The supported values are: **required**, **recommended**, **optional**, and **not\_supported**. |
+| `charge_description` | *Case-insensitive string* | payment for order #12 | The description supplied with the payment. |
+| `statement_descriptor` | *Case-insensitive string* | example descriptor | The [statement descriptor](https://docs.stripe.com/get-started/account/statement-descriptors.md) provided on a payment. |
 
 #### Card usage
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **is\_new\_card\_on\_customer** | *Boolean* | true | Identifies if the card associated with the [Customer](https://docs.stripe.com/api/customers.md) object hasn’t been seen on a payment by that customer on your account. |
-| **card\_count\_for\_billing\_address\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from charges on this account within the past 5 years. This value includes payments from 2020 onward. |
-| **card\_count\_for\_billing\_address\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from charges on this account in the past week. |
-| **card\_count\_for\_billing\_address\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from charges on this account in the past day. |
-| **card\_count\_for\_billing\_address\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from charges on this account in the past hour. |
-| **card\_count\_for\_billing\_address\_transactions\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from transactions (charges and SetupIntents) on this account in the past day. |
-| **card\_count\_for\_billing\_address\_transactions\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from transactions (charges and SetupIntents) on this account in the past hour. |
-| **card\_count\_for\_billing\_address\_transactions\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from transactions (charges and SetupIntents) on this account in the past week. |
-| **card\_count\_for\_customer\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from charges on this account within the past 5 years. This value includes payments from 2020 onward. |
-| **card\_count\_for\_customer\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from charges on this account in the past week. |
-| **card\_count\_for\_customer\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from charges on this account in the past day. |
-| **card\_count\_for\_customer\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from charges on this account in the past hour. |
-| **card\_count\_for\_customer\_transactions\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from transactions (charges and SetupIntents) on this account in the past day. |
-| **card\_count\_for\_customer\_transactions\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from transactions (charges and SetupIntents) on this account in the past hour. |
-| **card\_count\_for\_customer\_transactions\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from transactions (charges and SetupIntents) on this account in the past week. |
-| **card\_count\_for\_email\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from charges on this account within the past 5 years. This value includes payments from 2020 onward. |
-| **card\_count\_for\_email\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from charges on this account in the past week. |
-| **card\_count\_for\_email\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from charges on this account in the past day. |
-| **card\_count\_for\_email\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from charges on this account in the past hour. |
-| **card\_count\_for\_email\_transactions\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from transactions (charges and SetupIntents) on this account in the past day. |
-| **card\_count\_for\_email\_transactions\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from transactions (charges and SetupIntents) on this account in the past hour. |
-| **card\_count\_for\_email\_transactions\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from transactions (charges and SetupIntents) on this account in the past week. |
-| **card\_count\_for\_ip\_address\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **card\_count\_for\_ip\_address\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from charges on your account in the past week. |
-| **card\_count\_for\_ip\_address\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from charges on your account in the past day. |
-| **card\_count\_for\_ip\_address\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from charges on your account in the past hour. |
-| **card\_count\_for\_ip\_address\_transactions\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from transactions (charges and SetupIntents) on your account in the past day. |
-| **card\_count\_for\_ip\_address\_transactions\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from transactions (charges and SetupIntents) on your account in the past hour. |
-| **card\_count\_for\_ip\_address\_transactions\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from transactions (charges and SetupIntents) on your account in the past week. |
-| **card\_count\_for\_shipping\_address\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **card\_count\_for\_shipping\_address\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from charges on your account in the past week. |
-| **card\_count\_for\_shipping\_address\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from charges on your account in the past day. |
-| **card\_count\_for\_shipping\_address\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from charges on your account in the past hour. |
-| **card\_count\_for\_shipping\_address\_transactions\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from transactions (charges and SetupIntents) on your account in the past day. |
-| **card\_count\_for\_shipping\_address\_transactions\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from transactions (charges and SetupIntents) on your account in the past hour. |
-| **card\_count\_for\_shipping\_address\_transactions\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from transactions (charges and SetupIntents) on your account in the past week. |
+| `is_new_card_on_customer` | *Boolean* | true | Identifies if the card associated with the [Customer](https://docs.stripe.com/api/customers.md) object hasn’t been seen on a payment by that customer on your account. |
+| `card_count_for_billing_address_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from charges on this account within the past 5 years. This value includes payments from 2020 onward. |
+| `card_count_for_billing_address_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from charges on this account in the past week. |
+| `card_count_for_billing_address_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from charges on this account in the past day. |
+| `card_count_for_billing_address_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from charges on this account in the past hour. |
+| `card_count_for_billing_address_transactions_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from transactions (charges and SetupIntents) on this account in the past day. |
+| `card_count_for_billing_address_transactions_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from transactions (charges and SetupIntents) on this account in the past hour. |
+| `card_count_for_billing_address_transactions_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this billing address from transactions (charges and SetupIntents) on this account in the past week. |
+| `card_count_for_customer_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from charges on this account within the past 5 years. This value includes payments from 2020 onward. |
+| `card_count_for_customer_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from charges on this account in the past week. |
+| `card_count_for_customer_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from charges on this account in the past day. |
+| `card_count_for_customer_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from charges on this account in the past hour. |
+| `card_count_for_customer_transactions_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from transactions (charges and SetupIntents) on this account in the past day. |
+| `card_count_for_customer_transactions_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from transactions (charges and SetupIntents) on this account in the past hour. |
+| `card_count_for_customer_transactions_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with the [Customer](https://docs.stripe.com/api/customers.md) object from transactions (charges and SetupIntents) on this account in the past week. |
+| `card_count_for_email_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from charges on this account within the past 5 years. This value includes payments from 2020 onward. |
+| `card_count_for_email_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from charges on this account in the past week. |
+| `card_count_for_email_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from charges on this account in the past day. |
+| `card_count_for_email_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from charges on this account in the past hour. |
+| `card_count_for_email_transactions_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from transactions (charges and SetupIntents) on this account in the past day. |
+| `card_count_for_email_transactions_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from transactions (charges and SetupIntents) on this account in the past hour. |
+| `card_count_for_email_transactions_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this email from transactions (charges and SetupIntents) on this account in the past week. |
+| `card_count_for_ip_address_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `card_count_for_ip_address_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from charges on your account in the past week. |
+| `card_count_for_ip_address_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from charges on your account in the past day. |
+| `card_count_for_ip_address_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from charges on your account in the past hour. |
+| `card_count_for_ip_address_transactions_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from transactions (charges and SetupIntents) on your account in the past day. |
+| `card_count_for_ip_address_transactions_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from transactions (charges and SetupIntents) on your account in the past hour. |
+| `card_count_for_ip_address_transactions_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this IP address from transactions (charges and SetupIntents) on your account in the past week. |
+| `card_count_for_shipping_address_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `card_count_for_shipping_address_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from charges on your account in the past week. |
+| `card_count_for_shipping_address_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from charges on your account in the past day. |
+| `card_count_for_shipping_address_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from charges on your account in the past hour. |
+| `card_count_for_shipping_address_transactions_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from transactions (charges and SetupIntents) on your account in the past day. |
+| `card_count_for_shipping_address_transactions_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from transactions (charges and SetupIntents) on your account in the past hour. |
+| `card_count_for_shipping_address_transactions_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of cards associated with this shipping address from transactions (charges and SetupIntents) on your account in the past week. |
 
 #### Customers 
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **total\_customers\_for\_card\_yearly** | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this card on your account. This attribute only includes live mode Customer objects that interacted with your account in the past year. This data updates at most every 72 hours. |
-| **total\_customers\_for\_card\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this card on your account. This attribute only includes live mode Customer objects that interacted with your account in the past week. This data updates at most every 72 hours. |
-| **total\_customers\_with\_prior\_fraud\_activity\_for\_card\_yearly** | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this card that have fraud activity on your account. Fraud activity includes fraud disputes, early fraud warnings, and high risk Radar blocks. This attribute only includes live mode Customer objects that interacted with your account in the past year. This data updates at most every 72 hours. |
-| **total\_customers\_with\_prior\_fraud\_activity\_for\_card\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this card that have fraud activity on your account. Fraud activity includes fraud disputes, early fraud warnings, and high risk Radar blocks. This attribute only includes live mode Customer objects that interacted with your account in the past week. This data updates at most every 72 hours. |
-| **total\_customers\_for\_card\_transactions\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this card from transactions (charges and SetupIntents) on your account. This attribute only includes live mode Customer objects that interacted with your account in the past week. This data updates at most every 72 hours. |
+| `total_customers_for_card_yearly` | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this card on your account. This attribute only includes live mode Customer objects that interacted with your account in the past year. This data updates at most every 72 hours. |
+| `total_customers_for_card_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this card on your account. This attribute only includes live mode Customer objects that interacted with your account in the past week. This data updates at most every 72 hours. |
+| `total_customers_with_prior_fraud_activity_for_card_yearly` | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this card that have fraud activity on your account. Fraud activity includes fraud disputes, early fraud warnings, and high risk Radar blocks. This attribute only includes live mode Customer objects that interacted with your account in the past year. This data updates at most every 72 hours. |
+| `total_customers_with_prior_fraud_activity_for_card_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this card that have fraud activity on your account. Fraud activity includes fraud disputes, early fraud warnings, and high risk Radar blocks. This attribute only includes live mode Customer objects that interacted with your account in the past week. This data updates at most every 72 hours. |
+| `total_customers_for_card_transactions_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The total number of [Customer](https://docs.stripe.com/api/customers.md) objects associated with this card from transactions (charges and SetupIntents) on your account. This attribute only includes live mode Customer objects that interacted with your account in the past week. This data updates at most every 72 hours. |
 
 #### Disputes 
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **dispute\_count\_on\_card\_number\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The count of fraudulent disputes associated with charges from this card number on your account within the past 5 years. This value includes payments from 2019 onward. |
-| **dispute\_count\_on\_card\_number\_yearly** | *Bounded numeric (less than or equal to 25)* | 10 | The count of fraudulent disputes associated with charges from this card number on your account in the past year. |
+| `dispute_count_on_card_number_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The count of fraudulent disputes associated with charges from this card number on your account within the past 5 years. This value includes payments from 2019 onward. |
+| `dispute_count_on_card_number_yearly` | *Bounded numeric (less than or equal to 25)* | 10 | The count of fraudulent disputes associated with charges from this card number on your account in the past year. |
 
 #### Early Fraud Warnings
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **efw\_count\_on\_card\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this card on your account within the past 5 years. This value includes EFWs from 2020 onward. |
-| **efw\_count\_on\_card\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this card on your account in the past week. |
-| **efw\_count\_on\_card\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this card on your account in the past day. |
-| **efw\_count\_on\_card\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this card on your account in the past hour. |
-| **efw\_count\_on\_ip\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this IP address on your account within the past 5 years. This value includes EFWs from 2020 onward. |
-| **efw\_count\_on\_ip\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this IP address on your account in the past week. |
-| **efw\_count\_on\_ip\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this IP address on your account in the past day. |
-| **efw\_count\_on\_ip\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this IP address on your account in the past hour. |
+| `efw_count_on_card_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this card on your account within the past 5 years. This value includes EFWs from 2020 onward. |
+| `efw_count_on_card_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this card on your account in the past week. |
+| `efw_count_on_card_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this card on your account in the past day. |
+| `efw_count_on_card_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this card on your account in the past hour. |
+| `efw_count_on_ip_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this IP address on your account within the past 5 years. This value includes EFWs from 2020 onward. |
+| `efw_count_on_ip_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this IP address on your account in the past week. |
+| `efw_count_on_ip_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this IP address on your account in the past day. |
+| `efw_count_on_ip_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of [EFWs](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) associated with charges from this IP address on your account in the past hour. |
 
 #### Email usage 
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **email\_count\_for\_card\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **email\_count\_for\_card\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from charges on your account in the past week. |
-| **email\_count\_for\_card\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from charges on your account in the past day. |
-| **email\_count\_for\_card\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from charges on your account in the past hour. |
-| **email\_count\_for\_card\_transactions\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from transactions (charges and SetupIntents) on your account in the past day. |
-| **email\_count\_for\_card\_transactions\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from transactions (charges and SetupIntents) on your account in the past hour. |
-| **email\_count\_for\_card\_transactions\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from transactions (charges and SetupIntents) on your account in the past week. |
+| `email_count_for_card_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `email_count_for_card_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from charges on your account in the past week. |
+| `email_count_for_card_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from charges on your account in the past day. |
+| `email_count_for_card_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from charges on your account in the past hour. |
+| `email_count_for_card_transactions_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from transactions (charges and SetupIntents) on your account in the past day. |
+| `email_count_for_card_transactions_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from transactions (charges and SetupIntents) on your account in the past hour. |
+| `email_count_for_card_transactions_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of emails associated with this card from transactions (charges and SetupIntents) on your account in the past week. |
 
 #### Issuer checks
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **address\_line1\_check** | *Case-sensitive string* | pass | A check by the card issuer to match the first line of the provided billing address (typically a street name and number) against the information they have on file for the cardholder. The supported values are: **pass**, **fail**, **unavailable**, **unchecked**, **not\_provided**. ([This is a post-authorization attribute.](https://docs.stripe.com/radar/rules/supported-attributes.md#transaction-rule-attributes)) |
-| **address\_zip\_check** | *Case-sensitive string* | pass | A check by the card issuer to match the provided postal code against the information they have on file for the cardholder. The supported values are: **pass**, **fail**, **unavailable**, **unchecked**, **not\_provided**. ([This is a post-authorization attribute.](https://docs.stripe.com/radar/rules/supported-attributes.md#transaction-rule-attributes)) |
-| **cvc\_check** | *Case-sensitive string* | pass | A check by the card issuer to match the provided CVC (also referred to as CVV) against the information they have on file for the cardholder. The supported values are: **pass**, **fail**, **unavailable**, **unchecked**, **not\_provided**. ([This is a post-authorization attribute.](https://docs.stripe.com/radar/rules/supported-attributes.md#transaction-rule-attributes)) |
+| `address_line1_check` | *Case-sensitive string* | pass | A check by the card issuer to match the first line of the provided billing address (typically a street name and number) against the information they have on file for the cardholder. The supported values are: **pass**, **fail**, **unavailable**, **unchecked**, **not\_provided**. ([This is a post-authorization attribute.](https://docs.stripe.com/radar/rules/supported-attributes.md#transaction-rule-attributes)) |
+| `address_zip_check` | *Case-sensitive string* | pass | A check by the card issuer to match the provided postal code against the information they have on file for the cardholder. The supported values are: **pass**, **fail**, **unavailable**, **unchecked**, **not\_provided**. ([This is a post-authorization attribute.](https://docs.stripe.com/radar/rules/supported-attributes.md#transaction-rule-attributes)) |
+| `cvc_check` | *Case-sensitive string* | pass | A check by the card issuer to match the provided CVC (also referred to as CVV) against the information they have on file for the cardholder. The supported values are: **pass**, **fail**, **unavailable**, **unchecked**, **not\_provided**. ([This is a post-authorization attribute.](https://docs.stripe.com/radar/rules/supported-attributes.md#transaction-rule-attributes)) |
 
 #### Name
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **cardholder\_name** | *Case-insensitive string* | Jane Doe | The provided name with a purchaser’s card information. This attribute isn’t case sensitive, but it’s punctuation sensitive. You should only use this attribute to block names or name patterns of individuals who you have reason to believe have previously committed fraud on your service. We recommend that your customer service teams are prepared to respond to any customer complaints and to add legitimate end-customers to an “allowlist” where appropriate. |
-| **name\_count\_for\_card\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **name\_count\_for\_card\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from charges on your account in the past week. |
-| **name\_count\_for\_card\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from charges on your account in the past day. |
-| **name\_count\_for\_card\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from charges on your account in the past hour. |
-| **name\_count\_for\_card\_transactions\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from transactions (charges and SetupIntents) on your account in the past day. |
-| **name\_count\_for\_card\_transactions\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from transactions (charges and SetupIntents) on your account in the past hour. |
-| **name\_count\_for\_card\_transactions\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from transactions (charges and SetupIntents) on your account in the past week. |
+| `cardholder_name` | *Case-insensitive string* | Jane Doe | The provided name with a purchaser’s card information. This attribute isn’t case sensitive, but it’s punctuation sensitive. You should only use this attribute to block names or name patterns of individuals who you have reason to believe have previously committed fraud on your service. We recommend that your customer service teams are prepared to respond to any customer complaints and to add legitimate end-customers to an “allowlist” where appropriate. |
+| `name_count_for_card_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `name_count_for_card_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from charges on your account in the past week. |
+| `name_count_for_card_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from charges on your account in the past day. |
+| `name_count_for_card_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from charges on your account in the past hour. |
+| `name_count_for_card_transactions_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from transactions (charges and SetupIntents) on your account in the past day. |
+| `name_count_for_card_transactions_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from transactions (charges and SetupIntents) on your account in the past hour. |
+| `name_count_for_card_transactions_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of names associated with this card from transactions (charges and SetupIntents) on your account in the past week. |
 
 #### Other payment details 
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **digital\_wallet** | *Case-insensitive string* | apple_pay | The type of digital wallet used to store payment information. The supported values are: **android\_pay**, **amex\_express\_checkout**, **apple\_pay**, **masterpass**, **network\_token**, **samsung\_pay**, **visa\_checkout**, **meta\_pay**, **amazon\_pay**, **revolut\_pay**, **demo\_pay**, **unknown**, **none**. *Note: Except for **android\_pay** (valid with or without cryptogram), these are only valid when we receive a cryptogram that can only be generated by a registered device, as opposed to an unencrypted Primary Account Number*. |
-| **has\_cryptogram** | *Boolean* | true | True when we receive a cryptogram that can only be generated by a registered device, as opposed to an unencrypted Primary Account Number. |
+| `digital_wallet` | *Case-insensitive string* | apple_pay | The type of digital wallet used to store payment information. The supported values are: **android\_pay**, **amex\_express\_checkout**, **apple\_pay**, **masterpass**, **network\_token**, **samsung\_pay**, **visa\_checkout**, **meta\_pay**, **amazon\_pay**, **revolut\_pay**, **demo\_pay**, **unknown**, **none**. *Note: Except for **android\_pay** (valid with or without cryptogram), these are only valid when we receive a cryptogram that can only be generated by a registered device, as opposed to an unencrypted Primary Account Number*. |
+| `has_cryptogram` | *Boolean* | true | True when we receive a cryptogram that can only be generated by a registered device, as opposed to an unencrypted Primary Account Number. |
 
 #### Refunds 
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **refund\_count\_on\_card\_all\_time** | *Bounded numeric (less than or equal to 25)* | 10 | The number of refunds associated with this billing address from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **refund\_count\_on\_card\_weekly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of refunds associated with this card from charges on your account in the past week. |
-| **refund\_count\_on\_card\_daily** | *Bounded numeric (less than or equal to 25)* | 10 | The number of refunds associated with this card from charges on your account in the past day. |
-| **refund\_count\_on\_card\_hourly** | *Bounded numeric (less than or equal to 25)* | 10 | The number of refunds associated with this card from charges on your account in the past hour. |
+| `refund_count_on_card_all_time` | *Bounded numeric (less than or equal to 25)* | 10 | The number of refunds associated with this billing address from charges on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `refund_count_on_card_weekly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of refunds associated with this card from charges on your account in the past week. |
+| `refund_count_on_card_daily` | *Bounded numeric (less than or equal to 25)* | 10 | The number of refunds associated with this card from charges on your account in the past day. |
+| `refund_count_on_card_hourly` | *Bounded numeric (less than or equal to 25)* | 10 | The number of refunds associated with this card from charges on your account in the past hour. |
 
 #### Time 
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **hours\_since\_card\_first\_seen** | *Numeric* | 50 | The number of hours (up to five years) since the card for the payment first appeared on your account. This value includes payments from 2020 onward. |
-| **hours\_since\_first\_successful\_auth\_on\_card** | *Numeric* | 50 | The number of hours since the first successful auth for the card associated with the payment happened on your account. This value includes payments from 2020 onward. |
-| **minutes\_since\_card\_first\_seen** | *Numeric* | 50 | The number of minutes (up to five years) since the card for the payment first appeared on your account. This value includes payments from 2020 onward. |
-| **minutes\_since\_first\_successful\_auth\_on\_card** | *Numeric* | 50 | The number of minutes since the first successful auth for the card associated with the payment happened on your account. This value includes payments from 2020 onward. |
-| **seconds\_since\_card\_first\_seen** | *Numeric* | 50 | The number of seconds (up to five years) since the card for the payment first appeared on your account. This value includes payments from 2020 onward. |
-| **seconds\_since\_first\_successful\_auth\_on\_card** | *Numeric* | 50 | The number of seconds since the first successful authorization for the card associated with the payment on your account. This value includes payments from 2020 onward. |
-| **hours\_since\_card\_first\_seen\_on\_transactions** | *Numeric* | 50 | The number of hours (up to five years) since the card for the transaction (charge or SetupIntent) first appeared on your account. This value includes payments from 2020 onward. |
-| **hours\_since\_first\_successful\_auth\_on\_card\_on\_transactions** | *Numeric* | 50 | The number of hours since the first successful auth for the card associated with the transaction (charge or SetupIntent) happened on your account. This value includes payments from 2020 onward. |
-| **minutes\_since\_card\_first\_seen\_on\_transactions** | *Numeric* | 50 | The number of minutes (up to five years) since the card for the transaction (charge or SetupIntent) first appeared on your account. This value includes payments from 2020 onward. |
-| **minutes\_since\_first\_successful\_auth\_on\_card\_on\_transactions** | *Numeric* | 50 | The number of minutes since the first successful auth for the card associated with the transaction (charge or SetupIntent) happened on your account. This value includes payments from 2020 onward. |
-| **seconds\_since\_card\_first\_seen\_on\_transactions** | *Numeric* | 50 | The number of seconds (up to five years) since the card for the transaction (charge or SetupIntent) first appeared on your account. This value includes payments from 2020 onward. |
-| **seconds\_since\_first\_successful\_auth\_on\_card\_on\_transactions** | *Numeric* | 50 | The number of seconds since the first successful authorization for the card associated with the transaction (charge or SetupIntent) on your account. This value includes payments from 2020 onward. |
+| `hours_since_card_first_seen` | *Numeric* | 50 | The number of hours (up to five years) since the card for the payment first appeared on your account. This value includes payments from 2020 onward. |
+| `hours_since_first_successful_auth_on_card` | *Numeric* | 50 | The number of hours since the first successful auth for the card associated with the payment happened on your account. This value includes payments from 2020 onward. |
+| `minutes_since_card_first_seen` | *Numeric* | 50 | The number of minutes (up to five years) since the card for the payment first appeared on your account. This value includes payments from 2020 onward. |
+| `minutes_since_first_successful_auth_on_card` | *Numeric* | 50 | The number of minutes since the first successful auth for the card associated with the payment happened on your account. This value includes payments from 2020 onward. |
+| `seconds_since_card_first_seen` | *Numeric* | 50 | The number of seconds (up to five years) since the card for the payment first appeared on your account. This value includes payments from 2020 onward. |
+| `seconds_since_first_successful_auth_on_card` | *Numeric* | 50 | The number of seconds since the first successful authorization for the card associated with the payment on your account. This value includes payments from 2020 onward. |
+| `hours_since_card_first_seen_on_transactions` | *Numeric* | 50 | The number of hours (up to five years) since the card for the transaction (charge or SetupIntent) first appeared on your account. This value includes payments from 2020 onward. |
+| `hours_since_first_successful_auth_on_card_on_transactions` | *Numeric* | 50 | The number of hours since the first successful auth for the card associated with the transaction (charge or SetupIntent) happened on your account. This value includes payments from 2020 onward. |
+| `minutes_since_card_first_seen_on_transactions` | *Numeric* | 50 | The number of minutes (up to five years) since the card for the transaction (charge or SetupIntent) first appeared on your account. This value includes payments from 2020 onward. |
+| `minutes_since_first_successful_auth_on_card_on_transactions` | *Numeric* | 50 | The number of minutes since the first successful auth for the card associated with the transaction (charge or SetupIntent) happened on your account. This value includes payments from 2020 onward. |
+| `seconds_since_card_first_seen_on_transactions` | *Numeric* | 50 | The number of seconds (up to five years) since the card for the transaction (charge or SetupIntent) first appeared on your account. This value includes payments from 2020 onward. |
+| `seconds_since_first_successful_auth_on_card_on_transactions` | *Numeric* | 50 | The number of seconds since the first successful authorization for the card associated with the transaction (charge or SetupIntent) on your account. This value includes payments from 2020 onward. |
 
 ### ACH Direct Debit
 
@@ -416,9 +421,9 @@ Rules that evaluate attributes that are specific to a given [supported payment m
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **us\_bank\_account\_bank\_name** | *Case-insensitive string* | JPMORGAN CHASE BANK, NA | The name of the bank associated with the bank account used to make the payment. |
-| **us\_bank\_account\_fingerprint** | *Case-sensitive string* | example_fingerprint | The unique identifier of the bank account used to make the payment. |
-| **us\_bank\_account\_routing\_number** | *9-digit numeric string* | 000000000 | The ABA routing number of the bank associated with the bank account used to make the payment. |
+| `us_bank_account_bank_name` | *Case-insensitive string* | JPMORGAN CHASE BANK, NA | The name of the bank associated with the bank account used to make the payment. |
+| `us_bank_account_fingerprint` | *Case-sensitive string* | example_fingerprint | The unique identifier of the bank account used to make the payment. |
+| `us_bank_account_routing_number` | *9-digit numeric string* | 000000000 | The ABA routing number of the bank associated with the bank account used to make the payment. |
 
 ### SEPA Direct Debit
 
@@ -426,9 +431,9 @@ Rules that evaluate attributes that are specific to a given [supported payment m
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **sepa\_debit\_bank\_code** | *Case-insensitive string* | 08307 | The bank code associated with the account used to make the payment. |
-| **sepa\_debit\_country** | *Case-insensitive country* | IE | The two-letter code corresponding to the country of the customer’s bank account. |
-| **sepa\_debit\_fingerprint** | *Case-sensitive string* | example_fingerprint | The unique identifier of the bank account used to make the payment. |
+| `sepa_debit_bank_code` | *Case-insensitive string* | 08307 | The bank code associated with the account used to make the payment. |
+| `sepa_debit_country` | *Case-insensitive country* | IE | The two-letter code corresponding to the country of the customer’s bank account. |
+| `sepa_debit_fingerprint` | *Case-sensitive string* | example_fingerprint | The unique identifier of the bank account used to make the payment. |
 
 ## Payment outcome counters
 
@@ -443,53 +448,53 @@ Attributes that track payment outcomes (authorized, blocked, declined, total) re
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **authorized\_charges\_per\_billing\_address\_all\_time** | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this billing address on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **authorized\_charges\_per\_billing\_address\_weekly** | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this billing address in the past week on your account. |
-| **authorized\_charges\_per\_billing\_address\_daily** | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this billing address in the past day on your account. |
-| **authorized\_charges\_per\_billing\_address\_hourly** | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this billing address in the past hour on your account. |
-| **authorized\_charges\_per\_card\_number\_all\_time** | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this card on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **authorized\_charges\_per\_card\_number\_weekly** | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this card in the past week on your account. |
-| **authorized\_charges\_per\_card\_number\_daily** | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this card in the past day on your account. |
-| **authorized\_charges\_per\_card\_number\_hourly** | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this card in the past hour on your account. |
-| **authorized\_charges\_per\_customer\_all\_time** | *Numeric* | 10 | The number of charges that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **authorized\_charges\_per\_customer\_weekly** | *Numeric* | 10 | The number of charges that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
-| **authorized\_charges\_per\_customer\_daily** | *Numeric* | 10 | The number of charges that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
-| **authorized\_charges\_per\_customer\_hourly** | *Numeric* | 10 | The number of charges that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
-| **authorized\_charges\_per\_email\_all\_time** | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this email on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **authorized\_charges\_per\_email\_weekly** | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this email in the past week on your account. |
-| **authorized\_charges\_per\_email\_daily** | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this email in the past day on your account. |
-| **authorized\_charges\_per\_email\_hourly** | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this email in the past hour on your account. |
-| **authorized\_charges\_per\_shipping\_address\_all\_time** | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this shipping address on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **authorized\_charges\_per\_shipping\_address\_weekly** | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this shipping address in the past week on your account. |
-| **authorized\_charges\_per\_shipping\_address\_daily** | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this shipping address in the past day on your account. |
-| **authorized\_charges\_per\_shipping\_address\_hourly** | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this shipping address in the past hour on your account. |
-| **authorized\_charges\_per\_ip\_address\_all\_time** | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this IP address on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **authorized\_charges\_per\_ip\_address\_weekly** | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this IP address in the past week on your account. |
-| **authorized\_charges\_per\_ip\_address\_daily** | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this IP address in the past day on your account. |
-| **authorized\_charges\_per\_ip\_address\_hourly** | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this IP address in the past hour on your account. |
+| `authorized_charges_per_billing_address_all_time` | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this billing address on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `authorized_charges_per_billing_address_weekly` | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this billing address in the past week on your account. |
+| `authorized_charges_per_billing_address_daily` | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this billing address in the past day on your account. |
+| `authorized_charges_per_billing_address_hourly` | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this billing address in the past hour on your account. |
+| `authorized_charges_per_card_number_all_time` | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this card on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `authorized_charges_per_card_number_weekly` | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this card in the past week on your account. |
+| `authorized_charges_per_card_number_daily` | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this card in the past day on your account. |
+| `authorized_charges_per_card_number_hourly` | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this card in the past hour on your account. |
+| `authorized_charges_per_customer_all_time` | *Numeric* | 10 | The number of charges that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `authorized_charges_per_customer_weekly` | *Numeric* | 10 | The number of charges that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
+| `authorized_charges_per_customer_daily` | *Numeric* | 10 | The number of charges that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
+| `authorized_charges_per_customer_hourly` | *Numeric* | 10 | The number of charges that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
+| `authorized_charges_per_email_all_time` | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this email on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `authorized_charges_per_email_weekly` | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this email in the past week on your account. |
+| `authorized_charges_per_email_daily` | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this email in the past day on your account. |
+| `authorized_charges_per_email_hourly` | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this email in the past hour on your account. |
+| `authorized_charges_per_shipping_address_all_time` | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this shipping address on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `authorized_charges_per_shipping_address_weekly` | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this shipping address in the past week on your account. |
+| `authorized_charges_per_shipping_address_daily` | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this shipping address in the past day on your account. |
+| `authorized_charges_per_shipping_address_hourly` | *Numeric* | 10 | The number of charges that resulted in a successful authorization on this shipping address in the past hour on your account. |
+| `authorized_charges_per_ip_address_all_time` | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this IP address on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `authorized_charges_per_ip_address_weekly` | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this IP address in the past week on your account. |
+| `authorized_charges_per_ip_address_daily` | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this IP address in the past day on your account. |
+| `authorized_charges_per_ip_address_hourly` | *Numeric* | 10 | The number of charges that resulted in a successful authorization from this IP address in the past hour on your account. |
 
 #### Transactions
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **authorized\_transactions\_per\_billing\_address\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this billing address in the past day on your account. |
-| **authorized\_transactions\_per\_billing\_address\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this billing address in the past hour on your account. |
-| **authorized\_transactions\_per\_billing\_address\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this billing address in the past week on your account. |
-| **authorized\_transactions\_per\_card\_number\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this card in the past day on your account. |
-| **authorized\_transactions\_per\_card\_number\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this card in the past hour on your account. |
-| **authorized\_transactions\_per\_card\_number\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this card in the past week on your account. |
-| **authorized\_transactions\_per\_customer\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
-| **authorized\_transactions\_per\_customer\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
-| **authorized\_transactions\_per\_customer\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
-| **authorized\_transactions\_per\_email\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from this email in the past day on your account. |
-| **authorized\_transactions\_per\_email\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from this email in the past hour on your account. |
-| **authorized\_transactions\_per\_email\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from this email in the past week on your account. |
-| **authorized\_transactions\_per\_ip\_address\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from this IP address in the past day on your account. |
-| **authorized\_transactions\_per\_ip\_address\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from this IP address in the past hour on your account. |
-| **authorized\_transactions\_per\_ip\_address\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from this IP address in the past week on your account. |
-| **authorized\_transactions\_per\_shipping\_address\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this shipping address in the past day on your account. |
-| **authorized\_transactions\_per\_shipping\_address\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this shipping address in the past hour on your account. |
-| **authorized\_transactions\_per\_shipping\_address\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this shipping address in the past week on your account. |
+| `authorized_transactions_per_billing_address_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this billing address in the past day on your account. |
+| `authorized_transactions_per_billing_address_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this billing address in the past hour on your account. |
+| `authorized_transactions_per_billing_address_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this billing address in the past week on your account. |
+| `authorized_transactions_per_card_number_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this card in the past day on your account. |
+| `authorized_transactions_per_card_number_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this card in the past hour on your account. |
+| `authorized_transactions_per_card_number_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this card in the past week on your account. |
+| `authorized_transactions_per_customer_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
+| `authorized_transactions_per_customer_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
+| `authorized_transactions_per_customer_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
+| `authorized_transactions_per_email_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from this email in the past day on your account. |
+| `authorized_transactions_per_email_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from this email in the past hour on your account. |
+| `authorized_transactions_per_email_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from this email in the past week on your account. |
+| `authorized_transactions_per_ip_address_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from this IP address in the past day on your account. |
+| `authorized_transactions_per_ip_address_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from this IP address in the past hour on your account. |
+| `authorized_transactions_per_ip_address_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization from this IP address in the past week on your account. |
+| `authorized_transactions_per_shipping_address_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this shipping address in the past day on your account. |
+| `authorized_transactions_per_shipping_address_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this shipping address in the past hour on your account. |
+| `authorized_transactions_per_shipping_address_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) that resulted in a successful authorization on this shipping address in the past week on your account. |
 
 #### Blocked
 
@@ -497,53 +502,53 @@ Attributes that track payment outcomes (authorized, blocked, declined, total) re
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **blocked\_charges\_per\_billing\_address\_all\_time** | *Numeric* | 10 | The number of charges blocked on this billing address on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **blocked\_charges\_per\_billing\_address\_weekly** | *Numeric* | 10 | The number of charges blocked on this billing address in the past week on your account. |
-| **blocked\_charges\_per\_billing\_address\_daily** | *Numeric* | 10 | The number of charges blocked on this billing address in the past day on your account. |
-| **blocked\_charges\_per\_billing\_address\_hourly** | *Numeric* | 10 | The number of charges blocked on this billing address in the past hour on your account. |
-| **blocked\_charges\_per\_card\_number\_all\_time** | *Numeric* | 10 | The number of charges blocked on this card on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **blocked\_charges\_per\_card\_number\_weekly** | *Numeric* | 10 | The number of charges blocked on this card in the past week on your account. |
-| **blocked\_charges\_per\_card\_number\_daily** | *Numeric* | 10 | The number of charges blocked on this card in the past day on your account. |
-| **blocked\_charges\_per\_card\_number\_hourly** | *Numeric* | 10 | The number of charges blocked on this card in the past hour on your account. |
-| **blocked\_charges\_per\_customer\_all\_time** | *Numeric* | 10 | The number of charges blocked from the [Customer](https://docs.stripe.com/api/customers.md) object on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **blocked\_charges\_per\_customer\_weekly** | *Numeric* | 10 | The number of charges blocked from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
-| **blocked\_charges\_per\_customer\_daily** | *Numeric* | 10 | The number of charges blocked from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
-| **blocked\_charges\_per\_customer\_hourly** | *Numeric* | 10 | The number of charges blocked from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
-| **blocked\_charges\_per\_email\_all\_time** | *Numeric* | 10 | The number of charges blocked from this email on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **blocked\_charges\_per\_email\_weekly** | *Numeric* | 10 | The number of charges blocked from this email in the past week on your account. |
-| **blocked\_charges\_per\_email\_daily** | *Numeric* | 10 | The number of charges blocked from this email in the past day on your account. |
-| **blocked\_charges\_per\_email\_hourly** | *Numeric* | 10 | The number of charges blocked from this email in the past hour on your account. |
-| **blocked\_charges\_per\_shipping\_address\_all\_time** | *Numeric* | 10 | The number of charges blocked on this shipping address on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **blocked\_charges\_per\_shipping\_address\_weekly** | *Numeric* | 10 | The number of charges blocked on this shipping address in the past week on your account. |
-| **blocked\_charges\_per\_shipping\_address\_daily** | *Numeric* | 10 | The number of charges blocked on this shipping address in the past day on your account. |
-| **blocked\_charges\_per\_shipping\_address\_hourly** | *Numeric* | 10 | The number of charges blocked on this shipping address in the past hour on your account. |
-| **blocked\_charges\_per\_ip\_address\_all\_time** | *Numeric* | 10 | The number of charges blocked on this IP address on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **blocked\_charges\_per\_ip\_address\_weekly** | *Numeric* | 10 | The number of charges blocked on this IP address in the past week on your account. |
-| **blocked\_charges\_per\_ip\_address\_daily** | *Numeric* | 10 | The number of charges blocked on this IP address in the past day on your account. |
-| **blocked\_charges\_per\_ip\_address\_hourly** | *Numeric* | 10 | The number of charges blocked on this IP address in the past hour on your account. |
+| `blocked_charges_per_billing_address_all_time` | *Numeric* | 10 | The number of charges blocked on this billing address on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `blocked_charges_per_billing_address_weekly` | *Numeric* | 10 | The number of charges blocked on this billing address in the past week on your account. |
+| `blocked_charges_per_billing_address_daily` | *Numeric* | 10 | The number of charges blocked on this billing address in the past day on your account. |
+| `blocked_charges_per_billing_address_hourly` | *Numeric* | 10 | The number of charges blocked on this billing address in the past hour on your account. |
+| `blocked_charges_per_card_number_all_time` | *Numeric* | 10 | The number of charges blocked on this card on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `blocked_charges_per_card_number_weekly` | *Numeric* | 10 | The number of charges blocked on this card in the past week on your account. |
+| `blocked_charges_per_card_number_daily` | *Numeric* | 10 | The number of charges blocked on this card in the past day on your account. |
+| `blocked_charges_per_card_number_hourly` | *Numeric* | 10 | The number of charges blocked on this card in the past hour on your account. |
+| `blocked_charges_per_customer_all_time` | *Numeric* | 10 | The number of charges blocked from the [Customer](https://docs.stripe.com/api/customers.md) object on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `blocked_charges_per_customer_weekly` | *Numeric* | 10 | The number of charges blocked from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
+| `blocked_charges_per_customer_daily` | *Numeric* | 10 | The number of charges blocked from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
+| `blocked_charges_per_customer_hourly` | *Numeric* | 10 | The number of charges blocked from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
+| `blocked_charges_per_email_all_time` | *Numeric* | 10 | The number of charges blocked from this email on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `blocked_charges_per_email_weekly` | *Numeric* | 10 | The number of charges blocked from this email in the past week on your account. |
+| `blocked_charges_per_email_daily` | *Numeric* | 10 | The number of charges blocked from this email in the past day on your account. |
+| `blocked_charges_per_email_hourly` | *Numeric* | 10 | The number of charges blocked from this email in the past hour on your account. |
+| `blocked_charges_per_shipping_address_all_time` | *Numeric* | 10 | The number of charges blocked on this shipping address on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `blocked_charges_per_shipping_address_weekly` | *Numeric* | 10 | The number of charges blocked on this shipping address in the past week on your account. |
+| `blocked_charges_per_shipping_address_daily` | *Numeric* | 10 | The number of charges blocked on this shipping address in the past day on your account. |
+| `blocked_charges_per_shipping_address_hourly` | *Numeric* | 10 | The number of charges blocked on this shipping address in the past hour on your account. |
+| `blocked_charges_per_ip_address_all_time` | *Numeric* | 10 | The number of charges blocked on this IP address on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `blocked_charges_per_ip_address_weekly` | *Numeric* | 10 | The number of charges blocked on this IP address in the past week on your account. |
+| `blocked_charges_per_ip_address_daily` | *Numeric* | 10 | The number of charges blocked on this IP address in the past day on your account. |
+| `blocked_charges_per_ip_address_hourly` | *Numeric* | 10 | The number of charges blocked on this IP address in the past hour on your account. |
 
 #### Transactions
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **blocked\_transactions\_per\_billing\_address\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this billing address in the past day on your account. |
-| **blocked\_transactions\_per\_billing\_address\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this billing address in the past hour on your account. |
-| **blocked\_transactions\_per\_billing\_address\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this billing address in the past week on your account. |
-| **blocked\_transactions\_per\_card\_number\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this card in the past day on your account. |
-| **blocked\_transactions\_per\_card\_number\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this card in the past hour on your account. |
-| **blocked\_transactions\_per\_card\_number\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this card in the past week on your account. |
-| **blocked\_transactions\_per\_customer\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
-| **blocked\_transactions\_per\_customer\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
-| **blocked\_transactions\_per\_customer\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
-| **blocked\_transactions\_per\_email\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked from this email in the past day on your account. |
-| **blocked\_transactions\_per\_email\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked from this email in the past hour on your account. |
-| **blocked\_transactions\_per\_email\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked from this email in the past week on your account. |
-| **blocked\_transactions\_per\_ip\_address\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this IP address in the past day on your account. |
-| **blocked\_transactions\_per\_ip\_address\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this IP address in the past hour on your account. |
-| **blocked\_transactions\_per\_ip\_address\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this IP address in the past week on your account. |
-| **blocked\_transactions\_per\_shipping\_address\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this shipping address in the past day on your account. |
-| **blocked\_transactions\_per\_shipping\_address\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this shipping address in the past hour on your account. |
-| **blocked\_transactions\_per\_shipping\_address\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this shipping address in the past week on your account. |
+| `blocked_transactions_per_billing_address_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this billing address in the past day on your account. |
+| `blocked_transactions_per_billing_address_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this billing address in the past hour on your account. |
+| `blocked_transactions_per_billing_address_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this billing address in the past week on your account. |
+| `blocked_transactions_per_card_number_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this card in the past day on your account. |
+| `blocked_transactions_per_card_number_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this card in the past hour on your account. |
+| `blocked_transactions_per_card_number_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this card in the past week on your account. |
+| `blocked_transactions_per_customer_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
+| `blocked_transactions_per_customer_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
+| `blocked_transactions_per_customer_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
+| `blocked_transactions_per_email_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked from this email in the past day on your account. |
+| `blocked_transactions_per_email_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked from this email in the past hour on your account. |
+| `blocked_transactions_per_email_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked from this email in the past week on your account. |
+| `blocked_transactions_per_ip_address_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this IP address in the past day on your account. |
+| `blocked_transactions_per_ip_address_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this IP address in the past hour on your account. |
+| `blocked_transactions_per_ip_address_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this IP address in the past week on your account. |
+| `blocked_transactions_per_shipping_address_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this shipping address in the past day on your account. |
+| `blocked_transactions_per_shipping_address_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this shipping address in the past hour on your account. |
+| `blocked_transactions_per_shipping_address_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and setup attempts) blocked on this shipping address in the past week on your account. |
 
 #### Declined
 
@@ -551,53 +556,53 @@ Attributes that track payment outcomes (authorized, blocked, declined, total) re
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **declined\_charges\_per\_billing\_address\_all\_time** | *Numeric* | 10 | The number of charges declined on this billing address on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **declined\_charges\_per\_billing\_address\_weekly** | *Numeric* | 10 | The number of charges declined on this billing address in the past week on your account. |
-| **declined\_charges\_per\_billing\_address\_daily** | *Numeric* | 10 | The number of charges declined on this billing address in the past day on your account. |
-| **declined\_charges\_per\_billing\_address\_hourly** | *Numeric* | 10 | The number of charges declined on this billing address in the past hour on your account. |
-| **declined\_charges\_per\_card\_number\_all\_time** | *Numeric* | 10 | The number of charges declined on this card on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **declined\_charges\_per\_card\_number\_weekly** | *Numeric* | 10 | The number of charges declined on this card in the past week on your account. |
-| **declined\_charges\_per\_card\_number\_daily** | *Numeric* | 10 | The number of charges declined on this card in the past day on your account. |
-| **declined\_charges\_per\_card\_number\_hourly** | *Numeric* | 10 | The number of charges declined on this card in the past hour on your account. |
-| **declined\_charges\_per\_customer\_all\_time** | *Numeric* | 10 | The number of charges declined from the [Customer](https://docs.stripe.com/api/customers.md) object on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **declined\_charges\_per\_customer\_weekly** | *Numeric* | 10 | The number of charges declined from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
-| **declined\_charges\_per\_customer\_daily** | *Numeric* | 10 | The number of charges declined from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
-| **declined\_charges\_per\_customer\_hourly** | *Numeric* | 10 | The number of charges declined from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
-| **declined\_charges\_per\_shipping\_address\_all\_time** | *Numeric* | 10 | The number of charges declined on this shipping address on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **declined\_charges\_per\_shipping\_address\_weekly** | *Numeric* | 10 | The number of charges declined on this shipping address in the past week on your account. |
-| **declined\_charges\_per\_shipping\_address\_daily** | *Numeric* | 10 | The number of charges declined on this shipping address in the past day on your account. |
-| **declined\_charges\_per\_shipping\_address\_hourly** | *Numeric* | 10 | The number of charges declined on this shipping address in the past hour on your account. |
-| **declined\_charges\_per\_ip\_address\_all\_time** | *Numeric* | 10 | The number of charges declined on this IP address on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **declined\_charges\_per\_ip\_address\_weekly** | *Numeric* | 10 | The number of charges declined on this IP address in the past week on your account. |
-| **declined\_charges\_per\_ip\_address\_daily** | *Numeric* | 10 | The number of charges declined on this IP address in the past day on your account. |
-| **declined\_charges\_per\_ip\_address\_hourly** | *Numeric* | 10 | The number of charges declined on this IP address in the past hour on your account. |
-| **declined\_charges\_per\_email\_all\_time** | *Numeric* | 10 | The number of charges declined from this email on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **declined\_charges\_per\_email\_weekly** | *Numeric* | 10 | The number of charges declined from this email in the past week on your account. |
-| **declined\_charges\_per\_email\_daily** | *Numeric* | 10 | The number of charges declined from this email in the past day on your account. |
-| **declined\_charges\_per\_email\_hourly** | *Numeric* | 10 | The number of charges declined from this email in the past hour on your account. |
+| `declined_charges_per_billing_address_all_time` | *Numeric* | 10 | The number of charges declined on this billing address on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `declined_charges_per_billing_address_weekly` | *Numeric* | 10 | The number of charges declined on this billing address in the past week on your account. |
+| `declined_charges_per_billing_address_daily` | *Numeric* | 10 | The number of charges declined on this billing address in the past day on your account. |
+| `declined_charges_per_billing_address_hourly` | *Numeric* | 10 | The number of charges declined on this billing address in the past hour on your account. |
+| `declined_charges_per_card_number_all_time` | *Numeric* | 10 | The number of charges declined on this card on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `declined_charges_per_card_number_weekly` | *Numeric* | 10 | The number of charges declined on this card in the past week on your account. |
+| `declined_charges_per_card_number_daily` | *Numeric* | 10 | The number of charges declined on this card in the past day on your account. |
+| `declined_charges_per_card_number_hourly` | *Numeric* | 10 | The number of charges declined on this card in the past hour on your account. |
+| `declined_charges_per_customer_all_time` | *Numeric* | 10 | The number of charges declined from the [Customer](https://docs.stripe.com/api/customers.md) object on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `declined_charges_per_customer_weekly` | *Numeric* | 10 | The number of charges declined from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
+| `declined_charges_per_customer_daily` | *Numeric* | 10 | The number of charges declined from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
+| `declined_charges_per_customer_hourly` | *Numeric* | 10 | The number of charges declined from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
+| `declined_charges_per_shipping_address_all_time` | *Numeric* | 10 | The number of charges declined on this shipping address on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `declined_charges_per_shipping_address_weekly` | *Numeric* | 10 | The number of charges declined on this shipping address in the past week on your account. |
+| `declined_charges_per_shipping_address_daily` | *Numeric* | 10 | The number of charges declined on this shipping address in the past day on your account. |
+| `declined_charges_per_shipping_address_hourly` | *Numeric* | 10 | The number of charges declined on this shipping address in the past hour on your account. |
+| `declined_charges_per_ip_address_all_time` | *Numeric* | 10 | The number of charges declined on this IP address on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `declined_charges_per_ip_address_weekly` | *Numeric* | 10 | The number of charges declined on this IP address in the past week on your account. |
+| `declined_charges_per_ip_address_daily` | *Numeric* | 10 | The number of charges declined on this IP address in the past day on your account. |
+| `declined_charges_per_ip_address_hourly` | *Numeric* | 10 | The number of charges declined on this IP address in the past hour on your account. |
+| `declined_charges_per_email_all_time` | *Numeric* | 10 | The number of charges declined from this email on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `declined_charges_per_email_weekly` | *Numeric* | 10 | The number of charges declined from this email in the past week on your account. |
+| `declined_charges_per_email_daily` | *Numeric* | 10 | The number of charges declined from this email in the past day on your account. |
+| `declined_charges_per_email_hourly` | *Numeric* | 10 | The number of charges declined from this email in the past hour on your account. |
 
 #### Transactions
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **declined\_transactions\_per\_billing\_address\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this billing address in the past day on your account. |
-| **declined\_transactions\_per\_billing\_address\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this billing address in the past hour on your account. |
-| **declined\_transactions\_per\_billing\_address\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this billing address in the past week on your account. |
-| **declined\_transactions\_per\_card\_number\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this card in the past day on your account. |
-| **declined\_transactions\_per\_card\_number\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this card in the past hour on your account. |
-| **declined\_transactions\_per\_card\_number\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this card in the past week on your account. |
-| **declined\_transactions\_per\_customer\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
-| **declined\_transactions\_per\_customer\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
-| **declined\_transactions\_per\_customer\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
-| **declined\_transactions\_per\_email\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined from this email in the past day on your account. |
-| **declined\_transactions\_per\_email\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined from this email in the past hour on your account. |
-| **declined\_transactions\_per\_email\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined from this email in the past week on your account. |
-| **declined\_transactions\_per\_ip\_address\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this IP address in the past day on your account. |
-| **declined\_transactions\_per\_ip\_address\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this IP address in the past hour on your account. |
-| **declined\_transactions\_per\_ip\_address\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this IP address in the past week on your account. |
-| **declined\_transactions\_per\_shipping\_address\_daily** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this shipping address in the past day on your account. |
-| **declined\_transactions\_per\_shipping\_address\_hourly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this shipping address in the past hour on your account. |
-| **declined\_transactions\_per\_shipping\_address\_weekly** | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this shipping address in the past week on your account. |
+| `declined_transactions_per_billing_address_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this billing address in the past day on your account. |
+| `declined_transactions_per_billing_address_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this billing address in the past hour on your account. |
+| `declined_transactions_per_billing_address_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this billing address in the past week on your account. |
+| `declined_transactions_per_card_number_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this card in the past day on your account. |
+| `declined_transactions_per_card_number_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this card in the past hour on your account. |
+| `declined_transactions_per_card_number_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this card in the past week on your account. |
+| `declined_transactions_per_customer_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
+| `declined_transactions_per_customer_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
+| `declined_transactions_per_customer_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
+| `declined_transactions_per_email_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined from this email in the past day on your account. |
+| `declined_transactions_per_email_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined from this email in the past hour on your account. |
+| `declined_transactions_per_email_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined from this email in the past week on your account. |
+| `declined_transactions_per_ip_address_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this IP address in the past day on your account. |
+| `declined_transactions_per_ip_address_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this IP address in the past hour on your account. |
+| `declined_transactions_per_ip_address_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this IP address in the past week on your account. |
+| `declined_transactions_per_shipping_address_daily` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this shipping address in the past day on your account. |
+| `declined_transactions_per_shipping_address_hourly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this shipping address in the past hour on your account. |
+| `declined_transactions_per_shipping_address_weekly` | **Numeric** | 10 | The number of transactions (charges, supported LPM payment attempts, and card setup attempts) declined on this shipping address in the past week on your account. |
 
 #### Total
 
@@ -605,53 +610,53 @@ Attributes that track payment outcomes (authorized, blocked, declined, total) re
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **total\_charges\_per\_billing\_address\_all\_time** | *Numeric* | 10 | The total number of charges on this billing address on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **total\_charges\_per\_billing\_address\_weekly** | *Numeric* | 10 | The total number of charges on this billing address in the past week on your account. |
-| **total\_charges\_per\_billing\_address\_daily** | *Numeric* | 10 | The total number of charges on this billing address in the past day on your account. |
-| **total\_charges\_per\_billing\_address\_hourly** | *Numeric* | 10 | The total number of charges on this billing address in the past hour on your account. |
-| **total\_charges\_per\_card\_number\_all\_time** | *Numeric* | 10 | The total number of charges on this card on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **total\_charges\_per\_card\_number\_weekly** | *Numeric* | 10 | The total number of charges on this card in the past week on your account. |
-| **total\_charges\_per\_card\_number\_daily** | *Numeric* | 10 | The total number of charges on this card in the past day on your account. |
-| **total\_charges\_per\_card\_number\_hourly** | *Numeric* | 10 | The total number of charges on this card in the past hour on your account. |
-| **total\_charges\_per\_customer\_all\_time** | *Numeric* | 10 | The total number of charges from the [Customer](https://docs.stripe.com/api/customers.md) object on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **total\_charges\_per\_customer\_weekly** | *Numeric* | 10 | The total number of charges from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
-| **total\_charges\_per\_customer\_daily** | *Numeric* | 10 | The total number of charges from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
-| **total\_charges\_per\_customer\_hourly** | *Numeric* | 10 | The total number of charges from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
-| **total\_charges\_per\_email\_all\_time** | *Numeric* | 10 | The total number of charges from this email on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **total\_charges\_per\_email\_weekly** | *Numeric* | 10 | The total number of charges from this email in the past week on your account. |
-| **total\_charges\_per\_email\_daily** | *Numeric* | 10 | The total number of charges from this email in the past day on your account. |
-| **total\_charges\_per\_email\_hourly** | *Numeric* | 10 | The total number of charges from this email in the past hour on your account. |
-| **total\_charges\_per\_ip\_address\_all\_time** | *Numeric* | 10 | The total number of charges from this IP address on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **total\_charges\_per\_ip\_address\_weekly** | *Numeric* | 10 | The total number of charges from this IP address in the past week on your account. |
-| **total\_charges\_per\_ip\_address\_daily** | *Numeric* | 10 | The total number of charges from this IP address in the past day on your account. |
-| **total\_charges\_per\_ip\_address\_hourly** | *Numeric* | 10 | The total number of charges from this IP address in the past hour on your account. |
-| **total\_charges\_per\_shipping\_address\_all\_time** | *Numeric* | 10 | The total number of charges from this shipping address on your account within the past 5 years. This value includes payments from 2020 onward. |
-| **total\_charges\_per\_shipping\_address\_weekly** | *Numeric* | 10 | The total number of charges from this shipping address in the past week on your account. |
-| **total\_charges\_per\_shipping\_address\_daily** | *Numeric* | 10 | The total number of charges from this shipping address in the past day on your account. |
-| **total\_charges\_per\_shipping\_address\_hourly** | *Numeric* | 10 | The total number of charges from this shipping address in the past hour on your account. |
+| `total_charges_per_billing_address_all_time` | *Numeric* | 10 | The total number of charges on this billing address on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `total_charges_per_billing_address_weekly` | *Numeric* | 10 | The total number of charges on this billing address in the past week on your account. |
+| `total_charges_per_billing_address_daily` | *Numeric* | 10 | The total number of charges on this billing address in the past day on your account. |
+| `total_charges_per_billing_address_hourly` | *Numeric* | 10 | The total number of charges on this billing address in the past hour on your account. |
+| `total_charges_per_card_number_all_time` | *Numeric* | 10 | The total number of charges on this card on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `total_charges_per_card_number_weekly` | *Numeric* | 10 | The total number of charges on this card in the past week on your account. |
+| `total_charges_per_card_number_daily` | *Numeric* | 10 | The total number of charges on this card in the past day on your account. |
+| `total_charges_per_card_number_hourly` | *Numeric* | 10 | The total number of charges on this card in the past hour on your account. |
+| `total_charges_per_customer_all_time` | *Numeric* | 10 | The total number of charges from the [Customer](https://docs.stripe.com/api/customers.md) object on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `total_charges_per_customer_weekly` | *Numeric* | 10 | The total number of charges from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
+| `total_charges_per_customer_daily` | *Numeric* | 10 | The total number of charges from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
+| `total_charges_per_customer_hourly` | *Numeric* | 10 | The total number of charges from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
+| `total_charges_per_email_all_time` | *Numeric* | 10 | The total number of charges from this email on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `total_charges_per_email_weekly` | *Numeric* | 10 | The total number of charges from this email in the past week on your account. |
+| `total_charges_per_email_daily` | *Numeric* | 10 | The total number of charges from this email in the past day on your account. |
+| `total_charges_per_email_hourly` | *Numeric* | 10 | The total number of charges from this email in the past hour on your account. |
+| `total_charges_per_ip_address_all_time` | *Numeric* | 10 | The total number of charges from this IP address on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `total_charges_per_ip_address_weekly` | *Numeric* | 10 | The total number of charges from this IP address in the past week on your account. |
+| `total_charges_per_ip_address_daily` | *Numeric* | 10 | The total number of charges from this IP address in the past day on your account. |
+| `total_charges_per_ip_address_hourly` | *Numeric* | 10 | The total number of charges from this IP address in the past hour on your account. |
+| `total_charges_per_shipping_address_all_time` | *Numeric* | 10 | The total number of charges from this shipping address on your account within the past 5 years. This value includes payments from 2020 onward. |
+| `total_charges_per_shipping_address_weekly` | *Numeric* | 10 | The total number of charges from this shipping address in the past week on your account. |
+| `total_charges_per_shipping_address_daily` | *Numeric* | 10 | The total number of charges from this shipping address in the past day on your account. |
+| `total_charges_per_shipping_address_hourly` | *Numeric* | 10 | The total number of charges from this shipping address in the past hour on your account. |
 
 #### Transactions
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
-| **total\_transactions\_per\_billing\_address\_daily** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) on this billing address in the past day on your account. |
-| **total\_transactions\_per\_billing\_address\_hourly** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) on this billing address in the past hour on your account. |
-| **total\_transactions\_per\_billing\_address\_weekly** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) on this billing address in the past week on your account. |
-| **total\_transactions\_per\_card\_number\_daily** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) on this card in the past day on your account. |
-| **total\_transactions\_per\_card\_number\_hourly** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) on this card in the past hour on your account. |
-| **total\_transactions\_per\_card\_number\_weekly** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) on this card in the past week on your account. |
-| **total\_transactions\_per\_customer\_daily** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
-| **total\_transactions\_per\_customer\_hourly** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
-| **total\_transactions\_per\_customer\_weekly** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
-| **total\_transactions\_per\_email\_daily** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this email in the past day on your account. |
-| **total\_transactions\_per\_email\_hourly** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this email in the past hour on your account. |
-| **total\_transactions\_per\_email\_weekly** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this email in the past week on your account. |
-| **total\_transactions\_per\_ip\_address\_daily** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this IP address in the past day on your account. |
-| **total\_transactions\_per\_ip\_address\_hourly** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this IP address in the past hour on your account. |
-| **total\_transactions\_per\_ip\_address\_weekly** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this IP address in the past week on your account. |
-| **total\_transactions\_per\_shipping\_address\_daily** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this shipping address in the past day on your account. |
-| **total\_transactions\_per\_shipping\_address\_hourly** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this shipping address in the past hour on your account. |
-| **total\_transactions\_per\_shipping\_address\_weekly** | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this shipping address in the past week on your account. |
+| `total_transactions_per_billing_address_daily` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) on this billing address in the past day on your account. |
+| `total_transactions_per_billing_address_hourly` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) on this billing address in the past hour on your account. |
+| `total_transactions_per_billing_address_weekly` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) on this billing address in the past week on your account. |
+| `total_transactions_per_card_number_daily` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) on this card in the past day on your account. |
+| `total_transactions_per_card_number_hourly` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) on this card in the past hour on your account. |
+| `total_transactions_per_card_number_weekly` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) on this card in the past week on your account. |
+| `total_transactions_per_customer_daily` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from the [Customer](https://docs.stripe.com/api/customers.md) object in the past day on your account. |
+| `total_transactions_per_customer_hourly` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from the [Customer](https://docs.stripe.com/api/customers.md) object in the past hour on your account. |
+| `total_transactions_per_customer_weekly` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from the [Customer](https://docs.stripe.com/api/customers.md) object in the past week on your account. |
+| `total_transactions_per_email_daily` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this email in the past day on your account. |
+| `total_transactions_per_email_hourly` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this email in the past hour on your account. |
+| `total_transactions_per_email_weekly` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this email in the past week on your account. |
+| `total_transactions_per_ip_address_daily` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this IP address in the past day on your account. |
+| `total_transactions_per_ip_address_hourly` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this IP address in the past hour on your account. |
+| `total_transactions_per_ip_address_weekly` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this IP address in the past week on your account. |
+| `total_transactions_per_shipping_address_daily` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this shipping address in the past day on your account. |
+| `total_transactions_per_shipping_address_hourly` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this shipping address in the past hour on your account. |
+| `total_transactions_per_shipping_address_weekly` | **Numeric** | 10 | The total number of transactions (charges, supported LPM payment attempts, and card setup attempts) from this shipping address in the past week on your account. |
 
 ## Attributes for platforms
 

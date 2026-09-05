@@ -474,6 +474,47 @@ websocket.on('agent_chat_response_part', (event) => {
 });
 ```
 
+#### agent\_reasoning\_response\_part
+
+`agent_reasoning_response_part` streams model-provided reasoning during text-only conversations.
+Enable the event in `client_events` and turn on [Reasoning summary](/docs/eleven-agents/customization/llm#reasoning-summary) for the agent. The server sends
+`start`, `delta`, and `stop` messages. It does not send this event during voice conversations or
+while the agent or an active procedure uses blocking guardrails.
+
+This event and the corresponding SDK callback are experimental. Their behavior and shape may
+change in any release.
+
+```json title="Event payload" focus={3-7}
+{
+  "type": "agent_reasoning_response_part",
+  "reasoning_response_part": {
+    "type": "delta",
+    "text": "The user asked to cancel, so I should verify the account before continuing.",
+    "event_id": 123456
+  }
+}
+```
+
+Start and stop events use an empty `text` value.
+
+```javascript title="Handle reasoning events" focus={6-14}
+import { Conversation } from '@elevenlabs/client';
+
+const conversation = await Conversation.startSession({
+  agentId: 'agent_7101k5zvyjhmfg983brhmhkd98n6',
+  textOnly: true,
+  onAgentReasoningResponsePart: ({ type, text, event_id }) => {
+    if (type === 'start') {
+      initializeReasoningBuffer(event_id);
+    } else if (type === 'delta') {
+      appendToReasoningBuffer(text);
+    } else if (type === 'stop') {
+      finalizeReasoning();
+    }
+  },
+});
+```
+
 #### agent\_response\_complete
 
 * Fires when the agent has finished its response, including any pending tool calls. After this event, the agent will only produce further output if the user provides new input or a turn timeout triggers a new turn.

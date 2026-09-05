@@ -55,6 +55,9 @@ When operating in Zero Retention Mode, only the following LLMs are available:
 
 #### Google Models
 
+* Gemini 3.5 Flash
+* Gemini 3.5 Flash Lite
+* Gemini 3.1 Flash Lite
 * Gemini 2.5 Flash
 * Gemini 2.5 Flash Lite
 * Gemini 2.0 Flash
@@ -65,16 +68,48 @@ When operating in Zero Retention Mode, only the following LLMs are available:
 
 #### Anthropic Models
 
+* Claude Sonnet 5
+* Claude Sonnet 4.6
 * Claude Sonnet 4.5
 * Claude Sonnet 4
+* Claude Opus 4.8
+* Claude Opus 4.7
 * Claude Haiku 4.5
 * Claude 3.7 Sonnet
-* Claude 3.5 Sonnet
+* Claude 3.5 Sonnet v2
+* Claude 3.5 Sonnet v1
 * Claude 3 Haiku
+
+#### OpenAI Models
+
+* GPT-5.6 Sol\*
+* GPT-5.6 Terra\*
+* GPT-5.6 Luna\*
+* GPT-5.5\*
+* GPT-5.4\*
+* GPT-5.4 Mini\*
+* GPT-5.4 Nano\*
+* GPT-5.2\*
+* GPT-5.2 Chat Latest\*
+* GPT-5.1\*
+* GPT-5\*
+* GPT-5 Mini\*
+* GPT-5 Nano\*
+* GPT-4.1\*
+* GPT-4.1 Mini\*
+* GPT-4.1 Nano\*
+* GPT-4o\*
+* GPT-4o Mini\*
+* GPT-4\*
+* GPT-4 Turbo\*
+* GPT-3.5 Turbo\*
+
+\*Available only for enterprise workspaces with a BAA.
 
 #### Hosted by ElevenLabs
 
 * Qwen3.5-397b-a17b
+* GLM-5.2
 
 Qwen3.5-397b-a17b is not currently available in non-US residency workspaces that use ZRM.
 
@@ -98,17 +133,17 @@ When working with Zero Retention Mode agents:
 #### LLMs (except the available LLMs as described above) are disabled in the UI
 
 ![Redacted conversation analysis showing Zero Retention Mode in
-action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/01ba5fbc3d5d4a06a127f488d818428304c3f0d9500fd7931a7e4c05f8f15dab/assets/images/conversational-ai/hipaa-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260904%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260904T072909Z&X-Amz-Expires=604800&X-Amz-Signature=3a02fca1f4f44bab171c69ccd797c8af1f93dd9a05413c707d1520b8d93bc9f3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/01ba5fbc3d5d4a06a127f488d818428304c3f0d9500fd7931a7e4c05f8f15dab/assets/images/conversational-ai/hipaa-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T100017Z&X-Amz-Expires=604800&X-Amz-Signature=4b982649dd8624f6a69bcc62a0e57ed69a6cd6a8eada17e7af3a7cdb19d7a918&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Content is redacted from content history
 
 ![Redacted conversation history showing Zero Retention Mode in
-action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/af6abcc7d19b503a11e2daa6f9ca41eaab25be1b06417f448338ca3c4ef0b63f/assets/images/conversational-ai/redacted.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260904%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260904T072909Z&X-Amz-Expires=604800&X-Amz-Signature=be9aaf7d54d3ee0931d01c81dfacd647e6cfbc124c197bdeb471f4f4f7073607&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/af6abcc7d19b503a11e2daa6f9ca41eaab25be1b06417f448338ca3c4ef0b63f/assets/images/conversational-ai/redacted.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T100017Z&X-Amz-Expires=604800&X-Amz-Signature=335aa66e980c081894c68dea679eb129ac21873bb4c6945e98aeec88a444b1e5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Conversation analysis is limited
 
 ![Redacted conversation analysis showing HIPAA compliance in
-action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7dd246148456ae24c454a9f55d70f730fc1183b1a0b3270c9191d259af5081bb/assets/images/conversational-ai/redacted-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260904%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260904T072909Z&X-Amz-Expires=604800&X-Amz-Signature=74ce230b68d6a4ac682dc85c3b2b66d8e6398763521cc07cbbe2c9cc15c79e6b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7dd246148456ae24c454a9f55d70f730fc1183b1a0b3270c9191d259af5081bb/assets/images/conversational-ai/redacted-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T100017Z&X-Amz-Expires=604800&X-Amz-Signature=8181268153faac214f50553f919cff1948650020d95918f3b155531189d2b3d6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### API restrictions are enforced
 
@@ -118,9 +153,9 @@ API calls attempting to use unavailable LLMs will receive an HTTP 400 error. Ana
 
 #### Can I use any LLM if I am subject to HIPAA?
 
-No. In such case, you can only use LLMs from the approved list. Attempts to use other LLMs will
-produce an error. You can always use a custom LLM if you need a specific model not on the
-allowlist.
+No. You can only use models on the allowlist for your residency and workspace type. Attempts to
+use other LLMs return an error. Use a [custom LLM](/docs/eleven-agents/customization/llm/custom-llm) if you need a model that is not hosted on
+the allowlist, and complete the Custom LLM steps in the note above.
 
 #### Can I execute a BAA with ElevenLabs if I am subject to HIPAA?
 

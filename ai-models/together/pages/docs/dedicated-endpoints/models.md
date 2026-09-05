@@ -47,6 +47,7 @@ The response looks like this:
           "profileId": "cfg_a",
           "certifiedConfigRevisionId": "cr_certified",
           "certifiedModelRevisionId": "rv_snap",
+          "modelName": "zai-org/GLM-5.2-FP8",
           "config": "projects/proj_cfg/configs/cr_certified",
           "model": "projects/proj_weights/models/ml_weight/revisions/rv_snap",
           "parallelism": "TP8",
@@ -74,6 +75,7 @@ Each deployment profile includes these fields:
 
 | Field         | Description                                                                                                                                                                                                                                                                                                                                                                                     |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `modelName`   | Name of the deploy model this profile references (`<project_slug>/<model_name>`). This is the model name you pass when you deploy, and it identifies which precision weight the profile uses (for example `zai-org/GLM-5.2-FP8`).                                                                                                                                                               |
 | `config`      | Resource name of the certified config revision: `projects/{project_id}/configs/{config_revision_id}`. `{project_id}` is the config's owning project, which is often a platform project rather than your project. Empty when the profile has no config pinned or its owning project is unresolved.                                                                                               |
 | `model`       | Resource name of the deployable weight model for this profile (the quantization-specific build, not the architecture's base model): `projects/{project_id}/models/{model_id}[/revisions/{revision_id}]`. This field also exposes the deploy model ID, which the bare `certifiedModelRevisionId` alone does not. Empty when the profile has no model pinned or its owning project is unresolved. |
 | `parallelism` | The catalog's free-form parallelism spec (for example `TP8`, `TP4`, `EP`, or `PD`). Not every value is a tensor-parallel degree.                                                                                                                                                                                                                                                                |

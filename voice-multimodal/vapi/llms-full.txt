@@ -251,6 +251,7 @@
 - [Definitions](https://docs.vapi.ai/glossary.md): Useful terms and definitions for Vapi & voice AI applications.
 - [RSS Feed](https://docs.vapi.ai/rss-feed.md): Stay updated with the latest incidents from Vapi or third party providers
 - [Data Flow](https://docs.vapi.ai/security-and-privacy/data-flow.md): How data flows through Vapi's voice pipeline. What's processed in real time, what's stored by default, and how custom storage or custom model servers change where data lives.
+- [EU region and data residency](https://docs.vapi.ai/security-and-privacy/eu-region.md): Build in Vapi's EU region: the EU dashboard, API, and SIP endpoints, the outbound IP addresses to allowlist, and keeping your organization in-region.
 - [API keys](https://docs.vapi.ai/security-and-privacy/api-keys.md): API keys authenticate requests to Vapi. Learn where to find public and private keys, choose the correct type, restrict access, and store each key securely.
 - [Single Sign-On (SSO)](https://docs.vapi.ai/security-and-privacy/sso.md): Let your team access Vapi through your identity provider using SAML or OIDC.
 - [JWT Authentication](https://docs.vapi.ai/customization/jwt-authentication.md): Secure API authentication guide
@@ -276,6 +277,7 @@
 
 - API reference > Assistants [List Assistants](https://docs.vapi.ai/api-reference/assistants/list.md)
 - API reference > Assistants [Create Assistant](https://docs.vapi.ai/api-reference/assistants/create.md)
+- API reference > Assistants [Validate Background Sound URL](https://docs.vapi.ai/api-reference/assistants/assistant-controller-validate-background-sound-url.md)
 - API reference > Assistants [Get Assistant](https://docs.vapi.ai/api-reference/assistants/get.md)
 - API reference > Assistants [Delete Assistant](https://docs.vapi.ai/api-reference/assistants/delete.md)
 - API reference > Assistants [Update Assistant](https://docs.vapi.ai/api-reference/assistants/update.md)

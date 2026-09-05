@@ -12,19 +12,17 @@ Pinecone Assistant limits vary based on [subscription plan](https://www.pinecone
 
 Object limits are restrictions on the number or size of assistant-related objects. Limits below are scoped **per organization** except for **Assistants per project**, which is scoped per project.
 
-| Metric                              | Starter plan      | Builder plan      | Standard plan | Enterprise plan |
-| :---------------------------------- | :---------------- | :---------------- | :------------ | :-------------- |
-| Assistants per project              | 5                 | 200               | Unlimited     | Unlimited       |
-| File storage per org                | 1 GB              | 3 GB              | Unlimited     | Unlimited       |
-| Chat input tokens per org           | 500,000 / month\* | 2,000,000 / month | Unlimited     | Unlimited       |
-| Chat output tokens per org          | 300,000 / month   | 1,000,000 / month | Unlimited     | Unlimited       |
-| Context retrieval tokens per org    | 500,000 / month   | 2,000,000 / month | Unlimited     | Unlimited       |
-| Ingestion units per org             | 1,000 / month     | 10,000 / month    | Unlimited     | Unlimited       |
-| File size (.docx, .json, .md, .txt) | 10 MB             | 10 MB             | 10 MB         | 10 MB           |
-| File size (.pdf)                    | 10 MB             | 50 MB             | 100 MB        | 100 MB          |
-| Metadata size per file              | 16 KB             | 16 KB             | 16 KB         | 16 KB           |
-
-*\*1,000,000 input tokens/month to explore [Marketplace apps](/guides/marketplace) until June 30, 2026.*
+| Metric                              | Starter plan    | Builder plan      | Standard plan | Enterprise plan |
+| :---------------------------------- | :-------------- | :---------------- | :------------ | :-------------- |
+| Assistants per project              | 5               | 200               | Unlimited     | Unlimited       |
+| File storage per org                | 1 GB            | 3 GB              | Unlimited     | Unlimited       |
+| Chat input tokens per org           | 500,000 / month | 2,000,000 / month | Unlimited     | Unlimited       |
+| Chat output tokens per org          | 300,000 / month | 1,000,000 / month | Unlimited     | Unlimited       |
+| Context retrieval tokens per org    | 500,000 / month | 2,000,000 / month | Unlimited     | Unlimited       |
+| Ingestion units per org             | 1,000 / month   | 10,000 / month    | Unlimited     | Unlimited       |
+| File size (.docx, .json, .md, .txt) | 10 MB           | 10 MB             | 10 MB         | 10 MB           |
+| File size (.pdf)                    | 10 MB           | 50 MB             | 100 MB        | 100 MB          |
+| Metadata size per file              | 16 KB           | 16 KB             | 16 KB         | 16 KB           |
 
 Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal) (currently in [public preview](/release-notes/feature-availability)):
 

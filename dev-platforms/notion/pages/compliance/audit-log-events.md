@@ -173,6 +173,8 @@ Events are split into the following categories:
 * **Membership requests toggled**: That a user has enabled or disabled new workspace membership requests.
 * **Monday.com data fetched**: That a Notion admin fetched Monday.com data on behalf of a workspace user for Monday.com data importer triage/debugging.
 * **Notion AI toggled for workspace.**: That a user has enabled or disabled Notion AI in a workspace.
+* **Notion MCP personal access token setting updated**: That a group's ability to use personal access tokens with Notion MCP was updated.
+* **Notion MCP personal access token settings updated**: That the workspace policy controlling who can use personal access tokens with Notion MCP was updated.
 * **Page access requests toggled**: That a user has enabled or disabled page access requests from non-workspace-members.
 * **Pages to other workspaces toggled**: That a workspace owner has either disabled or enabled moving pages to other workspaces.
 * **People cards toggled**: That the people hover card setting was toggled.

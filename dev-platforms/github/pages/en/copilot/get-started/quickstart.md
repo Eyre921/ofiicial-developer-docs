@@ -8,7 +8,7 @@ path: en/copilot/get-started/quickstart
 
 Quickly learn how to use GitHub Copilot.
 
-This quickstart covers using Copilot on the GitHub website, in IDEs, and in Windows Terminal. To try an agent-driven workflow in the GitHub Copilot app, see [Getting started with the GitHub Copilot app](/en/copilot/how-tos/github-copilot-app/getting-started).
+This quickstart covers using Copilot on the GitHub website, in IDEs, and in Windows Terminal. To try an agent-driven workflow in the GitHub Copilot app, see [Getting started with the GitHub Copilot app](/en/copilot/get-started/quickstart-copilot-app).
 
 ## Introduction
 

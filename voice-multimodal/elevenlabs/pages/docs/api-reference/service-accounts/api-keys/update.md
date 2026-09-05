@@ -52,27 +52,6 @@ Successful Response
 **Request**
 
 ```json
-{
-  "is_enabled": true,
-  "name": "Analytics Service Key",
-  "permissions": [
-    "text_to_speech",
-    "models_read",
-    "voices_read",
-    "workspace_read"
-  ],
-  "character_limit": 500000,
-  "allowed_ips": [
-    "192.168.1.0/24",
-    "203.0.113.42"
-  ],
-  "third_party_disable_allowed": false
-}
-```
-
-**Response**
-
-```json
 {}
 ```
 
@@ -83,22 +62,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.serviceAccounts.apiKeys.update("service_account_user_id", "api_key_id", {
-        isEnabled: true,
-        name: "Analytics Service Key",
-        permissions: [
-            "text_to_speech",
-            "models_read",
-            "voices_read",
-            "workspace_read",
-        ],
-        characterLimit: 500000,
-        allowedIps: [
-            "192.168.1.0/24",
-            "203.0.113.42",
-        ],
-        thirdPartyDisableAllowed: false,
-    });
+    await client.serviceAccounts.apiKeys.update("service_account_user_id", "api_key_id", {});
 }
 main();
 
@@ -112,20 +76,6 @@ client = ElevenLabs()
 client.service_accounts.api_keys.update(
     service_account_user_id="service_account_user_id",
     api_key_id="api_key_id",
-    is_enabled=True,
-    name="Analytics Service Key",
-    permissions=[
-        "text_to_speech",
-        "models_read",
-        "voices_read",
-        "workspace_read"
-    ],
-    character_limit=500000,
-    allowed_ips=[
-        "192.168.1.0/24",
-        "203.0.113.42"
-    ],
-    third_party_disable_allowed=False,
 )
 
 ```
@@ -144,7 +94,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys/api_key_id"
 
-	payload := strings.NewReader("{\n  \"is_enabled\": true,\n  \"name\": \"Analytics Service Key\",\n  \"permissions\": [\n    \"text_to_speech\",\n    \"models_read\",\n    \"voices_read\",\n    \"workspace_read\"\n  ],\n  \"character_limit\": 500000,\n  \"allowed_ips\": [\n    \"192.168.1.0/24\",\n    \"203.0.113.42\"\n  ],\n  \"third_party_disable_allowed\": false\n}")
+	payload := strings.NewReader("{}")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -172,7 +122,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"is_enabled\": true,\n  \"name\": \"Analytics Service Key\",\n  \"permissions\": [\n    \"text_to_speech\",\n    \"models_read\",\n    \"voices_read\",\n    \"workspace_read\"\n  ],\n  \"character_limit\": 500000,\n  \"allowed_ips\": [\n    \"192.168.1.0/24\",\n    \"203.0.113.42\"\n  ],\n  \"third_party_disable_allowed\": false\n}"
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -184,7 +134,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys/api_key_id")
   .header("Content-Type", "application/json")
-  .body("{\n  \"is_enabled\": true,\n  \"name\": \"Analytics Service Key\",\n  \"permissions\": [\n    \"text_to_speech\",\n    \"models_read\",\n    \"voices_read\",\n    \"workspace_read\"\n  ],\n  \"character_limit\": 500000,\n  \"allowed_ips\": [\n    \"192.168.1.0/24\",\n    \"203.0.113.42\"\n  ],\n  \"third_party_disable_allowed\": false\n}")
+  .body("{}")
   .asString();
 ```
 
@@ -195,22 +145,7 @@ require_once('vendor/autoload.php');
 $client = new \GuzzleHttp\Client();
 
 $response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys/api_key_id', [
-  'body' => '{
-  "is_enabled": true,
-  "name": "Analytics Service Key",
-  "permissions": [
-    "text_to_speech",
-    "models_read",
-    "voices_read",
-    "workspace_read"
-  ],
-  "character_limit": 500000,
-  "allowed_ips": [
-    "192.168.1.0/24",
-    "203.0.113.42"
-  ],
-  "third_party_disable_allowed": false
-}',
+  'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
   ],
@@ -225,7 +160,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys/api_key_id");
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"is_enabled\": true,\n  \"name\": \"Analytics Service Key\",\n  \"permissions\": [\n    \"text_to_speech\",\n    \"models_read\",\n    \"voices_read\",\n    \"workspace_read\"\n  ],\n  \"character_limit\": 500000,\n  \"allowed_ips\": [\n    \"192.168.1.0/24\",\n    \"203.0.113.42\"\n  ],\n  \"third_party_disable_allowed\": false\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -233,14 +168,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = [
-  "is_enabled": true,
-  "name": "Analytics Service Key",
-  "permissions": ["text_to_speech", "models_read", "voices_read", "workspace_read"],
-  "character_limit": 500000,
-  "allowed_ips": ["192.168.1.0/24", "203.0.113.42"],
-  "third_party_disable_allowed": false
-] as [String : Any]
+let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

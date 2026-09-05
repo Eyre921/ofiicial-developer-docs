@@ -1,5 +1,5 @@
 ---
-title: "Troubleshooting"
+title: "Troubleshoot the Agent SDK"
 source: https://code.claude.com/docs/en/agent-sdk/troubleshooting
 path: agent-sdk/troubleshooting
 ---

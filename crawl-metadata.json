@@ -3,14 +3,14 @@
     "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
-    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15006 milliseconds\n"
   },
   "ai-models/cohere": {
     "pages": 2,
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15015 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
     "pages": 191,
@@ -23,7 +23,7 @@
     "status": "error: curl failed (22) for https://developers.openai.com/api/docs/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/together": {
-    "pages": 339,
+    "pages": 340,
     "status": "ok"
   },
   "ai-models/fireworks": {
@@ -39,7 +39,7 @@
     "status": "ok"
   },
   "agent-frameworks/crewai": {
-    "pages": 234,
+    "pages": 236,
     "status": "ok"
   },
   "ai-models/anthropic-api": {
@@ -47,7 +47,7 @@
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1165,
+    "pages": 1166,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -59,7 +59,7 @@
     "status": "ok"
   },
   "vector-db/pinecone": {
-    "pages": 1064,
+    "pages": 589,
     "status": "ok"
   },
   "vector-db/qdrant": {
@@ -86,7 +86,8 @@
     "status": "ok"
   },
   "dev-platforms/prisma": {
-    "status": "error: curl failed (16) for https://www.prisma.io/docs/llms-full.txt: curl: (28) Operation timed out after 90001 milliseconds with 3028992 out of 5156375 bytes received\ncurl: (16) Error in the HTTP2 framing layer\n"
+    "pages": 0,
+    "status": "ok"
   },
   "dev-platforms/cloudflare": {
     "pages": 0,
@@ -101,7 +102,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -116,7 +117,7 @@
     "status": "ok"
   },
   "dev-platforms/turso": {
-    "pages": 499,
+    "pages": 278,
     "status": "ok"
   },
   "dev-platforms/upstash": {
@@ -151,7 +152,7 @@
     "status": "ok"
   },
   "dev-platforms/notion": {
-    "pages": 435,
+    "pages": 244,
     "status": "ok"
   },
   "dev-platforms/twilio": {
@@ -194,7 +195,7 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 412,
+    "pages": 415,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
@@ -202,8 +203,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1296,
+    "pages": 1298,
     "status": "ok"
   },
-  "_last_crawl": "2026-09-04T11:30:58Z"
+  "_last_crawl": "2026-09-05T11:31:01Z"
 }

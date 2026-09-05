@@ -44138,6 +44138,7 @@ The following optional provider options are available for OpenAI completion mode
 
 | Model                 | Image Input         | Audio Input         | Object Generation   | Tool Usage          |
 | --------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gpt-6-astra`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.6`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.6-luna`        | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.6-sol`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -70249,6 +70250,69 @@ const tools = await mcpClient.tools();
 
 This approach is simpler to implement and automatically stays in sync with server changes. However, you won't have TypeScript type safety during development, and all tools from the server will be loaded
 
+### Tool Annotations and Approval
+
+MCP servers can describe tool behavior with annotations such as
+`readOnlyHint`, `destructiveHint`, `idempotentHint`, and `openWorldHint`. The
+MCP client exposes these annotations on each tool's `metadata.annotations` and
+on the resulting tool call's `toolMetadata.annotations`.
+
+Annotations are untrusted, server-provided hints. The MCP client does not turn
+them into an approval policy automatically. Applications should combine them
+with deterministic controls such as tool allowlists, scoped credentials, and
+their own [`needsApproval`](/docs/ai-sdk-core/tools-and-tool-calling#tool-execution-approval)
+policy.
+
+The following conservative policy allows tools to run automatically only when
+the server explicitly marks them as read-only. Tools with `readOnlyHint: false`
+or no `readOnlyHint` require user approval:
+
+```typescript
+import { type McpProviderMetadata } from '@ai-sdk/mcp';
+
+const mcpTools = await mcpClient.tools();
+const tools = Object.fromEntries(
+  Object.entries(mcpTools).map(([name, mcpTool]) => {
+    const annotations = (mcpTool.metadata as McpProviderMetadata | undefined)
+      ?.annotations;
+
+    return [
+      name,
+      {
+        ...mcpTool,
+        needsApproval: annotations?.readOnlyHint !== true,
+      },
+    ];
+  }),
+);
+
+const result = streamText({
+  model: __MODEL__,
+  tools,
+  prompt,
+});
+```
+
+See the
+[local tool annotations example](https://github.com/vercel/ai/tree/main/examples/mcp/src/tool-annotations)
+for a complete annotated MCP server and application-layer approval
+configuration. Start the server and client in separate terminals:
+
+```bash
+cd examples/mcp
+pnpm server:tool-annotations
+```
+
+```bash
+cd examples/mcp
+pnpm client:tool-annotations
+```
+
+Ask the client to read, delete, or create a note. The read-only tool executes
+immediately. The destructive and unannotated tools prompt for approval; after
+you enter `y` or `n`, the client sends the decision back and prints the model's
+response.
+
 ### Schema Definition
 
 For better type safety and control, you can define the tools and their input schemas explicitly in your client code:
@@ -86401,6 +86465,7 @@ The following optional provider options are available for OpenAI completion mode
 
 | Model                 | Image Input         | Audio Input         | Object Generation   | Tool Usage          |
 | --------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gpt-6-astra`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.6`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.6-luna`        | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.6-sol`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -89811,6 +89876,13 @@ You can use the following optional settings to customize the Open Responses prov
 
   Custom [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) implementation.
   Defaults to the global `fetch` function.
+
+- **strictResponseInput** _boolean_
+
+  Serializes assistant history using strict OpenAI Responses input schemas.
+  Assistant messages without an item ID are sent as easy input messages, while
+  messages with a genuine provider item ID are sent as complete output items.
+  Defaults to `false`.
 
 ## Language Models
 
@@ -116617,7 +116689,9 @@ The AI SDK provides built-in loop control through two parameters: `stopWhen` for
 
 ## Stop Conditions
 
-The `stopWhen` parameter controls when to stop execution when there are tool results in the last step. By default, agents stop after 20 steps using `isStepCount(20)`. This default is a safety measure to prevent runaway loops that could result in excessive API calls and costs.
+The `stopWhen` parameter controls when to stop execution when there are tool results in the last step. By default, `ToolLoopAgent` stops after 20 steps using `isStepCount(20)`. This default is a safety measure to prevent runaway loops that could result in excessive API calls and costs.
+
+`WorkflowAgent` does not apply a default step limit. It continues until the model stops calling tools or another natural termination condition is met. Configure an explicit condition such as `isStepCount(20)` when you need to bound its model calls. See [WorkflowAgent Loop Control](/docs/agents/workflow-agent#loop-control) for details.
 
 When you provide `stopWhen`, the agent continues executing after tool calls until a stopping condition is met. When the condition is an array, execution stops when any of the conditions are met.
 
@@ -116640,7 +116714,7 @@ const agent = new ToolLoopAgent({
   tools: {
     // your tools
   },
-  stopWhen: isStepCount(50), // Increasing the default of 20 to 50.
+  stopWhen: isStepCount(50), // Increase ToolLoopAgent's default from 20 to 50.
 });
 
 const result = await agent.generate({
@@ -116650,7 +116724,7 @@ const result = await agent.generate({
 
 ### Run Until Finished
 
-If you want the agent to run until the model naturally stops making tool calls, use `isLoopFinished()`. This removes the default step limit:
+If you want a `ToolLoopAgent` to run until the model naturally stops making tool calls, use `isLoopFinished()`. This removes its default step limit:
 
 ```ts
 import { ToolLoopAgent, isLoopFinished } from 'ai';
@@ -119192,6 +119266,16 @@ The stream-level value overrides the constructor default.
 
 ## Loop Control
 
+Unlike `ToolLoopAgent`, `WorkflowAgent` does not apply a default step limit.
+When `stopWhen` is omitted, it continues until the model stops calling tools or
+another natural termination condition is met.
+
+<Note>
+  A model that repeatedly calls tools can make an unlimited number of model
+  calls. Configure an explicit stop condition when you need to bound execution
+  time and cost.
+</Note>
+
 Control how many steps the agent can take:
 
 ```ts
@@ -119203,7 +119287,8 @@ const result = await agent.stream({
 });
 ```
 
-If you want the agent to keep running until it has finished calling tools, you can also use `isLoopFinished()`:
+Omitting `stopWhen` already lets `WorkflowAgent` continue until it has finished
+calling tools. You can make that intent explicit with `isLoopFinished()`:
 
 ```ts
 import { isLoopFinished } from 'ai';
@@ -119214,9 +119299,10 @@ const result = await agent.stream({
 });
 ```
 
-`isLoopFinished()` lets the agent run until all tool calls have completed, but you should still pair it with `maxSteps` to avoid runaway loops. See https://ai-sdk.dev/v7/docs/reference/ai-sdk-core/loop-finished#isloopfinished.
-
-By default, the agent loops until the model stops calling tools (no maximum).
+`isLoopFinished()` is equivalent to omitting `stopWhen` for `WorkflowAgent`.
+Use it with caution because a model that keeps calling tools can run
+indefinitely and incur significant costs. See
+[`isLoopFinished()`](/docs/reference/ai-sdk-core/loop-finished).
 
 ## Structured Output
 
@@ -119392,8 +119478,11 @@ const agent = new WorkflowAgent({
     console.log(`Calling tool: ${toolCall.toolName}`);
   },
 
-  onToolExecutionEnd({ toolCall, toolOutput }) {
-    console.log(`Tool finished: ${toolCall.toolName}`);
+  onToolExecutionEnd({ toolCall, success, durationMs }) {
+    console.log(`Tool finished: ${toolCall.toolName}`, {
+      success,
+      durationMs,
+    });
   },
 
   onStepEnd({ usage, finishReason }) {
@@ -119405,6 +119494,12 @@ const agent = new WorkflowAgent({
   },
 });
 ```
+
+For concrete tool sets, `WorkflowAgentToolExecutionStartEvent` and
+`WorkflowAgentToolExecutionEndEvent` preserve the relationship between each
+tool name and its input, context, and output types. TypeScript narrows the
+nested `toolCall` directly, but use `Extract` or a user-defined type guard when
+you need to narrow the correlated `toolContext` or `output` fields by tool name.
 
 Tool input callbacks (`onInputStart`, `onInputDelta`, and
 `onInputAvailable`) are also preserved by `WorkflowAgent`. The model call runs
@@ -120859,7 +120954,9 @@ const { output } = await generateText({
 
 ### `Output.array()`
 
-Use `Output.array({ element })` to specify that you expect an array of typed objects from the model, where each element should conform to a schema (defined in the `element` property).
+Use `Output.array({ element, minItems, maxItems })` to specify that you expect
+an array of typed objects from the model. Each element must conform to the
+`element` schema, and the optional bounds constrain the number of elements.
 
 ```ts
 import { generateText, Output } from 'ai';
@@ -120873,6 +120970,8 @@ const { output } = await generateText({
       temperature: z.number(),
       condition: z.string(),
     }),
+    minItems: 2,
+    maxItems: 2,
   }),
   prompt: 'List the weather for San Francisco and Paris.',
 });
@@ -120882,6 +120981,11 @@ const { output } = await generateText({
 //   { location: 'Paris', temperature: 65, condition: 'Cloudy' },
 // ]
 ```
+
+`minItems` and `maxItems` must be non-negative integers, and `minItems` cannot
+be greater than `maxItems`. Use the same value for both options to require an
+exact length. The bounds are sent to providers as part of the structured output
+schema when supported, and the AI SDK independently validates the final output.
 
 When streaming arrays with `streamText`, you can use `elementStream` to receive each completed element as it is generated:
 
@@ -120909,7 +121013,10 @@ for await (const hero of elementStream) {
 <Note>
   Each element emitted by `elementStream` is complete and validated against your
   element schema. This differs from `partialOutputStream`, which streams the
-  entire partial array including incomplete elements.
+  entire partial array including incomplete elements. If the model generates
+  more than `maxItems`, `elementStream` errors before emitting the first excess
+  element. This does not automatically abort provider generation, and the final
+  `output` promise rejects.
 </Note>
 
 ### `Output.choice()`
@@ -121060,7 +121167,7 @@ const { output } = await generateText({
 This works with all output types that support structured generation:
 
 - `Output.object({ name, description, schema })`
-- `Output.array({ name, description, element })`
+- `Output.array({ name, description, element, minItems, maxItems })`
 - `Output.choice({ name, description, options })`
 - `Output.json({ name, description })`
 
@@ -123029,6 +123136,67 @@ const tools = await mcpClient.tools();
 
 This approach is simpler to implement and automatically stays in sync with server changes. However, you won't have TypeScript type safety during development, and all tools from the server will be loaded
 
+### Tool Annotations and Approval
+
+MCP servers can describe tool behavior with annotations such as
+`readOnlyHint`, `destructiveHint`, `idempotentHint`, and `openWorldHint`. The
+MCP client exposes these annotations on each tool's `metadata.annotations` and
+on the resulting tool call's `toolMetadata.annotations`.
+
+Annotations are untrusted, server-provided hints. The MCP client does not turn
+them into an approval policy automatically. Applications should combine them
+with deterministic controls such as tool allowlists, scoped credentials, and
+their own [`toolApproval`](/docs/agents/tool-approvals) policy.
+
+The following conservative policy allows tools to run automatically only when
+the server explicitly marks them as read-only. Tools with `readOnlyHint: false`
+or no `readOnlyHint` require user approval:
+
+```typescript
+import { type McpProviderMetadata } from '@ai-sdk/mcp';
+
+const result = streamText({
+  model: __MODEL__,
+  tools,
+  toolApproval: ({ toolCall }) => {
+    const annotations = (
+      toolCall.toolMetadata as McpProviderMetadata | undefined
+    )?.annotations;
+
+    return annotations?.readOnlyHint === true
+      ? 'not-applicable'
+      : {
+          type: 'user-approval',
+          reason:
+            annotations?.destructiveHint === true
+              ? 'The MCP server marks this tool as destructive.'
+              : 'The MCP server does not mark this tool as read-only.',
+        };
+  },
+  prompt,
+});
+```
+
+See the
+[local tool annotations example](https://github.com/vercel/ai/tree/main/examples/mcp/src/tool-annotations)
+for a complete annotated MCP server and application-layer approval
+configuration. Start the server and client in separate terminals:
+
+```bash
+cd examples/mcp
+pnpm server:tool-annotations
+```
+
+```bash
+cd examples/mcp
+pnpm client:tool-annotations
+```
+
+Ask the client to read, delete, or create a note. The read-only tool executes
+immediately. The destructive and unannotated tools prompt for approval; after
+you enter `y` or `n`, the client sends the decision back and prints the model's
+response.
+
 ### Schema Definition
 
 For better type safety and control, you can define the tools and their input schemas explicitly in your client code:
@@ -123056,7 +123224,7 @@ This approach provides full TypeScript type safety and IDE autocompletion, letti
 
 ### Typed Tool Outputs
 
-When MCP servers return `structuredContent` (per the [MCP specification](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#structured-content)), you can define an `outputSchema` to get typed tool results:
+When MCP servers return `structuredContent` (per the [MCP specification](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#structured-content)), you can define an `outputSchema` to get typed tool results:
 
 ```typescript
 import { z } from 'zod';
@@ -123092,6 +123260,8 @@ When `outputSchema` is provided:
 - You get full TypeScript type safety for the result
 
 If the server doesn't return `structuredContent`, the client falls back to parsing JSON from the text content. If neither is available or validation fails, an error is thrown.
+
+If a server returns `structuredContent` without the backwards-compatible `content` field, the client adds a text content block containing the serialized JSON before returning the result. This compatibility behavior handles servers that omit the text mirror recommended by the MCP specification.
 
 <Note>
   Without `outputSchema`, the tool returns the raw `CallToolResult` object
@@ -125397,6 +125567,7 @@ This error occurs when the AI provider fails to generate an image. It can arise 
 
 The error preserves the following information to help you log the issue:
 
+- `calls`: Results from the underlying image model calls, including generated images, provider metadata, response metadata, warnings, and usage.
 - `responses`: Metadata about the image model responses, including timestamp, model, and headers.
 - `cause`: The cause of the error. You can use this for more detailed error handling
 
@@ -125410,6 +125581,12 @@ try {
     console.log('NoImageGeneratedError');
     console.log('Cause:', error.cause);
     console.log('Responses:', error.responses);
+
+    for (const call of error.calls ?? []) {
+      console.log('Provider metadata:', call.providerMetadata);
+      console.log('Warnings:', call.warnings);
+      console.log('Usage:', call.usage);
+    }
   }
 }
 ```
@@ -126098,41 +126275,42 @@ try {
 
 ## Transcription Models
 
-| Provider                                                                            | Model                    |
-| ----------------------------------------------------------------------------------- | ------------------------ |
-| [OpenAI](/providers/ai-sdk-providers/openai#transcription-models)                   | `whisper-1`              |
-| [OpenAI](/providers/ai-sdk-providers/openai#transcription-models)                   | `gpt-4o-transcribe`      |
-| [OpenAI](/providers/ai-sdk-providers/openai#transcription-models)                   | `gpt-4o-mini-transcribe` |
-| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#transcription-models)           | `scribe_v1`              |
-| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#transcription-models)           | `scribe_v1_experimental` |
-| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#transcription-models)           | `scribe_v2`              |
-| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#streaming-transcription-models) | `scribe_v2_realtime`     |
-| [Groq](/providers/ai-sdk-providers/groq#transcription-models)                       | `whisper-large-v3-turbo` |
-| [Groq](/providers/ai-sdk-providers/groq#transcription-models)                       | `whisper-large-v3`       |
-| [Mistral](/providers/ai-sdk-providers/mistral#transcription-models)                 | `voxtral-mini-latest`    |
-| [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `whisper-1`              |
-| [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `gpt-4o-transcribe`      |
-| [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `gpt-4o-mini-transcribe` |
-| [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                    | `machine`                |
-| [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                    | `low_cost`               |
-| [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                    | `fusion`                 |
-| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `base` (+ variants)      |
-| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `enhanced` (+ variants)  |
-| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `nova` (+ variants)      |
-| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `nova-2` (+ variants)    |
-| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `nova-3` (+ variants)    |
-| [Gladia](/providers/ai-sdk-providers/gladia#transcription-models)                   | `default`                |
-| [AssemblyAI](/providers/ai-sdk-providers/assemblyai#transcription-models)           | `universal-3-5-pro`      |
-| [AssemblyAI](/providers/ai-sdk-providers/assemblyai#transcription-models)           | `universal-3-pro`        |
-| [Fal](/providers/ai-sdk-providers/fal#transcription-models)                         | `whisper`                |
-| [Fal](/providers/ai-sdk-providers/fal#transcription-models)                         | `wizper`                 |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#transcription-models)     | `chirp_2`                |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#transcription-models)     | `chirp_3`                |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#transcription-models)     | `telephony`              |
-| [xAI](/providers/ai-sdk-providers/xai#transcription-models)                         | `default`                |
-| [Cartesia](/providers/ai-sdk-providers/cartesia#transcription-models)               | `ink-whisper`            |
-| [Cartesia](/providers/ai-sdk-providers/cartesia#streaming-transcription-models)     | `ink-2`                  |
-| [Fish Audio](/providers/ai-sdk-providers/fish-audio#transcription-models)           | `transcribe-1`           |
+| Provider                                                                            | Model                       |
+| ----------------------------------------------------------------------------------- | --------------------------- |
+| [OpenAI](/providers/ai-sdk-providers/openai#transcription-models)                   | `whisper-1`                 |
+| [OpenAI](/providers/ai-sdk-providers/openai#transcription-models)                   | `gpt-4o-transcribe`         |
+| [OpenAI](/providers/ai-sdk-providers/openai#transcription-models)                   | `gpt-4o-mini-transcribe`    |
+| [OpenAI](/providers/ai-sdk-providers/openai#transcription-models)                   | `gpt-4o-transcribe-diarize` |
+| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#transcription-models)           | `scribe_v1`                 |
+| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#transcription-models)           | `scribe_v1_experimental`    |
+| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#transcription-models)           | `scribe_v2`                 |
+| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#streaming-transcription-models) | `scribe_v2_realtime`        |
+| [Groq](/providers/ai-sdk-providers/groq#transcription-models)                       | `whisper-large-v3-turbo`    |
+| [Groq](/providers/ai-sdk-providers/groq#transcription-models)                       | `whisper-large-v3`          |
+| [Mistral](/providers/ai-sdk-providers/mistral#transcription-models)                 | `voxtral-mini-latest`       |
+| [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `whisper-1`                 |
+| [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `gpt-4o-transcribe`         |
+| [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `gpt-4o-mini-transcribe`    |
+| [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                    | `machine`                   |
+| [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                    | `low_cost`                  |
+| [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                    | `fusion`                    |
+| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `base` (+ variants)         |
+| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `enhanced` (+ variants)     |
+| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `nova` (+ variants)         |
+| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `nova-2` (+ variants)       |
+| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `nova-3` (+ variants)       |
+| [Gladia](/providers/ai-sdk-providers/gladia#transcription-models)                   | `default`                   |
+| [AssemblyAI](/providers/ai-sdk-providers/assemblyai#transcription-models)           | `universal-3-5-pro`         |
+| [AssemblyAI](/providers/ai-sdk-providers/assemblyai#transcription-models)           | `universal-3-pro`           |
+| [Fal](/providers/ai-sdk-providers/fal#transcription-models)                         | `whisper`                   |
+| [Fal](/providers/ai-sdk-providers/fal#transcription-models)                         | `wizper`                    |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#transcription-models)     | `chirp_2`                   |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#transcription-models)     | `chirp_3`                   |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#transcription-models)     | `telephony`                 |
+| [xAI](/providers/ai-sdk-providers/xai#transcription-models)                         | `default`                   |
+| [Cartesia](/providers/ai-sdk-providers/cartesia#transcription-models)               | `ink-whisper`               |
+| [Cartesia](/providers/ai-sdk-providers/cartesia#streaming-transcription-models)     | `ink-2`                     |
+| [Fish Audio](/providers/ai-sdk-providers/fish-audio#transcription-models)           | `transcribe-1`              |
 
 Above are a small subset of the transcription models supported by the AI SDK providers. For more, see the respective provider documentation.
 
@@ -131255,6 +131433,39 @@ try {
 }
 ```
 
+## Lifecycle Callbacks
+
+Configure lifecycle callbacks on `HarnessAgent` to observe agent calls, model
+steps, and tool executions:
+
+```ts
+const agent = new HarnessAgent({
+  harness: claudeCode,
+  sandbox,
+  tools: { weather },
+  onStart: event => console.log('call started', event.callId),
+  onStepStart: event => console.log('step started', event.stepNumber),
+  onLanguageModelCallStart: event =>
+    console.log('model call started', event.modelId),
+  onLanguageModelCallEnd: event =>
+    console.log('model call ended', event.finishReason),
+  onToolExecutionStart: event =>
+    console.log('tool started', event.toolCall.toolName),
+  onToolExecutionEnd: event => console.log('tool ended', event.toolOutput.type),
+  onStepEnd: step => console.log('step ended', step.stepNumber),
+  onEnd: event => console.log('call ended', event.finishReason),
+});
+```
+
+Callbacks configured on individual `generate()` and `stream()` calls are
+invoked in addition to settings callbacks, with settings callbacks invoked
+first. Callback errors are ignored and do not change agent execution.
+
+Harness runtimes execute their built-in tools internally. For those tools,
+`onToolExecutionStart` and `onToolExecutionEnd` describe the logical tool
+lifecycle after the runtime reports the result. The callbacks are still
+delivered before the tool result is published to the result stream.
+
 ## Generate Structured Output
 
 Set `output` when constructing `HarnessAgent` to require the same typed output
@@ -131667,6 +131878,9 @@ console.log(preparation.identity);
 - `id`: optional stable agent identifier.
 - `instructions`: instructions appended to the runtime's system or developer
   prompt when supported, or prepended to the user prompt otherwise.
+- `headers`: additional headers sent with model requests. Headers are fixed at
+  construction time. `authorization`, `x-api-key`, `user-agent`, and
+  `x-client-app` are not allowed.
 - `callOptionsSchema` and `prepareCall`: validate custom call options and derive
   model, skills, instructions, and tools for each new turn.
 - `output`: typed output specification applied to every turn.
@@ -137283,14 +137497,17 @@ export async function POST(req: Request) {
 
   const stream = createUIMessageStream<MyUIMessage>({
     execute: ({ writer }) => {
-      // 1. Send initial status (transient - won't be added to message history)
+      // 1. Start the assistant message before writing any message parts.
+      writer.write({ type: 'start' });
+
+      // 2. Send initial status (transient - won't be added to message history)
       writer.write({
         type: 'data-notification',
         data: { message: 'Processing your request...', level: 'info' },
         transient: true, // This part won't be added to message history
       });
 
-      // 2. Send sources (useful for RAG use cases)
+      // 3. Send sources (useful for RAG use cases)
       writer.write({
         type: 'source',
         value: {
@@ -137302,7 +137519,7 @@ export async function POST(req: Request) {
         },
       });
 
-      // 3. Send data parts with loading state
+      // 4. Send data parts with loading state
       writer.write({
         type: 'data-weather',
         id: 'weather-1',
@@ -137313,7 +137530,7 @@ export async function POST(req: Request) {
         model: __MODEL__,
         messages: await convertToModelMessages(messages),
         onEnd() {
-          // 4. Update the same data part (reconciliation)
+          // 5. Update the same data part (reconciliation)
           writer.write({
             type: 'data-weather',
             id: 'weather-1', // Same ID = update existing part
@@ -137324,7 +137541,7 @@ export async function POST(req: Request) {
             },
           });
 
-          // 5. Send completion notification (transient)
+          // 6. Send completion notification (transient)
           writer.write({
             type: 'data-notification',
             data: { message: 'Request completed', level: 'info' },
@@ -137333,7 +137550,9 @@ export async function POST(req: Request) {
         },
       });
 
-      writer.merge(toUIMessageStream({ stream: result.stream }));
+      writer.merge(
+        toUIMessageStream({ stream: result.stream, sendStart: false }),
+      );
     },
   });
 
@@ -138401,7 +138620,7 @@ To see `WorkflowAgent` in action, check out [these examples](#examples).
       type: 'StopCondition | StopCondition[]',
       isOptional: true,
       description:
-        'Default stop condition for the agent loop. Per-stream values override this default. Use `isLoopFinished()` to let the agent run until all tool calls have completed, but beware of potential runaway loops. See https://ai-sdk.dev/v7/docs/reference/ai-sdk-core/loop-finished#isloopfinished.',
+        'Default stop condition for the agent loop. When omitted, WorkflowAgent has no maximum step count and continues until natural completion. Use `isStepCount()` to bound execution. Per-stream values override this default.',
     },
     {
       name: 'activeTools',
@@ -138570,24 +138789,24 @@ To see `WorkflowAgent` in action, check out [these examples](#examples).
     },
     {
       name: 'onToolExecutionStart',
-      type: 'WorkflowAgentonToolExecutionStartCallback',
+      type: 'WorkflowAgentOnToolExecutionStartCallback',
       isOptional: true,
       description:
         "Callback called right before a tool's execute function runs. If also specified in `stream()`, both callbacks fire (constructor first). Experimental (can break in patch releases).",
       properties: [
         {
-          type: 'ToolExecutionStartEvent',
+          type: 'WorkflowAgentToolExecutionStartEvent',
           parameters: [
-            {
-              name: 'callId',
-              type: 'string',
-              description:
-                'Unique identifier for this generation call, used to correlate events.',
-            },
             {
               name: 'toolCall',
               type: '{ type: "tool-call"; toolCallId: string; toolName: string; input: unknown }',
-              description: 'The tool call being executed.',
+              description:
+                'The tool call being executed. For concrete tool sets, the tool name and input are correlated.',
+            },
+            {
+              name: 'stepNumber',
+              type: 'number',
+              description: 'The current step number, starting at zero.',
             },
             {
               name: 'messages',
@@ -138597,9 +138816,9 @@ To see `WorkflowAgent` in action, check out [these examples](#examples).
             },
             {
               name: 'toolContext',
-              type: 'InferToolContext<TOOLS[toolName]>',
+              type: 'InferToolContext<TOOLS[NAME]> | undefined',
               description:
-                'Tool-specific context object for the tool call that is about to execute. Narrowed to the context type of the individual tool, not the entire tool set.',
+                'The validated context for the tool call. For concrete tool sets, each event union member pairs it with the corresponding tool name.',
             },
           ],
         },
@@ -138607,24 +138826,24 @@ To see `WorkflowAgent` in action, check out [these examples](#examples).
     },
     {
       name: 'onToolExecutionEnd',
-      type: 'WorkflowAgentonToolExecutionEndCallback',
+      type: 'WorkflowAgentOnToolExecutionEndCallback',
       isOptional: true,
       description:
-        "Callback called right after a tool's execute function completes or errors. The `toolOutput` field is a discriminated union: check `toolOutput.type` to determine whether the result is `'tool-result'` or `'tool-error'`. If also specified in `stream()`, both callbacks fire (constructor first). Experimental (can break in patch releases).",
+        "Callback called right after a tool's execute function completes or errors. Check `success` to determine whether `output` or `error` is available. If also specified in `stream()`, both callbacks fire (constructor first). Experimental (can break in patch releases).",
       properties: [
         {
-          type: 'ToolExecutionEndEvent',
+          type: 'WorkflowAgentToolExecutionEndEvent',
           parameters: [
-            {
-              name: 'callId',
-              type: 'string',
-              description:
-                'Unique identifier for this generation call, used to correlate events.',
-            },
             {
               name: 'toolCall',
               type: '{ type: "tool-call"; toolCallId: string; toolName: string; input: unknown }',
-              description: 'The tool call that was executed.',
+              description:
+                'The tool call that was executed. For concrete tool sets, the tool name and input are correlated.',
+            },
+            {
+              name: 'stepNumber',
+              type: 'number',
+              description: 'The current step number, starting at zero.',
             },
             {
               name: 'durationMs',
@@ -138640,15 +138859,29 @@ To see `WorkflowAgent` in action, check out [these examples](#examples).
             },
             {
               name: 'toolContext',
-              type: 'InferToolContext<TOOLS[toolName]>',
+              type: 'InferToolContext<TOOLS[NAME]> | undefined',
               description:
-                'Tool-specific context object for the tool call that just completed. Narrowed to the context type of the individual tool, not the entire tool set.',
+                'The validated context for the tool call. For concrete tool sets, each event union member pairs it with the corresponding tool name.',
             },
             {
-              name: 'toolOutput',
-              type: 'ToolOutput<TOOLS>',
+              name: 'success',
+              type: 'boolean',
               description:
-                "Discriminated union representing the tool execution result. When `type` is `'tool-result'`, the `output` field contains the tool's return value. When `type` is `'tool-error'`, the `error` field contains the error.",
+                'Whether the tool execution succeeded. Discriminates between the output and error event variants.',
+            },
+            {
+              name: 'output',
+              type: 'InferToolOutput<TOOLS[NAME]>',
+              isOptional: true,
+              description:
+                'The tool output. Available when `success` is `true` and correlated with the configured tool.',
+            },
+            {
+              name: 'error',
+              type: 'unknown',
+              isOptional: true,
+              description:
+                'The tool execution error. Available when `success` is `false`.',
             },
           ],
         },
@@ -138811,7 +139044,7 @@ const result = await agent.stream({
       name: 'stopWhen',
       type: 'StopCondition | StopCondition[]',
       isOptional: true,
-      description: 'Condition(s) for ending the agent loop. Use `isLoopFinished()` to let the agent run until all tool calls have completed, but beware of potential runaway loops. See https://ai-sdk.dev/v7/docs/reference/ai-sdk-core/loop-finished#isloopfinished.',
+      description: 'Condition(s) for ending the agent loop. When omitted and no constructor-level condition is configured, WorkflowAgent has no maximum step count and continues until natural completion. Use `isStepCount()` to bound execution.',
     },
 
     {
@@ -138946,14 +139179,14 @@ const result = await agent.stream({
     },
     {
       name: 'onToolExecutionStart',
-      type: 'WorkflowAgentonToolExecutionStartCallback',
+      type: 'WorkflowAgentOnToolExecutionStartCallback',
       isOptional: true,
       description:
         'Per-call onToolExecutionStart callback. If also specified in the constructor, both fire (constructor first).',
     },
     {
       name: 'onToolExecutionEnd',
-      type: 'WorkflowAgentonToolExecutionEndCallback',
+      type: 'WorkflowAgentOnToolExecutionEndCallback',
       isOptional: true,
       description:
         'Per-call onToolExecutionEnd callback. If also specified in the constructor, both fire (constructor first).',
@@ -140343,6 +140576,7 @@ It can arise due to the following reasons:
 ## Properties
 
 - `message`: The error message (optional, defaults to `'No image generated.'`).
+- `calls`: Results from the underlying image model calls, including generated images, provider metadata, response metadata, warnings, and usage (optional).
 - `responses`: Metadata about the image model responses, including timestamp, model, and headers (optional).
 - `cause`: The cause of the error. You can use this for more detailed error handling (optional).
 
@@ -140360,6 +140594,12 @@ try {
     console.log('NoImageGeneratedError');
     console.log('Cause:', error.cause);
     console.log('Responses:', error.responses);
+
+    for (const call of error.calls ?? []) {
+      console.log('Provider metadata:', call.providerMetadata);
+      console.log('Warnings:', call.warnings);
+      console.log('Usage:', call.usage);
+    }
   }
 }
 ```
@@ -147090,6 +147330,7 @@ The following optional provider options are available for OpenAI completion mode
 
 | Model                 | Image Input | Audio Input | Object Generation | Tool Usage |
 | --------------------- | ----------- | ----------- | ----------------- | ---------- |
+| `gpt-6-astra`         | <Check />   | <Cross />   | <Check />         | <Check />  |
 | `gpt-5.6`             | <Check />   | <Cross />   | <Check />         | <Check />  |
 | `gpt-5.6-luna`        | <Check />   | <Cross />   | <Check />         | <Check />  |
 | `gpt-5.6-sol`         | <Check />   | <Cross />   | <Check />         | <Check />  |
@@ -147392,6 +147633,21 @@ const result = await transcribe({
 console.log(result.segments); // Array of segments with startSecond/endSecond
 ```
 
+`gpt-4o-transcribe-diarize` identifies speakers in a recording. It defaults to
+the `diarized_json` response format and automatic chunking:
+
+```ts
+import { transcribe } from 'ai';
+import { openai } from '@ai-sdk/openai';
+
+const result = await transcribe({
+  model: openai.transcription('gpt-4o-transcribe-diarize'),
+  audio: new Uint8Array([1, 2, 3, 4]),
+});
+
+console.log(result.providerMetadata.openai.segments);
+```
+
 The following provider options are available:
 
 - **timestampGranularities** _string[]_
@@ -147416,6 +147672,12 @@ The following provider options are available:
 - **include** _string[]_
   Additional information to include in the transcription response.
 
+- **responseFormat** _'json' | 'verbose_json' | 'diarized_json'_
+  The format of the transcription response. `gpt-4o-transcribe-diarize` defaults to `diarized_json`.
+
+- **chunkingStrategy** _'auto' | object_
+  Controls how the audio is split into chunks. `gpt-4o-transcribe-diarize` defaults to `'auto'`; provide this option to override the default. The object form configures OpenAI server-side VAD with `type: 'server_vad'` and optional `threshold`, `prefixPaddingMs`, and `silenceDurationMs` fields.
+
 - **streaming** _object_
   Options for streaming transcription models such as `gpt-realtime-whisper`.
   Use with `experimental_streamTranscribe`.
@@ -147427,12 +147689,13 @@ The following provider options are available:
 
 ### Model Capabilities
 
-| Model                    | Transcription | Streaming | Duration  | Segments  | Language  |
-| ------------------------ | ------------- | --------- | --------- | --------- | --------- |
-| `whisper-1`              | <Check />     | <Cross /> | <Check /> | <Check /> | <Check /> |
-| `gpt-4o-mini-transcribe` | <Check />     | <Cross /> | <Cross /> | <Cross /> | <Cross /> |
-| `gpt-4o-transcribe`      | <Check />     | <Cross /> | <Cross /> | <Cross /> | <Cross /> |
-| `gpt-realtime-whisper`   | <Cross />     | <Check /> | <Cross /> | <Cross /> | <Cross /> |
+| Model                       | Transcription | Streaming | Duration  | Segments  | Language  |
+| --------------------------- | ------------- | --------- | --------- | --------- | --------- |
+| `whisper-1`                 | <Check />     | <Cross /> | <Check /> | <Check /> | <Check /> |
+| `gpt-4o-mini-transcribe`    | <Check />     | <Cross /> | <Cross /> | <Cross /> | <Cross /> |
+| `gpt-4o-transcribe`         | <Check />     | <Cross /> | <Cross /> | <Cross /> | <Cross /> |
+| `gpt-4o-transcribe-diarize` | <Check />     | <Cross /> | <Check /> | <Check /> | <Cross /> |
+| `gpt-realtime-whisper`      | <Cross />     | <Check /> | <Cross /> | <Cross /> | <Cross /> |
 
 ## Translation Models
 
@@ -150674,6 +150937,13 @@ You can use the following optional settings to customize the Open Responses prov
 
   Custom [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) implementation.
   Defaults to the global `fetch` function.
+
+- **strictResponseInput** _boolean_
+
+  Serializes assistant history using strict OpenAI Responses input schemas.
+  Assistant messages without an item ID are sent as easy input messages, while
+  messages with a genuine provider item ID are sent as complete output items.
+  Defaults to `false`.
 
 ### Endpoint Examples
 
@@ -160437,6 +160707,12 @@ The following models are available through the MaaS provider. You can also pass 
 | `moonshotai/kimi-k2-thinking-maas`             | Moonshot |
 
 <Note>
+  Llama 4 MaaS models default to their 8,192-token output limit when
+  `maxOutputTokens` is not specified. An explicit `maxOutputTokens` value takes
+  precedence.
+</Note>
+
+<Note>
   Model availability depends on your Google Cloud project and region. Check the
   [Vertex AI Model
   Garden](https://console.cloud.google.com/vertex-ai/model-garden) for the
@@ -169684,6 +169960,11 @@ try {
 - `builtinTools`: optional native tool definitions for static typing and exact
   name matching.
 - `mcpServers`: MCP server definitions keyed by server name.
+- `hostToolMcpTransport`: transport used for the harness-owned MCP server that
+  exposes host tools to the ACP implementation. It defaults to `'stdio'`. Set
+  this to `'http'` for implementations that only accept HTTP or SSE MCP servers
+  from the client, which requires the implementation to advertise
+  `agentCapabilities.mcpCapabilities.http`.
 - `authentication`: advertised ACP authentication method, metadata, and client
   capabilities.
 - `auth`: downstream provider authentication mode:
@@ -169706,9 +169987,11 @@ try {
   that use a different location.
 - `instructionMapping`: optional mapping from `HarnessAgent` instructions to
   an implementation's native system or developer prompt. Use `session-meta`
-  for a path below the ACP session request's `_meta` field, or
-  `launch-env-json` for a path within a JSON launch environment variable. When
-  omitted, instructions are prepended to the first user prompt.
+  for a path below the ACP session request's `_meta` field, `launch-env-json`
+  for a path within a JSON launch environment variable, or `filesystem` with a
+  relative `path` to write instructions to a file under the implementation's
+  effective `$HOME`. When omitted, instructions are prepended to the first user
+  prompt.
 - `outputSchemaMapping`: optional implementation-specific mapping from a
   structured output JSON Schema to a path below the ACP `session/prompt`
   request's `_meta` field. ACP does not standardize structured output, so omit
@@ -170238,8 +170521,8 @@ export const grokBuildACPHarness = createACP({
     ];
   },
   instructionMapping: {
-    type: 'session-meta',
-    path: ['rules'],
+    type: 'filesystem',
+    path: '.grok/AGENTS.md',
   },
   providerAuthentication: {
     gateway: {
@@ -170497,6 +170780,10 @@ safe built-in operations internally without sending a permission request.
   error.
 - A changed host-tool catalog requires Grok Build to refresh its ACP MCP tool
   list. If the implementation retains stale tools, the turn fails explicitly.
+- Custom `headers` are not natively supported and only applied via
+  sandbox-external request transformations. When a sandbox without that
+  capability is provided, custom `headers` therefore cannot be passed and are
+  ignored.
 
 ## Related
 
@@ -170894,6 +171181,10 @@ MCP payload and correlates the call with the host-side tool execution.
   error.
 - Cursor ACP does not expose a structured-output metadata mapping, so schema-backed
   structured output is unsupported.
+- Custom `headers` are not natively supported and only applied via
+  sandbox-external request transformations. When a sandbox without that
+  capability is provided, custom `headers` therefore cannot be passed and are
+  ignored.
 
 ## Related
 
@@ -171095,6 +171386,10 @@ or apply its own permission policy without sending an ACP permission request.
   supported, but filtering fx built-ins throws an unsupported-capability error.
 - fx ACP does not expose a structured-output metadata mapping, so schema-backed
   structured output is unsupported.
+- Custom `headers` are not natively supported and only applied via
+  sandbox-external request transformations. When a sandbox without that
+  capability is provided, custom `headers` therefore cannot be passed and are
+  ignored.
 
 ## Related
 

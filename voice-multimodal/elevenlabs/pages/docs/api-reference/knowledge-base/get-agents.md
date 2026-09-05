@@ -63,12 +63,6 @@ Successful Response
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
@@ -76,40 +70,26 @@ Successful Response
   "agents": [
     {
       "type": "available",
-      "access_level": "editor",
-      "created_at_unix_secs": 1685600000,
-      "id": "agent_4a7d9e2b1c3f5g6h",
-      "name": "Customer Support Bot",
+      "access_level": "admin",
+      "created_at_unix_secs": 1,
+      "id": "string",
+      "name": "string",
       "referenced_resource_ids": [
-        "doc_9f8b7c6a2d3e4f1a"
-      ]
-    },
-    {
-      "type": "unknown",
-      "id": "agent_7b8c9d0e1f2a3b4c",
-      "referenced_resource_ids": [
-        "doc_1a2b3c4d5e6f7g8h"
+        "string"
       ]
     }
   ],
-  "has_more": false,
+  "has_more": true,
   "branches": [
     {
-      "agent_id": "agent_4a7d9e2b1c3f5g6h",
-      "agent_name": "Customer Support Bot",
-      "branch_id": "branch_main_001",
-      "branch_name": "Main",
+      "agent_id": "string",
+      "agent_name": "string",
+      "branch_id": "string",
+      "branch_name": "string",
       "is_main": true
-    },
-    {
-      "agent_id": "agent_4a7d9e2b1c3f5g6h",
-      "agent_name": "Customer Support Bot",
-      "branch_id": "branch_dev_002",
-      "branch_name": "Development",
-      "is_main": false
     }
   ],
-  "next_cursor": "cursor_eyJwYWdlIjoxfQ=="
+  "next_cursor": "string"
 }
 ```
 
@@ -142,7 +122,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -151,11 +130,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/dependent-agents"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -178,8 +153,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -190,8 +163,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/dependent-agents")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -201,12 +172,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/dependent-agents', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/dependent-agents');
 
 echo $response->getBody();
 ```
@@ -216,25 +182,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/dependent-agents");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/dependent-agents")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

@@ -64,16 +64,14 @@ fundamental unit of text data for LLMs, roughly equivalent to 4 characters on av
 
 Using your own custom LLM is supported by specifying the endpoint we should make requests to and providing credentials through our secure secret storage. Learn more about [custom LLM integration](/docs/eleven-agents/customization/llm/custom-llm).
 
-With EU data residency enabled, a small number of older Gemini and Claude LLMs are not available
-in ElevenLabs Agents to maintain compliance with EU data residency. Custom LLMs and OpenAI LLMs
-remain fully available. For more information please see [GDPR and data residency](/docs/overview/administration/data-residency).
+Some models are unavailable when EU data residency is enabled. See [GDPR and data residency](/docs/overview/administration/data-residency) for availability details.
 
 ## Choosing a model
 
 Selecting the most suitable LLM for your application involves considering several factors:
 
-* **Task complexity**: More demanding or nuanced tasks generally benefit from more powerful models (for example, OpenAI's GPT-5.6 / GPT-5.5 series, Anthropic's Claude Opus and Claude Sonnet 5, or Google's Gemini Pro models)
-* **Latency requirements**: For live voice conversations and other real-time applications, [ElevenLabs-hosted models](#models-hosted-by-elevenlabs) typically have the lowest latency. Google's Gemini Flash series, Anthropic's Claude Haiku, and OpenAI Mini and Nano models are also optimized for speed.
+* **Task complexity**: Evaluate models against representative tasks from your application
+* **Latency requirements**: For live voice conversations, choose a low-latency model and measure response time with your prompts and tools
 * **Context window size**: If your application needs to process, understand, or recall information from long conversations or extensive documents, select models with larger context windows
 * **Cost-effectiveness**: Balance the desired performance and features against your budget. LLM prices can vary significantly, so analyze the pricing structure (input, output, and cache tokens) in relation to your expected usage patterns
 * **HIPAA compliance**: If your application involves Protected Health Information (PHI), it is crucial to use an LLM that is designated as HIPAA compliant and ensure your entire data handling process meets regulatory standards
@@ -106,54 +104,43 @@ unavailable. This is strongly discouraged for production use.
 
 Learn more about [LLM cascading](/docs/eleven-agents/customization/llm/llm-cascading).
 
+## Reasoning
+
+Reasoning helps agents handle complex decisions, such as choosing between tools, applying policies, or completing multi-step workflows. Depending on the model, you control how much reasoning it performs with either a thinking budget or a reasoning effort level.
+
 ### Thinking budget
 
-Control how many internal reasoning tokens the model can use before responding. More tokens improve answer quality but slow down response time.
-
-**Options:**
-
-* **Disabled**: Fastest replies with no internal reasoning overhead
-* **Low**: Minimal reasoning for quick responses
-* **Medium**: Balanced reasoning and speed
-* **High**: Maximum reasoning for complex queries
+Set the maximum number of reasoning tokens with the numeric slider. Larger budgets can increase response time. Set the budget to `0` to disable thinking when the model allows it.
 
 ### Reasoning effort
 
-Some models support configurable reasoning effort. Higher effort can improve answer quality but increases latency.
+Reasoning effort controls how much reasoning the model performs before answering. Available levels depend on the selected model.
 
-**For conversational use-cases:**
-
-Keep reasoning effort as low as the model allows to avoid the agent thinking too long, which can disrupt natural conversation flow.
-
-**For workflow steps:**
-
-Higher reasoning effort is useful for workflow steps that require complex thought or decision-making where response time is less critical.
+Start with a lower budget or effort for live voice agents because extra thinking can delay
+turn-taking. Increase it for workflow steps that require more complex decisions.
 
 ### Reasoning summary
 
-Reasoning summary stores a summary of the model's reasoning on the conversation transcript, so you can review why the agent responded or called a tool the way it did. Messages that involved reasoning show a **Reasoning** badge in the conversation history; select it to expand the summary.
+Enable Reasoning summary to capture the model's returned reasoning when debugging responses, tool calls, or workflow paths. Turn on **Reasoning summary** in the agent's LLM settings, or set `enable_reasoning_summary` via the API. The setting is off by default.
 
-Enable the **Reasoning summary** toggle (off by default) in the agent's LLM settings, or set `enable_reasoning_summary` via the API.
+For custom endpoints, see [how ElevenLabs requests and stores reasoning](/docs/eleven-agents/customization/llm/custom-llm#reasoning-summary).
 
-#### Custom LLMs
+Reasoning content is subject to retention and PII redaction settings. You can access it through the following channels:
 
-Reasoning summary works with custom LLMs that return reasoning in a supported OpenAI-compatible format. ElevenLabs stores the reasoning returned by your endpoint; it does not generate a summary from the model's final answer.
+| Destination                                                             | Availability                                                                 |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Conversation history                                                    | Available under the **Reasoning** badge                                      |
+| [Get conversation API](/docs/api-reference/conversations/get)           | Returned in the transcript item's `reasoning` field                          |
+| [OpenTelemetry](/docs/eleven-agents/customization/opentelemetry-traces) | Included in post-call agent-response spans as `elevenlabs.reasoning_content` |
+| [Client events](/docs/eleven-agents/customization/events/client-events) | Available as `agent_reasoning_response_part` in text conversations only      |
 
-| API type             | Supported reasoning format                                                                                                                                                                                                                                          |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Chat Completions API | Stream reasoning in the `reasoning` or `reasoning_content` field of each response delta. For Gemini-compatible endpoints, ElevenLabs requests thoughts with `google.thinking_config.include_thoughts` and reads content marked with `extra_content.google.thought`. |
-| Responses API        | Return a `reasoning` output item with summary text in its `summary` field. When reasoning effort is configured, ElevenLabs requests an automatic summary by setting `reasoning.summary` to `auto`.                                                                  |
+With [Zero Retention Mode](/docs/eleven-agents/customization/privacy/zrm), ElevenLabs **does not
+store reasoning content**. It is delivered only to chat clients and post-call webhooks.
 
-Reasoning content is excluded from the agent's spoken response and stored with the corresponding transcript item. If the custom LLM does not return reasoning in one of these formats, the transcript does not include a reasoning summary for that turn.
+#### Limitations
 
-**Limitations:**
-
-* Summaries only appear for turns where the model actually reasoned (see [Reasoning effort](#reasoning-effort)). The setting stores the summary; it does not change how the model reasons.
-* Some providers respond faster when no summary is requested, so test the latency impact before enabling it on latency-sensitive voice agents.
-* Providers decide whether to return a summary, so some reasoned turns will have none. ElevenLabs-hosted models return the full reasoning trace.
-* Summaries are part of the stored transcript: they are not streamed during the conversation, follow retention and PII redaction settings, and are unavailable with [Zero Retention Mode](/docs/eleven-agents/customization/privacy/zrm).
-
-Summaries are also returned in the `reasoning` field of each transcript item in the [Get conversation](/docs/api-reference/conversations/get) response.
+* Requesting a reasoning summary can increase response latency. Test it before enabling it on latency-sensitive voice agents.
+* Providers may return a summary, thought text, raw reasoning deltas, or no displayable content.
 
 ## Understanding pricing
 
@@ -164,7 +151,7 @@ Summaries are also returned in the `reasoning` field of each transcript item in 
   * `input_cache_write`: This is the cost associated with storing input data into a cache. Some LLM providers may charge for this operation
 * The prices listed in this document are per 1 million tokens and are based on the information available at the time of writing. These prices are subject to change by the LLM providers
 
-For the most accurate and current information on model capabilities, pricing, and terms of service, always consult the official documentation from the respective LLM providers (OpenAI, Google, Anthropic).
+For current model capabilities, pricing, and terms of service, consult the provider's documentation.
 
 ## HIPAA compliance
 

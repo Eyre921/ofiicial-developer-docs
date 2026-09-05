@@ -23,7 +23,7 @@ Traditional RAG hands an agent ranked chunks and leaves it to search, stitch, an
     Curated artifacts for retrieval, then answers composed over a retrieval SDK.
   </Card>
 
-  <Card title="Bring your own cloud" icon="cloud" href="/guides/nexus/byoc/overview">
+  <Card title="Bring Your Own Cloud" icon="cloud" href="/guides/nexus/byoc/overview">
     Deploy Nexus in your own cloud account.
   </Card>
 </CardGroup>

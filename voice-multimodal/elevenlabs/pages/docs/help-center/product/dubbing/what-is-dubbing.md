@@ -12,7 +12,7 @@ ElevenLabs was founded on the idea of creating amazing dubbing; a tool that woul
 
 To get started, go to [Dubbing](https://elevenlabs.io/app/dubbing) and upload your audio or video file, or paste a URL to dub a video from YouTube, TikTok or elsewhere online **.**
 
-Select the language or languages you want to dub into in the **Choose languages** selector. You'll be charged for each language you select here.
+Select the language or languages you want to dub into in the **Choose languages** selector. You'll be charged for each language you select here. See [How much does Dubbing cost?](/docs/help-center/product/dubbing/how-much-does-dubbing-cost) for a full breakdown.
 
 By default, you'll use our latest Dubbing model, v2. Dubs created using the v2 model are completely automatic without any option to edit the content.
 

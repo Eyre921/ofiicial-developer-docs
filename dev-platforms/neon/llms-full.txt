@@ -1077,6 +1077,7 @@ Browse the full catalog below. Switch between the **Text** and **Image** tabs, f
 
 | Model                                                                                      | Model ID            | Inputs           | Context | Reasoning | Input /M | Output /M | Endpoints                             | License     |
 | ------------------------------------------------------------------------------------------ | ------------------- | ---------------- | ------- | --------- | -------- | --------- | ------------------------------------- | ----------- |
+| [Claude Fable 5.1](https://neon.com/docs/ai-gateway/models/claude-fable-5-1.md)            | `claude-fable-5-1`  | text, image, pdf | 1M      | Yes       | $10      | $50       | chat/completions · anthropic/messages | Proprietary |
 | [Claude Opus 5](https://neon.com/docs/ai-gateway/models/claude-opus-5.md)                  | `claude-opus-5`     | text, image, pdf | 1M      | Yes       | $5       | $25       | chat/completions · anthropic/messages | Proprietary |
 | [Claude Sonnet 5](https://neon.com/docs/ai-gateway/models/claude-sonnet-5.md)              | `claude-sonnet-5`   | text, image, pdf | 1M      | Yes       | $2       | $10       | chat/completions · anthropic/messages | Proprietary |
 | [Claude Fable 5](https://neon.com/docs/ai-gateway/models/claude-fable-5.md)                | `claude-fable-5`    | text, image, pdf | 1M      | Yes       | $10      | $50       | chat/completions · anthropic/messages | Proprietary |
@@ -1139,9 +1140,10 @@ Browse the full catalog below. Switch between the **Text** and **Image** tabs, f
 
 #### Zhipu AI
 
-| Model                                                         | Model ID  | Inputs | Context | Reasoning | Input /M | Output /M | Endpoints        | License      |
-| ------------------------------------------------------------- | --------- | ------ | ------- | --------- | -------- | --------- | ---------------- | ------------ |
-| [GLM-5.2](https://neon.com/docs/ai-gateway/models/glm-5-2.md) | `glm-5-2` | text   | 1M      | Yes       | $1.40    | $4.40     | chat/completions | Open weights |
+| Model                                                                     | Model ID        | Inputs      | Context | Reasoning | Input /M | Output /M | Endpoints        | License      |
+| ------------------------------------------------------------------------- | --------------- | ----------- | ------- | --------- | -------- | --------- | ---------------- | ------------ |
+| [GLM-5.3 Flash](https://neon.com/docs/ai-gateway/models/glm-5-3-flash.md) | `glm-5-3-flash` | text, image | 1M      | Yes       | $0.15    | $0.50     | chat/completions | Open weights |
+| [GLM-5.2](https://neon.com/docs/ai-gateway/models/glm-5-2.md)             | `glm-5-2`       | text        | 1M      | Yes       | $1.40    | $4.40     | chat/completions | Open weights |
 
 #### Thinking Machines
 
@@ -1154,6 +1156,12 @@ Browse the full catalog below. Switch between the **Text** and **Image** tabs, f
 | Model                                                         | Model ID  | Inputs             | Context | Reasoning | Input /M | Output /M | Endpoints        | License      |
 | ------------------------------------------------------------- | --------- | ------------------ | ------- | --------- | -------- | --------- | ---------------- | ------------ |
 | [Kimi K3](https://neon.com/docs/ai-gateway/models/kimi-k3.md) | `kimi-k3` | text, image, video | 1M      | Yes       | $3       | $15       | chat/completions | Open weights |
+
+#### xAI
+
+| Model                                                           | Model ID   | Inputs      | Context | Reasoning | Input /M | Output /M | Endpoints                           | License     |
+| --------------------------------------------------------------- | ---------- | ----------- | ------- | --------- | -------- | --------- | ----------------------------------- | ----------- |
+| [Grok 4.6](https://neon.com/docs/ai-gateway/models/grok-4-6.md) | `grok-4-6` | text, image | 500K    | Yes       | —        | —         | chat/completions · openai/responses | Proprietary |
 
 Select a linked model for code examples matched to its measured AI Gateway capabilities.
 
@@ -1313,6 +1321,163 @@ Models are hosted by Databricks and served through Neon AI Gateway. You are resp
 | Google Gemini | [Google Cloud Acceptable Use Policy](https://cloud.google.com/terms/aup) · [Google Generative AI Prohibited Use Policy](https://policies.google.com/terms/generative-ai/use-policy) |
 | Google Gemma  | [Gemma Terms of Use](https://ai.google.dev/gemma/terms) · [Gemma Prohibited Use Policy](https://ai.google.dev/gemma/prohibited_use_policy)                                          |
 | Meta          | Terms differ by Llama version. See the Notes column in the [Meta models table](https://neon.com/docs/ai-gateway/models#meta).                                                       |
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-fable-5-1.md) ---
+
+# Claude Fable 5.1
+
+## About
+
+Neon AI Gateway provides Claude Fable 5.1 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-fable-5-1"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-fable-5-1",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-fable-5-1",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-fable-5-1",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-fable-5-1",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-fable-5-1
+
+## Provider
+
+Anthropic provides Claude Fable 5.1. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Sep 2026
+
+## Input /M
+
+$10
+
+## Output /M
+
+$50
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/claude-fable-5.md) ---
 
@@ -3891,6 +4056,163 @@ $1.40
 ## Output /M
 
 $4.40
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/glm-5-3-flash.md) ---
+
+# GLM-5.3 Flash
+
+## About
+
+Neon AI Gateway provides GLM-5.3 Flash by Zhipu AI. The model supports text, image inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("glm-5-3-flash"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/glm-5-3-flash",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "glm-5-3-flash",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="glm-5-3-flash",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "glm-5-3-flash",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+glm-5-3-flash
+
+## Provider
+
+Zhipu AI provides GLM-5.3 Flash. Access the model through the Neon AI Gateway using chat/completions.
+
+## Inputs
+
+Text, image
+
+## Context
+
+1M
+
+## Released
+
+Aug 2026
+
+## Input /M
+
+$0.15
+
+## Output /M
+
+$0.50
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-1.md) ---
 
@@ -8057,6 +8379,163 @@ $0.07
 ## Output /M
 
 $0.30
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/grok-4-6.md) ---
+
+# Grok 4.6
+
+## About
+
+Neon AI Gateway provides Grok 4.6 by xAI. The model supports text, image inputs and a 500K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("grok-4-6"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/grok-4-6",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "grok-4-6",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="grok-4-6",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "grok-4-6",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+grok-4-6
+
+## Provider
+
+xAI provides Grok 4.6. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image
+
+## Context
+
+500K
+
+## Released
+
+Aug 2026
+
+## Input /M
+
+—
+
+## Output /M
+
+—
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/inkling.md) ---
 
@@ -30970,7 +31449,7 @@ neon env pull --file .env.preview
 
 To pull from a different branch, switch with `neon checkout`; it pulls the new branch's variables as part of the switch.
 
-`env pull` writes only the Neon-managed variables and preserves every other line in the file. That's the core variables `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, and `NEON_BRANCH`, plus the variables for any service you **declare in `neon.ts`**: the Managed Better Auth URLs, the Neon Data API URL, the AI Gateway credentials (`NEON_AI_GATEWAY_TOKEN`, `NEON_AI_GATEWAY_BASE_URL`), and the Object Storage credentials (`AWS_*`).
+`env pull` writes only the Neon-managed variables and preserves every other line in the file. That's the core variables `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, and `NEON_BRANCH`, plus the variables for any service you **declare in `neon.ts`**: the Managed Better Auth URLs, the Neon Data API URL, the AI Gateway credentials (`NEON_AI_GATEWAY_TOKEN`, `NEON_AI_GATEWAY_BASE_URL`), and the Object Storage credentials (`AWS_*`). It also writes a public invocation URL for each Neon Function as `NEON_FUNCTION_<SLUG>_BASE_URL` (origin only, matching `NEON_AUTH_BASE_URL` and `NEON_AI_GATEWAY_BASE_URL`), so one function can call another by reading its URL from the environment.
 
 ## Constraints
 
@@ -71530,7 +72009,7 @@ There are certain allowances associated with schema-only branches:
 
 - A schema-only branch is a [root branch](https://neon.com/docs/reference/glossary#root-branch), and only a certain number of root branches are permitted per Neon project, depending on your Neon plan.
 - The `main` root branch created with each Neon project counts toward the _root branch allowance per project_, as do certain [backup branches](https://neon.com/docs/reference/glossary#backup-branch) created by restore operations.
-- On the Free plan, all branches in a project share a total storage limit of 0.5 GB. Schema-only branches count toward this limit like any other branch. On paid plans, storage limits are higher, but each schema-only branch has a maximum storage allowance, as outlined in the following table.
+- On the Free plan, all branches in a project share a total storage limit of 0.5 GB. Schema-only branches count toward this limit like any other branch. On paid plans, ordinary branch storage is unlimited, but each schema-only branch has its own maximum storage allowance, as outlined in the following table. These allowances apply only to schema-only branches; they are not a general storage cap.
 
 | Plan   | Root branch allowance per project | Maximum storage allowance per schema-only branch |
 | :----- | :-------------------------------- | :----------------------------------------------- |
@@ -73727,7 +74206,7 @@ This pattern separates media storage, processing, and delivery (handled by Cloud
 
 --- [Document source](https://neon.com/docs/guides/consumption-limits.md) ---
 
-> Summary: On paid plans there's no hard per-branch size limit; storage grows with your usage. The customer-set quotas described here are separate, hard limits you choose. Per-project consumption quotas in Neon let you cap active_time_seconds, compute_time_seconds, written_data_bytes, data_transfer_bytes, and logical_size_bytes via the quota object in the Create or Update Project API endpoints. When any quota threshold is met, all active computes for that project are suspended and remain suspended until the next billing period starts, unlike scale-to-zero which restarts on the next connection. Use this page to configure, query, and reset quota limits for multi-tenant billing integrations where different plan tiers need different resource ceilings.
+> Summary: Storage is unlimited on paid plans: there's no hard per-branch size limit and storage grows with your usage. The customer-set quotas described here are separate, hard limits you choose. Per-project consumption quotas in Neon let you cap active_time_seconds, compute_time_seconds, written_data_bytes, data_transfer_bytes, and logical_size_bytes via the quota object in the Create or Update Project API endpoints. When any quota threshold is met, all active computes for that project are suspended and remain suspended until the next billing period starts, unlike scale-to-zero which restarts on the next connection. Use this page to configure, query, and reset quota limits for multi-tenant billing integrations where different plan tiers need different resource ceilings.
 
 # Configure consumption limits
 
@@ -112117,7 +112596,7 @@ For more, see [Session context](https://neon.com/docs/reference/compatibility#se
 
 --- [Document source](https://neon.com/docs/introduction/cost-optimization.md) ---
 
-> Summary: On paid plans, there's no hard per-branch size limit; storage grows with your usage. Practical strategies for cutting Neon costs across every billing metric: compute (CU-hours), storage, instant restore history, extra branches, and public data transfer. Use this page to diagnose an unexpectedly high bill or to proactively reduce spend. Key tactics include right-sizing compute, enabling scale to zero, running VACUUM FULL to reclaim storage space, and trimming the PITR history window. Instant restore storage is billed at $0.20/GB-month on paid plans for root branches only. Extra branches cost $1.50/branch-month over the plan allowance. Paid plans include 500 GB of public data transfer per project per month, then $0.10/GB.
+> Summary: Storage is unlimited on paid plans: there's no hard per-branch size limit and storage grows with your usage. Practical strategies for cutting Neon costs across every billing metric: compute (CU-hours), storage, instant restore history, extra branches, and public data transfer. Use this page to diagnose an unexpectedly high bill or to proactively reduce spend. Key tactics include right-sizing compute, enabling scale to zero, running VACUUM FULL to reclaim storage space, and trimming the PITR history window. Instant restore storage is billed at $0.20/GB-month on paid plans for root branches only. Extra branches cost $1.50/branch-month over the plan allowance. Paid plans include 500 GB of public data transfer per project per month, then $0.10/GB.
 
 # Cost optimization
 
@@ -112187,7 +112666,7 @@ Yes. Any data-modifying operation, including deletes, generates [WAL records](ht
 Storage limits depend on your Neon plan:
 
 - **Free plan**: The Free plan includes 0.5 GB of storage per project. If you reach this limit, database operations that would increase storage (inserts, updates, and deletes) will fail until you reduce your storage or [upgrade to a paid plan](https://neon.com/docs/introduction/manage-billing#change-your-plan).
-- **Paid plans**: Launch and Scale have no hard per-branch size limit; your storage grows with your usage, and you pay only for what you use.
+- **Paid plans**: Storage is unlimited on Launch and Scale: there's no hard per-branch size limit, your storage grows with your usage, and you pay only for what you use.
 
 </details>
 
@@ -112255,7 +112734,7 @@ In short, `VACUUM FULL` can help reduce your data size and future storage costs,
 
 <summary>**What is the maximum data size that Neon supports?**</summary>
 
-On paid plans (Launch and Scale), there's no hard per-branch size limit; your storage grows with your usage. A soft limit (16 TB) helps you avoid unexpected costs: if a branch reaches it, writes slow down, and you can raise it by contacting Neon Support. The Free plan is limited to 0.5 GB per project.
+Storage is unlimited on paid plans (Launch and Scale). Neon applies quota-based soft limits to help you avoid unexpected costs; if you approach your quota, writes slow down rather than stop, and you can contact [Neon Support](https://neon.com/docs/introduction/support) to raise it. The Free plan is limited to 0.5 GB per project.
 
 </details>
 
@@ -113514,7 +113993,7 @@ Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon-post
 
 --- [Document source](https://neon.com/docs/introduction/plans.md) ---
 
-> Summary: On Neon's paid plans (Launch and Scale), there's no hard per-branch size limit; storage grows with your usage. The Free plan includes 0.5 GB of storage per project. Free, Launch, and Scale also differ in compute rates, branch counts, storage pricing, and autoscaling limits. Compare per-unit pricing, feature availability, and billing examples to choose a plan or estimate monthly costs. Scale adds compliance certifications, uptime SLAs, private networking, and configurable scale-to-zero. Launch and Free plans share pay-only-for-what-you-use pricing with no monthly minimum.
+> Summary: Storage on Neon is unlimited on paid plans (Launch and Scale): there is no hard per-branch size limit and your storage grows with your usage. The Free plan includes 0.5 GB of storage per project. Free, Launch, and Scale also differ in compute rates, branch counts, storage pricing, and autoscaling limits. Compare per-unit pricing, feature availability, and billing examples to choose a plan or estimate monthly costs. Scale adds compliance certifications, uptime SLAs, private networking, and configurable scale-to-zero. Launch and Free plans share pay-only-for-what-you-use pricing with no monthly minimum.
 
 # Neon plans
 
@@ -113723,9 +114202,9 @@ Even though child branch storage is capped at your logical data size, it's still
 
 > **Free** plan users get 0.5 GB of storage per project
 
-#### Storage per branch: no hard size limit
+#### Unlimited storage
 
-**On paid plans (Launch and Scale), there's no hard per-branch size limit; your storage grows with your usage.** The Free plan is limited to 0.5 GB per project.
+**Storage is unlimited on paid plans (Launch and Scale): there's no hard per-branch size limit, and your storage grows with your usage.** The Free plan is limited to 0.5 GB per project.
 
 ### Public network transfer
 
@@ -114358,7 +114837,7 @@ We're accelerating work on improving and scaling the core database on Neon as we
 ### Database storage
 
 - Increased ingestion speeds
-- Storage limits up to 200 TB per project
+- Continued storage scaling
 
 ### Postgres compute
 
@@ -116825,7 +117304,7 @@ Restoring a `pg_dump` backup requires downloading the file from S3 and restoring
 
 --- [Document source](https://neon.com/docs/manage/branches.md) ---
 
-> Summary: On paid plans, there's no hard per-branch size limit; storage grows with your usage, so a branch can grow as large as your data requires. Neon branches are copy-on-write clones of a parent branch that isolate schema and data changes without affecting the parent. Each project starts with a root branch; you can create child branches from it or any existing branch. Use this page to create, rename, protect, restore, or delete branches via the Console, CLI, or API. Unused branches accumulate storage costs as they age past the history window.
+> Summary: Storage is unlimited on paid plans: there's no hard per-branch size limit and storage grows with your usage, so a branch can grow as large as your data requires. Neon branches are copy-on-write clones of a parent branch that isolate schema and data changes without affecting the parent. Each project starts with a root branch; you can create child branches from it or any existing branch. Use this page to create, rename, protect, restore, or delete branches via the Console, CLI, or API. Unused branches accumulate storage costs as they age past the history window.
 
 # Manage branches
 
@@ -117481,9 +117960,9 @@ The query value may differ slightly from the **Data size** reported in the Neon 
 
 Data size is your logical data size.
 
-**Note: Paid plans have no hard per-branch size limit**
+**Note: Storage is unlimited on paid plans**
 
-**On paid plans (Launch and Scale), there's no hard per-branch size limit; your branch storage grows with your usage.** The Free plan is limited to 0.5 GB per project.
+**Storage is unlimited on paid plans (Launch and Scale): there's no hard per-branch size limit, and your branch storage grows with your usage.** The Free plan is limited to 0.5 GB per project.
 
 ## Branch types
 
@@ -120656,7 +121135,7 @@ neon api /projects/$PROJECT_ID/members/$MEMBER_ID/role -X PUT -F role=editor
 
 --- [Document source](https://neon.com/docs/manage/projects.md) ---
 
-> Summary: On paid plans, there's no hard per-branch size limit; project storage grows with your usage. A Neon project is the top-level workspace that groups branches, databases, roles, and computes. This page covers the full project lifecycle: create, configure, and delete, via the Console or API. Use it when you need to set project-level defaults such as compute autoscaling, history window for instant restore and Time Travel, IP Allow rules, logical replication, or project access. Deleted projects can be recovered within a 7-day window using the CLI or API.
+> Summary: Storage is unlimited on paid plans: there's no hard per-branch size limit and project storage grows with your usage. A Neon project is the top-level workspace that groups branches, databases, roles, and computes. This page covers the full project lifecycle: create, configure, and delete, via the Console or API. Use it when you need to set project-level defaults such as compute autoscaling, history window for instant restore and Time Travel, IP Allow rules, logical replication, or project access. Deleted projects can be recovered within a 7-day window using the CLI or API.
 
 # Manage projects
 
@@ -125267,6 +125746,8 @@ Interface-specific indexes:
 
 # Get started with the Neon API
 
+Create an API key and make your first authenticated request.
+
 Copy into your AI assistant to get an API key and make your first API call. [View prompt](https://neon.com/prompts/neon-api-prompt.md)
 
 The Neon API uses API keys and Bearer authentication. This page shows the shortest REST API path: create a key, set it as an environment variable, and call the `/projects` endpoint.
@@ -125339,6 +125820,8 @@ The response includes your projects with their IDs, regions, and other details:
 > Summary: Understand asynchronous operations, rate limits, pagination, and important constraints before building automation with the Neon API.
 
 # Neon API key concepts
+
+Asynchronous operations, rate limits, and pagination.
 
 Review these API behavior notes before you build scripts, CI/CD workflows, or control-plane integrations on top of Neon.
 
@@ -128446,14 +128929,14 @@ Run `neon deploy` to apply. When `neon checkout` creates a new branch, the closu
 
 ### BranchTuning fields
 
-| Field                                            | Type                              | Description                                                                                                           |
-| ------------------------------------------------ | --------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `parent`                                         | `string`                          | Parent branch name or ID                                                                                              |
-| `protected`                                      | `boolean`                         | Mark the branch as protected                                                                                          |
-| `ttl`                                            | `string \| number`                | Branch lifetime: `"7d"`, `"2h"`, or seconds as a number. Maximum 30 days. Validated at deploy time, not by TypeScript |
-| `postgres.computeSettings.autoscalingLimitMinCu` | `0.25 \| 0.5 \| 1 \| 2 \| 4 \| 8` | Minimum compute units                                                                                                 |
-| `postgres.computeSettings.autoscalingLimitMaxCu` | `0.25 \| 0.5 \| 1 \| 2 \| 4 \| 8` | Maximum compute units                                                                                                 |
-| `postgres.computeSettings.suspendTimeout`        | `false \| string \| number`       | Idle suspend timeout. `false` disables suspend                                                                        |
+| Field                                            | Type                        | Description                                                                                                                                                      |
+| ------------------------------------------------ | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `parent`                                         | `string`                    | Parent branch name or ID                                                                                                                                         |
+| `protected`                                      | `boolean`                   | Mark the branch as protected                                                                                                                                     |
+| `ttl`                                            | `string \| number`          | Branch lifetime: `"7d"`, `"2h"`, or seconds as a number. Maximum 30 days. Validated at deploy time, not by TypeScript                                            |
+| `postgres.computeSettings.autoscalingLimitMinCu` | `ComputeUnit`               | Minimum compute units. Any size Neon offers: 0.25, 0.5, every integer 1 to 16, and even sizes 18 to 56                                                           |
+| `postgres.computeSettings.autoscalingLimitMaxCu` | `ComputeUnit`               | Maximum compute units. For an autoscaling range, keep both bounds at 16 or below and no more than 8 CU apart; sizes above 16 are fixed-size (`min` equals `max`) |
+| `postgres.computeSettings.suspendTimeout`        | `false \| string \| number` | Idle suspend timeout. `false` disables suspend                                                                                                                   |
 
 ## Services
 
@@ -128598,7 +129081,7 @@ preview: {
       name: string,       // display name shown in neon functions list and the console
       source: string,     // path to entry file, relative to neon.ts
       env?: Record<string, string>,
-      bundler?: "esbuild" | "none",  // default "esbuild"; "none" ships a prebuilt source as-is
+      bundler?: "esbuild" | "none" | ((fn) => Promise<FunctionBundle>),  // default "esbuild"
       dev?: {
         port?: number,    // local port for neon dev; fails if taken; auto-assigned if omitted
       },
@@ -128619,7 +129102,7 @@ env: {
 
 Use `neon deploy --env .env.production` to load a `.env` file before evaluation. For typed access to these variables inside your function at runtime, see [Environment variables](https://neon.com/docs/compute/functions/environment-variables).
 
-`bundler` controls how `source` becomes the deployed archive. The default, `"esbuild"`, bundles your source (TypeScript is compiled here). Set `"none"` to ship a prebuilt directory or file as-is, in which case the entry must be named `index.mjs` or `index.js`. This is the config form of the CLI's [`--no-bundle`](https://neon.com/docs/compute/functions/deploy#deploy-with-neon-functions-deploy) flag.
+`bundler` controls how `source` becomes the deployed archive. The default, `"esbuild"`, bundles your source (TypeScript is compiled here). Set `"none"` to ship a prebuilt directory or file as-is, in which case the entry must be named `index.mjs` or `index.js`. This is the config form of the CLI's [`--no-bundle`](https://neon.com/docs/compute/functions/deploy#deploy-with-neon-functions-deploy) flag. To use your own build system, set `bundler` to a function that receives the resolved function config and returns the files to deploy (a `FunctionBundle`, a record of path to file contents), so a framework that already emits its own build output can deploy it unchanged.
 
 `dev` settings apply only to `neon dev` and never affect deploy.
 

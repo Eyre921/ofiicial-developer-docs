@@ -16,12 +16,12 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Search Notion">
     `notion-search`
 
-    Search Notion with short, specific keywords for exact matches. Narrow results by location (page, data source, or teamspace), creator or editor, date, title, or content status. You can also sort results, search with filters only, search for a user by name or email, and return up to 50 results.
+    Before a content search, inspect `current_tool_access.ai_search.status` in `notion-fetch` with the id `self`. Use `notion-search` for content only when that status is not `available`. When it is `available`, use `notion-ai-search` for every content search, including exact keywords. `notion-search` remains the tool for a user lookup by name or email. It supports short, specific keywords, location (page, data source, or teamspace), creator or editor, date, title, content-status filters, sorting, and up to 50 results.
 
     Results may include `path` and `verification` details. Fetch important matches before relying on them.
 
     <Note>
-      * Full Notion MCP on Business or Enterprise is required to filter by editor, last-edited date, multiple teamspaces, title only, or content status, and to sort by date. Other filters are available on every plan.
+      Full Notion MCP on Business or Enterprise is required to filter by editor, last-edited date, multiple teamspaces, title only, or content status, and to sort by date. Other filters are available on every plan.
     </Note>
 
     **Example prompts:**
@@ -34,13 +34,21 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="AI search">
     `notion-ai-search`
 
-    Search Notion and connected apps like Slack, Google Drive, and Jira with a concise natural-language semantic query. Notion AI must be enabled for the workspace. If it isn't, the tool returns an upgrade or trial option when one is available.
+    Before a content search, inspect `current_tool_access.ai_search.status` in `notion-fetch` with the id `self`. When it is `available`, use `notion-ai-search` for every content search, including exact keywords. When it is not `available`, use `notion-search` instead. Search Notion and sources connected to your workspace, such as Slack, Mail, Calendar, Google Drive, and Jira, with a concise natural-language semantic query. It searches a source only when it is connected and available to you. Keep the query under about 50 words, and use one query per call. Narrow results to a page and its descendants, a data source, or a teamspace, and return up to 50 results.
+
+    Results use the same shape as `notion-search` and may include `path`, but they never include `verification` details. Fetch a Notion result with `notion-fetch` when verification state matters; connected-app results cannot be fetched with `notion-fetch`. This tool does not accept the exact filters, the sort options, or the user lookup that `notion-search` accepts. Use `notion-search` for user lookup, and for content search only when `ai_search` is unavailable.
+
+    <Note>
+      Available on all plans, but using it requires Notion AI. `notion-fetch` with the id `self` reports the API key `ai_search` in `current_tool_access` as `available` when the workspace can use AI search. Otherwise it reports `upgrade_required` with an `upgrade_url`, or `plan_required` with a `landing_page_url` and `landing_page_action` when Notion routes the user through a plan landing page. If the workspace has a billing restriction, such as an unpaid invoice, calls return a permission error that asks a workspace owner to manage billing, and `current_tool_access` reports the `ai_search` key as `not_enabled`.
+    </Note>
 
     **Example prompts:**
 
     * "How did we solve similar authentication bugs?"
     * "What decisions have we made about the mobile launch?"
     * "Find context about our customer onboarding strategy"
+    * "Find related work on improving search results for AI workspaces"
+    * "Find discussions about this launch in my connected Slack and Mail"
   </Accordion>
 
   <Accordion title="Search Notion Skills">
@@ -74,7 +82,7 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Pass the special id `self` to retrieve the connected workspace and user identity instead of an entity. The response includes a `self` object with the workspace's ID and name, and the authenticated user's ID, name, type, and email — useful for labeling a connection after OAuth.
 
-    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. The map covers the tools in a current tool list, so a tool that is no longer advertised has no entry, even when a cached tool list can still call it. For `query_data_sources`, view mode is always available; Business and Enterprise plans with Notion AI can query any number of data sources, while other plans receive metered single-data-source access. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
+    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. For content search, inspect the `ai_search` entry: use `notion-ai-search` whenever its status is `available`, and use `notion-search` only when it is not. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. The map covers the tools in a current tool list, so a tool that is no longer advertised has no entry, even when a cached tool list can still call it. For `query_data_sources`, view mode is always available; Business and Enterprise plans with Notion AI can query any number of data sources, while other plans receive metered single-data-source access. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
 
     When a page is large enough that some subtrees could not be loaded, the response sets `truncated` to `true` and includes `unknown_block_ids` (up to 50 omitted subtree root IDs) and `unknown_block_count` (the total number of omitted subtree roots). Pass one of the returned IDs back to `notion-fetch` to retrieve that subtree directly. An ID may also represent content the caller cannot access, so treat an `object_not_found` error on retry as a permissions signal rather than a failure to handle.
 
@@ -136,6 +144,8 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Use `creation_mode: "draft"` when the user wants a durable page but has not named a destination. Draft mode creates a workspace-level private page and cannot be combined with `parent`. If the user names a private or shared destination, omit `creation_mode` and create the page under that parent.
 
+    The tool description recommends `allow_async: true` for most page creates. This is guidance to assistants, not a request default. See [Async page create and update](#async-page-create-and-update).
+
     **Example prompts:**
 
     * "Create a project kickoff page under our Projects folder with agenda and team info"
@@ -154,6 +164,8 @@ An MCP client can call several tools in one task. For example, it can search for
     <Note>
       The `update_content` command applies content-changing search-and-replace operations as a batch. If any such operation's `old_str` doesn't match content on the page, the call returns a validation error naming the unmatched value and the page is left unchanged. An operation whose `old_str` and `new_str` are identical is ignored without checking for a match. Each `old_str` must be a non-empty string that matches exactly one location, unless `replace_all_matches: true` is set for that operation.
     </Note>
+
+    The tool description recommends `allow_async: true` for most page updates. This is guidance to assistants, not a request default. See [Async page create and update](#async-page-create-and-update).
 
     **Example prompts:**
 
@@ -414,7 +426,7 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Get async task status">
     `notion-get-async-task`
 
-    Retrieves the current status of an async task started by another tool (such as `notion-duplicate-page`, or `notion-create-pages` when invoked with `allow_async: true`). Returns one of `queued`, `running`, `retrying`, `succeeded`, or `failed`. When a task has succeeded, the operation's result is included in the response; when it has failed, an error is included instead.
+    Retrieves the current status of an async task started by another tool, such as `notion-duplicate-page`, `notion-create-pages` with `allow_async: true`, or `notion-update-page` whenever it returns an `async_task`. Returns one of `queued`, `running`, `retrying`, `succeeded`, or `failed`. When a task has succeeded, the operation's result is included in the response; when it has failed, an error is included instead.
 
     Poll this tool with the `task_id` from the originating tool's `async_task` response. Wait briefly between polls — the original response includes a suggested backoff.
 
@@ -427,9 +439,19 @@ An MCP client can call several tools in one task. For example, it can search for
 
 ## Async page create and update
 
-The `notion-create-pages` and `notion-update-page` tools support `allow_async: true` for long-running page create and update work. When `allow_async` is omitted or `false`, the tools keep their normal synchronous result shape. `allow_async` changes response behavior only; the same validation, permissions, and write operation still apply.
+The `notion-create-pages` and `notion-update-page` tools support `allow_async: true` for page create and update work. Their tool descriptions recommend that assistants pass it for most page writes. This is guidance to assistants, not a schema or server default: omitting `allow_async` has the same meaning as before. The same validation, permissions, and write operation still apply.
 
-Use async mode when asking an assistant to create or update a page with a large amount of markdown content. The initial tool call returns an `async_task` handle, and the assistant can poll `notion-get-async-task` with the returned `async_task.id` passed as `task_id` until the task reaches `succeeded` or `failed`.
+The descriptions recommend `allow_async: false` when the next step needs the created or updated page right away. They also recommend retrying synchronously when an async attempt is rejected as too large to queue.
+
+A request that is too large to queue returns a `validation_error` instead of an `async_task`. Either split it into smaller page writes or retry it with `allow_async: false`.
+
+When a call returns an `async_task` handle, poll `notion-get-async-task` with the returned `async_task.id` passed as `task_id` until the task reaches `succeeded` or `failed`. Wait for `succeeded` before any step that depends on the write, such as linking to a new page or adding content to it.
+
+<Note>
+  A `succeeded` status covers the page write, not template application. When dependent work needs template output, follow the webhook flow in [Creating pages from templates](/guides/data-apis/creating-pages-from-templates#step-3-confirm-page-contents-are-ready). For direct checks, look for the expected content or properties and stop after a bounded number of retries.
+</Note>
+
+When `allow_async` is omitted or `false`, `notion-create-pages` keeps its synchronous result shape. `notion-update-page` waits for a synchronous result when it can, but it can still return a pollable `async_task` if queued execution runs past the synchronous wait deadline, so handle both shapes.
 
 ```json theme={null}
 {
@@ -488,7 +510,7 @@ If the task is still `queued`, `running`, or `retrying`, wait at least the sugge
 <Info>
   **Tool names may vary for OpenAI**
 
-  When connecting with an OpenAI MCP client (e.g. ChatGPT), the `notion-` prefix is automatically omitted from the `notion-fetch` and `notion-search` tools, making them appear as `fetch` and `search`, respectively. This is because these specific tool names are required as part of the [Deep Research specification](https://platform.openai.com/docs/guides/deep-research#remote-mcp-servers) for remote MCP servers.
+  When connecting with an OpenAI MCP client (e.g. ChatGPT), the `notion-` prefix is automatically omitted from the `notion-fetch`, `notion-search`, and `notion-ai-search` tools, making them appear as `fetch`, `search`, and `ai-search`, respectively. This hyphenated `ai-search` is an OpenAI presentation name; access responses use the underscored API key `ai_search`. The `fetch` and `search` names are required as part of the [Deep Research specification](https://platform.openai.com/docs/guides/deep-research#remote-mcp-servers) for remote MCP servers.
 </Info>
 
 ## Rate limits
@@ -497,16 +519,16 @@ Standard [API request limits](/reference/request-limits) apply per user's usage 
 
 Some MCP tools have additional, tool-specific rate limits that are stricter. These are subject to change over time, but the current values are listed below for reference:
 
-* **Search**: 30 requests per minute
+* **Keyword `notion-search`** (including user lookups): 30 requests per minute. `notion-ai-search` uses the standard per-user limit above.
 
 ### Examples
 
 To illustrate the above limitations, you'll experience rate limit errors in your MCP client of choice in any of the following example scenarios (assuming we take the average rate over a large enough time window):
 
-* 35 searches per minute (exceeds search-specific limit)
-* 12 searches & 170 fetches per minute (exceeds general 180 requests/min limit)
+* 35 keyword `notion-search` calls per minute (exceeds the keyword-search-specific limit)
+* 12 keyword `notion-search` calls & 170 fetches per minute (exceeds the general 180 requests/min limit)
 * 185 fetches per minute (exceeds general 180 requests/min limit)
 
 ### What to do if you're rate-limited
 
-In most cases, the time it takes to do a complex AI-powered search across Notion and your connected tools means that sequential searches will typically stay under the rate limit. In general, if you encounter rate limit errors, prompt your LLM tool to reduce the amount of parallel searches or operations performed using Notion MCP, and/or try again later.
+If you encounter rate limit errors, prompt your LLM tool to reduce the amount of parallel searches or operations performed using Notion MCP, and/or try again later. Semantic `notion-ai-search` calls take longer than keyword `notion-search` calls, but only keyword `notion-search` has the additional 30-requests-per-minute limit. A client that runs many fast keyword searches in a row is the most likely to hit the `notion-search` rate limit.

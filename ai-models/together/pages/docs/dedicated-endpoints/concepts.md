@@ -58,7 +58,7 @@ Each supported model on DMI is really a **model architecture** (for example, Lla
 
 A **deployment profile** is a published, certified combination that pins one weight to one config, so it fixes the quantization, parallelism, and hardware. It's the unit you select when you deploy from the catalog.
 
-Where a config is the low-level serving spec for one weight, a profile is the catalog-level pairing of a weight with a config. Each profile in the [supported-models catalog](/docs/dedicated-endpoints/models) surfaces its `quantization`, `parallelism`, `gpuType`, and `gpuCount`, along with the `config` (`cr_...`) and `model` weight it references. When an architecture has more than one profile, you pick one at deploy time by passing its config ID to `--config`. With a single profile, the CLI selects it automatically.
+Where a config is the low-level serving spec for one weight, a profile is the catalog-level pairing of a weight with a config. Each profile in the [supported-models catalog](/docs/dedicated-endpoints/models) surfaces its `quantization`, `parallelism`, `gpuType`, and `gpuCount`, along with the `config` (`cr_...`), `model` weight, and `modelName` (the model name you pass at deploy time). When an architecture has more than one profile, you pick one at deploy time by its `modelName` or by passing its config ID to `--config`. With a single profile, the CLI selects it automatically.
 
 ### Endpoint
 

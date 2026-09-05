@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 339 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 340 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -187,6 +187,7 @@
 - `docs/volcano-on-gpu-clusters` — [Gang-schedule GPU jobs with Volcano](pages/docs/volcano-on-gpu-clusters.md) · [原文](https://docs.together.ai/docs/volcano-on-gpu-clusters)
 - `docs/wan2.7-quickstart` — [Wan 2.7 quickstart](pages/docs/wan2.7-quickstart.md) · [原文](https://docs.together.ai/docs/wan2.7-quickstart)
 - `docs/workflows` — [Agent workflows](pages/docs/workflows.md) · [原文](https://docs.together.ai/docs/workflows)
+- `docs/zero-data-retention` — [Zero data retention](pages/docs/zero-data-retention.md) · [原文](https://docs.together.ai/docs/zero-data-retention)
 
 ## learn
 

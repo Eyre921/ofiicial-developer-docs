@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 412 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 415 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -108,8 +108,10 @@
 - `docs/api/api-reference/scim/create-a-scim-group-mapping` — [Create a SCIM group mapping](pages/docs/api/api-reference/scim/create-a-scim-group-mapping.md) · [原文](https://openrouter.ai/docs/api/api-reference/scim/create-a-scim-group-mapping.md)
 - `docs/api/api-reference/scim/delete-a-scim-group-mapping` — [Delete a SCIM group mapping](pages/docs/api/api-reference/scim/delete-a-scim-group-mapping.md) · [原文](https://openrouter.ai/docs/api/api-reference/scim/delete-a-scim-group-mapping.md)
 - `docs/api/api-reference/scim/get-a-scim-group-mapping` — [Get a SCIM group mapping](pages/docs/api/api-reference/scim/get-a-scim-group-mapping.md) · [原文](https://openrouter.ai/docs/api/api-reference/scim/get-a-scim-group-mapping.md)
+- `docs/api/api-reference/scim/get-scim-directory-sync-status` — [Get SCIM directory sync status](pages/docs/api/api-reference/scim/get-scim-directory-sync-status.md) · [原文](https://openrouter.ai/docs/api/api-reference/scim/get-scim-directory-sync-status.md)
 - `docs/api/api-reference/scim/list-scim-group-mappings` — [List SCIM group mappings](pages/docs/api/api-reference/scim/list-scim-group-mappings.md) · [原文](https://openrouter.ai/docs/api/api-reference/scim/list-scim-group-mappings.md)
 - `docs/api/api-reference/scim/list-scim-groups` — [List SCIM groups](pages/docs/api/api-reference/scim/list-scim-groups.md) · [原文](https://openrouter.ai/docs/api/api-reference/scim/list-scim-groups.md)
+- `docs/api/api-reference/scim/start-a-scim-directory-sync` — [Start a SCIM directory sync](pages/docs/api/api-reference/scim/start-a-scim-directory-sync.md) · [原文](https://openrouter.ai/docs/api/api-reference/scim/start-a-scim-directory-sync.md)
 - `docs/api/api-reference/scim/update-a-scim-group-mapping` — [Update a SCIM group mapping](pages/docs/api/api-reference/scim/update-a-scim-group-mapping.md) · [原文](https://openrouter.ai/docs/api/api-reference/scim/update-a-scim-group-mapping.md)
 - `docs/api/api-reference/stt/create-transcription` — [Create transcription](pages/docs/api/api-reference/stt/create-transcription.md) · [原文](https://openrouter.ai/docs/api/api-reference/stt/create-transcription.md)
 - `docs/api/api-reference/tts/create-speech` — [Create speech](pages/docs/api/api-reference/tts/create-speech.md) · [原文](https://openrouter.ai/docs/api/api-reference/tts/create-speech.md)
@@ -269,6 +271,7 @@
 - `docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1` — [Claude Fable 5.1 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4` — [GPT-5.4 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6` — [GPT-5.6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md)
+- `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6-astra` — [GPT-6 Astra Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6-astra.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6-astra.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/opus-5` — [Claude Opus 5 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5` — [Claude 5 Sonnet Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5.md)
 - `docs/cookbook/evaluate-and-optimize/rag` — [RAG with Embeddings & Rerank](pages/docs/cookbook/evaluate-and-optimize/rag.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/rag.md)
@@ -373,7 +376,7 @@
 - `docs/guides/features/zdr` — [Zero Data Retention](pages/docs/guides/features/zdr.md) · [原文](https://openrouter.ai/docs/guides/features/zdr.md)
 - `docs/guides/features/zero-completion-insurance` — [Zero Completion Insurance](pages/docs/guides/features/zero-completion-insurance.md) · [原文](https://openrouter.ai/docs/guides/features/zero-completion-insurance.md)
 - `docs/guides/ori/changelog` — [Changelog](pages/docs/guides/ori/changelog.md) · [原文](https://openrouter.ai/docs/guides/ori/changelog.md)
-- `docs/guides/ori/env-vars` — [Ori environment variables](pages/docs/guides/ori/env-vars.md) · [原文](https://openrouter.ai/docs/guides/ori/env-vars.md)
+- `docs/guides/ori/configuration` — [Ori configuration](pages/docs/guides/ori/configuration.md) · [原文](https://openrouter.ai/docs/guides/ori/configuration.md)
 - `docs/guides/ori/eval` — [Ori Eval](pages/docs/guides/ori/eval.md) · [原文](https://openrouter.ai/docs/guides/ori/eval.md)
 - `docs/guides/ori/files` — [Where Ori writes files](pages/docs/guides/ori/files.md) · [原文](https://openrouter.ai/docs/guides/ori/files.md)
 - `docs/guides/ori/harness` — [Ori Harness](pages/docs/guides/ori/harness.md) · [原文](https://openrouter.ai/docs/guides/ori/harness.md)

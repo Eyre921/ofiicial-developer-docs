@@ -12,6 +12,10 @@ This guide shows you how to dub a media file into another language with the Dubb
 
 A dubbing project has two parts: a **project**, which holds one source of media and its transcript, and one or more **language targets**, each producing a dubbed output in a single language. You create a project, wait for its source to be transcribed, add a language, then download the finished dub.
 
+Creating a project charges you for one language up front — a dubbing project's minimum charge.
+This prepays your first language target: the first language you add consumes it, and each
+additional language is charged separately. See [How much does Dubbing cost?](/docs/help-center/product/dubbing/how-much-does-dubbing-cost) for details.
+
 Languages are specified as BCP-47 tags, for example `es` or `fr-CA`. See the [supported languages and dialects](/docs/overview/capabilities/dubbing#supported-languages) for all accepted values.
 
 ## Using the Dubbing API
@@ -237,6 +241,12 @@ curl -o dubbed.wav "<lossless_audio_url>"
 ```
 
 The dubbed audio is saved to `dubbed.wav` in your working directory.
+
+## Handling failures
+
+If adding a language does not succeed, add the same language to the existing project again rather than creating a new project. The project and its transcribed source are reusable, so retrying the language is faster and avoids paying the [one-language minimum charge](/docs/help-center/product/dubbing/how-much-does-dubbing-cost) a second time.
+
+Only create a new project if the project itself reaches `failed` while preparing, which means its source could not be transcribed. Check the source file or URL, then create a new project.
 
 Enterprise workspaces can review and correct the source transcript before adding a language, which
 produces more accurate translations. See [Refine and regenerate a dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate).

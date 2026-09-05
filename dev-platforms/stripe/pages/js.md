@@ -8406,6 +8406,9 @@ you can set its property in `paymentMethods` to `always`.
         - `link`
         - `paypal`
 
+- `onChange`
+  Callback called when any value in the [change event payload](https://docs.stripe.com/js/custom_checkout/element_events/on_change.md?type=checkoutForm) changes.
+
 - `onConfirm`
   Triggered when the embedded form sends a [confirm event](https://docs.stripe.com/js/custom_checkout/element_events/on_confirm.md?type=checkoutForm). Use this to handle payment confirmation.
 

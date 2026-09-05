@@ -92,7 +92,6 @@
 - [A Guide to Tokens and Tokenizers](https://docs.cohere.com/docs/tokens-and-tokenizers.md): This document describes how to use the tokenize and detokenize API endpoints.
 - [Migrating from the Generate API to the Chat API](https://docs.cohere.com/v1/docs/migrating-from-cogenerate-to-cochat.md): Learn about the transition from Generate to Chat for improved generative capabilities with Cohere.
 - [Summarizing Text with the Chat Endpoint](https://docs.cohere.com/docs/summarizing-text.md): Learn how to perform text summarization using Cohere's Chat endpoint with features like length control and RAG.
-- [Safety Modes](https://docs.cohere.com/docs/safety-modes.md): The safety modes documentation describes how to use default and strict modes in order to exercise additional control over model output.
 - [Introduction to Embeddings at Cohere](https://docs.cohere.com/docs/embeddings.md): Embeddings transform text into numerical data, enabling language-agnostic similarity searches and efficient storage with compression.
 - [Semantic Search with Embeddings](https://docs.cohere.com/docs/semantic-search-embed.md): Examples on how to use the Embed endpoint to perform semantic search (API v1).
 - [Unlocking the Power of Multimodal Embeddings](https://docs.cohere.com/docs/multimodal-embeddings.md): Multimodal embeddings convert text and images into embeddings for search and classification.

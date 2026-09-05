@@ -24,13 +24,13 @@ Use Pinecone's [security features](/guides/production/security-overview) to prot
 
 * Data security
   * Private endpoints
-  * Customer-managed encryption keys (CMEK) for hosted projects; for BYOC, use KMS on your own resources ([Bring your own cloud](/guides/production/bring-your-own-cloud))
+  * Customer-managed encryption keys (CMEK) for hosted projects; for BYOC, use KMS on your own resources ([Bring Your Own Cloud](/guides/production/bring-your-own-cloud))
 * Authorization
   * API keys
   * Role-based access control (RBAC)
   * Organization single sign-on (SSO)
 * Audit logs
-* Bring your own cloud
+* Bring Your Own Cloud
 
 ## Design your indexes for scale
 

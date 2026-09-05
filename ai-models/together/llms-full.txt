@@ -1362,7 +1362,7 @@ Each supported model on DMI is really a **model architecture** (for example, Lla
 
 A **deployment profile** is a published, certified combination that pins one weight to one config, so it fixes the quantization, parallelism, and hardware. It's the unit you select when you deploy from the catalog.
 
-Where a config is the low-level serving spec for one weight, a profile is the catalog-level pairing of a weight with a config. Each profile in the [supported-models catalog](/docs/dedicated-endpoints/models) surfaces its `quantization`, `parallelism`, `gpuType`, and `gpuCount`, along with the `config` (`cr_...`) and `model` weight it references. When an architecture has more than one profile, you pick one at deploy time by passing its config ID to `--config`. With a single profile, the CLI selects it automatically.
+Where a config is the low-level serving spec for one weight, a profile is the catalog-level pairing of a weight with a config. Each profile in the [supported-models catalog](/docs/dedicated-endpoints/models) surfaces its `quantization`, `parallelism`, `gpuType`, and `gpuCount`, along with the `config` (`cr_...`), `model` weight, and `modelName` (the model name you pass at deploy time). When an architecture has more than one profile, you pick one at deploy time by its `modelName` or by passing its config ID to `--config`. With a single profile, the CLI selects it automatically.
 
 ### Endpoint
 
@@ -1475,10 +1475,11 @@ Together publishes one or more profiles per model. You select one by its config 
 
 ## List a model's profiles
 
-Each profile is anchored by a config revision (`cr_...`). List the configs published for a model with the CLI. For a public-catalog model, the [supported-models catalog](/docs/dedicated-endpoints/models#list-supported-models-programmatically) also shows each profile's quantization alongside its config:
+Each profile is anchored by a config revision (`cr_...`). List the configs published for a model with the CLI, passing a model ID (`ml_...`) or a model name. For a public-catalog model, the [supported-models catalog](/docs/dedicated-endpoints/models#list-supported-models-programmatically) also shows each profile's quantization alongside its config:
 
 ```bash CLI theme={null}
 tg beta models configs ml_CbJNwQC2ZqCU2iFT3mrCh
+tg beta models configs Qwen/Qwen3.5-9B
 ```
 
 Response example:
@@ -1646,7 +1647,7 @@ Create the model record in your project before you upload its weights. Creating 
 
 Give the model a readable name (for example `gemma-4-31b-it`), rather than a Hugging Face repo ID.
 
-The base model is referenced by its `baseModelId` (`ml_...`). List the [supported models](/docs/dedicated-endpoints/models) with `tg beta models public --product dedicated` and copy the `baseModelId` of the architecture your fine-tune derives from (for example `ml_CbJNwQC2ZqCU2iFT3mrCh`). Don't use the architecture `id`, which starts with `arch_`:
+The base model is referenced by its `baseModelId` (`ml_...`). List the [supported models](/docs/dedicated-endpoints/models) with `tg beta models public --product dedicated` and copy the `baseModelId` of the architecture your fine-tune derives from (for example `ml_CbJNwQC2ZqCU2iFT3mrCh`), or pass a deployment profile's exact `modelName` (for example `Qwen/Qwen3.5-9B-FP8`). Don't use the architecture `id`, which starts with `arch_`:
 
 ```bash CLI theme={null}
 tg beta models create gemma-4-31b-it \
@@ -2373,6 +2374,7 @@ The response looks like this:
           "profileId": "cfg_a",
           "certifiedConfigRevisionId": "cr_certified",
           "certifiedModelRevisionId": "rv_snap",
+          "modelName": "zai-org/GLM-5.2-FP8",
           "config": "projects/proj_cfg/configs/cr_certified",
           "model": "projects/proj_weights/models/ml_weight/revisions/rv_snap",
           "parallelism": "TP8",
@@ -2400,6 +2402,7 @@ Each deployment profile includes these fields:
 
 | Field         | Description                                                                                                                                                                                                                                                                                                                                                                                     |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `modelName`   | Name of the deploy model this profile references (`<project_slug>/<model_name>`). This is the model name you pass when you deploy, and it identifies which precision weight the profile uses (for example `zai-org/GLM-5.2-FP8`).                                                                                                                                                               |
 | `config`      | Resource name of the certified config revision: `projects/{project_id}/configs/{config_revision_id}`. `{project_id}` is the config's owning project, which is often a platform project rather than your project. Empty when the profile has no config pinned or its owning project is unresolved.                                                                                               |
 | `model`       | Resource name of the deployable weight model for this profile (the quantization-specific build, not the architecture's base model): `projects/{project_id}/models/{model_id}[/revisions/{revision_id}]`. This field also exposes the deploy model ID, which the bare `certifiedModelRevisionId` alone does not. Empty when the profile has no model pinned or its owning project is unresolved. |
 | `parallelism` | The catalog's free-form parallelism spec (for example `TP8`, `TP4`, `EP`, or `PD`). Not every value is a tensor-parallel degree.                                                                                                                                                                                                                                                                |
@@ -15491,14 +15494,14 @@ Most of the models below are for instant [serverless inference](/docs/serverless
 
 ## Chat & text
 
-| Use case                     | Recommended model | Model string                         | Alternatives                                                     | Learn more                                                    |
-| :--------------------------- | :---------------- | :----------------------------------- | :--------------------------------------------------------------- | :------------------------------------------------------------ |
-| **Chat**                     | Kimi K3           | `moonshotai/Kimi-K3`                 | `Qwen3.8-2.4T-A95B`                                              | [Chat completions](/docs/inference/chat/overview)             |
-| **Reasoning**                | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Pro-0813`                               | [Reasoning](/docs/inference/chat/reasoning)                   |
-| **Coding agents**            | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Flash-0731`, `zai-org/GLM-5.3`          | [Build coding agents](/docs/how-to-build-coding-agents)       |
-| **Small and fast**           | Qwen3.8 27B       | `Qwen/Qwen3.8-27B`                   | `google/gemma-4-31B-it`, `openai/gpt-oss-20b`, `Qwen/Qwen3.5-9B` | -                                                             |
-| **Mid-size general purpose** | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `MiniMaxAI/MiniMax-M3`                                           | -                                                             |
-| **Function calling**         | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `zai-org/GLM-5.3`                                                | [Function calling](/docs/inference/function-calling/overview) |
+| Use case                     | Recommended model | Model string                         | Alternatives                                               | Learn more                                                    |
+| :--------------------------- | :---------------- | :----------------------------------- | :--------------------------------------------------------- | :------------------------------------------------------------ |
+| **Chat**                     | Kimi K3           | `moonshotai/Kimi-K3`                 | `zai-org/GLM-5.3`, `Qwen3.8-2.4T-A95B`                     | [Chat completions](/docs/inference/chat/overview)             |
+| **Reasoning**                | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Pro-0813`, `zai-org/GLM-5.3`      | [Reasoning](/docs/inference/chat/reasoning)                   |
+| **Coding agents**            | GLM-5.3           | `zai-org/GLM-5.3`                    | `moonshotai/Kimi-K3`, `deepseek-ai/DeepSeek-V4-Flash-0731` | [Build coding agents](/docs/how-to-build-coding-agents)       |
+| **Small and fast**           | Qwen3.8 27B       | `Qwen/Qwen3.8-27B`                   | `google/gemma-4-31B-it`, `Qwen/Qwen3.5-9B`                 | -                                                             |
+| **Mid-size general purpose** | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `zai-org/GLM-5.3-Flash`                                    | -                                                             |
+| **Function calling**         | GLM-5.3 Flash     | `zai-org/GLM-5.3-Flash`              | \`deepseek-ai/DeepSeek-V4-Flash-0731                       | [Function calling](/docs/inference/function-calling/overview) |
 
 ## Vision
 
@@ -39203,7 +39206,7 @@ How Together handles your inputs, outputs, and account data, plus enterprise opt
 
 ## What Together stores
 
-Together does not store inputs or outputs by default, i.e. it supports zero data retention (ZDR). Temporary caching may be used to improve performance unless otherwise configured.
+By default, Together stores the prompts you send and the responses models return, and may use them for product improvements. This data is not shared with third parties, and you can delete it at any time. Organization admins can turn storage off in privacy settings, which enables zero data retention (ZDR): request content is then not persisted or used for any secondary purpose. See [zero data retention](/docs/zero-data-retention) for what ZDR covers, how to enable it, and what Together retains.
 
 ## Training opt-in
 
@@ -39213,9 +39216,9 @@ Data sharing for training other models is **opt-in and not enabled by default**.
 
 Organization-level privacy toggles live on the main [Organization Settings](https://api.together.ai/settings/organization/~current) page under **Privacy**. Only organization admins can change them:
 
-* **Store prompts and model responses**: opt in to storing prompts and outputs for product improvements. Required before you can enable passthrough models.
-* **Allow organization's data for training**: opt in to using your organization's data for training models released by Together AI and partners.
-* **Allow passthrough models**: opt in to models that forward prompts and responses to third-party providers (see below).
+* **Store prompts and model responses**: on by default. Stores prompts and outputs for product improvements. Turn it off to enable [zero data retention](/docs/zero-data-retention), which also turns off passthrough models because they require prompt storage.
+* **Allow organization's data for training**: off by default. Opt in to using your organization's data for training models released by Together AI and partners.
+* **Allow passthrough models**: on by default. Allows models that forward prompts and responses to third-party providers (see below).
 
 If your organization is on the Limited tier, add a payment method before updating these settings.
 
@@ -39230,7 +39233,7 @@ When a request uses an organization's API key, the **organization setting is wha
 
 ## Passthrough third-party models
 
-Some models are offered as **passthrough**, meaning that Together forwards your prompts and responses directly to the upstream provider, and data is handled under that provider's own data policy. Passthrough is controlled by a separate organization-level toggle ("Allow my organization to use passthrough models…") and is independent of the training opt-in above. If you do not want any traffic leaving Together's infrastructure, leave that toggle off, and non-passthrough models will continue to work as normal.
+Some models are offered as **passthrough**, meaning that Together forwards your prompts and responses directly to the upstream provider, and data is handled under that provider's own data policy. Passthrough is controlled by a separate organization-level toggle ("Allow my organization to use passthrough models…") and is independent of the training opt-in above. If you do not want any traffic leaving Together's infrastructure, turn that toggle off, and non-passthrough models will continue to work as normal.
 
 ## Enterprise data residency and private networking
 
@@ -45474,6 +45477,70 @@ Learn more about [Iterative Workflows](/docs/iterative-workflow)
 When evaluating which workflow to use for a task consider tradeoffs between task complexity, latency, and cost. Workflows with parallel execution capabilities can dramatically reduce perceived latency, especially for tasks involving multiple independent operations like scraping several websites. Iterative workflows are great for optimizing for a given task until a termination condition is met but can be costly.
 
 
+# Zero data retention
+Source: https://docs.together.ai/docs/zero-data-retention
+
+Together's zero data retention policy and how to enable it.
+
+Together AI supports zero data retention (ZDR) at the organization level. With ZDR enabled, the prompts you send and the outputs models return are not stored by Together, and are not used for any secondary purpose.
+
+## Enable ZDR
+
+ZDR is not enabled by default. To enable it:
+
+1. Open the **Privacy** section of [Organization Settings](https://api.together.ai/settings/organization/~current).
+2. Set **Store prompts and model responses** to **No**.
+
+Turning off prompt storage also turns off passthrough models automatically, because passthrough requires retained prompts. Non-passthrough models keep working as normal.
+
+<Note>
+  ZDR applies from the moment you enable it. It does not retroactively affect data processed before then. To delete previously stored data, use the delete option in your settings or email [privacy@together.ai](mailto:privacy@together.ai).
+</Note>
+
+A similar storage toggle exists on your personal account profile, but it only applies to traffic sent under your personal account outside an organization. When a request uses an organization's API key, the organization setting is what applies.
+
+## Default behavior
+
+Unless your organization enables ZDR, Together stores the prompts you send and the responses models return, and may use them for product improvements. This data will never be shared with third parties, and you can delete it at any time.
+
+Two related settings are independent of ZDR:
+
+* **Training:** Use of your data for training models is a separate opt-in and is off by default. Together does not train on your data without your explicit consent, whether or not ZDR is enabled.
+* **Passthrough models:** Models that forward requests to a third-party provider are allowed by default. Data sent to them is handled under that provider's own policy.
+
+## What ZDR covers
+
+With ZDR enabled, the content you submit to Together's inference services, including text, images, and prompts, and any outputs returned to you are not stored, retained, or used for model training, product improvements, or any secondary purpose, except as needed to provide the service to you. Request content may pass through volatile memory and temporary caches while your request is served, but it is not persisted to non-volatile storage.
+
+## What Together retains with ZDR enabled
+
+ZDR applies to the content of your requests. Together still retains the data it needs to run your account:
+
+* **Request metadata:** Usage records such as token counts, model IDs, and timestamps, used for billing and the usage dashboard. Metadata does not include prompt or output content.
+* **Account data:** Profile, organization, and billing information, handled per the [privacy policy](https://www.together.ai/privacy).
+* **Data you explicitly upload:** Files you upload for [fine-tuning](/docs/fine-tuning/quickstart) or the [batch API](/docs/inference/batch/overview) are stored so your jobs can run, and remain stored until you [delete them](/reference/delete-files-id) through the API, CLI, or web console.
+
+## Enterprise deployments
+
+For data-residency, regulatory, or compliance requirements, Together supports private networking and VPC-based deployments, including in EU regions, on [dedicated endpoints](/docs/dedicated-endpoints/overview). [Contact us](https://www.together.ai/contact) to discuss the right setup for your workload.
+
+## Privacy requests
+
+For data access or deletion requests beyond what's covered above, email [privacy@together.ai](mailto:privacy@together.ai). The [privacy policy](https://www.together.ai/privacy) is the authoritative legal statement of Together's data practices.
+
+## Next steps
+
+<CardGroup>
+  <Card title="Privacy and security" icon="shield" href="/docs/privacy-and-security">
+    How Together handles account data, passthrough models, and enterprise networking.
+  </Card>
+
+  <Card title="Privacy policy" icon="file-text" href="https://www.together.ai/privacy">
+    The full legal statement of Together's data collection and retention practices.
+  </Card>
+</CardGroup>
+
+
 # Together Cookbooks & Example Apps
 Source: https://docs.together.ai/examples
 
@@ -46794,6 +46861,22 @@ Generate audio from input text
 
 
 
+# Create chat completion
+Source: https://docs.together.ai/reference/chat-completions
+
+openapi.yaml POST /chat/completions
+Generate a model response for a given chat conversation. Supports single queries and multi-turn conversations with system, user, and assistant messages.
+
+
+
+# Create image
+Source: https://docs.together.ai/reference/post-images-generations
+
+openapi.yaml POST /images/generations
+Use an image model to generate an image for a given prompt.
+
+
+
 # Create realtime text-to-speech
 Source: https://docs.together.ai/reference/audio-speech-websocket
 
@@ -46936,22 +47019,6 @@ All client and server message types support an optional `context_id` field. This
   "context_id": "conversation-1"
 }
 ```
-
-
-# Create chat completion
-Source: https://docs.together.ai/reference/chat-completions
-
-openapi.yaml POST /chat/completions
-Generate a model response for a given chat conversation. Supports single queries and multi-turn conversations with system, user, and assistant messages.
-
-
-
-# Create image
-Source: https://docs.together.ai/reference/post-images-generations
-
-openapi.yaml POST /images/generations
-Use an image model to generate an image for a given prompt.
-
 
 
 # Create audio transcription request
@@ -47432,14 +47499,6 @@ Source: https://docs.together.ai/reference/deployments-update
 
 openapi.yaml PATCH /deployments/{id}
 Update an existing deployment configuration
-
-
-
-# List A/B experiments
-Source: https://docs.together.ai/reference/dmi/ab-experiments-list
-
-openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/abExperiments
-Lists the managed live-traffic experiments configured for an endpoint.
 
 
 
@@ -50997,31 +51056,31 @@ tg beta endpoints deploy zai-org/GLM-5.2 \
   --max-replicas 3
 ```
 
-When a model has more than one [deployment profile](/docs/dedicated-endpoints/concepts#deployment-profile), `deploy` returns an error that lists the available profiles. Re-run with `--config <cr_...>` to pick one. When a model has a single profile, the CLI selects it automatically.
+When a model has more than one [deployment profile](/docs/dedicated-endpoints/concepts#deployment-profile), pass the profile's exact `modelName` (from `tg beta models public`) as `MODEL` to select that profile, or re-run with `--config <cr_...>`. If the name still matches more than one profile, `deploy` returns an error that lists each profile's `modelName`, config ID, quantization, GPUs, and parallelism, and shows an example `--model <modelName> --config <cr_...>` command. When a model has a single profile, the CLI selects it automatically.
 
 The CLI defaults `--min-replicas` and `--max-replicas` to 1, which may differ from the raw API defaults. If you pass only one bound, the CLI infers the other: `--min-replicas` alone mirrors into the max (including `0` to create the deployment stopped), and `--max-replicas 0` alone lowers the min to `0`. Passing `0` for one bound and a positive value for the other is an error.
 
 ### Parameters
 
-| Flag                                              | Description                                                                                                                                                                                                                                                                                                        |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `MODEL`                                           | (**required**) The model to deploy. Accepts a public model name (e.g. `zai-org/GLM-5.2`), a private model name, a private model ID (e.g. `ml_abc123`), or a fully resolved model path.                                                                                                                             |
-| `--endpoint [string]`                             | (**required**) The endpoint to deploy to. Pass an existing endpoint name or ID to add the deployment to it, or a new name to create the endpoint first.                                                                                                                                                            |
-| `--config [string]`                               | Config ID (`cr_...`) for this model. Run `tg beta models configs <model_id>` to list available configs. Auto-selected when the model has a single deployment profile. Required when it has more than one.                                                                                                          |
-| `--min-replicas [number]`                         | Minimum number of replicas. Default: 1. When passed alone, `--max-replicas` matches it. `--min-replicas 0` alone creates the deployment stopped.                                                                                                                                                                   |
-| `--max-replicas [number]`                         | Maximum number of replicas. Must be greater than or equal to `--min-replicas`. Defaults to the `--min-replicas` value, or 1 when neither flag is set. `--max-replicas 0` alone also lowers the minimum to `0`.                                                                                                     |
-| `--scale-up-window [string]`                      | How long the scaling metric must stay above target before adding replicas, in seconds (for example `30` or `30s`). Prevents thrashing from brief spikes.                                                                                                                                                           |
-| `--scale-down-window [string]`                    | Cooldown after a scale-down before removing more replicas, in seconds (for example `60` or `60s`). Higher values improve stability.                                                                                                                                                                                |
-| `--scaling-metric [string]`                       | Autoscaling metric to scale on: `inflight_requests`, `gpu_utilization`, `token_utilization`, `cache_hit_rate`, `throughput_per_replica`, `ttft`, `decoding_speed`, or `e2e_latency`. Must be set together with `--scaling-target`. See [Configure autoscaling](/docs/dedicated-endpoints/scaling#scaling-metrics). |
-| `--scaling-target [number]`                       | Target value for `--scaling-metric`. Utilization metrics use `0`–`100`. Other metrics use their native units.                                                                                                                                                                                                      |
-| `--scaling-percentile [p50 \| p90 \| p95 \| p99]` | Optional percentile for the latency metrics (`ttft`, `decoding_speed`, `e2e_latency`). Defaults to `p95`.                                                                                                                                                                                                          |
-| `--deployment-name [string]`                      | Name for the deployment created by this command. Defaults to a combination of the endpoint and model names.                                                                                                                                                                                                        |
-| `--model-revision [string]`                       | Deprecated. Model revision ID to pin the deployment to. Prefer passing a fully qualified model path ending in `/revisions/<REVISION_ID>` as the `MODEL` argument.                                                                                                                                                  |
-| `--placement [string]`                            | Placement profile to use.                                                                                                                                                                                                                                                                                          |
-| `--placement.regions [string]`                    | Comma-separated inline placement regions.                                                                                                                                                                                                                                                                          |
-| `--placement.constraint [required \| preferred]`  | How strictly to enforce the inline placement.                                                                                                                                                                                                                                                                      |
-| `--enable-lora`                                   | Run the multi-LoRA kernel so adapters hot-load after deploy. Toggling this later requires a redeploy.                                                                                                                                                                                                              |
-| `--traffic-weight [number]`                       | Relative capacity weight for this deployment in the endpoint's live traffic split. Set to `0` for no live traffic, or omit to leave routing unchanged.                                                                                                                                                             |
+| Flag                                              | Description                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `MODEL`                                           | (**required**) The model to deploy. Accepts a public architecture name (for example `zai-org/GLM-5.2`), a profile `modelName` from [`tg beta models public`](/reference/cli/models-beta#list-public-models) (for example `zai-org/GLM-5.2-FP8`), a private model name, a private model ID (for example `ml_abc123`), or a fully resolved model path. An exact profile `modelName` selects that profile when it uniquely matches. |
+| `--endpoint [string]`                             | (**required**) The endpoint to deploy to. Pass an existing endpoint name or ID to add the deployment to it, or a new name to create the endpoint first.                                                                                                                                                                                                                                                                          |
+| `--config [string]`                               | Config ID (`cr_...`) for this model. Run `tg beta models configs <model_id>` to list available configs. Auto-selected when the model has a single deployment profile, or when `MODEL` is an exact profile `modelName` that uniquely matches. Required when more than one profile still matches.                                                                                                                                  |
+| `--min-replicas [number]`                         | Minimum number of replicas. Default: 1. When passed alone, `--max-replicas` matches it. `--min-replicas 0` alone creates the deployment stopped.                                                                                                                                                                                                                                                                                 |
+| `--max-replicas [number]`                         | Maximum number of replicas. Must be greater than or equal to `--min-replicas`. Defaults to the `--min-replicas` value, or 1 when neither flag is set. `--max-replicas 0` alone also lowers the minimum to `0`.                                                                                                                                                                                                                   |
+| `--scale-up-window [string]`                      | How long the scaling metric must stay above target before adding replicas, in seconds (for example `30` or `30s`). Prevents thrashing from brief spikes.                                                                                                                                                                                                                                                                         |
+| `--scale-down-window [string]`                    | Cooldown after a scale-down before removing more replicas, in seconds (for example `60` or `60s`). Higher values improve stability.                                                                                                                                                                                                                                                                                              |
+| `--scaling-metric [string]`                       | Autoscaling metric to scale on: `inflight_requests`, `gpu_utilization`, `token_utilization`, `cache_hit_rate`, `throughput_per_replica`, `ttft`, `decoding_speed`, or `e2e_latency`. Must be set together with `--scaling-target`. See [Configure autoscaling](/docs/dedicated-endpoints/scaling#scaling-metrics).                                                                                                               |
+| `--scaling-target [number]`                       | Target value for `--scaling-metric`. Utilization metrics use `0`–`100`. Other metrics use their native units.                                                                                                                                                                                                                                                                                                                    |
+| `--scaling-percentile [p50 \| p90 \| p95 \| p99]` | Optional percentile for the latency metrics (`ttft`, `decoding_speed`, `e2e_latency`). Defaults to `p95`.                                                                                                                                                                                                                                                                                                                        |
+| `--deployment-name [string]`                      | Name for the deployment created by this command. Defaults to a combination of the endpoint and model names.                                                                                                                                                                                                                                                                                                                      |
+| `--model-revision [string]`                       | Deprecated. Model revision ID to pin the deployment to. Prefer passing a fully qualified model path ending in `/revisions/<REVISION_ID>` as the `MODEL` argument.                                                                                                                                                                                                                                                                |
+| `--placement [string]`                            | Placement profile to use.                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `--placement.regions [string]`                    | Comma-separated inline placement regions.                                                                                                                                                                                                                                                                                                                                                                                        |
+| `--placement.constraint [required \| preferred]`  | How strictly to enforce the inline placement.                                                                                                                                                                                                                                                                                                                                                                                    |
+| `--enable-lora`                                   | Run the multi-LoRA kernel so adapters hot-load after deploy. Toggling this later requires a redeploy.                                                                                                                                                                                                                                                                                                                            |
+| `--traffic-weight [number]`                       | Relative capacity weight for this deployment in the endpoint's live traffic split. Set to `0` for no live traffic, or omit to leave routing unchanged.                                                                                                                                                                                                                                                                           |
 
 ## List
 
@@ -52720,15 +52779,17 @@ tg beta models create my-custom-glm \
   --base-model zai-org/GLM-5.2
 ```
 
+You can also pass a base model ID (`ml_...`). Values that do not start with `ml_` are treated as a deploy model name: the CLI searches [public supported models](#list-public-models) and requires an exact match on a deployment profile's `modelName`. If the name is missing or matches more than one profile, the CLI prints the candidate model names and ids and asks you to re-run with an exact name or `ml_...` id.
+
 Alias: `tg beta models -c`.
 
 ### Parameters
 
-| Flag                        | Description                                                                                                                                                                                         |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NAME`                      | (**required**) The inference-addressable name for the model.                                                                                                                                        |
-| `--type [model \| adapter]` | Whether the record holds full weights (`model`) or a LoRA adapter (`adapter`). Set once at create time. File operations derive the type from the record. Default: `model`.                          |
-| `--base-model [string]`     | (**required**) The supported base model this model derives from. Accepts a base model ID (`ml_...`) or a deploy model name (for example `zai-org/GLM-5.2`). Run `tg beta models public` to find it. |
+| Flag                        | Description                                                                                                                                                                                                                           |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NAME`                      | (**required**) The inference-addressable name for the model.                                                                                                                                                                          |
+| `--type [model \| adapter]` | Whether the record holds full weights (`model`) or a LoRA adapter (`adapter`). Set once at create time. File operations derive the type from the record. Default: `model`.                                                            |
+| `--base-model [string]`     | (**required**) The supported base model this model derives from. Accepts a base model ID (`ml_...`) or an exact deployment profile `modelName` (for example `Qwen/Qwen3.5-9B-FP8`). Run `tg beta models public` to find either value. |
 
 ## Upload
 
@@ -52806,7 +52867,11 @@ List the deployable configs for a model. Pass a config ID to `tg beta endpoints 
 
 ```bash Shell theme={null}
 tg beta models configs ml_abc123
+tg beta models configs projects/proj_abc123/models/ml_abc123
+tg beta models configs Qwen/Qwen3.5-9B
 ```
+
+Pass a bare model ID (`ml_...`), a resource path (`projects/{project_id}/models/{model_id}`), or a model name. Names with a `/` resolve through the private models list when the prefix matches your project slug, or through [public supported models](#list-public-models) otherwise. Ambiguous public names print a short error that points you at `tg beta models public --search`.
 
 ### Parameters
 
@@ -52865,7 +52930,7 @@ tg beta models download ml_abc123 ./local-dir
 
 ## List public models
 
-List the publicly visible models across all projects. Use this to find a base model ID or name for [`create`](#create) or a model name for [`tg beta endpoints deploy`](/reference/cli/endpoints-beta#deploy).
+List the publicly visible models across all projects. Use this to find a base model ID or deployment profile `modelName` for [`create`](#create) and [`tg beta endpoints deploy`](/reference/cli/endpoints-beta#deploy).
 
 ```bash Shell theme={null}
 tg beta models public \
@@ -52873,7 +52938,9 @@ tg beta models public \
   --modality text
 ```
 
-Add `--json` to see each model's full record, including its `id` (which subsequent operations require) and its `deploymentProfiles` array. A model can expose more than one profile, each pairing a certified config with a hardware and parallelism choice, so read the `id`, `config`, `gpuType`, and `gpuCount` of the profile you want before deploying. See [Choose a hardware config](/docs/dedicated-endpoints/configs).
+The human-readable table prints one row per [deployment profile](/docs/dedicated-endpoints/concepts#deployment-profile), with columns for **Model** (the profile's `modelName`, such as `Qwen/Qwen3.5-9B-FP8`), **GPUs**, and **Parallelism**. Pass that **Model** value as the `MODEL` argument to `tg beta endpoints deploy` when you want that specific profile.
+
+Add `--json` to see each architecture's full record, including its `id` (which subsequent operations require) and its `deploymentProfiles` array. A model can expose more than one profile, each pairing a certified config with a hardware and parallelism choice, so read the profile's `modelName`, `config`, `gpuType`, and `gpuCount` before deploying. See [Choose a hardware config](/docs/dedicated-endpoints/configs).
 
 ### Parameters
 
@@ -53084,6 +53151,14 @@ Source: https://docs.together.ai/reference/dmi/ab-experiments-get
 
 openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
 Retrieves an A/B experiment and its participating deployments, roles, and traffic percentages.
+
+
+
+# List A/B experiments
+Source: https://docs.together.ai/reference/dmi/ab-experiments-list
+
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/abExperiments
+Lists the managed live-traffic experiments configured for an endpoint.
 
 
 

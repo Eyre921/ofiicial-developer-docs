@@ -104,10 +104,7 @@ For more information, see [OpenAI Codex](/en/copilot/concepts/agents/openai-code
 
 These models are available for Auto model selection in the Anthropic Claude coding agent.
 
-* Claude Opus 4.5
-* Claude Opus 4.6
 * Claude Opus 4.7
-* Claude Sonnet 4.5
 * Claude Sonnet 4.6
 
 For more information, see [Anthropic Claude](/en/copilot/concepts/agents/anthropic-claude).

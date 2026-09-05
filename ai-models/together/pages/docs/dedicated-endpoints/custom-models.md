@@ -73,7 +73,7 @@ Create the model record in your project before you upload its weights. Creating 
 
 Give the model a readable name (for example `gemma-4-31b-it`), rather than a Hugging Face repo ID.
 
-The base model is referenced by its `baseModelId` (`ml_...`). List the [supported models](/docs/dedicated-endpoints/models) with `tg beta models public --product dedicated` and copy the `baseModelId` of the architecture your fine-tune derives from (for example `ml_CbJNwQC2ZqCU2iFT3mrCh`). Don't use the architecture `id`, which starts with `arch_`:
+The base model is referenced by its `baseModelId` (`ml_...`). List the [supported models](/docs/dedicated-endpoints/models) with `tg beta models public --product dedicated` and copy the `baseModelId` of the architecture your fine-tune derives from (for example `ml_CbJNwQC2ZqCU2iFT3mrCh`), or pass a deployment profile's exact `modelName` (for example `Qwen/Qwen3.5-9B-FP8`). Don't use the architecture `id`, which starts with `arch_`:
 
 ```bash CLI theme={null}
 tg beta models create gemma-4-31b-it \

@@ -149,7 +149,7 @@ The following events are captured in the audit logs:
 
 Data within a Pinecone project can be encrypted using [customer-managed encryption keys (CMEK)](/guides/production/configure-cmek). This allows you to encrypt your data using keys that you manage in your cloud provider's key management system (KMS). Pinecone supports CMEK using Amazon Web Services (AWS) KMS.
 
-For [Bring your own cloud (BYOC)](/guides/production/bring-your-own-cloud), you use KMS on infrastructure in your own account rather than this console CMEK integration.
+For [Bring Your Own Cloud (BYOC)](/guides/production/bring-your-own-cloud), you use KMS on infrastructure in your own account rather than this console CMEK integration.
 
 ### Backup and recovery
 

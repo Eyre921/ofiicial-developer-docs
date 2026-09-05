@@ -162,6 +162,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.group.custom\_agent\_creation\_updated**: The custom agent creation permission for a group was enabled or disabled.
 * **workspace.group.deleted**: A group was deleted from the workspace.
 * **workspace.group.internal\_integration\_creation\_updated**: A permission group's ability to create internal integrations was updated.
+* **workspace.group.notion\_mcp\_personal\_access\_token\_updated**: A permission group's ability to use personal access tokens with Notion MCP was updated.
 * **workspace.group.permissions.member\_added**: A workspace owner or membership admin added a new member to a group. A group is a defined collection of workspace members.
 * **workspace.group.permissions.member\_removed**: A workspace owner or membership admin removed a member from a group.
 * **workspace.group.permissions.member\_role\_updated**: A group member's role was updated (Member ↔ Group owner).
@@ -238,6 +239,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.invite\_link\_setting\_updated**: A user enabled or disabled the workspace invite link.
 * **workspace.settings.membership\_request\_setting\_updated**: A user enabled or disabled new workspace membership requests.
 * **workspace.settings.name\_updated**: A user updated the workspace's name.
+* **workspace.settings.notion\_mcp\_personal\_access\_token\_policy\_updated**: The workspace policy controlling who can use personal access tokens with Notion MCP was updated.
 * **workspace.settings.page\_access\_request\_setting\_updated**: A user enabled or disabled page access requests from non-workspace-members.
 * **workspace.settings.people\_directory\_setting\_updated**: The people directory visibility setting was enabled or disabled.
 * **workspace.settings.people\_hover\_cards\_setting\_updated**: The people hover cards setting was enabled or disabled.

@@ -8,26 +8,30 @@ path: docs/help-center/product/mobile-apps/eleven-reader/how-do-offline-download
 
 # How do offline downloads work?
 
-Offline downloads let you convert text into audio ahead of time, so you can listen without an internet connection. You can use them to save articles, PDFs, eBooks, and other content for offline listening.
+Offline downloads let you prepare content for listening without an internet connection. You can download articles, PDFs, eBooks, and other supported content directly in ElevenReader.
 
-You can choose to download specific sections of your content (such as individual chapters) or the entire text for offline use.
+You can download the full text or, for larger files, select specific chapters or sections.
 
 ### How many offline download hours do I get?
 
-Paid subscribers receive up to 20 hours of offline downloads per day and 150 hours per month as current fair use limits.
+Paid subscribers can use up to **20 hours of offline downloads per day** and **150 hours per month** under the current fair use limits.
 
-If you need more hours, you can purchase extra hours to convert more text into audio, including for offline use.
+Offline download hours are fixed. **Extra Hours do not increase your offline download allowance.** Extra Hours can only be used for online Text to Audio and Premium Titles.
 
 ### How long does it take to create an offline download?
 
-Creating an offline download typically takes 2–5 minutes, though larger files may take longer to process.
+Offline downloads usually take around **2-5 minutes** to prepare. Larger files may take longer.
 
 ### How do I use my offline downloads?
 
-Once ready, your downloads are stored directly in the app and can be played anytime — even without Wi-Fi or mobile data. You can remove downloads at any time to free up device storage and are removed when you sign out.
+Once a download is ready, it is stored in the app and can be played without Wi-Fi or mobile data.
 
-For larger files, you may be asked to select specific chapters or sections to download rather than downloading the entire file at once.
+You can remove downloaded content at any time to free up storage on your device. Downloads are also removed when you sign out of the app.
+
+For larger files, you may be asked to download individual chapters or sections instead of the entire file at once.
 
 ### Do offline downloads expire?
 
-Yes. Offline downloads remain available for 60 days after they are created. You'll receive a notification 7 days before expiration, giving you time to renew the download if needed.
+Yes. Offline downloads remain available for **60 days** after they are created.
+
+You'll receive a notification **7 days before they expire**, giving you time to renew the download if needed.

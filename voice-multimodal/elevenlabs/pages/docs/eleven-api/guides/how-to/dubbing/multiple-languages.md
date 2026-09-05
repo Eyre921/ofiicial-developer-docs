@@ -117,3 +117,7 @@ for (const language of result.languages) {
 ```
 
 Signed URLs expire about an hour after they are issued. If a download fails because the URL has expired, fetch the language again with `language.get` to obtain a fresh URL.
+
+If a language fails to generate, add it again with `language.create` on the same project rather
+than creating a new project. The project and its transcript are reusable, so only the failed
+language is regenerated.

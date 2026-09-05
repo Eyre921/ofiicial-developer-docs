@@ -31,7 +31,7 @@ url: https://docs.sentry.io/changelog/
 * [Set Up Tracing](https://docs.sentry.io/platforms/javascript/tracing.md)
 * [Instrument MCP Servers](https://docs.sentry.io/platforms/javascript/guides/node/tracing/instrumentation/mcp-module.md)
 * [Example Instrumentation](https://docs.sentry.io/platforms/javascript/tracing/span-metrics/examples.md)
-* [Cloudflare Agents SDK](https://docs.sentry.io/platforms/javascript/guides/cloudflare/features/agents-sdk.md)
+* [Cloudflare Agents SDK](https://docs.sentry.io/platforms/javascript/guides/cloudflare/agent-tracing/agents-sdk.md)
 * [Next.js](https://docs.sentry.io/platforms/javascript/guides/nextjs.md)
 * [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup.md)
 * [Pages Router Setup](https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/pages-router.md)

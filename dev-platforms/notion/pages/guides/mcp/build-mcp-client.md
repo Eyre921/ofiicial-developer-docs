@@ -661,7 +661,9 @@ connecting, call the `fetch` tool with the special id `self`:
 
 The `self` payload also carries a `current_tool_access` map, so an MCP client
 can tell up front which tools will actually run on the connected workspace's
-plan and which would only return an upgrade prompt. Each entry's `status` is
+plan and which would only return an upgrade prompt. For content search, inspect
+`current_tool_access.ai_search.status`: use `notion-ai-search` when it is
+`available`, and use `notion-search` only when it is not. Each entry's `status` is
 `available`, `available_with_limit` (calls can be made up to the limit included with
 the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the entry
 includes an `upgrade_url` into the workspace's upgrade flow), or `not_enabled`.

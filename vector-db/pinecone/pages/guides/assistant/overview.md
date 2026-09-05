@@ -16,10 +16,6 @@ Overview of Pinecone Assistant, a managed service for building production-grade 
   </Card>
 </CardGroup>
 
-<Tip>
-  Looking for a no-code way to publish a knowledge app with citations, governed access, and versioned releases? See [Pinecone Marketplace](/guides/marketplace/overview) (in [public preview](/release-notes/feature-availability)).
-</Tip>
-
 ## Use cases
 
 Pinecone Assistant is useful for a variety of tasks, especially for the following:
