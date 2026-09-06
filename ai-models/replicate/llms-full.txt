@@ -1,3 +1,144 @@
+# Run a model from Node.js
+
+**URL:** https://replicate.com/docs/get-started/nodejs.md
+
+Learn how to run a model on Replicate using Node.js.
+
+This guide includes a quickstart to scaffold a new project with a single command in your terminal, followed by a step-by-step tutorial for setting up a project from scratch. By the end, you’ll have a working Node.js project that can run any model on Replicate.
+
+[](#prerequisites)Prerequisites
+-------------------------------
+
+**Node.js 16 or greater:** The simplest way to install Node.js is using the installer at [nodejs.org](https://nodejs.org/).
+
+[](#-quickstart-scaffold-a-project-with-a-one-liner)Quickstart: Scaffold a project with a one-liner
+---------------------------------------------------------------------------------------------------
+
+To get up and running as quickly as possible, you can use [create-replicate](https://github.com/replicate/create-replicate), an npm package that creates a project directory for you, writes some starter code, installs the dependencies, and runs the code.
+
+Run the following command to scaffold a new project:
+
+```shell
+npx create-replicate
+```
+
+That’s it. You should now have a working Node.js project that generates images with the [FLUX.1 \[schnell\]](https://replicate.com/black-forest-labs/flux-schnell) model using Replicate’s API.
+
+If you want to use a different model than FLUX.1 \[schnell\], specify it when creating your project:
+
+```shell
+npx create-replicate --model black-forest-labs/flux-schnell
+```
+
+To learn more about scaffolding new Node.js projects, check out the [create-replicate documentation](https://github.com/replicate/create-replicate).
+
+[](#-slowstart-set-up-a-project-from-scratch)Slowstart: Set up a project from scratch
+-------------------------------------------------------------------------------------
+
+If you prefer to manually set up your Node.js project step by step, follow the instructions below.
+
+### [](#step-1-authenticate)Step 1: Authenticate
+
+Authenticate by setting your Replicate API token in an environment variable:
+
+```shell
+export REPLICATE_API_TOKEN=r8_******
+```
+
+### [](#step-2-create-a-new-nodejs-project)Step 2: Create a new Node.js project
+
+```shell
+# create the directory
+mkdir my-replicate-app
+cd my-replicate-app
+# set up package.json
+npm init -y
+npm pkg set type=module
+```
+
+### [](#step-3-install-the-replicate-javascript-client)Step 3: Install the Replicate JavaScript client
+
+Use npm to install the [Replicate JavaScript client](https://github.com/replicate/replicate-javascript):
+
+```shell
+npm install replicate
+```
+
+### [](#step-4-write-some-code)Step 4: Write some code
+
+Create a file called `index.js` and add the following code:
+
+```javascript
+import Replicate from "replicate";
+const replicate = new Replicate();
+console.log("Running the model...");
+const [output] = await replicate.run(
+  "black-forest-labs/flux-schnell",
+  {
+    input: {
+      prompt: "An astronaut riding a rainbow unicorn, cinematic, dramatic",
+    },
+  }
+);
+// Save the generated image
+import { writeFile } from "node:fs/promises";
+await writeFile("./output.png", output);
+console.log("Image saved as output.png");
+```
+
+### [](#step-5-run-your-code)Step 5: Run your code
+
+Next, run your code from your terminal:
+
+```shell
+node index.js
+```
+
+You should see output indicating the model is running and the image has been saved:
+
+```shell
+Running the model...
+Image saved as output.png
+```
+
+[](#next-steps)Next steps
+-------------------------
+
+Now you’re up and running on Replicate with Node.js.
+
+In this guide you used the FLUX.1 \[schnell\] image generation model, but you can adapt the code to run any model on Replicate. Try [editing existing images with text prompts using FLUX.1 Kontext Pro](https://replicate.com/black-forest-labs/flux-kontext-pro?input=nodejs), or [writing AI-generated code using Claude Sonnet 4](https://replicate.com/anthropic/claude-4-sonnet?input=nodejs). There are [thousands of public models](https://replicate.com/explore) on Replicate, and you can run any of them using the project you just created.
+
+[](#further-reading)Further reading
+-----------------------------------
+
+*   [Build a website with Next.js](/docs/get-started/nextjs) and deploy it to Vercel
+*   [Replicate JavaScript client reference](https://github.com/replicate/replicate-javascript#readme)
+*   [setup-replicate documentation](https://github.com/replicate/setup-replicate#readme)
+*   [HTTP API reference](https://replicate.com/docs/reference/http)
+
+# Run a model from Google Colab
+
+**URL:** https://replicate.com/docs/get-started/google-colab.md
+
+[](#what-is-google-colab)What is Google Colab?
+----------------------------------------------
+
+Google Colab is a cloud-based platform that lets you write and execute Python code right from your browser, without having to install anything or worry about setting up Python.
+
+[](#what-are-notebooks)What are notebooks?
+------------------------------------------
+
+Colab uses **notebooks**: interactive documents that contain both code and other elements like paragraphs, equations, and images. Notebooks are a great prototyping tool for data scientists, researchers, and developers to create and share documents that contain live working code.
+
+[](#running-replicate-models-on-colab)Running Replicate models on Colab
+-----------------------------------------------------------------------
+
+You can run any public Replicate model in a notebook with just a few lines of Python code.
+
+To get started, [check out the Replicate Python notebook](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX)
+
+[![](https://github.com/replicate/cog/assets/2289/d2b4d474-7fa3-4b09-932a-deda4a9cab54)](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX)
+
 # Run a model from Python
 
 **URL:** https://replicate.com/docs/get-started/python.md
@@ -267,29 +408,6 @@ Now it’s time to integrate your deployed model into your app or product:
 *   Check out the [client libraries](/docs/reference/client-libraries) you can use to run your model.
 *   Check out the [deployments guide](/docs/topics/deployments) to learn more about model performance and scaling.
 
-# Run a model from Google Colab
-
-**URL:** https://replicate.com/docs/get-started/google-colab.md
-
-[](#what-is-google-colab)What is Google Colab?
-----------------------------------------------
-
-Google Colab is a cloud-based platform that lets you write and execute Python code right from your browser, without having to install anything or worry about setting up Python.
-
-[](#what-are-notebooks)What are notebooks?
-------------------------------------------
-
-Colab uses **notebooks**: interactive documents that contain both code and other elements like paragraphs, equations, and images. Notebooks are a great prototyping tool for data scientists, researchers, and developers to create and share documents that contain live working code.
-
-[](#running-replicate-models-on-colab)Running Replicate models on Colab
------------------------------------------------------------------------
-
-You can run any public Replicate model in a notebook with just a few lines of Python code.
-
-To get started, [check out the Replicate Python notebook](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX)
-
-[![](https://github.com/replicate/cog/assets/2289/d2b4d474-7fa3-4b09-932a-deda4a9cab54)](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX)
-
 # Fine-tune an image model
 
 **URL:** https://replicate.com/docs/get-started/fine-tune-with-flux.md
@@ -480,123 +598,117 @@ If you need inspiration, check the collection of [FLUX fine-tunes on Replicate](
 
 Have fun and share your results with the community on [X](https://x.com/replicate) or [Discord](https://discord.gg/replicate).
 
-# Run a model from Node.js
+# Subprocessors
 
-**URL:** https://replicate.com/docs/get-started/nodejs.md
+**URL:** https://replicate.com/docs/topics/site-policy/subprocessors.md
 
-Learn how to run a model on Replicate using Node.js.
+Name
 
-This guide includes a quickstart to scaffold a new project with a single command in your terminal, followed by a step-by-step tutorial for setting up a project from scratch. By the end, you’ll have a working Node.js project that can run any model on Replicate.
+Description
 
-[](#prerequisites)Prerequisites
--------------------------------
+Location
 
-**Node.js 16 or greater:** The simplest way to install Node.js is using the installer at [nodejs.org](https://nodejs.org/).
+Attio
 
-[](#-quickstart-scaffold-a-project-with-a-one-liner)Quickstart: Scaffold a project with a one-liner
----------------------------------------------------------------------------------------------------
+User CRM
 
-To get up and running as quickly as possible, you can use [create-replicate](https://github.com/replicate/create-replicate), an npm package that creates a project directory for you, writes some starter code, installs the dependencies, and runs the code.
+United States
 
-Run the following command to scaffold a new project:
+AWS
 
-```shell
-npx create-replicate
-```
+Cloud Hosted Infrastructure and Data Hosting
 
-That’s it. You should now have a working Node.js project that generates images with the [FLUX.1 \[schnell\]](https://replicate.com/black-forest-labs/flux-schnell) model using Replicate’s API.
+United States
 
-If you want to use a different model than FLUX.1 \[schnell\], specify it when creating your project:
+CloudAMQP
 
-```shell
-npx create-replicate --model black-forest-labs/flux-schnell
-```
+RabbitMQ for web
 
-To learn more about scaffolding new Node.js projects, check out the [create-replicate documentation](https://github.com/replicate/create-replicate).
+United States
 
-[](#-slowstart-set-up-a-project-from-scratch)Slowstart: Set up a project from scratch
--------------------------------------------------------------------------------------
+Cloudflare
 
-If you prefer to manually set up your Node.js project step by step, follow the instructions below.
+Content Delivery service
 
-### [](#step-1-authenticate)Step 1: Authenticate
+United States
 
-Authenticate by setting your Replicate API token in an environment variable:
+CoreWeave
 
-```shell
-export REPLICATE_API_TOKEN=r8_******
-```
+Cloud Hosted infrastructure
 
-### [](#step-2-create-a-new-nodejs-project)Step 2: Create a new Node.js project
+United States
 
-```shell
-# create the directory
-mkdir my-replicate-app
-cd my-replicate-app
-# set up package.json
-npm init -y
-npm pkg set type=module
-```
+Crunchy Bridge
 
-### [](#step-3-install-the-replicate-javascript-client)Step 3: Install the Replicate JavaScript client
+Postgres
 
-Use npm to install the [Replicate JavaScript client](https://github.com/replicate/replicate-javascript):
+United States
 
-```shell
-npm install replicate
-```
+Fly.io
 
-### [](#step-4-write-some-code)Step 4: Write some code
+Public Cloud infrastructure
 
-Create a file called `index.js` and add the following code:
+United States
 
-```javascript
-import Replicate from "replicate";
-const replicate = new Replicate();
-console.log("Running the model...");
-const [output] = await replicate.run(
-  "black-forest-labs/flux-schnell",
-  {
-    input: {
-      prompt: "An astronaut riding a rainbow unicorn, cinematic, dramatic",
-    },
-  }
-);
-// Save the generated image
-import { writeFile } from "node:fs/promises";
-await writeFile("./output.png", output);
-console.log("Image saved as output.png");
-```
+GCP (Google)
 
-### [](#step-5-run-your-code)Step 5: Run your code
+Cloud Hosted Infrastructure
 
-Next, run your code from your terminal:
+United States
 
-```shell
-node index.js
-```
+Honeycomb
 
-You should see output indicating the model is running and the image has been saved:
+Tracing and telemetry
 
-```shell
-Running the model...
-Image saved as output.png
-```
+United States
 
-[](#next-steps)Next steps
--------------------------
+LaunchDarkly
 
-Now you’re up and running on Replicate with Node.js.
+Feature flag management platform
 
-In this guide you used the FLUX.1 \[schnell\] image generation model, but you can adapt the code to run any model on Replicate. Try [editing existing images with text prompts using FLUX.1 Kontext Pro](https://replicate.com/black-forest-labs/flux-kontext-pro?input=nodejs), or [writing AI-generated code using Claude Sonnet 4](https://replicate.com/anthropic/claude-4-sonnet?input=nodejs). There are [thousands of public models](https://replicate.com/explore) on Replicate, and you can run any of them using the project you just created.
+United States
 
-[](#further-reading)Further reading
------------------------------------
+Loops.so
 
-*   [Build a website with Next.js](/docs/get-started/nextjs) and deploy it to Vercel
-*   [Replicate JavaScript client reference](https://github.com/replicate/replicate-javascript#readme)
-*   [setup-replicate documentation](https://github.com/replicate/setup-replicate#readme)
-*   [HTTP API reference](https://replicate.com/docs/reference/http)
+Marketing emails
+
+United States
+
+Metabase
+
+Data analysis
+
+United States
+
+Metronome
+
+Usage and invoicing
+
+United States
+
+Pylon
+
+Customer support platform
+
+United States
+
+Stripe
+
+Payment processing
+
+United States
+
+Sentry
+
+Error monitoring and performance tracking
+
+United States
+
+TigerData
+
+Timeseries data storage and management
+
+United States
 
 # API tokens
 
@@ -1125,118 +1237,6 @@ For example:
 
 The web URL is available immediately when a prediction is created and remains accessible after completion, making it useful for both real-time monitoring and post-completion analysis.
 
-# Subprocessors
-
-**URL:** https://replicate.com/docs/topics/site-policy/subprocessors.md
-
-Name
-
-Description
-
-Location
-
-Attio
-
-User CRM
-
-United States
-
-AWS
-
-Cloud Hosted Infrastructure and Data Hosting
-
-United States
-
-CloudAMQP
-
-RabbitMQ for web
-
-United States
-
-Cloudflare
-
-Content Delivery service
-
-United States
-
-CoreWeave
-
-Cloud Hosted infrastructure
-
-United States
-
-Crunchy Bridge
-
-Postgres
-
-United States
-
-Fly.io
-
-Public Cloud infrastructure
-
-United States
-
-GCP (Google)
-
-Cloud Hosted Infrastructure
-
-United States
-
-Honeycomb
-
-Tracing and telemetry
-
-United States
-
-LaunchDarkly
-
-Feature flag management platform
-
-United States
-
-Loops.so
-
-Marketing emails
-
-United States
-
-Metabase
-
-Data analysis
-
-United States
-
-Metronome
-
-Usage and invoicing
-
-United States
-
-Pylon
-
-Customer support platform
-
-United States
-
-Stripe
-
-Payment processing
-
-United States
-
-Sentry
-
-Error monitoring and performance tracking
-
-United States
-
-TigerData
-
-Timeseries data storage and management
-
-United States
-
 # Input files
 
 **URL:** https://replicate.com/docs/topics/predictions/input-files.md
@@ -1594,56 +1594,6 @@ const nextConfig = {
 
 Remember to update your code to work with `FileOutput` objects if you’re using version 1.0.0 or later of our client libraries.
 
-# Prediction lifecycle
-
-**URL:** https://replicate.com/docs/topics/predictions/lifecycle.md
-
-Whenever you run a model, you’re creating a [prediction](/docs/topics/predictions).
-
-Some models run very quickly and can return a result within a few milliseconds. Other models can take longer to run, especially generative models, like the kind that produce [images from text prompts](https://replicate.com/collections/text-to-image).
-
-[](#prediction-statuses)Prediction statuses
--------------------------------------------
-
-Predictions can have any of the following statuses:
-
-*   `starting`: the prediction is starting up. If this status lasts longer than a few seconds, then it’s typically because a new worker is being started to run the prediction. Refer to [cold boots](/docs/topics/models/run-a-model#warm-models).
-*   `processing`: the `predict()` method of the model is currently running.
-*   `succeeded`: the prediction completed successfully.
-*   `failed`: the prediction encountered an error during processing.
-*   `canceled`: the prediction was canceled by the user or exceeded its deadline after starting.
-*   `aborted`: the prediction exceeded its deadline before it could start running.
-
-[](#timeouts)Timeouts
----------------------
-
-Predictions time out after running for 30 minutes. If you require more than 30 minute timeouts for predictions, [contact us](https://replicate.com/support).
-
-You can also set a deadline to automatically cancel a prediction if it doesn’t complete within a specified duration. This is useful for building applications where you need to decide when to stop waiting and move on - for example, showing a timeout message to users or switching to an alternative workflow.
-
-What happens when a prediction exceeds its deadline depends on whether it had started running:
-
-*   **Before starting**: The status changes to `aborted`
-*   **After starting**: The status changes to `canceled`
-
-### [](#billing-for-predictions-with-deadlines)Billing for predictions with deadlines
-
-You’re billed based on whether the prediction had started running:
-
-*   **Aborted** (never started): No charge
-*   **Canceled** (started running): You pay for the time the prediction ran before it was canceled
-
-This means you only pay for compute resources that were actually used.
-
-[](#monitoring-predictions)Monitoring predictions
--------------------------------------------------
-
-When you’re logged in, you can view a list of your predictions on the [dashboard](https://replicate.com/dashboard), with summaries of status, run time, etc.
-
-For long-running models, you may want to poll the API or use [webhooks](/docs/topics/webhooks) to check the status of a prediction.
-
-To learn more about how long predictions are stored with Replicate, refer to [Data retention](/docs/topics/predictions/data-retention).
-
 # Receive webhooks
 
 **URL:** https://replicate.com/docs/topics/webhooks/receive-webhook.md
@@ -1818,41 +1768,55 @@ The default setup timeout is appropriate for most models, but you may need to in
 *   Performs complex initialization or preprocessing
 *   Requires additional setup steps during instance startup
 
-# Delete a deployment
+# Prediction lifecycle
 
-**URL:** https://replicate.com/docs/topics/deployments/delete-a-deployment.md
+**URL:** https://replicate.com/docs/topics/predictions/lifecycle.md
 
-You can delete a deployment you own on the settings page on the web or programmatically via the `deployments.delete` HTTP API.
+Whenever you run a model, you’re creating a [prediction](/docs/topics/predictions).
 
-Note
+Some models run very quickly and can return a result within a few milliseconds. Other models can take longer to run, especially generative models, like the kind that produce [images from text prompts](https://replicate.com/collections/text-to-image).
 
-You can only delete deployments that have been offline and unused for at least 15 minutes.
+[](#prediction-statuses)Prediction statuses
+-------------------------------------------
 
-[](#delete-a-deployment-on-the-web)Delete a deployment on the web
------------------------------------------------------------------
+Predictions can have any of the following statuses:
 
-Go to [Deployments](https://replicate.com/deployments) and select the deployment, navigate to **Settings**, then select **Delete deployment**.
+*   `starting`: the prediction is starting up. If this status lasts longer than a few seconds, then it’s typically because a new worker is being started to run the prediction. Refer to [cold boots](/docs/topics/models/run-a-model#warm-models).
+*   `processing`: the `predict()` method of the model is currently running.
+*   `succeeded`: the prediction completed successfully.
+*   `failed`: the prediction encountered an error during processing.
+*   `canceled`: the prediction was canceled by the user or exceeded its deadline after starting.
+*   `aborted`: the prediction exceeded its deadline before it could start running.
 
-[](#delete-a-deployment-via-api)Delete a deployment via API
------------------------------------------------------------
+[](#timeouts)Timeouts
+---------------------
 
-Use the [`deployments.delete` endpoint](https://replicate.com/docs/reference/http#delete-a-deployment):
+Predictions time out after running for 30 minutes. If you require more than 30 minute timeouts for predictions, [contact us](https://replicate.com/support).
 
-```http
-DELETE https://api.replicate.com/v1/deployments/{deployment_id}
-```
+You can also set a deadline to automatically cancel a prediction if it doesn’t complete within a specified duration. This is useful for building applications where you need to decide when to stop waiting and move on - for example, showing a timeout message to users or switching to an alternative workflow.
 
-Here’s an example cURL request:
+What happens when a prediction exceeds its deadline depends on whether it had started running:
 
-```shell
-curl -s -X DELETE \
-  -H "Authorization: Bearer YOUR_API_TOKEN" \
-  https://api.replicate.com/v1/deployments/deployment-id
-```
+*   **Before starting**: The status changes to `aborted`
+*   **After starting**: The status changes to `canceled`
 
-Note
+### [](#billing-for-predictions-with-deadlines)Billing for predictions with deadlines
 
-Currently, the JavaScript and Python client libraries do not offer a way to delete deployments (only the HTTP API does).
+You’re billed based on whether the prediction had started running:
+
+*   **Aborted** (never started): No charge
+*   **Canceled** (started running): You pay for the time the prediction ran before it was canceled
+
+This means you only pay for compute resources that were actually used.
+
+[](#monitoring-predictions)Monitoring predictions
+-------------------------------------------------
+
+When you’re logged in, you can view a list of your predictions on the [dashboard](https://replicate.com/dashboard), with summaries of status, run time, etc.
+
+For long-running models, you may want to poll the API or use [webhooks](/docs/topics/webhooks) to check the status of a prediction.
+
+To learn more about how long predictions are stored with Replicate, refer to [Data retention](/docs/topics/predictions/data-retention).
 
 # Verify webhooks
 
@@ -1948,18 +1912,41 @@ As mentioned above, Replicate also sends the timestamp of the attempt in the `we
 [](#complete-verification-example)Complete verification example
 ---------------------------------------------------------------
 
-# Model versions
+# Delete a deployment
 
-**URL:** https://replicate.com/docs/topics/models/versions.md
+**URL:** https://replicate.com/docs/topics/deployments/delete-a-deployment.md
 
-Just like normal software, machine learning models change and improve over time, and those changes are released as new versions. Whenever a model author retrains a model with new data, fixes a bug in the source code, or updates a dependency, those changes can influence the behavior of the model. The changes are published as new versions, so model authors can make improvements without disrupting the experience for people using older versions of the model. Versioning is essential to making machine learning reproducible: it helps guarantee that a model will behave consistently regardless of when or where it’s being run.
+You can delete a deployment you own on the settings page on the web or programmatically via the `deployments.delete` HTTP API.
 
-[](#finding-model-versions)Finding model versions
--------------------------------------------------
+Note
 
-You can find model versions by going to any model page and clicking on the [Versions tab](https://replicate.com/fofr/sticker-maker/versions).
+You can only delete deployments that have been offline and unused for at least 15 minutes.
 
-![The model versions UI on Replicate](/_content/assets/versions.B4zSnoCg.png)
+[](#delete-a-deployment-on-the-web)Delete a deployment on the web
+-----------------------------------------------------------------
+
+Go to [Deployments](https://replicate.com/deployments) and select the deployment, navigate to **Settings**, then select **Delete deployment**.
+
+[](#delete-a-deployment-via-api)Delete a deployment via API
+-----------------------------------------------------------
+
+Use the [`deployments.delete` endpoint](https://replicate.com/docs/reference/http#delete-a-deployment):
+
+```http
+DELETE https://api.replicate.com/v1/deployments/{deployment_id}
+```
+
+Here’s an example cURL request:
+
+```shell
+curl -s -X DELETE \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  https://api.replicate.com/v1/deployments/deployment-id
+```
+
+Note
+
+Currently, the JavaScript and Python client libraries do not offer a way to delete deployments (only the HTTP API does).
 
 # Publish a model
 
@@ -2105,6 +2092,73 @@ Cog models are versioned just like normal software projects, which means you can
 
 For more details, see [model versions](/docs/topics/models/versions).
 
+# Model versions
+
+**URL:** https://replicate.com/docs/topics/models/versions.md
+
+Just like normal software, machine learning models change and improve over time, and those changes are released as new versions. Whenever a model author retrains a model with new data, fixes a bug in the source code, or updates a dependency, those changes can influence the behavior of the model. The changes are published as new versions, so model authors can make improvements without disrupting the experience for people using older versions of the model. Versioning is essential to making machine learning reproducible: it helps guarantee that a model will behave consistently regardless of when or where it’s being run.
+
+[](#finding-model-versions)Finding model versions
+-------------------------------------------------
+
+You can find model versions by going to any model page and clicking on the [Versions tab](https://replicate.com/fofr/sticker-maker/versions).
+
+![The model versions UI on Replicate](/_content/assets/versions.B4zSnoCg.png)
+
+# Share a prediction
+
+**URL:** https://replicate.com/docs/topics/predictions/share-a-prediction.md
+
+Every [prediction](/docs/topics/predictions) that you create is associated with your user account, and only you can see the predictions that you create.
+
+If you’re using the web interface, then you can click the **Share** button to make the prediction public, so that others can view it:
+
+[
+
+![Share button](/_content/assets/share-button.D62V4_I1.png)
+
+](https://replicate.com/black-forest-labs/flux-schnell/examples)
+
+# Test your webhook code
+
+**URL:** https://replicate.com/docs/topics/webhooks/testing-webhook-code.md
+
+When writing the code for your new webhook handler, it’s useful to be able to receive real webhooks in your development environment so you can verify your code is handling them as expected.
+
+[ngrok](https://ngrok.com/) is a free reverse proxy tool that can create a secure tunnel to your local machine so you can receive webhooks. If you have Node.js installed, run ngrok directly from the command line using the `npx` command that’s included with Node.js.
+
+```shell
+npx ngrok http 3000
+```
+
+The command above will generate output that looks like this:
+
+```plaintext
+Session Status                online
+Session Expires               1 hour, 59 minutes
+Version                       2.3.41
+Region                        United States (us)
+Web Interface                 http://127.0.0.1:4040
+Forwarding                    http://3e48-20-171-41-18.ngrok.io -> http://localhost:3000
+Forwarding                    https://3e48-20-171-41-18.ngrok.io -> http://localhost:3000
+```
+
+The HTTPS URL in the output (`http://3e48-20-171-41-18.ngrok.io` in the example above) is a temporary URL pointing to your local machine. Copy that URL and use it as the base of your webhook URL.
+
+Here’s an example using the [`replicate` JavaScript client](https://github.com/replicate/replicate-javascript):
+
+```js
+await replicate.predictions.create({
+  version: "d55b9f2d...",
+  input: { prompt: "call me later maybe" },
+  webhook: "https://3e48-20-171-41-18.ngrok.io/replicate-webhook",
+});
+```
+
+Your webhook handler should now receive webhooks from Replicate. Once you’ve deployed your app, change the value of the `webhook` URL to your production webhook handler endpoint when creating predictions.
+
+For a real-world example of webhook handling in Next.js, check out [Scribble Diffusion’s codebase](https://github.com/replicate/scribble-diffusion/pull/27/commits/627c872c78aad89cadd02798d37d4696e3278a12).
+
 # Model hardware
 
 **URL:** https://replicate.com/docs/topics/models/hardware.md
@@ -2168,6 +2222,86 @@ Fine-tuned models based on SDXL or Flux with [fast booting](https://replicate.co
 
 If you would like to change the hardware for a fine-tuned version with fast booting, you can [make a deployment](https://replicate.com/deployments/create).
 
+# Official models
+
+**URL:** https://replicate.com/docs/topics/models/official-models.md
+
+We maintain [over 100 official models](https://replicate.com/collections/official) that are always on, predictably priced, and have a stable API.
+
+Official models are just like other models on Replicate, but with a few extra benefits:
+
+*   **Always on**: Official models are always warm and ready to respond to requests, so you can run them without worrying about cold boots.
+*   **Stable API**: The input and output API for every official model is stable. You can reliably use official models without having to worry about breaking changes or unexpected changes in the API.
+*   **Predictable pricing**: Unlike other models which are [priced by the hardware they use and the amount of time they run](https://replicate.com/pricing), official models are priced by predictable metrics, like the number of output image, seconds of video output, number of input and output tokens, etc.
+*   **Actively maintained**: Replicate maintains the official models, and we work with the authors to make sure they’re high quality. We also make sure they’re always up to date with the latest version of the model.
+
+[](#api)API
+-----------
+
+The way you call official models is a little different from other models. If you’re using a Replicate library like the [JavaScript](https://github.com/replicate/replicate-javascript) or [Python](https://github.com/replicate/replicate-python) client, you don’t need to specify a version.
+
+Here’s an example for running [black-forest-labs/flux-1.1-pro](https://replicate.com/black-forest-labs/flux-1.1-pro) in Node.js. Notice that the `model` identifer is just the owner and name (`black-forest-labs/flux-1.1-pro`), without a version:
+
+```tsx
+import Replicate from "replicate";
+const replicate = new Replicate();
+const model = "black-forest-labs/flux-1.1-pro";
+const input = { prompt: "A t-rex on a skateboard looking cool" };
+const output = await replicate.run(model, { input });
+console.log(output);
+```
+
+If you’re using the HTTP API to run an official model, you use the `POST /models/<owner>/<name>/predictions` endpoint and you don’t need to specify a version. For example:
+
+```bash
+curl https://api.replicate.com/v1/models/black-forest-labs/flux-1.1-pro/predictions \
+	--request POST \
+	--header "Authorization: Bearer $REPLICATE_API_TOKEN" \
+	--header "Content-Type: application/json" \
+	--header "Prefer: wait" \
+	--data @- <<'EOM'
+{
+	"input": {
+      "prompt": "A t-rex on a skateboard looking cool"
+	}
+}
+EOM
+```
+
+Nothing has changed about how you run other models. The best way to find out how to run a model is [the API documentation on a model](https://replicate.com/black-forest-labs/flux-dev/api).
+
+[](#pricing)Pricing
+-------------------
+
+Instead of being charged by the amount of time a model runs, you’re charged by output (or in some cases, input). For example, [black-forest-labs/flux-1.1-pro](https://replicate.com/black-forest-labs/flux-1.1-pro) is charged for each image it generates, but for other models this might be things like the number of tokens or the duration of a video.
+
+You can find out about each model’s pricing [on the pricing section of the model](https://replicate.com/black-forest-labs/flux-1.1-pro#pricing).
+
+[](#models)Models
+-----------------
+
+Replicate maintains [over 100 official models](https://replicate.com/collections/official), including:
+
+*   [bytedance/seedance-1-pro](https://replicate.com/bytedance/seedance-1-pro)
+*   [bytedance/seedance-1-lite](https://replicate.com/bytedance/seedance-1-lite)
+*   [kwaiyeij/kling-v2.1](https://replicate.com/kwaiyeij/kling-v2.1)
+*   [google/veo-3](https://replicate.com/google/veo-3)
+*   [google/imagen-4-ultra](https://replicate.com/google/imagen-4-ultra)
+*   [replicate/fast-flux-trainer](https://replicate.com/replicate/fast-flux-trainer)
+*   [black-forest-labs/flux-kontext-pro](https://replicate.com/black-forest-labs/flux-kontext-pro)
+*   [black-forest-labs/flux-kontext-max](https://replicate.com/black-forest-labs/flux-kontext-max)
+*   [ideogram-ai/ideogram-v3-turbo](https://replicate.com/ideogram-ai/ideogram-v3-turbo)
+*   [minimax/video-01](https://replicate.com/minimax/video-01)
+*   [meta/meta-llama-3-70b](https://replicate.com/meta/meta-llama-3-70b)
+*   [recraft-ai/recraft-v3](https://replicate.com/recraft-ai/recraft-v3)
+
+For the full list, [take a look at the official models collection](https://replicate.com/collections/official).
+
+[](#adding-new-official-models)Adding new official models
+---------------------------------------------------------
+
+The collection of official models is always growing. If you know of a model that you think should be official, please [let us know](https://replicate.com/contact).
+
 # Rate limits
 
 **URL:** https://replicate.com/docs/topics/predictions/rate-limits.md
@@ -2199,46 +2333,6 @@ If you hit a limit, you will receive a response with status `429` with a body li
 -------------------------------
 
 If you want higher limits, [contact us](https://replicate.com/support).
-
-# Test your webhook code
-
-**URL:** https://replicate.com/docs/topics/webhooks/testing-webhook-code.md
-
-When writing the code for your new webhook handler, it’s useful to be able to receive real webhooks in your development environment so you can verify your code is handling them as expected.
-
-[ngrok](https://ngrok.com/) is a free reverse proxy tool that can create a secure tunnel to your local machine so you can receive webhooks. If you have Node.js installed, run ngrok directly from the command line using the `npx` command that’s included with Node.js.
-
-```shell
-npx ngrok http 3000
-```
-
-The command above will generate output that looks like this:
-
-```plaintext
-Session Status                online
-Session Expires               1 hour, 59 minutes
-Version                       2.3.41
-Region                        United States (us)
-Web Interface                 http://127.0.0.1:4040
-Forwarding                    http://3e48-20-171-41-18.ngrok.io -> http://localhost:3000
-Forwarding                    https://3e48-20-171-41-18.ngrok.io -> http://localhost:3000
-```
-
-The HTTPS URL in the output (`http://3e48-20-171-41-18.ngrok.io` in the example above) is a temporary URL pointing to your local machine. Copy that URL and use it as the base of your webhook URL.
-
-Here’s an example using the [`replicate` JavaScript client](https://github.com/replicate/replicate-javascript):
-
-```js
-await replicate.predictions.create({
-  version: "d55b9f2d...",
-  input: { prompt: "call me later maybe" },
-  webhook: "https://3e48-20-171-41-18.ngrok.io/replicate-webhook",
-});
-```
-
-Your webhook handler should now receive webhooks from Replicate. Once you’ve deployed your app, change the value of the `webhook` URL to your production webhook handler endpoint when creating predictions.
-
-For a real-world example of webhook handling in Next.js, check out [Scribble Diffusion’s codebase](https://github.com/replicate/scribble-diffusion/pull/27/commits/627c872c78aad89cadd02798d37d4696e3278a12).
 
 # Community models
 
@@ -2397,86 +2491,6 @@ The safety checker is intended to protect users, but it can sometimes be too res
 
 For more details on allowed use, see the [terms of service](https://replicate.com/terms).
 
-# Official models
-
-**URL:** https://replicate.com/docs/topics/models/official-models.md
-
-We maintain [over 100 official models](https://replicate.com/collections/official) that are always on, predictably priced, and have a stable API.
-
-Official models are just like other models on Replicate, but with a few extra benefits:
-
-*   **Always on**: Official models are always warm and ready to respond to requests, so you can run them without worrying about cold boots.
-*   **Stable API**: The input and output API for every official model is stable. You can reliably use official models without having to worry about breaking changes or unexpected changes in the API.
-*   **Predictable pricing**: Unlike other models which are [priced by the hardware they use and the amount of time they run](https://replicate.com/pricing), official models are priced by predictable metrics, like the number of output image, seconds of video output, number of input and output tokens, etc.
-*   **Actively maintained**: Replicate maintains the official models, and we work with the authors to make sure they’re high quality. We also make sure they’re always up to date with the latest version of the model.
-
-[](#api)API
------------
-
-The way you call official models is a little different from other models. If you’re using a Replicate library like the [JavaScript](https://github.com/replicate/replicate-javascript) or [Python](https://github.com/replicate/replicate-python) client, you don’t need to specify a version.
-
-Here’s an example for running [black-forest-labs/flux-1.1-pro](https://replicate.com/black-forest-labs/flux-1.1-pro) in Node.js. Notice that the `model` identifer is just the owner and name (`black-forest-labs/flux-1.1-pro`), without a version:
-
-```tsx
-import Replicate from "replicate";
-const replicate = new Replicate();
-const model = "black-forest-labs/flux-1.1-pro";
-const input = { prompt: "A t-rex on a skateboard looking cool" };
-const output = await replicate.run(model, { input });
-console.log(output);
-```
-
-If you’re using the HTTP API to run an official model, you use the `POST /models/<owner>/<name>/predictions` endpoint and you don’t need to specify a version. For example:
-
-```bash
-curl https://api.replicate.com/v1/models/black-forest-labs/flux-1.1-pro/predictions \
-	--request POST \
-	--header "Authorization: Bearer $REPLICATE_API_TOKEN" \
-	--header "Content-Type: application/json" \
-	--header "Prefer: wait" \
-	--data @- <<'EOM'
-{
-	"input": {
-      "prompt": "A t-rex on a skateboard looking cool"
-	}
-}
-EOM
-```
-
-Nothing has changed about how you run other models. The best way to find out how to run a model is [the API documentation on a model](https://replicate.com/black-forest-labs/flux-dev/api).
-
-[](#pricing)Pricing
--------------------
-
-Instead of being charged by the amount of time a model runs, you’re charged by output (or in some cases, input). For example, [black-forest-labs/flux-1.1-pro](https://replicate.com/black-forest-labs/flux-1.1-pro) is charged for each image it generates, but for other models this might be things like the number of tokens or the duration of a video.
-
-You can find out about each model’s pricing [on the pricing section of the model](https://replicate.com/black-forest-labs/flux-1.1-pro#pricing).
-
-[](#models)Models
------------------
-
-Replicate maintains [over 100 official models](https://replicate.com/collections/official), including:
-
-*   [bytedance/seedance-1-pro](https://replicate.com/bytedance/seedance-1-pro)
-*   [bytedance/seedance-1-lite](https://replicate.com/bytedance/seedance-1-lite)
-*   [kwaiyeij/kling-v2.1](https://replicate.com/kwaiyeij/kling-v2.1)
-*   [google/veo-3](https://replicate.com/google/veo-3)
-*   [google/imagen-4-ultra](https://replicate.com/google/imagen-4-ultra)
-*   [replicate/fast-flux-trainer](https://replicate.com/replicate/fast-flux-trainer)
-*   [black-forest-labs/flux-kontext-pro](https://replicate.com/black-forest-labs/flux-kontext-pro)
-*   [black-forest-labs/flux-kontext-max](https://replicate.com/black-forest-labs/flux-kontext-max)
-*   [ideogram-ai/ideogram-v3-turbo](https://replicate.com/ideogram-ai/ideogram-v3-turbo)
-*   [minimax/video-01](https://replicate.com/minimax/video-01)
-*   [meta/meta-llama-3-70b](https://replicate.com/meta/meta-llama-3-70b)
-*   [recraft-ai/recraft-v3](https://replicate.com/recraft-ai/recraft-v3)
-
-For the full list, [take a look at the official models collection](https://replicate.com/collections/official).
-
-[](#adding-new-official-models)Adding new official models
----------------------------------------------------------
-
-The collection of official models is always growing. If you know of a model that you think should be official, please [let us know](https://replicate.com/contact).
-
 # Private models vs. public models
 
 **URL:** https://replicate.com/docs/topics/models/private-models.md
@@ -2495,20 +2509,6 @@ You can change a private model to be public in the model’s **Settings** tab. I
 
 It is possible to make a public model private, but you should be considerate of other users before doing so. If you change your public model to be private, anyone using it will immediately lose access to it. If you’re planning to add private features to an existing model, consider creating a new private model instead and leaving the existing public model public.
 
-# Share a prediction
-
-**URL:** https://replicate.com/docs/topics/predictions/share-a-prediction.md
-
-Every [prediction](/docs/topics/predictions) that you create is associated with your user account, and only you can see the predictions that you create.
-
-If you’re using the web interface, then you can click the **Share** button to make the prediction public, so that others can view it:
-
-[
-
-![Share button](/_content/assets/share-button.D62V4_I1.png)
-
-](https://replicate.com/black-forest-labs/flux-schnell/examples)
-
 # Data retention
 
 **URL:** https://replicate.com/docs/topics/predictions/data-retention.md
@@ -2526,6 +2526,51 @@ Data for predictions created through the web interface is kept indefinitely.
 ---------------------------------------------------------------
 
 To manually delete a prediction on the website, go to your dashboard, find the prediction, and look for a **Delete** button on the prediction page. Clicking this button completely removes the prediction from the site, including any output data and output files associated with it.
+
+# Use a model as a training destination
+
+**URL:** https://replicate.com/docs/topics/models/models-as-training-destinations.md
+
+Fine-tuning lets you take an existing model and train it with your own data to create a new model that is better suited to a specific task. Whenever you create a new fine-tune, you must specify a `destination` model. This is a model that you create, and it will be updated with the results of your fine-tuning process. The destination model can be a new model, or an existing model that you’ve already fine-tuned.
+
+This guide covers how to create and specify destination models for fine-tuning.
+
+[](#option-1-create-a-model-from-the-train-tab)Option 1: Create a model from the Train tab
+------------------------------------------------------------------------------------------
+
+Every trainable model has a “Train” tab with a form that lets you create a new fine-tune of that model. For example, check out the training pages for models like [Flux](https://replicate.com/replicate/fast-flux-trainer) or [LLaVA](https://replicate.com/yorickvp/llava-13b/train):
+
+![Replicate's UI with the Train tab highlighted on the llava-13b model](/_content/assets/train-tab.fzbvZ7uy.png)
+
+The training form asks you to choose a destination model. You can select an existing model as a destination, or create a new model.
+
+[](#option-2-create-a-model-on-the-web)Option 2: Create a model on the web
+--------------------------------------------------------------------------
+
+If you want to create a destination model without training it right away, you can create a model manually from the web at [replicate.com/create](https://replicate.com/create).
+
+[](#option-3-create-a-model-with-the-api)Option 3: Create a model with the API
+------------------------------------------------------------------------------
+
+You can use the [HTTP API](https://replicate.com/docs/reference/http#models.create) to create a new model programmatically whenever you need a new destination for a training.
+
+Here’s an example using cURL:
+
+```shell
+curl -s -X POST \
+  -H "Authorization: Token $REPLICATE_API_TOKEN" \
+  -d '{"owner": "alice" "name": "my-model", "description": "An example model", "visibility": "public", "hardware": "cpu"}' \
+  https://api.replicate.com/v1/models
+```
+
+You can also use Replicate’s [JavaScript](https://github.com/replicate/replicate-javascript#replicatemodelscreate) and [Python](https://github.com/replicate/replicate-python?tab=readme-ov-file#create-a-model) clients to create models with the API.
+
+[](#option-4-using-an-existing-model)Option 4: Using an existing model
+----------------------------------------------------------------------
+
+You don’t have to create a new model every time you fine-tune. You can instead use the same destination model multiple times, and the resulting fine-tunes will be added to the destination model as different “versions”. You can think of the destination model as a collection of fine-tunes, in the form of model versions.
+
+You only need to create the destination model once. When a new training is created, the resulting fine-tune is automatically pushed as a new version to the destination model.
 
 # Secrets
 
@@ -3022,450 +3067,6 @@ This will usually occur if you try to connect to the stream after the prediction
 *   Read the [Replicate Node.js client API docs](https://github.com/replicate/replicate-javascript#streaming) for usage details for Node.js and browsers.
 *   Compare streaming models using [Vercel’s AI playground](https://sdk.vercel.ai).
 *   Learn how to use [Vercel’s AI SDK](https://sdk.vercel.ai/docs/guides/providers/replicate) to stream models on Replicate in JavaScript apps.
-
-# Build a website with vinext
-
-**URL:** https://replicate.com/docs/guides/run/vinext.md
-
-[vinext](https://github.com/cloudflare/vinext) is a drop-in replacement for Next.js, built on [Vite](https://vite.dev/), that deploys to Cloudflare Workers with a single command. Read the [Cloudflare blog post](https://blog.cloudflare.com/vinext) for the full story.
-
-In this guide, you’ll build a vinext web app that uses Replicate to generate images with [FLUX.2 \[klein\]](https://replicate.com/black-forest-labs/flux-2-klein-9b), then deploy it to Cloudflare Workers.
-
-Tip
-
-The completed project is on GitHub at [replicate/getting-started-vinext](https://github.com/replicate/getting-started-vinext).
-
-[](#prerequisites)Prerequisites
--------------------------------
-
-*   **Node.js**: Download and install it from [nodejs.org](https://nodejs.org/).
-*   **[A Replicate account](https://replicate.com/signin)**: Free to get started. After your initial credit, you pay per second. See [how billing works](/docs/billing).
-*   **[A GitHub account](https://github.com)**: For hosting your source code.
-*   **[A Cloudflare account](https://dash.cloudflare.com/sign-up)**: For deploying your app to Cloudflare Workers.
-
-[](#step-1-clone-the-starter-app)Step 1: Clone the starter app
---------------------------------------------------------------
-
-Clone the getting-started repo and install dependencies:
-
-```shell
-git clone https://github.com/replicate/getting-started-vinext
-cd getting-started-vinext
-npm install
-```
-
-[](#step-2-configure-your-environment)Step 2: Configure your environment
-------------------------------------------------------------------------
-
-You need a Replicate API token to run models. Generate one at [replicate.com/account/api-tokens](https://replicate.com/account/api-tokens) and copy it.
-
-vinext runs on Cloudflare’s [workerd](https://github.com/cloudflare/workerd) runtime, which reads secrets from a `.dev.vars` file during local development (instead of `.env.local` like Next.js):
-
-```shell
-echo "REPLICATE_API_TOKEN=r8_..." > .dev.vars
-```
-
-Replace `r8_...` with your actual token. The `.dev.vars` file is git-ignored, so your token stays out of source control.
-
-[](#step-3-run-the-app-locally)Step 3: Run the app locally
-----------------------------------------------------------
-
-Start the development server:
-
-```shell
-npm run dev
-```
-
-Open [localhost:5173](http://localhost:5173) in your browser. You should see the starter app with a text prompt form.
-
-[](#step-4-explore-the-backend)Step 4: Explore the backend
-----------------------------------------------------------
-
-vinext uses the same file-based routing as Next.js. Files named `route.ts` in the `app/` directory are server-side API endpoints, and files named `page.tsx` are frontend components.
-
-The starter app has two API routes that talk to Replicate.
-
-### [](#creating-predictions)Creating predictions
-
-`app/api/predictions/route.ts` handles POST requests to create a new prediction. It calls Replicate to run FLUX.2 \[klein\] with the user’s prompt:
-
-```typescript
-import { NextResponse } from "next/server";
-import Replicate from "replicate";
-const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN,
-});
-// In production, WORKER_URL should be set to the Worker's public URL.
-// In development, use NGROK_HOST for webhook tunneling.
-const WEBHOOK_HOST = process.env.WORKER_URL ?? process.env.NGROK_HOST;
-export async function POST(request: Request) {
-  if (!process.env.REPLICATE_API_TOKEN) {
-    throw new Error(
-      "The REPLICATE_API_TOKEN environment variable is not set. See README.md for instructions on how to set it."
-    );
-  }
-  const { prompt } = await request.json();
-  const options: {
-    model: string;
-    input: { prompt: string };
-    webhook?: string;
-    webhook_events_filter?: string[];
-  } = {
-    model: "black-forest-labs/flux-2-klein-9b",
-    input: { prompt },
-  };
-  if (WEBHOOK_HOST) {
-    options.webhook = `${WEBHOOK_HOST}/api/webhooks`;
-    options.webhook_events_filter = ["start", "completed"];
-  }
-  const prediction = await replicate.predictions.create(options);
-  if (prediction?.error) {
-    return NextResponse.json({ detail: prediction.error }, { status: 500 });
-  }
-  return NextResponse.json(prediction, { status: 201 });
-}
-```
-
-Note how the `import` paths still use `next/server` — vinext reimplements these modules so your existing Next.js code works without changes.
-
-### [](#polling-for-results)Polling for results
-
-`app/api/predictions/[id]/route.ts` handles GET requests to check on a prediction’s status. The `[id]` in the path is a [dynamic route segment](https://nextjs.org/docs/routing/dynamic-routes), just like in Next.js:
-
-```typescript
-import { NextResponse } from "next/server";
-import Replicate from "replicate";
-const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN,
-});
-export async function GET(
-  _request: Request,
-  context: { params: Promise<{ id: string }> }
-) {
-  const { id } = await context.params;
-  const prediction = await replicate.predictions.get(id);
-  if (prediction?.error) {
-    return NextResponse.json({ detail: prediction.error }, { status: 500 });
-  }
-  return NextResponse.json(prediction);
-}
-```
-
-[](#step-5-explore-the-frontend)Step 5: Explore the frontend
-------------------------------------------------------------
-
-The app uses [@tanstack/react-query](https://tanstack.com/query) for data fetching and polling. The root layout wraps the app in a `QueryClientProvider` via `app/providers.tsx`:
-
-```tsx
-"use client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-const queryClient = new QueryClient();
-export default function Providers({ children }: { children: React.ReactNode }) {
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
-}
-```
-
-`app/page.tsx` is the main page component. It uses `useMutation` to create a prediction and `useQuery` to poll until the image is ready:
-
-```tsx
-"use client";
-import { useEffect, useRef, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import Image from "next/image";
-interface Prediction {
-  id: string;
-  status: string;
-  output?: string[];
-  detail?: string;
-  error?: string;
-}
-async function createPrediction(prompt: string): Promise<Prediction> {
-  const response = await fetch("/api/predictions", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt }),
-  });
-  const prediction = await response.json();
-  if (response.status !== 201) {
-    throw new Error(prediction.detail ?? "Something went wrong");
-  }
-  return prediction;
-}
-async function fetchPrediction(id: string): Promise<Prediction> {
-  const response = await fetch(`/api/predictions/${id}`);
-  const prediction = await response.json();
-  if (response.status !== 200) {
-    throw new Error(prediction.detail ?? "Something went wrong");
-  }
-  return prediction;
-}
-export default function Home() {
-  const [predictionId, setPredictionId] = useState<string | null>(null);
-  const promptInputRef = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    promptInputRef.current?.focus();
-  }, []);
-  const mutation = useMutation({
-    mutationFn: createPrediction,
-    onSuccess: (data) => setPredictionId(data.id),
-  });
-  const { data: prediction } = useQuery({
-    queryKey: ["prediction", predictionId],
-    queryFn: () => fetchPrediction(predictionId!),
-    enabled: !!predictionId,
-    refetchInterval: (query) => {
-      const status = query.state.data?.status;
-      return status === "succeeded" || status === "failed" ? false : 250;
-    },
-  });
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const prompt = formData.get("prompt") as string;
-    mutation.mutate(prompt);
-  };
-  const error = mutation.error?.message ?? (prediction?.status === "failed" ? prediction.error : null);
-  return (
-    <div className="container max-w-2xl mx-auto p-5">
-      <h1 className="py-6 text-center font-bold text-2xl">
-        Dream something with{" "}
-        <a href="https://replicate.com/black-forest-labs/flux-2-klein-9b?utm_source=project&utm_project=getting-started">
-          FLUX.2 [klein]
-        </a>
-      </h1>
-      <form className="w-full flex" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          className="flex-grow"
-          name="prompt"
-          placeholder="Enter a prompt to display an image"
-          ref={promptInputRef}
-        />
-        <button className="button" type="submit">
-          Go!
-        </button>
-      </form>
-      {error && <div>{error}</div>}
-      {prediction && (
-        <>
-          {prediction.output && (
-            <div className="image-wrapper mt-5">
-              <Image
-                fill
-                src={prediction.output[prediction.output.length - 1]}
-                alt="output"
-                sizes="100vw"
-              />
-            </div>
-          )}
-          <p className="py-3 text-sm opacity-50">
-            status: {prediction.status}
-          </p>
-        </>
-      )}
-    </div>
-  );
-}
-```
-
-This is standard React — the same component would work in a regular Next.js app. The only thing talking to Replicate is the server-side route handler; the frontend just calls your own API routes.
-
-[](#step-6-explore-the-vinext-specific-config)Step 6: Explore the vinext-specific config
-----------------------------------------------------------------------------------------
-
-A few files in the project are specific to vinext and Cloudflare Workers. You don’t need to modify these to get started, but it helps to know what they do.
-
-`vite.config.ts` is the Vite configuration. It loads the vinext plugin and the Cloudflare plugin:
-
-```typescript
-import { defineConfig } from "vite";
-import vinext from "vinext";
-import { cloudflare } from "@cloudflare/vite-plugin";
-export default defineConfig({
-  plugins: [
-    vinext(),
-    cloudflare({
-      viteEnvironment: {
-        name: "rsc",
-        childEnvironments: ["ssr"],
-      },
-    }),
-  ],
-});
-```
-
-`wrangler.jsonc` configures the Cloudflare Worker, including an [Images binding](https://developers.cloudflare.com/images/) for image optimization:
-
-```jsonc
-{
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "getting-started-vinext",
-  "compatibility_date": "2026-02-12",
-  "compatibility_flags": ["nodejs_compat"],
-  "main": "./worker/index.ts",
-  "preview_urls": true,
-  "assets": {
-    "not_found_handling": "none",
-    "binding": "ASSETS"
-  },
-  "images": {
-    "binding": "IMAGES"
-  }
-}
-```
-
-`worker/index.ts` is the Worker entry point. It handles image optimization requests via Cloudflare Images and delegates everything else to vinext:
-
-```typescript
-import { handleImageOptimization } from "vinext/server/image-optimization";
-import handler from "vinext/server/app-router-entry";
-export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    const url = new URL(request.url);
-    if (url.pathname === "/_vinext/image") {
-      return handleImageOptimization(request, {
-        fetchAsset: (path) =>
-          env.ASSETS.fetch(new Request(new URL(path, request.url))),
-        transformImage: async (body, { width, format, quality }) => {
-          const result = await env.IMAGES.input(body)
-            .transform(width > 0 ? { width } : {})
-            .output({ format, quality });
-          return result.response();
-        },
-      });
-    }
-    return handler.fetch(request);
-  },
-};
-```
-
-`next.config.ts` configures image remote patterns, just like a regular Next.js app:
-
-```typescript
-const nextConfig = {
-  reactStrictMode: true,
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "replicate.com",
-      },
-      {
-        protocol: "https",
-        hostname: "replicate.delivery",
-      },
-      {
-        protocol: "https",
-        hostname: "*.replicate.delivery",
-      },
-    ],
-  },
-};
-export default nextConfig;
-```
-
-[](#step-7-create-a-prediction)Step 7: Create a prediction
-----------------------------------------------------------
-
-Your app should be running at [localhost:5173](http://localhost:5173). Enter a prompt and hit “Go!” to generate an image.
-
-![screenshot of the app generating an iguana](https://github.com/replicate/getting-started-vinext/raw/main/public/screenshot.png)
-
-[](#step-8-publish-to-github)Step 8: Publish to GitHub
-------------------------------------------------------
-
-Commit your changes and push to a new GitHub repository. You can use GitHub’s [`gh` CLI](https://cli.github.com/):
-
-```shell
-git add .
-git commit -m "First working version"
-gh repo create my-replicate-app --public --push --source=.
-```
-
-[](#step-9-deploy-to-cloudflare-workers)Step 9: Deploy to Cloudflare Workers
-----------------------------------------------------------------------------
-
-First, log in to Cloudflare:
-
-```shell
-npx wrangler login
-```
-
-Then build and deploy:
-
-```shell
-npm run deploy
-```
-
-This runs `vinext deploy`, which builds the app and deploys it to Cloudflare Workers in a single step.
-
-After deploying, set your Replicate API token as a secret so the production app can use it:
-
-```shell
-npx wrangler secret put REPLICATE_API_TOKEN
-```
-
-Paste your token when prompted. Your app is now live on Cloudflare Workers.
-
-[](#next-steps)Next steps
--------------------------
-
-You now have a working web app powered by machine learning, deployed to the edge on Cloudflare Workers.
-
-Here are some ideas for what to do next:
-
-*   Update your app to [request and receive webhooks](/docs/webhooks) so you can do things like store prediction metadata in a database. See the [webhooks docs in the getting-started-vinext repo](https://github.com/replicate/getting-started-vinext?tab=readme-ov-file#webhooks).
-*   Fine-tune and deploy [your own custom Flux model](/docs/get-started/fine-tune-with-flux) and use your new website to show it off.
-*   Integrate a [super resolution model](https://replicate.com/collections/super-resolution) to upscale generated images.
-*   [Explore other models on Replicate](https://replicate.com/explore) and integrate them into your app.
-*   Add a [custom domain](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/) to your Cloudflare Worker.
-
-# Use a model as a training destination
-
-**URL:** https://replicate.com/docs/topics/models/models-as-training-destinations.md
-
-Fine-tuning lets you take an existing model and train it with your own data to create a new model that is better suited to a specific task. Whenever you create a new fine-tune, you must specify a `destination` model. This is a model that you create, and it will be updated with the results of your fine-tuning process. The destination model can be a new model, or an existing model that you’ve already fine-tuned.
-
-This guide covers how to create and specify destination models for fine-tuning.
-
-[](#option-1-create-a-model-from-the-train-tab)Option 1: Create a model from the Train tab
-------------------------------------------------------------------------------------------
-
-Every trainable model has a “Train” tab with a form that lets you create a new fine-tune of that model. For example, check out the training pages for models like [Flux](https://replicate.com/replicate/fast-flux-trainer) or [LLaVA](https://replicate.com/yorickvp/llava-13b/train):
-
-![Replicate's UI with the Train tab highlighted on the llava-13b model](/_content/assets/train-tab.fzbvZ7uy.png)
-
-The training form asks you to choose a destination model. You can select an existing model as a destination, or create a new model.
-
-[](#option-2-create-a-model-on-the-web)Option 2: Create a model on the web
---------------------------------------------------------------------------
-
-If you want to create a destination model without training it right away, you can create a model manually from the web at [replicate.com/create](https://replicate.com/create).
-
-[](#option-3-create-a-model-with-the-api)Option 3: Create a model with the API
-------------------------------------------------------------------------------
-
-You can use the [HTTP API](https://replicate.com/docs/reference/http#models.create) to create a new model programmatically whenever you need a new destination for a training.
-
-Here’s an example using cURL:
-
-```shell
-curl -s -X POST \
-  -H "Authorization: Token $REPLICATE_API_TOKEN" \
-  -d '{"owner": "alice" "name": "my-model", "description": "An example model", "visibility": "public", "hardware": "cpu"}' \
-  https://api.replicate.com/v1/models
-```
-
-You can also use Replicate’s [JavaScript](https://github.com/replicate/replicate-javascript#replicatemodelscreate) and [Python](https://github.com/replicate/replicate-python?tab=readme-ov-file#create-a-model) clients to create models with the API.
-
-[](#option-4-using-an-existing-model)Option 4: Using an existing model
-----------------------------------------------------------------------
-
-You don’t have to create a new model every time you fine-tune. You can instead use the same destination model multiple times, and the resulting fine-tunes will be added to the destination model as different “versions”. You can think of the destination model as a collection of fine-tunes, in the form of model versions.
-
-You only need to create the destination model once. When a new training is created, the resulting fine-tune is automatically pushed as a new version to the destination model.
 
 # Dynamic image caching with Cloudflare Workers
 
@@ -4068,196 +3669,404 @@ Here are some suggestions for next steps:
 
 Happy hacking!
 
-# Build a Discord bot with Python
+# Build a website with vinext
 
-**URL:** https://replicate.com/docs/guides/run/discord-bot.md
+**URL:** https://replicate.com/docs/guides/run/vinext.md
 
-In this tutorial you’ll use Python to build and deploy a Discord chat bot application that uses [Flux Schnell](https://replicate.com/black-forest-labs/flux-schnell) to generate images from text prompts.
+[vinext](https://github.com/cloudflare/vinext) is a drop-in replacement for Next.js, built on [Vite](https://vite.dev/), that deploys to Cloudflare Workers with a single command. Read the [Cloudflare blog post](https://blog.cloudflare.com/vinext) for the full story.
+
+In this guide, you’ll build a vinext web app that uses Replicate to generate images with [FLUX.2 \[klein\]](https://replicate.com/black-forest-labs/flux-2-klein-9b), then deploy it to Cloudflare Workers.
+
+Tip
+
+The completed project is on GitHub at [replicate/getting-started-vinext](https://github.com/replicate/getting-started-vinext).
 
 [](#prerequisites)Prerequisites
 -------------------------------
 
-*   Install [Python 3.5](https://www.python.org/downloads/) or later.
-*   A command-line shell (e.g. Terminal on Mac, gnome-terminal on Linux, or PowerShell on Windows)
-*   Sign up for an [account on Replicate](https://replicate.com/signin?next=/docs/tutorials/dicord-bot).
-*   Sign up for an [account on Discord](https://discord.com/register).
+*   **Node.js**: Download and install it from [nodejs.org](https://nodejs.org/).
+*   **[A Replicate account](https://replicate.com/signin)**: Free to get started. After your initial credit, you pay per second. See [how billing works](/docs/billing).
+*   **[A GitHub account](https://github.com)**: For hosting your source code.
+*   **[A Cloudflare account](https://dash.cloudflare.com/sign-up)**: For deploying your app to Cloudflare Workers.
 
-[](#set-up-a-discord-bot-account)Set up a Discord Bot account
--------------------------------------------------------------
+[](#step-1-clone-the-starter-app)Step 1: Clone the starter app
+--------------------------------------------------------------
 
-Follow [discord.py’s guide](https://discordpy.readthedocs.io/en/stable/discord.html) to set up a Discord Bot account. Give it a name like `flux-bot`. At the end of the first section, you’ll need to turn on the “message content intent” option on the bot page. That permission is needed for your bot to read the content of messages, to get the prompts!
+Clone the getting-started repo and install dependencies:
 
-In the second half of the guide – inviting your bot – when it tells you to “tick the permissions required for your bot to function”, you’ll want to give the bot permission to “Send messages”.
-
-[](#write-some-code)Write some code
------------------------------------
-
-This section walks you through steps required to set up a codebase.
-
-Tip
-
-**Want to skip ahead?** If you’d rather not copy and paste all the code below, then you can clone the [replicate/replicate-discord-bot](https://github.com/replicate/replicate-discord-bot) GitHub repo to start with a working project template.
-
-### [](#create-a-project-directory)Create a project directory
-
-```sh
-mkdir flux-bot
-cd flux-bot
+```shell
+git clone https://github.com/replicate/getting-started-vinext
+cd getting-started-vinext
+npm install
 ```
 
-### [](#define-python-dependencies)Define Python dependencies
+[](#step-2-configure-your-environment)Step 2: Configure your environment
+------------------------------------------------------------------------
 
-Next you’ll define some of the Python package dependencies needed by your project.
+You need a Replicate API token to run models. Generate one at [replicate.com/account/api-tokens](https://replicate.com/account/api-tokens) and copy it.
 
-Install the [poetry](https://python-poetry.org/docs#installation) command-line tool and create a new `pyproject.toml` file:
+vinext runs on Cloudflare’s [workerd](https://github.com/cloudflare/workerd) runtime, which reads secrets from a `.dev.vars` file during local development (instead of `.env.local` like Next.js):
 
-```sh
-poetry init -n
+```shell
+echo "REPLICATE_API_TOKEN=r8_..." > .dev.vars
 ```
 
-Then add dependencies:
+Replace `r8_...` with your actual token. The `.dev.vars` file is git-ignored, so your token stays out of source control.
 
-```sh
-poetry add discord.py python-dotenv replicate
+[](#step-3-run-the-app-locally)Step 3: Run the app locally
+----------------------------------------------------------
+
+Start the development server:
+
+```shell
+npm run dev
 ```
 
-### [](#configure-environment-and-secrets)Configure environment and secrets
+Open [localhost:5173](http://localhost:5173) in your browser. You should see the starter app with a text prompt form.
 
-Create a file named `.env`. This text file will be used to store secrets for your development environment. Paste in the following:
+[](#step-4-explore-the-backend)Step 4: Explore the backend
+----------------------------------------------------------
 
-```plaintext
-REPLICATE_API_TOKEN=<your-token>
-DISCORD_TOKEN=<your-token>
+vinext uses the same file-based routing as Next.js. Files named `route.ts` in the `app/` directory are server-side API endpoints, and files named `page.tsx` are frontend components.
+
+The starter app has two API routes that talk to Replicate.
+
+### [](#creating-predictions)Creating predictions
+
+`app/api/predictions/route.ts` handles POST requests to create a new prediction. It calls Replicate to run FLUX.2 \[klein\] with the user’s prompt:
+
+```typescript
+import { NextResponse } from "next/server";
+import Replicate from "replicate";
+const replicate = new Replicate({
+  auth: process.env.REPLICATE_API_TOKEN,
+});
+// In production, WORKER_URL should be set to the Worker's public URL.
+// In development, use NGROK_HOST for webhook tunneling.
+const WEBHOOK_HOST = process.env.WORKER_URL ?? process.env.NGROK_HOST;
+export async function POST(request: Request) {
+  if (!process.env.REPLICATE_API_TOKEN) {
+    throw new Error(
+      "The REPLICATE_API_TOKEN environment variable is not set. See README.md for instructions on how to set it."
+    );
+  }
+  const { prompt } = await request.json();
+  const options: {
+    model: string;
+    input: { prompt: string };
+    webhook?: string;
+    webhook_events_filter?: string[];
+  } = {
+    model: "black-forest-labs/flux-2-klein-9b",
+    input: { prompt },
+  };
+  if (WEBHOOK_HOST) {
+    options.webhook = `${WEBHOOK_HOST}/api/webhooks`;
+    options.webhook_events_filter = ["start", "completed"];
+  }
+  const prediction = await replicate.predictions.create(options);
+  if (prediction?.error) {
+    return NextResponse.json({ detail: prediction.error }, { status: 500 });
+  }
+  return NextResponse.json(prediction, { status: 201 });
+}
 ```
 
-Visit [replicate.com/account/api-tokens](https://replicate.com/account/api-tokens?new-token-name=discord-bot) to copy and paste your API token. If you didn’t subscribe before, you’ll need to now to get hold of the token.
+Note how the `import` paths still use `next/server` — vinext reimplements these modules so your existing Next.js code works without changes.
 
-The Discord token is the token you copied when creating your bot from the Discord guide. If you don’t have it, you can generate a new one by visiting [discord.com/applications](https://discord.com/developers/applications), selecting your bot application, selecting “Bot” from the side menu, and clicking “Reset Token”.
+### [](#polling-for-results)Polling for results
 
-Note
+`app/api/predictions/[id]/route.ts` handles GET requests to check on a prediction’s status. The `[id]` in the path is a [dynamic route segment](https://nextjs.org/docs/routing/dynamic-routes), just like in Next.js:
 
-The `.env` file contains secrets, so it should not be shared with anyone. If you’re planning to turn your project into a Git repository, be sure to create a [`.gitignore` file](https://git-scm.com/docs/gitignore) and add `.env` to it.
-
-### [](#write-the-bot)Write the bot
-
-Create a new file called `bot.py` and paste the following code into it:
-
-```python
-from discord import Intents
-from discord.ext import commands
-from dotenv import load_dotenv
-import os
-import replicate
-load_dotenv()
-intents = Intents.default()
-intents.message_content = True
-bot = commands.Bot(
-    command_prefix="!",
-    description="Runs models on Replicate!",
-    intents=intents,
-)
-@bot.command()
-async def flux(ctx, *, prompt):
-    """Generate an image from a text prompt using the Flux Schnell model"""
-    msg = await ctx.send(f""{prompt}"\n> Generating...")
-    output = replicate.run(
-        "black-forest-labs/flux-schnell",
-        input={"prompt": prompt}
-    )
-    # Convert the FileOutput to bytes for Discord's upload_file
-    file_data = output[0].read()
-    await msg.delete()
-    await ctx.send(f""{prompt}"", file=discord.File(file_data, "flux.png"))
-bot.run(os.environ["DISCORD_TOKEN"])
+```typescript
+import { NextResponse } from "next/server";
+import Replicate from "replicate";
+const replicate = new Replicate({
+  auth: process.env.REPLICATE_API_TOKEN,
+});
+export async function GET(
+  _request: Request,
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params;
+  const prediction = await replicate.predictions.get(id);
+  if (prediction?.error) {
+    return NextResponse.json({ detail: prediction.error }, { status: 500 });
+  }
+  return NextResponse.json(prediction);
+}
 ```
 
-This file defines the command for your bot (`!flux`) and how it works. When you want to make changes to your bot later, this will be the file you come back to.
+[](#step-5-explore-the-frontend)Step 5: Explore the frontend
+------------------------------------------------------------
 
-[](#run-your-bot-locally)Run your bot locally
----------------------------------------------
+The app uses [@tanstack/react-query](https://tanstack.com/query) for data fetching and polling. The root layout wraps the app in a `QueryClientProvider` via `app/providers.tsx`:
 
-Now that you’ve written the code for your bot, it’s time to run it!
-
-The Discord API uses a system called [Gateway](https://discord.com/developers/docs/topics/gateway) which supports real-time communication over WebSockets. This means you can run your bot from any computer, even if it’s not exposed to the public internet. No need to configure any webhooks!
-
-Run this command to start your bot locally:
-
-```sh
-poetry run python bot.py
+```tsx
+"use client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const queryClient = new QueryClient();
+export default function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
+}
 ```
 
-[](#use-the-bot)Use the bot
----------------------------
+`app/page.tsx` is the main page component. It uses `useMutation` to create a prediction and `useQuery` to poll until the image is ready:
 
-Check your bot is running by typing `!help` into one of the channels on your Discord server. Your bot should respond with the list of commands it can run, including `!flux`.
-
-Now try generating an image:
-
-```text
-!flux an astronaut riding a horse
+```tsx
+"use client";
+import { useEffect, useRef, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import Image from "next/image";
+interface Prediction {
+  id: string;
+  status: string;
+  output?: string[];
+  detail?: string;
+  error?: string;
+}
+async function createPrediction(prompt: string): Promise<Prediction> {
+  const response = await fetch("/api/predictions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt }),
+  });
+  const prediction = await response.json();
+  if (response.status !== 201) {
+    throw new Error(prediction.detail ?? "Something went wrong");
+  }
+  return prediction;
+}
+async function fetchPrediction(id: string): Promise<Prediction> {
+  const response = await fetch(`/api/predictions/${id}`);
+  const prediction = await response.json();
+  if (response.status !== 200) {
+    throw new Error(prediction.detail ?? "Something went wrong");
+  }
+  return prediction;
+}
+export default function Home() {
+  const [predictionId, setPredictionId] = useState<string | null>(null);
+  const promptInputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    promptInputRef.current?.focus();
+  }, []);
+  const mutation = useMutation({
+    mutationFn: createPrediction,
+    onSuccess: (data) => setPredictionId(data.id),
+  });
+  const { data: prediction } = useQuery({
+    queryKey: ["prediction", predictionId],
+    queryFn: () => fetchPrediction(predictionId!),
+    enabled: !!predictionId,
+    refetchInterval: (query) => {
+      const status = query.state.data?.status;
+      return status === "succeeded" || status === "failed" ? false : 250;
+    },
+  });
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const prompt = formData.get("prompt") as string;
+    mutation.mutate(prompt);
+  };
+  const error = mutation.error?.message ?? (prediction?.status === "failed" ? prediction.error : null);
+  return (
+    <div className="container max-w-2xl mx-auto p-5">
+      <h1 className="py-6 text-center font-bold text-2xl">
+        Dream something with{" "}
+        <a href="https://replicate.com/black-forest-labs/flux-2-klein-9b?utm_source=project&utm_project=getting-started">
+          FLUX.2 [klein]
+        </a>
+      </h1>
+      <form className="w-full flex" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          className="flex-grow"
+          name="prompt"
+          placeholder="Enter a prompt to display an image"
+          ref={promptInputRef}
+        />
+        <button className="button" type="submit">
+          Go!
+        </button>
+      </form>
+      {error && <div>{error}</div>}
+      {prediction && (
+        <>
+          {prediction.output && (
+            <div className="image-wrapper mt-5">
+              <Image
+                fill
+                src={prediction.output[prediction.output.length - 1]}
+                alt="output"
+                sizes="100vw"
+              />
+            </div>
+          )}
+          <p className="py-3 text-sm opacity-50">
+            status: {prediction.status}
+          </p>
+        </>
+      )}
+    </div>
+  );
+}
 ```
 
-Your bot should write a message saying “Generating…”, and then a few seconds later it should swap out that message for the newly generated image.
+This is standard React — the same component would work in a regular Next.js app. The only thing talking to Replicate is the server-side route handler; the frontend just calls your own API routes.
 
-[](#deploy-your-bot-optional)Deploy your bot (optional)
--------------------------------------------------------
+[](#step-6-explore-the-vinext-specific-config)Step 6: Explore the vinext-specific config
+----------------------------------------------------------------------------------------
 
-Running your bot locally is convenient, especially when you’re actively working on it. The downside, however, is that it can only run when you’re online. If you’re building a bot for a server, you probably want it to be online even when you aren’t.
+A few files in the project are specific to vinext and Cloudflare Workers. You don’t need to modify these to get started, but it helps to know what they do.
 
-There are lots of ways to deploy an application like this. Some of the easiest are services like [Vercel](https://vercel.com/), [Fly](https://fly.io/) or [Heroku](https://heroku.com). In this tutorial, you’ll use Fly to deploy the bot to the cloud.
+`vite.config.ts` is the Vite configuration. It loads the vinext plugin and the Cloudflare plugin:
 
-To get started, see [Fly’s “speedrun” guide](https://fly.io/speedrun/) to install the `flyctl` command-line tool and create a Fly account.
-
-Then create a new file called `Dockerfile` and paste the following code into it:
-
-```docker
-FROM python:3.10
-RUN pip install poetry
-WORKDIR /code
-COPY poetry.lock pyproject.toml /code/
-RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
-COPY . /code
-CMD python bot.py
+```typescript
+import { defineConfig } from "vite";
+import vinext from "vinext";
+import { cloudflare } from "@cloudflare/vite-plugin";
+export default defineConfig({
+  plugins: [
+    vinext(),
+    cloudflare({
+      viteEnvironment: {
+        name: "rsc",
+        childEnvironments: ["ssr"],
+      },
+    }),
+  ],
+});
 ```
 
-Then create a new Fly application:
+`wrangler.jsonc` configures the Cloudflare Worker, including an [Images binding](https://developers.cloudflare.com/images/) for image optimization:
 
-```sh
-flyctl launch
+```jsonc
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "getting-started-vinext",
+  "compatibility_date": "2026-02-12",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "./worker/index.ts",
+  "preview_urls": true,
+  "assets": {
+    "not_found_handling": "none",
+    "binding": "ASSETS"
+  },
+  "images": {
+    "binding": "IMAGES"
+  }
+}
 ```
 
-That command will generate a new file called `fly.toml`, but it’s designed for running web apps so you’ll need to make a few changes. Remove the `[[services]]` block and everything below it. Your modified file should look something like this:
+`worker/index.ts` is the Worker entry point. It handles image optimization requests via Cloudflare Images and delegates everything else to vinext:
 
-```toml
-app = "name-of-your-fly-app"
-kill_signal = "SIGINT"
-kill_timeout = 5
-processes = []
-[env]
-[experimental]
-  allowed_public_ports = []
-  auto_rollback = true
+```typescript
+import { handleImageOptimization } from "vinext/server/image-optimization";
+import handler from "vinext/server/app-router-entry";
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const url = new URL(request.url);
+    if (url.pathname === "/_vinext/image") {
+      return handleImageOptimization(request, {
+        fetchAsset: (path) =>
+          env.ASSETS.fetch(new Request(new URL(path, request.url))),
+        transformImage: async (body, { width, format, quality }) => {
+          const result = await env.IMAGES.input(body)
+            .transform(width > 0 ? { width } : {})
+            .output({ format, quality });
+          return result.response();
+        },
+      });
+    }
+    return handler.fetch(request);
+  },
+};
 ```
 
-Then configure your Fly app using the secrets from your local `.env` file:
+`next.config.ts` configures image remote patterns, just like a regular Next.js app:
 
-```sh
-flyctl secrets set REPLICATE_API_TOKEN=... DISCORD_TOKEN=...
+```typescript
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "replicate.com",
+      },
+      {
+        protocol: "https",
+        hostname: "replicate.delivery",
+      },
+      {
+        protocol: "https",
+        hostname: "*.replicate.delivery",
+      },
+    ],
+  },
+};
+export default nextConfig;
 ```
 
-That’s it! Your bot is now running in the cloud.
+[](#step-7-create-a-prediction)Step 7: Create a prediction
+----------------------------------------------------------
+
+Your app should be running at [localhost:5173](http://localhost:5173). Enter a prompt and hit “Go!” to generate an image.
+
+![screenshot of the app generating an iguana](https://github.com/replicate/getting-started-vinext/raw/main/public/screenshot.png)
+
+[](#step-8-publish-to-github)Step 8: Publish to GitHub
+------------------------------------------------------
+
+Commit your changes and push to a new GitHub repository. You can use GitHub’s [`gh` CLI](https://cli.github.com/):
+
+```shell
+git add .
+git commit -m "First working version"
+gh repo create my-replicate-app --public --push --source=.
+```
+
+[](#step-9-deploy-to-cloudflare-workers)Step 9: Deploy to Cloudflare Workers
+----------------------------------------------------------------------------
+
+First, log in to Cloudflare:
+
+```shell
+npx wrangler login
+```
+
+Then build and deploy:
+
+```shell
+npm run deploy
+```
+
+This runs `vinext deploy`, which builds the app and deploys it to Cloudflare Workers in a single step.
+
+After deploying, set your Replicate API token as a secret so the production app can use it:
+
+```shell
+npx wrangler secret put REPLICATE_API_TOKEN
+```
+
+Paste your token when prompted. Your app is now live on Cloudflare Workers.
 
 [](#next-steps)Next steps
 -------------------------
 
-Now might be a good time to tinker with the bot a bit. Some ideas:
+You now have a working web app powered by machine learning, deployed to the edge on Cloudflare Workers.
 
-*   Generate multiple images instead of a single one, and show them all.
-*   Add another command that runs [a different model](https://replicate.com/explore).
-*   Take the image output and run it through another model, like an [upscaler](https://replicate.com/collections/super-resolution).
-*   Turn it into a game. Perhaps [a game of telephone](https://twitter.com/TelephoneAI), or [a game of Pictionary](https://en.wikipedia.org/wiki/Pictionary).
+Here are some ideas for what to do next:
 
-[Get creative and share what you’ve built in our Discord!](https://discord.gg/replicate)
+*   Update your app to [request and receive webhooks](/docs/webhooks) so you can do things like store prediction metadata in a database. See the [webhooks docs in the getting-started-vinext repo](https://github.com/replicate/getting-started-vinext?tab=readme-ov-file#webhooks).
+*   Fine-tune and deploy [your own custom Flux model](/docs/get-started/fine-tune-with-flux) and use your new website to show it off.
+*   Integrate a [super resolution model](https://replicate.com/collections/super-resolution) to upscale generated images.
+*   [Explore other models on Replicate](https://replicate.com/explore) and integrate them into your app.
+*   Add a [custom domain](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/) to your Cloudflare Worker.
 
 # Build a website with Next.js
 
@@ -4624,6 +4433,197 @@ Integrate a [super resolution model](https://replicate.com/collections/super-res
 
 ⚡️ [Connect your Vercel app to your GitHub repo](https://vercel.com/docs/concepts/git/vercel-for-github), so you’ll get preview deployments for every pull request, and your app will automatically deploy every time you push to the main branch.
 
+# Build a Discord bot with Python
+
+**URL:** https://replicate.com/docs/guides/run/discord-bot.md
+
+In this tutorial you’ll use Python to build and deploy a Discord chat bot application that uses [Flux Schnell](https://replicate.com/black-forest-labs/flux-schnell) to generate images from text prompts.
+
+[](#prerequisites)Prerequisites
+-------------------------------
+
+*   Install [Python 3.5](https://www.python.org/downloads/) or later.
+*   A command-line shell (e.g. Terminal on Mac, gnome-terminal on Linux, or PowerShell on Windows)
+*   Sign up for an [account on Replicate](https://replicate.com/signin?next=/docs/tutorials/dicord-bot).
+*   Sign up for an [account on Discord](https://discord.com/register).
+
+[](#set-up-a-discord-bot-account)Set up a Discord Bot account
+-------------------------------------------------------------
+
+Follow [discord.py’s guide](https://discordpy.readthedocs.io/en/stable/discord.html) to set up a Discord Bot account. Give it a name like `flux-bot`. At the end of the first section, you’ll need to turn on the “message content intent” option on the bot page. That permission is needed for your bot to read the content of messages, to get the prompts!
+
+In the second half of the guide – inviting your bot – when it tells you to “tick the permissions required for your bot to function”, you’ll want to give the bot permission to “Send messages”.
+
+[](#write-some-code)Write some code
+-----------------------------------
+
+This section walks you through steps required to set up a codebase.
+
+Tip
+
+**Want to skip ahead?** If you’d rather not copy and paste all the code below, then you can clone the [replicate/replicate-discord-bot](https://github.com/replicate/replicate-discord-bot) GitHub repo to start with a working project template.
+
+### [](#create-a-project-directory)Create a project directory
+
+```sh
+mkdir flux-bot
+cd flux-bot
+```
+
+### [](#define-python-dependencies)Define Python dependencies
+
+Next you’ll define some of the Python package dependencies needed by your project.
+
+Install the [poetry](https://python-poetry.org/docs#installation) command-line tool and create a new `pyproject.toml` file:
+
+```sh
+poetry init -n
+```
+
+Then add dependencies:
+
+```sh
+poetry add discord.py python-dotenv replicate
+```
+
+### [](#configure-environment-and-secrets)Configure environment and secrets
+
+Create a file named `.env`. This text file will be used to store secrets for your development environment. Paste in the following:
+
+```plaintext
+REPLICATE_API_TOKEN=<your-token>
+DISCORD_TOKEN=<your-token>
+```
+
+Visit [replicate.com/account/api-tokens](https://replicate.com/account/api-tokens?new-token-name=discord-bot) to copy and paste your API token. If you didn’t subscribe before, you’ll need to now to get hold of the token.
+
+The Discord token is the token you copied when creating your bot from the Discord guide. If you don’t have it, you can generate a new one by visiting [discord.com/applications](https://discord.com/developers/applications), selecting your bot application, selecting “Bot” from the side menu, and clicking “Reset Token”.
+
+Note
+
+The `.env` file contains secrets, so it should not be shared with anyone. If you’re planning to turn your project into a Git repository, be sure to create a [`.gitignore` file](https://git-scm.com/docs/gitignore) and add `.env` to it.
+
+### [](#write-the-bot)Write the bot
+
+Create a new file called `bot.py` and paste the following code into it:
+
+```python
+from discord import Intents
+from discord.ext import commands
+from dotenv import load_dotenv
+import os
+import replicate
+load_dotenv()
+intents = Intents.default()
+intents.message_content = True
+bot = commands.Bot(
+    command_prefix="!",
+    description="Runs models on Replicate!",
+    intents=intents,
+)
+@bot.command()
+async def flux(ctx, *, prompt):
+    """Generate an image from a text prompt using the Flux Schnell model"""
+    msg = await ctx.send(f""{prompt}"\n> Generating...")
+    output = replicate.run(
+        "black-forest-labs/flux-schnell",
+        input={"prompt": prompt}
+    )
+    # Convert the FileOutput to bytes for Discord's upload_file
+    file_data = output[0].read()
+    await msg.delete()
+    await ctx.send(f""{prompt}"", file=discord.File(file_data, "flux.png"))
+bot.run(os.environ["DISCORD_TOKEN"])
+```
+
+This file defines the command for your bot (`!flux`) and how it works. When you want to make changes to your bot later, this will be the file you come back to.
+
+[](#run-your-bot-locally)Run your bot locally
+---------------------------------------------
+
+Now that you’ve written the code for your bot, it’s time to run it!
+
+The Discord API uses a system called [Gateway](https://discord.com/developers/docs/topics/gateway) which supports real-time communication over WebSockets. This means you can run your bot from any computer, even if it’s not exposed to the public internet. No need to configure any webhooks!
+
+Run this command to start your bot locally:
+
+```sh
+poetry run python bot.py
+```
+
+[](#use-the-bot)Use the bot
+---------------------------
+
+Check your bot is running by typing `!help` into one of the channels on your Discord server. Your bot should respond with the list of commands it can run, including `!flux`.
+
+Now try generating an image:
+
+```text
+!flux an astronaut riding a horse
+```
+
+Your bot should write a message saying “Generating…”, and then a few seconds later it should swap out that message for the newly generated image.
+
+[](#deploy-your-bot-optional)Deploy your bot (optional)
+-------------------------------------------------------
+
+Running your bot locally is convenient, especially when you’re actively working on it. The downside, however, is that it can only run when you’re online. If you’re building a bot for a server, you probably want it to be online even when you aren’t.
+
+There are lots of ways to deploy an application like this. Some of the easiest are services like [Vercel](https://vercel.com/), [Fly](https://fly.io/) or [Heroku](https://heroku.com). In this tutorial, you’ll use Fly to deploy the bot to the cloud.
+
+To get started, see [Fly’s “speedrun” guide](https://fly.io/speedrun/) to install the `flyctl` command-line tool and create a Fly account.
+
+Then create a new file called `Dockerfile` and paste the following code into it:
+
+```docker
+FROM python:3.10
+RUN pip install poetry
+WORKDIR /code
+COPY poetry.lock pyproject.toml /code/
+RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
+COPY . /code
+CMD python bot.py
+```
+
+Then create a new Fly application:
+
+```sh
+flyctl launch
+```
+
+That command will generate a new file called `fly.toml`, but it’s designed for running web apps so you’ll need to make a few changes. Remove the `[[services]]` block and everything below it. Your modified file should look something like this:
+
+```toml
+app = "name-of-your-fly-app"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+[env]
+[experimental]
+  allowed_public_ports = []
+  auto_rollback = true
+```
+
+Then configure your Fly app using the secrets from your local `.env` file:
+
+```sh
+flyctl secrets set REPLICATE_API_TOKEN=... DISCORD_TOKEN=...
+```
+
+That’s it! Your bot is now running in the cloud.
+
+[](#next-steps)Next steps
+-------------------------
+
+Now might be a good time to tinker with the bot a bit. Some ideas:
+
+*   Generate multiple images instead of a single one, and show them all.
+*   Add another command that runs [a different model](https://replicate.com/explore).
+*   Take the image output and run it through another model, like an [upscaler](https://replicate.com/collections/super-resolution).
+*   Turn it into a game. Perhaps [a game of telephone](https://twitter.com/TelephoneAI), or [a game of Pictionary](https://en.wikipedia.org/wiki/Pictionary).
+
+[Get creative and share what you’ve built in our Discord!](https://discord.gg/replicate)
+
 # Build an app with SwiftUI
 
 **URL:** https://replicate.com/docs/guides/run/swiftui.md
@@ -4844,6 +4844,147 @@ Integrate a [super resolution model](https://replicate.com/collections/super-res
 [Explore other models on Replicate](https://replicate.com/explore) and integrate them into your app.
 
 ️ Update the README if you’re planning to open-source your project so others know how to use it and contribute.
+
+# Push a model using GitHub Actions
+
+**URL:** https://replicate.com/docs/guides/build/push-a-model-using-github-actions.md
+
+GitHub Actions let you to automate your software development workflows directly within your GitHub repository.
+
+In this tutorial, you’ll learn how to use GitHub Actions to build and push your model to Replicate, so you don’t have to manually build and push your model. This setup works equally well for both public and private models.
+
+Note
+
+This guide will get you started using GitHub Actions to push your model, but if you’re looking for a more full-featured approach that includes linting, testing, and more, check out the [guide to setting up a CI/CD pipeline for your model](/docs/guides/continuous-model-deployment).
+
+[](#prerequisites)Prerequisites
+-------------------------------
+
+*   **An existing Cog model in a GitHub repository.** This tutorial assumes you already have a working Cog model. If you don’t, you can use one from [replicate/cog-examples](https://github.com/replicate/cog-examples) or check out the [guide to pushing a model](/docs/guides/push-a-model).
+*   **A Replicate account.** You’ll need a [Replicate API token](https://replicate.com/account/api-tokens?new-token-name=github-actions) to push your model to Replicate.
+
+[](#step-1-create-a-workflow-file)Step 1: Create a workflow file
+----------------------------------------------------------------
+
+To use GitHub Actions, you define workflows using YAML files stored in the `.github/workflows` directory of your GitHub repository.
+
+Your new workflow will use an open-source GitHub Action called [replicate/setup-cog](https://github.com/replicate/setup-cog) that takes care of installing Docker buildx, Cog, CUDA drivers (optionally), and other setup steps.
+
+Create a new file in the `.github/workflows` directory of your repository, and name it `push.yml`. Then add the following content:
+
+```yml
+name: Push to Replicate
+on:
+  workflow_dispatch:
+    inputs:
+      model_name:
+        description: 'Enter the model name, like "alice/bunny-detector"'
+        required: true
+jobs:
+  push_to_replicate:
+    name: Push to Replicate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Free disk pace
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          docker-images: false
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Cog
+        uses: replicate/setup-cog@v2
+        with:
+          token: ${{ secrets.REPLICATE_CLI_AUTH_TOKEN }}
+      - name: Push to Replicate
+        run: cog push r8.im/${{ inputs.model_name }}
+```
+
+Note
+
+If you’re creating a new model from scratch, you can use the `cog init` command, which will automatically generate a starter workflow for you.
+
+[](#step-2-get-your-replicate-cli-auth-token)Step 2: Get your Replicate CLI auth token
+--------------------------------------------------------------------------------------
+
+The [replicate/setup-cog](https://github.com/replicate/setup-cog) action supports automatically authenticating with your Replicate account so you can push models to Replicate. For this to work, you need to provide it with a Replicate CLI auth token.
+
+Go to [replicate.com/auth/token](https://replicate.com/auth/token) and copy the token to your clipboard.
+
+[](#step-3-add-your-replicate-token-as-a-secret)Step 3: Add your Replicate token as a secret
+--------------------------------------------------------------------------------------------
+
+Next you’ll add your Replicate API token as a secret to your repository, so it can be safely accessed by your workflow.
+
+Go to your GitHub repository, click “Settings”, click “Secrets”, click “New repository secret”, and add your token as the secret. Name it `REPLICATE_CLI_AUTH_TOKEN` and paste in the token you copied in the previous step.
+
+[](#step-4-commit-and-push-your-changes-to-github)Step 4: Commit and push your changes to GitHub
+------------------------------------------------------------------------------------------------
+
+Next you’ll commit and push your changes to GitHub, so you can run the workflow:
+
+```sh
+git add .
+git commit -am "Add Actions workflow for pushing to Replicate"
+git push
+```
+
+[](#step-5-trigger-the-workflow-manually)Step 5: Trigger the workflow manually
+------------------------------------------------------------------------------
+
+GitHub Actions workflows can be triggered manually, or on a schedule, or in response to events like creating pull requests or pushing to your default branch.
+
+The workflow you added above is configured to be triggered manually (see the `workflow_dispatch` bit). It’s a good idea to start with a manual trigger so you can test out the workflow explicitly, then switch to a more automated process once you’ve got it working as expected.
+
+1.  Go to your repository page on GitHub
+2.  Click **Actions**
+3.  Click **Push to Replicate**
+4.  Enter the name of your Replicate model
+5.  Click “Run workflow”
+
+[](#step-6-trigger-the-workflow-automatically-optional)Step 6: Trigger the workflow automatically (optional)
+------------------------------------------------------------------------------------------------------------
+
+Once you’ve run the workflow manually and the process is working as expected, you may want to update your workflow to trigger automatically. Here’s how to update the workflow to trigger whenever you push to your default branch:
+
+First, add a [Repository configuration variable](https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository) to your repository to store the name of your model.
+
+Then update your workflow to run on pushes to your main branch:
+
+```yml
+on:
+  push:
+    branches:
+      - main
+```
+
+Then update the `cog push` step in your workflow to fall back to the default model name if the input is empty. This will allow you to manually trigger the workflow with a custom model name, or automatically trigger the workflow with the default model name:
+
+```yml
+      - name: Push to Replicate
+        run: cog push r8.im/${{ inputs.model_name || vars.DEFAULT_MODEL_NAME }}
+```
+
+[](#troubleshooting-disk-space)Troubleshooting: Disk space
+----------------------------------------------------------
+
+If your model is large, the default GitHub Actions runner may not have enough disk space. The [jlumbroso/free-disk-space](https://github.com/jlumbroso/free-disk-space) action included in the workflow above saves about 30GB of disk space, but that may not be enough for your model.
+
+If you need even more space, you can can [set up a larger hosted runner on GitHub](https://docs.github.com/en/actions/using-github-hosted-runners/about-larger-runners/managing-larger-runners#adding-a-larger-runner-to-an-organization), then update your workflow to use your new runner:
+
+```yml
+jobs:
+  push_to_replicate:
+    name: Push to Replicate
+    runs-on: my-custom-runner-with-lots-of-disk-space
+```
+
+Note: You’ll need a GitHub Team or GitHub Enterprise Cloud plan to use larger runners.
+
+[](#next-steps)Next steps
+-------------------------
+
+Hooray! You’ve now got a workflow that pushes your model to Replicate. You’re on the path to a more automated future, where you can iterate quickly on AI models and ship them just like normal software.
 
 # Craft generative AI workflows with ComfyUI
 
@@ -5414,146 +5555,210 @@ const output = await replicate.run(
 console.log(output);
 ```
 
-# Push a model using GitHub Actions
+# Set up a CI/CD pipeline for your model
 
-**URL:** https://replicate.com/docs/guides/build/push-a-model-using-github-actions.md
+**URL:** https://replicate.com/docs/guides/build/continuous-model-deployment.md
 
-GitHub Actions let you to automate your software development workflows directly within your GitHub repository.
+This guide will show you how to set up continuous integration and deployment for your Cog model, so you can safely and easily publish new versions of your model as part of your GitHub-based development workflow.
 
-In this tutorial, you’ll learn how to use GitHub Actions to build and push your model to Replicate, so you don’t have to manually build and push your model. This setup works equally well for both public and private models.
+![Use GitHub, Anthropic, and Replicate to build a CI/CD pipeline for your Cog model.](/_content/assets/openai-anthropic-replicate.B4ZhQOYb_Z2tNfmX.webp)
 
-Note
+Use GitHub, Anthropic, and Replicate to build a CI/CD pipeline for your Cog model.
 
-This guide will get you started using GitHub Actions to push your model, but if you’re looking for a more full-featured approach that includes linting, testing, and more, check out the [guide to setting up a CI/CD pipeline for your model](/docs/guides/continuous-model-deployment).
+[](#what-is-cicd)What is CI/CD?
+-------------------------------
+
+CI/CD stands for continuous integration and deployment. It’s a well-known process for building, testing, and deploying software. It has been a popular practice in the software industry for a long time, but it’s just as applicable when developing machine learning models. After all, [AI models are just software](https://replicate.com/blog/machine-learning-needs-better-tools#machine-learning-is-just-software).
+
+CI/CD has many benefits:
+
+*   Catch errors early. This helps reduce the risk of breaking things for your users.
+*   Test your model in a consistent and repeatable way.
+*   Automate the release process so you can ship new versions of your model more frequently.
+*   Collaborate with others. CI/CD workflows live as code in your repository, so they’re easy to discover and understand.
+
+[](#what-are-we-building)What are we building?
+----------------------------------------------
+
+In this guide, you’ll set up a CI/CD pipeline for your Cog model using GitHub Actions and [github.com/replicate/cog-safe-push](https://github.com/replicate/cog-safe-push), an open-source project we use internally at Replicate to test and deploy our production models.
+
+Your pipeline will:
+
+*   Lint your Python model code.
+*   Create a private test model on Replicate.
+*   Push your local Cog model to the test model on Replicate.
+*   Lint the model schema, making sure all inputs have descriptions, etc.
+*   Run predictions against the test model and compare the outputs to the upstream model.
+*   “Fuzz” the test model for five minutes by throwing a bunch of different inputs at it and making sure it doesn’t throw any errors.
+*   Push your changes to the production model once the test model passes all the tests.
+
+[](#what-is-fuzz-testing)What is fuzz testing?
+----------------------------------------------
+
+Fuzz testing is a technique for finding bugs in software by passing invalid, unexpected, or random data as inputs to the software and seeing if it crashes. In this guide, we’ll use Anthropic’s [Claude API](https://docs.anthropic.com/en/api/introduction) to generate random inputs to test your model.
+
+Language models are great for generating plain text, but they can also be used to generate JSON data. We’ll take advantage of that here to generate structured data that matches the input schema of your model.
 
 [](#prerequisites)Prerequisites
 -------------------------------
 
-*   **An existing Cog model in a GitHub repository.** This tutorial assumes you already have a working Cog model. If you don’t, you can use one from [replicate/cog-examples](https://github.com/replicate/cog-examples) or check out the [guide to pushing a model](/docs/guides/push-a-model).
-*   **A Replicate account.** You’ll need a [Replicate API token](https://replicate.com/account/api-tokens?new-token-name=github-actions) to push your model to Replicate.
+Before starting this guide, you’ll need the following:
 
-[](#step-1-create-a-workflow-file)Step 1: Create a workflow file
-----------------------------------------------------------------
+*   An existing [Cog](https://cog.run/) model. If you’ve never pushed a Cog model before, check out the [guide to pushing your first model](/docs/guides/push-a-model).
+*   A [Replicate](https://replicate.com/) account for publishing your Cog model.
+*   A [GitHub](https://github.com/) repository containing the source code for your model.
+*   An [Anthropic](https://console.anthropic.com/) account for generating JSON data to test your model.
+
+[](#step-1-create-a-github-actions-workflow)Step 1: Create a GitHub Actions workflow
+------------------------------------------------------------------------------------
+
+GitHub Actions is a feature built into GitHub that makes it easy to add scripts to your repository, and run those scripts on GitHub’s servers. You can use GitHub Actions to do all kinds of automation, like running tests, deploying your model, and more.
 
 To use GitHub Actions, you define workflows using YAML files stored in the `.github/workflows` directory of your GitHub repository.
 
-Your new workflow will use an open-source GitHub Action called [replicate/setup-cog](https://github.com/replicate/setup-cog) that takes care of installing Docker buildx, Cog, CUDA drivers (optionally), and other setup steps.
+Create a new file in your repository called `.github/workflows/cog-safe-push.yml`.
 
-Create a new file in the `.github/workflows` directory of your repository, and name it `push.yml`. Then add the following content:
+Then paste the following code into the file:
 
 ```yml
-name: Push to Replicate
+name: Cog Safe Push
 on:
   workflow_dispatch:
     inputs:
-      model_name:
-        description: 'Enter the model name, like "alice/bunny-detector"'
-        required: true
+      model:
+        description: 'The name of the model to push, in the format owner/model-name'
+        type: string
 jobs:
-  push_to_replicate:
-    name: Push to Replicate
+  cog-safe-push:
+    # Tip: Create custom runners in your GitHub organization for faster builds
     runs-on: ubuntu-latest
     steps:
-      - name: Free disk pace
-        uses: jlumbroso/free-disk-space@v1.3.1
-        with:
-          tool-cache: false
-          docker-images: false
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Cog
-        uses: replicate/setup-cog@v2
-        with:
-          token: ${{ secrets.REPLICATE_CLI_AUTH_TOKEN }}
-      - name: Push to Replicate
-        run: cog push r8.im/${{ inputs.model_name }}
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.12"
+    - name: Install Cog
+      run: |
+        sudo curl -o /usr/local/bin/cog -L https://github.com/replicate/cog/releases/latest/download/cog_`uname -s`_`uname -m`
+        sudo chmod +x /usr/local/bin/cog
+    - name: cog login
+      run: |
+        echo ${{ secrets.COG_TOKEN }} | cog login --token-stdin
+    - name: Install cog-safe-push
+      run: |
+        pip install git+https://github.com/replicate/cog-safe-push.git
+    - name: Push selected models
+      env:
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+      run: |
+        cog-safe-push ${{ inputs.model }}
 ```
 
-Note
+Commit this file to your Git repository and push it to GitHub.
 
-If you’re creating a new model from scratch, you can use the `cog init` command, which will automatically generate a starter workflow for you.
+[](#step-2-set-a-replicate-api-token)Step 2: Set a Replicate API token
+----------------------------------------------------------------------
 
-[](#step-2-get-your-replicate-cli-auth-token)Step 2: Get your Replicate CLI auth token
---------------------------------------------------------------------------------------
+Before you can run your GitHub Actions workflow, you’ll need to set a Replicate API token as a secret in your GitHub repository.
 
-The [replicate/setup-cog](https://github.com/replicate/setup-cog) action supports automatically authenticating with your Replicate account so you can push models to Replicate. For this to work, you need to provide it with a Replicate CLI auth token.
+1.  Go to [replicate.com/account/api-tokens](https://replicate.com/account/api-tokens?new-token-name=continuous-deployment)
+2.  Create a new token with a name like “GitHub Actions CI/CD workflow for my-username/my-model”.
+3.  Copy the token to your clipboard.
+4.  In your GitHub repository, go to the **Settings**, click **Secrets and variables**, then click **Actions**.
+5.  Click **New repository secret**.
+6.  In the **Name** field, enter `REPLICATE_API_TOKEN`.
+7.  In the **Value** field, paste the token you copied from Replicate.
+8.  Click **Add secret**.
 
-Go to [replicate.com/auth/token](https://replicate.com/auth/token) and copy the token to your clipboard.
-
-[](#step-3-add-your-replicate-token-as-a-secret)Step 3: Add your Replicate token as a secret
---------------------------------------------------------------------------------------------
-
-Next you’ll add your Replicate API token as a secret to your repository, so it can be safely accessed by your workflow.
-
-Go to your GitHub repository, click “Settings”, click “Secrets”, click “New repository secret”, and add your token as the secret. Name it `REPLICATE_CLI_AUTH_TOKEN` and paste in the token you copied in the previous step.
-
-[](#step-4-commit-and-push-your-changes-to-github)Step 4: Commit and push your changes to GitHub
-------------------------------------------------------------------------------------------------
-
-Next you’ll commit and push your changes to GitHub, so you can run the workflow:
-
-```sh
-git add .
-git commit -am "Add Actions workflow for pushing to Replicate"
-git push
-```
-
-[](#step-5-trigger-the-workflow-manually)Step 5: Trigger the workflow manually
-------------------------------------------------------------------------------
-
-GitHub Actions workflows can be triggered manually, or on a schedule, or in response to events like creating pull requests or pushing to your default branch.
-
-The workflow you added above is configured to be triggered manually (see the `workflow_dispatch` bit). It’s a good idea to start with a manual trigger so you can test out the workflow explicitly, then switch to a more automated process once you’ve got it working as expected.
-
-1.  Go to your repository page on GitHub
-2.  Click **Actions**
-3.  Click **Push to Replicate**
-4.  Enter the name of your Replicate model
-5.  Click “Run workflow”
-
-[](#step-6-trigger-the-workflow-automatically-optional)Step 6: Trigger the workflow automatically (optional)
-------------------------------------------------------------------------------------------------------------
-
-Once you’ve run the workflow manually and the process is working as expected, you may want to update your workflow to trigger automatically. Here’s how to update the workflow to trigger whenever you push to your default branch:
-
-First, add a [Repository configuration variable](https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository) to your repository to store the name of your model.
-
-Then update your workflow to run on pushes to your main branch:
-
-```yml
-on:
-  push:
-    branches:
-      - main
-```
-
-Then update the `cog push` step in your workflow to fall back to the default model name if the input is empty. This will allow you to manually trigger the workflow with a custom model name, or automatically trigger the workflow with the default model name:
-
-```yml
-      - name: Push to Replicate
-        run: cog push r8.im/${{ inputs.model_name || vars.DEFAULT_MODEL_NAME }}
-```
-
-[](#troubleshooting-disk-space)Troubleshooting: Disk space
+[](#step-3-set-a-cog-api-token)Step 3: Set a Cog API token
 ----------------------------------------------------------
 
-If your model is large, the default GitHub Actions runner may not have enough disk space. The [jlumbroso/free-disk-space](https://github.com/jlumbroso/free-disk-space) action included in the workflow above saves about 30GB of disk space, but that may not be enough for your model.
+You’ll also need to set a Cog API token as a secret in your GitHub repository, so the `cog-safe-push` script can push your model to Replicate.
 
-If you need even more space, you can can [set up a larger hosted runner on GitHub](https://docs.github.com/en/actions/using-github-hosted-runners/about-larger-runners/managing-larger-runners#adding-a-larger-runner-to-an-organization), then update your workflow to use your new runner:
+1.  Go to [replicate.com/auth/token](https://replicate.com/auth/token) and copy your CLI auth token.
+2.  In your GitHub repository, go to the **Settings**, click **Secrets and variables**, then click **Actions**.
+3.  Click **New repository secret**.
+4.  In the **Name** field, enter `COG_TOKEN`.
+5.  In the **Value** field, paste the token you copied from Replicate.
+6.  Click **Add secret**.
 
-```yml
-jobs:
-  push_to_replicate:
-    name: Push to Replicate
-    runs-on: my-custom-runner-with-lots-of-disk-space
+[](#step-4-set-an-anthropic-api-key)Step 4: Set an Anthropic API key
+--------------------------------------------------------------------
+
+You’ll also need to set an Anthropic API key as a secret in your GitHub repository, so the `cog-safe-push` script can generate structured JSON inputs to test your model.
+
+1.  Go to [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys)
+2.  Create a new API key with a name like “fuzz testing with cog-safe-push for my-username/my-model”.
+3.  Copy the key to your clipboard.
+4.  In your GitHub repository, go to the **Settings**, click **Secrets and variables**, then click **Actions**.
+5.  Click **New repository secret**.
+6.  In the **Name** field, enter `ANTHROPIC_API_KEY`.
+7.  In the **Value** field, paste the key you copied from Anthropic.
+8.  Click **Add secret**.
+
+[](#step-5-run-the-workflow)Step 5: Run the workflow
+----------------------------------------------------
+
+Now that you’ve created your workflow and configured the necessary secrets, you can run the workflow manually.
+
+If you’ve configured your workflow correctly, you should see a green checkmark next to the workflow run, and output like the following:
+
+1.  In your GitHub repository, go to the **Actions** tab.
+2.  Click **Cog Safe Push**.
+3.  In the **Model** field, enter the name of your model in the format `owner/model-name`.
+4.  Click **Run workflow**.
+
+![Screenshot of the completed GitHub Actions workflow.](/_content/assets/actions.DNJDa6Ua_2cxMxY.webp)
+
+Screenshot of the completed GitHub Actions workflow.
+
+Success! You’ve just run your CI/CD pipeline. If all the steps passed, you’ve now got a newly published [version](https://replicate.com/docs/topics/models/versions) of your model on Replicate.
+
+[](#step-6-optional-customize-cog-safe-push)Step 6 (Optional): Customize cog-safe-push
+--------------------------------------------------------------------------------------
+
+The `cog-safe-push` command has sensible defaults and will work without any specific configuration, but you’ll probably want to customize it to your needs.
+
+If you create a file named `cog-safe-push.yaml` in your Cog directory, it will be used automatically.
+
+Here’s an example configuration that specifies a model, a test model, hardware, and a set of test cases:
+
+```yaml
+# This is the model that the deployment will use
+model: owner/my-model
+# A private model to run the test against before pushing
+test_model: owner/my-model-test
+test_hardware: gpu-l40s
+# Define the predict section to run predictions against the test model
+predict:
+  compare_outputs: false
+  predict_timeout: 700
+  test_cases:
+    - inputs:
+        prompt: A formula one car
+        seed: 1
+    - inputs:
+        prompt: A cat
+        duration: 4
+        negative_prompt: Ginger cat
+        frame_image_url: https://tjzk.replicate.delivery/models_models_featured_image/afce5fa4-5f8a-45db-95c0-bf62ec6958e7/output-59.webp
+        seed: 2
 ```
 
-Note: You’ll need a GitHub Team or GitHub Enterprise Cloud plan to use larger runners.
+To learn more about the available options, see the [cog-safe-push README](https://github.com/replicate/cog-safe-push/blob/main/README.md).
 
 [](#next-steps)Next steps
 -------------------------
 
-Hooray! You’ve now got a workflow that pushes your model to Replicate. You’re on the path to a more automated future, where you can iterate quickly on AI models and ship them just like normal software.
+Now that you have a CI/CD pipeline for your Cog model, you can use it to publish new versions of your model as part of your GitHub-based development workflow.
+
+The Actions workflow you created is triggered manually. This is a good starting point, as it lets you run the workflow repeatedly until you get everything working the way you want.
+
+Once you’ve got things configured just right, consider updating the workflow to run automatically when you push to a branch of your repository, or whenever you open a pull request.
+
+Remember that CI/CD is an iterative process, and you’ll need to customize the workflow and testing parameters to match your needs. The investment is worth it though: CI/CD will help you ship new versions of your model more frequently, and your team will enjoy faster development velocity and fewer operational headaches. Ship it!
 
 # Push your own model
 
@@ -6483,211 +6688,6 @@ We’d love to see what you build with these powerful new tools.
 
 Share your project on [X](https://x.com/replicate) or [Discord](https://discord.gg/replicate) and tag us.
 
-# Set up a CI/CD pipeline for your model
-
-**URL:** https://replicate.com/docs/guides/build/continuous-model-deployment.md
-
-This guide will show you how to set up continuous integration and deployment for your Cog model, so you can safely and easily publish new versions of your model as part of your GitHub-based development workflow.
-
-![Use GitHub, Anthropic, and Replicate to build a CI/CD pipeline for your Cog model.](/_content/assets/openai-anthropic-replicate.B4ZhQOYb_Z2tNfmX.webp)
-
-Use GitHub, Anthropic, and Replicate to build a CI/CD pipeline for your Cog model.
-
-[](#what-is-cicd)What is CI/CD?
--------------------------------
-
-CI/CD stands for continuous integration and deployment. It’s a well-known process for building, testing, and deploying software. It has been a popular practice in the software industry for a long time, but it’s just as applicable when developing machine learning models. After all, [AI models are just software](https://replicate.com/blog/machine-learning-needs-better-tools#machine-learning-is-just-software).
-
-CI/CD has many benefits:
-
-*   Catch errors early. This helps reduce the risk of breaking things for your users.
-*   Test your model in a consistent and repeatable way.
-*   Automate the release process so you can ship new versions of your model more frequently.
-*   Collaborate with others. CI/CD workflows live as code in your repository, so they’re easy to discover and understand.
-
-[](#what-are-we-building)What are we building?
-----------------------------------------------
-
-In this guide, you’ll set up a CI/CD pipeline for your Cog model using GitHub Actions and [github.com/replicate/cog-safe-push](https://github.com/replicate/cog-safe-push), an open-source project we use internally at Replicate to test and deploy our production models.
-
-Your pipeline will:
-
-*   Lint your Python model code.
-*   Create a private test model on Replicate.
-*   Push your local Cog model to the test model on Replicate.
-*   Lint the model schema, making sure all inputs have descriptions, etc.
-*   Run predictions against the test model and compare the outputs to the upstream model.
-*   “Fuzz” the test model for five minutes by throwing a bunch of different inputs at it and making sure it doesn’t throw any errors.
-*   Push your changes to the production model once the test model passes all the tests.
-
-[](#what-is-fuzz-testing)What is fuzz testing?
-----------------------------------------------
-
-Fuzz testing is a technique for finding bugs in software by passing invalid, unexpected, or random data as inputs to the software and seeing if it crashes. In this guide, we’ll use Anthropic’s [Claude API](https://docs.anthropic.com/en/api/introduction) to generate random inputs to test your model.
-
-Language models are great for generating plain text, but they can also be used to generate JSON data. We’ll take advantage of that here to generate structured data that matches the input schema of your model.
-
-[](#prerequisites)Prerequisites
--------------------------------
-
-Before starting this guide, you’ll need the following:
-
-*   An existing [Cog](https://cog.run/) model. If you’ve never pushed a Cog model before, check out the [guide to pushing your first model](/docs/guides/push-a-model).
-*   A [Replicate](https://replicate.com/) account for publishing your Cog model.
-*   A [GitHub](https://github.com/) repository containing the source code for your model.
-*   An [Anthropic](https://console.anthropic.com/) account for generating JSON data to test your model.
-
-[](#step-1-create-a-github-actions-workflow)Step 1: Create a GitHub Actions workflow
-------------------------------------------------------------------------------------
-
-GitHub Actions is a feature built into GitHub that makes it easy to add scripts to your repository, and run those scripts on GitHub’s servers. You can use GitHub Actions to do all kinds of automation, like running tests, deploying your model, and more.
-
-To use GitHub Actions, you define workflows using YAML files stored in the `.github/workflows` directory of your GitHub repository.
-
-Create a new file in your repository called `.github/workflows/cog-safe-push.yml`.
-
-Then paste the following code into the file:
-
-```yml
-name: Cog Safe Push
-on:
-  workflow_dispatch:
-    inputs:
-      model:
-        description: 'The name of the model to push, in the format owner/model-name'
-        type: string
-jobs:
-  cog-safe-push:
-    # Tip: Create custom runners in your GitHub organization for faster builds
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.12"
-    - name: Install Cog
-      run: |
-        sudo curl -o /usr/local/bin/cog -L https://github.com/replicate/cog/releases/latest/download/cog_`uname -s`_`uname -m`
-        sudo chmod +x /usr/local/bin/cog
-    - name: cog login
-      run: |
-        echo ${{ secrets.COG_TOKEN }} | cog login --token-stdin
-    - name: Install cog-safe-push
-      run: |
-        pip install git+https://github.com/replicate/cog-safe-push.git
-    - name: Push selected models
-      env:
-        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
-      run: |
-        cog-safe-push ${{ inputs.model }}
-```
-
-Commit this file to your Git repository and push it to GitHub.
-
-[](#step-2-set-a-replicate-api-token)Step 2: Set a Replicate API token
-----------------------------------------------------------------------
-
-Before you can run your GitHub Actions workflow, you’ll need to set a Replicate API token as a secret in your GitHub repository.
-
-1.  Go to [replicate.com/account/api-tokens](https://replicate.com/account/api-tokens?new-token-name=continuous-deployment)
-2.  Create a new token with a name like “GitHub Actions CI/CD workflow for my-username/my-model”.
-3.  Copy the token to your clipboard.
-4.  In your GitHub repository, go to the **Settings**, click **Secrets and variables**, then click **Actions**.
-5.  Click **New repository secret**.
-6.  In the **Name** field, enter `REPLICATE_API_TOKEN`.
-7.  In the **Value** field, paste the token you copied from Replicate.
-8.  Click **Add secret**.
-
-[](#step-3-set-a-cog-api-token)Step 3: Set a Cog API token
-----------------------------------------------------------
-
-You’ll also need to set a Cog API token as a secret in your GitHub repository, so the `cog-safe-push` script can push your model to Replicate.
-
-1.  Go to [replicate.com/auth/token](https://replicate.com/auth/token) and copy your CLI auth token.
-2.  In your GitHub repository, go to the **Settings**, click **Secrets and variables**, then click **Actions**.
-3.  Click **New repository secret**.
-4.  In the **Name** field, enter `COG_TOKEN`.
-5.  In the **Value** field, paste the token you copied from Replicate.
-6.  Click **Add secret**.
-
-[](#step-4-set-an-anthropic-api-key)Step 4: Set an Anthropic API key
---------------------------------------------------------------------
-
-You’ll also need to set an Anthropic API key as a secret in your GitHub repository, so the `cog-safe-push` script can generate structured JSON inputs to test your model.
-
-1.  Go to [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys)
-2.  Create a new API key with a name like “fuzz testing with cog-safe-push for my-username/my-model”.
-3.  Copy the key to your clipboard.
-4.  In your GitHub repository, go to the **Settings**, click **Secrets and variables**, then click **Actions**.
-5.  Click **New repository secret**.
-6.  In the **Name** field, enter `ANTHROPIC_API_KEY`.
-7.  In the **Value** field, paste the key you copied from Anthropic.
-8.  Click **Add secret**.
-
-[](#step-5-run-the-workflow)Step 5: Run the workflow
-----------------------------------------------------
-
-Now that you’ve created your workflow and configured the necessary secrets, you can run the workflow manually.
-
-If you’ve configured your workflow correctly, you should see a green checkmark next to the workflow run, and output like the following:
-
-1.  In your GitHub repository, go to the **Actions** tab.
-2.  Click **Cog Safe Push**.
-3.  In the **Model** field, enter the name of your model in the format `owner/model-name`.
-4.  Click **Run workflow**.
-
-![Screenshot of the completed GitHub Actions workflow.](/_content/assets/actions.DNJDa6Ua_2cxMxY.webp)
-
-Screenshot of the completed GitHub Actions workflow.
-
-Success! You’ve just run your CI/CD pipeline. If all the steps passed, you’ve now got a newly published [version](https://replicate.com/docs/topics/models/versions) of your model on Replicate.
-
-[](#step-6-optional-customize-cog-safe-push)Step 6 (Optional): Customize cog-safe-push
---------------------------------------------------------------------------------------
-
-The `cog-safe-push` command has sensible defaults and will work without any specific configuration, but you’ll probably want to customize it to your needs.
-
-If you create a file named `cog-safe-push.yaml` in your Cog directory, it will be used automatically.
-
-Here’s an example configuration that specifies a model, a test model, hardware, and a set of test cases:
-
-```yaml
-# This is the model that the deployment will use
-model: owner/my-model
-# A private model to run the test against before pushing
-test_model: owner/my-model-test
-test_hardware: gpu-l40s
-# Define the predict section to run predictions against the test model
-predict:
-  compare_outputs: false
-  predict_timeout: 700
-  test_cases:
-    - inputs:
-        prompt: A formula one car
-        seed: 1
-    - inputs:
-        prompt: A cat
-        duration: 4
-        negative_prompt: Ginger cat
-        frame_image_url: https://tjzk.replicate.delivery/models_models_featured_image/afce5fa4-5f8a-45db-95c0-bf62ec6958e7/output-59.webp
-        seed: 2
-```
-
-To learn more about the available options, see the [cog-safe-push README](https://github.com/replicate/cog-safe-push/blob/main/README.md).
-
-[](#next-steps)Next steps
--------------------------
-
-Now that you have a CI/CD pipeline for your Cog model, you can use it to publish new versions of your model as part of your GitHub-based development workflow.
-
-The Actions workflow you created is triggered manually. This is a good starting point, as it lets you run the workflow repeatedly until you get everything working the way you want.
-
-Once you’ve got things configured just right, consider updating the workflow to run automatically when you push to a branch of your repository, or whenever you open a pull request.
-
-Remember that CI/CD is an iterative process, and you’ll need to customize the workflow and testing parameters to match your needs. The investment is worth it though: CI/CD will help you ship new versions of your model more frequently, and your team will enjoy faster development velocity and fewer operational headaches. Ship it!
-
 # Optimize models with Pruna
 
 **URL:** https://replicate.com/docs/guides/build/optimize-models-with-pruna.md
@@ -7046,6 +7046,112 @@ Now that you’ve got a basic setup for receiving webhooks, you can use it to bu
 *   Use a more robust notification system. The example above uses email which is great for getting started, but you could also send notifications to Slack, SMS, PagerDuty, or other services.
 *   Use state to track recent predictions. Val town’s standard library has a built-in [blob storage system](https://www.val.town/v/std/blob) that you can use to store JSON data (as well as text, images, and other file types). Just like Val town’s email function, blob storage is preconfigured and ready to use. You could extend the example above to store recent predictions in a blob, and then notify yourself or your team when error rates exceed a certain threshold.
 
+# Get a GPU on Lambda Labs
+
+**URL:** https://replicate.com/docs/guides/build/get-a-gpu-on-lambda-labs.md
+
+GPUs are specialized processors that are designed to handle complex mathematical calculations. Many machine learning models will only run on a computer with a GPU. While GPUs are incredibly powerful, setting up a machine that can use them can be challenging. GPUs require specific drivers and software to work properly, which can be difficult to install and configure.
+
+In this guide, you’ll learn how to get your own GPU machine in the cloud, so you can package your model and push it to Replicate.
+
+Note
+
+You probably don’t need to set up your own GPU machine to push a model to Replicate. In most cases, you should be able to package your model with [Cog](https://cog.run) and [push it to Replicate](https://replicate.com/docs/guides/push-a-model) without ever leaving your local machine.
+
+In certain cases, you may need a GPU machine to push a model. If you’re not sure if you need this, you probably don’t. If you get an error message like this:
+
+`RuntimeError: CUDA unknown error - this may be due to an incorrectly set up environment, e.g. changing env variable CUDA_VISIBLE_DEVICES after program start. Setting the available devices to be zero.`
+
+then you may need this guide.
+
+[](#sign-up-for-lambda-labs)Sign up for Lambda Labs
+---------------------------------------------------
+
+Lambda Labs is a cloud provider that offers GPU machines that come preconfigured with Docker and NVIDIA drivers, which makes them a great fit for working with [Cog](https://cog.run).
+
+Create an account at [lambdalabs.com/service/gpu-cloud](https://lambdalabs.com/service/gpu-cloud) and enter your billing info. You’ll be able to run GPU machines for [as little as $0.50/hour](https://lambdalabs.com/service/gpu-cloud/pricing).
+
+[](#create-a-gpu-cloud-instance)Create a GPU Cloud instance
+-----------------------------------------------------------
+
+Once you’ve got a Lambda account, create a new GPU Cloud instance. You’ll be asked to specify three settings:
+
+*   **Instance type**: This is the type of machine you want to use. For example, `1x A10 (24 GB PCIe)`. Start by choosing the smallest instance type. You can upgrade to a larger instance type later if you need more power.
+*   **Region**: This is the geographical location of the machine. For example, “California, USA (`us-west-1`)”. Choose the region closest to you.
+*   **Filesystem**: This is not strictly required, as your instance will still have an ephemeral writeable filesystem, but if you want to be able to shut down your instance and come back to it without losing your changes on disk, you’ll need to attach a filesystem.
+
+[](#add-your-public-ssh-key)Add your public SSH key
+---------------------------------------------------
+
+Next you’ll be asked to provide your public SSH key so you can easily log into your new instance using SSH. If you’ve already set up your SSH keys for another service like GitHub, you can use your existing public key. Use a command like this to copy your public key to your clipboard:
+
+```bash
+cat ~/.ssh/id_ed25519.pub | pbcopy
+```
+
+If you don’t have one already, check out [GitHub’s docs for generating an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
+
+[](#launch-your-instance)Launch your instance
+---------------------------------------------
+
+Your GPU Cloud instance will be launched in a few minutes. Once it’s ready, you can access it through SSH or JupyterLab.
+
+To SSH into your instance, copy the “SSH login” command from your Lambda dashboard, then run it:
+
+```bash
+ssh ubuntu@[your-instance-ip]
+```
+
+To access your instance using JupyterLab, click the “Launch” button beside your new instance in the Lambda dashboard.
+
+[](#install-cog-on-your-instance)Install Cog on your instance
+-------------------------------------------------------------
+
+Cog is Replicate’s open-source tool that makes it easy to put a machine learning model in a Docker container. Cog is the tool you use to package your trained model and push it to Replicate.
+
+Using the terminal (either from your SSH sesion or inside JupyterLab), run the following command to install Cog on your instance:
+
+```sh
+sudo curl -o /usr/local/bin/cog -L https://github.com/replicate/cog/releases/latest/download/cog_`uname -s`_`uname -m`
+sudo chmod +x /usr/local/bin/cog
+```
+
+[](#run-an-existing-model)Run an existing model
+-----------------------------------------------
+
+To verify that your new instance is working properly, you can run a prediction on an existing model on Replicate.
+
+Run the following commmand in the terminal to download the [Stable Diffusion](https://replicate.com/stability-ai/stable-diffusion) model and run it locally on your new instance:
+
+```bash
+sudo cog predict r8.im/stability-ai/stable-diffusion@sha256:f178fa7a1ae43a9a9af01b833b9d2ecf97b1bcb0acfd2dc5dd04895e042863f1 -i prompt="a pot of gold"
+```
+
+Note: It’s important to use `sudo` here so Cog can work properly with the Docker installation on your instance.
+
+[](#use-jupyterlab-to-view-model-output)Use JupyterLab to view model output
+---------------------------------------------------------------------------
+
+JupyterLab is a web-based editor that makes it easy to run models interactively and view the files on your instance. Lambda’s GPU Cloud instances are preconfigured with JupyterLab.
+
+To access JupyterLab, click the “Launch” button beside your new instance in the Lambda dashboard.
+
+You should see your output file in the JupyterLab file browser. Click on it to view the output.
+
+![jupyterlab](https://user-images.githubusercontent.com/2289/214712829-b393d36a-fe90-4da2-974d-735b5ee036fe.png)
+
+[](#push-your-model-to-replicate)Push your model to Replicate
+-------------------------------------------------------------
+
+You’ve now got a working GPU machine in the cloud!
+
+Now it’s time to [build your own model and push it to Replicate](https://replicate.com/docs/topics/models/publish-a-model).
+
+[](#terminate-your-instance)Terminate your instance
+---------------------------------------------------
+
+Lambda’s GPU Cloud instances remain active until you terminate them, so you’ll be charged for them until you shut them down. To terminate your instance, go to the Lambda dashboard and click “Terminate” on your instance.
+
 # Get a GPU machine on Brev
 
 **URL:** https://replicate.com/docs/guides/build/get-a-gpu-on-brev.md
@@ -7246,6 +7352,108 @@ Happy hacking!
 *   Use `brev ls` to list your instances. This is handy if you forget what you named your new instance!
 *   Remember to `brev stop` your instance when you’re not using it to avoid incurring charges.
 
+# Best practices for Replicate models
+
+**URL:** https://replicate.com/docs/guides/build/model-best-practices.md
+
+This guide will walk you through the best practices for pushing a reliable, fast, and user-friendly model to Replicate.
+
+[](#getting-started)Getting started
+-----------------------------------
+
+All models on Replicate use [Cog](https://github.com/replicate/cog), an open-source tool that lets you package machine learning models in a standard, production-ready container. It’s based on Docker.
+
+If you’re new to Cog, we recommend starting from our docs: [Push a model to Replicate](https://replicate.com/docs/guides/push-a-model)
+
+In short, you need to:
+
+1.  define the Docker environment your model runs in with `cog.yaml`
+2.  define how predictions are run with `predict.py`
+3.  test your model by running predictions locally, for example: `cog predict -i image=@input.jpg`
+4.  push the model to Replicate with `cog push`
+
+For the rest of this guide we’ll assume you’re familiar with Cog and you know how to push a model to Replicate.
+
+[](#make-your-model-easy-to-understand)Make your model easy to understand
+-------------------------------------------------------------------------
+
+People must be able to use your model without reading the source code.
+
+### [](#naming-your-model)Naming your model
+
+All names on Replicate are lowercase and use dashes instead of spaces. For example, `llama-2-70b-chat`.
+
+Best practice is to use the model’s official name, like the name of the GitHub repo or HuggingFace model.
+
+Where there are variations of a model, we recommend adding those variations to the end of the name to make the model distinct. These are commonly different parameter sizes or fine-tunes, such as `codellama-34b` and `codellama-34b-instruct`.
+
+### [](#include-a-clear-description)Include a clear description
+
+A short one line description explaining what the model does. Avoid technical terms and abbreviations in your description.
+
+Some good examples:
+
+*   For the `autocaption` model: “Automatically add captions to a video”
+*   For the `llama-2-70b-chat`: “A 70 billion parameter language model from Meta, fine tuned for chat completions”
+
+### [](#use-well-named-model-inputs)Use well named model inputs
+
+Do not prematurely shorten names. Use `negative_prompt` instead of `n_prompt`.
+
+### [](#order-your-inputs)Order your inputs
+
+Put the most important inputs first.
+
+Group related inputs together. For example, `prompt` and `negative_prompt` should be together in your `predict.py` inputs. Users usually want to change them together.
+
+For models with many inputs, consider prefixing fields with a group name. For example, `controlnet_strength`, `controlnet_image` and `controlnet_model`.
+
+### [](#add-guidance-to-explain-inputs)Add guidance to explain inputs
+
+Even when obvious to you. For example, not everyone knows how to use a negative prompt. Guidance like this would help them:
+
+> A negative prompt is a prompt containing all the things you do not want in your output
+
+### [](#pick-defaults-that-balance-speed-and-quality)Pick defaults that balance speed and quality
+
+Good defaults get quality outputs quickly.
+
+For example, with SDXL you get good images at 768x768 with 25 inference steps, which is 3x faster than 1024x1024 at 50 steps.
+
+### [](#give-guidance-on-recommended-ranges)Give guidance on recommended ranges
+
+A model should make it difficult to get bad results while remaining flexible for anyone wanting to experiment.
+
+Keep wide input ranges, but use guidance text to explain where the best results lie.
+
+### [](#handle-image-inputs-well)Handle image inputs well
+
+If your model takes images as inputs, it should accept all the common image formats users will try. For example, JPEG, PNG, GIF and WEBP, as well as images with alpha channels (transparency).
+
+Where inference would fail with a given input (like an RGBA image), convert images to a format that works.
+
+An image that’s too big will often cause out of memory errors. Scale images to a size that works best with your model, but maintain aspect ratio.
+
+Some models need dimensions that are multiples of 8, or similar (for example Stable Diffusion). In these cases, automatically scale images to the nearest multiple.
+
+Make image scaling easy and automatic, so users can throw any image at your model and get good results. But add controls so they can override defaults and control sizing if they need to.
+
+[](#dependencies)Dependencies
+-----------------------------
+
+Keep dependencies to a minimum. Fewer dependencies mean smaller containers and faster builds.
+
+Use pinned versions. Pinning your dependencies to specific versions makes your model more reproducible. It will make it easier to debug.
+
+OpenCV is a big dependency. If you’re using it, we recommend using the headless version [opencv-python-headless](https://pypi.org/project/opencv-python-headless/) which is a smaller version for server use.
+
+[](#model-weights)Model weights
+-------------------------------
+
+Download weights and push them with your model. Do not try to download them at runtime. If you’re using HuggingFace Diffusers, you can also push the model cache.
+
+If you have weights that are especially large, contact the Replicate team and we’ll help you keep your model size down and your model fast. We’re working on making this better.
+
 # Working with LoRAs
 
 **URL:** https://replicate.com/docs/guides/extend/working-with-loras.md
@@ -7356,112 +7564,6 @@ Image models:
 *   [https://replicate.com/replicate/fast-flux-trainer](https://replicate.com/replicate/fast-flux-trainer)
 *   [https://replicate.com/pnyompen/sd-controlnet-lora](https://replicate.com/pnyompen/sd-controlnet-lora)
 *   [https://replicate.com/black-forest-labs/flux-schnell-lora](https://replicate.com/black-forest-labs/flux-schnell-lora)
-
-# Get a GPU on Lambda Labs
-
-**URL:** https://replicate.com/docs/guides/build/get-a-gpu-on-lambda-labs.md
-
-GPUs are specialized processors that are designed to handle complex mathematical calculations. Many machine learning models will only run on a computer with a GPU. While GPUs are incredibly powerful, setting up a machine that can use them can be challenging. GPUs require specific drivers and software to work properly, which can be difficult to install and configure.
-
-In this guide, you’ll learn how to get your own GPU machine in the cloud, so you can package your model and push it to Replicate.
-
-Note
-
-You probably don’t need to set up your own GPU machine to push a model to Replicate. In most cases, you should be able to package your model with [Cog](https://cog.run) and [push it to Replicate](https://replicate.com/docs/guides/push-a-model) without ever leaving your local machine.
-
-In certain cases, you may need a GPU machine to push a model. If you’re not sure if you need this, you probably don’t. If you get an error message like this:
-
-`RuntimeError: CUDA unknown error - this may be due to an incorrectly set up environment, e.g. changing env variable CUDA_VISIBLE_DEVICES after program start. Setting the available devices to be zero.`
-
-then you may need this guide.
-
-[](#sign-up-for-lambda-labs)Sign up for Lambda Labs
----------------------------------------------------
-
-Lambda Labs is a cloud provider that offers GPU machines that come preconfigured with Docker and NVIDIA drivers, which makes them a great fit for working with [Cog](https://cog.run).
-
-Create an account at [lambdalabs.com/service/gpu-cloud](https://lambdalabs.com/service/gpu-cloud) and enter your billing info. You’ll be able to run GPU machines for [as little as $0.50/hour](https://lambdalabs.com/service/gpu-cloud/pricing).
-
-[](#create-a-gpu-cloud-instance)Create a GPU Cloud instance
------------------------------------------------------------
-
-Once you’ve got a Lambda account, create a new GPU Cloud instance. You’ll be asked to specify three settings:
-
-*   **Instance type**: This is the type of machine you want to use. For example, `1x A10 (24 GB PCIe)`. Start by choosing the smallest instance type. You can upgrade to a larger instance type later if you need more power.
-*   **Region**: This is the geographical location of the machine. For example, “California, USA (`us-west-1`)”. Choose the region closest to you.
-*   **Filesystem**: This is not strictly required, as your instance will still have an ephemeral writeable filesystem, but if you want to be able to shut down your instance and come back to it without losing your changes on disk, you’ll need to attach a filesystem.
-
-[](#add-your-public-ssh-key)Add your public SSH key
----------------------------------------------------
-
-Next you’ll be asked to provide your public SSH key so you can easily log into your new instance using SSH. If you’ve already set up your SSH keys for another service like GitHub, you can use your existing public key. Use a command like this to copy your public key to your clipboard:
-
-```bash
-cat ~/.ssh/id_ed25519.pub | pbcopy
-```
-
-If you don’t have one already, check out [GitHub’s docs for generating an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
-
-[](#launch-your-instance)Launch your instance
----------------------------------------------
-
-Your GPU Cloud instance will be launched in a few minutes. Once it’s ready, you can access it through SSH or JupyterLab.
-
-To SSH into your instance, copy the “SSH login” command from your Lambda dashboard, then run it:
-
-```bash
-ssh ubuntu@[your-instance-ip]
-```
-
-To access your instance using JupyterLab, click the “Launch” button beside your new instance in the Lambda dashboard.
-
-[](#install-cog-on-your-instance)Install Cog on your instance
--------------------------------------------------------------
-
-Cog is Replicate’s open-source tool that makes it easy to put a machine learning model in a Docker container. Cog is the tool you use to package your trained model and push it to Replicate.
-
-Using the terminal (either from your SSH sesion or inside JupyterLab), run the following command to install Cog on your instance:
-
-```sh
-sudo curl -o /usr/local/bin/cog -L https://github.com/replicate/cog/releases/latest/download/cog_`uname -s`_`uname -m`
-sudo chmod +x /usr/local/bin/cog
-```
-
-[](#run-an-existing-model)Run an existing model
------------------------------------------------
-
-To verify that your new instance is working properly, you can run a prediction on an existing model on Replicate.
-
-Run the following commmand in the terminal to download the [Stable Diffusion](https://replicate.com/stability-ai/stable-diffusion) model and run it locally on your new instance:
-
-```bash
-sudo cog predict r8.im/stability-ai/stable-diffusion@sha256:f178fa7a1ae43a9a9af01b833b9d2ecf97b1bcb0acfd2dc5dd04895e042863f1 -i prompt="a pot of gold"
-```
-
-Note: It’s important to use `sudo` here so Cog can work properly with the Docker installation on your instance.
-
-[](#use-jupyterlab-to-view-model-output)Use JupyterLab to view model output
----------------------------------------------------------------------------
-
-JupyterLab is a web-based editor that makes it easy to run models interactively and view the files on your instance. Lambda’s GPU Cloud instances are preconfigured with JupyterLab.
-
-To access JupyterLab, click the “Launch” button beside your new instance in the Lambda dashboard.
-
-You should see your output file in the JupyterLab file browser. Click on it to view the output.
-
-![jupyterlab](https://user-images.githubusercontent.com/2289/214712829-b393d36a-fe90-4da2-974d-735b5ee036fe.png)
-
-[](#push-your-model-to-replicate)Push your model to Replicate
--------------------------------------------------------------
-
-You’ve now got a working GPU machine in the cloud!
-
-Now it’s time to [build your own model and push it to Replicate](https://replicate.com/docs/topics/models/publish-a-model).
-
-[](#terminate-your-instance)Terminate your instance
----------------------------------------------------
-
-Lambda’s GPU Cloud instances remain active until you terminate them, so you’ll be charged for them until you shut them down. To terminate your instance, go to the Lambda dashboard and click “Terminate” on your instance.
 
 # Speed up models with torch.compile
 
@@ -9574,134 +9676,6 @@ Tip
 
 For the best experience, install both the [MCP server](/docs/reference/mcp) and agent skills.
 
-# Best practices for Replicate models
-
-**URL:** https://replicate.com/docs/guides/build/model-best-practices.md
-
-This guide will walk you through the best practices for pushing a reliable, fast, and user-friendly model to Replicate.
-
-[](#getting-started)Getting started
------------------------------------
-
-All models on Replicate use [Cog](https://github.com/replicate/cog), an open-source tool that lets you package machine learning models in a standard, production-ready container. It’s based on Docker.
-
-If you’re new to Cog, we recommend starting from our docs: [Push a model to Replicate](https://replicate.com/docs/guides/push-a-model)
-
-In short, you need to:
-
-1.  define the Docker environment your model runs in with `cog.yaml`
-2.  define how predictions are run with `predict.py`
-3.  test your model by running predictions locally, for example: `cog predict -i image=@input.jpg`
-4.  push the model to Replicate with `cog push`
-
-For the rest of this guide we’ll assume you’re familiar with Cog and you know how to push a model to Replicate.
-
-[](#make-your-model-easy-to-understand)Make your model easy to understand
--------------------------------------------------------------------------
-
-People must be able to use your model without reading the source code.
-
-### [](#naming-your-model)Naming your model
-
-All names on Replicate are lowercase and use dashes instead of spaces. For example, `llama-2-70b-chat`.
-
-Best practice is to use the model’s official name, like the name of the GitHub repo or HuggingFace model.
-
-Where there are variations of a model, we recommend adding those variations to the end of the name to make the model distinct. These are commonly different parameter sizes or fine-tunes, such as `codellama-34b` and `codellama-34b-instruct`.
-
-### [](#include-a-clear-description)Include a clear description
-
-A short one line description explaining what the model does. Avoid technical terms and abbreviations in your description.
-
-Some good examples:
-
-*   For the `autocaption` model: “Automatically add captions to a video”
-*   For the `llama-2-70b-chat`: “A 70 billion parameter language model from Meta, fine tuned for chat completions”
-
-### [](#use-well-named-model-inputs)Use well named model inputs
-
-Do not prematurely shorten names. Use `negative_prompt` instead of `n_prompt`.
-
-### [](#order-your-inputs)Order your inputs
-
-Put the most important inputs first.
-
-Group related inputs together. For example, `prompt` and `negative_prompt` should be together in your `predict.py` inputs. Users usually want to change them together.
-
-For models with many inputs, consider prefixing fields with a group name. For example, `controlnet_strength`, `controlnet_image` and `controlnet_model`.
-
-### [](#add-guidance-to-explain-inputs)Add guidance to explain inputs
-
-Even when obvious to you. For example, not everyone knows how to use a negative prompt. Guidance like this would help them:
-
-> A negative prompt is a prompt containing all the things you do not want in your output
-
-### [](#pick-defaults-that-balance-speed-and-quality)Pick defaults that balance speed and quality
-
-Good defaults get quality outputs quickly.
-
-For example, with SDXL you get good images at 768x768 with 25 inference steps, which is 3x faster than 1024x1024 at 50 steps.
-
-### [](#give-guidance-on-recommended-ranges)Give guidance on recommended ranges
-
-A model should make it difficult to get bad results while remaining flexible for anyone wanting to experiment.
-
-Keep wide input ranges, but use guidance text to explain where the best results lie.
-
-### [](#handle-image-inputs-well)Handle image inputs well
-
-If your model takes images as inputs, it should accept all the common image formats users will try. For example, JPEG, PNG, GIF and WEBP, as well as images with alpha channels (transparency).
-
-Where inference would fail with a given input (like an RGBA image), convert images to a format that works.
-
-An image that’s too big will often cause out of memory errors. Scale images to a size that works best with your model, but maintain aspect ratio.
-
-Some models need dimensions that are multiples of 8, or similar (for example Stable Diffusion). In these cases, automatically scale images to the nearest multiple.
-
-Make image scaling easy and automatic, so users can throw any image at your model and get good results. But add controls so they can override defaults and control sizing if they need to.
-
-[](#dependencies)Dependencies
------------------------------
-
-Keep dependencies to a minimum. Fewer dependencies mean smaller containers and faster builds.
-
-Use pinned versions. Pinning your dependencies to specific versions makes your model more reproducible. It will make it easier to debug.
-
-OpenCV is a big dependency. If you’re using it, we recommend using the headless version [opencv-python-headless](https://pypi.org/project/opencv-python-headless/) which is a smaller version for server use.
-
-[](#model-weights)Model weights
--------------------------------
-
-Download weights and push them with your model. Do not try to download them at runtime. If you’re using HuggingFace Diffusers, you can also push the model cache.
-
-If you have weights that are especially large, contact the Replicate team and we’ll help you keep your model size down and your model fast. We’re working on making this better.
-
-# Client libraries
-
-**URL:** https://replicate.com/docs/reference/client-libraries.md
-
-Client libraries make it easier to call the HTTP API from various languages.
-
-[](#official-client-libraries)Official client libraries
--------------------------------------------------------
-
-*   [mcp.replicate.com](https://mcp.replicate.com) – MCP client for Replicate’s HTTP API
-*   [github.com/replicate/replicate-javascript](https://github.com/replicate/replicate-javascript) – Node.js client
-*   [github.com/replicate/replicate-python](https://github.com/replicate/replicate-python) – Python client
-*   [github.com/replicate/replicate-swift](https://github.com/replicate/replicate-swift) – Swift client
-*   [github.com/replicate/replicate-go](https://github.com/replicate/replicate-go) – Go client
-
-[](#community-maintained-client-libraries)Community-maintained client libraries
--------------------------------------------------------------------------------
-
-*   [github.com/cbh123/replicate-elixir](https://github.com/cbh123/replicate-elixir) – Elixir client
-*   [github.com/dreamingtulpa/replicate-ruby](https://github.com/dreamingtulpa/replicate-ruby) – Ruby client
-*   [github.com/dreamingtulpa/replicate-rails](https://github.com/dreamingtulpa/replicate-rails) – Rails integration
-*   [github.com/fofr/replicate-predict](https://github.com/fofr/replicate-predict) - JavaScript wrapper to run and save batches of API calls on Replicate
-*   [github.com/halilcosdu/laravel-replicate](https://github.com/halilcosdu/laravel-replicate) - Laravel client
-
-Got one you’d like to add? [Contact us](https://replicate.com/support).
-
 # Replicate's MCP server
 
 **URL:** https://replicate.com/docs/reference/mcp.md
@@ -9946,6 +9920,301 @@ Here’s an example prompt you can try:
 > Search Replicate for the best image upscaler model, then use it to upscale this image: [https://multimedia-example-files.replicate.dev/mona-lisa.7479x11146.jpg](https://multimedia-example-files.replicate.dev/mona-lisa.7479x11146.jpg). Show me the code you generated and the result.
 
 For more information, see the [replicate-mcp-code-mode repository](https://github.com/replicate/replicate-mcp-code-mode).
+
+# Client libraries
+
+**URL:** https://replicate.com/docs/reference/client-libraries.md
+
+Client libraries make it easier to call the HTTP API from various languages.
+
+[](#official-client-libraries)Official client libraries
+-------------------------------------------------------
+
+*   [mcp.replicate.com](https://mcp.replicate.com) – MCP client for Replicate’s HTTP API
+*   [github.com/replicate/replicate-javascript](https://github.com/replicate/replicate-javascript) – Node.js client
+*   [github.com/replicate/replicate-python](https://github.com/replicate/replicate-python) – Python client
+*   [github.com/replicate/replicate-swift](https://github.com/replicate/replicate-swift) – Swift client
+*   [github.com/replicate/replicate-go](https://github.com/replicate/replicate-go) – Go client
+
+[](#community-maintained-client-libraries)Community-maintained client libraries
+-------------------------------------------------------------------------------
+
+*   [github.com/cbh123/replicate-elixir](https://github.com/cbh123/replicate-elixir) – Elixir client
+*   [github.com/dreamingtulpa/replicate-ruby](https://github.com/dreamingtulpa/replicate-ruby) – Ruby client
+*   [github.com/dreamingtulpa/replicate-rails](https://github.com/dreamingtulpa/replicate-rails) – Rails integration
+*   [github.com/fofr/replicate-predict](https://github.com/fofr/replicate-predict) - JavaScript wrapper to run and save batches of API calls on Replicate
+*   [github.com/halilcosdu/laravel-replicate](https://github.com/halilcosdu/laravel-replicate) - Laravel client
+
+Got one you’d like to add? [Contact us](https://replicate.com/support).
+
+# llms.txt
+
+**URL:** https://replicate.com/docs/reference/llms-txt.md
+
+The `llms.txt` file provides a plain text overview of all Replicate documentation, formatted for consumption by Large Language Models.
+
+The file is available at: [https://replicate.com/docs/llms.txt](/docs/llms.txt)
+
+[](#example)Example
+-------------------
+
+```markdown
+# Replicate
+## Get Started
+- [Run a model from Node.js](https://replicate.com/docs/get-started/nodejs): Get started with a few lines of JavaScript.
+- [Run a model from Python](https://replicate.com/docs/get-started/python): The language of the machine learning world.
+## Topics
+- [Models](https://replicate.com/docs/topics/models/index): A model is a trained, packaged, and published software program that accepts inputs and returns outputs.
+- [Predictions](https://replicate.com/docs/topics/predictions/index): Whenever you run a model, you're creating a prediction.
+...
+```
+
+[](#use-cases)Use Cases
+-----------------------
+
+*   Training or fine-tuning language models on Replicate’s documentation
+*   Building chatbots or AI assistants that answer questions about Replicate
+*   Indexing documentation for semantic search
+*   Creating documentation embeddings
+
+[](#related)Related
+-------------------
+
+*   [HTTP API](/docs/reference/http) - The full API reference
+*   [OpenAPI schema](/docs/reference/openapi) - Machine-readable API schema
+
+# OpenAPI schema
+
+**URL:** https://replicate.com/docs/reference/openapi.md
+
+Replicate’s public HTTP API documentation is available as a machine-readable OpenAPI schema in JSON format.
+
+Download the schema at [**api.replicate.com/openapi.json**](https://api.replicate.com/openapi.json)
+
+[](#what-is-openapi)What is OpenAPI?
+------------------------------------
+
+OpenAPI (formerly known as Swagger) is a specification for describing the structure of HTTP APIs, including all their endpoints, HTTP methods, input parameters, request and response formats, and other metadata.
+
+OpenAPI schemas are useful as raw reference material when learning about an API, but they’re also great for dynamically generating client libraries, [reference documentation](/docs/reference/http), tests, and tools for interacting with HTTP APIs.
+
+OpenAPI is also the industry-standard format for AI [function calling](https://docs.anthropic.com/en/docs/build-with-claude/tool-use) (also called “tool use”), which enables products like [Anthropic Claude](https://github.com/anthropics/anthropic-cookbook/blob/main/tool_use/extracting_structured_json.ipynb) and [OpenAI GPT Actions](https://platform.openai.com/docs/actions/actions-library) to auto-discover the structure of HTTP APIs and interact with them dynamically.
+
+[](#exploring-the-schema)Exploring the schema
+---------------------------------------------
+
+Here’s an example using cURL and [jq](https://jqlang.github.io/jq/) to print all the API paths in your terminal:
+
+```shell
+curl -s https://api.replicate.com/openapi.json | jq -r '.paths | keys[]'
+/account
+/collections
+/collections/{collection_slug}
+/deployments
+/deployments/{deployment_owner}/{deployment_name}
+/deployments/{deployment_owner}/{deployment_name}/predictions
+/hardware
+/models
+/models/{model_owner}/{model_name}
+/models/{model_owner}/{model_name}/predictions
+/models/{model_owner}/{model_name}/versions
+/models/{model_owner}/{model_name}/versions/{version_id}
+/models/{model_owner}/{model_name}/versions/{version_id}/trainings
+/predictions
+/predictions/{prediction_id}
+/predictions/{prediction_id}/cancel
+/trainings
+/trainings/{training_id}
+/trainings/{training_id}/cancel
+/webhooks/default/secret
+```
+
+[](#dereferencing)Dereferencing
+-------------------------------
+
+OpenAPI schemas are written in [JSON Schema](https://json-schema.org/), a format which allows you to have multiple references to the same object (see [`$ref`](https://json-schema.org/understanding-json-schema/structuring#dollarref)). References are great for keeping the schema DRY (Don’t Repeat Yourself), but they can make the schema a bit harder to read and use as a consumer.
+
+To make the schema easier to work with, it’s helpful to “dereference” it. This means replacing all the references with the actual objects.
+
+Here’s an example of how `$ref`s appear in the schema:
+
+```json
+{
+  "parameters": [
+    {
+      "$ref": "#/components/parameters/prefer_header"
+    }
+  ],
+}
+```
+
+And here’s what that same object looks like after dereferencing:
+
+```json
+{
+  "parameters": [
+    {
+      "prefer_header": {
+        "description": "Leave the request open and wait for the model to finish generating output.",
+        "in": "header",
+        "name": "Prefer",
+        "schema": {
+          "example": "wait=5",
+          "pattern": "^wait(=([1-9]|[1-9][0-9]|60))?$",
+          "type": "string"
+        }
+      }
+    }
+  ]
+}
+```
+
+There are many open-source libraries for dereferencing OpenAPI schemas.
+
+Here’s some example code showing how to dereference Replicate’s OpenAPI schema using Node.js and the popular and well-maintained [@apidevtools/json-schema-ref-parser](https://www.npmjs.com/package/@apidevtools/json-schema-ref-parser) npm package:
+
+```js
+import $RefParser from "@apidevtools/json-schema-ref-parser";
+const res = await fetch("https://api.replicate.com/openapi.json");
+const rawSchema = await res.json();
+const dereferencedSchema = await $RefParser.dereference(rawSchema);
+console.log(dereferencedSchema);
+```
+
+That will print the entire dereferenced schema to the console:
+
+```js
+{
+  externalDocs: {
+    description: 'Replicate HTTP API',
+    url: 'https://replicate.com/docs/reference/http'
+  },
+  openapi: '3.1.0',
+  paths: {
+    '/account': { get: [Object] },
+    '/collections': { get: [Object] },
+    '/collections/{collection_slug}': { get: [Object] },
+    '/deployments': { get: [Object], post: [Object] },
+    '/deployments/{deployment_owner}/{deployment_name}': { delete: [Object], get: [Object], patch: [Object] },
+    '/deployments/{deployment_owner}/{deployment_name}/predictions': { post: [Object] },
+    '/hardware': { get: [Object] },
+    '/models': { get: [Object], post: [Object], query: [Object] },
+    '/models/{model_owner}/{model_name}': { delete: [Object], get: [Object] },
+    '/models/{model_owner}/{model_name}/predictions': { post: [Object] },
+    '/models/{model_owner}/{model_name}/versions': { get: [Object] },
+    '/models/{model_owner}/{model_name}/versions/{version_id}': { delete: [Object], get: [Object] },
+    '/models/{model_owner}/{model_name}/versions/{version_id}/trainings': { post: [Object] },
+    '/predictions': { get: [Object], post: [Object] },
+    '/predictions/{prediction_id}': { get: [Object] },
+    '/predictions/{prediction_id}/cancel': { post: [Object] },
+    '/trainings': { get: [Object] },
+    '/trainings/{training_id}': { get: [Object] },
+    '/trainings/{training_id}/cancel': { post: [Object] },
+    '/webhooks/default/secret': { get: [Object] }
+  },
+  security: [ { bearerAuth: [] } ],
+  servers: [ { url: 'https://api.replicate.com/v1' } ]
+}
+```
+
+[](#model-schemas)Model schemas
+-------------------------------
+
+Every model on Replicate also has its own API schema.
+
+You can programmatically fetch the full input and output schema for any Replicate model using the [`models.get`](/docs/reference/http#operation/models.get) API endpoint.
+
+Here’s an example using cURL and [jq](https://jqlang.github.io/jq/) to print the input schema for the [black-forest-labs/flux-schnell](https://replicate.com/black-forest-labs/flux-schnell) model:
+
+```shell
+curl -s \
+  -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
+  https://api.replicate.com/v1/models/black-forest-labs/flux-schnell \
+  | jq .latest_version.openapi_schema.components.schemas.Input.properties
+```
+
+And here’s the output:
+
+```json
+{
+  "seed": {
+    "type": "integer",
+    "title": "Seed",
+    "x-order": 3,
+    "description": "Random seed. Set for reproducible generation"
+  },
+  "prompt": {
+    "type": "string",
+    "title": "Prompt",
+    "x-order": 0,
+    "description": "Prompt for generated image"
+  },
+  "go_fast": {
+    "type": "boolean",
+    "title": "Go Fast",
+    "default": true,
+    "x-order": 7,
+    "description": "Run faster predictions with model optimized for speed (currently fp8 quantized); disable to run in original bf16"
+  },
+  "megapixels": {
+    "allOf": [
+      {
+        "$ref": "#/components/schemas/megapixels"
+      }
+    ],
+    "default": "1",
+    "x-order": 8,
+    "description": "Approximate number of megapixels for generated image"
+  },
+  "num_outputs": {
+    "type": "integer",
+    "title": "Num Outputs",
+    "default": 1,
+    "maximum": 4,
+    "minimum": 1,
+    "x-order": 2,
+    "description": "Number of outputs to generate"
+  },
+  "aspect_ratio": {
+    "allOf": [
+      {
+        "$ref": "#/components/schemas/aspect_ratio"
+      }
+    ],
+    "default": "1:1",
+    "x-order": 1,
+    "description": "Aspect ratio for the generated image"
+  },
+  "output_format": {
+    "allOf": [
+      {
+        "$ref": "#/components/schemas/output_format"
+      }
+    ],
+    "default": "webp",
+    "x-order": 4,
+    "description": "Format of the output images"
+  },
+  "output_quality": {
+    "type": "integer",
+    "title": "Output Quality",
+    "default": 80,
+    "maximum": 100,
+    "minimum": 0,
+    "x-order": 5,
+    "description": "Quality when saving the output images, from 0 to 100. 100 is best quality, 0 is lowest quality. Not relevant for .png outputs"
+  },
+  "disable_safety_checker": {
+    "type": "boolean",
+    "title": "Disable Safety Checker",
+    "default": false,
+    "x-order": 6,
+    "description": "Disable safety checker for generated images."
+  }
+}
+```
+
+To learn more about how Replicate model interfaces are defined, see the [Cog documentation](https://cog.run/python).
 
 # HTTP API
 
@@ -12215,274 +12484,76 @@ Replicate’s public HTTP API documentation is available as a machine-readable O
 
 See [OpenAPI schema](/docs/reference/openapi) to learn more and download the schema.
 
-# llms.txt
+# Error codes
 
-**URL:** https://replicate.com/docs/reference/llms-txt.md
+**URL:** https://replicate.com/docs/reference/error-codes.md
 
-The `llms.txt` file provides a plain text overview of all Replicate documentation, formatted for consumption by Large Language Models.
+When you’re running a model and something goes wrong, Replicate’s API returns error codes to help you understand what happened. These codes start at 1000 and are always 4 digits long.
 
-The file is available at: [https://replicate.com/docs/llms.txt](/docs/llms.txt)
+[](#understanding-error-codes)Understanding error codes
+-------------------------------------------------------
 
-[](#example)Example
--------------------
+Error codes are returned in the format `E####` (for example, `E1001`). Each code corresponds to a specific type of error that can help you troubleshoot issues with your predictions.
 
-```markdown
-# Replicate
-## Get Started
-- [Run a model from Node.js](https://replicate.com/docs/get-started/nodejs): Get started with a few lines of JavaScript.
-- [Run a model from Python](https://replicate.com/docs/get-started/python): The language of the machine learning world.
-## Topics
-- [Models](https://replicate.com/docs/topics/models/index): A model is a trained, packaged, and published software program that accepts inputs and returns outputs.
-- [Predictions](https://replicate.com/docs/topics/predictions/index): Whenever you run a model, you're creating a prediction.
-...
-```
+[](#common-error-codes)Common error codes
+-----------------------------------------
 
-[](#use-cases)Use Cases
------------------------
+### [](#e1000---unknown-error)E1000 - Unknown Error
 
-*   Training or fine-tuning language models on Replicate’s documentation
-*   Building chatbots or AI assistants that answer questions about Replicate
-*   Indexing documentation for semantic search
-*   Creating documentation embeddings
+An unexpected error occurred that we haven’t categorized yet. This can happen due to temporary system issues, network connectivity problems, or unforeseen edge cases that we haven’t encountered before.
 
-[](#related)Related
--------------------
+Try retrying your prediction, and check your internet connection. If the problem persists, [contact support](https://replicate.com/support).
 
-*   [HTTP API](/docs/reference/http) - The full API reference
-*   [OpenAPI schema](/docs/reference/openapi) - Machine-readable API schema
+### [](#e1001---model-out-of-memory-oom-killed)E1001 - Model Out of Memory (OOM Killed)
 
-# OpenAPI schema
+The model ran out of memory and was terminated by the system. This typically occurs when your input is too large (like a high-resolution image or very long text), when the model requires more memory than what’s available, or when complex operations exceed memory limits.
 
-**URL:** https://replicate.com/docs/reference/openapi.md
+Try reducing the size of your input by using smaller images or shorter text. You can also try a different model variant with lower memory requirements, split large inputs into smaller chunks, or check the model’s documentation for input size limits.
 
-Replicate’s public HTTP API documentation is available as a machine-readable OpenAPI schema in JSON format.
+### [](#e4875---internal-webhook-url-empty)E4875 - Internal Webhook URL Empty
 
-Download the schema at [**api.replicate.com/openapi.json**](https://api.replicate.com/openapi.json)
+A webhook URL was expected but not provided or is empty. This usually means you’re missing webhook configuration, have an empty webhook URL in your request, or the webhook URL was cleared or removed from your setup.
 
-[](#what-is-openapi)What is OpenAPI?
-------------------------------------
+Make sure you’re providing a valid webhook URL in your prediction request, check that your webhook endpoint is accessible, and verify your webhook configuration is correct.
 
-OpenAPI (formerly known as Swagger) is a specification for describing the structure of HTTP APIs, including all their endpoints, HTTP methods, input parameters, request and response formats, and other metadata.
+### [](#e6716---timeout-starting-prediction)E6716 - Timeout Starting Prediction
 
-OpenAPI schemas are useful as raw reference material when learning about an API, but they’re also great for dynamically generating client libraries, [reference documentation](/docs/reference/http), tests, and tools for interacting with HTTP APIs.
+The prediction failed to start within the expected time limit. This can happen due to high system load, model initialization taking too long, resource allocation delays, or network connectivity issues.
 
-OpenAPI is also the industry-standard format for AI [function calling](https://docs.anthropic.com/en/docs/build-with-claude/tool-use) (also called “tool use”), which enables products like [Anthropic Claude](https://github.com/anthropics/anthropic-cookbook/blob/main/tool_use/extracting_structured_json.ipynb) and [OpenAI GPT Actions](https://platform.openai.com/docs/actions/actions-library) to auto-discover the structure of HTTP APIs and interact with them dynamically.
+Wait a moment and retry your prediction, check if there are any ongoing system issues, or try during off-peak hours if the problem persists.
 
-[](#exploring-the-schema)Exploring the schema
----------------------------------------------
+### [](#e8367---prediction-stopped-in-non-terminal-state)E8367 - Prediction Stopped in Non-Terminal State
 
-Here’s an example using cURL and [jq](https://jqlang.github.io/jq/) to print all the API paths in your terminal:
+The prediction was stopped while it was still running, not in a completed or failed state. This usually occurs due to manual cancellation of the prediction, system maintenance or updates, resource reallocation, or timeout limits being exceeded.
 
-```shell
-curl -s https://api.replicate.com/openapi.json | jq -r '.paths | keys[]'
-/account
-/collections
-/collections/{collection_slug}
-/deployments
-/deployments/{deployment_owner}/{deployment_name}
-/deployments/{deployment_owner}/{deployment_name}/predictions
-/hardware
-/models
-/models/{model_owner}/{model_name}
-/models/{model_owner}/{model_name}/predictions
-/models/{model_owner}/{model_name}/versions
-/models/{model_owner}/{model_name}/versions/{version_id}
-/models/{model_owner}/{model_name}/versions/{version_id}/trainings
-/predictions
-/predictions/{prediction_id}
-/predictions/{prediction_id}/cancel
-/trainings
-/trainings/{training_id}
-/trainings/{training_id}/cancel
-/webhooks/default/secret
-```
+Check if you or your application cancelled the prediction, retry the prediction if it wasn’t intentionally stopped, or monitor for any scheduled maintenance windows.
 
-[](#dereferencing)Dereferencing
--------------------------------
+### [](#e8765---model-health-check-failed)E8765 - Model Health Check Failed
 
-OpenAPI schemas are written in [JSON Schema](https://json-schema.org/), a format which allows you to have multiple references to the same object (see [`$ref`](https://json-schema.org/understanding-json-schema/structuring#dollarref)). References are great for keeping the schema DRY (Don’t Repeat Yourself), but they can make the schema a bit harder to read and use as a consumer.
+The model failed its health check before starting the prediction. This can be caused by model container issues, corrupted model files, environment configuration problems, or model version incompatibilities.
 
-To make the schema easier to work with, it’s helpful to “dereference” it. This means replacing all the references with the actual objects.
+Try using a different model version, check if the model is experiencing known issues, wait a few minutes and retry, or contact support if the issue persists.
 
-Here’s an example of how `$ref`s appear in the schema:
+### [](#e9243---error-starting-prediction)E9243 - Error Starting Prediction
 
-```json
-{
-  "parameters": [
-    {
-      "$ref": "#/components/parameters/prefer_header"
-    }
-  ],
-}
-```
+The prediction encountered an error during the startup process. This typically happens due to invalid input parameters, model configuration issues, resource allocation failures, or environment setup problems.
 
-And here’s what that same object looks like after dereferencing:
+Verify your input parameters are correct, check the model’s documentation for required inputs, ensure all required environment variables are set, or try with simpler inputs first.
 
-```json
-{
-  "parameters": [
-    {
-      "prefer_header": {
-        "description": "Leave the request open and wait for the model to finish generating output.",
-        "in": "header",
-        "name": "Prefer",
-        "schema": {
-          "example": "wait=5",
-          "pattern": "^wait(=([1-9]|[1-9][0-9]|60))?$",
-          "type": "string"
-        }
-      }
-    }
-  ]
-}
-```
+### [](#e9825---failed-to-upload-file)E9825 - Failed to Upload File
 
-There are many open-source libraries for dereferencing OpenAPI schemas.
+A file upload to Replicate failed during the prediction process. This can occur when the file is too large, there are network connectivity issues, the file format is invalid, the upload times out, or your storage quota has been exceeded.
 
-Here’s some example code showing how to dereference Replicate’s OpenAPI schema using Node.js and the popular and well-maintained [@apidevtools/json-schema-ref-parser](https://www.npmjs.com/package/@apidevtools/json-schema-ref-parser) npm package:
+Check your file size (most models have upload limits), ensure the file format is supported, try uploading the file again, compress or resize the file if possible, or check your internet connection.
 
-```js
-import $RefParser from "@apidevtools/json-schema-ref-parser";
-const res = await fetch("https://api.replicate.com/openapi.json");
-const rawSchema = await res.json();
-const dereferencedSchema = await $RefParser.dereference(rawSchema);
-console.log(dereferencedSchema);
-```
+[](#getting-help)Getting help
+-----------------------------
 
-That will print the entire dereferenced schema to the console:
+If you’re encountering an error code not listed here, or if the suggested solutions don’t resolve your issue:
 
-```js
-{
-  externalDocs: {
-    description: 'Replicate HTTP API',
-    url: 'https://replicate.com/docs/reference/http'
-  },
-  openapi: '3.1.0',
-  paths: {
-    '/account': { get: [Object] },
-    '/collections': { get: [Object] },
-    '/collections/{collection_slug}': { get: [Object] },
-    '/deployments': { get: [Object], post: [Object] },
-    '/deployments/{deployment_owner}/{deployment_name}': { delete: [Object], get: [Object], patch: [Object] },
-    '/deployments/{deployment_owner}/{deployment_name}/predictions': { post: [Object] },
-    '/hardware': { get: [Object] },
-    '/models': { get: [Object], post: [Object], query: [Object] },
-    '/models/{model_owner}/{model_name}': { delete: [Object], get: [Object] },
-    '/models/{model_owner}/{model_name}/predictions': { post: [Object] },
-    '/models/{model_owner}/{model_name}/versions': { get: [Object] },
-    '/models/{model_owner}/{model_name}/versions/{version_id}': { delete: [Object], get: [Object] },
-    '/models/{model_owner}/{model_name}/versions/{version_id}/trainings': { post: [Object] },
-    '/predictions': { get: [Object], post: [Object] },
-    '/predictions/{prediction_id}': { get: [Object] },
-    '/predictions/{prediction_id}/cancel': { post: [Object] },
-    '/trainings': { get: [Object] },
-    '/trainings/{training_id}': { get: [Object] },
-    '/trainings/{training_id}/cancel': { post: [Object] },
-    '/webhooks/default/secret': { get: [Object] }
-  },
-  security: [ { bearerAuth: [] } ],
-  servers: [ { url: 'https://api.replicate.com/v1' } ]
-}
-```
-
-[](#model-schemas)Model schemas
--------------------------------
-
-Every model on Replicate also has its own API schema.
-
-You can programmatically fetch the full input and output schema for any Replicate model using the [`models.get`](/docs/reference/http#operation/models.get) API endpoint.
-
-Here’s an example using cURL and [jq](https://jqlang.github.io/jq/) to print the input schema for the [black-forest-labs/flux-schnell](https://replicate.com/black-forest-labs/flux-schnell) model:
-
-```shell
-curl -s \
-  -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
-  https://api.replicate.com/v1/models/black-forest-labs/flux-schnell \
-  | jq .latest_version.openapi_schema.components.schemas.Input.properties
-```
-
-And here’s the output:
-
-```json
-{
-  "seed": {
-    "type": "integer",
-    "title": "Seed",
-    "x-order": 3,
-    "description": "Random seed. Set for reproducible generation"
-  },
-  "prompt": {
-    "type": "string",
-    "title": "Prompt",
-    "x-order": 0,
-    "description": "Prompt for generated image"
-  },
-  "go_fast": {
-    "type": "boolean",
-    "title": "Go Fast",
-    "default": true,
-    "x-order": 7,
-    "description": "Run faster predictions with model optimized for speed (currently fp8 quantized); disable to run in original bf16"
-  },
-  "megapixels": {
-    "allOf": [
-      {
-        "$ref": "#/components/schemas/megapixels"
-      }
-    ],
-    "default": "1",
-    "x-order": 8,
-    "description": "Approximate number of megapixels for generated image"
-  },
-  "num_outputs": {
-    "type": "integer",
-    "title": "Num Outputs",
-    "default": 1,
-    "maximum": 4,
-    "minimum": 1,
-    "x-order": 2,
-    "description": "Number of outputs to generate"
-  },
-  "aspect_ratio": {
-    "allOf": [
-      {
-        "$ref": "#/components/schemas/aspect_ratio"
-      }
-    ],
-    "default": "1:1",
-    "x-order": 1,
-    "description": "Aspect ratio for the generated image"
-  },
-  "output_format": {
-    "allOf": [
-      {
-        "$ref": "#/components/schemas/output_format"
-      }
-    ],
-    "default": "webp",
-    "x-order": 4,
-    "description": "Format of the output images"
-  },
-  "output_quality": {
-    "type": "integer",
-    "title": "Output Quality",
-    "default": 80,
-    "maximum": 100,
-    "minimum": 0,
-    "x-order": 5,
-    "description": "Quality when saving the output images, from 0 to 100. 100 is best quality, 0 is lowest quality. Not relevant for .png outputs"
-  },
-  "disable_safety_checker": {
-    "type": "boolean",
-    "title": "Disable Safety Checker",
-    "default": false,
-    "x-order": 6,
-    "description": "Disable safety checker for generated images."
-  }
-}
-```
-
-To learn more about how Replicate model interfaces are defined, see the [Cog documentation](https://cog.run/python).
+1.  Check our status page for any ongoing system issues
+2.  Review the model documentation for specific requirements and limitations
+3.  [Contact our support team](https://replicate.com/support)
 
 # Open source at Replicate
 
@@ -12605,74 +12676,3 @@ Tools for working with [Flux](https://replicate.com/black-forest-labs), the stat
 [zeke/flux-fine-tune-action](https://github.com/zeke/flux-fine-tune-action) -  GitHub Actions workflow for fine-tuning Flux. Store your training data in a GitHub repo and train a custom version of Flux.
 
 [replicate/reflux](https://github.com/replicate/reflux) -  Flux LoRA image editor built on Nuxt
-
-# Error codes
-
-**URL:** https://replicate.com/docs/reference/error-codes.md
-
-When you’re running a model and something goes wrong, Replicate’s API returns error codes to help you understand what happened. These codes start at 1000 and are always 4 digits long.
-
-[](#understanding-error-codes)Understanding error codes
--------------------------------------------------------
-
-Error codes are returned in the format `E####` (for example, `E1001`). Each code corresponds to a specific type of error that can help you troubleshoot issues with your predictions.
-
-[](#common-error-codes)Common error codes
------------------------------------------
-
-### [](#e1000---unknown-error)E1000 - Unknown Error
-
-An unexpected error occurred that we haven’t categorized yet. This can happen due to temporary system issues, network connectivity problems, or unforeseen edge cases that we haven’t encountered before.
-
-Try retrying your prediction, and check your internet connection. If the problem persists, [contact support](https://replicate.com/support).
-
-### [](#e1001---model-out-of-memory-oom-killed)E1001 - Model Out of Memory (OOM Killed)
-
-The model ran out of memory and was terminated by the system. This typically occurs when your input is too large (like a high-resolution image or very long text), when the model requires more memory than what’s available, or when complex operations exceed memory limits.
-
-Try reducing the size of your input by using smaller images or shorter text. You can also try a different model variant with lower memory requirements, split large inputs into smaller chunks, or check the model’s documentation for input size limits.
-
-### [](#e4875---internal-webhook-url-empty)E4875 - Internal Webhook URL Empty
-
-A webhook URL was expected but not provided or is empty. This usually means you’re missing webhook configuration, have an empty webhook URL in your request, or the webhook URL was cleared or removed from your setup.
-
-Make sure you’re providing a valid webhook URL in your prediction request, check that your webhook endpoint is accessible, and verify your webhook configuration is correct.
-
-### [](#e6716---timeout-starting-prediction)E6716 - Timeout Starting Prediction
-
-The prediction failed to start within the expected time limit. This can happen due to high system load, model initialization taking too long, resource allocation delays, or network connectivity issues.
-
-Wait a moment and retry your prediction, check if there are any ongoing system issues, or try during off-peak hours if the problem persists.
-
-### [](#e8367---prediction-stopped-in-non-terminal-state)E8367 - Prediction Stopped in Non-Terminal State
-
-The prediction was stopped while it was still running, not in a completed or failed state. This usually occurs due to manual cancellation of the prediction, system maintenance or updates, resource reallocation, or timeout limits being exceeded.
-
-Check if you or your application cancelled the prediction, retry the prediction if it wasn’t intentionally stopped, or monitor for any scheduled maintenance windows.
-
-### [](#e8765---model-health-check-failed)E8765 - Model Health Check Failed
-
-The model failed its health check before starting the prediction. This can be caused by model container issues, corrupted model files, environment configuration problems, or model version incompatibilities.
-
-Try using a different model version, check if the model is experiencing known issues, wait a few minutes and retry, or contact support if the issue persists.
-
-### [](#e9243---error-starting-prediction)E9243 - Error Starting Prediction
-
-The prediction encountered an error during the startup process. This typically happens due to invalid input parameters, model configuration issues, resource allocation failures, or environment setup problems.
-
-Verify your input parameters are correct, check the model’s documentation for required inputs, ensure all required environment variables are set, or try with simpler inputs first.
-
-### [](#e9825---failed-to-upload-file)E9825 - Failed to Upload File
-
-A file upload to Replicate failed during the prediction process. This can occur when the file is too large, there are network connectivity issues, the file format is invalid, the upload times out, or your storage quota has been exceeded.
-
-Check your file size (most models have upload limits), ensure the file format is supported, try uploading the file again, compress or resize the file if possible, or check your internet connection.
-
-[](#getting-help)Getting help
------------------------------
-
-If you’re encountering an error code not listed here, or if the suggested solutions don’t resolve your issue:
-
-1.  Check our status page for any ongoing system issues
-2.  Review the model documentation for specific requirements and limitations
-3.  [Contact our support team](https://replicate.com/support)

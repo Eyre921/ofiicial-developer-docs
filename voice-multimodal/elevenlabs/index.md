@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1297 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1298 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -1206,6 +1206,7 @@
 - `docs/help-center/technical/api-error-code-422` — [API - Error Code 422](pages/docs/help-center/technical/api-error-code-422.md) · [原文](https://elevenlabs.io/docs/help-center/technical/api-error-code-422.md)
 - `docs/help-center/technical/api-error-code-429` — [API - Error Code 429](pages/docs/help-center/technical/api-error-code-429.md) · [原文](https://elevenlabs.io/docs/help-center/technical/api-error-code-429.md)
 - `docs/help-center/technical/can-i-reduce-api-latency` — [Can I reduce API latency?](pages/docs/help-center/technical/can-i-reduce-api-latency.md) · [原文](https://elevenlabs.io/docs/help-center/technical/can-i-reduce-api-latency.md)
+- `docs/help-center/technical/do-pauses-and-ssml-phoneme-tags-work-with-the-api` — [Do pauses and SSML phoneme tags work with the API?](pages/docs/help-center/technical/do-pauses-and-ssml-phoneme-tags-work-with-the-api.md) · [原文](https://elevenlabs.io/docs/help-center/technical/do-pauses-and-ssml-phoneme-tags-work-with-the-api.md)
 - `docs/help-center/technical/how-can-i-keep-the-websocket-open` — [How can I keep the WebSocket open?](pages/docs/help-center/technical/how-can-i-keep-the-websocket-open.md) · [原文](https://elevenlabs.io/docs/help-center/technical/how-can-i-keep-the-websocket-open.md)
 - `docs/help-center/technical/how-can-i-see-information-about-api-requests-for-my-account` — [How can I see information about API requests for my account?](pages/docs/help-center/technical/how-can-i-see-information-about-api-requests-for-my-account.md) · [原文](https://elevenlabs.io/docs/help-center/technical/how-can-i-see-information-about-api-requests-for-my-account.md)
 - `docs/help-center/technical/how-do-i-authorize-myself-using-an-api-key` — [How do I authorize myself using an API key?](pages/docs/help-center/technical/how-do-i-authorize-myself-using-an-api-key.md) · [原文](https://elevenlabs.io/docs/help-center/technical/how-do-i-authorize-myself-using-an-api-key.md)
