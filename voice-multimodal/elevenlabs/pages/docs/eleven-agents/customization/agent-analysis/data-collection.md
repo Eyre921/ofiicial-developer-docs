@@ -29,7 +29,7 @@ Data collection supports four data types to handle various information formats:
 
 In the **Analysis** tab of your agent settings, navigate to the **Data collection** section.
 
-![Setting up data collection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1dd7120a0d0236e4b225f1054f17c13956dc5ccc7de275e600eaab9e20604634/assets/images/conversational-ai/collection.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T170412Z&X-Amz-Expires=604800&X-Amz-Signature=42ff6dd69ea12d0b357c8852e24c6e84373712398cefb7e1bf5cbc2cc74f5af8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Setting up data collection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1dd7120a0d0236e4b225f1054f17c13956dc5ccc7de275e600eaab9e20604634/assets/images/conversational-ai/collection.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T052342Z&X-Amz-Expires=604800&X-Amz-Signature=75108f62692e02ffe90de1cd576a70358dfd7587f1b3b55c47fd67bef9a6a6b8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add data collection items
 
@@ -49,7 +49,7 @@ Data collection items are limited to 40 per agent for Trial and Enterprise plans
 
 Extracted data appears in your conversation history, allowing you to review what information was captured from each interaction.
 
-![Data collection results in conversation history](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/beddd4acf7a431f10b6d6ac602d4ef16604e93bc51040325e185df6517ba3021/assets/images/conversational-ai/collection_result.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T170412Z&X-Amz-Expires=604800&X-Amz-Signature=d304db1e23be4226fa5ff219f507580ff7102399bcbcc5232584f2040f0e0fed&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Data collection results in conversation history](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/beddd4acf7a431f10b6d6ac602d4ef16604e93bc51040325e185df6517ba3021/assets/images/conversational-ai/collection_result.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T052342Z&X-Amz-Expires=604800&X-Amz-Signature=58655f8f3af5d99c1cffaa45b0526ed2af38fa7fcdd1fc0f8695dc18fa059f99&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Best Practices
 

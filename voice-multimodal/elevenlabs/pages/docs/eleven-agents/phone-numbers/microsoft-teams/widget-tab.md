@@ -13,13 +13,13 @@ path: docs/eleven-agents/phone-numbers/microsoft-teams/widget-tab
 Host a small HTML page that loads the [agent widget](/docs/eleven-agents/customization/widget) and surface it as a **Teams tab**. Users open the tab and talk to the agent in the Teams client — no phone number or telephony. This is the lightest-weight approach; use it for internal self-service assistants and demos.
 
 ![The ElevenLabs agent widget open in a Microsoft Teams
-tab](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8fedd2110258c6751012619128601214cdfcd4a11aaa832f62050c00c52106e7/assets/images/conversational-ai/teams-widget-tab.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233215Z&X-Amz-Expires=604800&X-Amz-Signature=c66466ebb37795fc2063d3f0d217011bdc0cf5825e5814d1c8bac4d19bbd7a8b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+tab](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8fedd2110258c6751012619128601214cdfcd4a11aaa832f62050c00c52106e7/assets/images/conversational-ai/teams-widget-tab.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T072631Z&X-Amz-Expires=604800&X-Amz-Signature=9e1ebd9c1bb3984606f0ec498ae85496b6f8a71f71cf5b142d150c4c538f7783&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## How it works
 
 The widget is a web component. Teams renders a tab's `contentUrl` inside a webview (iframe), so the widget runs exactly as it would on a website — including microphone capture, provided the page is allowed to embed in Teams and is granted media permission.
 
-![Teams user opens a tab whose webview iframes a hosted page running the ElevenLabs agent widget, which streams audio to ElevenLabs](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c90698c01d5e874b3a3fa8a07af5ef64620e0fe8a602155aed31bd3f1ce06273/assets/images/conversational-ai/teams-widget-architecture.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233215Z&X-Amz-Expires=604800&X-Amz-Signature=7a9877b6fe35b247756230aabaaa8a3c0fc29079de5364a104d103c5e14bd99f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Teams user opens a tab whose webview iframes a hosted page running the ElevenLabs agent widget, which streams audio to ElevenLabs](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c90698c01d5e874b3a3fa8a07af5ef64620e0fe8a602155aed31bd3f1ce06273/assets/images/conversational-ai/teams-widget-architecture.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T072631Z&X-Amz-Expires=604800&X-Amz-Signature=9a22e60f44685bc1f4542583d90ab049db4b25c8e41045cbfba37879b9b47672&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Teams will **not** execute a raw `<script>` pasted into a chat, message, or Loop page. The widget
 script must live on a page **you host**, which Teams then embeds as a tab.
@@ -141,7 +141,7 @@ New-TeamsApp -DistributionMethod organization -Path ./voice-agent.zip
 If no prompt appears, open the tab's dropdown and choose **App permissions** to grant microphone access manually:
 
 ![The Teams tab dropdown menu with App permissions
-highlighted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/308d95d230864371f4ad2cd8b329c503e672878788a1fdcbc49ab2ce6aa8ce7d/assets/images/conversational-ai/teams-widget-app-permissions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233215Z&X-Amz-Expires=604800&X-Amz-Signature=06f1da99b724cf087f8e8a2e35db9abd45d7041ac4496e5129251cfa1d0d0a4a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+highlighted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/308d95d230864371f4ad2cd8b329c503e672878788a1fdcbc49ab2ce6aa8ce7d/assets/images/conversational-ai/teams-widget-app-permissions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T072631Z&X-Amz-Expires=604800&X-Amz-Signature=9fe02ec55f2d176023b272813b270f56e85730ee69a1270e30aa9a7380737894&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Step 3 — Allow Teams to embed the page
 

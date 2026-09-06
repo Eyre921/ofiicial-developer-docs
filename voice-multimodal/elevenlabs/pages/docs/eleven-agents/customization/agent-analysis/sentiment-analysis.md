@@ -29,7 +29,7 @@ To enable sentiment analysis, open your agent's **Analysis** settings and turn o
 The same settings page also includes the **Topic discovery** toggle, which controls whether the agent's completed conversations are clustered into topics in Spotlight.
 
 ![Analysis settings showing sentiment analysis and topic discovery
-toggles](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/75dff75af2e2aebca0ab6547562afef6f6b59fe988de2eea7814f27440dd2e53/assets/images/spotlight-analysis-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233223Z&X-Amz-Expires=604800&X-Amz-Signature=32f4b0ae8445c2eb10d8b0d61a56d9dab4b66aeb77c4bb5a7b82cedf8a119a00&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+toggles](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/75dff75af2e2aebca0ab6547562afef6f6b59fe988de2eea7814f27440dd2e53/assets/images/spotlight-analysis-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T113240Z&X-Amz-Expires=604800&X-Amz-Signature=de451ce373ce0b3af882463c5c88ae1417db4e67d7b2a6b1b03a5f7bf4372d4c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## How to interpret sentiment
 
@@ -46,7 +46,7 @@ For individual conversations, sentiment analysis can show how user sentiment cha
 Each scored user turn is plotted on a scale from negative to positive sentiment. Use the trajectory to identify where a conversation improved, declined, or stayed neutral.
 
 ![Sentiment over time chart showing scored user turns and the best moment in the
-conversation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b095a26cc1fb6eb6a13adc01841628da32d357afe5783cce27fb6a64c2d58f0b/assets/images/sentiment-analysis-trajectory.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233223Z&X-Amz-Expires=604800&X-Amz-Signature=6472a06344317a61f39420d3d0c1cdc6dbf8cab33281d0de9163938a571651d2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+conversation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b095a26cc1fb6eb6a13adc01841628da32d357afe5783cce27fb6a64c2d58f0b/assets/images/sentiment-analysis-trajectory.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T113240Z&X-Amz-Expires=604800&X-Amz-Signature=78991dc3b4089969387d0f7b27322400bf77bbe93ae899ca74fb5a045f53ca9e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Relationship to topic discovery
 

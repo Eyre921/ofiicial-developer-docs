@@ -12,7 +12,7 @@ The [Voice Library](https://elevenlabs.io/app/voice-library) is a marketplace wh
 
 To access the Voice Library, click **Voices** in the sidebar and select **Explore**.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bf65cdac70a470cbeea56ff85d3e692fee46b0a02d0072c497bdc0583c094b5c/assets/images/help-center/product/voices/voice-library/what-is-the-voice-library.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T213448Z&X-Amz-Expires=604800&X-Amz-Signature=9785dcd37c5665bc2909baff72236e5c7c44daaa23e0dc01be523d4a68fae6f5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bf65cdac70a470cbeea56ff85d3e692fee46b0a02d0072c497bdc0583c094b5c/assets/images/help-center/product/voices/voice-library/what-is-the-voice-library.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T113349Z&X-Amz-Expires=604800&X-Amz-Signature=2a44ef887e66c4c1b95320f344f51cc7a6e74f553b288ba5d6cecfe7a9972a05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 You can browse the Voice Library in several ways:
 

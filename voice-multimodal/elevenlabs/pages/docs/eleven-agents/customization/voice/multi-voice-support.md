@@ -17,7 +17,7 @@ Multi-voice support allows your ElevenLabs agent to dynamically switch between d
 * **Emotional agents**: Voice changes based on emotional context
 * **Role-playing scenarios**: Distinct voices for different personas
 
-![Multi-voice configuration interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a421eaed65575340ef34c1209a30d97ca2594a5fb48ee57b02c8349930191727/assets/images/conversational-ai/supported-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T203611Z&X-Amz-Expires=604800&X-Amz-Signature=fd9bef099465742e44e74a78b1a8b134117f0258517c448c35807aab693fe746&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Multi-voice configuration interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a421eaed65575340ef34c1209a30d97ca2594a5fb48ee57b02c8349930191727/assets/images/conversational-ai/supported-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T072623Z&X-Amz-Expires=604800&X-Amz-Signature=586395a3da9600b3444ed7b05917fac46e285445f8bd6322a569b4af99998f0c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## How it works
 
@@ -50,7 +50,7 @@ Each supported voice has the following properties:
 
 Open your agent in the dashboard, navigate to the **Voice** tab, and locate the **Multi-voice support** section. Click **Add voice** to configure a new supported voice.
 
-![Multi-voice configuration interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e7a6e86ed58abb54f75e884214e6bc056c85e85fc60176924fb2683e16250aa1/assets/images/conversational-ai/add-supported-voice.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T203611Z&X-Amz-Expires=604800&X-Amz-Signature=37f292bbfa76ff4c2c4ac4256a59423826bc021ce91f1e7a21ae548d60f33187&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Multi-voice configuration interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e7a6e86ed58abb54f75e884214e6bc056c85e85fc60176924fb2683e16250aa1/assets/images/conversational-ai/add-supported-voice.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T072623Z&X-Amz-Expires=604800&X-Amz-Signature=ecc4c43fe3279e766bd78663d995693838d735f016c9bc88062b037934265423&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 

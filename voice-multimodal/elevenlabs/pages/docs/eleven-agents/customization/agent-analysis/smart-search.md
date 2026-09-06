@@ -15,7 +15,7 @@ Conversation history includes a search bar with two modes for finding messages a
 Keyword search performs full-text matching and supports the same filters as the conversation list (time range, duration, ratings, tools, languages, and more). Smart search uses semantic search to match transcript chunks by meaning — useful when you don't know the exact phrasing a caller used.
 
 ![Conversation history search field with the search mode menu
-open](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5a8ee4f43638200e84fc77961ee4388ea3a32314c03a7e74ffaba6acf695ee68/assets/images/conversational-ai/smart-search-conversation-history.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233224Z&X-Amz-Expires=604800&X-Amz-Signature=e55433a5f205dbf67aa20287a430c255a6cbdf0ed0ed4efdf181f3494beb5ca7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+open](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5a8ee4f43638200e84fc77961ee4388ea3a32314c03a7e74ffaba6acf695ee68/assets/images/conversational-ai/smart-search-conversation-history.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T113238Z&X-Amz-Expires=604800&X-Amz-Signature=d0db16bab3f76c7d4754b9eaca18a94651e9ef5e1a0785969d5e76ba8de37b79&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 A query that matches a conversation id pattern (e.g. `conv_…`) searches for that conversation
 directly instead of running search.

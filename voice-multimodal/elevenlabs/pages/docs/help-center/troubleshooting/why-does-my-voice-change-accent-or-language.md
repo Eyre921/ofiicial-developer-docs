@@ -14,7 +14,7 @@ You can either create your own cloned voice, or you can find voices in the Voice
 
 
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a20116d23eec58c7eb81720fddd62551a68a4325a9267e09b8c447c3e7ac16c2/assets/images/help-center/troubleshooting/why-does-my-voice-change-accent-or-language.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233727Z&X-Amz-Expires=604800&X-Amz-Signature=e11ce80487f70fe998f868340ee2171f16c6a89b0c54ed2d14e2b8c3a59c608e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a20116d23eec58c7eb81720fddd62551a68a4325a9267e09b8c447c3e7ac16c2/assets/images/help-center/troubleshooting/why-does-my-voice-change-accent-or-language.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T113643Z&X-Amz-Expires=604800&X-Amz-Signature=0bd5876de4e544dc4fa072352fe01534af315d38b774821faa4488a8b39df66b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 
 

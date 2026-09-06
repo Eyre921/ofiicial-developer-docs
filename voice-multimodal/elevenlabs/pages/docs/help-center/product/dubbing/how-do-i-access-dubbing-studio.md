@@ -12,7 +12,7 @@ By default, when you create a new dub, our latest Dubbing v2 model will be used.
 
 If you want to use Dubbing Studio, you can do this by selecting **Use legacy v1 Dubbing model** in the **Advanced** options when you create your dub, then check the **Create Dubbing project** option.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9fc196e5c40348615fff7f381e5945b855702f9b0b0cbeb204c565d17d6211f6/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233633Z&X-Amz-Expires=604800&X-Amz-Signature=ca59a186b87436800b84ec57b1c51c55c0dbc137ae816f77c274d4150232d2a5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9fc196e5c40348615fff7f381e5945b855702f9b0b0cbeb204c565d17d6211f6/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T100017Z&X-Amz-Expires=604800&X-Amz-Signature=5da4886701aa757becf4a80f767df3c534645d3c041fc8c20c22a1acf015ee3a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 It's not possible to convert an existing automatic dub to a Dubbing project.
 
@@ -20,6 +20,6 @@ The new dubbing project will appear at the top of your list of dubbing projects,
 
 Once it has completed processing, click the three dots icon and select **Edit** to open your dubbing project.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233633Z&X-Amz-Expires=604800&X-Amz-Signature=dd4176a7826f1536d29a5831292522dc459819b274890dbc4cfec0f23259a58f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T100017Z&X-Amz-Expires=604800&X-Amz-Signature=4704c249565409ada662013a57614ae9ac71979f2d3d77e8efb3d6d086d6d8d4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For more information about Dubbing Studio, please see our [overview.](/docs/product-guides/products/dubbing/dubbing-studio)

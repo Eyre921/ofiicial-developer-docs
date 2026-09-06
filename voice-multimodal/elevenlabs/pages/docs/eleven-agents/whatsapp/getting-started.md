@@ -25,13 +25,13 @@ You need:
 
 Go to the [WhatsApp page](https://elevenlabs.io/app/agents/whatsapp) and click the ***Import account*** button. This opens Meta's authorization flow, where you select (or create) the WhatsApp business account and phone number and grant ElevenLabs permission to manage it:
 
-![WhatsApp authorization flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e5238e98f926582db314e9debc187a7dc29fd38a980cb732b4563b373110351/assets/images/agents/whatsapp/auth-flow.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233218Z&X-Amz-Expires=604800&X-Amz-Signature=7cafd0957611eff29dc2e320bc34d06e338a2c50850a04ae7ceab59fd6341430&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![WhatsApp authorization flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e5238e98f926582db314e9debc187a7dc29fd38a980cb732b4563b373110351/assets/images/agents/whatsapp/auth-flow.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T072634Z&X-Amz-Expires=604800&X-Amz-Signature=faa21f6372216090a15197850871c9419ea9a78355b7eb4f16aa7c548d9b68f6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Assign your agent and choose behaviors
 
 After the import you land on the account settings page. Assign an agent — until you do, inbound messages are ignored and inbound calls are rejected:
 
-![WhatsApp account page](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5598ac70ade00048effb5ee3bf6cbc93cd61876652eb3ce5917ac21c6209bf6/assets/images/agents/whatsapp/account-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233218Z&X-Amz-Expires=604800&X-Amz-Signature=8ac492fb2f4b17b18d68f32c1af1dd93419475bd52ae3f5b7a6a55bec2e54e24&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![WhatsApp account page](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5598ac70ade00048effb5ee3bf6cbc93cd61876652eb3ce5917ac21c6209bf6/assets/images/agents/whatsapp/account-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T072634Z&X-Amz-Expires=604800&X-Amz-Signature=04c3dd5dd737185b84b6f4a7e344632ecb465bac9a227b08b1e2975b1c6eb171&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Configure how the agent behaves on this number (see [account settings](/docs/eleven-agents/whatsapp#account-settings) for the full reference):
 
@@ -43,7 +43,7 @@ Configure how the agent behaves on this number (see [account settings](/docs/ele
 
 Message your business number from a personal phone. The agent replies. Send a voice note — it is transcribed for the agent, and the agent responds with a voice note of its own:
 
-![WhatsApp text conversation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4c31b4d2b5eccccd7cddfa81144176a6d3c32f4670add5306f3a6ef78bc05244/assets/images/agents/whatsapp/text-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233218Z&X-Amz-Expires=604800&X-Amz-Signature=c0fdaed83a3e860328f7a52cb8334ce3b3ba12bd3755cd204f7cc7edec4674ec&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![WhatsApp text conversation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4c31b4d2b5eccccd7cddfa81144176a6d3c32f4670add5306f3a6ef78bc05244/assets/images/agents/whatsapp/text-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T072634Z&X-Amz-Expires=604800&X-Amz-Signature=cf055ce66096904108ad90b6c8b28e6d78e848681ae8f4fff4c6fb05df15ce98&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The conversation appears in your [conversation history](https://elevenlabs.io/app/agents/history) as it happens.
 

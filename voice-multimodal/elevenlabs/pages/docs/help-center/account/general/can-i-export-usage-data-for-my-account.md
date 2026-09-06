@@ -13,6 +13,6 @@ Yes. [Usage analytics](https://elevenlabs.io/app/usage) lets you export the data
 Open **Developers** in the sidebar, go to the **Analytics** tab, set up the view you want, then click **Export**.
 
 ![Export button on an Analytics
-chart](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52d44c4736ed92ccb037fe8ffb7a3292f20a695350d689785e137fb75fac62a4/assets/images/product-guides/administration/analytics-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233350Z&X-Amz-Expires=604800&X-Amz-Signature=001abe3e8a207a7233d68568f3d0e35f8bbe00ebb6fc0e31a9028747fbeb625c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+chart](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52d44c4736ed92ccb037fe8ffb7a3292f20a695350d689785e137fb75fac62a4/assets/images/product-guides/administration/analytics-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T100017Z&X-Amz-Expires=604800&X-Amz-Signature=cbdb823d662fbaf39b3d033a95ac7d57958f4a65d9d1670fd261cc0a874d2cac&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For more information on Analytics views and filters, see [Usage analytics](/docs/overview/administration/usage-analytics).

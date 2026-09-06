@@ -14,7 +14,7 @@ Made edits to your website or decided to use a new voice? Here’s how to update
 Go to the [Audio Native page](https://elevenlabs.io/app/audio-native), click the three dots next to the page you'd like to update, and select **Edit Audio**. This will open the corresponding Studio project.\
 
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/55eda284239de43d8010769153064cb7dade1c95de41a7913b377ef450a52a1a/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233524Z&X-Amz-Expires=604800&X-Amz-Signature=0430c4bbcbc9e007c2f184931c254dfeb367137098d30eec1f490acb0d2bd86a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/55eda284239de43d8010769153064cb7dade1c95de41a7913b377ef450a52a1a/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T100017Z&X-Amz-Expires=604800&X-Amz-Signature=ef0cd43fab463ff465348b9d1f7c8002b14fa85bb68562778e16c04df213f57c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 **Make your changes**\
 Update your project as needed, such as changing the voice or editing the script.
@@ -23,7 +23,7 @@ Update your project as needed, such as changing the voice or editing the script.
 Go to **Export** and export the project.\
 
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d3116f4d112d3fe033649676abf81212662976589ab131fe56ad96a50c8c7438/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233524Z&X-Amz-Expires=604800&X-Amz-Signature=0cb28c2a1c447d075d9a6d8209bbf1b2caf27dcc07f0c6923a340509887145e4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)\
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d3116f4d112d3fe033649676abf81212662976589ab131fe56ad96a50c8c7438/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T100017Z&X-Amz-Expires=604800&X-Amz-Signature=c848ad0e4e401d06944014523bafd4ec9adfe4c5d9072ea73bab8181c36b4057&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)\
 *Note: This step is required for updating Audio Native, even if you don't need the MP3 file.*
 
 **Publish the updated version**\
@@ -33,7 +33,7 @@ Once the MP3 export is complete, go to **Export > Publish > Audio Native**.
 Click **Published version** and select the newly exported version of your audio to update the embedded player.\
 
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52cb3fe992bb7540153b7d431aab9f44359c713056c1d35e72b5abfd2cdde2a5/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233524Z&X-Amz-Expires=604800&X-Amz-Signature=a6d9c9aa504f0ca634727b6490b950c14ddd538599cad9901074cb6efe0c37b2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52cb3fe992bb7540153b7d431aab9f44359c713056c1d35e72b5abfd2cdde2a5/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T100017Z&X-Amz-Expires=604800&X-Amz-Signature=d819a45cd04d3eb3a5e72da74ca63e425e12a1738fb152bb790d9dcd2e74336c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Your Audio Native player will now reflect the latest version of your project.
 
@@ -48,16 +48,16 @@ To change the title or author shown in the Audio Native player:
 * Click the hamburger menu (☰) and select Project Settings\
 
 
-  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ef987276cce601b07bab9390e06adeb9d1b106f7ed78e8efa330a5a8b2181989/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233524Z&X-Amz-Expires=604800&X-Amz-Signature=5e6d3d2c7d46ce8bea98815266ea0cc3f591412347ad6bf7b19356c155b4754c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ef987276cce601b07bab9390e06adeb9d1b106f7ed78e8efa330a5a8b2181989/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T100017Z&X-Amz-Expires=604800&X-Amz-Signature=4c8b4f1c628042c2214121c39fa5fc93b2769a0ffd3a3e71712b882e2b9e2767&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * Go to the Export tab\
 
 
-  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/87b69fe08f2e63aa905ba3e00035de251f94d43ebee8c9bb7592517538994781/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-5.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233524Z&X-Amz-Expires=604800&X-Amz-Signature=db367e21eda8124e98cada124d07be6a69e3ac36912150ff78fea55760dd72f8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/87b69fe08f2e63aa905ba3e00035de251f94d43ebee8c9bb7592517538994781/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-5.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T100017Z&X-Amz-Expires=604800&X-Amz-Signature=41006d4cb61c6564b89661cefa94d5dddd7867dafc4c598a6bb9523d0edafe7f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * Edit the Title and Author fields\
 
 
-  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/77ed6d1a7724b2a6585a92216c4e1247fd115df74886ea5880fcd764a4608d1b/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-6.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T233524Z&X-Amz-Expires=604800&X-Amz-Signature=4c79fce0a2532304e2a7fbd184caa5872cf3698b11e31465a2a1aeba91b1b197&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+  ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/77ed6d1a7724b2a6585a92216c4e1247fd115df74886ea5880fcd764a4608d1b/assets/images/help-center/product/distribution-publishing/audio-native/how-to-update-an-audio-native-player-6.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T100017Z&X-Amz-Expires=604800&X-Amz-Signature=5e714d5fe1f87c9afd7589ef08e695593b8ad99ab3a9e9de5b3670cfed354397&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 These changes will be reflected automatically in the embedded player.

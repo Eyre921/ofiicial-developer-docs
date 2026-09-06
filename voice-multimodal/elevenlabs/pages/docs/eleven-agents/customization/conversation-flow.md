@@ -119,7 +119,7 @@ The value is specified in seconds and must be between 1 and 30 seconds. In the C
 
 Open your agent in the dashboard, navigate to the **Advanced** tab, and adjust the **Take turn after silence** value. Save your changes.
 
-![Take turn after silence setting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9de7653a0940ae3441b3470c2af53f4a72294ad3680946d4c3fa3b91df69c566/assets/images/conversational-ai/timeouts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T070756Z&X-Amz-Expires=604800&X-Amz-Signature=4db59b81de691c30cb770c96b0f22b337cd75cb17bafcde874aaff82bd04b8db&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Take turn after silence setting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9de7653a0940ae3441b3470c2af53f4a72294ad3680946d4c3fa3b91df69c566/assets/images/conversational-ai/timeouts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T052436Z&X-Amz-Expires=604800&X-Amz-Signature=17d0135b9b8a0da733518ed059bce1c24ed32c1d4e0a7b4f2dc96a5049229c63&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -214,7 +214,7 @@ Soft timeout triggers only once per turn to prevent multiple fillers in successi
 
 Open your agent in the dashboard, navigate to the **Advanced** tab, and adjust the **Soft timeout** settings. Save your changes.
 
-![Soft timeout settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7fdaca49ad50e6bc1f09f5eac46e36f0f4b071c5477e061a62791df9e100be75/assets/images/conversational-ai/soft-timeout.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T070756Z&X-Amz-Expires=604800&X-Amz-Signature=8bd413064a046aa7cae052c7e9f894d2fc32432e6d8ba1fb1781d76162306a82&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Soft timeout settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7fdaca49ad50e6bc1f09f5eac46e36f0f4b071c5477e061a62791df9e100be75/assets/images/conversational-ai/soft-timeout.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T052436Z&X-Amz-Expires=604800&X-Amz-Signature=0ded3bce34cbc42929aca40574edbded95aebe912517c25144f27bd20ab6da81&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -344,11 +344,11 @@ To enable interruptions, make sure interruption is a selected client event.
 
 #### Interruptions enabled
 
-![Interruption allowed](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1da794be8ea3bfed45d06241ce5db390480cd45d27c0f886943518bd52d76157/assets/images/conversational-ai/interruptions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T070756Z&X-Amz-Expires=604800&X-Amz-Signature=6d20da49a587efa90ead3d708e54c3b37f4b1101cc15858ca5be1366fdbeb58e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Interruption allowed](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1da794be8ea3bfed45d06241ce5db390480cd45d27c0f886943518bd52d76157/assets/images/conversational-ai/interruptions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T052436Z&X-Amz-Expires=604800&X-Amz-Signature=82a02abfb7ffd6b2595b24deb5d5ef7ed60fcfe0109eff38ab4343f0bea830c3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Interruptions disabled
 
-![Interruption ignored](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/847a2ebcdfff9498501502ab4b568fc498b6995f860a5552177a7883942197ff/assets/images/conversational-ai/no-interruption.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260905%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260905T070756Z&X-Amz-Expires=604800&X-Amz-Signature=e4c80efe9b46c6dd2b39746270178c083295ffdccdb09a0c553d287d74c7e59f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Interruption ignored](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/847a2ebcdfff9498501502ab4b568fc498b6995f860a5552177a7883942197ff/assets/images/conversational-ai/no-interruption.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T052436Z&X-Amz-Expires=604800&X-Amz-Signature=854b3d90b076c97ea322b20da0c790dd929a0f52ada933f359dada13e37fc07c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Disable interruptions when the complete delivery of information is crucial, such as legal
 disclaimers or safety instructions.
