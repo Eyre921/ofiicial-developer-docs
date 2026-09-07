@@ -422,6 +422,19 @@ components:
         - voice
       default: text
       title: AgentResponseAgentResponseEventResponseType
+    AgentResponseAgentResponseEventAttachmentsItems:
+      type: object
+      properties:
+        url:
+          type: string
+        name:
+          type: string
+        mime_type:
+          type: string
+      required:
+        - url
+        - name
+      title: AgentResponseAgentResponseEventAttachmentsItems
     AgentResponseAgentResponseEvent:
       type: object
       properties:
@@ -438,6 +451,11 @@ components:
         response_type:
           $ref: '#/components/schemas/AgentResponseAgentResponseEventResponseType'
           default: text
+        attachments:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/AgentResponseAgentResponseEventAttachmentsItems
       required:
         - agent_response
         - event_id

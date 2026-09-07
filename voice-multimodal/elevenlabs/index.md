@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1298 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1299 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -1246,6 +1246,7 @@
 - `docs/overview/administration/workspaces/api-keys` — [API Keys](pages/docs/overview/administration/workspaces/api-keys.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/api-keys.md)
 - `docs/overview/administration/workspaces/audit-logs` — [Audit logs](pages/docs/overview/administration/workspaces/audit-logs.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/audit-logs.md)
 - `docs/overview/administration/workspaces/billing-groups` — [Billing groups](pages/docs/overview/administration/workspaces/billing-groups.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/billing-groups.md)
+- `docs/overview/administration/workspaces/domain-verification` — [Domain Verification](pages/docs/overview/administration/workspaces/domain-verification.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/domain-verification.md)
 - `docs/overview/administration/workspaces/members` — [Members](pages/docs/overview/administration/workspaces/members.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/members.md)
 - `docs/overview/administration/workspaces/model-approvals` — [Model approvals](pages/docs/overview/administration/workspaces/model-approvals.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/model-approvals.md)
 - `docs/overview/administration/workspaces/overview` — [Workspaces](pages/docs/overview/administration/workspaces/overview.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/overview.md)

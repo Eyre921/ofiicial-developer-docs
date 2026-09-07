@@ -72,8 +72,6 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation
             - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
               - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
               - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
-            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
-              - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
             - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
               - `procedures` (map from string to object or object, optional)
@@ -118,8 +116,6 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation
             - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
               - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
               - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
-            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
-              - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
             - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
               - `procedures` (map from string to object or object, optional)
@@ -164,8 +160,6 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation
             - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
               - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
               - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
-            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
-              - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
             - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
               - `procedures` (map from string to object or object, optional)
@@ -210,8 +204,6 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation
             - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
               - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
               - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
-            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
-              - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
             - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
               - `procedures` (map from string to object or object, optional)
@@ -256,8 +248,6 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation
             - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
               - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
               - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
-            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
-              - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
             - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
               - `procedures` (map from string to object or object, optional)
@@ -302,8 +292,6 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation
             - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
               - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
               - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
-            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
-              - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
             - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
               - `procedures` (map from string to object or object, optional)
@@ -348,8 +336,6 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation
             - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
               - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
               - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
-            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
-              - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
             - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
               - `procedures` (map from string to object or object, optional)
@@ -521,8 +507,6 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation
             - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
               - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
               - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
-            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
-              - `agents` (list of object, required)
             - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
             - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
               - `procedures` (map from string to object or object, optional)

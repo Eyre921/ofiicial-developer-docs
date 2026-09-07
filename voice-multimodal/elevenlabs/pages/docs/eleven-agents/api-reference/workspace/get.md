@@ -35,8 +35,8 @@ Successful Response
       - `secret_id` (string, required)
 - `webhooks` (object, optional)
   - `post_call_webhook_id` (string, optional)
-  - `events` (list of enum, optional) — List of event types to send via webhook. Options: transcript, audio, call_initiation_failure, unredacted_transcript, unredacted_audio.
-    - Allowed values: `transcript`, `audio`, `call_initiation_failure`, `unredacted_transcript`, `unredacted_audio`
+  - `events` (list of enum, optional) — List of event types to send via webhook. Options: transcript, audio, call_initiation_failure, answering_machine_detection, unredacted_transcript, unredacted_audio.
+    - Allowed values: `transcript`, `audio`, `call_initiation_failure`, `answering_machine_detection`, `unredacted_transcript`, `unredacted_audio`
   - `transcript_format` (enum, optional, default: json) — Format for transcript webhooks.
     - Allowed values: `json`, `opentelemetry`
   - `send_audio` (boolean, optional, deprecated) — DEPRECATED: Use 'events' field instead. Whether to send audio data with post-call webhooks for ConvAI conversations
@@ -48,38 +48,27 @@ Successful Response
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "conversation_initiation_client_data_webhook": {
-    "url": "https://hooks.exampleworkspace.com/convai/initiate",
+    "url": "https://example.com/webhook",
     "request_headers": {
-      "Authorization": {
-        "secret_id": "secret_12345abcdef"
-      },
       "Content-Type": "application/json"
     }
   },
   "webhooks": {
-    "post_call_webhook_id": "webhook_98765xyz",
+    "post_call_webhook_id": "post_call_webhook_id",
     "events": [
-      "transcript",
-      "audio",
-      "call_initiation_failure"
+      "transcript"
     ],
     "transcript_format": "json",
-    "send_audio": false
+    "send_audio": true
   },
   "can_use_mcp_servers": true,
-  "rag_retention_period_days": 14,
-  "conversation_embedding_retention_days": 30,
+  "rag_retention_period_days": 1,
+  "conversation_embedding_retention_days": 1,
   "default_livekit_stack": "standard"
 }
 ```
@@ -111,7 +100,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -120,11 +108,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/settings"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -147,8 +131,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -159,8 +141,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/settings")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -170,12 +150,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/settings', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/settings');
 
 echo $response->getBody();
 ```
@@ -185,25 +160,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/settings");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/settings")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

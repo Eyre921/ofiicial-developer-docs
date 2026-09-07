@@ -31,8 +31,9 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/
   - `provider`: `twilio`
     - `label` (string, required) — Label for the phone number
     - `phone_number` (string, required) — Phone number
-    - `sid` (string, required) — Twilio Account SID
-    - `token` (string, required) — Twilio Auth Token
+    - `sid` (string, required) — Twilio Account SID (starts with `AC`) or API Key SID (starts with `SK`)
+    - `token` (string, required) — Secret paired with `sid`: the Account Auth Token for an Account SID, or the API Key Secret for an API Key SID
+    - `account_auth_token` (string, optional) — Twilio Account Auth Token, required for API Key imports to validate inbound webhook signatures
     - `agent_id` (string, optional) — Agent ID to assign the phone number to
     - `enable_sms` (boolean, optional, default: true) — Route inbound SMS to ElevenLabs. On by default; set to false to skip SMS configuration for numbers that don't support it.
     - `region_config` (object, optional) — Twilio Additional Region Configuration

@@ -43,6 +43,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/list
 - `user_id` (string, optional, nullable) — Filter conversations by the user ID who initiated them.
 - `evaluation_params` (list of string, optional, nullable) — Evaluation filters. Repeat param. Format: criteria_id:result. Example: eval=value_framing:success
 - `data_collection_params` (list of string, optional, nullable) — Data collection filters. Repeat param. Format: id:op:value where op is one of eq|neq|gt|gte|lt|lte|in|exists|missing. For in, pipe-delimit values.
+- `dynamic_variable_params` (list of string, optional, nullable) — Dynamic variable filters. Repeat param. Format: name:op:value where op is one of eq|gt|gte|lt|lte. Comparison operators require a numeric value. Names containing ':' cannot be expressed.
 - `data_collection_ids` (list of string, optional, nullable) — Data collection field IDs to include in each conversation summary. Repeat param. When omitted, data_collection_results is not returned.
 - `evaluation_criteria_ids` (list of string, optional, nullable) — Evaluation criteria IDs to include in each conversation summary. Repeat param. When omitted, evaluation_criteria_results is not returned.
 - `tool_names` (list of string, optional, nullable) — Filter conversations by tool names used during the call.

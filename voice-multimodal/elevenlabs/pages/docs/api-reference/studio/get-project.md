@@ -156,7 +156,7 @@ Successful Response
         - `generation_id` (string, optional, nullable)
         - `content_asset_id` (string, optional, nullable)
         - `template_node_id` (string, optional, nullable)
-        - `studio_clip` (object, optional, nullable)
+        - `studio_clip` (object, optional, nullable) — Coordinates of a clip inside a Studio project: the payload of a studio_clip reference.
           - `project_id` (string, required)
           - `chapter_id` (string, required)
           - `clip_type` (enum, required)

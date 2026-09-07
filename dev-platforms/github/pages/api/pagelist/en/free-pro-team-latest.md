@@ -1991,10 +1991,14 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-access/view-license-usage
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-access/manage-network-access
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-enterprise-policies
+/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings
+/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/get-started
+/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/deploy-managed-settings
+/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/override-settings-for-teams
+/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/copilot-business-only
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/prepare-for-custom-agents
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/create-github-private-repo
-/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/configure-enterprise-managed-settings
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/monitor-agentic-activity
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/enable-copilot-cloud-agent
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/block-agentic-features

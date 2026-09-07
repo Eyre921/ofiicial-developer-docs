@@ -44,11 +44,16 @@ Successful Response
   - `inputSchema` (map from string to any, required)
   - `title` (string, optional, nullable)
   - `description` (string, optional, nullable)
+  - `execution` (object, optional, nullable) — Execution-related properties for a tool (2025-11-25 only).
+    - `taskSupport` (enum, optional, nullable)
+      - Allowed values: `forbidden`, `optional`, `required`
   - `outputSchema` (map from string to any, optional, nullable)
   - `icons` (list of object, optional, nullable)
     - `src` (string, required)
     - `mimeType` (string, optional, nullable)
     - `sizes` (list of string, optional, nullable)
+    - `theme` (enum, optional, nullable)
+      - Allowed values: `light`, `dark`
   - `annotations` (object, optional, nullable) — Additional properties describing a Tool to clients. NOTE: all properties in ToolAnnotations are **hints**. They are not guaranteed to provide a faithful description of tool behavior (including descriptive properties like `title`). Clients should never make tool use decisions based on ToolAnnotations received from untrusted servers.
     - `title` (string, optional, nullable)
     - `readOnlyHint` (boolean, optional, nullable)
@@ -56,9 +61,6 @@ Successful Response
     - `idempotentHint` (boolean, optional, nullable)
     - `openWorldHint` (boolean, optional, nullable)
   - `_meta` (map from string to any, optional, nullable)
-  - `execution` (object, optional, nullable) — Execution-related properties for a tool.
-    - `taskSupport` (enum, optional, nullable)
-      - Allowed values: `forbidden`, `optional`, `required`
 - `error_message` (string, optional, nullable) — Error message if the operation was not successful.
 
 ## Examples

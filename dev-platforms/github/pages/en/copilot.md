@@ -1086,6 +1086,22 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Control the availability of features for GitHub Copilot in your enterprise using policies.
 
+* [Getting started with enterprise-managed settings](/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/get-started)
+
+  Configure enterprise managed settings to centrally control Copilot client behavior across your enterprise.
+
+* [Choosing how to deploy enterprise-managed settings to users](/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/deploy-managed-settings)
+
+  Choose from different deployment methods to deliver managed settings keys to users.
+
+* [Overriding enterprise-managed settings for teams](/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/override-settings-for-teams)
+
+  Avoid overly restrictive configuration by overriding default settings for specific teams.
+
+* [Using enterprise-managed settings without organizations](/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/copilot-business-only)
+
+  Special guidance for enterprises that are only used to assign Copilot Business licenses.
+
 * [Preparing to use custom agents in your enterprise](/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/prepare-for-custom-agents)
 
   Set up your enterprise for custom agents by configuring their source organization and repository, availability, and management permissions.
@@ -1093,10 +1109,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Creating a `.github-private` repository](/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/create-github-private-repo)
 
   A `.github-private` repository can serve as a designated source of governance settings for agents and plugins across your enterprise.
-
-* [Configuring enterprise-managed settings](/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/configure-enterprise-managed-settings)
-
-  Configure enterprise managed settings to centrally control Copilot client behavior across your enterprise using server-managed, MDM-managed, or file-based deployment.
 
 * [Monitoring agentic activity in your enterprise](/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/monitor-agentic-activity)
 

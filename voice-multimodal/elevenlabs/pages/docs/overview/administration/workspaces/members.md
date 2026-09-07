@@ -230,11 +230,63 @@ Workspace admins can assign and manage seat types from Settings → [Members](ht
 
 When inviting new users to your workspace, you can select their seat type during the invite flow.
 
-![Inviting a new member to workspace](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f526bee02bc0530073df4473b8319f3ed59c3e284b9ca019799c2b2a8c4c70b/assets/images/product-guides/administration/members-invite-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T231154Z&X-Amz-Expires=604800&X-Amz-Signature=a5a3e220ee36bc089e005ee10fbf1149ca5b364b80edbe70722ed6f0bbd1f96b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Inviting a new member to workspace](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f526bee02bc0530073df4473b8319f3ed59c3e284b9ca019799c2b2a8c4c70b/assets/images/product-guides/administration/members-invite-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110322Z&X-Amz-Expires=604800&X-Amz-Signature=71a709bbf68d6acb7abf7449c61139c25ec0c4a1896a9366b0d825022f6b65d3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Adding more seats
 
 See [Additional Full Seats](#additional-full-seats) for how Pro, Scale, Business, and Enterprise workspaces purchase Full Seats, and [Self-serve seats](#self-serve-seats) for buying, removing, and changing plans on Pro, Scale, and Business.
+
+## Member roles
+
+Member roles are available for **Enterprise** workspaces. Only Workspace admins can assign and
+remove roles.
+
+In addition to the Admin role, workspace admins can assign **member roles** to any non-admin workspace member. Roles grant specific permissions without requiring full admin access, and multiple roles can be assigned to the same member simultaneously.
+
+Roles are additive — they add permissions on top of whatever the member's group permissions already grant.
+
+### Available roles
+
+**User Manager**
+
+Grants the ability to invite and remove workspace members, and manage group membership:
+
+* Invite new members to the workspace
+* Remove members from the workspace
+* Add and remove members from groups
+
+User Manager permissions require the member to be on a **Full Seat**. Assigning this role to a
+Basic Seat member will not grant those permissions. Upgrade the member to a Full Seat first.
+
+**Resource Manager**
+
+Grants the ability to manage the following workspace resources:
+
+* Voices
+* Studio projects
+* Sound effects
+* Dubbing
+
+The Resource Manager role does **not** grant access to manage Agents. Agent access is controlled
+separately through workspace permissions.
+
+### Assigning roles
+
+### Navigate to Settings → Members
+
+Go to **Workspace settings** → [Members](https://elevenlabs.io/app/workspace/members).
+
+### Open Manage User Permissions
+
+Find the member you want to update and click the shield icon (**Manage User Permissions**) on
+their row.
+
+### Select roles and save
+
+Select **User Manager**, **Resource Manager**, or both, then click **Save Changes**.
+
+Roles cannot be assigned to workspace admins — admins already have all permissions. A workspace
+admin cannot modify their own roles.
 
 ## FAQ
 

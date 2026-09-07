@@ -43,6 +43,7 @@ Successful Response
 - `speech_engines` (list of object, required) — The speech engines matching the query
   - `speech_engine_id` (string, required) — The speech engine resource ID
   - `name` (string, required) — Human-readable name for the speech engine
+  - `voice_id` (string, required) — Voice ID assigned to this speech engine
   - `created_at_unix_secs` (integer, required) — Creation time in Unix seconds
   - `tags` (list of string, required) — Arbitrary tags for categorization and filtering
   - `access_info` (object, required) — The access information of the speech engine for the user
@@ -68,6 +69,7 @@ Successful Response
     {
       "speech_engine_id": "seng_3701k3ttaq12ewp8b7qv5rfyszkz",
       "name": "My Speech Engine",
+      "voice_id": "UCaNsl8F6Xh4GALkVMLS",
       "created_at_unix_secs": 1714000000,
       "tags": [
         "production",

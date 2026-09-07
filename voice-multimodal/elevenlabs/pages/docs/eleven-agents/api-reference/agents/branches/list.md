@@ -63,6 +63,8 @@ Successful Response
   - `current_live_percentage` (double, optional, default: 0) — Percentage of traffic live on the branch
   - `parent_branch_id` (string, optional) — ID of the parent branch
   - `draft_exists` (boolean, optional, default: false) — Whether a draft exists for the branch
+  - `draft_created_at` (integer, optional) — Unix seconds when the caller's draft on this branch was first created, or null when they have no draft. A draft created before last_committed_at was written against a config the branch has since moved past, so it may not reflect the current one.
+  - `draft_is_behind_tip` (boolean, optional, default: false) — Whether the caller's draft on this branch was created before the branch's last commit, meaning it was written against a config the branch has since moved past and may not reflect the current one.
   - `calls_7d` (integer, optional, default: 0) — Number of calls in the last 7 days
   - `commits_ahead` (integer, optional) — Number of commits on this branch not yet on main, relative to their common ancestor. Null if it could not be computed (e.g. no common ancestor, or the branch history exceeds the comparison budget).
   - `commits_behind` (integer, optional) — Number of commits on main not yet incorporated into this branch, relative to their common ancestor. Null if it could not be computed (e.g. no common ancestor, or the branch history exceeds the comparison budget).
@@ -98,6 +100,8 @@ Successful Response
       "current_live_percentage": 1.1,
       "parent_branch_id": "parent_branch_id",
       "draft_exists": true,
+      "draft_created_at": 1,
+      "draft_is_behind_tip": true,
       "calls_7d": 1,
       "commits_ahead": 1,
       "commits_behind": 1,

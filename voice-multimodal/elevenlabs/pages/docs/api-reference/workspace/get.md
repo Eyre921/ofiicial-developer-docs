@@ -35,8 +35,8 @@ Successful Response
       - `secret_id` (string, required)
 - `webhooks` (object, optional)
   - `post_call_webhook_id` (string, optional, nullable)
-  - `events` (list of enum, optional) — List of event types to send via webhook. Options: transcript, audio, call_initiation_failure, unredacted_transcript, unredacted_audio.
-    - Allowed values: `transcript`, `audio`, `call_initiation_failure`, `unredacted_transcript`, `unredacted_audio`
+  - `events` (list of enum, optional) — List of event types to send via webhook. Options: transcript, audio, call_initiation_failure, answering_machine_detection, unredacted_transcript, unredacted_audio.
+    - Allowed values: `transcript`, `audio`, `call_initiation_failure`, `answering_machine_detection`, `unredacted_transcript`, `unredacted_audio`
   - `transcript_format` (enum, optional, default: json) — Format for transcript webhooks.
     - Allowed values: `json`, `opentelemetry`
   - `send_audio` (boolean, optional, nullable, deprecated) — DEPRECATED: Use 'events' field instead. Whether to send audio data with post-call webhooks for ConvAI conversations

@@ -47,6 +47,18 @@ Successful Response
     - `character_count` (integer, optional, nullable) — Credits already used in the current billing period.
     - `allowed_ips` (list of string, optional, nullable)
     - `third_party_disable_allowed` (boolean, optional, nullable)
+    - `platform_limits` (object, optional, nullable) — Per-API-key concurrency limits (TTS/dubbing/music). Enterprise-only.
+      - `credits` (object, optional) — Credit usage limit (limit=None means unlimited)
+        - `limit` (integer, optional, nullable)
+        - `usage` (integer, optional, default: 0) — Current usage
+      - `pvc` (object, optional) — Professional Voice Clone count limit (limit=None means unlimited)
+        - `limit` (integer, optional, nullable)
+      - `concurrency` (object, optional) — TTS concurrency limit (limit=None means unlimited)
+        - `limit` (integer, optional, nullable)
+      - `dubbing_concurrency` (object, optional) — Dubbing concurrency limit (limit=None means unlimited)
+        - `limit` (integer, optional, nullable)
+      - `music_concurrency` (object, optional) — Music generation concurrency limit (limit=None means unlimited)
+        - `limit` (integer, optional, nullable)
   - `created_at_unix` (integer, optional, nullable)
   - `default_sharing_groups` (list of object, optional, default: [])
     - `group` (object, required) — The group to share with by default
@@ -98,7 +110,25 @@ Successful Response
           "allowed_ips": [
             "string"
           ],
-          "third_party_disable_allowed": true
+          "third_party_disable_allowed": true,
+          "platform_limits": {
+            "credits": {
+              "limit": 1,
+              "usage": 0
+            },
+            "pvc": {
+              "limit": 1
+            },
+            "concurrency": {
+              "limit": 1
+            },
+            "dubbing_concurrency": {
+              "limit": 1
+            },
+            "music_concurrency": {
+              "limit": 1
+            }
+          }
         }
       ],
       "created_at_unix": 1,

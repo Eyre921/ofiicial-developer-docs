@@ -52,6 +52,9 @@ Successful Response
   - `telephony_call_config` (object, required)
     - `ringing_timeout_secs` (integer, optional, default: 60) — How long to ring the recipient before giving up, in seconds. Note that this will also be limited by the provider's own constraints.
     - `twilio_call_recording_enabled` (boolean, optional, default: false) — Whether to record the call using Twilio call recording. Ignored for non-Twilio providers. Recordings are stored in your Twilio account.
+    - `twilio_machine_detection` (object, optional) — Configuration for Twilio's carrier-level answering machine detection (AMD). Omit or set to null to disable it. Ignored for non-Twilio providers and for inbound calls. The resulting verdict is delivered as its own `answering_machine_detection` webhook event, which requires that event to be enabled on the workspace or agent webhook settings; it is not part of the conversation or the post-call webhook. Detection runs asynchronously so it never delays the start of the conversation, and the verdict can arrive at any point during the call -- with `detect_message_end`, even after it has ended. Twilio bills separately for AMD.
+      - `mode` (enum, optional, default: enable) — How thorough the detection should be. `enable` returns a verdict as soon as Twilio can tell a human from a machine. `detect_message_end` also waits for the voicemail greeting to finish, which is what produces the `machine_end_*` verdicts, but returns a result later.
+        - Allowed values: `enable`, `detect_message_end`
   - `agent_name` (string, required)
   - `phone_number_id` (string, optional)
   - `phone_provider` (enum, optional)
@@ -70,49 +73,39 @@ Successful Response
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "batch_calls": [
     {
-      "id": "bc_9f8a7c6d-1234-4e56-8b9a-0f1e2d3c4b5a",
-      "name": "April Marketing Campaign Batch",
-      "agent_id": "agent_42f7e8d9-0abc-4def-9a12-3456789bcdef",
-      "created_at_unix": 1712000000,
-      "scheduled_time_unix": 1712604800,
-      "total_calls_dispatched": 150,
-      "total_calls_scheduled": 200,
-      "total_calls_finished": 140,
-      "last_updated_at_unix": 1712650000,
+      "id": "id",
+      "name": "name",
+      "agent_id": "agent_id",
+      "created_at_unix": 1,
+      "scheduled_time_unix": 1,
+      "total_calls_dispatched": 1,
+      "total_calls_scheduled": 1,
+      "total_calls_finished": 1,
+      "last_updated_at_unix": 1,
       "status": "pending",
-      "retry_count": 2,
-      "telephony_call_config": {
-        "ringing_timeout_secs": 45,
-        "twilio_call_recording_enabled": true
-      },
-      "agent_name": "Sales Outreach Bot",
-      "phone_number_id": "pn_7d3f2a1b-4567-4c89-9e0f-1a2b3c4d5e6f",
+      "retry_count": 1,
+      "telephony_call_config": {},
+      "agent_name": "agent_name",
+      "phone_number_id": "phone_number_id",
       "phone_provider": "twilio",
       "whatsapp_params": {
-        "whatsapp_call_permission_request_template_name": "customer_permission_request",
-        "whatsapp_call_permission_request_template_language_code": "en_US",
-        "whatsapp_phone_number_id": "wpn_1234567890abcdef"
+        "whatsapp_call_permission_request_template_name": "whatsapp_call_permission_request_template_name",
+        "whatsapp_call_permission_request_template_language_code": "whatsapp_call_permission_request_template_language_code"
       },
-      "branch_id": "branch_nyc_office",
-      "environment": "production",
-      "timezone": "America/New_York",
-      "target_concurrency_limit": 20,
-      "branch_name": "New York City Office"
+      "branch_id": "branch_id",
+      "environment": "environment",
+      "timezone": "timezone",
+      "target_concurrency_limit": 1,
+      "branch_name": "branch_name"
     }
   ],
-  "next_doc": "bc_9f8a7c6d-1234-4e56-8b9a-0f1e2d3c4b5b",
+  "next_doc": "next_doc",
   "has_more": true
 }
 ```
@@ -152,7 +145,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -161,11 +153,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/batch-calling/workspace?agent_id=agent_id&last_doc=last_doc&limit=1"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -188,8 +176,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -200,8 +186,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/batch-calling/workspace?agent_id=agent_id&last_doc=last_doc&limit=1")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -211,12 +195,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/batch-calling/workspace?agent_id=agent_id&last_doc=last_doc&limit=1', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/batch-calling/workspace?agent_id=agent_id&last_doc=last_doc&limit=1');
 
 echo $response->getBody();
 ```
@@ -226,25 +205,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/batch-calling/workspace?agent_id=agent_id&last_doc=last_doc&limit=1");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/batch-calling/workspace?agent_id=agent_id&last_doc=last_doc&limit=1")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

@@ -39,6 +39,7 @@ Successful Response
     - `data` (object, required)
       - `agent_id` (string, required) — The ID of the agent
       - `name` (string, required) — The name of the agent
+      - `voice_id` (string, required) — Voice ID assigned to this agent
       - `tags` (list of string, required) — Agent tags used to categorize the agent
       - `created_at_unix_secs` (integer, required) — The creation time of the agent in unix seconds
       - `access_info` (object, required) — The access information of the agent
@@ -69,6 +70,7 @@ Successful Response
     "data": {
       "agent_id": "J3Pbu5gP6NNKBscdCdwB",
       "name": "My Agent",
+      "voice_id": "UCaNsl8F6Xh4GALkVMLS",
       "tags": [
         "Customer Support",
         "Technical Help",

@@ -219,6 +219,7 @@ Found an error in these docs? Please open an issue at <https://github.com/langfu
 
 ---
 title: Docs MCP Server
+description: "The Langfuse Docs MCP server exposes the Langfuse documentation to AI agents and coding assistants. How to connect it and which tools it provides."
 ---
 
 # Langfuse Docs MCP Server

@@ -31,10 +31,11 @@ Reference: https://elevenlabs.io/docs/api-reference/phone-numbers/create
   - CreateTwilioPhoneNumberRequest
     - `phone_number` (string, required) — Phone number
     - `label` (string, required) — Label for the phone number
-    - `sid` (string, required) — Twilio Account SID
-    - `token` (string, required) — Twilio Auth Token
+    - `sid` (string, required) — Twilio Account SID (starts with `AC`) or API Key SID (starts with `SK`)
+    - `token` (string, required) — Secret paired with `sid`: the Account Auth Token for an Account SID, or the API Key Secret for an API Key SID
     - `provider` ("twilio", optional, default: twilio)
     - `agent_id` (string, optional, nullable) — Agent ID to assign the phone number to
+    - `account_auth_token` (string, optional, nullable) — Twilio Account Auth Token, required for API Key imports to validate inbound webhook signatures
     - `region_config` (object, optional, nullable) — Twilio Additional Region Configuration
       - `region_id` (enum, required) — Region ID
         - Allowed values: `us1`, `ie1`, `au1`

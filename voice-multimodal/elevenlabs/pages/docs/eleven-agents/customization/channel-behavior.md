@@ -64,7 +64,7 @@ Configure channel behavior with the `conversation_config.agent.text_behavior_ove
 Open your agent in the dashboard, select the **Agent** tab, and open **Agent behavior**. Expand a channel under **Text channels** and adjust its verbosity, output format, or response time. Save your changes.
 
 ![Agent behavior panel with per-channel text
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/372e6260e210a832be68a693b003abd63f2ae9b0f9f297d7b7049d1d0c978fec/assets/images/agents-agent-behavior-panel.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260906%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260906T233153Z&X-Amz-Expires=604800&X-Amz-Signature=d4f63d5d3f86c27a67134880aa6686007b4ebceab626f1ab483809d12622dc16&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/372e6260e210a832be68a693b003abd63f2ae9b0f9f297d7b7049d1d0c978fec/assets/images/agents-agent-behavior-panel.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110302Z&X-Amz-Expires=604800&X-Amz-Signature=8b84f9cf18fbef27e25b2079eaf53df6d1139e9f704f1556a14e89dbfcb735da&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
