@@ -74,11 +74,11 @@ The ElevenCreative Studio API is only available upon request. To get access, [co
 
       To manage chapters in an existing project, go to **Project options** in the top left corner, then select **Manage chapters**. This will open the **Chapters sidebar**.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/70c468910efa03c84f4cd309a937cbe537c223c2f1e6598db37eef6bd26e4f0d/assets/images/help-center/product/studio/studio-manage-chapters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110225Z&X-Amz-Expires=604800&X-Amz-Signature=2b93a1e76e46739fd5be17ceba2e49788290047da95dc9b079d7813c2d38c382&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/70c468910efa03c84f4cd309a937cbe537c223c2f1e6598db37eef6bd26e4f0d/assets/images/help-center/product/studio/studio-manage-chapters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T233247Z&X-Amz-Expires=604800&X-Amz-Signature=49680c2ed5b9346c3bab277bf0d34492f6b52245fbce00c8f3f6c515a90abe83&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       You can add a new chapter using the **+** button. You can also rename and remove chapters using the **Chapter actions** (three dots) button, and drag and drop the chapters to rearrange them.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0a498e857491f4974398d85b788ad49025892cf3aeed63913b03ce6e28d5d0cf/assets/images/help-center/product/studio/studio-chapter-options.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110225Z&X-Amz-Expires=604800&X-Amz-Signature=d6279bf935516625d352cb7ca4e50dbade77e95ec7758f7fc4881f76a22ac4a7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0a498e857491f4974398d85b788ad49025892cf3aeed63913b03ce6e28d5d0cf/assets/images/help-center/product/studio/studio-chapter-options.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T233247Z&X-Amz-Expires=604800&X-Amz-Signature=f47396a97b5add35d1b9401b1664e6d1e6f07702f18152a2f17b9f8302eec867&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -92,7 +92,7 @@ The ElevenCreative Studio API is only available upon request. To get access, [co
 
       If the selection is eligible for a free regeneration, you will see that the Generate/Regenerate button in the toolbar says **Regenerate**, and if you hover over it, you will see a notification letting you know how many free regenerations are remaining.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f3af89ec341d3d0e493219796067b35ce8d129e6d51edc70178f6a1ea22d4977/assets/images/help-center/product/studio/does-it-cost-credits-to-regenerate-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110225Z&X-Amz-Expires=604800&X-Amz-Signature=d8aa17c7f368a6580f0a9797b9be8b166e8e70568b68074486bc9901621959a8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f3af89ec341d3d0e493219796067b35ce8d129e6d51edc70178f6a1ea22d4977/assets/images/help-center/product/studio/does-it-cost-credits-to-regenerate-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T233247Z&X-Amz-Expires=604800&X-Amz-Signature=3adfa010205f350a19da0051c38bee1f9ec01bb674068c4447caef99aaed5700&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       If your selection isn't eligible for a free regeneration, the button will say **Generate**, and you will be charged for the generation.
     </td>
@@ -113,7 +113,7 @@ The ElevenCreative Studio API is only available upon request. To get access, [co
       * To add a video that you've generated using Image & Video, click **Video** in the sidebar. You'll see your previously generated videos and can import using the **+** button.
       * You can also generate a video directly in Studio using the Video prompt, which you can access by clicking **Video** in the sidebar.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9bd8a0e0c3d81158b4fe3416484c762c58aead9246a55ee5dd7c7b68400bb0e3/assets/images/help-center/product/studio/how-can-i-create-a-voiceover-for-my-video-using-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110225Z&X-Amz-Expires=604800&X-Amz-Signature=38b18d83b31d9be852894e7a5caea8df0d7664583fcff5782cbac0a95a7688ba&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9bd8a0e0c3d81158b4fe3416484c762c58aead9246a55ee5dd7c7b68400bb0e3/assets/images/help-center/product/studio/how-can-i-create-a-voiceover-for-my-video-using-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T233247Z&X-Amz-Expires=604800&X-Amz-Signature=2966c257ee34714756ee6a00bc6df771aa1db2d89a557086aa56c70c815b3143&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       You can:
 

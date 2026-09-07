@@ -10,7 +10,7 @@ path: docs/help-center/product/studio/studio/what-is-generation-history-in-studi
 
 Generation History allows you to listen to, download and restore previous audio generations for each paragraph.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ae1cf11978757a256a23e019b15c5469f72754709daf7f9bfa5d4c1b90e7ebe4/assets/images/help-center/product/studio/studio-generation-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110319Z&X-Amz-Expires=604800&X-Amz-Signature=44bb65487036a9ebcfc7ce8a909f76a989dcb258484f80af9f1556353538f583&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ae1cf11978757a256a23e019b15c5469f72754709daf7f9bfa5d4c1b90e7ebe4/assets/images/help-center/product/studio/studio-generation-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T233420Z&X-Amz-Expires=604800&X-Amz-Signature=5960dc7ffb8745e8fc057c46446002b215e26edd1a2facf94c05471b3b189afb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 
 
@@ -22,4 +22,4 @@ For each generation, you can download the individual audio file. To download, cl
 
 You can also remove generations, but please bear in mind that removing a generation is permanent, and it cannot be recovered. To remove a generation, click **More actions** (three dots) > **Remove**.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b9153e995e6984e9d6af639df51542efe2f5a46c09e0a00b354ee9f02fbcbc05/assets/images/help-center/product/studio/studio-generation-history-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110319Z&X-Amz-Expires=604800&X-Amz-Signature=c81ef805c736f745ec0f13cf80affa5557079250ce7bee2f8e49efadcdc5701d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b9153e995e6984e9d6af639df51542efe2f5a46c09e0a00b354ee9f02fbcbc05/assets/images/help-center/product/studio/studio-generation-history-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T233420Z&X-Amz-Expires=604800&X-Amz-Signature=c64be89de88d749dc2426f88951a07df7f1fafce32808a2cb60e61fa3100a589&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)

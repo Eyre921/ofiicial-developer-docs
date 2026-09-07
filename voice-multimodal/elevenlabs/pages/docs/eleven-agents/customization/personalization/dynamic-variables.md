@@ -123,7 +123,7 @@ Example of a response object and dot notation:
 
 To update a dynamic variable to be the first user's email, set the assignment like so.
 
-![Query parameters](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/95ff0cae8613eafa8bc4312e7cafa39ac0eab34d2fd2b21f0894a30775366110/assets/images/conversational-ai/dv-assignment.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T112445Z&X-Amz-Expires=604800&X-Amz-Signature=e5aeee5380a0afd5a7551013b1ca8b1aa9e366764766e41bca896f5defb7255f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Query parameters](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/95ff0cae8613eafa8bc4312e7cafa39ac0eab34d2fd2b21f0894a30775366110/assets/images/conversational-ai/dv-assignment.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110306Z&X-Amz-Expires=604800&X-Amz-Signature=a2c2a5e3f2cf826af99bf461f6debb450d348162dcfff63344ebf8107c08da46&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Assignments are a field of each webhook tool, documented [here](/docs/eleven-agents/api-reference/tools/create#response.body.tool_config.SystemToolConfig.assignments).
 
@@ -142,18 +142,18 @@ Add variables using double curly braces `{{variable_name}}` in your:
 * First messages
 * Tool parameters
 
-![Dynamic variables in messages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84a9870018a436215fe8d6563a47f42b1b45e005c56dffff3b37dbfe8a25adf3/assets/images/conversational-ai/dynamic-vars-first-message.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T112445Z&X-Amz-Expires=604800&X-Amz-Signature=7612ab611f8326f76209ee35ac353f0fac61b896cf3e93c7cbcd6720866bb227&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dynamic variables in messages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84a9870018a436215fe8d6563a47f42b1b45e005c56dffff3b37dbfe8a25adf3/assets/images/conversational-ai/dynamic-vars-first-message.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110306Z&X-Amz-Expires=604800&X-Amz-Signature=1b4b0f0ce8cd10a5525a240982dfcaacc995affbc8a1e3b4e56be9f4e2887c3d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-![Dynamic variables in messages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/052ab733ff3ecb2512218c70d82a4337764577b0082cdc4b2fb4415d273d2cbe/assets/images/conversational-ai/dynamic-vars-system-prompt.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T112445Z&X-Amz-Expires=604800&X-Amz-Signature=d1a1d00d96e825bd826f935d59e82ff8f168cf1340121831aec3218208eb7db4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dynamic variables in messages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/052ab733ff3ecb2512218c70d82a4337764577b0082cdc4b2fb4415d273d2cbe/assets/images/conversational-ai/dynamic-vars-system-prompt.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110306Z&X-Amz-Expires=604800&X-Amz-Signature=a11765c76323a42a89ee5457ca3dcec22af17d542de74d120ac00a2b3dc485f3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Define dynamic variables in tools
 
 You can also define dynamic variables in the tool configuration.
 To create a new dynamic variable, set the value type to Dynamic variable and click the `+` button.
 
-![Setting placeholders](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7da35479f409f1505dc528e78d782d74e226fa51b2a5d3b6ede3929359be8ddd/assets/images/conversational-ai/dynamic-vars-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T112445Z&X-Amz-Expires=604800&X-Amz-Signature=3b255f1584c23089761b288cd93e5668ae7237f4408c7f6056b8de20deb023e4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Setting placeholders](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7da35479f409f1505dc528e78d782d74e226fa51b2a5d3b6ede3929359be8ddd/assets/images/conversational-ai/dynamic-vars-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110306Z&X-Amz-Expires=604800&X-Amz-Signature=a446d635394e14fd60b6355786c588b48b1ffbffdc95a8179589337ab17466c3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-![Setting placeholders](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/21856929c95fe77b274dc1a849668c144554719cd468a225d110295ae94c7713/assets/images/conversational-ai/dynamic-vars-path-params.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T112445Z&X-Amz-Expires=604800&X-Amz-Signature=d30ae9114bf22733e71f1552d4801c3e9607be8eb05da0c0f9383d0bbd14eee6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Setting placeholders](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/21856929c95fe77b274dc1a849668c144554719cd468a225d110295ae94c7713/assets/images/conversational-ai/dynamic-vars-path-params.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110306Z&X-Amz-Expires=604800&X-Amz-Signature=c604e5916cc358e5ae8969a8aa9a29862e845d345a9b8287cb7b8c543e6b7f4a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Set placeholders
 
@@ -163,7 +163,7 @@ Configure default values for testing without passing variables at runtime.
 
 Set default values for each dynamic variable in the agent's dashboard.
 
-![Setting placeholders](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dbea803919e315240202a3cb355ef7f62f25a5182d9aa99d0916177349c70ae4/assets/images/conversational-ai/dynamic-vars-presets.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T112445Z&X-Amz-Expires=604800&X-Amz-Signature=ed938956bc65037ee33b7c9818bf983c473b2a61a640adb026ae7a34d7c78d46&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Setting placeholders](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dbea803919e315240202a3cb355ef7f62f25a5182d9aa99d0916177349c70ae4/assets/images/conversational-ai/dynamic-vars-presets.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110306Z&X-Amz-Expires=604800&X-Amz-Signature=9b2ac1d5c3511db2fc3dec45ce0851695ce4238dc220272aa404530e67a703f6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 

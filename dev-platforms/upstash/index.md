@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 912 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 927 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -32,6 +32,21 @@
 - `docs/api-reference/search/transfer-search-index` — [Transfer Search Index](pages/docs/api-reference/search/transfer-search-index.md) · [原文](https://upstash.com/docs/api-reference/search/transfer-search-index)
 - `docs/api-reference/vector/get-index-stats` — [Get Index Stats](pages/docs/api-reference/vector/get-index-stats.md) · [原文](https://upstash.com/docs/api-reference/vector/get-index-stats)
 - `docs/api-reference/vector/get-vector-stats` — [Get Vector Stats](pages/docs/api-reference/vector/get-vector-stats.md) · [原文](https://upstash.com/docs/api-reference/vector/get-vector-stats)
+- `docs/blob/bucket/caching` — [Caching](pages/docs/blob/bucket/caching.md) · [原文](https://upstash.com/docs/blob/bucket/caching)
+- `docs/blob/bucket/connecting` — [Connecting](pages/docs/blob/bucket/connecting.md) · [原文](https://upstash.com/docs/blob/bucket/connecting)
+- `docs/blob/bucket/deleting` — [Deleting](pages/docs/blob/bucket/deleting.md) · [原文](https://upstash.com/docs/blob/bucket/deleting)
+- `docs/blob/bucket/reading` — [Reading](pages/docs/blob/bucket/reading.md) · [原文](https://upstash.com/docs/blob/bucket/reading)
+- `docs/blob/bucket/writing` — [Writing](pages/docs/blob/bucket/writing.md) · [原文](https://upstash.com/docs/blob/bucket/writing)
+- `docs/blob/overall/pricing` — [Pricing & Limits](pages/docs/blob/overall/pricing.md) · [原文](https://upstash.com/docs/blob/overall/pricing)
+- `docs/blob/overall/quickstart` — [Quickstart](pages/docs/blob/overall/quickstart.md) · [原文](https://upstash.com/docs/blob/overall/quickstart)
+- `docs/blob/reference/errors` — [Errors](pages/docs/blob/reference/errors.md) · [原文](https://upstash.com/docs/blob/reference/errors)
+- `docs/blob/reference/signing` — [How Signing Works](pages/docs/blob/reference/signing.md) · [原文](https://upstash.com/docs/blob/reference/signing)
+- `docs/blob/reference/types` — [Types](pages/docs/blob/reference/types.md) · [原文](https://upstash.com/docs/blob/reference/types)
+- `docs/blob/uploads/abandoned-uploads` — [Abandoned Uploads](pages/docs/blob/uploads/abandoned-uploads.md) · [原文](https://upstash.com/docs/blob/uploads/abandoned-uploads)
+- `docs/blob/uploads/constraints` — [Constraints](pages/docs/blob/uploads/constraints.md) · [原文](https://upstash.com/docs/blob/uploads/constraints)
+- `docs/blob/uploads/large-files` — [Large Files](pages/docs/blob/uploads/large-files.md) · [原文](https://upstash.com/docs/blob/uploads/large-files)
+- `docs/blob/uploads/upload-client` — [Upload Client](pages/docs/blob/uploads/upload-client.md) · [原文](https://upstash.com/docs/blob/uploads/upload-client)
+- `docs/blob/uploads/upload-handler` — [Upload Handler](pages/docs/blob/uploads/upload-handler.md) · [原文](https://upstash.com/docs/blob/uploads/upload-handler)
 - `docs/box/guides/ai-sdk-code-interpreter` — [Code Interpreter with Vercel AI SDK](pages/docs/box/guides/ai-sdk-code-interpreter.md) · [原文](https://upstash.com/docs/box/guides/ai-sdk-code-interpreter)
 - `docs/box/guides/code-review-agent` — [Build a Code Review Agent](pages/docs/box/guides/code-review-agent.md) · [原文](https://upstash.com/docs/box/guides/code-review-agent)
 - `docs/box/guides/crabbox-setup` — [Running Tests with Crabbox](pages/docs/box/guides/crabbox-setup.md) · [原文](https://upstash.com/docs/box/guides/crabbox-setup)

@@ -7,7 +7,8 @@ path: docs/devops/developer-api/introduction
 Using Upstash API, you can develop applications that can create and manage
 Upstash products and resources. You can automate everything that
 you can do in the console. To use developer API, you need to create an API key
-in the console.
+in the console. The same key also authenticates the
+[Upstash CLI](/docs/agent-resources/cli) and the [MCP server](/docs/agent-resources/mcp).
 
 <Note>
 
@@ -17,16 +18,16 @@ The Developer API is only available to native Upstash accounts. Accounts created
 
 ### Create an API key
 
-1. Log in to the console then in the left menu click the
-   `Account > Management API` link.
+1. Log in to the console, then open `Account` and click the
+   `Developer API` tab.
 
 2. Click the `Create API Key` button.
 
   <img />
 
-3. Enter a name for your key. You can not use the same name for multiple keys.
-
-  <img />
+3. Enter a name for your key (you can not use the same name for multiple keys),
+   choose the permissions (`Read/Write` or `Read Only`) and an expiration, then
+   click `Submit`.
 
   <img />
 
@@ -44,12 +45,9 @@ need more than that, please send us an email at
 ### Deleting an API key
 
 When an API key is exposed (e.g. accidentally shared in a public repository) or
-not being used anymore; you should delete it. You can delete the API keys in
-`Account > API Keys` screen.
+not being used anymore; you should delete it. You can delete the API keys in the
+`Account > Developer API` tab.
 
 ### Roadmap
-
-**Role based access:** You will be able to create API keys with specific
-privileges. For example you will be able to create a key with read-only access.
 
 **Stats:** We will provide reports based on usage of your API keys.

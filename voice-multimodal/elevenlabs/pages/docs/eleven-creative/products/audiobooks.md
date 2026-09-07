@@ -39,7 +39,7 @@ Drag and drop your manuscript into the upload area, or browse your device to sel
 
 ### Choose a narration style
 
-![Audiobooks narration style selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a260dd3129eed27bde661e753a049b11ff845e7f4f8949f59bdb65048dae5f2/assets/images/product-guides/studio/audiobooks-narration-style.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110312Z&X-Amz-Expires=604800&X-Amz-Signature=3b43eec1c2bb6167721726ef30d4a4092156027a2fa026bd227e6865899c111b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audiobooks narration style selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a260dd3129eed27bde661e753a049b11ff845e7f4f8949f59bdb65048dae5f2/assets/images/product-guides/studio/audiobooks-narration-style.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T233101Z&X-Amz-Expires=604800&X-Amz-Signature=c2648c1df4dc2ec2d8387223a4ecaa83f5cd38647e55a9fc4c0d253ea8bfd776&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Select how you want your audiobook to be narrated:
 
@@ -87,7 +87,7 @@ Review the detected structure carefully before continuing. Manuscript formatting
 
 In the **Characters** step, you select the voices for your audiobook.
 
-![Audiobooks character casting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ada24df5144f84856f1440d93ab85265bf002ece92e297fb0db37ac939588ad/assets/images/product-guides/studio/audiobooks-characters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110312Z&X-Amz-Expires=604800&X-Amz-Signature=11f4a73f6c8757769f84654b92ee81edd3bab345e1a87b4ddad06ed5a7a2c7de&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audiobooks character casting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ada24df5144f84856f1440d93ab85265bf002ece92e297fb0db37ac939588ad/assets/images/product-guides/studio/audiobooks-characters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T233101Z&X-Amz-Expires=604800&X-Amz-Signature=fee29e94f6f4da3ef80efd35f648bbd1051b9d28b9c0951825e65286d9213354&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Cast a multi-cast audiobook
 
@@ -123,7 +123,7 @@ Previewing a voice with custom audio uses credits.
 
 The **Pronunciations** step helps you control how names, places, invented words, and other unusual terms are spoken.
 
-![Audiobooks pronunciations editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/123ec06328152f7464f0cfad028cf1049489a8beb1283338ba30100c2c4308cf/assets/images/product-guides/studio/audiobooks-pronunciations.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110312Z&X-Amz-Expires=604800&X-Amz-Signature=37762c0f57582c62615f3ee4bcbf22a419cd31f17811509550d41436d96f2ce1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audiobooks pronunciations editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/123ec06328152f7464f0cfad028cf1049489a8beb1283338ba30100c2c4308cf/assets/images/product-guides/studio/audiobooks-pronunciations.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T233101Z&X-Amz-Expires=604800&X-Amz-Signature=19e7ad414100959b35399383c4b8008f0fd576b3141ea7ebd6538bec4717d025&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Review automatically detected terms
 

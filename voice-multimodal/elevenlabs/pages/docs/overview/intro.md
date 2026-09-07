@@ -30,19 +30,19 @@ ElevenLabs provides AI voice infrastructure: text-to-speech, speech-to-text, voi
 
 ## Choose your path
 
-[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/12097a437e55f60c199946cf59c9528eb8349d110142394833d67fe93b50e68d/assets/images/overview/voice-library-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110324Z&X-Amz-Expires=604800&X-Amz-Signature=f65325c16312be306c7360636d2f6d89fdc25e6c4b47e5deb314d8bb30da6fdd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-creative/overview)
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/12097a437e55f60c199946cf59c9528eb8349d110142394833d67fe93b50e68d/assets/images/overview/voice-library-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T230547Z&X-Amz-Expires=604800&X-Amz-Signature=b6128df9a484d404b5ea6c525399a60ac78baa15b4563b9aeeec3f80cbc1585a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-creative/overview)
 
 ### ElevenCreative
 
 Learn how to use the ElevenCreative platform with step-by-step guides
 
-[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110324Z&X-Amz-Expires=604800&X-Amz-Signature=4155f8705ccfd76f0c5cf9c1ba63fcbde3b67d8b961e1a2a434b8dd823a0c517&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/overview)
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T230547Z&X-Amz-Expires=604800&X-Amz-Signature=80e841c9e92afc3cdc9ed5fb5d12d068ae844af7dd5ee0a2144da19543ed082e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/overview)
 
 ### ElevenAgents
 
 Learn how to build, launch, and scale agents with ElevenLabs
 
-[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/002b2432fa6ab18befc9f1a6e7fadf348f46506a5a5a72a2358ba1e7f92d8ded/assets/images/overview/scribe-code-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110324Z&X-Amz-Expires=604800&X-Amz-Signature=26910bd99e29012a9786b0cb0d1374caf9b484ed59b2610eac03b910c223e7d4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-api/quickstart)
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/002b2432fa6ab18befc9f1a6e7fadf348f46506a5a5a72a2358ba1e7f92d8ded/assets/images/overview/scribe-code-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T230547Z&X-Amz-Expires=604800&X-Amz-Signature=c827aa4518d01b35e35f919503f006c6b39f2e0434c3f8bd4a848e0d135c5fa8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-api/quickstart)
 
 ### ElevenAPI
 

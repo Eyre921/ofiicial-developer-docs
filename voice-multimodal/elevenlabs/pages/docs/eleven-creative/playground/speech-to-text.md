@@ -8,7 +8,7 @@ path: docs/eleven-creative/playground/speech-to-text
 
 # Speech to Text
 
-![Text to Speech product feature](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0c8dba5ebba5f9a72541640bb4a9c9fac7bd265df0549f80cb5557c022f85b6f/assets/images/product-guides/speech-to-text/speech-to-text-product-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T113149Z&X-Amz-Expires=604800&X-Amz-Signature=bf5df32f09d02ba21cacb3dc9ef2f8d9632c6521ea7058a4c93ccc1555426b90&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Text to Speech product feature](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0c8dba5ebba5f9a72541640bb4a9c9fac7bd265df0549f80cb5557c022f85b6f/assets/images/product-guides/speech-to-text/speech-to-text-product-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T222551Z&X-Amz-Expires=604800&X-Amz-Signature=de935f299f8c22eaa05581482abbe897176a5fa63739b42075b0988009cb47f7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -20,7 +20,7 @@ With speech to text, you can transcribe spoken audio into text with state of the
 
 In the ElevenLabs dashboard, navigate to the Speech to Text page and click the "Transcribe files" button. From the modal, you can upload an audio or video file to transcribe.
 
-![Speech to Text upload](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/596c6fceacbe4659b583db3ba6e2ba0c1f55177cf870654ae5ded693f1ffe43b/assets/images/product-guides/speech-to-text/speech-to-text-modal.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T113149Z&X-Amz-Expires=604800&X-Amz-Signature=8dfa42942656ed49d26faf2bb1817effa09a431d511f2fc60ec77fd1c2a56493&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Speech to Text upload](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/596c6fceacbe4659b583db3ba6e2ba0c1f55177cf870654ae5ded693f1ffe43b/assets/images/product-guides/speech-to-text/speech-to-text-modal.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T222551Z&X-Amz-Expires=604800&X-Amz-Signature=3bfdf98e520df72df8016b53cec221f5e96d59988fca3875c28b33f948cd3e18&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Select options
 

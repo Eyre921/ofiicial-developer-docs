@@ -21,7 +21,10 @@ To use the tooling, follow these steps:
 1. Go to the [Dashboard](https://dashboard.stripe.com/tax/migrations).
 2. Review the subscriptions you need to update.
 3. Review the recommended actions.
-4. Make any necessary manual updates.
+4. Choose whether to include subscriptions without a billing address, where Stripe supplies an [inferred location](https://docs.stripe.com/tax/subscriptions/update.md#inferred-locations). Stripe enables this option by default, but you can disable it to exclude these subscriptions.
+5. Review the projected outcome breakdown: subscriptions ready to collect tax using a billing address, subscriptions ready to collect tax using an inferred location, and subscriptions that can’t be resolved.
+6. Confirm the update.
+7. Make any necessary manual updates for the remaining subscriptions.
 
 Stripe removes manual [tax rates](https://docs.stripe.com/tax/tax-rates.md) from the subscriptions. When the process is complete, we notify you by email.
 
@@ -31,7 +34,7 @@ You can use the tooling to update subscriptions that meet the following criteria
 
 - Are active
 - Don’t automatically collect tax
-- Have sufficient [address information](https://docs.stripe.com/tax/customer-locations.md#address-hierarchy-other) to calculate tax
+- Have sufficient [address information](https://docs.stripe.com/tax/customer-locations.md#address-hierarchy-other) to calculate tax, or have an inferred location
 - Have the [tax behavior](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#set-tax-behavior-on-price) set on the price
 
 You need to update the following types of subscriptions:
@@ -39,7 +42,10 @@ You need to update the following types of subscriptions:
 - Subscriptions with schedules. To learn more, see [the Update Subscriptions with subscription schedules section](https://docs.stripe.com/tax/subscriptions/update.md#existing-subscription-schedules).
 - Subscriptions that use the [charge types](https://docs.stripe.com/connect/charges.md#types) destination charges or separate charges and transfers.
 
-The automated tool might not be able to update some subscriptions. This is usually due to not having a [valid customer address](https://docs.stripe.com/tax/customer-locations.md#other).
+The automated tool might not be able to update some subscriptions. This might indicate that the tool can’t infer a location for an [invalid customer address](https://docs.stripe.com/tax/customer-locations.md#other) because:
+
+- The customer doesn’t have an email address on file.
+- The email address doesn’t match a previous transaction on the Stripe network.
 
 > The automated tool doesn’t work with test subscriptions.
 
@@ -54,7 +60,7 @@ After using the automated tool, you have to wait a few days before you can run i
 
 ## Check customer locations
 
-To correctly calculate tax, we need to know the customer’s tax location status. You can check it in the Dashboard or in exported data, or get the information using the API.
+To correctly calculate tax, we need to know the customer’s tax location status. The migration tool uses our [location attribution hierarchy](https://docs.stripe.com/tax/monitoring.md#location-attribution) to determine a customer’s tax location. You can check it in the Dashboard or in exported data, or get the information using the API.
 
 #### Dashboard
 
@@ -147,6 +153,23 @@ curl https://api.stripe.com/v1/customers/{{CUSTOMER_ID}} \
 ```
 
 For more information on which customer address is valid, how they’re used, or how to handle errors, see [Collect customer addresses](https://docs.stripe.com/tax/customer-locations.md).
+
+### Inferred locations
+
+When a customer has no billing address on file, Stripe can match their email address to location data from a previous transaction on the Stripe network. An inferred location can include the country, postal code, and first address line, depending on the available data. This allows subscriptions that would otherwise fail migration to begin collecting tax. Inferred locations:
+
+- Apply only when the alternative is collecting no tax at all.
+- Include available country, postal code, and first address line data.
+- Must match within Stripe’s first-party network.
+- Take the lowest-priority. Any billing or shipping address automatically overrides the inferred location.
+
+Using inferred locations requires an active [customer portal](https://docs.stripe.com/customer-management.md) with address updates enabled to allow your customers to provide a full address at any time for more precise tax calculation.
+
+When an inferred location doesn’t include a street address, its postal code might not reflect the exact tax jurisdiction for customers in areas where tax rates vary within a postal code region. For most US tax calculations, postal code-level resolution is sufficient.
+
+Stripe protects privacy by matching email addresses and location data only within its first-party network.
+
+To see whether a subscription is using an inferred location, check the customer details page or transaction details. Inferred locations are labeled **Inferred**.
 
 ## Update products and prices
 
@@ -356,8 +379,10 @@ You can retrieve the tax amounts from the [tax](https://docs.stripe.com/api/invo
 | Status | Description | Possible Action |
 | --- | --- | --- |
 | `complete` | Stripe Tax has successfully assessed the taxes on the payment. | You can retrieve the tax amounts from the tax and `total_tax_amounts` fields on the latest invoice, and from the per-line item `tax_amounts` fields. |
-| `requires_location_inputs` | Stripe Tax was unable to assess taxes because it didn’t have enough information to determine the customer’s location. | Collect more information from a customer (such as a full street address) and update the [customer.address](https://docs.stripe.com/api/customers/update.md#update_customer-address) field. |
+| `requires_location_inputs`1 | Stripe Tax was unable to assess taxes because it didn’t have enough information to determine the customer’s location. | Collect more information from a customer (such as a full street address) and update the [customer.address](https://docs.stripe.com/api/customers/update.md#update_customer-address) field. |
 | `failed` | Internal Stripe error. | Try the request again or contact Stripe support for additional assistance. |
+
+1 If you enable inferred locations, subscriptions that previously returned `requires_location_inputs` might update to complete with tax calculated based on the [inferred location](https://docs.stripe.com/tax/subscriptions/update.md#inferred-locations).
 
 ## See also
 

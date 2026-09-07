@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-cloning/instant-voice-cloning
 
 # Instant Voice Cloning
 
-![Voice cloning product feature](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5771a77cc729af95301635acf8de5519cfb53f40a3f5d38e6af591a880907521/assets/images/product-guides/voices/voice-cloning/voice-cloning-product-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T100647Z&X-Amz-Expires=604800&X-Amz-Signature=6fab6269bb4b32eb6e251aa49988e25918fd7319425721853667ca9cdd47fc6b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice cloning product feature](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5771a77cc729af95301635acf8de5519cfb53f40a3f5d38e6af591a880907521/assets/images/product-guides/voices/voice-cloning/voice-cloning-product-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110311Z&X-Amz-Expires=604800&X-Amz-Signature=0385d8b776ebd0b37e06face50acaeda7b305bed824d97a219127c54c1a9512f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Creating an Instant Voice Clone
 
@@ -30,7 +30,7 @@ Follow the on-screen instructions to upload or record your audio.
 
 ### Confirm voice details
 
-![Voice cloning IVC modal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3b4b3b8361ca372638c9c315e69588dcc44520bfaa00a3455720d963894d8ed/assets/images/product-guides/voices/voice-cloning/voice-cloning-ivc-modal.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T100647Z&X-Amz-Expires=604800&X-Amz-Signature=36299ccb673d259f3ac0094c4c449c68d5b28711fe9798c4a9074e3353841ca9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice cloning IVC modal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3b4b3b8361ca372638c9c315e69588dcc44520bfaa00a3455720d963894d8ed/assets/images/product-guides/voices/voice-cloning/voice-cloning-ivc-modal.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110311Z&X-Amz-Expires=604800&X-Amz-Signature=393d168b0396ffb8d589f338169a1131ba6d54b632b6b14cbeefa475ac7f1e2f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Name and label your voice clone, confirm that you have the right and consent to clone the voice, then click **Save voice**.
 
@@ -205,7 +205,7 @@ Find a good balance for the volume so the audio is neither too quiet nor too lou
 
       You can check the progress of your PVC in My Voices by finding the voice in your list of voices, then clicking **View** to see more details.  You can hover over each model to see the current status.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec34838a2fd40c5105c9196c356045b2963daf2490fd36c19f42bcb8f5359c86/assets/images/help-center/product/voices/voice-cloning/what-does-the-error-no-model-found-for-this-voice-please-select-another-voice-mean.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T100647Z&X-Amz-Expires=604800&X-Amz-Signature=269987fd4436a558efd7c65a143117bab7e37a8cf135df889f6299dab70f5088&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec34838a2fd40c5105c9196c356045b2963daf2490fd36c19f42bcb8f5359c86/assets/images/help-center/product/voices/voice-cloning/what-does-the-error-no-model-found-for-this-voice-please-select-another-voice-mean.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T110311Z&X-Amz-Expires=604800&X-Amz-Signature=8188f006d3940c0557be0efe5dd76a25ebb15664822ebea5e4720a4cfd7e5bed&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       For more detail on what each status means, please see [What does the status of my Professional Voice Clone mean?](/docs/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean)
 

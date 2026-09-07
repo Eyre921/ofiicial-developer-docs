@@ -38,7 +38,7 @@ Opens the conversations behind a topic so you can review specific examples.
 Compares topics across the selected reporting period, such as 1, 7, or 30 days.
 
 ![Topic discovery showing trending conversation topics, conversation volume, sentiment, and
-success rate](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/66779a506120cd7bdaf035d0ab7e9c7c550b158072fd92ebd787d0bd797441cf/assets/images/spotlight-topic-discovery.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T113230Z&X-Amz-Expires=604800&X-Amz-Signature=d8c013fc4be1325c3129c3259257e4fd8f749c4bbadb3e307212d0f9be5379aa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+success rate](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/66779a506120cd7bdaf035d0ab7e9c7c550b158072fd92ebd787d0bd797441cf/assets/images/spotlight-topic-discovery.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T233203Z&X-Amz-Expires=604800&X-Amz-Signature=4c10e542238260985062710a24467c6f71a148fd79901d3ebdd28ee553bce3c6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Enable topic discovery
 
@@ -47,7 +47,7 @@ To enable topic discovery, open your agent's **Analysis** settings and turn on *
 The same settings page also includes **Sentiment analysis**, which adds sentiment metrics to conversations and discovered topics.
 
 ![Analysis settings showing topic discovery and sentiment analysis
-toggles](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/75dff75af2e2aebca0ab6547562afef6f6b59fe988de2eea7814f27440dd2e53/assets/images/spotlight-analysis-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T113230Z&X-Amz-Expires=604800&X-Amz-Signature=c09479af1dfe8b9fdf217f64ad917bbf48fb95438c80c9eb87c35f8f1907bce5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+toggles](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/75dff75af2e2aebca0ab6547562afef6f6b59fe988de2eea7814f27440dd2e53/assets/images/spotlight-analysis-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T233203Z&X-Amz-Expires=604800&X-Amz-Signature=8e0bbc3fe0b47de2880b0671157aa5ffe0f107dd4fecd80542e1922ae653da13&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## How topic discovery works
 

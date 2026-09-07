@@ -583,22 +583,6 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Estimate bandwidth usage](https://docs.expo.dev/eas-update/estimate-bandwidth.md)
 - [Using EAS Update in an existing native app](https://docs.expo.dev/eas-update/integration-in-existing-native-apps.md)
 
-## EAS Metadata
-
-- [EAS Metadata](https://docs.expo.dev/eas/metadata.md): An overview on how to automate and maintain your app store presence from the command line with EAS Metadata.
-- [Get started with EAS Metadata](https://docs.expo.dev/eas/metadata/getting-started.md)
-
-### Reference
-- [Configuring EAS Metadata](https://docs.expo.dev/eas/metadata/config.md)
-- [Schema for EAS Metadata](https://docs.expo.dev/eas/metadata/schema.md)
-
-## EAS Insights
-
-- [EAS Insights](https://docs.expo.dev/eas-insights/introduction.md): An introduction to EAS Insights, a dashboard that surfaces trends in your app's usage, workflow runs, and Maestro tests.
-- [App usage](https://docs.expo.dev/eas-insights/app-usage.md)
-- [EAS Workflows insights](https://docs.expo.dev/eas-insights/workflows.md)
-- [Maestro insights](https://docs.expo.dev/eas-insights/maestro.md)
-
 ## EAS Observe
 
 - [Introduction to EAS Observe](https://docs.expo.dev/eas/observe/introduction.md): EAS Observe is a performance monitoring service that tracks how your app performs in production across real devices and conditions.
@@ -620,6 +604,22 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Metrics reference](https://docs.expo.dev/eas/observe/reference/metrics.md)
 - [Client ID](https://docs.expo.dev/eas/observe/reference/client-id.md)
 - [Troubleshooting EAS Observe](https://docs.expo.dev/eas/observe/reference/troubleshooting.md)
+
+## EAS Metadata
+
+- [EAS Metadata](https://docs.expo.dev/eas/metadata.md): An overview on how to automate and maintain your app store presence from the command line with EAS Metadata.
+- [Get started with EAS Metadata](https://docs.expo.dev/eas/metadata/getting-started.md)
+
+### Reference
+- [Configuring EAS Metadata](https://docs.expo.dev/eas/metadata/config.md)
+- [Schema for EAS Metadata](https://docs.expo.dev/eas/metadata/schema.md)
+
+## EAS Insights
+
+- [EAS Insights](https://docs.expo.dev/eas-insights/introduction.md): An introduction to EAS Insights, a dashboard that surfaces trends in your app's usage, workflow runs, and Maestro tests.
+- [App usage](https://docs.expo.dev/eas-insights/app-usage.md)
+- [EAS Workflows insights](https://docs.expo.dev/eas-insights/workflows.md)
+- [Maestro insights](https://docs.expo.dev/eas-insights/maestro.md)
 
 ## Distribution
 
