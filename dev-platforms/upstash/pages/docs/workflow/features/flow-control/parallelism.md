@@ -25,10 +25,10 @@ const { workflowRunId } = await client.trigger({
 If `parallelism = 3`, at most 3 requests can run concurrently.
 
 When tokens are available, requests acquire one and start execution:
-  <img />
+  <img alt="Workflow steps within the parallelism limit" />
 
 When all tokens are in use, additional requests are not failed — they’re queued in a **waitlist**:
-  <img />
+  <img alt="Workflow step waiting at the parallelism limit" />
 
 The step in the waitlist will wait for a step to complete and hand off it's token to a pending request:
 
@@ -37,4 +37,4 @@ The step in the waitlist will wait for a step to complete and hand off it's toke
     A later request in the waitlist may acquire a token before an earlier one.
 </Tip>
 
-  <img />
+  <img alt="Workflow step starts when capacity is available" />

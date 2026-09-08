@@ -31,11 +31,11 @@ To minimize latency for read operations, we use a replica model. Our tests show 
 
 **Read commands are automatically served from the geographically closest replica**:
 
-  <img />
+  <img alt="Global read replication diagram" />
 
 **Write commands go to the primary database** for consistency. After a successful write, they are replicated to all read replicas:
 
-  <img />
+  <img alt="Global write replication diagram" />
 
 ***
 
@@ -48,7 +48,7 @@ To create a globally distributed database, select a primary region and the numbe
 
 Each request is then automatically served by the closest read replica for maximum performance and minimum latency:
 
-  <img />
+  <img alt="Global replication diagram" />
 
 **You can create read replicas in the following regions:**
 

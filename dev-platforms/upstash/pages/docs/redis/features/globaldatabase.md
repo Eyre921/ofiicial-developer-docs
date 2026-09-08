@@ -74,7 +74,7 @@ Here the list of regions currently supported:
 
 </Tabs>
 
-  <img width="520" />
+  <img alt="Select regions for a Global Redis database" width="520" />
 
 In our internal tests, we see the following latencies (99th percentile):
 
@@ -82,7 +82,7 @@ In our internal tests, we see the following latencies (99th percentile):
 * Write latency from the same region &lt;5ms
 * Read/write latency from the same continent &lt;50ms
 
-  <img width="1000" />
+  <img alt="Map of Global Redis database regions" width="1000" />
 
 ### Architecture
 

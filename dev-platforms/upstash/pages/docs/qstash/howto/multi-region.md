@@ -36,7 +36,7 @@ You can migrate your QStash resources from one region to another using the Upsta
 2. Click the **Migrate** button
 3. Follow the guided migration process
 
-<img />
+<img alt="Local QStash server mode" />
 
 The migration tool will:
 * Help you set up migration mode environment variables

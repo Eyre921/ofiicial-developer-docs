@@ -30,7 +30,7 @@ You can migrate your Workflow resources from one region to another using the Ups
 2. Click the **Migrate** button
 3. Follow the guided migration process
 
-<img />
+<img alt="Local Workflow server flow diagram" />
 
 The migration tool will:
 * Help you set up migration-mode environment variables

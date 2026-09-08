@@ -38,7 +38,7 @@ instead of treating your entire function as one continuous execution, **it split
 
 This means you no longer need custom queues, retry logic, or manual state management. You just define your workflow once, and the orchestration layer ensures that **every step runs once, in order, with full reliability.**
 
-  <img />
+  <img alt="Workflow execution diagram" />
 
 ***
 

@@ -14,7 +14,7 @@ This guide uses Next.js as an example, but the same approach works for any dev s
 
 Create a box with default settings. See the [quickstart](/docs/box/overall/quickstart) if you haven't created one before.
 
-<img />
+<img alt="Create a Box for remote development" />
 
 ***
 
@@ -30,7 +30,7 @@ ssh -L 3000:127.0.0.1:3000 <box-id>@us-east-1.box.upstash.com
 
 Use your [Box API key](/docs/box/overall/quickstart#1-get-your-api-key) as the password when prompted.
 
-<img />
+<img alt="SSH connection to an Upstash Box" />
 
 ***
 
@@ -64,4 +64,4 @@ Your app will be accessible at:
 https://<box-id>-3000.preview.box.upstash.com
 ```
 
-<img />
+<img alt="Public preview URL for a Box port" />

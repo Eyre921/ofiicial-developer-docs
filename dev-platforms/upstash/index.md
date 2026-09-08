@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 927 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 913 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -103,11 +103,8 @@
 - `docs/common/concepts/global-replication` — [Global Replication](pages/docs/common/concepts/global-replication.md) · [原文](https://upstash.com/docs/common/concepts/global-replication)
 - `docs/common/concepts/scale-to-zero` — [Scale to Zero](pages/docs/common/concepts/scale-to-zero.md) · [原文](https://upstash.com/docs/common/concepts/scale-to-zero)
 - `docs/common/concepts/serverless` — [Serverless](pages/docs/common/concepts/serverless.md) · [原文](https://upstash.com/docs/common/concepts/serverless)
-- `docs/common/help/account` — [Account & Teams](pages/docs/common/help/account.md) · [原文](https://upstash.com/docs/common/help/account)
-- `docs/common/help/announcements` — [Announcements](pages/docs/common/help/announcements.md) · [原文](https://upstash.com/docs/common/help/announcements)
 - `docs/common/help/compliance` — [Compliance](pages/docs/common/help/compliance.md) · [原文](https://upstash.com/docs/common/help/compliance)
 - `docs/common/help/legal` — [Legal](pages/docs/common/help/legal.md) · [原文](https://upstash.com/docs/common/help/legal)
-- `docs/common/help/production-checklist` — [Production Checklist](pages/docs/common/help/production-checklist.md) · [原文](https://upstash.com/docs/common/help/production-checklist)
 - `docs/common/help/prosupport` — [Professional Support](pages/docs/common/help/prosupport.md) · [原文](https://upstash.com/docs/common/help/prosupport)
 - `docs/common/help/sla` — [Uptime SLA](pages/docs/common/help/sla.md) · [原文](https://upstash.com/docs/common/help/sla)
 - `docs/common/help/support` — [Support & Contact Us](pages/docs/common/help/support.md) · [原文](https://upstash.com/docs/common/help/support)
@@ -168,7 +165,6 @@
 - `docs/devops/terraform/resources/upstash_qstash_topic` — [upstash_qstash_topic](pages/docs/devops/terraform/resources/upstash_qstash_topic.md) · [原文](https://upstash.com/docs/devops/terraform/resources/upstash_qstash_topic)
 - `docs/devops/terraform/resources/upstash_redis_database` — [upstash_redis_database](pages/docs/devops/terraform/resources/upstash_redis_database.md) · [原文](https://upstash.com/docs/devops/terraform/resources/upstash_redis_database)
 - `docs/devops/terraform/resources/upstash_team` — [upstash_team](pages/docs/devops/terraform/resources/upstash_team.md) · [原文](https://upstash.com/docs/devops/terraform/resources/upstash_team)
-- `docs/img/bg-color-codes` — [Bg color codes](pages/docs/img/bg-color-codes.md) · [原文](https://upstash.com/docs/img/bg-color-codes)
 - `docs/introduction` — [Overview](pages/docs/introduction.md) · [原文](https://upstash.com/docs/introduction)
 - `docs/qstash/api-reference/dlq/bulk-delete-dlq-messages` — [Bulk Delete DLQ messages](pages/docs/qstash/api-reference/dlq/bulk-delete-dlq-messages.md) · [原文](https://upstash.com/docs/qstash/api-reference/dlq/bulk-delete-dlq-messages)
 - `docs/qstash/api-reference/dlq/bulk-retry-dlq-messages` — [Bulk Retry DLQ messages](pages/docs/qstash/api-reference/dlq/bulk-retry-dlq-messages.md) · [原文](https://upstash.com/docs/qstash/api-reference/dlq/bulk-retry-dlq-messages)
@@ -598,11 +594,7 @@
 - `docs/redis/howto/connect-with-upstash-redis` — [Connect with @upstash/redis](pages/docs/redis/howto/connect-with-upstash-redis.md) · [原文](https://upstash.com/docs/redis/howto/connect-with-upstash-redis)
 - `docs/redis/howto/datadog` — [Datadog - Upstash Redis Integration](pages/docs/redis/howto/datadog.md) · [原文](https://upstash.com/docs/redis/howto/datadog)
 - `docs/redis/howto/emqxintegration` — [EMQX - Upstash Redis Integration](pages/docs/redis/howto/emqxintegration.md) · [原文](https://upstash.com/docs/redis/howto/emqxintegration)
-- `docs/redis/howto/getstartedawslambda` — [Get Started with AWS Lambda](pages/docs/redis/howto/getstartedawslambda.md) · [原文](https://upstash.com/docs/redis/howto/getstartedawslambda)
-- `docs/redis/howto/getstartedcloudflareworkers` — [Get Started with Cloudflare Workers](pages/docs/redis/howto/getstartedcloudflareworkers.md) · [原文](https://upstash.com/docs/redis/howto/getstartedcloudflareworkers)
-- `docs/redis/howto/getstartedgooglecloudfunctions` — [Get Started with Google Cloud Functions](pages/docs/redis/howto/getstartedgooglecloudfunctions.md) · [原文](https://upstash.com/docs/redis/howto/getstartedgooglecloudfunctions)
 - `docs/redis/howto/importexport` — [Import/Export Data](pages/docs/redis/howto/importexport.md) · [原文](https://upstash.com/docs/redis/howto/importexport)
-- `docs/redis/howto/ioredisnote` — [ioredis note](pages/docs/redis/howto/ioredisnote.md) · [原文](https://upstash.com/docs/redis/howto/ioredisnote)
 - `docs/redis/howto/ipallowlist` — [Use IP Allowlist](pages/docs/redis/howto/ipallowlist.md) · [原文](https://upstash.com/docs/redis/howto/ipallowlist)
 - `docs/redis/howto/keyspacenotifications` — [Listen Keyspace Notifications](pages/docs/redis/howto/keyspacenotifications.md) · [原文](https://upstash.com/docs/redis/howto/keyspacenotifications)
 - `docs/redis/howto/metrics-and-charts` — [Metrics and Charts](pages/docs/redis/howto/metrics-and-charts.md) · [原文](https://upstash.com/docs/redis/howto/metrics-and-charts)
@@ -610,7 +602,6 @@
 - `docs/redis/howto/monitoryourusage` — [Monitor your usage](pages/docs/redis/howto/monitoryourusage.md) · [原文](https://upstash.com/docs/redis/howto/monitoryourusage)
 - `docs/redis/howto/readyourwrites` — [Read Your Writes](pages/docs/redis/howto/readyourwrites.md) · [原文](https://upstash.com/docs/redis/howto/readyourwrites)
 - `docs/redis/howto/redis-cli` — [Using redis-cli](pages/docs/redis/howto/redis-cli.md) · [原文](https://upstash.com/docs/redis/howto/redis-cli)
-- `docs/redis/howto/terraformprovider` — [Terraform Provider](pages/docs/redis/howto/terraformprovider.md) · [原文](https://upstash.com/docs/redis/howto/terraformprovider)
 - `docs/redis/howto/upgrade-database` — [Upgrade Your Database](pages/docs/redis/howto/upgrade-database.md) · [原文](https://upstash.com/docs/redis/howto/upgrade-database)
 - `docs/redis/howto/vercelintegration` — [Vercel - Upstash Redis Integration](pages/docs/redis/howto/vercelintegration.md) · [原文](https://upstash.com/docs/redis/howto/vercelintegration)
 - `docs/redis/integrations/bullmq` — [BullMQ with Upstash Redis](pages/docs/redis/integrations/bullmq.md) · [原文](https://upstash.com/docs/redis/integrations/bullmq)
@@ -653,8 +644,6 @@
 - `docs/redis/sdks/ratelimit-ts/costs` — [Costs](pages/docs/redis/sdks/ratelimit-ts/costs.md) · [原文](https://upstash.com/docs/redis/sdks/ratelimit-ts/costs)
 - `docs/redis/sdks/ratelimit-ts/features` — [Features](pages/docs/redis/sdks/ratelimit-ts/features.md) · [原文](https://upstash.com/docs/redis/sdks/ratelimit-ts/features)
 - `docs/redis/sdks/ratelimit-ts/gettingstarted` — [Getting Started](pages/docs/redis/sdks/ratelimit-ts/gettingstarted.md) · [原文](https://upstash.com/docs/redis/sdks/ratelimit-ts/gettingstarted)
-- `docs/redis/sdks/ratelimit-ts/integrations/strapi/configurations` — [Configure Upstash Ratelimit Strapi Plugin](pages/docs/redis/sdks/ratelimit-ts/integrations/strapi/configurations.md) · [原文](https://upstash.com/docs/redis/sdks/ratelimit-ts/integrations/strapi/configurations)
-- `docs/redis/sdks/ratelimit-ts/integrations/strapi/getting-started` — [Upstash Ratelimit Strapi Integration](pages/docs/redis/sdks/ratelimit-ts/integrations/strapi/getting-started.md) · [原文](https://upstash.com/docs/redis/sdks/ratelimit-ts/integrations/strapi/getting-started)
 - `docs/redis/sdks/ratelimit-ts/methods` — [Methods](pages/docs/redis/sdks/ratelimit-ts/methods.md) · [原文](https://upstash.com/docs/redis/sdks/ratelimit-ts/methods)
 - `docs/redis/sdks/ratelimit-ts/overview` — [Overview](pages/docs/redis/sdks/ratelimit-ts/overview.md) · [原文](https://upstash.com/docs/redis/sdks/ratelimit-ts/overview)
 - `docs/redis/sdks/ratelimit-ts/traffic-protection` — [Traffic Protection](pages/docs/redis/sdks/ratelimit-ts/traffic-protection.md) · [原文](https://upstash.com/docs/redis/sdks/ratelimit-ts/traffic-protection)
@@ -781,7 +770,6 @@
 - `docs/vector/integrations/llamaindex` — [LlamaIndex with Upstash Vector](pages/docs/vector/integrations/llamaindex.md) · [原文](https://upstash.com/docs/vector/integrations/llamaindex)
 - `docs/vector/integrations/llamaparse` — [LlamaParse with Upstash Vector](pages/docs/vector/integrations/llamaparse.md) · [原文](https://upstash.com/docs/vector/integrations/llamaparse)
 - `docs/vector/overall/changelog` — [Changelog](pages/docs/vector/overall/changelog.md) · [原文](https://upstash.com/docs/vector/overall/changelog)
-- `docs/vector/overall/compare` — [Compare](pages/docs/vector/overall/compare.md) · [原文](https://upstash.com/docs/vector/overall/compare)
 - `docs/vector/overall/getstarted` — [Getting Started](pages/docs/vector/overall/getstarted.md) · [原文](https://upstash.com/docs/vector/overall/getstarted)
 - `docs/vector/overall/llms-txt` — [llms.txt](pages/docs/vector/overall/llms-txt.md) · [原文](https://upstash.com/docs/vector/overall/llms-txt)
 - `docs/vector/overall/pricing` — [Pricing & Limits](pages/docs/vector/overall/pricing.md) · [原文](https://upstash.com/docs/vector/overall/pricing)
@@ -882,7 +870,6 @@
 - `docs/workflow/features/parallel-steps` — [Parallel Steps](pages/docs/workflow/features/parallel-steps.md) · [原文](https://upstash.com/docs/workflow/features/parallel-steps)
 - `docs/workflow/features/retries` — [Overview](pages/docs/workflow/features/retries.md) · [原文](https://upstash.com/docs/workflow/features/retries)
 - `docs/workflow/features/retries/prevent-retries` — [Prevent Retries](pages/docs/workflow/features/retries/prevent-retries.md) · [原文](https://upstash.com/docs/workflow/features/retries/prevent-retries)
-- `docs/workflow/features/sleep` — [Sleep](pages/docs/workflow/features/sleep.md) · [原文](https://upstash.com/docs/workflow/features/sleep)
 - `docs/workflow/features/wait` — [Wait](pages/docs/workflow/features/wait.md) · [原文](https://upstash.com/docs/workflow/features/wait)
 - `docs/workflow/features/wait-for-event` — [Overview](pages/docs/workflow/features/wait-for-event.md) · [原文](https://upstash.com/docs/workflow/features/wait-for-event)
 - `docs/workflow/features/webhooks` — [Webhooks](pages/docs/workflow/features/webhooks.md) · [原文](https://upstash.com/docs/workflow/features/webhooks)
@@ -891,7 +878,6 @@
 - `docs/workflow/howto/changes` — [Update a Workflow](pages/docs/workflow/howto/changes.md) · [原文](https://upstash.com/docs/workflow/howto/changes)
 - `docs/workflow/howto/configure` — [Configure a Run](pages/docs/workflow/howto/configure.md) · [原文](https://upstash.com/docs/workflow/howto/configure)
 - `docs/workflow/howto/failures` — [Handle Failed Runs](pages/docs/workflow/howto/failures.md) · [原文](https://upstash.com/docs/workflow/howto/failures)
-- `docs/workflow/howto/flow-control` — [Flow control](pages/docs/workflow/howto/flow-control.md) · [原文](https://upstash.com/docs/workflow/howto/flow-control)
 - `docs/workflow/howto/get-token` — [Get your QStash Token](pages/docs/workflow/howto/get-token.md) · [原文](https://upstash.com/docs/workflow/howto/get-token)
 - `docs/workflow/howto/local-development/development-server` — [Development Server](pages/docs/workflow/howto/local-development/development-server.md) · [原文](https://upstash.com/docs/workflow/howto/local-development/development-server)
 - `docs/workflow/howto/local-development/local-tunnel` — [Local Tunnel](pages/docs/workflow/howto/local-development/local-tunnel.md) · [原文](https://upstash.com/docs/workflow/howto/local-development/local-tunnel)

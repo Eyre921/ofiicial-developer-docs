@@ -7,7 +7,7 @@ path: docs/qstash/howto/publishing
 Publishing a message is as easy as sending a HTTP request to the `/publish`
 endpoint. All you need is a valid url of your destination.
 
-  <img width="688" />
+  <img alt="Send a message via the Upstash Console" width="688" />
 
 <Info>
 Destination URLs must always include the protocol (`http://` or `https://`)

@@ -27,13 +27,13 @@ When using the [server-side API](/docs/realtime/features/server-side):
 | Operation | Commands | Count |
 | --------- | -------- | ----- |
 | [Emit event](/docs/realtime/features/server-side#emit-events) | PUBLISH, XADD | 2 |
-| Emit with [`expireAfterSecs`](/docs/realtime/features/history#param-expire-after-secs) | PUBLISH, XADD, EXPIRE | 3 |
+| Emit with [`expireAfterSecs`](/docs/realtime/features/history#configuration) | PUBLISH, XADD, EXPIRE | 3 |
 | [Read history](/docs/realtime/features/history#server-side-history) | XRANGE | 1 |
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Client-Side Usage" icon="browser" href="/realtime/features/client-side">
+  <Card title="Client-Side Usage" icon="monitor" href="/realtime/features/client-side">
     Learn how to use the useRealtime hook in React
   </Card>
   <Card title="History" icon="clock-rotate-left" href="/realtime/features/history">

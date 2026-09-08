@@ -12,7 +12,7 @@ This guide walks you through setting up [OpenClaw](https://docs.openclaw.ai) ins
 
 Create a keep-alive box with default settings. See the [quickstart](/docs/box/overall/quickstart) if you haven't created one before.
 
-<img />
+<img alt="Create a Box for OpenClaw" />
 
 ***
 
@@ -48,7 +48,7 @@ openclaw onboard --install-daemon
 
 Follow the prompts to complete your setup. Once onboarding is complete, copy the dashboard URL with its token — you will need it in step 6.
 
-<img />
+<img alt="OpenClaw control UI connection details" />
 
 ***
 
@@ -73,7 +73,7 @@ http://127.0.0.1:18789/#token=<your-token>
 
 Congratulations! You have successfully set up OpenClaw on your Upstash Box. Your AI gateway is now running and accessible through the secure SSH tunnel.
 
-<img />
+<img alt="OpenClaw dashboard running on an Upstash Box" />
 
 ***
 
@@ -81,7 +81,7 @@ Congratulations! You have successfully set up OpenClaw on your Upstash Box. Your
 
 To ensure the gateway restarts automatically if the box crashes, set the startup command as an init script from the Upstash Console.
 
-<img />
+<img alt="OpenClaw init script in the Upstash Console" />
 
 The init script to use:
 

@@ -17,5 +17,5 @@ When a workflow run fails, it's automatically moved to the DLQ (Dead Letter Queu
     You can make changes to the workflow code as long as these changes come after the failed steps. 
     However, making changes before the failed step will break the code and is not allowed.
 
-    For more details, check out [Handle workflow route code changes](/docs/workflow/howto/changes) page.
+    For more details, check out [Handle workflow route code changes](/workflow/howto/changes) page.
   </Note>

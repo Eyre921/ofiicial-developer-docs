@@ -22,7 +22,7 @@ Fluid Compute allows for less cold-starts, has much higher function timeouts com
 
 That way, you're only billed for actual message processing time, not connection duration.
 
-  <img />
+  <img alt="Enable Fluid compute in Vercel" />
 
 ## Optional: Configure Max Duration
 

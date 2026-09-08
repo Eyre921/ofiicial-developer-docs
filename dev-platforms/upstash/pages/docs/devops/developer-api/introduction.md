@@ -23,13 +23,13 @@ The Developer API is only available to native Upstash accounts. Accounts created
 
 2. Click the `Create API Key` button.
 
-  <img />
+  <img alt="Developer API key list" />
 
 3. Enter a name for your key (you can not use the same name for multiple keys),
    choose the permissions (`Read/Write` or `Read Only`) and an expiration, then
    click `Submit`.
 
-  <img />
+  <img alt="Create a Developer API key" />
 
 You need to download or copy/save your API key. Upstash does not remember or
 keep your API for security reasons. So if you forget your API key, it becomes

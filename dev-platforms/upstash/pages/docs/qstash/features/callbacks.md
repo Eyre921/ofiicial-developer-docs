@@ -21,8 +21,8 @@ are exhausted via `callbackBody.retried == callbackBody.maxRteries`. See the com
 callback body json below.
 </Note>
 
-<img className="block h-32 dark:hidden" />
-<img className="hidden h-40 dark:block" />
+<img className="block h-32 dark:hidden" alt="QStash callback flow" />
+<img className="hidden h-40 dark:block" alt="QStash callback flow" />
 
 1. You publish a message to QStash using the `/v2/publish` endpoint
 2. QStash will enqueue the message and deliver it to the destination

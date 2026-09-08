@@ -9,7 +9,7 @@ This token has access to your logs, messages, schedules, and other resources, bu
 
 You can get your read-only token from the dashboard by clicking "Read-only token" in the Quickstart section:
 
-  <img />
+  <img alt="Read-only QStash token in the Upstash Console" />
 
 <Info>
 Note that a read-only token can still access sensitive data such as logs and messages.

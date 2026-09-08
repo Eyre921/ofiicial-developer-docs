@@ -15,11 +15,11 @@ This guide shows you how to **gracefully handle failed workflow runs**. This inv
 Workflow automatically retries a failed step based on your configuration (by default, it retries three times with exponential backoff).
 This helps handle temporary outages or intermittent failures gracefully.
 
-  <img />
+  <img alt="A failed step is automatically retried three times" />
 
 If, even after all retries, your step does not succeed, we'll move the failed run into your [Dead Letter Queue (DLQ)](/docs/qstash/howto/handling-failures#dead-letter-queue). That way, you can always manually retry it again and debug the issue.
 
-  <img />
+  <img alt="Manually retry from the Dead-Letter-Queue (DLQ)" />
 
 If you want to take an action (a cleanup/log), you can configure either `failureFunction` or a `failureUrl` on the `serve` method of your workflow.
 These options allow you to define custom logic or an external endpoint that will be triggered when a failure occurs.
@@ -172,4 +172,4 @@ In your DLQ, filter messages via the `Workflow URL` or `Workflow Run ID` to sear
 
 For example, let's debug the following failed run. Judging by the status code `404`, the `Ngrok-Error-Code` header of `ERR_NGROK_3200` and the returned HTML body, we know that the URL our workflow called does not exist.
 
-  <img />
+  <img alt="Debug a failed workflow run in the DLQ" />

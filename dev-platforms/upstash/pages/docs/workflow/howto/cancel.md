@@ -10,7 +10,7 @@ You can cancel a running workflow both programatically and from your Upstash Wor
 
 In your Upstash Workflow console, find the run you'd like to cancel and press the `Cancel Workflow` button on the right side:
 
-  <img />
+  <img alt="Cancel a workflow run in the Upstash Console" />
 
 ## Cancelling programatically
 

@@ -6,7 +6,7 @@ path: docs/common/account/costexplorer
 
 The Cost Explorer pages allow you to view your current and previous months’ costs. To access the Cost Explorer, navigate to the left menu and select Account > Cost Explorer. Below is an example report:
 
-  <img />
+  <img alt="Monthly costs in the Upstash Cost Explorer" />
 
 You can select a specific month to view the cost breakdown for that period. Here's the explanation of the fields in the report:
 

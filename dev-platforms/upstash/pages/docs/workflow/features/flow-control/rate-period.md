@@ -26,15 +26,15 @@ If `rate = 2` and `period = 1 minute`, then **a maximum of 2 steps** can be exec
 
 The first 2 requests within the minute are executed immediately:
 
-  <img />
+  <img alt="Steps are executed within limit" />
 
 The 3rd request in the same minute is not executed immediately:
 
-  <img />
+  <img alt="A new step cannot execute immediately" />
 
 Instead of rejecting it, Workflow schedules the request in the next available time window:
 
-  <img />
+  <img alt="The new step is moved to the next time window" />
 
 Note that step executions may take longer than the defined period.
 The rate limit only controls how many steps are **started** within each time window,

@@ -100,7 +100,7 @@ npx @upstash/qstash-cli dev -port=8081 -log-port=9000
 
 Once you start the local server, you can go to the QStash tab on Upstash Console and enable local mode, which will allow you to publish requests and monitor messages with the local server.
 
-<img />
+<img alt="Local QStash server mode" />
 
 ### Docker
 

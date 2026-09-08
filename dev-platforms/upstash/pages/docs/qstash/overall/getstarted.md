@@ -10,7 +10,7 @@ QStash is a **serverless messaging and scheduling solution**. It fits easily int
 
 Instead of calling an endpoint directly, QStash acts as a middleman between you and an API to guarantee delivery, perform automatic retries on failure, and more.
 
-  <img />
+  <img alt="QStash benefits diagram" />
 
 <Tip href="/workflow/getstarted" >
 
@@ -66,7 +66,7 @@ Go to the [QStash tab in the Upstash Console](https://console.upstash.com/qstash
 pick the region you want to use (see [Select a Region](/docs/qstash/howto/multi-region)),
 and copy the `QSTASH_TOKEN` from the **Quickstart** section.
 
-  <img />
+  <img alt="QStash environment variables in the Upstash Console" />
 
 ### Publish a message
 
@@ -103,27 +103,27 @@ have to make these requests manually.
 
 You should receive a response with a unique message ID.
 
-  <img />
+  <img alt="Request Catcher response for a QStash message" />
 
 ### Check Message Status
 
 Head over to [Upstash Console](https://console.upstash.com/qstash) and go to the
 `Logs` tab where you can see your message activities.
 
-  <img />
+  <img alt="QStash message log in the Upstash Console" />
 
 Learn more about different states [here](/docs/qstash/howto/debug-logs).
 
 ## Features and Use Cases
 
 <CardGroup cols={2}>
-  <Card title="Background Jobs" icon="share-all" href="/qstash/features/background-jobs">
+  <Card title="Background Jobs" icon="share-2" href="/qstash/features/background-jobs">
     Run long-running tasks in the background, without blocking your application
   </Card>
   <Card title="Schedules" icon="calendar-days" href="/qstash/features/schedules">
     Schedule messages to be delivered at a time in the future
   </Card>
-  <Card title="Fan out" icon="arrows-maximize" href="/qstash/features/url-groups">
+  <Card title="Fan out" icon="maximize-2" href="/qstash/features/url-groups">
     Publish messages to multiple endpoints, in parallel, using URL Groups
   </Card>
   <Card title="FIFO" icon="right-left" href="/qstash/features/queues#ordered-delivery">

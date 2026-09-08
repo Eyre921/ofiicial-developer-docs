@@ -33,7 +33,7 @@ QSTASH_NEXT_SIGNING_KEY=xxxxxxxxx
 
 You can find the values in Upstash Workflow dashboard.
 
-  <img />
+  <img alt="QStash signing keys in the Upstash Console" />
 
 <Info>
     For edge cases where environment variables cannot be used, you can explicitly create and pass a `Receiver` object to verify request signatures:

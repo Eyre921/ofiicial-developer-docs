@@ -51,7 +51,7 @@ bun install @upstash/realtime @upstash/redis zod
 
 Upstash Realtime is powered by Redis Streams. Grab your credentials from the [Upstash Console](https://console.upstash.com).
 
-  <img width="100%" />
+  <img alt="Redis database details in the Upstash Console" width="100%" />
 
 Add them to your environment variables:
 
@@ -183,7 +183,7 @@ That's it! Your app is now listening for realtime events with full type safety. 
 
 For debugging or monitoring purposes, you can use Realtime Dashboard in console.
 
-  <img />
+  <img alt="Realtime database metrics in the Upstash Console" />
 
 ## Next Steps
 

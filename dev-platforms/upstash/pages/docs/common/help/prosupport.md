@@ -36,7 +36,7 @@ As a Professional Support Customer, below are the **two methods** to reach out t
 #### Starting a Chat
 You will see a chatbox on the bottom right when viewing Upstash console, docs and website. Once you initiate a chat, Professional Support customers will be prompted to select a severity level:
 
-  <img width="400" />
+  <img alt="Start a professional support chat" width="400" />
 
 <Note>
 To be able to see these options in chat, remember to sign into your Upstash Account first.

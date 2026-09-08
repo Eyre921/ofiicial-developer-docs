@@ -16,12 +16,12 @@ Upstash is available on the AWS Marketplace, which is particularly beneficial fo
 
 You can search "Upstash" on AWS Marketplace or just click [here](https://aws.amazon.com/marketplace/pp/prodview-fssqvkdcpycco).
 
-  <img />
+  <img alt="Upstash product page in AWS Marketplace" />
 
 Once you click subscribe, you will be prompted to select which personal or team account you wish to link with your AWS Subscription.
 
-  <img />
+  <img alt="Select an account for the AWS Marketplace subscription" />
 
 Once your account is linked, regardless of which Upstash product you use, all of your usage will be billed to your AWS Account. You can also upgrade or downgrade your subscription through Upstash console.
 
-  <img />
+  <img alt="Linked AWS Marketplace billing account" />

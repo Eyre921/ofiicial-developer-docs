@@ -19,7 +19,7 @@ Vercel provides a way to bypass this protection by using a bypass secret. To cre
 
 	<Step title="Find related section">
 		Click on **Add Secret** under **Protection Bypass for Automation** section.
-  			<img />
+        <img alt="Vercel deployment protection settings" />
 	</Step>
 
 	<Step title="Generate a bypass token">Don't forget to save it and store it as an environment variable (e.g., `VERCEL_AUTOMATION_BYPASS_SECRET`).</Step>

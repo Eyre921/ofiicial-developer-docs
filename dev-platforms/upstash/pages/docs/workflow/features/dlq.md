@@ -13,7 +13,7 @@ This ensures that no workflow execution is lost and provides multiple options fo
 When a workflow step fails and exhausts all configured retries, Upstash Workflow automatically moves the failed run to the DLQ.
 This happens automatically without any additional configuration required.
 
-  <img />
+  <img alt="Failed workflow runs are automatically moved to the Dead Letter Queue" />
 
 The DLQ serves as a safety net, preserving failed workflow runs with their complete execution context.
 

@@ -4,7 +4,7 @@ source: https://upstash.com/docs/redis/help/integration
 path: docs/redis/help/integration
 ---
 
-<img height="100" />
+<img height="100" alt="Upstash integration architecture diagram" />
 
 ## Introduction
 
@@ -51,7 +51,7 @@ curl -XPOST https://api.upstash.com/apikey \
 
 ## Technical Design ( GUI Apps )
 
-  <img />
+  <img alt="Technical Design ( GUI Apps ): OAuth 2.0 integration" />
 
 1. User clicks **`Connect Upstash`** button from web app.
 2. Web app initiates Upstash OAuth 2.0 flow and it can use **[Auth0 native libraries](https://auth0.com/docs/libraries)**.

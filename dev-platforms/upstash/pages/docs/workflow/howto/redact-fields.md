@@ -63,7 +63,7 @@ curl -XPOST \
 ```
 </CodeGroup>
 
-  <img />
+  <img alt="Redacted workflow fields in the Upstash Console" />
 
 Redaction is configured per workflow run, so you can redact different fields for different runs.
 

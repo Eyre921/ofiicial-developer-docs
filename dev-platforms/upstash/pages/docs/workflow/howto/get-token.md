@@ -10,7 +10,7 @@ authenticates with a QStash token. Go to the
 the region you want to use, and copy the `QSTASH_TOKEN` from the **Quickstart**
 section.
 
-  <img />
+  <img alt="QStash environment variables in the Upstash Console" />
 
 <Info>
 If you want to safely share a token with your team or AI agents, you can use a

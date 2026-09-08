@@ -280,7 +280,7 @@ Here are summaries of 5 topics in advanced physics:
 
 Here is the logs on Upstash Console:
 
-<img />
+<img alt="Single-agent workflow logs" />
 
 In the logs, you can see that the **academic agent** was called. It decided to invoke **wikiTool** five times in parallel. Once the tool requests were completed, the agent summarized the results from the individual calls in one final response and returned the outcome.
 
@@ -370,6 +370,6 @@ The sum of their populations is approximately 18.16 million.
 
 Here are the logs on Upstash Console:
 
-<img />
+<img alt="Multi-agent workflow logs" />
 
 The logs show that the `Manager LLM` first called the `academic` agent. The `academic` agent used the `wikiTool` three times, each with a different Japanese city, and summarized the results. Next, the `Manager LLM` called the `mathematician` agent, which used its `calculate` tool to compute the total population of the three cities and returned the result to the `Manager LLM`. With information about the cities and their total population, the `Manager LLM` generated the final response.

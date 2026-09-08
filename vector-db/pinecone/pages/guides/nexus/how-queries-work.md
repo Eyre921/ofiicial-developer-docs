@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/nexus/how-queries-work
 path: guides/nexus/how-queries-work
 ---
 
-The query runtime that gathers evidence and composes a grounded, cited answer.
+Pinecone Nexus queries gather evidence and compose a grounded, cited answer.
 
 A query is a single turn: a question in, a grounded answer out. A multi-turn conversation is a session. Rather than stuffing raw chunks into a prompt, Pinecone Nexus runs an agent loop in which the model writes Python against a retrieval SDK to gather just the evidence it needs, then composes a grounded answer with citations.
 

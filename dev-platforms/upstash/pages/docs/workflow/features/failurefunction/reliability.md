@@ -12,11 +12,11 @@ If all retry attempts also fail, the failure function execution is marked as fai
 
 You can view and filter workflow runs with failed failure function executions in the DLQ dashboard.
 
-  <img />
+  <img alt="Filter DLQ entries by failure function state" />
 
 From the DLQ dashboard, you can retry the failure function.
 
-  <img />
+  <img alt="Retry a failed workflow callback" />
 
 You can perform this action programmatically as well:
 

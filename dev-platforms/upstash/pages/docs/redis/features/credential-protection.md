@@ -25,11 +25,11 @@ When enabled:
 1. Go to database details page → Configuration section
 2. Toggle **Protect Credentials** switch:
 
-  <img />
+  <img alt="Enable Redis credential protection" />
 
 3. Save the credentials shown in the modal:
 
-  <img />
+  <img alt="Save protected Redis credentials" />
 
 <Warning>
   Disabling this feature will permanently revoke current credentials and
@@ -41,4 +41,4 @@ When enabled:
 **Reset Credentials**: This function remains available and, when credential protection is enabled, will generate new protected credentials.
 Navigate to the settings tab of your database and click **Reset Credentials**. You will be prompted to save the new credentials.
 
-  <img />
+  <img alt="Reset protected Redis credentials" />

@@ -106,7 +106,7 @@ export default function Page() {
 
 The token used in the `Search` client above is a read-only token.
 
-<img />
+<img alt="Read-only token for the Search API" />
 
 This token is safe to expose on the frontend. This allows your application to perform search queries without the need for a backend API.
 

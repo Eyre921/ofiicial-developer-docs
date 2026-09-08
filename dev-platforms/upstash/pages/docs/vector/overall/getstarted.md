@@ -18,7 +18,7 @@ You need an Upstash account before creating a vector, create one
 
 Once you logged in, you can create a Vector Index by clicking on the `Create Index` button in the Vector tab.
 
-  <img />
+  <img alt="Create a Vector index" />
 
 **Name:** Type a name for your index.
 
@@ -34,7 +34,7 @@ If you choose Dense or Hybrid as index type, you will also be presented with opt
 
 Once you pick these options, you will choose a plan:
 
-  <img  />
+  <img alt="Select a Vector database plan"  />
 
 **Free:** The free plan is suitable for small projects. It has a limit of 10,000 queries and 10,000 updates daily.
 
@@ -208,7 +208,7 @@ curl $UPSTASH_VECTOR_REST_URL/query \
 
 In Upstash console, you can see the charts of your index:
 
-  <img />
+  <img alt="Vector index usage in the Upstash Console" />
 
  There are following charts:
 
@@ -220,7 +220,7 @@ In Upstash console, you can see the charts of your index:
 
 You can also query your index with a simple UI:
 
-  <img />
+  <img alt="Vector index data browser" />
 
 ## SDKs
 

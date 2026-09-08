@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/nexus/byoc/overview
 path: guides/nexus/byoc/overview
 ---
 
-What Nexus BYOC is, how it relates to Database BYOC, and its architecture.
+Learn what Nexus BYOC is, how it relates to Database BYOC, and its architecture.
 
 <Note>
   Nexus BYOC is available only on [Enterprise plans](https://www.pinecone.io/pricing/).

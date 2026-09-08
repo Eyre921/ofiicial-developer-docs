@@ -112,7 +112,6 @@ We believe that Upstash is the best storage for your Lambda Functions because:
 - [Flask](https://upstash.com/docs/redis/quickstarts/flask.md)
 - [Fly.io](https://upstash.com/docs/redis/quickstarts/fly.md)
 - [Google Cloud Run functions](https://upstash.com/docs/redis/quickstarts/google-cloud-functions.md)
-- [ioredis note](https://upstash.com/docs/redis/quickstarts/ioredisnote.md)
 - [Koyeb](https://upstash.com/docs/redis/quickstarts/koyeb.md)
 - [Laravel](https://upstash.com/docs/redis/quickstarts/laravel.md)
 - [App Router](https://upstash.com/docs/redis/quickstarts/nextjs-app-router.md)

@@ -13,7 +13,7 @@ This approach is ideal when:
 * The failure was caused by corrupted or inconsistent state.
 * You need a completely fresh execution with updated or clean data.
 
-  <img />
+  <img alt="Restart a workflow run from the DLQ" />
 
 You can perform this action programmatically as well:
 

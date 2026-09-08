@@ -469,7 +469,7 @@ You can get/copy the tokens by clicking the copy button next to
 `UPSTASH_REDIS_REST_TOKEN` in the **Connect** section of the console (select the
 **REST** tab). For the _Read Only_ token, just enable the "Read-Only Token" switch.
 
-  <img />
+  <img alt="Redis REST API tokens" />
 
 <Warning>
   Do not expose your _Standard_ token publicly. _Standard_ token has full
@@ -501,7 +501,7 @@ redis-cli> ACL RESTTOKEN default 35fedg8xyu907d84af29222ert
 
 Or via CLI on the Upstash console:
 
-  <img />
+  <img alt="Access controls for a Redis REST token" />
 
 If the user doesn't exist or password doesn't match then an error will be
 returned.

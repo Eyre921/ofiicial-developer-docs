@@ -21,7 +21,7 @@ will skip it here.
 After completing the [getting started](../overall/getstarted) guide, you will
 see the database page as below:
 
-  <img />
+  <img alt="Redis database details in the Upstash Console" />
 
 The connection details required for Redis clients are displayed here: **Endpoint**,
 **Port**, and **Token** (which is also the password of the database). You can also

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/nexus/byoc/reference
 path: guides/nexus/byoc/reference
 ---
 
-Where your data lives and travels in Nexus BYOC, plus authentication, encryption, cluster footprint, and limitations.
+See where your data lives and travels in Nexus BYOC, plus its authentication, encryption, cluster footprint, and limitations.
 
 <Note>
   Nexus BYOC is available only on [Enterprise plans](https://www.pinecone.io/pricing/).

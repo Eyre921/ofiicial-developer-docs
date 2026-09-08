@@ -367,11 +367,11 @@ npm run dev
 
 Here is a screenshot of the chatbot in action:
 
-  <img />
+  <img alt="Adding information to the knowledge base" />
 
-  <img />
+  <img alt="Added information can be seen in Upstash Console" />
 
-  <img />
+  <img alt="Retrieving information from the knowledge base in another conversation" />
 
 If you would like to see the entire code of a slightly revised version of this chatbot, you can check out the [GitHub repository](https://github.com/Abdusshh/rag-chatbot-ai-sdk). In this version, the user chooses which embedding model to use through the UI.
 

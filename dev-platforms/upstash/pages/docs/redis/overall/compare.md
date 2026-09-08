@@ -114,7 +114,7 @@ requests. For 1 million, it is \$2 plus the storage cost that is \$0.25. So for
 1GB, 1M request per months, ElastiCache is \$24, RedisLabs is \$22, Upstash is
 $2.25.
 
-  <img />
+  <img alt="Compare: Cost comparison" />
 
 **What if your product becomes popular and starts to gain high and steady
 traffic?**

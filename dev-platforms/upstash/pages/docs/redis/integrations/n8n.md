@@ -15,7 +15,7 @@ In this quickstart we're going to set up an Redis node in n8n using Upstash Redi
 1. Go to Upstash Console and create a Redis database if you don't have any
 2. Note down your credentials in the details page, we will be using those to connect Redis
    Node in n8n to our Upstash Redis instance.
-   <img />
+   <img alt="Upstash Redis credentials in n8n" />
 
 ***
 
@@ -23,7 +23,7 @@ In this quickstart we're going to set up an Redis node in n8n using Upstash Redi
 
 1. Go to https://n8n.io and create a new project
 2. Create a Trigger as Webhook with default settings, this will be our entry point. Our Redis instances gonna watch the visits to this url.
-   <img />
+   <img alt="Webhook node in an n8n workflow" />
 
 ***
 
@@ -32,10 +32,10 @@ In this quickstart we're going to set up an Redis node in n8n using Upstash Redi
 Now, Let's create a redis node and connect it to our Upstash Redis instance
 
 1. Search for redis in nodes, and select increment action.
-   <img />
+   <img alt="Add a Redis node in n8n" />
 2. In the opening window, click select credentials, and create new credentials.
    Later, for other redis nodes, this will be saved and used automatically.
-   <img />
+   <img alt="Select a Redis operation in n8n" />
 3. Fill the credentials.
 
    * Pass your Upstash Token to the password field.
@@ -43,21 +43,21 @@ Now, Let's create a redis node and connect it to our Upstash Redis instance
    * Pass your Upstash Redis endpoint to the host field. (Leave the https:// part out)
    * If your Upstash Database has a port other than the default 6379, change it here.
 
-   <img />
+   <img alt="Configure Redis credentials in n8n" />
 
 4. Enable SSL (Upstash Redis requires SSL) and hit the save button.
-   <img />
+   <img alt="Configured Redis node in n8n" />
 
 ***
 
 ### Redis Example: Store the Visit Count per Visitor
 
 1. Track the users with `x-real-ip`
-   <img />
+   <img alt="Redis increment operation in n8n" />
 2. Add another redis node with get action to see the visit counts
-   <img />
+   <img alt="Redis get operation in n8n" />
 3. Read the set visit count with redis get
-   <img />
+   <img alt="Redis visit count result in n8n" />
 
 ***
 

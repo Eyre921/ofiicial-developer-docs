@@ -12,15 +12,15 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Start your journey](/en/get-started/start-your-journey)
 
-  <p>Brand new to GitHub? Learn the basics here.</p>
+  Brand new to GitHub? Learn the basics here.
 
 * [Learn to code with GitHub Copilot](/en/get-started/learning-to-code)
 
-  <p>Learn how GitHub and Copilot can help you build programming skills, write better code, and ship secure projects.</p>
+  Learn how GitHub and Copilot can help you build programming skills, write better code, and ship secure projects.
 
 * [Set up Git](/en/get-started/git-basics/set-up-git)
 
-  <p>At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.</p>
+  At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.
 
 * [Hello World](/en/get-started/using-github/hello-world)
 
@@ -32,11 +32,11 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 
-  <p>An overview of GitHub's pricing plans.</p>
+  An overview of GitHub's pricing plans.
 
 * [Quickstart for writing on GitHub](/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/quickstart-for-writing-on-github)
 
-  <p>Learn advanced formatting features by creating a README for your GitHub profile.</p>
+  Learn advanced formatting features by creating a README for your GitHub profile.
 
 * [Finding ways to contribute to open source on GitHub](/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github)
 

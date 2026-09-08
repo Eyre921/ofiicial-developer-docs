@@ -68,7 +68,7 @@ We currently support Claude Code and Codex as native agents inside of a box. You
 
 For more details, see the [Agent](/docs/box/overall/agent) page.
 
-  <img />
+  <img alt="Box agent architecture diagram" />
 
 Each iteration builds on the last. If a test fails, the agent sees the error output and corrects. If a file is missing, it discovers that during the read phase and adapts. The loop continues until the task is complete or the agent determines it cannot make further progress.
 
@@ -80,7 +80,7 @@ A box retains its full state between runs (files, installed packages, git histor
 
 ## Lifecycle
 
-  <img />
+  <img alt="Box lifecycle diagram" />
 
 ### 1. Created
 
@@ -302,7 +302,7 @@ You can control outbound network access for a box with a network policy. For mod
 
 Every box runs as its own Docker container with an independent filesystem, process tree, and network stack. Boxes cannot communicate with or observe each other. There is no shared state between them.
 
-  <img />
+  <img alt="Box request routing diagram" />
 
 Your app makes SDK calls to the Upstash API gateway, which authenticates the request and routes it to the correct box. Each box has a unique ID, and all communication between your app and the box is encrypted in transit.
 

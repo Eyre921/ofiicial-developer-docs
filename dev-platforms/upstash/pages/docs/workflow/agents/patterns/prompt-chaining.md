@@ -4,7 +4,7 @@ source: https://upstash.com/docs/workflow/agents/patterns/prompt-chaining
 path: docs/workflow/agents/patterns/prompt-chaining
 ---
 
-<img />
+<img alt="Prompt chaining workflow diagram" />
 
 This workflow involves chaining multiple LLM calls, where the output of one agent becomes the input for the next agent.
 
@@ -72,7 +72,7 @@ export const { POST } = serve(async (context) => {
 });
 ```
 
-<img />
+<img alt="Prompt chaining workflow logs" />
 
 In response to the prompt, our agents generate this response:
 

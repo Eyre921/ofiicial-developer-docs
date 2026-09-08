@@ -6,7 +6,7 @@ path: docs/vector/integrations/langflow
 
 Langflow provides an intuitive, visual interface to design LLM workflows. You can seamlessly integrate Upstash Vector into your Langflow projects to enable vector-based semantic search and context retrieval.
 
-    <img />
+    <img alt="Completed Langflow workflow with Upstash Vector" />
 
 ## Install
 
@@ -29,13 +29,13 @@ In Langflow, you can integrate Upstash Vector for document indexing and semantic
 1. Create a workflow with the **File**, **Split**, and **Upstash** components to process and store documents in the Upstash Vector index.
 2. Perform a vector search by connecting the **Upstash** component to your query input.
 
-    <img />
+    <img alt="Insert workflow in Langflow" />
 
 ### Example Workflow
 
 Enhance your chatbot by combining Langflow’s OpenAI integration with Upstash Vector. Create a RAG workflow to retrieve relevant context from your index and use it to answer user queries.
 
-    <img />
+    <img alt="Completed Langflow workflow with Upstash Vector" />
 
 ## Learn More
 

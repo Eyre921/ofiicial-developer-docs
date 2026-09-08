@@ -30,7 +30,7 @@ eviction mechanism in Upstash optimizes memory usage by prioritizing frequently
 accessed data while maintaining the ability to retrieve less frequently accessed
 data when needed.
 
-  <img width="600" />
+  <img alt="Redis durable storage diagram" width="600" />
 
 <Card
   title="Can I use Upstash as a database?"

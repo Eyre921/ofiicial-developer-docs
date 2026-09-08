@@ -236,7 +236,7 @@ export const { POST } = serve<{ prompt: string }>(async (context) => {
 
 When called with the same prompt as above, we will see the following logs:
 
-  <img />
+  <img alt="Workflow run that uses a Vercel AI SDK tool" />
 
 ## Important Considerations
 

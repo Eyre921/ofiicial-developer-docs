@@ -10,7 +10,7 @@ A workflow run consists of several QStash messages, with the total cost determin
 
 You can track your current message usage and associated costs in the [Overview tab of the console](https://console.upstash.com/qstash?tab=details).
 
-  <img />
+  <img alt="Workflow message cost diagram" />
 
 For detailed pricing information based on different plans, visit our [Workflow pricing page](https://upstash.com/pricing/workflow).
 

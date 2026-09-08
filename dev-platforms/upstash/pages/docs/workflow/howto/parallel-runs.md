@@ -49,4 +49,4 @@ export const { POST } = serve(async (ctx) => {
 
 After running your workflow, your dashboard shows each step in detail:
 
-  <img />
+  <img alt="Parallel workflow runs in the Upstash Console" />

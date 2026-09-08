@@ -22,7 +22,7 @@ Vercel and click the `Install` button. If you are installing an Upstash integrat
 for the first time, you will be prompted to choosing between connecting an existing Upstash
 account or letting Vercel manage an Upstash account for you.
 
-<img width="520" />
+<img alt="Add the Upstash integration in Vercel" width="520" />
 
 In both cases, you will be able to create and use a redis database as usual. If you let Vercel
 manage your Upstash account, you can handle payments, database creation and deletion directly from the Vercel dashboard.
@@ -39,7 +39,7 @@ page of the created resource on Vercel dashboard.
 
 On the Vercel dashboard, you will be able to find the credentials of the database, change the database
 name, update the regions or plan.
-<img width="520" />
+<img alt="Upstash integration in the Vercel dashboard" width="520" />
 
 You can also go to the `Settings` tab and connect your apps on Vercel to the database, making the credentials
 of the database available to the app as environment variables.
@@ -54,12 +54,12 @@ and Upstash resources that you want to integrate.
   are not logged in before clicking continue.
 </Tip>
 
-  <img width="520" />
+  <img alt="Configure the Vercel and Upstash integration" width="520" />
 
 If you do not have a Redis database yet, you can create one
 from the dropdown menu.
 
-  <img width="520" />
+  <img alt="Create a Redis database from the Vercel integration" width="520" />
 
 Once you have selected all resources, click the `Save` button at the bottom of
 the page.
@@ -75,7 +75,7 @@ The [Integration Dashboard](https://console.upstash.com/integration/vercel)
 allows you to see all your integrations, link new projects or manage existing
 ones.
 
-  <img />
+  <img alt="Redis database created by the Vercel integration" />
 
 ## Use Upstash in Your App
 

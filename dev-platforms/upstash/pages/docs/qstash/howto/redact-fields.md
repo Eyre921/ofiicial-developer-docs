@@ -63,7 +63,7 @@ curl -XPOST \
 ```
 </CodeGroup>
 
-  <img />
+  <img alt="Logs of a message with body and header[My-Secret-Header] redacted" />
 
 Redaction is configured per message, so you can redact different fields for different messages.
 
@@ -119,7 +119,7 @@ curl -XPOST \
 ```
 </CodeGroup>
 
-  <img />
+  <img alt="Schedule with body and header[My-Secret-Header] redacted" />
 
 <Warning>
 When updating a redacted schedule via the dashboard or API, you must provide the original values for the redacted fields.

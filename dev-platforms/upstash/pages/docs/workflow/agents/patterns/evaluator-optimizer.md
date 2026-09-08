@@ -4,7 +4,7 @@ source: https://upstash.com/docs/workflow/agents/patterns/evaluator-optimizer
 path: docs/workflow/agents/patterns/evaluator-optimizer
 ---
 
-<img />
+<img alt="Evaluator-optimizer workflow diagram" />
 
 In this example, the generator creates output and passes it to the evaluator, which evaluates the response. If the evaluation fails, the evaluator returns corrections, and the generator is called again using the corrected output.
 
@@ -65,7 +65,7 @@ export const { POST } = serve(async (context) => {
 });
 ```
 
-<img />
+<img alt="Evaluator-optimizer workflow logs" />
 
 In response to the prompt, our agents generate this response:
 

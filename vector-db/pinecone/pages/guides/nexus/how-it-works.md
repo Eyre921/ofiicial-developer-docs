@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/nexus/how-it-works
 path: guides/nexus/how-it-works
 ---
 
-How Nexus distills curated artifacts for retrieval, then answers with code over a retrieval SDK.
+Pinecone Nexus distills curated artifacts for retrieval, then answers with code over a retrieval SDK.
 
 Most RAG systems chop documents into chunks and hope the right ones surface at query time. Pinecone Nexus does the hard work *up front*: it distills your sources into curated artifacts so the information an answer needs is already organized and easy to find, then answers questions by writing code over a retrieval SDK.
 

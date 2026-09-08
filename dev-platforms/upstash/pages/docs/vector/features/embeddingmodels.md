@@ -68,7 +68,7 @@ See [Creating Sparse Vectors](/docs/vector/features/sparseindexes#creating-spars
 
 To start using embedding models, create the index with a model of your choice.
 
-  <img />
+  <img alt="Create a Vector index with an embedding model" />
 
 Then, you can start upserting and querying raw text data without any extra
 setup.

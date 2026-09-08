@@ -33,25 +33,25 @@ Flowise supports multiple Upstash integrations. Below are the nodes and their fu
 
 Use the **Upstash Vector** node to perform semantic search and store document embeddings. Connect the node to document loaders and embedding components for indexing and querying.
 
-    <img width="400" />
+    <img width="400" alt="Upstash Vector node in Flowise" />
 
 ### 2. Upstash Redis Cache Node
 
 The **Upstash Redis Cache** node caches LLM responses in a serverless Redis database.
 
-    <img width="400" />
+    <img width="400" alt="Upstash Redis cache node in Flowise" />
 
 ### 3. Upstash Redis-Backed Chat Memory Node
 
 The **Upstash Redis-Backed Chat Memory** node summarizes conversations and stores the memory in Redis. This enables persistent, context-aware interactions across multiple sessions.
 
-    <img width="400" />
+    <img width="400" alt="Upstash Redis chat memory node in Flowise" />
 
 ## Example Flow
 
 Below is an example flow using Upstash Vector:
 
-    <img />
+    <img alt="You can use a document loader to upload documents and connect it to the Upstash Vector node for indexing." />
 
 ## Learn More
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/nexus/how-curation-works
 path: guides/nexus/how-curation-works
 ---
 
-The write path that turns sources into chunks and artifacts, incrementally, driven by the manifest.
+Curation is the write path that turns sources into chunks and artifacts incrementally, driven by the manifest.
 
 Curation is how Pinecone Nexus turns a context's source documents into the chunks and artifacts that queries read from. One generic runtime, the Context Compiler, drives it, parameterized by the context's [manifest](/guides/nexus/context-design).
 

@@ -16,11 +16,11 @@ You can connect your account like this:
 
 <Tabs>
     <Tab title="macOS">
-          <img />
+          <img alt="Configure an ngrok tunnel on macOS" />
     </Tab>
 
     <Tab title="Windows">
-          <img />
+          <img alt="Configure an ngrok tunnel on Windows" />
     </Tab>
 </Tabs>
 

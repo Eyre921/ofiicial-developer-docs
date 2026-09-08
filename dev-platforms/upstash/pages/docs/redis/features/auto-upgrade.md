@@ -21,7 +21,7 @@ When enabled:
 
 * You can enable Auto Upgrade by checking the Auto Upgrade checkbox while creating a new database:
 
-    <img width="%50" />
+    <img alt="Enable Auto Upgrade when creating a Redis database" width="%50" />
 
 * Or for an existing database by clicking Enable in the Configuration/Auto Upgrade box in the database details page:
-    <img width="600" height="300" />
+    <img alt="Manage Auto Upgrade in the Upstash Console" width="600" height="300" />

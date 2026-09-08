@@ -48,7 +48,7 @@ Check out our Next.js quickstart guide if you're working in Next.js.
 
 Create a Search Database by navigating to the `Vector` tab and clicking on the `Search Database` button under `Create`.
 
-  <img />
+  <img alt="Create a Search database" />
 
 A dialog with the following options will open:
 
@@ -60,7 +60,7 @@ A dialog with the following options will open:
 
 Once you're done, click `Next`, choose a plan, and your Database is ready:
 
-  <img />
+  <img alt="New Search database in the Upstash Console" />
 
 ***
 
@@ -72,11 +72,11 @@ Add documents to your database using our REST API, our SDKs, or directly in the 
 
 Navigate to the `Data Browser` section of your Database and click `Upsert Documents`:
 
-  <img />
+  <img alt="Add data to a Search database" />
 
 A dialog with the following options will open:
 
-  <img />
+  <img alt="Add a document to a Search database" />
 
 * **Index:** An [index](/docs/search/features/indexes) to group your data.
 
@@ -163,7 +163,7 @@ You can search across your Database the same way: using our REST API, our SDKs o
 
 To search your documents, enter a search term and click `Search`:
 
-  <img />
+  <img alt="Run the first Search query" />
 
 ### 2. Searching Data via SDKs
 

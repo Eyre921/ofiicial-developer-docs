@@ -29,7 +29,7 @@ const {
 
 You can return a response from a workflow, which will be delivered to invoker workflow run.
 
-  <img />
+  <img alt="You can navigate between the invoker and invoked workflow runs on the dashboard" />
 
 <Note>
     You cannot create an infinite chain of workflow invocations. If you set up an 'invoke loop' where workflows continuously invoke each other, the process will fail once it reaches a depth of 100.

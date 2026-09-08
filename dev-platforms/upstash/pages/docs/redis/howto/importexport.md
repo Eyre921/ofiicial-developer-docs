@@ -19,7 +19,7 @@ To begin importing data:
 * Go to the [Redis database list page](https://console.upstash.com/redis) in the Upstash console
 * Click on the `Import...` button
 
-  <img width="800" />
+  <img alt="Import/Export Data: Import button" width="800" />
 
 You'll see a dialog with two import options:
 
@@ -33,7 +33,7 @@ Import data from a backup of any existing database in your account or team:
 * Select the target database (the database you want to import into)
 * Click `Start Import`
 
-  <img width="700" />
+  <img alt="Import/Export Data: Import from backup" width="700" />
 
 ### Option 2: Import from RDB File
 
@@ -44,7 +44,7 @@ Import data from an external Redis database by uploading an RDB file:
 * Select the target database (the database you want to import into)
 * Click `Start Import`
 
-  <img width="700" />
+  <img alt="Import/Export Data: Import from RDB" width="700" />
 
 <Info>
   If you're importing from an external Redis database (from another provider or on-premise), you'll need to export it as an RDB file first.
@@ -62,7 +62,7 @@ To export your database:
 * Click on the `Backup & Export` button
 * Choose `Export`
 
-  <img width="800" />
+  <img alt="Import/Export Data: Export button" width="800" />
 
 Your database will be exported as an RDB file. Once you start the export, you'll see the export progress in the backups table.
 

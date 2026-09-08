@@ -61,7 +61,7 @@ const { workflowRunId } = await client.trigger({
 Without Flow Control, all workflow runs immediately execute their steps as soon as possible.
 If the workflow calls an external API in a step, this would likely result in ~N concurrent requests being fired in a very short timeframe, potentially overloading services or breaching API limits.
 
-  <img />
+  <img alt="Flow-controlled workflow step types" />
 
 With the configuration above:
 * **Rate:** At most 3 steps per minute can start across all workflow runs.
@@ -69,7 +69,7 @@ With the configuration above:
 
 Steps that exceed these limits are automatically queued and executed later.
 
-  <img />
+  <img alt="Workflow steps queued for execution" />
 
 Note that each step above corresponds to a separate workflow run.
 Because this workflow is sequential, each workflow run has only one pending step at a time.
@@ -78,7 +78,7 @@ In workflows with **parallel branches**, multiple steps from the same workflow r
 Parallelism slots are consumed by running steps.
 If no slots are available, new steps enter the **waitlist** until resources free up:
 
-  <img />
+  <img alt="Workflow parallelism waitlist" />
 
 <Note>
 Upstash Workflow does not support per-step level configuration. Meaning that you can attach a flow-control configuration

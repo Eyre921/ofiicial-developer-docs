@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1166 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1167 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -973,6 +973,7 @@
 - `langsmith/smith-api/threads/list-runs-of-one-trace-in-a-public-shared-thread` — [List runs of one trace in a public shared thread](pages/langsmith/smith-api/threads/list-runs-of-one-trace-in-a-public-shared-thread.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/list-runs-of-one-trace-in-a-public-shared-thread)
 - `langsmith/smith-api/threads/list-traces-in-a-public-shared-thread` — [List traces in a public shared thread](pages/langsmith/smith-api/threads/list-traces-in-a-public-shared-thread.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/list-traces-in-a-public-shared-thread)
 - `langsmith/smith-api/threads/query-single-thread-stats` — [Query single thread stats](pages/langsmith/smith-api/threads/query-single-thread-stats.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/query-single-thread-stats)
+- `langsmith/smith-api/threads/query-thread-stats` — [Query thread stats](pages/langsmith/smith-api/threads/query-thread-stats.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/query-thread-stats)
 - `langsmith/smith-api/threads/query-thread-traces` — [Query thread traces](pages/langsmith/smith-api/threads/query-thread-traces.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/query-thread-traces)
 - `langsmith/smith-api/threads/query-threads` — [Query threads](pages/langsmith/smith-api/threads/query-threads.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/query-threads)
 - `langsmith/smith-api/threads/read-a-threads-share-state` — [Read a thread's share state](pages/langsmith/smith-api/threads/read-a-threads-share-state.md) · [原文](https://docs.langchain.com/langsmith/smith-api/threads/read-a-threads-share-state)

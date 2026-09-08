@@ -153273,6 +153273,120 @@ const { data, error } = await supabase.auth.mfa.verify({
 })
 ```
 
+## generate
+
+Generates the user's set of recovery codes. The plaintext codes are
+returned exactly once in the response and cannot be retrieved again, so
+show them to the user and ask them to store the codes safely.
+
+Requires `auth.experimental.recoveryCodes: true`.
+
+- The session must be at `aal2` (verify another factor first), otherwise an error with code `insufficient_aal` is returned.
+- The user must already have another verified factor (for example a TOTP factor): recovery codes can never be the only factor. Otherwise an error with code `mfa_recovery_codes_sole_factor` is returned.
+- A user can only have one set of recovery codes. If one already exists, an error with code `mfa_verified_factor_exists` is returned; use `mfa.recoveryCodes.regenerate()` to replace it.
+- The codes are returned in canonical form (lowercase, no separators). For display you can group them, for example in blocks of four characters. Avoid logging them to the console.
+- Returns an error with code `mfa_recovery_codes_enroll_not_enabled` when recovery codes are disabled on the server.
+
+### Examples
+
+#### Generate recovery codes
+
+```js
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: { experimental: { recoveryCodes: true } },
+})
+
+const { data, error } = await supabase.auth.mfa.recoveryCodes.generate({
+  friendlyName: 'Backup codes',
+})
+
+// Show the codes once, for example grouped in blocks of four characters
+const formatted = data.codes.map((code) => code.match(/.{1,4}/g).join('-'))
+```
+
+## getStatus
+
+Returns the enrollment status of the user's recovery codes: the total
+number of codes in the current set and how many are still unused. Never
+returns the codes themselves.
+
+Requires `auth.experimental.recoveryCodes: true`.
+
+- Works at any authenticator assurance level (`aal1` or `aal2`).
+- Returns an error with code `mfa_factor_not_found` when the user has not generated recovery codes yet.
+- `remaining` can be `0` once every code has been used; prompt the user to call `mfa.recoveryCodes.regenerate()`.
+
+### Examples
+
+#### Get the recovery codes status
+
+```js
+const { data, error } = await supabase.auth.mfa.recoveryCodes.getStatus()
+```
+
+## regenerate
+
+Replaces the user's recovery codes with a brand new set. All remaining
+codes from the previous set stop working immediately. The new plaintext
+codes are returned exactly once.
+
+Requires `auth.experimental.recoveryCodes: true`.
+
+- The session must be at `aal2`, otherwise an error with code `insufficient_aal` is returned.
+- The factor `id` and `friendly_name` are preserved; only the codes change.
+- Also clears any verification lockout on the recovery codes.
+- Returns an error with code `mfa_factor_not_found` when the user has no recovery codes to regenerate; use `mfa.recoveryCodes.generate()` instead.
+- Returns an error with code `mfa_recovery_codes_enroll_not_enabled` when recovery codes are disabled on the server.
+
+### Examples
+
+#### Regenerate recovery codes
+
+```js
+const { data, error } = await supabase.auth.mfa.recoveryCodes.regenerate()
+```
+
+## unenroll
+
+Removes the user's recovery codes factor together with all of its codes.
+
+Requires `auth.experimental.recoveryCodes: true`.
+
+- The session must be at `aal2`, otherwise an error with code `insufficient_aal` is returned.
+- Returns an error with code `mfa_factor_not_found` when the user has no recovery codes.
+
+### Examples
+
+#### Unenroll recovery codes
+
+```js
+const { data, error } = await supabase.auth.mfa.recoveryCodes.unenroll()
+```
+
+## verify
+
+Verifies one of the user's recovery codes and upgrades the current
+session to `aal2`. Each code can be used only once.
+
+Requires `auth.experimental.recoveryCodes: true`.
+
+- On success the current session is upgraded to `aal2` in place and persisted, and the `MFA_CHALLENGE_VERIFIED` event is emitted. The user's other `aal1` sessions are signed out.
+- The new access token includes `mfa/recovery_code` in its `amr` claim.
+- The code can be passed exactly as the user typed it: letter case, whitespace and `-` separators are ignored.
+- A wrong, already used, or missing code returns an error with code `mfa_verification_failed`.
+- After too many failed attempts, verification is locked for a period and an error with code `mfa_recovery_codes_locked` (status `429`) is returned. Ask the user to wait or to use another factor.
+- Returns an error with code `mfa_recovery_codes_verify_not_enabled` when recovery code verification is disabled on the server.
+
+### Examples
+
+#### Verify a recovery code
+
+```js
+const { data, error } = await supabase.auth.mfa.recoveryCodes.verify({
+  code: 'K4M9-X7QP-2AB8-HT3Z',
+})
+```
+
 ## Auth Passkey
 
 This section contains methods for WebAuthn passkey registration, authentication, and management. Methods are invoked behind the `supabase.auth.passkey` namespace.
@@ -154351,6 +154465,29 @@ const { data, error } = await supabase
   .deleteBucket('avatars')
 ```
 
+## deleteBucketLifecycle
+
+Removes the lifecycle policy from a bucket.
+
+Safe to call when no policy is stored. The response is still success.
+Standard buckets only. Returns `FeatureNotEnabled` if lifecycle is off
+for the project.
+
+- RLS policy permissions required:
+  - `buckets` table permissions: `select` and `update`
+  - `objects` table permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
+### Examples
+
+#### Delete lifecycle configuration
+
+```js
+const { data, error } = await supabase
+  .storage
+  .deleteBucketLifecycle('avatars')
+```
+
 ## download
 
 Downloads a file from a private bucket. For public buckets, make a request to the URL returned from `getPublicUrl` instead.
@@ -154470,6 +154607,32 @@ Retrieves the details of an existing Storage bucket.
 const { data, error } = await supabase
   .storage
   .getBucket('avatars')
+```
+
+## getBucketLifecycle
+
+Returns the lifecycle policy stored on a bucket.
+
+Fails with `NoSuchLifecycleConfiguration` when the bucket has no policy.
+
+These rules expire previous versions of objects, not the current one.
+Turn versioning on or there is nothing for the policy to act on.
+Standard buckets only. Returns `FeatureNotEnabled` if lifecycle is off
+for the project.
+
+- RLS policy permissions required:
+  - `buckets` table permissions: `select`
+  - `objects` table permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
+### Examples
+
+#### Get lifecycle configuration
+
+```js
+const { data, error } = await supabase
+  .storage
+  .getBucketLifecycle('avatars')
 ```
 
 ## getPublicUrl
@@ -154855,6 +155018,49 @@ const { data, error } = await supabase
     public: false,
     allowedMimeTypes: ['image/png'],
     fileSizeLimit: 1024
+  })
+```
+
+## updateBucketLifecycle
+
+Replaces the lifecycle policy on a bucket.
+
+The `rules` array you send is the whole policy. Anything previously stored
+is overwritten. Send at least one rule. Call deleteBucketLifecycle
+to remove the policy.
+
+Each rule currently supports only `noncurrentVersionExpiration`. `filter`
+is required and must be `{}`. Prefix filters, tag filters, and current-object
+expiration are rejected. Rule IDs must be unique. Omit `id` and the
+server generates one.
+
+Standard buckets only. Returns `FeatureNotEnabled` if lifecycle is off
+for the project.
+
+- RLS policy permissions required:
+  - `buckets` table permissions: `select` and `update`
+  - `objects` table permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
+### Examples
+
+#### Replace lifecycle configuration
+
+```js
+const { data, error } = await supabase
+  .storage
+  .updateBucketLifecycle('avatars', {
+    rules: [
+      {
+        id: 'expire-history',
+        status: 'Enabled',
+        filter: {},
+        noncurrentVersionExpiration: {
+          noncurrentDays: 30,
+          newerNoncurrentVersions: 2,
+        },
+      },
+    ],
   })
 ```
 

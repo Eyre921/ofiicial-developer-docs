@@ -26,7 +26,7 @@ Upstash Redis is a **highly available, infinitely scalable** Redis-compatible da
 
 Log in to the [Upstash Console](https://console.upstash.com) (or [sign up](https://console.upstash.com) for a free account). From the **Redis** tab, click `+ Create Database` in the upper right corner. A dialog opens up:
 
-  <img />
+  <img alt="Create a Global Redis database" />
 
 **Database Name:** Enter a name for your database.
 
@@ -34,7 +34,7 @@ Log in to the [Upstash Console](https://console.upstash.com) (or [sign up](https
 
 Once you click `Next` and select a plan, your database is running and ready to connect:
 
-  <img width="100%" />
+  <img alt="Redis database details in the Upstash Console" width="100%" />
 
 ***
 
@@ -65,7 +65,7 @@ ENDPOINT:PORT> incr counter
 
 As you run commands, you'll see updates to your database metrics in (almost) real-time. These database metrics are refreshed every 10 seconds.
 
-  <img width="100%" />
+  <img alt="Redis metrics charts in the Upstash Console" width="100%" />
 
 Congratulations! You have created an ultra-fast Upstash Redis database! 🎉
 

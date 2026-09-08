@@ -8,7 +8,7 @@ When you define a workflow endpoint, you can attach a failure function to the wo
 
 This feature ensures that you can perform cleanup operations, logging, alerting, or any other custom error handling logic before the failed workflow run is moved to the Dead Letter Queue (DLQ).
 
-  <img />
+  <img alt="Workflow failure function execution" />
 
 The failure function automatically receives the workflow run context and the reason for the failure, so you can decide how to handle it.
 

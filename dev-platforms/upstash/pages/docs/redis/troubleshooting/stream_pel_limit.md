@@ -32,7 +32,6 @@ from the list of the associated group and consumer.
 - [Session Management on Google Cloud Run with Serverless Redis](https://upstash.com/docs/redis/tutorials/cloud_run_sessions.md): This tutorial shows how to manage user sessions on Google Cloud Run using Serverless Redis.
 - [Cloudflare Workers with Websockets and Redis](https://upstash.com/docs/redis/tutorials/cloudflare_websockets_redis.md)
 - [Use Redis in Cloudflare Workers](https://upstash.com/docs/redis/tutorials/cloudflare_workers_with_redis.md)
-- [Backendless Coin Price List with GraphQL API, Serverless Redis and Next.JS](https://upstash.com/docs/redis/tutorials/coin_price_list.md)
 - [Build a Leaderboard API At Edge using Cloudflare Workers and Redis](https://upstash.com/docs/redis/tutorials/edge_leaderboard.md): This tutorial shows how to build a Leaderboard API At Edge using Cloudflare Workers and Redis.
 - [Express Session with Serverless Redis](https://upstash.com/docs/redis/tutorials/express_session.md): This tutorial shows how to use Upstash as the session storage of your Express application.
 - [Serverless Golang API with Redis](https://upstash.com/docs/redis/tutorials/goapi.md)

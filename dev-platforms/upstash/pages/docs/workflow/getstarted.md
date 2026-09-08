@@ -148,7 +148,7 @@ Here are some example real world use-cases for Upstash Workflow:
   </Card>
   <Card
     title="E-Commerce Order Fulfillment"
-    icon="cart-flatbed-boxes"
+    icon="boxes"
     href="/workflow/examples/eCommerceOrderFulfillment"
   >
     Receive an order request, verify the stock, process the payment, and handle
@@ -180,7 +180,7 @@ Each of the steps are executed by a separate request to your application, by pre
 
 In case of an error, a failed step is retried individually without needing to re-run any previous steps. Instead of the entire business logic, _each step_ can take up your serverless function execution duration, and many more benefits.
 
-  <img />
+  <img alt="Workflow execution diagram" />
 
 ## Support
 

@@ -68,7 +68,7 @@ elevenlabs-conversational-ai/
 
 In `index.html`, set up a simple user interface:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ad9dea65eddc50beaf444e5d319dc5094df0f4183e50f7ed01900394b3ff9d2/assets/images/conversational-ai/vite-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260907%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260907T233212Z&X-Amz-Expires=604800&X-Amz-Signature=ad36452be3b49099296784e3e2a8ea864024edd6d1fc93a61a686af5f9f2691c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ad9dea65eddc50beaf444e5d319dc5094df0f4183e50f7ed01900394b3ff9d2/assets/images/conversational-ai/vite-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260908%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260908T113227Z&X-Amz-Expires=604800&X-Amz-Signature=120fce607e4613f09512d162b010481165f1865d779de68f1bdfc4e313f1e8f5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ```html index.html
 <!DOCTYPE html>

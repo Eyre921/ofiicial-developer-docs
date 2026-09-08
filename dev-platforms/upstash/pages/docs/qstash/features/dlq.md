@@ -13,7 +13,7 @@ Read more about retries [here](/docs/qstash/features/retry).
 
 You can manually republish messages from the dead letter queue in the console.
 
-  <img />
+  <img alt="Dead Letter Queue entries in the Upstash Console" />
 
 1. **Retry** - Republish the message and remove it from the dead letter queue. Republished messages are just like any other message and will be retried automatically if they fail.
 2. **Delete** - Delete the message from the dead letter queue.

@@ -6,15 +6,15 @@ path: docs/common/account/teams
 
 Team management enables collaboration with other users. You can create a team and invite people to join by using their email addresses. Team members will have access to databases created under the team based on their assigned roles.
 
-  <img />
+  <img alt="Team member list in the Upstash Console" />
 
 ## Create Team
 
 You can create a team using the menu `Account > Teams`
 
-  <img />
+  <img alt="Teams page in the Upstash Console" />
 <br />
-  <img />
+  <img alt="Create team form in the Upstash Console" />
 
 > A user can create up to 5 teams. You can be part of even more teams but only
 > be the owner of 5 teams. If you need to own more teams please email us at
@@ -33,7 +33,7 @@ members. You can switch to the team via the switch button in the team table. Or
 you can click your profile pic in the top right and switch to any team listed
 there.
 
-  <img />
+  <img alt="Team selector in the Upstash Console" />
 
 ## Add/Remove Team Member
 
@@ -43,7 +43,7 @@ Until the invitation is accepted, the user appears as a **pending member** and d
 
 > Only Admins or the Owner can add/remove users.
 
-  <img />
+  <img alt="Invite team member form in the Upstash Console" />
 
 ## Roles
 
@@ -66,4 +66,4 @@ have any active databases, namely all databases under the team should be deleted
 first. To delete your team, first you need to switch your personal account then
 you can delete your team in the team list under `Account > Teams`.
 
-  <img />
+  <img alt="Team member list in the Upstash Console" />

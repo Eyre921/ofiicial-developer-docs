@@ -12,7 +12,7 @@ This approach is ideal when:
 * You want to preserve progress and avoid re-executing successful operations.
 * The failure was a temporary issue that can now be resolved.
 
-  <img />
+  <img alt="Resume a workflow run from the DLQ" />
 
 You can perform this action programmatically as well:
 

@@ -16,11 +16,11 @@ cache to adapt to evolving data needs while maintaining optimal performance.
 * You can enable eviction by checking **Eviction** checkbox while creating a new
   database:
 
-    <img />
+    <img alt="Enable eviction when creating a Redis database" />
 
 * Or for an existing database by clicking **Enable** in Configuration/Eviction
   box in the database details page:
-    <img />
+    <img alt="Manage Redis eviction in the Upstash Console" />
 
 Upstash currently uses a single eviction algorithm, called
 **optimistic-volatile**, which is a combination of _volatile-random_ and

@@ -27,11 +27,11 @@ Cosine similarity measures the cosine of the angle between two vectors. It is pa
 
   <img
     className="block h-32 dark:hidden"
-    src="/img/vector/cosine_similarity.svg"
+    src="/img/vector/cosine_similarity.svg" alt="Cosine similarity graph"
   />
   <img
     className="hidden h-32 dark:block"
-    src="/img/vector/cosine_similarity_dark.svg"
+    src="/img/vector/cosine_similarity_dark.svg" alt="Cosine similarity graph"
   />
 
 #### Euclidean Distance
@@ -48,11 +48,11 @@ Euclidean distance calculates the straight-line distance between two vectors in 
 
   <img
     className="block h-32 dark:hidden"
-    src="/img/vector/squared_distance.svg"
+    src="/img/vector/squared_distance.svg" alt="Squared distance graph"
   />
   <img
     className="hidden h-32 dark:block"
-    src="/img/vector/squared_distance_dark.svg"
+    src="/img/vector/squared_distance_dark.svg" alt="Squared distance graph"
   />
 
 #### Dot Product
@@ -68,8 +68,8 @@ Note that to use dot product, the vectors needs to be normalized to be of unit l
 **Score calculation:**
 ` (1 + dot_product(v1, v2)) / 2`
 
-  <img className="block h-32 dark:hidden" />
+  <img className="block h-32 dark:hidden" alt="Dot product similarity graph" />
   <img
     className="hidden h-32 dark:block"
-    src="/img/vector/dot_product_dark.svg"
+    src="/img/vector/dot_product_dark.svg" alt="Dot product similarity graph"
   />

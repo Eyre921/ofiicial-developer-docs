@@ -16,7 +16,7 @@ This feature is particularly helpful for:
 
 By manually rerunning this function, you can ensure that critical operations—such as cleanup tasks, logging, or alerting—complete successfully even if the main workflow has failed.
 
-  <img />
+  <img alt="Retry a failed workflow callback" />
 
 You can perform this action programmatically as well:
 

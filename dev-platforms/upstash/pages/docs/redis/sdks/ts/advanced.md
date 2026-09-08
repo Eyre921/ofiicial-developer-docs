@@ -225,7 +225,6 @@ const redis = new Redis({
 - [XREADGROUP](https://upstash.com/docs/redis/sdks/ts/commands/stream/xreadgroup.md): Reads data from a stream as part of a consumer group.
 - [XREVRANGE](https://upstash.com/docs/redis/sdks/ts/commands/stream/xrevrange.md): Returns stream entries matching a given range of IDs in reverse order.
 - [XTRIM](https://upstash.com/docs/redis/sdks/ts/commands/stream/xtrim.md): Trims the stream by removing entries to keep it at a reasonable size.
-- [String Commands](https://upstash.com/docs/redis/sdks/ts/commands/string.md)
 - [APPEND](https://upstash.com/docs/redis/sdks/ts/commands/string/append.md): Append a value to a string stored at key.
 - [DECR](https://upstash.com/docs/redis/sdks/ts/commands/string/decr.md): Decrement the integer value of a key by one
 - [DECRBY](https://upstash.com/docs/redis/sdks/ts/commands/string/decrby.md): Decrement the integer value of a key by a given number.

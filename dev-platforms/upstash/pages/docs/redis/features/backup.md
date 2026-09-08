@@ -23,7 +23,7 @@ To create a backup right now:
 * Click on the `Backup & Export` button
 * Choose `Backup`
 
-  <img width="800" />
+  <img alt="Export a Redis backup" width="800" />
 
 Backup process will start and will appear in the backups table below.
 
@@ -34,7 +34,7 @@ To automatically create backups on a regular schedule:
 * Go to the database details page and navigate to the `Backups` tab
 * Click the switch next to `Daily Backup` to enable daily backup or click on `Daily Backup` text itself to select how long the backup is to be stored (1 or 3 days)
 
-  <img width="800" />
+  <img alt="Enable daily Redis backups" width="800" />
 
 With daily backups enabled, your database will be automatically backed up every day.
 
@@ -63,7 +63,7 @@ To restore from a backup of the current database:
 * Click on the `Restore` button next to the backup
 * Confirm that you are deleting existing data and want to proceed with the restore
 
-  <img width="800" />
+  <img alt="Select a Redis backup to restore" width="800" />
 
 ### Restore from Any Database Backup
 
@@ -75,7 +75,7 @@ To restore from a backup created from any database in your account or team:
 * Select the backup you want to restore
 * Click on `Start Restore`
 
-  <img width="700" />
+  <img alt="Confirm a Redis backup restore" width="700" />
 
 ### Restore from the Redis List Page
 

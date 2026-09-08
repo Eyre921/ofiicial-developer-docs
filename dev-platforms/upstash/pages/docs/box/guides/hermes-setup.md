@@ -16,7 +16,7 @@ Create a keep-alive box with the **Medium** size. See the [quickstart](/docs/box
   Hermes is resource-intensive, so we recommend starting with a Medium box to ensure a smooth installation.
 </Note>
 
-<img />
+<img alt="Create a Box for Hermes" />
 
 ***
 
@@ -30,7 +30,7 @@ The `box-id` is the name of your box (e.g. `right-flamingo-14486`).
 ssh <box-id>@us-east-1.box.upstash.com
 ```
 
-<img />
+<img alt="SSH connection to the Hermes Box" />
 
 ***
 
@@ -52,7 +52,7 @@ Congratulations! You have successfully set up Hermes on your Upstash Box.
 
 To ensure Hermes restarts automatically if the box crashes, set the startup command as an init script from the Upstash Console.
 
-<img />
+<img alt="Hermes init script in the Upstash Console" />
 
 The init script to use:
 

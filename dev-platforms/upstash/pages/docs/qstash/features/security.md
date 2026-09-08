@@ -10,7 +10,7 @@ When interacting with the QStash API, you will need an authorization token. To
 get your token, go to the [QStash tab in the Console](https://console.upstash.com/qstash),
 pick a region, and copy the `QSTASH_TOKEN` from the **Quickstart** section.
 
-  <img />
+  <img alt="QStash environment variables in the Upstash Console" />
 
 Send this token along with every request made to `QStash` inside the
 `Authorization` header like this:

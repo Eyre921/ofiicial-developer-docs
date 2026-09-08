@@ -6,7 +6,7 @@ path: docs/workflow/features/flow-control/monitor
 
 You can monitor wait list size of your flow control key's from the console `FlowControl` tab. The console also allows you to pin, unpin, and reset rate for flow control keys directly.
 
-  <img />
+  <img alt="Flow control configuration in the Upstash Console" />
 
 Also you can get the same info using the REST API.
 * [List All Flow Control Keys](/docs/workflow/api-reference/flow-control/list-flow-control-keys).
