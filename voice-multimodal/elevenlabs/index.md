@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1299 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1300 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -1032,6 +1032,7 @@
 - `docs/help-center/product/distribution-publishing/gen-fm/how-much-does-gen-fm-cost` — [How much does GenFM cost?](pages/docs/help-center/product/distribution-publishing/gen-fm/how-much-does-gen-fm-cost.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/gen-fm/how-much-does-gen-fm-cost.md)
 - `docs/help-center/product/distribution-publishing/gen-fm/what-is-gen-fm` — [What is GenFM?](pages/docs/help-center/product/distribution-publishing/gen-fm/what-is-gen-fm.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/gen-fm/what-is-gen-fm.md)
 - `docs/help-center/product/dubbing` — [Dubbing FAQ](pages/docs/help-center/product/dubbing.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing.md)
+- `docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api` — [Can I edit and regenerate Dubbing v2 via the API?](pages/docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api.md)
 - `docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing` — [Do you offer lip sync in Dubbing?](pages/docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing.md)
 - `docs/help-center/product/dubbing/how-do-i-access-dubbing-studio` — [How do I access Dubbing Studio?](pages/docs/help-center/product/dubbing/how-do-i-access-dubbing-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/how-do-i-access-dubbing-studio.md)
 - `docs/help-center/product/dubbing/how-much-does-dubbing-cost` — [How much does Dubbing cost?](pages/docs/help-center/product/dubbing/how-much-does-dubbing-cost.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/how-much-does-dubbing-cost.md)

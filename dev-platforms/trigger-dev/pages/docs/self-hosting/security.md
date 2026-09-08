@@ -8,6 +8,11 @@ How to report security issues in Trigger.dev, our response targets, and how self
 
 We take the security of Trigger.dev seriously, for both Cloud and self-hosted deployments. This page covers how to report a vulnerability, what to expect, and how to stay informed about security releases.
 
+<Note>
+  Unlike Trigger.dev Cloud, the self-hosted setup is optimized for single-tenant use, with code and
+  users you trust. It is not designed to run untrusted code or untrusted payloads.
+</Note>
+
 <Warning>
   Do not report security vulnerabilities through public GitHub issues, pull requests, or Discord. Use one of the private channels below.
 </Warning>

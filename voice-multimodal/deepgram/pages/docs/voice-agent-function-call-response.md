@@ -20,6 +20,7 @@ This message completes a function call flow. It provides the output of the funct
 
 * If the [request](./voice-agent-function-call-request) was marked `client_side: true`, the client sends the `FunctionCallResponse`.
 * If the request had `client_side: false`, the server sends this message after processing the function.
+* Send no response for a call named in a [`FunctionCallCancelled`](/docs/voice-agent-function-call-cancelled). The turn resumed, the call is void, and a late response is dropped.
 
 ## Fields
 
@@ -44,3 +45,4 @@ In this example, the client (or server) returns the result of calling the `get_w
 ## Related messages
 
 * [`FunctionCallRequest`](./voice-agent-function-call-request): The message that triggers a function to be called.
+* [`FunctionCallCancelled`](/docs/voice-agent-function-call-cancelled): Tells you a request is void and needs no response.

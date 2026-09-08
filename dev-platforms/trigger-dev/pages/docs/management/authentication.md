@@ -6,7 +6,7 @@ path: docs/management/authentication
 
 Authenticating with the Trigger.dev management API
 
-There are two methods of authenticating with the management API: using a secret key associated with a specific environment in a project (`secretKey`), or using a personal access token (`personalAccessToken`). Both methods should only be used in a backend server, as they provide full access to the project.
+There are two methods of authenticating with the management API: using a named API key associated with a specific environment in a project (`secretKey`), or using a personal access token (`personalAccessToken`). Use both methods only on a backend server. An environment API key's access is limited by the preset and task restrictions selected when you create it.
 
 <Note>
   There is a separate authentication strategy when making requests from your frontend application.
@@ -21,7 +21,7 @@ import { configure, runs } from "@trigger.dev/sdk";
 
 // Using secretKey authentication
 configure({
-  secretKey: process.env["TRIGGER_SECRET_KEY"], // starts with tr_dev_, tr_prod_, or tr_preview_
+  secretKey: process.env["TRIGGER_SECRET_KEY"], // starts with tr_dev_sk_, tr_prod_sk_, or tr_preview_sk_
 });
 
 function secretKeyExample() {
@@ -72,9 +72,9 @@ function personalAccessTokenExample() {
   | `schedules.del`        | ✅          |                       |
 </Accordion>
 
-### Secret key
+### Environment API key
 
-Secret key authentication scopes the API access to a specific environment in a project, and works with certain endpoints. You can read our [API Keys guide](/docs/apikeys) for more information.
+Create a named environment API key with the narrowest access preset that supports your integration. Pass it through the `secretKey` option or `TRIGGER_SECRET_KEY` environment variable. Read the [API Keys guide](/docs/apikeys) for available presets and task restrictions.
 
 ### Personal Access Token (PAT)
 

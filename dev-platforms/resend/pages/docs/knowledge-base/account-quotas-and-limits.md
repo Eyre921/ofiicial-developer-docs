@@ -24,7 +24,7 @@ These limits help improve your deliverability and likelihood of reaching your re
 
 Free accounts have the following:
 
-* Transactional emails: daily email quota of 100 emails/day and 3,000 emails/month. This quota includes both sent and received emails. Multiple `To`, `CC`, or `BCC` recipients in sent emails count as separate emails towards this quota.
+* Transactional emails: daily email quota of 100 emails/day and 3,000 emails/month. This quota includes both sent and received emails. Multiple `To`, `CC`, or `BCC` recipients in sent emails count as separate emails towards this quota. The daily quota is a UTC calendar day (00:00–24:00 UTC) and resets at midnight UTC. It is not a rolling 24-hour window from your first send or from when you hit the limit.
 
 * Marketing emails: unlimited emails to up to 1,000 contacts per month.
 

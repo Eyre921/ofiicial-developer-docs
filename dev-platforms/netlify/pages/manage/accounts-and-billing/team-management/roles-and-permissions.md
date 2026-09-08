@@ -19,7 +19,11 @@ A role defines a standard set of permissions that a person has by default once t
 
 Since Netlify roles are optimized for cross-functional collaboration across the Netlify platform, a role can determine a person's access to different parts of the platform. An Owner can also customize project access for certain roles.
 
-A Team Owner can manage team roles and invite or remove new members from the **Members** page in **Team Settings** unless you've set up [SCIM](/manage/security/secure-netlify-access/directory-sync) to manage access control through an identity provider. Learn more about your options to [manage a team](/manage/accounts-and-billing/team-management/manage-team-members).
+A Team Owner can manage team roles and invite or remove new members from 
+### NavigationPath Component:
+
+Team settings > Members
+ unless you've set up [SCIM](/manage/security/secure-netlify-access/directory-sync) to manage access control through an identity provider. Learn more about your options to [manage a team](/manage/accounts-and-billing/team-management/manage-team-members).
 
 To optimize content publishing workflows, a Team Owner, Developer, or Publisher can customize even more granular [editorial permissions](/manage/visual-editor/editorial-permissions/) for Visual Editor.
 
@@ -242,7 +246,7 @@ If you're a Team Owner, you can add new Git Contributors to your team [manually 
 
 On the Credit Pro plan, team member seats are unlimited and included in your plan at no additional cost. [Learn more about Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/), or see the [April 2026 pricing update](https://www.netlify.com/changelog/2026-04-14-pricing-updates-april-2026/).
 
-On the Credit Pro plan, Git Contributors are included in your plan at no additional cost. The Members page shows a list of your team's active and inactive Git Contributors.
+On the Credit Pro plan, Git Contributors are included in your plan at no additional cost. The **Team settings > Members** page shows a list of your team's active and inactive Git Contributors.
 
 If you are on a Legacy Pro plan, you will be charged for Git Contributors who have triggered a deploy during your team's billing period. These active Git Contributors also contribute to your [total member count](https://www.netlify.com/pricing/?category=developer#features-members). If a Git Contributor hasn't collaborated on any of your team's sites during a billing period, they will be marked as inactive and you will not be charged for them. If needed, you can [remove inactive Git Contributors](/manage/accounts-and-billing/team-management/manage-team-members#delete-inactive-git-contributors) from your team.
 

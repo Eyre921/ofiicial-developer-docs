@@ -109,16 +109,22 @@ The Stripe Reader S700/S710 software consists of four components: the reader app
 
 | Countries | Reader | Firmware | Configuration | ROM |
 | --- | --- | --- | --- | --- |
-| US | `2.44.1.0` | `1.00.06.00` | `szzz_us_v11` | `2.2.22` |
-| CA | `2.44.1.0` | `1.00.06.00` | `szzz_ca_v4` | `2.2.22` |
-| AU | `2.44.1.0` | `1.00.06.00` | `szzz_prod_au_v11` | `2.2.22` |
-| MYNZ | `2.44.1.0` | `1.00.06.00` | `szzz_prod_apac_on_v5` | `2.2.22` |
-| SG | `2.44.1.0` | `1.00.06.00` | `szzz_prod_apac_on_v5` | `2.2.22` |
-| GBIEFI | `2.44.1.0` | `1.00.06.00` | `szzz_prod_eu_off_v3` | `2.2.22` |
-| ATBEDKFRITDENLESSECZLUPTCHNO | `2.44.1.0` | `1.00.06.00` | `szzz_prod_eu_on_v5` | `2.2.22` |
-| BGHRCYEEHULVLILTMTROSKSI | `2.44.1.0` | `1.00.06.00` | `szzz_prod_roeu_on_v2` | `2.2.22` |
+| US | `2.45.6.0` | `1.00.07.00` | `szzz_us_v11` | `2.2.24` |
+| CA | `2.45.6.0` | `1.00.07.00` | `szzz_ca_v4` | `2.2.24` |
+| AU | `2.45.6.0` | `1.00.07.00` | `szzz_prod_au_v11` | `2.2.24` |
+| MYNZ | `2.45.6.0` | `1.00.07.00` | `szzz_prod_apac_on_v5` | `2.2.24` |
+| SG | `2.45.6.0` | `1.00.07.00` | `szzz_prod_apac_on_v5` | `2.2.24` |
+| GBIEFI | `2.45.6.0` | `1.00.07.00` | `szzz_prod_eu_off_v3` | `2.2.24` |
+| ATBEDKFRITDENLESSECZLUPTCHNO | `2.45.6.0` | `1.00.07.00` | `szzz_prod_eu_on_v5` | `2.2.24` |
+| BGHRCYEEHULVLILTMTROSKSI | `2.45.6.0` | `1.00.07.00` | `szzz_prod_roeu_on_v2` | `2.2.24` |
 
 ### Reader software changelog
+
+#### 2026-09-08 (version 2.45.6.0)
+
+- Bug fix: Fixes tip selection screens on the reader so long translated text displays properly without being cut off.
+- Bug fix: Fixed a bug where the reader app occasionally experienced auto-disconnects when in countertop mode.
+- General bug fixes and improvements.
 
 #### 2026-08-04 (version 2.44.1.0)
 
@@ -348,6 +354,7 @@ The Stripe Reader S700/S710 software consists of four components: the reader app
 
 | Version | Release date | Description |
 | --- | --- | --- |
+| `1.00.07.00` | `2026-09-08` | - General bug fixes and improvements. |
 | `1.00.06.00` | `2026-08-04` | - General bug fixes and improvements. |
 | `1.00.05.00` | `2026-06-30` | - General bug fixes and improvements. |
 | `1.00.04.00` | `2026-05-26` | - General bug fixes and improvements. |

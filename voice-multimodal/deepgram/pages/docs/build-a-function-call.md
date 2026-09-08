@@ -20,6 +20,8 @@ This example demonstrates a simple client-side function call. When a user asks a
 
 Include the function definition in your `Settings` message under the `agent.think` object.
 
+`get_weather` only reads data, so it is safe to dispatch as soon as the model asks for it. A function that changes something should set `defer_until_eot: true` instead, as [`end_call`](#end-call) does later in this guide. See [`defer_until_eot`](/docs/configure-voice-agent#agentthinkfunctionsdefer_until_eot).
+
 ```json JSON
 {
   "type": "Settings",
@@ -423,6 +425,8 @@ public Map<String, Object> agentFiller(
 
 ### End Call
 
+Ending a call cannot be undone, so this function sets `defer_until_eot: true` in its definition below. The agent holds the call until the user's turn is confirmed, and discards it if the user keeps speaking. See [`defer_until_eot`](/docs/configure-voice-agent#agentthinkfunctionsdefer_until_eot).
+
 ```python Python
 
 async def end_call(websocket, params):
@@ -636,7 +640,9 @@ FUNCTION_DEFINITIONS = [
                 }
             },
             "required": ["farewell_type"]
-        }
+        },
+        # Hanging up cannot be undone, so wait for a confirmed end of turn.
+        "defer_until_eot": True
     }
 ]
 ```

@@ -4,6 +4,22 @@ source: https://docs.fireworks.ai/updates/changelog
 path: updates/changelog
 ---
 
+<Update label="2026-09-08">
+  <Badge>Platform</Badge>
+
+  # Deployment tags and annotation API changes
+
+  Deployment tags are customer-managed entries stored in a deployment's `annotations` map. firectl presents logical keys such as `environment`; the REST API represents the same key as `custom/environment`.
+
+  * **firectl:** Version 1.8.3 adds `deployment tag set`, `unset`, and `list`, including atomic batch operations.
+  * **REST writes:** Customer-managed annotation keys must begin with `custom/`. Bare keys now return HTTP `403` (`PERMISSION_DENIED`).
+  * **REST reads:** For regular account users, `GetDeployment` and `ListDeployments` return only `custom/*` annotation entries. Keys outside that namespace are omitted without an error.
+
+  Existing stored annotations were not rewritten. Clients using a bare key such as `environment` should set `custom/environment` and update reads to use that canonical key.
+
+  See [Deployment Tags](/deployments/deployment-tags) for commands, REST examples, validation rules, and migration guidance.
+</Update>
+
 <Update label="2026-09-01">
   <Badge>Inference</Badge>
 

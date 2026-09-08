@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 316 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 320 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -27,6 +27,7 @@
 - `docs/ai-chat/patterns/database-persistence` — [Database persistence for chat](pages/docs/ai-chat/patterns/database-persistence.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/database-persistence)
 - `docs/ai-chat/patterns/human-in-the-loop` — [Human-in-the-loop](pages/docs/ai-chat/patterns/human-in-the-loop.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/human-in-the-loop)
 - `docs/ai-chat/patterns/large-payloads` — [Large payloads in chat.agent](pages/docs/ai-chat/patterns/large-payloads.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/large-payloads)
+- `docs/ai-chat/patterns/native-compaction` — [Native compaction & provider fallback](pages/docs/ai-chat/patterns/native-compaction.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/native-compaction)
 - `docs/ai-chat/patterns/oom-resilience` — [OOM resilience](pages/docs/ai-chat/patterns/oom-resilience.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/oom-resilience)
 - `docs/ai-chat/patterns/persistence-and-replay` — [Persistence and replay](pages/docs/ai-chat/patterns/persistence-and-replay.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/persistence-and-replay)
 - `docs/ai-chat/patterns/recovery-boot` — [Recovery boot](pages/docs/ai-chat/patterns/recovery-boot.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/recovery-boot)
@@ -136,6 +137,7 @@
 - `docs/guides/examples/lightpanda` — [Lightpanda examples with Trigger.dev](pages/docs/guides/examples/lightpanda.md) · [原文](https://trigger.dev/docs/guides/examples/lightpanda)
 - `docs/guides/examples/open-ai-with-retrying` — [Call OpenAI with retrying](pages/docs/guides/examples/open-ai-with-retrying.md) · [原文](https://trigger.dev/docs/guides/examples/open-ai-with-retrying)
 - `docs/guides/examples/pdf-to-image` — [Turn a PDF into an image using MuPDF](pages/docs/guides/examples/pdf-to-image.md) · [原文](https://trigger.dev/docs/guides/examples/pdf-to-image)
+- `docs/guides/examples/private-gcp-resource` — [Connect to a private GCP resource from a deployed task](pages/docs/guides/examples/private-gcp-resource.md) · [原文](https://trigger.dev/docs/guides/examples/private-gcp-resource)
 - `docs/guides/examples/puppeteer` — [Puppeteer examples with Trigger.dev](pages/docs/guides/examples/puppeteer.md) · [原文](https://trigger.dev/docs/guides/examples/puppeteer)
 - `docs/guides/examples/react-email` — [Send emails using React Email](pages/docs/guides/examples/react-email.md) · [原文](https://trigger.dev/docs/guides/examples/react-email)
 - `docs/guides/examples/react-pdf` — [Generate a PDF using react-pdf and save it to R2](pages/docs/guides/examples/react-pdf.md) · [原文](https://trigger.dev/docs/guides/examples/react-pdf)
@@ -284,6 +286,7 @@
 - `docs/realtime/react-hooks/use-wait-token` — [useWaitToken](pages/docs/realtime/react-hooks/use-wait-token.md) · [原文](https://trigger.dev/docs/realtime/react-hooks/use-wait-token)
 - `docs/realtime/run-object` — [The run object](pages/docs/realtime/run-object.md) · [原文](https://trigger.dev/docs/realtime/run-object)
 - `docs/replaying` — [Replaying](pages/docs/replaying.md) · [原文](https://trigger.dev/docs/replaying)
+- `docs/reports` — [Project health report](pages/docs/reports.md) · [原文](https://trigger.dev/docs/reports)
 - `docs/request-feature` — [Request a feature](pages/docs/request-feature.md) · [原文](https://trigger.dev/docs/request-feature)
 - `docs/roadmap` — [Roadmap](pages/docs/roadmap.md) · [原文](https://trigger.dev/docs/roadmap)
 - `docs/run-tests` — [Run tests](pages/docs/run-tests.md) · [原文](https://trigger.dev/docs/run-tests)
@@ -312,6 +315,7 @@
 - `docs/troubleshooting-debugging-in-vscode` — [Debugging in VS Code](pages/docs/troubleshooting-debugging-in-vscode.md) · [原文](https://trigger.dev/docs/troubleshooting-debugging-in-vscode)
 - `docs/troubleshooting-github-issues` — [GitHub Issues](pages/docs/troubleshooting-github-issues.md) · [原文](https://trigger.dev/docs/troubleshooting-github-issues)
 - `docs/troubleshooting-uptime-status` — [Uptime Status](pages/docs/troubleshooting-uptime-status.md) · [原文](https://trigger.dev/docs/troubleshooting-uptime-status)
+- `docs/troubleshooting-zod` — [Zod](pages/docs/troubleshooting-zod.md) · [原文](https://trigger.dev/docs/troubleshooting-zod)
 - `docs/upgrading-packages` — [How to upgrade the Trigger.dev packages](pages/docs/upgrading-packages.md) · [原文](https://trigger.dev/docs/upgrading-packages)
 - `docs/vercel-integration` — [Vercel integration](pages/docs/vercel-integration.md) · [原文](https://trigger.dev/docs/vercel-integration)
 - `docs/versioning` — [Versioning](pages/docs/versioning.md) · [原文](https://trigger.dev/docs/versioning)

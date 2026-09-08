@@ -233,6 +233,8 @@ firectl deployment get <DEPLOYMENT_ID>
 firectl deployment delete <DEPLOYMENT_ID>
 ```
 
+Use [deployment tags](/deployments/deployment-tags) to attach customer-defined metadata such as an environment, team, or workload.
+
 <Note>
   By default, deployments scale to zero if unused for 1 hour. Deployments with min replicas set to 0 are automatically deleted after 7 days of no traffic.
 </Note>

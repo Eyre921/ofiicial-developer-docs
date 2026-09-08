@@ -213,17 +213,13 @@ This guide shows you how to set up and deploy a simple Supabase edge function ex
   </Step>
 </Steps>
 
-## Set your Trigger.dev prod secret key in the Supabase dashboard
+## Create a Trigger.dev API key for Supabase
 
-To trigger a task from your edge function, you need to set your Trigger.dev secret key in the Supabase dashboard.
-
-To do this, first go to your Trigger.dev [project dashboard](https://cloud.trigger.dev) and copy the `prod` secret key from the API keys page.
-
-<img alt="How to find your prod secret key" />
+Open the API Keys page for your Production environment in the Trigger.dev [project dashboard](https://cloud.trigger.dev). Create a named key with **Trigger only** access and copy it. Trigger.dev shows the complete value only once.
 
 Then, in [Supabase](https://supabase.com/dashboard/projects), select your project, navigate to 'Project settings' <Icon icon="circle-1" />, click 'Edge functions' <Icon icon="circle-2" /> in the configurations menu, and then click the 'Add new secret' <Icon icon="circle-3" /> button.
 
-Add `TRIGGER_SECRET_KEY` <Icon icon="circle-4" /> with the pasted value of your Trigger.dev `prod` secret key.
+Add `TRIGGER_SECRET_KEY` <Icon icon="circle-4" /> with the environment API key you created.
 
 <img alt="Add secret key in Supabase" />
 

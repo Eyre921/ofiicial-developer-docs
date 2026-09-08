@@ -99,10 +99,11 @@ If you have Sentry's default alert ("Alert me on every new issue") turned on for
 
 If you don't have Sentry's default alert turned on, follow these steps to set up alerts for every new feedback:
 
-1. Create a [New Alert](https://sentry.io/alerts/new/issue/) in Sentry.
-2. Scroll to the "Set conditions" section and set the "IF" filter to `The issue's category is equal to… "Feedback"`.
-3. Choose which actions to perform in the “THEN” filter.
-4. Add an alert name and owner.
+1. Go to the [Alerts](https://sentry.io/monitors/alerts) page in Sentry and click **Create Alert**.
+2. Select the project(s) with user feedback set up as the source.
+3. Under **Alert Builder**, add a filter in the `IF` statement - `Issue Category is equal to Feedback`.
+4. Under the `THEN` action statement, choose which actions to perform when the filter matches.
+5. Add an alert name and owner.
 
 To get notifications when crash-report feedback comes in, make sure to turn on "Enable Crash Report Notifications" in Settings > Projects > \[Project Name] > User Feedback.
 
@@ -112,11 +113,12 @@ If you'd like to automatically create an external issue (such as a GitHub or Jir
 
 Follow these steps to set up automated GitHub or Jira issue creation for every new feedback:
 
-1. Create a [New Alert](https://sentry.io/alerts/new/issue/) in Sentry.
-2. Scroll to the "Set conditions" section and set the "IF" filter to `The issue's category is equal to… "Feedback"`.
-3. Under the "THEN" filter actions, scroll to the "Create new\..." section and select the integration you'd like to use.
-4. Default issue link settings, such as the repository, labels, and assignees, can be configured by clicking the "Issue Link Settings" button.
-5. Add an alert name and owner.
+1. Go to the [Alerts](https://sentry.io/monitors/alerts) page in Sentry and click **Create Alert**.
+2. Select the project(s) with user feedback set up as the source.
+3. Under **Alert Builder**, add a filter in the `IF` statement - `Issue Category is equal to Feedback`.
+4. Under the `THEN` action statement, select your [integration](https://docs.sentry.io/integrations.md) for creating issues.
+5. Issue link settings, such as selecting labels and assignees can be configured by clicking the "Action Settings" button.
+6. Add an alert name at the very top of the page.
 
 Once this alert is configured, you should see a GitHub or Jira issue automatically created every time user feedback is submitted.
 

@@ -5394,8 +5394,9 @@ The following models support function-calling fine-tuning. See [supported models
   | Qwen         | Qwen3.6 27B                                        | `Qwen/Qwen3.6-27B`                                   |
   | Moonshot AI  | Kimi K2.7 Code                                     | `moonshotai/Kimi-K2.7-Code`                          |
   | Moonshot AI  | Kimi K2.6                                          | `moonshotai/Kimi-K2.6`                               |
-  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
+  | Z.ai         | GLM 5.3                                            | `zai-org/GLM-5.3`                                    |
   | Z.ai         | GLM 5.2                                            | `zai-org/GLM-5.2`                                    |
+  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
   | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
   | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                |
   | Meta         | Llama 4 Scout 17B 16E Instruct                     | `meta-llama/Llama-4-Scout-17B-16E-Instruct`          |
@@ -6754,8 +6755,9 @@ The following models support reasoning fine-tuning. See [supported models](/docs
   | Qwen         | Qwen3.5 0.8B                                       | `Qwen/Qwen3.5-0.8B`                                  |
   | Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                               |
   | Qwen         | Qwen3.6 27B                                        | `Qwen/Qwen3.6-27B`                                   |
-  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
+  | Z.ai         | GLM 5.3                                            | `zai-org/GLM-5.3`                                    |
   | Z.ai         | GLM 5.2                                            | `zai-org/GLM-5.2`                                    |
+  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
   | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
   | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                |
   | Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                              |
@@ -7034,8 +7036,9 @@ The tables below list every model available through the fine-tuning API. Context
 | Qwen         | Qwen3.6 27B                                        | `Qwen/Qwen3.6-27B`                                   | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
 | Moonshot AI  | Kimi K2.7 Code                                     | `moonshotai/Kimi-K2.7-Code`                          | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
 | Moonshot AI  | Kimi K2.6                                          | `moonshotai/Kimi-K2.6`                               | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
-| Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
+| Z.ai         | GLM 5.3                                            | `zai-org/GLM-5.3`                                    | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
 | Z.ai         | GLM 5.2                                            | `zai-org/GLM-5.2`                                    | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
+| Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
 | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
 | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                | 65536         | 32768         | 2               | 2               | 2         | 8          | 64            |
 | Meta         | Llama 4 Scout 17B 16E Instruct                     | `meta-llama/Llama-4-Scout-17B-16E-Instruct`          | 65536         | 12288         | 8               | 8               | 8         | 1          | 64            |
@@ -21930,45 +21933,40 @@ If you're not sure which vision model to use, we currently recommend **Qwen3.5 9
 
 ## Video models
 
-| Organization      | Model name           | Model string for API        | Price per video | Resolution / duration |
-| :---------------- | :------------------- | :-------------------------- | :-------------- | :-------------------- |
-| MiniMax           | MiniMax 01 Director  | minimax/video-01-director   | \$0.28          | 720p / 5s             |
-| MiniMax           | MiniMax Hailuo 02    | minimax/hailuo-02           | \$0.49          | 768p / 10s            |
-| Google            | Veo 2.0              | google/veo-2.0              | \$2.50          | 720p / 5s             |
-| Google            | Veo 3.0              | google/veo-3.0              | \$1.60          | 720p / 8s             |
-| Google            | Veo 3.0 + Audio      | google/veo-3.0-audio        | \$3.20          | 720p / 8s             |
-| Google            | Veo 3.0 Fast         | google/veo-3.0-fast         | \$0.80          | 1080p / 8s            |
-| Google            | Veo 3.0 Fast + Audio | google/veo-3.0-fast-audio   | \$1.20          | 1080p / 8s            |
-| ByteDance         | Seedance 1.0 Pro     | ByteDance/Seedance-1.0-pro  | \$0.57          | 1080p / 5s            |
-| PixVerse          | PixVerse v5          | pixverse/pixverse-v5        | \$0.30          | 1080p / 5s            |
-| Kuaishou          | Kling 2.1 Master     | kwaivgI/kling-2.1-master    | \$0.92          | 1080p / 5s            |
-| Kuaishou          | Kling 2.1 Standard   | kwaivgI/kling-2.1-standard  | \$0.18          | 720p / 5s             |
-| Kuaishou          | Kling 2.1 Pro        | kwaivgI/kling-2.1-pro       | \$0.32          | 1080p / 5s            |
-| Kuaishou          | Kling 1.6 Standard   | kwaivgI/kling-1.6-standard  | \$0.19          | 720p / 5s             |
-| Vidu              | Vidu 2.0             | vidu/vidu-2.0               | \$0.80          | 720p / 8s             |
-| Vidu              | Vidu Q1              | vidu/vidu-q1                | \$0.22          | 1080p / 5s            |
-| OpenAI            | Sora 2               | openai/sora-2               | \$0.80          | 720p / 8s             |
-| OpenAI            | Sora 2 Pro           | openai/sora-2-pro           | \$2.40          | 1080p / 8s            |
-| PixVerse          | PixVerse v5.6        | pixverse/pixverse-v5.6      | \$0.1326        | -                     |
-| Wan-AI            | Wan 2.7 T2V          | Wan-AI/wan2.7-t2v           | \$0.10          | -                     |
-| Google            | Veo 3.1 Debug Test   | google/veo-3.1-test-debug   | \$0.08          | -                     |
-| Vidu              | Vidu Q3              | vidu/vidu-q3                | \$0.0975        | -                     |
-| Vidu              | Vidu Q3 Turbo        | vidu/vidu-q3-turbo          | \$0.195         | -                     |
-| Wan-AI            | Wan 2.7 I2V          | Wan-AI/wan2.7-i2v           | \$0.10          | -                     |
-| Wan-AI            | Wan 2.7 R2V          | Wan-AI/wan2.7-r2v           | \$0.10          | -                     |
-| PixVerse          | PixVerse v6          | pixverse/pixverse-v6        | \$0.09          | -                     |
-| Alibaba           | HappyHorse 1.0 T2V   | alibaba/happyhorse-1.0-t2v  | \$0.24          | -                     |
-| ByteDance         | Seedance 2.0         | ByteDance/Seedance-2.0      | \$0.16          | -                     |
-| Alibaba           | HappyHorse 1.0 I2V   | alibaba/happyhorse-1.0-i2v  | \$0.24          | -                     |
-| Alibaba           | HappyHorse 1.0 R2V   | alibaba/happyhorse-1.0-r2v  | \$0.24          | -                     |
-| Google            | Veo 3.1              | google/veo-3.1              | \$0.08          | -                     |
-| Google            | Veo 3.1 Lite         | google/veo-3.1-lite         | \$0.05          | -                     |
-| Alibaba           | HappyHorse 1.1 I2V   | alibaba/happyhorse-1.1-i2v  | \$0.14          | -                     |
-| Alibaba           | HappyHorse 1.1 R2V   | alibaba/happyhorse-1.1-r2v  | \$0.14          | -                     |
-| Alibaba           | HappyHorse 1.1 T2V   | alibaba/happyhorse-1.1-t2v  | \$0.14          | -                     |
-| Black Forest Labs | FLUX 3               | black-forest-labs/FLUX-3    | \$0.17          | -                     |
-| ByteDance         | Seedance 2.5         | ByteDance/Seedance-2.5      | \$0.115         | -                     |
-| ByteDance         | Seedance 1.0 Lite    | ByteDance/Seedance-1.0-lite | \$0.143         | 720p / 5s             |
+| Organization      | Model name          | Model string for API        | Price per video | Resolution / duration |
+| :---------------- | :------------------ | :-------------------------- | :-------------- | :-------------------- |
+| MiniMax           | MiniMax 01 Director | minimax/video-01-director   | \$0.28          | 720p / 5s             |
+| MiniMax           | MiniMax Hailuo 02   | minimax/hailuo-02           | \$0.49          | 768p / 10s            |
+| Google            | Veo 2.0             | google/veo-2.0              | \$2.50          | 720p / 5s             |
+| ByteDance         | Seedance 1.0 Pro    | ByteDance/Seedance-1.0-pro  | \$0.57          | 1080p / 5s            |
+| PixVerse          | PixVerse v5         | pixverse/pixverse-v5        | \$0.30          | 1080p / 5s            |
+| Kuaishou          | Kling 2.1 Master    | kwaivgI/kling-2.1-master    | \$0.92          | 1080p / 5s            |
+| Kuaishou          | Kling 2.1 Standard  | kwaivgI/kling-2.1-standard  | \$0.18          | 720p / 5s             |
+| Kuaishou          | Kling 2.1 Pro       | kwaivgI/kling-2.1-pro       | \$0.32          | 1080p / 5s            |
+| Kuaishou          | Kling 1.6 Standard  | kwaivgI/kling-1.6-standard  | \$0.19          | 720p / 5s             |
+| Vidu              | Vidu Q1             | vidu/vidu-q1                | \$0.22          | 1080p / 5s            |
+| OpenAI            | Sora 2              | openai/sora-2               | \$0.80          | 720p / 8s             |
+| OpenAI            | Sora 2 Pro          | openai/sora-2-pro           | \$2.40          | 1080p / 8s            |
+| PixVerse          | PixVerse v5.6       | pixverse/pixverse-v5.6      | \$0.1326        | -                     |
+| Wan-AI            | Wan 2.7 T2V         | Wan-AI/wan2.7-t2v           | \$0.10          | -                     |
+| Google            | Veo 3.1 Debug Test  | google/veo-3.1-test-debug   | \$0.08          | -                     |
+| Vidu              | Vidu Q3             | vidu/vidu-q3                | \$0.0975        | -                     |
+| Vidu              | Vidu Q3 Turbo       | vidu/vidu-q3-turbo          | \$0.195         | -                     |
+| Wan-AI            | Wan 2.7 I2V         | Wan-AI/wan2.7-i2v           | \$0.10          | -                     |
+| Wan-AI            | Wan 2.7 R2V         | Wan-AI/wan2.7-r2v           | \$0.10          | -                     |
+| PixVerse          | PixVerse v6         | pixverse/pixverse-v6        | \$0.09          | -                     |
+| Alibaba           | HappyHorse 1.0 T2V  | alibaba/happyhorse-1.0-t2v  | \$0.24          | -                     |
+| ByteDance         | Seedance 2.0        | ByteDance/Seedance-2.0      | \$0.16          | -                     |
+| Alibaba           | HappyHorse 1.0 I2V  | alibaba/happyhorse-1.0-i2v  | \$0.24          | -                     |
+| Alibaba           | HappyHorse 1.0 R2V  | alibaba/happyhorse-1.0-r2v  | \$0.24          | -                     |
+| Google            | Veo 3.1             | google/veo-3.1              | \$0.08          | -                     |
+| Google            | Veo 3.1 Lite        | google/veo-3.1-lite         | \$0.05          | -                     |
+| Alibaba           | HappyHorse 1.1 I2V  | alibaba/happyhorse-1.1-i2v  | \$0.14          | -                     |
+| Alibaba           | HappyHorse 1.1 R2V  | alibaba/happyhorse-1.1-r2v  | \$0.14          | -                     |
+| Alibaba           | HappyHorse 1.1 T2V  | alibaba/happyhorse-1.1-t2v  | \$0.14          | -                     |
+| Black Forest Labs | FLUX 3              | black-forest-labs/FLUX-3    | \$0.17          | -                     |
+| ByteDance         | Seedance 2.5        | ByteDance/Seedance-2.5      | \$0.115         | -                     |
+| ByteDance         | Seedance 1.0 Lite   | ByteDance/Seedance-1.0-lite | \$0.143         | 720p / 5s             |
 
 ## Audio models
 
@@ -48002,6 +48000,25 @@ Requires a Bearer API key in the `Authorization` header. Cookie, session, and SL
 Source: https://docs.together.ai/docs/changelog
 
 
+
+<Update label="September 1, 2026">
+  ## Pricing update
+
+  H100 80GB dedicated endpoint hardware is now \$3.99 per hour, down from \$5.49.
+
+  See [Dedicated endpoint pricing](/docs/dedicated-endpoints/pricing).
+
+  ## Model deprecations
+
+  The following models are deprecated and will be removed from serverless on September 14, 2026:
+
+  * `openai/gpt-oss-20b`. Recommended replacement: `Qwen/Qwen3.5-9B`.
+  * `google/gemma-4-31B-it`. Recommended replacement: `zai-org/GLM-5.3-Flash`.
+  * `thinkingmachines/Inkling-Small`. Recommended replacement: `zai-org/GLM-5.3-Flash`.
+  * `intfloat/multilingual-e5-large-instruct`.
+
+  All except `intfloat/multilingual-e5-large-instruct` remain available through on-demand [dedicated endpoints](/docs/dedicated-endpoints). See [Deprecations](/docs/deprecations) for migration options.
+</Update>
 
 <Update label="August 31, 2026">
   ## New serverless models

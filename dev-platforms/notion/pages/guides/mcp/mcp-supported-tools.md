@@ -359,7 +359,7 @@ An MCP client can call several tools in one task. For example, it can search for
       asks a workspace owner to manage billing, and `current_tool_access` reports
       the tools as `not_enabled`.
 
-      A connection that lacks the "View threads and interact with agents"
+      A connection that lacks the "View sessions and interact with agents"
       capability does not advertise these tools or include them in
       `current_tool_access`. Disconnect and reconnect Notion, or enable the
       capability in the integration's settings and re-authorize.

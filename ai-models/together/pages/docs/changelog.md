@@ -4,6 +4,25 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="September 1, 2026">
+  ## Pricing update
+
+  H100 80GB dedicated endpoint hardware is now \$3.99 per hour, down from \$5.49.
+
+  See [Dedicated endpoint pricing](/docs/dedicated-endpoints/pricing).
+
+  ## Model deprecations
+
+  The following models are deprecated and will be removed from serverless on September 14, 2026:
+
+  * `openai/gpt-oss-20b`. Recommended replacement: `Qwen/Qwen3.5-9B`.
+  * `google/gemma-4-31B-it`. Recommended replacement: `zai-org/GLM-5.3-Flash`.
+  * `thinkingmachines/Inkling-Small`. Recommended replacement: `zai-org/GLM-5.3-Flash`.
+  * `intfloat/multilingual-e5-large-instruct`.
+
+  All except `intfloat/multilingual-e5-large-instruct` remain available through on-demand [dedicated endpoints](/docs/dedicated-endpoints). See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
 <Update label="August 31, 2026">
   ## New serverless models
 

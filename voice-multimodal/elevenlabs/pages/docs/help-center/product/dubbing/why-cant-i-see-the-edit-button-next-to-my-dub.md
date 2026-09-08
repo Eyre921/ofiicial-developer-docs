@@ -8,8 +8,10 @@ path: docs/help-center/product/dubbing/why-cant-i-see-the-edit-button-next-to-my
 
 # Why can't I see the edit button next to my dub?
 
-By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are completely automatic without any option to edit the content.
+By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are automatic. There is no in-app edit button for Dubbing v2.
 
-The edit button is only available when using Dubbing Studio, which is only available for our legacy v1 Dubbing model. To use Dubbing Studio, you will need to select **Use legacy v1 Dubbing model** in the **Advanced** options when you create your dub, then check the **Create Dubbing project** option.
+The edit button is only available when using Dubbing Studio, which is only available for our legacy v1 Dubbing model. To use Dubbing Studio, choose **Dubbing v1** as the model, then select **Dubbing project**.
+
+For Dubbing v2, you can edit transcripts and regenerate audio via the API on Enterprise plans only.
 
 **Note:** Dubbing Studio is in maintenance mode and receives critical bug fixes only.

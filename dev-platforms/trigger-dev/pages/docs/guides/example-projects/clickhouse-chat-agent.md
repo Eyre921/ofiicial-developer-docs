@@ -249,11 +249,11 @@ const runQuery = tool({
 
 ### Running it
 
-The example needs `CLICKHOUSE_URL` and `ANTHROPIC_API_KEY` set in the Trigger.dev dashboard on the [Environment Variables page](/docs/deploy-environment-variables), and `TRIGGER_PROJECT_REF` plus `TRIGGER_SECRET_KEY` in the local `.env` for the Next.js server actions:
+The example needs `CLICKHOUSE_URL` and `ANTHROPIC_API_KEY` set in the Trigger.dev dashboard on the [Environment Variables page](/docs/deploy-environment-variables). Create a named **Trigger only** API key in your Development environment, then set `TRIGGER_PROJECT_REF` and `TRIGGER_SECRET_KEY` in the local `.env` for the Next.js server actions:
 
 ```bash .env theme={"theme":"css-variables"}
 TRIGGER_PROJECT_REF=proj_xxxxxxxxxxxxxxxxxxxxxxxx
-TRIGGER_SECRET_KEY=tr_dev_xxxxxxxxxxxxxxxxxxxxxxxx
+TRIGGER_SECRET_KEY=tr_dev_sk_xxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 Run the agent and the app in two terminals, then open [http://localhost:3000](http://localhost:3000):

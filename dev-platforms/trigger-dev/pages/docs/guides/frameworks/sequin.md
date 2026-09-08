@@ -192,7 +192,7 @@ You'll now create an API endpoint that will receive posts from Sequin and then t
 
     The `SEQUIN_WEBHOOK_SECRET` ensures that only Sequin can access your API endpoint.
 
-    The `TRIGGER_SECRET_KEY` is used to authenticate requests to Trigger.dev and can be found in the **API keys** tab of the Trigger.dev dashboard.
+    Create a named key with **Trigger only** access in the Trigger.dev environment your app uses, then set it as `TRIGGER_SECRET_KEY`.
 
     The `OPENAI_API_KEY` and `DATABASE_URL` are used to create an embedding using OpenAI and connect to your database. Be sure to add these as [environment variables](https://trigger.dev/docs/deploy-environment-variables) in Trigger.dev as well.
   </Step>

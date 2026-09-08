@@ -575,19 +575,23 @@ Valid `--group-by` / `groupBy` and `--filter` / `filter` dimensions depend on th
 * **Serverless**: `model_name`, `api_key_id`, `api_key_name`, `annotations.team`, `annotations.project`, `annotations.environment`
 * **Dedicated deployment**: `deployment_name`, `accelerator_type`, `annotations.team`, `annotations.project`, `annotations.environment`
 
-The `annotations.*` dimensions require an **Enterprise** plan (see [Custom tags](#custom-tags-team--project--environment)); the other dimensions are available to all accounts.
+The `annotations.*` dimensions require an **Enterprise** plan (see [Usage annotations](#usage-annotations-team--project--environment)); the other dimensions are available to all accounts.
 
 Dedicated-deployment rows also include the deployment's region (`placement`, e.g. `US`, `EUROPE`, `GLOBAL`) and metered `accelerator_seconds`.
 
-## Custom tags (team / project / environment)
+## Usage annotations (team / project / environment)
 
 <Note>
-  Breaking usage down by annotations (`annotations.team` / `annotations.project` / `annotations.environment`) requires an **Enterprise** plan. Grouping or filtering by an annotation dimension without it returns HTTP `400` (`FAILED_PRECONDITION`); breakdowns by model, API key, or deployment remain available to all accounts. Annotation tags are still recorded on your usage regardless of plan, so past usage is immediately available for these breakdowns once an account is on Enterprise.
+  Breaking usage down by annotations (`annotations.team` / `annotations.project` / `annotations.environment`) requires an **Enterprise** plan. Grouping or filtering by an annotation dimension without it returns HTTP `400` (`FAILED_PRECONDITION`); breakdowns by model, API key, or deployment remain available to all accounts. Supported usage annotations from the sources described below are recorded on usage regardless of plan, so past usage containing them becomes available for these breakdowns once the account is on Enterprise.
+</Note>
+
+<Note>
+  Deployment tags and usage annotations are separate features. Tags managed with `firectl deployment tag` or stored under `custom/*` do not populate the `annotations.team`, `annotations.project`, or `annotations.environment` billing dimensions.
 </Note>
 
 Group by `annotations.team`, `annotations.project`, or `annotations.environment` to split usage by your own labels. The tag source depends on usage type:
 
-* **Dedicated deployments**: set an `annotations` map on the deployment, e.g. `{"team": "search", "project": "x", "environment": "prod"}`.
+* **Dedicated deployments**: existing `team`, `project`, and `environment` annotations remain unchanged and continue to appear in usage reports. New values cannot currently be configured through customer-facing deployment tag APIs.
 * **Serverless**: send a per-request header on inference calls:
 
   ```http theme={null}
@@ -2774,6 +2778,149 @@ This implementation:
 
 * Uses `AsyncFireworks` for non-blocking async requests with optimized connection pooling
 * Uses `asyncio.Semaphore` to control concurrency to avoid overwhelming the server
+
+
+# Deployment Tags
+Source: https://docs.fireworks.ai/deployments/deployment-tags
+
+Attach customer-defined metadata to dedicated deployments
+
+Deployment tags are key-value metadata attached to a dedicated deployment. Use them to record information such as an environment, team, or workload.
+
+Tag changes are atomic and do not replace other deployment metadata.
+
+## Manage tags with firectl
+
+Upgrade firectl before using the tag commands:
+
+```bash theme={null}
+firectl upgrade
+```
+
+These commands require firectl `1.8.3` or later.
+
+Set one tag:
+
+```bash theme={null}
+firectl deployment tag set <DEPLOYMENT_ID> --key environment --value prod
+```
+
+Set multiple tags atomically:
+
+```bash theme={null}
+firectl deployment tag set <DEPLOYMENT_ID> \
+  --tag environment=prod \
+  --tag team=search
+```
+
+Use either `--key` with `--value` or one or more `--tag` flags. Do not combine the two forms in one command.
+
+List tags:
+
+```bash theme={null}
+firectl deployment tag list <DEPLOYMENT_ID>
+```
+
+Remove one or more tags atomically:
+
+```bash theme={null}
+firectl deployment tag unset <DEPLOYMENT_ID> \
+  --key environment \
+  --key team
+```
+
+`set` overwrites existing values for the specified keys. `unset` ignores keys that do not exist. Each command changes all supplied keys in one request or makes no changes.
+
+<Note>
+  firectl uses logical tag keys and manages the API's `custom/` prefix for you. Do not add that prefix to firectl keys. For example, `--key environment` writes the API key `custom/environment`; `--key custom/environment` writes `custom/custom/environment`.
+</Note>
+
+## Manage tags with the REST API
+
+The REST API exposes canonical tag keys. Customer-managed keys must begin with `custom/`.
+
+Set one or more tags:
+
+```bash theme={null}
+curl --request POST \
+  --url "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/deployments/${DEPLOYMENT_ID}:setTags" \
+  --header "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "tags": {
+      "custom/environment": "prod",
+      "custom/team": "search"
+    }
+  }'
+```
+
+Remove one or more tags:
+
+```bash theme={null}
+curl --request POST \
+  --url "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/deployments/${DEPLOYMENT_ID}:deleteTags" \
+  --header "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "keys": [
+      "custom/environment",
+      "custom/team"
+    ]
+  }'
+```
+
+The set and delete endpoints modify only the supplied keys. Other tags and Fireworks-managed annotations remain unchanged.
+
+### Add tags when creating a deployment
+
+Direct API clients can include canonical keys in the deployment's `annotations` map:
+
+```json theme={null}
+{
+  "annotations": {
+    "custom/environment": "prod",
+    "custom/team": "search"
+  }
+}
+```
+
+<Warning>
+  Bare annotation keys such as `environment`, `team`, or `project` are not customer-writable. Deployment creation requests containing them return `403 PERMISSION_DENIED`. Prefix customer-managed keys with `custom/`, or create the deployment and use `firectl deployment tag set`.
+</Warning>
+
+To change tags after creation, use `:setTags` and `:deleteTags`. Regular account callers cannot replace the complete `annotations` map through `UpdateDeployment`.
+
+## Read tags
+
+For regular account users, `GetDeployment` and `ListDeployments` return only customer-owned deployment tags, with the canonical `custom/` prefix:
+
+```json theme={null}
+{
+  "annotations": {
+    "custom/environment": "prod",
+    "custom/team": "search"
+  }
+}
+```
+
+firectl's `deployment tag list` command shows deployment tags and removes one leading `custom/` prefix from each displayed key.
+
+<Warning>
+  Regular account responses no longer include legacy bare annotation keys. A client that previously read `annotations["environment"]`, for example, now receives no value and no error for that key. Set the canonical `custom/environment` tag and read `annotations["custom/environment"]` instead.
+</Warning>
+
+## Validation
+
+* A deployment can have at most 64 customer tags.
+* firectl logical keys can contain 1–121 ASCII characters. API keys can contain at most 128 characters, including `custom/`.
+* The `custom/` API prefix is case-sensitive.
+* The firectl logical key—and the portion of a REST key after `custom/`—may contain ASCII letters, digits, `-`, `_`, `.`, and `/`. It must start and end with an ASCII letter or digit.
+* Values must be non-empty valid UTF-8 with at most 128 Unicode code points.
+* Values cannot have leading or trailing whitespace or contain control characters.
+
+## Deployment list filtering
+
+Tag filtering in `ListDeployments` and `firectl deployment list` is not currently supported.
 
 
 # Exporting Metrics
@@ -19081,6 +19228,8 @@ firectl deployment get <DEPLOYMENT_ID>
 firectl deployment delete <DEPLOYMENT_ID>
 ```
 
+Use [deployment tags](/deployments/deployment-tags) to attach customer-defined metadata such as an environment, team, or workload.
+
 <Note>
   By default, deployments scale to zero if unused for 1 hour. Deployments with min replicas set to 0 are automatically deleted after 7 days of no traffic.
 </Note>
@@ -30816,6 +30965,22 @@ Quickstart](/getting-started/quickstart).
 Source: https://docs.fireworks.ai/updates/changelog
 
 
+
+<Update label="2026-09-08">
+  <Badge>Platform</Badge>
+
+  # Deployment tags and annotation API changes
+
+  Deployment tags are customer-managed entries stored in a deployment's `annotations` map. firectl presents logical keys such as `environment`; the REST API represents the same key as `custom/environment`.
+
+  * **firectl:** Version 1.8.3 adds `deployment tag set`, `unset`, and `list`, including atomic batch operations.
+  * **REST writes:** Customer-managed annotation keys must begin with `custom/`. Bare keys now return HTTP `403` (`PERMISSION_DENIED`).
+  * **REST reads:** For regular account users, `GetDeployment` and `ListDeployments` return only `custom/*` annotation entries. Keys outside that namespace are omitted without an error.
+
+  Existing stored annotations were not rewritten. Clients using a bare key such as `environment` should set `custom/environment` and update reads to use that canonical key.
+
+  See [Deployment Tags](/deployments/deployment-tags) for commands, REST examples, validation rules, and migration guidance.
+</Update>
 
 <Update label="2026-09-01">
   <Badge>Inference</Badge>

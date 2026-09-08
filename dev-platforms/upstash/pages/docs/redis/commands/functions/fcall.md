@@ -53,6 +53,10 @@ FCALL <function> <numkeys> [<key> [<key> ...]] [<arg> [<arg> ...]]
 * The function takes the global lock unless it was registered with the `allow-key-locking` flag, in which case only the keys passed in the key list are locked. See [Key-Based Locking](/docs/redis/features/key-locking).
 * Pass every key the function touches in the key list whether or not `allow-key-locking` is set. A key built inside the function is read from disk under the lock when it is not in memory, and it is rejected outright when the flag is set. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 
+## Reply conversion
+
+`redis.setresp()` and the RESP2 and RESP3 conversions applied to `redis.call` replies work exactly as they do for [`EVAL`](/docs/redis/commands/scripting/eval#reply-conversion).
+
 ## Response
 
 The reply reports the result of the operation. Error replies have the same shape in RESP2 and RESP3 and are surfaced as exceptions by the SDKs below.

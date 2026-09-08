@@ -229,7 +229,6 @@ paths:
               - modular
               - moonshotai
               - morph
-              - ncompass
               - nebius
               - nex-agi
               - nextbit
@@ -657,7 +656,6 @@ components:
         - modular
         - moonshotai
         - morph
-        - ncompass
         - nebius
         - nex-agi
         - nextbit

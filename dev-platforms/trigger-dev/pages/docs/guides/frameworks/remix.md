@@ -92,11 +92,9 @@ This guide will show you how to setup Trigger.dev in your existing Remix project
   </Step>
 </Steps>
 
-## Set your secret key locally
+## Create an API key for local development
 
-Set your `TRIGGER_SECRET_KEY` environment variable in your `.env` file. This key is used to authenticate with Trigger.dev, so you can trigger runs from your Remix app. Visit the API Keys page in the dashboard and select the DEV secret key.
-
-<img alt="How to find your secret key" />
+Open the API Keys page for your Development environment and create a named key with **Trigger only** access. Set the key as `TRIGGER_SECRET_KEY` in your `.env` file so your Remix app can trigger runs.
 
 For more information on authenticating with Trigger.dev, see the [API keys page](/docs/apikeys).
 
@@ -280,15 +278,11 @@ There are a few extra steps to follow to deploy your `/api/hello-world` API endp
   </Step>
 
   <Step title="Add your Vercel environment variables">
-    In the Vercel project settings, add your Trigger.dev secret key:
+    Open the Trigger.dev API Keys page for the environment your Vercel deployment uses. Create a named key with **Trigger only** access, then add it to the Vercel project settings:
 
     ```bash theme={"theme":"css-variables"}
-    TRIGGER_SECRET_KEY=your-secret-key
+    TRIGGER_SECRET_KEY=tr_prod_sk_xxxxxxxxxx
     ```
-
-    You can find this key in the Trigger.dev dashboard under API Keys and select the environment key you want to use.
-
-    <img alt="How to find your secret key" />
   </Step>
 
   <Step title="Deploy your project">

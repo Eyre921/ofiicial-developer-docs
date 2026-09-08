@@ -40,9 +40,11 @@ In addition to rate limits, the API returns headers that track your email sendin
 
 These headers help you monitor your usage and avoid hitting quota limits.
 
+The daily quota applies only to the Free plan. It is a UTC calendar day (00:00–24:00 UTC) and resets at midnight UTC — not a rolling 24-hour window. Paid sending plans have no daily quota, only the monthly limit.
+
 When you exceed your quota limits, you'll receive a `429` response error code with one of the following error types:
 
-* **`daily_quota_exceeded`** - You have reached your daily email quota. [Upgrade your plan](https://resend.com/settings/billing) to remove the daily quota limit or wait until 24 hours have passed.
+* **`daily_quota_exceeded`** - You have reached your daily email quota. [Upgrade your plan](https://resend.com/settings/billing) to remove the daily quota limit or wait for the quota to reset at midnight UTC.
 * **`monthly_quota_exceeded`** - You have reached your monthly email quota. [Upgrade your plan](https://resend.com/settings/billing) to increase the monthly email quota.
 
 Both sent and received emails count towards these quotas. See the full list of [error codes](/docs/api-reference/errors) for more details.

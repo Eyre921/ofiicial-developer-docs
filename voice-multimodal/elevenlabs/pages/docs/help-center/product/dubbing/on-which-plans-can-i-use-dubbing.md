@@ -9,3 +9,5 @@ path: docs/help-center/product/dubbing/on-which-plans-can-i-use-dubbing
 # On which plans can I use Dubbing?
 
 Dubbing is available on all our plans, including the free plan. Dubs generated on free plans are automatically watermarked, with no option to remove this. Watermarking is not available on our paid subscriptions.
+
+For Dubbing v2, transcript editing and audio regeneration via the API are available on Enterprise plans only.

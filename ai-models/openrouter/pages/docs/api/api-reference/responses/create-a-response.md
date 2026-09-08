@@ -6193,7 +6193,6 @@ components:
         - Moonshot AI
         - Morph
         - VoyageAI by MongoDB
-        - NCompass
         - Nebius
         - Nex AGI
         - NextBit
@@ -7013,8 +7012,6 @@ components:
           $ref: '#/components/schemas/BashServerToolEngine'
         environment:
           $ref: '#/components/schemas/BashServerToolEnvironment'
-        sleep_after_seconds:
-          $ref: '#/components/schemas/SandboxSleepAfterSeconds'
       type: object
     ShellServerToolConfig:
       description: Configuration for the openrouter:shell server tool
@@ -7027,8 +7024,6 @@ components:
           $ref: '#/components/schemas/ShellServerToolEngine'
         environment:
           $ref: '#/components/schemas/ShellServerToolEnvironment'
-        sleep_after_seconds:
-          $ref: '#/components/schemas/SandboxSleepAfterSeconds'
       type: object
     ToolSearchServerToolConfig:
       description: Configuration for the openrouter:tool_search server tool
@@ -9875,14 +9870,6 @@ components:
       oneOf:
         - $ref: '#/components/schemas/ContainerAutoEnvironment'
         - $ref: '#/components/schemas/ContainerReferenceEnvironment'
-    SandboxSleepAfterSeconds:
-      description: >-
-        How long (in seconds) the container stays warm after its last command
-        before sleeping, freeing its capacity slot. Idle-based: each command
-        renews the timer. Defaults to 300 (5 minutes); capped at 14400 (4
-        hours).
-      example: 300
-      type: integer
     ShellServerToolEngine:
       description: >-
         Which shell engine to use. "openrouter" runs commands server-side in the

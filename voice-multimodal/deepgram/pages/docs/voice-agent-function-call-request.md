@@ -22,6 +22,8 @@ This message is used to trigger either a built-in server-side function or a cust
 * When `client_side` is `true`, the client must handle the function and respond with a [`FunctionCallResponse`](./voice-agent-function-call-response).
 * The optional `thought_signature` field may be present when using certain Gemini models that require an additional function call identifier. See [Gemini Docs](https://ai.google.dev/gemini-api/docs/thought-signatures) for details.
 
+A request can arrive before the user's turn is confirmed. See [Turn confirmation](#turn-confirmation) below.
+
 ## Handling the message
 
 The `client_side` property is set by the server to indicate where the function should be executed.
@@ -32,6 +34,17 @@ When your client receives a `FunctionCallRequest`:
 2. If it's `true`, call the appropriate client-defined function.
 3. Return a `FunctionCallResponse` message with the function result.
 4. If it's `false`, no client action is needed; the server will handle it internally.
+
+## Turn confirmation
+
+The agent begins building a reply before speech-to-text confirms the user has finished speaking, so a `FunctionCallRequest` can reach you inside that speculative window. If the user keeps speaking, the turn resumes and the call is cancelled.
+
+* By default, a call is dispatched as soon as the LLM emits it. You may receive a [`FunctionCallCancelled`](/docs/voice-agent-function-call-cancelled) for it, in which case you should stop work on that `id` and send no response.
+* To stop a function from being requested speculatively at all, set [`defer_until_eot`](/docs/configure-voice-agent#agentthinkfunctionsdefer_until_eot) to `true` on its definition in `Settings`. The request is then only sent once the turn is confirmed.
+
+`defer_until_eot` is a `Settings` property, not a field on this message. Requests carry only the fields listed below.
+
+For the behavior in full, see [Speculative Replies & Turn Confirmation](/docs/voice-agent-speculative-replies).
 
 ## Example payloads
 
@@ -88,3 +101,4 @@ The server executes the function internally and notifies the client. The client 
 ## Related messages
 
 * [`FunctionCallResponse`](./voice-agent-function-call-response): The expected response from the client when `client_side` is `true`.
+* [`FunctionCallCancelled`](/docs/voice-agent-function-call-cancelled): Sent when a request you already received is cancelled because the user started speaking again, either inside the speculative window or after the turn was confirmed.

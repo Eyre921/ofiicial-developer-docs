@@ -57,7 +57,8 @@ Create a new broadcast to send to your contacts.
 </ParamField>
 
 <ResendParamField type="string">
-  The topic ID that the broadcast will be scoped to.
+  Optional. Omit it to send to every subscribed contact in the segment, without
+  checking topic preferences.
 </ResendParamField>
 
 <ParamField type="boolean">

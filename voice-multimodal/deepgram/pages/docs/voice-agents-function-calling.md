@@ -32,7 +32,7 @@ Function calling follows a specific sequence of events between the user, the Voi
 1. **Intent Detection**: The user asks a question that requires external information.
 2. **Function Selection**: The LLM identifies a matching function from the definitions you provided in your settings.
 3. **Parameter Extraction**: The model extracts the necessary arguments from the user's speech.
-4. **Execution Request**: The server sends a `FunctionCallRequest` to the client (for client-side functions) or executes it internally (for server-side functions).
+4. **Execution Request**: The server sends a `FunctionCallRequest` to the client (for client-side functions) or executes it internally (for server-side functions). This happens as soon as the model emits the call, which may be before the user's turn is confirmed. See [Irreversible Actions and Turn Confirmation](#irreversible-actions-and-turn-confirmation).
 5. **Result Processing**: The function returns data via a `FunctionCallResponse`.
 6. **Natural Response**: The agent incorporates the data into its spoken response to the user.
 
@@ -49,6 +49,7 @@ sequenceDiagram
 
     User->>Agent: Asks about weather
     Agent->>Server: Determines function needed
+    Note over Server: Turn not yet confirmed<br />Dispatches now unless defer_until_eot
     Server->>Client: Sends FunctionCallRequest
     Note over Client: Executes get_weather function
     Client->>Server: Sends FunctionCallResponse
@@ -68,6 +69,27 @@ Your application handles the function logic. This is ideal for actions that happ
 
 Deepgram calls a web endpoint that you provide. This is best for secure operations, database lookups, or interacting with third-party services where you want to keep logic and credentials on your server.
 
+## Irreversible Actions and Turn Confirmation
+
+The agent starts building its reply before speech-to-text confirms the user has finished speaking. Agent audio is held until that confirmation, so the agent never talks over a user mid-sentence. Function calls are not held by default, because dispatching them early is where much of the latency win comes from.
+
+That default is right for a function that reads data and wrong for one that changes something. If `end_call` fires while the user is still finishing a sentence, and the user then asks for a human, cancelling the call does not un-hang-up the phone.
+
+Set [`defer_until_eot`](/docs/configure-voice-agent#agentthinkfunctionsdefer_until_eot) to `true` on any function whose side effect cannot be undone:
+
+```json
+{
+  "name": "end_call",
+  "description": "End the conversation and close the connection",
+  "parameters": { "type": "object", "properties": {} },
+  "defer_until_eot": true
+}
+```
+
+Deferring one function does not slow the rest. Read-only functions in the same turn still dispatch immediately.
+
+Read [Speculative Replies & Turn Confirmation](/docs/voice-agent-speculative-replies) before you ship a function that spends money, sends a message, or ends a call.
+
 ## Next Steps
 
 To start implementing function calling, explore these detailed guides:
@@ -76,3 +98,5 @@ To start implementing function calling, explore these detailed guides:
 * [Function Call Request](./voice-agent-function-call-request): Learn about the message structure for initiating calls.
 * [Function Call Response](./voice-agent-function-call-response): Understand how to return results to the agent.
 * [Function Call Context](./voice-agent-function-call-context): See how to provide history for resumed sessions.
+* [Function Call Cancelled](/docs/voice-agent-function-call-cancelled): Handle a call cancelled because the user started speaking again.
+* [Speculative Replies & Turn Confirmation](/docs/voice-agent-speculative-replies): Understand what the agent does before a turn is confirmed.

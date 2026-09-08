@@ -324,15 +324,13 @@ Now you can now deploy your task using the following command:
 
 ## Create and deploy the Supabase Edge Function
 
-### Add your Trigger.dev prod secret key to the Supabase dashboard
+### Create a Trigger.dev API key for Supabase
 
-Go to your Trigger.dev [project dashboard](https://cloud.trigger.dev) and copy the `prod` secret key from the API keys page.
-
-<img alt="How to find your prod secret key" />
+Open the API Keys page for your Production environment in the Trigger.dev [project dashboard](https://cloud.trigger.dev). Create a named key with **Trigger only** access and copy it. Trigger.dev shows the complete value only once.
 
 Then, in [Supabase](https://supabase.com/dashboard/projects), select the project you want to use, navigate to 'Project settings' <Icon icon="circle-1" />, click 'Edge Functions' <Icon icon="circle-2" /> in the configurations menu, and then click the 'Add new secret' <Icon icon="circle-3" /> button.
 
-Add `TRIGGER_SECRET_KEY` <Icon icon="circle-4" /> with the pasted value of your Trigger.dev `prod` secret key.
+Add `TRIGGER_SECRET_KEY` <Icon icon="circle-4" /> with the environment API key you created.
 
 <img alt="Add secret key in Supabase" />
 
@@ -382,7 +380,7 @@ Now deploy your new Edge Function with the following command:
 supabase functions deploy video-processing-handler
 ```
 
-Follow the CLI instructions, selecting the same project you added your `prod` secret key to, and once complete you should see your new Edge Function deployment in your Supabase Edge Functions dashboard.
+Follow the CLI instructions, selecting the same project where you created the Production environment API key. Once complete, you should see your new Edge Function deployment in your Supabase Edge Functions dashboard.
 
 There will be a link to the dashboard in your terminal output.
 

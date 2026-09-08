@@ -288,19 +288,23 @@ Valid `--group-by` / `groupBy` and `--filter` / `filter` dimensions depend on th
 * **Serverless**: `model_name`, `api_key_id`, `api_key_name`, `annotations.team`, `annotations.project`, `annotations.environment`
 * **Dedicated deployment**: `deployment_name`, `accelerator_type`, `annotations.team`, `annotations.project`, `annotations.environment`
 
-The `annotations.*` dimensions require an **Enterprise** plan (see [Custom tags](#custom-tags-team--project--environment)); the other dimensions are available to all accounts.
+The `annotations.*` dimensions require an **Enterprise** plan (see [Usage annotations](#usage-annotations-team--project--environment)); the other dimensions are available to all accounts.
 
 Dedicated-deployment rows also include the deployment's region (`placement`, e.g. `US`, `EUROPE`, `GLOBAL`) and metered `accelerator_seconds`.
 
-## Custom tags (team / project / environment)
+## Usage annotations (team / project / environment)
 
 <Note>
-  Breaking usage down by annotations (`annotations.team` / `annotations.project` / `annotations.environment`) requires an **Enterprise** plan. Grouping or filtering by an annotation dimension without it returns HTTP `400` (`FAILED_PRECONDITION`); breakdowns by model, API key, or deployment remain available to all accounts. Annotation tags are still recorded on your usage regardless of plan, so past usage is immediately available for these breakdowns once an account is on Enterprise.
+  Breaking usage down by annotations (`annotations.team` / `annotations.project` / `annotations.environment`) requires an **Enterprise** plan. Grouping or filtering by an annotation dimension without it returns HTTP `400` (`FAILED_PRECONDITION`); breakdowns by model, API key, or deployment remain available to all accounts. Supported usage annotations from the sources described below are recorded on usage regardless of plan, so past usage containing them becomes available for these breakdowns once the account is on Enterprise.
+</Note>
+
+<Note>
+  Deployment tags and usage annotations are separate features. Tags managed with `firectl deployment tag` or stored under `custom/*` do not populate the `annotations.team`, `annotations.project`, or `annotations.environment` billing dimensions.
 </Note>
 
 Group by `annotations.team`, `annotations.project`, or `annotations.environment` to split usage by your own labels. The tag source depends on usage type:
 
-* **Dedicated deployments**: set an `annotations` map on the deployment, e.g. `{"team": "search", "project": "x", "environment": "prod"}`.
+* **Dedicated deployments**: existing `team`, `project`, and `environment` annotations remain unchanged and continue to appear in usage reports. New values cannot currently be configured through customer-facing deployment tag APIs.
 * **Serverless**: send a per-request header on inference calls:
 
   ```http theme={null}

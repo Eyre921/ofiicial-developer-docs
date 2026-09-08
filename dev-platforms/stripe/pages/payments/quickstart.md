@@ -408,7 +408,7 @@ Adaptive Pricing lets your customers pay in their local currency in more than 15
 
 ### Enable Adaptive Pricing
 
-[Enable Adaptive Pricing](https://dashboard.stripe.com/settings/adaptive-pricing) in your Dashboard settings.
+[Enable Adaptive Pricing](https://dashboard.stripe.com/settings/adaptive-pricing) in your Dashboard settings. Use an integration or price currency that’s [eligible for settlement](https://docs.stripe.com/payments/currencies/localize-prices/adaptive-pricing.md?payment-ui=embedded-components#restrictions) by the merchant of record. To add a settlement currency, [set up multi-currency settlement](https://docs.stripe.com/payouts/multi-currency-settlement.md#enable-multi-currency-settlement).
 
 ### Localize and format prices
 
@@ -424,7 +424,7 @@ Mount the Currency Selector Element to give your customer a choice of currencies
 
 ### Mark your integration ready for Adaptive Pricing
 
-Set the `adaptivePricing.allowed` parameter to `true`.
+Set the `adaptivePricing.allowed` parameter to `true`. You must configure this client-side setting and also enable Adaptive Pricing in the Checkout Session for an eligible currency.
 
 // This is a public sample test API key.
 // Don't submit any personally identifiable information in requests made with this key.

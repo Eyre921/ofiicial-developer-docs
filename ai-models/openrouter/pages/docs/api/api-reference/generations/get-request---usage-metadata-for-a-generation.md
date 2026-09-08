@@ -863,6 +863,7 @@ components:
             - Lynn
             - Mancer
             - Modal
+            - NCompass
             - Nineteen
             - OctoAI
             - Recursal
@@ -938,7 +939,6 @@ components:
             - Moonshot AI
             - Morph
             - VoyageAI by MongoDB
-            - NCompass
             - Nebius
             - Nex AGI
             - NextBit

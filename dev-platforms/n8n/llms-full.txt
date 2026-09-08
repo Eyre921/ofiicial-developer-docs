@@ -4,9 +4,9 @@ Get set up on n8n, build your first workflow, and find inspiration for what to a
 
 n8n is a fair-code licensed workflow automation tool that combines AI features with business process automation.
 
-<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-cover data-type="image">Cover image</th></tr></thead><tbody><tr><td><i class="fa-server">:server:</i> <strong>Get set up on n8n</strong></td><td><ul><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/ziS002yiEqmQSjXZALLO">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/ziS002yiEqmQSjXZALLO</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/v0g3kb2fsMoDP6jwGXeu">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/v0g3kb2fsMoDP6jwGXeu</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/UG58o6rsrfmn5LPW3DE4">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/UG58o6rsrfmn5LPW3DE4</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/o0tyrSRLdqerPqm6bDW8">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/o0tyrSRLdqerPqm6bDW8</a></li></ul></td><td></td><td><a href="/files/cew5tUoowk0ECeg4Sn7Q">/files/cew5tUoowk0ECeg4Sn7Q</a></td></tr><tr><td><i class="fa-draw-square">:draw-square:</i> <strong>Build your first workflow</strong></td><td><a data-mention href="/pages/zUKRppskKg9LhFTtXLPj">/pages/zUKRppskKg9LhFTtXLPj</a></td><td></td><td><a href="/files/jsSOd2oDuEAGpUNhiGlY">/files/jsSOd2oDuEAGpUNhiGlY</a></td></tr><tr><td><i class="fa-stamp">:stamp:</i> <strong>Get inspiration for what to automate</strong></td><td><ul><li><a href="https://n8n.io/workflows/1750-creating-an-api-endpoint/">Creating an API endpoint</a></li><li><a href="https://n8n.io/workflows/1954-ai-agent-chat/">AI agent chat</a></li><li><a href="https://n8n.io/workflows/1951-scrape-and-summarize-webpages-with-ai/">Scrape and summarize web pages with AI</a></li><li><a href="https://n8n.io/workflows/1747-joining-different-datasets/">Joining different datasets</a></li></ul></td><td></td><td><a href="/files/qnZMSRNOlw7AxMBtjXwi">/files/qnZMSRNOlw7AxMBtjXwi</a></td></tr><tr><td><i class="fa-lightbulb-gear">:lightbulb-gear:</i> <strong>Understand key concepts</strong></td><td><ul><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/bJVqnsoYoKeTVGzLQgy2">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/bJVqnsoYoKeTVGzLQgy2</a></li><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/1hqzhYpLBsjFvbo8HxAU">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/1hqzhYpLBsjFvbo8HxAU</a></li><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/eTf5Lc65AFb3sSVXviVc">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/eTf5Lc65AFb3sSVXviVc</a></li></ul></td><td></td><td><a href="/files/VkcOOhTRPQBjR6UUdVEy">/files/VkcOOhTRPQBjR6UUdVEy</a></td></tr><tr><td><strong>Anthropic</strong> <strong>Claude Desktop</strong></td><td><a href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/UOJtqNvrsXpvCGg9r3LR#connecting-claude-desktop-to-n8n-mcp-server">Connecting Claude Desktop to n8n MCP server</a></td><td></td><td><a href="/files/xmdd04HkxvE0QDJ5HV8G">/files/xmdd04HkxvE0QDJ5HV8G</a></td></tr><tr><td><strong>Anthropic</strong> <strong>Claude Code</strong></td><td><pre data-overflow="wrap"><code>claude mcp add --transport http n8n-mcp https:///mcp-server/http
-</code></pre></td><td><a href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/UOJtqNvrsXpvCGg9r3LR#connecting-claude-code-to-n8n-mcp-server">Connecting Claude Code to n8n MCP server</a></td><td><a href="/files/dd7B4dyNfwmfOPJTNbQS">/files/dd7B4dyNfwmfOPJTNbQS</a></td></tr><tr><td><strong>OpenAI</strong> <strong>Codex CLI</strong></td><td><pre data-overflow="wrap"><code>codex mcp add n8n-mcp --url https:///mcp-server/http
-</code></pre></td><td><a href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/UOJtqNvrsXpvCGg9r3LR#connecting-codex-cli-to-n8n-mcp-server">Connecting Codex CLI to n8n MCP server</a></td><td><a href="/files/Ct6O3FmZIzVLSJLgogne">/files/Ct6O3FmZIzVLSJLgogne</a></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-cover data-type="image">Cover image</th></tr></thead><tbody><tr><td><i class="fa-server">:server:</i> <strong>Get set up on n8n</strong></td><td><ul><li><a data-mention href="/deploy/use-n8n-cloud/start-your-free-trial">Try free then choose a plan</a></li><li><a data-mention href="/deploy/host-n8n/install-options/one-line-setup">One-line setup</a></li><li><a data-mention href="/deploy/host-n8n/install-options/install-using-docker-compose">Install using Docker Compose</a></li><li><a data-mention href="/deploy/host-n8n/install-options/use-a-cloud-provider">Use a cloud provider</a></li></ul></td><td></td><td><a href="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-252f2c2b322104dd9b57b662049a6162b7094c3c%2Fstart.png?alt=media">start.png</a></td></tr><tr><td><i class="fa-draw-square">:draw-square:</i> <strong>Build your first workflow</strong></td><td><a data-mention href="/build-your-first-workflow">Build your first workflow</a></td><td></td><td><a href="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-2422efb1618db051a64e2eaf9558228fdc6da5d4%2Fbuild.png?alt=media">build.png</a></td></tr><tr><td><i class="fa-stamp">:stamp:</i> <strong>Get inspiration for what to automate</strong></td><td><ul><li><a href="https://n8n.io/workflows/1750-creating-an-api-endpoint/">Creating an API endpoint</a></li><li><a href="https://n8n.io/workflows/1954-ai-agent-chat/">AI agent chat</a></li><li><a href="https://n8n.io/workflows/1951-scrape-and-summarize-webpages-with-ai/">Scrape and summarize web pages with AI</a></li><li><a href="https://n8n.io/workflows/1747-joining-different-datasets/">Joining different datasets</a></li></ul></td><td></td><td><a href="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-46ac2996f03e642961eb3a3005c5ebd7fa7b7944%2Finspire.png?alt=media">inspire.png</a></td></tr><tr><td><i class="fa-lightbulb-gear">:lightbulb-gear:</i> <strong>Understand key concepts</strong></td><td><ul><li><a data-mention href="/build/work-with-data/transform-data/expressions-for-data-transformation">Expressions for data transformation</a></li><li><a data-mention href="/build/flow-logic">Flow logic</a></li><li><a data-mention href="/build/understand-workflows/understand-executions">Understand executions</a></li></ul></td><td></td><td><a href="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-a79bf3f70430c9cd04c80ee5be3ececfa4992a90%2Fdeep.png?alt=media">deep.png</a></td></tr><tr><td><strong>Anthropic</strong> <strong>Claude Desktop</strong></td><td><a href="/connect/connect-to-n8n-mcp-server/mcp-client-examples#connecting-claude-desktop-to-n8n-mcp-server">Connecting Claude Desktop to n8n MCP server</a></td><td></td><td><a href="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-96b771cc26a7abf72e3cf12f455ade2a288d352b%2FClaude_logo.jpeg?alt=media">Claude_logo.jpeg</a></td></tr><tr><td><strong>Anthropic</strong> <strong>Claude Code</strong></td><td><pre data-overflow="wrap"><code>claude mcp add --transport http n8n-mcp https:///mcp-server/http
+</code></pre></td><td><a href="/connect/connect-to-n8n-mcp-server/mcp-client-examples#connecting-claude-code-to-n8n-mcp-server">Connecting Claude Code to n8n MCP server</a></td><td><a href="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-9600c7e6fb192d011a44763446bac7e9b2017fe1%2FClaude_code_logo.jpeg?alt=media">Claude_code_logo.jpeg</a></td></tr><tr><td><strong>OpenAI</strong> <strong>Codex CLI</strong></td><td><pre data-overflow="wrap"><code>codex mcp add n8n-mcp --url https:///mcp-server/http
+</code></pre></td><td><a href="/connect/connect-to-n8n-mcp-server/mcp-client-examples#connecting-codex-cli-to-n8n-mcp-server">Connecting Codex CLI to n8n MCP server</a></td><td><a href="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-da5441ec462c0eed20806ac3b90f9f6305ea110c%2Fcodex_logo.jpeg?alt=media">codex_logo.jpeg</a></td></tr></tbody></table>
 
 
 # Choose how to use n8n
@@ -20,7 +20,7 @@ n8n offers two primary deployment options: **n8n Cloud** (fully-managed) and **S
 
 This page helps with both.
 
-<figure><picture><source srcset="/files/d4qnqcLm6Fc3igPAFJR7" media="(prefers-color-scheme: dark)"><img src="/files/zsZQ0zzJyptPmDV5uR3j" alt="Decision flowchart: n8n Cloud offers the Starter, Pro, and Enterprise plans; self-hosted offers the Community, Registered Community, Business, and Enterprise editions"></picture><figcaption><p>Choosing your n8n deployment option, plan, and edition</p></figcaption></figure>
+<figure><picture><source srcset="/files/d4qnqcLm6Fc3igPAFJR7" media="(prefers-color-scheme: dark)"><img src="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-dce340966fda22a205b3e42384797190568ff563%2Fchoose-your-n8n-diag-light.png?alt=media" alt="Decision flowchart: n8n Cloud offers the Starter, Pro, and Enterprise plans; self-hosted offers the Community, Registered Community, Business, and Enterprise editions"></picture><figcaption><p>Choosing your n8n deployment option, plan, and edition</p></figcaption></figure>
 
 {% hint style="info" %}
 **Want to try n8n quickly?**
@@ -149,7 +149,7 @@ This guide will show you how to construct a workflow[^1] in n8n, explaining key 
   * Representing logic in an n8n workflow
   * Using expressions[^3]
 
-![The completed workflow: Schedule Trigger connected to NASA, then an If node branching into two PostBin nodes](/files/gBT9GfmMngz4IgkX77tZ)
+![The completed workflow: Schedule Trigger connected to NASA, then an If node branching into two PostBin nodes](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-289bd849cb70d5b09e7d12b4bcd9787d4cd4905e%2Ftutorial-first.png?alt=media)
 
 This quickstart uses [n8n Cloud](/deploy/use-n8n-cloud), which is recommended for new users. A free trial is available. If you haven't already, [sign up](https://app.n8n.cloud/register) for an account now.
 
@@ -191,7 +191,7 @@ Credentials are private pieces of information issued by apps and services to aut
 
 </details>
 
-1. Select the **Add node** <img src="/files/2JPfZoJR5xT5MYfSSeii" alt="Add node icon" data-size="line"> connector on the Schedule Trigger node.
+1. Select the **Add node** <img src="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-73e6ba16c5921db1159055c997764094715b508e%2Fadd-node-small.png?alt=media" alt="Add node icon" data-size="line"> connector on the Schedule Trigger node.
 2. Search for **NASA**. n8n shows a list of nodes that match the search.
 3. Select **NASA** to view a list of operations.
 4. Search for and select **Get a DONKI solar flare**. This operation returns a report about recent solar flares. When you select the operation, n8n adds the node to the canvas and opens it.
@@ -206,7 +206,7 @@ Credentials are private pieces of information issued by apps and services to aut
 
    1. Select **Add field**.
    2. Select **Start date**.
-   3. To get a report starting from a week ago, you can use an expression: next to **Start date**, select the **Expression** tab, then select the expand button <img src="/files/ApDq4wHH4ROV2DiCRMAb" alt="Add node icon" data-size="line"> to open the full expressions editor.
+   3. To get a report starting from a week ago, you can use an expression: next to **Start date**, select the **Expression** tab, then select the expand button <img src="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-f7569083fc194ce1fc7283fef2b7e69ed93d7418%2Fopen-expression-editor.png?alt=media" alt="Add node icon" data-size="line"> to open the full expressions editor.
    4. In the **Expression** field, enter the following expression:
 
    ```js
@@ -215,7 +215,7 @@ Credentials are private pieces of information issued by apps and services to aut
 
    This generates a date in the correct format, seven days before the current date.
 
-   ![Start Date expression editor, with the Result panel showing a resolved date one week before today](/files/hNHMmgYDORb7XfhAuVzn)
+   ![Start Date expression editor, with the Result panel showing a resolved date one week before today](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-4f5687df151212756d9f6c4f6408464b80eaeedc%2Ftutorial-date.png?alt=media)
 7. Close the **Edit Expression** modal to return to the NASA node.
 8. You can now check that the node is working and returning the expected date: select **Execute step** to run the node manually. n8n calls the NASA API and displays details of solar flares in the past seven days in the **OUTPUT** section.
 9. Close the NASA node to return to the workflow canvas.
@@ -226,7 +226,7 @@ n8n supports complex logic in workflows. This tutorial uses the [If node](/integ
 
 Add the If node:
 
-1. Select the **Add node** <img src="/files/2JPfZoJR5xT5MYfSSeii" alt="Add node icon" data-size="line"> connector on the NASA node.
+1. Select the **Add node** <img src="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-73e6ba16c5921db1159055c997764094715b508e%2Fadd-node-small.png?alt=media" alt="Add node icon" data-size="line"> connector on the NASA node.
 2. Search for **If**. n8n shows a list of nodes that match the search.
 3. Select **If** to add the node to the canvas. n8n opens the node.
 4. You need to check the value of the `classType` property in the NASA data. To do this:
@@ -244,14 +244,14 @@ Add the If node:
 
 The last step of the workflow is to send the two reports about solar flares. For this example, you'll send data to [Postbin](https://www.toptal.com/developers/postbin/). Postbin is a service that receives data and displays it on a temporary web page.
 
-1. On the If node, select the **Add node** <img src="/files/2JPfZoJR5xT5MYfSSeii" alt="Add node icon" data-size="line"> connector labeled **true**.
+1. On the If node, select the **Add node** <img src="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-73e6ba16c5921db1159055c997764094715b508e%2Fadd-node-small.png?alt=media" alt="Add node icon" data-size="line"> connector labeled **true**.
 2. Search for **PostBin**. n8n shows a list of nodes that match the search.
 3. Select **PostBin**.
 4. Select **Send a request**. n8n adds the node to the canvas and opens it.
 5. Go to [Postbin](https://www.toptal.com/developers/postbin/) and select **Create Bin**. Leave the tab open so you can come back to it when testing the workflow.
 6. Copy the bin ID. It looks like `1651063625300-2016451240051`.
 7. In n8n, paste your Postbin ID into **Bin ID**.
-8. Now, configure the data to send to Postbin. Next to **Bin Content**, select the **Expression** tab (you will need to mouse-over the **Bin Content** for the tab to appear), then select the expand button <img src="/files/ApDq4wHH4ROV2DiCRMAb" alt="Add node icon" data-size="line"> to open the full expressions editor.
+8. Now, configure the data to send to Postbin. Next to **Bin Content**, select the **Expression** tab (you will need to mouse-over the **Bin Content** for the tab to appear), then select the expand button <img src="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-f7569083fc194ce1fc7283fef2b7e69ed93d7418%2Fopen-expression-editor.png?alt=media" alt="Add node icon" data-size="line"> to open the full expressions editor.
 9. You can now click and drag the correct field from the If node output into the expressions editor to automatically create a reference for this label. In this case, the field you want is `classType`.
 10. Once dropped into the expressions editor it will transform into this reference: `{{$json["classType"]}}`. Add a message to it, so that the full expression is:
 
@@ -259,11 +259,11 @@ The last step of the workflow is to send the two reports about solar flares. For
     There was a solar flare of class {{$json["classType"]}}
     ```
 
-    ![Expression editor for Bin Content, with the Result panel showing the rendered message text](/files/M4eYRP1nDl4AWNJRsLlU)
+    ![Expression editor for Bin Content, with the Result panel showing the rendered message text](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-9e0ced87946b726548b5c0a0c81cf077ddcd03eb%2Ftutorial-expression.png?alt=media)
 11. Close the expressions editor to return to the node.
 12. Close the Postbin node to return to the canvas.
 13. Add another Postbin node, to handle the **false** output path from the If node:
-    1. Hover over the Postbin node, then select **Node context menu** <img src="/files/9h218OQWWbRACaluhjIo" alt="Node context menu icon" data-size="line"> > **Duplicate node** to duplicate the first Postbin node.
+    1. Hover over the Postbin node, then select **Node context menu** <img src="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-d32a8d59c9322093771e1e567f5ad2cf0a916558%2Fnode-context-menu.png?alt=media" alt="Node context menu icon" data-size="line"> > **Duplicate node** to duplicate the first Postbin node.
     2. Drag the **false** connector from the If node to the left side of the new Postbin node.
 
 ## Step six: Test the workflow <a href="#step-six-test-the-workflow" id="step-six-test-the-workflow"></a>
@@ -465,7 +465,7 @@ n8n offers two different deployment methods. [n8n Cloud](/deploy/use-n8n-cloud) 
 
 **Deploy** documentation helps you deploy, configure, secure, and maintain n8n in either model.
 
-<table data-view="cards"><thead><tr><th>Deployment option</th><th data-card-target data-type="content-ref">Go to section</th></tr></thead><tbody><tr><td><strong>Use n8n Cloud</strong><br>Managed by n8n. Get started fast, with less operational work.</td><td><a href="/pages/TfRz19xNcFbNxlcQq9L7">/pages/TfRz19xNcFbNxlcQq9L7</a></td></tr><tr><td><strong>Self-host n8n</strong><br>Run n8n yourself with Docker, npm, Docker Compose, or a supported platform.</td><td><a href="/pages/dqi8Y1iZswob8wzg3QaO">/pages/dqi8Y1iZswob8wzg3QaO</a></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th>Deployment option</th><th data-card-target data-type="content-ref">Go to section</th></tr></thead><tbody><tr><td><strong>Use n8n Cloud</strong><br>Managed by n8n. Get started fast, with less operational work.</td><td><a href="/deploy/use-n8n-cloud">Use n8n Cloud</a></td></tr><tr><td><strong>Self-host n8n</strong><br>Run n8n yourself with Docker, npm, Docker Compose, or a supported platform.</td><td><a href="/deploy/host-n8n">Host n8n</a></td></tr></tbody></table>
 
 ### Compare deployment options
 
@@ -505,7 +505,7 @@ curl -fsSL https://get.n8n.io | sh
 Requires Docker on Linux or macOS (or WSL on Windows). Sets up n8n locally in one step. See the [one-line setup guide](/deploy/host-n8n/install-options/one-line-setup) for details.
 {% endhint %}
 
-<table data-view="cards"><thead><tr><th>Self-hosted topic</th><th data-card-target data-type="content-ref">Open</th></tr></thead><tbody><tr><td><strong>Host n8n overview</strong><br>Start with the main self-hosted landing page.</td><td><a href="/pages/dqi8Y1iZswob8wzg3QaO">/pages/dqi8Y1iZswob8wzg3QaO</a></td></tr><tr><td><strong>Install options</strong><br>Set up n8n with Docker, npm, Docker Compose, or a cloud provider.</td><td><a href="/pages/tmlZdl7QpnGuCXup9vMd">/pages/tmlZdl7QpnGuCXup9vMd</a></td></tr><tr><td><strong>Configure n8n</strong><br>Manage databases, environment variables, users, licenses, and security settings.</td><td><a href="/pages/rc1k6jBpVgSdbcxQtXLJ">/pages/rc1k6jBpVgSdbcxQtXLJ</a></td></tr><tr><td><strong>Keep n8n running</strong><br>Monitor, log, trace, and update your instance.</td><td><a href="/pages/2XQWgN6U1L22KGt19WnT">/pages/2XQWgN6U1L22KGt19WnT</a></td></tr><tr><td><strong>Understand the architecture</strong><br>Learn how n8n works and how it structures its database.</td><td><a href="/pages/XddcCvbiPK7AMLl8LN5w">/pages/XddcCvbiPK7AMLl8LN5w</a></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th>Self-hosted topic</th><th data-card-target data-type="content-ref">Open</th></tr></thead><tbody><tr><td><strong>Host n8n overview</strong><br>Start with the main self-hosted landing page.</td><td><a href="/deploy/host-n8n">Host n8n</a></td></tr><tr><td><strong>Install options</strong><br>Set up n8n with Docker, npm, Docker Compose, or a cloud provider.</td><td><a href="/deploy/host-n8n/install-options">Install options</a></td></tr><tr><td><strong>Configure n8n</strong><br>Manage databases, environment variables, users, licenses, and security settings.</td><td><a href="/deploy/host-n8n/configure-n8n">Configure n8n</a></td></tr><tr><td><strong>Keep n8n running</strong><br>Monitor, log, trace, and update your instance.</td><td><a href="/deploy/host-n8n/keep-n8n-running">Keep n8n running</a></td></tr><tr><td><strong>Understand the architecture</strong><br>Learn how n8n works and how it structures its database.</td><td><a href="/deploy/host-n8n/understand-the-architecture">Understand the architecture</a></td></tr></tbody></table>
 
 {% content-ref url="/pages/dqi8Y1iZswob8wzg3QaO" %}
 [Host n8n](/deploy/host-n8n)
@@ -812,7 +812,7 @@ In the admin dashboard:
 
 In your workflow settings:
 
-1. Select the **Options** <img src="/files/GCH1Cy1SkEyvG1bCEbDi" alt="Options menu" data-size="line"> menu.
+1. Select the **Options** <img src="https://2773773108-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2Fjm0ZYRpZIPWge2ZSiDYO%2Fuploads%2Fgit-blob-f19a4d097d364587b73864eaed77b12bfd8f516b%2Fthree-dot-options-menu.png?alt=media" alt="Options menu" data-size="line"> menu.
 2. Select **Settings**. n8n opens the **Workflow settings** modal.
 3. Change **Save successful production executions** to **Do not save**.
 
@@ -948,11 +948,11 @@ When your balance reaches zero, nodes using Gateway credits stop working until y
 
 n8n has more than one kind of credit. They have separate balances and pay for different things:
 
-| Credit type             | What it pays for                                                                                           | Where you see it                                                                    |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| Gateway credits         | AI models and tool services used by nodes in your workflows                                                | On supported nodes, and on the **Gateway credits** tab in the Cloud admin dashboard |
-| AI Assistant credits    | Your usage of [n8n's AI Assistant](/build/ways-of-building-workflows/ai-assistant) and AI Workflow Builder | In the AI Assistant panel in the editor                                             |
-| Free OpenAI API credits | A legacy one-time OpenAI allowance for new Cloud users                                                     | Only on instances without Gateway credits                                           |
+| Credit type             | What it pays for                                                                                                            | Where you see it                                                                    |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Gateway credits         | AI models and tool services used by nodes in your workflows                                                                 | On supported nodes, and on the **Gateway credits** tab in the Cloud admin dashboard |
+| AI Assistant credits    | Your usage of [n8n's AI Assistant](broken://spaces/rPN1zU5jaYNvwH7RzxqA/pages/fKAO3BiV3ChJQ4IvbENm) and AI Workflow Builder | In the AI Assistant panel in the editor                                             |
+| Free OpenAI API credits | A legacy one-time OpenAI allowance for new Cloud users                                                                      | Only on instances without Gateway credits                                           |
 
 Topping up Gateway credits doesn't add AI Assistant credits, and using the AI Assistant doesn't spend your Gateway credit balance.
 
@@ -1831,7 +1831,7 @@ You can find a complete `docker-compose` file for PostgreSQL in the [n8n hosting
 
 To update n8n, in Docker Desktop, navigate to the **Images** tab and select **Pull** from the context menu to download the latest n8n image:
 
-![Docker Desktop Images tab with the row context menu open and Pull available](/files/PR3cvEHSw9Fnj0BpGkM1)
+![Docker Desktop Images tab with the row context menu open and Pull available](https://2773773108-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2Fjm0ZYRpZIPWge2ZSiDYO%2Fuploads%2Fgit-blob-8f7ce604273f267f280888b409587631adcd9b47%2Fdocker_desktop.png?alt=media)
 
 You can also use the command line to pull the latest, or a specific version:
 
@@ -5346,7 +5346,7 @@ This page lists environment variables to configure workflow execution settings.
 
 | Variable                                            | Type                                                 | Default                   | Description                                                                                                                                                                                                                                                                                                                                                                                                   |
 | --------------------------------------------------- | ---------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `EXECUTIONS_MODE`                                   | Enum string: `regular`, `queue`                      | `regular`                 | <p>Whether executions should run directly or using queue.<br><br>Refer to <a href="/pages/SDMOrI1swhKfy41uhhwL">Queue mode</a> for more details.</p>                                                                                                                                                                                                                                                          |
+| `EXECUTIONS_MODE`                                   | Enum string: `regular`, `queue`                      | `regular`                 | <p>Whether executions should run directly or using queue.<br><br>Refer to <a href="/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode">Queue mode</a> for more details.</p>                                                                                                                                                                                                                             |
 | `EXECUTIONS_TIMEOUT`                                | Number                                               | `-1`                      | Sets a default timeout (in seconds) to all workflows after which n8n stops their execution. Users can override this for individual workflows up to the duration set in `EXECUTIONS_TIMEOUT_MAX`. Set `EXECUTIONS_TIMEOUT` to `-1` to disable.                                                                                                                                                                 |
 | `EXECUTIONS_TIMEOUT_MAX`                            | Number                                               | `3600`                    | The maximum execution time (in seconds) that users can set for an individual workflow.                                                                                                                                                                                                                                                                                                                        |
 | `N8N_AI_TIMEOUT_MAX`                                | Number                                               | `3600000`                 | Sets the HTTP request timeout in milliseconds for AI and LLM nodes (such as OpenAI, Anthropic, Mistral, and Ollama). This controls how long n8n waits for responses from AI services before timing out. Useful for slower local AI services or complex prompts that require longer processing time.                                                                                                           |
@@ -5596,15 +5596,15 @@ You can add `_FILE` to individual variables to provide their configuration in a 
 
 To enable certain licensed features, you must first activate your license. You can do this either through the UI or by setting environment variables. For more information, see [license key](/deploy/host-n8n/configure-n8n/manage-your-license).
 
-| Variable                                  | Type    | Default                        | Description                                                                                                                                                                                                                                                                                                                                                                                                             |
-| ----------------------------------------- | ------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `N8N_HIDE_USAGE_PAGE`                     | boolean | `false`                        | Hide the usage and plans page in the app.                                                                                                                                                                                                                                                                                                                                                                               |
-| `N8N_LICENSE_ACTIVATION_KEY`              | String  | `''`                           | Activation key to initialize license. Not applicable if the n8n instance was already activated.                                                                                                                                                                                                                                                                                                                         |
-| `N8N_LICENSE_AUTO_RENEW_ENABLED`          | Boolean | `true`                         | <p>Enables (true) or disables (false) autorenewal for licenses.<br>If disabled, you need to manually renew the license every 10 days by navigating to <strong>Settings</strong> > <strong>Usage and plan</strong>, and pressing <code>F5</code>. Failure to renew the license will disable all licensed features.</p>                                                                                                   |
-| `N8N_LICENSE_DETACH_FLOATING_ON_SHUTDOWN` | Boolean | `true`                         | <p>Controls whether the instance releases <a href="/spaces/CxSeOtVxqqhfxMSac0AV/pages/8QXZKPT0QswCH5KIT1QV#entitlement-n8n">floating entitlements</a> back to the pool upon shutdown. Set to <code>true</code> to allow other instances to reuse the entitlements, or <code>false</code> to retain them.<br>For production instances that must always keep their licensed features, set this to <code>false</code>.</p> |
-| `N8N_LICENSE_SERVER_URL`                  | String  | `https://license.n8n.io/v1`    | Server URL to retrieve license.                                                                                                                                                                                                                                                                                                                                                                                         |
-| `N8N_LICENSE_TENANT_ID`                   | Number  | `1`                            | Tenant ID associated with the license. Only set this variable if explicitly instructed by n8n.                                                                                                                                                                                                                                                                                                                          |
-| `https_proxy_license_server`              | String  | `https://user:pass@proxy:port` | Proxy server URL for HTTPS requests to retrieve license. This variable name needs to be lowercase.                                                                                                                                                                                                                                                                                                                      |
+| Variable                                  | Type    | Default                        | Description                                                                                                                                                                                                                                                                                                                                                                           |
+| ----------------------------------------- | ------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `N8N_HIDE_USAGE_PAGE`                     | boolean | `false`                        | Hide the usage and plans page in the app.                                                                                                                                                                                                                                                                                                                                             |
+| `N8N_LICENSE_ACTIVATION_KEY`              | String  | `''`                           | Activation key to initialize license. Not applicable if the n8n instance was already activated.                                                                                                                                                                                                                                                                                       |
+| `N8N_LICENSE_AUTO_RENEW_ENABLED`          | Boolean | `true`                         | <p>Enables (true) or disables (false) autorenewal for licenses.<br>If disabled, you need to manually renew the license every 10 days by navigating to <strong>Settings</strong> > <strong>Usage and plan</strong>, and pressing <code>F5</code>. Failure to renew the license will disable all licensed features.</p>                                                                 |
+| `N8N_LICENSE_DETACH_FLOATING_ON_SHUTDOWN` | Boolean | `true`                         | <p>Controls whether the instance releases <a href="/key-concept-glossary#entitlement-n8n">floating entitlements</a> back to the pool upon shutdown. Set to <code>true</code> to allow other instances to reuse the entitlements, or <code>false</code> to retain them.<br>For production instances that must always keep their licensed features, set this to <code>false</code>.</p> |
+| `N8N_LICENSE_SERVER_URL`                  | String  | `https://license.n8n.io/v1`    | Server URL to retrieve license.                                                                                                                                                                                                                                                                                                                                                       |
+| `N8N_LICENSE_TENANT_ID`                   | Number  | `1`                            | Tenant ID associated with the license. Only set this variable if explicitly instructed by n8n.                                                                                                                                                                                                                                                                                        |
+| `https_proxy_license_server`              | String  | `https://user:pass@proxy:port` | Proxy server URL for HTTPS requests to retrieve license. This variable name needs to be lowercase.                                                                                                                                                                                                                                                                                    |
 
 
 # Nodes
@@ -6637,7 +6637,7 @@ docker compose up -d
 
 After n8n starts, have a user create a new credential for one of the pre-configured services (for example, Microsoft Outlook). They should see a **Managed OAuth2 (recommended)** option in the credential selection.
 
-![Microsoft Entra credentials screen](/files/F4S8QnWKBt4VwOffJzY7)
+![Microsoft Entra credentials screen](https://2773773108-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2Fjm0ZYRpZIPWge2ZSiDYO%2Fuploads%2Fgit-blob-496fa5f4883e7585a12562fc7e42fe48d3e78bca%2Fmicrosoft-entra-oauth.png?alt=media)
 
 The user can click **Connect to Microsoft Outlook**, with no auth required. An **Account connected** message should appear
 
@@ -8845,7 +8845,7 @@ In production, and on any instance holding sensitive data, use [external mode](#
 
 The task runner feature consists of these components: one or more task runners, a task broker, and a task requester.
 
-![Task runner overview](/files/lIbDwy4H1zem3CupSPwa)
+![Task runner overview](https://2773773108-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2Fjm0ZYRpZIPWge2ZSiDYO%2Fuploads%2Fgit-blob-55207f2deade3c6c7123a6086cdea2bca06208ff%2Ftask-runner-concept.png?alt=media)
 
 Task runners connect to the task broker using a websocket connection. A task requester submits a task request to the broker where an available task runner can pick it up for execution.
 
@@ -8871,7 +8871,7 @@ Because the runner runs as the same user on the same host as n8n, code that esca
 
 In external mode, a [launcher application](https://github.com/n8n-io/task-runner-launcher) launches task runners on demand and manages their lifecycle. Typically, this means that next to n8n you add a sidecar container running the [`n8nio/runners`](https://hub.docker.com/r/n8nio/runners) image containing the launcher, the JS task runner and the Python task runner. This sidecar container is independent from the n8n instance. The launcher exposes a health-check endpoint that it uses to monitor the task runner processes.
 
-![Task runner deployed as a side-car container](/files/EmSwTfNdQTqlBTKKw8bK)
+![Task runner deployed as a side-car container](https://2773773108-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2Fjm0ZYRpZIPWge2ZSiDYO%2Fuploads%2Fgit-blob-cb63fb1f1b7c6647e817f6eaff5ae1bd1a08dba6%2Ftask-runner-external-mode.png?alt=media)
 
 When using [Queue mode](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode), each worker needs to have its own sidecar container for task runners.
 

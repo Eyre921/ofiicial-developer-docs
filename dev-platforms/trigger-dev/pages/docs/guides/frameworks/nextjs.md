@@ -115,11 +115,9 @@ This guide will show you how to setup Trigger.dev in your existing Next.js proje
   This will run both your Next.js app and Trigger.dev dev server in the same terminal window, with color-coded output to distinguish between them.
 </Tip>
 
-## Set your secret key locally
+## Create an API key for local development
 
-Set your `TRIGGER_SECRET_KEY` environment variable in your `.env.local` file if using the Next.js App router or `.env` file if using Pages router. This key is used to authenticate with Trigger.dev, so you can trigger runs from your Next.js app. Visit the API Keys page in the dashboard and select the DEV secret key.
-
-<img alt="How to find your secret key" />
+Open the API Keys page for your Development environment and create a named key with **Trigger only** access. Set the key as `TRIGGER_SECRET_KEY` in `.env.local` when using the App Router or `.env` when using the Pages Router.
 
 For more information on authenticating with Trigger.dev, see the [API keys page](/docs/apikeys).
 

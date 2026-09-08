@@ -13,9 +13,14 @@ path: docs/overview/administration/workspaces/sso/scim
 SCIM is available for **Enterprise** workspaces. Only **Workspace Admins** can configure these
 settings.
 
-## Set up SCIM
+## Prerequisites
 
-Follow these steps to connect your Identity Provider (IdP) to ElevenLabs.
+* An Enterprise ElevenLabs workspace.
+* Workspace admin access in ElevenLabs.
+* [SSO configured](/docs/overview/administration/workspaces/sso) for your workspace. Most identity
+  providers require an existing SSO app integration to attach SCIM provisioning to.
+
+## Set up SCIM
 
 #### Open SCIM settings
 
@@ -26,19 +31,19 @@ Go to **Workspace settings** > **Security & SSO** > **SCIM**.
 Click **Generate Token**. Copy the **Base URL** and **Bearer token** immediately.
 
 The token is only shown once. If you lose it, you must generate a new one, which will
-invalidate the previous token.
+invalidate the previous token and disconnect any currently configured IdP provisioning.
 
 #### Configure your identity provider
 
 In your IdP SCIM/Provisioning configuration:
 
-* Set the **SCIM Endpoint/Connector URL** to the Base URL.
-* Set the authentication mode to bearer token and paste your token.
+* Set the **SCIM Endpoint/Connector URL** to the Base URL copied from ElevenLabs.
+* Set the authentication mode to **HTTP Bearer Token** and paste your token.
 
 For provider-specific instructions, see [Setup by Identity Provider](#setup-by-identity-provider).
 
-**Revoking access:** If a user is removed or deactivated via SCIM, their workspace access is
-revoked, but their historical activity remains associated with the workspace.
+When a user is removed or deactivated in your IdP, their ElevenLabs workspace access is revoked.
+Their historical activity in the workspace is retained.
 
 ## Capabilities
 

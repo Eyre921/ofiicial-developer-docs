@@ -10,6 +10,7 @@ path: docs/help-center/product/dubbing
 
 |                                                                                                                                                                                                               |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Can I edit and regenerate Dubbing v2 via the API?](/docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api)                                                                      |
 | [Do you offer lip sync in Dubbing?](/docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing)                                                                                                       |
 | [How do I access Dubbing Studio?](/docs/help-center/product/dubbing/how-do-i-access-dubbing-studio)                                                                                                           |
 | [How much does Dubbing cost?](/docs/help-center/product/dubbing/how-much-does-dubbing-cost)                                                                                                                   |

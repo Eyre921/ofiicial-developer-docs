@@ -37,7 +37,7 @@ path: page/changelog
 
   Workspaces with a billing restriction, such as an unpaid invoice, are treated separately: the tools return a permission error that asks a workspace owner to manage billing, and `current_tool_access` reports them as `not_enabled` rather than `upgrade_required`.
 
-  A connection that lacks the "View threads and interact with agents" capability does not advertise these tools and must reconnect or re-authorize.
+  A connection that lacks the "View sessions and interact with agents" capability does not advertise these tools and must reconnect or re-authorize.
 </Update>
 
 <Update label="August 31, 2026">

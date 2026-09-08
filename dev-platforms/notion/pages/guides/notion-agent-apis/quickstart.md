@@ -50,7 +50,7 @@ You can instead use an internal connection's installation access token. The conn
   </Step>
 
   <Step>
-    In the **Configuration** tab, enable the **View threads and interact with agents** capability.
+    In the **Configuration** tab, enable the **View sessions and interact with agents** capability.
   </Step>
 
   <Step>

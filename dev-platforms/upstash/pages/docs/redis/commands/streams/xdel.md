@@ -10,6 +10,8 @@ The reply counts the entries that were actually removed. Deleting an entry does 
 
 IDs are never reused, so the stream's ID sequence keeps moving forward after deletions. For bulk cleanup by size or age, [`XTRIM`](/docs/redis/commands/streams/xtrim) is the right command.
 
+An ID listed more than once in a single call is deleted once and counted once, so `XDEL my-stream 0-1 0-1 0-1` replies `1` when that entry existed.
+
 ## Syntax
 
 ```redis

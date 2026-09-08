@@ -2705,7 +2705,8 @@ Create a new broadcast to send to your contacts.
 </ParamField>
 
 <ResendParamField type="string">
-  The topic ID that the broadcast will be scoped to.
+  Optional. Omit it to send to every subscribed contact in the segment, without
+  checking topic preferences.
 </ResendParamField>
 
 <ParamField type="boolean">
@@ -10525,9 +10526,17 @@ Retrieve a single received email.
   the form actually served as `html_format` on the body.
 
   By default (or when set to `data_uri`), inline images appear in `html` as base64 `data:` URIs. Set `html_format=cid` to keep the original `<img src="cid:..." />` references instead. Each `cid:` matches the `content_id` of an attachment, so you can correlate inline images with entries in the `attachments` array and fetch them via the attachment download endpoint.
+
+  Emails whose inlined HTML would exceed 100 MB, typically long reply chains that quote the same inline image hundreds of times, are always stored and returned with `cid:` references. For those emails the response reports `html_format: "cid"` regardless of the requested format, so check the `html_format` field on the body rather than assuming the format you asked for.
 </ParamField>
 
 ## Response Fields
+
+<ParamField type="'data_uri' | 'cid'">
+  How inline images are referenced in `html`. Usually matches the requested
+  format, but is `cid` when the email is too large to inline (see the query
+  parameter above).
+</ParamField>
 
 <ParamField type="array">
   The recipient addresses the email was forwarded for, taken from the `for`
@@ -14677,9 +14686,11 @@ In addition to rate limits, the API returns headers that track your email sendin
 
 These headers help you monitor your usage and avoid hitting quota limits.
 
+The daily quota applies only to the Free plan. It is a UTC calendar day (00:00–24:00 UTC) and resets at midnight UTC — not a rolling 24-hour window. Paid sending plans have no daily quota, only the monthly limit.
+
 When you exceed your quota limits, you'll receive a `429` response error code with one of the following error types:
 
-* **`daily_quota_exceeded`** - You have reached your daily email quota. [Upgrade your plan](https://resend.com/settings/billing) to remove the daily quota limit or wait until 24 hours have passed.
+* **`daily_quota_exceeded`** - You have reached your daily email quota. [Upgrade your plan](https://resend.com/settings/billing) to remove the daily quota limit or wait for the quota to reset at midnight UTC.
 * **`monthly_quota_exceeded`** - You have reached your monthly email quota. [Upgrade your plan](https://resend.com/settings/billing) to increase the monthly email quota.
 
 Both sent and received emails count towards these quotas. See the full list of [error codes](/docs/api-reference/errors) for more details.
@@ -42098,7 +42109,7 @@ These limits help improve your deliverability and likelihood of reaching your re
 
 Free accounts have the following:
 
-* Transactional emails: daily email quota of 100 emails/day and 3,000 emails/month. This quota includes both sent and received emails. Multiple `To`, `CC`, or `BCC` recipients in sent emails count as separate emails towards this quota.
+* Transactional emails: daily email quota of 100 emails/day and 3,000 emails/month. This quota includes both sent and received emails. Multiple `To`, `CC`, or `BCC` recipients in sent emails count as separate emails towards this quota. The daily quota is a UTC calendar day (00:00–24:00 UTC) and resets at midnight UTC. It is not a rolling 24-hour window from your first send or from when you hit the limit.
 
 * Marketing emails: unlimited emails to up to 1,000 contacts per month.
 

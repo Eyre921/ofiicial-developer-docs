@@ -21,6 +21,7 @@ Server Events are messages sent from the Deepgram server to the client over the 
 * [`Agent Thinking`](/docs/voice-agent-agent-thinking): Informs the client that the agent is processing information.
 * [`Function Call Request`](/docs/voice-agent-function-call-request): Sent when the agent needs to make a function call.
 * [`Function Call Response`](/docs/voice-agent-function-call-response): Sent to provide information about a function call.
+* [`Function Call Cancelled`](/docs/voice-agent-function-call-cancelled): Sent when a function call the client already received is cancelled because the user started speaking again, either inside the speculative window or after the turn was confirmed.
 * [`PromptUpdated` / `SpeakUpdated` / `ThinkUpdated`](/docs/voice-agent-acknowledgements): Server confirms that an `Update*` message has been applied.
 * [`Agent Audio Done`](/docs/voice-agent-agent-audio-done): Indicates that the server has finished sending the final audio segment to the client.
 * [`Error` / `Warning`](/docs/voice-agent-errors-warnings): Server reports a fatal error (`Error`) or non-fatal issue (`Warning`).

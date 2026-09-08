@@ -21,11 +21,12 @@ Provide `shouldCompact` to decide when to compact and `summarize` to generate th
 
 ```ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText, generateText, stepCountIs } from "ai";
+import { generateText, stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 
 export const myChat = chat.agent({
   id: "my-chat",
+  registry,
   compaction: {
     shouldCompact: ({ totalTokens }) => (totalTokens ?? 0) > 80_000,
     summarize: async ({ messages }) => {
@@ -36,9 +37,8 @@ export const myChat = chat.agent({
       return result.text;
     },
   },
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({
-      ...chat.toStreamTextOptions({ registry }),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -62,6 +62,10 @@ After each turn completes:
 5. The `onCompacted` hook fires if configured
 
 On the next turn, the LLM receives the compact summary instead of the full history — dramatically reducing token usage while preserving context.
+
+<Note>
+  This is Trigger.dev's provider-agnostic compaction. To persist a **provider's own** compaction across turns instead (Anthropic context editing or OpenAI stored responses), and to fall back between providers without re-sending history, see [Native compaction & provider fallback](/docs/ai-chat/patterns/native-compaction).
+</Note>
 
 ## Customizing what gets persisted
 
@@ -93,7 +97,7 @@ export const myChat = chat.agent({
       ...uiMessages.slice(-4), // Keep the last 4 messages
     ],
   },
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
   },
 });
@@ -187,7 +191,7 @@ export const myChat = chat.agent({
       data: { chatId, summary, totalTokens, messageCount },
     });
   },
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
   },
 });
@@ -203,7 +207,7 @@ Define a `compact` action that reuses your existing `summarize` function:
 
 ```ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText, generateText, generateId, convertToModelMessages } from "ai";
+import { generateText, generateId, convertToModelMessages } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 
@@ -245,7 +249,7 @@ export const myChat = chat.agent({
     ]);
   },
 
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
   },
 });

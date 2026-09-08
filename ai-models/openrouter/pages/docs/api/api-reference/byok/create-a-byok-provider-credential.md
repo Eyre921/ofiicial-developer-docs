@@ -451,7 +451,6 @@ components:
         - modular
         - moonshotai
         - morph
-        - ncompass
         - nebius
         - nex-agi
         - nextbit

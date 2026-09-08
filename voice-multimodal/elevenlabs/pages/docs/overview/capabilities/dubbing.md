@@ -37,7 +37,7 @@ Learn how to integrate dubbing into your application.
 
 ### Cloning strength
 
-Cloning strength is the configurable setting in Automatic Dubbing on the Dubbing v2 Alpha model, on a scale of 0 to 10. In the app it appears as **Speaker similarity** under **Advanced**. The default value of 7 works well for most content. Higher values prioritize voice similarity to the original speaker, which can sound less natural across languages with very different phonetic characteristics. A higher setting can also carry over more of the original accent into the dubbed output. Lower values give the model more freedom for natural delivery in the target language at the cost of resemblance to the original voice.
+Cloning strength is the configurable setting in Automatic Dubbing on the Dubbing v2 Alpha model, on a scale of 0 to 10. In the app, click **Speaker similarity** to adjust it. The default value of 7 works well for most content. Higher values prioritize voice similarity to the original speaker, which can sound less natural across languages with very different phonetic characteristics. A higher setting can also carry over more of the original accent into the dubbed output. Lower values give the model more freedom for natural delivery in the target language at the cost of resemblance to the original voice.
 
 ### Key features
 
@@ -50,6 +50,9 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Dubbing
 Dubbing v2 does not include a watermark toggle. Free-tier dubs are watermarked automatically;
 paid-tier dubs are not. There is no watermark-for-credit-discount option on Dubbing v2. The legacy
 v1 dubbing flow and Dubbing Studio were the only places where the watermark discount existed.
+
+For Dubbing v2, transcript editing and audio regeneration via the API are available on Enterprise
+plans only.
 
 ### Cost
 
@@ -273,12 +276,18 @@ it. You will not lose credits by doing so.
 
 #### Is Dubbing v2 available via API?
 
-Yes. See the [Dubbing quickstart](/docs/eleven-api/guides/cookbooks/dubbing) to create your
-first dub with the API.
+Yes. Creating and downloading dubs is available on all plans. Transcript editing and
+regeneration via the API are available on Enterprise plans only. See the [Dubbing quickstart](/docs/eleven-api/guides/cookbooks/dubbing) and [Refine and regenerate a dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate).
+
+#### Can I edit or regenerate a Dubbing v2 project?
+
+In the app, Dubbing v2 is automatic and has no in-app editor. Transcript editing and audio
+regeneration via the API are available on Enterprise plans only. See [Refine and regenerate a dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate). To edit in the UI, use the
+legacy v1 model with [Dubbing Studio](/docs/eleven-creative/products/dubbing/dubbing-studio).
 
 #### How do I use the legacy v1 dubbing model?
 
 Automatic Dubbing on the main [Dubbing](https://elevenlabs.io/app/dubbing) page uses Dubbing v2
-by default. To use the legacy v1 dubbing model and the original dubbing dialog, click
-**Advanced** and then **Use legacy V1 dubbing model**. The legacy dialog includes the v1
-watermark-for-credit-discount option and is the only way to reach Dubbing Studio from this page.
+by default. To use the legacy v1 model, choose **Dubbing v1** as the model. To create a Dubbing
+Studio project, choose **Dubbing v1**, then select **Dubbing project**. Using v1 is the only way
+to create a Dubbing Studio project.

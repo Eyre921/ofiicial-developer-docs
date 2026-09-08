@@ -444,7 +444,7 @@ Deploys
 
 3. Next, use the **Further action required** drop-down menu to select **Approve and add as Git Contributor**.
 
-Git Contributors will appear on the Members page as **Active Git Contributors**.
+Git Contributors will appear on the **Team settings > Members** page as **Active Git Contributors**.
 
 ### Reject a pending deploy
 

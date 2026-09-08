@@ -212,6 +212,16 @@ Execute a single widget query from a built-in dashboard. Use `list_dashboards` f
 * `"Run the total runs widget from the overview dashboard"`
 * `"Show me the LLM cost over time from the AI dashboard"`
 
+### get\_report
+
+Render an interpreted [health report](/docs/reports) — a deterministic verdict, not a raw panel — as text with sparklines. The `health` report answers whether work is flowing, whether the runs that start are healthy, and whether the telemetry is fresh, with a headline verdict and a suggested next action. Returns markdown by default, or ANSI when `color` is set. Read-only.
+
+**Example usage:**
+
+* `"Is my production project healthy?"`
+* `"Run the health report for the last 24 hours"`
+* `"Why are my runs backing up?"`
+
 ## Dev Server Tools
 
 ### start\_dev\_server

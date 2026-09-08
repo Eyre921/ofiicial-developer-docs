@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 381 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 382 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -136,6 +136,7 @@
 - `deployments/autoscaling` — [Autoscaling](pages/deployments/autoscaling.md) · [原文](https://docs.fireworks.ai/deployments/autoscaling)
 - `deployments/benchmarking` — [Performance benchmarking](pages/deployments/benchmarking.md) · [原文](https://docs.fireworks.ai/deployments/benchmarking)
 - `deployments/client-side-performance-optimization` — [Client-side performance optimization](pages/deployments/client-side-performance-optimization.md) · [原文](https://docs.fireworks.ai/deployments/client-side-performance-optimization)
+- `deployments/deployment-tags` — [Deployment Tags](pages/deployments/deployment-tags.md) · [原文](https://docs.fireworks.ai/deployments/deployment-tags)
 - `deployments/exporting-metrics` — [Exporting Metrics](pages/deployments/exporting-metrics.md) · [原文](https://docs.fireworks.ai/deployments/exporting-metrics)
 - `deployments/regions` — [Regions](pages/deployments/regions.md) · [原文](https://docs.fireworks.ai/deployments/regions)
 - `deployments/reservations` — [Reserved capacity](pages/deployments/reservations.md) · [原文](https://docs.fireworks.ai/deployments/reservations)

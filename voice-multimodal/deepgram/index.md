@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 382 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 384 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -292,6 +292,7 @@
 - `docs/voice-agent-errors-warnings` — [Errors & Warnings](pages/docs/voice-agent-errors-warnings.md) · [原文](https://developers.deepgram.com/docs/voice-agent-errors-warnings.md)
 - `docs/voice-agent-feature-overview` — [Feature Overview](pages/docs/voice-agent-feature-overview.md) · [原文](https://developers.deepgram.com/docs/voice-agent-feature-overview.md)
 - `docs/voice-agent-force-end-turn` — [Force End Turn](pages/docs/voice-agent-force-end-turn.md) · [原文](https://developers.deepgram.com/docs/voice-agent-force-end-turn.md)
+- `docs/voice-agent-function-call-cancelled` — [Function Call Cancelled](pages/docs/voice-agent-function-call-cancelled.md) · [原文](https://developers.deepgram.com/docs/voice-agent-function-call-cancelled.md)
 - `docs/voice-agent-function-call-context` — [Function Call Context](pages/docs/voice-agent-function-call-context.md) · [原文](https://developers.deepgram.com/docs/voice-agent-function-call-context.md)
 - `docs/voice-agent-function-call-request` — [Function Call Request](pages/docs/voice-agent-function-call-request.md) · [原文](https://developers.deepgram.com/docs/voice-agent-function-call-request.md)
 - `docs/voice-agent-function-call-response` — [Function Call Response](pages/docs/voice-agent-function-call-response.md) · [原文](https://developers.deepgram.com/docs/voice-agent-function-call-response.md)
@@ -307,6 +308,7 @@
 - `docs/voice-agent-outputs` — [Outputs: Server Events](pages/docs/voice-agent-outputs.md) · [原文](https://developers.deepgram.com/docs/voice-agent-outputs.md)
 - `docs/voice-agent-setting-applied-message` — [Settings Applied](pages/docs/voice-agent-setting-applied-message.md) · [原文](https://developers.deepgram.com/docs/voice-agent-setting-applied-message.md)
 - `docs/voice-agent-settings` — [Settings](pages/docs/voice-agent-settings.md) · [原文](https://developers.deepgram.com/docs/voice-agent-settings.md)
+- `docs/voice-agent-speculative-replies` — [Speculative Replies & Turn Confirmation](pages/docs/voice-agent-speculative-replies.md) · [原文](https://developers.deepgram.com/docs/voice-agent-speculative-replies.md)
 - `docs/voice-agent-stt-models` — [STT Models](pages/docs/voice-agent-stt-models.md) · [原文](https://developers.deepgram.com/docs/voice-agent-stt-models.md)
 - `docs/voice-agent-template-apps` — [Template Apps](pages/docs/voice-agent-template-apps.md) · [原文](https://developers.deepgram.com/docs/voice-agent-template-apps.md)
 - `docs/voice-agent-tts-controls` — [Voice Agent TTS Controls](pages/docs/voice-agent-tts-controls.md) · [原文](https://developers.deepgram.com/docs/voice-agent-tts-controls.md)

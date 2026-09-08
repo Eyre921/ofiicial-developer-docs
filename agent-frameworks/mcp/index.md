@@ -1,6 +1,6 @@
 # agent-frameworks/mcp 文档索引
 
-> 共 147 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 148 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -30,6 +30,7 @@
 - `community/sep-guidelines` — [SEP Guidelines](pages/community/sep-guidelines.md) · [原文](https://modelcontextprotocol.io/community/sep-guidelines)
 - `community/working-groups/agents` — [Agents Charter](pages/community/working-groups/agents.md) · [原文](https://modelcontextprotocol.io/community/working-groups/agents)
 - `community/working-groups/file-uploads` — [File Uploads Charter](pages/community/working-groups/file-uploads.md) · [原文](https://modelcontextprotocol.io/community/working-groups/file-uploads)
+- `community/working-groups/filesystems` — [Filesystems Charter](pages/community/working-groups/filesystems.md) · [原文](https://modelcontextprotocol.io/community/working-groups/filesystems)
 - `community/working-groups/inspector-v2` — [Inspector V2 Working Group Charter](pages/community/working-groups/inspector-v2.md) · [原文](https://modelcontextprotocol.io/community/working-groups/inspector-v2)
 - `community/working-groups/interceptors` — [Interceptors Charter](pages/community/working-groups/interceptors.md) · [原文](https://modelcontextprotocol.io/community/working-groups/interceptors)
 - `community/working-groups/registry` — [Registry Charter](pages/community/working-groups/registry.md) · [原文](https://modelcontextprotocol.io/community/working-groups/registry)

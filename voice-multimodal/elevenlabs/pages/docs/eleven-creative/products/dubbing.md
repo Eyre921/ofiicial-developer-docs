@@ -14,7 +14,7 @@ path: docs/eleven-creative/products/dubbing
 
 Automatic dubbing or video translation is a process for translating and replacing the original audio of a video with a new language, while preserving the unique characteristics of the original speakers' voices.
 
-![Dubbing new project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8c0235c62183be7eabf87a0346600e94e3c5717ecb58f0207715894eb39c9f5e/assets/images/product-guides/dubbing/dubbing-new-project.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260908%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260908T082236Z&X-Amz-Expires=604800&X-Amz-Signature=cffee65d312890b26d568f53a0fa034d2be1f1153a14d365890bbee04b0fc7bd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing new project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3605e288454d9cce3c8a9ad9c097cbffa2aaf858564e55f3432065590cd293e7/assets/images/product-guides/dubbing/dubbing-new-project.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260908%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260908T133744Z&X-Amz-Expires=604800&X-Amz-Signature=d61a1ebc43f4247095a28cc4765456000d51c54827f2c4c222b63c464a6e5ce2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Guide
 
@@ -25,22 +25,20 @@ TikTok, etc.
 
 Choose the language, or languages, you want to dub into.
 
-Click the **Advanced** settings to adjust speaker similarity. This setting controls how closely
-your dubbed voice mimics the original speaker.
+Click **Speaker similarity** to adjust how closely your dubbed voice mimics the original
+speaker.
 
 Click the generate button to submit your dub. You will be shown the cost and asked to confirm
 your request.
 
 Once your dub is ready, you'll be able to download it from your list of dubs.
 
-![Dubbing new project advanced
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9515592460d4e2e6393e657c2743710b201c846ed0894c82343f55bde176b8fd/assets/images/product-guides/dubbing/dubbing-new-advanced.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260908%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260908T082236Z&X-Amz-Expires=604800&X-Amz-Signature=75c24d5292452b4dfe5471b2af58e8615b8ec7a730954c7223bbcd713899cbad&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+For Dubbing v2, transcript editing and audio regeneration via the API are available on Enterprise
+plans only.
 
 ## Cloning strength
 
-Cloning strength is the configurable setting in Automatic Dubbing on the Alpha model. The default value of 7 works well for most content.
-
-* This is the advanced Dubbing version, which you can access by checking the **Create a Dubbing Studio project** box. Read more about it in the [Dubbing Studio guide](/docs/creative-platform/products/dubbing/dubbing-studio).
+Cloning strength is the configurable setting in Automatic Dubbing on the Dubbing v2 Alpha model, on a scale of 0 to 10. In the app, click **Speaker similarity** to adjust it. The default value of 7 works well for most content. Higher values prioritize voice similarity to the original speaker, which can sound less natural across languages with very different phonetic characteristics. A higher setting can also carry over more of the original accent into the dubbed output. Lower values give the model more freedom for natural delivery in the target language at the cost of resemblance to the original voice.
 
 ## FAQ
 
@@ -55,7 +53,7 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
 
       Select the language or languages you want to dub into in the **Choose languages** selector. You'll be charged for each language you select here. See [How much does Dubbing cost?](/docs/help-center/product/dubbing/how-much-does-dubbing-cost) for a full breakdown.
 
-      By default, you'll use our latest Dubbing model, v2. Dubs created using the v2 model are completely automatic without any option to edit the content.
+      By default, you'll use our latest Dubbing model, v2. Dubs created using the v2 model are automatic. There is no in-app option to edit the content. Transcript editing and audio regeneration via the API are available on Enterprise plans only.
 
       When using Dubbing v2 via the website, there's a 2 GB and 180 minutes limit for the uploaded file, and you need to stay below both.
 
@@ -63,7 +61,7 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
 
 
 
-      If you want to create a Dubbing Studio project, so you can edit your dubs, you can also choose **Use legacy v1 dubbing model** in the **Advanced** options. This will allow you to create a Dubbing Studio project by checking the **Create Dubbing project** option.
+      If you want to create a Dubbing Studio project so you can edit your dubs, choose **Dubbing v1** as the model, then select **Dubbing project**.
 
       **Note:** Dubbing Studio is in maintenance mode and receives critical bug fixes only.
     </td>
@@ -74,6 +72,18 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
       #### On what plans can I use Dubbing?
 
       Dubbing is available on all our plans, including the free plan. Dubs generated on free plans are automatically watermarked, with no option to remove this. Watermarking is not available on our paid subscriptions.
+
+      For Dubbing v2, transcript editing and audio regeneration via the API are available on Enterprise plans only.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can I edit and regenerate Dubbing v2 via the API?
+
+      For Dubbing v2, transcript editing and audio regeneration via the API are available on Enterprise plans only.
+
+      Creating and downloading dubs with the API is available on all plans. To edit the source transcript or translations and regenerate the audio, you need an Enterprise workspace. See [Refine and regenerate a dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate).
     </td>
   </tr>
 
@@ -149,11 +159,9 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
     <td>
       #### How do I access Dubbing Studio?
 
-      By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are completely automatic without any option to edit the content.
+      By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are automatic. There is no in-app option to edit the content. Transcript editing and audio regeneration via the API are available on Enterprise plans only.
 
-      If you want to use Dubbing Studio, you can do this by selecting **Use legacy v1 Dubbing model** in the **Advanced** options when you create your dub, then check the **Create Dubbing project** option.
-
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9fc196e5c40348615fff7f381e5945b855702f9b0b0cbeb204c565d17d6211f6/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260908%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260908T082236Z&X-Amz-Expires=604800&X-Amz-Signature=0595ea6cae11f80fb72528c03241ce0a8414e78304de0fa170268f660f70f31b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      If you want to use Dubbing Studio, choose **Dubbing v1** as the model, then select **Dubbing project**.
 
       It's not possible to convert an existing automatic dub to a Dubbing project.
 
@@ -161,7 +169,7 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
 
       Once it has completed processing, click the three dots icon and select **Edit** to open your dubbing project.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260908%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260908T082236Z&X-Amz-Expires=604800&X-Amz-Signature=1f74673a0224dfe477f9f9dd67e763dee7e03fae3b3b47509f691ed3516e5a2e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260908%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260908T133744Z&X-Amz-Expires=604800&X-Amz-Signature=1b3940f8b2fdbe013e80a9b5fcf3f10e2e6ca5e65406981e91f753edb56e7b97&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       For more information about Dubbing Studio, please see our [overview.](/docs/product-guides/products/dubbing/dubbing-studio)
     </td>
@@ -203,9 +211,11 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
     <td>
       #### Why can't I see the edit button next to my dub?
 
-      By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are completely automatic without any option to edit the content.
+      By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are automatic. There is no in-app edit button for Dubbing v2.
 
-      The edit button is only available when using Dubbing Studio, which is only available for our legacy v1 Dubbing model. To use Dubbing Studio, you will need to select **Use legacy v1 Dubbing model** in the **Advanced** options when you create your dub, then check the **Create Dubbing project** option.
+      The edit button is only available when using Dubbing Studio, which is only available for our legacy v1 Dubbing model. To use Dubbing Studio, choose **Dubbing v1** as the model, then select **Dubbing project**.
+
+      For Dubbing v2, you can edit transcripts and regenerate audio via the API on Enterprise plans only.
 
       **Note:** Dubbing Studio is in maintenance mode and receives critical bug fixes only.
     </td>

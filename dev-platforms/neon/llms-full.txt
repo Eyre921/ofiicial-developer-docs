@@ -21190,12 +21190,6 @@ Ask a question about Neon.
 
 Usage: `neon ask [options]`
 
-### auth (alias: `login`)
-
-Authenticate.
-
-Usage: `neon auth [options]`
-
 ### bootstrap
 
 Scaffold a new project from a Neon starter template, then install agent tooling and link a Neon project.
@@ -21547,6 +21541,12 @@ Manage VPC endpoints and project VPC restrictions.
 | `neon vpc project remove <id>`   | Remove a VPC endpoint restriction from this project.                                           |
 | `neon vpc project restrict <id>` | Configure or update a VPC endpoint restriction for this project.                               |
 
+### login (alias: `auth`)
+
+Authenticate.
+
+Usage: `neon login [options]`
+
 ## Global options
 
 Global options are optional and work with any Neon CLI command.
@@ -21554,7 +21554,7 @@ Global options are optional and work with any Neon CLI command.
 | Option            | Description                                                                         | Type    | Default                                                         | Required |
 | ----------------- | ----------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------- | :------: |
 | `--analytics`     | Manage analytics. Example: --no-analytics, --analytics false                        | boolean | `true`                                                          |    No    |
-| `--api-key`       | Neon API key, authenticates without `neon auth`                                     | string  | `""`                                                            |    No    |
+| `--api-key`       | Neon API key, authenticates without `neon login`                                    | string  | `""`                                                            |    No    |
 | `--color`         | Colorize the output. Example: --no-color, --color false                             | boolean | `true`                                                          |    No    |
 | `--config-dir`    | Path to config directory                                                            | string  | \~/.config/neonctl (or $XDG\_CONFIG\_HOME/neonctl)              |    No    |
 | `--context-file`  | Context file with default org, project, and branch IDs, created by `neon link`      | string  | nearest .neon file, searching upward from the current directory |    No    |
@@ -21566,7 +21566,7 @@ Global options are optional and work with any Neon CLI command.
 More about global options:
 
 - **Output:** table output may omit fields. Use `--output json` or `--output yaml` to see all data.
-- **Authentication:** the CLI checks credentials in this order: the `--api-key` option, the `NEON_API_KEY` environment variable (`export NEON_API_KEY=<neon_api_key>`), the `credentials.json` file that `neon auth` creates in the config directory (override its location with `--config-dir`), then interactive web authentication. To get a key, see [Create an API key](https://neon.com/docs/manage/api-keys#creating-api-keys).
+- **Authentication:** the CLI checks credentials in this order: the `--api-key` option, the `NEON_API_KEY` environment variable (`export NEON_API_KEY=<neon_api_key>`), the `credentials.json` file that `neon login` creates in the config directory (override its location with `--config-dir`), then interactive web authentication. To get a key, see [Create an API key](https://neon.com/docs/manage/api-keys#creating-api-keys).
 - **Context file:** sets a default organization, project, or branch so you don't repeat IDs in every command. Create one with [`neon link`](https://neon.com/docs/cli/link) (preferred) or [`set-context`](https://neon.com/docs/cli/set-context).
 - **Analytics:** Neon collects anonymous data about which commands and options are used, never user-defined data such as project IDs or command payloads. Opt out with `--no-analytics`.
 - **Help:** `--help` works at every level: `neon --help`, `neon branches --help`, `neon branches create --help`.
@@ -21789,7 +21789,7 @@ Call any Neon API route directly as an authenticated passthrough
 
 The `api` command sends an authenticated request to any [Neon API](https://neon.com/docs/reference/api) route and prints the response. Pass an API path as the first argument. The method defaults to `GET`, or `POST` when you supply a body.
 
-By default the request uses your [`neon auth`](https://neon.com/docs/cli/auth) credentials. To use a specific key, pass `--api-key` or set `NEON_API_KEY`. The [key's permissions](https://neon.com/docs/manage/api-keys#types-of-api-keys) determine what the request can do.
+By default the request uses your [`neon login`](https://neon.com/docs/cli/login) credentials. To use a specific key, pass `--api-key` or set `NEON_API_KEY`. The [key's permissions](https://neon.com/docs/manage/api-keys#types-of-api-keys) determine what the request can do.
 
 **Note:** `api` is a raw passthrough: it does not read your [context file](https://neon.com/docs/cli/set-context) or auto-fill parameters. Pass what each route needs explicitly. For example, `neon api /projects` returns `ERROR: org_id is required` unless you add `-Q org_id=<org_id>` or authenticate with an organization API key. Get your organization ID from [`neon orgs list`](https://neon.com/docs/cli/orgs).
 
@@ -21916,49 +21916,6 @@ Get the answer as JSON so you can process it in a script:
 ```bash
 neon ask --prompt "What is a Neon project?" --output json
 ```
-
---- [Document source](https://neon.com/docs/cli/auth.md) ---
-
-> Summary: The `neon auth` command authenticates the Neon CLI to a Neon account by launching a browser OAuth flow that saves credentials to `~/.config/neonctl/credentials.json`. Use this command when setting up the CLI for the first time or when not using an API key. Vercel-Managed Integration users must authenticate via API key (`--api-key` or `NEON_API_KEY`) instead. The CLI resolves authentication in priority order: `--api-key` flag, then `NEON_API_KEY` env var, then the credentials file, then triggers browser auth if none are found.
-
-# Neon CLI command: auth
-
-Authenticate to Neon via browser or API key and manage credentials
-
-The `auth` command authenticates you to Neon. `neon login` is an alias for `neon auth`.
-
-## Usage
-
-```bash
-neon auth [options]
-```
-
-The command launches a browser window where you authorize the Neon CLI to access your Neon account. Your credentials are then saved locally to `credentials.json`:
-
-```text filename="Output"
-/home/<home>/.config/neonctl/credentials.json
-```
-
-**Note:** If you use Neon through the [Vercel-Managed Integration](https://neon.com/docs/guides/vercel-managed-integration), authenticate with a Neon API key instead (see below). The `neon auth` command requires an account registered through Neon rather than Vercel.
-
-Instead of running `neon auth`, you can provide an API key with the global `--api-key` option or the `NEON_API_KEY` environment variable. See [Global options](https://neon.com/docs/cli#global-options).
-
-**Info:**
-
-The Neon CLI resolves authentication in this order:
-
-- The `--api-key` option, if provided.
-- The `NEON_API_KEY` environment variable, if set.
-- The `credentials.json` file created by `neon auth`.
-- If none are found, the CLI starts the `neon auth` web authentication flow.
-
-## Options
-
-| Option      | Description                                                                                                            | Type    | Default | Required |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--keyring` | Store the credential in the OS keyring. Per profile; later auth without the flag stays there. See `neon profile list`. | boolean | —       |    No    |
-
-Pass `--keyring` to store the credential in your operating system's keyring instead of the `credentials.json` file. The choice is saved per profile, so once set, `neon auth` keeps using the keyring for that profile even without the flag. Along with this option, `auth` accepts the [global options](https://neon.com/docs/cli#global-options).
 
 --- [Document source](https://neon.com/docs/cli/bootstrap.md) ---
 
@@ -22953,7 +22910,7 @@ The `claim` command creates a temporary Neon project when there is no Neon accou
 
 If `neon claim` is not a command, or `neon claim --help` does not list `create`, install the latest CLI (`npm i -g neon@latest`) or use the HTTP flow in [Claimable Neon](https://neon.com/docs/reference/claimable-neon).
 
-Do not pass `--api-key` or `--profile`. Those are refused. `neon auth` and `neon init` need a Neon account; use this command instead when there is none.
+Do not pass `--api-key` or `--profile`. Those are refused. `neon login` and `neon init` need a Neon account; use this command instead when there is none.
 
 Start in the browser at [neon.com/claimable-neon](https://neon.com/claimable-neon), or give an agent [`auth.md`](https://neon.com/auth.md).
 
@@ -24430,7 +24387,7 @@ neon inspect db subscriptions
 
 --- [Document source](https://neon.com/docs/cli/install.md) ---
 
-> Summary: Install the Neon CLI (neon) with npm i -g neon@latest, or on macOS, Windows, or Linux via Homebrew, bun, or a standalone binary, with no-install options via npx or bunx. After installing, connect by running `neon auth` for browser-based authentication, or set the NEON_API_KEY environment variable or pass --api-key per command. Vercel-Managed Integration users must use an API key because web auth requires a Neon-registered account.
+> Summary: Install the Neon CLI (neon) with npm i -g neon@latest, or on macOS, Windows, or Linux via Homebrew, bun, or a standalone binary, with no-install options via npx or bunx. After installing, connect by running `neon login` for browser-based authentication, or set the NEON_API_KEY environment variable or pass --api-key per command. Vercel-Managed Integration users must use an API key because web auth requires a Neon-registered account.
 
 # Neon CLI: Install and connect
 
@@ -24603,12 +24560,12 @@ The Neon CLI supports connecting via web authentication or API key.
 Run the following command to connect to Neon via web authentication:
 
 ```bash
-neon auth
+neon login
 ```
 
-The [neon auth](https://neon.com/docs/cli/auth) command launches a browser window where you can authorize the Neon CLI to access your Neon account. If you haven't authenticated previously, running any Neon CLI command launches the web authentication process automatically unless you've specified an API key.
+The [neon login](https://neon.com/docs/cli/login) command launches a browser window where you can authorize the Neon CLI to access your Neon account. If you haven't authenticated previously, running any Neon CLI command launches the web authentication process automatically unless you've specified an API key.
 
-**Note:** If you use Neon through the [Vercel-Managed Integration](https://neon.com/docs/guides/vercel-managed-integration), you must authenticate connections from the CLI client using a Neon API key (see below). The `neon auth` command requires an account registered through Neon rather than Vercel.
+**Note:** If you use Neon through the [Vercel-Managed Integration](https://neon.com/docs/guides/vercel-managed-integration), you must authenticate connections from the CLI client using a Neon API key (see below). The `neon login` command requires an account registered through Neon rather than Vercel.
 
 ### API key
 
@@ -24822,6 +24779,49 @@ Organization-scoped API keys (those created at the organization level rather tha
 - If the API key is org-scoped and at least one project already exists in the org, the CLI auto-detects the `org_id` from the first project.
 - When the regions endpoint is not allowed, `link` falls back to a built-in static region list.
 
+--- [Document source](https://neon.com/docs/cli/login.md) ---
+
+> Summary: The `neon login` command authenticates the Neon CLI to a Neon account by launching a browser OAuth flow that saves credentials to `~/.config/neon/credentials.json`. Use this command when setting up the CLI for the first time or when not using an API key. `neon auth` is a legacy alias for `neon login`. Vercel-Managed Integration users must authenticate via API key (`--api-key` or `NEON_API_KEY`) instead. The CLI resolves authentication in priority order: `--api-key` flag, then `NEON_API_KEY` env var, then the credentials file, then triggers browser login if none are found.
+
+# Neon CLI command: login
+
+Authenticate to Neon via browser or API key and manage credentials
+
+The `login` command authenticates you to Neon. `neon auth` is a legacy alias for `neon login`.
+
+## Usage
+
+```bash
+neon login [options]
+```
+
+The command launches a browser window where you authorize the Neon CLI to access your Neon account. Your credentials are then saved locally to `credentials.json`:
+
+```text filename="Output"
+~/.config/neon/credentials.json
+```
+
+**Note:** If you use Neon through the [Vercel-Managed Integration](https://neon.com/docs/guides/vercel-managed-integration), authenticate with a Neon API key instead (see below). The `neon login` command requires an account registered through Neon rather than Vercel.
+
+Instead of running `neon login`, you can provide an API key with the global `--api-key` option or the `NEON_API_KEY` environment variable. See [Global options](https://neon.com/docs/cli#global-options).
+
+**Info:**
+
+The Neon CLI resolves authentication in this order:
+
+- The `--api-key` option, if provided.
+- The `NEON_API_KEY` environment variable, if set.
+- The `credentials.json` file created by `neon login`.
+- If none are found, the CLI starts the `neon login` web authentication flow.
+
+## Options
+
+| Option      | Description                                                                                                            | Type    | Default | Required |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--keyring` | Store the credential in the OS keyring. Per profile; later auth without the flag stays there. See `neon profile list`. | boolean | —       |    No    |
+
+Pass `--keyring` to store the credential in your operating system's keyring instead of the `credentials.json` file. The choice is saved per profile, so once set, `neon login` keeps using the keyring for that profile even without the flag. Along with this option, `login` accepts the [global options](https://neon.com/docs/cli#global-options).
+
 --- [Document source](https://neon.com/docs/cli/logs.md) ---
 
 > Summary: The Neon CLI `neon logs` command reads the logs a branch's services emit. Today that covers Neon Functions and Object Storage; Postgres compute logs are coming. Query records over a time window, filter by source, severity, or OpenTelemetry attributes, run raw LogQL, and list which fields and values a branch reports. Logs are in beta and available in AWS US East (Ohio) (aws-us-east-2) and AWS Europe (Frankfurt) (aws-eu-central-1).
@@ -24991,7 +24991,7 @@ neon mcp [options]
 
 ### Authentication
 
-By default, `mcp` mints a new Neon API key and writes it into each agent's config. Minting requires you to already be signed in, so run [`neon auth`](https://neon.com/docs/cli/auth) first or pass `--api-key`. If you aren't authenticated, the command stops and tells you to sign in, pass `--api-key`, or use `--oauth`.
+By default, `mcp` mints a new Neon API key and writes it into each agent's config. Minting requires you to already be signed in, so run [`neon login`](https://neon.com/docs/cli/login) first or pass `--api-key`. If you aren't authenticated, the command stops and tells you to sign in, pass `--api-key`, or use `--oauth`.
 
 **Warning: Minted keys are account-wide by default**
 
@@ -26015,7 +26015,7 @@ neon me --profile work
 
 Naming a profile that doesn't exist is an error, not a silent fall back to `DEFAULT`.
 
-Credentials resolve from `--profile`, then `NEON_PROFILE`, then a profile named `DEFAULT`. Nothing persists between commands, so set `NEON_PROFILE` to avoid repeating the flag. `DEFAULT` is what a plain `neon auth` gives you, with or without profiles.
+Credentials resolve from `--profile`, then `NEON_PROFILE`, then a profile named `DEFAULT`. Nothing persists between commands, so set `NEON_PROFILE` to avoid repeating the flag. `DEFAULT` is what a plain `neon login` gives you, with or without profiles.
 
 Profiles live in `profiles.json` in the config directory, which is `~/.config/neon` by default (`XDG_CONFIG_HOME` moves it) and `--config-dir` overrides per command. That file maps each profile name to the credentials file that holds its token. The CLI manages it for you, so create and remove profiles with the commands below rather than editing it by hand.
 
@@ -26049,7 +26049,7 @@ neon profile create <name> [options]
 
 Most of the time you create a profile one of two ways: a browser sign-in, or a freshly minted key.
 
-Sign in with the browser, the same as `neon auth --profile work`:
+Sign in with the browser, the same as `neon login --profile work`:
 
 ```bash
 neon profile create work
@@ -26110,7 +26110,7 @@ Profiles
 └────────┴─────────┴──────────────────────────────────────┴─────────┴────────────────────────────────┴──────┴─────────┴──────────────────────────┘
 ```
 
-`Account` is the recorded email label, the user ID when there's no label (as with a `DEFAULT` profile from a plain `neon auth`), or the organization identifier for an organization- or project-scoped key. `Auth` shows how the profile authenticates (`oauth` for a browser sign-in, `api key` for a stored key), and `Scope` shows what a minted key is limited to: `account`, `org <org-id>`, or `project <project-id>`. `File` reports whether the credential could be read: `ok` when it's present and readable, otherwise `missing`, `invalid`, or `unreadable`. `Storage` shows where the credential lives, `file` or `keyring`, and `Credentials` gives the file's name, or `keyring` when it's kept in the OS keyring.
+`Account` is the recorded email label, the user ID when there's no label (as with a `DEFAULT` profile from a plain `neon login`), or the organization identifier for an organization- or project-scoped key. `Auth` shows how the profile authenticates (`oauth` for a browser sign-in, `api key` for a stored key), and `Scope` shows what a minted key is limited to: `account`, `org <org-id>`, or `project <project-id>`. `File` reports whether the credential could be read: `ok` when it's present and readable, otherwise `missing`, `invalid`, or `unreadable`. `Storage` shows where the credential lives, `file` or `keyring`, and `Credentials` gives the file's name, or `keyring` when it's kept in the OS keyring.
 
 ## neon profile rotate-key
 
@@ -26167,7 +26167,7 @@ The prompt defaults to no, so pressing Enter leaves the profile in place.
 To switch accounts rather than discard one, authenticate again under the same name:
 
 ```bash
-neon auth --profile work
+neon login --profile work
 ```
 
 --- [Document source](https://neon.com/docs/cli/projects.md) ---
@@ -26569,7 +26569,7 @@ neon psql --pooled
 
 --- [Document source](https://neon.com/docs/cli/quickstart.md) ---
 
-> Summary: The Neon CLI quickstart installs neon on macOS, Windows, or Linux via Homebrew, npm, or bun, then authenticates using browser-based `neon auth` or a personal API key. Use this page when setting up terminal access to Neon for the first time, before working through the full CLI reference. It also covers the `.neon` context file (`neon link`) to avoid repeating `--project-id` and `--org-id` flags, shell tab completion, and first commands like `neon projects list`, `neon branches create`, and `neon connection-string`.
+> Summary: The Neon CLI quickstart installs neon on macOS, Windows, or Linux via Homebrew, npm, or bun, then authenticates using browser-based `neon login` or a personal API key. Use this page when setting up terminal access to Neon for the first time, before working through the full CLI reference. It also covers the `.neon` context file (`neon link`) to avoid repeating `--project-id` and `--org-id` flags, shell tab completion, and first commands like `neon projects list`, `neon branches create`, and `neon connection-string`.
 
 # Neon CLI quickstart
 
@@ -26646,7 +26646,7 @@ Authenticate with your Neon account using one of these methods:
 Run the command below to authenticate through your browser:
 
 ```bash
-neon auth
+neon login
 ```
 
 This opens a browser window where you can authorize the CLI to access your Neon account.
@@ -26665,7 +26665,7 @@ To avoid entering your API key with each command, set it as an environment varia
 export NEON_API_KEY=<your-api-key>
 ```
 
-For more about authenticating, see [Neon CLI commands: auth](https://neon.com/docs/cli/auth).
+For more about authenticating, see [Neon CLI commands: login](https://neon.com/docs/cli/login).
 
 ## Link your project
 
@@ -31297,7 +31297,7 @@ Neon Functions are not the right primitive for a Discord Gateway bot yet. Gatewa
 ## Prerequisites
 
 - A Neon project in AWS US East (Ohio) (`aws-us-east-2`) or AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions. See [Get started with Neon Functions](https://neon.com/docs/compute/functions/get-started).
-- The latest [Neon CLI](https://neon.com/docs/cli), installed and authenticated. Upgrade with `npm install -g neon@latest`, then see [CLI auth](https://neon.com/docs/cli/auth).
+- The latest [Neon CLI](https://neon.com/docs/cli), installed and authenticated. Upgrade with `npm install -g neon@latest`, then see [CLI login](https://neon.com/docs/cli/login).
 - Node.js 24 (`node -v`). Deployed functions run on `nodejs24`, so 24 locally is the closest match. Node.js 20+ works.
 - A Discord account.
 - A Discord server you own. Create one if you need to. You often can't add a bot to someone else's server.
@@ -32313,7 +32313,7 @@ This guide uses Telegram webhooks. It doesn't run a polling process with `getUpd
 ## Prerequisites
 
 - A Neon project in AWS US East (Ohio) (`aws-us-east-2`) or AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions. See [Get started with Neon Functions](https://neon.com/docs/compute/functions/get-started).
-- The latest [Neon CLI](https://neon.com/docs/cli), installed and authenticated. Upgrade with `npm install -g neon@latest`, then see [CLI auth](https://neon.com/docs/cli/auth).
+- The latest [Neon CLI](https://neon.com/docs/cli), installed and authenticated. Upgrade with `npm install -g neon@latest`, then see [CLI login](https://neon.com/docs/cli/login).
 - Node.js 24 (`node -v`). Deployed functions run on `nodejs24`, so 24 locally is the closest match. Node.js 20+ works.
 - A Telegram account.
 
@@ -33018,7 +33018,7 @@ This example uses Meta's hosted WhatsApp Cloud API. It doesn't automate a person
 ## Prerequisites
 
 - A Neon project in AWS US East (Ohio) (`aws-us-east-2`) or AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions. See [Get started with Neon Functions](https://neon.com/docs/compute/functions/get-started).
-- The latest [Neon CLI](https://neon.com/docs/cli), installed and authenticated. Upgrade with `npm install -g neon@latest`, then see [CLI auth](https://neon.com/docs/cli/auth).
+- The latest [Neon CLI](https://neon.com/docs/cli), installed and authenticated. Upgrade with `npm install -g neon@latest`, then see [CLI login](https://neon.com/docs/cli/login).
 - Node.js 24 (`node -v`). Deployed functions run on `nodejs24`, so 24 locally is the closest match. Node.js 20+ works.
 - A Meta developer account.
 - A Meta app connected to a WhatsApp Business Account, with a Cloud API phone number and a test recipient. Meta's get started flow can create test resources for you.
@@ -62269,11 +62269,11 @@ Object Storage, Functions, and the AI Gateway are in beta and currently availabl
 
 The setup is a few commands; the [CLI quickstart](https://neon.com/docs/cli/quickstart) is the full how-to. Install the CLI, link a project, scaffold one `neon.ts`.
 
-Install the [`neon` CLI](https://neon.com/docs/cli/install) (requires **Node.js 20.19 or higher**) and sign in with [`neon auth`](https://neon.com/docs/cli/auth):
+Install the [`neon` CLI](https://neon.com/docs/cli/install) (requires **Node.js 20.19 or higher**) and sign in with [`neon login`](https://neon.com/docs/cli/login):
 
 ```bash
 npm i -g neon
-neon auth
+neon login
 ```
 
 Then create the project. Create it in `aws-us-east-2` or `aws-eu-central-1` so the beta services are available:
@@ -63127,7 +63127,7 @@ Create your project in **AWS US East (Ohio)** or **AWS Europe (Frankfurt)**. Any
 Sign in and create the project:
 
 ```bash filename="Terminal"
-neon auth
+neon login
 neon projects create --name my-backend --region-id aws-us-east-2
 ```
 
@@ -63163,7 +63163,7 @@ A single [`neon.ts`](https://neon.com/docs/reference/neon-ts) file declares your
 
 Work through the commands on the right:
 
-1. `neon link` connects the directory to your project (writing a `.neon` file); `neon checkout` then pins the branch and pulls its env vars, including `DATABASE_URL`, into `.env.local`. If you haven't signed in to the CLI yet, run `neon auth` first.
+1. `neon link` connects the directory to your project (writing a `.neon` file); `neon checkout` then pins the branch and pulls its env vars, including `DATABASE_URL`, into `.env.local`. If you haven't signed in to the CLI yet, run `neon login` first.
 2. `neon config init` scaffolds `neon.ts` and installs `@neon/config` and `@neon/env`. It includes a branch policy; keep it and add the `preview` blocks shown in later steps alongside it (those snippets omit the policy for brevity).
 
 Postgres is already available on the branch, so `DATABASE_URL` is in `.env.local` and you can build the data layer before adding any beta services.
@@ -64344,10 +64344,10 @@ Let's create a `development` branch and learn how to use the Neon CLI to manage 
 
 3. **Authenticate with Neon**
 
-   The `neon auth` command launches a browser window where you can authorize the Neon CLI to access your Neon account.
+   The `neon login` command launches a browser window where you can authorize the Neon CLI to access your Neon account.
 
    ```bash
-   neon auth
+   neon login
    ```
 
 4. **View your branches**
@@ -95554,7 +95554,7 @@ Create a Neon project with the [Neon CLI](https://neon.com/docs/cli/install) or 
 Install the CLI (`npm i -g neon`), then sign in and create the project:
 
 ```bash filename="Terminal"
-neon auth
+neon login
 neon projects create --name my-app
 ```
 
@@ -95615,7 +95615,7 @@ neon env pull --file .env    # writes DATABASE_URL from your default branch into
 
 Notes:
 
-- Not signed in yet? Run `neon auth` first.
+- Not signed in yet? Run `neon login` first.
 - `neon link` prompts for an org and project. To skip the prompts, pass `--project-id <id>` (find IDs with `neon projects list`).
 - For Nuxt, pass in `--file .env` to `neon env pull` as it writes to `.env.local` by default, and `nuxt dev` only reads `.env` by default.
 - Which branch? `neon env pull` uses your project's default branch: `main` for CLI-created projects, `production` for Console-created ones (`neon branches list` shows yours). To use a different branch, run `neon checkout <branch>` first; it re-pins the branch in `.neon` so the next `env pull` reads from it.
@@ -107357,7 +107357,7 @@ You can see a live latency comparison of these three methods here: [Function lat
 
 --- [Document source](https://neon.com/docs/guides/vercel-managed-integration.md) ---
 
-> Summary: The Vercel-Managed Integration (also called Neon Postgres Native Integration) provisions a Lakebase Postgres database from the Vercel Marketplace and routes all billing through your Vercel invoice, injecting DATABASE_URL and related environment variables automatically. Choose this path over the Neon-Managed Integration when you have no existing Neon account or want a single Vercel bill; it does not support the neon auth CLI command. Automated Preview Branching creates an isolated copy-on-write Lakebase Postgres branch for every Vercel Preview Deployment, with branches cleaned up according to Vercel's 6-month default deployment retention policy.
+> Summary: The Vercel-Managed Integration (also called Neon Postgres Native Integration) provisions a Lakebase Postgres database from the Vercel Marketplace and routes all billing through your Vercel invoice, injecting DATABASE_URL and related environment variables automatically. Choose this path over the Neon-Managed Integration when you have no existing Neon account or want a single Vercel bill; it does not support the `neon login` CLI command. Automated Preview Branching creates an isolated copy-on-write Lakebase Postgres branch for every Vercel Preview Deployment, with branches cleaned up according to Vercel's 6-month default deployment retention policy.
 
 # Connecting with the Vercel-Managed Integration
 
@@ -107586,7 +107586,7 @@ Branches you don't delete are eventually [archived](https://neon.com/docs/guides
 ## Limitations
 
 - You cannot use this integration with the **Neon-Managed integration** in the same Vercel project
-- **Neon CLI access**: Requires API key authentication (the `neon auth` command won't work since the account is Vercel-managed)
+- **Neon CLI access**: Requires API key authentication (the `neon login` command won't work since the account is Vercel-managed)
 - Cannot install if you currently use Vercel Postgres (deprecated) - contact Vercel about transitioning
 - **Preview deployment environment variables**: Branch-specific connection variables cannot be accessed or viewed in your Vercel project's environment variable settings (they're injected at deployment time only and not stored to avoid manual cleanup when branches are deleted)
 
@@ -121033,11 +121033,11 @@ Neon's CLI provides an expanding set of commands to manage your organizations.
 
 ## Authorization
 
-Use the `auth` command to authenticate your Neon account from the CLI. This command opens a browser where you will be asked to grant the necessary permissions to manage your Neon resources across all organizations you belong to. Your OAuth token is stored in `~/.config/neonctl/credentials.json`.
+Use the `login` command to authenticate your Neon account from the CLI. This command opens a browser where you will be asked to grant the necessary permissions to manage your Neon resources across all organizations you belong to. Your OAuth token is stored in `~/.config/neon/credentials.json`.
 
 Authentication is tied to your Neon user account. Once authenticated, you can access and manage any organization you belong to. When running commands, you'll need to specify which organization to use via `--org-id`, a [context file](https://neon.com/docs/cli/set-context), or by responding to the interactive prompt.
 
-See [Auth - CLI](https://neon.com/docs/cli/auth) to learn more.
+See [Login - CLI](https://neon.com/docs/cli/login) to learn more.
 
 ## List Organizations
 
@@ -121724,7 +121724,7 @@ After creating a project, you are directed to the **Project Dashboard**.
 
 **CLI**
 
-Install the CLI with `npm i -g neon` and run `neon auth` to log in. Then create a project with `neon projects create`:
+Install the CLI with `npm i -g neon` and run `neon login` to log in. Then create a project with `neon projects create`:
 
 ```bash
 neon projects create --name myproject --region-id aws-us-east-2
@@ -127145,7 +127145,7 @@ const result = await apply(config, target); // apply the policy for real
 
 ## Authentication
 
-None of the functions on this page take a Neon session or browser login. [Create a Neon API key in the Console](https://console.neon.tech/app/settings/api-keys), then pass it in the `apiKey` option, or inject your own `NeonApi` adapter with `api`. The package doesn't read `NEON_API_KEY` or the credentials written by `neon auth`. If you omit both `apiKey` and `api`, the operation throws a `PlatformError` with code `PLATFORM_MISSING_API_KEY`.
+None of the functions on this page take a Neon session or browser login. [Create a Neon API key in the Console](https://console.neon.tech/app/settings/api-keys), then pass it in the `apiKey` option, or inject your own `NeonApi` adapter with `api`. The package doesn't read `NEON_API_KEY` or the credentials written by `neon login`. If you omit both `apiKey` and `api`, the operation throws a `PlatformError` with code `PLATFORM_MISSING_API_KEY`.
 
 For `inspect`, `plan`, `apply`, `pullConfig`, and `pushConfig`, the optional `apiHost` selects a non-production API host. If you omit it, the package uses Neon's production API. The package doesn't read `NEON_API_HOST`. `CreateBranchOptions` has no `apiHost` field, so you can't override the host per call to `createBranch`.
 

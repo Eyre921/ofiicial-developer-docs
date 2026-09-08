@@ -8,42 +8,77 @@ path: docs/overview/administration/workspaces/sso
 
 # Single Sign-On (SSO)
 
-![SSO](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e1575b62be17ed4dbd459539161c7853f9f3e000c8d2eeba01f40e1335d7dad0/assets/images/product-guides/workspaces/workspace-sso.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260908%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260908T082311Z&X-Amz-Expires=604800&X-Amz-Signature=9c49ac20783fc25d52a52635d69cb9b5403d37f2482b476da8a39abd41e3bf13&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
-
 ## Overview
 
-SSO is currently only available for Enterprise customers, and only Workspace admins can enable
-this feature. To upgrade, [get in touch with our sales team](https://elevenlabs.io/contact-sales).
+SSO is available for **Enterprise** customers only. Only Workspace admins can enable this feature.
+To upgrade, [get in touch with our sales team](https://elevenlabs.io/contact-sales).
 
-Single Sign-On (SSO) allows your team to log in to ElevenLabs by using your existing identity provider. This allows your team to use the same credentials they use for other services to log in to ElevenLabs.
+Single Sign-On (SSO) allows your team to sign in to ElevenLabs using your existing identity
+provider (IdP). ElevenLabs supports **SAML 2.0** and **OIDC** for enterprise SSO, and
+Service Provider (SP) initiated sign-in.
 
-## Guide
+Before enabling SSO, you must verify your email domain. Workspace members sign in with the same
+email domain that is verified and associated with your SSO configuration.
 
-#### Access your SSO settings
+## Set up SSO
 
-Click on your profile icon located in the top right corner of the dashboard, select **Workspace settings**, and then navigate to the **Security & SSO** tab.
+#### Open Security & SSO settings
 
-#### Choose identity providers
+Go to **Workspace settings** > **Security & SSO**.
 
-You can choose from a variety of pre-configured identity providers, including Google, Apple, GitHub, etc. Custom organization SSO providers will only appear in this list after they have been configured, as shown in the "SSO Provider" section.
+#### Restrict sign-in methods (optional)
+
+Under **Allowed Identity Providers**, you can restrict which sign-in methods workspace members
+may use — for example, limiting sign-in to your enterprise SSO provider only and disabling
+social providers such as Google, Apple, and GitHub.
+
+By default, all providers are enabled. Changes take effect immediately.
 
 #### Verify your email domain
 
-Next, you need to verify your email domain for authentication. This lets ElevenLabs know that you own the domain you are configuring for SSO. This is a security measure to prevent unauthorized access to your Workspace.
+Under **User Auto Provisioning**, verify the email domain your users will sign in with. This
+proves ownership of the domain and is required before you can associate it with an SSO
+provider.
 
-Click the **Verify domain** button and enter the domain name you want to verify. After completing this step, click on the domain pending verification. You will be prompted to add a DNS TXT record to your domain's DNS settings. Once the DNS record has been added, click on the **Verify** button.
+Add a DNS TXT record to your domain's DNS settings with the verification code shown, then click
+**Verify**. You can also enable auto-provisioning so users with a matching email domain are
+automatically added to your workspace when they sign up.
 
-#### Configure SSO
+#### Configure your SSO provider
 
-If you want to configure your own SSO provider, select the SSO provider dropdown to select between OIDC (OpenID Connect) and SAML (Security Assertion Markup Language).
+Under **SSO Provider**, select your protocol:
 
-**Important:** We do **not** recommend using Microsoft Entra (formerly Azure AD) with OIDC for SSO. For best compatibility and support, use SAML when integrating with Entra/Azure.
+* **SAML** — use with Okta, Microsoft Entra, OneLogin, and other SAML 2.0 identity providers.
+* **OIDC** (OpenID Connect) — use with providers that support OIDC.
 
-Only Service Provider (SP) initiated SSO is supported for SAML. To ease the sign in process, you can create a bookmark app in your SSO provider linking to [https://elevenlabs.io/app/sign-in?use\_sso=true](https://elevenlabs.io/app/sign-in?use_sso=true). You can include the user's email as an additional query parameter to pre-fill the field. For example [https://elevenlabs.io/app/sign-in?use\_sso=true\&email=test@test.com](https://elevenlabs.io/app/sign-in?use_sso=true\&email=test@test.com)
+Microsoft Entra (formerly Azure AD) is only supported through SAML. Do not use OIDC with
+Entra — it can cause sign-in failures.
 
-Once you've filled out the required fields, click the **Update SSO** button to save your changes.
+Only SP-initiated SSO is supported for SAML. To simplify sign-in, create a bookmark app in
+your IdP that links to `https://elevenlabs.io/app/sign-in?use_sso=true`. You can include the
+user email as a query parameter to pre-fill it:
+`https://elevenlabs.io/app/sign-in?use_sso=true&email=user@company.com`
 
-Configuring a new SSO provider will log out all Workspace members currently logged in with SSO.
+Fill in the required fields for your provider (entity ID, sign-in URL, certificate), then
+click **Update SSO**.
+
+Saving a new SSO provider configuration will immediately log out all workspace members
+currently signed in with SSO.
+
+#### Add your verified domain
+
+After saving the SSO provider configuration, click **Add Domain** and select the verified
+domain that matches your users' email addresses. Only verified domains appear in this list.
+
+For provider-specific field mappings and screenshots, see the guides below.
+
+#### [Microsoft Entra SAML](/docs/overview/administration/workspaces/sso/microsoft-entra-saml)
+
+Step-by-step setup for Microsoft Entra ID (formerly Azure AD).
+
+#### [Okta SAML](/docs/overview/administration/workspaces/sso/okta-saml)
+
+Step-by-step setup for Okta SAML 2.0.
 
 ## SCIM
 
@@ -52,7 +87,7 @@ SCIM is available for Enterprise workspaces, configurable by Workspace admins.
 #### [SCIM](/docs/overview/administration/workspaces/sso/scim)
 
 SCIM (System for Cross-domain Identity Management) allows your Identity Provider (IdP) to
-automatically manage users and groups in your ElevenLabs workspace.
+automatically provision, update, and deprovision users and groups in your ElevenLabs workspace.
 
 ## FAQ
 
@@ -68,18 +103,31 @@ For Okta-specific setup steps, field mappings, and troubleshooting notes, see
 
 #### OneLogin - SAML
 
-**What to fill in on the OneLogin side**:
+In your OneLogin app configuration, set **Recipient** to:
 
-* **Recipient**: Use `https://elevenlabs.io/__/auth/handler`
-  * For [data residency](/docs/overview/administration/data-residency) environments, use `https://<region>.residency.elevenlabs.io/__/auth/handler`, replacing `<region>` with your region code.
+* `https://elevenlabs.io/__/auth/handler` for standard environments
+* `https://<region>.residency.elevenlabs.io/__/auth/handler` for [data residency](/docs/overview/administration/data-residency) environments, replacing `<region>` with your region code.
+
+Set **ACS (Consumer) URL Validator** to the same value. Set **ACS (Consumer) URL** to the
+ElevenLabs **Redirect URL** shown in your SSO provider settings. Set the **SAML Initiator** to
+**Service Provider** (SP-initiated only).
 
 #### OIDC - Common Errors
 
-Please ensure that `email` and `email_verified` are included in the custom attributes returned in the OIDC response. Without these, the following errors may be hit:
+Ensure that `email` and `email_verified` are included in the OIDC response claims. Without
+these, the following errors may occur:
 
-* *No email address was received*: Fixed by adding **email** to the response.
-* *Account exists with different credentials*: Fixed by adding **email\_verified** to the response
+* *No email address was received* — add `email` to the response.
+* *Account exists with different credentials* — add `email_verified` to the response.
 
 #### I am getting the error 'Unable to login with saml.workspace...'
 
-* One known error: Inside the `<saml:Subject>` field of the SAML response, make sure `<saml:NameID>` is set to the email address of the user.
+Inside the `<saml:Subject>` field of the SAML response, confirm that `<saml:NameID>` is set to
+the user's email address. See the field mapping guide for your IdP for the correct attribute to
+use.
+
+#### Does ElevenLabs support IdP-initiated SSO?
+
+No. Only Service Provider (SP) initiated SSO is supported. Users must start sign-in from the
+ElevenLabs sign-in page (`https://elevenlabs.io/app/sign-in?use_sso=true`). You can create a
+bookmark app in your IdP that links there for a smoother experience.

@@ -22,23 +22,23 @@ The software on the BBPOS Wisepad 3 consists of a firmware version, configuratio
 
 | Countries | Latest Version |
 | --- | --- |
-| AUMYNZ | `4.01.05.00_Prod_APAC1_on_v28_491001` |
-| SG | `4.01.05.00_Prod_APAC1_off_v17_491001` |
-| ATBEDEITLUNLCH | `4.01.05.00_Prod_EU_W1_on_v28_510001` |
-| FR | `4.01.05.00_FR_v26_511001` |
-| DE | `4.01.05.00_DE_v31_511001` |
-| DKNOSE | `4.01.05.00_Prod_EU_W2_on_v21_510001` |
-| ESPT | `4.01.05.00_Prod_EU_W3_on_v13_510001` |
-| CZ | `4.01.05.00_Prod_EU_E1_on_v9_51001` |
-| BGHRRO | `4.01.05.00_SZZZ_EU_BG_HR_RO_v3_511001` |
-| CYMT | `4.01.05.00_SZZZ_EU_CY_MT_v2_511001` |
-| EELV | `4.01.05.00_SZZZ_EU_EE_LV_v3_511001` |
-| CHHULI | `4.01.05.00_SZZZ_EU_CH_HU_LI_v4_511001` |
-| LT | `4.01.05.00_SZZZ_EU_LT_v2_511001` |
-| SK | `4.01.05.00_SZZZ_EU_RU_SK_v3_511001` |
-| SI | `4.01.05.00_SZZZ_EU_SI_v2_511001` |
-| IEGBFI | `4.01.05.00_Prod_EU_W1_off_v23_510001` |
-| CA | `4.01.05.00_Prod_NA_off_v30_480001` |
+| AUMYNZ | `4.01.07.00_Prod_APAC1_on_v28_491001` |
+| SG | `4.01.07.00_Prod_APAC1_off_v17_491001` |
+| ATBEDEITLUNLCH | `4.01.07.00_Prod_EU_W1_on_v28_510001` |
+| FR | `4.01.07.00_FR_v26_511001` |
+| DE | `4.01.07.00_DE_v31_511001` |
+| DKNOSE | `4.01.07.00_Prod_EU_W2_on_v21_510001` |
+| ESPT | `4.01.07.00_Prod_EU_W3_on_v13_510001` |
+| CZ | `4.01.07.00_Prod_EU_E1_on_v9_51001` |
+| BGHRRO | `4.01.07.00_SZZZ_EU_BG_HR_RO_v3_511001` |
+| CYMT | `4.01.07.00_SZZZ_EU_CY_MT_v2_511001` |
+| EELV | `4.01.07.00_SZZZ_EU_EE_LV_v3_511001` |
+| CHHULI | `4.01.07.00_SZZZ_EU_CH_HU_LI_v4_511001` |
+| LT | `4.01.07.00_SZZZ_EU_LT_v2_511001` |
+| SK | `4.01.07.00_SZZZ_EU_RU_SK_v3_511001` |
+| SI | `4.01.07.00_SZZZ_EU_SI_v2_511001` |
+| IEGBFI | `4.01.07.00_Prod_EU_W1_off_v23_510001` |
+| CA | `4.01.07.00_Prod_NA_off_v30_480001` |
 
 ### Firmware versions 
 
@@ -48,6 +48,7 @@ The software on the BBPOS Wisepad 3 consists of a firmware version, configuratio
 
 | Version | Release Date | Description |
 | --- | --- | --- |
+| `4.01.07.00` | 9/8/2026 | - General bug fixes and code improvements. |
 | `4.01.06.00` | 8/3/2026 | - General bug fixes and code improvements. |
 | `4.01.05.00` | 6/30/2026 | - General bug fixes and code improvements. |
 | `4.01.04.00` | 5/26/2026 | - General bug fixes and code improvements.
