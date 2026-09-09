@@ -8187,7 +8187,7 @@ asyncio.run(main())
 # Git
 Source: https://upstash.com/docs/box/overall/git
 
-Clone a repository, inspect changes, commit work, push a branch, or open a pull request from inside a box.
+Clone a repository, inspect changes, commit work, push a branch, or open a pull request or issue from inside a box.
 
 ***
 
@@ -8199,6 +8199,7 @@ If you want to work with private repositories, push changes, or create pull requ
   For a fine-grained token, the following permissions are sufficient for basic usage:
   * **Contents** — Read and write
   * **Pull requests** — Read and write
+  * **Issues** — Read and write
 </Note>
 
 ```bash title=".env" {2}
@@ -8344,6 +8345,31 @@ box.git.push(branch="fix/empty-state")
 
 print(commit.sha)
 print(commit.message)
+```
+</CodeGroup>
+
+### Open an issue
+
+Create an issue on the cloned repository. Attachments are uploaded and
+referenced from the body, so a screenshot taken in the box can be included.
+
+<CodeGroup>
+```tsx box.ts
+const issue = await box.git.createIssue({
+  title: "Search returns nothing on staging",
+  body: "Reproduced on the staging deploy.",
+})
+
+console.log(issue.url)
+```
+
+```python box.py
+issue = box.git.create_issue(
+    title="Search returns nothing on staging",
+    body="Reproduced on the staging deploy.",
+)
+
+print(issue.url)
 ```
 </CodeGroup>
 
@@ -8520,6 +8546,28 @@ pr = box.git.create_pr(
     title="feat: add onboarding checklist",
     body="Adds a simple onboarding checklist to improve first-run guidance.",
     base="main",
+)
+```
+</CodeGroup>
+
+### Create an issue
+
+Creates an issue and returns its URL and metadata. Works with the box's built-in
+GitHub connection, or with your own `token` if it carries the **Issues**
+permission.
+
+<CodeGroup>
+```tsx box.ts
+const issue = await box.git.createIssue({
+  title: "Onboarding checklist does not persist",
+  body: "The checklist resets on reload.",
+})
+```
+
+```python box.py
+issue = box.git.create_issue(
+    title="Onboarding checklist does not persist",
+    body="The checklist resets on reload.",
 )
 ```
 </CodeGroup>
@@ -28106,7 +28154,7 @@ Use `FCALL` to invoke a function from a library loaded with [`FUNCTION LOAD`](/d
 
 The function runs on the server as a single atomic step, so a sequence of reads and writes that would otherwise need several round trips and a transaction becomes one command. Use [`FCALL_RO`](/docs/redis/commands/functions/fcall-ro) when the function only reads. Functions are the successor to [`EVAL`](/docs/redis/commands/scripting/eval) scripts: they are named, registered once as part of a library, and persisted with the dataset instead of being sent or looked up by digest on every call.
 
-Upstash runs a function under the global lock by default, since the engine cannot know in advance which keys it will touch. Registering the function with the `allow-key-locking` flag makes the call lock only the keys passed in the key list, so calls that work on disjoint keys run in parallel:
+Upstash runs a function under the global lock by default, since the engine cannot know in advance which keys it will touch. Registering the function with the `allow-key-locking` flag makes the call lock the [hash tag](/docs/redis/features/key-locking#hash-tags) of each key passed in the key list, so calls that work on disjoint [hash tags](/docs/redis/features/key-locking#hash-tags) run in parallel:
 
 ```lua
 redis.register_function{
@@ -28116,15 +28164,16 @@ redis.register_function{
 }
 ```
 
-Unlike Lua scripts, where the flag goes on the library shebang, this flag is set per registered function. With it set, every key the function touches must be passed as a key in the `FCALL` call: keys sent as ordinary arguments are not locked, and commands that need database-wide access, such as `FLUSHDB`, are rejected. See [Key-Based Locking](/docs/redis/features/key-locking) for the full rules.
+Unlike Lua scripts, where the flag goes on the library shebang, this flag is set per registered function. With it set, every key the function touches must be passed as a key in the `FCALL` call or share a valid [hash tag](/docs/redis/features/key-locking#hash-tags) with an already locked key. Commands that need database-wide access, such as `FLUSHDB`, are rejected. See [Key-Based Locking](/docs/redis/features/key-locking) for the full rules.
 
 <Warning>
-  Pass every key the function touches in the key list, even when it runs under
-  the global lock. Upstash keeps idle entries
-  [on disk](/docs/redis/features/durability): keys given in the key list are loaded
-  before the function starts and the lock is released during that read, but a
-  key that the function builds from `ARGV` while it runs is read from disk with
-  the lock held, stalling every command waiting on it. See
+  Pass every key the function touches in the key list when possible, even when
+  it runs under the global lock. Upstash keeps idle entries
+  [on disk](/docs/redis/features/durability): declared keys are loaded before the
+  function starts and the lock is released during that read. A same-tag dynamic
+  key is allowed with `allow-key-locking`, but it is read from disk with the
+  lock held. This stalls commands using the same hash tag, or the whole
+  database when the function uses the global lock. See
   [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 </Warning>
 
@@ -28146,8 +28195,8 @@ FCALL <function> <numkeys> [<key> [<key> ...]] [<arg> [<arg> ...]]
 ## Important points
 
 * `numkeys` must equal the number of key arguments that immediately follow it; remaining arguments are available to the script or function as ordinary arguments.
-* The function takes the global lock unless it was registered with the `allow-key-locking` flag, in which case only the keys passed in the key list are locked. See [Key-Based Locking](/docs/redis/features/key-locking).
-* Pass every key the function touches in the key list whether or not `allow-key-locking` is set. A key built inside the function is read from disk under the lock when it is not in memory, and it is rejected outright when the flag is set. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
+* The function takes the global lock unless it was registered with the `allow-key-locking` flag, in which case it locks the hash tag of each key passed in the key list and any matching Search indexes. See [Key-Based Locking](/docs/redis/features/key-locking).
+* Pass every key the function touches in the key list when possible. With `allow-key-locking`, a dynamic key is accepted only when its hash tag is already locked, and a cold dynamic key is loaded with that lock held. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 
 ## Reply conversion
 
@@ -28346,7 +28395,7 @@ FCALL_RO <function> <numkeys> [<key> [<key> ...]] [<arg> [<arg> ...]]
 
 * `numkeys` must equal the number of key arguments that immediately follow it; remaining arguments are available to the script or function as ordinary arguments.
 * A `no-writes` function still takes the global lock unless it was also registered with the `allow-key-locking` flag. See [Key-Based Locking](/docs/redis/features/key-locking).
-* Pass every key the function reads in the key list whether or not `allow-key-locking` is set. A key built inside the function is read from disk under the lock when it is not in memory, and it is rejected outright when the flag is set. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
+* Pass every key the function reads in the key list when possible. With `allow-key-locking`, a dynamic key is accepted only when its [hash tag](/docs/redis/features/key-locking#hash-tags) is already locked, and a cold dynamic key is loaded with that lock held. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 
 ## Reply conversion
 
@@ -29224,7 +29273,7 @@ Use `FUNCTION LOAD` to register a library of functions in the database.
 
 The payload is the library source code. It must begin with a shebang line naming the engine and the library, such as `#!lua name=mylib`, and register each function with `redis.register_function`, giving it a name, a callback, and optional flags such as `no-writes`. The reply is the library name.
 
-`allow-key-locking` is one of those flags. It opts a function out of the global lock so that a call locks only the keys passed in its key list, which lets calls on disjoint keys run in parallel. Unlike Lua scripts, where the flag goes on the shebang line, it is declared per function in `redis.register_function`, and it is fixed until the library is loaded again. See [Key-Based Locking](/docs/redis/features/key-locking).
+`allow-key-locking` is one of those flags. It opts a function out of the global lock so that a call locks the [hash tag](/docs/redis/features/key-locking#hash-tags) of each key passed in its key list, which lets calls on disjoint [hash tags](/docs/redis/features/key-locking#hash-tags) run in parallel. Unlike Lua scripts, where the flag goes on the shebang line, it is declared per function in `redis.register_function`, and it is fixed until the library is loaded again. See [Key-Based Locking](/docs/redis/features/key-locking).
 
 Whether or not you set that flag, write functions so that every key they touch arrives in the key list rather than being assembled from `ARGV` inside the function, since an undeclared key can force a disk read while the lock is held. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 
@@ -50994,7 +51043,7 @@ Use `EVAL` to run a Lua script on the server.
 
 The script runs as a single atomic step, which makes it the standard way to do read, decide, and write logic, such as a rate limiter or a compare-and-set update, in one round trip and without a transaction. Keep scripts short, since a script that holds the database blocks everything else, and keep them deterministic by deriving values from `KEYS`, `ARGV`, or data read inside the script rather than from clock or random sources.
 
-Upstash isolates a script with a lock. By default that is the global lock, because the engine cannot know in advance which keys the script will touch, so no other command runs while the script does. Adding the `allow-key-locking` flag to the script's shebang line makes it lock only the keys passed in `KEYS` instead, so calls that work on disjoint keys run in parallel:
+Upstash isolates a script with a lock. By default that is the global lock, because the engine cannot know in advance which keys the script will touch, so no other command runs while the script does. Adding the `allow-key-locking` flag to the script's shebang line makes it lock the [hash tag](/docs/redis/features/key-locking#hash-tags) of each key passed in `KEYS` instead, so calls that work on disjoint [hash tags](/docs/redis/features/key-locking#hash-tags) run in parallel:
 
 ```lua
 #!lua flags=allow-key-locking
@@ -51003,15 +51052,16 @@ redis.call('INCR', KEYS[1])
 return 1
 ```
 
-With the flag set, every key the script touches must appear in `KEYS`, and commands that need database-wide access, such as `FLUSHDB`, are rejected. See [Key-Based Locking](/docs/redis/features/key-locking) for the full rules.
+With the flag set, every key the script touches must appear in `KEYS` or share a valid [hash tag](/docs/redis/features/key-locking#hash-tags) with an already locked key. Commands that need database-wide access, such as `FLUSHDB`, are rejected. See [Key-Based Locking](/docs/redis/features/key-locking) for the full rules.
 
 <Warning>
-  Pass every key the script touches through `KEYS`, even when the script runs
-  under the global lock. Upstash keeps idle entries
+  Pass every key the script touches through `KEYS` when possible, even when the
+  script runs under the global lock. Upstash keeps idle entries
   [on disk](/docs/redis/features/durability): declared keys are loaded before the
-  script starts and the lock is released during that read, but a key that the
-  script builds while it runs is read from disk with the lock held, stalling
-  every command waiting on it. See
+  script starts and the lock is released during that read. A same-tag dynamic
+  key is allowed with `allow-key-locking`, but it is read from disk with the
+  lock held. This stalls commands using the same hash tag, or the whole
+  database when the script uses the global lock. See
   [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 </Warning>
 
@@ -51035,9 +51085,9 @@ EVAL <script> <numkeys> [<key> [<key> ...]] [<arg> [<arg> ...]]
 ## Important points
 
 * `numkeys` must equal the number of key arguments that immediately follow it; remaining arguments are available to the script or function as ordinary arguments.
-* The script takes the global lock unless its shebang sets the `allow-key-locking` flag, in which case it locks only the keys passed in `KEYS`. See [Key-Based Locking](/docs/redis/features/key-locking).
+* The script takes the global lock unless its shebang sets the `allow-key-locking` flag, in which case it locks the hash tag of each key passed in `KEYS` and any matching Search indexes. See [Key-Based Locking](/docs/redis/features/key-locking).
 * A script queued inside a `MULTI`/`EXEC` transaction always runs under the global lock, even when it sets `allow-key-locking`. Call it directly if you want per-key locking.
-* Pass every key the script touches through `KEYS` whether or not `allow-key-locking` is set. A key built inside the script is read from disk under the lock when it is not in memory, and it is rejected outright when the flag is set. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
+* Pass every key the script touches through `KEYS` when possible. With `allow-key-locking`, a dynamic key is accepted only when its hash tag is already locked, and a cold dynamic key is loaded with that lock held. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 
 ## Reply conversion
 
@@ -51231,7 +51281,7 @@ Use `EVAL_RO` to run a Lua script that is not allowed to write.
 
 It behaves like [`EVAL`](/docs/redis/commands/scripting/eval), with `<numkeys>` splitting the arguments into the `KEYS` and `ARGV` tables, except that any write command called from the script fails with an error. Declaring the read-only intent lets the server serve the call on replicas and turns an accidental write into a clear error instead of an unexpected modification, which is worth doing for every script that only computes over existing data.
 
-Being read-only is not by itself enough to run concurrently with other commands: like `EVAL`, this command takes the global lock unless the script's shebang sets the `allow-key-locking` flag. With the flag, the script takes shared read locks on the keys passed in `KEYS`, so several readers of the same key proceed together. Combine the two flags with a comma, as in `#!lua flags=no-writes,allow-key-locking`, and see [Key-Based Locking](/docs/redis/features/key-locking) for the full rules.
+Being read-only is not by itself enough to run concurrently with other commands: like `EVAL`, this command takes the global lock unless the script's shebang sets the `allow-key-locking` flag. With the flag, the script takes shared read locks on the [hash tag](/docs/redis/features/key-locking#hash-tags) of each key passed in `KEYS`, so several readers on the same [hash tag](/docs/redis/features/key-locking#hash-tags) proceed together. Combine the two flags with a comma, as in `#!lua flags=no-writes,allow-key-locking`, and see [Key-Based Locking](/docs/redis/features/key-locking) for the full rules.
 
 ## Syntax
 
@@ -51424,7 +51474,7 @@ Use `EVALSHA` to run a script that is already in the server's script cache, iden
 
 It behaves exactly like [`EVAL`](/docs/redis/commands/scripting/eval) but sends only the 40-character digest instead of the script body, which keeps the request small when a script is called often. The digest is what [`SCRIPT LOAD`](/docs/redis/commands/scripting/script-load) returns, and it is also computed as a side effect of any `EVAL` call.
 
-Locking behaviour comes from the cached script body, not from the call: the script takes the global lock unless its shebang sets the `allow-key-locking` flag, in which case only the keys passed in `KEYS` are locked. Because the flag lives in the body, changing it means loading a new script and calling the new digest. See [Key-Based Locking](/docs/redis/features/key-locking).
+Locking behaviour comes from the cached script body, not from the call: the script takes the global lock unless its shebang sets the `allow-key-locking` flag, in which case the [hash tag](/docs/redis/features/key-locking#hash-tags) of each key passed in `KEYS` is locked. Because the flag lives in the body, changing it means loading a new script and calling the new digest. See [Key-Based Locking](/docs/redis/features/key-locking).
 
 When the script is not in the cache the server replies with a `NOSCRIPT` error, and the client is expected to fall back to `EVAL`. Most client libraries do this automatically. The cache does not survive a restart and is cleared by [`SCRIPT FLUSH`](/docs/redis/commands/scripting/script-flush), so applications must always be able to resend the script body.
 
@@ -51617,7 +51667,7 @@ Use `EVALSHA_RO` to run a script cached by its SHA1 digest. The script may not w
 
 It is the read-only form of [`EVALSHA`](/docs/redis/commands/scripting/evalsha): any write command called from the script fails, which lets the server run it on replicas. As with `EVALSHA`, a digest that is not in the cache produces a `NOSCRIPT` error, and the caller is expected to fall back to [`EVAL_RO`](/docs/redis/commands/scripting/eval-ro) with the script body.
 
-Read-only scripts take the global lock like any other script unless the cached body's shebang sets the `allow-key-locking` flag, for example `#!lua flags=no-writes,allow-key-locking`. With the flag, the call takes shared read locks on the keys passed in `KEYS`. See [Key-Based Locking](/docs/redis/features/key-locking).
+Read-only scripts take the global lock like any other script unless the cached body's shebang sets the `allow-key-locking` flag, for example `#!lua flags=no-writes,allow-key-locking`. With the flag, the call takes shared read locks on the [hash tag](/docs/redis/features/key-locking#hash-tags) of each key passed in `KEYS`. See [Key-Based Locking](/docs/redis/features/key-locking).
 
 ## Syntax
 
@@ -52343,7 +52393,7 @@ The reply is the script's SHA1 digest, which is what [`EVALSHA`](/docs/redis/com
 
 The cache is lost on restart and cleared by [`SCRIPT FLUSH`](/docs/redis/commands/scripting/script-flush), so keep the script source available and be ready to handle a `NOSCRIPT` error by loading it again.
 
-Shebang flags are part of the source, so they are fixed at load time and a change to them produces a different digest. This includes `allow-key-locking`, which opts the script out of the global lock and into locking only the keys passed in `KEYS`; see [Key-Based Locking](/docs/redis/features/key-locking).
+Shebang flags are part of the source, so they are fixed at load time and a change to them produces a different digest. This includes `allow-key-locking`, which opts the script out of the global lock and into locking the [hash tag](/docs/redis/features/key-locking#hash-tags) of each key passed in `KEYS`; see [Key-Based Locking](/docs/redis/features/key-locking).
 
 Whether or not you set that flag, write the script so that every key it touches arrives through `KEYS` rather than being assembled from `ARGV` inside the script, since an undeclared key can force a disk read while the lock is held. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 
@@ -52532,7 +52582,6 @@ For feature guides and tutorials, start with the [Upstash Redis Search introduct
 
 <CardGroup cols={2}>
 <Card title="SEARCH.CREATE" href="/redis/commands/search/search-create">Create a search index</Card>
-<Card title="SEARCH.REINDEX" href="/redis/commands/search/search-reindex">Rebuild a search index from the current data</Card>
 <Card title="SEARCH.DROP" href="/redis/commands/search/search-drop">Remove a search index</Card>
 <Card title="SEARCH.DESCRIBE" href="/redis/commands/search/search-describe">Return metadata about a search index</Card>
 <Card title="SEARCH.WAITINDEXING" href="/redis/commands/search/search-waitindexing">Wait until pending index updates are visible</Card>
@@ -52545,7 +52594,7 @@ For feature guides and tutorials, start with the [Upstash Redis Search introduct
 <Card title="SEARCH.LISTALIASES" href="/redis/commands/search/search-listaliases">List index aliases</Card>
 </CardGroup>
 
-`SEARCH.QUERY`, `SEARCH.COUNT`, `SEARCH.AGGREGATE`, `SEARCH.DESCRIBE`, `SEARCH.WAITINDEXING`, and `SEARCH.REINDEX` accept either an index name or alias. `SEARCH.DROP` always treats its argument as a literal index name. This makes it possible to switch an alias to a replacement index and then drop the old index without dropping the replacement.
+`SEARCH.QUERY`, `SEARCH.COUNT`, `SEARCH.AGGREGATE`, `SEARCH.DESCRIBE`, and `SEARCH.WAITINDEXING` accept either an index name or alias. `SEARCH.DROP` always treats its argument as a literal index name. This makes it possible to switch an alias to a replacement index and then drop the old index without dropping the replacement.
 
 ## REST API Usage
 
@@ -53367,9 +53416,9 @@ Use `SEARCH.CREATE` to create a search index over JSON, hash, or string values, 
 
 `ON STREAM` indexes a single stream instead of a set of keys, so it takes the stream key in place of `PREFIX`. Each entry added with [`XADD`](/docs/redis/commands/streams/xadd) becomes a document whose fields are the entry's fields and whose ID is the entry ID, which is what makes a stream searchable by content rather than only by ID range. Entries removed from the stream leave the index as well.
 
-A `KEYWORD` or `TEXT` field whose value is a JSON array of values is indexed as several values rather than as one string. A document matches when any element matches, so a tags field or a list of descriptions needs no separate key per value. `HIGHLIGHT` follows the same shape: the reply keeps the array, with the matching elements marked up and the others, including any non-string elements, left as they are.
+`TEXT`, `KEYWORD`, `U64`, `I64`, `F64`, and `DATE` fields can index multiple values. Store the field as a JSON array; for hash and stream indexes, store the complete JSON-encoded array in the field string. Each valid element is indexed separately, and a document matches when any element matches. `BOOL` and `FACET` fields remain single-valued.
 
-Creating an index starts an initial scan of the matching keys, which `SKIPINITIALSCAN` skips when you only want to index data written from now on; [`SEARCH.REINDEX`](/docs/redis/commands/search/search-reindex) can run that scan later. `EXISTSOK` makes the command succeed instead of failing when the index already exists.
+Creating an index starts an initial scan of the matching keys, which `SKIPINITIALSCAN` skips when you only want to index data written from now on. `EXISTSOK` makes the command succeed instead of failing when the index already exists.
 
 See [Index Management](/docs/redis/search/index-management#creating-an-index) for a feature-level guide to creating indexes and [Schema Definition](/docs/redis/search/schema-definition) for field types and schema design.
 
@@ -53401,7 +53450,7 @@ SEARCH.CREATE <name>
 | `PREFIX` | One or more key prefixes. Prefixes in the same index cannot be duplicates or overlap one another. Not allowed with `ON STREAM`. |
 | `<stream-key>` | Key of the stream to index. Required with `ON STREAM`, and given in place of `PREFIX`. |
 | `LANGUAGE` | Stemming language for `TEXT` fields. Defaults to `english`. Supported values are `arabic`, `danish`, `dutch`, `english`, `finnish`, `french`, `german`, `greek`, `hungarian`, `italian`, `norwegian`, `portuguese`, `romanian`, `russian`, `spanish`, `swedish`, `tamil`, and `turkish`. |
-| `SKIPINITIALSCAN` | Create the index without scanning existing keys. Later writes are still indexed; use [`SEARCH.REINDEX`](/docs/redis/commands/search/search-reindex) to add the current matching data. |
+| `SKIPINITIALSCAN` | Create the index without scanning existing keys. Later writes are still indexed. |
 | `EXISTSOK` | Return `0` when an index with the same data type, prefixes, and schema already exists. A configuration mismatch returns an error. |
 | `SCHEMA` | One or more field definitions. `SCHEMA` must be the final top-level clause. |
 
@@ -53414,7 +53463,7 @@ SEARCH.CREATE <name>
 | `NOTOKENIZE` | `TEXT` | Index the entire value as one token. |
 | `FROM <source_field>` | All field types | Read the value from a different document field or nested dot path while exposing it under `<field>` in the index. |
 
-`KEYWORD` and `TEXT` fields accept multiple values: a field whose value is a JSON array is indexed element by element, and a document matches when any element matches.
+`TEXT`, `KEYWORD`, `U64`, `I64`, `F64`, and `DATE` fields accept multiple values. A field whose value is a JSON array is indexed element by element, and a document matches when any valid element matches. See [Multi-value fields](/docs/redis/search/schema-definition#multi-value-fields) for data-type-specific input formats and query behavior.
 
 ## Response
 
@@ -54476,7 +54525,7 @@ The filter is a JSON object naming index fields and the values to match, so `'{"
 
 Results come back ordered by relevance score by default. `ORDERBY` sorts by a `FAST` field instead, `LIMIT` and `OFFSET` page through the matches, `SELECT` and `NOCONTENT` cut the payload down to the fields you need, `HIGHLIGHT` wraps the matched terms in tags for display, and `SCOREFUNC` blends numeric fields such as popularity or recency into the relevance score.
 
-A `KEYWORD` or `TEXT` field whose value is a JSON array is indexed element by element, so a document matches when any element matches the condition. `HIGHLIGHT` preserves that shape: the field comes back as the same array with the matching elements marked up, and elements that did not match, including non-string ones, unchanged. The stored document is never modified.
+For multi-value `TEXT`, `KEYWORD`, `U64`, `I64`, `F64`, and `DATE` fields, a document matches when any indexed array element satisfies the condition. Phrase queries on `TEXT` stay within one array element. `HIGHLIGHT` preserves the stored array shape in the response, marking matching string elements while leaving other elements unchanged. See [Multi-value queries](/docs/redis/search/querying#multi-value-fields) for examples.
 
 See [Querying and filtering](/docs/redis/search/querying) for the full filter syntax and worked examples, and [`SEARCH.COUNT`](/docs/redis/commands/search/search-count) when you only need the number of matches.
 
@@ -54742,170 +54791,6 @@ fn main() -> redis::RedisResult<()> {
 curl -X POST https://YOUR_ENDPOINT.upstash.io \
   -H "Authorization: Bearer $UPSTASH_REDIS_REST_TOKEN" \
   -d '["SEARCH.QUERY", "products", "{\"name\": \"wireless\"}", "LIMIT", "10", "OFFSET", "0"]'
-```
-
-</Accordion>
-
-</AccordionGroup>
-
-# SEARCH.REINDEX
-Source: https://upstash.com/docs/redis/commands/search/search-reindex
-
-Use `SEARCH.REINDEX` to rebuild an existing index from the current Redis keys that match its data type and prefixes. It is especially useful after creating an index with `SKIPINITIALSCAN`.
-
-See [Index Management](/docs/redis/search/index-management) for the feature guide to creating and managing indexes.
-
-`SEARCH.REINDEX` accepts an index name or alias. The index definition is preserved while its searchable contents are replaced with a fresh scan.
-
-<Warning>
-  Reindexing scans all matching keys and can be expensive for large datasets.
-</Warning>
-
-## Syntax
-
-```redis
-SEARCH.REINDEX <name>
-```
-
-## Response
-
-Returns `1` when the index is rebuilt or `0` if the index does not exist.
-
-## Examples
-
-<AccordionGroup>
-
-<Accordion title="Redis CLI" icon="terminal">
-
-```bash
-SEARCH.REINDEX products
-```
-
-</Accordion>
-
-<Accordion title="@upstash/redis" icon="node-js" iconType="brands">
-
-<Note>
-  This command is not supported yet in `@upstash/redis`.
-</Note>
-
-</Accordion>
-
-<Accordion title="upstash_redis" icon="python" iconType="brands">
-
-<Note>
-  This command is not supported yet in `upstash_redis`.
-</Note>
-
-</Accordion>
-
-<Accordion title="ioredis" icon="node-js" iconType="brands">
-
-```ts
-import Redis from "ioredis";
-
-const redis = new Redis(process.env.REDIS_URL!);
-const result = await redis.call("SEARCH.REINDEX", "products");
-console.log(result);
-```
-
-</Accordion>
-
-<Accordion title="node-redis" icon="node-js" iconType="brands">
-
-```ts
-import { createClient } from "redis";
-
-const client = await createClient({ url: process.env.REDIS_URL })
-  .on("error", console.error)
-  .connect();
-const result = await client.sendCommand(["SEARCH.REINDEX", "products"]);
-console.log(result);
-```
-
-</Accordion>
-
-<Accordion title="redis-py" icon="python" iconType="brands">
-
-```python
-import os
-import redis
-
-client = redis.from_url(os.environ["REDIS_URL"])
-result = client.execute_command("SEARCH.REINDEX", "products")
-print(result)
-```
-
-</Accordion>
-
-<Accordion title="go-redis" icon="golang" iconType="brands">
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-
-    "github.com/redis/go-redis/v9"
-)
-
-func main() {
-    opts, err := redis.ParseURL(os.Getenv("REDIS_URL"))
-    if err != nil {
-        panic(err)
-    }
-    client := redis.NewClient(opts)
-    result, err := client.Do(context.Background(), "SEARCH.REINDEX", "products").Result()
-    if err != nil {
-        panic(err)
-    }
-    fmt.Println(result)
-}
-```
-
-</Accordion>
-
-<Accordion title="jedis" icon="java" iconType="brands">
-
-```java
-import java.net.URI;
-
-import redis.clients.jedis.Jedis;
-
-try (Jedis jedis = new Jedis(new URI(System.getenv("REDIS_URL")))) {
-  Object result = jedis.sendCommand(() -> "SEARCH.REINDEX".getBytes(), "products");
-  System.out.println(result);
-}
-```
-
-</Accordion>
-
-<Accordion title="redis-rs" icon="rust" iconType="brands">
-
-```rust
-fn main() -> redis::RedisResult<()> {
-    let url = std::env::var("REDIS_URL").expect("REDIS_URL is not set");
-    let client = redis::Client::open(url)?;
-    let mut connection = client.get_connection()?;
-
-    let mut command = redis::cmd("SEARCH.REINDEX");
-    command.arg("products");
-    let result: redis::Value = command.query(&mut connection)?;
-    println!("{result:?}");
-    Ok(())
-}
-```
-
-</Accordion>
-
-<Accordion title="curl">
-
-```bash
-curl -X POST https://YOUR_ENDPOINT.upstash.io \
-  -H "Authorization: Bearer $UPSTASH_REDIS_REST_TOKEN" \
-  -d '["SEARCH.REINDEX", "products"]'
 ```
 
 </Accordion>
@@ -78805,8 +78690,9 @@ Source: https://upstash.com/docs/redis/features/key-locking
 
 Upstash Redis databases use locks to keep commands isolated while allowing
 independent keys to be processed in parallel. The engine automatically locks
-the keys used by the command. Commands that operate on different keys can run
-concurrently, subject to the parallelism available to your database.
+the [hash tag](#hash-tags) of each key a command uses. Commands whose keys
+have different [hash tags](#hash-tags) can run concurrently, subject to the
+parallelism available to your database.
 
 Key-based locking is transparent to clients. You do not need to change regular
 Redis commands to use it.
@@ -78814,14 +78700,28 @@ Redis commands to use it.
 ## How It Works
 
 * Single-key commands (for example `GET`, `SET`, `INCR`, `HSET`) acquire a
-  lock on just that key.
-* Multi-key commands acquire locks on every key they reference, in a
-  deterministic order to avoid deadlocks.
+  lock on that key's [hash tag](#hash-tags).
+* Multi-key commands acquire locks on the [hash tag](#hash-tags) of every key
+  they reference, in a deterministic order to avoid deadlocks.
 * Read-only commands (for example `GET`, `HGET`, `LRANGE`) take a shared read
-  lock, so multiple readers on the same key run concurrently. Read
-  locks block writers on that key until they complete.
+  lock, so multiple readers on the same [hash tag](#hash-tags) run
+  concurrently. Read locks block writers on that [hash tag](#hash-tags) until
+  they complete.
 * Commands that need a database-wide operation, such as `FLUSHDB` and
   `FLUSHALL`, take the global lock and can reduce concurrency while they run.
+
+### Hash Tags
+
+A valid Redis hash tag is the non-empty value between the first `{` in a key
+and the first `}` that follows it. If a key has no valid hash tag, its full
+name acts as its hash tag. Locking works on hash tags: `{queue}:wait` and
+`{queue}:active` share the `queue` hash tag and lock together; `queue:wait`
+and `queue:active` have no hash tag, so each locks under its own full name.
+
+Commands that write indexed data also lock the matching
+[Search indexes](/docs/redis/search/getting-started). Two commands can therefore
+contend even when their data keys differ if both commands update the same
+index.
 
 ## Transactions
 
@@ -78830,8 +78730,9 @@ commands are queued, Upstash collects the keys referenced by the transaction.
 When `EXEC` runs, the engine takes an exclusive write lock for the union of
 those keys and executes the queued commands atomically.
 
-Transactions that touch disjoint key sets can run concurrently. Transactions
-that share any key block each other until one transaction finishes.
+Transactions whose keys have disjoint [hash tags](#hash-tags) can run
+concurrently. Transactions that share a [hash tag](#hash-tags) block each
+other until one transaction finishes.
 
 ```redis
 MULTI
@@ -78870,25 +78771,40 @@ redis.call('INCRBY', KEYS[2], ARGV[1])
 return "OK"
 ```
 
-When the flag is set, Upstash locks only the keys passed through the `KEYS`
-array when the script is invoked. Other commands and scripts that touch disjoint
-keys can run in parallel.
+When the flag is set, Upstash locks the [hash tag](#hash-tags) of each key
+passed through the `KEYS` array when the script is invoked. For writes, it
+also locks the matching Search indexes. Other commands and scripts whose keys
+have disjoint [hash tags](#hash-tags) can run in parallel.
 
 ### Rules for `allow-key-locking`
 
-* **Every key passed to `redis.call` must appear in `KEYS`.** You may compute
-  the key value inside the script (for example by concatenating parts of
-  `ARGV`), but the final string must exactly match one of the entries declared
-  in the `KEYS` array. Otherwise the engine rejects the command:
+* **Every key passed to `redis.call` must be covered by an existing lock.** A
+  key is covered when its [hash tag](#hash-tags) is already locked — usually
+  because the key itself appears in `KEYS`, or because it shares a
+  [hash tag](#hash-tags) with one that does. A Search index matched by a
+  declared key can also lock a [hash tag](#hash-tags). For example, declaring
+  `{queue}:wait` locks the `queue` [hash tag](#hash-tags), which also covers a
+  dynamic `{queue}:active` key. A key with a different
+  [hash tag](#hash-tags) is rejected, and a key with no valid
+  [hash tag](#hash-tags) — whose [hash tag](#hash-tags) is its own full name —
+  is covered only when it appears in `KEYS` itself.
+
+  When a command writes indexed data, all matching Search indexes must also be
+  covered by locks acquired before the script starts. Upstash automatically
+  includes the indexes that match declared keys. An indexed dynamic key is
+  rejected if it requires another index that is not already covered.
+
+  An uncovered key or index produces an error such as:
 
   ```
   ERR Dynamic keys are not allowed in Lua scripts when 'allow-key-locking' flag is set. Key was: <key>
   ```
 
-  In practice, this means you should pass fully resolved keys through `KEYS`
-  rather than reconstructing them from `ARGV` inside the script. This is worth
-  doing even for scripts that run under the global lock, because an undeclared
-  key can force a disk read while the lock is held. See
+  Even when a dynamic key shares a declared [hash tag](#hash-tags), pass the fully resolved
+  key through `KEYS` when possible. Declared keys and their matching indexes
+  can be loaded before the script runs. A dynamic key can instead force a disk
+  read while the lock is held. This is also worth avoiding in scripts that use
+  the global lock. See
   [Dynamic Keys and Latency](#dynamic-keys-and-latency).
 
 * **Database-wide writes are not allowed.** Commands that require database-wide
@@ -78935,6 +78851,31 @@ EVAL "<script>" 1 user:42:quota 100
 Multiple clients calling this script for different users will execute
 concurrently, each holding a lock only on its own `user:<id>:quota` key.
 
+### Example: Dynamic Keys with a Shared Hash Tag
+
+```lua
+#!lua flags=allow-key-locking
+
+local destination = '{queue}:' .. ARGV[1]
+local job = redis.call('LPOP', KEYS[1])
+if job then
+  redis.call('RPUSH', destination, job)
+end
+return job
+```
+
+Invoke the script with `{queue}:wait` as its declared key and `active` as an
+argument:
+
+```redis
+EVAL "<script>" 1 {queue}:wait active
+```
+
+The declared key locks the `queue` [hash tag](#hash-tags), so the dynamically
+constructed `{queue}:active` key is covered by the same lock. Constructing
+`{other}:active` would be rejected because the `other` [hash tag](#hash-tags)
+was not locked.
+
 ## Redis Functions
 
 Redis functions ([`FCALL`](/docs/redis/commands/functions/fcall),
@@ -78969,9 +78910,11 @@ Invoked with:
 FCALL incr_if_below 1 user:42:quota 100
 ```
 
-The same rules apply: every key used by the function must be passed in the
-`FCALL` key list. Keys passed as regular arguments are not locked unless they
-also appear in the key list.
+The same rules apply to functions. A key is covered when it appears in the
+`FCALL` key list or shares a [hash tag](#hash-tags) with an already locked
+key, including a Search index matched by a declared key. A key passed as a
+regular argument is rejected if its [hash tag](#hash-tags) is not already
+locked.
 
 If the function is also read-only, include both flags in the function
 registration:
@@ -78983,25 +78926,25 @@ flags={'no-writes', 'allow-key-locking'}
 ## Dynamic Keys and Latency
 
 Pass every key a script or function touches through the key list of the call,
-where it arrives as `KEYS`, even when you are not using `allow-key-locking`.
-With the flag set, a key that was not declared is rejected outright. Without it
-the call still succeeds, but it can be slow, and the slowdown is not limited to
-the caller.
+where it arrives as `KEYS`, when possible. This remains the best choice even
+when you are not using `allow-key-locking`. With the flag set, a dynamic key is
+accepted only when its [hash tag](#hash-tags) is already locked. Without the flag, the
+call uses the global lock and dynamic keys are accepted, but they can be slow,
+and the slowdown is not limited to the caller.
 
 Upstash keeps data [in memory and on disk](/docs/redis/features/durability), and an
 entry that has been idle long enough to be evicted from memory is read back from
 disk on the next access. Declared keys are loaded before the script body starts
 running, and the engine releases the lock while it waits for that read, so other
 commands keep making progress. A key that only becomes known in the middle of
-the script cannot be handled that way: script execution has to stay atomic, so
-the engine holds the lock across the disk read. Under the global lock, that
-means the whole database waits for a disk read in the middle of your script.
-It is also why dynamic keys are rejected when `allow-key-locking` is set: a key
-the engine was never told about can be neither locked nor loaded up front.
+the script cannot be loaded that way: script execution has to stay atomic, so
+the engine holds the lock across the disk read. With `allow-key-locking`, this
+blocks other work on the same [hash tag](#hash-tags). Under the global lock,
+the whole database waits for the disk read.
 
 ```lua
--- Dynamic key: resolved inside the script, may be read from disk under the lock
-local key = 'user:' .. ARGV[1] .. ':quota'
+-- A same-tag dynamic key is locked, but may be read from disk under that lock
+local key = '{user:42}:' .. ARGV[1]
 redis.call('INCR', key)
 ```
 
@@ -79010,9 +78953,10 @@ redis.call('INCR', key)
 redis.call('INCR', KEYS[1])
 ```
 
-The cost only appears when the key is not already in memory, so it is easy to
-miss against a small, warm test dataset and easy to hit in production against a
-large one. Resolve key names in your application and pass them in the key list.
+The cost only appears when the key or a matching Search index is not already in
+memory, so it is easy to miss against a small, warm test dataset and easy to hit
+in production against a large one. Resolve key names in your application and
+pass them in the key list whenever possible.
 
 # Replication
 Source: https://upstash.com/docs/redis/features/replication
@@ -82502,6 +82446,13 @@ support larger data sizes and custom limits — [contact us](/docs/common/help/s
 
 # Changelog
 Source: https://upstash.com/docs/redis/overall/changelog
+
+<Update label="September 2026">
+* Added [Vector](/docs/redis/commands/vector/overview) feature for storing embeddings and running nearest-neighbor queries directly in Redis.
+* Added [Array commands](/docs/redis/commands/array/overview) for sparse, index-addressed data, including range operations, scans, and fixed-size rings.
+* Expanded [Redis Search](/docs/redis/search/introduction) with [searchable Redis streams](/docs/redis/search/streams), multi-value text and keyword fields, and [composite aggregations](/docs/redis/search/aggregation-operators/bucket-aggregations/composite).
+* Increased Redis compatibility with [`MSETEX`](/docs/redis/commands/string/msetex), [`SDIFFCARD`](/docs/redis/commands/set/sdiffcard), and [`SUNIONCARD`](/docs/redis/commands/set/sunioncard).
+</Update>
 
 <Update label="March 2026">
 Added [Upstash Redis Search](/docs/redis/search/introduction) feature, a new extension for searching Redis data. It works with JSON, Hash, and String data, automatically keeps indexes in sync with Redis writes, and supports full-text search, filtering, aggregations, aliases, highlighting, fuzzy matching, phrase queries, and regex matching.
@@ -87990,6 +87941,181 @@ const result = await index.drop();
 The adapter exposes the exact same search API as `@upstash/redis`. Refer to the [Index Management](../index-management), [Querying](../querying), [Aggregations](../aggregations), and [Schema Definition](../schema-definition) pages for the full API reference.
 </Note>
 
+# $composite
+Source: https://upstash.com/docs/redis/search/aggregation-operators/bucket-aggregations/composite
+
+`$composite` groups documents by several fields and lets you page through every bucket.
+
+Use it when you need all combinations of several dimensions, such as category and price range. Unlike `$terms`, which returns the top buckets, `$composite` returns buckets in a stable sort order and provides an `afterKey` cursor for the next page.
+
+### Input Format
+
+Each entry in `sources` has a name and one source operator. The source names become the fields in each bucket's `key` and in the pagination cursor.
+
+```json
+{
+  "by_category_and_price": {
+    "$composite": {
+      "size": 100,
+      "sources": [
+        { "category": { "$terms": { "field": "category" } } },
+        { "price": { "$histogram": { "field": "price", "interval": 10 } } }
+      ]
+    }
+  }
+}
+```
+
+The order of `sources` controls how buckets are sorted. In this example, buckets are sorted by category first and then by price.
+
+### Arguments
+
+| Argument | Type | Required | Description |
+|----------|------|----------|-------------|
+| `sources` | `array` | Yes | Non-empty list of named `$terms`, `$histogram`, or `$dateHistogram` sources. Each entry must contain exactly one source name. |
+| `size` | `number` | No | Number of buckets per page. Must be a positive integer. Default: `10`. |
+| `after` | `object` | No | The `afterKey` object from the previous response. |
+
+Every source supports these arguments:
+
+| Argument | Type | Required | Description |
+|----------|------|----------|-------------|
+| `field` | `string` | Yes | `FAST` field to bucket on. |
+| `order` | `"asc" \| "desc"` | No | Sort direction for this source. Default: `"asc"`. |
+| `missingBucket` | `boolean` | No | Create a bucket for documents where this field is missing. Default: `false`. |
+| `missingOrder` | `"default" \| "first" \| "last"` | No | Position of the missing-value bucket. Used with `missingBucket`. Default: `"default"`. |
+
+Source-specific compatibility and arguments:
+
+| Source | Supported `FAST` field types | Extra arguments |
+|--------|------------------------------|-----------------|
+| `$terms` | U64, I64, F64, BOOL, DATE, KEYWORD | None |
+| `$histogram` | U64, I64, F64, DATE | `interval` (number, required) |
+| `$dateHistogram` | DATE | `fixedInterval` (for example, `"1d"`) or `calendarInterval` (`"year"`, `"month"`, or `"week"`) |
+
+### Paginate Through Buckets
+
+The response contains the values for the current page in `buckets`. Its `afterKey` is an opaque cursor for the next page.
+
+<Tabs>
+
+<Tab title="TypeScript">
+```ts
+const firstPage = await index.aggregate({
+  aggregations: {
+    by_category_and_price: {
+      $composite: {
+        size: 100,
+        sources: [
+          { category: { $terms: { field: "category" } } },
+          { price: { $histogram: { field: "price", interval: 10 } } },
+        ],
+      },
+    },
+  },
+});
+
+const secondPage = await index.aggregate({
+  aggregations: {
+    by_category_and_price: {
+      $composite: {
+        size: 100,
+        sources: [
+          { category: { $terms: { field: "category" } } },
+          { price: { $histogram: { field: "price", interval: 10 } } },
+        ],
+        after: firstPage.by_category_and_price.afterKey,
+      },
+    },
+  },
+});
+```
+</Tab>
+
+<Tab title="Python">
+```python
+sources = [
+    {"category": {"$terms": {"field": "category"}}},
+    {"price": {"$histogram": {"field": "price", "interval": 10}}},
+]
+
+first_page = index.aggregate(
+    aggregations={
+        "by_category_and_price": {
+            "$composite": {"size": 100, "sources": sources}
+        }
+    }
+)
+
+second_page = index.aggregate(
+    aggregations={
+        "by_category_and_price": {
+            "$composite": {
+                "size": 100,
+                "sources": sources,
+                "after": first_page["by_category_and_price"]["afterKey"],
+            }
+        }
+    }
+)
+```
+</Tab>
+
+<Tab title="Redis CLI">
+```bash
+SEARCH.AGGREGATE products '{}' '{"by_category_and_price": {"$composite": {"size": 100, "sources": [{"category": {"$terms": {"field": "category"}}}, {"price": {"$histogram": {"field": "price", "interval": 10}}}]}}}'
+
+# Use the afterKey from the first response to request the next page.
+SEARCH.AGGREGATE products '{}' '{"by_category_and_price": {"$composite": {"size": 100, "sources": [{"category": {"$terms": {"field": "category"}}}, {"price": {"$histogram": {"field": "price", "interval": 10}}}], "after": {"category": "str:books", "price": "f64:20"}}}}'
+```
+</Tab>
+
+</Tabs>
+
+### Output
+
+```json
+{
+  "by_category_and_price": {
+    "buckets": [
+      {
+        "key": { "category": "books", "price": 20 },
+        "docCount": 12
+      }
+    ],
+    "afterKey": {
+      "category": "str:books",
+      "price": "f64:20"
+    }
+  }
+}
+```
+
+Pass `afterKey` back verbatim. Its encoded values, such as `"str:books"` and `"f64:20"`, are different from the display values in a bucket's `key`.
+
+Use the same filter, sources, and source order for every page. Continue until a request returns no buckets.
+
+### Sub-aggregations
+
+Add `$aggs` next to `$composite` to compute metrics for each composite bucket:
+
+```json
+{
+  "by_category": {
+    "$composite": {
+      "sources": [
+        { "category": { "$terms": { "field": "category" } } }
+      ]
+    },
+    "$aggs": {
+      "avg_price": { "$avg": { "field": "price" } }
+    }
+  }
+}
+```
+
+Each bucket then includes an `avg_price` result alongside `key` and `docCount`.
+
 # $dateHistogram
 Source: https://upstash.com/docs/redis/search/aggregation-operators/bucket-aggregations/date-histogram
 
@@ -88346,11 +88472,12 @@ Use bucket aggregations when you want segmented analytics (for example by catego
 | [`$range`](./range) | Explicit `from` / `to` ranges |
 | [`$histogram`](./histogram) | Fixed numeric intervals |
 | [`$dateHistogram`](./date-histogram) | Fixed date/time intervals |
+| [`$composite`](./composite) | Paginated combinations of several sources |
 | [`$facet`](./facet) | Hierarchical FACET paths |
 
 ### Input Format
 
-Every bucket operator takes an object with a `field` property and operator-specific parameters:
+Most bucket operators take an object with a `field` property and operator-specific parameters. `$composite` instead takes a `sources` array, and each source specifies its own field.
 
 **`$terms`** — group by distinct values:
 ```json
@@ -88372,10 +88499,15 @@ Every bucket operator takes an object with a `field` property and operator-speci
 {"by_month": {"$dateHistogram": {"field": "createdAt", "fixedInterval": "30d"}}}
 ```
 
+**`$composite`** — paginated buckets across several sources:
+```json
+{"by_category_and_price": {"$composite": {"size": 100, "sources": [{"category": {"$terms": {"field": "category"}}}, {"price": {"$histogram": {"field": "price", "interval": 10}}}]}}}
+```
+
 ### Behavior Notes
 
 * Bucket operators can contain nested `$aggs` for per-bucket metrics.
-* `$terms`, `$range`, `$histogram`, and `$dateHistogram` support nested `$aggs`.
+* `$terms`, `$range`, `$histogram`, `$dateHistogram`, and `$composite` support nested `$aggs`.
 * `$facet` does not support nested `$aggs` and cannot be used as a sub-aggregation.
 
 # $range
@@ -89171,6 +89303,8 @@ Source: https://upstash.com/docs/redis/search/aggregation-operators/metric-aggre
 
 If `missing` is set, missing fields contribute that fallback value.
 
+By default, `$sum` returns `0` when no values are collected — either no documents match, or the matching documents all have a missing/null value for the field and no `missing` fallback is set. Set `nullIfNoMatch` to `true` to return `null` instead, so you can distinguish that case from a real total of zero.
+
 ### Compatibility
 
 | Field Type | Supported |
@@ -89190,6 +89324,7 @@ Field must be `FAST`.
 |----------|------|----------|-------------|
 | `field` | `string` | Yes | Field to aggregate. |
 | `missing` | `number` | No | Fallback value for missing fields. |
+| `nullIfNoMatch` | `boolean` | No | Return `null` instead of `0` when no values are collected. Default: `false`. |
 
 <Tabs>
 
@@ -89197,7 +89332,7 @@ Field must be `FAST`.
 ```ts
 await index.aggregate({
   aggregations: {
-    total_price: { $sum: { field: "price", missing: 0 } },
+    total_price: { $sum: { field: "price", nullIfNoMatch: true } },
   },
 });
 ```
@@ -89206,14 +89341,18 @@ await index.aggregate({
 <Tab title="Python">
 ```python
 index.aggregate(
-    aggregations={"total_price": {"$sum": {"field": "price", "missing": 0}}}
+    aggregations={
+        "total_price": {
+            "$sum": {"field": "price", "nullIfNoMatch": True}
+        }
+    },
 )
 ```
 </Tab>
 
 <Tab title="Redis CLI">
 ```bash
-SEARCH.AGGREGATE products '{}' '{"total_price": {"$sum": {"field": "price", "missing": 0}}}'
+SEARCH.AGGREGATE products '{}' '{"total_price": {"$sum": {"field": "price", "nullIfNoMatch": true}}}'
 ```
 </Tab>
 
@@ -89225,7 +89364,13 @@ SEARCH.AGGREGATE products '{}' '{"total_price": {"$sum": {"field": "price", "mis
 { "total_price": { "value": 360 } }
 ```
 
-`value` can be `null` when no values are available.
+With `nullIfNoMatch: true`, an aggregation with no collected values (for example, the filter above matches no documents) returns:
+
+```json
+{ "total_price": { "value": null } }
+```
+
+Without `nullIfNoMatch`, the same aggregation returns `0`. This option does not change results where at least one value was collected, including a real sum of zero.
 
 # Aggregations
 Source: https://upstash.com/docs/redis/search/aggregations
@@ -89241,6 +89386,7 @@ They are useful when you want to answer questions like:
 * "How many unique users do we have?"
 * "How many orders fall into each price range?"
 * "How does traffic change per hour/day?"
+* "How can I page through every category and price-range combination?"
 
 <Tabs>
 
@@ -89430,7 +89576,7 @@ SEARCH.AGGREGATE products '{}' '{"avg_price": {"$avg": {"field": "price"}}, "pri
 
 Bucket operators can include sub-aggregations via `$aggs`, so you can compute per-bucket metrics.
 
-* `$terms`, `$range`, `$histogram`, and `$dateHistogram` support nested `$aggs`.
+* `$terms`, `$range`, `$histogram`, `$dateHistogram`, and `$composite` support nested `$aggs`.
 * `$facet` does not support nested `$aggs`.
 * Metric operators do not support nested `$aggs`.
 
@@ -89485,7 +89631,7 @@ Metric aggregations return numeric summaries.
 | Operator | Typical use |
 |----------|-------------|
 | [`$avg`](./aggregation-operators/metric-aggregations/avg) | Mean value |
-| [`$sum`](./aggregation-operators/metric-aggregations/sum) | Total |
+| [`$sum`](./aggregation-operators/metric-aggregations/sum) | Total, with an option to return `null` when no values are collected |
 | [`$min`](./aggregation-operators/metric-aggregations/min) | Smallest value |
 | [`$max`](./aggregation-operators/metric-aggregations/max) | Largest value |
 | [`$count`](./aggregation-operators/metric-aggregations/count) | Number of values |
@@ -89495,6 +89641,8 @@ Metric aggregations return numeric summaries.
 | [`$percentiles`](./aggregation-operators/metric-aggregations/percentiles) | Distribution cut points |
 
 See the [metric overview](./aggregation-operators/metric-aggregations/overview).
+
+By default, `$sum` returns `0` when no values are collected — either no documents match, or the matching documents all have a missing/null value for the field and no `missing` fallback is set. Set `nullIfNoMatch: true` to return `null` for that case. This lets you distinguish it from a real sum of zero.
 
 ### Bucket Aggregations
 
@@ -89506,6 +89654,7 @@ Bucket aggregations partition documents into groups.
 | [`$range`](./aggregation-operators/bucket-aggregations/range) | Custom ranges |
 | [`$histogram`](./aggregation-operators/bucket-aggregations/histogram) | Fixed numeric bins |
 | [`$dateHistogram`](./aggregation-operators/bucket-aggregations/date-histogram) | Fixed time bins |
+| [`$composite`](./aggregation-operators/bucket-aggregations/composite) | Paginated combinations of several sources |
 | [`$facet`](./aggregation-operators/bucket-aggregations/facet) | Hierarchical facets |
 
 See the [bucket overview](./aggregation-operators/bucket-aggregations/overview).
@@ -90400,8 +90549,7 @@ SEARCH.CREATE comments ON STRING PREFIX 1 comment: SCHEMA user.name TEXT user.em
 By default, creating an index scans and indexes all existing keys matching its type and prefixes, or
 all existing entries in its bound stream.
 Use `SKIPINITIALSCAN` to defer indexing, which is useful for large datasets where you want to start fresh or handle
-existing data differently. Run [`SEARCH.REINDEX`](/docs/redis/commands/search/search-reindex) later to rebuild the index from
-the current matching keys or stream entries.
+existing data differently.
 
 <Tabs>
 
@@ -92421,6 +92569,76 @@ or [`$fuzzy`](./query-operators/field-operators/fuzzy).
 
 ***
 
+## Multi-value fields
+
+`TEXT`, `KEYWORD`, `U64`, `I64`, `F64`, and `DATE` fields can contain multiple values. A condition
+matches the document when at least one array element matches it. The query value remains a single
+value; you do not need to search the whole stored array.
+
+Given this document:
+
+```json
+{
+  "tags": ["new", "sale"],
+  "descriptions": ["Wireless headphones", "Includes a travel case"],
+  "prices": [199.99, 179.99]
+}
+```
+
+each query below matches it:
+
+<Tabs>
+
+<Tab title="TypeScript">
+```ts
+await products.query({
+  filter: { tags: { $eq: "sale" } },
+});
+
+await products.query({
+  filter: { prices: { $lt: 180 } },
+});
+
+await products.query({
+  filter: { descriptions: { $phrase: "wireless headphones" } },
+});
+```
+</Tab>
+
+<Tab title="Python">
+```python
+products.query(filter={"tags": {"$eq": "sale"}})
+
+products.query(filter={"prices": {"$lt": 180}})
+
+products.query(filter={"descriptions": {"$phrase": "wireless headphones"}})
+```
+</Tab>
+
+<Tab title="Redis CLI">
+```bash
+SEARCH.QUERY products '{"tags":{"$eq":"sale"}}'
+
+SEARCH.QUERY products '{"prices":{"$lt":180}}'
+
+SEARCH.QUERY products '{"descriptions":{"$phrase":"wireless headphones"}}'
+```
+</Tab>
+
+</Tabs>
+
+For `TEXT`, phrase matching stays within one array element. For example, `"headphones includes"`
+does not match the document above because those words are in different elements.
+
+Search results keep the field's stored array unchanged. When you use `HIGHLIGHT` on a multi-value
+`TEXT` field, only matching string elements are marked up in the response. Other elements keep their
+original values, and highlighting does not change the stored document.
+
+See [Multi-value fields in schema definitions](/docs/redis/search/schema-definition#multi-value-fields)
+for supported types and the required storage format for JSON, string, hash, and stream indexes.
+
+***
+
 ## Query Options
 
 ### 1. Pagination with Limit and Offset
@@ -92873,14 +93091,14 @@ import { Redis, s } from "@upstash/redis"
 
 ### Field Type Reference
 
-| SDK Method | Redis CLI Type | Description | Supports FAST | Range Operators | Text Operators |
-|---|---|---|---|---|---|
-| `s.string()` | `TEXT` | Full-text searchable field with tokenization and stemming | No | No | `$smart`, `$phrase`, `$fuzzy`, `$regex` |
-| `s.keyword()` | `KEYWORD` | Exact-match string (no tokenization) | Yes | Yes (`$gt`, `$gte`, `$lt`, `$lte`) | No |
-| `s.number()` | `F64` (default), `U64`, `I64` | Numeric field | Yes | Yes | No |
-| `s.date()` | `DATE` | Date/time field | Yes | Yes | No |
-| `s.boolean()` | `BOOL` | Boolean field | Yes | No | No |
-| `s.facet()` | `FACET` | Hierarchical path-based field | No | No | No (only `$eq`, `$in`) |
+| SDK Method    | Redis CLI Type                | Description                                               | Supports FAST | Multiple values | Range Operators                    | Text Operators                          |
+| ------------- | ----------------------------- | --------------------------------------------------------- | ------------- | --------------- | ---------------------------------- | --------------------------------------- |
+| `s.string()`  | `TEXT`                        | Full-text searchable field with tokenization and stemming | No            | Yes             | No                                 | `$smart`, `$phrase`, `$fuzzy`, `$regex` |
+| `s.keyword()` | `KEYWORD`                     | Exact-match string (no tokenization)                      | Yes           | Yes             | Yes (`$gt`, `$gte`, `$lt`, `$lte`) | No                                      |
+| `s.number()`  | `F64` (default), `U64`, `I64` | Numeric field                                             | Yes           | Yes             | Yes                                | No                                      |
+| `s.date()`    | `DATE`                        | Date/time field                                           | Yes           | Yes             | Yes                                | No                                      |
+| `s.boolean()` | `BOOL`                        | Boolean field                                             | Yes           | No              | No                                 | No                                      |
+| `s.facet()`   | `FACET`                       | Hierarchical path-based field                             | No            | No              | No                                 | No (only `$eq`, `$in`)                  |
 
 <Note>
 In the TypeScript SDK, `s.number()` defaults to `F64`. You can specify `s.number("U64")` or
@@ -92949,6 +93167,51 @@ const schema = s.object({
   }),
 })
 ```
+
+## Multi-value fields
+
+A document field can contain several values without a separate array type in the schema. Declare the
+field as `TEXT`, `KEYWORD`, `U64`, `I64`, `F64`, or `DATE`, then store its value as a JSON array.
+Search indexes every valid array element under the same field.
+
+For example, this schema accepts several tags, descriptions, prices, and restock dates per product:
+
+```ts
+const schema = s.object({
+  tags: s.keyword(),
+  descriptions: s.string(),
+  prices: s.number("F64"),
+  restockedAt: s.date(),
+});
+```
+
+The way you store the array depends on the index data type:
+
+| Index data type | How to store multiple values                              | Example                                            |
+| --------------- | --------------------------------------------------------- | -------------------------------------------------- |
+| `JSON`          | A JSON array in the document                              | `JSON.SET product:1 $ '{"tags":["new","sale"]}'`   |
+| `STRING`        | A JSON array inside the JSON object stored in the string  | `SET product:1 '{"tags":["new","sale"]}'`          |
+| `HASH`          | A complete, JSON-encoded array in the hash field string   | `HSET product:1 tags '["new","sale"]'`             |
+| `STREAM`        | A complete, JSON-encoded array in the stream field string | `XADD events * services '["checkout","payments"]'` |
+
+There is no separator option, a value such as `new,sale` remains one value. Use a valid JSON array `["new","sale"]` to index two values.
+
+Each array element must match the schema type. Search ignores an invalid element while still indexing
+the valid elements in the same array. An empty array, or an array with no valid elements, acts like a
+missing field. `BOOL` and `FACET` fields do not support array values.
+
+Queries match a document when any indexed element satisfies the condition. For example, both of these
+queries match a product whose `tags` value is `["new","sale"]` and whose `prices` value is
+`[19.99,24.99]`:
+
+```bash
+SEARCH.QUERY products '{"tags":{"$eq":"sale"}}'
+SEARCH.QUERY products '{"prices":{"$lt":20}}'
+```
+
+Each `TEXT` array element is analyzed separately. A phrase can match within one element, but cannot
+start in one element and continue in another. See [Multi-value queries](/docs/redis/search/querying#multi-value-fields)
+for more examples and highlighting behavior.
 
 ### Where to use the Schema
 
@@ -93481,7 +93744,7 @@ SEARCH.CREATE event-search ON STREAM events SCHEMA description TEXT FROM message
 Queries use the schema name (`description`), while `SELECT` and returned content use the original
 stream field name (`message`).
 
-## Existing entries and reindexing
+## Existing entries
 
 Creating an index scans entries already present in the stream. Use `SKIPINITIALSCAN` to index only new
 entries at first:
@@ -93490,13 +93753,6 @@ entries at first:
 # Replace the index without indexing the existing stream entries.
 SEARCH.DROP event-search
 SEARCH.CREATE event-search SKIPINITIALSCAN ON STREAM events SCHEMA message TEXT severity U64 FAST
-```
-
-Run [`SEARCH.REINDEX`](/docs/redis/commands/search/search-reindex) later to rebuild the index from all
-entries currently in the stream.
-
-```bash
-SEARCH.REINDEX event-search
 ```
 
 ## Entry deletion and trimming

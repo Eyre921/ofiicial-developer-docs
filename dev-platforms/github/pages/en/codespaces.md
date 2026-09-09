@@ -12,7 +12,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Quickstart for GitHub Codespaces](/en/codespaces/quickstart)
 
-  Get started with GitHub Codespaces quickly.
+  <p>Get started with GitHub Codespaces quickly.</p>
 
 * [What are GitHub Codespaces?](/en/codespaces/about-codespaces/what-are-codespaces)
 
@@ -32,15 +32,15 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Introduction to dev containers](/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers)
 
-  <p>When you work in a codespace, the environment you are working in is created using a development container, or dev container, hosted on a virtual machine.</p>
+  When you work in a codespace, the environment you are working in is created using a development container, or dev container, hosted on a virtual machine.
 
 * [Using source control in your codespace](/en/codespaces/developing-in-a-codespace/using-source-control-in-your-codespace)
 
-  <p>After making changes to a file in your codespace you can quickly commit the changes and push your update to the remote repository.</p>
+  After making changes to a file in your codespace you can quickly commit the changes and push your update to the remote repository.
 
 * [Enabling or disabling GitHub Codespaces for your organization](/en/codespaces/managing-codespaces-for-your-organization/enabling-or-disabling-github-codespaces-for-your-organization)
 
-  You can control which users can use GitHub Codespaces in your organization's private repositories.
+  <p>You can control which users can use GitHub Codespaces in your organization's private repositories.</p>
 
 * [Security in GitHub Codespaces](/en/codespaces/reference/security-in-github-codespaces)
 

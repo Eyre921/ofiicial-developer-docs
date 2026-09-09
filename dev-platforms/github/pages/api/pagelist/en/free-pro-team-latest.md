@@ -838,6 +838,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/code-security/how-tos/secure-your-secrets/prevent-future-leaks
 /en/code-security/how-tos/secure-your-secrets/prevent-future-leaks/enable-push-protection
 /en/code-security/how-tos/secure-your-secrets/prevent-future-leaks/manage-user-push-protection
+/en/code-security/how-tos/secure-your-secrets/prevent-future-leaks/block-merges-with-secrets
 /en/code-security/how-tos/secure-your-secrets/work-with-leak-prevention
 /en/code-security/how-tos/secure-your-secrets/work-with-leak-prevention/push-protection-on-the-command-line
 /en/code-security/how-tos/secure-your-secrets/work-with-leak-prevention/push-protection-in-the-github-ui

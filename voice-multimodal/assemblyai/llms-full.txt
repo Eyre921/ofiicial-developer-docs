@@ -46,7 +46,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Transcript export options](#transcript-export-options-docs-pre-recorded-audio-export-transcripts-as-srt-vtt-or-text-mdx)
 - [Delete Transcripts](#delete-transcripts-docs-pre-recorded-audio-delete-transcripts-mdx)
 - [Upload a media file](#upload-a-media-file-docs-pre-recorded-audio-api-reference-files-upload-mdx)
-- [Submit a transcript](#submit-a-transcript-docs-pre-recorded-audio-api-reference-transcripts-submit-mdx)
+- [Transcribe audio](#transcribe-audio-docs-pre-recorded-audio-api-reference-transcripts-submit-mdx)
 - [Get a transcript](#get-a-transcript-docs-pre-recorded-audio-api-reference-transcripts-get-mdx)
 - [Get transcript sentences](#get-transcript-sentences-docs-pre-recorded-audio-api-reference-transcripts-get-sentences-mdx)
 - [Get transcript paragraphs](#get-transcript-paragraphs-docs-pre-recorded-audio-api-reference-transcripts-get-paragraphs-mdx)
@@ -7337,10 +7337,11 @@ while (true) {
 
 ## Set a list of expected languages
 
-If you're confident the audio is in one of a few languages, provide that list via `language_detection_options.expected_languages`. Detection is restricted to these candidates and the model will choose the language with the highest confidence from this list. This can eliminate scenarios where Automatic Language Detection selects an unexpected language for transcription.
+If you're confident the audio is in one of a few languages, provide that list via `language_detection_options.expected_languages`. These language candidates guide the model toward choosing the language(s) it's most likely to detect, which can reduce cases where Automatic Language Detection selects an unexpected language for transcription.
 
-- Use our [language codes](/pre-recorded-audio/supported-languages) (e.g., `"en"`, `"es"`, `"fr"`).
-- If `expected_languages` is not specified, it is set to `["all"]` by default.
+Note that `expected_languages` is a hint, not a strict filter. The model may still transcribe the audio in a language outside your provided list if it detects that language with high confidence. This ensures the model doesn't force a transcription into an incorrect language just because it wasn't in the expected list.
+
+- If `expected_languages` is not specified, it defaults to `["all"]`.
 
 ```python title="Python SDK" for="python-sdk" highlight={13}  expandable
 from assemblyai import LanguageDetectionOptions
@@ -10471,9 +10472,9 @@ Metadata:
 
 ---
 
-<a id="submit-a-transcript-docs-pre-recorded-audio-api-reference-transcripts-submit-mdx"></a>
+<a id="transcribe-audio-docs-pre-recorded-audio-api-reference-transcripts-submit-mdx"></a>
 
-# Submit a transcript
+# Transcribe audio
 
 URL: https://www.assemblyai.com/docs/pre-recorded-audio/api-reference/transcripts/submit
 Source: docs/pre-recorded-audio/api-reference/transcripts/submit.mdx
@@ -75540,7 +75541,6 @@ paths:
       summary: Transcribe audio
       description: |
         <Note>To use our EU server for transcription, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
-        <Tip>Building a load test or submitting a large batch? [See our guide →](/pre-recorded-audio/guides/bulk-transcription-and-load-tests-at-scale)</Tip>
         Create a transcript from a media file that is accessible via a URL.
       operationId: createTranscript
       x-fern-sdk-group-name: transcripts
@@ -81703,6 +81703,7 @@ components:
       type: apiKey
       in: header
       name: Authorization
+      description: Add your AssemblyAI API key as the Authorization header value. Required on every request.
 ```
 
 ## docs/api-reference/specs/llm-gateway.yaml

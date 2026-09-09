@@ -136862,9 +136862,11 @@ results = index.query(
 - [Fetch requests to API endpoints aren't showing the session](https://supabase.com/docs/guides/troubleshooting/fetch-requests-to-api-endpoints-arent-showing-the-session-UbUwRs)
 - [Fixing 520 Errors in the Database REST API](https://supabase.com/docs/guides/troubleshooting/fixing-520-errors-in-the-database-rest-api-Ur5-B2)
 - [Forbidden resource error from the CLI](https://supabase.com/docs/guides/troubleshooting/forbidden-resource-error-from-the-cli-L6rm6l)
+- ['Formatting support requests for faster resolution'](https://supabase.com/docs/guides/troubleshooting/formatting-support-requests-for-faster-resolution-616717)
 - [Get detailed Storage metrics with the AWS CLI](https://supabase.com/docs/guides/troubleshooting/get-detailed-storage-metrics-with-the-aws-cli-587a7d)
 - [Google Auth fails for some users](https://supabase.com/docs/guides/troubleshooting/google-auth-fails-for-some-users-XcFXEu)
 - [Grafana not displaying data](https://supabase.com/docs/guides/troubleshooting/grafana-not-displaying-data-sXJrMj)
+- [SQLSTATE 40001 (serialization_failure) in an RPC function causes infinite retries](https://supabase.com/docs/guides/troubleshooting/high-cpu-and-infinite-transaction-retries-when-using-custom-error-codes-in-rpc-functions-77326b)
 - [High CPU and Slow Queries with `ERROR: must be a superuser to terminate superuser process`](https://supabase.com/docs/guides/troubleshooting/high-cpu-and-slow-queries-with-error-must-be-a-superuser-to-terminate-superuser-process)
 - [High CPU usage](https://supabase.com/docs/guides/troubleshooting/high-cpu-usage)
 - [High latency with supabase client](https://supabase.com/docs/guides/troubleshooting/high-latency-with-supabase-client-z0pZzR)
@@ -136915,10 +136917,12 @@ results = index.query(
 - [Partitioning an existing table with same name](https://supabase.com/docs/guides/troubleshooting/partitioning-an-existing-table-with-same-name-VEnbzK)
 - [Pausing Pro-Projects](https://supabase.com/docs/guides/troubleshooting/pausing-pro-projects-vNL-2a)
 - [Performing administration tasks on the server side with a secret key](https://supabase.com/docs/guides/troubleshooting/performing-administration-tasks-on-the-server-side-with-the-servicerole-secret-BYM4Fa)
+- ['Permission denied' when deleting the 'cli_login_postgres' role](https://supabase.com/docs/guides/troubleshooting/permission-denied-when-deleting-the-cli_login_postgres-role-808bae)
 - [`pg_cron launcher crashes with 'duplicate key value violates unique constraint'`](https://supabase.com/docs/guides/troubleshooting/pg_cron-launcher-crashes-with-duplicate-key-value-violates-unique-constraint-cc6472)
 - [pg_cron debugging guide](https://supabase.com/docs/guides/troubleshooting/pgcron-debugging-guide-n1KTaz)
 - [PGRST106: "The schema must be one of the following..." error when querying an exposed schema](https://supabase.com/docs/guides/troubleshooting/pgrst106-the-schema-must-be-one-of-the-following-error-when-querying-an-exposed-schema)
 - [PKCE Flow errors: 'cannot parse response' or '#ZgotmplZ' in magic link emails](https://supabase.com/docs/guides/troubleshooting/pkce-flow-errors-cannot-parse-response-or-zgotmplz-in-magic-link-emails-433665)
+- [Postgres error: 'could not access status of transaction' when PostgREST runs LISTEN](https://supabase.com/docs/guides/troubleshooting/postgres-error-could-not-access-status-of-transaction-or-could-not-open-file-pg_xact-f88389)
 - [PostgREST error: 400 'column example_table.example_column does not exist' when using OR operators](https://supabase.com/docs/guides/troubleshooting/postgrest-error-400-column-example_tableexample_column-does-not-exist-when-using-or-operators-46ff23)
 - [PostgREST error: {PGRST002: Could not query the database for the schema cache}](https://supabase.com/docs/guides/troubleshooting/postgrest-error-pgrst002-could-not-query-the-database-for-the-schema-cache-c396e9)
 - [PostgREST not recognizing new columns, tables, views or functions](https://supabase.com/docs/guides/troubleshooting/postgrest-not-recognizing-new-columns-or-functions-bd75f5)
@@ -136960,6 +136964,7 @@ results = index.query(
 - [Steps to improve query performance with indexes](https://supabase.com/docs/guides/troubleshooting/steps-to-improve-query-performance-with-indexes-q8PoC9)
 - [Storage error: 403 Forbidden: 'new row violates row-level security policy' on upload](https://supabase.com/docs/guides/troubleshooting/storage-error-403-forbidden-new-row-violates-row-level-security-policy-on-upload-a94384)
 - [RLS policy causes infinite recursion](https://supabase.com/docs/guides/troubleshooting/storage-error-database-schema-is-incompatible-when-uploading-files-988baa)
+- [Storage: Unexpectedly high usage or 'exceed_storage_size_quota' errors](https://supabase.com/docs/guides/troubleshooting/storage-unexpectedly-high-usage-or-exceed_storage_size_quota-errors-ae21a5)
 - [Supabase & Your Network: IPv4 and IPv6 compatibility](https://supabase.com/docs/guides/troubleshooting/supabase--your-network-ipv4-and-ipv6-compatibility-cHe3BP)
 - [Supabase CLI: "failed SASL auth" or "invalid SCRAM server-final-message"](https://supabase.com/docs/guides/troubleshooting/supabase-cli-failed-sasl-auth-or-invalid-scram-server-final-message)
 - [Supabase CLI fails with 'Transport error' (antivirus/proxy TLS interception)](https://supabase.com/docs/guides/troubleshooting/supabase-cli-transport-error-antivirus-firewall-tls-interception)
@@ -136968,6 +136973,7 @@ results = index.query(
 - [Supabase project provisioned via Bolt not visible in dashboard](https://supabase.com/docs/guides/troubleshooting/supabase-project-provisioned-via-bolt-not-visible-in-dashboard-7188fc)
 - [Supabase Storage: Inefficient folder operations and hierarchical RLS challenges](https://supabase.com/docs/guides/troubleshooting/supabase-storage-inefficient-folder-operations-and-hierarchical-rls-challenges-b05a4d)
 - [Supavisor and Connection Terminology Explained](https://supabase.com/docs/guides/troubleshooting/supavisor-and-connection-terminology-explained-9pr_ZO)
+- [Supavisor connection error: FATAL: (EAUTHQUERY) unsupported or invalid secret format](https://supabase.com/docs/guides/troubleshooting/supavisor-connection-error-fatal-eauthquery-unsupported-or-invalid-secret-format-d23dd4)
 - [Supavisor error: 'Circuit breaker open' after password rotation](https://supabase.com/docs/guides/troubleshooting/supavisor-error-circuit-breaker-open-after-password-rotation-0fdb72)
 - [Supavisor FAQ](https://supabase.com/docs/guides/troubleshooting/supavisor-faq-YyP5tI)
 - [Database: "Error: too many connections for database "postgres""](https://supabase.com/docs/guides/troubleshooting/too-many-connections-for-database-postgres)
@@ -140996,6 +141002,55 @@ If the issue persists, add a --debug --create-ticket flags to your command and c
 
 ---
 
+# 'Formatting support requests for faster resolution'
+
+When you contact Supabase Support, a clear and focused ticket helps our team understand the issue, assess its impact, and begin investigating.
+
+If you use an LLM to help write your ticket, give it the information you have gathered, such as your notes, exact error messages, and relevant evidence, combined with the prompt below. The LLM will organise this information into a concise, technically useful support ticket while removing repetition, speculation, and irrelevant details.
+
+Before submitting the generated ticket, review it carefully to confirm that all details are accurate and that it does not contain passwords, API keys, access tokens, personal data, or other sensitive information. An LLM should help organise the information you provide, it should never invent missing details.
+
+## Prompt:
+
+Prioritise clarity over completeness. Include only information that helps the support team understand, reproduce, or investigate the issue.
+Remove repetition, speculation, generic explanations, attempted diagnoses without evidence, and irrelevant background.
+
+A shorter ticket containing verified facts is preferable to a longer ticket containing assumptions.
+
+**Use the following structure:**
+
+**Summary:** One or two sentences describing the specific problem.
+
+**Impact:** What is blocked or degraded, who is affected, and whether the issue is ongoing.
+
+**Expected behaviour:** What should happen.
+
+**Actual behaviour:** What happens instead, including the exact error message where available.
+
+**Steps to reproduce:** The shortest reliable sequence of steps. If the issue cannot be reproduced consistently, say so.
+
+**Environment:** Only relevant identifiers and configuration, such as project reference, region, product or feature, client or library version, and approximate timestamps with timezone. Never include passwords, API keys, tokens, or other secrets.
+
+**Troubleshooting completed:** Briefly list actions already attempted and their results.
+
+**Evidence:** Include only relevant logs, queries, screenshots, or request IDs. Use short excerpts instead of full log dumps.
+
+**Request:** State clearly what assistance or outcome is needed from Support.
+
+**Requirements:**
+
+- Aim to keep the ticket under 300 words, excluding essential logs or code.
+- Put the most important information first.
+- Do not repeat information across sections.
+- Do not invent, assume, or infer missing details.
+- Clearly label any uncertainty.
+- Preserve exact error messages, timestamps, and identifiers.
+- If essential information is missing, list no more than three questions under Missing information.
+- Do not include greetings, apologies, conclusions, or commentary about how the ticket was written.
+
+
+---
+
 # Get detailed Storage metrics with the AWS CLI
 
 Supabase Studio primarily lists the current objects within your buckets. You can use standard S3 tooling such as the AWS CLI to review your Supabase project's Storage usage, or perform operations on the bucket contents.
@@ -141139,6 +141194,49 @@ If off, update the values
 ```sh
 chmod +x entrypoint.sh
 ```
+
+
+---
+
+# SQLSTATE 40001 (serialization_failure) in an RPC function causes infinite retries
+
+A custom `raise exception` using SQLSTATE `40001` (`serialization_failure`) in your PL/pgSQL function tells PostgREST the failure is transient, so PostgREST retries the transaction. That floods your logs with duplicates and splits one API request into several independent Postgres transactions.
+
+This [bug](https://github.com/PostgREST/postgrest/pull/4222) is present in PostgREST 14 and is fixed in PostgREST 16. Follow the [Supabase changelog](https://supabase.com/changelog) to get notified when PostgREST 16 is released.
+
+## How to resolve
+
+To resolve this, update your Postgres function to use standard exception handling or SQLSTATE codes that map correctly to HTTP status codes.
+
+**1. Modify the Raise Statement**
+Replace custom `errcode` assignments with a standard exception or a PostgREST-compliant code:
+
+- **Standard Fix**: Change `raise exception using errcode = '40001', message = '...';` to `raise exception 'YOUR_ERROR_MESSAGE';`. This defaults to SQLSTATE `P0001`, which does not trigger the retry loop.
+- **HTTP Mapping**: Use the `PT` [prefix](https://docs.postgrest.org/en/v14/references/errors.html#raise-errors-with-http-status-codes) to map to specific HTTP status codes. For example, to return an HTTP 409, use: `raise sqlstate 'PT409' using message = 'YOUR_ERROR_MESSAGE';`
+
+**2. Terminate Hanging Backends**
+Existing looping processes must be stopped manually — fixing the function does not stop transactions already in flight. The repeated error entries in your Postgres logs (Logs Explorer) include a `process_id` field identifying the exact backend raising the error, e.g.:
+
+```json
+"process_id": 183165,
+"sql_state_code": "40001",
+"user_name": "authenticator"
+```
+
+You can also find candidate backends in `pg_stat_activity` by filtering on `authenticator`, the role PostgREST connects as:
+
+```sql
+select pid, state, query_start, query
+from pg_stat_activity
+where usename = 'authenticator'
+order by query_start;
+```
+
+Match the `pid` against the `process_id` from your logs to confirm you have the right backend, then terminate it from the [SQL editor](https://supabase.com/dashboard/project/_/sql/new):
+
+`SELECT pg_terminate_backend(pid);`
+
+Alternatively, you can restart the project from the dashboard to clear all hanging backends at once.
 
 
 ---
@@ -144038,6 +144136,64 @@ const supabase = createClient(supabaseUrl, secretKey, {
 
 ---
 
+# 'Permission denied' when deleting the 'cli_login_postgres' role
+
+## **What are CLI login roles?**
+
+In the Supabase ecosystem, specific database roles are generated to help communication between your local development environment and your remote database. Understanding these roles is key to managing your database's security posture.
+
+**Key Technical Terms:**
+
+- **`cli_login_postgres`:** A temporary role automatically created by the Supabase CLI to allow administrative access for tasks like migrations or queries when a database password is not explicitly provided.
+- **`supabase_admin`:** An internal system-level role that manages core database infrastructure. It "owns" certain system-generated roles, meaning standard users cannot modify or delete them.
+- **`rolvaliduntil`:** A PostgreSQL attribute that sets an expiration timestamp for a role's password. In this context, these roles are typically set to expire within a few hundred seconds of creation.
+- **`NOLOGIN`:** A role attribute that prevents a role from being used to establish a new connection to the database, effectively disabling it while keeping the record in the system catalog.
+
+***
+
+## **Understanding the problem: "Permission denied"**
+
+If you attempt to execute `DROP ROLE cli_login_postgres` via the SQL Editor or a standard database connection, you will encounter a "permission denied" error. Even when logged in as the `postgres` user, you lack the administrative authority to remove this specific role because it is managed by the internal `supabase_admin` system.
+
+**Why the role persists:**
+The role is part of a managed lifecycle. While you can mitigate risk by setting the role to `NOLOGIN`, the record remains in the `pg_roles` table. Furthermore, because the Supabase CLI depends on this role for passwordless authentication, it will automatically recreate the role the next time a CLI command is run without a password.
+
+***
+
+## **How to resolve: Permanently removing the role**
+
+Standard SQL commands are insufficient for roles administered by the platform. To remove the role from the catalog entirely, you must use the Supabase Management API.
+
+1. **Generate an Access Token:** Obtain a Personal Access Token from your Supabase Dashboard account settings.
+2. **Execute the API Delete Request:** Use a `DELETE` request to the CLI login-role endpoint. This informs the management system to drop the `cli_login_postgres` role (and its read-only counterparts) using its elevated system permissions.
+   ```bash
+   curl -X DELETE "https://api.supabase.com/v1/projects/your_project/cli/login-role" \
+   -H "Authorization: Bearer <your-personal-access-token>"
+   ```
+3. **Verify the Removal:** Run the following query in your SQL Editor to confirm the role has been cleared:
+   ```sql
+   select rolname from pg_roles where rolname = 'cli_login_postgres';
+   ```
+
+***
+
+## **Prevention: Avoiding role recreation**
+
+To ensure the role is not recreated in the future, you must change how you interact with the Supabase CLI. The role is only generated when the CLI runs a command against a linked project without a database password.
+
+To prevent recreation, always provide your database password using one of these methods:
+
+- **Environment Variables:** Set the `SUPABASE_DB_PASSWORD` variable in your local shell or `.env` file.
+- **Command Flags:** Use the password flag (typically `-p` or `--password`) when executing commands:
+  ```bash
+  supabase db query --linked -p 'your_database_password' "SELECT 1;"
+  ```
+
+By providing the password, the CLI authenticates directly as the `postgres` user rather than provisioning a temporary `cli_login_postgres` role.
+
+
+---
+
 # `pg_cron launcher crashes with 'duplicate key value violates unique constraint'`
 
 The `pg_cron` launcher process crashes approximately every minute, displaying the error `'duplicate key value violates unique constraint "job_run_details_pkey"'`.
@@ -144325,6 +144481,42 @@ This is the most crucial step to resolve both the broken PKCE handshake and the 
 - **Implement Deep Link Redirection**: When the user clicks the "Verify & Open App." button, execute a script that redirects them to your mobile application using its deep link scheme. For example, `window.location.href = "your-app-scheme://login-callback?code=..."` where `code` would contain any necessary authentication parameters received by the web callback page.
 
 By following this Email → Website → Mobile App flow with a user-initiated action on the web page, you establish a robust and secure authentication process that sidesteps common pitfalls associated with email clients and link scanners, ensuring a consistent user experience.
+
+
+---
+
+# Postgres error: 'could not access status of transaction' when PostgREST runs LISTEN
+
+## The error
+
+You'll see this in your database logs:
+
+- **Error:** `could not access status of transaction`
+- **Detail:** `Could not open file "pg_xact/[ID]": No such file or directory`
+- **Application:** PostgREST (shown as `PostgREST 13.0.5` or similar)
+- **Command:** `LISTEN`
+
+If you see the first error message without the pg\_xact detail, or outside PostgREST, it may be a different issue.
+
+## What's happening
+
+This is an upstream Postgres [bug](http://postgresql.org/message-id/flat/VE1PR03MB531295B1BDCFE422441B15FD92499%40VE1PR03MB5312.eurprd03.prod.outlook.com) but affects PostgREST. The notification queue gets stuck and tries to access old transaction IDs that no longer exist.
+
+## Fix
+
+Run this command in the [SQL editor](https://supabase.com/dashboard/project/_/sql/new):
+
+```sql
+select pg_notification_queue_usage();
+```
+
+This clears the stuck queue. Your Data API will become responsive again, and the errors should stop.
+
+## If it happens again
+
+Run the command above again.
+
+If you upgrade to PostgREST v14.8+, the logs will include a `HINT` that tells you to run `SELECT pg_notification_queue_usage();`. You can upgrade PostgREST and Postgres in [Infrastructure Settings](https://supabase.com/dashboard/project/_/settings/infrastructure).
 
 
 ---
@@ -147404,6 +147596,21 @@ Option 2: Wrap the permission check in a SECURITY DEFINER function. This execute
 
 ---
 
+# Storage: Unexpectedly high usage or 'exceed_storage_size_quota' errors
+
+If you're observing unexpectedly high storage usage or receiving 'exceed\_storage\_size\_quota' errors, even after deleting files, it's often due to orphaned storage objects.
+
+**Why Does This Happen?**
+This issue arises when storage objects are deleted directly from `storage.objects` or `storage.buckets` tables using SQL queries, bypassing the Supabase Storage API. Deleting database rows in this manner does not remove the corresponding physical files, leading to orphaned objects that continue to consume storage space.
+
+**How to Avoid This Issue:**
+
+- Always delete storage objects using the official Supabase Storage API. This can be done via client libraries (e.g., `storage.from('example_bucket').remove(['example_folder/example_object.txt'])`) or through the [Supabase Studio Storage UI](https://supabase.com/dashboard/project/_/storage/buckets).
+- Never manually remove rows directly from `storage.objects` or `storage.buckets` tables using SQL, as this will not delete the associated physical files and will result in orphaned objects.
+
+
+---
+
 # Supabase & Your Network: IPv4 and IPv6 compatibility
 
 ## Network compatibility with your Supabase database
@@ -147760,6 +147967,35 @@ Session mode behaves nearly identically to a standard direct connection, which m
 One benefit is that if you need long-lasting connections in an IPv4-only environment and do not want to enable the IPv4 Add-On, session mode resolves this issue.
 
 Another clear benefit is queueing. If all direct connections were taken, without the pooler, the n+1 client that tried to connect would be rejected. It would have to constantly poll the database to see if a slot became available. The pooler in session mode will queue a client for up to a minute, so it doesn't have to constantly poll while waiting for a slot.
+
+
+---
+
+# Supavisor connection error: FATAL: (EAUTHQUERY) unsupported or invalid secret format
+
+If you are observing a `FATAL: (EAUTHQUERY) unsupported or invalid secret format` error when connecting to the Supavisor pooler (ports 5432 or 6543), it typically indicates an issue with the database role's credentials.
+
+## Why does this happen?
+
+This error occurs when the custom Postgres role used for the connection has an expired `VALID UNTIL` timestamp. When a role is expired, the internal authentication query used by Supavisor returns a null password secret, which prevents the pooler from completing the SCRAM authentication process.
+
+## How to resolve this issue
+
+You can verify and update the role's expiration status via the [SQL editor](https://supabase.com/dashboard/project/_/sql/new):
+
+1. Identify if the role has expired by running the following query:
+   ```sql
+   select rolname, rolvaliduntil, rolvaliduntil < now() as expired
+   from pg_authid
+   where rolname = 'example_role';
+   ```
+2. If the `expired` column returns true, update the role to extend or remove the expiration limit:
+   ```sql
+   ALTER ROLE example_role VALID UNTIL 'infinity';
+   ```
+3. Re-attempt the connection using your Supavisor connection string.
+
+If the issue persists or the role is not expired, reach out to [supabase.help](https://supabase.help/) for assistance.
 
 
 ---

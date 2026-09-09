@@ -8,6 +8,8 @@ path: docs/redis/search/aggregation-operators/metric-aggregations/sum
 
 If `missing` is set, missing fields contribute that fallback value.
 
+By default, `$sum` returns `0` when no values are collected — either no documents match, or the matching documents all have a missing/null value for the field and no `missing` fallback is set. Set `nullIfNoMatch` to `true` to return `null` instead, so you can distinguish that case from a real total of zero.
+
 ### Compatibility
 
 | Field Type | Supported |
@@ -27,6 +29,7 @@ Field must be `FAST`.
 |----------|------|----------|-------------|
 | `field` | `string` | Yes | Field to aggregate. |
 | `missing` | `number` | No | Fallback value for missing fields. |
+| `nullIfNoMatch` | `boolean` | No | Return `null` instead of `0` when no values are collected. Default: `false`. |
 
 <Tabs>
 
@@ -34,7 +37,7 @@ Field must be `FAST`.
 ```ts
 await index.aggregate({
   aggregations: {
-    total_price: { $sum: { field: "price", missing: 0 } },
+    total_price: { $sum: { field: "price", nullIfNoMatch: true } },
   },
 });
 ```
@@ -43,14 +46,18 @@ await index.aggregate({
 <Tab title="Python">
 ```python
 index.aggregate(
-    aggregations={"total_price": {"$sum": {"field": "price", "missing": 0}}}
+    aggregations={
+        "total_price": {
+            "$sum": {"field": "price", "nullIfNoMatch": True}
+        }
+    },
 )
 ```
 </Tab>
 
 <Tab title="Redis CLI">
 ```bash
-SEARCH.AGGREGATE products '{}' '{"total_price": {"$sum": {"field": "price", "missing": 0}}}'
+SEARCH.AGGREGATE products '{}' '{"total_price": {"$sum": {"field": "price", "nullIfNoMatch": true}}}'
 ```
 </Tab>
 
@@ -62,4 +69,10 @@ SEARCH.AGGREGATE products '{}' '{"total_price": {"$sum": {"field": "price", "mis
 { "total_price": { "value": 360 } }
 ```
 
-`value` can be `null` when no values are available.
+With `nullIfNoMatch: true`, an aggregation with no collected values (for example, the filter above matches no documents) returns:
+
+```json
+{ "total_price": { "value": null } }
+```
+
+Without `nullIfNoMatch`, the same aggregation returns `0`. This option does not change results where at least one value was collected, including a real sum of zero.

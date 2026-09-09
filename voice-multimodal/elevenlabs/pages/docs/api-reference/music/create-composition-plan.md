@@ -50,7 +50,7 @@ Reference: https://elevenlabs.io/docs/api-reference/music/create-composition-pla
   - CompositionPlan
     - `chunks` (list of object or object, required) — The chunks that make up the generation.
       - GenerationChunk
-        - `text` (string, required) — The text config to be generated for this chunk. Can contain section name in square brackets, e.g. \[Verse 1], lyrics lines, and inline directions in curly braces, e.g. \{scratching}.
+        - `text` (string, required) — The text config to be generated for this chunk. Can contain an optional section name in square brackets at the beginning, e.g. \[Verse 1], lyrics lines, and inline directions in curly braces, e.g. \{scratching}. Section names must be between 1 and 100 characters. At most 30 lines are allowed, each at most 200 characters.
         - `duration_ms` (integer, required) — The duration of the chunk in milliseconds. Must be between 3000ms and 120000ms.
         - `positive_styles` (list of string, required) — The styles and musical directions that should be present in this chunk. Use English language for best results. The styles for the first chunk are the most important as they set the overall tone and genre. Styles for subsequent chunks can be used to add nuance, progression, emphasis, or change the direction of the song. Aim to have at least 6-7 styles in early chunks until the direction is established. Generic styles like 'great production quality' are good default styles to append to the list.
         - `negative_styles` (list of string, optional) — The styles and musical directions that should not be present in this chunk. Use English language for best results. Leaving empty is a good default, only use this field if you want to explicitly avoid a particular style or direction.
@@ -98,7 +98,7 @@ Successful Response
   - CompositionPlan
     - `chunks` (list of object or object, required) — The chunks that make up the generation.
       - GenerationChunk
-        - `text` (string, required) — The text config to be generated for this chunk. Can contain section name in square brackets, e.g. \[Verse 1], lyrics lines, and inline directions in curly braces, e.g. \{scratching}.
+        - `text` (string, required) — The text config to be generated for this chunk. Can contain an optional section name in square brackets at the beginning, e.g. \[Verse 1], lyrics lines, and inline directions in curly braces, e.g. \{scratching}. Section names must be between 1 and 100 characters. At most 30 lines are allowed, each at most 200 characters.
         - `duration_ms` (integer, required) — The duration of the chunk in milliseconds. Must be between 3000ms and 120000ms.
         - `positive_styles` (list of string, required) — The styles and musical directions that should be present in this chunk. Use English language for best results. The styles for the first chunk are the most important as they set the overall tone and genre. Styles for subsequent chunks can be used to add nuance, progression, emphasis, or change the direction of the song. Aim to have at least 6-7 styles in early chunks until the direction is established. Generic styles like 'great production quality' are good default styles to append to the list.
         - `negative_styles` (list of string, optional) — The styles and musical directions that should not be present in this chunk. Use English language for best results. Leaving empty is a good default, only use this field if you want to explicitly avoid a particular style or direction.

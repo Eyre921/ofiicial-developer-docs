@@ -904,7 +904,7 @@ components:
         poolside:
           additionalProperties: {}
           type: object
-        prime-intellect:
+        primeintellect:
           additionalProperties: {}
           type: object
         quiver:

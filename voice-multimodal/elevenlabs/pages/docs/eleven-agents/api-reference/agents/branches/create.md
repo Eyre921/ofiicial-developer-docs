@@ -391,6 +391,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branche
             - `prompt` (string, optional) — Prompt override for the LLM. If not provided, the original schema description is used.
           - `source`: `omit`
   - `prevent_subagent_loops` (boolean, optional, default: false) — Whether to prevent loops in the workflow execution.
+- `include_draft` (boolean, optional, default: false) — When true, the new branch uses the caller's draft procedure set instead of the branch tip. Requires parent_version_id to be the branch tip.
 
 ## Response
 

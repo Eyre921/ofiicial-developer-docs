@@ -20,23 +20,23 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Authenticating to the REST API](/en/rest/authentication/authenticating-to-the-rest-api)
 
-  <p>You can authenticate to the REST API to access more endpoints and have a higher rate limit.</p>
+  You can authenticate to the REST API to access more endpoints and have a higher rate limit.
 
 * [Best practices for using the REST API](/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api)
 
-  Follow these best practices when using GitHub's API.
+  <p>Follow these best practices when using GitHub's API.</p>
 
 * [Rate limits for the REST API](/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
 
-  Learn about REST API rate limits, how to avoid exceeding them, and what to do if you do exceed them.
+  <p>Learn about REST API rate limits, how to avoid exceeding them, and what to do if you do exceed them.</p>
 
 * [Keeping your API credentials secure](/en/rest/authentication/keeping-your-api-credentials-secure)
 
-  Follow these best practices to keep your API credentials and tokens secure.
+  <p>Follow these best practices to keep your API credentials and tokens secure.</p>
 
 * [Scripting with the REST API and JavaScript](/en/rest/guides/scripting-with-the-rest-api-and-javascript)
 
-  <p>Write a script using the Octokit.js SDK to interact with the REST API.</p>
+  Write a script using the Octokit.js SDK to interact with the REST API.
 
 * [Troubleshooting the REST API](/en/rest/using-the-rest-api/troubleshooting-the-rest-api)
 

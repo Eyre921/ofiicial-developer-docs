@@ -175,9 +175,11 @@
 - [Debugging voice agents](https://docs.vapi.ai/debugging.md): Learn to identify, diagnose, and fix common issues with your voice assistants
 - [Enterprise environments (DEV/UAT/PROD)](https://docs.vapi.ai/documentation/best-practices/enterprise-environments-dev-uat-prod.md): Promotion and configuration management for assistants and squads
 - [IVR Navigation](https://docs.vapi.ai/ivr-navigation.md): How to navigate IVR menu systems effectively
-- [Test Suites](https://docs.vapi.ai/test/test-suites.md): End-to-end test automation for AI voice agents
-- [Chat Testing](https://docs.vapi.ai/test/chat-testing.md): Automated text-based testing for AI agents
-- [Voice Testing](https://docs.vapi.ai/test/voice-testing.md): Automated voice call testing for AI voice agents
+- [Testing voice agents](https://docs.vapi.ai/test/voice-testing.md): Understand why voice agents need systematic testing, when to reach for Evals versus Simulations, and how to layer both into a repeatable pre-launch workflow.
+- [Plan test coverage](https://docs.vapi.ai/test/plan-test-coverage.md): Prioritize test coverage by risk, mapping customer outcomes, critical decisions, failure paths, guardrails, and voice behavior to Evals and Simulations.
+- [Test outcomes with Simulations](https://docs.vapi.ai/test/simulations-best-practices.md): Write Simulation scenarios that give the AI tester a goal, set success criteria two reviewers would score alike, and cover recovery, guardrail, and voice paths.
+- [Test decisions with Evals](https://docs.vapi.ai/test/evals-best-practices.md): Choose Eval checkpoints, give a decision only the context it needs, test both sides of each boundary, and pick the simplest judge that proves the behavior.
+- [Run and maintain tests](https://docs.vapi.ai/test/run-and-maintain-tests.md): Set a release and incident test cadence, triage failures to the right layer, turn production issues into regression tests, and pair automation with call review.
 - [Frequently Asked Questions](https://docs.vapi.ai/faq.md): Frequently asked questions about Vapi.
 - [Manage pay-as-you-go billing and credits](https://docs.vapi.ai/billing/manage-billing-and-credits.md): Manage pay-as-you-go billing in the Vapi Dashboard: add a payment method, buy credits, configure auto reload, and download PDF statements and invoices. See Vapi pricing for rates.
 - [Purchase call concurrency](https://docs.vapi.ai/billing/purchase-call-concurrency.md): Purchase call concurrency from Billing & Add-Ons to increase the number of simultaneous calls available to your Vapi organization. See Vapi pricing for rates.

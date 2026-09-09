@@ -4,15 +4,15 @@ source: https://docs.stripe.com/tax/standalone-tax-api.md
 path: tax/standalone-tax-api
 ---
 
-# Standalone Tax API
+# Standalone Tax APIs
 
 Use the Tax Calculations and Transactions APIs directly for shipping, tax-inclusive pricing, and more.
 
-The standalone Tax API lets you calculate tax, record transactions, and handle reversals directly. Use it with [PaymentIntents](https://docs.stripe.com/tax/payment-intent.md) or when processing payments [off-Stripe](https://docs.stripe.com/tax/off-stripe.md). The following features are available when using the Tax Calculations and Transactions APIs.
+The standalone [Tax Calculations](https://docs.stripe.com/api/tax/calculations.md) and [Tax Transactions](https://docs.stripe.com/api/tax/transactions.md) APIs lets you calculate tax, record transactions, and handle reversals directly. Use them with [PaymentIntents](https://docs.stripe.com/tax/payment-intent.md) or when processing payments [off-Stripe](https://docs.stripe.com/tax/off-stripe.md). The following features are available when you use these APIs.
 
 Stripe only calculates tax in jurisdictions where you have an active [tax registration](https://docs.stripe.com/tax/registering.md). Without a registration in the customer’s location, the calculation returns zero tax. To learn more, see [Understand zero tax amounts](https://docs.stripe.com/tax/zero-tax.md).
 
-## Optional: Calculate tax on shipping costs [Server-side]
+## Calculate tax on shipping costs 
 
 To calculate tax on shipping costs, use the `shipping_cost` parameter:
 
@@ -49,7 +49,7 @@ curl https://api.stripe.com/v1/tax/calculations \
   -d "shipping_cost[shipping_rate]=shr_1Mlh8YI6rIcR421eUr9SJzAD"
 ```
 
-## Optional: Estimate taxes with an IP address [Server-side]
+## Estimate taxes with an IP address 
 
 If you provide your customer’s [IP address](https://docs.stripe.com/api/tax/calculations/create.md#calculate_tax-customer_details-ip_address), we geolocate it and use that location as your customer’s location. Use this to show your customer a tax estimate before they provide their postal address.
 
@@ -64,7 +64,7 @@ curl https://api.stripe.com/v1/tax/calculations \
   -d "customer_details[ip_address]=127.0.0.1"
 ```
 
-## Optional: Collect customer tax IDs [Server-side]
+## Collect customer tax IDs 
 
 In some cases, such as the cross-border supply of services, your customer might need to account for tax on a [reverse charge](https://docs.stripe.com/tax/zero-tax.md#reverse-charges) basis. Instead of collecting the tax, you must issue an invoice with the text, “Tax to be paid on reverse charge basis.” This informs your customer that they’re responsible for any tax on their purchase.
 
@@ -98,7 +98,7 @@ If you provide a tax ID with an invalid format, the calculation returns a `tax_i
 
 The Tax API doesn’t automatically validate tax IDs against government databases. To validate a tax ID before calculating tax, you must use [customer tax ID validation](https://docs.stripe.com/billing/customer/tax-ids.md#validation).
 
-## Optional: Tax-inclusive pricing [Server-side]
+## Use tax-inclusive pricing 
 
 By default, tax is calculated on top of the line item and shipping cost amounts you provide. To calculate the tax included in your prices, set the `tax_behavior` to `inclusive` for the [line item](https://docs.stripe.com/api/tax/calculations/create.md#calculate_tax-line_items-tax_behavior) or [shipping cost](https://docs.stripe.com/api/tax/calculations/create.md#calculate_tax-shipping_cost-tax_behavior).
 
@@ -143,7 +143,7 @@ The response returns the tax included:
 }
 ```
 
-## Optional: Use an existing Product object [Server-side]
+## Use an existing Product object 
 
 You can provide a [Product](https://docs.stripe.com/api/products/object.md) object for each line item. If the product has a [tax_code](https://docs.stripe.com/api/products/object.md#product_object-tax_code), we use it as the line item’s `tax_code`, if it’s not already populated. We don’t use other product values, including the `tax_behavior` and `price`, during tax calculation.
 
@@ -158,7 +158,7 @@ curl https://api.stripe.com/v1/tax/calculations \
   -d "customer_details[address_source]=billing"
 ```
 
-## Optional: Use an existing Account or Customer [Server-side]
+## Use an existing Account or Customer 
 
 The tax calculation automatically uses the relevant [Customer](https://docs.stripe.com/api/customers/object.md) address and tax IDs according to the availability of customer data:
 
@@ -177,7 +177,7 @@ curl https://api.stripe.com/v1/tax/calculations \
   -d "customer={{CUSTOMER_ID}}"
 ```
 
-## Optional: Override customer taxability [Server-side]
+## Override customer taxability 
 
 You don’t need to collect tax in certain cases, such as when your customer is tax-exempt. You can provide the tax exemption to Stripe Tax using the [taxability_override](https://docs.stripe.com/api/tax/calculations/create.md#calculate_tax-customer_details-taxability_override) parameter.
 
@@ -215,7 +215,7 @@ curl https://api.stripe.com/v1/tax/calculations \
   -d "customer_details[taxability_override]=reverse_charge"
 ```
 
-## Optional: Specify a ship-from location [Server-side]
+## Specify a ship-from location 
 
 If you ship goods from a location other than your main place of business, you can provide that address for tax calculations.
 
@@ -269,7 +269,7 @@ The response returns the calculated tax based on the shipping origin of the orde
 
 To learn more about how ship-from addresses affect tax calculation in different jurisdictions, see [Use ship-from addresses](https://docs.stripe.com/tax/ship-from-address.md).
 
-## Optional: Calculate the retail delivery fee [Server-side]
+## Calculate the retail delivery fee 
 
 Stripe Tax supports calculating the retail delivery fee in Minnesota and Colorado.
 
@@ -288,7 +288,7 @@ curl https://api.stripe.com/v1/tax/registrations \
   -d active_from=now
 ```
 
-To calculate the retail delivery fee, call the tax calculations API using a [physical item product tax code](https://docs.stripe.com/tax/tax-codes.md?type=physical), such as `txcd_30011000`, which represents Clothing and Footwear.
+To calculate the retail delivery fee, call the Tax Calculations API using a [physical item product tax code](https://docs.stripe.com/tax/tax-codes.md?type=physical), such as `txcd_30011000`, which represents Clothing and Footwear.
 
 Not all physical items trigger calculation of the retail delivery fee. Refer to the state’s documentation for when the tax applies:
 
@@ -363,7 +363,7 @@ The response returns the calculated tax with the retail delivery fee for Colorad
 }
 ```
 
-## Optional: Detailed line item tax breakdowns [Server-side]
+## Provide detailed line item tax breakdowns 
 
 The top-level [tax_breakdown](https://docs.stripe.com/api/tax/calculations/object.md#tax_calculation_object-tax_breakdown) is always returned and provides a simple breakdown that’s suitable for displaying a list of taxes at checkout or on a receipt.
 
@@ -512,11 +512,7 @@ curl https://api.stripe.com/v1/tax/calculations \
 }
 ```
 
-## Optional: Troubleshoot common errors [Server-side]
-
-Follow the steps below to troubleshoot errors in your tax integration.
-
-### Resolve invalid tax code errors
+## Resolve invalid tax code errors
 
 If you receive an `Invalid tax code` error, refer to the [Product tax codes](https://docs.stripe.com/tax/tax-codes.md) for a list of available tax codes. Then, follow these steps to resolve the issue:
 
@@ -563,8 +559,6 @@ If you continue to experience issues, review the [Tax Settings API documentation
 
 ## See also
 
-- [Stripe Tax with PaymentIntents](https://docs.stripe.com/tax/payment-intent.md)
-- [Off-Stripe payments](https://docs.stripe.com/tax/off-stripe.md)
 - [Tax Calculation API](https://docs.stripe.com/api/tax/calculations/create.md)
 - [Reporting and filing](https://docs.stripe.com/tax/reports.md)
 - [Tax for physical goods](https://docs.stripe.com/tax/physical-goods.md)

@@ -164,7 +164,7 @@ For example, the following code converts the query “What is AAPL's outlook, co
   curl "https://$INDEX_HOST/records/namespaces/example-namespace/search" \
     -H "Content-Type: application/json" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
           "query": {
             "inputs": { "text": "What is AAPL'\''s outlook, considering both product launches and market conditions?" },
@@ -500,7 +500,7 @@ For example, the following code uses a sparse vector representation of the query
   curl "https://$INDEX_HOST/query" \
     -H "Content-Type: application/json" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
           "sparseVector": {
               "values": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
@@ -897,7 +897,7 @@ For example, the following code uses an ID to search for the 3 records in the `e
   curl "https://$INDEX_HOST/query" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
           "id": "rec2",
           "namespace": "example-namespace",
@@ -932,7 +932,7 @@ INDEX_HOST="INDEX_HOST"
 curl "https://$INDEX_HOST/records/namespaces/example-namespace/search" \
   -H "Content-Type: application/json" \
   -H "Api-Key: $PINECONE_API_KEY" \
-  -H "X-Pinecone-Api-Version: 2025-10" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
   -d '{
         "query": {
           "inputs": { "text": "What is the current outlook for Tesla stock performance?" },

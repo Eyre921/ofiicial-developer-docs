@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 415 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 416 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -259,6 +259,7 @@
 - `docs/cookbook/coding-agents/claude-code-integration` — [Claude Code](pages/docs/cookbook/coding-agents/claude-code-integration.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/claude-code-integration.md)
 - `docs/cookbook/coding-agents/claude-desktop-integration` — [Claude Desktop](pages/docs/cookbook/coding-agents/claude-desktop-integration.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/claude-desktop-integration.md)
 - `docs/cookbook/coding-agents/codex-cli` — [Codex CLI](pages/docs/cookbook/coding-agents/codex-cli.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/codex-cli.md)
+- `docs/cookbook/coding-agents/codex-desktop` — [Codex Desktop App](pages/docs/cookbook/coding-agents/codex-desktop.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/codex-desktop.md)
 - `docs/cookbook/coding-agents/cursor-integration` — [Cursor](pages/docs/cookbook/coding-agents/cursor-integration.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/cursor-integration.md)
 - `docs/cookbook/coding-agents/hermes-integration` — [Hermes Agent](pages/docs/cookbook/coding-agents/hermes-integration.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/hermes-integration.md)
 - `docs/cookbook/coding-agents/junie` — [Junie CLI](pages/docs/cookbook/coding-agents/junie.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/junie.md)

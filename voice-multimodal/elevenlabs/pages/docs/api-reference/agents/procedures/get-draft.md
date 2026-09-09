@@ -40,8 +40,9 @@ Successful Response
 - `name` (string, required) — Procedure name
 - `content` (string, required) — Procedure content
 - `type` (enum, optional, default: free_form) — Procedure type
-  - Allowed values: `free_form`, `deterministic`
+  - Allowed values: `free_form`, `deterministic`, `folder`
 - `trigger` (string, optional, default: ) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it.
+- `folder_parent_id` (string, optional, nullable) — Procedure ID of the folder this procedure is placed in. None means root.
 
 ## Examples
 

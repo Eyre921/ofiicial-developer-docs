@@ -10,7 +10,7 @@ path: docs/api-reference/agents/procedures/list
 
 GET https://api.elevenlabs.io/v1/convai/agents/{agent_id}/branches/{branch_id}/procedures
 
-List the agent's procedures on a branch with their procedure_id, version_id, name, type, trigger, and has_draft. has_draft is true when a procedure has unpublished draft changes on this branch; its name/type/trigger then reflect that draft. Does not return procedure content -- use Get Procedure to read a procedure's body.
+List the procedures attached to this agent branch. By default, unpublished drafts take precedence over the latest committed version. Pass agent_version_id to list a published snapshot instead. has_draft is true when a procedure has unpublished draft changes on this branch. Procedure content is not included; use Get Procedure to read a procedure's body.
 
 Reference: https://elevenlabs.io/docs/api-reference/agents/procedures/list
 
@@ -45,8 +45,13 @@ Successful Response
   - `version_id` (string, optional, nullable) — Version ID of a version of the procedure. None for a procedure never versioned.
   - `name` (string, optional, default: ) — Procedure name
   - `type` (enum, optional, default: free_form) — Procedure type
-    - Allowed values: `free_form`, `deterministic`
+    - Allowed values: `free_form`, `deterministic`, `folder`
   - `trigger` (string, optional, default: ) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it.
+  - `referenced_tool_ids` (list of string, optional) — Tool IDs referenced in the procedure content
+  - `referenced_kb_ids` (list of string, optional) — Knowledge base IDs referenced in the procedure content
+  - `referenced_procedure_ids` (list of string, optional) — Procedure IDs referenced in the procedure content
+  - `referenced_dynamic_variables` (list of string, optional) — Dynamic variable names used in the procedure content
+  - `folder_parent_id` (string, optional, nullable) — Procedure ID of the folder this procedure is placed in. None means root.
 
 ## Examples
 
@@ -61,7 +66,19 @@ Successful Response
       "version_id": "agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4",
       "name": "Customer Support Procedure",
       "type": "free_form",
-      "trigger": "When the customer asks for support"
+      "trigger": "When the customer asks for support",
+      "referenced_tool_ids": [
+        "tool_123"
+      ],
+      "referenced_kb_ids": [
+        "kb_123"
+      ],
+      "referenced_procedure_ids": [
+        "agtprc_other"
+      ],
+      "referenced_dynamic_variables": [
+        "customer_id"
+      ]
     }
   ]
 }

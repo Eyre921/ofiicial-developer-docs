@@ -1598,6 +1598,18 @@ Successful Response
 - `version_id` (string, optional, nullable) — The ID of the version the agent is on
 - `branch_id` (string, optional, nullable) — The ID of the branch the agent is on
 - `main_branch_id` (string, optional, nullable) — The ID of the main branch for this agent
+- `procedures` (map from string to object, optional) — Procedures keyed by procedure_id.
+  - `procedure_id` (string, required) — Procedure ID
+  - `version_id` (string, optional, nullable) — Version ID of a version of the procedure. None for a procedure never versioned.
+  - `name` (string, optional, default: ) — Procedure name
+  - `type` (enum, optional, default: free_form) — Procedure type
+    - Allowed values: `free_form`, `deterministic`, `folder`
+  - `trigger` (string, optional, default: ) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it.
+  - `referenced_tool_ids` (list of string, optional) — Tool IDs referenced in the procedure content
+  - `referenced_kb_ids` (list of string, optional) — Knowledge base IDs referenced in the procedure content
+  - `referenced_procedure_ids` (list of string, optional) — Procedure IDs referenced in the procedure content
+  - `referenced_dynamic_variables` (list of string, optional) — Dynamic variable names used in the procedure content
+  - `folder_parent_id` (string, optional, nullable) — Procedure ID of the folder this procedure is placed in. None means root.
 - `overridden_fields` (list of string, optional) — Dot-paths of config fields where both branches modified the same field relative to their common ancestor (conflicts). Present regardless of which side wins the conflict.
 - `conflicts` (list of object, optional) — Structured view of the same conflicts as overridden_fields, each carrying the value on the base (common ancestor), source branch, and target branch so the divergence can be presented and resolved field-by-field.
   - `path` (string, required) — Identifier of the conflicting field relative to its section: a dot-path within conversation_config/platform_settings, or a procedure id.

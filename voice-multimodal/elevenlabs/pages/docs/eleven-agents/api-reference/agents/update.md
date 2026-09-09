@@ -3064,6 +3064,18 @@ Successful Response
 - `version_id` (string, optional) — The ID of the version the agent is on
 - `branch_id` (string, optional) — The ID of the branch the agent is on
 - `main_branch_id` (string, optional) — The ID of the main branch for this agent
+- `procedures` (map from string to object, optional) — Procedures keyed by procedure_id.
+  - `procedure_id` (string, required) — Procedure ID
+  - `version_id` (string, optional) — Version ID of a version of the procedure. None for a procedure never versioned.
+  - `name` (string, optional, default: ) — Procedure name
+  - `type` (enum, optional, default: free_form) — Procedure type
+    - Allowed values: `free_form`, `deterministic`, `folder`
+  - `trigger` (string, optional, default: ) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it.
+  - `referenced_tool_ids` (list of string, optional) — Tool IDs referenced in the procedure content
+  - `referenced_kb_ids` (list of string, optional) — Knowledge base IDs referenced in the procedure content
+  - `referenced_procedure_ids` (list of string, optional) — Procedure IDs referenced in the procedure content
+  - `referenced_dynamic_variables` (list of string, optional) — Dynamic variable names used in the procedure content
+  - `folder_parent_id` (string, optional) — Procedure ID of the folder this procedure is placed in. None means root.
 
 ## Examples
 
@@ -4597,7 +4609,29 @@ Successful Response
   ],
   "version_id": "version_id",
   "branch_id": "branch_id",
-  "main_branch_id": "main_branch_id"
+  "main_branch_id": "main_branch_id",
+  "procedures": {
+    "key": {
+      "procedure_id": "agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3",
+      "version_id": "agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4",
+      "name": "Customer Support Procedure",
+      "type": "free_form",
+      "trigger": "When the customer asks for support",
+      "referenced_tool_ids": [
+        "tool_123"
+      ],
+      "referenced_kb_ids": [
+        "kb_123"
+      ],
+      "referenced_procedure_ids": [
+        "agtprc_other"
+      ],
+      "referenced_dynamic_variables": [
+        "customer_id"
+      ],
+      "folder_parent_id": "folder_parent_id"
+    }
+  }
 }
 ```
 

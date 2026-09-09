@@ -177,7 +177,7 @@ For example, the following code searches for the 3 records most semantically rel
     -H "Accept: application/json" \
     -H "Content-Type: application/json" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: unstable" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
           "query": {
               "inputs": {"text": "Disease prevention"},
@@ -513,7 +513,7 @@ For example, the following code uses the hosted `bge-reranker-v2-m3` model to re
   curl https://api.pinecone.io/rerank \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -d '{
     "model": "bge-reranker-v2-m3",
@@ -822,7 +822,7 @@ For example, the following request uses the `bge-reranker-v2-m3` reranking model
   curl https://api.pinecone.io/rerank \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -H "Api-Key: $PINECONE_API_KEY" \
   -d '{
     "model": "bge-reranker-v2-m3",
@@ -1173,7 +1173,7 @@ For example, the following request reranks documents based on the values of the 
   curl "https://api.pinecone.io/rerank" \
   -H "Content-Type: application/json" \
   -H "Accept: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -H "Api-Key: $PINECONE_API_KEY" \
   -d '{
     "model": "bge-reranker-v2-m3",

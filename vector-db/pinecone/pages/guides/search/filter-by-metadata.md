@@ -163,7 +163,7 @@ The following code searches for the 3 records that are most semantically similar
         -H "Accept: application/json" \
         -H "Content-Type: application/json" \
         -H "Api-Key: $PINECONE_API_KEY" \
-        -H "X-Pinecone-Api-Version: 2025-10" \
+        -H "X-Pinecone-Api-Version: 2026-07" \
         -d '{
               "query": {
                   "inputs": {"text": "Disease prevention"},
@@ -325,7 +325,7 @@ The following code searches for the 3 records that are most semantically similar
       curl "https://$INDEX_HOST/query" \
         -H "Api-Key: $PINECONE_API_KEY" \
         -H 'Content-Type: application/json' \
-        -H "X-Pinecone-Api-Version: 2025-10" \
+        -H "X-Pinecone-Api-Version: 2026-07" \
         -d '{
               "vector": [0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875],
               "namespace": "example-namespace",
@@ -368,13 +368,13 @@ Pinecone's filtering language supports the following operators:
 
 For example, the following has a `"genre"` metadata field with a list of strings:
 
-```JSON JSON theme={null}
+```JSON JSON theme={null} theme={null}
 { "genre": ["comedy", "documentary"] }
 ```
 
 This means `"genre"` takes on both values, and requests with the following filters will match:
 
-```JSON JSON theme={null}
+```JSON JSON theme={null} theme={null}
 {"genre":"comedy"}
 
 {"genre": {"$in":["documentary","action"]}}
@@ -384,18 +384,18 @@ This means `"genre"` takes on both values, and requests with the following filte
 
 However, requests with the following filter will **not** match:
 
-```JSON JSON theme={null}
+```JSON JSON theme={null} theme={null}
 { "$and": [{ "genre": "comedy" }, { "genre": "drama" }] }
 ```
 
 Additionally, requests with the following filters will **not** match because they are invalid. They will result in a compilation error:
 
-```json JSON theme={null}
+```json JSON theme={null} theme={null}
 # INVALID QUERY:
 {"genre": ["comedy", "documentary"]}
 ```
 
-```json JSON theme={null}
+```json JSON theme={null} theme={null}
 # INVALID QUERY:
 {"genre": {"$eq": ["comedy", "documentary"]}}
 ```

@@ -159,7 +159,7 @@ For example, the following code searches for the 2 records most semantically rel
     -H "Accept: application/json" \
     -H "Content-Type: application/json" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
           "query": {
               "inputs": {"text": "Disease prevention"},
@@ -434,7 +434,7 @@ For example, the following code uses a dense vector representation of the query 
   curl "https://$INDEX_HOST/query" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
           "vector": [0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875],
           "namespace": "example-namespace",
@@ -785,7 +785,7 @@ For example, the following code uses an ID to search for the 3 records in the `e
   curl "https://$INDEX_HOST/query" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
           "id": "rec2",
           "namespace": "example-namespace",

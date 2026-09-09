@@ -120,6 +120,15 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
               - `message` (string, optional)
               - `reason` (string, optional)
               - `status` ("success", optional)
+            - `result_type`: `end_procedure_error`
+              - `message` (string, required)
+              - `status` (enum, required)
+              - `procedure_id` (string, optional)
+            - `result_type`: `end_procedure_success`
+              - `procedure_id` (string, required)
+              - `procedure_name` (string, required)
+              - `message` (string, optional, default: )
+              - `status` ("success", optional)
             - `result_type`: `knowledge_base_rag_success`
               - `chunk_count` (integer, optional, default: 0) — Number of relevant chunks retrieved
               - `chunks` (list of object, optional) — Retrieved chunks; populated only in the rag-result-in-tool-result mode
@@ -143,6 +152,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
               - `status` ("success", optional)
             - `result_type`: `skip_turn_success`
               - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `start_procedure_error`
+              - `message` (string, required)
+              - `status` (enum, required)
+              - `procedure_id` (string, optional)
+            - `result_type`: `start_procedure_success`
+              - `procedure_id` (string, required)
+              - `procedure_name` (string, required)
+              - `message` (string, optional, default: Procedure is now started. Follow its instructions from the <active-procedures> section of your system prompt.)
+              - `procedure_entry_workflow_node` (string, optional)
+              - `procedure_return_workflow_node` (string, optional)
               - `status` ("success", optional)
             - `result_type`: `testing_tool_result`
               - `reason` (string, optional, default: Skipping tool call in test mode)
@@ -536,6 +556,15 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
               - `message` (string, optional)
               - `reason` (string, optional)
               - `status` ("success", optional)
+            - `result_type`: `end_procedure_error`
+              - `message` (string, required)
+              - `status` (enum, required)
+              - `procedure_id` (string, optional)
+            - `result_type`: `end_procedure_success`
+              - `procedure_id` (string, required)
+              - `procedure_name` (string, required)
+              - `message` (string, optional, default: )
+              - `status` ("success", optional)
             - `result_type`: `knowledge_base_rag_success`
               - `chunk_count` (integer, optional, default: 0) — Number of relevant chunks retrieved
               - `chunks` (list of object, optional) — Retrieved chunks; populated only in the rag-result-in-tool-result mode
@@ -559,6 +588,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
               - `status` ("success", optional)
             - `result_type`: `skip_turn_success`
               - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `start_procedure_error`
+              - `message` (string, required)
+              - `status` (enum, required)
+              - `procedure_id` (string, optional)
+            - `result_type`: `start_procedure_success`
+              - `procedure_id` (string, required)
+              - `procedure_name` (string, required)
+              - `message` (string, optional, default: Procedure is now started. Follow its instructions from the <active-procedures> section of your system prompt.)
+              - `procedure_entry_workflow_node` (string, optional)
+              - `procedure_return_workflow_node` (string, optional)
               - `status` ("success", optional)
             - `result_type`: `testing_tool_result`
               - `reason` (string, optional, default: Skipping tool call in test mode)
@@ -966,6 +1006,15 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
               - `message` (string, optional)
               - `reason` (string, optional)
               - `status` ("success", optional)
+            - `result_type`: `end_procedure_error`
+              - `message` (string, required)
+              - `status` (enum, required)
+              - `procedure_id` (string, optional)
+            - `result_type`: `end_procedure_success`
+              - `procedure_id` (string, required)
+              - `procedure_name` (string, required)
+              - `message` (string, optional, default: )
+              - `status` ("success", optional)
             - `result_type`: `knowledge_base_rag_success`
               - `chunk_count` (integer, optional, default: 0) — Number of relevant chunks retrieved
               - `chunks` (list of object, optional) — Retrieved chunks; populated only in the rag-result-in-tool-result mode
@@ -989,6 +1038,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create
               - `status` ("success", optional)
             - `result_type`: `skip_turn_success`
               - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `start_procedure_error`
+              - `message` (string, required)
+              - `status` (enum, required)
+              - `procedure_id` (string, optional)
+            - `result_type`: `start_procedure_success`
+              - `procedure_id` (string, required)
+              - `procedure_name` (string, required)
+              - `message` (string, optional, default: Procedure is now started. Follow its instructions from the <active-procedures> section of your system prompt.)
+              - `procedure_entry_workflow_node` (string, optional)
+              - `procedure_return_workflow_node` (string, optional)
               - `status` ("success", optional)
             - `result_type`: `testing_tool_result`
               - `reason` (string, optional, default: Skipping tool call in test mode)

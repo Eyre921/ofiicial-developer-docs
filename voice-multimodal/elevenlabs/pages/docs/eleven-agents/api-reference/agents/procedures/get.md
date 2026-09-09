@@ -46,8 +46,9 @@ Successful Response
 - `content` (string, required) — Procedure content
 - `version_id` (string, optional) — Version ID of a version of the procedure. None for a procedure never versioned.
 - `type` (enum, optional, default: free_form) — Procedure type
-  - Allowed values: `free_form`, `deterministic`
+  - Allowed values: `free_form`, `deterministic`, `folder`
 - `trigger` (string, optional, default: ) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it.
+- `folder_parent_id` (string, optional) — Procedure ID of the folder this procedure is placed in. None means root.
 
 ## Examples
 
@@ -60,7 +61,8 @@ Successful Response
   "content": "# Customer Support Procedure\n\n1. Greet the customer...",
   "version_id": "agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4",
   "type": "free_form",
-  "trigger": "When the customer asks for support"
+  "trigger": "When the customer asks for support",
+  "folder_parent_id": "folder_parent_id"
 }
 ```
 

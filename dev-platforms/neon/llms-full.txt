@@ -43072,6 +43072,31 @@ Prefiltering works best when the filter is cheap to evaluate and removes most ro
 
 When you set these GUCs from application code, the `SET` and the query must run on the same session. With a connection pool or the [Neon serverless driver](https://neon.com/docs/serverless/serverless-driver), where each statement can use a different connection, issue both in a single transaction so the `SET` applies to the query.
 
+### Index build time
+
+Larger `shared_buffers` can significantly reduce index build time. Neon enables this optimization only on [larger computes](https://neon.com/docs/manage/computes#how-to-size-your-compute). Check the current value before optimizing an index build:
+
+```sql title="PostgreSQL"
+SHOW shared_buffers;
+```
+
+If `shared_buffers` is 1 GB or less, consider temporarily resizing to a larger compute before starting the index build.
+
+You can also speed up index creation by increasing the number of parallel workers.
+
+The `max_parallel_maintenance_workers` configuration parameter sets the maximum number of parallel workers that can be started by a single utility command such as `CREATE INDEX`.
+
+The `max_parallel_workers` configuration parameter sets the maximum number of workers that the compute can support for parallel operations. Values of `max_parallel_maintenance_workers` above this limit have no effect.
+
+The `max_worker_processes` configuration parameter sets the maximum number of background processes that the compute can support. Neon [manages this setting](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size) based on compute size. Values of `max_parallel_workers` above this limit have no effect.
+
+```sql title="PostgreSQL"
+SHOW max_worker_processes;
+-- Set both values to the desired parallelism minus one.
+SET max_parallel_workers = 15;
+SET max_parallel_maintenance_workers = 15;
+```
+
 ### Concurrent index updates
 
 For large, frequently changing datasets, use `CREATE INDEX CONCURRENTLY` to build or rebuild an index without blocking reads and writes:

@@ -356,6 +356,8 @@ components:
             - low
             - medium
             - high
+            - xhigh
+            - max
           example: high
           type: string
         resolution:
@@ -1698,7 +1700,7 @@ components:
         poolside:
           additionalProperties: {}
           type: object
-        prime-intellect:
+        primeintellect:
           additionalProperties: {}
           type: object
         quiver:

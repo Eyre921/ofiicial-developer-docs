@@ -28,7 +28,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/list
 
 - `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
 - `page_size` (integer, optional, default: 30) — How many Tests to return at maximum. Can not exceed 100, defaults to 30.
-- `search` (string, optional, nullable) — Search query to filter tests by name.
+- `search` (string, optional, nullable) — Search query to filter tests and folders by name.
 - `parent_folder_id` (string, optional, nullable) — Filter by parent folder ID. Use 'root' to get items in the root folder.
 - `types` (list of enum, optional, nullable) — If present, the endpoint will return only tests/folders of the given types.
   - Allowed values: `llm`, `tool`, `simulation`, `folder`

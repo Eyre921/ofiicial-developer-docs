@@ -36,7 +36,7 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/procedures/update
 - `name` (string, required) — Procedure name
 - `content` (string, required) — Procedure content
 - `type` (enum, required, default: free_form) — Procedure type
-  - Allowed values: `free_form`, `deterministic`
+  - Allowed values: `free_form`, `deterministic`, `folder`
 - `trigger` (string, optional, nullable) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it. If omitted or null, the trigger is derived from the content instead. Also accepts `description` as an alias.
 
 ## Response
@@ -49,8 +49,9 @@ Successful Response
 - `name` (string, required) — Procedure name
 - `content` (string, required) — Procedure content
 - `type` (enum, optional, default: free_form) — Procedure type
-  - Allowed values: `free_form`, `deterministic`
+  - Allowed values: `free_form`, `deterministic`, `folder`
 - `trigger` (string, optional, default: ) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it.
+- `folder_parent_id` (string, optional, nullable) — Procedure ID of the folder this procedure is placed in. None means root.
 
 ## Examples
 

@@ -8,7 +8,7 @@ Use `EVALSHA` to run a script that is already in the server's script cache, iden
 
 It behaves exactly like [`EVAL`](/docs/redis/commands/scripting/eval) but sends only the 40-character digest instead of the script body, which keeps the request small when a script is called often. The digest is what [`SCRIPT LOAD`](/docs/redis/commands/scripting/script-load) returns, and it is also computed as a side effect of any `EVAL` call.
 
-Locking behaviour comes from the cached script body, not from the call: the script takes the global lock unless its shebang sets the `allow-key-locking` flag, in which case only the keys passed in `KEYS` are locked. Because the flag lives in the body, changing it means loading a new script and calling the new digest. See [Key-Based Locking](/docs/redis/features/key-locking).
+Locking behaviour comes from the cached script body, not from the call: the script takes the global lock unless its shebang sets the `allow-key-locking` flag, in which case the [hash tag](/docs/redis/features/key-locking#hash-tags) of each key passed in `KEYS` is locked. Because the flag lives in the body, changing it means loading a new script and calling the new digest. See [Key-Based Locking](/docs/redis/features/key-locking).
 
 When the script is not in the cache the server replies with a `NOSCRIPT` error, and the client is expected to fall back to `EVAL`. Most client libraries do this automatically. The cache does not survive a restart and is cleared by [`SCRIPT FLUSH`](/docs/redis/commands/scripting/script-flush), so applications must always be able to resend the script body.
 

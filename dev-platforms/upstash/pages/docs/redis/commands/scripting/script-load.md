@@ -10,7 +10,7 @@ The reply is the script's SHA1 digest, which is what [`EVALSHA`](/docs/redis/com
 
 The cache is lost on restart and cleared by [`SCRIPT FLUSH`](/docs/redis/commands/scripting/script-flush), so keep the script source available and be ready to handle a `NOSCRIPT` error by loading it again.
 
-Shebang flags are part of the source, so they are fixed at load time and a change to them produces a different digest. This includes `allow-key-locking`, which opts the script out of the global lock and into locking only the keys passed in `KEYS`; see [Key-Based Locking](/docs/redis/features/key-locking).
+Shebang flags are part of the source, so they are fixed at load time and a change to them produces a different digest. This includes `allow-key-locking`, which opts the script out of the global lock and into locking the [hash tag](/docs/redis/features/key-locking#hash-tags) of each key passed in `KEYS`; see [Key-Based Locking](/docs/redis/features/key-locking).
 
 Whether or not you set that flag, write the script so that every key it touches arrives through `KEYS` rather than being assembled from `ARGV` inside the script, since an undeclared key can force a disk read while the lock is held. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 

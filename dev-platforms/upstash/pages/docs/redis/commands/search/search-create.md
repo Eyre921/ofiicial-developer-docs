@@ -10,9 +10,9 @@ Use `SEARCH.CREATE` to create a search index over JSON, hash, or string values, 
 
 `ON STREAM` indexes a single stream instead of a set of keys, so it takes the stream key in place of `PREFIX`. Each entry added with [`XADD`](/docs/redis/commands/streams/xadd) becomes a document whose fields are the entry's fields and whose ID is the entry ID, which is what makes a stream searchable by content rather than only by ID range. Entries removed from the stream leave the index as well.
 
-A `KEYWORD` or `TEXT` field whose value is a JSON array of values is indexed as several values rather than as one string. A document matches when any element matches, so a tags field or a list of descriptions needs no separate key per value. `HIGHLIGHT` follows the same shape: the reply keeps the array, with the matching elements marked up and the others, including any non-string elements, left as they are.
+`TEXT`, `KEYWORD`, `U64`, `I64`, `F64`, and `DATE` fields can index multiple values. Store the field as a JSON array; for hash and stream indexes, store the complete JSON-encoded array in the field string. Each valid element is indexed separately, and a document matches when any element matches. `BOOL` and `FACET` fields remain single-valued.
 
-Creating an index starts an initial scan of the matching keys, which `SKIPINITIALSCAN` skips when you only want to index data written from now on; [`SEARCH.REINDEX`](/docs/redis/commands/search/search-reindex) can run that scan later. `EXISTSOK` makes the command succeed instead of failing when the index already exists.
+Creating an index starts an initial scan of the matching keys, which `SKIPINITIALSCAN` skips when you only want to index data written from now on. `EXISTSOK` makes the command succeed instead of failing when the index already exists.
 
 See [Index Management](/docs/redis/search/index-management#creating-an-index) for a feature-level guide to creating indexes and [Schema Definition](/docs/redis/search/schema-definition) for field types and schema design.
 
@@ -44,7 +44,7 @@ SEARCH.CREATE <name>
 | `PREFIX` | One or more key prefixes. Prefixes in the same index cannot be duplicates or overlap one another. Not allowed with `ON STREAM`. |
 | `<stream-key>` | Key of the stream to index. Required with `ON STREAM`, and given in place of `PREFIX`. |
 | `LANGUAGE` | Stemming language for `TEXT` fields. Defaults to `english`. Supported values are `arabic`, `danish`, `dutch`, `english`, `finnish`, `french`, `german`, `greek`, `hungarian`, `italian`, `norwegian`, `portuguese`, `romanian`, `russian`, `spanish`, `swedish`, `tamil`, and `turkish`. |
-| `SKIPINITIALSCAN` | Create the index without scanning existing keys. Later writes are still indexed; use [`SEARCH.REINDEX`](/docs/redis/commands/search/search-reindex) to add the current matching data. |
+| `SKIPINITIALSCAN` | Create the index without scanning existing keys. Later writes are still indexed. |
 | `EXISTSOK` | Return `0` when an index with the same data type, prefixes, and schema already exists. A configuration mismatch returns an error. |
 | `SCHEMA` | One or more field definitions. `SCHEMA` must be the final top-level clause. |
 
@@ -57,7 +57,7 @@ SEARCH.CREATE <name>
 | `NOTOKENIZE` | `TEXT` | Index the entire value as one token. |
 | `FROM <source_field>` | All field types | Read the value from a different document field or nested dot path while exposing it under `<field>` in the index. |
 
-`KEYWORD` and `TEXT` fields accept multiple values: a field whose value is a JSON array is indexed element by element, and a document matches when any element matches.
+`TEXT`, `KEYWORD`, `U64`, `I64`, `F64`, and `DATE` fields accept multiple values. A field whose value is a JSON array is indexed element by element, and a document matches when any valid element matches. See [Multi-value fields](/docs/redis/search/schema-definition#multi-value-fields) for data-type-specific input formats and query behavior.
 
 ## Response
 

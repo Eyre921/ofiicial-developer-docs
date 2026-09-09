@@ -28,6 +28,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-inv
 
 - `agent_id` (string, optional) — Filter by agent ID
 - `page_size` (integer, optional, default: 30) — How many Tests to return at maximum. Can not exceed 100, defaults to 30.
+- `search` (string, optional) — Search query to filter tests and folders by name.
 - `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
 
 ## Response
@@ -112,6 +113,7 @@ async function main() {
         agentId: "agent_id",
         cursor: "cursor",
         pageSize: 1,
+        search: "search",
     });
 }
 main();
@@ -127,6 +129,7 @@ client.conversational_ai.tests.invocations.list(
     agent_id="agent_id",
     cursor="cursor",
     page_size=1,
+    search="search",
 )
 
 ```
@@ -142,7 +145,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&cursor=cursor&page_size=1"
+	url := "https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&cursor=cursor&page_size=1&search=search"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -161,7 +164,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&cursor=cursor&page_size=1")
+url = URI("https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&cursor=cursor&page_size=1&search=search")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -176,7 +179,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&cursor=cursor&page_size=1")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&cursor=cursor&page_size=1&search=search")
   .asString();
 ```
 
@@ -186,7 +189,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&cursor=cursor&page_size=1');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&cursor=cursor&page_size=1&search=search');
 
 echo $response->getBody();
 ```
@@ -194,7 +197,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&cursor=cursor&page_size=1");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&cursor=cursor&page_size=1&search=search");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -202,7 +205,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&cursor=cursor&page_size=1")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&cursor=cursor&page_size=1&search=search")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1300 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1299 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -547,7 +547,6 @@
 - `docs/eleven-agents/api-reference/workspace/dashboard/update` — [Update Convai Dashboard Settings](pages/docs/eleven-agents/api-reference/workspace/dashboard/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/dashboard/update.md)
 - `docs/eleven-agents/api-reference/workspace/get` — [Get settings](pages/docs/eleven-agents/api-reference/workspace/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/get.md)
 - `docs/eleven-agents/api-reference/workspace/secrets/create` — [Create secret](pages/docs/eleven-agents/api-reference/workspace/secrets/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/create.md)
-- `docs/eleven-agents/api-reference/workspace/secrets/delete` — [Delete secret](pages/docs/eleven-agents/api-reference/workspace/secrets/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/delete.md)
 - `docs/eleven-agents/api-reference/workspace/secrets/get` — [Get secret](pages/docs/eleven-agents/api-reference/workspace/secrets/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/get.md)
 - `docs/eleven-agents/api-reference/workspace/secrets/get-dependencies` — [Get secret dependencies](pages/docs/eleven-agents/api-reference/workspace/secrets/get-dependencies.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/get-dependencies.md)
 - `docs/eleven-agents/api-reference/workspace/secrets/list` — [Get secrets](pages/docs/eleven-agents/api-reference/workspace/secrets/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/list.md)

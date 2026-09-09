@@ -4,7 +4,7 @@ source: https://upstash.com/docs/box/overall/git
 path: docs/box/overall/git
 ---
 
-Clone a repository, inspect changes, commit work, push a branch, or open a pull request from inside a box.
+Clone a repository, inspect changes, commit work, push a branch, or open a pull request or issue from inside a box.
 
 ***
 
@@ -16,6 +16,7 @@ If you want to work with private repositories, push changes, or create pull requ
   For a fine-grained token, the following permissions are sufficient for basic usage:
   * **Contents** — Read and write
   * **Pull requests** — Read and write
+  * **Issues** — Read and write
 </Note>
 
 ```bash title=".env" {2}
@@ -161,6 +162,31 @@ box.git.push(branch="fix/empty-state")
 
 print(commit.sha)
 print(commit.message)
+```
+</CodeGroup>
+
+### Open an issue
+
+Create an issue on the cloned repository. Attachments are uploaded and
+referenced from the body, so a screenshot taken in the box can be included.
+
+<CodeGroup>
+```tsx box.ts
+const issue = await box.git.createIssue({
+  title: "Search returns nothing on staging",
+  body: "Reproduced on the staging deploy.",
+})
+
+console.log(issue.url)
+```
+
+```python box.py
+issue = box.git.create_issue(
+    title="Search returns nothing on staging",
+    body="Reproduced on the staging deploy.",
+)
+
+print(issue.url)
 ```
 </CodeGroup>
 
@@ -337,6 +363,28 @@ pr = box.git.create_pr(
     title="feat: add onboarding checklist",
     body="Adds a simple onboarding checklist to improve first-run guidance.",
     base="main",
+)
+```
+</CodeGroup>
+
+### Create an issue
+
+Creates an issue and returns its URL and metadata. Works with the box's built-in
+GitHub connection, or with your own `token` if it carries the **Issues**
+permission.
+
+<CodeGroup>
+```tsx box.ts
+const issue = await box.git.createIssue({
+  title: "Onboarding checklist does not persist",
+  body: "The checklist resets on reload.",
+})
+```
+
+```python box.py
+issue = box.git.create_issue(
+    title="Onboarding checklist does not persist",
+    body="The checklist resets on reload.",
 )
 ```
 </CodeGroup>
