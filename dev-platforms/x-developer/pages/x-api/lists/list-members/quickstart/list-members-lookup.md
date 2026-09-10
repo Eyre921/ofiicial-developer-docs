@@ -40,7 +40,7 @@ This guide walks you through retrieving members of a List.
         -H "Authorization: Bearer $BEARER_TOKEN"
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
 
       client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -55,7 +55,7 @@ This guide walks you through retrieving members of a List.
               print(f"{user.username} - Joined: {user.created_at}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -118,7 +118,7 @@ Use expansions to get related data like pinned Posts:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -135,7 +135,7 @@ Use expansions to get related data like pinned Posts:
       # Pinned Posts are in page.includes.tweets
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -165,11 +165,11 @@ Use expansions to get related data like pinned Posts:
     Add and remove members
   </Card>
 
-  <Card title="List lookup" icon="list" href="/x-api/lists/list-lookup/quickstart">
+  <Card title="List lookup" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/lists/list-lookup/quickstart">
     Get List details
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/lists/get-list-members">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/lists/get-list-members">
     Full endpoint documentation
   </Card>
 </CardGroup>

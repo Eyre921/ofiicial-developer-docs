@@ -5,4 +5,4 @@ path: x-api/bookmarks/create-bookmark
 ---
 
 post /2/users/{id}/bookmarks
-Adds a post to the authenticated user’s bookmarks.
+Adds one or more Posts to the authenticated user's Bookmarks. Supply `tweet_id` for a single Post, or `tweet_ids` (at most 25) to bookmark several in one request. Optional `folder_id` applies to every Post in the request. Billing and rate limits still apply per HTTP request.

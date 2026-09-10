@@ -83,7 +83,7 @@ Make a GET request with the user ID and User Access Token:
           print(post.text)
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -103,7 +103,7 @@ Make a GET request with the user ID and User Access Token:
 
 ## Step 3: Review the response
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
@@ -142,7 +142,7 @@ Request additional data with query parameters:
     -H "Authorization: Bearer $USER_ACCESS_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_USER_ACCESS_TOKEN")
@@ -159,7 +159,7 @@ Request additional data with query parameters:
           print(f"{post.text[:50]}... - Likes: {post.public_metrics.like_count}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -215,15 +215,15 @@ pagination_token=7140dibdnow9c7btw421dyz6jism75z99gyxd8egarsc4" \
     Get Posts mentioning a user
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/posts/timelines/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/posts/timelines/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-timeline">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-timeline">
     Full endpoint documentation
   </Card>
 
-  <Card title="Pagination guide" icon="arrow-right" href="/x-api/fundamentals/pagination">
+  <Card title="Pagination guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" href="/x-api/fundamentals/pagination">
     Navigate large result sets
   </Card>
 </CardGroup>

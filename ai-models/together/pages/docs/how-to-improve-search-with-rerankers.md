@@ -30,7 +30,7 @@ mkdir datasets
 mv movies.json datasets/movies.json
 ```
 
-```py Python theme={null}
+```python Python theme={null}
 import json
 import together, os
 from together import Together
@@ -72,7 +72,7 @@ Below we implement a simple semantic search pipeline:
 1. Embed movie documents + query
 2. Obtain a list of movies ranked based on cosine similarities between the query and movie vectors.
 
-```py Python theme={null}
+```python Python theme={null}
 # This function will be used to access the Together API to generate embeddings for the movie plots
 
 from typing import List
@@ -115,7 +115,7 @@ embeddings = generate_embeddings(
 
 Next we implement a function that when given the above embeddings and a test query will return indices of most semantically similar data objects:
 
-```py Python theme={null}
+```python Python theme={null}
 def retrieve(
     query: str,
     top_k: int = 5,
@@ -141,7 +141,7 @@ def retrieve(
 
 We will use the above function to retrieve 25 movies most similar to our query:
 
-```py Python theme={null}
+```python Python theme={null}
 indices = retrieve(
     query="super hero mystery action movie about bats",
     top_k=25,
@@ -156,7 +156,7 @@ array([ 13, 265, 451,  33,  56,  17, 140, 450,  58, 828, 227,  62, 337,
        172, 724, 424, 585, 696, 933, 996, 932, 433, 883, 420, 744])
 ```
 
-```py Python theme={null}
+```python Python theme={null}
 # Get the top 25 movie titles that are most similar to the query - these will be passed to the reranker
 top_25_sorted_titles = [movies_data[index]["title"] for index in indices[0]][
     :25
@@ -199,7 +199,7 @@ The reranker can more closely determine the similarity between these 25 candidat
 
 Treating the top 25 matching movies as good candidate matches, potentially with irrelevant false positives, that might have snuck in we want to have the reranker model look and rerank each based on similarity to the query.
 
-```py Python theme={null}
+```python Python theme={null}
 query = "super hero mystery action movie about bats"  # we keep the same query - can change if we want
 
 response = client.rerank.create(

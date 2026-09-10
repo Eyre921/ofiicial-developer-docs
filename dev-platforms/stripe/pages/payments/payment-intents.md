@@ -178,4 +178,5 @@ curl https://api.stripe.com/v1/payment_intents \
 - [Accept a payment in an iOS app](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=mobile&platform=ios)
 - [Accept a payment in an Android app](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=mobile&platform=android)
 - [Set up future payments](https://docs.stripe.com/payments/save-and-reuse.md)
+- [How PaymentIntents work](https://docs.stripe.com/payments/paymentintents/lifecycle.md)
 

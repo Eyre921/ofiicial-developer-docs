@@ -75,7 +75,7 @@ There are three ways to estimate the cost of a fine-tuning job before launching 
 When a running job is cancelled or [stopped early](/docs/fine-tuning/early-stopping), you pay for completed steps only. To check how many steps a job completed, retrieve it and read `steps_completed`:
 
 ```bash theme={null}
-tg fine-tuning retrieve <job-id> --json | jq '.steps_completed'
+tg fine-tuning retrieve <job_id> --json | jq '.steps_completed'
 ```
 
 ## Failed jobs

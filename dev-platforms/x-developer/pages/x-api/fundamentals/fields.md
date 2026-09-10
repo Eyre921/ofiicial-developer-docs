@@ -51,7 +51,7 @@ curl "https://api.x.com/2/tweets/1234567890?tweet.fields=created_at,public_metri
 
 Response:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "1234567890",
@@ -84,7 +84,7 @@ curl "https://api.x.com/2/users/by/username/xdevelopers?user.fields=created_at,d
 
 Response:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "2244994945",
@@ -119,7 +119,7 @@ curl "https://api.x.com/2/tweets/1234567890?expansions=author_id&user.fields=des
 
 Response:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "1234567890",
@@ -199,7 +199,7 @@ Response:
     Include related objects in responses.
   </Card>
 
-  <Card title="Data Dictionary" icon="book" href="/x-api/fundamentals/data-dictionary">
+  <Card title="Data Dictionary" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/fundamentals/data-dictionary">
     Complete field reference for all objects.
   </Card>
 </CardGroup>

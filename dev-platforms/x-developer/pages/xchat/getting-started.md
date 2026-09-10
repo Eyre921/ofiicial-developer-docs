@@ -1,0 +1,1093 @@
+---
+title: "Get started: send your first encrypted message"
+source: https://docs.x.com/xchat/getting-started
+path: xchat/getting-started
+---
+
+A hands-on tutorial that takes you from zero to your first encrypted X Chat message, in Python, TypeScript, Go, Rust, C#, or Java.
+
+Send and receive encrypted direct messages on X: set up keys, initialize a conversation, send a message, and decrypt inbound traffic.
+
+X Chat apps use two pieces together:
+
+| Component                        | Role                                                                                                                                                                            |
+| :------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **[Chat XDK](/xchat/xchat-xdk)** | Encryption, decryption, signing, and private key storage (secure key backup or a key blob)                                                                                      |
+| **X API**                        | Public keys, conversation keys, messages, and events: via the [Python](/xdks/python/overview) or [TypeScript](/xdks/typescript/overview) XDK, or HTTPS with a user access token |
+
+<Note>
+  **Prerequisites**
+
+  * [Developer account](https://developer.x.com/en/portal/petition/essential/basic-info) and an app configured for OAuth 2.0
+  * User access token with `dm.read`, `dm.write`, `tweet.read`, and `users.read`
+</Note>
+
+***
+
+## 1. Install dependencies
+
+<Tabs>
+  <Tab title="Python">
+    ```bash theme={null}
+    pip install chatxdk xdk
+    ```
+
+    The PyPI package is `chatxdk`; import it as `chat_xdk`. Requires Python 3.10+.
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```bash theme={null}
+    npm install @xdevplatform/chat-xdk @xdevplatform/xdk
+    npm install juicebox-sdk   # optional peer dependency; required for setup()/unlock() secure key backup
+    ```
+
+    The compiled WASM engine ships inside `@xdevplatform/chat-xdk`; there is no build step. Requires Node.js 18+.
+  </Tab>
+
+  <Tab title="Rust">
+    ```toml theme={null}
+    [dependencies]
+    # chat-xdk-core is not yet on crates.io; use the git dependency
+    chat-xdk-core = { git = "https://github.com/xdevplatform/chat-xdk" }  # pin a release tag in production, e.g. tag = "vX.Y.Z"
+    reqwest = { version = "0.12", features = ["blocking", "json"] }
+    serde_json = "1"
+    base64 = "0.22"
+
+    # Required until thrift 0.24 is released on crates.io
+    [patch.crates-io]
+    thrift = { git = "https://github.com/apache/thrift.git", rev = "deb36fa409849de45973b04ffc3ce49d277ca90a" }
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```bash theme={null}
+    go get github.com/xdevplatform/chat-xdk/go/chatxdk
+    ```
+
+    Precompiled static libraries are included (macOS arm64/amd64, Linux amd64 glibc/musl): you need a C compiler but not Rust. Requires Go 1.21+.
+  </Tab>
+
+  <Tab title="C#">
+    ```bash theme={null}
+    dotnet add package XDevPlatform.ChatXdk
+    ```
+
+    The package is self-contained: native libraries for macOS (arm64, x64), Linux (x64), and Windows (x64) ship inside it. Requires .NET 8+.
+  </Tab>
+
+  <Tab title="Java">
+    ```xml theme={null}
+    <dependency>
+      <groupId>com.x</groupId>
+      <artifactId>chatxdk</artifactId>
+      <!-- Use the latest version from https://central.sonatype.com/artifact/com.x/chatxdk -->
+      <version>x.y.z</version>
+    </dependency>
+    ```
+
+    Available on Maven Central. The jar bundles the native library for macOS (arm64, x64), Linux (x64), and Windows (x64); no `jna.library.path` setup is needed. Import from `com.x.chatxdk`. Requires JDK 17+.
+  </Tab>
+</Tabs>
+
+Create an API client with your **user** OAuth 2.0 access token:
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    from xdk import Client
+
+    client = Client(access_token="YOUR_OAUTH2_USER_TOKEN")
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    import { Client } from '@xdevplatform/xdk';
+
+    const client = new Client({ accessToken: 'YOUR_OAUTH2_USER_TOKEN' });
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    let access_token = std::env::var("X_ACCESS_TOKEN")?;
+    let http = reqwest::blocking::Client::new();
+    let auth = format!("Bearer {access_token}");
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    accessToken := os.Getenv("X_ACCESS_TOKEN")
+    httpClient := &http.Client{Timeout: 30 * time.Second}
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    using var http = new HttpClient();
+    http.DefaultRequestHeaders.Authorization =
+        new System.Net.Http.Headers.AuthenticationHeaderValue(
+            "Bearer", Environment.GetEnvironmentVariable("X_ACCESS_TOKEN"));
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    String accessToken = System.getenv("X_ACCESS_TOKEN");
+    HttpClient http = HttpClient.newHttpClient();
+    ```
+  </Tab>
+</Tabs>
+
+***
+
+## 2. Initialize the Chat XDK with existing keys
+
+This step **loads keys you already have**: use it when this identity completed first-time setup before:
+
+* **Secure key backup:** construct the SDK with the `juicebox_config` from your public-key record, then `unlock` with your passcode to recover the private keys (for example, on a new device).
+* **Key blob:** `import_keys` with a blob you previously exported via `export_keys`, passing the registered key version alongside it (Rust and Go name this variant `import_keys_with_version` / `ImportKeysWithVersion`).
+
+Then call **`set_identity(user_id, signing_key_version)`** once, with your user ID and your record's `public_key_version`. This stores the session identity: every later encrypt and prepare call signs as this identity, so you never pass a sender ID or signing key version per call.
+
+**Setting up for the first time?** Construct the SDK the same way but skip `unlock`/`import_keys`, and continue to [step 3](#3-create-and-register-keys-first-time-setup) to create, back up, and register your keys.
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    import json
+    from chat_xdk import Chat
+
+    resp = client.chat.get_user_public_keys(
+        "YOUR_USER_ID",
+        public_key_fields=[
+            "public_key_version", "public_key", "signing_public_key",
+            "identity_public_key_signature", "juicebox_config",
+        ],
+    )
+    record = resp.data[0]
+    signing_key_version = str(record["public_key_version"])
+
+    chat = Chat(json.dumps(record["juicebox_config"]))
+    chat.unlock("YOUR_PASSCODE")  # recovers keys stored by setup() during first-time setup (step 3)
+    # Or load a key blob instead of secure key backup:
+    # chat.import_keys(blob, version=signing_key_version)
+    chat.set_identity("YOUR_USER_ID", signing_key_version)
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    import { createChat } from '@xdevplatform/chat-xdk';
+
+    const resp = await client.chat.getUserPublicKeys('YOUR_USER_ID', {
+      publicKeyFields: [
+        'public_key_version', 'public_key', 'signing_public_key',
+        'identity_public_key_signature', 'juicebox_config',
+      ],
+    });
+    const record = resp.data[0];
+    const signingKeyVersion = String(record.public_key_version);
+
+    const chat = await createChat({
+      juiceboxConfig: JSON.stringify(record.juicebox_config),
+      getAuthToken: async (realmId) => getRealmTokenFromYourBackend(realmId),
+    });
+    await chat.unlock('YOUR_PASSCODE');
+    chat.setIdentity('YOUR_USER_ID', signingKeyVersion);
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    use base64::{engine::general_purpose::STANDARD as B64, Engine};
+    use chat_xdk_core::ChatCore;
+
+    let chat = ChatCore::new();
+    let blob = B64.decode(std::env::var("PRIVATE_KEYS_B64")?)?;
+    let signing_key_version = std::env::var("SIGNING_KEY_VERSION").unwrap_or_else(|_| "1".into());
+    chat.import_keys_with_version(&blob, &signing_key_version)?;
+    chat.set_identity("YOUR_USER_ID", &signing_key_version);
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    import "github.com/xdevplatform/chat-xdk/go/chatxdk"
+
+    chat := chatxdk.New()
+    defer chat.Close()
+
+    blob, err := chatxdk.Base64ToBytes(os.Getenv("PRIVATE_KEYS_B64"))
+    if err != nil {
+        log.Fatal(err)
+    }
+    signingKeyVersion := os.Getenv("SIGNING_KEY_VERSION")
+    if signingKeyVersion == "" {
+        signingKeyVersion = "1"
+    }
+    if err := chat.ImportKeysWithVersion(blob, signingKeyVersion); err != nil {
+        log.Fatal(err)
+    }
+    if err := chat.SetIdentity(myUserID, signingKeyVersion); err != nil {
+        log.Fatal(err)
+    }
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    using ChatXdk;
+
+    using var chat = new Chat();
+    var signingKeyVersion = Environment.GetEnvironmentVariable("SIGNING_KEY_VERSION") ?? "1";
+    chat.ImportKeys(Convert.FromBase64String(
+        Environment.GetEnvironmentVariable("PRIVATE_KEYS_B64")!), signingKeyVersion);
+    chat.SetIdentity(myUserId, signingKeyVersion);
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    import com.x.chatxdk.Chat;
+
+    String signingKeyVersion = Optional.ofNullable(System.getenv("SIGNING_KEY_VERSION")).orElse("1");
+    try (Chat chat = new Chat()) {
+        chat.importKeys(Base64.getDecoder().decode(System.getenv("PRIVATE_KEYS_B64")), signingKeyVersion);
+        chat.setIdentity(myUserId, signingKeyVersion);
+    }
+    ```
+  </Tab>
+</Tabs>
+
+Server and bot samples often use a **key blob** (`export_keys` / `import_keys`). Client apps often use **secure key backup** (`setup` / `unlock` with a passcode). See the [Chat XDK](/xchat/xchat-xdk) reference for both paths.
+
+<Note>
+  **Bringing your own keys?** `import_keys` only accepts the opaque blob produced by `export_keys` from the Chat XDK. It is a versioned, private serialization of the full key state, not raw or PEM-encoded P-256 keys. You cannot construct this blob yourself: generate keys through `generate_keypairs` ([step 3](#3-create-and-register-keys-first-time-setup)), export the blob once, and store it base64-encoded. Hand-crafted or modified blobs fail to import.
+</Note>
+
+***
+
+## 3. Create and register keys (first-time setup)
+
+Skip this step if you loaded existing keys in [step 2](#2-initialize-the-chat-xdk-with-existing-keys). Otherwise, one-time setup for a new identity does **three things**:
+
+1. **Create the keypairs**: `generate_keypairs` produces the identity and signing keypairs.
+2. **Store the private keys**: `setup` with a passcode writes them to secure key backup (clients), or `export_keys` returns a key blob for you to store securely (servers and bots).
+3. **Register the public keys**: POST the registration payload to the add-public-key endpoint so others can encrypt to you and verify your signatures.
+
+Finish by calling `set_identity` with the registration's key version, so this session signs as the new identity.
+
+<Tip>
+  Ready-to-run one-time registration scripts for every binding live under [`chat-xdk/examples`](https://github.com/xdevplatform/chat-xdk/tree/main/examples) (Python, TypeScript, Go, Rust, C#, and Java). Use them instead of hand-rolling the flow below when you just need to onboard a new identity.
+</Tip>
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    from xdk.chat.models import AddUserPublicKeyRequest
+
+    registration = chat.generate_keypairs()
+    pk = registration.public_key
+    client.chat.add_user_public_key(
+        "YOUR_USER_ID",
+        AddUserPublicKeyRequest(
+            public_key={
+                "identity_public_key_signature": pk.identity_public_key_signature,
+                "public_key": pk.public_key,
+                "public_key_fingerprint": pk.public_key_fingerprint,
+                "registration_method": pk.registration_method,
+                "signing_public_key": pk.signing_public_key,
+                "signing_public_key_signature": pk.signing_public_key_signature,
+            },
+            version=registration.version,
+            generate_version=registration.generate_version,
+        ),
+    )
+    chat.setup("YOUR_PASSCODE")
+    chat.set_identity("YOUR_USER_ID", str(registration.version or "1"))
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    const registration = chat.generateKeypairs();
+    const pk = registration.publicKey;
+    await client.chat.addUserPublicKey('YOUR_USER_ID', {
+      public_key: {
+        identity_public_key_signature: pk.identityPublicKeySignature,
+        public_key: pk.publicKey,
+        public_key_fingerprint: pk.publicKeyFingerprint,
+        registration_method: pk.registrationMethod,
+        signing_public_key: pk.signingPublicKey,
+        signing_public_key_signature: pk.signingPublicKeySignature,
+      },
+      version: registration.version,
+      generate_version: registration.generateVersion,
+    });
+    await chat.setup('YOUR_PASSCODE');
+    chat.setIdentity('YOUR_USER_ID', String(registration.version ?? '1'));
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    let registration = chat.generate_keypairs()?;
+    let body = serde_json::to_value(&registration)?;
+    let resp = http
+        .post(format!("https://api.x.com/2/users/{user_id}/public_keys"))
+        .header("Authorization", &auth)
+        .json(&body)
+        .send()?;
+    if !resp.status().is_success() {
+        anyhow::bail!("register keys: {}", resp.text()?);
+    }
+    let _blob = chat.export_keys()?; // store securely
+    let key_version = registration.version.clone().unwrap_or_else(|| "1".into());
+    chat.set_identity(&user_id, &key_version);
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    registration, err := chat.GenerateKeypairs()
+    if err != nil {
+        log.Fatal(err)
+    }
+    regJSON, _ := json.Marshal(registration)
+    req, _ := http.NewRequest(http.MethodPost,
+        "https://api.x.com/2/users/"+userID+"/public_keys",
+        bytes.NewReader(regJSON))
+    req.Header.Set("Authorization", "Bearer "+accessToken)
+    req.Header.Set("Content-Type", "application/json")
+    resp, err := httpClient.Do(req)
+    if err != nil {
+        log.Fatal(err)
+    }
+    resp.Body.Close()
+    privateKeys, _ := chat.ExportKeys() // store securely
+    _ = privateKeys
+    keyVersion := "1"
+    if registration.Version != nil {
+        keyVersion = *registration.Version
+    }
+    if err := chat.SetIdentity(userID, keyVersion); err != nil {
+        log.Fatal(err)
+    }
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    var registration = chat.GenerateKeypairs();
+    var regJson = System.Text.Json.JsonSerializer.Serialize(registration);
+    using var content = new StringContent(regJson, Encoding.UTF8, "application/json");
+    using var regResp = await http.PostAsync(
+        $"https://api.x.com/2/users/{Uri.EscapeDataString(userId)}/public_keys", content);
+    regResp.EnsureSuccessStatusCode();
+    var blob = chat.ExportKeys(); // store securely
+    chat.SetIdentity(userId, registration.Version ?? "1");
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    var registration = chat.generateKeypairs();
+    String regJson = new ObjectMapper().writeValueAsString(registration);
+    HttpRequest req = HttpRequest.newBuilder()
+        .uri(URI.create("https://api.x.com/2/users/" + userId + "/public_keys"))
+        .header("Authorization", "Bearer " + accessToken)
+        .header("Content-Type", "application/json")
+        .POST(HttpRequest.BodyPublishers.ofString(regJson))
+        .build();
+    HttpResponse<String> regResp = http.send(req, HttpResponse.BodyHandlers.ofString());
+    if (regResp.statusCode() >= 300) {
+        throw new RuntimeException("register keys: " + regResp.body());
+    }
+    byte[] blob = chat.exportKeys(); // store securely
+    chat.setIdentity(myUserId, registration.version != null ? registration.version : "1");
+    ```
+  </Tab>
+</Tabs>
+
+<Warning>
+  Use a strong passcode for secure key backup. Losing the passcode or an unprotected key blob can prevent decrypting past messages.
+</Warning>
+
+***
+
+## 4. Set up conversation keys
+
+Call **`prepare_conversation_key_change`** with every participant's identity public key; the sender identity comes from the session you set in step 2. One call generates a fresh conversation key, encrypts it for each participant, and signs the change. POST the result to the **add conversation keys** endpoint (`POST /2/chat/conversations/{id}/keys`). The body needs `conversation_key_version`, `conversation_participant_keys` (SDK `encrypted_key` → API `encrypted_conversation_key`), and **`action_signatures`** (required; the API rejects the call without them). Keep the **raw** conversation key for sending.
+
+The response returns the canonical conversation id (`data.conversation_id`: the hyphen-joined pair for a 1:1, or the g-prefixed id for a group) and the key change's `data.sequence_id`. Use that returned id for subsequent requests instead of reconstructing it client-side. The same call also **rotates** keys later: pass the existing conversation id to `prepare_conversation_key_change` and POST with the newer key version. Rotate when you suspect the conversation key was exposed. Rotation protects **future** messages only; messages encrypted under earlier key versions stay readable to anyone who holds those versions.
+
+<Warning>
+  **Verify fetched keys before wrapping.** `prepare_conversation_key_change` encrypts the fresh conversation key to whatever public keys you pass. Check each fetched record first with `verify_key_binding(identity, signing, signature)` (passing the record's `public_key`, `signing_public_key`, and `identity_public_key_signature` fields from the public-keys API) so a substituted identity key cannot receive the conversation key.
+</Warning>
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    def public_key_input(user_id: str) -> dict:
+        r = client.chat.get_user_public_keys(
+            user_id, public_key_fields=["public_key_version", "public_key"]
+        ).data[0]
+        return {"user_id": user_id, "public_key": r["public_key"], "key_version": r["public_key_version"]}
+
+    prepared = chat.prepare_conversation_key_change(
+        [public_key_input("YOUR_USER_ID"), public_key_input("RECIPIENT_USER_ID")],
+        # conversation_id=None for a new 1:1; pass the id to rotate later
+    )
+    resp = client.chat.add_conversation_keys(
+        "RECIPIENT_USER_ID",
+        {
+            "conversation_key_version": prepared["conversation_key_version"],
+            "conversation_participant_keys": [
+                {
+                    "user_id": pk["user_id"],
+                    "encrypted_conversation_key": pk["encrypted_key"],
+                    "public_key_version": pk["public_key_version"],
+                }
+                for pk in prepared["participant_keys"]
+            ],
+            "action_signatures": [
+                {
+                    "message_id": sig["message_id"],
+                    "encoded_message_event_detail": sig["encoded_message_event_detail"],
+                    "message_event_signature": {
+                        "signature": sig["signature"],
+                        "public_key_version": sig["public_key_version"],
+                        "signature_version": sig["signature_version"],
+                    },
+                }
+                for sig in prepared["action_signatures"]
+            ],
+        },
+    )
+    conversation_id = resp.data["conversation_id"]  # canonical id for later requests
+    sequence_id = resp.data["sequence_id"]
+    conv_key = prepared["conversation_key"]
+    conv_key_version = prepared["conversation_key_version"]
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    async function publicKeyInput(userId: string) {
+      const r = (await client.chat.getUserPublicKeys(userId, {
+        publicKeyFields: ['public_key_version', 'public_key'],
+      })).data[0];
+      return { userId, publicKey: r.public_key, keyVersion: r.public_key_version };
+    }
+
+    // Omit conversationId for a new 1:1; pass the id to rotate later
+    const prepared = chat.prepareConversationKeyChange({
+      publicKeys: [
+        await publicKeyInput('YOUR_USER_ID'),
+        await publicKeyInput('RECIPIENT_USER_ID'),
+      ],
+    });
+    const resp = await client.chat.addConversationKeys('RECIPIENT_USER_ID', {
+      conversation_key_version: prepared.conversationKeyVersion,
+      conversation_participant_keys: prepared.participantKeys.map((pk) => ({
+        user_id: pk.userId,
+        encrypted_conversation_key: pk.encryptedKey,
+        public_key_version: pk.publicKeyVersion,
+      })),
+      action_signatures: prepared.actionSignatures.map((sig) => ({
+        message_id: sig.messageId,
+        encoded_message_event_detail: sig.encodedMessageEventDetail,
+        message_event_signature: {
+          signature: sig.signature,
+          public_key_version: sig.publicKeyVersion,
+          signature_version: sig.signatureVersion,
+        },
+      })),
+    });
+    const conversationId = resp.data.conversation_id; // canonical id for later requests
+    const sequenceId = resp.data.sequence_id;
+    const convKey = prepared.conversationKey;
+    const convKeyVersion = prepared.conversationKeyVersion;
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    // public_key_inputs: Vec<PublicKeyInput> from GET public keys
+    // (user_id, public_key, key_version ← public_key_version)
+    // New 1:1; set params.conversation_id = Some(id) to rotate later
+    let prepared = chat.prepare_conversation_key_change(
+        ConversationKeyChangeParams::new(public_key_inputs),
+    )?;
+    let participant_keys: Vec<_> = prepared
+        .participant_keys
+        .iter()
+        .map(|pk| {
+            serde_json::json!({
+                "user_id": pk.user_id,
+                "encrypted_conversation_key": pk.encrypted_key,
+                "public_key_version": pk.public_key_version,
+            })
+        })
+        .collect();
+    let action_signatures: Vec<_> = prepared
+        .action_signatures
+        .iter()
+        .map(|sig| {
+            serde_json::json!({
+                "message_id": sig.message_id,
+                "encoded_message_event_detail": sig.encoded_message_event_detail,
+                "message_event_signature": {
+                    "signature": sig.signature,
+                    "public_key_version": sig.public_key_version,
+                    "signature_version": sig.signature_version,
+                },
+            })
+        })
+        .collect();
+    let body = serde_json::json!({
+        "conversation_key_version": prepared.conversation_key_version,
+        "conversation_participant_keys": participant_keys,
+        "action_signatures": action_signatures,
+    });
+    let resp: serde_json::Value = http
+        .post(format!("https://api.x.com/2/chat/conversations/{recipient_id}/keys"))
+        .header("Authorization", &auth)
+        .json(&body)
+        .send()?
+        .json()?;
+    // Canonical id for later requests
+    let conversation_id = resp["data"]["conversation_id"].as_str().unwrap().to_string();
+    // conversation_key is Option<XChatConversationKey>; encrypt_message wants owned bytes
+    let conv_key = prepared.conversation_key.expect("key present").to_bytes();
+    let conv_key_version = prepared.conversation_key_version;
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    // KeyVersion comes from the public_key_version field on each record
+    prepared, err := chat.PrepareConversationKeyChange(chatxdk.ConversationKeyChangeParams{
+        PublicKeys: []chatxdk.PublicKeyInput{
+            {UserID: myUserID, PublicKey: myIdentityPubB64, KeyVersion: myKeyVersion},
+            {UserID: recipientID, PublicKey: theirIdentityPubB64, KeyVersion: theirKeyVersion},
+        },
+        // ConversationID empty for a new 1:1; pass the id to rotate later
+    })
+    var parts []map[string]string
+    for _, pk := range prepared.ParticipantKeys {
+        parts = append(parts, map[string]string{
+            "user_id":                    pk.UserID,
+            "encrypted_conversation_key": pk.EncryptedKey,
+            "public_key_version":         pk.PublicKeyVersion,
+        })
+    }
+    var sigs []map[string]any
+    for _, sig := range prepared.ActionSignatures {
+        sigs = append(sigs, map[string]any{
+            "message_id":                   sig.MessageID,
+            "encoded_message_event_detail": sig.EncodedMessageEventDetail,
+            "message_event_signature": map[string]string{
+                "signature":          sig.Signature,
+                "public_key_version": sig.PublicKeyVersion,
+                "signature_version":  sig.SignatureVersion,
+            },
+        })
+    }
+    body, _ := json.Marshal(map[string]any{
+        "conversation_key_version":      prepared.ConversationKeyVersion,
+        "conversation_participant_keys": parts,
+        "action_signatures":             sigs,
+    })
+    req, _ := http.NewRequest(http.MethodPost,
+        "https://api.x.com/2/chat/conversations/"+recipientID+"/keys",
+        bytes.NewReader(body))
+    req.Header.Set("Authorization", "Bearer "+accessToken)
+    req.Header.Set("Content-Type", "application/json")
+    resp, err := httpClient.Do(req)
+    // Response data.conversation_id is the canonical id for later requests
+    _ = resp
+    convKey := prepared.ConversationKey
+    convKeyVersion := prepared.ConversationKeyVersion
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    // KeyVersion comes from the public_key_version field on each record
+    var prepared = chat.PrepareConversationKeyChange(new ConversationKeyChangeParams(new[] {
+        new PublicKeyInput { UserId = myUserId, PublicKey = myPk, KeyVersion = myVer },
+        new PublicKeyInput { UserId = recipientId, PublicKey = theirPk, KeyVersion = theirVer },
+    })); // ConversationId null for a new 1:1; set it to rotate later
+    var keysBody = new {
+        conversation_key_version = prepared.ConversationKeyVersion,
+        conversation_participant_keys = prepared.ParticipantKeys.Select(pk => new {
+            user_id = pk.UserId,
+            encrypted_conversation_key = pk.EncryptedKey,
+            public_key_version = pk.PublicKeyVersion,
+        }),
+        action_signatures = prepared.ActionSignatures.Select(sig => new {
+            message_id = sig.MessageId,
+            encoded_message_event_detail = sig.EncodedMessageEventDetail,
+            message_event_signature = new {
+                signature = sig.Signature,
+                public_key_version = sig.PublicKeyVersion,
+                signature_version = sig.SignatureVersion,
+            },
+        }),
+    };
+    var json = System.Text.Json.JsonSerializer.Serialize(keysBody);
+    using var content = new StringContent(json, Encoding.UTF8, "application/json");
+    using var resp = await http.PostAsync(
+        $"https://api.x.com/2/chat/conversations/{Uri.EscapeDataString(recipientId)}/keys",
+        content);
+    resp.EnsureSuccessStatusCode();
+    var data = System.Text.Json.JsonDocument.Parse(await resp.Content.ReadAsStringAsync())
+        .RootElement.GetProperty("data");
+    string conversationId = data.GetProperty("conversation_id").GetString()!; // canonical id
+    byte[] convKey = prepared.ConversationKey!;
+    string convKeyVersion = prepared.ConversationKeyVersion;
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    // keyVersion comes from the public_key_version field on each record
+    PublicKeyInput mine = new PublicKeyInput();
+    mine.userId = myUserId; mine.publicKey = myIdentityPubB64; mine.keyVersion = myKeyVersion;
+    PublicKeyInput theirs = new PublicKeyInput();
+    theirs.userId = recipientId; theirs.publicKey = theirIdentityPubB64; theirs.keyVersion = theirKeyVersion;
+
+    // conversationId stays null for a new 1:1; set it to rotate later
+    PreparedConversationChange prepared =
+        chat.prepareConversationKeyChange(new ConversationKeyChangeParams(List.of(mine, theirs)));
+
+    List<Map<String, String>> parts = new ArrayList<>();
+    for (var pk : prepared.participantKeys) {
+        parts.add(Map.of(
+            "user_id", pk.userId,
+            "encrypted_conversation_key", pk.encryptedKey,
+            "public_key_version", pk.publicKeyVersion));
+    }
+    List<Map<String, Object>> sigs = new ArrayList<>();
+    for (var sig : prepared.actionSignatures) {
+        sigs.add(Map.of(
+            "message_id", sig.messageId,
+            "encoded_message_event_detail", sig.encodedMessageEventDetail,
+            "message_event_signature", Map.of(
+                "signature", sig.signature,
+                "public_key_version", sig.publicKeyVersion,
+                "signature_version", sig.signatureVersion)));
+    }
+    ObjectMapper mapper = new ObjectMapper();
+    String body = mapper.writeValueAsString(Map.of(
+        "conversation_key_version", prepared.conversationKeyVersion,
+        "conversation_participant_keys", parts,
+        "action_signatures", sigs));
+    HttpRequest req = HttpRequest.newBuilder()
+        .uri(URI.create("https://api.x.com/2/chat/conversations/" + recipientId + "/keys"))
+        .header("Authorization", "Bearer " + accessToken)
+        .header("Content-Type", "application/json")
+        .POST(HttpRequest.BodyPublishers.ofString(body))
+        .build();
+    HttpResponse<String> resp = http.send(req, HttpResponse.BodyHandlers.ofString());
+    JsonNode data = mapper.readTree(resp.body()).path("data");
+    String conversationId = data.path("conversation_id").asText(); // canonical id
+    byte[] convKey = prepared.conversationKey;
+    String convKeyVersion = prepared.conversationKeyVersion;
+    ```
+  </Tab>
+</Tabs>
+
+***
+
+## 5. Send a message
+
+Encrypt with the **raw** conversation key from step 4. The SDK generates the message id (a UUID), embeds it in the signed event, and returns it on the payload; you never mint one yourself. On the send request, map:
+
+| Chat XDK field                                                                | Request body field                |
+| :---------------------------------------------------------------------------- | :-------------------------------- |
+| `encrypted_content` / `encryptedContent` / `EncryptedContent`                 | `encoded_message_create_event`    |
+| `encoded_event_signature` / `encodedEventSignature` / `EncodedEventSignature` | `encoded_message_event_signature` |
+| Payload `message_id` / `messageId` / `MessageId`                              | `message_id`                      |
+
+Use a **hyphenated** conversation id in the URL path when the API requires it (`:` → `-`). The SDK itself is flexible: `encrypt_message` and `encrypt_reply` accept the id in any form you hold (`A:B` from events, `A-B` from listings or URL paths in either order, or just the recipient's user id) and canonicalize it before signing. Group ids (prefixed with `g`) pass through unchanged.
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    from xdk.chat.models import SendMessageRequest
+
+    # Sender identity resolves from set_identity (step 2)
+    payload = chat.encrypt_message(
+        "CONVERSATION_ID",
+        "Hello!",
+        conversation_key=conv_key,
+        conversation_key_version=conv_key_version,
+    )
+    client.chat.send_message(
+        "RECIPIENT_USER_ID",
+        SendMessageRequest(
+            message_id=payload.message_id,  # SDK-generated, embedded in the signed event
+            encoded_message_create_event=payload.encrypted_content,
+            encoded_message_event_signature=payload.encoded_event_signature,
+        ),
+    )
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    // Sender identity resolves from setIdentity (step 2)
+    const payload = chat.encryptMessage({
+      conversationId: 'CONVERSATION_ID',
+      text: 'Hello!',
+      conversationKey: convKey,
+      conversationKeyVersion: convKeyVersion,
+    });
+    await client.chat.sendMessage('RECIPIENT_USER_ID', {
+      message_id: payload.messageId, // SDK-generated, embedded in the signed event
+      encoded_message_create_event: payload.encryptedContent,
+      encoded_message_event_signature: payload.encodedEventSignature,
+    });
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    use chat_xdk_core::EncryptMessageParams;
+
+    // Sender identity resolves from set_identity (step 2)
+    let payload = chat.encrypt_message(
+        EncryptMessageParams::new(&conversation_id, "Hello!")
+            .with_conversation_key(conv_key, &conv_key_version),
+    )?;
+    let body = serde_json::json!({
+        // SDK-generated, embedded in the signed event
+        "message_id": payload.message_id,
+        "encoded_message_create_event": payload.encrypted_content,
+        "encoded_message_event_signature": payload.encoded_event_signature,
+    });
+    let path_id = conversation_id.replace(':', "-");
+    http.post(format!("https://api.x.com/2/chat/conversations/{path_id}/messages"))
+        .header("Authorization", &auth)
+        .json(&body)
+        .send()?;
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    // Sender identity resolves from SetIdentity (step 2)
+    payload, err := chat.EncryptMessage(chatxdk.EncryptMessageParams{
+        ConversationID:         conversationID,
+        Text:                   "Hello!",
+        ConversationKey:        convKey,
+        ConversationKeyVersion: convKeyVersion,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    body, _ := json.Marshal(map[string]string{
+        // SDK-generated, embedded in the signed event
+        "message_id":                      payload.MessageID,
+        "encoded_message_create_event":    payload.EncryptedContent,
+        "encoded_message_event_signature": payload.EncodedEventSignature,
+    })
+    pathID := strings.ReplaceAll(conversationID, ":", "-")
+    req, _ := http.NewRequest(http.MethodPost,
+        "https://api.x.com/2/chat/conversations/"+pathID+"/messages",
+        bytes.NewReader(body))
+    req.Header.Set("Authorization", "Bearer "+accessToken)
+    req.Header.Set("Content-Type", "application/json")
+    resp, err := httpClient.Do(req)
+    _ = resp
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    // Sender identity resolves from SetIdentity (step 2)
+    var payload = chat.EncryptMessage(new EncryptMessageParams(conversationId, "Hello!") {
+        ConversationKey = convKey,
+        ConversationKeyVersion = convKeyVersion,
+    });
+    var sendJson = System.Text.Json.JsonSerializer.Serialize(new Dictionary<string, string> {
+        // SDK-generated, embedded in the signed event
+        ["message_id"] = payload.MessageId,
+        ["encoded_message_create_event"] = payload.EncryptedContent,
+        ["encoded_message_event_signature"] = payload.EncodedEventSignature,
+    });
+    using var content = new StringContent(sendJson, Encoding.UTF8, "application/json");
+    var pathId = conversationId.Replace(':', '-');
+    using var resp = await http.PostAsync(
+        $"https://api.x.com/2/chat/conversations/{Uri.EscapeDataString(pathId)}/messages",
+        content);
+    resp.EnsureSuccessStatusCode();
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    // Sender identity resolves from setIdentity (step 2)
+    EncryptMessageParams params = new EncryptMessageParams(conversationId, "Hello!");
+    params.conversationKey = convKey;
+    params.conversationKeyVersion = convKeyVersion;
+    SendPayload payload = chat.encryptMessage(params);
+
+    String pathId = conversationId.replace(':', '-');
+    String sendJson = new ObjectMapper().writeValueAsString(Map.of(
+        // SDK-generated, embedded in the signed event
+        "message_id", payload.messageId,
+        "encoded_message_create_event", payload.encryptedContent,
+        "encoded_message_event_signature", payload.encodedEventSignature));
+    HttpRequest req = HttpRequest.newBuilder()
+        .uri(URI.create("https://api.x.com/2/chat/conversations/" + pathId + "/messages"))
+        .header("Authorization", "Bearer " + accessToken)
+        .header("Content-Type", "application/json")
+        .POST(HttpRequest.BodyPublishers.ofString(sendJson))
+        .build();
+    http.send(req, HttpResponse.BodyHandlers.ofString());
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+  The snippets pass the conversation key explicitly because in this flow you just created it in step 4. Once the key cache is on and a `decrypt_events` pass has verified the conversation's key ([step 6](#6-receive-and-decrypt)), `encrypt_message(conversation_id, text)` alone is enough: the SDK fills in the latest verified key. Retries should resend the **same** encrypted payload, so an id is never minted twice.
+</Note>
+
+***
+
+## 6. Receive and decrypt
+
+Use [webhooks or the activity stream](/xchat/real-time-events) for live traffic, or page conversation **events** for history.
+
+* Live payload fields: `encoded_event`, optional `conversation_key_change_event`
+* History: `GET /2/chat/conversations/{id}/events`; prefer **`decrypt_events`** on all events plus `meta.conversation_key_events`
+* Decrypting needs the senders' **signing keys** so the SDK can verify who wrote each message. These are the other participants' *public* keys: fetch them from the same public-keys endpoint you used in step 4 and map the fields into `SigningKeyEntry` (the snippets below include the mapping)
+* You can pass the signing keys (and, for `decrypt_event`, the conversation keys) on every call, **or** set two optional session stores once and use the short call forms. The snippets below use the stores: `set_signing_keys(entries)` holds the participants' keys, and `set_cache_keys(true)` (off by default) keeps each conversation's latest **signature-verified** key so later calls can omit key arguments. Both styles verify identically
+* JavaScript uses camelCase event types (`message`); other languages use `"Message"` and snake\_case fields in JSON
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    # Once per process: fill the signing-key store and enable the key cache
+    def signing_keys_for(user_id: str) -> list[dict]:
+        resp = client.chat.get_user_public_keys(
+            user_id,
+            public_key_fields=[
+                "public_key_version", "public_key", "signing_public_key", "identity_public_key_signature",
+            ],
+        )
+        return [
+            {
+                "user_id": user_id,
+                "public_key_version": r["public_key_version"],
+                "public_key": r["signing_public_key"],
+                "identity_public_key": r["public_key"],
+                "identity_public_key_signature": r["identity_public_key_signature"],
+            }
+            for r in resp.data
+        ]
+
+    chat.set_signing_keys(
+        signing_keys_for("YOUR_USER_ID") + signing_keys_for("RECIPIENT_USER_ID")
+    )
+    chat.set_cache_keys(True)
+
+    # Initial load or pagination: batch decrypt. Conversation keys are
+    # extracted from the KeyChange events in the batch; per-event failures
+    # are collected in result["errors"], never raised.
+    result = chat.decrypt_events(all_events_b64)
+    for dm in result["messages"]:
+        event = dm["event"]
+        if event["type"] == "Message" and event["content"]["content_type"] == "Text":
+            print(event["sender_id"], event["content"]["text"], event["verified"])
+
+    # Live traffic: one event at a time
+    def handle_payload(payload: dict):
+        if payload.get("conversation_key_change_event"):
+            # A rotation enters the key cache only after its signature
+            # verifies, which is what decrypt_events does
+            chat.decrypt_events([payload["conversation_key_change_event"]])
+        event = chat.decrypt_event(payload["encoded_event"])  # raises on failure
+        if event["type"] == "Message" and event["content"]["content_type"] == "Text":
+            print(event["sender_id"], event["content"]["text"], event["verified"])
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    // Once per process: fill the signing-key store and enable the key cache
+    async function signingKeysFor(userId: string) {
+      const resp = await client.chat.getUserPublicKeys(userId, {
+        publicKeyFields: [
+          'public_key_version', 'public_key', 'signing_public_key', 'identity_public_key_signature',
+        ],
+      });
+      return resp.data.map((r: {
+        public_key_version: string;
+        public_key: string;
+        signing_public_key: string;
+        identity_public_key_signature: string;
+      }) => ({
+        userId,
+        publicKeyVersion: r.public_key_version,
+        publicKey: r.signing_public_key,
+        identityPublicKey: r.public_key,
+        identityPublicKeySignature: r.identity_public_key_signature,
+      }));
+    }
+
+    chat.setSigningKeys([
+      ...(await signingKeysFor('YOUR_USER_ID')),
+      ...(await signingKeysFor('RECIPIENT_USER_ID')),
+    ]);
+    chat.setCacheKeys(true);
+
+    // Initial load or pagination: batch decrypt. Conversation keys are
+    // extracted from the KeyChange events in the batch; per-event failures
+    // are collected in result.errors, never thrown.
+    const result = chat.decryptEvents(allEventsB64);
+    for (const dm of result.messages) {
+      if (dm.event.type === 'message' && dm.event.content?.contentType === 'text') {
+        console.log(dm.event.senderId, dm.event.content.text, dm.event.verified);
+      }
+    }
+
+    // Live traffic: one event at a time
+    function handlePayload(payload: {
+      encoded_event: string;
+      conversation_key_change_event?: string;
+    }) {
+      if (payload.conversation_key_change_event) {
+        // A rotation enters the key cache only after its signature
+        // verifies, which is what decryptEvents does
+        chat.decryptEvents([payload.conversation_key_change_event]);
+      }
+      const event = chat.decryptEvent(payload.encoded_event); // throws on failure
+      if (event.type === 'message' && event.content?.contentType === 'text') {
+        console.log(event.senderId, event.content.text, event.verified);
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    // Once per instance: fill the signing-key store (Vec<SigningKeyEntry>
+    // from GET /2/users/{id}/public_keys) and enable the key cache
+    chat.set_signing_keys(participant_signing_keys);
+    chat.set_cache_keys(true);
+
+    // Initial load: batch decrypt; per-event failures land in result.errors
+    let result = chat.decrypt_events(&all_events_b64, &[]);
+
+    // Live traffic: a rotation enters the key cache only after its
+    // signature verifies, which is what decrypt_events does
+    if let Some(kc) = key_change_b64.as_deref() {
+        chat.decrypt_events(&[kc], &[]);
+    }
+    let event = chat.decrypt_event(&encoded_event, &Default::default(), &[])?;
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    // Once per instance: fill the signing-key store ([]SigningKeyEntry
+    // from GET /2/users/{id}/public_keys) and enable the key cache
+    if err := chat.SetSigningKeys(participantSigningKeys); err != nil {
+        log.Fatal(err)
+    }
+    chat.SetCacheKeys(true)
+
+    // Initial load: batch decrypt; per-event failures land in result.Errors
+    result, err := chat.DecryptEvents(allEventsB64, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+    for _, dm := range result.Messages {
+        if dm.Event.Type == "Message" {
+            fmt.Println(dm.Event.AsMessage().Text())
+        }
+    }
+
+    // Live traffic: a rotation enters the key cache only after its
+    // signature verifies, which is what DecryptEvents does
+    if keyChange != "" {
+        chat.DecryptEvents([]string{keyChange}, nil)
+    }
+    event, err := chat.DecryptEvent(encodedEvent, nil, nil)
+    if err == nil && event.Type == "Message" {
+        fmt.Println(event.AsMessage().Text())
+    }
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    // Once per instance: fill the signing-key store (SigningKeyEntry list
+    // from GET /2/users/{id}/public_keys) and enable the key cache
+    chat.SetSigningKeys(participantSigningKeys);
+    chat.SetCacheKeys(true);
+
+    // Initial load: batch decrypt; per-event failures land in result.Errors
+    var result = chat.DecryptEvents(allEventsB64);
+    foreach (var dm in result.Messages)
+    {
+        if (dm.Event.GetProperty("type").GetString() == "Message")
+            Console.WriteLine(dm.Event.GetProperty("content").GetProperty("text").GetString());
+    }
+
+    // Live traffic: a rotation enters the key cache only after its
+    // signature verifies, which is what DecryptEvents does
+    if (!string.IsNullOrEmpty(keyChangeB64))
+        chat.DecryptEvents(new[] { keyChangeB64 });
+    var evt = chat.DecryptEvent(encodedEvent);  // throws on failure
+    if (evt.GetProperty("type").GetString() == "Message")
+        Console.WriteLine(evt.GetProperty("content").GetProperty("text").GetString());
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    // Once per instance: fill the signing-key store (SigningKeyEntry list
+    // from GET /2/users/{id}/public_keys) and enable the key cache
+    chat.setSigningKeys(participantSigningKeys);
+    chat.setCacheKeys(true);
+
+    // Initial load: batch decrypt; per-event failures land in result.errors
+    DecryptEventsResult result = chat.decryptEvents(allEventsB64, null);
+    for (DecryptedMessage dm : result.messages) {
+        if ("Message".equals(dm.event.path("type").asText())) {
+            System.out.println(dm.event.path("content").path("text").asText());
+        }
+    }
+
+    // Live traffic: a rotation enters the key cache only after its
+    // signature verifies, which is what decryptEvents does
+    if (keyChangeB64 != null && !keyChangeB64.isEmpty()) {
+        chat.decryptEvents(List.of(keyChangeB64), null);
+    }
+    JsonNode evt = chat.decryptEvent(encodedEvent, (Map<String, byte[]>) null, null);
+    if ("Message".equals(evt.path("type").asText())) {
+        System.out.println(evt.path("content").path("text").asText());
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+  **Serverless or multi-instance?** The signing-key store and key cache live in the SDK instance's memory. Where that doesn't fit (one invocation decrypts, another sends), pass keys explicitly instead: `decrypt_events(events, signing_keys)`, `decrypt_event(event_b64, conversation_keys, signing_keys)`, and the `conversation_key`/`conversation_key_version` overrides on the encrypt methods. Persist the `conversation_keys` returned by `decrypt_events` yourself and pass them back in.
+</Note>
+
+Complete poll-and-reply bots for every language: [chat-xdk/examples](https://github.com/xdevplatform/chat-xdk/tree/main/examples).
+
+***
+
+## Best practices
+
+* Keep the signing-key store fresh: re-call `set_signing_keys` with the full participant set when a sender registers a new key version, and refresh on signature verification failures
+* Deduplicate live deliveries with `event_uuid`

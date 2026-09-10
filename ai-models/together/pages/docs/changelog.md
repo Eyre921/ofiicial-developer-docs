@@ -299,6 +299,14 @@ path: docs/changelog
 </Update>
 
 <Update label="August 10, 2026">
+  ## HIPAA compliance policy on dedicated endpoint placement
+
+  Inline placement on [dedicated model inference](/docs/dedicated-endpoints/manage#placement-profiles) deployments now accepts an optional `compliancePolicy` object. Set `hipaa: true` so replicas only schedule on HIPAA-attested clusters. The policy is always enforced strictly, regardless of `constraint`, and the deployment stays unscheduled while no qualifying cluster is available.
+
+  See [Compliance policy](/docs/dedicated-endpoints/manage#compliance-policy).
+</Update>
+
+<Update label="August 10, 2026">
   ## Tokenized dataset download in the fine-tuning console
 
   Open a job on the [fine-tuning jobs dashboard](https://api.together.ai/fine-tuning). When the job has a tokenized dataset archive, the job details show a **Tokenized dataset** row with **Download**. Selecting **Download** opens a presigned archive URL in a new tab.
@@ -559,6 +567,22 @@ path: docs/changelog
   * `MiniMaxAI/MiniMax-M2.7`.
 
   See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
+<Update label="July 27, 2026">
+  ## GPU quota rejections return HTTP 429
+
+  Creating or updating a [dedicated endpoint](/docs/dedicated-endpoints/manage) deployment that would exceed your project or organization GPU quota now returns HTTP `429` with a message that names the GPU type and the would-be usage against the limit. Platform-wide capacity checks return the same status and ask you to retry later.
+
+  See [Error codes](/docs/error-codes) and [Troubleshooting](/docs/dedicated-endpoints/manage#troubleshooting).
+</Update>
+
+<Update label="July 27, 2026">
+  ## CLI get by endpoint or deployment name
+
+  `tg beta endpoints get` now accepts endpoint and deployment names in addition to IDs (`ep_...`, `dep_...`). You can also pass the name or ID directly as `tg beta endpoints <name_or_id>`. If a bare deployment name matches more than one deployment, the CLI asks for a deployment ID or a fully qualified name.
+
+  See [Get](/reference/cli/endpoints-beta#get).
 </Update>
 
 <Update label="July 27, 2026">

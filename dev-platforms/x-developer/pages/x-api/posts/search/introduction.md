@@ -106,11 +106,11 @@ Search Posts from the **last 7 days**. Available to all developers.
 * 512-character query length (4,096 for Enterprise)
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/posts/search/quickstart/recent-search">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/posts/search/quickstart/recent-search">
     Make your first recent search request
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/search-recent-posts">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/search-recent-posts">
     Full endpoint documentation
   </Card>
 </CardGroup>
@@ -133,11 +133,11 @@ Search the **complete Post archive** dating back to March 2006.
 * 1,024-character query length (4,096 for Enterprise)
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/posts/search/quickstart/full-archive-search">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/posts/search/quickstart/full-archive-search">
     Make your first full-archive search request
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/search-all-posts">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/search-all-posts">
     Full endpoint documentation
   </Card>
 </CardGroup>
@@ -155,15 +155,15 @@ Search the **complete Post archive** dating back to March 2006.
 </Note>
 
 <CardGroup>
-  <Card title="Build a query" icon="magnifying-glass" href="/x-api/posts/search/integrate/build-a-query">
+  <Card title="Build a query" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/posts/search/integrate/build-a-query">
     Learn query syntax and operators
   </Card>
 
-  <Card title="Pagination" icon="arrow-right" href="/x-api/posts/search/integrate/paginate">
+  <Card title="Pagination" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" href="/x-api/posts/search/integrate/paginate">
     Navigate through large result sets
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/posts/search/integrate/overview">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/posts/search/integrate/overview">
     Key concepts and best practices
   </Card>
 

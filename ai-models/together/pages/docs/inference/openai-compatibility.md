@@ -7,7 +7,7 @@ path: docs/inference/openai-compatibility
 Point your OpenAI Python or TypeScript client at Together AI to call open-source models without rewriting your app.
 
 <Note>
-  You can access our full OpenAPI spec here: [https://docs.together.ai/openapi.yaml](https://docs.together.ai/openapi.yaml).
+  The full OpenAPI spec is available at [openapi.yaml](https://docs.together.ai/openapi.yaml).
 </Note>
 
 Together's API is compatible with the OpenAI REST API and SDKs across chat, completions, vision, image generation, text-to-speech, and embeddings. If you have an application that uses the OpenAI Python or TypeScript client (or cURL against `api.openai.com`), you can point it at models hosted on Together with two changes: the API key and base URL.

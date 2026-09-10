@@ -22,6 +22,26 @@ The following are examples of some common Treasury for platforms use cases:
 | **Store and spend account** | Allow businesses to store funds, add recipients, and pay contractors and vendors. The accounts allow storage of money into multiple financial accounts and transfers of funds to yourself or third party recipients. |
 | **Programmatic money movement** | Facilitate money movement between your platform’s connected accounts and from connected accounts to third-party accounts. |
 
+Treasury payments relationship between customers, a platform account, connected accounts, external financial accounts, and a cardholder. (See full diagram at https://docs.stripe.com/treasury/connect/how-treasury-for-platforms-works)
+
+```text
+[customer] --> [platform]
+[customer] --> [platform]
+[customer] --> [platform]
+[platform] --> [account]
+[account] --> [Financial Account]
+[Financial Account] --> [bank]
+[bank] --> [Financial Account]
+[platform] --> [account]
+[account] --> [finaccount]
+[finaccount] --> [bank]
+[bank] --> [finaccount]
+[finaccount] --> [Card]
+[account] --> [Card]
+[Card] --> [Cardholder]
+[Cardholder] --> [account]
+```
+
 ## Connected accounts
 
 To use Treasury for platforms, you must have a Stripe [Connect](https://docs.stripe.com/connect.md) integration where your platform account provides Stripe functionality to its connected accounts. Each connected account exists as an [Account](https://docs.stripe.com/api/v2/core/accounts.md) object in the Accounts v2 API and its access to Stripe functionality is defined by its configuration capabilities, such as `merchant`, `customer`, `recipient`, or `money_manager`.

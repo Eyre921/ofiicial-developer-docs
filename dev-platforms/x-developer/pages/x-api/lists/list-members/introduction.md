@@ -11,7 +11,7 @@ The List Members endpoints let you view List members, add members to your Lists,
 ## Overview
 
 <CardGroup>
-  <Card title="View members" icon="users">
+  <Card title="View members" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-people.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=9d5f3f82edcd2a4070364193436e7980">
     Get all members of a List
   </Card>
 
@@ -23,7 +23,7 @@ The List Members endpoints let you view List members, add members to your Lists,
     Remove a user from your List
   </Card>
 
-  <Card title="Memberships" icon="list">
+  <Card title="Memberships" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5">
     See Lists a user is on
   </Card>
 </CardGroup>
@@ -78,7 +78,7 @@ curl -X POST "https://api.x.com/2/lists/1234567890/members" \
 </Note>
 
 <CardGroup>
-  <Card title="Lookup quickstart" icon="users" href="/x-api/lists/list-members/quickstart/list-members-lookup">
+  <Card title="Lookup quickstart" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-people.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=9d5f3f82edcd2a4070364193436e7980" href="/x-api/lists/list-members/quickstart/list-members-lookup">
     Get members of a List
   </Card>
 
@@ -86,11 +86,11 @@ curl -X POST "https://api.x.com/2/lists/1234567890/members" \
     Add and remove members
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/lists/list-members/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/lists/list-members/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/lists/get-list-members">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/lists/get-list-members">
     Full endpoint documentation
   </Card>
 </CardGroup>

@@ -1,5 +1,5 @@
 ---
-title: "Quickstart"
+title: "X Activity API quickstart guide for streaming events"
 source: https://docs.x.com/x-api/activity/quickstart
 path: x-api/activity/quickstart
 ---
@@ -86,7 +86,7 @@ curl -H "Authorization: Bearer YOUR_BEARER_TOKEN" \
 
 Upon successful request, your subscription will be created:
 
-```json theme={null}
+```json title="profile.update.bio" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data":[
     {
@@ -118,7 +118,7 @@ curl -H "Authorization: Bearer YOUR_BEARER_TOKEN" https://api.x.com/2/activity/s
 
 When Xdevelopers account updates their profile bio, the event will be delivered through the stream:
 
-```json theme={null}
+```json title="profile.update.bio" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "filter": {
@@ -163,9 +163,28 @@ curl -H "Authorization: Bearer YOUR_BEARER_TOKEN" \
   * The `webhook_id` field is also optional. See our [webhook docs](https://docs.x.com/x-api/webhooks/introduction) for help setting up a webhook. If a `webhook_id` is specified, the event will be delivered to the provided webhook, in addition to the stream if it is open.
 </Note>
 
+For supported event types, you can narrow which events match by adding an optional `filter.qualifiers` map. For example, to subscribe to `chat.received` events for one-on-one conversations only:
+
+```bash theme={null}
+curl -H "Authorization: Bearer YOUR_BEARER_TOKEN" \
+  -X POST \
+  https://api.x.com/2/activity/subscriptions \
+  -d '{
+    "event_type": "chat.received",
+    "filter": {
+      "user_id": "1830023695835787264",
+      "qualifiers": { "conversation_type": "direct" }
+    },
+    "webhook_id": "2090847910112202752",
+    "tag": "direct chats only"
+  }'
+```
+
+The response echoes the same `filter.qualifiers` map. See [Filter qualifiers](/x-api/activity/introduction#filter-qualifiers) for the list of supported qualifiers and their limits.
+
 **Response:**
 
-```json theme={null}
+```json title="profile.update.bio" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "subscription_id": "1976325569252868096",
@@ -192,7 +211,7 @@ curl -H "Authorization: Bearer YOUR_BEARER_TOKEN" \
 
 **Response:**
 
-```json theme={null}
+```json title="profile.update.bio" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
@@ -263,7 +282,7 @@ curl -H "Authorization: Bearer YOUR_BEARER_TOKEN" \
 
 **Response:**
 
-```json theme={null}
+```json title="profile.update.bio" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "subscription_id": "1976325569252868096",
@@ -287,7 +306,11 @@ curl -H "Authorization: Bearer YOUR_BEARER_TOKEN" \
 ## Next steps
 
 <CardGroup>
-  <Card title="API Reference" icon="code" href="/x-api/activity/activity-stream">
+  <Card title="Event payloads" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" href="/x-api/activity/event-payloads">
+    Sample JSON for each activity event type
+  </Card>
+
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/activity/activity-stream">
     Full endpoint documentation
   </Card>
 

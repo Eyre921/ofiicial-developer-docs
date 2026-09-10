@@ -15,11 +15,11 @@ The X API opens up possibilities across moderation, analytics, community buildin
 Help create healthier conversations on X.
 
 <CardGroup>
-  <Card title="Moderation tools" icon="shield">
+  <Card title="Moderation tools" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-shield-keyhole.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=a0e05514090c8a6af232297bfb9c4055">
     Build tools to help users manage replies, filter content, and protect their experience.
   </Card>
 
-  <Card title="Anti-harassment" icon="ban">
+  <Card title="Anti-harassment" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-block.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=702a65b4001948aebcc42635b8e2eac7">
     Detect and flag abusive content, provide bulk blocking tools.
   </Card>
 </CardGroup>
@@ -50,7 +50,7 @@ Help people express themselves and grow their audience.
     Help users compose and publish long-form threads.
   </Card>
 
-  <Card title="Bots & automation" icon="robot">
+  <Card title="Bots & automation" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-ai-agents.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=53171c3a2a9432187cf705d13e24651b">
     Create helpful bots that add value to the conversation.
   </Card>
 </CardGroup>
@@ -68,19 +68,19 @@ Help people express themselves and grow their audience.
 Help users understand their impact and audience.
 
 <CardGroup>
-  <Card title="Performance dashboards" icon="chart-line">
+  <Card title="Performance dashboards" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bar-chart.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=e2a41caa858b122416f0005a55a8f143">
     Visualize engagement metrics, growth trends, and reach.
   </Card>
 
-  <Card title="Audience insights" icon="users">
+  <Card title="Audience insights" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-people.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=9d5f3f82edcd2a4070364193436e7980">
     Analyze followers, engagement patterns, and demographics.
   </Card>
 
-  <Card title="Trend analysis" icon="arrow-trend-up">
+  <Card title="Trend analysis" icon="https://mintcdn.com/x-preview/UIyI4eSwiP2OpODQ/icons/xds/icon-feather-chart-line.svg?fit=max&auto=format&n=UIyI4eSwiP2OpODQ&q=85&s=185e7e1271f798947403bb3f0c44f294">
     Track hashtags, topics, and conversation volume.
   </Card>
 
-  <Card title="Competitive analysis" icon="chart-bar">
+  <Card title="Competitive analysis" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bar-chart.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=e2a41caa858b122416f0005a55a8f143">
     Compare accounts, benchmark performance.
   </Card>
 </CardGroup>
@@ -184,7 +184,7 @@ Use the API to make a positive impact.
 Connect AI tools to the X API and build intelligent workflows.
 
 <CardGroup>
-  <Card title="MCP-powered agents" icon="robot">
+  <Card title="MCP-powered agents" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-ai-agents.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=53171c3a2a9432187cf705d13e24651b">
     Use XMCP to give AI assistants direct access to X API endpoints — create posts, search, and manage accounts via natural language.
   </Card>
 

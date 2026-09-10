@@ -32,3 +32,7 @@ Stripe processes meter events asynchronously, so aggregated usage in meter event
 
 [Use Amazon S3](https://docs.stripe.com/billing/subscriptions/usage-based/recording-usage-in-bulk.md): Use Amazon S3 to add customer usage data in bulk.
 
+## See also
+
+- [Usage-based pricing models](https://docs.stripe.com/products-prices/pricing-models.md#usage-based-pricing)
+

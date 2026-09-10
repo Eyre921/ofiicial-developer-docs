@@ -71,7 +71,7 @@ The following example sends a message and requests a response in the default for
   curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
     "messages": [
       {
@@ -160,9 +160,9 @@ The following example sends a message and requests a streaming response:
   ASSISTANT_NAME="example-assistant"
 
   curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
-    -H "Api-Key: $PINECONE_API_KEY "\
+    -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
     "messages": [
       {
@@ -373,7 +373,7 @@ To choose a non-default model for your assistant, set the `model` parameter in t
   curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
     "messages": [
       {
@@ -430,9 +430,9 @@ You can [filter which documents to use for chat completions](/guides/assistant/f
   ASSISTANT_NAME="example-assistant"
 
   curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
-    -H "Api-Key: $PINECONE_API_KEY "\
+    -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
     "messages": [
       {
@@ -500,7 +500,7 @@ To control the sampling temperature for a model, set the `temperarture` paramete
   curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
     "messages": [
       {

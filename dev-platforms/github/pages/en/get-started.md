@@ -12,7 +12,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Start your journey](/en/get-started/start-your-journey)
 
-  Brand new to GitHub? Learn the basics here.
+  <p>Brand new to GitHub? Learn the basics here.</p>
 
 * [Learn to code with GitHub Copilot](/en/get-started/learning-to-code)
 
@@ -24,7 +24,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Hello World](/en/get-started/using-github/hello-world)
 
-  <p>Follow this Hello World exercise to learn GitHub's pull request workflow.</p>
+  Follow this Hello World exercise to learn GitHub's pull request workflow.
 
 * [Getting started with your GitHub account](/en/get-started/onboarding/getting-started-with-your-github-account)
 

@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/together-code-sandbox
 path: docs/together-code-sandbox
 ---
 
-Level-up generative code tooling with fast, secure code sandboxes at scale
+Run generative code tooling in fast, secure sandboxes at scale.
 
 Together Code Sandbox offers a fully configurable development environment with fast start-up times, robust snapshotting, and a suite of mature dev tools.
 
@@ -301,7 +301,7 @@ In case you expect a high volume of VM runtime, the Enterprise plan also provide
 <Tip>
   ### For enterprise
 
-  Please [contact Sales](https://www.together.ai/contact-sales)
+  [Contact Sales](https://www.together.ai/contact-sales)
 </Tip>
 
 ### Estimating your bill

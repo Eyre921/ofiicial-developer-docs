@@ -8,22 +8,22 @@ The Blocks endpoints let you retrieve the list of users blocked by the authentic
 
 The Blocks endpoints let you retrieve the list of users blocked by the authenticated user, as well as block and unblock users.
 
-<Callout icon="key">
+<Callout icon="/icons/xds/icon-key.svg">
   The block and unblock users endpoints are only available under the Enterprise plan. You can fill out the Enterprise interest form [here](/forms/enterprise-api-interest).
 </Callout>
 
 ## Overview
 
 <CardGroup>
-  <Card title="Blocked users" icon="list">
+  <Card title="Blocked users" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5">
     Get your blocked user list
   </Card>
 
-  <Card title="Block" icon="ban">
+  <Card title="Block" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-block.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=702a65b4001948aebcc42635b8e2eac7">
     Block a user
   </Card>
 
-  <Card title="Unblock" icon="circle-check">
+  <Card title="Unblock" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59">
     Unblock a user
   </Card>
 </CardGroup>
@@ -70,15 +70,15 @@ curl -X POST "https://api.x.com/2/users/123456789/blocking" \
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/users/blocks/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/users/blocks/quickstart">
     Get started with blocks
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/users/blocks/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/users/blocks/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-blocking">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-blocking">
     Full endpoint documentation
   </Card>
 </CardGroup>

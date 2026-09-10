@@ -147,7 +147,7 @@ For detailed information about the endpoint's URL and POST body parameters, plea
 
 ### Example Request (formatted for readability)
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 
     twurl -H 'ads-api.x.com' -X POST '/12/measurement/conversions/oka17' --data '
     {

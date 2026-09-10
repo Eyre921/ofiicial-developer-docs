@@ -19,11 +19,11 @@ The Manage Direct Messages endpoints let you send and delete Direct Messages on 
     Delete a DM for yourself
   </Card>
 
-  <Card title="Create conversation" icon="comments">
+  <Card title="Create conversation" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat-unread.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=ce6313d8c0b7b4e5363f2ce80b89f7e4">
     Start a new conversation
   </Card>
 
-  <Card title="Group messages" icon="users">
+  <Card title="Group messages" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-people.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=9d5f3f82edcd2a4070364193436e7980">
     Send to group conversations
   </Card>
 </CardGroup>
@@ -89,11 +89,11 @@ You can send text messages and attach media:
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/direct-messages/manage/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/direct-messages/manage/quickstart">
     Send your first DM
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/direct-messages/manage/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/direct-messages/manage/integrate">
     Key concepts and best practices
   </Card>
 
@@ -101,7 +101,7 @@ You can send text messages and attach media:
     Retrieve DM events
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/direct-messages/create-dm-message-by-conversation-id">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/direct-messages/create-dm-message-by-conversation-id">
     Full endpoint documentation
   </Card>
 </CardGroup>

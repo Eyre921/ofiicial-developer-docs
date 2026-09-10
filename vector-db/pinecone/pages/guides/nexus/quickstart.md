@@ -51,26 +51,38 @@ Build a context from your own documents. A company knowledge base might include 
 The queries later in this quickstart draw on these files.
 
 <Steps>
-  <Step title="Create a context">
-    In your deployment's console sidebar, next to **Contexts**, click **+ New**. On the **New context** tab, enter a **Name** (for example, `Company knowledge base`) and a **Description**, then click **Create context**. The URL slug is generated from the name.
+  <Step title="Create the context">
+    In the console sidebar, next to **Contexts**, click **+ New**. The **New context** dialog opens on the **New context** tab.
+
+    Enter a **Name** (for example, `Company knowledge base`) and a **Description**, then click **Create context**. The URL slug is generated from the name.
+
+    Creating the context opens a guided setup with three steps: **Add sources**, **Design your context**, and **Review and curate**.
   </Step>
 
-  <Step title="Import sources">
-    On the **Sources** tab, click **+ Import**, then bring in your documents one of these ways:
+  <Step title="Add sources">
+    On the **Add sources** step, bring in your documents in one of these ways:
 
-    * **Upload** files or an archive.
+    * **Upload** files from your computer, individually or as an archive (`.zip`, `.tar`, `.tar.gz`, or `.tgz`).
     * Pull from a public **Hugging Face** or **GitHub** repository URL.
-    * Connect a **Box** or **Google Drive** account and import from it.
+    * Connect a **Box** or **Google Drive** account.
+
+    After you add at least one source, click **Design your context**.
   </Step>
 
-  <Step title="Design the manifest">
-    On the **Design** tab, pick a **[manifest](/guides/nexus/context-design) template** that fits your sources (for example, **General knowledge base**). The template describes the artifacts and edges it'll build and shows an estimated cost and time.
+  <Step title="Design your context">
+    On the **Design your context** step, Nexus scans your sources and suggests [manifest](/guides/nexus/context-design) templates that match. Each template describes the artifacts and edges it'll build.
+
+    Pick a template that fits, such as **General knowledge base**. If none fit, you can [design your own manifest](/guides/nexus/design-your-own-manifest) or import one under **Or start from scratch**.
+
+    Click **Review**.
   </Step>
 
-  <Step title="Curate">
-    On the **Design** tab, click **Save and curate**. Nexus [curates](/guides/nexus/how-curation-works) your sources. It chunks them, distills them into the typed artifacts the manifest defines, then indexes everything.
+  <Step title="Review and curate">
+    On the **Review and curate** step, check the artifact types, edge types, model, and estimated cost, then click **Save and curate**. The curation task opens.
 
-    You can follow the task under **Activity**. When it finishes, it reports the context is ready, with **View artifacts** and **Query this context**.
+    Nexus [curates](/guides/nexus/how-curation-works) your sources. It chunks them, distills them into the typed artifacts the manifest defines, then indexes everything.
+
+    Curation runs in the background, so you can leave the task and return to the context while it works.
   </Step>
 </Steps>
 
@@ -83,12 +95,12 @@ The queries later in this quickstart draw on these files.
 Once curation finishes, ask your context a question and get back a grounded answer with citations.
 
 <Steps>
-  <Step title="Open the Query tab">
-    Open your context's **Query** tab, and optionally pick the answering **model**.
+  <Step title="Open the context">
+    Use **Query this context** on the curation task, or open the context anytime from the console sidebar. The context opens on the **Query** tab.
   </Step>
 
   <Step title="Ask a question">
-    Type your question in the **Search this context** box and run it.
+    In the **Query this context** box on the **Query** tab, type your question and run it. You can also pick the answering **model**.
   </Step>
 </Steps>
 

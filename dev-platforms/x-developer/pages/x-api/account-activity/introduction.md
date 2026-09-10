@@ -1,10 +1,14 @@
 ---
-title: "V2 Account Activity API"
+title: "Account Activity API v2 introduction and overview"
 source: https://docs.x.com/x-api/account-activity/introduction
 path: x-api/account-activity/introduction
 ---
 
 The Account Activity API (AAA) provides a way to receive real-time events related to X. Reference for the X API v2 standard tier covering account activity.
+
+<Warning>
+  The Account Activity API (AAA) is being deprecated. Check out the [X Activity API (XAA)](/x-api/activity/introduction) for real-time user activity delivery going forward.
+</Warning>
 
 The Account Activity API (AAA) provides a way to receive real-time events related to X user accounts via webhooks. By subscribing specific user accounts to a pre-configured webhook, your application can be notified of various activities such as Posts, Direct Messages, Likes, Follows, Blocks, and more, from one or more of your owned or subscribed accounts through a single connection.
 
@@ -21,11 +25,11 @@ This API is commonly used to build applications that need to react instantly to 
     Delivers data at the speed of X — no polling required
   </Card>
 
-  <Card title="Comprehensive" icon="list">
+  <Card title="Comprehensive" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5">
     Posts, DMs, follows, likes, blocks, mutes, and more
   </Card>
 
-  <Card title="Subscription-based" icon="bell">
+  <Card title="Subscription-based" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bell.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=5e0b3dcfbb39ba3d4619931d7cd927d1">
     Subscribe user accounts to receive all their activity
   </Card>
 </CardGroup>
@@ -144,7 +148,7 @@ Below are example payloads for each Account Activity event.
 
 ### favorite\_events
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "for_user_id": "2244994945",
   "favorite_events": [{
@@ -163,7 +167,7 @@ Below are example payloads for each Account Activity event.
 
 ### follow\_events
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "for_user_id": "2244994945",
   "follow_events": [{
@@ -181,7 +185,7 @@ Below are example payloads for each Account Activity event.
 
 ### unfollow\_events
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "for_user_id": "2244994945",
   "follow_events": [{
@@ -199,7 +203,7 @@ Below are example payloads for each Account Activity event.
 
 ### block\_events
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "for_user_id": "2244994945",
   "block_events": [{
@@ -217,7 +221,7 @@ Below are example payloads for each Account Activity event.
 
 ### unblock\_events
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "for_user_id": "2244994945",
   "block_events": [{
@@ -235,7 +239,7 @@ Below are example payloads for each Account Activity event.
 
 ### mute\_events
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "for_user_id": "2244994945",
   "mute_events": [
@@ -255,7 +259,7 @@ Below are example payloads for each Account Activity event.
 
 ### unmute\_events
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "for_user_id": "2244994945",
   "mute_events": [
@@ -275,7 +279,7 @@ Below are example payloads for each Account Activity event.
 
 ### user\_event
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "user_event": {
     "revoke": {
@@ -293,7 +297,7 @@ Below are example payloads for each Account Activity event.
 
 ### direct\_message\_events
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "for_user_id": "4337869213",
   "direct_message_events": [{
@@ -359,7 +363,7 @@ Below are example payloads for each Account Activity event.
 
 ### direct\_message\_indicate\_typing\_events
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "for_user_id": "4337869213",
   "direct_message_indicate_typing_events": [{
@@ -403,7 +407,7 @@ Below are example payloads for each Account Activity event.
 
 ### direct\_message\_mark\_read\_events
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "for_user_id": "4337869213",
   "direct_message_mark_read_events": [{
@@ -450,7 +454,7 @@ Below are example payloads for each Account Activity event.
 
 ### tweet\_delete\_events
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "for_user_id": "930524282358325248",
   "tweet_delete_events": [
@@ -477,7 +481,7 @@ The V2 Account Activity API supports **longform** posts, which are posts exceedi
 
 This ensures that applications can process the entire content of longform posts, including mentions or other entities that appear later in the text. Below is an example of a `tweet_create_events` payload for a longform post:
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "for_user_id": "1603419180975409153",
   "tweet_create_events": [
@@ -604,7 +608,7 @@ For webhook management endpoints (register, view, validate, delete), see the [V2
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/account-activity/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/account-activity/quickstart">
     Set up subscriptions and start receiving events
   </Card>
 

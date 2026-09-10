@@ -148,9 +148,9 @@ Now that we understand the different operator levels within X API v2, here is th
 | include:antisocial\_offensive\_user | Available                                        |            |                                                |
 | include:sensitive\_content          | Available                                        |            |                                                |
 | source:                             | Available                                        |            |                                                |
-| min\_replies:                       | Available                                        |            |                                                |
-| min\_retweets:                      | Available                                        |            |                                                |
-| min\_faves:                         | Available                                        |            |                                                |
+| min\_replies:                       | Available                                        |            | Available                                      |
+| min\_retweets:                      | Available                                        |            | Available as min\_reposts:                     |
+| min\_faves:                         | Available                                        |            | Available as min\_likes:                       |
 | card\_name:                         | Available                                        |            |                                                |
 | card\_domain:                       | Available                                        |            |                                                |
 

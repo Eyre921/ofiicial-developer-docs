@@ -1,5 +1,5 @@
 ---
-title: "Python v2 SDK Migration Guide"
+title: "Python v2 SDK migration guide"
 source: https://docs.together.ai/docs/pythonv2-migration-guide
 path: docs/pythonv2-migration-guide
 ---
@@ -725,7 +725,7 @@ The evaluations API has significant changes including a namespace rename and res
 * Parameters restructured with typed parameter objects
 * `retrieve()` and `status()` no longer use named arguments
 
-## New SDK-Only Features
+## New SDK-only features
 
 **Raw Response Access**
 

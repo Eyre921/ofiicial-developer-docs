@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/composio
 path: docs/composio
 ---
 
-Using Composio With Together AI
+Use Composio with Together AI.
 
 Composio allows developers to integrate external tools and services into their AI applications. It handles tool calling, web-hooks, authentication, and more.
 
@@ -24,7 +24,7 @@ You need to register on a Composio account - Sign up here if you haven't already
 
 Set your `TOGETHER_API_KEY` environment variable.
 
-```sh Shell theme={null}
+```bash Shell theme={null}
 export TOGETHER_API_KEY=***
 export COMPOSIO_API_KEY=***
 ```
@@ -69,15 +69,15 @@ In this example, you will use Together AI to star a repository on GitHub using C
 
 ### Connect your GitHub account
 
-You need to have an active GitHub Integration in Composio. Learn how to do this [here](https://www.youtube.com/watch?v=LmyWy4LiedQ)
+You need to have an active GitHub Integration in Composio. See the [Composio GitHub setup video](https://www.youtube.com/watch?v=LmyWy4LiedQ).
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   request = toolset.initiate_connection(app=App.GITHUB)
   print(f"Open this URL to authenticate: {request.redirectUrl}")
   ```
 
-  ```sh Shell theme={null}
+  ```bash Shell theme={null}
   composio login
   composio add github
   ```

@@ -592,7 +592,7 @@ to use v3 features.
 The stability slider is the most important setting in v3, controlling how closely the generated voice adheres to the original reference audio.
 
 ![Stability settings in Eleven
-v3](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/291b91ec752d09b8c87004ae7091811eb8b5996c349288c88ed0c7afa1272999/assets/images/product-guides/text-to-speech/text-to-speech-v3-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260909%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260909T045828Z&X-Amz-Expires=604800&X-Amz-Signature=7c1179807e1965c07a94f78747973cc1296676220955b84f1a666d1416bc570f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+v3](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/291b91ec752d09b8c87004ae7091811eb8b5996c349288c88ed0c7afa1272999/assets/images/product-guides/text-to-speech/text-to-speech-v3-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260910%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260910T045653Z&X-Amz-Expires=604800&X-Amz-Signature=3d9c7336b1ce8e78fd728923078210ba71b51a369a994b6f818f8be72afcff8c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * **Creative:** More emotional and expressive, but prone to hallucinations.
 * **Natural:** Closest to the original voice recording—balanced and neutral.

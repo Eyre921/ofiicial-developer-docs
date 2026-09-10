@@ -58,16 +58,14 @@ curl "https://api.x.com/2/trends/by/woeid/1" \
 
 ## Example response
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
-      "trend_name": "#AI",
-      "tweet_count": 250000
+      "trend_name": "#AI"
     },
     {
-      "trend_name": "Breaking News",
-      "tweet_count": 180000
+      "trend_name": "Breaking News"
     }
   ]
 }
@@ -86,11 +84,11 @@ curl "https://api.x.com/2/trends/by/woeid/1" \
 </Note>
 
 <CardGroup>
-  <Card title="Personalized trends" icon="user" href="/x-api/trends/personalized-trends/introduction">
+  <Card title="Personalized trends" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-person.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=507a4bbcdcf5744bd18781508002e305" href="/x-api/trends/personalized-trends/introduction">
     Get trends for the authenticated user
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/trends/trends-by-woeid">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/trends/trends-by-woeid">
     Full endpoint documentation
   </Card>
 </CardGroup>

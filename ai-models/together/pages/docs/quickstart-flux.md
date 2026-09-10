@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/quickstart-flux
 path: docs/quickstart-flux
 ---
 
-Learn how to use FLUX.2, the next generation image model with advanced prompting capabilities
+Use FLUX.2, the next generation image model with advanced prompting capabilities.
 
 ## FLUX.2
 
@@ -743,4 +743,4 @@ FLUX.2 does **not** support negative prompts. Instead of saying what you don't w
 * Specify camera angle, distance, and composition type
 * Use position descriptors (foreground, midground, background)
 
-Check out all available Flux models [here](/docs/serverless/models#image-models)
+See all available FLUX models in the [image models catalog](/docs/serverless/models#image-models).

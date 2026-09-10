@@ -34,7 +34,7 @@ Error responses are served with a non-200-series HTTP code. Usually a JSON respo
 
 Typical error responses follow a similar structure to successful responses. The nature of the error will be communicated in an `errors` node of the response. The `errors/code` node will indicate a CAPS\_CASE constant error code you can programmatically consume to make resolution decisions from. The `errors/message` node will indicate a (usually) human-readable description of the error in English. Additional fields may be attached to indicate finer-grained detail about the error.
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "errors": [
     {

@@ -36,7 +36,7 @@ Use the Inference API to generate vector embeddings and rerank results using [em
 
 There are two ways to use the Inference API:
 
-* As a standalone service, through the [Rerank documents](/reference/api/latest/inference/rerank) and [Generate vectors](/reference/api/latest/inference/generate-embeddings) endpoints.
+* As a standalone service, through the [Rerank documents](/reference/api/latest/inference/rerank-results) and [Generate vectors](/reference/api/latest/inference/generate-vectors) endpoints.
 * As an integrated part of database operations, through the [Create an index with integrated embedding](/reference/api/latest/control-plane/create_for_model), [Upsert text](/reference/api/latest/data-plane/upsert_records), and [Search with text](/reference/api/latest/data-plane/search_records) endpoints.
 
 The following Pinecone SDKs support using the Inference API:

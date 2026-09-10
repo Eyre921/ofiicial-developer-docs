@@ -123,7 +123,7 @@ Treasury for platforms supports multiple financial accounts for each connected a
 
 - [Issue stablecoin-backed cards](https://docs.stripe.com/issuing/stablecoin-cards-for-financial-accounts.md)
 - [Learn how to set up Issuing as a Connect platform](https://docs.stripe.com/issuing/connect.md)
-- [Review compliance requirements pertaining to Issuing](https://docs.stripe.com/issuing/compliance-us.md)
+- [Review compliance requirements for Issuing](https://docs.stripe.com/issuing/commercial-compliance.md)
 - [Review best practices and tools for testing an Issuing integration](https://docs.stripe.com/issuing/testing.md)
 - [Learn about setting card rules to control spending](https://docs.stripe.com/issuing/controls/spending-controls.md)
 

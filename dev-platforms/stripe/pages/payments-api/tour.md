@@ -95,3 +95,7 @@ Stripe always does this part for you—and it can have several steps. (For credi
 
 When we’re done, one last object comes into play: the [Event](https://docs.stripe.com/api/events.md). We use `Event` objects to represent activity. In this case, the activity might be “the charge succeeded” or “the charge failed.” In some integrations, you write custom code to respond to events using [webhook endpoints](https://docs.stripe.com/webhooks.md). In others, such as [Checkout](https://docs.stripe.com/payments/checkout.md) or [Payment Links](https://docs.stripe.com/payment-links.md) integrations, Stripe listens for the event and provides a pre-written response.
 
+## See also
+
+- [How PaymentIntents work](https://docs.stripe.com/payments/paymentintents/lifecycle.md)
+

@@ -19562,6 +19562,161 @@ Retrieve a list of webhooks for the authenticated user.
 </ResponseExample>
 
 
+# Replay Event
+Source: https://resend.com/docs/api-reference/webhooks/replay-event
+
+POST /webhooks/:webhook_id/events/:event_id/replay
+Queue an additional delivery attempt for a webhook event.
+
+<Note>
+  Replaying an event queues one additional delivery immediately. It's the same
+  action as the [dashboard's Replay
+  button](/docs/webhooks/retries-and-replays#manual-replays) and does not affect the
+  [automatic retry schedule](/docs/webhooks/retries-and-replays#automatic-retries)
+  already running for that event.
+</Note>
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The Webhook ID.
+</ResendParamField>
+
+<ResendParamField type="string">
+  The Webhook Event ID.
+</ResendParamField>
+
+## Response Fields
+
+<ParamField type="string">
+  Always `webhook_event`.
+</ParamField>
+
+<ParamField type="string">
+  The event ID.
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.webhooks.events.replay({
+    eventId: 'msg_1srOrx2ZWZBpBUvZwXKQmoEYga2',
+    webhookId: '4dd369bc-aa82-4ff3-97de-514ae3000ee0',
+  });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $event = $resend->webhooks->events->replay(
+      '4dd369bc-aa82-4ff3-97de-514ae3000ee0',
+      'msg_1srOrx2ZWZBpBUvZwXKQmoEYga2'
+  );
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = 're_xxxxxxxxx'
+
+  replayed = resend.Webhooks.replay_event(
+      webhook_id='4dd369bc-aa82-4ff3-97de-514ae3000ee0',
+      event_id='msg_1srOrx2ZWZBpBUvZwXKQmoEYga2',
+  )
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require 'resend'
+
+  Resend.api_key = 're_xxxxxxxxx'
+
+  replayed = Resend::Webhooks.replay_event(
+    '4dd369bc-aa82-4ff3-97de-514ae3000ee0',
+    'msg_1srOrx2ZWZBpBUvZwXKQmoEYga2'
+  )
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v4"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Webhooks.ReplayEvent(
+  		"4dd369bc-aa82-4ff3-97de-514ae3000ee0",
+  		"msg_1srOrx2ZWZBpBUvZwXKQmoEYga2",
+  	)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _replayed = resend
+      .webhooks
+      .replay_event(
+        "4dd369bc-aa82-4ff3-97de-514ae3000ee0",
+        "msg_1srOrx2ZWZBpBUvZwXKQmoEYga2",
+      )
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+  import com.resend.core.exception.ResendException;
+  import com.resend.services.webhooks.model.ReplayWebhookEventResponseSuccess;
+
+  public class Main {
+      public static void main(String[] args) throws ResendException {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          ReplayWebhookEventResponseSuccess replayed = resend.webhooks().replayEvent(
+              "4dd369bc-aa82-4ff3-97de-514ae3000ee0",
+              "msg_1srOrx2ZWZBpBUvZwXKQmoEYga2"
+          );
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  var resp = await resend.WebhookEventReplayAsync(
+      new Guid( "4dd369bc-aa82-4ff3-97de-514ae3000ee0" ),
+      "msg_1srOrx2ZWZBpBUvZwXKQmoEYga2"
+  );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/webhooks/4dd369bc-aa82-4ff3-97de-514ae3000ee0/events/msg_1srOrx2ZWZBpBUvZwXKQmoEYga2/replay' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "webhook_event",
+    "id": "msg_1srOrx2ZWZBpBUvZwXKQmoEYga2"
+  }
+  ```
+</ResponseExample>
+
+
 # Update Webhook
 Source: https://resend.com/docs/api-reference/webhooks/update-webhook
 
@@ -37599,6 +37754,10 @@ As an admin of your team, you can change the role of members in your team.
 
 Upon confirmation, your team member will be given the new role.
 
+## Check team members' MFA status
+
+The **Enabled MFA** column on your [**Team Settings**](https://resend.com/settings/team) page shows a checkmark next to each member who has multi-factor authentication (MFA) enabled. Every member of the team can see this column, not just admins. There is no setting to require MFA for the whole team. See [how to add MFA](/docs/knowledge-base/how-can-i-add-mfa) for how each member enables it on their own account.
+
 ## Leave your Resend team
 
 You can leave your team by following these steps:
@@ -44436,6 +44595,12 @@ To turn off MFA on your Resend account:
 2. Click **Revoke Access**.
 
 After revoking access, you can sign in with your email and password without an authenticator code.
+
+## MFA for your team
+
+MFA is enabled per account, not per team. There is no setting to require or enforce MFA for everyone on your team. Each member enables it individually on their own [**Profile**](https://resend.com/profile) page.
+
+Every member of the team can check who has enabled MFA from the [**Team Settings**](https://resend.com/settings/team) page. The **Enabled MFA** column is not admin-only. See [Managing Teams](/docs/dashboard/settings/team) for details.
 
 
 # How to change your Resend email address
@@ -60047,29 +60212,47 @@ Learn how to add the Resend integration to your v0 project.
 
 [v0](https://v0.dev) by Vercel is a platform for building web sites, tools, apps, and projects via chat. You can add Resend in a v0 project by asking the chat to add email sending with Resend.
 
+The [v0 Resend integration](https://vercel.com/marketplace/resend) automatically sets up a new Resend account, adds a Resend API key to your v0 project's environment variables, configures DNS for Resend, and manages billing through v0.
+
+## Prerequisites
+
+Before you begin, you'll need two things:
+
+1. A Vercel v0 account with a project.
+2. A domain purchased through Vercel.
+
 ## Guide
 
+<Info>
+  Prefer a video guide? [Watch the v0 Resend integration
+  video](https://youtu.be/WSSV5Ofpxzc).
+</Info>
+
 <Steps>
-  <Step title="Add your Resend API key">
-    To use Resend with v0, you'll need to add a Resend API key, which you can create in the [Resend Dashboard](https://resend.com/api-keys).
+  <Step title="Ask v0 to add the Resend integration">
+    You can ask v0 something like:
 
-    <Note>
-      Do not share your API key with others or expose it in the browser or other
-      client-side code.
-    </Note>
-
-    <img alt="adding the Resend integration to a v0 chat" />
+    ```
+    Add an email capture to my application using Resend. Store the user's email as a Contact in Resend and send them a welcome email.
+    ```
   </Step>
 
-  <Step title="Add a custom domain to your Resend account">
-    By default, you can only send emails to your own email address.
+  <Step title="Install the integration">
+    Click **Install** to add the Resend integration to your v0 project. This will take you to the integration page, where you can follow the instructions to add email to your project.
 
-    To send emails to other email addresses:
+    <img alt="Install button called out in v0 chat" />
 
-    1. Add a [custom domain to your Resend account](/docs/add-a-domain).
-    2. Add the custom domain to the `from` field in the `resend` function in v0 (or ask the chat to update these fields).
+    The integration will automatically set up a new Resend account, add the necessary environment variables to your v0 project, and verify your domain in Resend.
+  </Step>
 
-    Get more help adding a custom domain in [Resend's documentation](/docs/dashboard/domains/introduction).
+  <Step title="Finish setup">
+    Once the integration is installed, click **Finish Setup** to complete the setup.
+
+    <img alt="Finish setup button called out in v0 chat" />
+
+    You'll be taken to the Resend dashboard, where you can confirm the domain has been verified.
+
+    Once you've confirmed your domain is verified, return to the v0 chat and tell the chat the domain is verified and which email it should use to send emails on your behalf.
   </Step>
 </Steps>
 

@@ -4,6 +4,26 @@ source: https://docs.fireworks.ai/updates/changelog
 path: updates/changelog
 ---
 
+<Update label="2026-09-09">
+  <Badge>Training</Badge>
+
+  # Training cost estimator
+
+  The new [training cost estimator](/fine-tuning/cost-estimator) helps you estimate what a training job will cost before you run it.
+
+  Managed and Serverless estimates use published per-token rates. Dedicated estimates use allocated GPU-hour rates. Planning estimates are not quotes.
+</Update>
+
+<Update label="2026-09-09">
+  <Badge>Training</Badge>
+
+  # Training skill for coding agents
+
+  A new Fireworks training skill is available for Claude Code, Cursor, Codex, and other compatible coding agents. Describe a training goal in plain language to plan a run, estimate cost, and wait for approval before spend.
+
+  See [Agent Skills](/fine-tuning/agent/use-with-coding-agents) for install commands.
+</Update>
+
 <Update label="2026-09-08">
   <Badge>Platform</Badge>
 

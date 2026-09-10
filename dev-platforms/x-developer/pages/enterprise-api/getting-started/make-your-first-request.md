@@ -1,5 +1,5 @@
 ---
-title: "Make Your First Request"
+title: "Make your first Enterprise API request"
 source: https://docs.x.com/enterprise-api/getting-started/make-your-first-request
 path: enterprise-api/getting-started/make-your-first-request
 ---
@@ -88,7 +88,7 @@ curl "https://api.x.com/2/users/by/username/xdevelopers?user.fields=created_at,d
 
 Response:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "2244994945",
@@ -190,7 +190,7 @@ Response:
     Examples in multiple languages.
   </Card>
 
-  <Card title="API reference" icon="code" href="/x-api/posts/lookup/introduction">
+  <Card title="API reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/lookup/introduction">
     Full endpoint documentation.
   </Card>
 </CardGroup>
@@ -224,7 +224,7 @@ Response:
 ## Next steps
 
 <CardGroup>
-  <Card title="Learn authentication" icon="key" href="/resources/fundamentals/authentication/overview">
+  <Card title="Learn authentication" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-key.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=de93497af2dde62afd3a06e896d330f5" href="/resources/fundamentals/authentication/overview">
     Understand OAuth for user-context requests.
   </Card>
 

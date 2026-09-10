@@ -6,6 +6,10 @@ path: x-api/account-activity/migrate/overview
 
 Step-by-step guide to migrate webhooks, subscriptions, and authentication from the legacy Account Activity API to the X API v2 equivalents.
 
+<Warning>
+  The Account Activity API (AAA) is being deprecated. Check out the [X Activity API (XAA)](/x-api/activity/introduction) for real-time user activity delivery going forward.
+</Warning>
+
 This guide helps you migrate from the legacy Enterprise Account Activity API to the V2 Account Activity API. The core functionality remains the same, but endpoint structures and authentication methods have been updated for consistency with X API v2.
 
 ### Summary of Changes

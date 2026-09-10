@@ -234,4 +234,5 @@ If you have a subscription configured to invoice this way, you can set it up to 
 
 - [Using trial periods](https://docs.stripe.com/billing/subscriptions/trials.md)
 - [Update Subscription](https://docs.stripe.com/api.md#update_subscription)
+- [Use test clocks to preview invoices](https://docs.stripe.com/billing/testing/test-clocks.md)
 

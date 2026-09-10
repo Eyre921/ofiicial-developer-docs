@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/roles-permissions
 path: docs/roles-permissions
 ---
 
-Understand organization and project role-based access control (RBAC), including the admin, developer, and editor roles, and what each can do across Together
+Understand organization and project role-based access control (RBAC), including the admin, developer, and editor roles, and what each can do across Together.
 
 Together uses role-based access control (RBAC) at both the [organization](/docs/organizations) and [project](/docs/projects) level. Every member of an organization is assigned an organization role, and every collaborator of a project is assigned a project role.
 

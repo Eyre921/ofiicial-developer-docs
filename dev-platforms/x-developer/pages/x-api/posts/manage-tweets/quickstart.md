@@ -41,7 +41,7 @@ This guide walks you through creating and deleting Posts using the X API.
         -d '{"text": "Hello from the X API!"}'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -59,7 +59,7 @@ This guide walks you through creating and deleting Posts using the X API.
       print(f"Created Post: {response.data.id}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -111,7 +111,7 @@ This guide walks you through creating and deleting Posts using the X API.
         }'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -132,7 +132,7 @@ This guide walks you through creating and deleting Posts using the X API.
       print(f"Created reply: {response.data.id}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -166,7 +166,7 @@ This guide walks you through creating and deleting Posts using the X API.
         }'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -187,7 +187,7 @@ This guide walks you through creating and deleting Posts using the X API.
       print(f"Created quote: {response.data.id}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -225,7 +225,7 @@ This guide walks you through creating and deleting Posts using the X API.
         }'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -246,7 +246,7 @@ This guide walks you through creating and deleting Posts using the X API.
       print(f"Created Post with media: {response.data.id}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -283,7 +283,7 @@ This guide walks you through creating and deleting Posts using the X API.
         }'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -304,7 +304,7 @@ This guide walks you through creating and deleting Posts using the X API.
       print(f"Created poll: {response.data.id}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -340,7 +340,7 @@ This guide walks you through creating and deleting Posts using the X API.
         }'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -361,7 +361,7 @@ This guide walks you through creating and deleting Posts using the X API.
       print(f"Created paid partnership post: {response.data.id}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -400,7 +400,7 @@ This guide walks you through creating and deleting Posts using the X API.
         -H "Authorization: Bearer $USER_ACCESS_TOKEN"
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -418,7 +418,7 @@ This guide walks you through creating and deleting Posts using the X API.
       print(f"Deleted: {response.data.deleted}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -457,15 +457,15 @@ This guide walks you through creating and deleting Posts using the X API.
 ## Next steps
 
 <CardGroup>
-  <Card title="Integration guide" icon="book" href="/x-api/posts/manage-tweets/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/posts/manage-tweets/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="Media upload" icon="image" href="/x-api/media/quickstart/media-upload-chunked">
+  <Card title="Media upload" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-photo.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=d0986097dcff55478c32801b20440ecc" href="/x-api/media/quickstart/media-upload-chunked">
     Upload media for Posts
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/create-post">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/create-post">
     Full endpoint documentation
   </Card>
 

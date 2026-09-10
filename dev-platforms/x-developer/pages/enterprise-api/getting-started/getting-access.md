@@ -117,7 +117,7 @@ You'll receive several credentials depending on your authentication needs:
     Regenerate credentials periodically as a security measure.
   </Card>
 
-  <Card title="Use minimal scopes" icon="shield-check">
+  <Card title="Use minimal scopes" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-shield-check.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=768533bde161ac68862de87449f011c3">
     Only request the OAuth permissions your app needs.
   </Card>
 </CardGroup>
@@ -127,11 +127,11 @@ You'll receive several credentials depending on your authentication needs:
 ## Next steps
 
 <CardGroup>
-  <Card title="Make your first request" icon="rocket" href="/x-api/getting-started/make-your-first-request">
+  <Card title="Make your first request" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/getting-started/make-your-first-request">
     Call the API with your new credentials.
   </Card>
 
-  <Card title="Learn about authentication" icon="key" href="/resources/fundamentals/authentication/overview">
+  <Card title="Learn about authentication" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-key.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=de93497af2dde62afd3a06e896d330f5" href="/resources/fundamentals/authentication/overview">
     Understand OAuth 1.0a and OAuth 2.0.
   </Card>
 </CardGroup>

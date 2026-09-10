@@ -27,3 +27,9 @@ To turn off MFA on your Resend account:
 2. Click **Revoke Access**.
 
 After revoking access, you can sign in with your email and password without an authenticator code.
+
+## MFA for your team
+
+MFA is enabled per account, not per team. There is no setting to require or enforce MFA for everyone on your team. Each member enables it individually on their own [**Profile**](https://resend.com/profile) page.
+
+Every member of the team can check who has enabled MFA from the [**Team Settings**](https://resend.com/settings/team) page. The **Enabled MFA** column is not admin-only. See [Managing Teams](/docs/dashboard/settings/team) for details.

@@ -8,7 +8,7 @@ This guide walks you through retrieving your block list, as well as blocking and
 
 This guide walks you through retrieving your block list, as well as blocking and unblocking users.
 
-<Callout icon="key">
+<Callout icon="/icons/xds/icon-key.svg">
   The block and unblock users endpoints are only available under the Enterprise plan. You can fill out the Enterprise interest form [here](/forms/enterprise-api-interest).
 </Callout>
 
@@ -39,7 +39,7 @@ This guide walks you through retrieving your block list, as well as blocking and
         -H "Authorization: Bearer $USER_ACCESS_TOKEN"
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
 
       client = Client(bearer_token="YOUR_USER_ACCESS_TOKEN")
@@ -54,7 +54,7 @@ This guide walks you through retrieving your block list, as well as blocking and
               print(f"{user.username} - Created: {user.created_at}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -113,7 +113,7 @@ This guide walks you through retrieving your block list, as well as blocking and
         -d '{"target_user_id": "9876543210"}'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -134,7 +134,7 @@ This guide walks you through retrieving your block list, as well as blocking and
       print(f"Blocking: {response.data.blocking}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -178,7 +178,7 @@ This guide walks you through retrieving your block list, as well as blocking and
         -H "Authorization: Bearer $USER_ACCESS_TOKEN"
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -199,7 +199,7 @@ This guide walks you through retrieving your block list, as well as blocking and
       print(f"Blocking: {response.data.blocking}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -242,11 +242,11 @@ This guide walks you through retrieving your block list, as well as blocking and
     Manage follows
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/users/blocks/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/users/blocks/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-blocking">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-blocking">
     Full endpoint documentation
   </Card>
 </CardGroup>

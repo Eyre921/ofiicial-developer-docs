@@ -63,7 +63,7 @@ Retrieve details for some or all account media associated with the current accou
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -112,7 +112,7 @@ Retrieve a specific account media object associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -152,7 +152,7 @@ Delete the specified account media object belonging to the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "video_id": null,
@@ -237,7 +237,7 @@ Retrieve details for some or all cards associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -306,7 +306,7 @@ Retrieve details for a single card associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -368,7 +368,7 @@ The JSON POST body must include a card `name` and an array of `components`. Comp
 
 The following example shows the general structure of the payload (but includes non-working information).
 
-```
+```json theme={null}
 {
   "name": "some name",
   "components": [
@@ -422,7 +422,7 @@ Each component has a set of required fields (in addition to the `type` key). The
 
 The following is an example of a `BUTTON` component in the context of the `components` array (intentionally omitting the `name` key). (The ellipses indicate places where more information would need to be specified.)
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "components": [
     {
@@ -446,7 +446,7 @@ Labels define the text shown on buttons and, therefore, only apply to the `BUTTO
 
 Building on the previous example, the following shows the `label` object within the `BUTTON` component.
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "components": [
     {
@@ -505,7 +505,7 @@ Destinations are where advertisers intend to take users. They are always require
 
 `POST https://ads-api.x.com/12/accounts/18ce54d4x5t/cards`
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "name": "components create cards",
   "components": [
@@ -531,7 +531,7 @@ Destinations are where advertisers intend to take users. They are always require
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -582,7 +582,7 @@ The JSON POST body must include the parameters that will be updated. The request
 
 The following example shows the general structure of the payload (but includes non-working information).
 
-```
+```json theme={null}
 {
   "name": "some name",
   "components": [
@@ -620,7 +620,7 @@ This example updates both the name and removes one of the media\_keys from the c
 
 `PUT https://ads-api.x.com/12/accounts/18ce54d4x5t/cards/1321554298900107264`
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "name": "changed name",
   "components": [
@@ -649,7 +649,7 @@ This example updates both the name and removes one of the media\_keys from the c
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -712,7 +712,7 @@ Delete the specified card belonging to the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -786,7 +786,7 @@ Retrieve multiple cards, by `card_uri`, associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -865,7 +865,7 @@ Retrieve a specific card, by `card_id`, associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -936,7 +936,7 @@ Retrieve details for some or all Draft Tweets associated with the current accoun
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -980,7 +980,7 @@ Retrieve a specific Draft Tweet associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -1044,7 +1044,7 @@ Create a Draft Tweet for the account's full promotable user (default) or the use
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -1109,7 +1109,7 @@ Update the specified Draft Tweet belonging to the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -1155,7 +1155,7 @@ Permanently delete the specified Draft Tweet belonging to the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -1205,7 +1205,7 @@ A successful request sends a notification to every device the authenticated user
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json theme={null}
 {
   "request": {
     "params": {
@@ -1274,7 +1274,7 @@ Retrieve details for some or all image conversation cards associated with the cu
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -1332,7 +1332,7 @@ Retrieve a specific image conversation card associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -1446,7 +1446,7 @@ See [Uploading Media](/x-api/media/quickstart/media-upload-chunked) for useful i
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "name": "image conversation card",
@@ -1570,7 +1570,7 @@ See [Uploading Media](/x-api/media/quickstart/media-upload-chunked) for useful i
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "name": "moon card",
@@ -1614,7 +1614,7 @@ Permanently delete the specified image conversation card belonging to the curren
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "name": "image conversation card",
@@ -1678,7 +1678,7 @@ Retrieve details for some or all media library objects associated with the curre
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -1725,7 +1725,7 @@ Retrieve a specific media library object associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -1804,7 +1804,7 @@ Associate a media object with the current account. For additional details, pleas
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -1875,7 +1875,7 @@ Update the specified media library object belonging to the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -1927,7 +1927,7 @@ Delete the specified media library object belonging to the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -2012,7 +2012,7 @@ Retrieve details for some or all poll cards associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -2075,7 +2075,7 @@ Retrieve a specific poll card associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -2157,7 +2157,7 @@ Create a new poll card associated with the specified account. This endpoint supp
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -2215,7 +2215,7 @@ Note: This is a hard delete. As a result, it is not possible to retrieve deleted
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "name": "poll with image",
@@ -2290,7 +2290,7 @@ Retrieve details for some or all preroll Call-To-Actions (CTAs) associated with 
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -2339,7 +2339,7 @@ Retrieve a specific Call-to-Action (CTAs) associated with this account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -2390,7 +2390,7 @@ Set the optional Call-to-Action (CTA) for a `PREROLL_VIEWS` line item.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "line_item_id": "8v53k",
@@ -2441,7 +2441,7 @@ Update the optional Call-to-Action (CTA) for a `PREROLL_VIEWS` line item.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "line_item_id": "8v53k",
@@ -2482,7 +2482,7 @@ Delete the specified preroll Call-to-Action (CTA) belonging to the current accou
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "line_item_id": "8v53k",
@@ -2539,7 +2539,7 @@ Retrieve details for some or all Scheduled Tweets associated with the current ac
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -2587,7 +2587,7 @@ Retrieve a specific Scheduled Tweet associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -2663,7 +2663,7 @@ Create a Scheduled Tweet for the account's full promotable user (default) or the
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -2741,7 +2741,7 @@ Update the specified Scheduled Tweet belonging to the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -2789,7 +2789,7 @@ Permanently delete the specified Scheduled Tweet belonging to the current accoun
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -2853,7 +2853,7 @@ Preview published, scheduled, or draft Tweets.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -2943,7 +2943,7 @@ Retrieve Tweet details for the account's full promotable user (default) or the u
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -3088,7 +3088,7 @@ When using the [upload.x.com endpoint](/x-api/media/initialize-media-upload) for
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "created_at": "Sat Jun 24 05:08:30 +0000 2017",
@@ -3161,7 +3161,7 @@ Update the specified Tweet `name` belonging to the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -3315,7 +3315,7 @@ Retrieve details for some or all video conversation cards associated with the cu
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -3375,7 +3375,7 @@ Retrieve a specific video conversation card associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -3499,7 +3499,7 @@ See [Uploading Media](/x-api/media/quickstart/media-upload-chunked) for useful i
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "name": "video conversation card",
@@ -3637,7 +3637,7 @@ See [Uploading Media](/x-api/media/quickstart/media-upload-chunked) for useful i
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "name": "developers card",
@@ -3691,7 +3691,7 @@ Permanently delete the specified video conversation card belonging to the curren
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "name": "video conversation card",

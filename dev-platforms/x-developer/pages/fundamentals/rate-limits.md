@@ -19,7 +19,7 @@ Each X API product has its own rate limiting approach:
     Per-endpoint limits based on 15-minute windows. View detailed tables and recovery tips.
   </Card>
 
-  <Card title="Enterprise API" icon="building" href="/x-api/enterprise-gnip-2.0/fundamentals/rate-limits">
+  <Card title="Enterprise API" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bank.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=6dd9ad48fa88936abb112b49e022abff" href="/x-api/enterprise-gnip-2.0/fundamentals/rate-limits">
     Custom limits based on your enterprise agreement and data package.
   </Card>
 
@@ -81,7 +81,7 @@ When you exceed a rate limit, you'll receive a **429 Too Many Requests** respons
     Store API responses locally to reduce repeated requests for the same data.
   </Card>
 
-  <Card title="Use exponential backoff" icon="clock-rotate-left">
+  <Card title="Use exponential backoff" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-history.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=6afe17587c08ee621e37afde19a07ff1">
     When rate limited, wait before retrying. Double the wait time with each retry.
   </Card>
 

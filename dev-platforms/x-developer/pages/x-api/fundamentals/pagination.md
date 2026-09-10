@@ -87,7 +87,7 @@ Check each endpoint's API reference for specific `max_results` limits.
 
 <Tabs>
   <Tab title="Python">
-    ```python theme={null}
+    ```python title="Example" lines wrap icon="python" theme={null}
     import requests
 
     def get_all_tweets(user_id, bearer_token):
@@ -116,7 +116,7 @@ Check each endpoint's API reference for specific `max_results` limits.
   </Tab>
 
   <Tab title="JavaScript">
-    ```javascript theme={null}
+    ```javascript title="Example" expandable lines wrap icon="square-js" theme={null}
     async function getAllTweets(userId, bearerToken) {
       const url = `https://api.x.com/2/users/${userId}/tweets`;
       const headers = { Authorization: `Bearer ${bearerToken}` };

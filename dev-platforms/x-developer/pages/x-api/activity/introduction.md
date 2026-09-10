@@ -4,11 +4,13 @@ source: https://docs.x.com/x-api/activity/introduction
 path: x-api/activity/introduction
 ---
 
-Overview of the X Activity API for streaming real-time user activity events such as post.create, post.delete, and profile updates from the X Platform.
+Stream real-time user activity events from the X Platform, including posts, likes, follows, mutes, blocks, DMs, mentions, and profile updates via webhooks.
+
+<BlueprintMark name="broadcast" />
 
 The X Activity API (XAA) endpoint group allows developers to tap into activity events happening on the X Platform.
 
-A developer can subscribe to events they are interested in such as `profile.update.bio`, `post.create`, `post.delete` etc. and filter for the User ID whose events they want. The matching events for that User ID will be delivered to your app with sub-second latency.
+You can subscribe to events you are interested in, such as `profile.update.bio`, `post.create`, or `post.delete`, and filter by the User ID whose events you want. XAA delivers matching events for that User ID to your app with sub-second latency.
 
 ## Delivery mechanisms
 
@@ -19,22 +21,33 @@ The X Activity API currently supports the following delivery mechanisms to send 
 
 ## Supported event types
 
-Currently, X Activity API supports the following event types, organized by category:
+Currently, X Activity API supports the following event types, organized by category. For sample JSON for each type, see [Event payloads](/x-api/activity/event-payloads).
 
 ### Post events
 
-Post events are triggered when a user creates or deletes a Post.
+Post events are triggered when the filtered user creates or deletes a Post, or when another user interacts with the filtered user's Posts (replies, quotes, reposts, and @mentions).
 
-| Event Name            | Description                                              | Filters   |
-| --------------------- | -------------------------------------------------------- | --------- |
-| `post.create`         | Fired when a user creates a Post                         | `user_id` |
-| `post.delete`         | Fired when a user deletes a Post                         | `user_id` |
-| `post.mention.create` | Fired when someone @mentions the filtered user in a Post | `user_id` |
+| Event Name            | Description                                                                                                                                                                                                                                    | Filters   |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `post.create`         | Fired when the filtered user creates a Post. Fires for standalone Posts, replies, quote Posts, and reposts by the filtered user. Inspect the payload (for example `in_reply_to_tweet_id` or `referenced_tweets`) to distinguish the Post type. | `user_id` |
+| `post.delete`         | Fired when the filtered user deletes a Post                                                                                                                                                                                                    | `user_id` |
+| `post.mention.create` | Fired when another user explicitly @mentions the filtered user in the body of a Post. Does not fire for implicit mentions carried by replies or reposts.                                                                                       | `user_id` |
+| `post.reply.create`   | Fired when a user other than the filtered user posts a direct reply to a Post by the filtered user. Direct replies only (does not fire for replies to replies).                                                                                | `user_id` |
+| `post.quote.create`   | Fired when a user other than the filtered user quote Posts a Post by the filtered user. Direct quotes only (does not fire for quotes of quotes).                                                                                               | `user_id` |
+| `post.repost.create`  | Fired when a user other than the filtered user reposts a Post by the filtered user.                                                                                                                                                            | `user_id` |
 
 <Note>
-  **Post events via XAA vs Filtered Stream:** X Activity API supports `post.create` and `post.delete` events. Subscribe by `user_id` to get real-time notifications when users create or delete Posts.
+  **Protected accounts:** Posts from protected accounts are not delivered through XAA, even when the subscribing app has user-context authorization for the filtered user.
+</Note>
+
+<Note>
+  **Post events via XAA vs Filtered Stream:** X Activity API delivers per-user Post activity by `user_id`. Subscribe to get real-time notifications when the filtered user creates or deletes Posts, or when other users reply to, quote, repost, or @mention them.
 
   If you want targeted keyword filtering, boolean logic, geo targeting, language filters, or any of the other operators that the Filtered Stream supports, use the [Filtered Stream](/x-api/posts/filtered-stream/introduction) endpoint instead.
+</Note>
+
+<Note>
+  **Billing:** Each delivered Post event (`post.create`, `post.delete`, `post.mention.create`, `post.reply.create`, `post.quote.create`, `post.repost.create`) is billed as a Post.
 </Note>
 
 ### Like events
@@ -53,12 +66,25 @@ Like events are triggered when a user likes a Post, or when one of the user's ow
 
 ### Follow events
 
-Follow events are triggered when the filtered user follows another user, or is followed by another user.
+Follow events are triggered when the filtered user follows another user, or is followed by another user. Supports the `direction` qualifier.
 
 | Event Name        | Description                              | Filters   |
 | ----------------- | ---------------------------------------- | --------- |
 | `follow.follow`   | Fired when a user follows another user   | `user_id` |
 | `follow.unfollow` | Fired when a user unfollows another user | `user_id` |
+
+### Subscription events
+
+Subscription events are triggered when the filtered user subscribes to another user, or is subscribed to by another user, using the paid subscriptions button on the profile page. Supports the `direction` qualifier.
+
+| Event Name                  | Description                                                                                                                                                                    | Filters   |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| `subscriptions.subscribe`   | Fired when a user subscribes to another user                                                                                                                                   | `user_id` |
+| `subscriptions.unsubscribe` | Fired when a user unsubscribes to another user. Emitted when the subscription actually expires, not upon cancellation, since the subscription is still active until expiration | `user_id` |
+
+<Note>
+  **Private events:** Subscription events are private and require user-context (OAuth 2.0) authentication with the `follows.read` scope. See [Event privacy and authentication](#event-privacy-and-authentication) below.
+</Note>
 
 ### Profile events
 
@@ -90,12 +116,12 @@ Chat events pertain to the new, encrypted messaging stack, or XChat.
 
 Legacy DM events pertain to the legacy, unencrypted DM system.
 
-| Event Name           | Description                                                                          | Filters   |
-| -------------------- | ------------------------------------------------------------------------------------ | --------- |
-| `dm.received`        | Fired when a user receives an unencrypted direct message                             | `user_id` |
-| `dm.sent`            | Fired when a user sends an unencrypted direct message                                | `user_id` |
-| `dm.read`            | Fired when a user reads the filtered users unencrypted DM message, or "read receipt" | `user_id` |
-| `dm.indicate_typing` | Fired when a user is typing a message to the filtered user                           | `user_id` |
+| Event Name           | Description                                                                           | Filters   |
+| -------------------- | ------------------------------------------------------------------------------------- | --------- |
+| `dm.received`        | Fired when a user receives an unencrypted direct message                              | `user_id` |
+| `dm.sent`            | Fired when a user sends an unencrypted direct message                                 | `user_id` |
+| `dm.read`            | Fired when a user reads the filtered user's unencrypted DM message, or "read receipt" | `user_id` |
+| `dm.indicate_typing` | Fired when a user is typing a message to the filtered user                            | `user_id` |
 
 ### News events
 
@@ -106,7 +132,7 @@ News events provide updates on trending topics and headlines curated by Grok.
 | `news.new` | New grok-curated trends and headlines | `keyword` |
 
 <Note>
-  **Enterprise Only:** The `news.new` event is only available to Enterprise and Partner tier accounts at this time.
+  **Enterprise only:** The `news.new` event is only available to Enterprise and Partner tier accounts at this time.
 </Note>
 
 ### Spaces events
@@ -118,11 +144,90 @@ Spaces events are triggered when a user starts or ends a Space.
 | `spaces.start` | Fired when a user starts a Space | `user_id` |
 | `spaces.end`   | Fired when a user ends a Space   | `user_id` |
 
+### Mute events
+
+Mute events are triggered when the filtered user mutes or unmutes another user.
+
+| Event Name    | Description                            | Filters   |
+| ------------- | -------------------------------------- | --------- |
+| `mute.mute`   | Fired when a user mutes another user   | `user_id` |
+| `mute.unmute` | Fired when a user unmutes another user | `user_id` |
+
+<Note>
+  **Private events:** Mute events are private and require user-context (OAuth 2.0) authentication with the `mute.read` scope. The `user_id` filter matches the user performing the mute or unmute — you cannot subscribe to notifications about a user *being* muted. See [Event privacy and authentication](#event-privacy-and-authentication) below.
+</Note>
+
+### Block events
+
+Block events are triggered when the filtered user blocks or unblocks another user.
+
+| Event Name      | Description                             | Filters   |
+| --------------- | --------------------------------------- | --------- |
+| `block.block`   | Fired when a user blocks another user   | `user_id` |
+| `block.unblock` | Fired when a user unblocks another user | `user_id` |
+
+<Note>
+  **Private events:** Block events are private and require user-context (OAuth 2.0) authentication with the `block.read` scope. The `user_id` filter matches the user performing the block or unblock — you cannot subscribe to notifications about a user *being* blocked. See [Event privacy and authentication](#event-privacy-and-authentication) below.
+</Note>
+
+### Broadcast events
+
+| Event Name        | Description                                                                       | Filters   |
+| ----------------- | --------------------------------------------------------------------------------- | --------- |
+| `broadcast.start` | Fired when a user starts a live broadcast                                         | `user_id` |
+| `broadcast.end`   | Fired when a user ends a live broadcast                                           | `user_id` |
+| `broadcast.chat`  | Fired when the filtered user receives a chat message in a broadcast that they own | `user_id` |
+
+<Note>
+  **Public events:** `broadcast.start` and `broadcast.end` are public events and can be subscribed to with either app-only or user-context authentication.
+
+  **Private event:** `broadcast.chat` is a private event and requires user-context (OAuth 2.0) authentication with the `broadcast.read` scope. See [Event privacy and authentication](#event-privacy-and-authentication) below.
+</Note>
+
+### OAuth events
+
+OAuth events are triggered when a user revokes your application's access.
+
+| Event Name     | Description                                 | Filters |
+| -------------- | ------------------------------------------- | ------- |
+| `oauth.revoke` | Fired when a user revokes app authorization | none    |
+
 In future releases, XAA will expand to support additional event types including social interactions, content engagement, monetization features, and more. We will continue to update our docs when new event types become available.
+
+## Filter qualifiers
+
+Subscriptions accept an optional `filter.qualifiers` map of event-specific predicates that narrow which events match. Each entry is a string key and string value, and a subscription can have up to 8 entries.
+
+The following qualifiers are currently supported:
+
+| Qualifier           | Values                | Supported events                                                                                          |
+| ------------------- | --------------------- | --------------------------------------------------------------------------------------------------------- |
+| `conversation_type` | `direct`, `group`     | `chat.received`                                                                                           |
+| `direction`         | `inbound`, `outbound` | `follow.follow`, `follow.unfollow`, `like.create`, `subscriptions.subscribe`, `subscriptions.unsubscribe` |
+
+The `direction` qualifier is equivalent to the top-level `filter.direction` field. Both remain supported.
+
+For example, to receive `chat.received` events for one-on-one conversations only:
+
+```json theme={null}
+{
+  "event_type": "chat.received",
+  "filter": {
+    "user_id": "1830023695835787264",
+    "qualifiers": { "conversation_type": "direct" }
+  },
+  "webhook_id": "2090847910112202752",
+  "tag": "direct chats only"
+}
+```
+
+The create, list, and update subscription responses echo `filter.qualifiers` back. The field is omitted when no qualifiers are set.
+
+If you pass an unsupported qualifier key or value, the request returns a 400 error with a descriptive message, for example: `Invalid value 'bogus' for qualifier 'conversation_type'; expected one of: direct, group`.
 
 ## Event privacy and authentication
 
-The X Activity API distinguishes between **public events** and **private events** as at parity with the X app as explained below.
+The X Activity API distinguishes between **public events** and **private events**, at parity with the X app, as explained below.
 
 ### Public events
 
@@ -132,16 +237,33 @@ Public events are activities that a public user account performs publicly that a
 
 * Profile updates (bio, picture, banner, location, URL, username changes)
 * Post creation (`post.create`) and deletion (`post.delete`)
+* Broadcast start (`broadcast.start`) and end (`broadcast.end`)
 
 For these public events, you can create subscriptions by specifying the user ID in your filter and receive them via XAA.
 
+Posts from protected accounts are not delivered, even for public events.
+
 ### Private events
 
-Private events are activities that require explicit user consent through OAuth authentication. A User has to authenticate via X and give explicit permission to a developer app to access these events.
+Private events are activities that require explicit user consent through OAuth authentication. A user must authenticate via X and grant explicit permission to a developer app to access these events.
 
 **Current private events:**
 
 * Likes (`like.create`)
+* Encrypted chat received (`chat.received`)
+* Encrypted chat sent (`chat.sent`)
+* DM received (`dm.received`)
+* DM sent (`dm.sent`)
+* DM read (`dm.read`)
+* DM typing indicator (`dm.indicate_typing`)
+* Post mentions (`post.mention.create`) — requires the `tweet.read` scope
+* Post replies (`post.reply.create`) — requires the `tweet.read` scope
+* Post quotes (`post.quote.create`) — requires the `tweet.read` scope
+* Post reposts (`post.repost.create`) — requires the `tweet.read` scope
+* Subscriptions (`subscriptions.subscribe`, `subscriptions.unsubscribe`) — requires the `follows.read` scope
+* Mutes (`mute.mute`, `mute.unmute`) — requires the `mute.read` scope
+* Blocks (`block.block`, `block.unblock`) — requires the `block.read` scope
+* Broadcast chats (`broadcast.chat`) — requires the `broadcast.read` scope
 
 **Authentication requirements for private events:**
 
@@ -156,9 +278,9 @@ The X Activity API has different subscription limits based on your account tier:
 
 | Package Tier | Maximum Subscriptions |
 | ------------ | --------------------- |
-| Self-serve   | 1000                  |
-| Enterprise   | 50,000                |
-| Partner      | 100,000               |
+| Self-serve   | 1,500                 |
+| Enterprise   | 75,000                |
+| Partner      | 150,000               |
 
 ## Endpoints
 
@@ -184,5 +306,9 @@ The X Activity API has different subscription limits based on your account tier:
 <div>
   <Button href="/x-api/activity/quickstart">
     Quick start
+  </Button>
+
+  <Button href="/x-api/activity/event-payloads">
+    Event payloads
   </Button>
 </div>

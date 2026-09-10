@@ -101,7 +101,7 @@ We've added a guide on how to [use fields and expansions](/x-api/fundamentals/da
       print(f"{user.username} - Verified: {user.verified}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -127,7 +127,7 @@ We've added a guide on how to [use fields and expansions](/x-api/fundamentals/da
     -d '{"tweet_id": "1234567890"}'
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -145,7 +145,7 @@ We've added a guide on how to [use fields and expansions](/x-api/fundamentals/da
   print(response.data)
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({

@@ -412,7 +412,7 @@ nvidia-smi pmon
 nvidia-smi -q
 ```
 
-[Learn how to SSH into nodes →](/docs/gpu-clusters-management#direct-ssh-access)
+See [Direct SSH access](/docs/gpu-clusters-management#direct-ssh-access) to connect to nodes.
 
 ## When to contact support
 

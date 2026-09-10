@@ -1,0 +1,393 @@
+---
+title: "Send images and files in X Chat"
+source: https://docs.x.com/xchat/media
+path: xchat/media
+---
+
+Share images and file attachments in your encrypted chats: encrypt, upload, send, download, and decrypt media with the Chat XDK.
+
+Images and other files use the **same conversation key** as text. Encrypt bytes with the Chat XDK (`encrypt_stream` / `decrypt_stream`), upload via the **`/2/chat/media/upload`** routes (sidebar **API reference → Media**), then attach **`media_hash_key`** on `encrypt_message`.
+
+Include **`media.write`** with your DM scopes when uploading. Use hyphenated conversation ids in paths (`:` → `-`). Prefer MIME/dimensions from **decrypted** bytes.
+
+This path is **not** the Posts media model (`expansions=attachments.media_keys`, `media.fields=variants`, etc.). Those parameters apply to **Posts**; encrypted X Chat blobs are addressed by **`media_hash_key`** and X Chat media download.
+
+```mermaid theme={null}
+flowchart LR
+    A[Plain bytes] --> B[encrypt_stream]
+    B --> C[Upload 3 steps]
+    C --> D[media_hash_key]
+    D --> E[encrypt_message + send]
+    F[GET media] --> G[decrypt_stream]
+    G --> H[Plain bytes]
+```
+
+***
+
+## Encrypt
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    from chat_xdk import detect_mime_type, detect_image_dimensions
+
+    with open("photo.jpg", "rb") as f:
+        plaintext = f.read()
+
+    mime = detect_mime_type(plaintext)
+    dims = detect_image_dimensions(plaintext)
+    width, height = dims if dims else (0, 0)
+
+    encrypted_blob = chat.encrypt_stream(plaintext, raw_conv_key)
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    import { detectMimeType, detectImageDimensions } from '@xdevplatform/chat-xdk';
+    import { readFile } from 'fs/promises';
+
+    const plaintext = await readFile('photo.jpg');
+    const mime = detectMimeType(plaintext);
+    const dims = detectImageDimensions(plaintext);
+    const width = dims?.width ?? 0;
+    const height = dims?.height ?? 0;
+
+    const encryptedBlob = chat.encryptStream(plaintext, rawConvKey);
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    use chat_xdk_core::{detect_image_dimensions, detect_mime_type};
+
+    let plaintext = std::fs::read("photo.jpg")?;
+    let _mime = detect_mime_type(&plaintext);
+    let dims = detect_image_dimensions(&plaintext);
+    let (width, height) = dims.map(|d| (d.width as i64, d.height as i64)).unwrap_or((0, 0));
+    // conv_key: &XChatConversationKey from extract_conversation_keys / decrypt_conversation_key
+    let encrypted_blob = chat.encrypt_stream(&plaintext, &conv_key)?;
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    plaintext, err := os.ReadFile("photo.jpg")
+    mime, _ := chatxdk.DetectMimeType(plaintext)
+    dims, _ := chatxdk.DetectImageDimensions(plaintext)
+    _ = mime
+    encrypted, err := chat.EncryptStream(plaintext, rawConvKey)
+    _ = dims
+    _ = encrypted
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    using ChatXdk;
+
+    byte[] plaintext = await File.ReadAllBytesAsync("photo.jpg");
+    string? mime = ChatXdkUtilities.DetectMimeType(plaintext);
+    var dims = ChatXdkUtilities.DetectImageDimensions(plaintext);
+    int width = (int)(dims?.Width ?? 0);
+    int height = (int)(dims?.Height ?? 0);
+    byte[] encryptedBlob = chat.EncryptStream(plaintext, rawConvKey);
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    import com.x.chatxdk.ChatXdkUtilities;
+    import com.x.chatxdk.Types.ImageDimensions;
+
+    byte[] plaintext = Files.readAllBytes(Path.of("photo.jpg"));
+    String mime = ChatXdkUtilities.detectMimeType(plaintext);
+    ImageDimensions dims = ChatXdkUtilities.detectImageDimensions(plaintext);
+    int width = dims != null ? (int) dims.width : 0;
+    int height = dims != null ? (int) dims.height : 0;
+    byte[] encryptedBlob = chat.encryptStream(plaintext, rawConvKey);
+    ```
+  </Tab>
+</Tabs>
+
+`encrypt_stream` / `decrypt_stream` process the whole payload in memory. For large files, `stream_encryptor()` / `stream_decryptor()` return incremental objects (`StreamEncryptor` / `StreamDecryptor`): feed chunks with `push`, then call `finish` once; `finish` errors if the stream was truncated.
+
+***
+
+## Upload
+
+| Step       | Method | Path                                 |
+| :--------- | :----- | :----------------------------------- |
+| Initialize | `POST` | `/2/chat/media/upload/initialize`    |
+| Append     | `POST` | `/2/chat/media/upload/{id}/append`   |
+| Finalize   | `POST` | `/2/chat/media/upload/{id}/finalize` |
+
+Use the request bodies on the OpenAPI pages under **API reference → Media**. Prefer **encrypted** blob size where size is required. Finalize yields **`media_hash_key`** for attachments and download. Retry transient `5xx` with backoff. Python/TypeScript may use the XDK when media helpers exist; otherwise POST with a Bearer token in any language.
+
+***
+
+## Send with an attachment
+
+Encrypt with a media attachment, then POST the send-message body (same field mapping as [Getting Started](/xchat/getting-started#5-send-a-message)). The SDK generates the `message_id` and returns it on the payload. Send that value, and reuse the same payload on retries so an id is never minted twice.
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    from xdk.chat.models import SendMessageRequest
+
+    # chat has keys loaded and set_identity called (see Getting Started)
+    payload = chat.encrypt_message(
+        conversation_id,
+        caption or "",
+        conversation_key=raw_conv_key,
+        conversation_key_version=conversation_key_version,
+        attachments=[{
+            "attachment_type": "media",
+            "media_hash_key": media_hash_key,
+            "width": width,
+            "height": height,
+            "filesize_bytes": len(plaintext),
+            "filename": "photo.jpg",
+        }],
+    )
+    client.chat.send_message(
+        conversation_id.replace(":", "-"),
+        SendMessageRequest(
+            message_id=payload.message_id,  # generated by the SDK
+            encoded_message_create_event=payload.encrypted_content,
+            encoded_message_event_signature=payload.encoded_event_signature,
+        ),
+    )
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    // chat has keys loaded and setIdentity called (see Getting Started)
+    const payload = chat.encryptMessage({
+      conversationId,
+      text: caption || '',
+      conversationKey: rawConvKey,
+      conversationKeyVersion,
+      attachments: [{
+        attachment_type: 'media',
+        media_hash_key: mediaHashKey,
+        width,
+        height,
+        filesize_bytes: plaintext.byteLength,
+        filename: 'photo.jpg',
+      }],
+    });
+    await client.chat.sendMessage(conversationId.replace(/:/g, '-'), {
+      message_id: payload.messageId, // generated by the SDK
+      encoded_message_create_event: payload.encryptedContent,
+      encoded_message_event_signature: payload.encodedEventSignature,
+    });
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    use chat_xdk_core::{AttachmentDescriptor, EncryptMessageParams};
+
+    // chat has keys loaded and set_identity called (see Getting Started)
+    let mut params = EncryptMessageParams::new(&conversation_id, caption)
+        .with_conversation_key(conv_key.to_bytes(), &conversation_key_version);
+    params.attachments = Some(vec![AttachmentDescriptor::Media {
+        media_hash_key: media_hash_key.clone(),
+        width,
+        height,
+        filesize_bytes: plaintext.len() as i64,
+        filename: "photo.jpg".into(),
+        media_type: None,
+        duration_millis: None,
+    }]);
+    let payload = chat.encrypt_message(params)?;
+    let body = serde_json::json!({
+        "message_id": payload.message_id, // generated by the SDK
+        "encoded_message_create_event": payload.encrypted_content,
+        "encoded_message_event_signature": payload.encoded_event_signature,
+    });
+    let path_id = conversation_id.replace(':', "-");
+    http.post(format!("https://api.x.com/2/chat/conversations/{path_id}/messages"))
+        .header("Authorization", &auth)
+        .json(&body)
+        .send()?;
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    // chat has keys loaded and SetIdentity called (see Getting Started)
+    payload, err := chat.EncryptMessage(chatxdk.EncryptMessageParams{
+        ConversationID:         conversationID,
+        Text:                   caption,
+        ConversationKey:        rawConvKey,
+        ConversationKeyVersion: conversationKeyVersion,
+        Attachments: []chatxdk.AttachmentDescriptor{{
+            AttachmentType: "media",
+            MediaHashKey:   mediaHashKey,
+            Width:          width,
+            Height:         height,
+            FilesizeBytes:  int64(len(plaintext)),
+            Filename:       "photo.jpg",
+        }},
+    })
+    // POST payload.MessageID (generated by the SDK), payload.EncryptedContent,
+    // and payload.EncodedEventSignature to /2/chat/conversations/{id}/messages
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    // chat has keys loaded and SetIdentity called (see Getting Started)
+    var payload = chat.EncryptMessage(new EncryptMessageParams(conversationId, caption ?? "")
+    {
+        ConversationKey = rawConvKey,
+        ConversationKeyVersion = conversationKeyVersion,
+        Attachments = new[]
+        {
+            AttachmentDescriptor.Media(mediaHashKey, width, height, plaintext.Length, "photo.jpg"),
+        },
+    });
+    // POST payload.MessageId (generated by the SDK), payload.EncryptedContent,
+    // and payload.EncodedEventSignature as for text messages
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    // chat has keys loaded and setIdentity called (see Getting Started)
+    EncryptMessageParams params =
+        new EncryptMessageParams(conversationId, caption != null ? caption : "");
+    params.conversationKey = rawConvKey;
+    params.conversationKeyVersion = conversationKeyVersion;
+    params.attachments = List.of(AttachmentDescriptor.media(
+        mediaHashKey, width, height, plaintext.length, "photo.jpg", null, null));
+    SendPayload payload = chat.encryptMessage(params);
+    // POST payload.messageId (generated by the SDK), payload.encryptedContent,
+    // and payload.encodedEventSignature to /2/chat/conversations/{id}/messages
+    ```
+  </Tab>
+</Tabs>
+
+The conversation key pair can be omitted entirely: with `set_cache_keys(true)` enabled, `encrypt_message` resolves the key and version from the conversation's latest verified key change (see [Getting Started](/xchat/getting-started)).
+
+***
+
+## Download and decrypt
+
+Path: [`GET /2/chat/media/{conversation_id}/{media_hash_key}`](/x-api/chat/download-chat-media). Response body is ciphertext. On inbound messages, read `media_hash_key` from decrypted attachments / `media_hashes`.
+
+**Pick the key by the event's key version.** Each decrypted message event carries the `keyVersion` (JS; `key_version` in the other bindings) its content was encrypted under. Decrypt an attachment with the conversation key for **that** version (`conversationKeys.keys[event.keyVersion]`), not the latest. After a key rotation (for example a member add), the latest key cannot decrypt media attached to older messages.
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    keys = result["conversation_keys"]["keys"]
+    key_for_media = keys[event["key_version"]]   # not the latest version
+    plaintext = chat.decrypt_stream(encrypted_blob, key_for_media)
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    const keys = result.conversationKeys.keys;
+    const keyForMedia = keys[event.keyVersion]; // not the latest version
+    const plaintext = chat.decryptStream(encryptedBlob, keyForMedia);
+    ```
+  </Tab>
+</Tabs>
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    import requests
+    from chat_xdk import detect_mime_type
+
+    api_id = conversation_id.replace(":", "-")
+    url = f"https://api.x.com/2/chat/media/{api_id}/{media_hash_key}"
+    r = requests.get(url, headers={"Authorization": f"Bearer {access_token}"})
+    r.raise_for_status()
+
+    plaintext = chat.decrypt_stream(r.content, raw_conv_key)
+    mime = detect_mime_type(plaintext) or "application/octet-stream"
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    import { detectMimeType } from '@xdevplatform/chat-xdk';
+
+    const apiId = conversationId.replace(/:/g, '-');
+    const res = await fetch(
+      `https://api.x.com/2/chat/media/${apiId}/${mediaHashKey}`,
+      { headers: { Authorization: `Bearer ${accessToken}` } },
+    );
+    const encryptedBlob = new Uint8Array(await res.arrayBuffer());
+    const plaintext = chat.decryptStream(encryptedBlob, rawConvKey);
+    const mime = detectMimeType(plaintext) ?? 'application/octet-stream';
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    let api_id = conversation_id.replace(':', "-");
+    let encrypted_blob = http
+        .get(format!("https://api.x.com/2/chat/media/{api_id}/{media_hash_key}"))
+        .header("Authorization", &auth)
+        .send()?
+        .bytes()?;
+    // conv_key: &XChatConversationKey from extract_conversation_keys / decrypt_conversation_key
+    let plaintext = chat.decrypt_stream(&encrypted_blob, &conv_key)?;
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    url := fmt.Sprintf("https://api.x.com/2/chat/media/%s/%s",
+        strings.ReplaceAll(conversationID, ":", "-"), mediaHashKey)
+    req, _ := http.NewRequest(http.MethodGet, url, nil)
+    req.Header.Set("Authorization", "Bearer "+accessToken)
+    resp, err := http.DefaultClient.Do(req)
+    // read body into []byte → chat.DecryptStream(encryptedBlob, rawConvKey)
+    _ = resp
+    _ = err
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    var apiId = conversationId.Replace(':', '-');
+    byte[] encryptedBlob = await http.GetByteArrayAsync(
+        $"https://api.x.com/2/chat/media/{apiId}/{mediaHashKey}");
+    byte[] plaintext = chat.DecryptStream(encryptedBlob, rawConvKey);
+    string? mime = ChatXdkUtilities.DetectMimeType(plaintext);
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    String apiId = conversationId.replace(':', '-');
+    HttpRequest req = HttpRequest.newBuilder()
+        .uri(URI.create("https://api.x.com/2/chat/media/" + apiId + "/" + mediaHashKey))
+        .header("Authorization", "Bearer " + accessToken)
+        .GET()
+        .build();
+    byte[] encryptedBlob = http.send(req, HttpResponse.BodyHandlers.ofByteArray()).body();
+    byte[] plaintext = chat.decryptStream(encryptedBlob, rawConvKey);
+    String mime = ChatXdkUtilities.detectMimeType(plaintext);
+    ```
+  </Tab>
+</Tabs>
+
+***
+
+## Tips
+
+* Use the same **conversation key version** as when the media was encrypted
+* Do not log plaintext media or raw keys
+* Detect MIME **after** decrypt
+* Web clients: encrypt/decrypt on the client when possible; keep OAuth tokens on your server
+
+Full request and response schemas for each media route are under **API reference → Media** in the sidebar (initialize upload, append chunk, finalize upload, and download media).

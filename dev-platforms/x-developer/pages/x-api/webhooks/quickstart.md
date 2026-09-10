@@ -76,7 +76,7 @@ Your application must respond with a JSON body containing a `response_token`:
 
 ### Example: Python
 
-```python theme={null}
+```python title="Example" lines wrap icon="python" theme={null}
 import hmac
 import hashlib
 import base64
@@ -105,7 +105,7 @@ def handle_crc(crc_token, consumer_secret):
 
 ### Example: Node.js
 
-```javascript theme={null}
+```javascript title="Example" lines wrap icon="square-js" theme={null}
 const crypto = require('crypto');
 
 function handleCrc(crcToken, consumerSecret) {
@@ -124,7 +124,7 @@ function handleCrc(crcToken, consumerSecret) {
 
 This example shows a complete webhook endpoint that handles both CRC validation (GET) and event delivery (POST):
 
-```python theme={null}
+```python title="Example" expandable lines wrap icon="python" theme={null}
 from flask import Flask, request, jsonify
 import hmac
 import hashlib
@@ -177,7 +177,7 @@ To verify the signature:
 3. Base64 encode the hash and prepend `sha256=`
 4. Compare your computed value to the header value — they should match
 
-```python theme={null}
+```python title="Example" expandable lines wrap icon="python" theme={null}
 import hmac
 import hashlib
 import base64
@@ -267,7 +267,7 @@ curl --request GET \
 
 **Response (with one webhook):**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
@@ -404,11 +404,11 @@ Starting local HTTP server to handle requests from ngrok tunnel...
 ## Next steps
 
 <CardGroup>
-  <Card title="Filtered Stream Webhooks" icon="filter" href="/x-api/webhooks/stream/introduction">
+  <Card title="Filtered Stream Webhooks" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e" href="/x-api/webhooks/stream/introduction">
     Receive filtered Posts via webhook
   </Card>
 
-  <Card title="Account Activity API" icon="bell" href="/x-api/account-activity/introduction">
+  <Card title="Account Activity API" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bell.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=5e0b3dcfbb39ba3d4619931d7cd927d1" href="/x-api/account-activity/introduction">
     Receive account events via webhook
   </Card>
 </CardGroup>

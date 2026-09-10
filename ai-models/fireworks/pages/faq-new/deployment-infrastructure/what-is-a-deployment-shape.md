@@ -11,12 +11,15 @@ A **deployment shape** is a pre-validated, pre-configured deployment template. I
 If you create a deployment without a shape — that is, without passing `--deployment-shape` (or `deploymentShape` in the API) — the configuration is not validated ahead of time. Mistakes only surface at creation, where they cause failures. Common examples:
 
 * A GPU count that cannot fit the model in memory
+* An accelerator type the model isn't validated on (for example, requesting H200 for a model whose shapes are all B200)
 * A context length the configuration can't serve
 * A quantization or precision the model doesn't support on that hardware
 
 Deployments created without a shape fail far more often than deployments created from a shape — they are the most common cause of failed deployment creations on Fireworks. Do not create deployments without a shape; the unshaped path may be deprecated in the future.
 
 ## How to find and use a shape
+
+The shape list is also the authoritative way to discover which GPU types, GPU counts, and precisions a model supports — a hardware combination with no shape is not a validated configuration.
 
 <Tabs>
   <Tab title="firectl">

@@ -43,9 +43,9 @@ The CLI defaults `--min-replicas` and `--max-replicas` to 1, which may differ fr
 | `--scaling-percentile [p50 \| p90 \| p95 \| p99]` | Optional percentile for the latency metrics (`ttft`, `decoding_speed`, `e2e_latency`). Defaults to `p95`.                                                                                                                                                                                                                                                                                                                        |
 | `--deployment-name [string]`                      | Name for the deployment created by this command. Defaults to a combination of the endpoint and model names.                                                                                                                                                                                                                                                                                                                      |
 | `--model-revision [string]`                       | Deprecated. Model revision ID to pin the deployment to. Prefer passing a fully qualified model path ending in `/revisions/<REVISION_ID>` as the `MODEL` argument.                                                                                                                                                                                                                                                                |
-| `--placement [string]`                            | Placement profile to use.                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `--placement [string]`                            | [Placement profile](/docs/dedicated-endpoints/manage#placement-profiles) ID (`pp_...`) to attach.                                                                                                                                                                                                                                                                                                                                |
 | `--placement.regions [string]`                    | Comma-separated inline placement regions.                                                                                                                                                                                                                                                                                                                                                                                        |
-| `--placement.constraint [required \| preferred]`  | How strictly to enforce the inline placement.                                                                                                                                                                                                                                                                                                                                                                                    |
+| `--placement.constraint [required \| preferred]`  | How strictly to enforce the inline placement regions. A [compliance policy](/docs/dedicated-endpoints/manage#compliance-policy) is not exposed in the CLI and is always enforced strictly.                                                                                                                                                                                                                                       |
 | `--enable-lora`                                   | Run the multi-LoRA kernel so adapters hot-load after deploy. Toggling this later requires a redeploy.                                                                                                                                                                                                                                                                                                                            |
 | `--traffic-weight [number]`                       | Relative capacity weight for this deployment in the endpoint's live traffic split. Set to `0` for no live traffic, or omit to leave routing unchanged.                                                                                                                                                                                                                                                                           |
 
@@ -68,16 +68,31 @@ tg beta endpoints ls
 
 ## Get
 
-Print details for an endpoint or deployment. Pass an endpoint ID (`ep_...`) to see its deployments and traffic split, or pass a deployment ID (`dep_...`) to inspect that deployment directly.
+Print details for an endpoint or deployment. Pass an endpoint name or ID (`ep_...`) to see its deployments and traffic split, or pass a deployment name or ID (`dep_...`) to inspect that deployment directly. You can also omit `get` and pass the name or ID as the first argument (`tg beta endpoints <name_or_id>`).
 
 Endpoint responses include at most the 10 newest deployment summaries per endpoint. To list every deployment, use the [deployments list API](/docs/dedicated-endpoints/manage#list-resources).
 
 ```bash Shell theme={null}
+# By name
+tg beta endpoints get my-endpoint
+
+# By ID
 tg beta endpoints get ep_abc123
 tg beta endpoints get dep_abc123
+
+# Implicit get (same as `get`)
+tg beta endpoints my-endpoint
 ```
 
+If more than one deployment shares the same bare name across endpoints, the CLI errors and asks you to pass a deployment ID (`dep_...`) or a fully qualified deployment name.
+
 With `--json`, endpoint responses expose deployment state under `deployments[].state`, while deployment responses expose it under `status.state`.
+
+### Parameters
+
+| Flag | Description                                                                                          |
+| ---- | ---------------------------------------------------------------------------------------------------- |
+| `ID` | (**required**) Endpoint name, endpoint ID (`ep_...`), deployment name, or deployment ID (`dep_...`). |
 
 ## Update
 
@@ -90,7 +105,7 @@ tg beta endpoints update dep_abc123 --min-replicas 2 --max-replicas 4
 # Scale on a specific metric and target
 tg beta endpoints update dep_abc123 --scaling-metric gpu_utilization --scaling-target 70
 
-# Stop a deployment by scaling it to zero
+# Stop a deployment by scaling it to zero (both flags required)
 tg beta endpoints update dep_abc123 --min-replicas 0 --max-replicas 0
 
 # Set a deployment's weight in the endpoint traffic split
@@ -102,6 +117,8 @@ tg beta endpoints update dep_abc123 --traffic-weight 0
 # Set an A/B variant's percent (takes from or returns to control)
 tg beta endpoints update dep_variant456 --ab-percent 20
 ```
+
+To stop a deployment, pass both `--min-replicas 0` and `--max-replicas 0`. Passing only one zero bound returns an error. Partial nonzero updates (for example, only `--min-replicas 3`) still patch that field alone.
 
 ### Parameters
 

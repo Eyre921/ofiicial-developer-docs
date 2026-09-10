@@ -40,7 +40,7 @@ The following table compares the differences between Labs and the newer X API v2
     -d '{"hidden": true}'
   ```
 
-  ```python Python theme={null}
+  ```python title="Python" lines wrap icon="python" theme={null}
   # Requires OAuth 1.0a User Context authentication
   import requests
   from requests_oauthlib import OAuth1
@@ -55,7 +55,7 @@ The following table compares the differences between Labs and the newer X API v2
   print(response.json())
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -73,7 +73,7 @@ The following table compares the differences between Labs and the newer X API v2
   print(f"Hidden: {response.data.hidden}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({

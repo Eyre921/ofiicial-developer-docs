@@ -6,6 +6,8 @@ path: x-ads-api/audiences
 
 Overview of audience targeting on X Ads, covering Custom Audiences, CRM, web, mobile, and lookalike segments used to reach users in ad campaigns.
 
+<BlueprintMark name="audiences" />
+
 **Build highly targeted audiences for your X ad campaigns using first-party data and X engagement signals.**
 
 ## Quick links

@@ -161,7 +161,7 @@ twttr.widgets.createTweet(
 
 Create a timeline widget:
 
-```javascript theme={null}
+```javascript title="Example" lines wrap icon="square-js" theme={null}
 twttr.widgets.createTimeline(
   {
     sourceType: 'profile',

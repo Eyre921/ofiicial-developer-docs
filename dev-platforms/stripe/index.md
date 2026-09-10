@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 457 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 459 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -20,12 +20,14 @@
 - `radar` — [Stripe Radar](pages/radar.md) · [原文](https://docs.stripe.com/radar.md)
 - `refunds` — [Refund and cancel payments](pages/refunds.md) · [原文](https://docs.stripe.com/refunds.md)
 - `saas` — [SaaS](pages/saas.md) · [原文](https://docs.stripe.com/saas.md)
+- `sandboxes` — [sandboxes](pages/sandboxes.md) · [原文](https://docs.stripe.com/sandboxes.md)
 - `sdks` — [Stripe SDKs](pages/sdks.md) · [原文](https://docs.stripe.com/sdks.md)
 - `security` — [Security at Stripe](pages/security.md) · [原文](https://docs.stripe.com/security.md)
 - `stripe-reports` — [reports](pages/stripe-reports.md) · [原文](https://docs.stripe.com/stripe-reports.md)
 - `tax` — [Stripe Tax](pages/tax.md) · [原文](https://docs.stripe.com/tax.md)
 - `terminal` — [features](pages/terminal.md) · [原文](https://docs.stripe.com/terminal.md)
 - `testing` — [Testing](pages/testing.md) · [原文](https://docs.stripe.com/testing.md)
+- `testing-use-cases` — [testing environment comparison](pages/testing-use-cases.md) · [原文](https://docs.stripe.com/testing-use-cases.md)
 - `upgrades` — [API upgrades](pages/upgrades.md) · [原文](https://docs.stripe.com/upgrades.md)
 - `webhooks` — [Receive Stripe events in your webhook endpoint](pages/webhooks.md) · [原文](https://docs.stripe.com/webhooks.md)
 
@@ -293,7 +295,7 @@
 - `issuing/cards/virtual` — [Virtual cards with Issuing](pages/issuing/cards/virtual.md) · [原文](https://docs.stripe.com/issuing/cards/virtual.md)
 - `issuing/categories` — [Issuing merchant categories](pages/issuing/categories.md) · [原文](https://docs.stripe.com/issuing/categories.md)
 - `issuing/choose-cards` — [Choose which type of card to issue](pages/issuing/choose-cards.md) · [原文](https://docs.stripe.com/issuing/choose-cards.md)
-- `issuing/compliance-us` — [Issuing and Treasury product marketing, design, and compliance guidelines](pages/issuing/compliance-us.md) · [原文](https://docs.stripe.com/issuing/compliance-us.md)
+- `issuing/commercial-compliance` — [Issuing and Treasury product marketing, design, and compliance guidelines](pages/issuing/commercial-compliance.md) · [原文](https://docs.stripe.com/issuing/commercial-compliance.md)
 - `issuing/connect/tos_acceptance` — [Update the Issuing terms of service acceptance](pages/issuing/connect/tos_acceptance.md) · [原文](https://docs.stripe.com/issuing/connect/tos_acceptance.md)
 - `issuing/elements` — [Using Issuing Elements](pages/issuing/elements.md) · [原文](https://docs.stripe.com/issuing/elements.md)
 - `issuing/global` — [Use Stripe Issuing in different countries](pages/issuing/global.md) · [原文](https://docs.stripe.com/issuing/global.md)

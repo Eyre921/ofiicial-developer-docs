@@ -178,7 +178,7 @@ curl "https://api.x.com/2/compliance/jobs?type=tweets" \
 ## Next steps
 
 <CardGroup>
-  <Card title="Integration guide" icon="book" href="/x-api/compliance/batch-compliance/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/compliance/batch-compliance/integrate">
     Key concepts and best practices
   </Card>
 
@@ -186,7 +186,7 @@ curl "https://api.x.com/2/compliance/jobs?type=tweets" \
     Real-time compliance events
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/compliance/create-compliance-job">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/compliance/create-compliance-job">
     Full endpoint documentation
   </Card>
 </CardGroup>

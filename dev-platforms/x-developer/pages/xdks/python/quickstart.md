@@ -24,7 +24,7 @@ pip install xdk
 
 Create a file `quickstart.py`:
 
-```python theme={null}
+```python title="Example" lines wrap icon="python" theme={null}
 # Import the client
 from xdk import Client
 # Replace with your actual Bearer Token

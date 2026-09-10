@@ -6,9 +6,9 @@ path: tools/python-xdk
 
 Install and use the official Python XDK client library for the X API v2, including authentication setup, paginated requests, and streaming examples.
 
-The [Python XDK](https://github.com/xdevplatform/xdk-py) is the official client library for the X API v2. It handles authentication, pagination, and streaming so you can focus on building.
+The [Python XDK](https://github.com/xdevplatform/xdk-python) is the official client library for the X API v2. It handles authentication, pagination, and streaming so you can focus on building.
 
-<Card title="GitHub repository" icon="github" href="https://github.com/xdevplatform/xdk-py">
+<Card title="GitHub repository" icon="github" href="https://github.com/xdevplatform/xdk-python">
   Source code, issues, and releases.
 </Card>
 
@@ -63,7 +63,7 @@ for page in client.posts.search_recent(query="X API", max_results=10):
   </Tab>
 
   <Tab title="OAuth 2.0">
-    ```python theme={null}
+    ```python title="Example" lines wrap icon="python" theme={null}
     from xdk import Client
     from xdk.oauth2_auth import OAuth2PKCEAuth
 
@@ -117,11 +117,11 @@ for page in client.posts.search_recent(query="X API", max_results=10):
     Development install, prerequisites, and verification.
   </Card>
 
-  <Card title="Quickstart" icon="rocket" href="/xdks/python/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/xdks/python/quickstart">
     Step-by-step first request walkthrough.
   </Card>
 
-  <Card title="Authentication" icon="key" href="/xdks/python/authentication">
+  <Card title="Authentication" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-key.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=de93497af2dde62afd3a06e896d330f5" href="/xdks/python/authentication">
     Detailed guide for all auth methods.
   </Card>
 
@@ -133,7 +133,7 @@ for page in client.posts.search_recent(query="X API", max_results=10):
     Real-time data via filtered stream.
   </Card>
 
-  <Card title="API Reference" icon="book" href="/xdks/python/reference/modules">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/xdks/python/reference/modules">
     Complete client and model reference.
   </Card>
 </CardGroup>

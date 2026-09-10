@@ -18,7 +18,7 @@ Create an agent that conditionally routes tasks to specialized models.
 
 ## Set up client and helper functions
 
-```py Python theme={null}
+```python Python theme={null}
 import json
 from pydantic import ValidationError
 from together import Together
@@ -72,7 +72,7 @@ def JSON_llm(user_prompt: str, schema, system_prompt: str = None):
 ## Implement workflow
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   from pydantic import BaseModel, Field
   from typing import Literal, Dict
 
@@ -108,7 +108,7 @@ def JSON_llm(user_prompt: str, schema, system_prompt: str = None):
       return response
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import dedent from "dedent";
   import assert from "node:assert";
   import Together from "together-ai";
@@ -194,7 +194,7 @@ def JSON_llm(user_prompt: str, schema, system_prompt: str = None):
 
 ## Example usage
 
-```py Python theme={null}
+```python Python theme={null}
 prompt_list = [
     "Produce python snippet to check to see if a number is prime or not.",
     "Plan and provide a short itinerary for a 2 week vacation in Europe.",
@@ -222,7 +222,7 @@ for i, prompt in enumerate(prompt_list):
 * If one model's output doesn't meet a certain confidence threshold or fails for some reason, route automatically to a fallback model.
 
 <Note>
-  ### Conditional Workflow Cookbook
+  ### Conditional workflow cookbook
 
   For a more detailed walk-through refer to the [notebook here](https://togetherai.link/agent-recipes-deep-dive-routing).
 </Note>

@@ -18,7 +18,7 @@ Netlify provides logs in the Netlify UI to help you observe and troubleshoot ser
 1. In the Netlify UI, for your chosen site, go to 
 ### NavigationPath Component:
 
-Logs & Metrics > Functions
+Cloud compute > Functions
 .
 2. Select a function from the list to open the log for that function.
 

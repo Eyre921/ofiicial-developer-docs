@@ -72,8 +72,8 @@ All pages are available in the navigation tree defined in `docs.json`.
 ## Additional Resources
 
 * OpenAPI spec: [https://docs.x.com/openapi.json](https://docs.x.com/openapi.json) (or [https://api.x.com/2/openapi.json](https://api.x.com/2/openapi.json))
-* Changelog: [https://docs.x.com/changelog.md](https://docs.x.com/changelog.md)
-* Status page: [https://docs.x.com/status.md](https://docs.x.com/status.md)
+* Changelog: [https://docs.x.com/changelog.md](https://docs.x.com/changelog.md) (RSS feed: [https://docs.x.com/changelog/rss.xml](https://docs.x.com/changelog/rss.xml))
+* Status page: [https://developer.x.com/status](https://developer.x.com/status) (incident history: [https://docs.x.com/incidents.md](https://docs.x.com/incidents.md))
 * Developer Guidelines: [https://docs.x.com/developer-guidelines.md](https://docs.x.com/developer-guidelines.md)
 * Support & Community: [https://devcommunity.x.com](https://devcommunity.x.com)
 

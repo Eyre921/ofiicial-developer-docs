@@ -6,7 +6,7 @@ path: x-api/users/blocks/migrate
 
 The block and unblock users endpoints are only available under the Enterprise plan. Reference for the X API v2 standard tier covering blocks.
 
-<Callout icon="key">
+<Callout icon="/icons/xds/icon-key.svg">
   The block and unblock users endpoints are only available under the Enterprise plan. You can fill out the Enterprise interest form [here](/forms/enterprise-api-interest).
 </Callout>
 
@@ -100,7 +100,7 @@ The following standard v1.1 request parameters accepted two request query parame
     -H "Authorization: OAuth ..."
   ```
 
-  ```python Python theme={null}
+  ```python title="Python" lines wrap icon="python" theme={null}
   # Requires OAuth 1.0a User Context authentication
   import requests
   from requests_oauthlib import OAuth1
@@ -117,7 +117,7 @@ The following standard v1.1 request parameters accepted two request query parame
   print(response.json())
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -140,7 +140,7 @@ The following standard v1.1 request parameters accepted two request query parame
           print(f"{user.username} - Verified: {user.verified}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({
@@ -176,7 +176,7 @@ The following standard v1.1 request parameters accepted two request query parame
     -d '{"target_user_id": "2244994945"}'
   ```
 
-  ```python Python theme={null}
+  ```python title="Python" lines wrap icon="python" theme={null}
   # Requires OAuth 1.0a User Context authentication
   import requests
   from requests_oauthlib import OAuth1
@@ -191,7 +191,7 @@ The following standard v1.1 request parameters accepted two request query parame
   print(response.json())
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -212,7 +212,7 @@ The following standard v1.1 request parameters accepted two request query parame
   print(f"Blocking: {response.data.blocking}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({

@@ -80,7 +80,7 @@ Learn more about getting access to the X API v2 endpoints in our [getting start
     Handle high throughput
   </Card>
 
-  <Card title="Recovery and redundancy" icon="shield" href="/x-api/fundamentals/recovery-and-redundancy">
+  <Card title="Recovery and redundancy" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-shield-keyhole.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=a0e05514090c8a6af232297bfb9c4055" href="/x-api/fundamentals/recovery-and-redundancy">
     Build resilient applications
   </Card>
 </CardGroup>

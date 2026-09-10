@@ -4,11 +4,11 @@ source: https://docs.together.ai/docs/gpu-clusters-overview
 path: docs/gpu-clusters-overview
 ---
 
-High-performance GPU clusters for training, fine-tuning, and large-scale AI workloads
+High-performance GPU clusters for training, fine-tuning, and large-scale AI workloads.
 
 <Tip>Using a coding agent? Install the [together-gpu-clusters](https://github.com/togethercomputer/skills/tree/main/skills/together-gpu-clusters) skill to let your agent write correct GPU cluster code automatically. [Learn more](/docs/agent-skills).</Tip>
 
-## What are GPU Clusters?
+## What are GPU clusters?
 
 Together GPU Clusters provide on-demand access to high-performance GPU infrastructure for training, fine-tuning, and running large-scale AI workloads. Create clusters in minutes with features like real-time scaling, persistent storage, and support for both Kubernetes and Slurm workload managers.
 
@@ -29,7 +29,7 @@ The [GPU clusters quickstart](/docs/gpu-clusters-quickstart) breaks down this fl
 
 ## Concepts
 
-### Kubernetes Cluster Architecture
+### Kubernetes cluster architecture
 
 <Frame>
   <img alt="" />
@@ -54,7 +54,7 @@ For users preferring HPC-style workflows, Together runs Slurm on top of Kubernet
 
 This architecture gives you the simplicity of `sbatch` and `srun` commands while leveraging Kubernetes' reliability, scalability, and ecosystem.
 
-## Key Features
+## Key features
 
 * **Fast provisioning** – Clusters ready in minutes, not hours or days
 * **Flexible scaling** – Scale up or down in real time to match workload demands
@@ -63,7 +63,7 @@ This architecture gives you the simplicity of `sbatch` and `srun` commands while
 * **Full API access** – Manage clusters via REST API or CLI
 * **Enterprise integration** – Works with SkyPilot and other orchestration tools
 
-## Available Hardware
+## Available hardware
 
 Choose from the latest NVIDIA GPU configurations:
 
@@ -73,11 +73,11 @@ Choose from the latest NVIDIA GPU configurations:
 
 All nodes feature high-speed InfiniBand networking for multi-node training (except inference-optimized variants).
 
-## Capacity Options
+## Capacity options
 
 GPU Clusters offer two billing modes to match different workload patterns and budget requirements. You can choose **Reserved** capacity for predictable, sustained workloads with cost savings, or **On-demand** capacity for flexible, pay-as-you-go usage.
 
-### Reserved Capacity
+### Reserved capacity
 
 Reserve GPU capacity upfront for a commitment period of 1-90 days at discounted rates.
 
@@ -98,7 +98,7 @@ Reserve GPU capacity upfront for a commitment period of 1-90 days at discounted 
 
 Note: The lifecycle of the shared volumes attached to a reserved cluster is decoupled from the clusters; i.e. storage volumes are not decommissioned when the cluster is decommissioned at the reservation expiration. Shared volumes automatically move to on-demand pricing and continue to persist, and can be attached to other clusters or deleted post data extraction.
 
-### On-demand Capacity
+### On-demand capacity
 
 Pay only for what you use with hourly billing and no upfront commitment.
 
@@ -116,7 +116,7 @@ Pay only for what you use with hourly billing and no upfront commitment.
 * Exploratory testing before committing to longer runs
 * Temporary capacity needs beyond reserved baseline
 
-### Mixing Capacity Types
+### Mixing capacity types
 
 You can combine reserved and on-demand capacity in the same cluster for optimal cost and flexibility:
 
@@ -126,7 +126,7 @@ You can combine reserved and on-demand capacity in the same cluster for optimal 
 
 Any usage beyond your reserved capacity is automatically billed at on-demand rates.
 
-### Choosing the Right Type
+### Choosing the right type
 
 **Choose Reserved if:**
 
@@ -164,7 +164,7 @@ Storage can be dynamically resized as your data grows.
 
 [Learn more about storage →](/docs/cluster-storage)
 
-## Workload Management
+## Workload management
 
 ### Kubernetes
 
@@ -186,7 +186,7 @@ For HPC-style workflows, use Slurm with:
 
 [Learn more about Slurm →](/docs/slurm)
 
-## Getting Started
+## Getting started
 
 Ready to create your first cluster?
 

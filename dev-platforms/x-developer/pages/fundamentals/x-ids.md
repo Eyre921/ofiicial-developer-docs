@@ -99,11 +99,11 @@ if (BigInt(id1) > BigInt(id2)) {
 ## Related resources
 
 <CardGroup>
-  <Card title="Data Dictionary" icon="book" href="/x-api/fundamentals/data-dictionary">
+  <Card title="Data Dictionary" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/fundamentals/data-dictionary">
     See ID fields for each object type.
   </Card>
 
-  <Card title="Post Lookup" icon="magnifying-glass" href="/x-api/posts/lookup/introduction">
+  <Card title="Post Lookup" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/posts/lookup/introduction">
     Retrieve posts by ID.
   </Card>
 </CardGroup>

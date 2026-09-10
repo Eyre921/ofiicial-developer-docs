@@ -515,19 +515,11 @@ If the task is still `queued`, `running`, or `retrying`, wait at least the sugge
 
 ## Rate limits
 
-Standard [API request limits](/reference/request-limits) apply per user's usage of Notion MCP (totaled across all tool calls). Currently, this is an average of **180 requests per minute** (3 requests per second). A separate limit applies per workspace, shared across all of its connections and scaled to the workspace's plan. Because it's shared, you can be rate limited even when you're under the per-user limit above.
+Standard [API request limits](/reference/request-limits) apply per user's usage of Notion MCP, totaled across all tool calls.
 
 Some MCP tools have additional, tool-specific rate limits that are stricter. These are subject to change over time, but the current values are listed below for reference:
 
-* **Keyword `notion-search`** (including user lookups): 30 requests per minute. `notion-ai-search` uses the standard per-user limit above.
-
-### Examples
-
-To illustrate the above limitations, you'll experience rate limit errors in your MCP client of choice in any of the following example scenarios (assuming we take the average rate over a large enough time window):
-
-* 35 keyword `notion-search` calls per minute (exceeds the keyword-search-specific limit)
-* 12 keyword `notion-search` calls & 170 fetches per minute (exceeds the general 180 requests/min limit)
-* 185 fetches per minute (exceeds general 180 requests/min limit)
+* **Keyword `notion-search`** (including user lookups): 30 requests per minute. These calls also count toward the standard per-user limit. `notion-ai-search` has no tool-specific limit.
 
 ### What to do if you're rate-limited
 

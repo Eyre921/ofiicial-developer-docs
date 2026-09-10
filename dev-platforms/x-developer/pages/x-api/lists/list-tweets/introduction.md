@@ -11,7 +11,7 @@ The List Posts endpoint lets you retrieve Posts from a List's timeline. Get the 
 ## Overview
 
 <CardGroup>
-  <Card title="List timeline" icon="list">
+  <Card title="List timeline" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5">
     Get Posts from List members
   </Card>
 
@@ -54,19 +54,19 @@ max_results=100" \
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/lists/list-tweets/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/lists/list-tweets/quickstart">
     Get Posts from a List
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/lists/list-tweets/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/lists/list-tweets/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="List lookup" icon="list" href="/x-api/lists/list-lookup/introduction">
+  <Card title="List lookup" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/lists/list-lookup/introduction">
     Get List details
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/lists/get-list-posts">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/lists/get-list-posts">
     Full endpoint documentation
   </Card>
 </CardGroup>

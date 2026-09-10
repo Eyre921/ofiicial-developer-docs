@@ -17,7 +17,7 @@ Developer use of X materials and content is subject to and governed by our Devel
     </div>
   </Card>
 
-  <Card title="Developer Policy" icon="book" href="/developer-terms/policy">
+  <Card title="Developer Policy" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/developer-terms/policy">
     <div>
       <Button href="/developer-terms/policy">View</Button>
     </div>

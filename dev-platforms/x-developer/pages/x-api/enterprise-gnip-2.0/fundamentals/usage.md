@@ -47,7 +47,7 @@ curl -u<username>:<password> \
 "https://gnip-api.x.com/metrics/usage/accounts/<account-name>.json?bucket=month"
 ```
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "account": {
     "name": "accountnamehere"
@@ -331,7 +331,7 @@ curl -u<username>:<password> \
 
 Below is a sample of the payload:
 
-```bash theme={null}
+```bash title="Example request" expandable lines wrap icon="terminal" theme={null}
 {
   "account": {
     "name": "gnip-username"

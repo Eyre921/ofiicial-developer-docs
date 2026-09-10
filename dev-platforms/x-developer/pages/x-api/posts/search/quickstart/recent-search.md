@@ -20,7 +20,7 @@ This guide walks you through making your first recent search request to find Pos
 ***
 
 <Steps>
-  <Step title="Build a query" icon="magnifying-glass">
+  <Step title="Build a query" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834">
     Search queries use operators to match Posts. Start with a simple keyword:
 
     ```
@@ -60,7 +60,7 @@ This guide walks you through making your first recent search request to find Pos
               print(post.text)
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -119,7 +119,7 @@ This guide walks you through making your first recent search request to find Pos
         -H "Authorization: Bearer $BEARER_TOKEN"
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
 
       client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -136,7 +136,7 @@ This guide walks you through making your first recent search request to find Pos
               print(f"{post.text[:50]}... - Likes: {post.public_metrics.like_count}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -160,7 +160,7 @@ This guide walks you through making your first recent search request to find Pos
 
     **Response:**
 
-    ```json theme={null}
+    ```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -195,7 +195,7 @@ This guide walks you through making your first recent search request to find Pos
     ```
   </Step>
 
-  <Step title="Paginate through results" icon="arrow-right">
+  <Step title="Paginate through results" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e">
     The SDKs handle pagination automatically. For cURL, use the `next_token` from the response:
 
     ```bash theme={null}
@@ -206,7 +206,7 @@ This guide walks you through making your first recent search request to find Pos
       -H "Authorization: Bearer $BEARER_TOKEN"
     ```
 
-    <Card title="Pagination guide" icon="arrow-right" href="/x-api/posts/search/integrate/paginate">
+    <Card title="Pagination guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" href="/x-api/posts/search/integrate/paginate">
       Learn more about navigating large result sets
     </Card>
   </Step>
@@ -253,7 +253,7 @@ This guide walks you through making your first recent search request to find Pos
 ## Next steps
 
 <CardGroup>
-  <Card title="Build a query" icon="magnifying-glass" href="/x-api/posts/search/integrate/build-a-query">
+  <Card title="Build a query" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/posts/search/integrate/build-a-query">
     Master query syntax and operators
   </Card>
 
@@ -265,7 +265,7 @@ This guide walks you through making your first recent search request to find Pos
     Search the complete Post archive
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/search-recent-posts">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/search-recent-posts">
     Full endpoint documentation
   </Card>
 </CardGroup>

@@ -1344,6 +1344,7 @@ components:
         - Moonshot AI
         - Morph
         - VoyageAI by MongoDB
+        - Near AI
         - Nebius
         - Nex AGI
         - NextBit
@@ -1653,6 +1654,9 @@ components:
           additionalProperties: {}
           type: object
         ncompass:
+          additionalProperties: {}
+          type: object
+        near-ai:
           additionalProperties: {}
           type: object
         nebius:

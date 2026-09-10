@@ -5,4 +5,4 @@ path: x-api/webhooks/delete-stream-link
 ---
 
 delete /2/tweets/search/webhooks/{webhook_id}
-Deletes a link from FilteredStream events to the given webhook.
+Deletes the link delivering FilteredStream events to the given webhook.

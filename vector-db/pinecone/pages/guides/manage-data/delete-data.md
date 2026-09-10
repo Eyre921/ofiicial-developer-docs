@@ -118,7 +118,7 @@ Since Pinecone records can always be efficiently accessed using their ID, deleti
   curl "https://$INDEX_HOST/vectors/delete" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "ids": [
         "id-1", 
@@ -255,9 +255,9 @@ For example, the following code deletes all records with a `genre` field set to 
   INDEX_HOST="INDEX_HOST"
 
   curl -i "https://$INDEX_HOST/vectors/delete" \
-    -H 'Api-Key: $PINECONE_API_KEY' \
-    -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "filter": {"genre": {"$eq": "documentary"}},
       "namespace": "example-namespace"
@@ -359,7 +359,7 @@ To delete all of the records in a namespace but not the namespace itself, provid
   curl "https://$INDEX_HOST/vectors/delete" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "deleteAll": true,
       "namespace": "example-namespace"

@@ -51,7 +51,7 @@ twurl -H publish.x.com "/oembed?url=https://x.com/XDevelopers"
 
 ## Example Response
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "url": "https://x.com/XDevelopers",
   "title": "",

@@ -64,27 +64,27 @@ The X API provides programmatic access to X's public conversation. Retrieve post
 The X API provides access to these resource types:
 
 <CardGroup>
-  <Card title="Posts" icon="message">
+  <Card title="Posts" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=9fde7d51b4f18c96d3a38a81d519761f">
     Search, retrieve, create, and delete posts. Access timelines, threads, and quote posts.
   </Card>
 
-  <Card title="Users" icon="user">
+  <Card title="Users" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-person.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=507a4bbcdcf5744bd18781508002e305">
     Look up profiles, manage relationships, and access follower data.
   </Card>
 
-  <Card title="Spaces" icon="microphone">
+  <Card title="Spaces" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-microphone.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=84616ff8f3d942047a71ee5e0a5adab9">
     Discover live audio conversations and participants.
   </Card>
 
-  <Card title="Direct Messages" icon="envelope">
+  <Card title="Direct Messages" icon="https://mintcdn.com/x-preview/UIyI4eSwiP2OpODQ/icons/xds/icon-envelope.svg?fit=max&auto=format&n=UIyI4eSwiP2OpODQ&q=85&s=fbd38dbcd64d8688d3c9912ac30c4621">
     Send and receive private messages between users.
   </Card>
 
-  <Card title="Lists" icon="list">
+  <Card title="Lists" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5">
     Create and manage curated lists of accounts.
   </Card>
 
-  <Card title="Trends" icon="arrow-trend-up">
+  <Card title="Trends" icon="https://mintcdn.com/x-preview/UIyI4eSwiP2OpODQ/icons/xds/icon-feather-chart-line.svg?fit=max&auto=format&n=UIyI4eSwiP2OpODQ&q=85&s=185e7e1271f798947403bb3f0c44f294">
     Access trending topics by location.
   </Card>
 </CardGroup>
@@ -148,11 +148,11 @@ X API v2 uses **pay-per-usage** pricing:
 ## Next steps
 
 <CardGroup>
-  <Card title="Get access" icon="key" href="/x-api/getting-started/getting-access">
+  <Card title="Get access" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-key.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=de93497af2dde62afd3a06e896d330f5" href="/x-api/getting-started/getting-access">
     Sign up and create your first app.
   </Card>
 
-  <Card title="Make your first request" icon="rocket" href="/x-api/getting-started/make-your-first-request">
+  <Card title="Make your first request" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/getting-started/make-your-first-request">
     Call the API in minutes.
   </Card>
 </CardGroup>

@@ -25,7 +25,7 @@ Enterprise endpoints that return Post objects have been updated to provide the m
 
 In native X format, the JSON payload will include of ‘root-level’ attributes, and nested JSON objects (which are represented here with the `{}` notation):
 
-```JSON theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"created_at": "Fri Feb 14 19:00:55 +0000 2020",
 	"id_str": "1228393702244134912",
@@ -170,7 +170,7 @@ Even before the introduction of Extended Posts, the root-level "entities" object
 
 Below is an example structure for a Retweet. Again, when parsing Retweets, it is key to parse the "retweeted\_status" object for complete (original) Post message and entity metadata.
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"tweet": {
 		"text": "RT @author original message",
@@ -204,7 +204,7 @@ When Quote Tweets were first launched, a shortened link (t.co URL) was appended 
 
 Below is an example structure for a Quote Tweet using this original formatting. 
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"created_at": "Tue Feb 14 19:30:06 +0000 2017",
 	"id_str": "831586333415976960",
@@ -239,7 +239,7 @@ Below is an example structure for a Quote Tweet using this original formatting.�
 }
 ```
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"created_at": "Fri Jan 04 18:47:16 +0000 2019",
 	"id_str": "1081260794069671936",
@@ -293,7 +293,7 @@ Extended Posts are identified with a root-level "truncated" boolean. When true (
 
 Note in the JSON example below that the root-level "text" field is truncated and the root-level "entities.hashtags" array is empty even though the Post message includes three hashtags. Since this is an Extended Post, the "truncated" field is set to true, and the "extended\_tweet" object provides complete "full\_text" and "entities" Post metadata.
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"created_at": "Thu May 10 17:41:57 +0000 2018",
 	"id_str": "994633657141813248",
@@ -489,7 +489,7 @@ The geo and `coordinates` objects only present (non-null) when the Post is ass
 
 #### Examples:
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "geo": null,
   "coordinates": null,
@@ -531,7 +531,7 @@ The geo and `coordinates` objects only present (non-null) when the Post is ass
 }
 ```
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "geo": {
     "type": "Point",
@@ -856,7 +856,7 @@ In this example, the user url field contains a t.co link that is fully expan
 
 #### JSON example
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "id": 6253282,
   "id_str": "6253282",
@@ -914,7 +914,7 @@ All Posts with attached photos, videos and animated GIFs will include an `extend
 
 Posts can only have one type of media attached to it. For photos, up to four photos can be attached. For videos and GIFs, one can be attached. Since the media `type` metadata in the `extended_entities` section correctly indicates the media type (‘photo’, ‘video’ or ‘animated\_gif’), and supports up to 4 photos, it is the preferred metadata source for native media.
 
-```
+```json theme={null}
 {
       "extended_entities": {
         "media": [
@@ -936,7 +936,7 @@ Post with hashtag, user mention, cashtag, URL, and four native photos:
 
 Here is the `entities` section for this Post:
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
       "entities": {
         "hashtags": [
@@ -1032,7 +1032,7 @@ Only in this ‘extended’ payload below will you find the four (maximum) nativ
 
 Here is the `extented_entities` section for this Post:
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
     "extended_entities": {
         "media": [
@@ -1191,7 +1191,7 @@ Below is the extended entities metadata for this Post with a video:
 
 <iframe />
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
       "extended_entities": {
         "media": [
@@ -1270,7 +1270,7 @@ The `additional_media_info` will contain additional media info provided by the p
 
 Here is an example of what the extended entities object will look like in this situation:
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
       "extended_entities": {
         "media": [
@@ -1323,7 +1323,7 @@ Here is an example of what the extended entities object will look like in this s
 
 As discussed above, here is the `entities` section that incorrectly has the `type` set to ‘photo’. Again, the `extended_entities` section is preferred for all native media types, including ‘video’ and ‘animated\_gif’.
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
     "entities": {
         "hashtags": [
@@ -1387,7 +1387,7 @@ As discussed above, here is the `entities` section that incorrectly has the `typ
 
 Below is the extended entities metadata for this Post with an animated GIF:
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
       "extended_entities": {
         "media": [
@@ -1449,7 +1449,7 @@ Below is the extended entities metadata for this Post with an animated GIF:
 
 #### Post
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"created_at": "Fri Sep 18 18:36:15 +0000 2020",
 	"id": 1307025659294675000,
@@ -1545,7 +1545,7 @@ Below is the extended entities metadata for this Post with an animated GIF:
 
 #### Post reply
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"created_at": "Fri Aug 21 19:10:05 +0000 2020",
 	"id": 1296887316556980200,
@@ -1650,7 +1650,7 @@ Below is the extended entities metadata for this Post with an animated GIF:
 
 #### Extended Post
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"created_at": "Wed Aug 19 16:26:16 +0000 2020",
 	"id": 1296121314218897400,
@@ -1773,7 +1773,7 @@ Below is the extended entities metadata for this Post with an animated GIF:
 
 #### Post with extended\_entities
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"created_at": "Wed Aug 12 17:01:42 +0000 2020",
 	"id": 1293593516040269800,
@@ -2040,7 +2040,7 @@ Below is the extended entities metadata for this Post with an animated GIF:
 
 #### Retweet
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"created_at": "Tue Feb 18 19:33:59 +0000 2020",
 	"id": 1229851574555508700,
@@ -2239,7 +2239,7 @@ Below is the extended entities metadata for this Post with an animated GIF:
 
 #### Quote Tweet
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"created_at": "Mon Nov 16 18:09:36 +0000 2020",
 	"id": 1328399838128468000,
@@ -2476,7 +2476,7 @@ Below is the extended entities metadata for this Post with an animated GIF:
 
 #### Retweeted Quote Tweet
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
  {
  	"created_at": "Thu Feb 06 17:26:44 +0000 2020",
  	"id": 1225470895902412800,
@@ -3084,7 +3084,7 @@ In several cases, a Post object will included other nested Posts.  If you are 
 
 Activity streams format of Retweets includes a nested object with the type "activity" and the verb "note" to represent the original Post being Retweeted.
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"id": "tag:search.x.com,2005:222222222222",
 	"objectType": "activity",
@@ -3155,7 +3155,7 @@ Activity streams format embedded quote Tweets
 
 Retweeted Quote Tweet:
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
     	"id": "tag:search.x.com,2005:1293612267087384577",
     	"objectType": "activity",
@@ -3181,7 +3181,7 @@ Retweeted Quote Tweet:
 
 Activity streams format of the extended\_tweet
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "id": "tag:search.x.com,2005:1050118621198921728",
   "objectType": "activity",
@@ -3508,7 +3508,7 @@ The gnip object, within Activity streams format, contains the metadata added by 
 
 #### Example:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 	"gnip": {
     "matching_rules": [
       {
@@ -3531,7 +3531,7 @@ The gnip object, within Activity streams format, contains the metadata added by 
 
 Post activity
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"id": "tag:search.x.com,2005:1307025659294674945",
 	"objectType": "activity",
@@ -3620,7 +3620,7 @@ Post activity
 
 Reply Post activity
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"id": "tag:search.x.com,2005:1296887316556980230",
 	"objectType": "activity",
@@ -3718,7 +3718,7 @@ Reply Post activity
 
 Post activity with long\_object
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"id": "tag:search.x.com,2005:1296121314218897408",
 	"objectType": "activity",
@@ -3831,7 +3831,7 @@ Post activity with long\_object
 
 Post activity with `twitter_extended_entities`
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"id": "tag:search.x.com,2005:1293593516040269825",
 	"objectType": "activity",
@@ -4088,7 +4088,7 @@ Post activity with `twitter_extended_entities`
 
 Retweet activity
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"id": "tag:search.x.com,2005:1229851574555508737",
 	"objectType": "activity",
@@ -4257,7 +4257,7 @@ Retweet activity
 
 Quote Tweet activity
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
  {
  	"id": "tag:search.x.com,2005:1328399838128467969",
  	"objectType": "activity",
@@ -4463,7 +4463,7 @@ Quote Tweet activity
 
 Retweetd Quote Tweet activity
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
 	"id": "tag:search.x.com,2005:1225470895902412800",
 	"objectType": "activity",

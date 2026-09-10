@@ -53,7 +53,7 @@ You can [retrieve context snippets](/reference/api/latest/assistant/context_assi
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "accept: application/json" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "query": "Who is the CFO of Netflix?"
   }'
@@ -134,7 +134,7 @@ While additional tokens will be used for other parameters, adjusting the `top_k`
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "accept: application/json" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "query": "Who is the CFO of Netflix?",
       "top_k": 10,

@@ -34,6 +34,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Sign in to the GitHub Copilot app, connect a repository or local folder, and create your first agent session to make code changes.
 
+* [Build your first Copilot-powered app](/en/copilot/get-started/sdk-quickstart)
+
+  In this tutorial, you'll use the Copilot SDK to build a command-line assistant. You'll start with the basics, add streaming responses, then add custom tools - giving Copilot the ability to call your code.
+
 * [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot)
 
   Learn what Copilot is and what you can do with it.
@@ -653,10 +657,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Using deep links to open the GitHub Copilot app](/en/copilot/how-tos/github-copilot-app/open-with-deep-links)
 
   Use deep links to launch the GitHub Copilot app from the terminal, tickets, and internal tools, so people can jump directly into the right repository, pull request, automation, or session.
-
-* [Build your first Copilot-powered app](/en/copilot/how-tos/copilot-sdk/getting-started)
-
-  In this tutorial, you'll use the Copilot SDK to build a command-line assistant. You'll start with the basics, add streaming responses, then add custom tools - giving Copilot the ability to call your code.
 
 * [Authentication](/en/copilot/how-tos/copilot-sdk/auth/authenticate)
 

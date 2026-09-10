@@ -63,7 +63,7 @@ curl "https://api.x.com/2/tweets/1234567891?tweet.fields=edit_controls" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "1234567891",
@@ -97,7 +97,7 @@ expansions=edit_history_tweet_ids" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "1234567891",
@@ -200,11 +200,11 @@ Posts created before this date do not have edit metadata.
 ## Next steps
 
 <CardGroup>
-  <Card title="Post lookup" icon="magnifying-glass" href="/x-api/posts/lookup/introduction">
+  <Card title="Post lookup" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/posts/lookup/introduction">
     Retrieve posts with edit history.
   </Card>
 
-  <Card title="Data dictionary" icon="book" href="/x-api/fundamentals/data-dictionary">
+  <Card title="Data dictionary" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/fundamentals/data-dictionary">
     Complete post object reference.
   </Card>
 </CardGroup>

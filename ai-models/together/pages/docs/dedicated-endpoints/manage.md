@@ -101,14 +101,49 @@ Add more deployments to an endpoint to run several models or hardware configs be
 
 After you've created a deployment, you'll need to [route traffic](/docs/dedicated-endpoints/route-traffic) to it before it can serve requests.
 
+### Placement profiles
+
+Choose a placement profile to restrict which regions your deployment can run in. Placement can't be changed on an existing deployment, so set it when you deploy. You have two options:
+
+* **Attach a profile:** Pass `--placement <pp_...>` with a placement profile ID. A placement profile is a reusable, Together-managed list of preferred regions that you attach instead of repeating the same region list on every deploy.
+* **Set placement inline:** Pass `--placement.regions` with a comma-separated region list, and `--placement.constraint` (`required` or `preferred`) to control how strictly Together enforces it.
+
+Together creates and manages the list of placement profiles, so they are read-only. To see the profiles available to your project, along with their IDs and preferred regions, use the [placement profiles API](/reference/dmi/placement-profiles-list). The regions you can pass inline depend on the clusters available to your project, so a profile's preferred regions are a useful reference for valid region names.
+
+#### Compliance policy
+
+When you set inline placement, you can also pass an optional `compliancePolicy` object. The only supported policy today is `hipaa`. When set to `true`, replicas only run on HIPAA-attested clusters. Unlike the regions list, the policy is always enforced strictly, regardless of `constraint`. If no qualifying cluster is available, the deployment stays unscheduled.
+
+The CLI and SDKs don't expose `compliancePolicy` yet, but you can set it with the [create deployment API](/reference/dmi/deployments-create) when you create the deployment:
+
+```bash cURL theme={null}
+curl -X POST "https://api.together.ai/v2/projects/$PROJECT_ID/endpoints/ep_abc123/deployments" \
+  -H "Authorization: Bearer $TOGETHER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "hipaa-ready",
+    "model": "projects/proj_abc123/models/ml_abc123",
+    "config": "projects/proj_abc123/configs/cr_abc123",
+    "autoscaling": {"minReplicas": 1, "maxReplicas": 1},
+    "placement": {
+      "inline": {
+        "regions": ["us-east-1"],
+        "constraint": "ENFORCEMENT_PREFERRED",
+        "compliancePolicy": {"hipaa": true}
+      }
+    }
+  }'
+```
+
 ## Poll deployment status
 
 <Tabs>
   <Tab title="CLI / SDK">
-    To check a deployment's status, run `tg beta endpoints get` on its endpoint. The output lists up to the 10 newest deployments' `state` and ready/desired replica counts, so re-run it to watch a specific deployment come up:
+    To check a deployment's status, run `tg beta endpoints get` on its endpoint name or ID. The output lists up to the 10 newest deployments' `state` and ready/desired replica counts, so re-run it to watch a specific deployment come up:
 
     ```bash CLI theme={null}
     # Show the endpoint with each deployment's state and replica counts
+    tg beta endpoints get my-endpoint
     tg beta endpoints get ep_abc123
     ```
 
@@ -190,7 +225,7 @@ A deployment runs until you stop it. Stopping scales it to zero replicas and rel
 
 <Tabs>
   <Tab title="CLI">
-    Set both replica bounds to `0`:
+    Pass both `--min-replicas 0` and `--max-replicas 0`. The CLI rejects a stop request that sets only one bound to zero:
 
     ```bash CLI theme={null}
     tg beta endpoints update dep_abc123 --min-replicas 0 --max-replicas 0
@@ -206,7 +241,7 @@ The replicas keep serving until they finish draining, then the deployment moves 
 
 ## Restart a deployment
 
-A stopped deployment doesn't restart on its own. Only deployments in `DEPLOYMENT_STATE_STOPPED` can be restarted. A deployment in `FAILED` is terminal and can't be brought back this way; [deploy a new deployment](#create-a-deployment) instead. To restart a stopped deployment, raise both bounds to `1` or more.
+A stopped deployment doesn't restart on its own. Only deployments in `DEPLOYMENT_STATE_STOPPED` can be restarted. A deployment in `FAILED` is terminal and can't be brought back this way. [Deploy a new deployment](#create-a-deployment) instead. To restart a stopped deployment, raise both bounds to `1` or more.
 
 <Tabs>
   <Tab title="CLI">
@@ -230,7 +265,8 @@ A stopped deployment doesn't restart on its own. Only deployments in `DEPLOYMENT
     # All endpoints in the project
     tg beta endpoints ls
 
-    # One endpoint (includes up to the 10 newest deployments' state and replica counts)
+    # One endpoint by name or ID (includes up to the 10 newest deployments' state and replica counts)
+    tg beta endpoints get my-endpoint
     tg beta endpoints get ep_abc123
     ```
   </Tab>
@@ -309,6 +345,7 @@ Deletion is permanent. A deployment must be stopped before it can be deleted. Fo
 * **Model not supported:** Not every model can be deployed. See the [model catalog](/docs/dedicated-endpoints/models). A fine-tuned model deploys only if its base model is supported.
 * **Deploy fails with `the model has no revisions to deploy`:** The model record exists but has no uploaded weights yet. Finish [uploading the model](/docs/dedicated-endpoints/custom-models#upload-the-model) and wait for the upload to succeed before you deploy it.
 * **Deploy fails with a revision validation error:** When you pin a specific model or speculator revision, that revision must have passed validation first. Check `validationStatus` on the revision ([custom models](/docs/dedicated-endpoints/custom-models#check-revision-validation), [adapters](/docs/dedicated-endpoints/adapter#check-revision-validation)). Deploy the latest validated revision, or wait for the pinned revision to finish validating.
+* **Deploy or update fails with `GPU quota exceeded` (HTTP 429):** The request would put your project or organization over its per-GPU-type quota. The error message names the GPU type and the would-be total against the limit (for example, `this deployment would put your project at 116 of 100 H100 GPUs`). Lower the requested replica count, stop unused deployments on that GPU type, or [contact support](https://www.together.ai/contact) to raise the limit. When the platform itself is out of capacity for a GPU type (`GPU quota exceeded for H100`), retry later or contact support to request capacity.
 * **Deployment delete fails with `the deployment is referenced by an endpoint's traffic split and cannot be deleted; please drop traffic split weight to 0 before deleting the deployment` (HTTP 400):** The deployment still has weight in the endpoint's [traffic split](/docs/dedicated-endpoints/route-traffic). Set its weight to 0 (or remove it from the split) before deleting. The CLI's `tg beta endpoints rm dep_...` detaches it automatically.
 
 ## Next steps

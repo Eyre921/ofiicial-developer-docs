@@ -27,7 +27,7 @@ This guide walks you through using the Community Notes API to search for eligibl
 ## Find Posts eligible for notes
 
 <Steps>
-  <Step title="Search for eligible Posts" icon="magnifying-glass">
+  <Step title="Search for eligible Posts" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834">
     <Tabs>
       <Tab title="cURL">
         ```bash theme={null}
@@ -169,7 +169,7 @@ This guide walks you through using the Community Notes API to search for eligibl
 
 Retrieve notes you've written:
 
-```python theme={null}
+```python title="Example" lines wrap icon="python" theme={null}
 from requests_oauthlib import OAuth1Session
 import json
 
@@ -189,7 +189,7 @@ print(json.dumps(response.json(), indent=2))
 
 **Response:**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
@@ -268,7 +268,7 @@ print(json.dumps(response.json(), indent=2))
 ## Next steps
 
 <CardGroup>
-  <Card title="Community Notes Guide" icon="book" href="https://communitynotes.x.com/guide/en/api/overview">
+  <Card title="Community Notes Guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="https://communitynotes.x.com/guide/en/api/overview">
     Official Community Notes documentation
   </Card>
 

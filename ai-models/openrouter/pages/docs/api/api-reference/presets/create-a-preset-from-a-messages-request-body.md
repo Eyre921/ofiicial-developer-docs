@@ -2053,6 +2053,18 @@ components:
       example:
         prefix_mismatch_behavior: drop_block
       properties:
+        mismatch_behavior:
+          deprecated: true
+          description: >-
+            Deprecated: legacy alias of prefix_mismatch_behavior. Send only one
+            of the two.
+          enum:
+            - error
+            - drop_block
+            - null
+          type:
+            - string
+            - 'null'
         prefix_mismatch_behavior:
           enum:
             - error
@@ -3078,6 +3090,7 @@ components:
         - Moonshot AI
         - Morph
         - VoyageAI by MongoDB
+        - Near AI
         - Nebius
         - Nex AGI
         - NextBit

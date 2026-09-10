@@ -1,5 +1,5 @@
 ---
-title: "X Ads API for campaign, audience, and creative management"
+title: "Introduction"
 source: https://docs.x.com/x-ads-api/introduction
 path: x-ads-api/introduction
 ---
@@ -21,9 +21,10 @@ The X Ads API connects developers to X's advertising platform to build solutions
   <Card title="Custom audiences" href="/x-ads-api/audiences" icon="user-group">Create and manage Tailored Audiences using X, web or mobile data you provide.</Card>
   <Card title="Creatives" href="/x-ads-api/creatives" icon="paintbrush">Draft and publish posts, extend the functionality of posts with Cards and manage and upload images and videos.</Card>
   <Card title="Advertising analytics" href="/x-ads-api/analytics" icon="chart-pie">Use async and synchronous API endpoints to retrieve granular insights of ad campaigns by a full range of metrics.</Card>
-  <Card title="Tools and libraries" href="/x-ads-api/tools-and-libraries" icon="screwdriver-wrench">Check out our curated selection of X-built and community-supported client libraries.</Card>
-  <Card title="Postman collection" href="https://documenter.getpostman.com/view/7379786/SzRw1WTU" icon="code">Explore our v2 endpoints with a curated Postman collection and visual client.</Card>
+  <Card title="Tools and libraries" href="/x-ads-api/tools-and-libraries" icon="https://mintcdn.com/x-preview/jLbdFJYHCS9a6gmb/icons/xds/icon-wrench.svg?fit=max&auto=format&n=jLbdFJYHCS9a6gmb&q=85&s=c3f1761285cd013a76037d1d537f10ed">Check out our curated selection of X-built and community-supported client libraries.</Card>
+  <Card title="Postman collection" href="https://documenter.getpostman.com/view/7379786/SzRw1WTU" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219">Explore our v2 endpoints with a curated Postman collection and visual client.</Card>
   <Card title="Command line tool" href="https://github.com/xdevplatform/xurl" icon="terminal">Work with our endpoints from your terminal using xurl.</Card>
+  <Card title="X Ads MCP" href="/x-ads-api/mcp" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-ai-agents.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=53171c3a2a9432187cf705d13e24651b">Connect AI tools to the X Ads API.</Card>
 </CardGroup>
 
 ## Get Ads API access

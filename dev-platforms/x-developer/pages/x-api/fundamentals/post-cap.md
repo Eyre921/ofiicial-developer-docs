@@ -19,7 +19,7 @@ X API v2 uses **pay-per-usage** pricing. You're charged based on actual API cons
 | **Real-time tracking**  | Monitor usage in the Developer Console                |
 
 <Note>
-  Pay-per-usage plans are subject to a monthly cap of 2 million Post reads. If you need higher volume, consider an [Enterprise plan](/forms/enterprise-api-interest).
+  Pay-per-usage plans are subject to a monthly cap of 3 million Post reads. If you need higher volume, consider an [Enterprise plan](/forms/enterprise-api-interest).
 </Note>
 
 ***
@@ -75,7 +75,7 @@ Track your usage in the [Developer Console](https://console.x.com):
     Configure spending limits in the Developer Console.
   </Card>
 
-  <Card title="Monitor alerts" icon="bell">
+  <Card title="Monitor alerts" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bell.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=5e0b3dcfbb39ba3d4619931d7cd927d1">
     Get notified before hitting budget thresholds.
   </Card>
 
@@ -83,7 +83,7 @@ Track your usage in the [Developer Console](https://console.x.com):
     Cache responses to avoid re-fetching the same posts.
   </Card>
 
-  <Card title="Optimize queries" icon="filter">
+  <Card title="Optimize queries" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e">
     Use precise filters to retrieve only needed posts.
   </Card>
 </CardGroup>
@@ -112,7 +112,7 @@ For high-volume needs with custom pricing:
 * Complete data access
 
 <CardGroup>
-  <Card title="Contact Enterprise Sales" icon="building" href="/enterprise/forms/enterprise-api-interest">
+  <Card title="Contact Enterprise Sales" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bank.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=6dd9ad48fa88936abb112b49e022abff" href="/enterprise/forms/enterprise-api-interest">
     Discuss custom solutions for your needs.
   </Card>
 </CardGroup>

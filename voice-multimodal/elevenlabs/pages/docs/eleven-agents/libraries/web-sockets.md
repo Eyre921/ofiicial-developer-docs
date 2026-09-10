@@ -178,7 +178,8 @@ type AgentChatResponsePartEvent = BaseEvent & {
   text_response_part: {
     type: "start" | "delta" | "stop";
     text: string;
-    event_id: string;
+    event_id: number;
+    response_id: string;
   };
 };
 
@@ -277,9 +278,11 @@ export const useAgentConversation = () => {
 
       if (data.type === "agent_chat_response_part") {
         const { text_response_part } = data;
-        const { type: partType, text, event_id } = text_response_part;
-        // Handle streaming text chunks during text-only conversations
-        console.log("Chat response part:", partType, text, event_id);
+        const { type: partType, text, response_id } = text_response_part;
+        // Handle the agent's response text as it is generated. Enable
+        // agent_chat_response_part in the agent's client_events to receive
+        // this during voice conversations.
+        console.log("Chat response part:", partType, text, response_id);
       }
     };
 

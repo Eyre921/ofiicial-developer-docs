@@ -12,7 +12,7 @@ An embedded Post's fallback markup will inherit the CSS rules already applied to
 
 Below is some basic CSS to style an embedded Post's `<blockquote>` content in a way that more closely resembles its fully-rendered form.
 
-```css theme={null}
+```css title="Example" expandable lines wrap icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" theme={null}
 blockquote.twitter-tweet {
   display: inline-block;
   font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;

@@ -170,7 +170,7 @@ In this example, assume you are updating the dense vector values and one metadat
   curl "https://$INDEX_HOST/vectors/update" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
           "id": "id-3",
           "values": [5.0, 3.0],
@@ -402,7 +402,7 @@ The following code updates all matching records with the new `author` metadata f
   curl "https://$INDEX_HOST/vectors/update" \
       -H "Api-Key: $PINECONE_API_KEY" \
       -H 'Content-Type: application/json' \
-      -H "X-Pinecone-Api-Version: 2025-10" \
+      -H "X-Pinecone-Api-Version: 2026-07" \
       -d '{
               "namespace": "example-namespace",
               "filter": {
@@ -434,7 +434,7 @@ Each request updates a maximum of 100,000 records. For larger datasets, use `dry
    curl "https://$INDEX_HOST/vectors/update" \
        -H "Api-Key: $PINECONE_API_KEY" \
        -H 'Content-Type: application/json' \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
                "dry_run": true,
                "namespace": "example-namespace",
@@ -463,7 +463,7 @@ Each request updates a maximum of 100,000 records. For larger datasets, use `dry
    curl "https://$INDEX_HOST/vectors/update" \
        -H "Api-Key: $PINECONE_API_KEY" \
        -H 'Content-Type: application/json' \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
                "namespace": "example-namespace",
                "filter": {
@@ -494,7 +494,7 @@ Each request updates a maximum of 100,000 records. For larger datasets, use `dry
    curl "https://$INDEX_HOST/vectors/update" \
        -H "Api-Key: $PINECONE_API_KEY" \
        -H 'Content-Type: application/json' \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
                "dry_run": true,
                "namespace": "example-namespace",
@@ -519,7 +519,7 @@ Each request updates a maximum of 100,000 records. For larger datasets, use `dry
    curl "https://$INDEX_HOST/vectors/update" \
        -H "Api-Key: $PINECONE_API_KEY" \
        -H 'Content-Type: application/json' \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
                "namespace": "example-namespace",
                "filter": {
@@ -542,7 +542,7 @@ Each request updates a maximum of 100,000 records. For larger datasets, use `dry
    curl "https://$INDEX_HOST/vectors/update" \
        -H "Api-Key: $PINECONE_API_KEY" \
        -H 'Content-Type: application/json' \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
                "dry_run": true,
                "namespace": "example-namespace",

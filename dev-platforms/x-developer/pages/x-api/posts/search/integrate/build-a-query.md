@@ -274,15 +274,15 @@ context:65.852262932607926273 -context:66.852262932607926273 -is:retweet has:ima
 ## Next steps
 
 <CardGroup>
-  <Card title="Operators reference" icon="list" href="/x-api/posts/search/integrate/operators">
+  <Card title="Operators reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/posts/search/integrate/operators">
     Complete list of available operators
   </Card>
 
-  <Card title="Search quickstart" icon="rocket" href="/x-api/posts/search/quickstart/recent-search">
+  <Card title="Search quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/posts/search/quickstart/recent-search">
     Make your first search request
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/posts/search/integrate/overview">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/posts/search/integrate/overview">
     Full integration documentation
   </Card>
 </CardGroup>

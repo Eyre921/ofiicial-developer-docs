@@ -34,6 +34,7 @@ Want to learn more about these features?
 * [**Session Replay**](https://docs.sentry.io/product/session-replay/web.md): Get to the root cause of an issue faster by viewing a video-like reproduction of what was happening in the user's browser before, during, and after the problem.
 * [**Logs**](https://docs.sentry.io/product/logs.md): Centralize and analyze your application logs to correlate them with errors and performance issues. Search, filter, and visualize log data to understand what's happening in your applications.
 * [**User Feedback**](https://docs.sentry.io/product/user-feedback.md): Collect feedback directly from users when they encounter errors, allowing them to describe what happened and provide context that helps you understand and resolve issues faster.
+* [**Application Metrics**](https://docs.sentry.io/product/metrics.md) (always enabled): Track and analyze custom application metrics, such as response times and database query durations, to understand trends and patterns in your application's performance and behavior over time.
 
 ## [Install](https://docs.sentry.io/platforms/javascript.md#install)
 
@@ -177,8 +178,8 @@ Sentry.init({
 
 ```html
 <script
-  src="https://browser.sentry-cdn.com/10.73.0/bundle.tracing.min.js"
-  integrity="sha384-hg+m2gH9OTwLWydPV8rT7sz0kLIp9u9BxTvWnb+htzr1DJfGKk5e8JRLg92vUDOJ"
+  src="https://browser.sentry-cdn.com/10.74.0/bundle.tracing.min.js"
+  integrity="sha384-CCezsb0qbfbnbzcRDSy3XlHzSU07iIC4skHulLBwZKmpUT1mGzkLRYB1NWry9XPY"
   crossorigin="anonymous"
 ></script>
 
@@ -334,6 +335,20 @@ Sentry.logger.error("Validation failed", {
 });
 ```
 
+### [Application Metrics NEW](https://docs.sentry.io/platforms/javascript.md#application-metrics-)
+
+[Application Metrics](https://docs.sentry.io/platforms/javascript/metrics.md) are enabled by default.
+
+Send test metrics from your app to verify that metrics are arriving in Sentry:
+
+```javascript
+Sentry.metrics.count("checkout.failed", 1);
+Sentry.metrics.gauge("queue.depth", 42);
+Sentry.metrics.distribution("api_latency", 187, {
+  unit: "millisecond",
+});
+```
+
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/javascript.md#view-captured-data-in-sentry)
 
 Now, head over to your project on [Sentry.io](https://sentry.io) to view the collected data (it takes a couple of moments for the data to appear).
@@ -345,6 +360,7 @@ Need help locating the captured errors in your Sentry project?
 * Open the [**Replays**](https://sentry.io/orgredirect/organizations/:orgslug/replays/) page and select an entry from the list to get a detailed view where you can replay the interaction and get more information to help you troubleshoot.
 * Open the [**Logs**](https://sentry.io/orgredirect/organizations/:orgslug/explore/logs/) page and filter by service, environment, or search keywords to view log entries from your application. For an interactive UI walkthrough, click [here](https://docs.sentry.io/product/logs.md#overview).
 * Open the [**User Feedback**](https://sentry.io/orgredirect/organizations/:orgslug/feedback/) page and click on individual feedback to see more details all in one view. For more information, click [here](https://docs.sentry.io/product/user-feedback.md).
+* Open the [**Application Metrics**](https://sentry.io/orgredirect/organizations/:orgslug/explore/metrics) page to view and analyze your metrics. For more details, see this [interactive walkthrough](https://docs.sentry.io/product/metrics.md#overview).
 
 ## [Next Steps](https://docs.sentry.io/platforms/javascript.md#next-steps)
 

@@ -1,8 +1,13 @@
 ---
-title: "Create or Edit Post"
+title: "Create Posts"
 source: https://docs.x.com/x-api/posts/create-or-edit-post
 path: x-api/posts/create-or-edit-post
 ---
 
 post /2/tweets
-Creates a new Post for the authenticated user, or edits an existing Post when edit_options are provided. Supports paid partnership disclosure via the paid_partnership field.
+
+<Warning>
+  Quote-posting (using the `quote_tweet_id` parameter) requires an [Enterprise plan](/enterprise-api/introduction). It is not available on self-serve (pay-per-use) tiers.
+</Warning>
+
+Video attached via `media.media_ids` is subject to size and duration limits based on the posting user's X Premium / verified status and the `media_category` used at upload. A successful upload can still be rejected here with **403** `This user is not allowed to post a video longer than N minutes.` See [size and duration limits](/x-api/media/introduction#size-and-duration-limits).

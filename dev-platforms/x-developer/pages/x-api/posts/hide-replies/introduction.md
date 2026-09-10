@@ -19,7 +19,7 @@ The Hide Replies endpoint lets you hide or unhide replies to Posts authored by t
     Unhide a previously hidden reply
   </Card>
 
-  <Card title="Conversation control" icon="comments">
+  <Card title="Conversation control" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat-unread.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=ce6313d8c0b7b4e5363f2ce80b89f7e4">
     Moderate discussions on your Posts
   </Card>
 </CardGroup>
@@ -78,11 +78,11 @@ curl -X PUT "https://api.x.com/2/tweets/1234567890/hidden" \
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/posts/hide-replies/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/posts/hide-replies/quickstart">
     Hide your first reply
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/hide-replies">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/hide-replies">
     Full endpoint documentation
   </Card>
 </CardGroup>

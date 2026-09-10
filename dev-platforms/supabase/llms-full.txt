@@ -913,6 +913,30 @@ Add this configuration to `.cursor/mcp.json`:
 }
 ```
 
+To make the server available across all projects, place the configuration in `~/.cursor/mcp.json` instead.
+
+##### Using Cursor CLI
+
+Cursor IDE and the Cursor CLI (`agent`) use the same MCP configuration. After you add the configuration above or install with the one-click button, manage the server from your terminal using the [Cursor CLI](https://cursor.com/docs/cli/mcp).
+
+Approve the server locally:
+
+```bash
+agent mcp enable supabase
+```
+
+Authenticate with Supabase:
+
+```bash
+agent mcp login supabase
+```
+
+Check the server connection status:
+
+```bash
+agent mcp list
+```
+
 **VS Code**
 
 Add this configuration to `.vscode/mcp.json`:
@@ -36235,32 +36259,198 @@ Test your connection and then connect
 
 # Connect to your database
 
-Supabase provides multiple methods to connect to your Postgres database, whether you’re working on the frontend, backend, or using serverless functions.
+Supabase provides several ways to connect to your Postgres database, whether your code runs in the frontend, in a persistent backend, or in a serverless function.
 
 Connect to Postgres from your frontend, backend, or serverless environment
 
-## How to connect to your Postgres databases
+Learn how to pick a connection method and where to find the connection string for it.
 
-How you connect to your database depends on where you're connecting from:
+- [Which connection method do you use?](#choose-a-connection-method) picks a method based on where your code runs.
+- [Get your connection string](#get-your-connection-string) shows where each string comes from.
+- [Configure your client](#configure-your-client) sets pool size, prepared statements, and SSL.
+- [Quickstarts](#quickstarts) connect a specific ORM or database GUI.
 
-- For frontend applications, use the [Data API](#data-apis-and-client-libraries)
-- For Postgres clients, use a connection string
-  - **Use the [direct connection string](#direct-connection) for single sessions or Postgres native commands**. For example, database GUIs, client applications like [pg\_dump](https://www.postgresql.org/docs/current/app-pgdump.html), [migrations](https://supabase.com/docs/guides/deployment/database-migrations), [backup-restore](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore), or specifying connections for [replication](https://supabase.com/docs/guides/database/postgres/setup-replication-external). The direct endpoint is on IPv6, or on IPv4 if the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address).
-  - **Use [pooler session mode](#pooler-session-mode)** for application traffic from persistent clients on IPv4-only networks,
-  - **Use [pooler transaction mode](#pooler-transaction-mode)** for application traffic from temporary clients (for example, serverless or edge functions).
+For how pooling works and the limits that apply to your connections, see [Connection pooling and limits](https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits).
 
-The table below summarizes each mode, its host and port, IP version support per project tier, and what it's best used for:
+## Which connection method do you use? \[#choose-a-connection-method]
 
-| Mode                                            | Host:Port                               | Free | Paid | Paid + IPv4 add-on | Best for                                   |
-| ----------------------------------------------- | --------------------------------------- | ---- | ---- | ------------------ | ------------------------------------------ |
-| Direct connection                               | `db.[project-id].supabase.co:5432`      | IPv6 | IPv6 | IPv4               | Migrations, `pg_dump`, long-lived backend  |
-| Shared pooler (Supavisor) - session mode        | `aws-[region].pooler.supabase.com:5432` | IPv4 | IPv4 | IPv4               | Persistent backend on IPv4-only networks   |
-| Shared pooler (Supavisor) - transaction mode    | `aws-[region].pooler.supabase.com:6543` | IPv4 | IPv4 | IPv4               | Serverless and edge functions              |
-| Dedicated pooler (PgBouncer) - transaction mode | `db.[project-id].supabase.co:6543`      | -    | IPv6 | IPv4               | High-performance app traffic on paid tiers |
+How you connect to your database depends on where your code runs. Find your case in the table, then get the matching connection string.
+
+| Where your code runs                                      | Use                                                         | Why                                                                                           |
+| --------------------------------------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| A frontend application                                    | [Data API](#data-apis-and-client-libraries)                 | Works over REST or GraphQL, so you don't need a Postgres client. Requires Row Level Security. |
+| A serverless or edge function                             | [Shared pooler, transaction mode](#pooler-transaction-mode) | These environments open many short-lived connections.                                         |
+| A persistent backend on IPv6, or with the IPv4 add-on     | [Direct connection](#direct-connection)                     | No pooler in the path.                                                                        |
+| A persistent backend on an IPv4-only network              | [Shared pooler, session mode](#pooler-session-mode)         | The shared pooler is IPv4-only on every plan.                                                 |
+| A third-party tool, such as a BI client or database GUI   | [Shared pooler, session mode](#pooler-session-mode)         | Reachable over IPv4 from networks you don't control, and it supports prepared statements.     |
+| A high-performance application on a paid plan             | [Dedicated pooler](#dedicated-pooler)                       | Runs on the same machine as your database, so lower latency than the shared pooler.           |
+| Migrations, `pg_dump`, backup and restore, or replication | [Direct connection](#direct-connection)                     | These are single sessions and Postgres native commands.                                       |
 
 Caution: The IPv4 add-on is not dual-stack: enabling it swaps the project's IPv6 (AAAA) DNS record for an IPv4 (A) record, so the project endpoint becomes reachable only over IPv4.
 
-## Quickstarts
+For the host, port, and IP version of each mode, see [Endpoints and IP versions](#endpoints-and-ip-versions). For a named ORM or database GUI, see [Quickstarts](#quickstarts).
+
+## Get your connection string \[#get-your-connection-string]
+
+Connecting from a frontend application? You don't need a connection string. Skip to [Data APIs and client libraries](#data-apis-and-client-libraries), which uses your project URL and an API key instead.
+
+For every Postgres connection mode, the string comes from the same place:
+
+1. Open your project in the [Supabase Dashboard](https://supabase.com/dashboard/project/_).
+2. Click **Connect** at the top of the page.
+3. Choose the connection method you picked above.
+4. Copy the string and replace `[YOUR-PASSWORD]` with your database password. [Percent-encode](https://en.wikipedia.org/wiki/Percent-encoding) any reserved characters it contains, such as `&`, `#`, `?`, or a space.
+
+The sections below show what each string looks like and when to use it. Take the host, port, and username from the string you copied rather than typing the bracketed placeholders literally. The pooler host in particular can't be composed from your region, and pooled connections use a different username from direct connections. Both are covered under [Endpoints and IP versions](#endpoints-and-ip-versions).
+
+### Direct connection \[#direct-connection]
+
+The direct connection string connects directly to your Postgres instance. Use it for persistent backends, such as virtual machines (VMs) and long-running containers. Examples include AWS EC2 machines, Fly.io VMs, and DigitalOcean Droplets.
+
+Caution: Direct connections are on IPv6, or on IPv4 if the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address). If your network is IPv4-only and you don't have the add-on, use [session mode](#pooler-session-mode) instead.
+
+```txt
+postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
+```
+
+Get this string from the Supabase Dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true).
+
+### Shared pooler, session mode \[#pooler-session-mode]
+
+The session mode connection string connects to your Postgres instance through the shared pooler. Use it as an alternative to a direct connection when you connect from an IPv4-only network.
+
+```txt
+postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:5432/postgres
+```
+
+Get this string from the Supabase Dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session) and choosing **Session pooler**.
+
+### Shared pooler, transaction mode \[#pooler-transaction-mode]
+
+The transaction mode connection string connects to your Postgres instance through the shared pooler in transaction-pooling mode. Use it for serverless and edge functions, which open many short-lived connections.
+
+Caution: Transaction mode does not support [prepared statements](https://postgresql.org/docs/current/sql-prepare.html). To avoid errors, turn them off in your connection library. See [Transaction mode limitations](#transaction-mode-limitations) for the setting your driver uses and for the other session-state features this affects.
+
+```txt
+postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:6543/postgres
+```
+
+Get this string from the Supabase Dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=transaction) and choosing **Transaction pooler**.
+
+### Dedicated pooler \[#dedicated-pooler]
+
+On paid plans, Supabase provisions a dedicated pooler that runs alongside your Postgres database. The dedicated pooler runs in transaction mode only. For session mode, use the [shared pooler](#pooler-session-mode). It is reachable over IPv6, or over IPv4 if the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address).
+
+```txt
+postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:6543/postgres
+```
+
+Get this string from the Supabase Dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=transaction).
+
+### Data APIs and client libraries \[#data-apis-and-client-libraries]
+
+The Data APIs let you interact with your database using REST or GraphQL requests. You can use these APIs to fetch and insert data from the frontend, as long as your tables have [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) (RLS) enabled and policies that allow the access. RLS with no policies denies every request.
+
+- [REST](https://supabase.com/docs/guides/api)
+- [GraphQL](https://supabase.com/docs/guides/graphql/api)
+
+For convenience, you can also use the [Supabase client libraries](https://supabase.com/docs/reference), which wrap the Data APIs with a developer-friendly interface and handle authentication for you:
+
+- [JavaScript](https://supabase.com/docs/reference/javascript/introduction)
+- [Flutter](https://supabase.com/docs/reference/dart/introduction)
+- [Swift](https://supabase.com/docs/reference/swift)
+- [Python](https://supabase.com/docs/reference/python/introduction)
+- [C#](https://supabase.com/docs/reference/csharp/introduction)
+- [Kotlin](https://supabase.com/docs/reference/kotlin/introduction)
+
+### Endpoints and IP versions \[#endpoints-and-ip-versions]
+
+Each mode has its own host, port, and IP version support. IP version support depends on your plan and on whether the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address).
+
+| Mode                               | Host:Port                                       | Free | Paid | Paid + IPv4 add-on |
+| ---------------------------------- | ----------------------------------------------- | ---- | ---- | ------------------ |
+| Direct connection                  | `db.[PROJECT-REF].supabase.co:5432`             | IPv6 | IPv6 | IPv4               |
+| Shared pooler, session mode        | `aws-[INDEX]-[REGION].pooler.supabase.com:5432` | IPv4 | IPv4 | IPv4               |
+| Shared pooler, transaction mode    | `aws-[INDEX]-[REGION].pooler.supabase.com:6543` | IPv4 | IPv4 | IPv4               |
+| Dedicated pooler, transaction mode | `db.[PROJECT-REF].supabase.co:6543`             | -    | IPv6 | IPv4               |
+
+`[INDEX]` in the shared pooler host is a pooler cluster index, not part of the region name. A region can have more than one, so you can't work out your host from your region. Copy the host from the Connect dialog.
+
+The username differs by connection type. Direct connections and the dedicated pooler use `postgres`. Shared pooler connections use `postgres.[PROJECT-REF]`. If you connect as a custom role through the shared pooler, the username is `[ROLE].[PROJECT-REF]`.
+
+The port routes the connection to the right pooler and mode. Port `5432` reaches Postgres for a direct connection and Supavisor for session mode. Port `6543` reaches PgBouncer for the dedicated pooler and Supavisor for shared transaction mode.
+
+To connect over IPv4, you have two options. The shared pooler is IPv4-only on every plan, in both session and transaction mode. Alternatively, add the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address) to your project, which makes the direct connection and the dedicated pooler reachable over IPv4 instead of IPv6.
+
+## Configure your client
+
+A connection string on its own isn't enough. Your connection library keeps its own pool of connections, separate from the poolers Supabase runs, and its defaults assume a persistent backend.
+
+In a serverless function:
+
+1. Create the client once at module scope, not per request.
+2. Set the pool to 1 connection. The client is shared by every invocation on that warm instance, so this caps the instance, not the request.
+3. Turn off prepared statements, which [transaction mode](#pooler-transaction-mode) doesn't support.
+4. Set SSL to `require`, so the driver refuses to connect without encryption.
+
+```ts lib/db.ts
+import postgres from 'postgres'
+
+export const sql = postgres(process.env.DATABASE_URL, {
+  max: 1,
+  prepare: false,
+  ssl: 'require',
+})
+```
+
+The rest of this section explains each setting, and what changes for a driver other than Postgres.js.
+
+### Application-side pool size
+
+Library defaults are too high for serverless. [Postgres.js](https://github.com/porsager/postgres) defaults to 10 connections. That is 10 connections for every warm instance of your function, and the number of warm instances isn't something you control. A few dozen instances is enough to exhaust the pool.
+
+Raise the pool above 1 only when you have evidence that concurrent invocations on one instance are queuing for the connection.
+
+For more on sizing an application-side pool, see the [Supavisor FAQ](https://supabase.com/docs/guides/troubleshooting/supavisor-faq-YyP5tI). If you use Prisma, [Prisma troubleshooting](https://supabase.com/docs/guides/database/prisma/prisma-troubleshooting) covers the equivalent `connection_limit` setting.
+
+### Transaction mode limitations
+
+[Transaction mode](#pooler-transaction-mode) returns your connection to the pool after each transaction, so anything that depends on session state doesn't survive between transactions. Three things are affected.
+
+**Prepared statements** aren't supported, so turn them off. Each driver does this differently:
+
+| Driver               | Setting                                   |
+| -------------------- | ----------------------------------------- |
+| Postgres.js, Drizzle | `prepare: false`                          |
+| Prisma               | `pgbouncer=true` on the connection string |
+| asyncpg              | `statement_cache_size=0`                  |
+| JDBC                 | `prepareThreshold=0`                      |
+
+For node-postgres, Psycopg, and Rust drivers, see [Disabling prepared statements](https://supabase.com/docs/guides/troubleshooting/disabling-prepared-statements-qL8lEL).
+
+**Cursors** work inside a single transaction only. A `with hold` cursor is meant to outlive its transaction, and it doesn't survive the connection returning to the pool.
+
+**Session-level state** is lost between transactions. This covers `set` and `reset`, session-level advisory locks, `listen` and `notify`, and temporary tables. Run them inside the transaction that needs them, or use session mode or a direct connection instead.
+
+Direct connections and session mode support all three, so none of this applies to either.
+
+### SSL \[#connecting-with-ssl]
+
+Connect using SSL wherever possible, to prevent snooping and man-in-the-middle attacks.
+
+Set SSL to `require` so the driver refuses to connect without encryption. Most drivers default to `prefer`, which falls back to sending your data in plaintext if the encrypted attempt fails. On a connection string, this is `sslmode=require`.
+
+`require` encrypts the connection but doesn't verify the server, so it doesn't stop a man-in-the-middle attack. To verify as well as encrypt, download your server root certificate from [Database settings](https://supabase.com/dashboard/project/_/database/settings) in the Supabase Dashboard and point your driver at it. Downloading the certificate on its own changes nothing: the driver has to be told to use it, with `sslmode=verify-full` and `sslrootcert` on a connection string, or the equivalent option in your library. The same section has a toggle that rejects non-SSL connections to your database.
+
+![The SSL Configuration section of Database settings, with a toggle to enforce SSL on incoming connections and a Download Certificate button.](/docs/img/database/database-settings-ssl.png)
+
+### Stale connections
+
+Serverless runtimes freeze a function between requests, which can leave a pooled TCP socket stale. If you see `CONNECT_TIMEOUT` errors or queries that hang until the execution limit, see [Troubleshooting `CONNECT_TIMEOUT` or hanging queries in Serverless Functions](https://supabase.com/docs/guides/troubleshooting/troubleshooting-connect_timeout-or-hanging-queries-in-vercel-serverless-functions-775f92).
+
+## Quickstarts \[#quickstarts]
+
+Each quickstart connects one ORM or database GUI to your Supabase database.
 
 - [Prisma](/docs/guides/database/prisma)
 - [Drizzle](/docs/guides/database/drizzle)
@@ -36272,167 +36462,101 @@ Caution: The IPv4 add-on is not dual-stack: enabling it swaps the project's IPv6
 - [Metabase](/docs/guides/database/metabase)
 - [Beekeeper Studio](/docs/guides/database/beekeeper-studio)
 
-## Data APIs and client libraries
+## Related
 
-The Data APIs allow you to interact with your database using REST or GraphQL requests. You can use these APIs to fetch and insert data from the frontend, as long as you have [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) enabled.
-
-- [REST](https://supabase.com/docs/guides/api)
-- [GraphQL](https://supabase.com/docs/guides/graphql/api)
-
-For convenience, you can also use the [Supabase client libraries](https://supabase.com/docs/reference), which wrap the Data APIs with a developer-friendly interface and automatically handle authentication:
-
-- [JavaScript](https://supabase.com/docs/reference/javascript/introduction)
-- [Flutter](https://supabase.com/docs/reference/dart/introduction)
-- [Swift](https://supabase.com/docs/reference/swift)
-- [Python](https://supabase.com/docs/reference/python/introduction)
-- [C#](https://supabase.com/docs/reference/csharp/introduction)
-- [Kotlin](https://supabase.com/docs/reference/kotlin/introduction)
-
-## Direct connection
-
-The direct connection string connects directly to your Postgres instance. It is ideal for persistent servers, such as virtual machines (VMs) and long-lasting containers. Examples include AWS EC2 machines, Fly.io VMs, and DigitalOcean Droplets.
-
-Caution: Direct connections are on IPv6, or on IPv4 if the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address). If your network is IPv4-only and you don't have the add-on, use [pooler session mode](#pooler-session-mode) instead.
-
-The connection string looks like this:
-
-```
-postgresql://postgres:[YOUR-PASSWORD]@db.abcdefghijklmnopqrst.supabase.co:5432/postgres
-```
-
-Get your project's direct connection string from your project dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true).
-
-## Poolers
-
-Supabase offers two poolers. The **Shared Pooler** ([Supavisor](https://github.com/supabase/supavisor)) is multi-tenant, available on every project, and IPv4-only. The **Dedicated Pooler** ([PgBouncer](https://www.pgbouncer.org/)) is available on paid plans and co-located with your Postgres instance; like the direct connection, it is on IPv6, or on IPv4 if the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address).
-
-### Pooler session mode
-
-The session mode connection string connects to your Postgres instance via the Shared Pooler (Supavisor). This is only recommended as an alternative to a Direct Connection when connecting from an IPv4-only network.
-
-The connection string looks like this:
-
-```
-postgres://postgres.apbkobhfnmcqqzqeeqss:[YOUR-PASSWORD]@aws-[REGION].pooler.supabase.com:5432/postgres
-```
-
-Get your project's Session pooler connection string from your project dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session).
-
-### Pooler transaction mode
-
-The transaction mode connection string connects to your Postgres instance via the Shared Pooler (Supavisor) in transaction-pooling mode. This is ideal for serverless or edge functions, which require many transient connections.
-
-Caution: Transaction mode does not support [prepared statements](https://postgresql.org/docs/current/sql-prepare.html). To avoid errors, [turn off prepared statements](https://github.com/orgs/supabase/discussions/28239) for your connection library.
-
-The connection string looks like this:
-
-```
-postgres://postgres.apbkobhfnmcqqzqeeqss:[YOUR-PASSWORD]@aws-[REGION].pooler.supabase.com:6543/postgres
-```
-
-Get your project's Transaction pooler connection string from your project dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=transaction).
-
-## Dedicated pooler
-
-For paying customers, we provision a Dedicated Pooler ([PgBouncer](https://www.pgbouncer.org/)) that's co-located with your Postgres database. The Dedicated Pooler runs in transaction mode only - for session mode, use the [Shared Pooler](#pooler-session-mode). It is reachable over IPv6, or over IPv4 if the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address).
-
-The connection string looks like this:
-
-```
-postgres://postgres:[YOUR-PASSWORD]@db.abcdefghijklmnopqrst.supabase.co:6543/postgres
-```
-
-The Dedicated Pooler ensures best performance and latency, while using up more of your project's compute resources. If your network supports IPv6 or you have the IPv4 add-on, we encourage you to use the Dedicated Pooler over the Shared Pooler.
-
-Get your project's Dedicated pooler connection string from your project dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=transaction).
-
-## More about connection pooling
-
-Connection pooling improves database performance by reusing existing connections between queries. This reduces the overhead of establishing connections and improves scalability.
-
-You can use an application-side pooler or a server-side pooler (Supabase automatically provides one called Supavisor), depending on whether your backend is persistent or serverless.
-
-### Application-side poolers
-
-Application-side poolers are built into connection libraries and API servers, such as Prisma, SQLAlchemy, and PostgREST. They maintain several active connections with Postgres or a server-side pooler, reducing the overhead of establishing connections between queries. When deploying to static architecture, such as long-standing containers or VMs, application-side poolers are satisfactory on their own.
-
-### Server-side poolers
-
-Postgres connections are like a WebSocket. Once established, they are preserved until the client (application server) disconnects. A server might only make a single 10 ms query, but needlessly reserve its database connection for seconds or longer.
-
-Server-side poolers, such as Supabase's [Supavisor](https://github.com/supabase/supavisor) in transaction mode, sit between clients and the database and can be thought of as load balancers for Postgres connections.
-
-![New migration files trigger migrations on the preview instance.](https://supabase.com/docs/img/guides/database/connecting-to-postgres/how-connection-pooling-works.png)
-
-They maintain hot connections with the database and intelligently share them with clients only when needed, maximizing the amount of queries a single connection can service. They're best used to manage queries from auto-scaling systems, such as edge and serverless functions.
-
-## Connecting with SSL
-
-You should connect to your database using SSL wherever possible, to prevent snooping and man-in-the-middle attacks.
-
-You can obtain your connection info and Server root certificate from your application's dashboard:
-
-![Connection Info and Certificate.](/docs/img/database/database-settings-ssl.png)
-
-## Resources
-
-- [Connection management](https://supabase.com/docs/guides/database/connection-management)
+- [Connection pooling and limits](https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits) explains poolers, pool size, and connection limits.
+- [Serverless drivers](https://supabase.com/docs/guides/database/connecting-to-postgres/serverless-drivers) covers Vercel, Cloudflare Workers, and Supabase Edge Functions.
+- [Managing connections](https://supabase.com/docs/guides/database/connection-management) covers monitoring and diagnosing stuck queries.
 - [Connecting with psql](https://supabase.com/docs/guides/database/psql)
 - [Importing data into Supabase](https://supabase.com/docs/guides/database/import-data)
 
-## Troubleshooting and Postgres connection string FAQs
+### Troubleshooting
 
-Below are answers to common challenges and queries.
+- [Tenant or user not found](https://supabase.com/docs/guides/troubleshooting/tenant-or-user-not-found), when the pooler can't match your host and username to a project.
+- [FATAL: Password authentication failed](https://supabase.com/docs/guides/troubleshooting/fatal-password-authentication-failed)
+- [Connection refused](https://supabase.com/docs/guides/troubleshooting/error-connection-refused-when-trying-to-connect-to-supabase-database-hwG0Dr), which is usually an IP ban rather than an outage.
+- [Too many connections](https://supabase.com/docs/guides/troubleshooting/too-many-connections-for-database-postgres)
 
-### What is a “connection refused” error?
 
-A “Connection refused” error typically means your database isn’t reachable. Ensure your Supabase project is running, confirm your database’s connection string, check firewall settings, and validate network permissions.
+---
 
-### What is the “FATAL: Password authentication failed” error?
+# Connection pooling and limits
 
-This error occurs when your credentials are incorrect. Double-check your username and password from the Supabase dashboard. If the problem persists, reset your database password from the project settings.
+How Supabase pools database connections, and the limits that apply to them.
 
-### How do you connect using IPv4?
+How connection pooling works, and the limits that apply to your connections
 
-You have two options. The Shared Pooler (Supavisor) is IPv4-only on every project tier - use it in either session or transaction mode. Alternatively, add the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address) to your project, which makes the direct connection and Dedicated Pooler reachable over IPv4 instead of IPv6.
+Learn how to choose between connection modes, size a pool, and work out why you're running out of connections. To get connected, see [Connect to your database](https://supabase.com/docs/guides/database/connecting-to-postgres).
 
-### Where is the Postgres connection string in Supabase?
+## How connection pooling works \[#how-connection-pooling-works]
 
-Your connection string is located in the Supabase Dashboard. Click the [Connect](https://supabase.com/dashboard/project/_?showConnect=true) button at the top of the page.
+Connection pooling improves database performance by reusing existing connections between queries. This reduces the overhead of establishing connections and improves scalability.
 
-### Can you use Supavisor and PgBouncer together?
+A Postgres connection is a long-lived session. Once established, it stays open until the client disconnects, or until the server or the network closes it. A server might make a single 10 ms query but hold its database connection for seconds or longer.
 
-You can technically use both, but it’s not recommended unless you’re specifically trying to increase the total number of concurrent client connections. In most cases, it is better to choose either PgBouncer or Supavisor for pooled or transaction-based traffic. Direct connections remain the best choice for long-lived sessions, and, if IPv4 is required for those sessions, Supavisor session mode can be used as an alternative. Running both poolers simultaneously increases the risk of hitting your database’s maximum connection limit on smaller compute tiers.
+A pooler sits between clients and the database and shares a small set of database connections across many clients, so a connection isn't tied up while a client sits idle.
 
-### How does the default pool size work?
+![A direct connection reserves one database connection per client. A connection pooler shares a smaller set of database connections across many clients.](https://supabase.com/docs/img/guides/database/connecting-to-postgres/how-connection-pooling-works.png)
 
-Supavisor and PgBouncer work independently, but both reference the same pool size setting. For example, If you set the pool size to 30, Supavisor can open up to 30 server side connections to Postgres. These connections are shared between the session mode port (5432) and the transaction mode port (6543). Each mode can use up to 30 connections independently, or split them between both, but the total combined connections across both modes cannot exceed 30. PgBouncer can also open up to 30 connections under the same limit. If both poolers are active and reach their roles/modes limits at the same time, you could have as many as 60 backend connections hitting your database, in addition to any direct connections. You can adjust the pool size in [Database settings](https://supabase.com/dashboard/project/_/database/settings) in the dashboard.
+### Application-side and server-side poolers \[#application-side-poolers]
 
-### What is the difference between client connections and backend connections?
+There are two kinds, and they work together.
 
-There are two different limits to understand when working with poolers. The first is client connections, which refers to how many clients can connect to a pooler at the same time. This number is capped by your [compute tier’s “max pooler clients” limit](https://supabase.com/docs/guides/platform/compute-and-disk#postgres-replication-slots-wal-senders-and-connections), and it applies independently to Supavisor and PgBouncer. The second is backend connections, which is the number of active connections a pooler opens to Postgres. This number is set by the pool size for that pooler.
+**Application-side poolers** are built into connection libraries and API servers, such as Prisma, SQLAlchemy, and Postgres.js. They keep a few connections open and reuse them. On a persistent backend, such as a long-running container or VM, an application-side pooler is enough on its own.
 
+**Server-side poolers**, such as Supavisor in transaction mode, run in front of the database and serve many clients. Use one when connections come from serverless or edge functions, or from anything that scales horizontally. These environments open many short-lived connections, which is the case an application-side pooler can't cover.
+
+For more on when each is needed and how to size them, see the [Supavisor FAQ](https://supabase.com/docs/guides/troubleshooting/supavisor-faq-YyP5tI).
+
+### Shared and dedicated poolers \[#shared-pooler]
+
+Supabase offers two poolers. The shared pooler, [Supavisor](https://github.com/supabase/supavisor), is multi-tenant, available on every project, and IPv4-only. The dedicated pooler, [PgBouncer](https://www.pgbouncer.org/), is available on paid plans and runs alongside your Postgres instance. Like the direct connection, it is on IPv6, or on IPv4 if the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address).
+
+The dedicated pooler runs on the same machine as your database, so it connects with lower latency than the shared pooler, which runs on a separate server. It also uses more of your project's compute resources. If your network supports IPv6, or you have the IPv4 add-on, use the dedicated pooler instead of the shared pooler. Direct connections have no pooler overhead, but they require IPv6 unless you have the IPv4 add-on.
+
+In most cases, choose either PgBouncer or Supavisor for pooled or transaction-based traffic. Direct connections remain the best choice for long-lived sessions, and shared pooler session mode is the alternative when those sessions need IPv4. Run both poolers at once only when you need to raise the total number of concurrent client connections, and expect a higher risk of hitting your database's maximum connection limit on smaller compute sizes.
+
+## Connection limits
+
+### Pool size \[#pooler-pool-size]
+
+Pool size sets how many connections a pooler is allowed to open to Postgres. You can adjust it in [Database settings](https://supabase.com/dashboard/project/_/database/settings) in the Supabase Dashboard.
+
+Supavisor and PgBouncer read the same setting but apply it independently, so raising it raises the ceiling for both.
+
+For what the setting counts, and how it interacts with the user, database, and mode combinations connecting to your project, see [the Supavisor FAQ](https://supabase.com/docs/guides/troubleshooting/supavisor-faq-YyP5tI).
+
+### Client connections and backend connections \[#client-connections-and-backend-connections]
+
+There are two limits to understand when working with poolers.
+
+| Limit               | What it counts                                            | What sets it                                                                                                                                                      |
+| ------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Client connections  | How many clients can connect to a pooler at the same time | Your [compute size's max pooler clients limit](https://supabase.com/docs/guides/platform/compute-and-disk#postgres-replication-slots-wal-senders-and-connections) |
+| Backend connections | How many active connections a pooler opens to Postgres    | The pool size for that pooler                                                                                                                                     |
+
+Both limits apply independently to Supavisor and PgBouncer. One pooler reaching its client limit doesn't affect the other. When a pooler reaches this limit, it stops accepting new client connections until existing ones close.
+
+```txt
+Direct connections +
+ Supavisor backend connections +
+ PgBouncer backend connections
+< Postgres max connections for your compute instance
 ```
-Total backend load on Postgres =
- Direct connections +
- Supavisor backend connections (≤ supavisor_pool_size) +
- PgBouncer backend connections (≤ pgbouncer_pool_size)
-≤ Postgres max connections for your compute instance
-```
 
-### What is the max pooler clients limit?
+Stay below the maximum rather than at it. Supabase services hold their own connections, including Auth, Storage, PostgREST, and the health checker, and those come out of the same total. [Managing connections](https://supabase.com/docs/guides/database/connection-management) covers how much headroom to leave.
 
-The “max pooler clients” limit for your compute tier applies separately to Supavisor and PgBouncer. One pooler reaching its client limit does not affect the other. When a pooler reaches this limit, it stops accepting new client connections until existing ones are closed, but the other pooler remains unaffected. You can check your tier’s connection limits in the [compute and disk limits documentation](https://supabase.com/docs/guides/platform/compute-and-disk#postgres-replication-slots-wal-senders-and-connections).
+For the connection counts that come with each compute size, see [compute and disk](https://supabase.com/docs/guides/platform/compute-and-disk#postgres-replication-slots-wal-senders-and-connections). For the terminology, see [Supavisor and connection terminology explained](https://supabase.com/docs/guides/troubleshooting/supavisor-and-connection-terminology-explained-9pr_ZO).
 
-### Where can you see current connection usage?
+### Monitor connection usage \[#monitor-connection-usage]
 
-You can track connection usage from the [Observability](https://supabase.com/dashboard/project/_/observability/database) section in your project dashboard. There are three key reports:
+Track connection usage in the [Observability](https://supabase.com/dashboard/project/_/observability/database) section of the Supabase Dashboard. There are three reports:
 
-- **Database Connections:** shows total active connections by role (this includes direct and pooled connections).
-- **Dedicated Pooler Client Connections:** shows the number of active client connections to PgBouncer.
-- **Shared Pooler (Supavisor) Client Connections:** shows the number of active client connections to Supavisor.
+- **Database Connections:** total active connections by role, including direct and pooled connections.
+- **Dedicated Pooler Client Connections:** active client connections to PgBouncer.
+- **Shared Pooler (Supavisor) Client Connections:** active client connections to Supavisor.
 
-Keep in mind that the Roles page is not real-time, it shows the connection count from the last refresh. If you need up-to-the-second data, set up Grafana or run the query against `pg_stat_activity` directly in SQL Editor. We have a few helpful queries for checking connections.
+These reports are not real-time. They show the connection count from the last refresh. For up-to-the-second data, query `pg_stat_activity` in the SQL Editor:
 
 ```sql
 -- Count connections by application and user name
@@ -36447,101 +36571,38 @@ from
 group by usename, application_name;
 ```
 
-```sql
--- View all connections
- SELECT
-   pg_stat_activity.pid,
-   ssl AS ssl_connection,
-   datname AS database,
-   usename AS connected_role,
-   application_name,
-   client_addr,
-   query,
-   query_start,
-   state,
-   backend_start
-FROM pg_stat_ssl
-JOIN pg_stat_activity
- ON pg_stat_ssl.pid = pg_stat_activity.pid;
-```
+To list every connection with its state and query, and to read which Supabase service each role belongs to, see [Managing connections](https://supabase.com/docs/guides/database/connection-management#observing-live-connections).
 
-### Why are there active connections when the app is idle?
+## Related
 
-Even if your application isn’t making queries, some Supabase services keep persistent connections to your database. For example, Storage, PostgREST, and our health checker all maintain long-lived connections. You usually see a small baseline of active connections from these services.
-
-### Why do connection strings have different ports?
-
-Different modes use different ports:
-
-- Direct connection: `5432` (Postgres on your project instance)
-- Dedicated pooler, transaction mode: `6543` (PgBouncer on your project instance)
-- Shared pooler, transaction mode: `6543` (Supavisor, multi-tenant)
-- Shared pooler, session mode: `5432` (Supavisor, multi-tenant)
-
-The port helps route the connection to the right pooler/mode.
-
-### Does connection pooling affect latency?
-
-Because the dedicated pooler is hosted on the same machine as your database, it connects with lower latency than the shared pooler, which is hosted on a separate server. Direct connections have no pooler overhead but require IPv6 unless you have the IPv4 add-on.
-
-### How to choose the right connection method?
-
-**Direct connection:**
-
-- Best for: persistent backend services
-- Use for migrations, pg\_dump, backup and management tools
-- Network: reachable over IPv6, or over IPv4 if the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address).
-
-**Shared pooler (Supavisor):**
-
-- Best for: connections from IPv4 networks (IPv4-only on every tier)
-  - Supavisor session mode → persistent backend on IPv4 networks
-  - Supavisor transaction mode → serverless functions or short-lived tasks
-- Use for application runtime traffic (queries, writes)
-
-**Dedicated pooler (PgBouncer, paid tier):**
-
-- Best for: high-performance apps that need dedicated resources
-- Use for application runtime traffic (queries, writes)
-- Transaction mode only - use the Shared Pooler if you need session mode
-- Network: reachable over IPv6, or over IPv4 if the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address)
-
-See the [connection method matrix](#how-to-connect-to-your-postgres-databases) at the top of this page for a quick reference, or follow the decision flow in the diagram below to choose the right option for your environment.
-
-```mermaid
-flowchart TD
-  A[Where are you connecting from?] --> B[Persistent Backend]
-  A --> C[Serverless / Edge]
-  B --> D{IPv6 Supported?<br/>IPv4 Add-on?}
-  B --> E{IPv4 Needed?}
-  C --> H{IPv6 Supported?<br/>IPv4 Add-on?}
-  C --> I{IPv4 Needed?}
-  D --> F[Use Direct Connection]
-  E --> G[Use Supavisor Session Mode]
-  H --> J[Use Dedicated Pooler PgBouncer Pro]
-  I --> K[Use Supavisor Transaction Mode]
-```
-
-The decision depends on where you connect from. For a **persistent backend**, use a direct connection if you can reach the database over IPv6 (or have the IPv4 add-on); otherwise use Supavisor in session mode. For **serverless or edge** environments, use the dedicated pooler (PgBouncer, Pro plan) when IPv6 or the IPv4 add-on is available, or Supavisor in transaction mode when you need IPv4.
+- [Connect to your database](https://supabase.com/docs/guides/database/connecting-to-postgres)
+- [Managing connections](https://supabase.com/docs/guides/database/connection-management)
+- [Supavisor FAQ](https://supabase.com/docs/guides/troubleshooting/supavisor-faq-YyP5tI)
 
 
 ---
 
-# Serverless Drivers
+# Serverless drivers
 
-Connecting to your Postgres database in serverless environments.
+Choose a driver for connecting to your Postgres database from a serverless environment.
 
-Supabase provides several options for connecting to your Postgres database from serverless environments.
+Connect to your Postgres database from a serverless environment
 
-[supabase-js](https://supabase.com/docs/reference/javascript/introduction) is an isomorphic JavaScript client that uses the [auto-generated REST API](https://supabase.com/docs/guides/api) and therefore works in any environment that supports HTTPS connections. This API has a built-in [connection pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#poolers) and can serve thousands of simultaneous requests, and therefore is ideal for Serverless workloads.
+Learn how to connect to your Postgres database from a serverless environment. The driver you use depends on which runtime your code runs in.
+
+[supabase-js](https://supabase.com/docs/reference/javascript/introduction) is an isomorphic JavaScript client that uses the [auto-generated REST API](https://supabase.com/docs/guides/api), so it works in any environment that supports HTTPS connections. This API has a built-in [connection pooler](https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits#how-connection-pooling-works) and can serve thousands of simultaneous requests, which suits serverless workloads.
+
+If you connect with a Postgres client instead, use the [shared pooler in transaction mode](https://supabase.com/docs/guides/database/connecting-to-postgres#pooler-transaction-mode), then [configure your client](https://supabase.com/docs/guides/database/connecting-to-postgres#configure-your-client) for pool size, prepared statements, and SSL. Those three settings are what most serverless connection problems come down to.
 
 ## Vercel Edge Functions
 
-Vercel's [Edge runtime](https://vercel.com/docs/functions/runtimes/edge-runtime) is built on top of the [V8 engine](https://v8.dev/), that provides a limited set of Web Standard APIs.
+Vercel's [Edge runtime](https://vercel.com/docs/functions/runtimes/edge-runtime) runs on the [V8 engine](https://v8.dev/) and exposes a limited set of Web Standard APIs.
+
+Start from a deploy template, or configure the connection yourself.
 
 ### Quickstart
 
-Choose one of these Vercel Deploy Templates which use our [Vercel Deploy Integration](https://vercel.com/integrations/supabase) to automatically configure your connection strings as environment variables on your Vercel project!
+Choose one of these Vercel Deploy Templates. They use the [Vercel Deploy Integration](https://vercel.com/integrations/supabase) to configure your connection strings as environment variables on your Vercel project.
 
 [supabase-js: A Next.js App Router template configured with cookie-based auth using Supabase, TypeScript and Tailwind CSS.](https://supabase.link/nextjs-with-supabase-starter)
 
@@ -36549,10 +36610,13 @@ Choose one of these Vercel Deploy Templates which use our [Vercel Deploy Integra
 
 ### Manual configuration
 
-In your [`Database Settings`](https://supabase.com/dashboard/project/_?showConnect=true\&method=transaction) and copy the URI from the `Transaction pooler` section and save it as the `POSTGRES_URL` environment variable. Remember to replace the password placeholder with your actual database password and add the following suffix `?workaround=supabase-pooler.vercel`.
+1. In the Supabase Dashboard, click [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=transaction) and copy the URI from the **Transaction pooler** section.
+2. Replace the password placeholder with your database password.
+3. Add the suffix `?workaround=supabase-pooler.vercel` to the URI.
+4. Save the result as the `POSTGRES_URL` environment variable.
 
 ```txt .env.local
-POSTGRES_URL="postgres://postgres.cfcxynqnhdybqtbhjemm:[YOUR-PASSWORD]@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?workaround=supabase-pooler.vercel"
+POSTGRES_URL="postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:6543/postgres?workaround=supabase-pooler.vercel"
 ```
 
 **Drizzle**
@@ -36620,7 +36684,9 @@ export { sql } from 'kysely'
 
 ## Cloudflare Workers
 
-Cloudflare's Workers runtime also uses the [V8 engine](https://v8.dev/) but provides polyfills for a subset of Node.js APIs and [TCP Sockets API](https://developers.cloudflare.com/workers/runtime-apis/tcp-sockets/), giving you a couple of options:
+Cloudflare's Workers runtime also uses the [V8 engine](https://v8.dev/), but it provides polyfills for a subset of Node.js APIs and the [TCP Sockets API](https://developers.cloudflare.com/workers/runtime-apis/tcp-sockets/). That gives you three options:
+
+### Drivers \[#cloudflare-workers-drivers]
 
 - [supabase-js](https://developers.cloudflare.com/workers/databases/native-integrations/supabase/)
 - [Postgres.js](https://github.com/porsager/postgres?tab=readme-ov-file#cloudflare-workers-support)
@@ -36628,7 +36694,9 @@ Cloudflare's Workers runtime also uses the [V8 engine](https://v8.dev/) but prov
 
 ## Supabase Edge Functions
 
-Supabase Edge Functions uses the [Deno runtime](https://deno.com/) which has native support for TCP connections allowing you to choose your favorite client:
+Supabase Edge Functions use the [Deno runtime](https://deno.com/), which has native support for TCP connections. You can choose any of these clients:
+
+### Drivers \[#supabase-edge-functions-drivers]
 
 - [supabase-js](https://supabase.com/docs/guides/functions/connect-to-postgres#using-supabase-js)
 - [Deno Postgres driver](https://supabase.com/docs/guides/functions/connect-to-postgres#using-a-postgres-client)
@@ -61329,7 +61397,7 @@ end $$;
 
 This query works by listing out all the tables in the given schema and then executing a `drop table` for each (hence the `for... loop`).
 
-You can run this query using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard, or via `psql` if you're [connecting directly to the database](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connections).
+You can run this query using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard, or via `psql` if you're [connecting directly to the database](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 
 ---
@@ -61630,7 +61698,7 @@ The important bits here are:
 - The `desc` keyword to order the `points` from highest to lowest.
 - The `distinct` keyword that tells Postgres to only return a single row per team.
 
-This query can also be executed via `psql` or any other query editor if you prefer to [connect directly to the database](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connections).
+This query can also be executed via `psql` or any other query editor if you prefer to [connect directly to the database](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 
 ---
@@ -61660,7 +61728,7 @@ create table persons (
 );
 ```
 
-Note: All the queries in this guide can be run using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard, or via `psql` if you're [connecting directly to the database](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connections).
+Note: All the queries in this guide can be run using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard, or via `psql` if you're [connecting directly to the database](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 We might want to frequently query users based on their age:
 
@@ -62864,7 +62932,7 @@ See [https://www.postgresql.org/docs/current/sql-alterpublication.html](https://
 
 Extend database timeouts to execute longer transactions
 
-Note: Dashboard and [Client](https://supabase.com/docs/guides/api/rest/client-libs) queries have a max-configurable timeout of 60 seconds. For longer transactions, use [Supavisor or direct connections](https://supabase.com/docs/guides/database/connecting-to-postgres#quick-summary).
+Note: Dashboard and [Client](https://supabase.com/docs/guides/api/rest/client-libs) queries have a max-configurable timeout of 60 seconds. For longer transactions, use [Supavisor or direct connections](https://supabase.com/docs/guides/database/connecting-to-postgres#choose-a-connection-method).
 
 ## Change Postgres timeout
 
@@ -63179,7 +63247,7 @@ Which should return something like:
 PostgreSQL 15.1 on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 10.3.0-1ubuntu1~20.04) 10.3.0, 64-bit
 ```
 
-This query can also be executed via `psql` or any other query editor if you prefer to [connect directly to the database](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connections).
+This query can also be executed via `psql` or any other query editor if you prefer to [connect directly to the database](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 
 ---
@@ -63266,9 +63334,9 @@ yarn init -y
 yarn add prisma tsx @types/pg --save-dev
 yarn add @prisma/client @prisma/adapter-pg dotenv pg
 
-npx tsc --init
+yarn tsc --init
 
-npx prisma init
+yarn prisma init
 ```
 
 **bun**
@@ -63410,8 +63478,8 @@ pnpx prisma generate
 **yarn**
 
 ```bash
-npx prisma migrate dev --name first_prisma_migration
-npx prisma generate
+yarn prisma migrate dev --name first_prisma_migration
+yarn prisma generate
 ```
 
 **bun**
@@ -63484,7 +63552,7 @@ pnpx prisma generate
 **yarn**
 
 ```bash
-npx prisma db pull
+yarn prisma db pull
 ```
 
 Create a migration file
@@ -63496,7 +63564,7 @@ mkdir -p prisma/migrations/0_init_supabase
 Synchronize the migrations
 
 ```bash
-  npx prisma migrate diff \
+  yarn prisma migrate diff \
   --from-empty \
   --to-schema prisma/schema.prisma \
   --script > prisma/migrations/0_init_supabase/migration.sql
@@ -63505,8 +63573,8 @@ Synchronize the migrations
 Note: If there are any conflicts, reference [Prisma's official doc](https://www.prisma.io/docs/orm/prisma-migrate/getting-started#work-around-features-not-supported-by-prisma-schema-language) or the [trouble shooting guide](https://supabase.com/docs/guides/database/prisma/prisma-troubleshooting) for more details
 
 ```bash
-npx prisma migrate resolve --applied 0_init_supabase
-npx prisma generate
+yarn prisma migrate resolve --applied 0_init_supabase
+yarn prisma generate
 ```
 
 **bun**
@@ -66233,7 +66301,7 @@ For example, if you wanted to load a CSV file into your movies table:
 "Return of the Jedi", "After a daring mission to rescue Han Solo from Jabba the Hutt, the Rebels dispatch to Endor to destroy the second Death Star."
 ```
 
-You would [connect](../../guides/database/connecting-to-postgres#direct-connections) to your database directly and load the file with the COPY command:
+You would [connect](../../guides/database/connecting-to-postgres#direct-connection) to your database directly and load the file with the COPY command:
 
 ```bash
 psql -h DATABASE_URL -p 5432 -d postgres -U postgres \
@@ -77275,22 +77343,24 @@ Resources for getting started with Supabase.
 
 - **[React](https://supabase.com/docs/guides/getting-started/quickstarts/reactjs):** Build single-page apps from reusable components, and query Supabase Postgres from the browser.
 - **[Next.js](https://supabase.com/docs/guides/getting-started/quickstarts/nextjs):** Full-stack React with server rendering, wired to Supabase Postgres and cookie-based auth.
-- **[Nuxt](https://supabase.com/docs/guides/getting-started/quickstarts/nuxtjs):** Full-stack Vue with server rendering, reading Postgres through a Supabase composable.
+- **[TanStack Start](https://supabase.com/docs/guides/getting-started/quickstarts/tanstack):** Type-safe full-stack React that queries Supabase Postgres in server functions.
 - **[Astro](https://supabase.com/docs/guides/getting-started/quickstarts/astrojs):** Content-driven sites that render on the server and pull Supabase Postgres data per request.
-- **[Hono](https://supabase.com/docs/guides/getting-started/quickstarts/hono):** Lightweight web APIs with Supabase Auth anonymous sign-in and RLS-protected reads.
-- **[RedwoodJS](https://supabase.com/docs/guides/getting-started/quickstarts/redwoodjs):** Full-stack React and GraphQL, with Prisma migrations against your Supabase Postgres database.
-- **[Expo React Native](https://supabase.com/docs/guides/getting-started/quickstarts/expo-react-native):** Ship iOS and Android from one React Native codebase, backed by Supabase Postgres.
-- **[Flutter](https://supabase.com/docs/guides/getting-started/quickstarts/flutter):** Ship iOS and Android from one Dart codebase, backed by Supabase Postgres.
-- **[iOS SwiftUI](https://supabase.com/docs/guides/getting-started/quickstarts/ios-swiftui):** Native iOS apps in Swift, reading Postgres through the Supabase Swift SDK.
-- **[Android Kotlin](https://supabase.com/docs/guides/getting-started/quickstarts/kotlin):** Native Android apps in Kotlin and Jetpack Compose, using the Supabase Kotlin SDK.
+- **[Vue](https://supabase.com/docs/guides/getting-started/quickstarts/vue):** Build single-page apps with the Vue composition API, backed by Supabase Postgres.
+- **[Nuxt](https://supabase.com/docs/guides/getting-started/quickstarts/nuxtjs):** Full-stack Vue with server rendering, reading Postgres through a Supabase composable.
 - **[SvelteKit](https://supabase.com/docs/guides/getting-started/quickstarts/sveltekit):** Full-stack Svelte that loads Supabase Postgres data in server load functions.
 - **[SolidJS](https://supabase.com/docs/guides/getting-started/quickstarts/solidjs):** Fine-grained reactive UIs that load Supabase Postgres data with Solid resources.
-- **[Vue](https://supabase.com/docs/guides/getting-started/quickstarts/vue):** Build single-page apps with the Vue composition API, backed by Supabase Postgres.
-- **[TanStack Start](https://supabase.com/docs/guides/getting-started/quickstarts/tanstack):** Type-safe full-stack React that queries Supabase Postgres in server functions.
+- **[RedwoodJS](https://supabase.com/docs/guides/getting-started/quickstarts/redwoodjs):** Full-stack React and GraphQL, with Prisma migrations against your Supabase Postgres database.
 - **[Refine](https://supabase.com/docs/guides/getting-started/quickstarts/refine):** Scaffold CRUD dashboards and admin panels straight from your Supabase Postgres tables.
+- **[Hono](https://supabase.com/docs/guides/getting-started/quickstarts/hono):** Lightweight web APIs with Supabase Auth anonymous sign-in and RLS-protected reads.
+- **[iOS SwiftUI](https://supabase.com/docs/guides/getting-started/quickstarts/ios-swiftui):** Native iOS apps in Swift, reading Postgres through the Supabase Swift SDK.
+- **[Android Kotlin](https://supabase.com/docs/guides/getting-started/quickstarts/kotlin):** Native Android apps in Kotlin and Jetpack Compose, using the Supabase Kotlin SDK.
+- **[Expo React Native](https://supabase.com/docs/guides/getting-started/quickstarts/expo-react-native):** Ship iOS and Android from one React Native codebase, backed by Supabase Postgres.
+- **[Flutter](https://supabase.com/docs/guides/getting-started/quickstarts/flutter):** Ship iOS and Android from one Dart codebase, backed by Supabase Postgres.
 - **[Python](https://supabase.com/docs/guides/getting-started/quickstarts/flask):** Serve Flask web apps that query Postgres with the Supabase Python client.
+- **[Reflex](https://supabase.com/docs/guides/getting-started/quickstarts/reflex):** Full-stack Python web apps that query Supabase Postgres with the async Python client.
 - **[Laravel](https://supabase.com/docs/guides/getting-started/quickstarts/laravel):** Full-stack PHP with Eloquent ORM connected directly to your Supabase Postgres database.
 - **[Ruby on Rails](https://supabase.com/docs/guides/getting-started/quickstarts/ruby-on-rails):** Convention-driven Ruby apps with Active Record connected directly to your Supabase Postgres database.
+- **[Spring Boot](https://supabase.com/docs/guides/getting-started/quickstarts/spring-boot):** Java APIs with Spring Data JPA connected directly to your Supabase Postgres database.
 
 
 
@@ -80971,6 +81041,215 @@ npm run dev
 ```
 
 The Inferencer auto-generated code gives you a good starting point on which to keep building your `list`, `create`, `show` and `edit` pages. You can get these by clicking the `Show the auto-generated code` buttons in their respective pages.
+
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
+
+## Next steps
+
+- Set up [Auth](https://supabase.com/docs/guides/auth) for your app
+- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
+- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
+
+
+---
+
+# Use Supabase with Reflex
+
+Learn how to create a Supabase project, add some sample data to your database, and query the data from a Reflex app.
+
+
+
+## 1. Create a Supabase project
+
+To start, you need a Supabase project.
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Note: Use [the Management API](https://supabase.com/docs/reference/api/v1-create-a-project) or ask [the MCP server](https://supabase.com/docs/guides/ai-tools/mcp#account-management) to create a new Supabase project.
+
+## 2. Set up your database
+
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
+
+Do these steps within your project's dashboard by copying and running the snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+
+Note: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
+
+Note: You can use [the Management API](https://supabase.com/docs/reference/api/v1-run-a-query) or ask [the MCP server](https://supabase.com/docs/guides/ai-tools/mcp#database) to execute SQL queries.
+
+```sql SQL_EDITOR
+-- Create the table
+create table instruments (
+  id bigint primary key generated always as identity,
+  name text not null
+);
+
+-- Insert sample data into the table
+insert into instruments (name)
+values
+  ('violin'),
+  ('viola'),
+  ('cello');
+
+-- Grant the privileges the role needs, which is read access
+grant select on public.instruments to anon;
+
+-- Enable row level security for the table
+alter table instruments enable row level security;
+
+-- Create a policy to allow the anon role to read from the instruments table
+create policy "public can read instruments"
+on public.instruments
+for select to anon
+using (true);
+```
+
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
+
+## 3. Create a Reflex app
+
+Create a new directory for your Reflex app, initialize a project with `uv`, add Reflex as a dependency, and scaffold a blank app with `--template blank`.
+
+```bash
+mkdir my_app && cd my_app
+uv init
+uv add reflex
+uv run reflex init --template blank
+```
+
+## 4. Set up AI tooling (optional)
+
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
+
+To install, run the following command in the root of your project:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
+
+## 5. Install the Supabase client library
+
+The fastest way to get started is to use the `supabase-py` client library, which provides a convenient interface for working with Supabase from a Reflex app.
+
+Install `supabase-py` and `python-dotenv` to load environment variables.
+
+```bash
+uv add supabase python-dotenv
+```
+
+## 6. Declare Supabase environment variables
+
+Create a `.env` file in your project root and populate it with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks):
+
+Open Connect panel
+
+```text name=.env
+SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
+SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
+```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=\&framework=).
+
+
+
+
+
+Note: See [API keys](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
+## 7. Create the Supabase client
+
+Open `my_app/my_app.py` and add the following code to create an async Supabase client from your environment variables. Reflex's event handlers run inside an async event loop, so the client is created once with `acreate_client` and reused across requests, rather than recreated per page load.
+
+```python name=my_app/my_app.py
+import os
+import reflex as rx
+from supabase import acreate_client, AsyncClient
+from dotenv import load_dotenv
+
+load_dotenv()
+
+_supabase: AsyncClient | None = None
+
+
+async def get_supabase() -> AsyncClient:
+    global _supabase
+    if _supabase is None:
+        _supabase = await acreate_client(
+            os.environ.get("SUPABASE_URL"),
+            os.environ.get("SUPABASE_PUBLISHABLE_KEY"),
+        )
+    return _supabase
+```
+
+## 8. Query data from the app
+
+Add a `State` class that holds the query result, an async event handler that fetches data from your `instruments` table, and a page that renders the result. `on_load` triggers the handler when the page is opened.
+
+```python name=my_app/my_app.py
+from postgrest import APIError
+
+
+class State(rx.State):
+    instruments: list[dict] = []
+    error: str = ""
+
+    async def load_instruments(self):
+        supabase = await get_supabase()
+        try:
+            response = await supabase.table("instruments").select("*").execute()
+        except APIError as error:
+            self.error = f"Error loading instruments: {error.message}"
+            return
+        self.instruments = response.data
+
+
+def index() -> rx.Component:
+    return rx.container(
+        rx.heading("Instruments"),
+        rx.cond(
+            State.error,
+            rx.text(State.error),
+            rx.foreach(
+                State.instruments,
+                lambda instrument: rx.text(instrument["name"]),
+            ),
+        ),
+    )
+
+
+app = rx.App()
+app.add_page(index, on_load=State.load_instruments)
+```
+
+## 9. Start the app
+
+Run the Reflex development server, go to [http://localhost:3000](http://localhost:3000) in a browser, and you should see the list of instruments.
+
+```bash
+uv run reflex run
+```
 
 ## Production requirements
 
@@ -104106,12 +104385,12 @@ Why this matters for Postgres:
 
 Actions you can take:
 
-| Action                                                                                                                  | Description                                                                             |
-| ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| [Use connection pooling](https://supabase.com/docs/guides/database/connecting-to-postgres#how-connection-pooling-works) | Route clients through Supavisor or PgBouncer to cap fork-driven commit pressure.        |
-| Lower `max_connections` or per-pool sizes                                                                               | Reduce the upper bound on concurrent backends so spikes cannot exceed the Commit limit. |
-| [Tune `work_mem`](https://pgtune.leopard.in.ua)                                                                         | Reduce per-operation memory allocations on workloads with many concurrent queries.      |
-| [Upgrade compute size](https://supabase.com/docs/guides/platform/compute-and-disk#compute-size)                         | Raise both physical RAM and the Commit limit so the workload fits with headroom.        |
+| Action                                                                                                                                     | Description                                                                             |
+| ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| [Use connection pooling](https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits#how-connection-pooling-works) | Route clients through Supavisor or PgBouncer to cap fork-driven commit pressure.        |
+| Lower `max_connections` or per-pool sizes                                                                                                  | Reduce the upper bound on concurrent backends so spikes cannot exceed the Commit limit. |
+| [Tune `work_mem`](https://pgtune.leopard.in.ua)                                                                                            | Reduce per-operation memory allocations on workloads with many concurrent queries.      |
+| [Upgrade compute size](https://supabase.com/docs/guides/platform/compute-and-disk#compute-size)                                            | Raise both physical RAM and the Commit limit so the workload fits with headroom.        |
 
 ### CPU usage
 
@@ -104243,11 +104522,11 @@ How it helps debug issues:
 
 Actions you can take:
 
-| Action                                                                                                         | Description                                                     |
-| -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| [Upgrade compute size](https://supabase.com/docs/guides/platform/compute-and-disk#compute-size)                | Increase maximum connection limits                              |
-| Implement [connection pooling](https://supabase.com/docs/guides/database/connecting-to-postgres#shared-pooler) | Optimize connection management for high direct connection usage |
-| Review application code                                                                                        | Ensure proper connection handling and cleanup                   |
+| Action                                                                                                                      | Description                                                     |
+| --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [Upgrade compute size](https://supabase.com/docs/guides/platform/compute-and-disk#compute-size)                             | Increase maximum connection limits                              |
+| Implement [connection pooling](https://supabase.com/docs/guides/database/connecting-to-postgres#choose-a-connection-method) | Optimize connection management for high direct connection usage |
+| Review application code                                                                                                     | Ensure proper connection handling and cleanup                   |
 
 ### Dedicated Pooler (PgBouncer) Client Connections
 
@@ -104265,11 +104544,11 @@ How it helps debug issues:
 
 Actions you can take:
 
-| Action                                                                                                         | Description                                                     |
-| -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| [Upgrade compute size](https://supabase.com/docs/guides/platform/compute-and-disk#compute-size)                | Increase maximum connection limits                              |
-| Implement [connection pooling](https://supabase.com/docs/guides/database/connecting-to-postgres#shared-pooler) | Optimize connection management for high direct connection usage |
-| Review application code                                                                                        | Ensure proper connection handling and cleanup                   |
+| Action                                                                                                                      | Description                                                     |
+| --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [Upgrade compute size](https://supabase.com/docs/guides/platform/compute-and-disk#compute-size)                             | Increase maximum connection limits                              |
+| Implement [connection pooling](https://supabase.com/docs/guides/database/connecting-to-postgres#choose-a-connection-method) | Optimize connection management for high direct connection usage |
+| Review application code                                                                                                     | Ensure proper connection handling and cleanup                   |
 
 ### Shared Pooler (Supavisor) Client Connections
 
@@ -104287,11 +104566,11 @@ How it helps debug issues:
 
 Actions you can take:
 
-| Action                                                                                                         | Description                                                     |
-| -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| [Upgrade compute size](https://supabase.com/docs/guides/platform/compute-and-disk#compute-size)                | Increase maximum connection limits                              |
-| Implement [connection pooling](https://supabase.com/docs/guides/database/connecting-to-postgres#shared-pooler) | Optimize connection management for high direct connection usage |
-| Review application code                                                                                        | Ensure proper connection handling and cleanup                   |
+| Action                                                                                                                      | Description                                                     |
+| --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [Upgrade compute size](https://supabase.com/docs/guides/platform/compute-and-disk#compute-size)                             | Increase maximum connection limits                              |
+| Implement [connection pooling](https://supabase.com/docs/guides/database/connecting-to-postgres#choose-a-connection-method) | Optimize connection management for high direct connection usage |
+| Review application code                                                                                                     | Ensure proper connection handling and cleanup                   |
 
 ### Disk Usage
 
@@ -107507,7 +107786,7 @@ Data pushed to clients via Supabase Realtime for subscribed events.
 
 Data sent to the client when using the shared connection pooler (Supavisor) to access your database. When using the shared connection pooler, we do not count database egress, as this would otherwise count double (Database -> Shared Pooler + Shared Pooler -> Client).
 
-**Example:** You are using our [shared connection pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#shared-pooler) and you query a list of invoices in your backend. The data returned from that query is contributing to Shared Pooler Egress.
+**Example:** You are using our [shared connection pooler](https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits#shared-pooler) and you query a list of invoices in your backend. The data returned from that query is contributing to Shared Pooler Egress.
 
 ### Log Drain Egress
 
@@ -112029,7 +112308,7 @@ In such a scenario, you can consider:
 
 You can use the [pg\_stat\_activity](https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-ACTIVITY-VIEW) view to debug which clients are holding open connections on your DB. `pg_stat_activity` only exposes information on direct connections to the database. Information on the number of connections to Supavisor is available [via the metrics endpoint](../telemetry/metrics).
 
-Depending on the clients involved, you might be able to configure them to work with fewer connections (e.g. by imposing a limit on the maximum number of connections they're allowed to use), or shift specific workloads to connect via [Supavisor](https://supabase.com/docs/guides/database/connecting-to-postgres#poolers) instead. Transient workflows, which can scale up and down rapidly in response to traffic (e.g. serverless functions), can especially benefit from using a connection pooler rather than connecting to the DB directly.
+Depending on the clients involved, you might be able to configure them to work with fewer connections (e.g. by imposing a limit on the maximum number of connections they're allowed to use), or shift specific workloads to connect via [Supavisor](https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits#shared-pooler) instead. Transient workflows, which can scale up and down rapidly in response to traffic (e.g. serverless functions), can especially benefit from using a connection pooler rather than connecting to the DB directly.
 
 ### Allowing higher number of connections
 
@@ -126657,7 +126936,7 @@ A shallow clone of the full Supabase repository. Works on any OS with `git` inst
 
 ```sh
 # Get the code
-git clone --depth 1 --branch self-hosted/v0.8.0 https://github.com/supabase/supabase
+git clone --depth 1 --branch self-hosted/v0.8.1 https://github.com/supabase/supabase
 
 # Make your new supabase project directory
 mkdir supabase-project
@@ -126674,7 +126953,7 @@ cp -rf supabase/docker/. supabase-project
 cd supabase-project && cp .env.example .env
 
 # Record the base version so update.sh can upgrade this install later
-printf 'ref=self-hosted/v0.8.0\n' > .supabase-version
+printf 'ref=self-hosted/v0.8.1\n' > .supabase-version
 
 # Pull the latest images
 docker compose pull
@@ -126686,7 +126965,7 @@ Only downloads the `docker/` directory from the repository, saving bandwidth and
 
 ```sh
 # Get the code using git sparse checkout
-git clone --filter=blob:none --no-checkout --depth=1 --quiet --branch self-hosted/v0.8.0 https://github.com/supabase/supabase
+git clone --filter=blob:none --no-checkout --depth=1 --quiet --branch self-hosted/v0.8.1 https://github.com/supabase/supabase
 cd supabase
 git sparse-checkout init --cone
 git sparse-checkout set docker
@@ -126708,7 +126987,7 @@ cp -rf supabase/docker/. supabase-project
 cd supabase-project && cp .env.example .env
 
 # Record the base version so update.sh can upgrade this install later
-printf 'ref=self-hosted/v0.8.0\n' > .supabase-version
+printf 'ref=self-hosted/v0.8.1\n' > .supabase-version
 
 # Pull the latest images
 docker compose pull
@@ -135206,6 +135485,18 @@ Vector buckets have default limits during the alpha phase. These limits are desi
 | **Vector dimensions**   | Max 4096     | Maximum dimension size for embeddings                 |
 | **Batch size**          | 1000 vectors | Maximum vectors per single insert/update request      |
 
+## Query limits
+
+The `queryVectors` limits differ between hosted and local vector buckets.
+
+| Limit                            | Hosted vector buckets | Local vector buckets |
+| -------------------------------- | --------------------- | -------------------- |
+| **Maximum `topK`**               | 10,000                | 100                  |
+| **Maximum results per response** | 100                   | 100                  |
+| **`nextToken` query pagination** | Supported             | Not supported        |
+
+Hosted vector buckets use Amazon S3 Vectors. When a response includes a `nextToken`, send the same query again with that token to retrieve the next page. Local vector buckets use pgvector and return the requested results in one response.
+
 
 ---
 
@@ -135220,10 +135511,11 @@ You can now develop and test Vector Bucket integrations in your local environmen
 This allows you to build and iterate on your vector search applications without needing to deploy to a live environment.
 Make sure you have the latest version of the Supabase CLI installed to access this feature.
 
-Note: In local development, vector buckets uses pg\_vector as the underlying storage engine under the hood.
-The Hosted version uses S3Vectors as the Storage engine for vectors, which is optimized for large-scale vector storage and similarity search. This means that while you can develop and test your vector bucket integrations locally, there may be differences in performance and behavior compared to the cloud environment.
+Note: Local vector buckets use pgvector as their storage engine. Hosted vector buckets use Amazon S3 Vectors, so query behavior and performance can differ between environments.
 
-The API remain consistent between local and hosted environments, so you can build your application logic against the local pg\_vector implementation and expect it to work with the S3Vectors engine in production.
+Hosted `queryVectors` requests accept `topK` values up to 10,000 and return results in pages of at most 100. Use `nextToken` to retrieve each additional page. Local requests accept `topK` values up to 100 and reject `nextToken`.
+
+See [Vector Bucket limits](https://supabase.com/docs/guides/storage/vector/limits) for the full comparison.
 
 ## Setting up local vector buckets
 
@@ -135334,6 +135626,47 @@ WHERE data <==> '[0.1, 0.2, 0.3, /* ... embedding ... */]'::embd
 ORDER BY embd_distance(data) ASC
 LIMIT 5;
 ```
+
+## Retrieve more than 100 results
+
+Hosted vector buckets return at most 100 query results per response. To retrieve more nearest-neighbor results, set `topK` to the total number of results you need, up to 10,000, and follow `nextToken` until the response omits it. Keep the other query parameters unchanged between requests.
+
+```typescript
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient('https://your-project-id.supabase.co', 'your-service-key')
+const index = supabase.storage.vectors.from('embeddings').index('documents-openai')
+
+const query = {
+  queryVector: {
+    float32: [0.1, 0.2, 0.3 /* ... embedding of 1536 dimensions ... */],
+  },
+  topK: 1000,
+  returnDistance: true,
+  returnMetadata: true,
+}
+
+const matches = []
+let nextToken: string | undefined
+
+do {
+  const { data, error } = await index.queryVectors({
+    ...query,
+    ...(nextToken ? { nextToken } : {}),
+  })
+
+  if (error) {
+    throw error
+  }
+
+  matches.push(...data.vectors)
+  nextToken = data.nextToken
+} while (nextToken)
+
+console.log(`Retrieved ${matches.length} matches`)
+```
+
+Note: Local vector buckets use pgvector. They accept `topK` values up to 100 and do not support `nextToken` for `queryVectors`. See [Vector Bucket limits](https://supabase.com/docs/guides/storage/vector/limits) for the provider-specific limits.
 
 ## Semantic search
 
@@ -136859,6 +137192,7 @@ results = index.query(
 - [Failed to restore from backup: All subscriptions and replication slots must be dropped before a backup can be restored.](https://supabase.com/docs/guides/troubleshooting/failed-to-restore-from-backup-all-subscriptions-and-replication-slots-must-be-dropped-before-a-backup-can-be-restored-L-rCvt)
 - [Failed to retrieve tables](https://supabase.com/docs/guides/troubleshooting/failed-to-retrieve-tables)
 - [Error: Failed to run sql query: Connection terminated due to connection timeout](https://supabase.com/docs/guides/troubleshooting/failed-to-run-sql-query-connection-terminated-due-to-connection-timeout)
+- [FATAL: Password authentication failed](https://supabase.com/docs/guides/troubleshooting/fatal-password-authentication-failed)
 - [Fetch requests to API endpoints aren't showing the session](https://supabase.com/docs/guides/troubleshooting/fetch-requests-to-api-endpoints-arent-showing-the-session-UbUwRs)
 - [Fixing 520 Errors in the Database REST API](https://supabase.com/docs/guides/troubleshooting/fixing-520-errors-in-the-database-rest-api-Ur5-B2)
 - [Forbidden resource error from the CLI](https://supabase.com/docs/guides/troubleshooting/forbidden-resource-error-from-the-cli-L6rm6l)
@@ -136976,6 +137310,7 @@ results = index.query(
 - [Supavisor connection error: FATAL: (EAUTHQUERY) unsupported or invalid secret format](https://supabase.com/docs/guides/troubleshooting/supavisor-connection-error-fatal-eauthquery-unsupported-or-invalid-secret-format-d23dd4)
 - [Supavisor error: 'Circuit breaker open' after password rotation](https://supabase.com/docs/guides/troubleshooting/supavisor-error-circuit-breaker-open-after-password-rotation-0fdb72)
 - [Supavisor FAQ](https://supabase.com/docs/guides/troubleshooting/supavisor-faq-YyP5tI)
+- [Tenant or user not found when connecting through the shared pooler](https://supabase.com/docs/guides/troubleshooting/tenant-or-user-not-found)
 - [Database: "Error: too many connections for database "postgres""](https://supabase.com/docs/guides/troubleshooting/too-many-connections-for-database-postgres)
 - [Identifying Dashboard SQL Editor Activity by User](https://supabase.com/docs/guides/troubleshooting/tracking-postgres-role-activity-to-specific-dashboard-users-8d3715)
 - [Transfer edge functions from one project to another](https://supabase.com/docs/guides/troubleshooting/transfer-edge-function-from-one-project-to-another)
@@ -137864,7 +138199,7 @@ This error usually occurs when the database reaches the maximum number of connec
 To overcome this, the connections need to be optimized as mentioned here: [https://supabase.com/docs/guides/platform/performance#optimizing-the-number-of-connections](https://supabase.com/docs/guides/platform/performance#optimizing-the-number-of-connections)
 
 Additionally, you can try using the connection pool to help solve this issue:
-[https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pooler)
+[https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits#how-connection-pooling-works](https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits#how-connection-pooling-works)
 
 If you're already using connection pooling and still hitting the maximum connections, then it is suggested to upgrade your compute add-on that allows more connections: [https://supabase.com/docs/guides/platform/compute-and-disk](https://supabase.com/docs/guides/platform/compute-and-disk)
 
@@ -138040,6 +138375,14 @@ set the [prepare\_threshold](https://www.psycopg.org/psycopg3/docs/api/connectio
 Follow the recommendation in the [asyncpg docs](https://magicstack.github.io/asyncpg/current/faq.html#why-am-i-getting-prepared-statement-errors)
 
 > disable automatic use of prepared statements by passing `statement_cache_size=0` to [asyncpg.connect()](https://magicstack.github.io/asyncpg/current/api/index.html#asyncpg.connection.connect) and [asyncpg.create\_pool()](https://magicstack.github.io/asyncpg/current/api/index.html#asyncpg.pool.create_pool) (and, obviously, avoid the use of [Connection.prepare()](https://magicstack.github.io/asyncpg/current/api/index.html#asyncpg.connection.Connection.prepare));
+
+## JDBC
+
+Set [`prepareThreshold`](https://jdbc.postgresql.org/documentation/use/#connection-parameters) to `0`:
+
+```
+jdbc:postgresql://[POOLER-HOST]:6543/postgres?prepareThreshold=0
+```
 
 ## Rust's Deadpool or `tokio-postgres`:
 
@@ -140920,6 +141263,34 @@ You can also set up alerts using a [Prometheus endpoint / Grafana charts](https:
 
 ---
 
+# FATAL: Password authentication failed
+
+A `FATAL: Password authentication failed` error means Postgres rejected your credentials. Check the username before the password, because the username is the more common mistake.
+
+## Check the username first
+
+The username depends on how you connect:
+
+- Direct connections and the dedicated pooler use `postgres`.
+- Shared pooler connections use `postgres.[PROJECT-REF]`.
+
+Supplying the wrong one usually produces [Tenant or user not found](https://supabase.com/docs/guides/troubleshooting/tenant-or-user-not-found) rather than this error, but a valid username with the wrong password lands here.
+
+## Check the password
+
+Reserved characters in a password have to be [percent-encoded](https://en.wikipedia.org/wiki/Percent-encoding) when they appear in a connection string. This covers `&`, `#`, `?`, and spaces, among others. A password that works in a GUI field can fail in a URI for this reason alone.
+
+If you don't have the password, [reset it](https://supabase.com/docs/guides/troubleshooting/how-do-i-reset-my-supabase-database-password-oTs5sB) in [Database settings](https://supabase.com/dashboard/project/_/database/settings).
+
+## Repeated failures cause a different error
+
+Repeated authentication failures from the same address get that address banned. Once banned, connections stop failing with this error and start failing with [connection refused](https://supabase.com/docs/guides/troubleshooting/error-connection-refused-when-trying-to-connect-to-supabase-database-hwG0Dr) instead.
+
+If your error changes from authentication failed to connection refused while you're testing credentials, you're banned rather than locked out. That page has the unban procedure.
+
+
+---
+
 # Fetch requests to API endpoints aren't showing the session
 
 You must pass along the cookie header with the fetch request in order for your API endpoint to get access to the cookie from this request.
@@ -142837,7 +143208,7 @@ Errors about too many open connections can be *temporarily* resolved by [restart
 - If you're receiving a `No more connections allowed (max_client_conn)` error:
   - Configure your applications and services to [use fewer connections](../platform/performance#configuring-clients-to-use-fewer-connections).
   - [Upgrade](https://supabase.com/dashboard/project/_/settings/infrastructure) to a [larger compute add-on](../platform/compute-and-disk) to increase the number of available connections.
-- If you're receiving a `sorry, too many clients already` or `remaining connection slots are reserved for non-replication superuser connections` error message in addition to the above suggestions, switch to using the [connection pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pool) instead.
+- If you're receiving a `sorry, too many clients already` or `remaining connection slots are reserved for non-replication superuser connections` error message in addition to the above suggestions, switch to using the [connection pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#choose-a-connection-method) instead.
 
 ### Connection refused
 
@@ -148194,6 +148565,35 @@ select pg_sleep(60);
 A backlog could also happen if there are not enough direct connections available. In our setup, 400 connections were enough to handle a million clients, ensuring a smooth flow of requests. But if we had only 1 direct connection, the queue would've moved too slowly and clients would expire their requests.
 
 Scaling to this level only works when the pooler is operating in transaction mode. In Session mode, hypothetically, the 400 clients that first accessed the direct connections could keep them, even if they are no longer executing queries. The pending 999,600 clients waiting for a turn would then be starved of direct connections.
+
+
+---
+
+# Tenant or user not found when connecting through the shared pooler
+
+A `Tenant or user not found` error means the shared pooler couldn't match your host and username to a project. Some drivers report it as `FATAL: (ENOTFOUND) tenant/user postgres.<project-ref> not found`.
+
+The error reads like a credentials problem, so it often sends people to reset a password that was never wrong. The cause is almost always the host or the username, not the password.
+
+## The host was typed instead of copied
+
+Shared pooler hosts look like `aws-1-us-east-2.pooler.supabase.com`. The number is a pooler cluster index, not part of the region name, and a region can have more than one. `aws-0` is not a safe default, and you can't work the host out from your region.
+
+Copy the host from the [Connect](https://supabase.com/dashboard/project/_?showConnect=true) dialog rather than composing it.
+
+## The username is missing the project ref
+
+Shared pooler connections use `postgres.[PROJECT-REF]`, not `postgres`. Direct connections and the dedicated pooler use `postgres`.
+
+If you connect as a custom role through the shared pooler, the username is `[ROLE].[PROJECT-REF]`. Supplying only the role name, with no project ref, produces this error rather than an authentication failure.
+
+## How to fix it
+
+1. Open the [Connect](https://supabase.com/dashboard/project/_?showConnect=true) dialog in the Supabase Dashboard.
+2. Choose **Session pooler** or **Transaction pooler**.
+3. Copy the whole string, and replace only the password placeholder.
+
+For the full set of hosts, ports, and usernames, see [Connect to your database](https://supabase.com/docs/guides/database/connecting-to-postgres).
 
 
 ---
@@ -172436,7 +172836,10 @@ OAuthProtectedResourceConfig.authorizationServer falls back to
 Contributes `ctx.oauthProtectedResource` (the resolved metadata URL) to the
 downstream context. Nested under `withSupabase`, the key is typed on the
 handler's `ctx` when the outermost call is anchored with
-`satisfies FetchHandler` — see `withSupabase`'s type note.
+`satisfies FetchHandler` — see `withSupabase`'s type note. Placed directly
+after `withSupabase` with an auth mode that requires credentials, the
+composition is refused when the stack is built, since the gate would
+answer discovery and preflight before this middleware runs.
 
 The OAuth Protected Resource surface is alpha — the config shape, the
 contributed context key, and the metadata route may change in a minor
@@ -172504,25 +172907,18 @@ never looks at `ctx.jwtClaims`, so it composes in any auth mode, including
 `auth: 'secret'` and `auth: 'none'`:
 
 ```ts
+import { pipeline } from '@supabase/middleware'
 import { withSupabase } from '@supabase/server'
 import { withPostgresAdminClient } from '@supabase/server/middleware/postgres-admin'
 
-export default {
-  fetch: withSupabase(
-    { auth: 'secret', middleware: [withPostgresAdminClient()] },
-    async (_req, ctx) => {
-      const rows = await ctx.postgresAdmin.query`select user_id, count(*) from notes group by user_id`
-      return Response.json(rows)
-    },
-  ),
-}
+pipeline([withSupabase({ auth: 'secret' }), withPostgresAdminClient()], handler)
 ```
 
 Compose both halves when a handler needs each in turn — they share one pool,
 and `ctx.postgres` stays RLS-scoped regardless:
 
 ```ts
-middleware: [withPostgresClient(), withPostgresAdminClient()]
+pipeline([withSupabase({ auth: 'user' }), withPostgresClient(), withPostgresAdminClient()], handler)
 ```
 
 > **Authorization is yours now.** RLS is not consulted, so any per-user
@@ -172575,11 +172971,12 @@ debug. Bypassing RLS is a separate, explicit opt-in: compose
 > claim, and RLS still applies to them. They are not supported here yet, so
 > such a token is refused rather than downgraded.
 
-Reads the caller's claims from `ctx.jwtClaims`, which `withSupabase` already
-populates (JWKS-verified) — so inside `withSupabase` you compose it directly:
+Reads the caller's claims from `ctx.jwtClaims`, which `withSupabase`
+populates (JWKS-verified) — so after `withSupabase` in a pipeline it composes
+directly:
 
 ```ts
-withSupabase({ auth: 'user', middleware: [withPostgresClient()] }, handler)
+pipeline([withSupabase({ auth: 'user' }), withPostgresClient()], handler)
 ```
 
 Standalone (no `withSupabase`), pair it with `withClaims` so `ctx.jwtClaims`
@@ -172638,10 +173035,10 @@ answers no `OPTIONS` preflight. For browser callers, compose `withCors`
 the gate runs and stamps `Access-Control-*` headers on the short-circuit
 responses.
 
-Inside `withSupabase` the context already carries verified `jwtClaims`, so
-this gate is unnecessary there and composing it through the `middleware`
-option is a compile-time conflict. Use `withSupabase({ auth: 'user' })` to
-gate that path.
+After `withSupabase` in a pipeline the context already carries verified
+`jwtClaims`, so this gate is unnecessary there and placing it after
+`withSupabase` is a compile-time conflict. Use `withSupabase({ auth: 'user' })`
+to gate that path.
 
 ### Examples
 
@@ -172685,7 +173082,6 @@ context creation, and error responses. Your handler only runs on successful auth
 ```ts
 import { withSupabase } from '@supabase/server'
 
-// Without middleware — existing API, unchanged.
 export default {
   fetch: withSupabase({ auth: 'user' }, async (req, ctx) => {
     const { data } = await ctx.supabase.rpc('get_my_profile')
@@ -173255,6 +173651,33 @@ when `errors: { detailed: false }` strips `hint` and `details`.
 
 **Deprecated.** Use AuthModeWithKey instead. Will be removed in a future major release.
 
+## AuthConfig
+
+Accepted shape of the `auth` option: one mode, or an ordered list of modes
+tried left to right.
+
+`"none"` accepts every request, so it only carries meaning as the last
+entry of a list — the modes before it are the ones that can produce an
+identity, and anything after it is unreachable. On its own in a list
+(`["none"]`) it says nothing that a bare `auth: 'none'` doesn't. So the
+type accepts `"none"` alone or in final position behind at least one
+credentialed mode, and nowhere else.
+
+A single mode needs no wrapping array — `"user"` and `["user"]` are the
+same configuration, and the unwrapped form is the one the union names
+first, so it is what shows up in editor completions.
+
+### Examples
+
+#### Every accepted form
+
+```ts
+withSupabase({ auth: 'user' }, handler)              // one mode
+withSupabase({ auth: ['secret', 'user'] }, handler)  // first match wins
+withSupabase({ auth: ['user', 'none'] }, handler)    // optional user
+withSupabase({ auth: 'none' }, handler)              // no credentials required
+```
+
 ## AuthMode
 
 Authentication mode that determines what credentials a request must provide.
@@ -173325,6 +173748,11 @@ Options for core.createAdminClient.
 ## CreateContextClientOptions
 
 Options for core.createContextClient.
+
+## CredentialedAuthMode
+
+An auth mode that requires a credential — every AuthModeWithKey
+except `"none"`, keyed forms included.
 
 ## Credentials
 

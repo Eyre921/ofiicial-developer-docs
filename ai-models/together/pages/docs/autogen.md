@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/autogen
 path: docs/autogen
 ---
 
-Using AutoGen(AG2) with Together AI
+Using AutoGen(AG2) with Together AI.
 
 AG2 (formerly AutoGen) is an open-source framework for building and orchestrating AI agents. It focuses on enabling multiple agents to cooperate in solving complex tasks. The framework supports various language models from Together AI, tool integrations, and both autonomous and human-in-the-loop workflows.
 

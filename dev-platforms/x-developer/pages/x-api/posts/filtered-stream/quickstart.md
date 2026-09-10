@@ -20,7 +20,7 @@ This guide walks you through connecting to the filtered stream to receive near r
 ***
 
 <Steps>
-  <Step title="Create a filter rule" icon="filter">
+  <Step title="Create a filter rule" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e">
     Rules define which Posts to receive. Use operators to match on keywords, hashtags, users, and more.
 
     **Example rule:** Match Posts containing "cat" with images:
@@ -29,7 +29,7 @@ This guide walks you through connecting to the filtered stream to receive near r
     cat has:images
     ```
 
-    <Card title="Build a rule" icon="filter" href="/x-api/posts/filtered-stream/integrate/build-a-rule">
+    <Card title="Build a rule" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e" href="/x-api/posts/filtered-stream/integrate/build-a-rule">
       Learn rule syntax and operators
     </Card>
   </Step>
@@ -63,7 +63,7 @@ This guide walks you through connecting to the filtered stream to receive near r
           print(f"Rule added: {rule.id} - {rule.value}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -151,7 +151,7 @@ This guide walks you through connecting to the filtered stream to receive near r
         -H "Authorization: Bearer $BEARER_TOKEN"
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
 
       client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -166,7 +166,7 @@ This guide walks you through connecting to the filtered stream to receive near r
           print(f"Matching rules: {post.matching_rules}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -186,7 +186,7 @@ This guide walks you through connecting to the filtered stream to receive near r
     </CodeGroup>
   </Step>
 
-  <Step title="Process incoming Posts" icon="message">
+  <Step title="Process incoming Posts" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=9fde7d51b4f18c96d3a38a81d519761f">
     Matching Posts stream as JSON objects:
 
     ```json theme={null}
@@ -285,7 +285,7 @@ This guide walks you through connecting to the filtered stream to receive near r
 ## Next steps
 
 <CardGroup>
-  <Card title="Build a rule" icon="filter" href="/x-api/posts/filtered-stream/integrate/build-a-rule">
+  <Card title="Build a rule" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e" href="/x-api/posts/filtered-stream/integrate/build-a-rule">
     Learn rule syntax
   </Card>
 
@@ -297,7 +297,7 @@ This guide walks you through connecting to the filtered stream to receive near r
     Reconnect gracefully
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/filtered-stream">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/filtered-stream">
     Full endpoint documentation
   </Card>
 </CardGroup>

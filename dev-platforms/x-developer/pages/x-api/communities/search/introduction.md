@@ -11,7 +11,7 @@ The Communities Search endpoint lets you search for Communities by keyword. Disc
 ## Overview
 
 <CardGroup>
-  <Card title="Keyword search" icon="magnifying-glass">
+  <Card title="Keyword search" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834">
     Search Communities by name and description
   </Card>
 
@@ -67,7 +67,7 @@ community.fields=name,description,member_count" \
     Look up Communities by ID
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/communities/search-communities">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/communities/search-communities">
     Full endpoint documentation
   </Card>
 </CardGroup>

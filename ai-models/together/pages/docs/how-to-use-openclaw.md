@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/how-to-use-openclaw
 path: docs/how-to-use-openclaw
 ---
 
-Learn how to power OpenClaw (an autonomous agent) with Together AI models.
+Power OpenClaw, an autonomous agent, with Together AI models.
 
 OpenClaw is the first Jarvis-like agent that actually gets things done: writing and executing scripts, browsing the web, using apps, and managing tasks from Telegram, WhatsApp, or any chat interface. By pairing it with [Together AI](https://together.ai), you unlock access to leading open-source models like Kimi K3, GLM 5.2, and DeepSeek V4 Pro through a single OpenAI-compatible API, at a fraction of the cost of closed-source alternatives.
 

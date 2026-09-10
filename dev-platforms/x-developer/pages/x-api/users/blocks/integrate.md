@@ -8,7 +8,7 @@ This guide covers the key concepts you need to integrate the blocks endpoints in
 
 This guide covers the key concepts you need to integrate the blocks endpoints into your application.
 
-<Callout icon="key">
+<Callout icon="/icons/xds/icon-key.svg">
   The block and unblock users endpoints are only available under the Enterprise plan. You can fill out the Enterprise interest form [here](/forms/enterprise-api-interest).
 </Callout>
 
@@ -122,7 +122,7 @@ For users with large block lists, results are paginated:
     -H "Authorization: Bearer $USER_ACCESS_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   # Use OAuth 2.0 user access token
@@ -138,7 +138,7 @@ For users with large block lists, results are paginated:
   print(f"Blocked {len(all_blocked)} users")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -181,7 +181,7 @@ For users with large block lists, results are paginated:
 ## Next steps
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/users/blocks/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/users/blocks/quickstart">
     Make your first blocks request
   </Card>
 
@@ -189,7 +189,7 @@ For users with large block lists, results are paginated:
     Mute users instead of blocking
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-blocking">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-blocking">
     Full endpoint documentation
   </Card>
 

@@ -153,7 +153,7 @@ When using OAuth 2.0 PKCE, your access token must have these scopes:
     Get your bookmarked Posts
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/create-bookmark">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/create-bookmark">
     Full endpoint documentation
   </Card>
 </CardGroup>

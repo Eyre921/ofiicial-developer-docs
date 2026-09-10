@@ -335,7 +335,7 @@ The response looks as follows. For each hit, the `_score` represents the relevan
 
 ## Standalone reranking
 
-To rerank initial results as a standalone operation, use the [`rerank`](/reference/api/latest/inference/rerank) operation with the [hosted reranking model](#reranking-models) you want to use, the query results and the query, the number of ranked results to return, the field to use for reranking, and any other model-specific parameters.
+To rerank initial results as a standalone operation, use the [`rerank`](/reference/api/latest/inference/rerank-results) operation with the [hosted reranking model](#reranking-models) you want to use, the query results and the query, the number of ranked results to return, the field to use for reranking, and any other model-specific parameters.
 
 For example, the following code uses the hosted `bge-reranker-v2-m3` model to rerank the values of the `documents.chunk_text` fields based on their relevance to the query and return only the 2 most relevant documents, along with their score:
 
@@ -640,7 +640,7 @@ The response looks as follows. For each hit, the \_score represents the relevanc
 
 ## Rerank results on the default field
 
-To [rerank search results](/reference/api/latest/inference/rerank), specify a [supported reranking model](/guides/search/rerank-results#reranking-models), and provide documents and a query as well as other model-specific parameters. By default, Pinecone expects the documents to be in the `documents.text` field.
+To [rerank search results](/reference/api/latest/inference/rerank-results), specify a [supported reranking model](/guides/search/rerank-results#reranking-models), and provide documents and a query as well as other model-specific parameters. By default, Pinecone expects the documents to be in the `documents.text` field.
 
 For example, the following request uses the `bge-reranker-v2-m3` reranking model to rerank the values of the `documents.text` field based on their relevance to the query, `"The tech company Apple is known for its innovative products like the iPhone."`.
 
@@ -991,7 +991,7 @@ The returned object contains documents with relevance scores:
 
 ## Rerank results on a custom field
 
-To [rerank results](/reference/api/latest/inference/rerank) on a field other than `documents.text`, provide the `rank_fields` parameter to specify the fields on which to rerank.
+To [rerank results](/reference/api/latest/inference/rerank-results) on a field other than `documents.text`, provide the `rank_fields` parameter to specify the fields on which to rerank.
 
 <Note>
   The [`bge-reranker-v2-m3`](#bge-reranker-v2-m3) and [`pinecone-rerank-v0`](#pinecone-rerank-v0) models support only a single rerank field. [`cohere-rerank-4-fast`](#cohere-rerank-4-fast) and [`cohere-rerank-3.5`](#cohere-rerank-3-5) support multiple rerank fields, ranked based on the order of the fields specified.
@@ -1201,7 +1201,7 @@ Pinecone hosts several reranking models so it's easy to manage two-stage vector 
 The following reranking models are hosted by Pinecone.
 
 <Note>
-  To understand how cost is calculated for reranking, see [Reranking cost](/guides/manage-cost/understanding-cost#reranking). To get model details via the API, see [List models](/reference/api/latest/inference/list_models) and [Describe a model](/reference/api/latest/inference/describe_model).
+  To understand how cost is calculated for reranking, see [Reranking cost](/guides/manage-cost/understanding-cost#reranking). To get model details via the API, see [List models](/reference/api/latest/inference/list-available-models) and [Describe a model](/reference/api/latest/inference/describe-a-model).
 </Note>
 
 <AccordionGroup>

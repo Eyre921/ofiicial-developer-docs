@@ -64,7 +64,7 @@ pip install bm25s # To implement our key-word BM25 search
 
 We will RAG over Paul Graham's latest essay titled [Founder Mode](https://paulgraham.com/foundermode.html).
 
-```py Python theme={null}
+```python Python theme={null}
 # Let's download the essay from Paul Graham's website
 
 import requests
@@ -106,7 +106,7 @@ pg_essay = scrape_pg_essay()
 
 This will give us the essay, we still need to chunk the essay, so let's implement a function and use it:
 
-```py Python theme={null}
+```python Python theme={null}
 # We can get away with naive fixed sized chunking as the context generation will add meaning to these chunks
 
 
@@ -143,7 +143,7 @@ Prompt caching allows key and value matrices corresponding to the document to be
 
 We will use the following prompt to generate context for each chunk:
 
-```py Python theme={null}
+```python Python theme={null}
 # We want to generate a snippet explaining the relevance/importance of the chunk with
 # full document in mind.
 
@@ -162,7 +162,7 @@ Answer ONLY with a succinct explaination of the meaning of the chunk in the cont
 
 Now we can prep each chunk into these prompt template and generate the context:
 
-```py Python theme={null}
+```python Python theme={null}
 from typing import List
 import together, os
 from together import Together
@@ -207,7 +207,7 @@ def generate_context(prompt: str):
 
 We can now use the functions above to generate context for each chunk and append it to the chunk itself:
 
-```py Python theme={null}
+```python Python theme={null}
 # Let's generate the entire list of contextual chunks and concatenate to the original chunk
 
 contextual_chunks = [
@@ -221,7 +221,7 @@ Now we can embed each chunk into a vector index.
 
 We will now use `multilingual-e5-large-instruct` to embed the augmented chunks above into a vector index.
 
-```py Python theme={null}
+```python Python theme={null}
 from typing import List
 import together
 import numpy as np
@@ -255,7 +255,7 @@ contextual_embeddings = generate_embeddings(
 
 Next we need to write a function that can retrieve the top matching chunks from this index given a query:
 
-```py Python theme={null}
+```python Python theme={null}
 def vector_retrieval(
     query: str,
     top_k: int = 5,
@@ -292,7 +292,7 @@ We now have a way to retrieve from the vector index given a query.
 
 Let's build a keyword index that allows us to use BM25 to perform lexical search based on the words present in the query and the contextual chunks. For this we will use the `bm25s` python library:
 
-```py Python theme={null}
+```python Python theme={null}
 import bm25s
 
 # Create the BM25 model and index the corpus
@@ -302,7 +302,7 @@ retriever.index(bm25s.tokenize(contextual_chunks))
 
 Which can be queried as follows:
 
-```py Python theme={null}
+```python Python theme={null}
 # Query the corpus and get top-k results
 query = "What are 'skip-level' meetings?"
 results, scores = retriever.retrieve(
@@ -313,7 +313,7 @@ results, scores = retriever.retrieve(
 
 Similar to the function above which produces vector results from the vector index we can write a function that produces keyword search results from the BM25 index:
 
-```py Python theme={null}
+```python Python theme={null}
 def bm25_retrieval(query: str, k: int, bm25_index) -> List[int]:
     """
     Retrieve the top-k document indices based on the BM25 algorithm for a given query.
@@ -334,7 +334,7 @@ def bm25_retrieval(query: str, k: int, bm25_index) -> List[int]:
 
 Once a user submits a query we are going to use both functions above to perform Vector and BM25 retrieval and then fuse the ranks using the RRF algorithm implemented below.
 
-```py Python theme={null}
+```python Python theme={null}
 # Example ranked lists from different sources
 vector_top_k = vector_retreival(
     query="What are 'skip-level' meetings?",
@@ -350,7 +350,7 @@ bm25_top_k = bm25_retreival(
 
 The Reciprocal Rank Fusion algorithm takes two ranked list of objects and combines them:
 
-```py Python theme={null}
+```python Python theme={null}
 from collections import defaultdict
 
 
@@ -382,7 +382,7 @@ def reciprocal_rank_fusion(*list_of_list_ranks_system, K=60):
 
 We can use the RRF function above as follows:
 
-```py Python theme={null}
+```python Python theme={null}
 # Combine the lists using RRF
 hybrid_top_k = reciprocal_rank_fusion(vector_top_k, bm25_top_k)
 hybrid_top_k[1]
@@ -398,7 +398,7 @@ Now we add a retrieval quality improvement step here to make sure only the highe
   Rerank models like `Mxbai-Rerank-Large-V2` are only available with [dedicated model inference](https://api.together.ai/endpoints/configure). You can bring up a dedicated endpoint to use reranking in your applications.
 </Tip>
 
-```py Python theme={null}
+```python Python theme={null}
 query = "What are 'skip-level' meetings?"  # we keep the same query - can change if we want
 
 response = client.rerank.create(
@@ -428,7 +428,7 @@ This chunk explains that founder mode, a hypothetical approach to running a comp
 
 We will pass the finalized 3 chunks into an LLM to get our final answer.
 
-```py Python theme={null}
+```python Python theme={null}
 # Generate a story based on the top 10 most similar movies
 
 query = "What are 'skip-level' meetings?"

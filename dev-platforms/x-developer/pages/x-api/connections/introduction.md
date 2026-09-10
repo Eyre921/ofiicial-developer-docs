@@ -23,7 +23,7 @@ The Stream Connections endpoints let you retrieve the history of your applicatio
     End all active streaming connections
   </Card>
 
-  <Card title="Terminate by endpoint" icon="filter">
+  <Card title="Terminate by endpoint" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e">
     Stop connections for specific streams
   </Card>
 
@@ -65,7 +65,7 @@ The Stream Connections endpoints let you retrieve the history of your applicatio
 </Note>
 
 <CardGroup>
-  <Card title="API Reference" icon="code" href="/x-api/connections/get-connection-history">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/connections/get-connection-history">
     Full endpoint documentation
   </Card>
 

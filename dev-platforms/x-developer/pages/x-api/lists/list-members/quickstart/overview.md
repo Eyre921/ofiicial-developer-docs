@@ -23,7 +23,7 @@ The List members endpoints let you look up members of a List and manage List mem
 ## Available endpoints
 
 <CardGroup>
-  <Card title="List members lookup" icon="users" href="/x-api/lists/list-members/quickstart/list-members-lookup">
+  <Card title="List members lookup" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-people.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=9d5f3f82edcd2a4070364193436e7980" href="/x-api/lists/list-members/quickstart/list-members-lookup">
     Get members of a List
   </Card>
 
@@ -63,7 +63,7 @@ The List members endpoints let you look up members of a List and manage List mem
           print(f"{user.username}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -84,11 +84,11 @@ The List members endpoints let you look up members of a List and manage List mem
 ## Next steps
 
 <CardGroup>
-  <Card title="List lookup" icon="list" href="/x-api/lists/list-lookup/quickstart">
+  <Card title="List lookup" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/lists/list-lookup/quickstart">
     Get List details
   </Card>
 
-  <Card title="List Posts" icon="message" href="/x-api/lists/list-tweets/quickstart">
+  <Card title="List Posts" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=9fde7d51b4f18c96d3a38a81d519761f" href="/x-api/lists/list-tweets/quickstart">
     Get Posts from a List
   </Card>
 </CardGroup>

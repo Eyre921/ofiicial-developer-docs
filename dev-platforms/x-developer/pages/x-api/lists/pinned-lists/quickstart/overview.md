@@ -86,7 +86,7 @@ The pinned Lists endpoints let you look up a user's pinned Lists and manage whic
 ## Next steps
 
 <CardGroup>
-  <Card title="List lookup" icon="list" href="/x-api/lists/list-lookup/quickstart">
+  <Card title="List lookup" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/lists/list-lookup/quickstart">
     Get List details
   </Card>
 

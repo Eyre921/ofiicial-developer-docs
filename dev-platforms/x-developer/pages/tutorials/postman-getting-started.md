@@ -13,9 +13,9 @@ Postman is a desktop and web application that lets you make requests to an API f
 We currently have two Postman collections available:
 
 <CardGroup>
-  <Card title="X API v2 Collection" icon="code" href="https://www.postman.com/xapidevelopers/x-api-public-workspace/collection/34902927-2efc5689-99c6-4ab6-8091-996f35c2fd80" />
+  <Card title="X API v2 Collection" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="https://www.postman.com/xapidevelopers/x-api-public-workspace/collection/34902927-2efc5689-99c6-4ab6-8091-996f35c2fd80" />
 
-  <Card title="X Ads API Collection" icon="code" href="https://app.getpostman.com/run-collection/1d12b9fc623b8e149f87" />
+  <Card title="X Ads API Collection" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="https://app.getpostman.com/run-collection/1d12b9fc623b8e149f87" />
 </CardGroup>
 
 ### Prerequisites
@@ -109,7 +109,7 @@ Now that your request is set up, select the "Send" button.
 
 If everything was set up properly, you should receive the following payload:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
     "data": {
         "author_id": "2244994945",

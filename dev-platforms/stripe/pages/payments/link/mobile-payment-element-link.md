@@ -78,4 +78,5 @@ You can create sandbox accounts for Link using any valid email address. When pro
 ## See also
 
 - [Stripe Mobile SDKs](https://docs.stripe.com/sdks.md#stripe-mobile-sdks)
+- [Build an app that accepts payments with Link](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=mobile)
 

@@ -22,7 +22,7 @@ This guide walks you through hiding and unhiding replies to Posts in conversatio
 ## Hide a reply
 
 <Steps>
-  <Step title="Find the reply's Post ID" icon="message">
+  <Step title="Find the reply's Post ID" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=9fde7d51b4f18c96d3a38a81d519761f">
     Get the ID of the reply you want to hide. You can only hide replies to conversations started by the authenticated user.
 
     ```
@@ -40,7 +40,7 @@ This guide walks you through hiding and unhiding replies to Posts in conversatio
         -d '{"hidden": true}'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -58,7 +58,7 @@ This guide walks you through hiding and unhiding replies to Posts in conversatio
       print(f"Hidden: {response.data.hidden}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -106,7 +106,7 @@ To make a hidden reply visible again:
     -d '{"hidden": false}'
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -124,7 +124,7 @@ To make a hidden reply visible again:
   print(f"Hidden: {response.data.hidden}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({
@@ -177,7 +177,7 @@ To make a hidden reply visible again:
     Moderate replies as they arrive
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/hide-reply">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/hide-reply">
     Full endpoint documentation
   </Card>
 </CardGroup>

@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/cluster-storage
 path: docs/cluster-storage
 ---
 
-Understand storage types, persistence, and best practices for GPU clusters
+Understand storage types, persistence, and best practices for GPU clusters.
 
 Together GPU Clusters provides multiple storage options. It is critical to understand which storage is **persistent** and which is **ephemeral** so you can architect your workloads to avoid data loss.
 
@@ -69,7 +69,7 @@ On Slurm clusters, `/home` is a **persistent NFS-backed file system** shared acr
 * Small datasets
 * Model weights and training data
 
-We recommend logging into the Slurm head node first to set up your user folder with the correct permissions.
+Log into the Slurm head node first to set up your user folder with the correct permissions.
 
 ### Kubernetes clusters
 

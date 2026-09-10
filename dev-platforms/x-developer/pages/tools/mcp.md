@@ -1,5 +1,5 @@
 ---
-title: "MCP Servers"
+title: "MCP servers for the X API and X developer docs"
 source: https://docs.x.com/tools/mcp
 path: tools/mcp
 ---
@@ -64,7 +64,7 @@ Pick one of two routes:
 
 1. **Create an X app** with **OAuth 2.0** enabled.
 2. **Register the redirect URI** `http://localhost:8080/callback` on the app (required for the first-run browser login). To use a different one, set `REDIRECT_URI` and register that instead.
-3. **Copy your `CLIENT_ID` and `CLIENT_SECRET`** — you'll put them in the client config.
+3. **Copy your `CLIENT_ID` and `CLIENT_SECRET`** — you'll put them in the client config. If you ever run `xurl auth oauth2` manually (e.g., the headless flow below), export them as environment variables in that shell first — the login fails in the browser without them.
 4. **Have Node.js installed** (for `npx`).
 5. We recommend you **install [xurl](https://github.com/xdevplatform/xurl)**:
 
@@ -128,7 +128,7 @@ The first time a tool is invoked (or on `doctor`), your browser opens for the X 
 Create `~/.cursor/mcp.json` (global, all projects) or `.cursor/mcp.json` (this project only):
 
 <CodeGroup>
-  ```json xurl bridge theme={null}
+  ```json title="xurl bridge" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
   {
     "mcpServers": {
       "xapi": {
@@ -251,7 +251,7 @@ The bridge authenticates as **you** (PKCE flow), so tools act with your account'
 
 With no cached token, the bridge prints to stderr and opens your browser:
 
-```
+```json theme={null}
 [xurl mcp] no valid OAuth2 token; opening the browser to sign in -- complete the login to start the bridge...
 [xurl mcp] authentication complete; starting bridge
 ```
@@ -263,6 +263,11 @@ The MCP handshake is held until you finish — that's why clients need a generou
 No reachable browser? Authenticate once out-of-band, then start the client:
 
 ```bash theme={null}
+# Required: the env block in your client config only applies to the bridge,
+# not to manual xurl runs — export the credentials in this shell first.
+export CLIENT_ID="YOUR_X_APP_CLIENT_ID"
+export CLIENT_SECRET="YOUR_X_APP_CLIENT_SECRET"
+
 xurl auth oauth2 --headless                 # prints an auth URL; you paste back the redirect URL/code
 xurl auth oauth2 --app my-app --headless    # for a specific app
 ```
@@ -284,6 +289,10 @@ Authorization = "Bearer YOUR_APP_ONLY_BEARER_TOKEN"
 Trade-off: no auto-refresh and no user context (no actions as you). The bridge is recommended for full functionality.
 
 #### Multiple apps & accounts
+
+<Note>
+  The OAuth login authorizes **whichever X account is logged in when the browser opens** — not necessarily the account that owns the app. If you're posting on behalf of a secondary/bot account, switch to that account in your browser before completing the login (or use `-u` to pick a previously authorized user).
+</Note>
 
 ```bash theme={null}
 xurl --app my-app mcp                  # bridge using a specific registered app
@@ -313,15 +322,16 @@ grok mcp doctor xapi          # Grok Build: end-to-end check
 npx -y @xdevplatform/xurl mcp https://api.x.com/mcp
 ```
 
-| Symptom                            | Cause / Fix                                                                                              |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Client times out on startup        | Raise `startup_timeout_sec` to 300+; the bridge is waiting on your browser login                         |
-| Browser never opens                | No display (headless) → run `xurl auth oauth2 --headless` first; ensure `npx` resolves                   |
-| `401` / `token refresh failed`     | App credentials wrong, or refresh token revoked → re-run the login (`xurl auth oauth2 [--app NAME]`)     |
-| Redirect/callback error in browser | `http://localhost:8080/callback` not registered on the app (or `REDIRECT_URI` mismatch)                  |
-| `client-not-enrolled` after login  | App isn't in the right X package/environment → in the portal move it to **Pay-per-use** + **Production** |
-| `npx` pulls a stale version        | A private registry mirror is default → pin `--registry=https://registry.npmjs.org/` in `args`            |
-| Empty/garbled tool output          | Don't run the client with `--verbose`; stdout must stay a clean JSON-RPC channel                         |
+| Symptom                                                                           | Cause / Fix                                                                                                                                                             |
+| --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Client times out on startup                                                       | Raise `startup_timeout_sec` to 300+; the bridge is waiting on your browser login                                                                                        |
+| Browser never opens                                                               | No display (headless) → run `xurl auth oauth2 --headless` first; ensure `npx` resolves                                                                                  |
+| `401` / `token refresh failed`                                                    | App credentials wrong, or refresh token revoked → re-run the login (`xurl auth oauth2 [--app NAME]`)                                                                    |
+| Browser shows "Something went wrong — You weren't able to give access to the App" | `CLIENT_ID`/`CLIENT_SECRET` not set where `xurl` runs → put them in the client's `env` block, or `export` them in your shell before running `xurl auth oauth2` manually |
+| Redirect/callback error in browser                                                | `http://localhost:8080/callback` not registered on the app (or `REDIRECT_URI` mismatch)                                                                                 |
+| `client-not-enrolled` after login                                                 | App isn't in the right X package/environment → in the portal move it to **Pay-per-use** + **Production**                                                                |
+| `npx` pulls a stale version                                                       | A private registry mirror is default → pin `--registry=https://registry.npmjs.org/` in `args`                                                                           |
+| Empty/garbled tool output                                                         | Don't run the client with `--verbose`; stdout must stay a clean JSON-RPC channel                                                                                        |
 
 ### Security & best practices
 
@@ -367,7 +377,7 @@ You can connect both MCP servers simultaneously. This gives your AI assistant th
 
 **Grok Build** (`~/.grok/config.toml`):
 
-```toml theme={null}
+```toml title="Example" lines wrap icon="file-lines" theme={null}
 [mcp_servers.xapi]
 command = "npx"
 args = ["-y", "@xdevplatform/xurl", "mcp", "https://api.x.com/mcp"]
@@ -385,7 +395,7 @@ enabled = true
 
 **Cursor / Claude-style** (`mcp.json`):
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "mcpServers": {
     "xapi": {

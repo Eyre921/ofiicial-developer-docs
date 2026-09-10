@@ -15,11 +15,11 @@ The X API uses **pay-per-usage** pricing. No subscriptions—pay only for what y
 ## How it works
 
 <CardGroup>
-  <Card title="Credit-based" icon="coins">
+  <Card title="Credit-based" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-coins.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=d8b17de3fb4032d86b77606ea95fcb55">
     Purchase credits upfront in the Developer Console. Credits are deducted as you make API requests.
   </Card>
 
-  <Card title="Per-endpoint pricing" icon="code">
+  <Card title="Per-endpoint pricing" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219">
     Different endpoints have different costs. View current rates in the Developer Console.
   </Card>
 
@@ -61,6 +61,10 @@ Charged per resource returned in the response.
 | **Block: Read**               | \$0.001 per resource |
 | **Profile Update: Read**      | \$0.005 per resource |
 
+<Note>
+  Pay-per-usage plans are capped at **3 million Post reads per monthly billing cycle**. If you need higher volume, upgrade to an [Enterprise plan](/forms/enterprise-api-interest).
+</Note>
+
 ### Write operations
 
 Charged per request.
@@ -98,6 +102,10 @@ Webhook events delivered through the [X Activity API](/x-api/activity/introducti
 | `post.delete`            | Not billed     |
 | `follow.follow`          | \$0.010        |
 | `follow.unfollow`        | \$0.010        |
+| `mute.mute`              | \$0.001        |
+| `mute.unmute`            | \$0.001        |
+| `block.block`            | \$0.001        |
+| `block.unblock`          | \$0.001        |
 | `profile.update.*`       | \$0.005        |
 | `chat.received`          | \$0.010        |
 | `chat.sent`              | Not billed     |
@@ -173,6 +181,10 @@ Enable auto-recharge to automatically top up your credit balance and avoid servi
 | :-------------------- | :---------------------------------------------------------------------------- |
 | **Recharge amount**   | The amount to add when auto-recharge triggers (e.g., \$25)                    |
 | **Trigger threshold** | Auto-recharge activates when your balance falls below this amount (e.g., \$5) |
+
+#### When the trigger fires
+
+Auto-recharge triggers the first time your balance drops below the trigger threshold after having been **at or above** it. A balance exactly equal to the threshold counts as armed: if you purchase \$5 of credits with a \$5 trigger threshold, your very first spend takes the balance below the threshold and a top-up is triggered.
 
 <Note>
   Auto-recharge requires a saved payment method set as your default. You can cancel anytime in the Developer Console or by contacting support.
@@ -276,7 +288,7 @@ This returns daily Post consumption counts, helping you:
     Purchase credits and view current pricing.
   </Card>
 
-  <Card title="Usage API" icon="chart-line" href="/x-api/usage/introduction">
+  <Card title="Usage API" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bar-chart.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=e2a41caa858b122416f0005a55a8f143" href="/x-api/usage/introduction">
     Monitor usage programmatically.
   </Card>
 </CardGroup>

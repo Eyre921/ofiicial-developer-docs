@@ -1,8 +1,7 @@
 ---
-title: "Unblock DMs"
+title: "Unblock Users Dms"
 source: https://docs.x.com/x-api/users/unblock-dms
 path: x-api/users/unblock-dms
 ---
 
 post /2/users/{id}/dm/unblock
-Unblocks direct messages to or from a specific User by their ID for the authenticated user.

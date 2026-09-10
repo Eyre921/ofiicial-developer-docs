@@ -19,7 +19,7 @@ Navigate to your Squarespace site, sign in and open the page you wish to add nar
 
 Click the "+" symbol on the spot you want to place the Audio Native player and select "Code" from the menu.
 
-![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aedf2e008d7a58a1c502b0b71fc674397928102ce07202a31eec415360d98490/assets/images/product-guides/audio-native/audio-native-squarespace-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260909%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260909T100016Z&X-Amz-Expires=604800&X-Amz-Signature=15f956e9dfe2330965604c9de3ab6d1b6d0625cde0b9d6bda94d36b998c569ab&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aedf2e008d7a58a1c502b0b71fc674397928102ce07202a31eec415360d98490/assets/images/product-guides/audio-native/audio-native-squarespace-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260910%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260910T113103Z&X-Amz-Expires=604800&X-Amz-Signature=22be046aee98ef788ec539b477c3666623cbe5abc92e0f8cffee3ed37c5c4573&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Paste the Audio Native embed code into the HTML box and press enter.
 
@@ -39,7 +39,7 @@ Paste the Audio Native embed code into the HTML box and press enter.
     <script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
 ```
 
-![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c9bc7a9212ad6934ebd100aab3fc6d35436e01058d1ce41cf6ac9994a1aba91c/assets/images/product-guides/audio-native/audio-native-squarespace-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260909%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260909T100016Z&X-Amz-Expires=604800&X-Amz-Signature=e29c993982bf55295e2977d94109a22ee4fcb8962de54f0342c1b18baf241df0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c9bc7a9212ad6934ebd100aab3fc6d35436e01058d1ce41cf6ac9994a1aba91c/assets/images/product-guides/audio-native/audio-native-squarespace-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260910%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260910T113103Z&X-Amz-Expires=604800&X-Amz-Signature=8e22dc1392ca17345cfe8f30e3ab8b2dfc53f74f40cca4c8fd443addb24ce170&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update the blog post
 
@@ -49,4 +49,4 @@ Click the "Save" button in the top right corner of the editor, which should now 
 
 Finally, navigate to the live version of the blog post. You should see a message to let you know that the Audio Native project is being created. After a few minutes the text in your blog will be converted to an audio article and the embedded audio player will appear.
 
-![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e5dd2d8d5c0a5827527911cfab8bb32c5c1af58947a0eeb5e6e6e2df8687de44/assets/images/product-guides/audio-native/audio-native-squarespace-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260909%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260909T100016Z&X-Amz-Expires=604800&X-Amz-Signature=d67e7750c65dc83958c33557f11f9836f2b2eb49f2f91d28b782a323df713db6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audio Native](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e5dd2d8d5c0a5827527911cfab8bb32c5c1af58947a0eeb5e6e6e2df8687de44/assets/images/product-guides/audio-native/audio-native-squarespace-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260910%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260910T113103Z&X-Amz-Expires=604800&X-Amz-Signature=db5adca535fddc357822938eef3cf89913533bcb6bc4f4ee68622443ffd1092d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)

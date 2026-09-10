@@ -11,7 +11,7 @@ The Spaces lookup endpoints let you retrieve information about live or scheduled
 ## Overview
 
 <CardGroup>
-  <Card title="By ID" icon="microphone">
+  <Card title="By ID" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-microphone.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=84616ff8f3d942047a71ee5e0a5adab9">
     Get details for a specific Space
   </Card>
 
@@ -19,7 +19,7 @@ The Spaces lookup endpoints let you retrieve information about live or scheduled
     Look up multiple Spaces at once
   </Card>
 
-  <Card title="By creator" icon="user">
+  <Card title="By creator" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-person.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=507a4bbcdcf5744bd18781508002e305">
     Find Spaces by their hosts
   </Card>
 
@@ -88,15 +88,15 @@ space.fields=title,host_ids,participant_count,scheduled_start,state" \
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/spaces/lookup/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/spaces/lookup/quickstart">
     Make your first Spaces lookup request
   </Card>
 
-  <Card title="Search Spaces" icon="magnifying-glass" href="/x-api/spaces/search/introduction">
+  <Card title="Search Spaces" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/spaces/search/introduction">
     Find Spaces by keyword
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/spaces/space-lookup-by-space-id">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/spaces/space-lookup-by-space-id">
     Full endpoint documentation
   </Card>
 

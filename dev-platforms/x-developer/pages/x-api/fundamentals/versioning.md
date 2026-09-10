@@ -97,7 +97,7 @@ When we release a new major version:
 Get notified about changes:
 
 <CardGroup>
-  <Card title="Changelog" icon="clock-rotate-left" href="/changelog">
+  <Card title="Changelog" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-history.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=6afe17587c08ee621e37afde19a07ff1" href="/changelog">
     All platform changes and updates.
   </Card>
 
@@ -105,11 +105,11 @@ Get notified about changes:
     Breaking change notices.
   </Card>
 
-  <Card title="@XDevelopers" icon="x-twitter" href="https://x.com/XDevelopers">
+  <Card title="@XDevelopers" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-logo-x.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=53e3153f3b8d6efdad31484ef133b274" href="https://x.com/XDevelopers">
     Platform news and updates.
   </Card>
 
-  <Card title="Newsletter" icon="envelope" href="/newsletter">
+  <Card title="Newsletter" icon="https://mintcdn.com/x-preview/UIyI4eSwiP2OpODQ/icons/xds/icon-envelope.svg?fit=max&auto=format&n=UIyI4eSwiP2OpODQ&q=85&s=fbd38dbcd64d8688d3c9912ac30c4621" href="/newsletter">
     Monthly digest.
   </Card>
 </CardGroup>
@@ -143,7 +143,7 @@ When a new version is released, we provide:
     Start new projects on the latest version.
   </Card>
 
-  <Card title="Monitor announcements" icon="bell">
+  <Card title="Monitor announcements" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bell.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=5e0b3dcfbb39ba3d4619931d7cd927d1">
     Subscribe to changelog and forum updates.
   </Card>
 

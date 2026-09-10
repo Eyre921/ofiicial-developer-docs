@@ -56,7 +56,7 @@ Please note that the API is recommended for performing tasks in bulk, and we adv
 
     ## Example Response
 
-    ```json theme={null}
+    ```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 
     {
       "url": "https://x.com/TwitterDev",
@@ -115,7 +115,7 @@ Please note that the API is recommended for performing tasks in bulk, and we adv
 
     ## Example Response
 
-    ```json theme={null}
+    ```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "url": "https:\/\/twitter.com\/Interior\/status\/463440424141459456",
       "author_name": "US Department of the Interior",

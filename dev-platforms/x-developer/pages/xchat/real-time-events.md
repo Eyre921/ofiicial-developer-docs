@@ -1,0 +1,239 @@
+---
+title: "Get new X Chat messages as they arrive"
+source: https://docs.x.com/xchat/real-time-events
+path: xchat/real-time-events
+---
+
+Listen for new X Chat messages and events in real time using webhooks or a stream, then decrypt them with the Chat XDK.
+
+X delivers **`chat.received`**, **`chat.sent`**, and related X Chat activity with **ciphertext** in the payload. Decrypt with the [Chat XDK](/xchat/xchat-xdk).
+
+| Layer              | Role                                                                                                                                |
+| :----------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
+| **X Activity API** | `GET /2/activity/stream`; `POST` / `GET` / `PUT` / `DELETE` `/2/activity/subscriptions` (see OpenAPI security per operation)        |
+| **Webhooks**       | Optional `POST` / `GET` `/2/webhooks` and `PUT` / `DELETE` `/2/webhooks/{webhook_id}` routes if you terminate on your own HTTPS URL |
+| **Chat XDK**       | `decrypt_event` / `decrypt_events`, with the `set_signing_keys` / `set_cache_keys` session stores                                   |
+
+Private X Chat event types need authorization for the user you monitor. Encrypted X Chat file attachments use **`media_hash_key`** and X Chat media download, not Post API `expansions=attachments.media_keys` / `media.fields=variants`.
+
+***
+
+## Event types
+
+| Event                    | When                                         |
+| :----------------------- | :------------------------------------------- |
+| `chat.received`          | Subscribed user receives an encrypted DM     |
+| `chat.sent`              | Subscribed user sends an encrypted DM        |
+| `chat.conversation_join` | Subscribed user joins a group (when offered) |
+
+***
+
+## 1. Choose delivery
+
+**Activity stream (often simplest for bots):** `GET /2/activity/stream` with an app Bearer token (optional `backfill_minutes`, `start_time`, `end_time` per OpenAPI). Filter client-side for `chat.received` / `chat.sent`.
+
+**Activity subscriptions:** manage durable subscriptions with:
+
+* `POST /2/activity/subscriptions`: create
+* `GET /2/activity/subscriptions`: list (paginated)
+* `PUT /2/activity/subscriptions/{subscription_id}`: update
+* `DELETE /2/activity/subscriptions/{subscription_id}` or `DELETE /2/activity/subscriptions?ids=`: delete
+
+Request bodies and required scopes are defined in the OpenAPI operation for each route. Creating an X Activity API (XAA) subscription requires **user-context authorization** (OAuth 2.0 user context with the relevant scopes, such as `dm.read` for chat events) for the user whose activity you monitor.
+
+**Webhooks:** if you terminate events on your HTTPS endpoint, register a webhook with `POST /2/webhooks`, pass CRC challenges, then create your activity subscriptions with `POST /2/activity/subscriptions`, referencing your `webhook_id` (see Webhooks and Activity operations in OpenAPI). Python/TypeScript XDK may expose helpers for webhooks and activity when your SDK version includes them.
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    from xdk import Client
+
+    # Stream (app token); exact helper names depend on your XDK version
+    stream_client = Client(bearer_token="YOUR_BEARER_TOKEN")
+    # for event in stream_client.activity.stream():
+    #     handle_payload(event)  # see "Decrypt with the Chat XDK" below
+
+    # Or create a subscription; requires user-context auth for the monitored user
+    client = Client(access_token="YOUR_OAUTH2_USER_TOKEN")
+    client.activity.create_subscription({
+        "event_type": "chat.received",
+        "filter": {"user_id": "USER_ID_TO_MONITOR"},
+    })
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    import { Client } from '@xdevplatform/xdk';
+
+    // Creating a subscription requires user-context auth for the monitored user
+    const client = new Client({ accessToken: 'YOUR_OAUTH2_USER_TOKEN' });
+    await client.activity.createSubscription({
+      event_type: 'chat.received',
+      filter: { user_id: 'USER_ID_TO_MONITOR' },
+    });
+    // Stream: client.activity.stream() when available in your SDK version
+    ```
+  </Tab>
+</Tabs>
+
+Subscribe to `chat.sent` as well if you need outbound copies. Other languages: call the same `/2/activity/*` HTTPS routes directly (user-context token to create subscriptions, app Bearer token for the stream).
+
+***
+
+## 2. CRC (webhooks only)
+
+If you use webhooks, respond to Challenge-Response Checks (GET `crc_token`) with HMAC-SHA256 of the token using your consumer secret, in the JSON shape your webhook product expects (typically `sha256=<base64>`).
+
+***
+
+## 3. Decrypt with the Chat XDK
+
+Live fields: **`payload.encoded_event`**, optional **`payload.conversation_key_change_event`**. Deduplicate deliveries on **`event_uuid`**; deduplicate messages on the **`message_id`** carried in the decrypted event. It is part of the signed content, while sequence ids are backend-assigned, unsigned metadata.
+
+The snippets below use the two **optional** session stores for the shortest handler: `set_signing_keys` holds the participants' public keys (fetched once from the [public-keys endpoint](/x-api/chat/get-user-public-keys)), and `set_cache_keys(true)` keeps each conversation's verified key, so `decrypt_event` needs only the event. When a payload carries `conversation_key_change_event`, run it through `decrypt_events` first: that verifies the key change and, with caching on, retains its key for the `decrypt_event` call. Prefer no instance state? Pass the keys per call instead; see the note at the end of this section.
+
+JavaScript uses camelCase event types (`message`); other bindings use `"Message"` and snake\_case fields.
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    # chat has keys loaded and set_identity called (see Getting Started)
+    chat.set_cache_keys(True)
+    chat.set_signing_keys(participant_signing_keys)  # all participants, from the public-key routes
+
+    data = body.get("data") or {}
+    if data.get("event_type") in ("chat.received", "chat.sent"):
+        p = data.get("payload") or {}
+        if p.get("conversation_key_change_event"):
+            # Verify the key change and retain its key in the cache
+            chat.decrypt_events([p["conversation_key_change_event"]])
+        ev = chat.decrypt_event(p["encoded_event"])
+        if ev["type"] == "Message":
+            print(ev["sender_id"], ev["content"]["text"])
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    // chat has keys loaded and setIdentity called (see Getting Started)
+    chat.setCacheKeys(true);
+    chat.setSigningKeys(participantSigningKeys); // all participants, from the public-key routes
+
+    const data = body?.data ?? {};
+    if (data.event_type === 'chat.received' || data.event_type === 'chat.sent') {
+      const p = data.payload ?? {};
+      if (p.conversation_key_change_event) {
+        // Verify the key change and retain its key in the cache
+        chat.decryptEvents([p.conversation_key_change_event]);
+      }
+      const ev = chat.decryptEvent(p.encoded_event);
+      if (ev.type === 'message') {
+        console.log(ev.senderId, ev.content.text);
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    // chat has keys loaded and set_identity called (see Getting Started)
+    chat.set_cache_keys(true);
+    chat.set_signing_keys(participant_signing_keys); // all participants
+
+    if let Some(kc) = key_change.as_deref() {
+        // Verify the key change and retain its key in the cache
+        let _ = chat.decrypt_events(&[kc], &[]);
+    }
+    // Decrypt with the cached conversation key; verify against the stored signing keys
+    let event = chat.decrypt_event(&encoded_event, &Default::default(), &[])?;
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    // chat has keys loaded and SetIdentity called (see Getting Started)
+    chat.SetCacheKeys(true)
+    _ = chat.SetSigningKeys(participantSigningKeys) // all participants
+
+    if keyChange != "" {
+        // Verify the key change and retain its key in the cache
+        _, _ = chat.DecryptEvents([]string{keyChange}, nil)
+    }
+    // Decrypt with the cached conversation key; verify against the stored signing keys
+    event, err := chat.DecryptEvent(encodedEvent, nil, nil)
+    if err == nil && event.Type == "Message" {
+        fmt.Println(event.AsMessage().Text())
+    }
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    // chat has keys loaded and SetIdentity called (see Getting Started)
+    chat.SetCacheKeys(true);
+    chat.SetSigningKeys(participantSigningKeys); // all participants
+
+    if (!string.IsNullOrEmpty(keyChangeB64))
+    {
+        // Verify the key change and retain its key in the cache
+        chat.DecryptEvents(new[] { keyChangeB64 });
+    }
+    // Decrypt with the cached conversation key; verify against the stored signing keys
+    var evt = chat.DecryptEvent(encodedEvent);
+    if (evt.GetProperty("type").GetString() == "Message")
+        Console.WriteLine(evt.GetProperty("content").GetProperty("text").GetString());
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    // chat has keys loaded and setIdentity called (see Getting Started)
+    chat.setCacheKeys(true);
+    chat.setSigningKeys(participantSigningKeys); // all participants
+
+    if (keyChangeB64 != null && !keyChangeB64.isEmpty()) {
+        // Verify the key change and retain its key in the cache
+        chat.decryptEvents(List.of(keyChangeB64), null);
+    }
+    // Decrypt with the cached conversation key; verify against the stored signing keys
+    JsonNode evt = chat.decryptEvent(encodedEvent, (Map<String, byte[]>) null, null);
+    if ("Message".equals(evt.path("type").asText())) {
+        System.out.println(evt.path("content").path("text").asText());
+    }
+    ```
+  </Tab>
+</Tabs>
+
+To keep the key maps in your own hands instead, `extract_conversation_keys` decrypts the keys from `conversation_key_change_event` and `decrypt_event` accepts them (and the sender's signing keys) as explicit arguments; an explicit non-empty argument always wins over the stores.
+
+History: [`GET /2/chat/conversations/{id}/events`](/x-api/chat/get-chat-conversation-events) + **`decrypt_events`**; see [Getting Started](/xchat/getting-started#6-receive-and-decrypt).
+
+***
+
+## Payload shape (live)
+
+```json title="chat.received" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_type": "chat.received",
+    "event_uuid": "0f52b591-4b7e-4f13-92cd-30e6b2a3f18a",
+    "payload": {
+      "conversation_id": "1215441834412953600-1843439638876491776",
+      "sender_id": "1843439638876491776",
+      "encoded_event": "BASE64_ENCODED_MESSAGE_EVENT",
+      "conversation_key_version": "1782945126642",
+      "conversation_key_change_event": "BASE64_ENCODED_KEY_CHANGE_EVENT"
+    }
+  }
+}
+```
+
+***
+
+## Practices
+
+* Verify webhook signatures per platform requirements
+* Set the session stores once: `set_signing_keys` for all participants, `set_cache_keys(true)` for conversation keys
+* Apply key-change blobs (via `decrypt_events`) before decrypting dependent messages
+* Deduplicate deliveries on `event_uuid` and messages on the signed `message_id`

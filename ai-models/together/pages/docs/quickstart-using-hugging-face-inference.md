@@ -33,11 +33,11 @@ The examples below demonstrate how to interact with various models using Python 
 First, ensure you have the `huggingface_hub` library installed (version v0.29.0 or later):
 
 <CodeGroup>
-  ```sh Shell theme={null}
+  ```bash Shell theme={null}
   pip install huggingface_hub>=0.29.0
   ```
 
-  ```sh Shell theme={null}
+  ```bash Shell theme={null}
   npm install @huggingface/inference
   ```
 </CodeGroup>
@@ -47,7 +47,7 @@ First, ensure you have the `huggingface_hub` library installed (version v0.29.0 
 ### a. Chat completion with Hugging Face Hub library
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   from huggingface_hub import InferenceClient
 
   # Initialize the InferenceClient with together as the provider
@@ -74,7 +74,7 @@ First, ensure you have the `huggingface_hub` library installed (version v0.29.0 
   print(completion.choices[0].message)
   ```
 
-  ```js TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import { HfInference } from "@huggingface/inference";
 
   // Initialize the HfInference client with your API key
@@ -106,7 +106,7 @@ You can also call inference providers via the [OpenAI python client](https://git
 
 The easiest way is to go to [a model’s page](https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813?inference_api=true\&inference_provider=together\&language=python) on the hub and copy the snippet.
 
-```py Python theme={null}
+```python Python theme={null}
 from openai import OpenAI
 
 client = OpenAI(
@@ -128,7 +128,7 @@ print(completion.choices[0].message)
 ## 2. Text-to-image generation
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   from huggingface_hub import InferenceClient
 
   # Initialize the InferenceClient with together as the provider
@@ -150,7 +150,7 @@ print(completion.choices[0].message)
   image.show()
   ```
 
-  ```js TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import { HfInference } from "@huggingface/inference";
 
   // Initialize the HfInference client with your API key

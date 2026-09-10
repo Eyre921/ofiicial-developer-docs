@@ -1,12 +1,37 @@
 ---
-title: "Create or Edit Post"
+title: "Create Posts"
 source: https://docs.x.com/x-api/posts/create-post
 path: x-api/posts/create-post
 ---
 
 post /2/tweets
-Creates a new Post for the authenticated user, or edits an existing Post when edit_options are provided. Supports paid partnership disclosure via the paid_partnership field.
 
 <Warning>
   Quote-posting (using the `quote_tweet_id` parameter) requires an [Enterprise plan](/enterprise-api/introduction). It is not available on self-serve (pay-per-use) tiers.
 </Warning>
+
+## Media attachments
+
+Upload media first with the [chunked upload](/x-api/media/quickstart/media-upload-chunked) endpoints, then pass the returned `media_id` in `media.media_ids`.
+
+A Post may include **up to 4 photos**, **1 animated GIF**, or **1 video**.
+
+Duration and file size are checked again at Post create. They follow the **posting user's** X Premium / verified status and the `media_category` used at upload — not your developer API plan.
+
+| Posting account      | Video cap when attaching to a Post |
+| :------------------- | :--------------------------------- |
+| Default (no Premium) | 20 minutes, 8 GB                   |
+| X Premium / verified | 125 minutes, 16 GB                 |
+
+These caps apply to `tweet_video` and `amplify_video`. If the video is longer than that user is allowed to post, the response is **403 Forbidden**:
+
+```json theme={null}
+{
+  "title": "Forbidden",
+  "detail": "This user is not allowed to post a video longer than 20 minutes.",
+  "type": "about:blank",
+  "status": 403
+}
+```
+
+A successful upload does not guarantee the media can be attached. See [size and duration limits](/x-api/media/introduction#size-and-duration-limits).

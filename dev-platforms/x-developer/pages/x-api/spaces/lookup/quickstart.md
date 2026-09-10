@@ -30,7 +30,7 @@ Retrieve details for a specific Space:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -46,7 +46,7 @@ Retrieve details for a specific Space:
   print(f"Participants: {response.data.participant_count}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -91,7 +91,7 @@ Look up multiple Spaces at once:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -106,7 +106,7 @@ Look up multiple Spaces at once:
       print(f"{space.title} - {space.state}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -137,7 +137,7 @@ Find Spaces hosted by specific users:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -152,7 +152,7 @@ Find Spaces hosted by specific users:
       print(f"{space.title} - {space.state}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -184,7 +184,7 @@ Expand host user data:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -201,7 +201,7 @@ Expand host user data:
   # Host info is in response.includes.users
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -220,7 +220,7 @@ Expand host user data:
 
 ### Response with expansion
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "1DXxyRYNejbKM",
@@ -271,11 +271,11 @@ Expand host user data:
 ## Next steps
 
 <CardGroup>
-  <Card title="Search Spaces" icon="magnifying-glass" href="/x-api/spaces/search/quickstart">
+  <Card title="Search Spaces" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/spaces/search/quickstart">
     Find Spaces by keyword
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/spaces/space-lookup-by-space-id">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/spaces/space-lookup-by-space-id">
     Full endpoint documentation
   </Card>
 </CardGroup>

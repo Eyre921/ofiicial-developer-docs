@@ -62,7 +62,7 @@ GET https://ads-api.x.com/12/insights/keywords/search?end_time=2018-02-02&granul
 
 **Example Response[](#example-response "Permalink to this headline")**\*
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -168,7 +168,7 @@ Retrieve details for some or all permissions associated with the specified tailo
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -227,7 +227,7 @@ Create a new permission object allowing the specified audience to be shared with
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -279,7 +279,7 @@ When revoked, we guarantee that the granted account (`granted_account_id`) will 
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -332,7 +332,7 @@ Retrieve a list of active or all line items and campaigns that target a given `c
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -455,7 +455,7 @@ Given the multi-key approach to the `users` object, each element of this object 
 
 `POST https://ads-api.x.com/12/accounts/18ce54d4x5t/custom_audiences/1nmth/users`
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     [
       {
         "operation_type": "Update",
@@ -521,7 +521,7 @@ Given the multi-key approach to the `users` object, each element of this object 
 
 #### Example Response[](#example-response "Permalink to this headline")
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -590,7 +590,7 @@ Retrieve details for some or all permissions associated with the specified custo
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -650,7 +650,7 @@ POST https://ads-api.x.com/12/accounts/18ce54d4x5t/custom_audiences/2906h/permis
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -714,7 +714,7 @@ When revoked, we guarantee that the granted account (`granted_account_id`) will 
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -796,7 +796,7 @@ Retrieve details for some or all Custom Audiences associated with the current ac
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -857,7 +857,7 @@ Retrieve specific Custom Audiences associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -913,7 +913,7 @@ Create a new placeholder Custom Audience associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "targetable": false,
@@ -976,7 +976,7 @@ Update the specific Custom Audience associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "targetable": false,
@@ -1102,7 +1102,7 @@ Batch API responses return an ordered collection of items. Otherwise, they are i
 
 `POST https://ads-api.x.com/12/batch/accounts/18ce54d4x5t/custom_audiences`
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     [
       {
         "operation_type":"Create",
@@ -1153,7 +1153,7 @@ Batch API responses return an ordered collection of items. Otherwise, they are i
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "targetable": false,
@@ -1301,7 +1301,7 @@ Delete the specified Custom Audience belonging to the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "targetable": false,
@@ -1363,7 +1363,7 @@ Retrieve details for some or all Do Not Reach List associated with the current a
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -1413,7 +1413,7 @@ Create a new Do Not Reach List associated with the current account.
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -1560,7 +1560,7 @@ Given the multi-key approach to the `users` object, each element of this object 
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -1599,7 +1599,7 @@ None
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {

@@ -69,3 +69,7 @@ Stripe also provides reports of your completed tax transactions. Go to [Location
 
 You’re responsible for filing and remitting your taxes. Stripe doesn’t file taxes on your behalf.
 
+## See also
+
+- [Introduction to indirect tax compliance](https://stripe.com/guides/introduction-to-sales-tax-vat-and-gst-compliance)
+

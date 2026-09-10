@@ -132,7 +132,7 @@ To access logs for your production edge functions:
 1. In the Netlify UI, for your chosen site, visit 
 ### NavigationPath Component:
 
-Logs & Metrics > Edge Functions
+Cloud compute > Edge functions
 .
 
 To access logs for other versions of your edge functions: 

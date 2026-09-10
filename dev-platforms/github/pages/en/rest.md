@@ -12,7 +12,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Quickstart for GitHub REST API](/en/rest/quickstart)
 
-  <p>Learn how to get started with the GitHub REST API.</p>
+  Learn how to get started with the GitHub REST API.
 
 * [Getting started with the REST API](/en/rest/using-the-rest-api/getting-started-with-the-rest-api)
 
@@ -20,7 +20,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Authenticating to the REST API](/en/rest/authentication/authenticating-to-the-rest-api)
 
-  You can authenticate to the REST API to access more endpoints and have a higher rate limit.
+  <p>You can authenticate to the REST API to access more endpoints and have a higher rate limit.</p>
 
 * [Best practices for using the REST API](/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api)
 

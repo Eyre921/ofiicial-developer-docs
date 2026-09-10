@@ -22,7 +22,7 @@ curl 'https://api.x.com/2/news/1989418137272422538?news.fields=contexts,cluster_
 
 If the request is successful, you should see the JSON response as shown below:
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data":{
     "category":"News",

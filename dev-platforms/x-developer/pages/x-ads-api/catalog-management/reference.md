@@ -43,7 +43,7 @@ GET https://ads-api.x.com/12/product_catalogs
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {}
@@ -82,7 +82,7 @@ POST https://ads-api.x.com/12/product_catalogs?name=catalog_123_abc_def
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json theme={null}
 {
   "request": {
     "params": {
@@ -120,7 +120,7 @@ PUT https://ads-api.x.com/12/product_catalogs/1547080201384865792?name=My Catalo
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -155,7 +155,7 @@ DELETE https://ads-api.x.com/12/product_catalogs/1559919496399204352
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json theme={null}
 {
   "request": {
     "params": {
@@ -210,7 +210,7 @@ GET https://ads-api.x.com/12/product_catalogs/1547080201384865792/products?count
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -423,7 +423,7 @@ PUT https://ads-api.x.com/12/product_catalogs/1547080201384865792/products
 
 **JSON Body**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "products": [
     {
@@ -456,7 +456,7 @@ PUT https://ads-api.x.com/12/product_catalogs/1547080201384865792/products
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -499,7 +499,7 @@ DELETE https://ads-api.x.com/12/product_catalogs/1569782857975087104/products
 
 **JSON Body**
 
-```
+```json theme={null}
 {
   "product_keys": [
     "1576769414321651714",
@@ -510,7 +510,7 @@ DELETE https://ads-api.x.com/12/product_catalogs/1569782857975087104/products
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -565,7 +565,7 @@ GET https://ads-api.x.com/12/product_catalogs/1547080201384865792/product_sets/1
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -647,7 +647,7 @@ POST https://ads-api.x.com/12/product_catalogs/1569782857975087104/product_sets
 
 **JSON Body**
 
-```
+```json theme={null}
 {
   "name": "manual API product set",
   "type": "MANUAL",
@@ -659,7 +659,7 @@ POST https://ads-api.x.com/12/product_catalogs/1569782857975087104/product_sets
 
 **Example Response**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -693,7 +693,7 @@ POST https://ads-api.x.com/12/product_catalogs/1569782857975087104/product_sets
 
 **JSON Body**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "name": "filtered API product set",
   "description": "price above 100 USD",
@@ -710,7 +710,7 @@ POST https://ads-api.x.com/12/product_catalogs/1569782857975087104/product_sets
 
 **Example Response**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -782,7 +782,7 @@ PUT https://ads-api.x.com/12/product_catalogs/1549442554172694528/product_sets/1
 
 **JSON Body**
 
-```
+```json theme={null}
 {
   "name": "Update name product catalogs",
   "product_keys": ["1576768397127606272", "1547080787865939969"]
@@ -791,7 +791,7 @@ PUT https://ads-api.x.com/12/product_catalogs/1549442554172694528/product_sets/1
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -839,7 +839,7 @@ DELETE https://ads-api.x.com/12/product_catalogs/1547080201384865792/product_set
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -891,7 +891,7 @@ GET https://ads-api.x.com/12/product_catalogs/1547080201384865792/scheduled_feed
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -962,7 +962,7 @@ POST https://ads-api.x.com/12/product_catalogs/1547080201384865792/scheduled_fee
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -1036,7 +1036,7 @@ PUT https://ads-api.x.com/12/product_catalogs/1547080201384865792/scheduled_feed
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -1080,7 +1080,7 @@ DELETE https://ads-api.x.com/12/product_catalogs/1547080201384865792/scheduled_f
 
 **Example Response[](#example-response "Permalink to this headline")**
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {

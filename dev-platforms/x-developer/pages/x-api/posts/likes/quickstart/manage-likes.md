@@ -44,7 +44,7 @@ This guide walks you through liking and unliking Posts using the X API.
         -d '{"tweet_id": "1228393702244134912"}'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -66,7 +66,7 @@ This guide walks you through liking and unliking Posts using the X API.
       print(f"Liked: {response.data.liked}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -111,7 +111,7 @@ Remove a like from a Post:
     -H "Authorization: Bearer $USER_ACCESS_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -133,7 +133,7 @@ Remove a like from a Post:
   print(f"Liked: {response.data.liked}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({
@@ -167,11 +167,11 @@ Remove a like from a Post:
 ## Next steps
 
 <CardGroup>
-  <Card title="Likes lookup" icon="heart" href="/x-api/posts/likes/quickstart/likes-lookup">
+  <Card title="Likes lookup" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-heart.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=3a435e6393c019d681c6f1a0737e21a8" href="/x-api/posts/likes/quickstart/likes-lookup">
     Get users who liked a Post
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/like-post">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/like-post">
     Full endpoint documentation
   </Card>
 </CardGroup>

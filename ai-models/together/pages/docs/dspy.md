@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/dspy
 path: docs/dspy
 ---
 
-Using DSPy with Together AI
+Using DSPy with Together AI.
 
 DSPy is a framework for programming language models rather than relying on static prompts. It enables you to build modular AI systems with code instead of hand-crafted prompting, and it offers methods to automatically optimize these systems.
 

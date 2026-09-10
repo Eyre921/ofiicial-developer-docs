@@ -4,25 +4,25 @@ source: https://docs.together.ai/docs/gpu-clusters-management
 path: docs/gpu-clusters-management
 ---
 
-Manage, scale, and operate your GPU clusters
+Manage, scale, and operate your GPU clusters.
 
 ## On this page
 
-* [Kubernetes Usage](#kubernetes-usage)
-* [GPU Access in Containers](#understanding-gpu-access-in-containers-for-kubernetes-clusters)
-* [Kubernetes Dashboard](#kubernetes-dashboard)
-* [Direct SSH Access](#direct-ssh-access)
-* [Managing Cluster Access](#managing-cluster-access)
+* [Kubernetes usage](#kubernetes-usage)
+* [GPU access in containers](#understanding-gpu-access-in-containers-for-kubernetes-clusters)
+* [Kubernetes dashboard](#kubernetes-dashboard)
+* [Direct SSH access](#direct-ssh-access)
+* [Managing cluster access](#managing-cluster-access)
 * [Download cluster kubeconfig](#download-cluster-kubeconfig)
-* [Cluster Scaling](#cluster-scaling)
-* [Monitoring and Status](#monitoring-and-status)
-* [Best Practices](#best-practices)
+* [Cluster scaling](#cluster-scaling)
+* [Monitoring and status](#monitoring-and-status)
+* [Best practices](#best-practices)
 
-## Kubernetes Usage
+## Kubernetes usage
 
 Use `kubectl` to interact with Kubernetes clusters for containerized workloads.
 
-### Deploy Pods with Storage
+### Deploy pods with storage
 
 <Note>
   **New to Kubernetes?** A [PersistentVolumeClaim (PVC)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) is a request for storage that your pods can use. Think of it like requesting a disk that persists even when pods restart.
@@ -30,7 +30,7 @@ Use `kubectl` to interact with Kubernetes clusters for containerized workloads.
 
 We provide a static [PersistentVolume (PV)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) with the same name as your shared volume. As long as you use the static PV, your data will persist across pod restarts, cluster operations, and even after cluster deletion.
 
-#### Understanding Storage in Kubernetes
+#### Understanding storage in Kubernetes
 
 Kubernetes uses a three-step process for storage:
 
@@ -95,7 +95,7 @@ kubectl get pvc -A # across all namespaces
 
 You should see `STATUS: Bound` for both PVCs.
 
-#### Step 2: Create a Pod with Mounted Volumes
+#### Step 2: Create a pod with mounted volumes
 
 Now create a pod that mounts these volumes:
 
@@ -132,7 +132,7 @@ spec:
 
 [Learn more about volumes in pods →](https://kubernetes.io/docs/concepts/storage/volumes/)
 
-#### Step 3: Deploy and Access Your Pod
+#### Step 3: Deploy and access your pod
 
 Save the pod definition to a file (e.g., `pod-with-storage.yaml`) and deploy:
 
@@ -147,7 +147,7 @@ kubectl get pods -w
 kubectl exec -it test-pod -- bash
 ```
 
-#### Step 4: Verify Mounted Volumes
+#### Step 4: Verify mounted volumes
 
 Once inside the pod, verify your volumes are mounted:
 
@@ -164,7 +164,7 @@ echo "Hello from pod" > /mnt/shared/test.txt
 cat /mnt/shared/test.txt
 ```
 
-#### Accessing Volumes from Multiple Pods
+#### Accessing volumes from multiple pods
 
 Because the shared storage uses `ReadWriteMany`, multiple pods can access it simultaneously:
 
@@ -179,7 +179,7 @@ kubectl exec -it test-pod-2 -- bash
 cat /mnt/shared/test.txt
 ```
 
-#### Understanding GPU Access in Containers for Kubernetes Clusters
+#### Understanding GPU access in containers for Kubernetes clusters
 
 Our Kubernetes runtime exposes **all GPU devices to all containers on the host**. However, whether you can use tools like `nvidia-smi` inside your container depends on your container image.
 
@@ -248,11 +248,11 @@ ls /mnt/shared                # Access your mounted volumes
 python train.py               # Run your GPU workloads
 ```
 
-### Kubernetes Dashboard
+### Kubernetes dashboard
 
 Access the Kubernetes Dashboard for visual cluster management:
 
-1. From the cluster UI, click the **K8s Dashboard URL**
+1. From the cluster UI, select the **K8s Dashboard URL**
 2. Retrieve your access token:
 
 ```bash theme={null}
@@ -377,12 +377,12 @@ scancel        # Cancel jobs
 <Warning>
   **Set memory limits explicitly in your `sbatch` scripts.**
 
-  Set `--mem` to a specific value (e.g., `--mem=500G`) rather than `--mem=0`. `--mem=0` tells Slurm to use all memory on the node, which can crash the node under load. We recommend not exceeding 90% of the node's memory to leave headroom for system processes. Adjust lower based on what your job actually needs.
+  Set `--mem` to a specific value (e.g., `--mem=500G`) rather than `--mem=0`. `--mem=0` tells Slurm to use all memory on the node, which can crash the node under load. Do not exceed 90% of the node's memory, so system processes have headroom. Adjust lower based on what your job actually needs.
 
   If a job exceeds its allocation, Slurm fails it with an `OUT_OF_MEMORY` error instead of crashing the node.
 </Warning>
 
-#### VS Code Remote SSH Setup
+#### VS Code remote SSH setup
 
 To use VS Code with your Slurm cluster, configure SSH with a proxy jump host in your `~/.ssh/config`:
 
@@ -393,19 +393,19 @@ Host *
 
 # Together AI jump host (if applicable)
 Host together-jump
-  HostName <your-jump-host>
-  User <your-username>
+  HostName <your_jump_host>
+  User <your_username>
 
 # Your Slurm login node
 Host slurm-cluster
   HostName slurm-login
   ProxyJump together-jump
-  User <your-username>
+  User <your_username>
 ```
 
 Then in VS Code's Remote SSH extension, connect to `slurm-cluster`. The connection will automatically route through the jump host.
 
-## Managing Cluster Access
+## Managing cluster access
 
 Cluster access is controlled through Together's [project-based permissions](/docs/projects). Users with access to a project can access all clusters and volumes within it. There are two roles:
 
@@ -442,17 +442,17 @@ Find your cluster ID with `tg beta clusters list`.
 
 When OIDC is enabled, editors use the OIDC kubeconfig for day-to-day `kubectl` access, and project admins keep the admin kubeconfig for administrative tasks such as RBAC setup. See [Set up OIDC authentication](/docs/cluster-oidc).
 
-### Adding Users to a Cluster Project
+### Adding users to a cluster project
 
 For step-by-step instructions on adding and removing project members, see [Managing project collaborators](/docs/projects#managing-project-collaborators).
 
 <Info>
-  **Quick version:** Go to **Settings > Collaborators**, find the project that contains your cluster, click **View Project**, then **Add collaborator**. If you don't see Collaborators yet, use the **GPU Cluster Projects** tab instead (this tab is being replaced by the unified Collaborators page).
+  **Quick version:** Go to **Settings > Collaborators**, find the project that contains your cluster, select **View Project**, then **Add collaborator**. If you don't see Collaborators yet, use the **GPU Cluster Projects** tab instead (this tab is being replaced by the unified Collaborators page).
 </Info>
 
 New members are added with the **editor** role by default, unless they are an organization admin (who are admins for every project by default). The user must already belong to your [organization](/docs/organizations).
 
-### Removing Users
+### Removing users
 
 See [Removing collaborators](/docs/projects#removing-collaborators) for the full steps.
 
@@ -470,7 +470,7 @@ See [Removing collaborators](/docs/projects#removing-collaborators) for the full
   </Card>
 </CardGroup>
 
-## Cluster Scaling
+## Cluster scaling
 
 Clusters can scale flexibly in real time. Add on-demand compute to temporarily scale up when workload demand spikes, then scale back down as demand decreases.
 
@@ -480,7 +480,7 @@ Scaling operations can be performed via:
 * Together CLI
 * REST API
 
-### Cluster Autoscaling
+### Cluster autoscaling
 
 Cluster Autoscaling automatically adjusts the number of nodes in your cluster based on workload demand using the Kubernetes Cluster Autoscaler.
 
@@ -497,7 +497,7 @@ When pods cannot be scheduled due to lack of resources, the autoscaler provision
 **Enabling Autoscaling:**
 
 1. Navigate to **GPU Clusters** in the Together Cloud UI
-2. Click **Create Cluster**
+2. Select **Create Cluster**
 3. In the cluster configuration, toggle **Enable Autoscaling**
 4. Configure your maximum GPUs
 5. Create the cluster
@@ -548,11 +548,11 @@ To control which specific nodes are removed during scale-down, mark them for del
   Scale down one node at a time. Repeat the steps above for each additional node you want to remove — this gives the operator time to drain each node cleanly and makes it easy to stop if something goes wrong.
 </Tip>
 
-## Storage Management
+## Storage management
 
 Clusters support long-lived, resizable shared storage with persistent data.
 
-### Storage Tiers
+### Storage tiers
 
 <Warning>
   **Local NVMe disks are ephemeral.** Data can be lost during node migrations, recreations, maintenance, or cluster operations. Use shared volumes for any data you need to keep. [See full storage guide →](/docs/cluster-storage)
@@ -564,7 +564,7 @@ All clusters include:
 * **Local NVMe disks** – **Ephemeral.** Fast local storage on each node. Use only for temporary scratch data.
 * **`/home` directory** – **Persistent on Slurm** (NFS-backed, shared across nodes). **Ephemeral on Kubernetes** (local to each node).
 
-### Upload Data
+### Upload data
 
 **For small datasets:**
 
@@ -596,15 +596,15 @@ spec:
         claimName: shared-pvc
 ```
 
-### Resize Storage
+### Resize storage
 
 Storage volumes can be dynamically resized as your data grows. Use the UI, CLI, or API to increase volume size.
 
 [Learn more about storage options →](/docs/cluster-storage)
 
-## Monitoring and Status
+## Monitoring and status
 
-### Check Cluster Health
+### Check cluster health
 
 **From the UI:**
 
@@ -628,28 +628,28 @@ squeue                      # Job queue
 scontrol show node          # Detailed node info
 ```
 
-## Best Practices
+## Best practices
 
-### Resource Management
+### Resource management
 
 * **Always** use shared volumes (PVC) for training data, checkpoints, model weights, and application state
 * **Never** rely on local NVMe or node-local `/home` (on Kubernetes) for data you cannot afford to lose — it is ephemeral and can be wiped during migrations/recreations or maintenance
 * Use local NVMe only for temporary scratch files that can be regenerated
 * Set resource requests and limits in pod specs
 
-### Job Scheduling
+### Job scheduling
 
 * Use Kubernetes Jobs for batch processing
 * Use Slurm job arrays for embarrassingly parallel workloads
 * Set appropriate timeouts and retry policies
 
-### Data Management
+### Data management
 
 * Download large datasets directly on the cluster (not via local machine)
 * Use shared storage for training data and checkpoints
 * Use local NVMe for temporary files during training
 
-### Scaling Strategy
+### Scaling strategy
 
 * Start with reserved capacity for baseline workload
 * Add on-demand capacity for burst periods
@@ -657,12 +657,12 @@ scontrol show node          # Detailed node info
 
 ## GPU capacity not available
 
-In case you do not see GPU capacity of the type you require in the api.together.ai cloud console, you can request GPU capacity by going to the create cluster view, selecting your region and GPU capacity, type required and clicking on "Request" button. Please also, select the date from which you need the GPUs.
+If you do not see GPU capacity of the type you require in the api.together.ai cloud console, request GPU capacity by going to the create cluster view, selecting your region and GPU capacity, the type required, and selecting the **Request** button. Also select the date from which you need the GPUs.
 
 We use these requests as input for our demand planning, and our team will reach out to you if and when that becomes available.
 
 <Note>
-  Submitting a request for capacity does not guarantee fulfillment due to very high demand, we try our best to fulfill these requests based on available GPU capacity. In case you need guaranteed GPU capacity for fixed periods of time, [please reach out to our team](https://www.together.ai/contact-sales).
+  Submitting a request for capacity does not guarantee fulfillment due to very high demand. Together fulfills these requests based on available GPU capacity. If you need guaranteed GPU capacity for fixed periods of time, [contact the team](https://www.together.ai/contact-sales).
 </Note>
 
 ## Troubleshooting
@@ -671,7 +671,7 @@ We use these requests as input for our demand planning, and our team will reach 
 
 * Check node status: `kubectl get nodes`
 * Verify resource requests don't exceed available resources
-* Check for taints on nodes: `kubectl describe node <node-name>`
+* Check for taints on nodes: `kubectl describe node <node_name>`
 
 ### Storage mount issues
 
@@ -685,9 +685,22 @@ We use these requests as input for our demand planning, and our team will reach 
 * Verify partition is available
 * Check job status: `scontrol show job <jobid>`
 
-## What's Next?
+## Next steps
 
-* [Manage cluster access](/docs/projects#managing-project-collaborators)
-* [Understand roles and permissions](/docs/roles-permissions)
-* [Understand billing and pricing](/docs/gpu-clusters-billing)
-* [Explore API and automation options](/docs/gpu-clusters-api)
+<CardGroup>
+  <Card title="Project collaborators" icon="users" href="/docs/projects#managing-project-collaborators">
+    Add and remove members who can access clusters in a project.
+  </Card>
+
+  <Card title="Roles and permissions" icon="shield" href="/docs/roles-permissions">
+    Control what each member can do in your organization.
+  </Card>
+
+  <Card title="Billing and pricing" icon="currency-dollar" href="/docs/gpu-clusters-billing">
+    Understand reserved, on-demand, and storage charges.
+  </Card>
+
+  <Card title="API and CLI" icon="terminal" href="/docs/gpu-clusters-api">
+    Create and manage clusters from the API or Together CLI.
+  </Card>
+</CardGroup>

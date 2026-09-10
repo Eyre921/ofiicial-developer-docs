@@ -32,7 +32,7 @@ Retrieve the list of users following a specific user:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -47,7 +47,7 @@ Retrieve the list of users following a specific user:
           print(f"{user.username} - Followers: {user.public_metrics.followers_count}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -68,7 +68,7 @@ Retrieve the list of users following a specific user:
 
 ### Response
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
@@ -104,7 +104,7 @@ Retrieve the list of users that a specific user follows:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -119,7 +119,7 @@ Retrieve the list of users that a specific user follows:
           print(f"{user.username} - Verified: {user.verified}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -152,7 +152,7 @@ Follow a user on behalf of the authenticated user:
     -d '{"target_user_id": "2244994945"}'
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -173,7 +173,7 @@ Follow a user on behalf of the authenticated user:
   print(f"Following: {response.data.following}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({
@@ -220,7 +220,7 @@ Unfollow a user on behalf of the authenticated user:
     -H "Authorization: Bearer $USER_ACCESS_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -241,7 +241,7 @@ Unfollow a user on behalf of the authenticated user:
   print(f"Following: {response.data.following}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({
@@ -285,11 +285,11 @@ Unfollow a user on behalf of the authenticated user:
 ## Next steps
 
 <CardGroup>
-  <Card title="User lookup" icon="user" href="/x-api/users/lookup/introduction">
+  <Card title="User lookup" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-person.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=507a4bbcdcf5744bd18781508002e305" href="/x-api/users/lookup/introduction">
     Look up user profiles
   </Card>
 
-  <Card title="Blocks" icon="ban" href="/x-api/users/blocks/introduction">
+  <Card title="Blocks" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-block.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=702a65b4001948aebcc42635b8e2eac7" href="/x-api/users/blocks/introduction">
     Block and unblock users
   </Card>
 
@@ -297,7 +297,7 @@ Unfollow a user on behalf of the authenticated user:
     Mute and unmute users
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-followers">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-followers">
     Full endpoint documentation
   </Card>
 </CardGroup>

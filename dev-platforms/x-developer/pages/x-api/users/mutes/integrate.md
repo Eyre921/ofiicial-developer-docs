@@ -87,7 +87,7 @@ Mutes endpoints require user authentication to access private mute lists:
     -H "Authorization: Bearer $USER_ACCESS_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_USER_ACCESS_TOKEN")
@@ -102,7 +102,7 @@ Mutes endpoints require user authentication to access private mute lists:
           print(f"{user.username} - Verified: {user.verified}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -137,7 +137,7 @@ For users with large mute lists, results are paginated:
     -H "Authorization: Bearer $USER_ACCESS_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_USER_ACCESS_TOKEN")
@@ -152,7 +152,7 @@ For users with large mute lists, results are paginated:
   print(f"Muted {len(all_muted)} users")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -178,7 +178,7 @@ For users with large mute lists, results are paginated:
   ```
 </CodeGroup>
 
-<Card title="Pagination guide" icon="arrow-right" href="/x-api/fundamentals/pagination">
+<Card title="Pagination guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" href="/x-api/fundamentals/pagination">
   Learn more about pagination
 </Card>
 
@@ -217,15 +217,15 @@ For users with large mute lists, results are paginated:
 ## Next steps
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/users/mutes/quickstart/manage-mutes-quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/users/mutes/quickstart/manage-mutes-quickstart">
     Make your first mutes request
   </Card>
 
-  <Card title="Blocks" icon="ban" href="/x-api/users/blocks/introduction">
+  <Card title="Blocks" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-block.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=702a65b4001948aebcc42635b8e2eac7" href="/x-api/users/blocks/introduction">
     Block users instead of muting
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-muting">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-muting">
     Full endpoint documentation
   </Card>
 

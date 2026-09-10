@@ -47,6 +47,9 @@ Successful Response
   - `title` (string, required) — Title of the test invocation - the folder name for folder runs, otherwise the single test name or count of tests
   - `agent_id` (string, optional) — The ID of the agent this test invocation belongs to
   - `branch_id` (string, optional) — The ID of the branch this test invocation was run on
+  - `version_id` (string, optional) — The ID of the agent version this test invocation ran against. For draft or config-override runs this is the version those uncommitted changes were applied on top of. None only for runs recorded before this field existed.
+  - `ran_against_draft` (boolean, optional, default: false) — Whether the run included uncommitted changes (a saved draft or an ad-hoc config override) layered on top of version_id.
+  - `runs_diverged_from_version` (boolean, optional, default: false) — Whether the test runs in this invocation did not all execute against the same version, which happens when a subset of runs was resubmitted after the original run. When true, version_id describes the most recent resubmit rather than every run.
   - `access_info` (object, optional) — The access information of the test invocation
     - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
     - `creator_name` (string, required) — Name of the agent's creator
@@ -82,6 +85,9 @@ Successful Response
       "title": "title",
       "agent_id": "agent_id",
       "branch_id": "branch_id",
+      "version_id": "version_id",
+      "ran_against_draft": true,
+      "runs_diverged_from_version": true,
       "access_info": {
         "is_creator": true,
         "creator_name": "John Doe",

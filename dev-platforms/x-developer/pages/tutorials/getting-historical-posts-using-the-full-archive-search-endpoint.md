@@ -143,7 +143,7 @@ If you want to get Posts that have geo data, you can use the has:geo operator.
 For example, the following cURL request will get only those Posts from the
 @XDevelopers handle that have geo data:
 
-```
+```bash theme={null}
 curl --request GET
 'https://api.x.com/2/tweets/search/all?query=from:xdevelopers%20has:geo' --header
 'Aubashthorization: Bearer $BEARER_TOKEN'
@@ -155,7 +155,7 @@ Similarly, you can limit Posts that have geo data, to a specific country, using
 the place\_country operator. The cURL command below will get all Posts from the
 @XDevelopers handle from the United States:
 
-```
+```bash theme={null}
 curl --request GET
 'https://api.x.com/2/tweets/search/all?query=from:xdevelopers%20place_country:US'
 --hbasheader 'Authorization: Bearer XXXXX'
@@ -173,7 +173,7 @@ can append to your API call in order to get the next available Posts for this
 query. This next\_token is available in the meta object of your JSON response,
 which looks something:
 
-```
+```json theme={null}
 { "newest_id": "12345678...", "oldest_id": "12345678...", "result_count": 500,
 "nebashxt_token": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" }
 ```
@@ -183,7 +183,7 @@ object and use the value as the value for the next\_token in your API call to th
 full-archive search endpoint as shown below (You will use your own Bearer Token
 and the value that you get for the Next Token for your previous API call).
 
-```
+```bash theme={null}
 curl --request GET
 'https://api.x.com/2/tweets/search/all?max_results=500&query=covid&next_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 --header 'Authorization: Bearer $BEARER_TOKEN'

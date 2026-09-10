@@ -65,7 +65,7 @@ GET https://ads-api.x.com/12/accounts?account_ids=18ce54d4x5t
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
        {
          "request": {
            "params": {
@@ -114,7 +114,7 @@ Retrieve a specific account that the authenticating user has access to.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
        {
          "request": {
            "params": {
@@ -161,7 +161,7 @@ None
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
        {
          "request": {
            "params": {}
@@ -211,7 +211,7 @@ Updates the account name and/or industry type.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
        {
          "request": {
            "params": {
@@ -260,7 +260,7 @@ Delete an ads account in the sandbox environment.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
        {
          "data": {
            "name": "Sandbox account",
@@ -325,7 +325,7 @@ Retrieve details for all mobile apps that are associated with the specified ad a
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
        {
          "request": {
            "params": {
@@ -410,7 +410,7 @@ Retrieve a summary of changes made to the `entity_id` specified in the request.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -484,7 +484,7 @@ No request parameters
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {}
@@ -749,7 +749,7 @@ This endpoint accepts an array of JSON objects containing the parameters for the
 
 `POST https://ads-api.x.com/12/accounts/18ce54d4x5t/audience_estimate`
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
         "targeting_criteria": [
             {
@@ -781,7 +781,7 @@ This endpoint accepts an array of JSON objects containing the parameters for the
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -833,7 +833,7 @@ None
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "user_id": "2417045708",
@@ -876,7 +876,7 @@ While these bidding rules change rarely, it is suggested that your systems refre
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -958,7 +958,7 @@ Retrieve details for some or all campaigns associated with the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -1023,7 +1023,7 @@ Retrieve a specific campaign associated with the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -1112,7 +1112,7 @@ Create a new campaign associated with the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -1186,7 +1186,7 @@ Batch API responses return an ordered collection of items. Otherwise, they are i
 
 `POST 'Content-Type: application/json' https://ads-api.x.com/12/batch/accounts/18ce54d4x5t/campaigns`
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     [
       {
         "operation_type":"Create",
@@ -1203,7 +1203,7 @@ Batch API responses return an ordered collection of items. Otherwise, they are i
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -1299,7 +1299,7 @@ Update the specified campaign associated with the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -1358,7 +1358,7 @@ Delete the specified campaign belonging to the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -1419,7 +1419,7 @@ No request parameters
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {}
@@ -1662,7 +1662,7 @@ Additional details can be found in the [Video Views Pre-roll Objective Guide](/x
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -2216,7 +2216,7 @@ Each `curated_category` is only available in specific countries specified by the
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -2306,7 +2306,7 @@ Retrieve the collection of granted features accessible by this ads account. Feat
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -2351,7 +2351,7 @@ The up to date list of account features may be retrieved via the [GET accounts/:
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -2402,7 +2402,7 @@ The up to date list of account features may be retrieved via the [GET accounts/:
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -2472,7 +2472,7 @@ Retrieve details for some or all funding instruments associated with the current
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -2530,7 +2530,7 @@ Retrieve a specific funding instrument associated with the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -2609,7 +2609,7 @@ There is no risk of incurring costs while using a sandbox funding instrument.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "start_time": "2017-07-10T00:00:00Z",
@@ -2667,7 +2667,7 @@ Delete a funding instrument in the sandbox environment.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "start_time": "2017-08-30T19:23:47Z",
@@ -2733,7 +2733,7 @@ Request the valid app `categories` for ad groups (`line_items`).
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -2822,7 +2822,7 @@ Retrieve details for some or all line items associated with the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -2900,7 +2900,7 @@ Retrieve a specific line item associated with the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -3100,7 +3100,7 @@ Setting either `android_app_store_identifier` or `ios_app_store_identifier` will
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -3191,7 +3191,7 @@ Batch API responses return an ordered collection of items. Otherwise, they are i
 
 `POST 'Content-Type: application/json' https://ads-api.x.com/12/batch/accounts/18ce54d4x5t/line_items`
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     [
       {
         "operation_type":"Create",
@@ -3209,7 +3209,7 @@ Batch API responses return an ordered collection of items. Otherwise, they are i
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -3385,7 +3385,7 @@ Update the specified line item associated with the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -3458,7 +3458,7 @@ Delete the specified line item belonging to the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "bid_strategy": "MAX",
@@ -3545,7 +3545,7 @@ Retrieve details for some or all line item curated categories associated with th
 
 **Example Response**
 
-```josn theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -3592,7 +3592,7 @@ Retrieves details for a specific line item curated category associated with the 
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -3633,7 +3633,7 @@ Associate a [curated category](/x-ads-api/campaign-management/reference#curated-
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -3678,7 +3678,7 @@ Update the specified line item curated category.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -3719,7 +3719,7 @@ Delete the specified line item curated category.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -3763,7 +3763,7 @@ Retrieve valid `placement` and `product_type` combinations.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -3844,7 +3844,7 @@ Retrieve details for some or all media creatives associated with the current acc
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -3898,7 +3898,7 @@ Retrieves details for a specific media creative associated with the current acco
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -3956,7 +3956,7 @@ Use this endpoint to promote in-stream ads (when the account media `creative_typ
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -4002,7 +4002,7 @@ Delete the specified media creative belonging to the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -4083,7 +4083,7 @@ An HTTP 400 will be returned if none of the specified line items are configured 
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -4135,7 +4135,7 @@ Retrieve a specific reference to an account associated with a line item under th
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -4188,7 +4188,7 @@ For more information on Promoted Accounts, see our [campaign management](/x-ads-
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "line_item_id": "9bpb2",
@@ -4232,7 +4232,7 @@ Disassociate an account from the specified line item.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "line_item_id": "9bpb2",
@@ -4311,7 +4311,7 @@ Use the [GET accounts/:account\_id/tweets](/x-ads-api/creatives/reference#get-ac
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -4365,7 +4365,7 @@ Retrieve a specific reference to a Tweet associated with a line item under the c
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -4416,7 +4416,7 @@ When using the `PROMOTED_ACCOUNT` product type, associating a Tweet with the `li
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -4467,7 +4467,7 @@ Disassociate a Tweet from the specified line item.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "line_item_id": "9pl99",
@@ -4544,7 +4544,7 @@ You do not have to retweet the target Tweet. When you promote a Tweet with this 
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -4596,7 +4596,7 @@ You do not have to retweet the target Tweet. When you promote a Tweet with this 
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -4641,7 +4641,7 @@ No request parameters
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {}
@@ -4952,7 +4952,7 @@ Retrieve campaign recommendations associated with this ads account. Currently th
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     "request": {
       "params": {
         "account_id": "18ce54d4x5t"
@@ -4998,7 +4998,7 @@ The campaign recommendation contains a full set of changes suggested for the cam
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
     "request": {
       "params": {
@@ -5264,7 +5264,7 @@ Retrieve details for some or all scheduled promoted Tweets associated with the c
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -5315,7 +5315,7 @@ Retrieve a specific scheduled promoted Tweet associated with the current account
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -5363,7 +5363,7 @@ Associate a scheduled Tweet with the specified line item.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "line_item_id": "8xdpe",
@@ -5408,7 +5408,7 @@ Disassociate a scheduled Tweet from the specified line item.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "line_item_id": "8xdpe",
@@ -5482,7 +5482,7 @@ Retrieve details for some or all of the targeting criteria associated with line 
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -5539,7 +5539,7 @@ Retrieve a specific targeting criterion associated with the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -5609,7 +5609,7 @@ Use the `BROAD_KEYWORD`, `EXACT_KEYWORD`, `PHRASE_KEYWORD`, or `UNORDERED_KEYWOR
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "line_item_id": "619jl",
@@ -5669,7 +5669,7 @@ Batch API responses return an ordered collection of items. Otherwise, they are i
 
 `POST https://ads-api.x.com/12/batch/accounts/18ce54d4x5t/targeting_criteria`
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     [
       {
         "operation_type":"Create",
@@ -5690,7 +5690,7 @@ Batch API responses return an ordered collection of items. Otherwise, they are i
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data_type": "targeting_criterion",
       "data": [
@@ -5761,7 +5761,7 @@ Delete the specified targeting criterion belonging to the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": {
         "line_item_id": "8u94t",
@@ -5826,7 +5826,7 @@ Installed app category targeting allows targeting of users based on the categori
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -5879,7 +5879,7 @@ Discover available conversation-based targeting criteria for Promoted Products.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -5927,7 +5927,7 @@ Discover available device-based targeting criteria for Promoted Products. Device
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -5997,7 +5997,7 @@ Discover available event-based targeting criteria for Promoted Products. Only on
 
 **Example Response**
 
-```json theme={null}
+```json title="HOLIDAY" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -6056,7 +6056,7 @@ Discover available interest-based targeting criteria for Promoted Products. Inte
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -6102,7 +6102,7 @@ Discover languages available for targeting.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -6160,7 +6160,7 @@ To target Designated Market Areas (DMAs), use the `METROS` enum.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -6276,7 +6276,7 @@ This endpoint enables you to lookup targetingable carriers, such as AT\&T, Veriz
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -6338,7 +6338,7 @@ Discover available mobile OS version-based targeting criteria for Promoted Produ
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
         "data": [
             {...},
@@ -6392,7 +6392,7 @@ Discover available platform-based targeting criteria for Promoted Products.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -6445,7 +6445,7 @@ None
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -6575,7 +6575,7 @@ Discover available TV show-based targeting criteria for Promoted Products. TV sh
 
 **Example Response**
 
-```jdon theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -6643,7 +6643,7 @@ Get up to 50 keyword or user targeting suggestions to complement your initial se
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data": [
         {
@@ -6692,7 +6692,7 @@ Retrieve tax setting details associated with the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -6855,7 +6855,7 @@ Update the tax settings for the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -6937,7 +6937,7 @@ Retrieve details for some or all tracking tags associated with the current accou
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -6988,7 +6988,7 @@ Retrieve a specific tracking tag associated with the current account.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -7040,7 +7040,7 @@ Associate a tracking tag with the specified line item.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -7084,7 +7084,7 @@ Associate a tracking tag with the specified line item.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -7127,7 +7127,7 @@ Disassociate a tracking tag from the specified line item.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -7177,7 +7177,7 @@ Retrieves user settings.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
       {
         "request": {
           "params": {
@@ -7227,7 +7227,7 @@ Updates user settings. Requires user context. Not accessible by account admins.
 
 **Example Response**
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
       {
         "request": {
           "params": {

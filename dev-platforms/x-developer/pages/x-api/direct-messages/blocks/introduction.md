@@ -29,7 +29,7 @@ curl --request POST 'https://api.x.com/2/users/:id/dm/block' --header 'Authoriza
 
 If the request is successful, you should see the JSON response as shown below:
 
-```
+```json theme={null}
 {
    "data": {
        "blocked": true
@@ -47,7 +47,7 @@ curl --request POST 'https://api.x.com/2/users/:id/dm/unblock' --header 'Authori
 
 If the request is successful, you should see the JSON response as shown below:
 
-```
+```json theme={null}
 {
    "data": {
        "blocked": false

@@ -4,24 +4,23 @@ source: https://docs.fireworks.ai/fireworks-nexus/usage-limits
 path: fireworks-nexus/usage-limits
 ---
 
-Set per-user spending limits on serverless inference — account defaults, group limits, and per-user overrides
+Set per-user spending limits on serverless inference with account defaults, group limits, and per-user overrides
 
 Set spending limits for individual users in your account on serverless (per-token) inference. You can change the account-wide default cap, cap everyone in a group at a shared amount with a **group limit**, and override the limit for specific users.
 
 <Note>
   Per-user usage limits are available on request. Reach out to your Fireworks
-  contact to enable them for your account. Group limits additionally require
-  groups to be enabled and your directory connected through [SCIM group
-  sync](/accounts/sso#group-provisioning).
+  contact to enable them. Group limits additionally require [SCIM group
+  sync](/accounts/sso#group-provisioning). Limit changes are admin-only.
 </Note>
 
 ## Concepts
 
-* **Account default cap** — the per-user limit applied to anyone with no override and no group cap. Nexus accounts start at **\$100**.
-* **Group limit** — a named, reusable cap you define once and assign to one or more [groups](#group-limits). The User Limits page calls these **limit options**.
-* **Per-user override** — a cap set on one specific user.
-* **Effective limit** — the limit actually applied to a user, resolved by the precedence below.
-* **Current-period usage** — how much a user (and the account overall) has spent in the current billing period.
+* **Account default cap** is the per-user limit applied to anyone with no override and no group cap. Nexus accounts start at **\$100**.
+* **Group limit** is a named, reusable cap you define once and assign to one or more [groups](#group-limits). The User Limits page calls these **limit options**.
+* **Per-user override** is a cap set on one specific user.
+* **Effective limit** is the limit actually applied to a user, resolved by the precedence below.
+* **Current-period usage** is how much a user (and the account overall) has spent in the current billing period.
 
 All amounts are in USD, and usage resets at the start of each billing period.
 
@@ -39,9 +38,28 @@ A user with no override, no group limit, and no account default has no cap. Use 
 
 These tasks are done by account admins on the [User Limits](https://app.fireworks.ai/settings/user-limits) page under **Settings**.
 
+### Override a specific user's limit
+
+Give one user a cap of their own.
+
+<Frame>
+  <img alt="Setting a custom limit on a single user from the Usage tab" />
+</Frame>
+
+1. Open the **Usage** tab and select the user.
+2. Set a custom limit.
+
+The override takes precedence over the user's group limit and the account default.
+
 ### Set a group's limit
 
-Assign a limit option to a group, creating one first if you need it.
+<Note>
+  Groups are available only after you [set up SCIM
+  provisioning](/accounts/sso#set-up-scim-provisioning). Until then, use the
+  account default cap and per-user overrides.
+</Note>
+
+Once your groups are synced, assign a limit option to a group, creating one first if you need it.
 
 <Frame>
   <img alt="Assigning a limit option to a group from the dropdown on the Groups tab" />
@@ -51,7 +69,7 @@ Assign a limit option to a group, creating one first if you need it.
 2. Click the limit dropdown on the group's row.
 3. Pick an existing limit option, or choose **+ New limit** to create one.
 
-The limit applies to each member individually — it is not a shared budget for the group.
+The limit applies to each member individually; it is not a shared budget for the group.
 
 ### Edit a limit option
 
@@ -77,20 +95,7 @@ Remove a limit option you no longer need.
 1. Open the **Groups** tab.
 2. Delete the limit option.
 
-Groups assigned to it fall back to the org default automatically. Only the User Limits page does this — `firectl` and the REST API reject the delete instead. User overrides are unaffected.
-
-### Override a specific user's limit
-
-Give one user a cap of their own.
-
-<Frame>
-  <img alt="Setting a custom limit on a single user from the Usage tab" />
-</Frame>
-
-1. Open the **Usage** tab and select the user.
-2. Set a custom limit.
-
-The override takes precedence over the user's group limit and the account default.
+Groups assigned to it fall back to the org default automatically. Only the User Limits page does this; `firectl` and the REST API reject the delete instead. User overrides are unaffected.
 
 ## Group limits
 
@@ -98,16 +103,16 @@ A group limit is a reusable spending cap. Create a few amounts, assign one to ea
 
 ### Where groups come from
 
-Groups come from your identity provider through [SCIM group sync](/accounts/sso#group-provisioning) — that is the only way to create one. Groups and their membership are read-only in Fireworks; add, rename, delete, and populate them in your directory. The limit assignment is the one part you set in Fireworks.
+Groups come from your identity provider through [SCIM group sync](/accounts/sso#group-provisioning); that is the only way to create one. Groups and their membership are read-only in Fireworks; add, rename, delete, and populate them in your directory. The limit assignment is the one part you set in Fireworks.
 
 ### Rules and limits
 
 * An account may define **at most 9 group limits**. The User Limits page counts these against a total of 10, because the org default occupies one of the slots.
 * **Each group limit must hold a distinct amount.** Creating or updating one to an amount another already holds is rejected. A group limit *may* equal the account default.
-* Amounts are **USD and non-negative**. A **`$0`** group limit is a real cap — its members are blocked from serverless spend immediately.
+* Amounts are **USD and non-negative**. A **`$0`** group limit is a real cap: its members are blocked from serverless spend immediately.
 * A group limit sets an **amount only**. Reaching any cap blocks the user, so someone in several groups has one unambiguous outcome.
 * An **unassigned group contributes no cap**; its members fall back to another of their groups or to the account default.
-* **Deleting a group limit that groups are still assigned to is rejected** by `firectl` and the REST API — clear those assignments first. On the User Limits page, deleting a limit option reassigns its groups to the org default for you.
+* **Deleting a group limit that groups are still assigned to is rejected** by `firectl` and the REST API; clear those assignments first. On the User Limits page, deleting a limit option reassigns its groups to the org default for you.
 
 ## Supported models
 
@@ -115,8 +120,8 @@ Per-user metering applies to **all serverless models** except **[MiniMax M2.7](h
 
 ## Who can do what
 
-* **Account admins** — view and manage everything: update the default cap, define and assign group limits, set/clear per-user overrides, and view every user's usage.
-* **Members (non-admin)** — view the account-level limits, every group's limit assignment and the group limits themselves, and **their own** usage and limit. Members cannot view other users' limits, list all users, or change any limits.
+* **Account admins** can view and manage everything: update the default cap, define and assign group limits, set/clear per-user overrides, and view every user's usage.
+* **Members (non-admin)** can view the account-level limits, every group's limit assignment and the group limits themselves, and **their own** usage and limit. Members cannot view other users' limits, list all users, or change any limits.
 
 Each command below is annotated with who can run it.
 
@@ -124,11 +129,11 @@ Each command below is annotated with who can run it.
 
 Account admins manage limits on the [User Limits](https://app.fireworks.ai/settings/user-limits) page under **Settings**. Members see their own usage and limit there, and can request an increase.
 
-The page has three tabs — **Groups** appears once group limits are enabled for your account:
+The page has three tabs; **Groups** appears once group limits are enabled for your account:
 
-* **Usage** — every user's current-period spend against their effective limit, with the source of that limit and, for a group-derived cap, which group it came from.
-* **Groups** — each group with its assigned limit option and member count. Choose **Org default** on a group's row to clear its assignment and fall back to the account default.
-* **Increase Request** — pending per-user increase requests to approve or reject.
+* **Usage** shows every user's current-period spend against their effective limit, with the source of that limit and, for a group-derived cap, which group it came from.
+* **Groups** shows each group with its assigned limit option and member count. Choose **Org default** on a group's row to clear its assignment and fall back to the account default.
+* **Increase Request** holds pending per-user increase requests to approve or reject.
 
 Group rows show a **SCIM-synced** source and the time of the last directory sync. Membership changes belong in your identity provider; only the limit assignment is editable here.
 
@@ -139,48 +144,48 @@ Group rows show a **SCIM-synced** source and the time of the last directory sync
 ### Account-level
 
 ```bash theme={null}
-# View the account default cap and account-wide usage — any member
+# View the account default cap and account-wide usage: any member
 firectl usage-limits get
 
-# Update the default per-user cap — admin only
+# Update the default per-user cap: admin only
 firectl usage-limits update --default-user-limit=200
 ```
 
 ### Defining group limits
 
 ```bash theme={null}
-# List the account's group limits — any member
+# List the account's group limits: any member
 firectl usage-limits group-tier list
 
-# Define a group limit — admin only
+# Define a group limit: admin only
 firectl usage-limits group-tier create contractors --limit=100 --display-name="Contractors"
 
-# View one group limit — any member
+# View one group limit: any member
 firectl usage-limits group-tier get contractors
 
-# Re-price every group using this limit — admin only
+# Re-price every group using this limit: admin only
 firectl usage-limits group-tier update contractors --limit=250
 
-# Rename it — admin only
+# Rename it: admin only
 firectl usage-limits group-tier update contractors --display-name="Contractors (2026)"
 
-# Delete it — admin only, and only once no group is assigned
+# Delete it: admin only, and only once no group is assigned
 firectl usage-limits group-tier delete contractors
 ```
 
 ### Group assignments
 
 ```bash theme={null}
-# List every group's limit assignment, unassigned groups included — any member
+# List every group's limit assignment, unassigned groups included: any member
 firectl usage-limits group list
 
-# View a single group's assignment — any member
+# View a single group's assignment: any member
 firectl usage-limits group get platform-team
 
-# Assign a group limit to a group — admin only
+# Assign a group limit to a group: admin only
 firectl usage-limits group set platform-team --group-usage-limit-tier=contractors
 
-# Clear the assignment, so the group contributes no cap — admin only
+# Clear the assignment, so the group contributes no cap: admin only
 firectl usage-limits group unset platform-team
 ```
 
@@ -189,27 +194,27 @@ Every command takes either a bare ID or a full resource name, so `firectl usage-
 ### Per-user
 
 ```bash theme={null}
-# List every user with their usage, effective limit, and override — admin only
+# List every user with their usage, effective limit, and override: admin only
 firectl usage-limits user list
 
-# View a single user — admin, or that user viewing their own
+# View a single user: admin, or that user viewing their own
 firectl usage-limits user get <USER_ID>
 
-# Give a user their own cap, overriding groups and the account default — admin only
+# Give a user their own cap, overriding groups and the account default: admin only
 firectl usage-limits user set <USER_ID> --limit=500
 
-# Remove a user's override, reverting them to their group cap or the account default — admin only
+# Remove a user's override, reverting them to their group cap or the account default: admin only
 firectl usage-limits user unset <USER_ID>
 ```
 
 A user record shows:
 
-* **used** — current-period spend
-* **effective\_limit** — the limit applied to them, per the [precedence rules](#limit-precedence)
-* **limit\_source** — which rule produced it: `USER_OVERRIDE`, `GROUP_ASSIGNMENT`, or `ACCOUNT_DEFAULT`
-* **limit\_groups** — for a group-derived cap, the groups sitting at that amount (several groups can share one cap)
-* **override** — their per-user override, if any
-* **exceeded\_until** — set only when the user is currently blocked; shows when the block lifts (the end of the current billing period)
+* **used**: current-period spend
+* **effective\_limit**: the limit applied to them, per the [precedence rules](#limit-precedence)
+* **limit\_source**: which rule produced it: `USER_OVERRIDE`, `GROUP_ASSIGNMENT`, or `ACCOUNT_DEFAULT`
+* **limit\_groups**: for a group-derived cap, the groups sitting at that amount (several groups can share one cap)
+* **override**: their per-user override, if any
+* **exceeded\_until**: set only when the user is currently blocked; shows when the block lifts (the end of the current billing period)
 
 An override wins outright, so it is also how you lower a single user below their group's limit. Unsetting it resolves the user to their group cap if they have one and the account default otherwise; the account-wide default itself cannot be cleared.
 
@@ -220,27 +225,27 @@ Writes are `PATCH` (or `POST` to create a group limit). The examples below pass 
 ### Read
 
 ```bash theme={null}
-# Account-level usage limits — any member
+# Account-level usage limits: any member
 curl -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/usageLimits
 
-# A single user's usage limits — admin, or that user
+# A single user's usage limits: admin, or that user
 curl -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/users/<USER_ID>/usageLimits
 
-# All users in the account — admin only
+# All users in the account: admin only
 curl -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/userUsageLimits
 
-# The account's group limits — any member
+# The account's group limits: any member
 curl -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/groupUsageLimitTiers
 
-# Every group's limit assignment — any member
+# Every group's limit assignment: any member
 curl -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/groupUsageLimits
 
-# One group's limit assignment — any member
+# One group's limit assignment: any member
 curl -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/groups/<GROUP_ID>/usageLimits
 ```
@@ -261,7 +266,7 @@ curl -X POST \
 ```
 
 ```bash theme={null}
-# Re-price the group limit — moves the cap for every group assigned to it
+# Re-price the group limit: moves the cap for every group assigned to it
 curl -X PATCH \
   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   -H "Content-Type: application/json" \
@@ -270,14 +275,14 @@ curl -X PATCH \
 ```
 
 ```bash theme={null}
-# Delete the group limit — rejected while any group is still assigned to it
+# Delete the group limit: rejected while any group is still assigned to it
 curl -X DELETE -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/groupUsageLimitTiers/contractors
 ```
 
 ### Assign a group limit to a group (admin only)
 
-Assigning and clearing are both updates of the group's usage-limits singleton — there is no create or delete.
+Assigning and clearing are both updates of the group's usage-limits singleton; there is no create or delete.
 
 ```bash theme={null}
 # Assign
@@ -287,7 +292,7 @@ curl -X PATCH \
   "https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/groups/<GROUP_ID>/usageLimits?updateMask=group_usage_limit_tier" \
   -d '{"groupUsageLimitTier": "accounts/<ACCOUNT_ID>/groupUsageLimitTiers/contractors"}'
 
-# Clear — an empty value removes the group's cap
+# Clear: an empty value removes the group's cap
 curl -X PATCH \
   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   -H "Content-Type: application/json" \
@@ -297,8 +302,8 @@ curl -X PATCH \
 
 ### Other updates (admin only)
 
-* `PATCH /v1/accounts/<ACCOUNT_ID>/usageLimits` — update `default_user_limit` (cannot be cleared)
-* `PATCH /v1/accounts/<ACCOUNT_ID>/users/<USER_ID>/usageLimits` — set `limit_override` (an unset value removes the override)
+* `PATCH /v1/accounts/<ACCOUNT_ID>/usageLimits` to update `default_user_limit` (cannot be cleared)
+* `PATCH /v1/accounts/<ACCOUNT_ID>/users/<USER_ID>/usageLimits` to set `limit_override` (an unset value removes the override)
 
 ## How enforcement works
 
@@ -306,7 +311,7 @@ curl -X PATCH \
 * **Limits are per billing period.** Usage and any blocks reset when the period rolls over.
 * **Enforcement is near-real-time, not instantaneous.** After a user crosses their limit there is a short delay (typically a few minutes) before requests start being blocked, and a similar delay before a user is unblocked after you raise their limit. Plan around this lag rather than expecting an immediate cutoff.
 * **The same lag applies to group changes.** Re-pricing a group limit, reassigning a group, or a directory sync that changes someone's membership takes effect on the next enforcement pass, not on the next request.
-* **A `$0` cap** — whether from a group limit, an override, or the account default — means the user is allowed no serverless spend and is blocked immediately.
+* **A `$0` cap**, whether from a group limit, an override, or the account default, means the user is allowed no serverless spend and is blocked immediately.
 * **Enforcement is account-wide.** Reaching a cap blocks the user whether the cap came from a group limit, an override, or the account default.
 * Only **serverless (per-token) inference on [supported models](#supported-models)** counts toward these limits. **[MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)** is excluded. Dedicated deployment (GPU-hour) usage is not metered per user here.
 
@@ -323,7 +328,7 @@ curl -X PATCH \
 
   <Accordion title="A user is in two groups with different limits. Which applies?">
     The **higher** of the two caps. If that isn't what you want for a particular
-    person, give them a per-user override — an override outranks every group cap.
+    person, give them a per-user override; an override outranks every group cap.
   </Accordion>
 
   <Accordion title="Does a group limit below the account default still apply?">
@@ -338,8 +343,8 @@ curl -X PATCH \
   </Accordion>
 
   <Accordion title="Why was my group limit rejected?">
-    Most likely the amount duplicates an existing group limit — each must hold
-    a distinct amount — or the account already has the maximum of 9. Reuse or
+    Most likely the amount duplicates an existing group limit (each must hold
+    a distinct amount), or the account already has the maximum of 9. Reuse or
     delete one and retry.
   </Accordion>
 
@@ -355,7 +360,7 @@ curl -X PATCH \
   </Accordion>
 
   <Accordion title="Can a user check their own usage?">
-    Yes — a user can read their own usage and limit; they just can't see other
+    Yes. A user can read their own usage and limit; they just can't see other
     users' limits or change any limits.
   </Accordion>
 

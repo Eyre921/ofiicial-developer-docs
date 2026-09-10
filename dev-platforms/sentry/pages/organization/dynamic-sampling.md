@@ -12,6 +12,10 @@ url: https://docs.sentry.io/organization/dynamic-sampling/
 
 # Dynamic Sampling
 
+##### Only Available to Existing Customers
+
+Dynamic Sampling is only available to organizations that already have it enabled. It isn't available to new customers. If you want to control the volume of spans you send to Sentry, configure [sampling in your SDK](https://docs.sentry.io/concepts/key-terms/sample-rates.md) instead.
+
 ## [Overview](https://docs.sentry.io/organization/dynamic-sampling.md#overview)
 
 While storing all your data makes sense at relatively low volumes, as your application scales, storing a raw copy of all your data has diminishing returns. When data reaches high volumes, Sentry begins to automatically prioritize retaining certain spans over others with server-side data retention strategies called Dynamic Sampling Priorities.

@@ -39,7 +39,7 @@ INDEX_HOST="INDEX_HOST"
 curl -i "https://$INDEX_HOST/vectors/upsert" \
   -H "Api-Key: $PINECONE_API_KEY" \
   -H "content-type: application/json" \
-  -H "X-Pinecone-Api-Version: 2025-10" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
   -d '{
         "vectors": [
           {
@@ -84,8 +84,8 @@ INDEX_HOST="INDEX_HOST"
 
 curl -i "https://$INDEX_HOST/query" \
   -H "Api-Key: $PINECONE_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -H "X-Pinecone-Api-Version: 2025-10" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
   -d '{
     "vector": [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3],
     "namespace": "example-namespace",
@@ -230,7 +230,7 @@ To verify that your index contains the number of records you expect, [view index
 
   curl -X POST "https://$INDEX_HOST/describe_index_stats" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10"
+    -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </CodeGroup>
 

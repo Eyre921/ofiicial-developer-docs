@@ -13,7 +13,7 @@ The TypeScript SDK supports multiple authentication methods for different use ca
 For read-only operations and public data access:
 
 <CodeGroup>
-  ```typescript quickstart.ts theme={null} theme={null}
+  ```typescript title="quickstart.ts" lines wrap icon="square-js" theme={null} theme={null}
   import { 
     Client, 
     type ClientConfig,
@@ -49,7 +49,7 @@ For read-only operations and public data access:
 For legacy applications or specific use cases:
 
 <CodeGroup>
-  ```typescript oauth1.ts theme={null} theme={null}
+  ```typescript title="oauth1.ts" expandable lines wrap icon="square-js" theme={null} theme={null}
   import { 
     Client, 
     OAuth1,
@@ -84,7 +84,7 @@ For legacy applications or specific use cases:
 
   ```
 
-  ```javascript oauth1.js theme={null} theme={null}
+  ```javascript title="oauth1.js" lines wrap icon="square-js" theme={null} theme={null}
   import { Client, OAuth1 } from '@xdevplatform/xdk';
 
   const oauth1 = new OAuth1({
@@ -108,7 +108,7 @@ For legacy applications or specific use cases:
 For user-specific operations:
 
 <CodeGroup>
-  ```typescript oauth2.ts theme={null} theme={null}
+  ```typescript title="oauth2.ts" expandable lines wrap icon="square-js" theme={null} theme={null}
   import { 
     Client, 
     OAuth2,
@@ -153,7 +153,7 @@ For user-specific operations:
 
   ```
 
-  ```javascript oauth2.js theme={null} theme={null}
+  ```javascript title="oauth2.js" expandable lines wrap icon="square-js" theme={null} theme={null}
   import { Client, OAuth2, generateCodeVerifier, generateCodeChallenge } from '@xdevplatform/xdk';
 
   (async () => {

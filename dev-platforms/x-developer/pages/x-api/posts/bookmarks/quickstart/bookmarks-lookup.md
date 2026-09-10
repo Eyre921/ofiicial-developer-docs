@@ -35,7 +35,7 @@ This guide walks you through retrieving your bookmarked Posts using the X API.
         -H "Authorization: Bearer $USER_ACCESS_TOKEN"
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
 
       client = Client(bearer_token="YOUR_USER_ACCESS_TOKEN")
@@ -50,7 +50,7 @@ This guide walks you through retrieving your bookmarked Posts using the X API.
               print(f"{post.text[:50]}... - Likes: {post.public_metrics.like_count}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -123,7 +123,7 @@ Use expansions to get data about Post authors:
     -H "Authorization: Bearer $USER_ACCESS_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_USER_ACCESS_TOKEN")
@@ -140,7 +140,7 @@ Use expansions to get data about Post authors:
       # Author info is in page.includes.users
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -182,7 +182,7 @@ When using OAuth 2.0 PKCE, your access token must have these scopes:
     Add and remove bookmarks
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-bookmarks">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-bookmarks">
     Full endpoint documentation
   </Card>
 </CardGroup>

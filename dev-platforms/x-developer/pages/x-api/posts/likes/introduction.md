@@ -11,7 +11,7 @@ The Likes endpoints let you like and unlike Posts, see which users liked a Post,
 ## Overview
 
 <CardGroup>
-  <Card title="Like a Post" icon="heart">
+  <Card title="Like a Post" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-heart.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=3a435e6393c019d681c6f1a0737e21a8">
     Like a Post on behalf of a user
   </Card>
 
@@ -19,7 +19,7 @@ The Likes endpoints let you like and unlike Posts, see which users liked a Post,
     Remove a like from a Post
   </Card>
 
-  <Card title="Liking users" icon="users">
+  <Card title="Liking users" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-people.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=9d5f3f82edcd2a4070364193436e7980">
     See who liked a Post
   </Card>
 
@@ -86,7 +86,7 @@ curl -X POST "https://api.x.com/2/users/123456789/likes" \
 </Note>
 
 <CardGroup>
-  <Card title="Lookup quickstart" icon="heart" href="/x-api/posts/likes/quickstart/likes-lookup">
+  <Card title="Lookup quickstart" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-heart.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=3a435e6393c019d681c6f1a0737e21a8" href="/x-api/posts/likes/quickstart/likes-lookup">
     Get likes for a Post
   </Card>
 
@@ -94,7 +94,7 @@ curl -X POST "https://api.x.com/2/users/123456789/likes" \
     Like and unlike Posts
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/get-liking-users">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/get-liking-users">
     Full endpoint documentation
   </Card>
 

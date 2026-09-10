@@ -5971,6 +5971,13 @@ You can constrain the number of speakers with `speakers_expected`, or with `min_
       <td>**0–2 minutes**: —<br/>**2–10 minutes**: 10 speakers<br/>**10+ minutes**: 30 speakers</td>
       <td>A hard upper limit on the number of speaker labels. If more people speak than this, the additional speakers are merged into existing labels. Give the model a little headroom above the number of speakers you expect; setting it too high can cause over-splitting and return more speakers than are actually present.</td>
     </tr>
+
+    <tr>
+      <td>`speaker_options.include_speaker_confidence`</td>
+      <td>boolean</td>
+      <td>`false`</td>
+      <td>Set to `true` to include a `speaker_confidence` field per word and per utterance in the response.</td>
+    </tr>
   </tbody>
 </table>
 
@@ -5989,6 +5996,7 @@ The `utterances` array contains objects with the following fields:
 | `start`       | number | The start time of the utterance in milliseconds.                                                       |
 | `end`         | number | The end time of the utterance in milliseconds.                                                         |
 | `confidence`  | number | A score between 0 and 1 indicating the model's confidence in the transcribed text.                     |
+| `speaker_confidence` | number | A score between 0 and 1 indicating the model's confidence in the speaker label for the utterance. Only present when `speaker_options.include_speaker_confidence` is `true`. |
 | `words`       | array  | A word-level breakdown of the utterance.                                                               |
 
 Each object in the `words` array contains the following fields:
@@ -6000,6 +6008,7 @@ Each object in the `words` array contains the following fields:
 | `start`      | number | The start time of the word in milliseconds.                                         |
 | `end`        | number | The end time of the word in milliseconds.                                           |
 | `confidence` | number | A score between 0 and 1 indicating the model's confidence in the word.              |
+| `speaker_confidence` | number | A score between 0 and 1 indicating the model's confidence in the speaker label for the word. Only present when `speaker_options.include_speaker_confidence` is `true`. |
 
 ### Identify speakers by name
 
@@ -77294,6 +77303,11 @@ components:
                 <Warning>Setting this parameter too high may hurt model accuracy</Warning>
                 A hard upper limit on the number of speaker labels. If more people speak than this value, the additional speakers are merged into existing labels. Setting it higher than the true number of speakers can cause the model to over-split and return more speakers than are actually present. The default depends on audio duration: no limit for 0-2 minutes, 10 for 2-10 minutes, and 30 for 10+ minutes. See [Set a range of possible speakers](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-a-range-of-possible-speakers) for more details.
               type: integer
+            include_speaker_confidence:
+              x-label: Include speaker confidence
+              description: When `true`, includes a `speaker_confidence` field per word and per utterance in the response. See [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#configuration) for more details.
+              type: boolean
+              default: false
 
         speakers_expected:
           x-label: Speakers expected
@@ -77656,6 +77670,13 @@ components:
           x-label: Speaker
           description: The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. "A" for Speaker A, "B" for Speaker B, etc.
           type: string
+        speaker_confidence:
+          x-label: Speaker confidence
+          description: The confidence score for the speaker label of this utterance, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.
+          type: [number, "null"]
+          format: double
+          minimum: 0
+          maximum: 1
         translated_texts:
           x-label: Translated texts
           description: 'Translations keyed by language code (e.g., `{"es": "Texto traducido", "de": "Übersetzter Text"}`). Only present when `match_original_utterance` is enabled with translation.'
@@ -80782,6 +80803,13 @@ components:
           x-label: Speaker
           description: The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) is enabled, else null
           type: [string, "null"]
+        speaker_confidence:
+          x-label: Speaker confidence
+          description: The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.
+          type: [number, "null"]
+          format: double
+          minimum: 0
+          maximum: 1
       example:
         {
           text: "Smoke",

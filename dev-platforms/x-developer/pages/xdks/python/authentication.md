@@ -60,7 +60,7 @@ This example shows how to use OAuth 2.0 with Proof Key for Code Exchange (PKCE).
 3. Initiate the flow, direct user to auth URL and handle callback.
    **Example** (using a web server for callback):
 
-```python theme={null}
+```python title="Example" expandable lines wrap icon="python" theme={null}
 from xdk.oauth2_auth import OAuth2PKCEAuth
 from urllib.parse import urlparse
 import webbrowser
@@ -109,7 +109,7 @@ For legacy applications or specific use cases that require OAuth 1.0a authentica
 3. Create an OAuth1 instance and pass it to the Client.
    **Example** (with existing access tokens):
 
-```python theme={null}
+```python title="Example" lines wrap icon="python" theme={null}
 from xdk import Client
 from xdk.oauth1_auth import OAuth1
 # Step 1: Create OAuth1 instance with credentials
@@ -130,7 +130,7 @@ print(me)
 
 **Example** (complete OAuth 1.0a flow):
 
-```python theme={null}
+```python title="Example" lines wrap icon="python" theme={null}
 from xdk import Client
 from xdk.oauth1_auth import OAuth1
 import webbrowser

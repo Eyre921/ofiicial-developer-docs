@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/how-to-build-a-lovable-clone-with-kimi-k2
 path: docs/how-to-build-a-lovable-clone-with-kimi-k2
 ---
 
-Learn how to build a full-stack Next.js app that can generate React apps with a single prompt.
+Build a full-stack Next.js app that generates React apps from a single prompt.
 
 [LlamaCoder](https://llamacoder.together.ai/) is a Lovable-inspired app that shows off how to use Together AI’s hosted LLM endpoints to build AI applications.
 

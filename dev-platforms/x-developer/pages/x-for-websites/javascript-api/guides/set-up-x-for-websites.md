@@ -17,7 +17,7 @@ Include the X for Websites JavaScript once in your page template for optimal web
 
 If your site is using multiple widgets you can set up X widgets in your pages once, which will make your site faster, and widgets such as embedded Posts will be more reliable for authors when using content management systems.
 
-```html theme={null}
+```html title="Example" lines wrap icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" theme={null}
 <script>window.twttr = (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0],
     t = window.twttr || {};

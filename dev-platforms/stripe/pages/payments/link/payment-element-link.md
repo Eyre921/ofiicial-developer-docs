@@ -116,4 +116,5 @@ Stripe automatically supports additional funding sources without changes to your
 - [Stripe Web Elements](https://docs.stripe.com/payments/elements.md)
 - [Payment Element](https://docs.stripe.com/payments/payment-element.md)
 - [Address Element](https://docs.stripe.com/elements/address-element.md)
+- [Build a custom checkout page that includes Link](https://docs.stripe.com/payments/link/add-link-elements-integration.md?link-integration-type=before-payment)
 

@@ -30,7 +30,7 @@ Retrieve details for a specific List:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -62,7 +62,7 @@ Retrieve details for a specific List:
 
 ### Response
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "1234567890",
@@ -91,7 +91,7 @@ Retrieve all Lists owned by a specific user:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -106,7 +106,7 @@ Retrieve all Lists owned by a specific user:
           print(f"{lst.name} - {lst.member_count} members")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -127,7 +127,7 @@ Retrieve all Lists owned by a specific user:
 
 ### Response
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
@@ -166,7 +166,7 @@ Expand the owner's user data:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -183,7 +183,7 @@ Expand the owner's user data:
   # Owner info is in response.includes.users
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -202,7 +202,7 @@ Expand the owner's user data:
 
 ### Response with expansion
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "1234567890",
@@ -240,11 +240,11 @@ Expand the owner's user data:
 ## Next steps
 
 <CardGroup>
-  <Card title="List Posts" icon="list" href="/x-api/lists/list-tweets/quickstart">
+  <Card title="List Posts" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/lists/list-tweets/quickstart">
     Get Posts from a List
   </Card>
 
-  <Card title="List members" icon="users" href="/x-api/lists/list-members/quickstart/list-members-lookup">
+  <Card title="List members" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-people.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=9d5f3f82edcd2a4070364193436e7980" href="/x-api/lists/list-members/quickstart/list-members-lookup">
     Get List members
   </Card>
 
@@ -252,7 +252,7 @@ Expand the owner's user data:
     Create and update Lists
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/lists/list-lookup-by-list-id">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/lists/list-lookup-by-list-id">
     Full endpoint documentation
   </Card>
 </CardGroup>

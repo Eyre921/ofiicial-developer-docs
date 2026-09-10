@@ -1,0 +1,2485 @@
+---
+title: "X Activity API event payload examples"
+source: https://docs.x.com/x-api/activity/event-payloads
+path: x-api/activity/event-payloads
+---
+
+Sample JSON payloads for X Activity API events, including posts, likes, follows, profile updates, chat, DMs, mutes, blocks, Spaces, news, and OAuth revokes.
+
+Events delivered by the X Activity API (via the [persistent HTTP stream](/x-api/activity/activity-stream) or [webhooks](/x-api/webhooks/introduction)) share a common envelope:
+
+| Field        | Description                                                         |
+| ------------ | ------------------------------------------------------------------- |
+| `event_uuid` | Unique identifier for this event delivery                           |
+| `filter`     | The filter that matched (for example `user_id` or `keyword`)        |
+| `event_type` | The subscribed event type                                           |
+| `tag`        | Optional tag from your subscription (when set)                      |
+| `payload`    | Event-specific data                                                 |
+| `includes`   | Optional expanded objects (users, tweets, and so on) when available |
+
+```json title="Event envelope" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "2080761390344937796",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "post.create",
+    "tag": "posts",
+    "payload": {},
+    "includes": {}
+  }
+}
+```
+
+The examples below are representative real-world payloads with sample account identifiers and profile fields substituted for documentation. Field availability can vary based on account settings, expansions, and the object state at delivery time. See the [introduction](/x-api/activity/introduction) for the full list of supported event types and authentication requirements.
+
+Payload samples use Mintlify code blocks with titles, line numbers, and wrapping. Longer examples are expandable—click to expand and copy the full delivery body.
+
+***
+
+## Post events
+
+### `post.create`
+
+Fired when the filtered user creates a Post. Fires for standalone Posts, replies, quote Posts, and reposts by the filtered user. Inspect the payload to distinguish the type — for example, `in_reply_to_tweet_id` is present on replies, and `referenced_tweets` indicates quotes and reposts. The `payload` is a Post object; `includes` may contain related users and tweets.
+
+```json title="post.create" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "2080761390344937796",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "post.create",
+    "tag": "posts",
+    "payload": {
+      "public_metrics": {
+        "retweet_count": 0,
+        "retweet_count_str": "0",
+        "reply_count": 0,
+        "reply_count_str": "0",
+        "like_count": 0,
+        "like_count_str": "0",
+        "quote_count": 0,
+        "quote_count_str": "0",
+        "bookmark_count": 0,
+        "bookmark_count_str": "0",
+        "impression_count": 0,
+        "impression_count_str": "0"
+      },
+      "lang": "en",
+      "created_at": "2026-07-24T21:05:48.000Z",
+      "author_id": "1111111111111111111",
+      "reply_settings": "everyone",
+      "display_text_range": [
+        0,
+        34
+      ],
+      "paid_partnership": false,
+      "id": "2080761390344937796",
+      "possibly_sensitive": false,
+      "edit_history_tweet_ids": [
+        "2080761390344937796"
+      ],
+      "conversation_id": "2080761390344937796",
+      "text": "Hello from the Activity API",
+      "edit_controls": {
+        "edits_remaining": 5,
+        "edits_remaining_str": "5",
+        "is_edit_eligible": true,
+        "editable_until": "2026-07-24T22:05:48.000Z"
+      }
+    },
+    "includes": {
+      "tweets": [
+        {
+          "public_metrics": {
+            "retweet_count": 0,
+            "retweet_count_str": "0",
+            "reply_count": 0,
+            "reply_count_str": "0",
+            "like_count": 0,
+            "like_count_str": "0",
+            "quote_count": 0,
+            "quote_count_str": "0",
+            "bookmark_count": 0,
+            "bookmark_count_str": "0",
+            "impression_count": 0,
+            "impression_count_str": "0"
+          },
+          "lang": "en",
+          "created_at": "2026-07-24T21:05:48.000Z",
+          "author_id": "1111111111111111111",
+          "reply_settings": "everyone",
+          "display_text_range": [
+            0,
+            34
+          ],
+          "paid_partnership": false,
+          "id": "2080761390344937796",
+          "possibly_sensitive": false,
+          "edit_history_tweet_ids": [
+            "2080761390344937796"
+          ],
+          "conversation_id": "2080761390344937796",
+          "text": "Hello from the Activity API",
+          "edit_controls": {
+            "edits_remaining": 5,
+            "edits_remaining_str": "5",
+            "is_edit_eligible": true,
+            "editable_until": "2026-07-24T22:05:48.000Z"
+          }
+        }
+      ],
+      "users": [
+        {
+          "entities": {
+            "url": {
+              "urls": [
+                {
+                  "start": 0,
+                  "start_str": "0",
+                  "end": 23,
+                  "end_str": "23",
+                  "url": "https://t.co/xxxxxxxx",
+                  "expanded_url": "https://example.com",
+                  "display_url": "https://example.com"
+                }
+              ]
+            },
+            "description": {
+              "mentions": [
+                {
+                  "start": 49,
+                  "start_str": "49",
+                  "end": 51,
+                  "end_str": "51",
+                  "username": "X"
+                },
+                {
+                  "start": 52,
+                  "start_str": "52",
+                  "end": 64,
+                  "end_str": "64",
+                  "username": "XDevelopers"
+                }
+              ]
+            }
+          },
+          "name": "Example User",
+          "protected": false,
+          "verified": true,
+          "description": "Building with the X AnotherUser @XDevelopers",
+          "is_identity_verified": true,
+          "affiliation": {
+            "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+            "url": "https://twitter.com/X",
+            "user_id": [
+              "783214"
+            ],
+            "description": "X"
+          },
+          "location": "San Francisco, CA",
+          "username": "ExampleUser",
+          "verified_type": "blue",
+          "pinned_tweet_id": "1968451310203859083",
+          "created_at": "2023-10-23T13:44:53.000Z",
+          "id": "1111111111111111111",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+          "url": "https://t.co/xxxxxxxx",
+          "profile_banner_url": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000",
+          "most_recent_tweet_id": "2080761390344937796",
+          "public_metrics": {
+            "followers_count": 5502,
+            "followers_count_str": "5502",
+            "following_count": 652,
+            "following_count_str": "652",
+            "tweet_count": 790,
+            "tweet_count_str": "790",
+            "listed_count": 47,
+            "listed_count_str": "47",
+            "like_count": 8011,
+            "like_count_str": "8011",
+            "media_count": 79,
+            "media_count_str": "79"
+          },
+          "profile_geo_enrichment": {
+            "potential_locations": [
+              {
+                "geo_entity": {
+                  "entity_id": "5391959",
+                  "display_name": "San Francisco, California, United States",
+                  "country_code": "US",
+                  "region": "California",
+                  "sub_region": "San Francisco County",
+                  "locality": "San Francisco",
+                  "population": 873965,
+                  "population_str": "873965",
+                  "geo_point": {
+                    "latitude": 37.77493,
+                    "longitude": -122.41942
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+### `post.delete`
+
+Fired when the filtered user deletes a Post. The `payload` contains the deleted Post ID and author ID.
+
+```json title="post.delete" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "-2781149976877970683",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "post.delete",
+    "tag": "post-deletes",
+    "payload": {
+      "id": "2080761269309813134",
+      "author_id": "1111111111111111111"
+    },
+    "includes": {
+      "users": [
+        {
+          "data": {
+            "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+            "affiliation": {
+              "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+              "url": "https://twitter.com/X",
+              "description": "X"
+            },
+            "protected": false,
+            "id": "1111111111111111111",
+            "username": "ExampleUser",
+            "verified_type": "blue",
+            "verified": true,
+            "profile_banner_url": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000",
+            "entities": {
+              "url": {
+                "urls": [
+                  {
+                    "start": 0,
+                    "start_str": "0",
+                    "end": 23,
+                    "end_str": "23",
+                    "url": "https://t.co/xxxxxxxx",
+                    "expanded_url": "https://example.com",
+                    "display_url": "https://example.com"
+                  }
+                ]
+              },
+              "description": {
+                "mentions": [
+                  {
+                    "start": 49,
+                    "start_str": "49",
+                    "end": 51,
+                    "end_str": "51",
+                    "username": "X"
+                  },
+                  {
+                    "start": 52,
+                    "start_str": "52",
+                    "end": 64,
+                    "end_str": "64",
+                    "username": "XDevelopers"
+                  }
+                ]
+              }
+            },
+            "public_metrics": {
+              "followers_count": 5502,
+              "followers_count_str": "5502",
+              "following_count": 651,
+              "following_count_str": "651",
+              "tweet_count": 789,
+              "tweet_count_str": "789",
+              "listed_count": 47,
+              "listed_count_str": "47",
+              "like_count": 8010,
+              "like_count_str": "8010",
+              "media_count": 79,
+              "media_count_str": "79"
+            },
+            "url": "https://t.co/xxxxxxxx",
+            "created_at": "2023-10-23T13:44:53.000Z",
+            "description": "Building with the X AnotherUser @XDevelopers",
+            "is_identity_verified": true,
+            "location": "San Francisco, CA",
+            "name": "Example User"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+### `post.mention.create`
+
+Fired when another user explicitly @mentions the filtered user in the body of a Post. Does not fire for implicit mentions carried by replies or reposts. Private event — requires user-context authentication with the `tweet.read` scope.
+
+```json title="post.mention.create" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "2080765813578191303",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "post.mention.create",
+    "tag": "mentions",
+    "payload": {
+      "paid_partnership": false,
+      "created_at": "2026-07-24T21:23:23.000Z",
+      "edit_history_tweet_ids": [
+        "2080765813578191303"
+      ],
+      "conversation_id": "2080765813578191303",
+      "display_text_range": [
+        0,
+        16
+      ],
+      "edit_controls": {
+        "edits_remaining": 5,
+        "edits_remaining_str": "5",
+        "is_edit_eligible": true,
+        "editable_until": "2026-07-24T22:23:23.000Z"
+      },
+      "text": "hey @ExampleUser",
+      "entities": {
+        "mentions": [
+          {
+            "start": 4,
+            "start_str": "4",
+            "end": 16,
+            "end_str": "16",
+            "username": "ExampleUser",
+            "id": "1111111111111111111"
+          }
+        ]
+      },
+      "author_id": "2222222222222222222",
+      "possibly_sensitive": false,
+      "public_metrics": {
+        "retweet_count": 0,
+        "retweet_count_str": "0",
+        "reply_count": 0,
+        "reply_count_str": "0",
+        "like_count": 0,
+        "like_count_str": "0",
+        "quote_count": 0,
+        "quote_count_str": "0",
+        "bookmark_count": 0,
+        "bookmark_count_str": "0",
+        "impression_count": 0,
+        "impression_count_str": "0"
+      },
+      "reply_settings": "everyone",
+      "id": "2080765813578191303",
+      "lang": "und"
+    },
+    "includes": {
+      "users": [
+        {
+          "public_metrics": {
+            "followers_count": 97,
+            "followers_count_str": "97",
+            "following_count": 1,
+            "following_count_str": "1",
+            "tweet_count": 50,
+            "tweet_count_str": "50",
+            "listed_count": 4,
+            "listed_count_str": "4",
+            "like_count": 26,
+            "like_count_str": "26",
+            "media_count": 3,
+            "media_count_str": "3"
+          },
+          "profile_banner_url": "",
+          "username": "OtherUser",
+          "protected": false,
+          "is_identity_verified": false,
+          "affiliation": {
+            "badge_url": "https://pbs.twimg.com/semantic_core_img/1428827730364096519/4ZXpTBhS?format=png&name=orig",
+            "description": "Automated"
+          },
+          "most_recent_tweet_id": "2080765813578191303",
+          "verified_type": "none",
+          "description": "",
+          "created_at": "2026-04-20T19:55:59.000Z",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+          "name": "OtherUser",
+          "verified": false,
+          "url": "",
+          "id": "2222222222222222222"
+        },
+        {
+          "public_metrics": {
+            "followers_count": 5502,
+            "followers_count_str": "5502",
+            "following_count": 651,
+            "following_count_str": "651",
+            "tweet_count": 789,
+            "tweet_count_str": "789",
+            "listed_count": 46,
+            "listed_count_str": "46",
+            "like_count": 8010,
+            "like_count_str": "8010",
+            "media_count": 79,
+            "media_count_str": "79"
+          },
+          "profile_banner_url": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000",
+          "username": "ExampleUser",
+          "protected": false,
+          "is_identity_verified": true,
+          "affiliation": {
+            "user_id": [
+              "783214"
+            ],
+            "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+            "url": "https://twitter.com/X",
+            "description": "X"
+          },
+          "most_recent_tweet_id": "2080761269309813134",
+          "verified_type": "blue",
+          "description": "Building with the X AnotherUser @XDevelopers",
+          "pinned_tweet_id": "1968451310203859083",
+          "created_at": "2023-10-23T13:44:53.000Z",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+          "name": "Example User",
+          "verified": true,
+          "url": "https://t.co/xxxxxxxx",
+          "location": "San Francisco, CA",
+          "id": "1111111111111111111",
+          "entities": {
+            "url": {
+              "urls": [
+                {
+                  "start": 0,
+                  "start_str": "0",
+                  "end": 23,
+                  "end_str": "23",
+                  "url": "https://t.co/xxxxxxxx",
+                  "expanded_url": "https://developer.x.com",
+                  "display_url": "developer.x.com"
+                }
+              ]
+            },
+            "description": {
+              "mentions": [
+                {
+                  "start": 48,
+                  "start_str": "48",
+                  "end": 50,
+                  "end_str": "50",
+                  "username": "X"
+                },
+                {
+                  "start": 51,
+                  "start_str": "51",
+                  "end": 63,
+                  "end_str": "63",
+                  "username": "XDevelopers"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "tweets": [
+        {
+          "paid_partnership": false,
+          "created_at": "2026-07-24T21:23:23.000Z",
+          "edit_history_tweet_ids": [
+            "2080765813578191303"
+          ],
+          "conversation_id": "2080765813578191303",
+          "display_text_range": [
+            0,
+            16
+          ],
+          "edit_controls": {
+            "edits_remaining": 5,
+            "edits_remaining_str": "5",
+            "is_edit_eligible": true,
+            "editable_until": "2026-07-24T22:23:23.000Z"
+          },
+          "text": "hey @ExampleUser",
+          "entities": {
+            "mentions": [
+              {
+                "start": 4,
+                "start_str": "4",
+                "end": 16,
+                "end_str": "16",
+                "username": "ExampleUser",
+                "id": "1111111111111111111"
+              }
+            ]
+          },
+          "author_id": "2222222222222222222",
+          "possibly_sensitive": false,
+          "public_metrics": {
+            "retweet_count": 0,
+            "retweet_count_str": "0",
+            "reply_count": 0,
+            "reply_count_str": "0",
+            "like_count": 0,
+            "like_count_str": "0",
+            "quote_count": 0,
+            "quote_count_str": "0",
+            "bookmark_count": 0,
+            "bookmark_count_str": "0",
+            "impression_count": 0,
+            "impression_count_str": "0"
+          },
+          "reply_settings": "everyone",
+          "id": "2080765813578191303",
+          "lang": "und"
+        }
+      ]
+    }
+  }
+}
+```
+
+### `post.reply.create`
+
+Fired when a user other than the filtered user posts a direct reply to a Post by the filtered user. Direct replies only (does not fire for replies to replies). Private event — requires user-context authentication with the `tweet.read` scope. The `payload` is a Post object for the reply; `includes` may contain related users and tweets (including the Post being replied to).
+
+```json title="post.reply.create" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "3091827364059182736",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "post.reply.create",
+    "tag": "replies",
+    "payload": {
+      "paid_partnership": false,
+      "created_at": "2026-08-12T18:00:00.000Z",
+      "edit_history_tweet_ids": [
+        "2090000000000000001"
+      ],
+      "conversation_id": "2080761390344937796",
+      "in_reply_to_tweet_id": "2080761390344937796",
+      "in_reply_to_user_id": "1111111111111111111",
+      "referenced_tweets": [
+        {
+          "type": "replied_to",
+          "id": "2080761390344937796"
+        }
+      ],
+      "display_text_range": [
+        14,
+        45
+      ],
+      "text": "@ExampleUser Great post — thanks for sharing!",
+      "entities": {
+        "mentions": [
+          {
+            "start": 0,
+            "start_str": "0",
+            "end": 12,
+            "end_str": "12",
+            "username": "ExampleUser",
+            "id": "1111111111111111111"
+          }
+        ]
+      },
+      "author_id": "2222222222222222222",
+      "possibly_sensitive": false,
+      "public_metrics": {
+        "retweet_count": 0,
+        "retweet_count_str": "0",
+        "reply_count": 0,
+        "reply_count_str": "0",
+        "like_count": 0,
+        "like_count_str": "0",
+        "quote_count": 0,
+        "quote_count_str": "0",
+        "bookmark_count": 0,
+        "bookmark_count_str": "0",
+        "impression_count": 0,
+        "impression_count_str": "0"
+      },
+      "reply_settings": "everyone",
+      "id": "2090000000000000001",
+      "lang": "en"
+    },
+    "includes": {}
+  }
+}
+```
+
+### `post.quote.create`
+
+Fired when a user other than the filtered user quote Posts a Post by the filtered user. Direct quotes only (does not fire for quotes of quotes). Private event — requires user-context authentication with the `tweet.read` scope. The `payload` is a Post object for the quote; `referenced_tweets` identifies the quoted Post.
+
+```json title="post.quote.create" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "4172938465017283645",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "post.quote.create",
+    "tag": "quotes",
+    "payload": {
+      "paid_partnership": false,
+      "created_at": "2026-08-12T18:05:00.000Z",
+      "edit_history_tweet_ids": [
+        "2090000000000000002"
+      ],
+      "conversation_id": "2090000000000000002",
+      "referenced_tweets": [
+        {
+          "type": "quoted",
+          "id": "2080761390344937796"
+        }
+      ],
+      "display_text_range": [
+        0,
+        29
+      ],
+      "text": "Adding some context to this. https://t.co/xxxxxxxx",
+      "entities": {
+        "urls": [
+          {
+            "start": 29,
+            "start_str": "29",
+            "end": 52,
+            "end_str": "52",
+            "url": "https://t.co/xxxxxxxx",
+            "expanded_url": "https://twitter.com/ExampleUser/status/2080761390344937796",
+            "display_url": "x.com/ExampleUser/st…"
+          }
+        ]
+      },
+      "author_id": "2222222222222222222",
+      "possibly_sensitive": false,
+      "public_metrics": {
+        "retweet_count": 0,
+        "retweet_count_str": "0",
+        "reply_count": 0,
+        "reply_count_str": "0",
+        "like_count": 0,
+        "like_count_str": "0",
+        "quote_count": 0,
+        "quote_count_str": "0",
+        "bookmark_count": 0,
+        "bookmark_count_str": "0",
+        "impression_count": 0,
+        "impression_count_str": "0"
+      },
+      "reply_settings": "everyone",
+      "id": "2090000000000000002",
+      "lang": "en"
+    },
+    "includes": {}
+  }
+}
+```
+
+### `post.repost.create`
+
+Fired when a user other than the filtered user reposts a Post by the filtered user. Private event — requires user-context authentication with the `tweet.read` scope. The `payload` is a Post object for the repost; `referenced_tweets` with `type: "retweeted"` identifies the original Post.
+
+```json title="post.repost.create" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "5283049576128394756",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "post.repost.create",
+    "tag": "reposts",
+    "payload": {
+      "paid_partnership": false,
+      "created_at": "2026-08-12T18:10:00.000Z",
+      "edit_history_tweet_ids": [
+        "2090000000000000003"
+      ],
+      "conversation_id": "2090000000000000003",
+      "referenced_tweets": [
+        {
+          "type": "retweeted",
+          "id": "2080761390344937796"
+        }
+      ],
+      "display_text_range": [
+        0,
+        56
+      ],
+      "text": "RT @ExampleUser: Hello from the Activity API",
+      "entities": {
+        "mentions": [
+          {
+            "start": 3,
+            "start_str": "3",
+            "end": 15,
+            "end_str": "15",
+            "username": "ExampleUser",
+            "id": "1111111111111111111"
+          }
+        ]
+      },
+      "author_id": "2222222222222222222",
+      "possibly_sensitive": false,
+      "public_metrics": {
+        "retweet_count": 0,
+        "retweet_count_str": "0",
+        "reply_count": 0,
+        "reply_count_str": "0",
+        "like_count": 0,
+        "like_count_str": "0",
+        "quote_count": 0,
+        "quote_count_str": "0",
+        "bookmark_count": 0,
+        "bookmark_count_str": "0",
+        "impression_count": 0,
+        "impression_count_str": "0"
+      },
+      "reply_settings": "everyone",
+      "id": "2090000000000000003",
+      "lang": "en"
+    },
+    "includes": {}
+  }
+}
+```
+
+<Note>
+  **Protected accounts:** Posts from protected accounts are not delivered through XAA, even when the subscribing app has user-context authorization for the filtered user.
+</Note>
+
+<Note>
+  **Billing:** Each delivered Post event (`post.create`, `post.delete`, `post.mention.create`, `post.reply.create`, `post.quote.create`, `post.repost.create`) is billed as a Post.
+</Note>
+
+***
+
+## Like events
+
+### `like.create`
+
+Fired when the filtered user likes a Post, or when one of their Posts is liked. Private event — requires user-context authentication. Supports an optional `direction` filter (`inbound` or `outbound`).
+
+The `payload` is a like object with the following fields:
+
+| Field                   | Description                                      |
+| ----------------------- | ------------------------------------------------ |
+| `id`                    | Like event ID                                    |
+| `liked_tweet_id`        | ID of the Post that was liked                    |
+| `liked_tweet_author_id` | Author of the liked Post                         |
+| `created_at`            | Creation time of the liked Post (when available) |
+| `timestamp_ms`          | Event timestamp in milliseconds (when available) |
+
+`includes` may contain the liked Post and related users.
+
+```json title="like.create" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "-3402274206530057851",
+    "filter": {
+      "user_id": "1111111111111111111",
+      "direction": "outbound"
+    },
+    "event_type": "like.create",
+    "tag": "likes",
+    "payload": {
+      "id": "87719f50ee17bdfa06a3089098a2b9ed",
+      "created_at": "2026-07-24T21:12:45.000Z",
+      "timestamp_ms": "1784927565236",
+      "liked_tweet_author_id": "3333333333333333333",
+      "liked_tweet_id": "2079814480427442556"
+    },
+    "includes": {
+      "users": [
+        {
+          "description": "𝕏 | @X @AnotherUser @XDevelopers",
+          "pinned_tweet_id": "2040770361566826685",
+          "url": "",
+          "profile_banner_url": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000",
+          "created_at": "2014-05-29T20:24:26.000Z",
+          "entities": {
+            "description": {
+              "mentions": [
+                {
+                  "start": 4,
+                  "start_str": "4",
+                  "end": 6,
+                  "end_str": "6",
+                  "username": "X"
+                },
+                {
+                  "start": 7,
+                  "start_str": "7",
+                  "end": 11,
+                  "end_str": "11",
+                  "username": "AnotherUser"
+                },
+                {
+                  "start": 12,
+                  "start_str": "12",
+                  "end": 24,
+                  "end_str": "24",
+                  "username": "XDevelopers"
+                }
+              ]
+            }
+          },
+          "public_metrics": {
+            "followers_count": 26972,
+            "followers_count_str": "26972",
+            "following_count": 1713,
+            "following_count_str": "1713",
+            "tweet_count": 2994,
+            "tweet_count_str": "2994",
+            "listed_count": 297,
+            "listed_count_str": "297",
+            "like_count": 47468,
+            "like_count_str": "47468",
+            "media_count": 265,
+            "media_count_str": "265"
+          },
+          "affiliation": {
+            "description": "X",
+            "url": "https://twitter.com/X",
+            "user_id": [
+              "783214"
+            ],
+            "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg"
+          },
+          "name": "Public User",
+          "verified_type": "blue",
+          "id": "3333333333333333333",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+          "username": "PublicUser",
+          "protected": false,
+          "is_identity_verified": false,
+          "location": "New York, NY",
+          "verified": true,
+          "profile_geo_enrichment": {
+            "potential_locations": [
+              {
+                "geo_entity": {
+                  "entity_id": "5391959",
+                  "display_name": "San Francisco, California, United States",
+                  "country_code": "US",
+                  "region": "California",
+                  "sub_region": "San Francisco County",
+                  "locality": "San Francisco",
+                  "population": 873965,
+                  "population_str": "873965",
+                  "geo_point": {
+                    "latitude": 37.77493,
+                    "longitude": -122.41942
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "tweets": [
+        {
+          "possibly_sensitive": false,
+          "edit_controls": {
+            "edits_remaining": 5,
+            "edits_remaining_str": "5",
+            "is_edit_eligible": true,
+            "editable_until": "2026-07-22T07:23:07.000Z"
+          },
+          "lang": "en",
+          "text": "Great guide on using the X AnotherUser via our new XMCP and Grok Build to build a structured knowledge system powered by X—unlocking great use cases like agentic research, realtime monitoring the situation, and an audience flywheel to improve as creators on X. https://t.co/5DedenNGo9",
+          "conversation_id": "2079814480427442556",
+          "created_at": "2026-07-22T06:23:07.000Z",
+          "paid_partnership": false,
+          "author_id": "3333333333333333333",
+          "entities": {
+            "urls": [
+              {
+                "start": 253,
+                "start_str": "253",
+                "end": 276,
+                "end_str": "276",
+                "url": "https://t.co/5DedenNGo9",
+                "expanded_url": "https://twitter.com/xfreeze/status/2079756440722665849",
+                "display_url": "x.com/xfreeze/status…"
+              }
+            ]
+          },
+          "edit_history_tweet_ids": [
+            "2079814480427442556"
+          ],
+          "id": "2079814480427442556",
+          "public_metrics": {
+            "retweet_count": 16,
+            "retweet_count_str": "16",
+            "reply_count": 8,
+            "reply_count_str": "8",
+            "like_count": 131,
+            "like_count_str": "131",
+            "quote_count": 2,
+            "quote_count_str": "2",
+            "bookmark_count": 90,
+            "bookmark_count_str": "90",
+            "impression_count": 21004,
+            "impression_count_str": "21004"
+          },
+          "referenced_tweets": [
+            {
+              "type": "quoted",
+              "id": "2079756440722665849"
+            }
+          ],
+          "display_text_range": [
+            0,
+            252
+          ],
+          "reply_settings": "everyone"
+        }
+      ]
+    }
+  }
+}
+```
+
+***
+
+## Follow events
+
+### `follow.follow`
+
+Fired when the filtered user follows another user, or is followed. The `payload` includes `source` (the follower) and `target` (the user being followed).
+
+```json title="follow.follow" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "-7953119945885597316",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "follow.follow",
+    "tag": "follows",
+    "payload": {
+      "source": {
+        "data": {
+          "affiliation": {
+            "description": "X",
+            "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+            "url": "https://twitter.com/X"
+          },
+          "location": "San Francisco, CA",
+          "name": "Example User",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+          "created_at": "2023-10-23T13:44:53.000Z",
+          "protected": false,
+          "verified": true,
+          "url": "https://t.co/xxxxxxxx",
+          "public_metrics": {
+            "followers_count": 5502,
+            "followers_count_str": "5502",
+            "following_count": 652,
+            "following_count_str": "652",
+            "tweet_count": 790,
+            "tweet_count_str": "790",
+            "listed_count": 47,
+            "listed_count_str": "47",
+            "like_count": 8010,
+            "like_count_str": "8010",
+            "media_count": 79,
+            "media_count_str": "79"
+          },
+          "is_identity_verified": true,
+          "description": "Building with the X AnotherUser @XDevelopers",
+          "verified_type": "blue",
+          "entities": {
+            "url": {
+              "urls": [
+                {
+                  "start": 0,
+                  "start_str": "0",
+                  "end": 23,
+                  "end_str": "23",
+                  "url": "https://t.co/xxxxxxxx",
+                  "expanded_url": "https://example.com",
+                  "display_url": "https://example.com"
+                }
+              ]
+            },
+            "description": {
+              "mentions": [
+                {
+                  "start": 49,
+                  "start_str": "49",
+                  "end": 51,
+                  "end_str": "51",
+                  "username": "X"
+                },
+                {
+                  "start": 52,
+                  "start_str": "52",
+                  "end": 64,
+                  "end_str": "64",
+                  "username": "XDevelopers"
+                }
+              ]
+            }
+          },
+          "profile_banner_url": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000",
+          "username": "ExampleUser",
+          "id": "1111111111111111111"
+        }
+      },
+      "target": {
+        "data": {
+          "affiliation": {
+            "description": "X",
+            "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+            "url": "https://twitter.com/X"
+          },
+          "name": "AnotherUser",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+          "created_at": "2007-05-23T06:01:13.000Z",
+          "protected": false,
+          "verified": true,
+          "url": "https://t.co/YrfsitXdac",
+          "public_metrics": {
+            "followers_count": 4934564,
+            "followers_count_str": "4934564",
+            "following_count": 12,
+            "following_count_str": "12",
+            "tweet_count": 3755,
+            "tweet_count_str": "3755",
+            "listed_count": 11603,
+            "listed_count_str": "11603",
+            "like_count": 7,
+            "like_count_str": "7",
+            "media_count": 9,
+            "media_count_str": "9"
+          },
+          "is_identity_verified": false,
+          "description": "Updates about X AnotherUser changes and service issues.",
+          "verified_type": "business",
+          "entities": {
+            "url": {
+              "urls": [
+                {
+                  "start": 0,
+                  "start_str": "0",
+                  "end": 23,
+                  "end_str": "23",
+                  "url": "https://t.co/YrfsitXdac",
+                  "expanded_url": "https://developer.x.com",
+                  "display_url": "developer.x.com"
+                }
+              ]
+            }
+          },
+          "profile_banner_url": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000",
+          "username": "AnotherUser",
+          "id": "4444444444444444444"
+        }
+      }
+    }
+  }
+}
+```
+
+### `follow.unfollow`
+
+Fired when the filtered user unfollows another user, or is unfollowed. Same `source` / `target` shape as `follow.follow`.
+
+```json title="follow.unfollow" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "-4233426745281461957",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "follow.unfollow",
+    "tag": "unfollows",
+    "payload": {
+      "source": {
+        "data": {
+          "affiliation": {
+            "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+            "url": "https://twitter.com/X",
+            "description": "X"
+          },
+          "url": "https://t.co/xxxxxxxx",
+          "description": "Building with the X AnotherUser @XDevelopers",
+          "verified": true,
+          "entities": {
+            "url": {
+              "urls": [
+                {
+                  "start": 0,
+                  "start_str": "0",
+                  "end": 23,
+                  "end_str": "23",
+                  "url": "https://t.co/xxxxxxxx",
+                  "expanded_url": "https://example.com",
+                  "display_url": "https://example.com"
+                }
+              ]
+            },
+            "description": {
+              "mentions": [
+                {
+                  "start": 49,
+                  "start_str": "49",
+                  "end": 51,
+                  "end_str": "51",
+                  "username": "X"
+                },
+                {
+                  "start": 52,
+                  "start_str": "52",
+                  "end": 64,
+                  "end_str": "64",
+                  "username": "XDevelopers"
+                }
+              ]
+            }
+          },
+          "profile_banner_url": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000",
+          "is_identity_verified": true,
+          "username": "ExampleUser",
+          "id": "1111111111111111111",
+          "name": "Example User",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+          "created_at": "2023-10-23T13:44:53.000Z",
+          "public_metrics": {
+            "followers_count": 5502,
+            "followers_count_str": "5502",
+            "following_count": 651,
+            "following_count_str": "651",
+            "tweet_count": 790,
+            "tweet_count_str": "790",
+            "listed_count": 47,
+            "listed_count_str": "47",
+            "like_count": 8010,
+            "like_count_str": "8010",
+            "media_count": 79,
+            "media_count_str": "79"
+          },
+          "verified_type": "blue",
+          "location": "San Francisco, CA",
+          "protected": false
+        }
+      },
+      "target": {
+        "data": {
+          "affiliation": {
+            "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+            "url": "https://twitter.com/X",
+            "description": "X"
+          },
+          "url": "https://t.co/YrfsitXdac",
+          "description": "Updates about X AnotherUser changes and service issues.",
+          "verified": true,
+          "entities": {
+            "url": {
+              "urls": [
+                {
+                  "start": 0,
+                  "start_str": "0",
+                  "end": 23,
+                  "end_str": "23",
+                  "url": "https://t.co/YrfsitXdac",
+                  "expanded_url": "https://developer.x.com",
+                  "display_url": "developer.x.com"
+                }
+              ]
+            }
+          },
+          "profile_banner_url": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000",
+          "is_identity_verified": false,
+          "username": "AnotherUser",
+          "id": "4444444444444444444",
+          "name": "AnotherUser",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+          "created_at": "2007-05-23T06:01:13.000Z",
+          "public_metrics": {
+            "followers_count": 4934563,
+            "followers_count_str": "4934563",
+            "following_count": 12,
+            "following_count_str": "12",
+            "tweet_count": 3755,
+            "tweet_count_str": "3755",
+            "listed_count": 11603,
+            "listed_count_str": "11603",
+            "like_count": 7,
+            "like_count_str": "7",
+            "media_count": 9,
+            "media_count_str": "9"
+          },
+          "verified_type": "business",
+          "protected": false
+        }
+      }
+    }
+  }
+}
+```
+
+***
+
+## Subscription events
+
+Subscription events use a `source` / `target` user pair similar to follow events. Private events — require user-context authentication with the `follows.read` scope.
+
+### `subscriptions.subscribe`
+
+Fired when the filtered user subscribes to another user, or is subscribed to by another user, using the paid subscriptions button on the profile page. The `payload` includes `source` (the subscriber) and `target` (the user being subscribed to).
+
+```json title="subscriptions.subscribe" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "1093427633808192000",
+    "filter": {
+      "user_id": "123456789"
+    },
+    "event_type": "subscriptions.subscribe",
+    "payload": {
+      "source": {
+        "data": {
+          "id": "123456789",
+          "username": "subscriber_user",
+          "name": "Subscriber User",
+          "created_at": "2024-08-31T23:23:51.000Z",
+          "description": "Example subscriber",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/123456789/example_normal.jpg",
+          "protected": false,
+          "verified": false,
+          "public_metrics": {
+            "followers_count": 100,
+            "following_count": 50,
+            "tweet_count": 250,
+            "listed_count": 2,
+            "like_count": 500,
+            "media_count": 25
+          }
+        }
+      },
+      "target": {
+        "data": {
+          "id": "987654321",
+          "username": "creator_user",
+          "name": "Creator User",
+          "created_at": "2020-01-15T12:00:00.000Z",
+          "description": "Example creator",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/987654321/example_normal.jpg",
+          "protected": false,
+          "verified": true,
+          "verified_type": "blue",
+          "public_metrics": {
+            "followers_count": 10000,
+            "following_count": 200,
+            "tweet_count": 5000,
+            "listed_count": 150,
+            "like_count": 3000,
+            "media_count": 400
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### `subscriptions.unsubscribe`
+
+Fired when the filtered user unsubscribes to another user, or is unsubscribed from. Emitted when the subscription actually expires, not upon cancellation, since the subscription is still active until expiration. Same `source` / `target` shape as `subscriptions.subscribe`.
+
+```json title="subscriptions.unsubscribe" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "1093427633808192001",
+    "filter": {
+      "user_id": "123456789"
+    },
+    "event_type": "subscriptions.unsubscribe",
+    "payload": {
+      "source": {
+        "data": {
+          "id": "123456789",
+          "username": "subscriber_user",
+          "name": "Subscriber User",
+          "created_at": "2024-08-31T23:23:51.000Z",
+          "description": "Example subscriber",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/123456789/example_normal.jpg",
+          "protected": false,
+          "verified": false,
+          "public_metrics": {
+            "followers_count": 100,
+            "following_count": 50,
+            "tweet_count": 250,
+            "listed_count": 2,
+            "like_count": 500,
+            "media_count": 25
+          }
+        }
+      },
+      "target": {
+        "data": {
+          "id": "987654321",
+          "username": "creator_user",
+          "name": "Creator User",
+          "created_at": "2020-01-15T12:00:00.000Z",
+          "description": "Example creator",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/987654321/example_normal.jpg",
+          "protected": false,
+          "verified": true,
+          "verified_type": "blue",
+          "public_metrics": {
+            "followers_count": 10000,
+            "following_count": 200,
+            "tweet_count": 5000,
+            "listed_count": 150,
+            "like_count": 3000,
+            "media_count": 400
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+***
+
+## Profile events
+
+All `profile.update.*` events share a `before` / `after` payload shape.
+
+Supported types: `profile.update.bio`, `profile.update.profile_picture`, `profile.update.banner_picture`, `profile.update.screenname`, `profile.update.handle`, `profile.update.geo`, `profile.update.url`, `profile.update.verified_badge`, `profile.update.affiliate_badge`.
+
+### `profile.update.bio`
+
+Fired when the filtered user updates their profile bio.
+
+```json title="profile.update.bio" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "-8917909039855612786",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "profile.update.bio",
+    "tag": "profile-bio",
+    "payload": {
+      "before": "Building with the X API",
+      "after": "Building with the X API @XDevelopers"
+    }
+  }
+}
+```
+
+### `profile.update.profile_picture`
+
+Fired when the filtered user updates their profile picture.
+
+```json title="profile.update.profile_picture" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "3497989179769309099",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "profile.update.profile_picture",
+    "tag": "profile-picture",
+    "payload": {
+      "before": "https://pbs.twimg.com/profile_images/0000000000000000001/old_normal.jpg",
+      "after": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg"
+    }
+  }
+}
+```
+
+### `profile.update.banner_picture`
+
+Fired when the filtered user updates their profile banner.
+
+```json title="profile.update.banner_picture" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "5061407317112342192",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "profile.update.banner_picture",
+    "tag": "profile-banner",
+    "payload": {
+      "before": "https://pbs.twimg.com/profile_banners/1111111111111111111/1500000000",
+      "after": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000"
+    }
+  }
+}
+```
+
+### `profile.update.screenname`
+
+Fired when the filtered user updates their display name.
+
+```json title="profile.update.screenname" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "4123434298221215973",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "profile.update.screenname",
+    "tag": "profile-name",
+    "payload": {
+      "before": "Example User",
+      "after": "Example"
+    }
+  }
+}
+```
+
+### `profile.update.geo`
+
+Fired when the filtered user updates their profile location.
+
+```json title="profile.update.geo" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "8309664692915093892",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "profile.update.geo",
+    "tag": "profile-location",
+    "payload": {
+      "before": "New York, NY",
+      "after": "San Francisco, CA"
+    }
+  }
+}
+```
+
+### `profile.update.url`
+
+Fired when the filtered user updates their profile website URL.
+
+```json title="profile.update.url" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "-6055744140117128555",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "profile.update.url",
+    "tag": "profile-url",
+    "payload": {
+      "before": "https://t.co/oldlinkxx",
+      "after": "https://t.co/xxxxxxxx"
+    }
+  }
+}
+```
+
+### `profile.update.handle`
+
+Fired when the filtered user updates their @handle. Same `before` / `after` payload shape as other profile events.
+
+### `profile.update.verified_badge`
+
+Fired when the filtered user's verified badge changes. Same `before` / `after` payload shape as other profile events.
+
+### `profile.update.affiliate_badge`
+
+Fired when the filtered user's affiliate badge changes. Same `before` / `after` payload shape as other profile events.
+
+***
+
+## Chat events (XChat)
+
+Encrypted chat payloads include opaque encoded fields used by the XChat client libraries. Private events — require user-context authentication. Encoded crypto fields below are truncated for readability; real deliveries include the full strings.
+
+### `chat.received`
+
+```json title="chat.received" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "8511582263942905822",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "chat.received",
+    "tag": "chat-inbound",
+    "payload": {
+      "conversation_token": "eyJhbGciOiJIUzI1NiJ9.eyJyZXF1ZXN0aW5nVXN…(truncated)",
+      "id": "e4f4d3fc-8bbf-4928-92eb-e5058d6bb6f6",
+      "created_at_msec": "1784841183370",
+      "sender_id": "2222222222222222222",
+      "conversation_id": "2222222222222222222:1111111111111111111",
+      "conversation_key_version": "1768236281331",
+      "encoded_event": "CwABAAAAEzIwODA0MDA4MjUyMjcxMDAxNjALAAIA…(truncated)",
+      "conversation_key_change_event": "CwABAAAAEzIwMTA3NTQ4MTkxMTY0NDk5MDULAAIA…(truncated)",
+      "message_event_signature": {
+        "public_key_version": "1765382634817",
+        "signature": "6IK9SZIMXBe5SFcB7vGZJd5A5Eb5MLvnwrhUFfBGv4S5GsSX3WWPGuInXVNfSla36EjXQQ/R/HhsA+2hPAEY7A",
+        "signature_version": "7",
+        "signing_public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEJ2c+3BYZs7ZCEY/UPCpmQxJO9v6FJjeusvmSZO/JEay8oF1+oXXlHV55kX4bK6/zFijNKvq1YRb0it0yXqbglA=="
+      }
+    }
+  }
+}
+```
+
+### `chat.sent`
+
+```json title="chat.sent" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "3723060601307155846",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "chat.sent",
+    "tag": "chat-outbound",
+    "payload": {
+      "conversation_token": "eyJhbGciOiJIUzI1NiJ9.eyJyZXF1ZXN0aW5nVXN…(truncated)",
+      "id": "8e75466b-56ec-4e88-bddf-b18f7cc6030e",
+      "created_at_msec": "1784841233939",
+      "sender_id": "1111111111111111111",
+      "conversation_id": "2222222222222222222:1111111111111111111",
+      "conversation_key_version": "1768236281331",
+      "encoded_event": "CwABAAAAEzIwODA0MDEwMzczMzMyMzc3NjALAAIA…(truncated)",
+      "conversation_key_change_event": "CwABAAAAEzIwMTA3NTQ4MTkxMTY0NDk5MDULAAIA…(truncated)",
+      "message_event_signature": {
+        "public_key_version": "1736723828667",
+        "signature": "ManuRvBupip38XzgS733V9xVn/6+4uguMwvMa+YUDQiDIxVhVbaQcN+bKybPRBCj7IPuRi2QQzRvPg7Wq9ZhPw",
+        "signature_version": "7",
+        "signing_public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEyxQY+3CI2lwMF5EqRWc6XMRnYmTnaQXhQy1ozchz0IQn7ui5ry1USzScT900WyTPkNmSvG+M8txz+8Y5Wf0gZQ=="
+      }
+    }
+  }
+}
+```
+
+### `chat.conversation_join`
+
+Fired when a user joins an encrypted chat conversation. The payload shape matches other chat events (conversation identity and encoded crypto material). Private event — requires user-context authentication.
+
+***
+
+## Legacy DM events
+
+Legacy (unencrypted) DM events. Private events — require user-context authentication.
+
+### `dm.sent`
+
+Fired when the filtered user sends an unencrypted DM. The `payload` includes `direct_message_events` and a `users` map.
+
+```json title="dm.sent" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "-3577827201104920132",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "dm.sent",
+    "tag": "dm-outbound",
+    "payload": {
+      "direct_message_events": [
+        {
+          "type": "message_create",
+          "id": "2080763914820927863",
+          "created_timestamp": "1784927750704",
+          "message_create": {
+            "target": {
+              "recipient_id": "2244994945"
+            },
+            "sender_id": "1111111111111111111",
+            "message_data": {
+              "text": "Thanks for the update!",
+              "entities": {
+                "hashtags": [],
+                "symbols": [],
+                "user_mentions": [],
+                "urls": []
+              }
+            }
+          }
+        }
+      ],
+      "users": {
+        "1111111111111111111": {
+          "data": {
+            "profile_banner_url": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000",
+            "username": "ExampleUser",
+            "affiliation": {
+              "description": "X",
+              "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+              "url": "https://twitter.com/X"
+            },
+            "name": "Example User",
+            "verified_type": "blue",
+            "description": "Building with the X AnotherUser @XDevelopers",
+            "location": "San Francisco, CA",
+            "public_metrics": {
+              "followers_count": 5502,
+              "followers_count_str": "5502",
+              "following_count": 651,
+              "following_count_str": "651",
+              "tweet_count": 789,
+              "tweet_count_str": "789",
+              "listed_count": 47,
+              "listed_count_str": "47",
+              "like_count": 8010,
+              "like_count_str": "8010",
+              "media_count": 79,
+              "media_count_str": "79"
+            },
+            "id": "1111111111111111111",
+            "url": "https://t.co/xxxxxxxx",
+            "protected": false,
+            "created_at": "2023-10-23T13:44:53.000Z",
+            "is_identity_verified": true,
+            "verified": true,
+            "entities": {
+              "url": {
+                "urls": [
+                  {
+                    "start": 0,
+                    "start_str": "0",
+                    "end": 23,
+                    "end_str": "23",
+                    "url": "https://t.co/xxxxxxxx",
+                    "expanded_url": "https://example.com",
+                    "display_url": "https://example.com"
+                  }
+                ]
+              },
+              "description": {
+                "mentions": [
+                  {
+                    "start": 49,
+                    "start_str": "49",
+                    "end": 51,
+                    "end_str": "51",
+                    "username": "X"
+                  },
+                  {
+                    "start": 52,
+                    "start_str": "52",
+                    "end": 64,
+                    "end_str": "64",
+                    "username": "XDevelopers"
+                  }
+                ]
+              }
+            },
+            "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg"
+          }
+        },
+        "2244994945": {
+          "data": {
+            "profile_banner_url": "https://pbs.twimg.com/profile_banners/2244994945/1690213128",
+            "username": "XDevelopers",
+            "affiliation": {
+              "description": "X",
+              "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+              "url": "https://twitter.com/X"
+            },
+            "name": "X Developers",
+            "verified_type": "business",
+            "description": "The voice of the X Dev team and your official source for updates, news, and events, related to the X AnotherUser.",
+            "location": "127.0.0.1",
+            "public_metrics": {
+              "followers_count": 694887,
+              "followers_count_str": "694887",
+              "following_count": 762,
+              "following_count_str": "762",
+              "tweet_count": 4309,
+              "tweet_count_str": "4309",
+              "listed_count": 2978,
+              "listed_count_str": "2978",
+              "like_count": 2626,
+              "like_count_str": "2626",
+              "media_count": 829,
+              "media_count_str": "829"
+            },
+            "id": "2244994945",
+            "url": "https://t.co/NIwHVIVyrN",
+            "protected": false,
+            "created_at": "2013-12-14T04:35:55.000Z",
+            "is_identity_verified": false,
+            "verified": true,
+            "entities": {
+              "url": {
+                "urls": [
+                  {
+                    "start": 0,
+                    "start_str": "0",
+                    "end": 23,
+                    "end_str": "23",
+                    "url": "https://t.co/NIwHVIVyrN",
+                    "expanded_url": "https://docs.x.com/",
+                    "display_url": "docs.x.com"
+                  }
+                ]
+              }
+            },
+            "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### `dm.received`
+
+Fired when the filtered user receives an unencrypted DM. Same payload shape as `dm.sent` (`direct_message_events` plus a `users` map). Private event — requires user-context authentication.
+
+```json title="dm.received" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "-6850472171600526495",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "dm.received",
+    "tag": "dm-inbound",
+    "payload": {
+      "direct_message_events": [
+        {
+          "type": "message_create",
+          "id": "2080765901528535096",
+          "created_timestamp": "1784928224372",
+          "message_create": {
+            "target": {
+              "recipient_id": "1111111111111111111"
+            },
+            "sender_id": "2222222222222222222",
+            "message_data": {
+              "text": "hello!",
+              "entities": {
+                "hashtags": [],
+                "symbols": [],
+                "user_mentions": [],
+                "urls": []
+              }
+            }
+          }
+        }
+      ],
+      "users": {
+        "2222222222222222222": {
+          "data": {
+            "description": "",
+            "profile_banner_url": "",
+            "public_metrics": {
+              "followers_count": 97,
+              "followers_count_str": "97",
+              "following_count": 1,
+              "following_count_str": "1",
+              "tweet_count": 50,
+              "tweet_count_str": "50",
+              "listed_count": 4,
+              "listed_count_str": "4",
+              "like_count": 27,
+              "like_count_str": "27",
+              "media_count": 3,
+              "media_count_str": "3"
+            },
+            "protected": false,
+            "url": "",
+            "affiliation": {
+              "description": "Automated",
+              "badge_url": "https://pbs.twimg.com/semantic_core_img/1428827730364096519/4ZXpTBhS?format=png&name=orig"
+            },
+            "is_identity_verified": false,
+            "id": "2222222222222222222",
+            "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+            "verified_type": "none",
+            "created_at": "2026-04-20T19:55:59.000Z",
+            "username": "OtherUser",
+            "verified": false,
+            "name": "OtherUser"
+          }
+        },
+        "1111111111111111111": {
+          "data": {
+            "description": "Building with the X AnotherUser @XDevelopers",
+            "profile_banner_url": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000",
+            "entities": {
+              "url": {
+                "urls": [
+                  {
+                    "start": 0,
+                    "start_str": "0",
+                    "end": 23,
+                    "end_str": "23",
+                    "url": "https://t.co/xxxxxxxx",
+                    "expanded_url": "https://developer.x.com",
+                    "display_url": "developer.x.com"
+                  }
+                ]
+              },
+              "description": {
+                "mentions": [
+                  {
+                    "start": 48,
+                    "start_str": "48",
+                    "end": 50,
+                    "end_str": "50",
+                    "username": "X"
+                  },
+                  {
+                    "start": 51,
+                    "start_str": "51",
+                    "end": 63,
+                    "end_str": "63",
+                    "username": "XDevelopers"
+                  }
+                ]
+              }
+            },
+            "public_metrics": {
+              "followers_count": 5502,
+              "followers_count_str": "5502",
+              "following_count": 651,
+              "following_count_str": "651",
+              "tweet_count": 789,
+              "tweet_count_str": "789",
+              "listed_count": 46,
+              "listed_count_str": "46",
+              "like_count": 8010,
+              "like_count_str": "8010",
+              "media_count": 79,
+              "media_count_str": "79"
+            },
+            "location": "San Francisco, CA",
+            "protected": false,
+            "url": "https://t.co/xxxxxxxx",
+            "affiliation": {
+              "description": "X",
+              "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+              "url": "https://twitter.com/X"
+            },
+            "is_identity_verified": true,
+            "id": "1111111111111111111",
+            "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+            "verified_type": "blue",
+            "created_at": "2023-10-23T13:44:53.000Z",
+            "username": "ExampleUser",
+            "verified": true,
+            "name": "Example User"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### `dm.read`
+
+Fired when a participant reads the filtered user's unencrypted DM (read receipt). Private event — requires user-context authentication.
+
+### `dm.indicate_typing`
+
+Fired when a participant is typing a message to the filtered user. Private event — requires user-context authentication.
+
+***
+
+## News events
+
+### `news.new`
+
+Filter by `keyword`. The `payload` includes Grok-curated news fields such as category, name, hook, summary, contexts, and related cluster post results.
+
+| Field                   | Description                     |
+| ----------------------- | ------------------------------- |
+| `id`                    | News item ID                    |
+| `name`                  | Headline / topic name           |
+| `category`              | News category                   |
+| `hook`                  | Short hook / teaser             |
+| `summary`               | Longer summary                  |
+| `contexts`              | Related topic / entity contexts |
+| `cluster_posts_results` | Related Posts when available    |
+| `updated_at`            | Last update timestamp           |
+| `disclaimer`            | Optional disclaimer text        |
+
+```json title="news.new" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "2080756868147019827",
+    "filter": {
+      "keyword": "OpenAI"
+    },
+    "event_type": "news.new",
+    "tag": "news-keyword",
+    "payload": {
+      "summary": "OpenAI rolled out a new feature in ChatGPT's web version that lets users create virtual pets by describing them, generating fun companions like a fluffy gray cat or a seal in a yellow bow tie. Creators can copy a shareable link from…",
+      "contexts": {
+        "entities": {
+          "events": [],
+          "organizations": [
+            "OpenAI"
+          ],
+          "people": [],
+          "places": [],
+          "products": []
+        },
+        "topics": [
+          "Technology"
+        ],
+        "finance": {
+          "tickers": []
+        },
+        "sports": {
+          "teams": []
+        }
+      },
+      "id": "2080756868147019827",
+      "updated_at": "2026-07-24T20:53:37.000Z",
+      "hook": "Imagine designing a green dinosaur with a bow tie, then sharing it with friends to adopt as their own ChatGPT companion.",
+      "category": "News",
+      "disclaimer": "This story is a summary of posts on X and may evolve over time. Grok can make mistakes, verify its outputs.",
+      "cluster_posts_results": [
+        {
+          "post_id": "2080756403493560652"
+        },
+        {
+          "post_id": "2080747505474736162"
+        },
+        {
+          "post_id": "2080750142437880021"
+        }
+      ],
+      "name": "ChatGPT Adds Custom Virtual Pets for Sharing"
+    }
+  }
+}
+```
+
+***
+
+## Spaces events
+
+### `spaces.start`
+
+Fired when the filtered user starts a Space. The `payload` includes the host `user`, `broadcast_id`, and an inner `event_type` of `start`.
+
+```json title="spaces.start" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "4093201169289922041",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "spaces.start",
+    "tag": "spaces-start",
+    "payload": {
+      "user": {
+        "data": {
+          "affiliation": {
+            "description": "X",
+            "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+            "url": "https://twitter.com/X"
+          },
+          "location": "San Francisco, CA",
+          "name": "Example User",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+          "created_at": "2023-10-23T13:44:53.000Z",
+          "protected": false,
+          "verified": true,
+          "url": "https://t.co/xxxxxxxx",
+          "public_metrics": {
+            "followers_count": 5502,
+            "followers_count_str": "5502",
+            "following_count": 651,
+            "following_count_str": "651",
+            "tweet_count": 789,
+            "tweet_count_str": "789",
+            "listed_count": 46,
+            "listed_count_str": "46",
+            "like_count": 8010,
+            "like_count_str": "8010",
+            "media_count": 79,
+            "media_count_str": "79"
+          },
+          "is_identity_verified": true,
+          "description": "Building with the X AnotherUser @XDevelopers",
+          "verified_type": "blue",
+          "entities": {
+            "url": {
+              "urls": [
+                {
+                  "start": 0,
+                  "start_str": "0",
+                  "end": 23,
+                  "end_str": "23",
+                  "url": "https://t.co/xxxxxxxx",
+                  "expanded_url": "https://developer.x.com",
+                  "display_url": "developer.x.com"
+                }
+              ]
+            },
+            "description": {
+              "mentions": [
+                {
+                  "start": 48,
+                  "start_str": "48",
+                  "end": 50,
+                  "end_str": "50",
+                  "username": "X"
+                },
+                {
+                  "start": 51,
+                  "start_str": "51",
+                  "end": 63,
+                  "end_str": "63",
+                  "username": "XDevelopers"
+                }
+              ]
+            }
+          },
+          "profile_banner_url": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000",
+          "username": "ExampleUser",
+          "id": "1111111111111111111"
+        }
+      },
+      "broadcast_id": "1qxvvvyLLdnxB",
+      "event_type": "spaces_start"
+    }
+  }
+}
+```
+
+### `spaces.end`
+
+Fired when the filtered user ends a Space. Same shape as `spaces.start` with an inner `event_type` of `end`.
+
+```json title="spaces.end" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "-498317022904955631",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "spaces.end",
+    "tag": "spaces-end",
+    "payload": {
+      "user": {
+        "data": {
+          "description": "Building with the X AnotherUser @XDevelopers",
+          "protected": false,
+          "is_identity_verified": true,
+          "affiliation": {
+            "url": "https://twitter.com/X",
+            "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+            "description": "X"
+          },
+          "entities": {
+            "url": {
+              "urls": [
+                {
+                  "start": 0,
+                  "start_str": "0",
+                  "end": 23,
+                  "end_str": "23",
+                  "url": "https://t.co/xxxxxxxx",
+                  "expanded_url": "https://developer.x.com",
+                  "display_url": "developer.x.com"
+                }
+              ]
+            },
+            "description": {
+              "mentions": [
+                {
+                  "start": 48,
+                  "start_str": "48",
+                  "end": 50,
+                  "end_str": "50",
+                  "username": "X"
+                },
+                {
+                  "start": 51,
+                  "start_str": "51",
+                  "end": 63,
+                  "end_str": "63",
+                  "username": "XDevelopers"
+                }
+              ]
+            }
+          },
+          "profile_banner_url": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000",
+          "public_metrics": {
+            "followers_count": 5502,
+            "followers_count_str": "5502",
+            "following_count": 651,
+            "following_count_str": "651",
+            "tweet_count": 789,
+            "tweet_count_str": "789",
+            "listed_count": 46,
+            "listed_count_str": "46",
+            "like_count": 8010,
+            "like_count_str": "8010",
+            "media_count": 79,
+            "media_count_str": "79"
+          },
+          "id": "1111111111111111111",
+          "verified_type": "blue",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+          "name": "Example User",
+          "url": "https://t.co/xxxxxxxx",
+          "username": "ExampleUser",
+          "location": "San Francisco, CA",
+          "verified": true,
+          "created_at": "2023-10-23T13:44:53.000Z"
+        }
+      },
+      "broadcast_id": "1qxvvvyLLdnxB",
+      "event_type": "spaces_end"
+    }
+  }
+}
+```
+
+***
+
+## Mute events
+
+Mute events use a `source` / `target` user pair similar to follow events. Private events — require user-context authentication with the `mute.read` scope. The `user_id` filter matches the user **performing** the mute or unmute (not the account being muted).
+
+### `mute.mute`
+
+Fired when the filtered user mutes another user.
+
+### `mute.unmute`
+
+Fired when the filtered user unmutes another user.
+
+***
+
+## Block events
+
+Block events use a `source` / `target` user pair similar to follow events. Private events — require user-context authentication with the `block.read` scope. The `user_id` filter matches the user **performing** the block or unblock (not the account being blocked).
+
+### `block.block`
+
+Fired when the filtered user blocks another user.
+
+### `block.unblock`
+
+Fired when the filtered user unblocks another user.
+
+***
+
+## Broadcast events
+
+### `broadcast.start`
+
+Fired when a user starts a live broadcast. Public event — can be subscribed to with either app-only or user-context authentication. The `payload` includes the host `user`, the `broadcast_id`, the broadcast `title` and `language`, timing fields, a live `thumbnail_url`, and a `broadcast_state` of `Running`.
+
+```json title="broadcast.start" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "1234567890123456789",
+    "filter": {
+      "user_id": "1234567890123456789"
+    },
+    "event_type": "broadcast.start",
+    "tag": "example broadcast starts",
+    "payload": {
+      "user": {
+        "data": {
+          "id": "1234567890123456789",
+          "name": "Example Broadcaster",
+          "username": "example_broadcaster",
+          "description": "Example account",
+          "url": "https://example.com",
+          "protected": false,
+          "verified": true,
+          "verified_type": "blue",
+          "is_identity_verified": false,
+          "created_at": "2024-01-01T00:00:00.000Z",
+          "profile_image_url": "https://example.com/profile.jpg",
+          "profile_banner_url": "https://example.com/banner.jpg",
+          "affiliation": {
+            "description": "Example Organization",
+            "url": "https://example.com/organization",
+            "badge_url": "https://example.com/badge.jpg"
+          },
+          "public_metrics": {
+            "followers_count": 1000,
+            "followers_count_str": "1000",
+            "following_count": 100,
+            "following_count_str": "100",
+            "tweet_count": 500,
+            "tweet_count_str": "500",
+            "listed_count": 10,
+            "listed_count_str": "10",
+            "like_count": 250,
+            "like_count_str": "250",
+            "media_count": 50,
+            "media_count_str": "50"
+          },
+          "entities": {
+            "url": {
+              "urls": [
+                {
+                  "start": 0,
+                  "start_str": "0",
+                  "end": 23,
+                  "end_str": "23",
+                  "url": "https://t.co/example",
+                  "expanded_url": "https://example.com",
+                  "display_url": "example.com"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "broadcast_id": "1a2b3c4d5e6fG",
+      "event_timestamp_ms": 1720000003500,
+      "event_timestamp_ms_str": "1720000003500",
+      "title": "Example broadcast",
+      "broadcast_state": "Running",
+      "created_timestamp_ms": 1720000000000,
+      "created_timestamp_ms_str": "1720000000000",
+      "updated_timestamp_ms": 1720000003200,
+      "updated_timestamp_ms_str": "1720000003200",
+      "language": "en",
+      "thumbnail_url": "https://example.com/broadcasts/1a2b3c4d5e6fG/live-thumbnail.jpg",
+      "available_for_replay": false
+    }
+  }
+}
+```
+
+### `broadcast.end`
+
+Fired when a user ends a live broadcast. Public event — can be subscribed to with either app-only or user-context authentication. The `payload` includes the host `user`, the `broadcast_id`, timing fields, and a `broadcast_state` of `Ended` (with `duration_ms` and a replay `thumbnail_url` on the ended broadcast).
+
+```json title="broadcast.end" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "2234567890123456789",
+    "filter": {
+      "user_id": "1234567890123456789"
+    },
+    "event_type": "broadcast.end",
+    "tag": "example broadcast ends",
+    "payload": {
+      "user": {
+        "data": {
+          "id": "1234567890123456789",
+          "name": "Example Broadcaster",
+          "username": "example_broadcaster",
+          "description": "Example account",
+          "url": "https://example.com",
+          "protected": false,
+          "verified": true,
+          "verified_type": "blue",
+          "is_identity_verified": false,
+          "created_at": "2024-01-01T00:00:00.000Z",
+          "profile_image_url": "https://example.com/profile.jpg",
+          "profile_banner_url": "https://example.com/banner.jpg",
+          "affiliation": {
+            "description": "Example Organization",
+            "url": "https://example.com/organization",
+            "badge_url": "https://example.com/badge.jpg"
+          },
+          "public_metrics": {
+            "followers_count": 1000,
+            "followers_count_str": "1000",
+            "following_count": 100,
+            "following_count_str": "100",
+            "tweet_count": 500,
+            "tweet_count_str": "500",
+            "listed_count": 10,
+            "listed_count_str": "10",
+            "like_count": 250,
+            "like_count_str": "250",
+            "media_count": 50,
+            "media_count_str": "50"
+          },
+          "entities": {
+            "url": {
+              "urls": [
+                {
+                  "start": 0,
+                  "start_str": "0",
+                  "end": 23,
+                  "end_str": "23",
+                  "url": "https://t.co/example",
+                  "expanded_url": "https://example.com",
+                  "display_url": "example.com"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "broadcast_id": "1a2b3c4d5e6fG",
+      "event_timestamp_ms": 1720000007400,
+      "event_timestamp_ms_str": "1720000007400",
+      "title": "Example broadcast",
+      "broadcast_state": "Ended",
+      "created_timestamp_ms": 1720000000000,
+      "created_timestamp_ms_str": "1720000000000",
+      "updated_timestamp_ms": 1720000007000,
+      "updated_timestamp_ms_str": "1720000007000",
+      "duration_ms": 3800,
+      "duration_ms_str": "3800",
+      "language": "en",
+      "thumbnail_url": "https://example.com/broadcasts/1a2b3c4d5e6fG/replay-thumbnail.jpg",
+      "available_for_replay": true
+    }
+  }
+}
+```
+
+### `broadcast.chat`
+
+Fired when the filtered user receives a chat message in a broadcast that they own. Private event — requires user-context authentication with the `broadcast.read` scope. The `payload` includes the `broadcast_id`, the chat `message_id` and `message` text, an `is_subscriber` boolean, and an `author` block with the sending user's profile.
+
+```json title="broadcast.chat" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "7365873565827875221",
+    "filter": {
+      "user_id": "1111111111111111111"
+    },
+    "event_type": "broadcast.chat",
+    "tag": "my stream chats",
+    "payload": {
+      "broadcast_id": "1mGPaZaAdNqJN",
+      "message_id": "2090000000000000004",
+      "message": "test",
+      "is_subscriber": false,
+      "author": {
+        "data": {
+          "affiliation": {
+            "url": "https://twitter.com/X",
+            "badge_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+            "description": "X"
+          },
+          "created_at": "2024-08-31T23:23:51.000Z",
+          "is_identity_verified": false,
+          "id": "1111111111111111111",
+          "username": "ExampleUser",
+          "profile_image_url": "https://pbs.twimg.com/profile_images/0000000000000000001/example_normal.jpg",
+          "verified_type": "blue",
+          "public_metrics": {
+            "followers_count": 2774,
+            "followers_count_str": "2774",
+            "following_count": 268,
+            "following_count_str": "268",
+            "tweet_count": 705,
+            "tweet_count_str": "705",
+            "listed_count": 42,
+            "listed_count_str": "42",
+            "like_count": 983,
+            "like_count_str": "983",
+            "media_count": 93,
+            "media_count_str": "93"
+          },
+          "profile_banner_url": "https://pbs.twimg.com/profile_banners/1111111111111111111/1600000000",
+          "name": "Example User",
+          "entities": {
+            "url": {
+              "urls": [
+                {
+                  "start": 0,
+                  "start_str": "0",
+                  "end": 23,
+                  "end_str": "23",
+                  "url": "https://t.co/xxxxxxxx",
+                  "expanded_url": "https://example.com",
+                  "display_url": "example.com"
+                }
+              ]
+            },
+            "description": {
+              "mentions": [
+                {
+                  "start": 19,
+                  "start_str": "19",
+                  "end": 21,
+                  "end_str": "21",
+                  "username": "X"
+                }
+              ]
+            }
+          },
+          "protected": false,
+          "url": "https://t.co/xxxxxxxx",
+          "description": "Developer Platform @X",
+          "verified": true
+        }
+      }
+    }
+  }
+}
+```
+
+***
+
+## OAuth events
+
+### `oauth.revoke`
+
+Fired when a user revokes your application's access. The `filter` may be empty. Use this to clean up local state for the revoked user.
+
+```json title="oauth.revoke" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
+{
+  "data": {
+    "event_uuid": "5934540941047412905",
+    "filter": {},
+    "event_type": "oauth.revoke",
+    "payload": {
+      "date_time": "2026-07-23T21:44:05+00:00",
+      "user_id": "1111111111111111111",
+      "app_id": "29820954"
+    }
+  }
+}
+```
+
+***
+
+## Next steps
+
+<CardGroup>
+  <Card title="Introduction" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/activity/introduction">
+    Supported event types, privacy, and authentication
+  </Card>
+
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/activity/quickstart">
+    Create a subscription and receive events
+  </Card>
+
+  <Card title="Activity stream" icon="water" href="/x-api/activity/activity-stream">
+    Connect to the persistent HTTP stream
+  </Card>
+
+  <Card title="Webhooks" icon="webhook" href="/x-api/webhooks/introduction">
+    Deliver activity events to your webhook URL
+  </Card>
+</CardGroup>

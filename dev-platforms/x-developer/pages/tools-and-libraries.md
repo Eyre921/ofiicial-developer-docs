@@ -78,7 +78,7 @@ Speed up your development with official SDKs, developer tools, and community lib
     Local mock server for testing X API v2 endpoints without using real credits.
   </Card>
 
-  <Card title="Agent Resources" icon="robot" href="/tools/ai">
+  <Card title="Agent Resources" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-ai-agents.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=53171c3a2a9432187cf705d13e24651b" href="/tools/ai">
     XMCP, llms.txt, skill.md, docs MCP server, and resources for AI-powered development.
   </Card>
 </CardGroup>

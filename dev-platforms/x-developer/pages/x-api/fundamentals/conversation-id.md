@@ -37,7 +37,7 @@ curl "https://api.x.com/2/tweets/1234567891?tweet.fields=conversation_id,in_repl
 
 Response:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "1234567891",
@@ -76,7 +76,7 @@ This returns all replies to the original post, sorted reverse-chronologically.
   <Tab title="Thread reconstruction">
     Build the full conversation tree:
 
-    ```python theme={null}
+    ```python title="Example" lines wrap icon="python" theme={null}
     import requests
 
     conversation_id = "1234567890"
@@ -131,7 +131,7 @@ This returns all replies to the original post, sorted reverse-chronologically.
 
 ## Example: Full thread retrieval
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
@@ -182,7 +182,7 @@ This returns all replies to the original post, sorted reverse-chronologically.
 ## Next steps
 
 <CardGroup>
-  <Card title="Search posts" icon="magnifying-glass" href="/x-api/posts/search/introduction">
+  <Card title="Search posts" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/posts/search/introduction">
     Search by conversation\_id.
   </Card>
 

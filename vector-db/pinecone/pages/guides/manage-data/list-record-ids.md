@@ -174,7 +174,7 @@ To list the IDs of all records in the namespace of a serverless index, pass only
 
   curl -X GET "https://$INDEX_HOST/vectors/list?namespace=example-namespace" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10"
+    -H "X-Pinecone-Api-Version: 2026-07"
 
   # Response:
   # {
@@ -387,7 +387,7 @@ When using the Node.js SDK, Java SDK, Go SDK, or REST API, you must manually fet
 
   curl -X GET "https://$INDEX_HOST/vectors/list?namespace=example-namespace" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10"
+    -H "X-Pinecone-Api-Version: 2026-07"
 
   # Response:
   # {
@@ -558,7 +558,7 @@ Then, to get the next batch of IDs, use the returned `pagination_token`:
 
   curl -X GET "https://$INDEX_HOST/vectors/list?namespace=example-namespace&paginationToken=c2Vjb25kY2FsbA%3D%3D" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10"
+    -H "X-Pinecone-Api-Version: 2026-07"
 
   # Response:
   # {
@@ -694,7 +694,7 @@ When there are no more IDs to return, the response does not includes a `paginati
 
   curl -X GET "https://$INDEX_HOST/vectors/list?namespace=example-namespace&paginationToken=mn23b4jB3Y9jpsS1" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10"
+    -H "X-Pinecone-Api-Version: 2026-07"
   # Response:
   # {
   #   "vectors": [

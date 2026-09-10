@@ -31,7 +31,7 @@ Match the problem you're solving to the parameter most likely to help.
 
 ## Prompting
 
-### prompt
+### `prompt`
 
 A description of the video to generate. Required for every model except Kling. Maximum length is 32,000 characters.
 
@@ -39,7 +39,7 @@ Be specific about subject, action, setting, camera movement, and pacing. Vague p
 
 Typical default: required.
 
-### negative\_prompt
+### `negative_prompt`
 
 A description of what to avoid in the generated video. Useful for excluding common artifacts.
 
@@ -49,19 +49,19 @@ Typical default: unset.
 
 ## Output dimensions
 
-### width and height
+### `width` and `height`
 
 The size of the generated video in pixels. Available combinations differ by model.
 
 Typical default: `1366` x `768`.
 
-### resolution
+### `resolution`
 
 A resolution tier used by Wan 2.7 models in place of `width` and `height`. Accepts `"720P"` or `"1080P"`.
 
 Typical default: `"1080P"`.
 
-### ratio
+### `ratio`
 
 The aspect ratio used by Wan 2.7 models. Accepts `"16:9"`, `"9:16"`, `"1:1"`, `"4:3"`, or `"3:4"`.
 
@@ -69,7 +69,7 @@ Typical default: `"16:9"`.
 
 ## Length and frame rate
 
-### seconds
+### `seconds`
 
 Clip duration in seconds. Accepted range is `"1"` through `"10"`. Passed as a string.
 
@@ -77,7 +77,7 @@ Longer clips cost more and take longer to generate. Use shorter clips while iter
 
 Typical default: `"6"`.
 
-### fps
+### `fps`
 
 Frames per second. Higher values produce smoother motion at the cost of generation time and file size.
 
@@ -85,7 +85,7 @@ Typical default: `24` (some models accept up to `60`).
 
 ## Quality and speed
 
-### steps
+### `steps`
 
 The number of denoising steps. More steps generally improve visual quality and temporal consistency at a near-linear cost in latency. Past a model-specific point, additional steps stop helping.
 
@@ -131,7 +131,7 @@ Typical default: model-specific.
   ```
 </CodeGroup>
 
-### guidance\_scale
+### `guidance_scale`
 
 Controls how closely the video follows the prompt. Higher values make the model adhere more strictly to the text description. Lower values give the model more creative freedom. Affects both visual content and temporal consistency.
 
@@ -191,7 +191,7 @@ Typical default: model-specific.
 
 ## Reproducibility
 
-### seed
+### `seed`
 
 An integer that fixes the random initialization. With the same `seed`, prompt, model, and parameters, the model returns the same video. Useful for reproducibility and for fair comparisons when tuning other parameters.
 
@@ -199,13 +199,13 @@ Typical default: unset (each call returns a new video).
 
 ## Output format
 
-### output\_format
+### `output_format`
 
 The encoded video format. Accepts `"MP4"` or `"WEBM"`. MP4 is the broadest-compatible default. WEBM produces smaller files but isn't supported by every player.
 
 Typical default: `"MP4"`.
 
-### output\_quality
+### `output_quality`
 
 Compression quality. Lower values produce higher fidelity and larger files. Higher values produce smaller files with more compression artifacts.
 
@@ -213,7 +213,7 @@ Typical default: `20`.
 
 ## Audio
 
-### generate\_audio
+### `generate_audio`
 
 Whether the model should generate audio for the video. Only applies to models that support audio generation.
 
@@ -251,7 +251,7 @@ These parameters belong to features with their own dedicated pages. Each link be
   The top-level `frame_images` and `reference_images` parameters are deprecated. Use `media.frame_images` and `media.reference_images` instead.
 </Note>
 
-### media object schema
+### `media` object schema
 
 The `media` object is the unified way to pass images, videos, and audio into video generation requests.
 

@@ -165,7 +165,7 @@ Namespaces are created automatically as you [upsert](/guides/index-data/upsert-d
     -H "Accept: application/json" \
     -H "Content-Type: application/json" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
           "name": "example-namespace",
           "schema": {
@@ -341,7 +341,7 @@ Up to 100 namespaces are returned at a time by default, in sorted order (bitwise
 
   curl -X GET "https://$INDEX_HOST/namespaces" \
       -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2026-04"
+      -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </CodeGroup>
 
@@ -535,7 +535,7 @@ Use the [`describe_namespace`](/reference/api/latest/data-plane/describenamespac
 
   curl -X GET "https://$INDEX_HOST/namespaces/$NAMESPACE" \
       -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2026-04"
+      -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </CodeGroup>
 
@@ -680,7 +680,7 @@ Use the [`delete_namespace`](/reference/api/latest/data-plane/deletenamespace) o
 
   curl -X DELETE "https://$INDEX_HOST/namespaces/$NAMESPACE" \
       -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2026-04"
+      -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </CodeGroup>
 

@@ -1206,7 +1206,9 @@ If you hit the limit, you'll receive a `429 Too Many Requests` response with a m
 
 The TPM limit is counted against total tokens (input and output combined), not input alone. Upstream output token limits (20,000 OTPM for most models) apply independently, so you can hit a `429` on output tokens without reaching the gateway's TPM limit. See [Databricks Foundation Model API limits](https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/limits) for details.
 
-Once billing begins, usage will also be capped by your prepaid credit balance. See [Pricing](https://neon.com/docs/ai-gateway/models#pricing) below.
+The 200,000 TPM ceiling is a soft limit. If you need a higher limit, [contact Support](https://neon.com/docs/introduction/support).
+
+A separate account-level daily spend cap also applies and can block AI Gateway requests with a `429` / `REQUEST_LIMIT_EXCEEDED` even during the free beta. It isn't a fixed published number and can vary by account. See [Pricing](https://neon.com/docs/ai-gateway/models#pricing) for details, or [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting#429-account-quota-exceeded) if you hit it.
 
 ## Pricing
 
@@ -10120,6 +10122,8 @@ Neon AI Gateway serves frontier models like GPT (`gpt-5`) and Gemini (`gemini-3-
 
 Open-weight models are available to every project right away. Frontier models from OpenAI and Google are rolling out gradually. Don't see them in your project yet? Request early access below.
 
+When AI Gateway reaches GA, all available models will be open to any paid Neon customer with prepaid credits, with no early-access step.
+
 ## Get started
 
 - [Quickstart](https://neon.com/docs/ai-gateway/get-started): Get a credential and make your first inference request in minutes.
@@ -10143,11 +10147,11 @@ Neon AI Gateway is the LLM inference layer built into the Neon backend. It lets 
 
 ## Pricing
 
-AI Gateway pricing isn't finalized. Here's what to expect once it moves out of beta:
+Inference is free during the beta. Billing begins when AI Gateway reaches GA. Here's what to expect once it does:
 
-- **Paid plans only.** AI Gateway will be available on Neon's Launch and Scale plans. There's no difference in AI Gateway pricing or model access between the two plans.
-- **No markup.** Neon charges the same per-token rate as the model provider. Published provider prices are passed on to users with no additional markup.
-- **Free during beta.** Inference remains free through the end of the beta. Billing begins when AI Gateway reaches GA.
+- **Paid plans only.** AI Gateway will be available on Neon's Launch and Scale plans. Any paid customer with prepaid credits will be able to access all available models. There's no difference in AI Gateway pricing or model access between the two plans.
+- **No markup.** Neon will charge the same per-token rate as the model provider. Published provider prices are passed on to users with no additional markup.
+- **Prepaid credits.** Inference will draw down a prepaid credit balance. 1 credit will equal $1 USD, with a $5 minimum purchase, and credits will be valid for 12 months from purchase. You'll buy credits from the **Billing** page in the [Neon Console](https://console.neon.tech/app/billing).
 
 We'll publish exact per-model rates on the [Neon pricing page](https://neon.com/pricing) and update this page before billing begins.
 
@@ -10166,6 +10170,45 @@ neon bootstrap --template ai-sdk
 ```bash
 neon bootstrap --template mastra
 ```
+
+## Frequently asked questions
+
+### Who can use AI Gateway?
+
+During the beta, AI Gateway is available on Neon's paid plans (Launch and Scale). When it reaches GA, any paid Neon customer with prepaid credits will be able to access all available models.
+
+### How much will AI Gateway credits cost?
+
+When billing begins, 1 credit will equal $1 USD, with a $5 minimum purchase. You'll buy credits from the **Billing** page in the [Neon Console](https://console.neon.tech/app/billing). Inference is free during the beta.
+
+### Will my credit balance be able to go negative?
+
+Yes, by a small amount. Usage can exceed your remaining balance before it's detected, so a minimum balance of $2 will apply to account for this.
+
+### Will credits expire?
+
+Credits will be valid for 12 months from the date of purchase.
+
+### What happens to my credits if I downgrade to Free?
+
+Your credits will stay on your account, but you won't be able to use AI Gateway while on the Free plan. They become available again if you upgrade to a paid plan.
+
+### What are the default usage limits?
+
+By default, each account has a soft limit of 200,000 tokens per minute. Separately, Neon enforces an account-level daily spend cap on total usage. It applies even during the free beta, isn't a fixed published number, and can vary by account. Both guard against runaway costs. If you're blocked and need a limit raised, [contact Support](https://neon.com/docs/introduction/support). See [Rate limits](https://neon.com/docs/ai-gateway/models#rate-limits) for details.
+
+### What happens if I hit a usage limit?
+
+Requests are blocked once you reach your per-minute token limit or daily spend limit, and the gateway returns an `HTTP 429` response:
+
+```json
+{
+  "error_code": "REQUEST_LIMIT_EXCEEDED",
+  "message": "ai gateway daily token limit exceeded"
+}
+```
+
+See [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting#429-account-quota-exceeded).
 
 --- [Document source](https://neon.com/docs/ai-gateway/troubleshooting.md) ---
 
@@ -21315,12 +21358,15 @@ Manage a branch's Neon env variables locally.
 
 Manage Neon Functions.
 
-| Subcommand                     | Description                              |
-| ------------------------------ | ---------------------------------------- |
-| `neon functions delete <slug>` | Delete a function on the branch          |
-| `neon functions deploy <slug>` | Deploy a function from a local directory |
-| `neon functions get <slug>`    | Show a function's details                |
-| `neon functions list`          | List functions on the branch             |
+| Subcommand                                 | Description                                                |
+| ------------------------------------------ | ---------------------------------------------------------- |
+| `neon functions delete <slug>`             | Delete a function on the branch                            |
+| `neon functions deploy <slug>`             | Deploy a function from a local directory                   |
+| `neon functions domains delete <domain>`   | Delete a custom domain from the branch                     |
+| `neon functions domains list`              | List custom domains on the branch                          |
+| `neon functions domains register <domain>` | Point a domain you already own at a function on the branch |
+| `neon functions get <slug>`                | Show a function's details                                  |
+| `neon functions list`                      | List functions on the branch                               |
 
 ### init
 
@@ -22926,8 +22972,8 @@ neon claim create [options]
 
 | Option       | Description                                                                                                                                                                                                                                  | Type    | Default | Required |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--config`   | Path to neon.ts. Defaults to walking up from the current directory                                                                                                                                                                           | string  | —       |    No    |
-| `--env-pull` | Write the provisioned DATABASE\_URL and service URLs to a dotenv file                                                                                                                                                                        | boolean | `true`  |    No    |
+| `--config`   | Path to neon.ts for registration and the bundled env pull. Defaults to walking up from the current directory                                                                                                                                 | string  | —       |    No    |
+| `--env-pull` | Write the same Neon env vars `env pull` would                                                                                                                                                                                                | boolean | `true`  |    No    |
 | `--file`     | Target dotenv file. Defaults to an existing .env, otherwise .env.local                                                                                                                                                                       | string  | —       |    No    |
 | `--service`  | Services to request for the claimable project: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. Postgres is always included. Services unavailable before claim are recorded and reported. | array   | —       |    No    |
 
@@ -23802,6 +23848,7 @@ neon env pull [options]
 
 | Option         | Description                                                                                                                                                                                               | Type   | Default | Required |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--config`     | Path to a neon.ts policy (defaults to walking up from cwd)                                                                                                                                                | string | —       |    No    |
 | `--env`, `-e`  |                                                                                                                                                                                                           | array  | —       |    No    |
 | `--file`       | Target .env file to write. Defaults to an existing .env, otherwise .env.local. Only Neon variables are updated; other lines are preserved.                                                                | string | —       |    No    |
 | `--service`    | Pull only these services' variables: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. Overrides neon.ts, and prunes only within the services you name. | array  | —       |    No    |
@@ -23826,13 +23873,19 @@ Pull only the variables for the services you name, ignoring `neon.ts`. Repeat `-
 neon env pull --service ai-gateway --service postgres
 ```
 
+Use a specific `neon.ts` policy instead of the one found by walking up from the current directory:
+
+```bash
+neon env pull --config ./config/neon.ts
+```
+
 --- [Document source](https://neon.com/docs/cli/functions.md) ---
 
-> Summary: The Neon CLI `neon functions` command manages Neon Functions on a branch: `neon functions deploy <slug>` bundles and deploys a function from a local directory or entry file (with --src, --runtime, --env, and --wait), and the list, get, and delete subcommands manage deployed functions. The slug is the permanent function identifier: 1 to 20 lowercase letters and digits.
+> Summary: The Neon CLI `neon functions` command manages Neon Functions on a branch: deploy, list, get, and delete functions, and register and manage their custom domains with the `domains` subcommands.
 
 # Neon CLI command: functions
 
-Deploy, list, inspect, and delete Neon Functions
+Deploy, list, inspect, and delete Neon Functions, and manage their custom domains
 
 **Note: Beta**
 
@@ -23840,7 +23893,7 @@ The **Neon Functions** is in Beta. Share your feedback on [Discord](https://disc
 
 The `functions` command manages [Neon Functions](https://neon.com/docs/compute/functions/overview) on a branch. This is the command reference; for the full deployment workflow, see [Deploy functions](https://neon.com/docs/compute/functions/deploy). To run functions locally, see [`neon dev`](https://neon.com/docs/cli/dev).
 
-Subcommands: [delete](https://neon.com/docs/cli/functions#delete), [deploy](https://neon.com/docs/cli/functions#deploy), [get](https://neon.com/docs/cli/functions#get), [list](https://neon.com/docs/cli/functions#list)
+Subcommands: [delete](https://neon.com/docs/cli/functions#delete), [deploy](https://neon.com/docs/cli/functions#deploy), [domains](https://neon.com/docs/cli/functions#domains), [get](https://neon.com/docs/cli/functions#get), [list](https://neon.com/docs/cli/functions#list)
 
 ## neon functions deploy
 
@@ -24003,6 +24056,89 @@ neon functions delete hello
 INFO: Function hello deleted from branch br-cool-darkness-123456
 ```
 
+## neon functions domains
+
+Manage custom domains for functions on the branch. Custom domains are in beta.
+
+Subcommands: [delete](https://neon.com/docs/cli/functions#domains-delete), [list](https://neon.com/docs/cli/functions#domains-list), [register](https://neon.com/docs/cli/functions#domains-register)
+
+### neon functions domains list
+
+Lists the custom domains registered on the branch.
+
+```bash
+neon functions domains list [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+```bash
+neon functions domains list
+```
+
+The default table shows the domain, target function, and CNAME target. To inspect DNS and routing status, use JSON output:
+
+```bash
+neon functions domains list --output json
+```
+
+```json filename="Output"
+[
+  {
+    "domain": "docs.example.com",
+    "entity_type": "function",
+    "entity_id": "hello",
+    "cname_target": "fn-custom-domains.us-east-2.aws.neon.build",
+    "status": "active",
+    "dns_status": "ok",
+    "binding_status": "present",
+    "status_reason": ""
+  }
+]
+```
+
+An `active` status confirms that DNS, CAA authorization, and routing are ready. Verify the domain with an HTTPS request because certificate issuance isn't included in this status.
+
+### neon functions domains register
+
+Points a domain you already own at a function on the branch. Both `--slug` and the domain are required. The command prints a CNAME target; create a CNAME record for the domain at your DNS provider pointing at that target.
+
+```bash
+neon functions domains register <domain> [options]
+```
+
+| Option         | Description                               | Type   | Default | Required |
+| -------------- | ----------------------------------------- | ------ | ------- | :------: |
+| `--slug`       | Function slug this domain should point at | string | —       |    Yes   |
+| `--branch`     | Branch ID or name                         | string | —       |    No    |
+| `--project-id` | Project ID                                | string | —       |    No    |
+
+```bash
+neon functions domains register docs.example.com --slug hello
+```
+
+### neon functions domains delete
+
+Deletes a custom domain from the branch.
+
+```bash
+neon functions domains delete <domain> [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+```bash
+neon functions domains delete docs.example.com
+```
+
+Routing changes are eventually consistent, so the custom URL can continue reaching the function briefly after deletion. Deleting a function doesn't delete its custom-domain registration; delete the domain separately.
+
 --- [Document source](https://neon.com/docs/cli/init.md) ---
 
 > Summary: The `neon init` command sets up the current directory to use Neon with your AI coding assistant. In an empty directory it scaffolds a starter template first, then installs agent tooling (either a plugin, or skills and the MCP server), links a Neon project, and writes a neon.ts config. It runs interactively by default; pass -y and --agent for an unattended agent setup.
@@ -24155,7 +24291,7 @@ neon inspect db <sub-command> [options]
 | `--project-id`    | Project ID                                                                                                                                                                                                                                                 | string | —       |    No    |
 | `--role-name`     | Role name                                                                                                                                                                                                                                                  | string | —       |    No    |
 
-By default the command resolves the project, branch, database, and role from your [context](https://neon.com/docs/cli/set-context) and connects through the Neon API. Pass `--db-url` to inspect any Postgres directly from a connection string, which bypasses API resolution and lets you point `inspect` at a database outside Neon.
+By default the command resolves the project, branch, database, and role from your [context](https://neon.com/docs/cli/set-context) and connects through the Neon API. Pass `--db-url` to inspect any Postgres directly from a connection string, which bypasses API resolution and lets you point `inspect` at a database outside Neon without being logged in to Neon.
 
 When you omit `--database-name`, `inspect` covers every database on the branch and adds a `database` column so you can tell the rows apart. Pass `--database-name` to inspect a single database, which also scopes `locks` and `long-running-queries` to that database so lock and relation names resolve correctly. Database-scoped checks such as `table-sizes`, `locks`, and `outliers` run against each database, while compute-wide checks (`lfc-hit-rate`, `working-set`, and `replication-slots`) run once. If any database fails, the whole run fails, so pass `--database-name` to narrow to one when that happens. `--db-url` always inspects the single database in the connection string and never adds the `database` column.
 
@@ -30862,7 +30998,7 @@ export default {
     const { messages } = (await request.json()) as { messages: ModelMessage[] };
 
     const result = streamText({
-      model: neon('claude-sonnet-4-6'), // any model in the AI Gateway catalog
+      model: neon('gpt-5-mini'), // any model in the AI Gateway catalog
       system: 'You are a concise assistant. Use tools when relevant.',
       messages,
       tools: {
@@ -30891,7 +31027,7 @@ export default {
 };
 ```
 
-`tool({ inputSchema, execute })` is the AI SDK v5+ shape. Create the `pg` pool once at module scope so it's reused across requests, and call `attachDatabasePool(pool)` so an idle disconnect can't crash the isolate (see [Connecting to Postgres](https://neon.com/docs/compute/functions/get-started#connect-to-postgres)). Pick any model from the [AI Gateway catalog](https://neon.com/docs/ai-gateway/models); swap `claude-sonnet-4-6` for a different one without changing anything else.
+`tool({ inputSchema, execute })` is the AI SDK v5+ shape. Create the `pg` pool once at module scope so it's reused across requests, and call `attachDatabasePool(pool)` so an idle disconnect can't crash the isolate (see [Connecting to Postgres](https://neon.com/docs/compute/functions/get-started#connect-to-postgres)). Pick any model from the [AI Gateway catalog](https://neon.com/docs/ai-gateway/models); swap `gpt-5-mini` for a different one without changing anything else.
 
 Deploy and call it. `toUIMessageStreamResponse()` returns a stream the AI SDK's `useChat` hook consumes directly:
 
@@ -31798,7 +31934,7 @@ neon env pull --file .env.preview
 
 To pull from a different branch, switch with `neon checkout`; it pulls the new branch's variables as part of the switch.
 
-`env pull` writes only the Neon-managed variables and preserves every other line in the file. That's the core variables `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, and `NEON_BRANCH`, plus the variables for any service you **declare in `neon.ts`**: the Managed Better Auth URLs, the Neon Data API URL, the AI Gateway credentials (`NEON_AI_GATEWAY_TOKEN`, `NEON_AI_GATEWAY_BASE_URL`), and the Object Storage credentials (`AWS_*`). It also writes a public invocation URL for each Neon Function as `NEON_FUNCTION_<SLUG>_BASE_URL` (origin only, matching `NEON_AUTH_BASE_URL` and `NEON_AI_GATEWAY_BASE_URL`), so one function can call another by reading its URL from the environment.
+`env pull` writes only the Neon-managed variables and preserves every other line in the file. That's the core variables `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, and `NEON_BRANCH`, plus the variables for any service you **declare in `neon.ts`**: the Managed Better Auth URLs, the Neon Data API URL, the AI Gateway credentials (`NEON_AI_GATEWAY_TOKEN`, `NEON_AI_GATEWAY_BASE_URL`), and the Object Storage credentials (`AWS_*`). It also writes a public invocation URL for each Neon Function as `NEON_FUNCTION_<SLUG>_BASE_URL` (origin only, matching `NEON_AUTH_BASE_URL` and `NEON_AI_GATEWAY_BASE_URL`), so code running locally can call your deployed functions by reading their URLs from the environment. These variables are local-only: they aren't injected into a deployed function's runtime. To call one function from another at runtime, pass the target URL explicitly (for example as a `--env` variable) or read the incoming request's `Host` header.
 
 ## Constraints
 
@@ -62460,7 +62596,7 @@ import { neon } from "@neon/ai-sdk-provider";
 import { streamText } from "ai";
 
 const result = streamText({
-  model: neon("gpt-5-mini"), // or "claude-sonnet-4-6", "gemini-3-flash", ...
+  model: neon("gpt-5-mini"), // or "glm-5-3-flash", "gemini-3-flash", ...
   system: "Answer using only the user's notes.",
   prompt: `${question}\n\nNotes:\n${notesText}`,
 });
@@ -63435,7 +63571,7 @@ app.post('/generate', async (c) => {
   const { topic, author = 'anonymous' } = await c.req.json();
 
   const { text } = await generateText({
-    model: neon('claude-sonnet-4-6'),
+    model: neon('gpt-5-nano'),
     prompt: `Write a 2 sentence post about the following topic. Just send the post content without any additional text: ${topic}`,
   });
 
@@ -63453,7 +63589,7 @@ app.post('/assistant', async (c) => {
   const { messages } = await c.req.json();
 
   const result = streamText({
-    model: neon('claude-sonnet-4-6'),
+    model: neon('gpt-5-mini'),
     system:
       "You are a helpful assistant that answers questions about the user's blog posts. Use the queryPosts tool to look them up.",
     messages: await convertToModelMessages(messages),
@@ -107123,10 +107259,19 @@ If you're using the **Neon-Managed integration**, your branch cleanup is based o
 If you're using the **Vercel-Managed integration**, you might expect preview branches to be deleted when you close a PR or delete a Git branch. That doesn't happen because cleanup is tied to **deployment deletion**, not Git branch deletion. Manually deleting a Vercel deployment triggers immediate Neon branch cleanup, but most teams rely on Vercel's automatic retention, which follows this timeline:
 
 1. **Vercel retains preview deployments for 6 months by default.** As of [October 2025](https://vercel.com/changelog/updated-defaults-for-deployment-retention), Vercel's default retention for pre-production deployments is 180 days. The clock starts when the deployment is created, not when the PR is closed.
-2. **Vercel's cleanup job runs asynchronously.** After the retention period expires, Vercel deletes the deployment in a batch process. This typically happens within hours to days of the expiration date, not instantly. Vercel offers a [30-day recovery window](https://vercel.com/docs/deployment-retention#restoring-a-deleted-deployment) to restore deleted deployments, but this does not delay cleanup for connected integrations.
+2. **Vercel's cleanup job runs asynchronously.** Vercel marks an expired deployment for deletion within about 48 hours. If a [retention exception](https://neon.com/docs/guides/vercel-branch-cleanup#retention-exceptions) still protects it, deletion waits until the exception no longer applies, and that re-evaluation can take up to 30 days. Vercel offers a [30-day recovery window](https://vercel.com/docs/deployment-retention#restoring-a-deleted-deployment) to restore deleted deployments, but this does not delay cleanup for connected integrations.
 3. **Neon deletes the branch when Vercel deletes the deployment.** Neon receives a cleanup webhook and removes the corresponding preview branch immediately.
 
-In the worst case (a deployment created moments before the PR is closed), this means up to **~6 months** before the Neon branch is automatically deleted.
+Vercel's current default retention periods:
+
+| Plan               | Canceled | Errored | Pre-Production (Preview) | Production |
+| ------------------ | -------- | ------- | ------------------------ | ---------- |
+| Hobby              | 30 days  | 30 days | 30 days                  | 30 days    |
+| Pro and Enterprise | 30 days  | 90 days | 180 days                 | 1 year     |
+
+Preview deployments use the Pre-Production column. Production retention matters here too, because production deployments count toward the "last 10 deployments" exception described below.
+
+In the worst case (a deployment created moments before the PR is closed), this means up to **~6 months** before the Neon branch is automatically deleted, and longer, potentially never, if a [retention exception](https://neon.com/docs/guides/vercel-branch-cleanup#retention-exceptions) keeps one of the branch's deployments alive.
 
 **Warning: Restoring deleted deployments**
 
@@ -107134,9 +107279,14 @@ Vercel lets you [restore deleted deployments](https://vercel.com/docs/deployment
 
 ### Retention exceptions
 
-Vercel keeps a minimum number of recent deployments regardless of your retention settings. See [Vercel's retention exceptions](https://vercel.com/docs/deployment-retention#exceptions-to-the-retention-policy) for details. Neon branches associated with these retained deployments won't be automatically cleaned up. Use the [GitHub Action approach](https://neon.com/docs/guides/vercel-branch-cleanup#github-action-on-pr-close-recommended) for those.
+Vercel keeps some deployments regardless of your retention setting. A deployment is kept while any of these is true (see [Vercel's retention exceptions](https://vercel.com/docs/deployment-retention#exceptions-to-the-retention-policy) for the full list):
 
-These exceptions protect _deployments_, not branches. A single branch can have multiple deployments, so the number of protected branches depends on how deployments are distributed across them.
+- It is one of the last 10 deployments created in the project (production and preview combined).
+- It is one of the last 20 non-production (preview) deployments in state Ready.
+- It is the latest preview deployment for a Git branch whose pull request is still open. While a PR is open, that branch's latest preview deployment, and the Neon branch behind it, stay protected. A branch whose PR was merged or closed, or that never had a PR at all, does not get this protection, so its preview deployment is cleaned up on the normal retention schedule.
+- It has a custom alias assigned.
+
+These exceptions protect _deployments_, not branches, and they are the usual reason a preview branch is "never" cleaned up. In particular, a project with fewer than about 20 preview deployments may never auto-delete any preview branch, because every preview stays within the last-20 set. For those projects, reducing retention does nothing on its own, and the [GitHub Action approach](https://neon.com/docs/guides/vercel-branch-cleanup#github-action-on-pr-close-recommended) is the reliable path.
 
 The following screenshot shows Vercel's default retention policy settings, where pre-production deployments are set to 180 days:
 
@@ -107151,16 +107301,16 @@ Lowering the retention period reduces how long Vercel keeps deployments before d
 To adjust your retention settings:
 
 1. Open your Vercel project dashboard
-2. Go to **Settings → Security**
-3. Scroll to **Deployment Retention Policy**
+2. Open **Settings**
+3. Find the **Deployment Retention Policy** section (currently under **Build and Deployment**)
 4. Set **Pre-Production Deployments** to the shortest available duration
 5. Save
 
-After the retention period expires, Vercel's cleanup job processes deletions asynchronously, typically within hours to days. To avoid waiting for retention entirely, you can [delete deployments manually](https://neon.com/docs/guides/vercel-branch-cleanup#delete-vercel-deployments) or use a [GitHub Action](https://neon.com/docs/guides/vercel-branch-cleanup#github-action-on-pr-close-recommended).
+After the retention period expires, Vercel marks the deployment for deletion within about 48 hours, and longer if an exception still applies. To avoid waiting for retention entirely, you can [delete deployments manually](https://neon.com/docs/guides/vercel-branch-cleanup#delete-vercel-deployments) or use a [GitHub Action](https://neon.com/docs/guides/vercel-branch-cleanup#github-action-on-pr-close-recommended).
 
 For more details, see [Vercel's deployment retention documentation](https://vercel.com/docs/deployment-retention#setting-a-deployment-retention-policy).
 
-**Note:** You can also set a default retention policy for all new projects in your Vercel team under **Team Settings → Security & Privacy → Deployment Retention Policy**.
+**Note:** You can also set a default retention policy for all new projects in your **Team Settings**, in the **Deployment Retention Policy** section.
 
 ---
 
@@ -107249,7 +107399,7 @@ The most common cause is Vercel's deployment retention policy. With the default 
 
 ### I reduced retention but branches are still not being deleted
 
-Vercel keeps a minimum number of recent deployments regardless of your retention settings. The project's `deploymentsToKeep` value (typically 10, visible via the [Vercel project API](https://vercel.com/docs/rest-api/projects/retrieve-a-list-of-projects)) controls how many are protected. Neon branches tied to these deployments won't be auto-deleted. Use the [GitHub Action workaround](https://neon.com/docs/guides/vercel-branch-cleanup#github-action-on-pr-close-recommended) or [manual cleanup](https://neon.com/docs/guides/vercel-branch-cleanup#cleaning-up-existing-stale-branches) for these branches.
+Vercel keeps some deployments regardless of your retention setting (see [Retention exceptions](https://neon.com/docs/guides/vercel-branch-cleanup#retention-exceptions)). On low-activity projects, every preview can stay within the protected set, so reducing retention may change nothing. Use the [GitHub Action workaround](https://neon.com/docs/guides/vercel-branch-cleanup#github-action-on-pr-close-recommended) or [manual cleanup](https://neon.com/docs/guides/vercel-branch-cleanup#cleaning-up-existing-stale-branches).
 
 ### Which integration type gives faster cleanup?
 
@@ -114916,15 +115066,17 @@ There's no charge for Functions during the beta, but [usage limits](https://neon
 
 On the **Free** plan, you get 10 active Capacity-Hours, 400 waiting Capacity-Hours, and 1 million invocations per month.
 
+When billing begins, these Free allowances will be enforced at two levels: an account-wide total across all your projects, and an independent per-project limit.
+
 When billing begins, egress (data a function sends out) will count toward your [public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer) allowance, which is shared across all products.
 
 See [Neon Functions](https://neon.com/docs/compute/functions/overview) for what's included and current limitations.
 
 ### AI Gateway
 
-Neon AI Gateway provides access to foundation models from Anthropic, OpenAI, Google, Meta, Databricks, and Alibaba through a single Neon credential. It is available on paid plans (Launch and Scale) during the beta.
+Neon AI Gateway provides access to foundation models from OpenAI, Google, Meta, Databricks, and Alibaba through a single Neon credential. It is available on paid plans (Launch and Scale) during the beta. When AI Gateway reaches GA, any paid customer with prepaid credits will be able to access all available models.
 
-Inference is free during the beta. When billing begins, prices will match each provider's published list prices, with no additional markup.
+Inference is free during the beta. When billing begins, prices will match each provider's published list prices, with no additional markup, drawing down a prepaid credit balance you buy from the Billing page in the Neon Console.
 
 See [AI Gateway pricing](https://neon.com/docs/ai-gateway/overview#pricing) for details.
 
@@ -132749,6 +132901,8 @@ The **Neon Object Storage** is in Beta. Share your feedback on [Discord](https:/
 
 A bucket is a named container for objects in Neon Object Storage. Buckets are scoped to a branch and inherit from parent branches when a new branch is created. No data is copied on fork.
 
+For object size and storage limits, see [Limits](https://neon.com/docs/storage/overview#limits).
+
 ## Create a bucket
 
 You can create a bucket from the Neon Console, the Neon CLI, the Neon API, or directly via the S3 API.
@@ -132920,6 +133074,7 @@ This makes it safe to test bucket changes in a preview branch without affecting 
 
 - [Objects](https://neon.com/docs/storage/objects): upload, download, list, and delete objects
 - [Authentication](https://neon.com/docs/storage/authentication): credential scopes and branch binding
+- [Limits](https://neon.com/docs/storage/overview#limits): object size and usage limits
 
 --- [Document source](https://neon.com/docs/storage/get-started.md) ---
 
@@ -133389,7 +133544,7 @@ aws s3 cp ./photo.jpg s3://my-bucket/images/photo.jpg \
 
 ## Multipart upload
 
-During beta, the maximum object size is 5 GiB, whether you upload it in a single request or as a multipart upload. This is a beta limit, not a permanent cap; [contact support](https://neon.com/docs/introduction/support) if you need to store larger objects. For large files, the AWS SDK automatically uses multipart upload above a configurable threshold. You can also initiate multipart upload manually for fine-grained control. Multipart upload makes large uploads more reliable because each part is retried independently, though it doesn't raise the per-object limit during beta.
+During beta, the maximum object size is 5 GiB, whether you upload it in a single request or as a multipart upload. When billing begins, paid plans follow standard [S3 limits](https://aws.amazon.com/s3/faqs/): objects up to 5 TB, with a 5 GB maximum for a single-request upload, so multipart upload is required for larger objects (AWS recommends it above 100 MB). For large files, the AWS SDK automatically uses multipart upload above a configurable threshold. You can also initiate multipart upload manually for fine-grained control. Multipart upload makes large uploads more reliable because each part is retried independently. For all size and capacity limits, see [Limits](https://neon.com/docs/storage/overview#limits).
 
 **TypeScript**
 
@@ -133824,12 +133979,19 @@ neon bootstrap --template ai-sdk
 
 ## Limits
 
-During the beta, the following usage limits apply:
+During the beta, the following limits apply:
+
+| Limit                    | Value                                                                                                                          |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| Object size (maximum)    | 5 GiB, whether uploaded in a single request or with [multipart upload](https://neon.com/docs/storage/objects#multipart-upload) |
+| Free plan object storage | 5 GB per project ([rates](https://neon.com/docs/introduction/plans#object-storage))                                            |
+
+Two limits are behavioral rather than fixed numbers:
 
 - **Region**: object storage is available in AWS US East (Ohio) (`aws-us-east-2`) and AWS Europe (Frankfurt) (`aws-eu-central-1`). Support is expanding toward all regions.
-- **Free object storage**: the Free plan includes 5 GB of object storage per project. See [plans and pricing](https://neon.com/docs/introduction/plans#object-storage) for storage and egress rates.
-- **Object size**: objects can be up to 5 GiB, whether uploaded in a single request or with [multipart upload](https://neon.com/docs/storage/objects#multipart-upload). [Contact support](https://neon.com/docs/introduction/support) if you need to store larger objects.
 - **Rate limiting**: requests may be throttled during heavy use, returning a `503 SlowDown` response. Back off and retry. See [Connection and performance errors](https://neon.com/docs/storage/troubleshooting#connection-and-performance-errors).
+
+When billing begins, paid plans follow standard [S3 limits](https://aws.amazon.com/s3/faqs/): individual objects up to 5 TB, with a 5 GB maximum for a single-request upload. Use [multipart upload](https://neon.com/docs/storage/objects#multipart-upload) for larger objects; AWS recommends it for anything over 100 MB. Storage-volume limits apply to the Free plan only; paid plans have no fixed limit on total storage or number of objects, which is metered per GB (see [plans and pricing](https://neon.com/docs/introduction/plans#object-storage)).
 
 For S3 API and feature limitations (as opposed to usage limits), see [Known limitations](https://neon.com/docs/storage/s3-compatibility#known-limitations).
 
@@ -134051,9 +134213,9 @@ See [S3 compatibility](https://neon.com/docs/storage/s3-compatibility#not-suppor
 
 ### `EntityTooLarge`
 
-The object exceeds the maximum size. During beta, Neon Object Storage allows objects up to 5 GiB. A single-request `PutObject` fails immediately; a multipart upload fails at `CompleteMultipartUpload` once the assembled object would exceed the limit.
+The object exceeds the maximum size. During beta, Neon Object Storage allows objects up to 5 GiB, whether uploaded in a single request or via [multipart upload](https://neon.com/docs/storage/objects#multipart-upload). A single-request `PutObject` fails immediately; a multipart upload fails at `CompleteMultipartUpload` once the assembled object would exceed the limit.
 
-**Fix:** Split the data across multiple objects, or confirm the upload isn't unexpectedly large. Multipart upload makes large uploads more reliable but doesn't raise the per-object limit. The 5 GiB limit is a beta limit, not a permanent cap; [contact support](https://neon.com/docs/introduction/support) if you need to store larger objects.
+**Fix:** Split the data across multiple objects, or confirm the upload isn't unexpectedly large. Multipart upload makes large uploads more reliable but doesn't raise the per-object limit during beta. [Contact support](https://neon.com/docs/introduction/support) if you need to store larger objects.
 
 ## Connection and performance errors
 

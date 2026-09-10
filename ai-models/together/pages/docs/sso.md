@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/sso
 path: docs/sso
 ---
 
-Connect your Identity Provider for secure, automated team access to Together
+Connect your Identity Provider for secure, automated team access to Together.
 
 Single Sign-On enables your company to authenticate to your Together Organization through your company's existing Identity Provider (IdP) when configured for SSO. Instead of managing separate credentials, Members sign in with the same account they use for everything else at your company.
 

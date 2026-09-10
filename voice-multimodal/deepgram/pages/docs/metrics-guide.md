@@ -318,7 +318,7 @@ engine_stream_latency_count <integer>
 
 ##### TTS metrics
 
-The `tier` label identifies the TTS model family (for example, `aura` or `aura-2`).
+The `tier` label identifies the TTS model family: `flux`, `aura-2`, or `aura`. All TTS services report the same set of metrics through these histograms.
 
 ```
 # HELP engine_tts_first_raw_byte_latency Latency of inferring the first response byte for TTS requests.
@@ -392,7 +392,7 @@ engine_tts_first_transcoded_byte_latency_count{tier="<model>"} <integer>
 engine_tts_failures_during_response_total <integer>
 ```
 
-##### Flux metrics
+##### Flux STT metrics
 
 ```
 # HELP engine_flux_cursor_latency_seconds The cursor latency as measured inside impeller, after transcoding and rate-limiting.

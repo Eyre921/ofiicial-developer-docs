@@ -6,8 +6,6 @@ path: enterprise/customer-directory
 
 Directory of enterprise customers using the X API for social listening, research, financial analysis, public safety, brand monitoring, and other use cases.
 
-## Discover companies that use X data to help power innovation
-
 Our enterprise data customers receive commercial-level access to APIs and dedicated account and developer support. Apply for enterprise API access to get the highest level of access and reliability.
 
 [Apply for enterprise access →](/forms/enterprise-api-interest)
@@ -252,6 +250,8 @@ Work with a trusted X Official Partner to expand what's possible for your busine
       <LogoCard title="Verint" href="https://www.verint.com/?utm_source=twitter_data_website&utm_medium=enterprise%20customer%20directory" />
 
       <LogoCard title="Visibrain" href="https://www.visibrain.com/?utm_source=twitter_data_website&utm_medium=enterprise%20customer%20directory" />
+
+      <LogoCard title="Vista Social" href="https://vistasocial.com" />
 
       <LogoCard title="v-tracker" href="https://www.vtracker.com.br" />
 

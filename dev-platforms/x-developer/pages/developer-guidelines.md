@@ -15,15 +15,15 @@ Developer policies and guidelines for the X API, covering allowed use cases, res
     Binding legal terms for API access
   </Card>
 
-  <Card title="Developer Policy" icon="shield-check" href="https://docs.x.com/developer-terms/policy">
+  <Card title="Developer Policy" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-shield-check.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=768533bde161ac68862de87449f011c3" href="https://docs.x.com/developer-terms/policy">
     Rules for building on X
   </Card>
 
-  <Card title="Automation Rules" icon="robot" href="https://help.x.com/en/rules-and-policies/x-automation">
+  <Card title="Automation Rules" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-ai-agents.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=53171c3a2a9432187cf705d13e24651b" href="https://help.x.com/en/rules-and-policies/x-automation">
     Specific rules for bots
   </Card>
 
-  <Card title="Restricted Use Cases" icon="ban" href="https://docs.x.com/developer-terms/restricted-use-cases">
+  <Card title="Restricted Use Cases" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-block.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=702a65b4001948aebcc42635b8e2eac7" href="https://docs.x.com/developer-terms/restricted-use-cases">
     Prohibited activities
   </Card>
 </CardGroup>
@@ -51,7 +51,7 @@ Before building, ask yourself these questions. If you answer **"no"** to any of 
     Does it provide **real value** beyond self-promotion?
   </Card>
 
-  <Card title="Official API Only?" icon="code">
+  <Card title="Official API Only?" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219">
     Are you **only using the official API** (not scraping/browser automation)?
   </Card>
 
@@ -72,73 +72,73 @@ Real-world examples to help you understand what's permitted. **These rules apply
 
 <Tabs>
   <Tab title="Content & Posting">
-    | Scenario                                                              |           Allowed?           | Why                                                |
-    | --------------------------------------------------------------------- | :--------------------------: | -------------------------------------------------- |
-    | Automated account posts scheduled content (news, weather, quotes)     | <Icon icon="circle-check" /> | Informational, no unsolicited mentions             |
-    | App posts RSS feed updates on behalf of user                          | <Icon icon="circle-check" /> | Helpful broadcasting                               |
-    | Alert service posts earthquake/disaster notifications                 | <Icon icon="circle-check" /> | Public safety value                                |
-    | Sports app posts game updates to user's timeline                      | <Icon icon="circle-check" /> | Informational                                      |
-    | App posts stock/crypto prices on schedule                             | <Icon icon="circle-check" /> | Informational, no manipulation                     |
-    | App posts identical content across multiple accounts                  | <Icon icon="circle-xmark" /> | Spam / platform manipulation                       |
-    | App posts to trending topics to gain visibility                       | <Icon icon="circle-xmark" /> | Trend manipulation                                 |
-    | Multiple city-specific alert accounts (e.g., @WeatherNYC, @WeatherLA) | <Icon icon="circle-check" /> | Allowed—non-duplicative, location-specific content |
+    | Scenario                                                              |                                                                                      Allowed?                                                                                     | Why                                                |
+    | --------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | -------------------------------------------------- |
+    | Automated account posts scheduled content (news, weather, quotes)     | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | Informational, no unsolicited mentions             |
+    | App posts RSS feed updates on behalf of user                          | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | Helpful broadcasting                               |
+    | Alert service posts earthquake/disaster notifications                 | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | Public safety value                                |
+    | Sports app posts game updates to user's timeline                      | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | Informational                                      |
+    | App posts stock/crypto prices on schedule                             | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | Informational, no manipulation                     |
+    | App posts identical content across multiple accounts                  |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Spam / platform manipulation                       |
+    | App posts to trending topics to gain visibility                       |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Trend manipulation                                 |
+    | Multiple city-specific alert accounts (e.g., @WeatherNYC, @WeatherLA) | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | Allowed—non-duplicative, location-specific content |
   </Tab>
 
   <Tab title="Replies & Mentions">
-    | Scenario                                               |               Allowed?               | Why                                                                         |
-    | ------------------------------------------------------ | :----------------------------------: | --------------------------------------------------------------------------- |
-    | App responds to @mentions asking for help              |     <Icon icon="circle-check" />     | User-initiated request                                                      |
-    | App auto-replies to anyone mentioning a keyword        |     <Icon icon="circle-xmark" />     | Unsolicited interaction                                                     |
-    | App auto-replies to users who reply to your post       |     <Icon icon="circle-check" />     | User engaged first—limit 1 reply. [Conditions apply](#gray-areas-explained) |
-    | AI-powered app generates and posts replies             | <Icon icon="triangle-exclamation" /> | Requires **prior approval** from X                                          |
-    | App replies with "follow me for more!" to random users |     <Icon icon="circle-xmark" />     | Spam, unsolicited                                                           |
-    | Utility app that unrolls threads when mentioned        |     <Icon icon="circle-check" />     | User-initiated utility                                                      |
+    | Scenario                                               |                                                                                      Allowed?                                                                                     | Why                                                                         |
+    | ------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | --------------------------------------------------------------------------- |
+    | App responds to @mentions asking for help              | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | User-initiated request                                                      |
+    | App auto-replies to anyone mentioning a keyword        |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Unsolicited interaction                                                     |
+    | App auto-replies to users who reply to your post       | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | User engaged first—limit 1 reply. [Conditions apply](#gray-areas-explained) |
+    | AI-powered app generates and posts replies             |      <Icon icon="https://mintcdn.com/x-preview/jLbdFJYHCS9a6gmb/icons/xds/icon-warning.svg?fit=max&auto=format&n=jLbdFJYHCS9a6gmb&q=85&s=3760ceda7c43e1ffbd9f8b7ccbf83cca" />     | Requires **prior approval** from X                                          |
+    | App replies with "follow me for more!" to random users |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Spam, unsolicited                                                           |
+    | Utility app that unrolls threads when mentioned        | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | User-initiated utility                                                      |
   </Tab>
 
   <Tab title="Direct Messages">
-    | Scenario                                                  |           Allowed?           | Why                                                                     |
-    | --------------------------------------------------------- | :--------------------------: | ----------------------------------------------------------------------- |
-    | App responds to DMs with helpful info                     | <Icon icon="circle-check" /> | User-initiated                                                          |
-    | App sends affiliate links when user DMs first             | <Icon icon="circle-check" /> | User-initiated—must disclose. [Conditions apply](#gray-areas-explained) |
-    | App auto-DMs new followers with welcome message           | <Icon icon="circle-xmark" /> | Unsolicited, even to followers                                          |
-    | App bulk-DMs users about a product launch                 | <Icon icon="circle-xmark" /> | Spam                                                                    |
-    | Support integration asks "How can I help?" after user DMs | <Icon icon="circle-check" /> | User-initiated conversation                                             |
+    | Scenario                                                  |                                                                                      Allowed?                                                                                     | Why                                                                     |
+    | --------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | ----------------------------------------------------------------------- |
+    | App responds to DMs with helpful info                     | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | User-initiated                                                          |
+    | App sends affiliate links when user DMs first             | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | User-initiated—must disclose. [Conditions apply](#gray-areas-explained) |
+    | App auto-DMs new followers with welcome message           |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Unsolicited, even to followers                                          |
+    | App bulk-DMs users about a product launch                 |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Spam                                                                    |
+    | Support integration asks "How can I help?" after user DMs | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | User-initiated conversation                                             |
   </Tab>
 
   <Tab title="Engagement">
-    | Scenario                                              |           Allowed?           | Why                                                                                    |
-    | ----------------------------------------------------- | :--------------------------: | -------------------------------------------------------------------------------------- |
-    | Third-party app lets user tap a like button on a post | <Icon icon="circle-check" /> | User-initiated through the app                                                         |
-    | App auto-likes posts containing a hashtag             | <Icon icon="circle-xmark" /> | Automated, not user-initiated                                                          |
-    | Mobile app has "auto-like" feature for selected users | <Icon icon="circle-xmark" /> | Automated, not user-initiated                                                          |
-    | Service sells likes or offers "bulk like" packages    | <Icon icon="circle-xmark" /> | Selling engagement is prohibited                                                       |
-    | App reposts content from a curated list               | <Icon icon="circle-check" /> | OK for informational purposes, no bulk spam. [Conditions apply](#gray-areas-explained) |
-    | Growth tool bulk-follows accounts to grow audience    | <Icon icon="circle-xmark" /> | Manipulation                                                                           |
-    | App follows back anyone who follows it                | <Icon icon="circle-xmark" /> | Bulk/aggressive following                                                              |
-    | App adds users to lists in bulk                       | <Icon icon="circle-xmark" /> | Indiscriminate list manipulation                                                       |
+    | Scenario                                              |                                                                                      Allowed?                                                                                     | Why                                                                                    |
+    | ----------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | -------------------------------------------------------------------------------------- |
+    | Third-party app lets user tap a like button on a post | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | User-initiated through the app                                                         |
+    | App auto-likes posts containing a hashtag             |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Automated, not user-initiated                                                          |
+    | Mobile app has "auto-like" feature for selected users |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Automated, not user-initiated                                                          |
+    | Service sells likes or offers "bulk like" packages    |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Selling engagement is prohibited                                                       |
+    | App reposts content from a curated list               | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | OK for informational purposes, no bulk spam. [Conditions apply](#gray-areas-explained) |
+    | Growth tool bulk-follows accounts to grow audience    |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Manipulation                                                                           |
+    | App follows back anyone who follows it                |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Bulk/aggressive following                                                              |
+    | App adds users to lists in bulk                       |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Indiscriminate list manipulation                                                       |
 
     <Warning>**Likes must be directly initiated by the authenticated user.** Automated, bulk, or indiscriminate liking — including auto-liking by keyword, hashtag, user, or schedule — is prohibited. Apps may not offer "auto-like" features or sell likes as a service. This applies to all apps—bots, mobile apps, browser extensions, or any integration.</Warning>
   </Tab>
 
   <Tab title="Promotions & Commerce">
-    | Scenario                                             |               Allowed?               | Why                                                                                         |
-    | ---------------------------------------------------- | :----------------------------------: | ------------------------------------------------------------------------------------------- |
-    | App sends product recommendations when asked         |     <Icon icon="circle-check" />     | User-initiated                                                                              |
-    | App replies to random posts with affiliate links     |     <Icon icon="circle-xmark" />     | Unsolicited spam                                                                            |
-    | Giveaway app that requires follows/retweets to enter | <Icon icon="triangle-exclamation" /> | Risky—can be seen as engagement manipulation                                                |
-    | Service selling likes/follows/retweets               |     <Icon icon="circle-xmark" />     | Strictly prohibited                                                                         |
-    | Tip service that sends crypto when user requests     |     <Icon icon="circle-check" />     | User-initiated—comply with financial regulations. [Conditions apply](#gray-areas-explained) |
+    | Scenario                                             |                                                                                      Allowed?                                                                                     | Why                                                                                         |
+    | ---------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | ------------------------------------------------------------------------------------------- |
+    | App sends product recommendations when asked         | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | User-initiated                                                                              |
+    | App replies to random posts with affiliate links     |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Unsolicited spam                                                                            |
+    | Giveaway app that requires follows/retweets to enter |      <Icon icon="https://mintcdn.com/x-preview/jLbdFJYHCS9a6gmb/icons/xds/icon-warning.svg?fit=max&auto=format&n=jLbdFJYHCS9a6gmb&q=85&s=3760ceda7c43e1ffbd9f8b7ccbf83cca" />     | Risky—can be seen as engagement manipulation                                                |
+    | Service selling likes/follows/retweets               |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Strictly prohibited                                                                         |
+    | Tip service that sends crypto when user requests     | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | User-initiated—comply with financial regulations. [Conditions apply](#gray-areas-explained) |
   </Tab>
 
   <Tab title="Data & Research">
-    | Scenario                                          |           Allowed?           | Why                               |
-    | ------------------------------------------------- | :--------------------------: | --------------------------------- |
-    | App tracks brand mentions for analytics dashboard | <Icon icon="circle-check" /> | Valid use case                    |
-    | App scrapes X via browser automation (not API)    | <Icon icon="circle-xmark" /> | **Permanent suspension**—API only |
-    | App stores X data to train AI/ML models           | <Icon icon="circle-xmark" /> | Prohibited (except Grok)          |
-    | App redistributes >1.5M posts in 30 days          | <Icon icon="circle-xmark" /> | Exceeds redistribution limits     |
-    | App benchmarks X performance vs competitors       | <Icon icon="circle-xmark" /> | Prohibited competitive analysis   |
-    | Academic research on public conversation trends   | <Icon icon="circle-check" /> | Valid with proper data handling   |
+    | Scenario                                          |                                                                                      Allowed?                                                                                     | Why                               |
+    | ------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | --------------------------------- |
+    | App tracks brand mentions for analytics dashboard | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | Valid use case                    |
+    | App scrapes X via browser automation (not API)    |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | **Permanent suspension**—API only |
+    | App stores X data to train AI/ML models           |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Prohibited (except Grok)          |
+    | App redistributes >1.5M posts in 30 days          |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Exceeds redistribution limits     |
+    | App benchmarks X performance vs competitors       |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | Prohibited competitive analysis   |
+    | Academic research on public conversation trends   | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | Valid with proper data handling   |
 
     <Danger>
       **Non-API automation (scraping, browser automation) results in permanent suspension.** Always use the official X API.
@@ -208,18 +208,18 @@ All automated accounts using the X API must meet these requirements:
 
 ### Automated actions: what's allowed?
 
-| Action              |               Allowed?               | Rules                                                                                        |
-| ------------------- | :----------------------------------: | -------------------------------------------------------------------------------------------- |
-| **Post tweets**     |     <Icon icon="circle-check" />     | No unsolicited @mentions. No identical cross-posting.                                        |
-| **Reply to users**  | <Icon icon="triangle-exclamation" /> | Only if user engaged first. Max **1 reply per interaction**.                                 |
-| **Send DMs**        | <Icon icon="triangle-exclamation" /> | Only after user DMs you first. Easy opt-out required.                                        |
-| **Like posts**      | <Icon icon="triangle-exclamation" /> | Must be directly user-initiated. Auto-liking, bulk liking, and selling likes are prohibited. |
-| **Repost**          | <Icon icon="triangle-exclamation" /> | OK for informational/entertainment. No bulk spam.                                            |
-| **Quote tweet**     | <Icon icon="triangle-exclamation" /> | Same rules as repost—no spam or manipulation.                                                |
-| **Follow/Unfollow** |     <Icon icon="circle-xmark" />     | No bulk, aggressive, or automated following.                                                 |
-| **Add to Lists**    | <Icon icon="triangle-exclamation" /> | No bulk or indiscriminate additions.                                                         |
-| **Bookmark**        |     <Icon icon="circle-check" />     | Fine for personal/automated use.                                                             |
-| **Search/Read**     |     <Icon icon="circle-check" />     | Standard use within rate limits.                                                             |
+| Action              |                                                                                      Allowed?                                                                                     | Rules                                                                                        |
+| ------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | -------------------------------------------------------------------------------------------- |
+| **Post tweets**     | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | No unsolicited @mentions. No identical cross-posting.                                        |
+| **Reply to users**  |      <Icon icon="https://mintcdn.com/x-preview/jLbdFJYHCS9a6gmb/icons/xds/icon-warning.svg?fit=max&auto=format&n=jLbdFJYHCS9a6gmb&q=85&s=3760ceda7c43e1ffbd9f8b7ccbf83cca" />     | Only if user engaged first. Max **1 reply per interaction**.                                 |
+| **Send DMs**        |      <Icon icon="https://mintcdn.com/x-preview/jLbdFJYHCS9a6gmb/icons/xds/icon-warning.svg?fit=max&auto=format&n=jLbdFJYHCS9a6gmb&q=85&s=3760ceda7c43e1ffbd9f8b7ccbf83cca" />     | Only after user DMs you first. Easy opt-out required.                                        |
+| **Like posts**      |      <Icon icon="https://mintcdn.com/x-preview/jLbdFJYHCS9a6gmb/icons/xds/icon-warning.svg?fit=max&auto=format&n=jLbdFJYHCS9a6gmb&q=85&s=3760ceda7c43e1ffbd9f8b7ccbf83cca" />     | Must be directly user-initiated. Auto-liking, bulk liking, and selling likes are prohibited. |
+| **Repost**          |      <Icon icon="https://mintcdn.com/x-preview/jLbdFJYHCS9a6gmb/icons/xds/icon-warning.svg?fit=max&auto=format&n=jLbdFJYHCS9a6gmb&q=85&s=3760ceda7c43e1ffbd9f8b7ccbf83cca" />     | OK for informational/entertainment. No bulk spam.                                            |
+| **Quote tweet**     |      <Icon icon="https://mintcdn.com/x-preview/jLbdFJYHCS9a6gmb/icons/xds/icon-warning.svg?fit=max&auto=format&n=jLbdFJYHCS9a6gmb&q=85&s=3760ceda7c43e1ffbd9f8b7ccbf83cca" />     | Same rules as repost—no spam or manipulation.                                                |
+| **Follow/Unfollow** |  <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45" /> | No bulk, aggressive, or automated following.                                                 |
+| **Add to Lists**    |      <Icon icon="https://mintcdn.com/x-preview/jLbdFJYHCS9a6gmb/icons/xds/icon-warning.svg?fit=max&auto=format&n=jLbdFJYHCS9a6gmb&q=85&s=3760ceda7c43e1ffbd9f8b7ccbf83cca" />     | No bulk or indiscriminate additions.                                                         |
+| **Bookmark**        | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | Fine for personal/automated use.                                                             |
+| **Search/Read**     | <Icon icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59" /> | Standard use within rate limits.                                                             |
 
 ***
 
@@ -255,7 +255,7 @@ Many developers have questions about edge cases. Here's guidance on common gray 
     <Warning>Deploying AI-generated replies without approval is a violation, even if the content itself is helpful.</Warning>
   </Accordion>
 
-  <Accordion title="Welcome Messages to New Followers" icon="envelope">
+  <Accordion title="Welcome Messages to New Followers" icon="https://mintcdn.com/x-preview/UIyI4eSwiP2OpODQ/icons/xds/icon-envelope.svg?fit=max&auto=format&n=UIyI4eSwiP2OpODQ&q=85&s=fbd38dbcd64d8688d3c9912ac30c4621">
     **Not allowed** as automated DMs—this counts as unsolicited contact, even though they followed you.
 
     **Alternatives:**
@@ -420,14 +420,14 @@ You must delete X Content from your systems when requested:
 Your obligations as a developer:
 
 <AccordionGroup>
-  <Accordion title="Security Requirements" icon="shield">
+  <Accordion title="Security Requirements" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-shield-keyhole.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=a0e05514090c8a6af232297bfb9c4055">
     * Use **industry-standard security** practices to protect X data
     * Never share your API credentials or tokens
     * Store credentials securely (environment variables, secret managers—not in code)
     * Implement proper authentication in your apps
   </Accordion>
 
-  <Accordion title="Breach Notification" icon="bell">
+  <Accordion title="Breach Notification" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bell.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=5e0b3dcfbb39ba3d4619931d7cd927d1">
     If you experience a security breach involving X data:
 
     * **Notify X immediately**
@@ -441,7 +441,7 @@ Your obligations as a developer:
     * Don't use confidential info for competitive purposes
   </Accordion>
 
-  <Accordion title="Audit Rights" icon="magnifying-glass">
+  <Accordion title="Audit Rights" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834">
     * X may audit your compliance **up to once per year**
     * You must provide reasonable access and documentation
     * Keep records of how you use X data
@@ -453,7 +453,7 @@ Your obligations as a developer:
 ## Summary: do's and don'ts
 
 <Tabs>
-  <Tab title="Do" icon="circle-check">
+  <Tab title="Do" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-checkmark-circle.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=bd3e78cd745fde73a934535acacaff59">
     **For Automated Accounts:**
 
     * Enable "Automated" profile label
@@ -473,7 +473,7 @@ Your obligations as a developer:
     * Keep records of your X data usage
   </Tab>
 
-  <Tab title="Don't" icon="circle-xmark">
+  <Tab title="Don't" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-close-circle-lg.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=acd38e6d809cbe13214e52f85f30eb45">
     **For Automated Accounts:**
 
     * Hide automated nature

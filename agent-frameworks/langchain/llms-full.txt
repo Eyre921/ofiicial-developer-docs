@@ -18,7 +18,7 @@ Source: https://docs.langchain.com/build-overview
 
         <h2 class="flex whitespace-pre-wrap group font-semibold">Choose your starting point</h2>
 
-        Deep Agents, LangChain, and LangGraph share the same stack, so choose based on how much control you need:
+        Deep Agents, LangChain, and LangGraph share the same open source stack, so choose based on how much control you need. For managed hosting or no-code, start with Managed Deep Agents or Fleet:
 
         <Tabs>
         <Tab title="Python">
@@ -32,6 +32,15 @@ Source: https://docs.langchain.com/build-overview
           icon="/images/brand/deep-agents-icon.png"
         >
         Build agents for complex, long-running tasks. A complete agent harness with planning, subagents, a virtual filesystem, and long-term memory built in. The fastest way to start.
+        </Card>
+
+        <Card
+          title="Managed Deep Agents"
+          cta="Get started"
+          href="/langsmith/python/managed-deep-agents-overview"
+          icon="/images/brand/deep-agents-icon.png"
+        >
+        Build deep agents with managed deployment infrastructure. You write the agent; LangSmith runs the harness and runtime.
         </Card>
 
         <Card
@@ -52,6 +61,17 @@ Source: https://docs.langchain.com/build-overview
         Low-level orchestration for stateful, long-running agents: durable execution, streaming, memory, and human-in-the-loop.
         </Card>
 
+        <Card
+          title="Prefer no-code?"
+          cta="View Fleet"
+          href="/langsmith/fleet"
+          icon="wand"
+          type="tip"
+          className="card-tip"
+        >
+        Build and run agents without writing code using LangSmith Fleet.
+        </Card>
+
         </CardGroup>
 
         </Tab>
@@ -66,6 +86,15 @@ Source: https://docs.langchain.com/build-overview
           icon="/images/brand/deep-agents-icon.png"
         >
         Build agents for complex, long-running tasks. A complete agent harness with planning, subagents, a virtual filesystem, and long-term memory built in. The fastest way to start.
+        </Card>
+
+        <Card
+          title="Managed Deep Agents"
+          cta="Get started"
+          href="/langsmith/javascript/managed-deep-agents-overview"
+          icon="/images/brand/deep-agents-icon.png"
+        >
+        Build deep agents with managed deployment infrastructure. You write the agent; LangSmith runs the harness and runtime.
         </Card>
 
         <Card
@@ -84,6 +113,17 @@ Source: https://docs.langchain.com/build-overview
           icon="/images/brand/langgraph-icon.png"
         >
         Low-level orchestration for stateful, long-running agents: durable execution, streaming, memory, and human-in-the-loop.
+        </Card>
+
+        <Card
+          title="Prefer no-code?"
+          cta="View Fleet"
+          href="/langsmith/fleet"
+          icon="wand"
+          type="tip"
+          className="card-tip"
+        >
+        Build and run agents without writing code using LangSmith Fleet.
         </Card>
 
         </CardGroup>
@@ -12138,6 +12178,8 @@ LangChain needs cross-account IAM permissions to provision and manage resources 
 
 Permissions are granted through a single cross-account IAM role that you create during onboarding by applying the [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role).
 
+LangChain provides the external ID used in the role's trust policy. Copy it using the button next to the **Data Planes** header in **Settings > Data Planes**, and use it when applying the module. The role's `ExternalId` condition must match this value.
+
 ### How least privilege is enforced
 
 The role is scoped to only what BYOC operations require:
@@ -12301,6 +12343,10 @@ In the Kubernetes cluster, passive workloads that do not interfere with LangSmit
 - Do not edit the resources LangChain provisions.
 
 LangChain is not responsible for downtime or issues caused by interfering workloads.
+</Accordion>
+
+<Accordion title="What value do I set to the external ID for my role?">
+LangChain provides the external ID. Navigate to **Settings > Data Planes** and use the copy button next to the **Data Planes** header to copy it. Use this value when applying the `langsmith-byoc-role` Terraform module. The role's trust policy must use this value in its `ExternalId` condition.
 </Accordion>
 
 <Accordion title="How long does provisioning take?">
@@ -12704,7 +12750,9 @@ Send your organization ID to the LangChain team to enable BYOC.
 </Step>
 
 <Step title="Create the IAM role">
-Apply the [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) in your AWS account. This creates the cross-account role LangChain assumes to provision and manage the data plane.
+LangChain provides the external ID for the IAM role. Navigate to **Settings > Data Planes** and use the copy button next to the **Data Planes** header to copy it.
+
+Apply the [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) in your AWS account using the copied external ID. This creates the cross-account role LangChain assumes to provision and manage the data plane. The role's trust policy must use this value in its `ExternalId` condition.
 
 <Note>
 LangChain recommends a fresh AWS account dedicated to LangSmith BYOC.
@@ -12718,7 +12766,6 @@ Navigate to **Settings > Data Planes** and create a data plane with the followin
 - **Name**: Lowercase letters, digits, and hyphens, up to 24 characters.
 - **AWS region**: One of the [supported regions](/langsmith/byoc#regions-and-cloud-providers).
 - **AWS IAM role ARN**: The ARN of the role you created in the previous step, which LangSmith assumes in your account.
-- **External ID**: Must match the `ExternalId` condition in the role's trust policy.
 - **VPC CIDR range**: A private RFC 1918 range, from `/16` to `/18`.
 - **Load balancer access**: Private by default, which keeps the ingress load balancer reachable only from your VPC. Set it to **Public** to make the load balancer internet-facing.
 </Step>
@@ -13198,7 +13245,7 @@ Before LangChain can provision a data plane, you need the following:
 - **A LangSmith organization on AWS**: Create one at [aws.smith.langchain.com](https://aws.smith.langchain.com), then send your organization ID to the LangChain team to enable BYOC.
 - **An AWS account**: LangChain recommends a fresh account dedicated to LangSmith BYOC, but it is not required.
 - **A supported region**: Pick one of the AWS regions listed above.
-- **An IAM role and external ID**: Apply the [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) to create the role LangChain assumes to provision and manage your data plane. You must use this module.
+- **An IAM role and external ID**: LangChain provides the external ID. Copy it using the button next to the **Data Planes** header in **Settings > Data Planes**, then apply the [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) with this value to create the role LangChain assumes to provision and manage your data plane. You must use this module.
 
 ---
 
@@ -63123,7 +63170,7 @@ For request examples and translation behavior, see [API formats](/langsmith/llm-
 
 ## Pricing
 
-Gateway Credits are available on all paid plans besides Enterprise. See [the pricing page](https://www.langchain.com/pricing) for plan details and current rates. Gateway Credits are denominated in **LangChain Credit Units (LCUs)** at **$1.50 per LCU**; each call consumes LCUs based on token usage.
+Gateway Credits are available on all paid plans besides Enterprise. See [the pricing page](https://www.langchain.com/pricing) for plan details and current rates. Gateway Credits are denominated in **LangChain Credit Units (LCUs)**; each call consumes LCUs based on token usage.
 
 Standard gateway [spend policies](/langsmith/llm-gateway-spend-policies) apply to hosted-model traffic, so any organization, workspace, API key, or user cap you have configured also governs Gateway Credit usage. You can control Gateway Credit consumption with the same tools you use for bring-your-own-key providers. For example, cap a specific API key at $200/month across every provider, or set a workspace-wide daily limit that includes hosted-model calls.
 
@@ -63937,6 +63984,77 @@ The sync script in [step 3](#step-3-sync-policies-with-your-customer-list) appli
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-header-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+</Callout>
+</div>
+
+
+# Model access policies
+Source: https://docs.langchain.com/langsmith/llm-gateway-model-access-policies
+
+<Note>
+**Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
+</Note>
+
+A model access policy defines which providers and models are permitted through the [LLM Gateway](/langsmith/llm-gateway). The gateway blocks requests for providers or models the policy does not include, returning a `403` response. If no policy applies, all providers and models are available.
+
+## Policy configuration
+
+A model access policy lists one or more providers, each with an access mode:
+
+- **All models**: Every model the provider offers is permitted.
+- **Selected models**: Only the models you specify are permitted. At least one model is required.
+
+<Note>
+Model access policies do not yet support [custom model providers](/langsmith/llm-gateway-custom-providers). While a model access policy applies to a request, the gateway blocks the `/providers/{configName}` and `/models/{configName}` routes.
+</Note>
+
+## Scopes and overrides
+
+A model access policy is scoped to one subject tier:
+
+| Tier | Applies to |
+| --- | --- |
+| Organization | All users and workspaces in the organization |
+| Workspace | All users in a workspace |
+| User | A single user |
+| API key | A single API key |
+
+### Policy overrides
+
+Policy overrides let you grant a more specific subject different access than the broader default. A common case is giving one API key access to a premium model that is not available to the rest of the organization.
+
+When a request matches policies at multiple tiers, only the most specific tier applies, in the order API key, user, workspace, then organization. The more specific policy replaces the broader one entirely. For example, if the organization policy permits OpenAI and Anthropic, and an API key policy permits only OpenAI and Gemini, requests using that key can access OpenAI and Gemini only. If multiple policies match at the same tier, a model must be permitted by all of them to be accessible.
+
+## Create a model access policy
+
+<Warning>
+Creating and managing policies requires `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
+</Warning>
+
+1. Go to **Settings → Gateway → LLM Gateway** and select **Model Access**.
+1. Click **Create model access**.
+1. Enter a **Policy name**.
+1. Select the scope under **Applies to** (organization, workspace, user, or API key).
+1. Configure the **Allowed providers and models**.
+1. Save.
+
+Policies take effect immediately.
+
+## Next steps
+
+- [Spend policies](/langsmith/llm-gateway-spend-policies): set cost caps on LLM usage.
+- [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies): limit request or token throughput.
+- [Per-customer policies](/langsmith/llm-gateway-header-policies): split a policy by a custom request header so each end customer gets its own allowance.
+- [Data protection](/langsmith/llm-gateway-data-protection): add data protection policies.
+
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+</Callout>
+<Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-model-access-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 </Callout>
 </div>
 
@@ -130590,7 +130708,7 @@ This integration is in beta, so its API may change.
 Use the LangSmith LiveKit integration to trace your [LiveKit Agents](https://docs.livekit.io/agents/) voice agents, including their transcripts and audio recordings. For high-level conventions, see [Voice tracing fundamentals](/langsmith/trace-voice-fundamentals).
 
 <Note>
-This setup requires `langsmith[livekit]>=0.11.2` and `livekit-agents>=1.6`.
+This setup requires `langsmith[livekit]>=0.11.2` and `livekit-agents>=1.6`. LiveKit Agents 1.7 and later require `langsmith[livekit]>=0.12.4`.
 </Note>
 
 Each conversation appears as one LangSmith trace with its pipeline events, latency, and token metrics.
@@ -132030,7 +132148,7 @@ For non-LangChain applications or custom instrumentation, you can trace your app
    </CodeGroup>
 
    <Note>
-   Depending on how your otel exporter is configured, you may need to append `/v1/traces` to the endpoint if you are only sending traces.
+   `OTEL_EXPORTER_OTLP_ENDPOINT` is a base URL. OTLP/HTTP exporters append the signal path (`/v1/traces`) themselves, so do not include it: setting the base endpoint to `https://api.smith.langchain.com/otel/v1/traces` sends traces to `/otel/v1/traces/v1/traces`, which returns `404`. Include the full path only with the per-signal `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` variable or a collector exporter's `traces_endpoint`, which are used exactly as given.
    </Note>
 
    <Note>
@@ -137598,7 +137716,9 @@ Click on an agent or skill from the Context Hub to view it.
 
 ![An Agent context with an AGENTS.md file open, showing the environments panel, commit history, and file tree.](/langsmith/images/context-hub-agent-view.png)
 
-The middle panel shows the file tree for the current commit and the right panel previews the selected file. Click a file in the middle panel to open it, then edit it in the right panel and save your changes to create a new commit.
+The middle panel shows the file tree for the current commit and the right panel previews the selected file. Click a file in the middle panel to open it.
+
+Markdown files open in **Preview**, which is a read-only rendering. To change a file, switch to the **Edit** tab in the top right of the right panel: it shows the exact text in the file. Save your changes to create a new commit.
 
 Each saved change creates a new **commit** in the **Commit History** panel on
 the left, so you can browse, compare, and revert prior versions without losing
@@ -142106,7 +142226,7 @@ Pair `dcode doctor` with `dcode config show` when you need both a high-level hea
 | `dcode skills create NAME [--project]`    | Create a new skill with template `SKILL.md`. Idempotent—re-creating an existing skill prints an informational message instead of an error |
 | `dcode skills info NAME [--project]`      | Show detailed information about a skill |
 | `dcode skills delete NAME [--project] [-f]` | Delete a skill and its contents. Supports `--dry-run` |
-| `dcode threads list [--agent NAME] [--limit N]` | List sessions (alias: `ls`). Default limit: 20. `-n` is a short flag for `--limit`. Additional flags: `--sort {created,updated}`, `--branch TEXT` (filter by git branch), `--cwd [PATH]` (filter by working directory; bare flag uses current directory), `-v`/`--verbose` (show all columns including branch, created time, and initial prompt), `-r`/`--relative` (relative timestamps) |
+| `dcode threads list [--agent NAME] [--limit N]` | List sessions (alias: `ls`). Default limit: 20. Set `DEEPAGENTS_CODE_RECENT_THREADS` to change the default, or use `-n` as a short flag for `--limit`. Additional flags: `--sort {created,updated}`, `--branch TEXT` (filter by git branch), `--cwd [PATH]` (filter by working directory; bare flag uses current directory), `-v`/`--verbose` (show all columns including branch, created time, and initial prompt), `-r`/`--relative` (relative timestamps) |
 | `dcode threads delete ID`       | Delete a session. Supports `--dry-run` |
 | `dcode mcp login [NAME] [--mcp-config PATH]` | With `NAME`, run the OAuth login flow for a server marked `auth: "oauth"`. Omit `NAME` to list configured OAuth servers that need login. See [MCP tools](/oss/deepagents/code/mcp-tools#oauth-login) |
 | `dcode mcp config`              | Show MCP config discovery paths        |
@@ -143596,6 +143716,10 @@ All Deep Agents Code-specific environment variables use the `DEEPAGENTS_CODE_` p
 
 <ResponseField name="DEEPAGENTS_CODE_READ_PROJECT_DOTENV" type="string" default="true" post={["optional"]}>
     Load the project `.env` (found walking up from the working directory) into the process environment. Set to a falsy value to skip an untrusted repository's file; the global `~/.deepagents/.env` still loads. Overrides `[startup].read_project_dotenv`. See [Loading order and precedence](#loading-order-and-precedence).
+</ResponseField>
+
+<ResponseField name="DEEPAGENTS_CODE_RECENT_THREADS" type="integer" default="20" post={["optional"]}>
+    Maximum number of recent threads to load and display in thread lists and selectors. Values below `1` are clamped to `1`, and non-integer values use the default. `-n` or `--limit` overrides this value for `dcode threads list`.
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_RECURSION_LIMIT" type="integer" post={["optional"]}>
@@ -150048,6 +150172,10 @@ Source: https://docs.langchain.com/langsmith/smith-api/orgs/list-org-personal-ac
 
 # Create org personal access token
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/create-org-personal-access-token
+
+
+# List all org personal access tokens
+Source: https://docs.langchain.com/langsmith/smith-api/orgs/list-all-org-personal-access-tokens
 
 
 # Delete org personal access token

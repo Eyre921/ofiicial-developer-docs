@@ -25,7 +25,7 @@ The [API Playground](https://github.com/xdevplatform/playground) is a local mock
     Visual endpoint explorer at `http://localhost:8080/playground` for testing in the browser.
   </Card>
 
-  <Card title="No credits needed" icon="coins">
+  <Card title="No credits needed" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-coins.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=d8b17de3fb4032d86b77606ea95fcb55">
     Everything runs locally with mock data — no API keys or billing required.
   </Card>
 
@@ -66,7 +66,7 @@ The server starts at `http://localhost:8080` by default.
 
 Make requests just like you would to the real API — use `test_token` as your bearer token:
 
-```bash theme={null}
+```bash title="me" lines wrap icon="terminal" theme={null}
 # Look up a user
 curl -H "Authorization: Bearer test_token" \
   http://localhost:8080/2/users/me
@@ -107,7 +107,7 @@ Open `http://localhost:8080/playground` in your browser for the interactive UI.
     CLI tool for the real X API with built-in authentication.
   </Card>
 
-  <Card title="Make your first request" icon="rocket" href="/make-your-first-request">
+  <Card title="Make your first request" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/make-your-first-request">
     Ready for the real API? Make your first request.
   </Card>
 </CardGroup>

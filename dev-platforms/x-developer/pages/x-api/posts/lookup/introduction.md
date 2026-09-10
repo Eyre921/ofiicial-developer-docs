@@ -20,7 +20,7 @@ Posts are the core content on X. Each Post can contain:
 Posts can be edited up to 5 times within 30 minutes of creation. Each edit generates a new Post ID, and the edit history is preserved.
 
 <CardGroup>
-  <Card title="Single Post" icon="message">
+  <Card title="Single Post" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=9fde7d51b4f18c96d3a38a81d519761f">
     Retrieve a specific Post by ID
   </Card>
 
@@ -28,7 +28,7 @@ Posts can be edited up to 5 times within 30 minutes of creation. Each edit gener
     Retrieve up to 100 Posts in one request
   </Card>
 
-  <Card title="Edit History" icon="clock-rotate-left">
+  <Card title="Edit History" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-history.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=6afe17587c08ee621e37afde19a07ff1">
     Access the complete edit history of a Post
   </Card>
 
@@ -68,15 +68,15 @@ Posts can be edited up to 5 times within 30 minutes of creation. Each edit gener
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/posts/lookup/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/posts/lookup/quickstart">
     Make your first Post lookup request
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/posts/lookup/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/posts/lookup/integrate">
     Learn key concepts and best practices
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/get-post-by-id">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/get-post-by-id">
     See full endpoint documentation
   </Card>
 

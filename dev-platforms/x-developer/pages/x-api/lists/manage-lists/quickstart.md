@@ -47,7 +47,7 @@ This guide walks you through creating, updating, and deleting Lists.
         }'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -70,7 +70,7 @@ This guide walks you through creating, updating, and deleting Lists.
       print(f"List created: {response.data.id} - {response.data.name}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -125,7 +125,7 @@ Modify a List's name, description, or privacy:
     }'
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -148,7 +148,7 @@ Modify a List's name, description, or privacy:
   print(f"Updated: {response.data.updated}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({
@@ -196,7 +196,7 @@ Modify a List's name, description, or privacy:
         -H "Authorization: Bearer $USER_ACCESS_TOKEN"
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -214,7 +214,7 @@ Modify a List's name, description, or privacy:
       print(f"Deleted: {response.data.deleted}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -253,19 +253,19 @@ Modify a List's name, description, or privacy:
 ## Next steps
 
 <CardGroup>
-  <Card title="List members" icon="users" href="/x-api/lists/list-members/introduction">
+  <Card title="List members" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-people.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=9d5f3f82edcd2a4070364193436e7980" href="/x-api/lists/list-members/introduction">
     Add and remove List members
   </Card>
 
-  <Card title="List lookup" icon="magnifying-glass" href="/x-api/lists/list-lookup/quickstart">
+  <Card title="List lookup" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/lists/list-lookup/quickstart">
     Retrieve List details
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/lists/manage-lists/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/lists/manage-lists/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/lists/create-list">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/lists/create-list">
     Full endpoint documentation
   </Card>
 </CardGroup>

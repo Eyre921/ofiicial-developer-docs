@@ -304,7 +304,7 @@ An alternate and useful parallel workflow. This workflow begins with an LLM brea
 </Frame>
 
 <Info>
-  ### Subtask Workflow Cookbook
+  ### Subtask workflow cookbook
 
   For a more detailed walk-through refer to the [notebook here](https://togetherai.link/agent-recipes-deep-dive-orchestrator).
 </Info>

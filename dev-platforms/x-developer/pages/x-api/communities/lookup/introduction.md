@@ -17,7 +17,7 @@ Communities are public or private groups on X where members can share Posts, dis
     Get details for a specific Community
   </Card>
 
-  <Card title="Search" icon="magnifying-glass">
+  <Card title="Search" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834">
     Find Communities by keyword
   </Card>
 </CardGroup>
@@ -66,11 +66,11 @@ community.fields=name,description,member_count,created_at" \
 </Note>
 
 <CardGroup>
-  <Card title="Search Communities" icon="magnifying-glass" href="/x-api/communities/search/introduction">
+  <Card title="Search Communities" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/communities/search/introduction">
     Find Communities by keyword
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/communities/get-community-by-id">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/communities/get-community-by-id">
     Full endpoint documentation
   </Card>
 </CardGroup>

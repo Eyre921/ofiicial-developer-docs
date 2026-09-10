@@ -235,32 +235,19 @@ The result identifies a machine-payments route for using the service. Before pay
 
 ## List your company in Stripe Directory
 
-### Add yourself to search results
+Make your business discoverable to developers and AI agents by publishing a public Stripe profile. After you publish your profile, your company appears in Stripe Directory search results.
 
-To make your business discoverable in Stripe Directory, set up a public Stripe profile. Your listing appears in search results immediately after you publish your profile.
+### Be discoverable and payable by agents on the Stripe Directory
 
-> Stripe users appear in search results only if they opt in.
+Enter your email and we'll contact you about being listed.
 
-1. Set up your [Stripe profile](https://docs.stripe.com/get-started/account/profile.md). You can leave some fields blank, such as phone or address, if you don’t want them visible publicly.
-2. Keep the **Make your profile private** option disabled.
-
-To maximize the likelihood that your business appears in users’ search results, take the following steps:
-
-1. **Make sure Stripe can crawl your site**: Our search uses your website content to match your business to relevant searches. If your site blocks Stripe crawlers, you make yourself hard to find. [Learn how to allow Stripe to crawl your site](https://docs.stripe.com/stripebot-crawler.md).
-2. **Write a clear Stripe profile description** 
-   - Describe what you do in plain language, using the words your customers would actually type. Think about the problem you solve, not how you’d market it. For example, “it helps freelancers send invoices and get paid faster” finds more customers than “a next-generation financial operations platform.”
-   - Use entire phrases such as “appointment booking for salons” instead of scattering the words separately.
-   - If you offer multiple things, mention all of them—“email marketing, newsletters, and audience analytics” match a wider range of searches than “email.”
-3. **Make your Stripe profile display name and handle are accurate**: If someone searches any of these directly, we’ll show your profile first. Make sure they all match what customers know you as.
-
-### View your Directory listing
-
-1. Ensure you’ve installed the Stripe CLI and logged in with the same account that set up your Stripe Profile.
-2. Use `stripe directory me` to view your own Directory listing.
-
-### Remove yourself from search results
-
-To remove yourself from search results, enable **Make your profile private** in your [Stripe profile settings](https://docs.stripe.com/get-started/account/profile.md).
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/directory" \
+  -d '{"email": "EMAIL", "preview": "stripe_directory_mcp_server_listing_preview"}'
+```
 
 ## See also
 

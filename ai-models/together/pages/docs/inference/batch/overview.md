@@ -43,7 +43,7 @@ Batch jobs run against a separate rate-limit pool from the standard real-time AP
 * Up to 30B tokens enqueued per model at any time.
 * Completion window defaults to `24h` and cannot be changed; it is a best-effort target.
 
-See [rate limits](https://docs.together.ai/docs/serverless/rate-limits) for more info.
+See [rate limits](/docs/serverless/rate-limits) for more info.
 
 ## Supported models
 

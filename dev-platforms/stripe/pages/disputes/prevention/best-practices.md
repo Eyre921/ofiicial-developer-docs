@@ -182,3 +182,9 @@ Stripe alerts you to the following attack types:
 
 > Your reliance on fraudulent transaction alerts is at your own risk. Stripe isn’t liable for any losses, damages, or costs relating to the accuracy or inaccuracy of the alerts, and any actions that you might take or refrain from taking based on the alerts.
 
+## See also
+
+- [Identifying fraud](https://docs.stripe.com/disputes/prevention/identifying-fraud.md)
+- [Dispute categories](https://docs.stripe.com/disputes/categories.md)
+- [Measuring disputes](https://docs.stripe.com/disputes/measuring.md)
+

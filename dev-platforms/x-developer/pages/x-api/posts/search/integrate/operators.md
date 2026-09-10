@@ -121,6 +121,22 @@ Operators are used to match on specific Post attributes. There are two types:
 
 ***
 
+## Engagement operators
+
+| Operator       | Type       | Summary                                                     | Example                           |
+| :------------- | :--------- | :---------------------------------------------------------- | :-------------------------------- |
+| `min_likes:`   | Standalone | Matches Posts with at least the specified number of Likes   | `#SuperBowl min_likes:100`        |
+| `min_replies:` | Standalone | Matches Posts with at least the specified number of replies | `from:XDevelopers min_replies:10` |
+| `min_reposts:` | Standalone | Matches Posts with at least the specified number of Reposts | `"breaking news" min_reposts:50`  |
+
+Each operator takes a non-negative integer value and is available with both recent search and full-archive search.
+
+<Warning>
+  The equivalent operators on X web search are named `min_faves:` and `min_retweets:`. Those names are **not** valid in the X API and will be rejected with a 400 error. Use `min_likes:` and `min_reposts:` instead.
+</Warning>
+
+***
+
 ## Language operator
 
 | Operator | Type                 | Summary                                         | Example                    |
@@ -178,11 +194,11 @@ The `lang:` operator supports these BCP 47 language codes:
 ## Next steps
 
 <CardGroup>
-  <Card title="Build a query" icon="filter" href="/x-api/posts/search/integrate/build-a-query">
+  <Card title="Build a query" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e" href="/x-api/posts/search/integrate/build-a-query">
     Learn query syntax and best practices
   </Card>
 
-  <Card title="Search introduction" icon="magnifying-glass" href="/x-api/posts/search/introduction">
+  <Card title="Search introduction" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/posts/search/introduction">
     Get started with Search
   </Card>
 

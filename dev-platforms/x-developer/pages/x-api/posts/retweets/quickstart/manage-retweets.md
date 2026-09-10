@@ -44,7 +44,7 @@ This guide walks you through Retweeting and undoing Retweets using the X API.
         -d '{"tweet_id": "1228393702244134912"}'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -66,7 +66,7 @@ This guide walks you through Retweeting and undoing Retweets using the X API.
       print(f"Retweeted: {response.data.retweeted}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -111,7 +111,7 @@ Remove a Retweet:
     -H "Authorization: Bearer $USER_ACCESS_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -133,7 +133,7 @@ Remove a Retweet:
   print(f"Retweeted: {response.data.retweeted}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({
@@ -175,7 +175,7 @@ Remove a Retweet:
     Get Quote Posts
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/repost-post">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/repost-post">
     Full endpoint documentation
   </Card>
 </CardGroup>

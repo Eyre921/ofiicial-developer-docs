@@ -39,7 +39,7 @@ This guide walks you through muting and unmuting users using the X API.
         -d '{"target_user_id": "9876543210"}'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
       from xdk.oauth1_auth import OAuth1
 
@@ -61,7 +61,7 @@ This guide walks you through muting and unmuting users using the X API.
       print(f"Muting: {response.data.muting}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client, OAuth1 } from "@xdevplatform/xdk";
 
       const oauth1 = new OAuth1({
@@ -106,7 +106,7 @@ Remove a mute from a user:
     -H "Authorization: Bearer $USER_ACCESS_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -128,7 +128,7 @@ Remove a mute from a user:
   print(f"Muting: {response.data.muting}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({
@@ -178,11 +178,11 @@ Remove a mute from a user:
     Get your muted users
   </Card>
 
-  <Card title="Blocks" icon="ban" href="/x-api/users/blocks/quickstart">
+  <Card title="Blocks" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-block.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=702a65b4001948aebcc42635b8e2eac7" href="/x-api/users/blocks/quickstart">
     Block users instead
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/mute-user-by-user-id">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/mute-user-by-user-id">
     Full endpoint documentation
   </Card>
 </CardGroup>

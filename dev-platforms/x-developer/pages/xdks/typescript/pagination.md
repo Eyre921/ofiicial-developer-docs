@@ -11,7 +11,7 @@ The SDK provides generic paginator utilities you can use with any endpoint that 
 ### Basic Pagination
 
 <CodeGroup>
-  ```typescript quick-start.ts theme={null} theme={null}
+  ```typescript title="quick-start.ts" lines wrap icon="square-js" theme={null} theme={null}
   import { Client, UserPaginator, PaginatedResponse, Schemas } from '@xdevplatform/xdk';
 
   const client: Client = new Client({ bearerToken: 'your-bearer-token' });
@@ -34,7 +34,7 @@ The SDK provides generic paginator utilities you can use with any endpoint that 
   );
   ```
 
-  ```javascript quick-start.js theme={null} theme={null}
+  ```javascript title="quick-start.js" lines wrap icon="square-js" theme={null} theme={null}
   import { Client } from '@xdevplatform/xdk';
   import { UserPaginator } from '@xdevplatform/xdk';
 
@@ -119,7 +119,7 @@ The SDK provides generic paginator utilities you can use with any endpoint that 
 ### Error handling and rate limits
 
 <CodeGroup>
-  ```typescript errors.ts theme={null} theme={null}
+  ```typescript title="errors.ts" lines wrap icon="square-js" theme={null} theme={null}
   import { UserPaginator, Schemas } from '@xdevplatform/xdk';
 
   try {

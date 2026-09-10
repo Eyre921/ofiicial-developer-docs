@@ -1,5 +1,5 @@
 ---
-title: "Enterprise API"
+title: "X Enterprise API introduction and product overview"
 source: https://docs.x.com/enterprise-api/introduction
 path: enterprise-api/introduction
 ---
@@ -9,11 +9,11 @@ Enterprise-grade access to the X firehose, volume streams, full-archive search, 
 The X API Enterprise plan provides the highest level of access to X data. Get complete firehose coverage, volume streams, semantic embedding operators for Filtered Stream, dedicated account management, and custom rate limits designed for organizations that depend on X data at scale.
 
 <CardGroup>
-  <Card title="Request access" icon="rocket" href="/forms/enterprise-api-interest">
+  <Card title="Request access" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/forms/enterprise-api-interest">
     Apply for Enterprise access with a dedicated account team.
   </Card>
 
-  <Card title="API reference" icon="code" href="/x-api/posts/create-post">
+  <Card title="API reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/create-post">
     Explore all available endpoints, including Enterprise-exclusive ones.
   </Card>
 
@@ -45,11 +45,11 @@ Enterprise access includes everything in the pay-per-use X API plus exclusive hi
     Higher rate limits and custom-tailored packages to match your throughput requirements.
   </Card>
 
-  <Card title="Engagement metrics at scale" icon="chart-line">
+  <Card title="Engagement metrics at scale" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bar-chart.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=e2a41caa858b122416f0005a55a8f143">
     Access post and media analytics endpoints for deep engagement insights across large datasets.
   </Card>
 
-  <Card title="Compliance streams" icon="shield-check">
+  <Card title="Compliance streams" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-shield-check.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=768533bde161ac68862de87449f011c3">
     Stay compliant with real-time compliance event streams for posts, users, and likes.
   </Card>
 
@@ -69,7 +69,7 @@ These endpoints are only available on Enterprise plans:
     Full firehose, language-specific streams, and sampled streams.
   </Card>
 
-  <Card title="Likes Streams" icon="heart" href="/x-api/stream/likes-streams-introduction">
+  <Card title="Likes Streams" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-heart.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=3a435e6393c019d681c6f1a0737e21a8" href="/x-api/stream/likes-streams-introduction">
     Stream all likes or sampled likes in real-time.
   </Card>
 
@@ -77,11 +77,11 @@ These endpoints are only available on Enterprise plans:
     High-performance filtered streaming with low latency (keyword operators).
   </Card>
 
-  <Card title="Engagement Metrics" icon="chart-bar" href="/x-api/posts/get-post-analytics">
+  <Card title="Engagement Metrics" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bar-chart.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=e2a41caa858b122416f0005a55a8f143" href="/x-api/posts/get-post-analytics">
     Deep analytics for post and media engagement.
   </Card>
 
-  <Card title="Account Activity" icon="bell" href="/x-api/account-activity/introduction">
+  <Card title="Account Activity" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bell.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=5e0b3dcfbb39ba3d4619931d7cd927d1" href="/x-api/account-activity/introduction">
     Subscribe to real-time user activity events including posts, DMs, likes, and follows.
   </Card>
 
@@ -97,27 +97,27 @@ These endpoints are only available on Enterprise plans:
 Enterprise access powers the most demanding use cases on X.
 
 <CardGroup>
-  <Card title="Posts" icon="message" href="/x-api/posts/lookup/introduction">
+  <Card title="Posts" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=9fde7d51b4f18c96d3a38a81d519761f" href="/x-api/posts/lookup/introduction">
     Search, retrieve, and publish posts. Access timelines, threads, and quote posts.
   </Card>
 
-  <Card title="Users" icon="user" href="/x-api/users/lookup/introduction">
+  <Card title="Users" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-person.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=507a4bbcdcf5744bd18781508002e305" href="/x-api/users/lookup/introduction">
     Look up users, manage follows, blocks, and mutes.
   </Card>
 
-  <Card title="Spaces" icon="microphone" href="/x-api/spaces/lookup/introduction">
+  <Card title="Spaces" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-microphone.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=84616ff8f3d942047a71ee5e0a5adab9" href="/x-api/spaces/lookup/introduction">
     Find live audio conversations and their participants.
   </Card>
 
-  <Card title="Direct Messages" icon="envelope" href="/x-api/direct-messages/lookup/introduction">
+  <Card title="Direct Messages" icon="https://mintcdn.com/x-preview/UIyI4eSwiP2OpODQ/icons/xds/icon-envelope.svg?fit=max&auto=format&n=UIyI4eSwiP2OpODQ&q=85&s=fbd38dbcd64d8688d3c9912ac30c4621" href="/x-api/direct-messages/lookup/introduction">
     Send and receive private messages.
   </Card>
 
-  <Card title="Lists" icon="list" href="/x-api/lists/list-lookup/introduction">
+  <Card title="Lists" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/lists/list-lookup/introduction">
     Create and manage curated lists of accounts.
   </Card>
 
-  <Card title="Trends" icon="arrow-trend-up" href="/x-api/trends/trends-by-woeid/introduction">
+  <Card title="Trends" icon="https://mintcdn.com/x-preview/UIyI4eSwiP2OpODQ/icons/xds/icon-feather-chart-line.svg?fit=max&auto=format&n=UIyI4eSwiP2OpODQ&q=85&s=185e7e1271f798947403bb3f0c44f294" href="/x-api/trends/trends-by-woeid/introduction">
     Access trending topics by location.
   </Card>
 </CardGroup>
@@ -207,7 +207,7 @@ Enterprise access powers the most demanding use cases on X.
 | **Powerstream**        | -                       | Advanced filtered streaming                                           |
 | **Engagement metrics** | -                       | Post and media analytics                                              |
 | **Account Activity**   | -                       | Real-time user event subscriptions                                    |
-| **Monthly post cap**   | 2 million reads         | Custom / unlimited                                                    |
+| **Monthly post cap**   | 3 million reads         | Custom / unlimited                                                    |
 | **Rate limits**        | Standard                | Custom / elevated                                                     |
 | **Support**            | Community forum         | Dedicated account manager                                             |
 
@@ -265,7 +265,7 @@ Enterprise access powers the most demanding use cases on X.
     Enterprise customers get a dedicated point of contact for technical and account support.
   </Card>
 
-  <Card title="Developer Forum" icon="comments" href="https://devcommunity.x.com">
+  <Card title="Developer Forum" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat-unread.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=ce6313d8c0b7b4e5363f2ce80b89f7e4" href="https://devcommunity.x.com">
     Get help from the community and X team.
   </Card>
 </CardGroup>

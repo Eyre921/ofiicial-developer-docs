@@ -233,7 +233,7 @@ If a record ID already exists, upserting overwrites the entire record. To change
       curl "https://$INDEX_HOST/records/namespaces/$NAMESPACE/upsert" \
         -H "Content-Type: application/x-ndjson" \
         -H "Api-Key: $PINECONE_API_KEY" \
-        -H "X-Pinecone-Api-Version: 2025-10" \
+        -H "X-Pinecone-Api-Version: 2026-07" \
         -d '{"_id": "rec1", "chunk_text": "Apples are a great source of dietary fiber, which supports digestion and helps maintain a healthy gut.", "category": "digestive system"}
             {"_id": "rec2", "chunk_text": "Apples originated in Central Asia and have been cultivated for thousands of years, with over 7,500 varieties available today.", "category": "cultivation"}
             {"_id": "rec3", "chunk_text": "Rich in vitamin C and other antioxidants, apples contribute to immune health and may reduce the risk of chronic diseases.", "category": "immune system"}
@@ -477,8 +477,8 @@ If a record ID already exists, upserting overwrites the entire record. To change
 
       curl "https://$INDEX_HOST/vectors/upsert" \
         -H "Api-Key: $PINECONE_API_KEY" \
-        -H 'Content-Type: application/json' \
-        -H "X-Pinecone-Api-Version: 2025-10" \
+        -H "Content-Type: application/json" \
+        -H "X-Pinecone-Api-Version: 2026-07" \
         -d '{
           "vectors": [
             {
@@ -737,7 +737,7 @@ If a record ID already exists, upserting overwrites the entire record. To change
       curl  "https://$INDEX_HOST/records/namespaces/$NAMESPACE/upsert" \
           -H "Content-Type: application/x-ndjson" \
           -H "Api-Key: $PINECONE_API_KEY" \
-          -H "X-Pinecone-Api-Version: 2025-10" \
+          -H "X-Pinecone-Api-Version: 2026-07" \
           -d '{ "_id": "vec1", "chunk_text": "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.", "category": "technology", "quarter": "Q3" }
             { "_id": "vec2", "chunk_text": "Analysts suggest that AAPL'\''s upcoming Q4 product launch event might solidify its position in the premium smartphone market.", "category": "technology", "quarter": "Q4" }
             { "_id": "vec3", "chunk_text": "AAPL'\''s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production.", "category": "technology", "quarter": "Q3" }
@@ -1115,10 +1115,10 @@ If a record ID already exists, upserting overwrites the entire record. To change
       INDEX_HOST="INDEX_HOST"
       PINECONE_API_KEY="YOUR_API_KEY"
 
-      curl "http://$INDEX_HOST/vectors/upsert" \
+      curl "https://$INDEX_HOST/vectors/upsert" \
         -H "Content-Type: application/json" \
         -H "Api-Key: $PINECONE_API_KEY" \
-        -H "X-Pinecone-Api-Version: 2025-10" \
+        -H "X-Pinecone-Api-Version: 2026-07" \
         -d '{
               "namespace": "example-namespace",
               "vectors": [
@@ -1205,7 +1205,7 @@ curl -X POST "https://INDEX_HOST/namespaces/articles/documents/upsert" \
 ```
 
 <Note>
-  The Documents API uses the `2026-07` API version. Indexes with dense or sparse vectors use the stable `2025-10` API version shown in the upsert examples above.
+  The Documents API requires API version `2026-07` or later. The vector and records upsert examples above work on `2026-07` and on earlier stable versions.
 </Note>
 
 Field-name rules:

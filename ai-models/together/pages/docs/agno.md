@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/agno
 path: docs/agno
 ---
 
-Using Agno with Together AI
+Using Agno with Together AI.
 
 Agno is an open-source library for creating multimodal agents. It supports interactions with text, images, audio, and video while remaining model-agnostic, allowing you to use any model in the Together AI library with this integration.
 

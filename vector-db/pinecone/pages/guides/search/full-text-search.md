@@ -486,7 +486,9 @@ For the full request and response schema, see [Search documents](/reference/api/
 * **Maximum results per query**: `top_k` is capped at **10,000**. Full-text search is optimized for ranked retrieval rather than aggregation- or count-style queries.
 * Indexes cannot be created in CMEK-enabled projects.
 * Backup and restore are not yet supported.
-* **`describe_index_stats`** is not yet supported on indexes with document schemas.
+* **`describe_index_stats`** is supported. In the REST response, `totalVectorCount` and `namespaces` are accurate for every schema. For the full response schema, see [Get index stats](/reference/api/latest/data-plane/describeindexstats).
+* **`describe_index_stats` vector fields**: in the same REST response, `dimension` and `metric` describe the schema's `dense_vector` field, and `vectorType` is `dense`. When a schema declares no `dense_vector` field, `metric` falls back to `dotproduct`, and `dimension` is `0` on a text-only schema (`vectorType` is `text`) or is omitted when the schema declares a `sparse_vector` field (`vectorType` is `sparse`).
+* **Namespace operations**: you can [create, list, describe, and delete namespaces](/guides/manage-data/manage-namespaces) on an index with a document schema, and [describing a namespace](/guides/manage-data/manage-namespaces#describe-a-namespace) returns its `record_count` and `size_bytes`.
 * [Fuzzy matching](/guides/search/full-text-search/query-syntax) (`term~`, `term~N`) is available only in `query_string` scoring, not in `type: "text"` or in `$match_*` filters.
 * Single-term prefix wildcards (`auto*`) are not supported; use phrase prefix (`"word auto"*`) instead, or configure a field for [substring search](/guides/search/full-text-search/text-processing#substring-search-with-n-grams).
 

@@ -11,7 +11,7 @@ Overview of X for Websites tools including embedded Posts, timelines, the Post b
 </Info>
 
 <CardGroup>
-  <Card title="Embedded Tweets" icon="code">
+  <Card title="Embedded Tweets" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219">
     An [embedded Tweet](https://developer.x.com/en/docs/twitter-for-websites/embedded-tweets/overview "Embedded Tweet") brings your pick of content from X into your website articles. It’s easy to embed a Tweet by copy and pasting HTML markup from the Tweet menus on X.com and TweetDeck, programmatically in your CMS using our [oEmbed API endpoint](https://developer.x.com/en/docs/twitter-for-websites/oembed-api), or by installing our [WordPress plugin](https://wordpress.org/plugins/twitter/).
 
     [Learn more](https://developer.x.com/en/docs/twitter-for-websites/embedded-tweets/overview.html) <Icon icon="angle-right" />
@@ -25,7 +25,7 @@ Overview of X for Websites tools including embedded Posts, timelines, the Post b
 ***
 
 <CardGroup>
-  <Card title="Embedded timelines" icon="code">
+  <Card title="Embedded timelines" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219">
     [Embedded timelines](https://developer.x.com/en/docs/twitter-for-websites/timelines/overview "Embedded timelines") are an easy way to embed multiple Tweets on your website in a compact, linear view. Choose between a profile timeline to get the latest Tweets from a X account, or a List timeline containing a curated list of X accounts.
 
     [Learn more](https://developer.x.com/en/docs/twitter-for-websites/timelines.html) <Icon icon="angle-right" />

@@ -12,7 +12,7 @@ In retrieval-augmented generation (RAG) pipelines, the reranking step sits betwe
 
 ## How the rerank API works
 
-Together's [rerank API](https://docs.together.ai/reference/rerank-1) takes a `query` and a list of `documents`, and returns a relevancy score and ordering index for each document. It can also filter the response to the top `n` most relevant documents.
+Together's [rerank API](/reference/rerank) takes a `query` and a list of `documents`, and returns a relevancy score and ordering index for each document. It can also filter the response to the top `n` most relevant documents.
 
 Key features:
 

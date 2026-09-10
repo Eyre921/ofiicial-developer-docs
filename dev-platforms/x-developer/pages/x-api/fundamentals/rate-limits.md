@@ -424,7 +424,7 @@ When you hit a rate limit, you'll receive a 429 response:
 2. Wait until that time before retrying
 3. Use exponential backoff if needed
 
-```python theme={null}
+```python title="Example" lines wrap icon="python" theme={null}
 import time
 
 def make_request_with_backoff(url, headers):
@@ -485,11 +485,11 @@ Enterprise customers have custom rate limits. Contact your account manager or [a
 ## Next steps
 
 <CardGroup>
-  <Card title="Error handling" icon="triangle-exclamation" href="/x-api/fundamentals/response-codes-and-errors">
+  <Card title="Error handling" icon="https://mintcdn.com/x-preview/jLbdFJYHCS9a6gmb/icons/xds/icon-warning.svg?fit=max&auto=format&n=jLbdFJYHCS9a6gmb&q=85&s=3760ceda7c43e1ffbd9f8b7ccbf83cca" href="/x-api/fundamentals/response-codes-and-errors">
     Handle 429 and other errors.
   </Card>
 
-  <Card title="Getting started" icon="rocket" href="/x-api/getting-started/about-x-api">
+  <Card title="Getting started" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/getting-started/about-x-api">
     Learn about access levels and features.
   </Card>
 </CardGroup>

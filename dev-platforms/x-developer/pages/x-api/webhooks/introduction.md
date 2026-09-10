@@ -15,11 +15,11 @@ The V2 Webhooks API enables developers to receive real-time event notifications 
     Receive events instantly as they occur
   </Card>
 
-  <Card title="Push-based" icon="arrow-right">
+  <Card title="Push-based" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e">
     Data sent directly to your server — no polling
   </Card>
 
-  <Card title="Secure" icon="shield">
+  <Card title="Secure" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-shield-keyhole.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=a0e05514090c8a6af232297bfb9c4055">
     CRC validation and signature verification
   </Card>
 
@@ -91,7 +91,7 @@ X's webhook-based APIs provide two methods for confirming the security of your w
 
 2. **Signature verification** — Each POST request from X includes an `x-twitter-webhooks-signature` header. You can verify this signature to confirm X is the source of incoming events.
 
-<Card title="See full implementation details" icon="code" href="/x-api/webhooks/quickstart">
+<Card title="See full implementation details" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/webhooks/quickstart">
   Step-by-step CRC setup, code examples, and signature verification
 </Card>
 
@@ -134,15 +134,15 @@ You can check the valid/invalid status of a webhook using the `GET /2/webhooks` 
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/webhooks/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/webhooks/quickstart">
     Set up your webhook end-to-end
   </Card>
 
-  <Card title="Filtered Stream Webhooks" icon="filter" href="/x-api/webhooks/stream/introduction">
+  <Card title="Filtered Stream Webhooks" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e" href="/x-api/webhooks/stream/introduction">
     Receive filtered Posts via webhook
   </Card>
 
-  <Card title="Account Activity API" icon="bell" href="/x-api/account-activity/introduction">
+  <Card title="Account Activity API" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bell.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=5e0b3dcfbb39ba3d4619931d7cd927d1" href="/x-api/account-activity/introduction">
     Receive account events via webhook
   </Card>
 

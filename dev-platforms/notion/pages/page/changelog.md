@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="September 9, 2026">
+  ### Faster retries and plan-based rate limits
+
+  The per-connection rate limit is now enforced over a fixed 60-second window: 600 requests per minute on Business and Enterprise plans, and 180 requests per minute on all other plans. `Retry-After` for this limit never exceeds 60 seconds, down from up to 15 minutes, and per-connection 429 responses now also include the wait as `additional_data.retry_after` in the body. See [Request limits](/reference/request-limits).
+</Update>
+
 <Update label="September 2, 2026">
   ### Notion MCP splits keyword search and AI search
 

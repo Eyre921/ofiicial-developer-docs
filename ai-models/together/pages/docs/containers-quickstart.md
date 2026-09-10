@@ -12,7 +12,7 @@ This guide walks you through deploying a sample inference worker to Together's m
 
 * **Together API Key** – Required for all operations. Get one from [together.ai](https://together.ai).
 * **Dedicated Containers access** – Contact your account representative or [support@together.ai](mailto:support@together.ai) to enable Dedicated Containers for your organization.
-* **Docker** – For building and pushing container images. Get it [here](https://docs.docker.com/engine/install).
+* **Docker:** For building and pushing container images. See the [Docker installation guide](https://docs.docker.com/engine/install).
 * **uv** (optional) – For Python/package management. Install from [astral-sh/uv](https://github.com/astral-sh/uv).
 
 ## Step 1: Install the Together CLI

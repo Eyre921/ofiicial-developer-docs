@@ -35,7 +35,7 @@ This guide walks you through sending Direct Messages and creating group conversa
         -d '{"text": "Hello! This is a message from the API."}'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
 
       client = Client(bearer_token="YOUR_USER_ACCESS_TOKEN")
@@ -50,7 +50,7 @@ This guide walks you through sending Direct Messages and creating group conversa
       print(f"Conversation: {response.data.dm_conversation_id}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -101,7 +101,7 @@ This guide walks you through sending Direct Messages and creating group conversa
         }'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
 
       client = Client(bearer_token="YOUR_USER_ACCESS_TOKEN")
@@ -116,7 +116,7 @@ This guide walks you through sending Direct Messages and creating group conversa
       print(f"Group created: {response.data.dm_conversation_id}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -211,7 +211,7 @@ Send a message to a conversation you're already part of:
         }'
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
 
       client = Client(bearer_token="YOUR_USER_ACCESS_TOKEN")
@@ -226,7 +226,7 @@ Send a message to a conversation you're already part of:
       print(f"Message with media sent: {response.data.dm_event_id}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -313,11 +313,11 @@ When using OAuth 2.0 PKCE, your access token must have these scopes:
     Retrieve DM conversations
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/direct-messages/manage/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/direct-messages/manage/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/direct-messages/create-dm-message-by-participant-id">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/direct-messages/create-dm-message-by-participant-id">
     Full endpoint documentation
   </Card>
 

@@ -14,7 +14,7 @@ authentication, request configuration, and error handling.
 
 **`Example`**
 
-```typescript theme={null}
+```typescript title="Example" lines wrap icon="square-js" theme={null}
 import { Client } from '@xdevplatform/xdk';
 
 const client = new Client({
@@ -56,7 +56,7 @@ Creates a new X API client instance
 
 **`Example`**
 
-```typescript theme={null}
+```typescript title="Example" lines wrap icon="square-js" theme={null}
 // Bearer token authentication
 const client = new Client({
   bearerToken: 'your-bearer-token'

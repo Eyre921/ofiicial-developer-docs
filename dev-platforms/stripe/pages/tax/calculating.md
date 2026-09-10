@@ -90,3 +90,7 @@ Stripe Tax provides detailed tax breakdowns for each transaction. All applicable
 
 [Countries supported by Stripe Tax](https://docs.stripe.com/tax/supported-countries.md): Learn how to use Stripe to calculate, collect, and report tax in different countries
 
+## See also
+
+- [Calculate tax using APIs](https://docs.stripe.com/tax/standalone-tax-api.md)
+

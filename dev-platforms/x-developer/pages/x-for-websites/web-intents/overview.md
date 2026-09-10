@@ -101,7 +101,7 @@ You may pass a `lang` query parameter as part of any web intent to override the 
 
 Some sites may prefer to embed the unobtrusive web intents JavaScript inline or without a dependency to `platform.twitter.com`. The snippet below will offer the equivalent functionality without the external dependency.
 
-```javascript theme={null}
+```javascript title="Example" expandable lines wrap icon="square-js" theme={null}
 (function() {
   if (window.__twitterIntentHandler) return;
   var intentRegex = /twitter\.com\/intent\/(\w+)/,

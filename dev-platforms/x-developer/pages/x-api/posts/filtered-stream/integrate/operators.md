@@ -223,7 +223,7 @@ The `lang:` operator supports these BCP 47 language codes:
 ## Next steps
 
 <CardGroup>
-  <Card title="Build a rule" icon="filter" href="/x-api/posts/filtered-stream/integrate/build-a-rule">
+  <Card title="Build a rule" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e" href="/x-api/posts/filtered-stream/integrate/build-a-rule">
     Learn rule syntax and best practices
   </Card>
 

@@ -9,11 +9,11 @@ Programmatic access to X with v2 REST endpoints for Posts, users, Spaces, lists,
 The X API gives you programmatic access to X's public conversation. Read posts, publish content, manage users, and analyze trends—all through modern REST endpoints with flexible pay-per-usage pricing.
 
 <CardGroup>
-  <Card title="Get started" icon="rocket" href="/x-api/getting-started/make-your-first-request">
+  <Card title="Get started" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/getting-started/make-your-first-request">
     Create an app and make your first request in minutes.
   </Card>
 
-  <Card title="API reference" icon="code" href="/x-api/posts/create-post">
+  <Card title="API reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/create-post">
     Explore all available endpoints.
   </Card>
 
@@ -27,27 +27,27 @@ The X API gives you programmatic access to X's public conversation. Read posts, 
 ## What you can build
 
 <CardGroup>
-  <Card title="Posts" icon="message" href="/x-api/posts/lookup/introduction">
+  <Card title="Posts" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=9fde7d51b4f18c96d3a38a81d519761f" href="/x-api/posts/lookup/introduction">
     Search, retrieve, and publish posts. Access timelines, threads, and quote posts.
   </Card>
 
-  <Card title="Users" icon="user" href="/x-api/users/lookup/introduction">
+  <Card title="Users" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-person.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=507a4bbcdcf5744bd18781508002e305" href="/x-api/users/lookup/introduction">
     Look up users, manage follows, blocks, and mutes.
   </Card>
 
-  <Card title="Spaces" icon="microphone" href="/x-api/spaces/lookup/introduction">
+  <Card title="Spaces" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-microphone.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=84616ff8f3d942047a71ee5e0a5adab9" href="/x-api/spaces/lookup/introduction">
     Find live audio conversations and their participants.
   </Card>
 
-  <Card title="Direct Messages" icon="envelope" href="/x-api/direct-messages/lookup/introduction">
+  <Card title="Direct Messages" icon="https://mintcdn.com/x-preview/UIyI4eSwiP2OpODQ/icons/xds/icon-envelope.svg?fit=max&auto=format&n=UIyI4eSwiP2OpODQ&q=85&s=fbd38dbcd64d8688d3c9912ac30c4621" href="/x-api/direct-messages/lookup/introduction">
     Send and receive private messages.
   </Card>
 
-  <Card title="Lists" icon="list" href="/x-api/lists/list-lookup/introduction">
+  <Card title="Lists" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/lists/list-lookup/introduction">
     Create and manage curated lists of accounts.
   </Card>
 
-  <Card title="Trends" icon="arrow-trend-up" href="/x-api/trends/trends-by-woeid/introduction">
+  <Card title="Trends" icon="https://mintcdn.com/x-preview/UIyI4eSwiP2OpODQ/icons/xds/icon-feather-chart-line.svg?fit=max&auto=format&n=UIyI4eSwiP2OpODQ&q=85&s=185e7e1271f798947403bb3f0c44f294" href="/x-api/trends/trends-by-woeid/introduction">
     Access trending topics by location.
   </Card>
 </CardGroup>
@@ -59,7 +59,7 @@ The X API gives you programmatic access to X's public conversation. Read posts, 
 The X API uses **pay-per-usage** pricing. No subscriptions—pay only for what you use.
 
 <CardGroup>
-  <Card title="Flexible scaling" icon="chart-line">
+  <Card title="Flexible scaling" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bar-chart.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=e2a41caa858b122416f0005a55a8f143">
     Start small and grow. Costs scale with your actual usage.
   </Card>
 
@@ -71,7 +71,7 @@ The X API uses **pay-per-usage** pricing. No subscriptions—pay only for what y
     Monitor usage and costs live in the Developer Console.
   </Card>
 
-  <Card title="Credit-based" icon="coins">
+  <Card title="Credit-based" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-coins.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=d8b17de3fb4032d86b77606ea95fcb55">
     Purchase credits upfront. Deducted as you use the API.
   </Card>
 </CardGroup>
@@ -190,7 +190,7 @@ The X API uses **pay-per-usage** pricing. No subscriptions—pay only for what y
 ## Support
 
 <CardGroup>
-  <Card title="Developer Forum" icon="comments" href="https://devcommunity.x.com">
+  <Card title="Developer Forum" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat-unread.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=ce6313d8c0b7b4e5363f2ce80b89f7e4" href="https://devcommunity.x.com">
     Get help from the community and X team.
   </Card>
 

@@ -99,8 +99,17 @@ curl -X POST "https://api.x.com/2/tweets" \
 ```
 
 <Note>
-  Upload media first using the [Media Upload endpoint](/x-api/media/quickstart/media-upload-chunked), then reference the `media_id` in your Post.
+  Upload media first using the [chunked media upload](/x-api/media/quickstart/media-upload-chunked) endpoints (`/2/media/upload/initialize`, `/{id}/append`, `/{id}/finalize`), then reference the `media_id` in your Post.
 </Note>
+
+A Post may include **up to 4 photos**, **1 animated GIF**, or **1 video**. Video duration and file size are checked again at Post create. They follow the **posting user's** X Premium / verified status and the `media_category` used at upload:
+
+| Posting account      | Video cap when attaching to a Post (`tweet_video` / `amplify_video`) |
+| :------------------- | :------------------------------------------------------------------- |
+| Default (no Premium) | 20 minutes, 8 GB                                                     |
+| X Premium / verified | 125 minutes, 16 GB                                                   |
+
+If the video is longer than that user is allowed to post, the response is **403 Forbidden**: `This user is not allowed to post a video longer than N minutes.` A successful upload does not guarantee the media can be attached. See [size and duration limits](/x-api/media/introduction#size-and-duration-limits).
 
 ### Post with poll
 
@@ -164,19 +173,19 @@ curl -X DELETE "https://api.x.com/2/tweets/1234567890" \
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/posts/manage-tweets/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/posts/manage-tweets/quickstart">
     Create your first Post
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/posts/manage-tweets/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/posts/manage-tweets/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="Media upload" icon="image" href="/x-api/media/quickstart/media-upload-chunked">
+  <Card title="Media upload" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-photo.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=d0986097dcff55478c32801b20440ecc" href="/x-api/media/quickstart/media-upload-chunked">
     Upload media for Posts
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/creation-of-a-post">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/creation-of-a-post">
     Full endpoint documentation
   </Card>
 </CardGroup>

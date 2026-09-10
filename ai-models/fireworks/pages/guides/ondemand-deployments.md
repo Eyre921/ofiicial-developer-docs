@@ -25,9 +25,15 @@ Need higher GPU quotas or want to reserve capacity? [Contact us](https://firewor
 **Create a deployment:**
 
 ```bash theme={null}
+firectl deployment-shape-version list --base-model accounts/fireworks/models/<MODEL_NAME>
+
 # This command returns your accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID> - save it for querying
-firectl deployment create accounts/fireworks/models/<MODEL_NAME> --wait
+firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
+  --deployment-shape <SHAPE_NAME> \
+  --wait
 ```
+
+Copy `<SHAPE_NAME>` from the `SHAPE NAME (version-id)` column (the resource name before the parenthesized version ID).
 
 <Warning>
   **Deployment placement (`--region`) must be set at creation time and cannot be changed in place.**
@@ -264,6 +270,16 @@ Choose GPU type with `--accelerator-type`:
 * `AMD_MI350X_288GB`
 
 GPU availability varies by [region](/deployments/regions). See the [Create Deployment API reference](/api-reference/create-deployment#body-accelerator-type) for the authoritative list of supported accelerator types.
+
+<Note>
+  **Not every model runs on every GPU.** Each model is validated only on specific accelerator type, GPU count, and precision combinations — many models support just one or two entries from the list above. To see what a model supports, list its deployment shapes:
+
+  ```bash theme={null}
+  firectl deployment-shape-version list --base-model accounts/fireworks/models/<MODEL_NAME>
+  ```
+
+  The `GPUS`, `ACCELERATOR`, and `PRECISION` columns are the validated combinations; the model's page in the [Fireworks console](https://app.fireworks.ai) shows the same options under dedicated deployments. Setting `--accelerator-type` or `--accelerator-count` to a combination no shape validates will typically fail at creation — often with a generic `Internal error occurred` message that does not name the hardware mismatch. If you need hardware no shape covers, [contact us](https://fireworks.ai/contact).
+</Note>
 
 ### Autoscaling
 

@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/gpu-clusters-api
 path: docs/gpu-clusters-api
 ---
 
-Manage clusters programmatically with the Together CLI, REST API, and SkyPilot
+Manage clusters programmatically with the Together CLI, REST API, and SkyPilot.
 
 ## Overview
 
@@ -233,7 +233,7 @@ tg beta clusters update <CLUSTER_ID> --num-reserved-gpus 16
 
 See [Billing and pricing](/docs/gpu-clusters-billing) for how reserved and on-demand usage appear on invoices.
 
-## SkyPilot Integration
+## SkyPilot integration
 
 Orchestrate AI workloads on GPU Clusters using SkyPilot for simplified cluster management and job scheduling.
 
@@ -279,7 +279,7 @@ Checking credentials to enable infra for SkyPilot.
 sky show-gpus --infra k8s
 ```
 
-### Example: Launch a Workload
+### Example: Launch a workload
 
 Create a SkyPilot task file (`task.yaml`):
 
@@ -318,9 +318,9 @@ sky launch -c gpt-together gpt-oss-20b.yaml
 * **Cost optimization** – Auto-select cheapest available resources.
 * **Job management** – Easy monitoring and cancellation.
 
-## Automation Patterns
+## Automation patterns
 
-### CI/CD Integration
+### CI/CD integration
 
 **GitHub Actions example:**
 
@@ -362,7 +362,7 @@ jobs:
           tg beta clusters delete [CLUSTER_ID]
 ```
 
-### Scheduled Jobs
+### Scheduled jobs
 
 **Cron-based cluster creation:**
 
@@ -378,7 +378,7 @@ jobs:
   --non-interactive
 ```
 
-### Auto-scaling Scripts
+### Auto-scaling scripts
 
 Scale a cluster up or down based on demand with the Together CLI:
 
@@ -391,7 +391,7 @@ else
 fi
 ```
 
-## Best Practices
+## Best practices
 
 ### API usage
 
@@ -420,9 +420,22 @@ fi
 * Batch operations when possible
 * Contact support for higher limits
 
-## What's Next?
+## Next steps
 
-* [Review API reference documentation](/reference/clusters-create)
-* [Explore the clusters CLI reference](/reference/cli/clusters)
-* [Learn about cluster management](/docs/gpu-clusters-management)
-* [Understand billing](/docs/gpu-clusters-billing)
+<CardGroup>
+  <Card title="Clusters API reference" icon="code" href="/reference/clusters-create">
+    Create, list, and update clusters through the REST API.
+  </Card>
+
+  <Card title="Clusters CLI" icon="terminal" href="/reference/cli/clusters">
+    Reserve, configure, and manage GPU clusters from the terminal.
+  </Card>
+
+  <Card title="Manage clusters" icon="server" href="/docs/gpu-clusters-management">
+    Deploy workloads, manage storage, and scale a running cluster.
+  </Card>
+
+  <Card title="Billing and pricing" icon="currency-dollar" href="/docs/gpu-clusters-billing">
+    Understand reserved, on-demand, and storage charges.
+  </Card>
+</CardGroup>

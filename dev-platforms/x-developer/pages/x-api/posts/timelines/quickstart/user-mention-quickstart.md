@@ -37,7 +37,7 @@ This guide walks you through retrieving Posts that mention a specific user.
         -H "Authorization: Bearer $BEARER_TOKEN"
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
 
       client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -54,7 +54,7 @@ This guide walks you through retrieving Posts that mention a specific user.
               print(f"@{post.author_id}: {post.text[:50]}...")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -130,7 +130,7 @@ Get only original Posts that mention the user:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -145,7 +145,7 @@ Get only original Posts that mention the user:
           print(post.text)
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -174,7 +174,7 @@ Get only original Posts that mention the user:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -189,7 +189,7 @@ Get only original Posts that mention the user:
           print(f"{post.created_at}: {post.text[:50]}...")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -231,15 +231,15 @@ Get only original Posts that mention the user:
     Get user's home timeline
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/posts/timelines/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/posts/timelines/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-mentions">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-mentions">
     Full endpoint documentation
   </Card>
 
-  <Card title="Pagination guide" icon="arrow-right" href="/x-api/fundamentals/pagination">
+  <Card title="Pagination guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" href="/x-api/fundamentals/pagination">
     Navigate large result sets
   </Card>
 </CardGroup>

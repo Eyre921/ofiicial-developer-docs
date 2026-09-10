@@ -4,12 +4,12 @@ source: https://docs.x.com/x-api/usage/introduction
 path: x-api/usage/introduction
 ---
 
-The Usage endpoint lets you monitor your API usage, including the number of Posts consumed. Reference for the X API v2 standard tier covering usage.
+The Usage endpoints let you monitor your API usage and, for Pay-per-use (PPU) accounts, check your credit balance. Reference for the X API v2 standard tier covering usage.
 
 The Usage endpoint lets you monitor your API usage, including the number of Posts consumed. Track your usage programmatically to manage costs and stay within limits.
 
 <Note>
-  Pay-per-usage plans are subject to a monthly cap of 2 million Post reads. If you need higher volume, consider an [Enterprise plan](/forms/enterprise-api-interest).
+  Pay-per-usage plans are subject to a monthly cap of 3 million Post reads. If you need higher volume, consider an [Enterprise plan](/forms/enterprise-api-interest).
 </Note>
 
 ## Overview
@@ -30,11 +30,12 @@ The Usage endpoint lets you monitor your API usage, including the number of Post
 
 ***
 
-## Endpoint
+## Endpoints
 
-| Method | Endpoint                                    | Description         |
-| :----- | :------------------------------------------ | :------------------ |
-| GET    | [`/2/usage/tweets`](/x-api/usage/get-usage) | Get Post usage data |
+| Method | Endpoint                                             | Description                                      |
+| :----- | :--------------------------------------------------- | :----------------------------------------------- |
+| GET    | [`/2/usage/tweets`](/x-api/usage/get-usage)          | Get Post usage data                              |
+| GET    | [`/2/usage/credits`](/x-api/usage/get-usage-credits) | Get your Pay-per-use (PPU) credit balance in USD |
 
 ***
 
@@ -42,7 +43,7 @@ The Usage endpoint lets you monitor your API usage, including the number of Post
 
 The response includes daily Post consumption counts:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "daily_project_usage": [
@@ -107,7 +108,7 @@ curl "https://api.x.com/2/usage/tweets" \
 </Note>
 
 <CardGroup>
-  <Card title="API Reference" icon="code" href="/x-api/usage/post-usage">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/usage/post-usage">
     Full endpoint documentation
   </Card>
 

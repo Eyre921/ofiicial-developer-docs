@@ -24,11 +24,11 @@ export TOGETHER_API_KEY=xxxxx
 
 Together provides an official library for Python:
 
-```sh Shell theme={null}
+```bash Shell theme={null}
 pip install together --upgrade
 ```
 
-```py Python theme={null}
+```python Python theme={null}
 from together import Together
 
 client = Together(api_key=TOGETHER_API_KEY)
@@ -38,7 +38,7 @@ client = Together(api_key=TOGETHER_API_KEY)
 
 You'll RAG over Paul Graham's latest essay titled [Founder Mode](https://paulgraham.com/foundermode.html). The code below will scrape and load the essay into memory.
 
-```py Python theme={null}
+```python Python theme={null}
 import requests
 from bs4 import BeautifulSoup
 
@@ -77,7 +77,7 @@ pg_essay = scrape_pg_essay()
 
 Chunk the essay:
 
-```py Python theme={null}
+```python Python theme={null}
 # Naive fixed sized chunking with overlaps
 def create_chunks(document, chunk_size=300, overlap=50):
     return [
@@ -93,7 +93,7 @@ chunks = create_chunks(pg_essay, chunk_size=250, overlap=30)
 
 You'll now use `multilingual-e5-large-instruct` to embed the augmented chunks above into a vector index.
 
-```py Python theme={null}
+```python Python theme={null}
 from typing import List
 import numpy as np
 
@@ -125,7 +125,7 @@ embeddings = generate_embeddings(
 
 The function below will help us perform vector search:
 
-```py Python theme={null}
+```python Python theme={null}
 def vector_retrieval(
     query: str,
     top_k: int = 5,
@@ -170,7 +170,7 @@ You'll use a reranker model to improve retrieved chunk relevance quality:
   Rerank models like `Mxbai-Rerank-Large-V2` are only available with [dedicated model inference](https://api.together.ai/endpoints/configure). You can bring up a dedicated endpoint to use reranking in your applications.
 </Tip>
 
-```py Python theme={null}
+```python Python theme={null}
 def rerank(query: str, chunks: List[str], top_k=3) -> List[int]:
 
     response = client.rerank.create(
@@ -201,7 +201,7 @@ print(reranked_chunks)
 
 You'll pass the final 3 concatenated chunks into an LLM to get the final answer.
 
-```py Python theme={null}
+```python Python theme={null}
 query = "What are 'skip-level' meetings?"
 
 response = client.chat.completions.create(

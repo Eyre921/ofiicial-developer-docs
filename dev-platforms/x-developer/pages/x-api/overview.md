@@ -13,39 +13,39 @@ The X API gives you programmatic access to X's public conversation. All endpoint
 ## Endpoints
 
 <CardGroup>
-  <Card title="Posts" icon="message" href="/x-api/posts/lookup/introduction">
+  <Card title="Posts" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=9fde7d51b4f18c96d3a38a81d519761f" href="/x-api/posts/lookup/introduction">
     Search, retrieve, and publish posts. Access timelines, threads, and quote posts.
   </Card>
 
-  <Card title="Users" icon="user" href="/x-api/users/lookup/introduction">
+  <Card title="Users" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-person.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=507a4bbcdcf5744bd18781508002e305" href="/x-api/users/lookup/introduction">
     Look up profiles, manage follows, blocks, and mutes.
   </Card>
 
-  <Card title="Direct Messages" icon="envelope" href="/x-api/direct-messages/lookup/introduction">
+  <Card title="Direct Messages" icon="https://mintcdn.com/x-preview/UIyI4eSwiP2OpODQ/icons/xds/icon-envelope.svg?fit=max&auto=format&n=UIyI4eSwiP2OpODQ&q=85&s=fbd38dbcd64d8688d3c9912ac30c4621" href="/x-api/direct-messages/lookup/introduction">
     Send and receive private messages.
   </Card>
 
-  <Card title="Spaces" icon="microphone" href="/x-api/spaces/lookup/introduction">
+  <Card title="Spaces" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-microphone.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=84616ff8f3d942047a71ee5e0a5adab9" href="/x-api/spaces/lookup/introduction">
     Find live audio conversations and participants.
   </Card>
 
-  <Card title="Lists" icon="list" href="/x-api/lists/list-lookup/introduction">
+  <Card title="Lists" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/lists/list-lookup/introduction">
     Create and manage curated lists of accounts.
   </Card>
 
-  <Card title="Likes" icon="heart" href="/x-api/posts/likes/introduction">
+  <Card title="Likes" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-heart.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=3a435e6393c019d681c6f1a0737e21a8" href="/x-api/posts/likes/introduction">
     Like and unlike posts. Look up who liked a post.
   </Card>
 
-  <Card title="Trends" icon="arrow-trend-up" href="/x-api/trends/trends-by-woeid/introduction">
+  <Card title="Trends" icon="https://mintcdn.com/x-preview/UIyI4eSwiP2OpODQ/icons/xds/icon-feather-chart-line.svg?fit=max&auto=format&n=UIyI4eSwiP2OpODQ&q=85&s=185e7e1271f798947403bb3f0c44f294" href="/x-api/trends/trends-by-woeid/introduction">
     Trending topics by location and personalized trends.
   </Card>
 
-  <Card title="Media" icon="image" href="/x-api/media/introduction">
+  <Card title="Media" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-photo.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=d0986097dcff55478c32801b20440ecc" href="/x-api/media/introduction">
     Upload images, videos, and GIFs. Manage subtitles and metadata.
   </Card>
 
-  <Card title="Communities" icon="users" href="/x-api/communities/lookup/introduction">
+  <Card title="Communities" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-people.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=9d5f3f82edcd2a4070364193436e7980" href="/x-api/communities/lookup/introduction">
     Look up and search communities.
   </Card>
 
@@ -57,7 +57,7 @@ The X API gives you programmatic access to X's public conversation. All endpoint
     Search and retrieve news stories.
   </Card>
 
-  <Card title="Compliance" icon="shield-check" href="/x-api/compliance/batch-compliance/introduction">
+  <Card title="Compliance" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-shield-check.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=768533bde161ac68862de87449f011c3" href="/x-api/compliance/batch-compliance/introduction">
     Batch compliance jobs and compliance streams.
   </Card>
 </CardGroup>
@@ -67,7 +67,7 @@ The X API gives you programmatic access to X's public conversation. All endpoint
 ## Streaming & real-time
 
 <CardGroup>
-  <Card title="Filtered Stream" icon="filter" href="/x-api/posts/filtered-stream/introduction">
+  <Card title="Filtered Stream" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e" href="/x-api/posts/filtered-stream/introduction">
     Get posts delivered in real-time matching your filter rules.
   </Card>
 
@@ -91,7 +91,7 @@ These endpoints require an [Enterprise plan](/enterprise-api/introduction).
     Full firehose and language-specific streams.
   </Card>
 
-  <Card title="Likes Streams" icon="heart" href="/x-api/stream/likes-streams-introduction">
+  <Card title="Likes Streams" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-heart.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=3a435e6393c019d681c6f1a0737e21a8" href="/x-api/stream/likes-streams-introduction">
     Stream all or sampled likes in real-time.
   </Card>
 
@@ -99,11 +99,11 @@ These endpoints require an [Enterprise plan](/enterprise-api/introduction).
     High-performance filtered streaming with advanced operators.
   </Card>
 
-  <Card title="Analytics" icon="chart-bar" href="/x-api/posts/get-post-analytics">
+  <Card title="Analytics" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bar-chart.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=e2a41caa858b122416f0005a55a8f143" href="/x-api/posts/get-post-analytics">
     Post and media engagement metrics at scale.
   </Card>
 
-  <Card title="Account Activity" icon="bell" href="/x-api/account-activity/introduction">
+  <Card title="Account Activity" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bell.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=5e0b3dcfbb39ba3d4619931d7cd927d1" href="/x-api/account-activity/introduction">
     Real-time user event subscriptions.
   </Card>
 
@@ -122,7 +122,7 @@ curl "https://api.x.com/2/users/by/username/xdevelopers" \
 ```
 
 <CardGroup>
-  <Card title="Make your first request" icon="rocket" href="/x-api/getting-started/make-your-first-request">
+  <Card title="Make your first request" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/getting-started/make-your-first-request">
     Get your credentials and call the API in minutes.
   </Card>
 

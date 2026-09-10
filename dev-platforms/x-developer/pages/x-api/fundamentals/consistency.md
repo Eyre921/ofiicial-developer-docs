@@ -169,7 +169,7 @@ Media and polls are in `attachments`, not `entities`.
     Same object types have same structures across the API.
   </Card>
 
-  <Card title="Simpler code" icon="code">
+  <Card title="Simpler code" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219">
     Build reusable functions for common patterns.
   </Card>
 

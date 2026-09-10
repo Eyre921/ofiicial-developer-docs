@@ -58,7 +58,7 @@ Use Together AI as a provider for [Hugging Face Inference](https://huggingface.c
   ```
 </CodeGroup>
 
-See the [Together AI Hugging Face guide](https://docs.together.ai/docs/quickstart-using-hugging-face-inference) for more details.
+See the [Together AI Hugging Face guide](/docs/quickstart-using-hugging-face-inference) for more details.
 
 ## Vercel AI SDK
 
@@ -80,7 +80,7 @@ const { text } = await generateText({
 console.log(text);
 ```
 
-See the [Together AI Vercel AI SDK guide](https://docs.together.ai/docs/using-together-with-vercels-ai-sdk) for details on streaming, tool use, and structured outputs.
+See the [Together AI Vercel AI SDK guide](/docs/using-together-with-vercels-ai-sdk) for details on streaming, tool use, and structured outputs.
 
 ## LangChain
 

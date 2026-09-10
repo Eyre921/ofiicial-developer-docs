@@ -57,7 +57,7 @@ The JSON below highlights edit metadata that is included for a Post posted after
 
 Note that the `"edit_tweet_ids"` array has a single ID. 
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "created_at": "Wed Aug 16 18:29:02 +0000 2022",
   "id": 1557433858676740098,
@@ -81,7 +81,7 @@ The JSON below highlights edit metadata that is included for a post posted after
 
 Note that the `"edit_tweet_ids"` array has two IDs, one for the original Post and one for the edited update. 
 
-```
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "created_at": "Wed Aug 16 18:35:42 +0000 2022",
   "id": 1557445923210514432,
@@ -105,7 +105,7 @@ The [Compliance Firehose](/x-api/enterprise-gnip-2.0/fundamentals/firehouse) a
 
 A new "tweet\_edit" event type has been added to the Compliance Firehose. 
 
-```
+```json theme={null}
 {
   "tweet_edit": {
     "id": <tweetId>,

@@ -14,36 +14,36 @@ We are opening up our platform to encourage you to build new tools and products 
   <Card title="Moderate conversations for health and safety" icon="bullhorn">
     Improve the health and safety of public conversation. Build content moderation tools and other solutions that help people feel safe and excited to participate on X. Create complementary technology that gives people a comprehensive choice of tools to control their int
 
-    [**Learn more**](/x-api/what-to-build#moderate-conversations-for-health-and-safety) <Icon icon="arrow-right" />
+    [**Learn more**](/x-api/what-to-build#moderate-conversations-for-health-and-safety) <Icon icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" />
   </Card>
 
   <Card title="Enable creation and personal expression" icon="bullhorn">
     Build tools for creators, brands, and individuals who want to extend their reach, express their brand, and connect with people that share their passion. Or broaden the ways people can engage on X like cross-posted content, gamification, or helpful bots.
 
-    [**Learn more**](/x-api/what-to-build#enable-creation-and-personal-expression) <Icon icon="arrow-right" />
+    [**Learn more**](/x-api/what-to-build#enable-creation-and-personal-expression) <Icon icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" />
   </Card>
 
   <Card title="Measure and analyze “what’s happening”" icon="bullhorn">
     Help people measure, analyze, and derive insights from the public conversation or their own content. Understand your audience better, measure the performance and impact of your content, make more informed decisions, and so much more.
 
-    [**Learn more**](/x-api/what-to-build#measure-and-analyze-whats-happening) <Icon icon="arrow-right" />
+    [**Learn more**](/x-api/what-to-build#measure-and-analyze-whats-happening) <Icon icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" />
   </Card>
 
   <Card title="Improve community experiences " icon="bullhorn">
     X is for everyone, and we want to empower you to use your expertise to serve the unique needs of different communities on X. Whether you're building localized solutions for emerging global markets or enhancing experiences for communities like gaming or finance, we want everyone to find their place on X.
 
-    [**Learn more**](/x-api/what-to-build#improve-community-experiences) <Icon icon="arrow-right" />
+    [**Learn more**](/x-api/what-to-build#improve-community-experiences) <Icon icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" />
   </Card>
 
   <Card title="Curate and recommend content" icon="bullhorn">
     Build apps, bots, or other tools that help people discover new content or make new connections. Or build curated and customizable experiences so people see more of the content they care most about.
 
-    [**Learn more**](/x-api/what-to-build#curate-and-recommend-content) <Icon icon="arrow-right" />
+    [**Learn more**](/x-api/what-to-build#curate-and-recommend-content) <Icon icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" />
   </Card>
 
   <Card title="Impact the greater good" icon="bullhorn">
     Conduct groundbreaking research, help advance knowledge about public health and the climate crises and build non-commercially for the greater good.
 
-    [**Learn more**](/x-api/what-to-build#impact-the-greater-good) <Icon icon="arrow-right" />
+    [**Learn more**](/x-api/what-to-build#impact-the-greater-good) <Icon icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" />
   </Card>
 </CardGroup>

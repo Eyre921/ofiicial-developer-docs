@@ -180,3 +180,7 @@ const paymentElement = elements.create('payment', options);
 paymentElement.mount('#payment-element');
 ```
 
+## See also
+
+- [Add Link to an Elements integration](https://docs.stripe.com/payments/link/add-link-elements-integration.md)
+

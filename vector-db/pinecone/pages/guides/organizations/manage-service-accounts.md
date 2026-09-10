@@ -45,8 +45,8 @@ To access the Admin API, you must provide an access token to authenticate. Retri
 You can retrieve an access token for a service account from the `https://login.pinecone.io/oauth/token` endpoint, as shown in the following example:
 
 ```bash curl theme={null}
-curl "https://login.pinecone.io/oauth/token" \ # Note: Base URL is login.pinecone.io
-	-H "X-Pinecone-Api-Version: 2025-10" \
+curl "https://login.pinecone.io/oauth/token" \
+	-H "X-Pinecone-Api-Version: 2026-07" \
 	-H "Content-Type: application/json" \
 	-d '{
 		"grant_type": "client_credentials",

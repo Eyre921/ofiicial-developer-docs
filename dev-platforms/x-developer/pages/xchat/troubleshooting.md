@@ -1,0 +1,308 @@
+---
+title: "Fix common X Chat problems"
+source: https://docs.x.com/xchat/troubleshooting
+path: xchat/troubleshooting
+---
+
+Solutions for the most common X Chat issues: key setup, backup recovery, messages that won't decrypt, and send errors.
+
+This page covers problems that are **specific to X Chat encryption and the Chat XDK**: keys, secure key backup, decrypt/verify, and building encrypted send payloads.
+
+For webhooks, OAuth, HTTP status codes, and rate limits, use the general [X API](/x-api/introduction) and [authentication](/fundamentals/authentication/overview) documentation.
+
+***
+
+## Keys and secure key backup
+
+### Unlock fails (invalid passcode)
+
+* Confirm the passcode matches the one used with `setup`
+* Wait between attempts; realms rate-limit wrong guesses and can lock recovery after too many failures
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    try:
+        chat.unlock(passcode)
+    except ValueError as e:
+        print(e)  # may mention InvalidPin or guesses remaining
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    try {
+      await chat.unlock(passcode);
+    } catch (e) {
+      console.error((e as Error).message);
+    }
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    chat.unlock(passcode_bytes).await?;
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    if err := chat.Unlock(passcode, juiceboxConfigJSON); err != nil {
+        log.Println(err)
+    }
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    try { chat.Unlock(passcode, juiceboxConfigJson); }
+    catch (Exception e) { Console.WriteLine(e.Message); }
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    try { chat.unlock(passcode, juiceboxConfigJson); }
+    catch (Exception e) { System.out.println(e.getMessage()); }
+    ```
+  </Tab>
+</Tabs>
+
+### Encrypt or decrypt fails because keys or identity are not set
+
+Load private keys first, then set the **session identity**: your user id plus the `public_key_version` from your record on X. The `encrypt_*` and `prepare_*` methods sign with it; calling them with no session identity (and no explicit per-call override) is an error.
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    chat.unlock(passcode)  # or: chat.import_keys(blob)
+    chat.set_identity(my_user_id, signing_key_version)
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    await chat.unlock(passcode);
+    chat.setIdentity(myUserId, signingKeyVersion);
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    chat.import_keys(&blob)?;
+    chat.set_identity(&my_user_id, &signing_key_version);
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    blob, _ := chatxdk.Base64ToBytes(privateKeysB64)
+    _ = chat.ImportKeys(blob)
+    _ = chat.SetIdentity(myUserID, signingKeyVersion)
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    chat.ImportKeys(blobBytes);
+    chat.SetIdentity(myUserId, signingKeyVersion);
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    chat.importKeys(blobBytes);
+    chat.setIdentity(myUserId, signingKeyVersion);
+    ```
+  </Tab>
+</Tabs>
+
+### Your local public key never matches the account's registered keys
+
+Clients often need to answer *"is the key on this device one of the keys registered to this account?"*, after a restore or import, to adopt the right `public_key_version`, or to decide whether onboarding already happened. Comparing the Chat XDK's `get_public_keys` output against the API's `public_key` field **as strings always fails**, even for the same key, because the two use different encodings:
+
+* The **API** stores and returns the key exactly as registration uploaded it: the DER (SPKI) encoding, which is the raw key behind a fixed algorithm-identifier prefix
+* The **Chat XDK**'s `get_public_keys` returns the raw key alone, without that prefix
+
+Same key, two spellings. To compare, base64-decode both and check that the API bytes **end with** the SDK bytes (identical bytes also match, in case both sides ever hold the same encoding):
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    import base64
+
+    def same_key(local_b64: str, server_b64: str) -> bool:
+        local = base64.b64decode(local_b64)    # chat.get_public_keys()["identity"]
+        server = base64.b64decode(server_b64)  # API row's "public_key"
+        return local == server or (len(server) > len(local) and server.endswith(local))
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    const sameKey = (localB64: string, serverB64: string): boolean => {
+      const local = Buffer.from(localB64, 'base64');   // chat.getPublicKeys().identity
+      const server = Buffer.from(serverB64, 'base64'); // API row's public_key
+      return local.equals(server) ||
+        (server.length > local.length && server.subarray(server.length - local.length).equals(local));
+    };
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    fn same_key(local: &[u8], server: &[u8]) -> bool {
+        local == server || (server.len() > local.len() && server.ends_with(local))
+    }
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    func sameKey(local, server []byte) bool {
+        return bytes.Equal(local, server) ||
+            (len(server) > len(local) && bytes.HasSuffix(server, local))
+    }
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    static bool SameKey(byte[] local, byte[] server) =>
+        local.SequenceEqual(server) ||
+        (server.Length > local.Length &&
+         server.AsSpan(server.Length - local.Length).SequenceEqual(local));
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    static boolean sameKey(byte[] local, byte[] server) {
+        if (Arrays.equals(local, server)) return true;
+        if (server.length <= local.length) return false;
+        byte[] tail = Arrays.copyOfRange(server, server.length - local.length, server.length);
+        return Arrays.equals(tail, local);
+    }
+    ```
+  </Tab>
+</Tabs>
+
+Once matched, adopt that row's `public_key_version` for `set_identity`. When comparing versions (for example to pick the newest key), compare **numerically**: versions are millisecond timestamps of varying string length, so lexicographic comparison picks the wrong one.
+
+### Missing conversation key for a message
+
+An error like `Message encrypted with key version '…' but no matching key found` means you do not have the **raw** key for that message's `conversation_key_version`.
+
+1. Decrypt key material from `conversation_key_change_event` (live events) or `meta.conversation_key_events` (history) with `extract_conversation_keys`, **or** include those blobs in `decrypt_events`; with `set_cache_keys(true)` enabled, `decrypt_events` also retains each conversation's latest verified key so later `decrypt_event` and `encrypt_*` calls can omit it
+2. Confirm conversation keys were added for that version and you are still a participant (see [Getting Started](/xchat/getting-started#4-set-up-conversation-keys))
+
+### Peer has no public keys
+
+They may not have finished onboarding. After they register, load `public_key`, `signing_public_key`, `identity_public_key_signature`, and `public_key_version` from **API reference → Encryption keys**.
+
+***
+
+## Decryption and signatures
+
+### Decrypt fails
+
+* Stale or wrong **raw** conversation key, or wrong key version
+* Incomplete `encoded_event` string
+* Event type is not an encrypted message you can treat as decryptable content
+
+### Signature does not verify
+
+Verification is **fail-closed by default** (`reject_unverified = true`): the SDK already rejects unverified signed events, so a failure here means the verification inputs are wrong, not that you need to turn checking on. Common causes:
+
+* Missing or incomplete signing-key entry for the **sender** (all fields required by the Chat XDK; see the [Chat XDK](/xchat/xchat-xdk) reference)
+* No signing keys passed on the call and none stored via `set_signing_keys`
+* The sender rotated versions: re-fetch their public keys
+* A key version below the accepted floor never verifies
+* On a **group key-change event**, the signer has since left the group, so their keys are no longer served; see [Key changes from departed members](/xchat/groups#key-changes-from-departed-members)
+
+The `set_reject_unverified` setter exists to opt **out** of this default (`false`, not recommended). If you disabled it earlier, restore the fail-closed default:
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={null}
+    chat.set_reject_unverified(True)
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```typescript theme={null}
+    chat.setRejectUnverified(true);
+    ```
+  </Tab>
+
+  <Tab title="Rust">
+    ```rust theme={null}
+    chat.set_reject_unverified(true);
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go theme={null}
+    chat.SetRejectUnverified(true)
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp theme={null}
+    chat.SetRejectUnverified(true);
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java theme={null}
+    chat.setRejectUnverified(true);
+    ```
+  </Tab>
+</Tabs>
+
+### A reply carries `reply_preview_validation: "Invalid"`
+
+Decrypted replies may carry `reply_preview_validation` (`"Valid"` / `"Invalid"`; JavaScript uses `'valid'` / `'invalid'`). `Invalid` means the quoted preview inside the message does not match the signed original event it embeds. Treat the quote as untrusted and render the quoted content only from the validated original. The message itself is verified separately and is still authentic; nothing throws for an invalid preview.
+
+### Old events permanently fail verification
+
+Errors like `signature missing or no matching signing key` or an ECDSA mismatch on **old** events are permanent. Signatures are immutable and verified by rebuilding the signed payload from the event itself, so an event that was signed over different bytes (or never signed) fails on every future load. No retry, key refresh, or API call can heal it. Treat these events as tombstones, not retryable errors. Rotating the conversation key starts a clean, verifiable history from that point forward; new messages are unaffected.
+
+***
+
+## Building the send payload
+
+These mistakes are specific to X Chat encryption (not general HTTP errors):
+
+| Issue                  | Fix                                                                                                                                                                                                              |
+| :--------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Wrong key bytes        | Pass the **raw** conversation key bytes into the Chat XDK, not the encrypted key string from the API                                                                                                             |
+| Wrong JSON field names | Map `encrypted_content` → `encoded_message_create_event` and `encoded_event_signature` → `encoded_message_event_signature`                                                                                       |
+| Wrong message id       | Send the `message_id` from the returned payload: the SDK generates it and embeds it in the signed event, so any other value fails. On retries, reuse the same encrypted payload so the id is never minted twice  |
+| Version mismatch       | Align `conversation_key_version` with the key you use; align the signing key version passed to `set_identity` with your public-key record                                                                        |
+| Path id form           | URL paths still need the hyphenated conversation id (`:` → `-`), but for signing the SDK accepts any form: `A:B`, `A-B` (either order), or the bare recipient user id; all canonicalize to the same signed bytes |
+
+### API returns 400 for a state-changing call
+
+Every state-changing chat call (adding or rotating conversation keys, creating a group, adding members) requires **`action_signatures`** in the request body, validated at the API boundary. A missing or malformed entry (each needs `message_id`, `encoded_message_event_detail`, and a `message_event_signature` with `signature`, `public_key_version`, and `signature_version`) returns an HTTP 400 problem-details response immediately. Use the SDK prepare methods (`prepare_conversation_key_change`, `prepare_group_create`, `prepare_group_members_change`) and send **all** returned signatures; group create and member adds return two.
+
+***
+
+## Media encrypt and decrypt
+
+* Use the **same** conversation key (and version) as the message that references the attachment
+* Treat download responses as **ciphertext** until you run `decrypt_stream`
+* Infer MIME type **after** decrypt; the download `Content-Type` is often not the real image type
+
+Details: [Media](/xchat/media).
+
+***
+
+## Safe debugging
+
+When investigating crypto failures:
+
+* Log conversation ids, event ids, and key **versions** only
+* Do **not** log plaintext, passcodes, private keys, or full key blobs
+* Confirm the signing-key version passed to `set_identity` matches the `public_key_version` on your public-key record
+* For incomplete history, page **all** event pages so key-change metadata is not skipped before decrypting

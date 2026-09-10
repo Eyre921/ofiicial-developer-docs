@@ -11,7 +11,7 @@ The Timelines endpoints let you retrieve Posts from user timelines, mention feed
 ## Overview
 
 <CardGroup>
-  <Card title="User Posts" icon="user">
+  <Card title="User Posts" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-person.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=507a4bbcdcf5744bd18781508002e305">
     Get Posts authored by a user
   </Card>
 
@@ -52,7 +52,7 @@ Get the most recent Posts authored by a specific user.
 * Historical access with time-based filtering
 
 <CardGroup>
-  <Card title="API Reference" icon="code" href="/x-api/users/get-posts">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-posts">
     Full endpoint documentation
   </Card>
 </CardGroup>
@@ -70,11 +70,11 @@ Get Posts that mention a specific user.
 * Pagination support
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/posts/timelines/quickstart/user-mention-quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/posts/timelines/quickstart/user-mention-quickstart">
     Get mentions for a user
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-mentions">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-mentions">
     Full endpoint documentation
   </Card>
 </CardGroup>
@@ -97,11 +97,11 @@ Get the authenticated user's home timeline in reverse chronological order.
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/posts/timelines/quickstart/reverse-chron-quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/posts/timelines/quickstart/reverse-chron-quickstart">
     Get a user's home timeline
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-timeline">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-timeline">
     Full endpoint documentation
   </Card>
 </CardGroup>
@@ -154,7 +154,7 @@ curl "https://api.x.com/2/users/123/tweets?exclude=retweets,replies" \
     Get mentions for a user
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/posts/timelines/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/posts/timelines/integrate">
     Key concepts and best practices
   </Card>
 

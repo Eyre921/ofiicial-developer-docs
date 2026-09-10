@@ -111,7 +111,7 @@ List lookup endpoints support multiple authentication methods:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -128,7 +128,7 @@ List lookup endpoints support multiple authentication methods:
   print(response.includes)  # Contains owner user object
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -146,7 +146,7 @@ List lookup endpoints support multiple authentication methods:
 
 ### Response with expansion
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "84839422",
@@ -189,7 +189,7 @@ When retrieving owned Lists, results are paginated:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -204,7 +204,7 @@ When retrieving owned Lists, results are paginated:
   print(f"Found {len(all_lists)} lists")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -230,7 +230,7 @@ When retrieving owned Lists, results are paginated:
   ```
 </CodeGroup>
 
-<Card title="Pagination guide" icon="arrow-right" href="/x-api/fundamentals/pagination">
+<Card title="Pagination guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" href="/x-api/fundamentals/pagination">
   Learn more about pagination
 </Card>
 
@@ -259,15 +259,15 @@ When retrieving owned Lists, results are paginated:
 ## Next steps
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/lists/list-lookup/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/lists/list-lookup/quickstart">
     Make your first List lookup request
   </Card>
 
-  <Card title="List Posts" icon="list" href="/x-api/lists/list-tweets/introduction">
+  <Card title="List Posts" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/lists/list-tweets/introduction">
     Get Posts from a List
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/lists/get-list-by-id">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/lists/get-list-by-id">
     Full endpoint documentation
   </Card>
 

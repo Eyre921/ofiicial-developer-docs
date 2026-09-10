@@ -1050,7 +1050,7 @@ To transform data into vector format, you use an embedding model. Pinecone hosts
 The following embedding models are hosted by Pinecone.
 
 <Note>
-  To understand how cost is calculated for embedding, see [Embedding cost](/guides/manage-cost/understanding-cost#embedding). To get model details via the API, see [List models](/reference/api/latest/inference/list_models) and [Describe a model](/reference/api/latest/inference/describe_model).
+  To understand how cost is calculated for embedding, see [Embedding cost](/guides/manage-cost/understanding-cost#embedding). To get model details via the API, see [List models](/reference/api/latest/inference/list-available-models) and [Describe a model](/reference/api/latest/inference/describe-a-model).
 </Note>
 
 #### multilingual-e5-large

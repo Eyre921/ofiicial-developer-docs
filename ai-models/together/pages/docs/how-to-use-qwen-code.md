@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/how-to-use-qwen-code
 path: docs/how-to-use-qwen-code
 ---
 
-Learn how to power Qwen Code with Together AI models.
+Power Qwen Code with Together AI models.
 
 Qwen Code is a powerful command-line AI workflow tool specifically optimized for code understanding, automated tasks, and intelligent development assistance. While it comes with built-in Qwen OAuth support, you can also configure it to use Together AI's extensive model selection for even more flexibility and control over your AI coding experience.
 

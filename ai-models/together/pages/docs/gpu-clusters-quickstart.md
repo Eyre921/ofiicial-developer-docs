@@ -6,17 +6,17 @@ path: docs/gpu-clusters-quickstart
 
 Get started with GPU Clusters in minutes.
 
-## Create a Cluster
+## Create a cluster
 
 Follow these steps to create your first GPU cluster:
 
-### 1. Access the Cluster Console
+### 1. Access the cluster console
 
 1. Log into [api.together.ai](https://api.together.ai)
 2. Select **GPU Clusters** in the top navigation menu
 3. Select **Create Cluster**
 
-### 2. Choose Capacity Type
+### 2. Choose capacity type
 
 Select the billing mode that fits your needs:
 
@@ -25,7 +25,7 @@ Select the billing mode that fits your needs:
 
 [Learn more about capacity types →](/docs/gpu-clusters-capacity-types)
 
-### 3. Configure Your Cluster
+### 3. Configure your cluster
 
 **Cluster Size**
 
@@ -62,17 +62,17 @@ Select the billing mode that fits your needs:
 * Select NVIDIA driver version
 * Select CUDA version
 
-### 4. Create and Verify
+### 4. Create and verify
 
-1. Click **Proceed** to create your cluster
+1. Select **Proceed** to create your cluster
 2. Monitor the cluster status in the UI as it provisions
 3. Wait for status to transition to **Ready**
 
 Your cluster is now ready to use!
 
-## Next Steps
+## Next steps
 
-### For Kubernetes Clusters
+### For Kubernetes clusters
 
 1. **Install kubectl**
    * [MacOS installation guide](https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/)
@@ -98,7 +98,7 @@ You should see all worker and control plane nodes listed.
    * [Deploy workloads](/docs/gpu-clusters-management#kubernetes-usage)
    * [Access the K8s Dashboard](/docs/gpu-clusters-management#kubernetes-dashboard)
 
-### For Slurm Clusters
+### For Slurm clusters
 
 1. **Choose an SSH access method**
    * On clusters with OIDC enabled, select **OIDC** or **Key-based** in **SSH access method** on the cluster details page.
@@ -131,9 +131,9 @@ tg beta clusters get-credentials [CLUSTER_ID] --set-default-context
 
 SSH to the login node remains the primary workflow for submitting jobs. See [Download cluster kubeconfig](/docs/gpu-clusters-management#download-cluster-kubeconfig) for console steps and OIDC visibility rules.
 
-## Common First Tasks
+## Common first tasks
 
-### Upload Data
+### Upload data
 
 For small datasets:
 
@@ -145,7 +145,7 @@ kubectl cp local_file.tar.gz pod-name:/mnt/shared/
 
 For large datasets, create a pod that downloads from S3 or your data source.
 
-### Run a Test Job
+### Run a test job
 
 **Kubernetes example:**
 
@@ -180,9 +180,22 @@ nvidia-smi
 * Try a different region
 * Contact [support@together.ai](mailto:support@together.ai) for custom requirements
 
-## What's Next?
+## Next steps
 
-* [Learn cluster management operations](/docs/gpu-clusters-management)
-* [Understand capacity types and billing](/docs/gpu-clusters-capacity-types)
-* [Explore API and CLI options](/docs/gpu-clusters-api)
-* [View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters)
+<CardGroup>
+  <Card title="Manage clusters" icon="server" href="/docs/gpu-clusters-management">
+    Deploy workloads, manage storage, and scale a running cluster.
+  </Card>
+
+  <Card title="Capacity types" icon="scale" href="/docs/gpu-clusters-capacity-types">
+    Compare reserved and on-demand capacity and how each is billed.
+  </Card>
+
+  <Card title="API and CLI" icon="terminal" href="/docs/gpu-clusters-api">
+    Create and manage clusters from the API or Together CLI.
+  </Card>
+
+  <Card title="GPU cluster pricing" icon="currency-dollar" href="https://www.together.ai/pricing#gpu-clusters">
+    View current reserved and on-demand GPU cluster rates.
+  </Card>
+</CardGroup>

@@ -1,10 +1,14 @@
 ---
-title: "Quickstart"
+title: "Account Activity API quickstart guide"
 source: https://docs.x.com/x-api/account-activity/quickstart
 path: x-api/account-activity/quickstart
 ---
 
-This guide walks you through setting up the Account Activity API, managing user. Reference for the X API v2 standard tier covering account activity.
+Set up the Account Activity API, register a webhook, manage user subscriptions, and start receiving real-time X account events in this quickstart.
+
+<Warning>
+  The Account Activity API (AAA) is being deprecated. Check out the [X Activity API (XAA)](/x-api/activity/introduction) for real-time user activity delivery going forward.
+</Warning>
 
 This guide walks you through setting up the Account Activity API, managing user subscriptions, validating your webhook, and using the replay feature to recover missed events.
 
@@ -345,7 +349,7 @@ In the event your job does not complete successfully, X will return the followin
 ## Next steps
 
 <CardGroup>
-  <Card title="Introduction" icon="book" href="/x-api/account-activity/introduction">
+  <Card title="Introduction" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/account-activity/introduction">
     Activity types, data objects, and payload examples
   </Card>
 
@@ -357,7 +361,7 @@ In the event your job does not complete successfully, X will return the followin
     Migrate from legacy Enterprise to v2
   </Card>
 
-  <Card title="Webhook quickstart" icon="rocket" href="/x-api/webhooks/quickstart">
+  <Card title="Webhook quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/webhooks/quickstart">
     CRC setup, security, and webhook registration
   </Card>
 </CardGroup>

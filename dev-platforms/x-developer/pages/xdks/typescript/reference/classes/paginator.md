@@ -18,7 +18,7 @@ This class provides comprehensive pagination support for the X API, including:
 
 **`Example`**
 
-```typescript theme={null}
+```typescript title="Example" lines wrap icon="square-js" theme={null}
 // Automatic iteration
 const followers = await client.users.getFollowers('783214');
 for await (const follower of followers) {

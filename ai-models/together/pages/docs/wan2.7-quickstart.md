@@ -22,7 +22,7 @@ Wan 2.7 is a family of video generation models supporting text-to-video, image-t
 Generate a video from a text prompt. Video generation is asynchronous: you create a job, receive a job ID, and poll for the result.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -52,7 +52,7 @@ Generate a video from a text prompt. Video generation is asynchronous: you creat
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();
@@ -106,7 +106,7 @@ Generate a video from a text prompt. Video generation is asynchronous: you creat
 Drive video generation with an audio file using `media.audio_inputs`. The model synchronizes the generated video to the audio, useful for lip sync, beat-matched motion, or narration-driven scenes. If no audio is provided, the model automatically generates matching background music or sound effects.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -141,7 +141,7 @@ Drive video generation with an audio file using `media.audio_inputs`. The model 
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();
@@ -191,7 +191,7 @@ Drive video generation with an audio file using `media.audio_inputs`. The model 
 Animate a still image by using it as the first frame. Pass images via `media.frame_images` with `frame` set to `"first"` or `"last"`.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -229,7 +229,7 @@ Animate a still image by using it as the first frame. Pass images via `media.fra
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();
@@ -294,7 +294,7 @@ Animate a still image by using it as the first frame. Pass images via `media.fra
 Provide both a starting and ending frame to control the video's transition. The model generates smooth motion between the two keyframes.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -330,7 +330,7 @@ Provide both a starting and ending frame to control the video's transition. The 
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();
@@ -377,7 +377,7 @@ Provide both a starting and ending frame to control the video's transition. The 
 Continue from an existing video clip using `media.frame_videos`. The model generates new content that seamlessly extends the input video.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -412,7 +412,7 @@ Continue from an existing video clip using `media.frame_videos`. The model gener
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();
@@ -458,7 +458,7 @@ Continue from an existing video clip using `media.frame_videos`. The model gener
 Generate video featuring a specific person or object by providing reference images or videos via `media.reference_images` or `media.reference_videos`. The model maintains the character's appearance throughout the generated video. Multiple references can be passed for multi-character scenes.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -493,7 +493,7 @@ Generate video featuring a specific person or object by providing reference imag
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();
@@ -556,7 +556,7 @@ Generate video featuring a specific person or object by providing reference imag
 Edit an existing video with text instructions using `media.source_video`. Optionally pass `media.reference_images` to guide the edit with a visual reference.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -588,7 +588,7 @@ Edit an existing video with text instructions using `media.source_video`. Option
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();

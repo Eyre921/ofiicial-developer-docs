@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/identity-access-management
 path: docs/identity-access-management
 ---
 
-How users, credentials, and resources are organized across the Together platform
+How users, credentials, and resources are organized across the Together platform.
 
 Together's Identity and Access Management (IAM) model controls how your team collaborates on the platform, and how your workloads are authenticated. It determines who can access what, how credentials are scoped, and how resources are organized.
 

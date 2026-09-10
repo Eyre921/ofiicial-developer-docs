@@ -112,7 +112,7 @@ Each health check validates different aspects of your GPU infrastructure:
 * Runs a short [TorchTitan](https://github.com/pytorch/torchtitan) training benchmark on a single node or across multiple nodes.
 * Measures the steady-state median model FLOPs utilization (MFU), skipping the warmup step.
 * Validates that a node sustains the expected training throughput for its GPU type, catching grossly degraded nodes that still pass point-in-time diagnostics.
-* **Requires:** NVIDIA B200 (Blackwell) GPU nodes. The benchmark runs a CUDA and PyTorch training stack (PyTorch with FlashAttention 4) built for the B200 architecture (compute capability `sm_100`), so it does not run on other GPU types.
+* **Requires:** NVIDIA B200 (Blackwell) GPU nodes. The benchmark runs a CUDA and PyTorch training stack (PyTorch with FlashAttention-4) built for the B200 architecture (compute capability `sm_100`), so it does not run on other GPU types.
 * **Runtime:** About 15 minutes total, roughly 9 minutes to initialize and 6 minutes to run.
 * **Use for:** End-to-end training-readiness validation.
 

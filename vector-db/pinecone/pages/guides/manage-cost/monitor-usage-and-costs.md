@@ -269,7 +269,7 @@ For a more in-depth demonstration of how to use read units to inspect read costs
 
 ### Embedding tokens
 
-Requests to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models), either directly via the [`embed` operation](/reference/api/latest/inference/generate-embeddings) or automatically when upserting or querying an [index with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), return a `usage` parameter with the total tokens generated.
+Requests to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models), either directly via the [`embed` operation](/reference/api/latest/inference/generate-vectors) or automatically when upserting or querying an [index with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), return a `usage` parameter with the total tokens generated.
 
 For example, the following request to use the `multilingual-e5-large` model to generate embeddings for sentences related to the word “apple” might return this request and summary of embedding tokens generated:
 
@@ -485,7 +485,7 @@ For example, the following request to use the `multilingual-e5-large` model to g
   curl https://api.pinecone.io/embed \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
         "model": "llama-text-embed-v2",
         "parameters": {

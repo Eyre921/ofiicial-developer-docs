@@ -51,11 +51,17 @@ The result is a deployment that is indistinguishable from a fully trained model 
 
 ### Deploy with live merge
 
-Deploy your LoRA trained model with a single command:
+List shapes for the LoRA's base model, then deploy your trained model with one:
 
 ```bash theme={null}
-firectl deployment create "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>"
+firectl deployment-shape-version list \
+  --base-model "accounts/<BASE_MODEL_ACCOUNT_ID>/models/<BASE_MODEL_ID>"
+
+firectl deployment create "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>" \
+  --deployment-shape <SHAPE_NAME>
 ```
+
+Copy `<SHAPE_NAME>` from the `SHAPE NAME (version-id)` column (the resource name before the parenthesized version ID).
 
 <Check>
   Your deployment will be ready to use once it completes, with performance that matches the base model.

@@ -984,7 +984,7 @@ A common anti-pattern is storing all data in a single namespace and using metada
   curl -X POST "https://$INDEX_HOST/query" \
        -H "Api-Key: $PINECONE_API_KEY" \
        -H "Content-Type: application/json" \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
              "vector": [0.1, 0.2, 0.3, ...],
              "topK": 10,
@@ -1171,7 +1171,7 @@ If data must be shared across many tenants, design your access control using the
   curl -X POST "https://$INDEX_HOST/query" \
        -H "Api-Key: $PINECONE_API_KEY" \
        -H "Content-Type: application/json" \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
              "vector": [0.1, 0.2, 0.3, ...],
              "topK": 10,

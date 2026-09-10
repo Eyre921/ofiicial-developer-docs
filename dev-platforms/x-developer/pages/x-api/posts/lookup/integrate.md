@@ -137,7 +137,7 @@ The X API v2 returns minimal data by default. Use `fields` and `expansions` to r
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -155,7 +155,7 @@ The X API v2 returns minimal data by default. Use `fields` and `expansions` to r
   print(response.includes)  # Contains expanded user and media objects
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -225,7 +225,7 @@ If a Post is deleted or from a protected account you don't follow:
 * Single Post lookup returns `404`
 * Multi-Post lookup omits the Post from results with an `errors` array
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     { "id": "1234567890", "text": "Available post" }
@@ -250,7 +250,7 @@ If a Post is deleted or from a protected account you don't follow:
     Use the multi-Post endpoint to fetch up to 100 Posts at once, reducing API calls.
   </Card>
 
-  <Card title="Request only needed fields" icon="filter">
+  <Card title="Request only needed fields" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e">
     Specify only the fields you need to minimize response size and processing time.
   </Card>
 
@@ -258,7 +258,7 @@ If a Post is deleted or from a protected account you don't follow:
     Cache Post data locally to reduce repeated requests for the same content.
   </Card>
 
-  <Card title="Handle edits" icon="clock-rotate-left">
+  <Card title="Handle edits" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-history.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=6afe17587c08ee621e37afde19a07ff1">
     For real-time apps, consider re-fetching Posts after the 30-minute edit window.
   </Card>
 </CardGroup>
@@ -268,11 +268,11 @@ If a Post is deleted or from a protected account you don't follow:
 ## Next steps
 
 <CardGroup>
-  <Card title="API Reference" icon="code" href="/x-api/posts/post-lookup-by-post-id">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/post-lookup-by-post-id">
     Complete endpoint documentation
   </Card>
 
-  <Card title="Data dictionary" icon="book" href="/x-api/fundamentals/data-dictionary">
+  <Card title="Data dictionary" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/fundamentals/data-dictionary">
     All available objects and fields
   </Card>
 
@@ -280,7 +280,7 @@ If a Post is deleted or from a protected account you don't follow:
     Working code examples
   </Card>
 
-  <Card title="Error handling" icon="triangle-exclamation" href="/x-api/fundamentals/response-codes-and-errors">
+  <Card title="Error handling" icon="https://mintcdn.com/x-preview/jLbdFJYHCS9a6gmb/icons/xds/icon-warning.svg?fit=max&auto=format&n=jLbdFJYHCS9a6gmb&q=85&s=3760ceda7c43e1ffbd9f8b7ccbf83cca" href="/x-api/fundamentals/response-codes-and-errors">
     Handle errors gracefully
   </Card>
 </CardGroup>

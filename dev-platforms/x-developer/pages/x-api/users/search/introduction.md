@@ -11,7 +11,7 @@ The User Search endpoint lets you search for users by keyword. Find users by nam
 ## Overview
 
 <CardGroup>
-  <Card title="Keyword search" icon="magnifying-glass">
+  <Card title="Keyword search" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834">
     Search by name, username, or bio
   </Card>
 
@@ -41,7 +41,7 @@ user.fields=description,verified,public_metrics" \
 
 ## Example response
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
@@ -76,11 +76,11 @@ user.fields=description,verified,public_metrics" \
 </Note>
 
 <CardGroup>
-  <Card title="User lookup" icon="user" href="/x-api/users/lookup/introduction">
+  <Card title="User lookup" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-person.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=507a4bbcdcf5744bd18781508002e305" href="/x-api/users/lookup/introduction">
     Look up users by ID or username
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/user-search">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/user-search">
     Full endpoint documentation
   </Card>
 </CardGroup>

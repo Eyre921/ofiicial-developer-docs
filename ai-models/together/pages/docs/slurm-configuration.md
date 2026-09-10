@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/slurm-configuration
 path: docs/slurm-configuration
 ---
 
-Customize Slurm cluster settings to match your workload requirements
+Customize Slurm cluster settings to match your workload requirements.
 
 Modify Slurm configuration files to optimize scheduling, resource allocation, and job management for your GPU cluster.
 
@@ -14,7 +14,7 @@ Modify Slurm configuration files to optimize scheduling, resource allocation, an
 * Kubeconfig downloaded from your cluster
 * Access to your cluster's Slurm namespace
 
-## Configuration Files
+## Configuration files
 
 Your Slurm cluster configuration is stored in a Kubernetes ConfigMap with four main files:
 
@@ -25,7 +25,7 @@ Your Slurm cluster configuration is stored in a Kubernetes ConfigMap with four m
 | `cgroup.conf`    | Control group resource management                          |
 | `plugstack.conf` | SPANK plugin configuration                                 |
 
-## Edit Configuration
+## Edit configuration
 
 ### Update ConfigMap
 
@@ -50,7 +50,7 @@ kubectl get configmap slurm -n slurm -o yaml > slurm-config.yaml
 kubectl apply -f slurm-config.yaml
 ```
 
-### Restart Components
+### Restart components
 
 After editing the ConfigMap, restart the appropriate components:
 
@@ -71,7 +71,7 @@ kubectl delete pods -n slurm -l app=slurm-compute-production
 kubectl delete pods -n slurm -l app=slurm-compute-production
 ```
 
-### Verify Changes
+### Verify changes
 
 ```bash theme={null}
 # Check rollout status
@@ -84,9 +84,9 @@ kubectl exec -it slurm-controller-0 -n slurm -- cat /etc/slurm/slurm.conf
 kubectl exec -it slurm-controller-0 -n slurm -- scontrol show config
 ```
 
-## Configuration Examples
+## Configuration examples
 
-### Configure GPU Resources
+### Configure GPU resources
 
 Edit `gres.conf` to define GPU resources:
 
@@ -95,7 +95,7 @@ Name=gpu Type=a100 File=/dev/nvidia[0-7]
 Name=gpu Type=h100 File=/dev/nvidia[8-15]
 ```
 
-### Modify Partitions
+### Modify partitions
 
 Edit the partition section in `slurm.conf`:
 
@@ -104,7 +104,7 @@ PartitionName=gpu Nodes=gpu-nodes State=UP Default=NO MaxTime=24:00:00
 PartitionName=cpu Nodes=cpu-nodes State=UP Default=YES
 ```
 
-### Tune Scheduler
+### Tune scheduler
 
 Adjust scheduler parameters in `slurm.conf`:
 
@@ -112,7 +112,7 @@ Adjust scheduler parameters in `slurm.conf`:
 SchedulerParameters=batch_sched_delay=10,bf_interval=180,sched_max_job_start=500
 ```
 
-### Update Resource Allocation
+### Update resource allocation
 
 Modify resource allocation settings:
 
@@ -121,7 +121,7 @@ SelectTypeParameters=CR_Core_Memory
 DefMemPerCPU=4096  # 4GB per CPU
 ```
 
-### Enable Cgroup Limits
+### Enable cgroup limits
 
 Edit `cgroup.conf` to enforce resource limits:
 
@@ -140,7 +140,7 @@ TaskPlugin=task/cgroup,task/affinity
 
 ## Troubleshooting
 
-### Configuration Not Applied
+### Configuration not applied
 
 ```bash theme={null}
 # Verify ConfigMap was updated
@@ -153,7 +153,7 @@ kubectl get pods -n slurm
 kubectl logs slurm-controller-0 -n slurm
 ```
 
-### Syntax Errors
+### Syntax errors
 
 ```bash theme={null}
 # Check controller logs for errors
@@ -163,7 +163,7 @@ kubectl logs slurm-controller-0 -n slurm | grep -i error
 kubectl get events -n slurm --sort-by='.lastTimestamp'
 ```
 
-### Pods Not Restarting
+### Pods not restarting
 
 ```bash theme={null}
 # Check rollout status
@@ -173,7 +173,7 @@ kubectl rollout status statefulset slurm-controller -n slurm
 kubectl delete pod slurm-controller-0 -n slurm
 ```
 
-### Jobs Failing After Changes
+### Jobs failing after changes
 
 ```bash theme={null}
 # Check node status
@@ -186,9 +186,9 @@ kubectl exec -it slurm-controller-0 -n slurm -- scontrol show node <nodename>
 kubectl exec -it slurm-controller-0 -n slurm -- scontrol show job <jobid>
 ```
 
-## Quick Reference
+## Quick reference
 
-### View Configurations
+### View configurations
 
 ```bash theme={null}
 # View all Slurm configmaps
@@ -201,7 +201,7 @@ kubectl get configmap slurm -n slurm -o jsonpath='{.data.slurm\.conf}'
 kubectl get configmap slurm -n slurm -o jsonpath='{.data.gres\.conf}'
 ```
 
-### Restart Components
+### Restart components
 
 ```bash theme={null}
 # Restart controller
@@ -214,7 +214,7 @@ kubectl rollout restart statefulset slurm-accounting -n slurm
 kubectl delete pods -n slurm -l app=slurm-compute-production
 ```
 
-### Monitor Cluster
+### Monitor cluster
 
 ```bash theme={null}
 # Watch pod status
@@ -227,7 +227,7 @@ kubectl logs -f slurm-controller-0 -n slurm
 kubectl exec -it slurm-controller-0 -n slurm -- sinfo
 ```
 
-## Best Practices
+## Best practices
 
 * **Back up configurations** before making changes
 * **Test in development** before applying to production
@@ -240,7 +240,7 @@ kubectl exec -it slurm-controller-0 -n slurm -- sinfo
   Slurm compute nodes run as pods (not daemonsets). When you delete compute node pods, they will automatically restart with the new configuration. Running jobs may be affected during the restart.
 </Note>
 
-## Additional Resources
+## Additional resources
 
 * [Slurm Configuration Tool](https://slurm.schedmd.com/configurator.html) - Interactive configuration generator
 * [Slurm Configuration Reference](https://slurm.schedmd.com/slurm.conf.html) - Complete parameter documentation

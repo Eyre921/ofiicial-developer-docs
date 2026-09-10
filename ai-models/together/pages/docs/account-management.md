@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/account-management
 path: docs/account-management
 ---
 
-Sign up for Together AI, get your API key, and manage your account settings
+Sign up for Together AI, get your API key, and manage your account settings.
 
 ## Create an account
 
@@ -23,7 +23,7 @@ Together uses OAuth (Open Authorization) instead of a traditional username and p
 Once your account is set up, create a Project API key to start making requests.
 
 <Card title="API Keys & Authentication" icon="key" href="/docs/api-keys-authentication">
-  Learn how to create, scope, and manage your API keys
+  Create, scope, and manage your API keys.
 </Card>
 
 ## Change your email address

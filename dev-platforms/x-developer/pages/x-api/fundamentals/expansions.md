@@ -21,7 +21,7 @@ curl "https://api.x.com/2/tweets/1234567890?expansions=author_id" \
 
 Response:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "1234567890",
@@ -110,7 +110,7 @@ media.fields=url,alt_text" \
 
 Response:
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "1234567890",
@@ -220,11 +220,11 @@ console.log(`${author.name} said: ${post.text}`);
 ## Next steps
 
 <CardGroup>
-  <Card title="Fields" icon="list" href="/x-api/fundamentals/fields">
+  <Card title="Fields" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/fundamentals/fields">
     Request specific fields for each object.
   </Card>
 
-  <Card title="Data Dictionary" icon="book" href="/x-api/fundamentals/data-dictionary">
+  <Card title="Data Dictionary" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/fundamentals/data-dictionary">
     Complete object schemas.
   </Card>
 </CardGroup>

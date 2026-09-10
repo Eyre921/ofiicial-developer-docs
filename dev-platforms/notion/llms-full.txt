@@ -12413,19 +12413,11 @@ If the task is still `queued`, `running`, or `retrying`, wait at least the sugge
 
 ## Rate limits
 
-Standard [API request limits](/reference/request-limits) apply per user's usage of Notion MCP (totaled across all tool calls). Currently, this is an average of **180 requests per minute** (3 requests per second). A separate limit applies per workspace, shared across all of its connections and scaled to the workspace's plan. Because it's shared, you can be rate limited even when you're under the per-user limit above.
+Standard [API request limits](/reference/request-limits) apply per user's usage of Notion MCP, totaled across all tool calls.
 
 Some MCP tools have additional, tool-specific rate limits that are stricter. These are subject to change over time, but the current values are listed below for reference:
 
-* **Keyword `notion-search`** (including user lookups): 30 requests per minute. `notion-ai-search` uses the standard per-user limit above.
-
-### Examples
-
-To illustrate the above limitations, you'll experience rate limit errors in your MCP client of choice in any of the following example scenarios (assuming we take the average rate over a large enough time window):
-
-* 35 keyword `notion-search` calls per minute (exceeds the keyword-search-specific limit)
-* 12 keyword `notion-search` calls & 170 fetches per minute (exceeds the general 180 requests/min limit)
-* 185 fetches per minute (exceeds general 180 requests/min limit)
+* **Keyword `notion-search`** (including user lookups): 30 requests per minute. These calls also count toward the standard per-user limit. `notion-ai-search` has no tool-specific limit.
 
 ### What to do if you're rate-limited
 
@@ -17260,6 +17252,12 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 Source: https://developers.notion.com/page/changelog
 
 
+
+<Update label="September 9, 2026">
+  ### Faster retries and plan-based rate limits
+
+  The per-connection rate limit is now enforced over a fixed 60-second window: 600 requests per minute on Business and Enterprise plans, and 180 requests per minute on all other plans. `Retry-After` for this limit never exceeds 60 seconds, down from up to 15 minutes, and per-connection 429 responses now also include the wait as `additional_data.retry_after` in the body. See [Request limits](/reference/request-limits).
+</Update>
 
 <Update label="September 2, 2026">
   ### Notion MCP splits keyword search and AI search
@@ -27769,14 +27767,28 @@ Workspace plan limits are separate from request limits. See [Workspace block lim
 
 ## Rate limits
 
-The Notion API enforces two rate limits:
+The Notion API enforces two rate limits: a per-connection limit and a per-workspace limit.
 
-* **Per connection** — an average of three requests per second, with some bursts beyond the average allowed.
-* **Per workspace** — shared across all of the workspace's connections and scaled to the workspace's plan.
+### Per-connection limit
 
-Requests that exceed either limit return a `"rate_limited"` error code and an HTTP 429 response, with `additional_data.rate_limit_reason` indicating which limit was exceeded (for example, `public_api_request_rate_limit` or `public_api_space_request_rate_limit`).
+Each connection has a fixed budget of requests per 60-second window, based on the workspace's plan:
 
-Connections should handle HTTP 429 and 529 responses and respect the `Retry-After` response header. The header value is an integer number of seconds. A 529 response carries the `"service_overload"` code and means Notion is temporarily overloaded; retry it the same way as a 429.
+| Workspace plan          | Limit                                                 |
+| :---------------------- | :---------------------------------------------------- |
+| Business and Enterprise | 600 requests per minute (an average of 10 per second) |
+| All other plans         | 180 requests per minute (an average of 3 per second)  |
+
+The budget can be spent at any pace within the window — spread out evenly or in a single burst. When a request exceeds this limit, the `Retry-After` value is the time until the window resets, so it is at most 60 seconds.
+
+### Per-workspace limit
+
+A separate limit is shared across all of the workspace's connections and scaled to the workspace's plan. Because it's shared, requests can be rate limited even when each individual connection is within its per-connection limit. `Retry-After` for this limit can be longer than a minute.
+
+### Rate limit responses
+
+Requests that exceed either limit return a `"rate_limited"` error code and an HTTP 429 response, with `additional_data.rate_limit_reason` indicating which limit was exceeded (for example, `public_api_request_rate_limit` or `public_api_space_request_rate_limit`). Per-connection 429 responses also repeat the wait in the body as `additional_data.retry_after` (an integer number of seconds, as a string), for clients that can't read response headers.
+
+Connections should handle HTTP 429 and 529 responses and respect the `Retry-After` response header. The header value is an integer number of seconds. Use the returned value rather than assuming a fixed wait. A 529 response carries the `"service_overload"` code and means Notion is temporarily overloaded; retry it the same way as a 429.
 
 ### Retry rate-limited requests
 
@@ -29033,7 +29045,7 @@ Error responses contain more detail about the error in the response body, in the
 | 403              | `"restricted_resource"`             | The token lacks permission, or the request exceeds a [workspace block limit](/reference/workspace-block-limits). The message explains the cause.                                                                                                                                                                                                                       | `"API token does not have access to this resource."`                                                                                                                     |
 | 404              | `"object_not_found"`                | Given the bearer token used, the resource does not exist. This error can also indicate that the resource has not been shared with owner of the bearer token. If the connection name is available, it will be included in the error message.                                                                                                                            | `"Could not find database with ID: be907abe-510e-4116-a3d1-7ea71018c06f. Make sure the relevant pages and databases are shared with your connection \"My Connection\"."` |
 | 409              | `"conflict_error"`                  | The transaction could not be completed, potentially due to a data collision. Make sure the parameters are up to date and try again.      We also use this HTTP status code in rare cases when our [File Upload](/reference/file-upload) third-party data storage provider has downtime and sending file contents failed. In this case, please retry the request later. | `"Conflict occurred while saving. Please try again."`                                                                                                                    |
-| 429              | `"rate_limited"`                    | This request exceeds the number of requests allowed. Slow down and try again. [More details on rate limits](/reference/request-limits).                                                                                                                                                                                                                                | `"You have been rate limited. Please try again in a few minutes."`                                                                                                       |
+| 429              | `"rate_limited"`                    | This request exceeds the number of requests allowed. Slow down and try again. [More details on rate limits](/reference/request-limits).                                                                                                                                                                                                                                | `"You have been rate limited. Please try again later."`                                                                                                                  |
 | 500              | `"internal_server_error"`           | An unexpected error occurred. Reach out to [Notion support](https://www.notion.com/help).                                                                                                                                                                                                                                                                              | `"Unexpected error occurred."`                                                                                                                                           |
 | 502              | `"bad_gateway"`                     | Notion encountered an issue while attempting to complete this request (e.g., failed to establish a connection with an upstream server). Please try again.                                                                                                                                                                                                              | `"Bad Gateway"`                                                                                                                                                          |
 | 503              | `"service_unavailable"`             | Notion is unavailable. This can occur when the time to respond to a request takes longer than 60 seconds, the maximum request timeout. Please try again later.                                                                                                                                                                                                         | `"Notion is unavailable, please try again later."`                                                                                                                       |

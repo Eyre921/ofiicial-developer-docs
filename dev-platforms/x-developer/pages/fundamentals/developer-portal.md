@@ -19,11 +19,11 @@ The [Developer Console](https://console.x.com) is your central hub for managing 
     Set up apps to get API credentials. Configure authentication, permissions, and callback URLs.
   </Card>
 
-  <Card title="Monitor usage & costs" icon="chart-line">
+  <Card title="Monitor usage & costs" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bar-chart.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=e2a41caa858b122416f0005a55a8f143">
     Track API usage in real-time. View costs per endpoint and manage your credit balance.
   </Card>
 
-  <Card title="Generate credentials" icon="key">
+  <Card title="Generate credentials" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-key.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=de93497af2dde62afd3a06e896d330f5">
     Create API keys, access tokens, and OAuth credentials for your apps.
   </Card>
 
@@ -102,7 +102,7 @@ To invite a team member, navigate to the Team page in your console and enter the
     Learn about app settings, permissions, and credentials.
   </Card>
 
-  <Card title="Make your first request" icon="rocket" href="/x-api/getting-started/make-your-first-request">
+  <Card title="Make your first request" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/getting-started/make-your-first-request">
     Use your credentials to call the API.
   </Card>
 </CardGroup>

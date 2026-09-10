@@ -33,7 +33,7 @@ To ask a question with Together AI, you'll need an API route, and a page with a 
 
 Make a new POST route that takes in a `question` and returns a chat completion as a stream:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/api/answer/route.ts
 import Together from "together-ai";
 
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
 
 Add a form that sends a POST request to your new API route, and use the `ChatCompletionStream` helper to read the stream and update some React state to display the answer:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/page.tsx
 "use client";
 
@@ -118,7 +118,7 @@ To build a chatbot with Together AI, you'll need an API route that accepts an ar
 
 Make a new POST route that takes in a `messages` array and returns a chat completion as a stream:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/api/chat/route.ts
 import Together from "together-ai";
 
@@ -142,7 +142,7 @@ export async function POST(request: Request) {
 
 Create a form to submit a new message, and some React state to store the `messages` for the session. In the form's submit handler, send over the new array of messages, and use the `ChatCompletionStream` helper to read the stream and update the last message with the LLM's response.
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/page.tsx
 "use client";
 
@@ -227,7 +227,7 @@ npm i ai @ai-sdk/togetherai
 
 The API route uses `streamText` instead of the Together SDK directly:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/api/chat/route.ts
 import { streamText, convertToModelMessages } from "ai";
 import { createTogetherAI } from "@ai-sdk/togetherai";
@@ -250,7 +250,7 @@ export async function POST(req: Request) {
 
 The page uses the `useChat` hook which handles all message state and streaming automatically:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/page.tsx
 "use client";
 
@@ -308,7 +308,7 @@ npm i @mastra/core
 
 The API route uses Mastra's Together AI integration:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/api/chat/route.ts
 import { Agent } from "@mastra/core/agent";
 import { NextRequest } from "next/server";
@@ -350,7 +350,7 @@ export async function POST(request: NextRequest) {
 
 The page uses Mastra's chat hooks to manage conversation state:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/page.tsx
 "use client";
 

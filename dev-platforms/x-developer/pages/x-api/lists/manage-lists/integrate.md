@@ -66,7 +66,7 @@ The chart below shows the rate limits for each endpoint.
     -d '{"name": "My List", "description": "A list of interesting accounts"}'
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -87,7 +87,7 @@ The chart below shows the rate limits for each endpoint.
   print(response.data)
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({
@@ -117,7 +117,7 @@ The chart below shows the rate limits for each endpoint.
     -d '{"name": "Updated List Name"}'
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -138,7 +138,7 @@ The chart below shows the rate limits for each endpoint.
   print(response.data)
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({

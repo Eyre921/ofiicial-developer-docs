@@ -312,11 +312,11 @@ See the [operators reference](/x-api/posts/filtered-stream/integrate/operators) 
 ## Next steps
 
 <CardGroup>
-  <Card title="Operators reference" icon="list" href="/x-api/posts/filtered-stream/integrate/operators">
+  <Card title="Operators reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/posts/filtered-stream/integrate/operators">
     Complete list of available operators
   </Card>
 
-  <Card title="Filtered stream quickstart" icon="rocket" href="/x-api/posts/filtered-stream/quickstart">
+  <Card title="Filtered stream quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/posts/filtered-stream/quickstart">
     Connect to your stream
   </Card>
 

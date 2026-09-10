@@ -6,7 +6,7 @@ path: x-api/powerstream/introduction
 
 Powerstream is the X API v2 lowest-latency streaming endpoint for public Post data, using PowerTrack-style rules to filter by keywords, operators, and metadata.
 
-Powerstream is our **lowest-latency streaming API** for accessing public X data in real-time. Unlike other streaming endpoints that prioritize data hydration and delivery (with \~6-7 seconds P99 latency), Powerstream is optimized for speed and delivers data with minimal delay.
+Powerstream is our **lowest-latency streaming API** for accessing public X data in real-time. Unlike other streaming endpoints that prioritize data hydration and delivery (with \~4-5 seconds P99 latency), Powerstream is optimized for speed and delivers data with minimal delay.
 
 Similar to the legacy GNIP Powertrack API, it uses rules to filter Posts based on keywords, operators, and metadata. Once a persistent HTTP connection is made to the Powerstream endpoint, you can start receiving matching Posts in real-time.
 
@@ -56,7 +56,7 @@ headers = {
 
 Add rules to filter your stream.
 
-```python theme={null}
+```python title="Example" lines wrap icon="python" theme={null}
 data = {
    "rules": [
        {
@@ -81,7 +81,7 @@ else:
 
 Remove rules by ID (recommended) or value.
 
-```python theme={null}
+```python title="Example" lines wrap icon="python" theme={null}
 data = {
    "rules": [
        {
@@ -126,7 +126,7 @@ else:
 
 Connect to the stream for real-time, low-latency Posts. Use `stream=True` for line-by-line reading. Implement reconnect logic for robustness.
 
-```python theme={null}
+```python title="Example" lines wrap icon="python" theme={null}
 stream_url = base_url
 
 def main():
@@ -192,7 +192,7 @@ In order to set rules for filtering, you can use keywords and operators.
 
 The payload of the Powerstream API is the same format as the legacy GNIP Powertrack API. A sample json response looks like:
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 [
    {
        "created_at": "Tue Mar 21 20:50:14 +0000 2006",
@@ -311,7 +311,7 @@ The payload of the Powerstream API is the same format as the legacy GNIP Powertr
     Handle high throughput
   </Card>
 
-  <Card title="Recovery and redundancy" icon="shield" href="/x-api/fundamentals/recovery-and-redundancy">
+  <Card title="Recovery and redundancy" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-shield-keyhole.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=a0e05514090c8a6af232297bfb9c4055" href="/x-api/fundamentals/recovery-and-redundancy">
     Build resilient applications
   </Card>
 </CardGroup>

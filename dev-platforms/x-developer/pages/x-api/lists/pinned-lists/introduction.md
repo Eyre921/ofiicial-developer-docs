@@ -74,11 +74,11 @@ curl -X POST "https://api.x.com/2/users/123456789/pinned_lists" \
     Pin and unpin Lists
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/lists/pinned-lists/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/lists/pinned-lists/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-pinned-lists">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-pinned-lists">
     Full endpoint documentation
   </Card>
 </CardGroup>

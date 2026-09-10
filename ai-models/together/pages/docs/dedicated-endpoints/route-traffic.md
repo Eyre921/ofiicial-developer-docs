@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/dedicated-endpoints/route-traffic
 path: docs/dedicated-endpoints/route-traffic
 ---
 
-Learn how to route traffic to a deployment, and explore advanced strategies to change how traffic moves over time.
+Route traffic to a deployment, and explore strategies that change how traffic moves over time.
 
 After you create a deployment, you still need to route traffic to it before it can receive requests (even if it's marked `READY`).
 

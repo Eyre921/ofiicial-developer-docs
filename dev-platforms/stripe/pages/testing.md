@@ -1464,4 +1464,5 @@ Make sure that the page (corresponding to `return_url`) on your website provides
 - [Testing your Billing integration](https://docs.stripe.com/billing/testing.md)
 - [Testing your Terminal integration](https://docs.stripe.com/terminal/references/testing.md)
 - [Load testing](https://docs.stripe.com/rate-limits.md#load-testing)
+- [Testing use cases](https://docs.stripe.com/testing-use-cases.md)
 

@@ -6,7 +6,36 @@ path: changelog
 
 Release notes and version history for the X API v2, Enterprise APIs, Ads API, SDKs, streaming, webhooks, and the developer platform.
 
-To subscribe to updates, please [**“Turn on notifications”**](https://help.x.com/en/managing-your-account/notifications-on-mobile-devices#:~:text=In%20the%20top%20menu,%20you,you%20would%20like%20to%20receive) for [**@API**](https://x.com/api).
+To subscribe to updates, please [**“Turn on notifications”**](https://help.x.com/en/managing-your-account/notifications-on-mobile-devices#:~:text=In%20the%20top%20menu,%20you,you%20would%20like%20to%20receive) for [**@API**](https://x.com/api). You can also follow this changelog in your feed reader via the [**RSS feed**](https://docs.x.com/changelog/rss.xml).
+
+<Update label="Sep 1, 2026" description="X API v2">
+  ### Media upload and Post-create size and duration limits
+
+  We documented the size and duration limits that apply when uploading media and when attaching it to a Post. Upload and [`POST /2/tweets`](/x-api/posts/create-post) are separately enforced. Limits follow the **authenticated user's** X Premium / verified status and `media_category`, not your developer API plan.
+
+  * Default accounts: Post video up to **20 minutes** and **8 GB** (`tweet_video` / `amplify_video`)
+  * X Premium / verified: Post video up to **125 minutes** and **16 GB**
+  * Direct Message video is unchanged: 140 seconds / 512 MB default, 10 minutes / 1 GB Premium
+  * Exceeding the posting user's duration cap returns **403** `This user is not allowed to post a video longer than N minutes.`
+
+  The [chunked upload quickstart](/x-api/media/quickstart/media-upload-chunked) now uses the v2 paths (`POST /2/media/upload/initialize`, `/{id}/append`, `/{id}/finalize`) instead of the previous command-style `POST /2/media/upload` flow.
+</Update>
+
+<Update label="Aug 13, 2026" description="X Ads API">
+  ### Updated `video_total_views` definition
+
+  We updated the definition of the `video_total_views` metric in the `VIDEO` metrics group of the [X Ads API Analytics endpoints](/x-ads-api/analytics). It now reports views that are 100% in-view for at least 3 seconds, plus any view where a user manually clicks the play button.
+
+  The previous definition (at least 50% in-view for 2 seconds, per the MRC standard) no longer applies. The prior "100% in-view for 3 seconds" definition remains available as the `video_3s100pct_views` metric, and you can continue bidding on it via the `VIEW_3S_100PCT` bid unit.
+</Update>
+
+<Update label="Jul 21, 2026" description="X API v2">
+  ### Mute and block events for X Activity API
+
+  Today, we added mute and block events to the [X Activity API](https://docs.x.com/x-api/activity/introduction). You can now subscribe by User ID to receive real-time notifications when a user mutes or unmutes (`mute.mute`, `mute.unmute`) or blocks or unblocks (`block.block`, `block.unblock`) another user.
+
+  These are private events: they require user-context (OAuth 2.0) authentication with the `mute.read` or `block.read` scope, respectively, and the `user_id` filter matches the user performing the action.
+</Update>
 
 <Update label="Jun 11, 2026" description="X API v2">
   ### Articles draft and publish endpoints
@@ -1550,7 +1579,7 @@ To subscribe to updates, please [**“Turn on notifications”**](https://help.x
 <Update label="Jun 2, 2017" description="X API: Standard v1.1">
   ### Retirement of xAuth
 
-  The xAuth authentication mechanism has been removed from all X APIs  Read more about this update [on our forum](https://devcommunity.x.com/t/retirement-of-xauth/88022).
+  The xAuth authentication mechanism has been removed from all X APIs. Read more about this update [on our forum](https://devcommunity.x.com/t/retirement-of-xauth/88022).
 </Update>
 
 <Update label="May 8, 2017" description="X API: Standard v1.1">

@@ -73,19 +73,19 @@ curl -X POST "https://api.x.com/2/lists" \
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/lists/manage-lists/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/lists/manage-lists/quickstart">
     Create your first List
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/lists/manage-lists/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/lists/manage-lists/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="List members" icon="users" href="/x-api/lists/list-members/introduction">
+  <Card title="List members" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-people.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=9d5f3f82edcd2a4070364193436e7980" href="/x-api/lists/list-members/introduction">
     Add and remove members
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/lists/create-list">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/lists/create-list">
     Full endpoint documentation
   </Card>
 </CardGroup>

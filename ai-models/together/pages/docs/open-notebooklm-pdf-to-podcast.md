@@ -24,7 +24,7 @@ Below we define the required classes:
 * The overall conversation consists of lines said by either the host or the guest. The `DialogueItem` class specifies the structure of these lines.
 * The full script is a combination of multiple lines performed by the speakers, here we also include a `scratchpad` field to allow the LLM to ideate and brainstorm the overall flow of the script prior to actually generating the lines. The `Dialogue` class specifies this.
 
-```py Python theme={null}
+```python Python theme={null}
 from pydantic import BaseModel
 from typing import List, Literal, Tuple, Optional
 
@@ -50,7 +50,7 @@ The inclusion of a scratchpad field is very important - it allows the LLM comput
 
 Next we need to define a detailed prompt template engineered to guide the LLM through the generation of the script. Feel free to modify and update the prompt below.
 
-```py Python theme={null}
+```python Python theme={null}
 # Adapted and modified from https://github.com/gabrielchua/open-notebooklm
 SYSTEM_PROMPT = """
 You are a world-class podcast producer tasked with transforming the provided input text into an engaging and informative podcast script. The input may be unstructured or messy, sourced from PDFs or web pages. Your goal is to extract the most interesting and insightful content for a compelling podcast discussion.
@@ -125,7 +125,7 @@ Download the PDF file and then extract text contents using the function below.
 !mv 2406.04692 MoA.pdf
 ```
 
-```py Python theme={null}
+```python Python theme={null}
 from pypdf import PdfReader
 
 
@@ -156,7 +156,7 @@ text = get_PDF_text("MoA.pdf")
 
 Below we call Llama3.1 70B with JSON mode to generate a script for our podcast. JSON mode makes it so that the LLM will only generate responses in the format specified by the `Script` class. We will also be able to read its scratchpad and see how it structured the overall conversation.
 
-```py Python theme={null}
+```python Python theme={null}
 from together import Together
 from pydantic import ValidationError
 
@@ -230,7 +230,7 @@ Now we can have a look at the script that is generated:
 
 Below we read through the script and choose the TTS voice depending on the speaker. We define a speaker and guest voice id.
 
-```py Python theme={null}
+```python Python theme={null}
 import subprocess
 import ffmpeg
 from cartesia import Cartesia
@@ -254,7 +254,7 @@ ws = client_cartesia.tts.websocket()
 
 We can loop through the lines in the script and generate them by a call to the TTS model with specific voice and lines configurations. The lines all appended to the same buffer and once the script finishes we write this out to a wav file, ready to be played.
 
-```py Python theme={null}
+```python Python theme={null}
 # Open a file to write the raw PCM audio bytes to.
 f = open("podcast.pcm", "wb")
 

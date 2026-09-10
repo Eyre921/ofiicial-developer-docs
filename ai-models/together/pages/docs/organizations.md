@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/organizations
 path: docs/organizations
 ---
 
-Create and manage your Together organization, invite members, and configure billing
+Create and manage your Together organization, invite members, and configure billing.
 
 An organization is your company's account on Together. It's the top-level container for everything: projects, members, resources, and billing. Every Together account belongs to one organization.
 

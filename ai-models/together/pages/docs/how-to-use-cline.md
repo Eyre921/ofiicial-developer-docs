@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/how-to-use-cline
 path: docs/how-to-use-cline
 ---
 
-Learn how to power Cline (an AI coding agent) with Together AI models.
+Power Cline, an AI coding agent, with Together AI models.
 
 Cline is a popular open source AI coding agent with nearly 2 million installs that is installable through any IDE including VS Code, Cursor, and Windsurf. This quick guide takes you through how you can combine Cline with powerful open source models on Together AI like Kimi K2.7 Code to supercharge your development process.
 

@@ -205,3 +205,11 @@ Another customer, `second_customer`, subscribes to the advanced product. When yo
 
 You can determine which features to provision for a customer by [retrieving their active entitlements or listening to the Active Entitlement Summary event](https://docs.stripe.com/billing/entitlements.md?dashboard-or-api=api#entitlements). You don’t have to retrieve their subscriptions, products, and features.
 
+## See also
+
+- [Coupons](https://docs.stripe.com/billing/subscriptions/coupons.md)
+- [Customers](https://docs.stripe.com/billing/customer.md)
+- [Subscription invoices](https://docs.stripe.com/billing/invoices/subscription.md)
+- [How invoicing works](https://docs.stripe.com/invoicing/overview.md)
+- [Payment Intents](https://docs.stripe.com/payments/payment-intents.md)
+

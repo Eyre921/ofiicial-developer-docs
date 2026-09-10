@@ -6,6 +6,8 @@ path: x-ads-api/campaign-management
 
 Create, manage, and optimize advertising campaigns on X. Define budgets, targeting, creatives, and bidding strategies using the Ads API.
 
+<BlueprintMark name="targeting" />
+
 **Programmatically create, schedule, and manage ad campaigns on X.**
 
 Campaigns define your budget and schedule. Line items (also called ad groups) control targeting, bidding, and the creatives that run within a campaign.
@@ -69,7 +71,7 @@ The following example assumes you have installed, configured, and authorized you
 twurl -H ads-api.x.com /9/accounts/
 ```
 
-```JSON theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {
@@ -102,7 +104,7 @@ Hit the [GET accounts/:account\_id/funding\_instruments](/x-ads-api/campaign-man
 twurl -H ads-api.x.com /9/accounts/xxxxxx/funding_instruments
 ```
 
-```JSON theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
@@ -138,7 +140,7 @@ Specify a start time and a budget for the campaign. For the purpose of this exam
 twurl -H ads-api.x.com -d "funding_instrument_id=yyyy&name=My First Campaign&total_budget_amount_local_micro=500000000&daily_budget_amount_local_micro=50000000" /9/accounts/xxxxxx/campaigns
 ```
 
-```JSON theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "created_at": "2015-02-09T00:00:00Z",
@@ -175,7 +177,7 @@ Now that we have a campaign id, we can create a line item to associate with it. 
 twurl -H ads-api.x.com -d "campaign_id=XXXX&bid_amount_local_micro=1500000&product_type=PROMOTED_TWEETS&placements=ALL_ON_TWITTER&objective=ENGAGEMENTS&entity_status=PAUSED" /9/accounts/xxxxxxx/line_items
 ```
 
-```JSON theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data_type": "line_item",
   "data": {
@@ -227,7 +229,7 @@ With the line item created, we can assign targeting criteria. We want to target 
 twurl -H ads-api.x.com "/9/targeting_criteria/locations?location_type=CITIES&q=San Francisco"
 ```
 
-```JSON theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
@@ -250,7 +252,7 @@ twurl -H ads-api.x.com "/9/targeting_criteria/locations?location_type=CITIES&q=S
 twurl -H ads-api.x.com -X POST -d "line_item_id=yyyy&targeting_type=LOCATION&targeting_value=5122804691e5fecc" /9/accounts/xxxxxx/targeting_criteria
 ```
 
-```JSON theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "created_at": "2015-02-09T00:00:15Z",
@@ -278,7 +280,7 @@ twurl -H ads-api.x.com -X POST -d "line_item_id=yyyy&targeting_type=LOCATION&tar
 twurl -H ads-api.x.com -X POST -d "line_item_id=yyyy&targeting_type=PHRASE_KEYWORD&targeting_value=grumpy cat" /9/accounts/xxxxxx/targeting_criteria
 ```
 
-```JSON theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "created_at": "2015-02-09T00:00:20Z",
@@ -308,7 +310,7 @@ twurl -H ads-api.x.com -X POST -d "line_item_id=yyyy&targeting_type=PHRASE_KEYWO
 twurl -H ads-api.x.com -X PUT "/9/accounts/xxxxxx/line_items/yyyy/?entity_status=ACTIVE"
 ```
 
-```JSON theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data_type": "line_item",
   "data": {
@@ -421,7 +423,7 @@ Advertisers can fund campaigns across multiple handles with this type of credit 
 
 For example, @NikeSB and @NikeFuel can both have access to the @Nike credit line. This funding instrument is available just like any other. You retrieve the data by submitting a GET request to the funding\_instrument endpoint. Here is a sample response (note the `CREDIT_LINE` type).
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 GET https://ads-api.x.com/5/accounts/a0b1c3/funding_instruments
 
 {
@@ -946,7 +948,7 @@ First, using the [Chunked media upload](/x-api/media/quickstart/media-upload-chu
 
 Once the state returned using the `STATUS` command is `succeeded`, you’ll use the media\_key returned from that endpoint to add the video to the advertiser’s media library, using the [POST accounts/:account\_id/media\_library](/x-ads-api/creatives/reference#media-library) endpoint.
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 POST https://ads-api.x.com/8/55w3kv/media\_library?media\_key=3_931236738554519552
 
 {
@@ -979,7 +981,7 @@ POST https://ads-api.x.com/8/55w3kv/media\_library?media\_key=3_9312367385545195
 
 Create the [campaign](/x-ads-api/campaign-management/reference#post-accounts-account-id-campaigns) and [line item/ad group](/x-ads-api/campaign-management/reference#campaigns). Line items should be created with an `objective` of `VIDEO_VIEWS_PREROLL`, and a `product_type` of `MEDIA`. The `categories` parameter must also be set to the appropriate [advertiser business categories](/x-ads-api/campaign-management/reference#advertiser-business-categories).
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 POST https://ads-api.x.com/8/accounts/55w3kv/campaigns?name=test-curated-categories-api&funding\_instrument\_id=103hp9&start\_time=2021-02-10&entity\_status=PAUSED&daily\_budget\_amount\_local\_micro=55000000
 
 {
@@ -1027,7 +1029,7 @@ Line items must have the categories parameter set to the appropriate set of IAB 
 
 In order to use these values, partners must select an appropriate content category and use the entire set of iab\_categories returned in the response, to set the categories parameter on the line items endpoint. Any partial application of the iab\_categories will result in the entire group being set on the line item. For example,
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 GET https://ads-api.x.com/8/advertiser\_business\_categories
 
 {
@@ -1261,7 +1263,7 @@ GET https://ads-api.x.com/8/advertiser\_business\_categories
 
 Now, in order to set the `categories` parameter to "Science & Education", the entire set of `iab_categories` i.e., `"IAB5", "IAB15"` must be set for the line item, like so:
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 POST https://ads-api.x.com/8/accounts/55w3kv/line\_items?campaign\_id=f2rp3&bid\_amount\_local\_micro=5500000&name=curated-category-line-item&product\_type=MEDIA&placements=ALL\_ON\_TWITTER&objective=PREROLL_VIEWS&categories=IAB3,IAB13,IAB21
 
 {
@@ -1356,7 +1358,7 @@ The following example illustrates how to associate a curated category id: b0xt 
 
 First, the line item’s targeting criteria is set to the value 96683cc9126741d
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 GET https://ads-api.x.com/8/targeting\_criteria/locations?country\_code=US&location_type=COUNTRIES
 
 {
@@ -1453,7 +1455,7 @@ Content categories, also referred to as Standard Categories can be retrieved fro
   **Note**: The entire set of iab\_categories in the [GET curated\_categories](/x-ads-api/campaign-management/reference#get-accounts-account-id-curated-categories) response must be targeted via the targeting criteria endpoint. Failing to do so will result in a validation error. 
 </Note>
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 GET https://ads-api.x.com/8/content_categories
 {
       "name": "News & Current Events",
@@ -1551,7 +1553,7 @@ POST https://ads-api.x.com/8/batch/accounts/55w3kv/targeting_criteria
 
 Use the [POST accounts/:account\_id/media\_creatives](/x-ads-api/campaign-management/reference#post-accounts-account-id-media-creatives) endpoint to associate the video with an ad group.
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 POST https://ads-api.x.com/8/accounts/55w3kv/media_creatives
 line\_item\_id=4bii5&account\_media\_id=knb
 
@@ -1580,7 +1582,7 @@ line\_item\_id=4bii5&account\_media\_id=knb
 
 It is important to note that unlike most other campaigns on X, the `VIDEO_VIEWS_PREROLL` objective does not utilize Promoted Tweets or Cards. Instead, the video creative is associated with your ad group (line item) and the CTA information is associated with a `preroll_call_to_action` entity. The [POST accounts/:account\_id/preroll\_call\_to\_action](/x-ads-api/creatives/reference#preroll-call-to-actions) endpoint allows you to control the button CTA and the destination URL.
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 POST https://ads-api.x.com/8/accounts/55w3kv/preroll\_call\_to_action
 line\_item\_id=4bii5&call\_to\_action=VISIT\_SITE&call\_to\_action\_url=https%3A%2F%2Fx.com%2FAdsAPI
 
@@ -1614,7 +1616,7 @@ The [GET publishers](/x-ads-api/campaign-management/reference#publishers) endp
 
 **Note:** A maximum of 5 publisher\_user\_id can be excluded for Curated Categories and 50 user\_id for Content Categories.
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 POST https://ads-api.x.com/8/batch/accounts/55w3kv/targeting_criteria
 \[
   {
@@ -1668,7 +1670,7 @@ When you’re ready to launch your campaign, simply un-pause using [PUT accounts
 PUT [https://ads-api.x.com/8/accounts/55w3kv/campaigns/f2rp3](https://ads-api.x.com/8/accounts/55w3kv/campaigns/f2rp3)?
 entity\_status=ACTIVE
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "request": {
     "params": {

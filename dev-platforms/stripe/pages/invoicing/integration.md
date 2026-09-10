@@ -660,5 +660,10 @@ curl https://api.stripe.com/v1/customers \
 ## See also
 
 - [Post-finalization](https://docs.stripe.com/invoicing/integration/workflow-transitions.md#post-finalized)
+
 - [Use incoming webhooks to get real-time updates](https://docs.stripe.com/webhooks.md)
+
+- [How Invoicing Works](https://docs.stripe.com/invoicing/overview.md)
+
+- [Hosted Invoice Page](https://docs.stripe.com/invoicing/hosted-invoice-page.md)
 

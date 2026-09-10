@@ -19,7 +19,7 @@ The Mutes endpoints let you mute and unmute users, and retrieve the list of user
     Unmute a user
   </Card>
 
-  <Card title="Muted users" icon="list">
+  <Card title="Muted users" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5">
     Get your muted user list
   </Card>
 </CardGroup>
@@ -66,7 +66,7 @@ curl -X POST "https://api.x.com/2/users/123456789/muting" \
 </Note>
 
 <CardGroup>
-  <Card title="Mutes lookup quickstart" icon="list" href="/x-api/users/mutes/quickstart/mutes-lookup">
+  <Card title="Mutes lookup quickstart" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/users/mutes/quickstart/mutes-lookup">
     Get your muted users
   </Card>
 
@@ -74,11 +74,11 @@ curl -X POST "https://api.x.com/2/users/123456789/muting" \
     Mute and unmute users
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/users/mutes/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/users/mutes/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-muting">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-muting">
     Full endpoint documentation
   </Card>
 </CardGroup>

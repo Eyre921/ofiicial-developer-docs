@@ -33,12 +33,12 @@ The X API uses standard HTTP status codes. Successful requests return 2xx codes;
 
 ### Server error codes
 
-| Code    | Meaning               | What to do                                   |
-| :------ | :-------------------- | :------------------------------------------- |
-| **500** | Internal Server Error | Wait and retry; check [status page](/status) |
-| **502** | Bad Gateway           | Wait and retry                               |
-| **503** | Service Unavailable   | X is overloaded; wait and retry              |
-| **504** | Gateway Timeout       | Wait and retry                               |
+| Code    | Meaning               | What to do                                                          |
+| :------ | :-------------------- | :------------------------------------------------------------------ |
+| **500** | Internal Server Error | Wait and retry; check [status page](https://developer.x.com/status) |
+| **502** | Bad Gateway           | Wait and retry                                                      |
+| **503** | Service Unavailable   | X is overloaded; wait and retry                                     |
+| **504** | Gateway Timeout       | Wait and retry                                                      |
 
 ***
 
@@ -86,7 +86,7 @@ Additional fields may be present depending on the error type.
 
 Some requests can partially succeed. A 200 response may include both `data` and `errors`:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {"id": "123", "text": "Hello"}
@@ -196,7 +196,7 @@ x-rate-limit-reset: 1705420800
     Always check HTTP status before parsing the response body.
   </Card>
 
-  <Card title="Handle partial errors" icon="triangle-exclamation">
+  <Card title="Handle partial errors" icon="https://mintcdn.com/x-preview/jLbdFJYHCS9a6gmb/icons/xds/icon-warning.svg?fit=max&auto=format&n=jLbdFJYHCS9a6gmb&q=85&s=3760ceda7c43e1ffbd9f8b7ccbf83cca">
     Check for `errors` array even in 200 responses.
   </Card>
 
@@ -222,11 +222,11 @@ When posting questions about errors, include:
 * Steps you've tried
 
 <CardGroup>
-  <Card title="Developer Forum" icon="comments" href="https://devcommunity.x.com">
+  <Card title="Developer Forum" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat-unread.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=ce6313d8c0b7b4e5363f2ce80b89f7e4" href="https://devcommunity.x.com">
     Ask questions and search solutions.
   </Card>
 
-  <Card title="API Status" icon="signal" href="/status">
+  <Card title="API Status" icon="signal" href="https://developer.x.com/status">
     Check for known issues.
   </Card>
 </CardGroup>

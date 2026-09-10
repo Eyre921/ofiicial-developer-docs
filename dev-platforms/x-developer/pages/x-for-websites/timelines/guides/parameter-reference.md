@@ -34,7 +34,7 @@ Posts by @XDevelopers
 
 ## JavaScript factory example
 
-```javascript theme={null}
+```javascript title="Example" lines wrap icon="square-js" theme={null}
 twttr.widgets.createTimeline(
   {
     sourceType: "profile",

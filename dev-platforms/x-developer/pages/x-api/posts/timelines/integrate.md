@@ -53,7 +53,7 @@ By default, responses include only `id`, `text`, and `edit_history_tweet_ids`. R
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -71,7 +71,7 @@ By default, responses include only `id`, `text`, and `edit_history_tweet_ids`. R
           print(f"{post.text} - {post.public_metrics}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -133,7 +133,7 @@ Timelines return up to 100 Posts per request. Use pagination for larger result s
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -148,7 +148,7 @@ Timelines return up to 100 Posts per request. Use pagination for larger result s
   print(f"Found {len(all_posts)} posts")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -174,7 +174,7 @@ Timelines return up to 100 Posts per request. Use pagination for larger result s
   ```
 </CodeGroup>
 
-<Card title="Pagination guide" icon="arrow-right" href="/x-api/fundamentals/pagination">
+<Card title="Pagination guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" href="/x-api/fundamentals/pagination">
   Learn more about pagination
 </Card>
 
@@ -215,7 +215,7 @@ Remove specific Post types from results:
           print(post.text)
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -265,7 +265,7 @@ Posts can be edited up to 5 times within 30 minutes. Timeline endpoints always r
 * Near-real-time use cases should account for potential edits
 * Use Post lookup to verify final state if needed
 
-<Card title="Edit Posts fundamentals" icon="clock-rotate-left" href="/x-api/fundamentals/edit-posts">
+<Card title="Edit Posts fundamentals" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-history.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=6afe17587c08ee621e37afde19a07ff1" href="/x-api/fundamentals/edit-posts">
   Learn more about Post edits
 </Card>
 
@@ -330,11 +330,11 @@ Requires User Context authentication from the Post author:
     Get mentions for a user
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-posts">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-posts">
     Full endpoint documentation
   </Card>
 
-  <Card title="Pagination" icon="arrow-right" href="/x-api/fundamentals/pagination">
+  <Card title="Pagination" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" href="/x-api/fundamentals/pagination">
     Handle large result sets
   </Card>
 </CardGroup>

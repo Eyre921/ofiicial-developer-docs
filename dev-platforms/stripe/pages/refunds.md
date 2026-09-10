@@ -312,4 +312,5 @@ If your business processes a large volume of refunds close to the time of transa
 - [Add funds to your Stripe balance](https://docs.stripe.com/get-started/account/add-funds.md)
 - [Add funds to your platform balance](https://docs.stripe.com/connect/top-ups.md)
 - [Localize prices](https://docs.stripe.com/payments/currencies/localize-prices.md)
+- [Bank transfer refunds](https://docs.stripe.com/payments/bank-transfers.md#refunds)
 

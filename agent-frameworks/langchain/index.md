@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1169 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1171 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -334,6 +334,7 @@
 - `langsmith/llm-gateway-direct-model-access` — [Direct model access](pages/langsmith/llm-gateway-direct-model-access.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-direct-model-access)
 - `langsmith/llm-gateway-fallbacks` — [Model fallbacks](pages/langsmith/llm-gateway-fallbacks.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-fallbacks)
 - `langsmith/llm-gateway-header-policies` — [Per-customer policies](pages/langsmith/llm-gateway-header-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-header-policies)
+- `langsmith/llm-gateway-model-access-policies` — [Model access policies](pages/langsmith/llm-gateway-model-access-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-model-access-policies)
 - `langsmith/llm-gateway-monitoring` — [Monitor LLM Gateway spend](pages/langsmith/llm-gateway-monitoring.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-monitoring)
 - `langsmith/llm-gateway-quickstart` — [Quickstart](pages/langsmith/llm-gateway-quickstart.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-quickstart)
 - `langsmith/llm-gateway-rate-limit-policies` — [Rate limit policies](pages/langsmith/llm-gateway-rate-limit-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-rate-limit-policies)
@@ -818,6 +819,7 @@
 - `langsmith/smith-api/orgs/get-org-usage` — [Get org usage](pages/langsmith/smith-api/orgs/get-org-usage.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/get-org-usage)
 - `langsmith/smith-api/orgs/get-organization-billing-info` — [Get organization billing info](pages/langsmith/smith-api/orgs/get-organization-billing-info.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/get-organization-billing-info)
 - `langsmith/smith-api/orgs/get-organization-info` — [Get organization info](pages/langsmith/smith-api/orgs/get-organization-info.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/get-organization-info)
+- `langsmith/smith-api/orgs/list-all-org-personal-access-tokens` — [List all org personal access tokens](pages/langsmith/smith-api/orgs/list-all-org-personal-access-tokens.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/list-all-org-personal-access-tokens)
 - `langsmith/smith-api/orgs/list-org-members-with-workspace-roles` — [List org members with workspace roles](pages/langsmith/smith-api/orgs/list-org-members-with-workspace-roles.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/list-org-members-with-workspace-roles)
 - `langsmith/smith-api/orgs/list-org-personal-access-tokens` — [List org personal access tokens](pages/langsmith/smith-api/orgs/list-org-personal-access-tokens.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/list-org-personal-access-tokens)
 - `langsmith/smith-api/orgs/list-org-service-keys` — [List org service keys](pages/langsmith/smith-api/orgs/list-org-service-keys.md) · [原文](https://docs.langchain.com/langsmith/smith-api/orgs/list-org-service-keys)

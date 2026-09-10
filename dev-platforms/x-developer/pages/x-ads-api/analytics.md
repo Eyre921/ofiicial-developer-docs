@@ -1,10 +1,12 @@
 ---
-title: "X Ads API analytics: metrics, segmentation, and endpoints"
+title: "Analytics"
 source: https://docs.x.com/x-ads-api/analytics
 path: x-ads-api/analytics
 ---
 
 Retrieve campaign performance metrics on the X Ads API using synchronous and asynchronous analytics endpoints with segmentation and granularity options.
+
+<BlueprintMark name="attention" />
 
 Analytics metrics help partners and advertisers understand the performance of the content they promote on X. This includes information such as impressions, clicks, video views, and spend. In addition, partners and advertisers are able to get detailed metrics for various segments of the audiences they reach.
 
@@ -278,7 +280,7 @@ This document is an overview of the metrics available from our [Analytics](/x-ad
 
 Notice about video metrics definition changes:
 
-The `video_total_views` metric within the `VIDEO` metrics group will report on any views which are at least 50% in-view for 2 seconds, as per the MRC standard.
+The `video_total_views` metric within the `VIDEO` metrics group reports on 100%-in view for at least 3 seconds and when a user manually clicks on the play button.
 
 Our original video view definition of 100% in view for at least 3 seconds will continue to be available as a new `video_3s100pct_views` metric in the `VIDEO` metrics group. To continue to bid and be charged based on the original view definition, use the newly available `VIEW_3S_100PCT` bid\_unit.
 
@@ -298,14 +300,22 @@ Our original video view definition of 100% in view for at least 3 seconds will c
 
 #### `WEB_CONVERSION`
 
-|                          |                                                                                                |                        |             |
-| :----------------------- | :--------------------------------------------------------------------------------------------- | :--------------------- | :---------- |
-| Metric                   | Description                                                                                    | Segmentation Available | Data Type   |
-| `conversion_purchases`   | Number of conversions of type PURCHASE and the corresponding sale amount and order quantity    | `PLATFORMS` only       | JSON object |
-| `conversion_sign_ups`    | Number of conversions of type SIGN\_UP and the corresponding sale amount and order quantity    | `PLATFORMS` only       | JSON object |
-| `conversion_site_visits` | Number of conversions of type SITE\_VISIT and the corresponding sale amount and order quantity | `PLATFORMS` only       | JSON object |
-| `conversion_downloads`   | Number of conversions of type DOWNLOAD and the corresponding sale amount and order quantity    | `PLATFORMS` only       | JSON object |
-| `conversion_custom`      | Number of conversions of type CUSTOM and the corresponding sale amount and order quantity      | `PLATFORMS` only       | JSON object |
+|                                     |                                                                                                          |                                        |             |
+| :---------------------------------- | :------------------------------------------------------------------------------------------------------- | :------------------------------------- | :---------- |
+| Metric                              | Description                                                                                              | Segmentation Available                 | Data Type   |
+| `conversion_purchases`              | Number of conversions of type PURCHASE and the corresponding sale amount and order quantity              | `PLATFORMS` only                       | JSON object |
+| `conversion_sign_ups`               | Number of conversions of type SIGN\_UP and the corresponding sale amount and order quantity              | `PLATFORMS` only                       | JSON object |
+| `conversion_site_visits`            | Number of conversions of type SITE\_VISIT and the corresponding sale amount and order quantity           | `PLATFORMS` only                       | JSON object |
+| `conversion_downloads`              | Number of conversions of type DOWNLOAD and the corresponding sale amount and order quantity              | `PLATFORMS` only                       | JSON object |
+| `conversion_custom`                 | Number of conversions of type CUSTOM and the corresponding sale amount and order quantity                | `PLATFORMS` only                       | JSON object |
+| `conversion_add_to_carts`           | Number of conversions of type ADD TO CART and the corresponding sale amount and order quantity           | `PLATFORMS` and `CONVERSION_TAGS` only | JSON object |
+| `conversion_checkouts_initiated`    | Number of conversions of type CHECKOUT INITIATED and the corresponding sale amount and order quantity    | `PLATFORMS` and `CONVERSION_TAGS` only | JSON object |
+| `conversion_content_views`          | Number of conversions of type CONTENT VIEW and the corresponding sale amount and order quantity          | `PLATFORMS` and `CONVERSION_TAGS` only | JSON object |
+| `conversion_payment_info_additions` | Number of conversions of type PAYMENT INFO ADDITION and the corresponding sale amount and order quantity | `PLATFORMS` and `CONVERSION_TAGS` only | JSON object |
+| `conversion_add_to_wishlists`       | Number of conversions of type ADD TO WISHLIST and the corresponding sale amount and order quantity       | `PLATFORMS` and `CONVERSION_TAGS` only | JSON object |
+| `conversion_searches`               | Number of conversions of type SEARCH and the corresponding sale amount and order quantity                | `PLATFORMS` and `CONVERSION_TAGS` only | JSON object |
+| `conversion_landing_page_views`     | Number of conversions of type LANDING PAGE VIEWS and the corresponding sale amount and order quantity    | `PLATFORMS` and `CONVERSION_TAGS` only | JSON object |
+| `conversion_subscriptions`          | Number of conversions of type SUBSCRIPTIONS and the corresponding sale amount and order quantity         | `PLATFORMS` and `CONVERSION_TAGS` only | JSON object |
 
 #### `MOBILE_CONVERSION`
 
@@ -367,13 +377,16 @@ Segmentation reporting allows the retrieval of metrics broken out by the values 
 
 As of May 2026, only the following segmentation types are enabled. METROS returns Nielsen DMA codes as numeric strings (819 = Seattle-Tacoma). Geographic segmentation types such as METROS require the country parameter (96683cc9126741d1 for US).
 
-|                   |                          |
-| :---------------- | :----------------------- |
-| Segmentation Type | `country` param required |
-| `AGE`             |                          |
-| `GENDER`          |                          |
-| `METROS`          | ✔                        |
-| `PLATFORMS`       |                          |
+|                    |                          |
+| :----------------- | :----------------------- |
+| Segmentation Type  | `country` param required |
+| `AGE`              |                          |
+| `GENDER`           |                          |
+| `METROS`           | ✔                        |
+| `PLATFORMS`        |                          |
+| `CONVERSION_TAGS*` |                          |
+
+\*The CONVERSION\_TAGS segmentation is only compatible with the WEB\_CONVERSION metric group.
 
 ## Derived Metrics
 
@@ -487,7 +500,7 @@ This endpoint also supports three optional parameters that can be used to filter
 
 The Active Entities response for the request above is shown below.
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -596,7 +609,7 @@ The first Active Entities request is made at 03:00:00. The response indicates th
 `twurl -H ads-api.x.com "/12/stats/accounts/18ce54d4x5t/active_entities?entity=LINE_ITEM&start_time=2026-02-11T02:00:00Z&end_time=2026-02-11T03:00:00Z"`
 ```
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {},
       "data": [
@@ -618,7 +631,7 @@ Based on these activity start and end times and using the approach described abo
 `twurl -H ads-api.x.com "/12/stats/accounts/18ce54d4x5t?entity=LINE_ITEM&entity_ids=dvcz7&start_time=2026-02-11T00:00:00Z&end_time=2026-02-12T00:00:00Z&granularity=HOUR&metric_groups=ENGAGEMENT,VIDEO&placement=ALL_ON_TWITTER"`
 ```
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data_type": "stats",
       "time_series_length": 24,
@@ -653,7 +666,7 @@ The next Active Entities request happens at 04:00:00 and only looks at the previ
 `twurl -H ads-api.x.com "/12/stats/accounts/18ce54d4x5t/active_entities?entity=LINE_ITEM&start_time=2026-02-11T03:00:00Z&end_time=2026-02-11T04:00:00Z"`
 ```
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {},
       "data": [
@@ -675,7 +688,7 @@ In addition to seeing non-zero metrics for 03:00:00, we see that the impressions
 `twurl -H ads-api.x.com "/12/stats/accounts/18ce54d4x5t?entity=LINE_ITEM&entity_ids=dvcz7&start_time=2026-02-11T00:00:00Z&end_time=2026-02-12T00:00:00Z&granularity=HOUR&metric_groups=ENGAGEMENT,VIDEO&placement=ALL_ON_TWITTER"`
 ```
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data_type": "stats",
       "time_series_length": 24,
@@ -710,7 +723,7 @@ The Active Entities request at 05:00:00, again looking at just the previous hour
 `twurl -H ads-api.x.com "/12/stats/accounts/18ce54d4x5t/active_entities?entity=LINE_ITEM&start_time=2026-02-11T04:00:00Z&end_time=2026-02-11T05:00:00Z"`
 ```
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {},
       "data": [
@@ -732,7 +745,7 @@ The analytics response shows that only metrics for the 03:00:00 hour have change
 `twurl -H ads-api.x.com "/12/stats/accounts/18ce54d4x5t?entity=LINE_ITEM&entity_ids=dvcz7&start_time=2026-02-11T00:00:00Z&end_time=2026-02-12T00:00:00Z&granularity=HOUR&metric_groups=ENGAGEMENT,VIDEO&placement=ALL_ON_TWITTER"`
 ```
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data_type": "stats",
       "time_series_length": 24,
@@ -811,7 +824,7 @@ Start by creating a job using the [POST stats/jobs/accounts/:account\_id](/x-ads
 $ twurl -X POST -H ads-api.x.com "/12/stats/jobs/accounts/18ce54d4x5t?entity=LINE_ITEM&entity_ids=el32n&start_time=2026-03-12T00:00:00Z&end_time=2026-03-20T00:00:00Z&granularity=TOTAL&placement=ALL_ON_TWITTER&metric_groups=ENGAGEMENT"
 ```
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -863,7 +876,7 @@ Next, you'll want to check whether the job you've created using the `id_str` fro
 $ twurl -H ads-api.x.com "/12/stats/jobs/accounts/18ce54d4x5t?job_ids=1120829647711653888"
 ```
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -918,7 +931,7 @@ Finally, unzip the data file.
 
 The contents of the file are shown below.
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data_type": "stats",
       "time_series_length": 1,
@@ -1008,7 +1021,7 @@ Retrieve reach and average frequency analytics for specified campaigns.
 
 ### Example Response
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -1056,7 +1069,7 @@ GET https://ads-api.x.com/12/stats/accounts/18ce54d4x5t/reach/funding_instrument
 
 ### Example Response
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {
@@ -1114,7 +1127,7 @@ GET https://ads-api.x.com/12/stats/accounts/18ce54d4x5t?entity=LINE_ITEM&entity_
 
 ### Example Response
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "data_type": "stats",
       "time_series_length": 1,
@@ -1286,7 +1299,7 @@ Change events are available in hourly buckets.
 
 ### Example Response
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
     {
       "request": {
         "params": {

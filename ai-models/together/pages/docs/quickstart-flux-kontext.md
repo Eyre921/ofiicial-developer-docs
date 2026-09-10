@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/quickstart-flux-kontext
 path: docs/quickstart-flux-kontext
 ---
 
-Learn how to use Flux's new in-context image generation models
+Use FLUX Kontext for in-context image generation.
 
 ## FLUX Kontext
 

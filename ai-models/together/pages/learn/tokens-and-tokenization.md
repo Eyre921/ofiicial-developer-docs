@@ -9,7 +9,7 @@ How tokenization works, what the model reads, and why tokens drive cost and cont
 **TL;DR:** A model never reads actual words or characters. It reads tokens, subword chunks of about four characters each, where every chunk has a fixed integer ID. Tokenization is the deterministic step that turns your text into those IDs before the model ever sees it. Understanding this step matters because you pay per token, and filling your LLM's context window with the right tokens makes all the difference for generating useful outputs.
 
 <a href="https://tiktokenizer.vercel.app/">
-  <img alt="Tokenized example: &#x22;What are the top 3 things to do in NYC?&#x22; split into 12 tokens with integer IDs shown. Click to open tiktokenizer.vercel.app." />
+  <img alt="Tokenized example: &#x22;What are the top 3 things to do in NYC?&#x22; split into 12 tokens with integer IDs shown. Select to open tiktokenizer.vercel.app." />
 </a>
 
 <p>

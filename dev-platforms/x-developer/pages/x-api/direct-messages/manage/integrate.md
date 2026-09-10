@@ -268,7 +268,7 @@ Conversation and event IDs are shared between v1.1 and v2 endpoints. This enable
 ## Next steps
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/direct-messages/manage/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/direct-messages/manage/quickstart">
     Send your first Direct Message
   </Card>
 
@@ -276,11 +276,11 @@ Conversation and event IDs are shared between v1.1 and v2 endpoints. This enable
     Retrieve DM conversations
   </Card>
 
-  <Card title="Media upload" icon="image" href="/x-api/media/quickstart/media-upload-chunked">
+  <Card title="Media upload" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-photo.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=d0986097dcff55478c32801b20440ecc" href="/x-api/media/quickstart/media-upload-chunked">
     Upload media for attachments
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/direct-messages/create-dm-message-by-participant-id">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/direct-messages/create-dm-message-by-participant-id">
     Full endpoint documentation
   </Card>
 </CardGroup>

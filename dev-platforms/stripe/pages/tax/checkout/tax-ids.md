@@ -107,7 +107,7 @@ curl https://api.stripe.com/v1/checkout/sessions \
 
 ## Optional: Collect tax IDs in the payment form
 
-If you use [elements mode](https://docs.stripe.com/tax/checkout/elements.md) (`ui_mode: 'elements'`), you can render the [Tax ID Element](https://docs.stripe.com/js/custom_checkout/create_tax_id_element) to collect tax IDs directly in your payment form. See the [elements integration guide](https://docs.stripe.com/tax/checkout/elements.md#render-tax-id-element) for client-side setup instructions.
+If you use elements mode (`ui_mode: 'elements'`), you can render the [Tax ID Element](https://docs.stripe.com/js/custom_checkout/create_tax_id_element) to collect tax IDs directly in your payment form. See [Render the Tax ID element](https://docs.stripe.com/tax/checkout/elements.md#render-tax-id-element) for client-side setup instructions.
 
 ## Retrieve customer tax ID details after a session
 

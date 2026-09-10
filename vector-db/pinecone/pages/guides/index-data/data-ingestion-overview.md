@@ -26,7 +26,7 @@ For ongoing ingestion into an index, either one record at a time or in batches, 
 
 Import and upsert move vectors into Pinecone. For workflows where you only need vectors from hosted models (for example, to embed offline and upsert later), use the Inference API as follows:
 
-You can call the [`embed` operation](/reference/api/latest/inference/generate-embeddings) through Pinecone Inference to turn text into vectors without writing to an index. That differs from [`upsert_records`](/reference/api/latest/data-plane/upsert_records) on an index with integrated embedding, where each request embeds and stores records in one step. To see how embedding consumption appears in billing and usage reports, see [Embedding tokens](/guides/manage-cost/monitor-usage-and-costs#embedding-tokens).
+You can call the [`embed` operation](/reference/api/latest/inference/generate-vectors) through Pinecone Inference to turn text into vectors without writing to an index. That differs from [`upsert_records`](/reference/api/latest/data-plane/upsert_records) on an index with integrated embedding, where each request embeds and stores records in one step. To see how embedding consumption appears in billing and usage reports, see [Embedding tokens](/guides/manage-cost/monitor-usage-and-costs#embedding-tokens).
 
 ## Ingestion cost
 

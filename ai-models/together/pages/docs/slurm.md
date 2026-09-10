@@ -12,7 +12,7 @@ Use Slurm for HPC-style workload management on GPU clusters with familiar batch 
 
 Slurm is a cluster management system that allows users to manage and schedule jobs on a cluster of computers. A Together GPU Cluster provides Slurm configured out-of-the-box for distributed training and the option to use your own scheduler. Users can submit computing jobs to the Slurm head node where the scheduler will assign the tasks to available GPU nodes based on resource availability. For more information on Slurm, see the [Slurm Quick Start User Guide](https://slurm.schedmd.com/quickstart.html).
 
-### **Slurm Basic Concepts**
+### Slurm basic concepts
 
 1. **Jobs**: A job is a unit of work that is submitted to the cluster. Jobs can be scripts, programs, or other types of tasks.
 2. **Nodes**: A node is a computer in the cluster that can run jobs. Nodes can be physical machines or virtual machines.
@@ -29,12 +29,12 @@ Slurm is a cluster management system that allows users to manage and schedule jo
 <Warning>
   **Set memory limits explicitly in your `sbatch` scripts.**
 
-  Set `--mem` to a specific value (e.g., `--mem=500G`) rather than `--mem=0`. `--mem=0` tells Slurm to use all memory on the node, which can crash the node under load. We recommend not exceeding 90% of the node's memory to leave headroom for system processes. Adjust lower based on what your job actually needs.
+  Set `--mem` to a specific value (e.g., `--mem=500G`) rather than `--mem=0`. `--mem=0` tells Slurm to use all memory on the node, which can crash the node under load. Do not exceed 90% of the node's memory, so system processes have headroom. Adjust lower based on what your job actually needs.
 
   If a job exceeds its allocation, Slurm fails it with an `OUT_OF_MEMORY` error instead of crashing the node.
 </Warning>
 
-### Slurm Job Arrays
+### Slurm job arrays
 
 You can use Slurm job arrays to partition input files into k chunks and distribute the chunks across the nodes. See this example on processing RPv1 which will need to be adapted to your processing: [arxiv-clean-slurm.sbatch](https://github.com/togethercomputer/RedPajama-Data/blob/rp_v1/data_prep/arxiv/scripts/arxiv-clean-slurm.sbatch)
 

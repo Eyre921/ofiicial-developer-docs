@@ -27,7 +27,7 @@ for post_response in client.stream.posts():
 
 ### Async
 
-```python theme={null}
+```python title="Example" expandable lines wrap icon="python" theme={null}
 import asyncio
 from asyncio import Queue
 import threading

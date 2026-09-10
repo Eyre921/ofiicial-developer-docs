@@ -307,7 +307,7 @@ Kubernetes' API server can validate JSON Web Tokens (JWTs) issued by an external
     </Step>
 
     <Step title="Validate">
-      `kubectl` sends the API request with the token in the `Authorization: Bearer …` header. The Kubernetes API server validates the token by fetching the IdP's public signing keys from its OIDC discovery document (`<issuer-url>/.well-known/openid-configuration`), verifying the token's signature, and checking that the `iss` and `aud` claims match the issuer URL and client ID configured on the cluster. A failure here returns `401 Unauthorized`.
+      `kubectl` sends the API request with the token in the `Authorization: Bearer …` header. The Kubernetes API server validates the token by fetching the IdP's public signing keys from its OIDC discovery document (`<issuer_url>/.well-known/openid-configuration`), verifying the token's signature, and checking that the `iss` and `aud` claims match the issuer URL and client ID configured on the cluster. A failure here returns `401 Unauthorized`.
     </Step>
 
     <Step title="Authorize">
@@ -342,8 +342,8 @@ The username claim is the field in the OIDC token that Kubernetes uses as the id
   **The username claim affects the RBAC `--user` value.** The format Kubernetes uses for the identity depends on which claim you choose:
 
   * `email` produces `user@company.com`, used as-is.
-  * `sub` produces `<issuer-url>#<sub-value>` (e.g., `https://accounts.google.com#105010678054620911233`).
-  * `preferred_username` produces `<issuer-url>#<username>` (e.g., `https://login.microsoftonline.com/<TENANT_ID>/v2.0#user@company.com`).
+  * `sub` produces `<issuer_url>#<sub_value>` (e.g., `https://accounts.google.com#105010678054620911233`).
+  * `preferred_username` produces `<issuer_url>#<username>` (e.g., `https://login.microsoftonline.com/<TENANT_ID>/v2.0#user@company.com`).
 
   You'll need this exact value when creating RBAC bindings.
 </Note>
@@ -434,7 +434,7 @@ The tasks in this section are run by a cluster admin using the [admin kubeconfig
     **If username claim is `sub`:**
 
     ```bash theme={null}
-    # Format: <issuer-url>#<sub-value>
+    # Format: <issuer_url>#<sub_value>
     kubectl create clusterrolebinding my-user-admin \
       --clusterrole=cluster-admin \
       --user="https://accounts.google.com#105010678054620911233"
@@ -443,7 +443,7 @@ The tasks in this section are run by a cluster admin using the [admin kubeconfig
     **If username claim is `preferred_username`:**
 
     ```bash theme={null}
-    # Format: <issuer-url>#<preferred-username-value>
+    # Format: <issuer_url>#<preferred_username_value>
     kubectl create clusterrolebinding my-user-admin \
       --clusterrole=cluster-admin \
       --user="https://login.microsoftonline.com/<TENANT_ID>/v2.0#user@company.com"
@@ -538,7 +538,7 @@ The tasks in this section are run by each team member using their local machine.
     If your provider requires it, set it for the current session:
 
     ```bash theme={null}
-    export OIDC_CLIENT_SECRET="<your-client-secret>"
+    export OIDC_CLIENT_SECRET="<your_client_secret>"
     ```
 
     <Warning>
@@ -638,7 +638,7 @@ Your IdP requires a client secret that wasn't provided.
 **Fix:**
 
 ```bash theme={null}
-export OIDC_CLIENT_SECRET="<your-client-secret>"
+export OIDC_CLIENT_SECRET="<your_client_secret>"
 ```
 
 ### Browser login doesn't open
@@ -658,7 +658,7 @@ export OIDC_CLIENT_SECRET="<your-client-secret>"
 # Cluster storage
 Source: https://docs.together.ai/docs/cluster-storage
 
-Understand storage types, persistence, and best practices for GPU clusters
+Understand storage types, persistence, and best practices for GPU clusters.
 
 Together GPU Clusters provides multiple storage options. It is critical to understand which storage is **persistent** and which is **ephemeral** so you can architect your workloads to avoid data loss.
 
@@ -723,7 +723,7 @@ On Slurm clusters, `/home` is a **persistent NFS-backed file system** shared acr
 * Small datasets
 * Model weights and training data
 
-We recommend logging into the Slurm head node first to set up your user folder with the correct permissions.
+Log into the Slurm head node first to set up your user folder with the correct permissions.
 
 ### Kubernetes clusters
 
@@ -767,7 +767,7 @@ This guide walks you through deploying a sample inference worker to Together's m
 
 * **Together API Key** – Required for all operations. Get one from [together.ai](https://together.ai).
 * **Dedicated Containers access** – Contact your account representative or [support@together.ai](mailto:support@together.ai) to enable Dedicated Containers for your organization.
-* **Docker** – For building and pushing container images. Get it [here](https://docs.docker.com/engine/install).
+* **Docker:** For building and pushing container images. See the [Docker installation guide](https://docs.docker.com/engine/install).
 * **uv** (optional) – For Python/package management. Install from [astral-sh/uv](https://github.com/astral-sh/uv).
 
 ## Step 1: Install the Together CLI
@@ -1949,14 +1949,49 @@ Add more deployments to an endpoint to run several models or hardware configs be
 
 After you've created a deployment, you'll need to [route traffic](/docs/dedicated-endpoints/route-traffic) to it before it can serve requests.
 
+### Placement profiles
+
+Choose a placement profile to restrict which regions your deployment can run in. Placement can't be changed on an existing deployment, so set it when you deploy. You have two options:
+
+* **Attach a profile:** Pass `--placement <pp_...>` with a placement profile ID. A placement profile is a reusable, Together-managed list of preferred regions that you attach instead of repeating the same region list on every deploy.
+* **Set placement inline:** Pass `--placement.regions` with a comma-separated region list, and `--placement.constraint` (`required` or `preferred`) to control how strictly Together enforces it.
+
+Together creates and manages the list of placement profiles, so they are read-only. To see the profiles available to your project, along with their IDs and preferred regions, use the [placement profiles API](/reference/dmi/placement-profiles-list). The regions you can pass inline depend on the clusters available to your project, so a profile's preferred regions are a useful reference for valid region names.
+
+#### Compliance policy
+
+When you set inline placement, you can also pass an optional `compliancePolicy` object. The only supported policy today is `hipaa`. When set to `true`, replicas only run on HIPAA-attested clusters. Unlike the regions list, the policy is always enforced strictly, regardless of `constraint`. If no qualifying cluster is available, the deployment stays unscheduled.
+
+The CLI and SDKs don't expose `compliancePolicy` yet, but you can set it with the [create deployment API](/reference/dmi/deployments-create) when you create the deployment:
+
+```bash cURL theme={null}
+curl -X POST "https://api.together.ai/v2/projects/$PROJECT_ID/endpoints/ep_abc123/deployments" \
+  -H "Authorization: Bearer $TOGETHER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "hipaa-ready",
+    "model": "projects/proj_abc123/models/ml_abc123",
+    "config": "projects/proj_abc123/configs/cr_abc123",
+    "autoscaling": {"minReplicas": 1, "maxReplicas": 1},
+    "placement": {
+      "inline": {
+        "regions": ["us-east-1"],
+        "constraint": "ENFORCEMENT_PREFERRED",
+        "compliancePolicy": {"hipaa": true}
+      }
+    }
+  }'
+```
+
 ## Poll deployment status
 
 <Tabs>
   <Tab title="CLI / SDK">
-    To check a deployment's status, run `tg beta endpoints get` on its endpoint. The output lists up to the 10 newest deployments' `state` and ready/desired replica counts, so re-run it to watch a specific deployment come up:
+    To check a deployment's status, run `tg beta endpoints get` on its endpoint name or ID. The output lists up to the 10 newest deployments' `state` and ready/desired replica counts, so re-run it to watch a specific deployment come up:
 
     ```bash CLI theme={null}
     # Show the endpoint with each deployment's state and replica counts
+    tg beta endpoints get my-endpoint
     tg beta endpoints get ep_abc123
     ```
 
@@ -2038,7 +2073,7 @@ A deployment runs until you stop it. Stopping scales it to zero replicas and rel
 
 <Tabs>
   <Tab title="CLI">
-    Set both replica bounds to `0`:
+    Pass both `--min-replicas 0` and `--max-replicas 0`. The CLI rejects a stop request that sets only one bound to zero:
 
     ```bash CLI theme={null}
     tg beta endpoints update dep_abc123 --min-replicas 0 --max-replicas 0
@@ -2054,7 +2089,7 @@ The replicas keep serving until they finish draining, then the deployment moves 
 
 ## Restart a deployment
 
-A stopped deployment doesn't restart on its own. Only deployments in `DEPLOYMENT_STATE_STOPPED` can be restarted. A deployment in `FAILED` is terminal and can't be brought back this way; [deploy a new deployment](#create-a-deployment) instead. To restart a stopped deployment, raise both bounds to `1` or more.
+A stopped deployment doesn't restart on its own. Only deployments in `DEPLOYMENT_STATE_STOPPED` can be restarted. A deployment in `FAILED` is terminal and can't be brought back this way. [Deploy a new deployment](#create-a-deployment) instead. To restart a stopped deployment, raise both bounds to `1` or more.
 
 <Tabs>
   <Tab title="CLI">
@@ -2078,7 +2113,8 @@ A stopped deployment doesn't restart on its own. Only deployments in `DEPLOYMENT
     # All endpoints in the project
     tg beta endpoints ls
 
-    # One endpoint (includes up to the 10 newest deployments' state and replica counts)
+    # One endpoint by name or ID (includes up to the 10 newest deployments' state and replica counts)
+    tg beta endpoints get my-endpoint
     tg beta endpoints get ep_abc123
     ```
   </Tab>
@@ -2157,6 +2193,7 @@ Deletion is permanent. A deployment must be stopped before it can be deleted. Fo
 * **Model not supported:** Not every model can be deployed. See the [model catalog](/docs/dedicated-endpoints/models). A fine-tuned model deploys only if its base model is supported.
 * **Deploy fails with `the model has no revisions to deploy`:** The model record exists but has no uploaded weights yet. Finish [uploading the model](/docs/dedicated-endpoints/custom-models#upload-the-model) and wait for the upload to succeed before you deploy it.
 * **Deploy fails with a revision validation error:** When you pin a specific model or speculator revision, that revision must have passed validation first. Check `validationStatus` on the revision ([custom models](/docs/dedicated-endpoints/custom-models#check-revision-validation), [adapters](/docs/dedicated-endpoints/adapter#check-revision-validation)). Deploy the latest validated revision, or wait for the pinned revision to finish validating.
+* **Deploy or update fails with `GPU quota exceeded` (HTTP 429):** The request would put your project or organization over its per-GPU-type quota. The error message names the GPU type and the would-be total against the limit (for example, `this deployment would put your project at 116 of 100 H100 GPUs`). Lower the requested replica count, stop unused deployments on that GPU type, or [contact support](https://www.together.ai/contact) to raise the limit. When the platform itself is out of capacity for a GPU type (`GPU quota exceeded for H100`), retry later or contact support to request capacity.
 * **Deployment delete fails with `the deployment is referenced by an endpoint's traffic split and cannot be deleted; please drop traffic split weight to 0 before deleting the deployment` (HTTP 400):** The deployment still has weight in the endpoint's [traffic split](/docs/dedicated-endpoints/route-traffic). Set its weight to 0 (or remove it from the split) before deleting. The CLI's `tg beta endpoints rm dep_...` detaches it automatically.
 
 ## Next steps
@@ -3131,7 +3168,7 @@ Decoding optimizations such as speculative decoding are set by the [config](/doc
 # Overview
 Source: https://docs.together.ai/docs/dedicated-endpoints/route-traffic
 
-Learn how to route traffic to a deployment, and explore advanced strategies to change how traffic moves over time.
+Route traffic to a deployment, and explore strategies that change how traffic moves over time.
 
 After you create a deployment, you still need to route traffic to it before it can receive requests (even if it's marked `READY`).
 
@@ -6160,7 +6197,7 @@ There are three ways to estimate the cost of a fine-tuning job before launching 
 When a running job is cancelled or [stopped early](/docs/fine-tuning/early-stopping), you pay for completed steps only. To check how many steps a job completed, retrieve it and read `steps_completed`:
 
 ```bash theme={null}
-tg fine-tuning retrieve <job-id> --json | jq '.steps_completed'
+tg fine-tuning retrieve <job_id> --json | jq '.steps_completed'
 ```
 
 ## Failed jobs
@@ -7298,7 +7335,7 @@ VLM endpoints accept the same vision request shapes as the base models. See [vis
 # API & integrations
 Source: https://docs.together.ai/docs/gpu-clusters-api
 
-Manage clusters programmatically with the Together CLI, REST API, and SkyPilot
+Manage clusters programmatically with the Together CLI, REST API, and SkyPilot.
 
 ## Overview
 
@@ -7527,7 +7564,7 @@ tg beta clusters update <CLUSTER_ID> --num-reserved-gpus 16
 
 See [Billing and pricing](/docs/gpu-clusters-billing) for how reserved and on-demand usage appear on invoices.
 
-## SkyPilot Integration
+## SkyPilot integration
 
 Orchestrate AI workloads on GPU Clusters using SkyPilot for simplified cluster management and job scheduling.
 
@@ -7573,7 +7610,7 @@ Checking credentials to enable infra for SkyPilot.
 sky show-gpus --infra k8s
 ```
 
-### Example: Launch a Workload
+### Example: Launch a workload
 
 Create a SkyPilot task file (`task.yaml`):
 
@@ -7612,9 +7649,9 @@ sky launch -c gpt-together gpt-oss-20b.yaml
 * **Cost optimization** – Auto-select cheapest available resources.
 * **Job management** – Easy monitoring and cancellation.
 
-## Automation Patterns
+## Automation patterns
 
-### CI/CD Integration
+### CI/CD integration
 
 **GitHub Actions example:**
 
@@ -7656,7 +7693,7 @@ jobs:
           tg beta clusters delete [CLUSTER_ID]
 ```
 
-### Scheduled Jobs
+### Scheduled jobs
 
 **Cron-based cluster creation:**
 
@@ -7672,7 +7709,7 @@ jobs:
   --non-interactive
 ```
 
-### Auto-scaling Scripts
+### Auto-scaling scripts
 
 Scale a cluster up or down based on demand with the Together CLI:
 
@@ -7685,7 +7722,7 @@ else
 fi
 ```
 
-## Best Practices
+## Best practices
 
 ### API usage
 
@@ -7714,24 +7751,37 @@ fi
 * Batch operations when possible
 * Contact support for higher limits
 
-## What's Next?
+## Next steps
 
-* [Review API reference documentation](/reference/clusters-create)
-* [Explore the clusters CLI reference](/reference/cli/clusters)
-* [Learn about cluster management](/docs/gpu-clusters-management)
-* [Understand billing](/docs/gpu-clusters-billing)
+<CardGroup>
+  <Card title="Clusters API reference" icon="code" href="/reference/clusters-create">
+    Create, list, and update clusters through the REST API.
+  </Card>
+
+  <Card title="Clusters CLI" icon="terminal" href="/reference/cli/clusters">
+    Reserve, configure, and manage GPU clusters from the terminal.
+  </Card>
+
+  <Card title="Manage clusters" icon="server" href="/docs/gpu-clusters-management">
+    Deploy workloads, manage storage, and scale a running cluster.
+  </Card>
+
+  <Card title="Billing and pricing" icon="currency-dollar" href="/docs/gpu-clusters-billing">
+    Understand reserved, on-demand, and storage charges.
+  </Card>
+</CardGroup>
 
 
 # Billing & pricing
 Source: https://docs.together.ai/docs/gpu-clusters-billing
 
-Understand billing, pricing, and lifecycle policies for GPU Clusters
+Understand billing, pricing, and lifecycle policies for GPU clusters.
 
 ## Billing
 
-### Compute Billing
+### Compute billing
 
-Instant Clusters offer two compute billing options: **reserved** and **on-demand**.
+Instant clusters offer two compute billing options: **reserved** and **on-demand**.
 
 * **Reservations** – Credits are charged upfront or deducted for the full
   reserved duration once the cluster is provisioned. Any usage beyond the reserved
@@ -7748,31 +7798,31 @@ Instant Clusters offer two compute billing options: **reserved** and **on-demand
   current on-demand and reserved rates.
 </Note>
 
-### Storage Billing
+### Storage billing
 
 Storage is billed on a **pay-as-you-go** basis. [View current GPU Cluster
 pricing](https://www.together.ai/pricing#gpu-clusters). You can freely increase
 your storage volume size, with all usage billed at the same rate.
-To decrease the storage volume size, please contact your account team.
+To decrease the storage volume size, contact your account team.
 
-### Viewing Usage and Invoices
+### Viewing usage and invoices
 
 You can view your current usage anytime on the [Billing page in
 Settings](https://api.together.ai/settings/organization/~current/billing). Each invoice includes a
 detailed breakdown of reservation, burst, and on-demand usage for compute and
 storage.
 
-### Cluster and Storage Lifecycles
+### Cluster and storage lifecycles
 
 Clusters and storage volumes follow different lifecycle policies:
 
 * **Compute Clusters** – Clusters are automatically decommissioned when their
-  reservation period ends. To extend a reservation, go to the cloud console, "Cluster Details" view and then click the "Extend Reservation" button.
+  reservation period ends. To extend a reservation, go to the cloud console, "Cluster Details" view and then select the "Extend Reservation" button.
 * **Storage Volumes** – Storage volumes are persistent and remain available as
   long as your billing account is in good standing. They are not automatically
   deleted. The user data persists as long as you use the static PV we provide.
 
-### Running Out of Credits
+### Running out of credits
 
 When your credits are exhausted, resources behave differently depending on their
 type:
@@ -7786,15 +7836,15 @@ type:
   decommissioned.
 
 You will receive alerts before these actions take place. For questions or
-assistance, please contact your billing team.
+assistance, contact your billing team.
 
-### Access Billing Dashboard
+### Access billing dashboard
 
 1. Log into [api.together.ai](https://api.together.ai)
 2. Navigate to [Settings > Billing](https://api.together.ai/settings/organization/~current/billing)
 3. View current usage, credits, and invoices
 
-### Invoice Breakdown
+### Invoice breakdown
 
 Each invoice includes detailed line items for:
 
@@ -7803,9 +7853,9 @@ Each invoice includes detailed line items for:
 * **Storage** – Shared volume usage per TiB
 * **Usage period** – Exact timeframes for each charge
 
-## Lifecycle Policies
+## Lifecycle policies
 
-### Cluster Lifecycle
+### Cluster lifecycle
 
 **Reserved clusters:**
 
@@ -7820,7 +7870,7 @@ Each invoice includes detailed line items for:
 * Can be stopped/started anytime
 * No automatic decommissioning
 
-### Storage Lifecycle
+### Storage lifecycle
 
 **Shared volumes:**
 
@@ -7829,9 +7879,9 @@ Each invoice includes detailed line items for:
 * Must be manually deleted if no longer needed
 * Data persists as long as you use static PersistentVolumes
 
-## Best Practices
+## Best practices
 
-### Cost Optimization
+### Cost optimization
 
 * **Use reserved capacity** for predictable baseline workloads
 * **Add on-demand** only during burst periods
@@ -7839,7 +7889,7 @@ Each invoice includes detailed line items for:
 * **Monitor usage** regularly in the billing dashboard
 * **Delete unused storage** to avoid ongoing charges
 
-### Budget Planning
+### Budget planning
 
 * **Reserved capacity** – Calculate total cost upfront (GPUs × hours × rate)
 * **On-demand capacity** – Estimate based on expected burst hours
@@ -7851,7 +7901,7 @@ tiers.
 
 [View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters)
 
-## Common Questions
+## Common questions
 
 ### Can I get a refund for unused reservation time?
 
@@ -7887,35 +7937,45 @@ For billing questions or issues:
 * Contact your account team for reservation extensions
 * Email [support@together.ai](mailto:support@together.ai) for billing assistance
 
-## What's Next?
+## Next steps
 
-* [Understand capacity types](/docs/gpu-clusters-capacity-types)
-* [Create your first cluster](/docs/gpu-clusters-quickstart)
-* [Learn about cluster management](/docs/gpu-clusters-management)
+<CardGroup>
+  <Card title="Capacity types" icon="scale" href="/docs/gpu-clusters-capacity-types">
+    Compare reserved and on-demand capacity and how each is billed.
+  </Card>
+
+  <Card title="GPU clusters quickstart" icon="rocket" href="/docs/gpu-clusters-quickstart">
+    Create your first reserved or on-demand GPU cluster.
+  </Card>
+
+  <Card title="Manage clusters" icon="server" href="/docs/gpu-clusters-management">
+    Deploy workloads, manage storage, and scale a running cluster.
+  </Card>
+</CardGroup>
 
 
 # Cluster management
 Source: https://docs.together.ai/docs/gpu-clusters-management
 
-Manage, scale, and operate your GPU clusters
+Manage, scale, and operate your GPU clusters.
 
 ## On this page
 
-* [Kubernetes Usage](#kubernetes-usage)
-* [GPU Access in Containers](#understanding-gpu-access-in-containers-for-kubernetes-clusters)
-* [Kubernetes Dashboard](#kubernetes-dashboard)
-* [Direct SSH Access](#direct-ssh-access)
-* [Managing Cluster Access](#managing-cluster-access)
+* [Kubernetes usage](#kubernetes-usage)
+* [GPU access in containers](#understanding-gpu-access-in-containers-for-kubernetes-clusters)
+* [Kubernetes dashboard](#kubernetes-dashboard)
+* [Direct SSH access](#direct-ssh-access)
+* [Managing cluster access](#managing-cluster-access)
 * [Download cluster kubeconfig](#download-cluster-kubeconfig)
-* [Cluster Scaling](#cluster-scaling)
-* [Monitoring and Status](#monitoring-and-status)
-* [Best Practices](#best-practices)
+* [Cluster scaling](#cluster-scaling)
+* [Monitoring and status](#monitoring-and-status)
+* [Best practices](#best-practices)
 
-## Kubernetes Usage
+## Kubernetes usage
 
 Use `kubectl` to interact with Kubernetes clusters for containerized workloads.
 
-### Deploy Pods with Storage
+### Deploy pods with storage
 
 <Note>
   **New to Kubernetes?** A [PersistentVolumeClaim (PVC)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) is a request for storage that your pods can use. Think of it like requesting a disk that persists even when pods restart.
@@ -7923,7 +7983,7 @@ Use `kubectl` to interact with Kubernetes clusters for containerized workloads.
 
 We provide a static [PersistentVolume (PV)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) with the same name as your shared volume. As long as you use the static PV, your data will persist across pod restarts, cluster operations, and even after cluster deletion.
 
-#### Understanding Storage in Kubernetes
+#### Understanding storage in Kubernetes
 
 Kubernetes uses a three-step process for storage:
 
@@ -7988,7 +8048,7 @@ kubectl get pvc -A # across all namespaces
 
 You should see `STATUS: Bound` for both PVCs.
 
-#### Step 2: Create a Pod with Mounted Volumes
+#### Step 2: Create a pod with mounted volumes
 
 Now create a pod that mounts these volumes:
 
@@ -8025,7 +8085,7 @@ spec:
 
 [Learn more about volumes in pods →](https://kubernetes.io/docs/concepts/storage/volumes/)
 
-#### Step 3: Deploy and Access Your Pod
+#### Step 3: Deploy and access your pod
 
 Save the pod definition to a file (e.g., `pod-with-storage.yaml`) and deploy:
 
@@ -8040,7 +8100,7 @@ kubectl get pods -w
 kubectl exec -it test-pod -- bash
 ```
 
-#### Step 4: Verify Mounted Volumes
+#### Step 4: Verify mounted volumes
 
 Once inside the pod, verify your volumes are mounted:
 
@@ -8057,7 +8117,7 @@ echo "Hello from pod" > /mnt/shared/test.txt
 cat /mnt/shared/test.txt
 ```
 
-#### Accessing Volumes from Multiple Pods
+#### Accessing volumes from multiple pods
 
 Because the shared storage uses `ReadWriteMany`, multiple pods can access it simultaneously:
 
@@ -8072,7 +8132,7 @@ kubectl exec -it test-pod-2 -- bash
 cat /mnt/shared/test.txt
 ```
 
-#### Understanding GPU Access in Containers for Kubernetes Clusters
+#### Understanding GPU access in containers for Kubernetes clusters
 
 Our Kubernetes runtime exposes **all GPU devices to all containers on the host**. However, whether you can use tools like `nvidia-smi` inside your container depends on your container image.
 
@@ -8141,11 +8201,11 @@ ls /mnt/shared                # Access your mounted volumes
 python train.py               # Run your GPU workloads
 ```
 
-### Kubernetes Dashboard
+### Kubernetes dashboard
 
 Access the Kubernetes Dashboard for visual cluster management:
 
-1. From the cluster UI, click the **K8s Dashboard URL**
+1. From the cluster UI, select the **K8s Dashboard URL**
 2. Retrieve your access token:
 
 ```bash theme={null}
@@ -8270,12 +8330,12 @@ scancel        # Cancel jobs
 <Warning>
   **Set memory limits explicitly in your `sbatch` scripts.**
 
-  Set `--mem` to a specific value (e.g., `--mem=500G`) rather than `--mem=0`. `--mem=0` tells Slurm to use all memory on the node, which can crash the node under load. We recommend not exceeding 90% of the node's memory to leave headroom for system processes. Adjust lower based on what your job actually needs.
+  Set `--mem` to a specific value (e.g., `--mem=500G`) rather than `--mem=0`. `--mem=0` tells Slurm to use all memory on the node, which can crash the node under load. Do not exceed 90% of the node's memory, so system processes have headroom. Adjust lower based on what your job actually needs.
 
   If a job exceeds its allocation, Slurm fails it with an `OUT_OF_MEMORY` error instead of crashing the node.
 </Warning>
 
-#### VS Code Remote SSH Setup
+#### VS Code remote SSH setup
 
 To use VS Code with your Slurm cluster, configure SSH with a proxy jump host in your `~/.ssh/config`:
 
@@ -8286,19 +8346,19 @@ Host *
 
 # Together AI jump host (if applicable)
 Host together-jump
-  HostName <your-jump-host>
-  User <your-username>
+  HostName <your_jump_host>
+  User <your_username>
 
 # Your Slurm login node
 Host slurm-cluster
   HostName slurm-login
   ProxyJump together-jump
-  User <your-username>
+  User <your_username>
 ```
 
 Then in VS Code's Remote SSH extension, connect to `slurm-cluster`. The connection will automatically route through the jump host.
 
-## Managing Cluster Access
+## Managing cluster access
 
 Cluster access is controlled through Together's [project-based permissions](/docs/projects). Users with access to a project can access all clusters and volumes within it. There are two roles:
 
@@ -8335,17 +8395,17 @@ Find your cluster ID with `tg beta clusters list`.
 
 When OIDC is enabled, editors use the OIDC kubeconfig for day-to-day `kubectl` access, and project admins keep the admin kubeconfig for administrative tasks such as RBAC setup. See [Set up OIDC authentication](/docs/cluster-oidc).
 
-### Adding Users to a Cluster Project
+### Adding users to a cluster project
 
 For step-by-step instructions on adding and removing project members, see [Managing project collaborators](/docs/projects#managing-project-collaborators).
 
 <Info>
-  **Quick version:** Go to **Settings > Collaborators**, find the project that contains your cluster, click **View Project**, then **Add collaborator**. If you don't see Collaborators yet, use the **GPU Cluster Projects** tab instead (this tab is being replaced by the unified Collaborators page).
+  **Quick version:** Go to **Settings > Collaborators**, find the project that contains your cluster, select **View Project**, then **Add collaborator**. If you don't see Collaborators yet, use the **GPU Cluster Projects** tab instead (this tab is being replaced by the unified Collaborators page).
 </Info>
 
 New members are added with the **editor** role by default, unless they are an organization admin (who are admins for every project by default). The user must already belong to your [organization](/docs/organizations).
 
-### Removing Users
+### Removing users
 
 See [Removing collaborators](/docs/projects#removing-collaborators) for the full steps.
 
@@ -8363,7 +8423,7 @@ See [Removing collaborators](/docs/projects#removing-collaborators) for the full
   </Card>
 </CardGroup>
 
-## Cluster Scaling
+## Cluster scaling
 
 Clusters can scale flexibly in real time. Add on-demand compute to temporarily scale up when workload demand spikes, then scale back down as demand decreases.
 
@@ -8373,7 +8433,7 @@ Scaling operations can be performed via:
 * Together CLI
 * REST API
 
-### Cluster Autoscaling
+### Cluster autoscaling
 
 Cluster Autoscaling automatically adjusts the number of nodes in your cluster based on workload demand using the Kubernetes Cluster Autoscaler.
 
@@ -8390,7 +8450,7 @@ When pods cannot be scheduled due to lack of resources, the autoscaler provision
 **Enabling Autoscaling:**
 
 1. Navigate to **GPU Clusters** in the Together Cloud UI
-2. Click **Create Cluster**
+2. Select **Create Cluster**
 3. In the cluster configuration, toggle **Enable Autoscaling**
 4. Configure your maximum GPUs
 5. Create the cluster
@@ -8441,11 +8501,11 @@ To control which specific nodes are removed during scale-down, mark them for del
   Scale down one node at a time. Repeat the steps above for each additional node you want to remove — this gives the operator time to drain each node cleanly and makes it easy to stop if something goes wrong.
 </Tip>
 
-## Storage Management
+## Storage management
 
 Clusters support long-lived, resizable shared storage with persistent data.
 
-### Storage Tiers
+### Storage tiers
 
 <Warning>
   **Local NVMe disks are ephemeral.** Data can be lost during node migrations, recreations, maintenance, or cluster operations. Use shared volumes for any data you need to keep. [See full storage guide →](/docs/cluster-storage)
@@ -8457,7 +8517,7 @@ All clusters include:
 * **Local NVMe disks** – **Ephemeral.** Fast local storage on each node. Use only for temporary scratch data.
 * **`/home` directory** – **Persistent on Slurm** (NFS-backed, shared across nodes). **Ephemeral on Kubernetes** (local to each node).
 
-### Upload Data
+### Upload data
 
 **For small datasets:**
 
@@ -8489,15 +8549,15 @@ spec:
         claimName: shared-pvc
 ```
 
-### Resize Storage
+### Resize storage
 
 Storage volumes can be dynamically resized as your data grows. Use the UI, CLI, or API to increase volume size.
 
 [Learn more about storage options →](/docs/cluster-storage)
 
-## Monitoring and Status
+## Monitoring and status
 
-### Check Cluster Health
+### Check cluster health
 
 **From the UI:**
 
@@ -8521,28 +8581,28 @@ squeue                      # Job queue
 scontrol show node          # Detailed node info
 ```
 
-## Best Practices
+## Best practices
 
-### Resource Management
+### Resource management
 
 * **Always** use shared volumes (PVC) for training data, checkpoints, model weights, and application state
 * **Never** rely on local NVMe or node-local `/home` (on Kubernetes) for data you cannot afford to lose — it is ephemeral and can be wiped during migrations/recreations or maintenance
 * Use local NVMe only for temporary scratch files that can be regenerated
 * Set resource requests and limits in pod specs
 
-### Job Scheduling
+### Job scheduling
 
 * Use Kubernetes Jobs for batch processing
 * Use Slurm job arrays for embarrassingly parallel workloads
 * Set appropriate timeouts and retry policies
 
-### Data Management
+### Data management
 
 * Download large datasets directly on the cluster (not via local machine)
 * Use shared storage for training data and checkpoints
 * Use local NVMe for temporary files during training
 
-### Scaling Strategy
+### Scaling strategy
 
 * Start with reserved capacity for baseline workload
 * Add on-demand capacity for burst periods
@@ -8550,12 +8610,12 @@ scontrol show node          # Detailed node info
 
 ## GPU capacity not available
 
-In case you do not see GPU capacity of the type you require in the api.together.ai cloud console, you can request GPU capacity by going to the create cluster view, selecting your region and GPU capacity, type required and clicking on "Request" button. Please also, select the date from which you need the GPUs.
+If you do not see GPU capacity of the type you require in the api.together.ai cloud console, request GPU capacity by going to the create cluster view, selecting your region and GPU capacity, the type required, and selecting the **Request** button. Also select the date from which you need the GPUs.
 
 We use these requests as input for our demand planning, and our team will reach out to you if and when that becomes available.
 
 <Note>
-  Submitting a request for capacity does not guarantee fulfillment due to very high demand, we try our best to fulfill these requests based on available GPU capacity. In case you need guaranteed GPU capacity for fixed periods of time, [please reach out to our team](https://www.together.ai/contact-sales).
+  Submitting a request for capacity does not guarantee fulfillment due to very high demand. Together fulfills these requests based on available GPU capacity. If you need guaranteed GPU capacity for fixed periods of time, [contact the team](https://www.together.ai/contact-sales).
 </Note>
 
 ## Troubleshooting
@@ -8564,7 +8624,7 @@ We use these requests as input for our demand planning, and our team will reach 
 
 * Check node status: `kubectl get nodes`
 * Verify resource requests don't exceed available resources
-* Check for taints on nodes: `kubectl describe node <node-name>`
+* Check for taints on nodes: `kubectl describe node <node_name>`
 
 ### Storage mount issues
 
@@ -8578,22 +8638,35 @@ We use these requests as input for our demand planning, and our team will reach 
 * Verify partition is available
 * Check job status: `scontrol show job <jobid>`
 
-## What's Next?
+## Next steps
 
-* [Manage cluster access](/docs/projects#managing-project-collaborators)
-* [Understand roles and permissions](/docs/roles-permissions)
-* [Understand billing and pricing](/docs/gpu-clusters-billing)
-* [Explore API and automation options](/docs/gpu-clusters-api)
+<CardGroup>
+  <Card title="Project collaborators" icon="users" href="/docs/projects#managing-project-collaborators">
+    Add and remove members who can access clusters in a project.
+  </Card>
+
+  <Card title="Roles and permissions" icon="shield" href="/docs/roles-permissions">
+    Control what each member can do in your organization.
+  </Card>
+
+  <Card title="Billing and pricing" icon="currency-dollar" href="/docs/gpu-clusters-billing">
+    Understand reserved, on-demand, and storage charges.
+  </Card>
+
+  <Card title="API and CLI" icon="terminal" href="/docs/gpu-clusters-api">
+    Create and manage clusters from the API or Together CLI.
+  </Card>
+</CardGroup>
 
 
 # Overview
 Source: https://docs.together.ai/docs/gpu-clusters-overview
 
-High-performance GPU clusters for training, fine-tuning, and large-scale AI workloads
+High-performance GPU clusters for training, fine-tuning, and large-scale AI workloads.
 
 <Tip>Using a coding agent? Install the [together-gpu-clusters](https://github.com/togethercomputer/skills/tree/main/skills/together-gpu-clusters) skill to let your agent write correct GPU cluster code automatically. [Learn more](/docs/agent-skills).</Tip>
 
-## What are GPU Clusters?
+## What are GPU clusters?
 
 Together GPU Clusters provide on-demand access to high-performance GPU infrastructure for training, fine-tuning, and running large-scale AI workloads. Create clusters in minutes with features like real-time scaling, persistent storage, and support for both Kubernetes and Slurm workload managers.
 
@@ -8614,7 +8687,7 @@ The [GPU clusters quickstart](/docs/gpu-clusters-quickstart) breaks down this fl
 
 ## Concepts
 
-### Kubernetes Cluster Architecture
+### Kubernetes cluster architecture
 
 <Frame>
   <img alt="" />
@@ -8639,7 +8712,7 @@ For users preferring HPC-style workflows, Together runs Slurm on top of Kubernet
 
 This architecture gives you the simplicity of `sbatch` and `srun` commands while leveraging Kubernetes' reliability, scalability, and ecosystem.
 
-## Key Features
+## Key features
 
 * **Fast provisioning** – Clusters ready in minutes, not hours or days
 * **Flexible scaling** – Scale up or down in real time to match workload demands
@@ -8648,7 +8721,7 @@ This architecture gives you the simplicity of `sbatch` and `srun` commands while
 * **Full API access** – Manage clusters via REST API or CLI
 * **Enterprise integration** – Works with SkyPilot and other orchestration tools
 
-## Available Hardware
+## Available hardware
 
 Choose from the latest NVIDIA GPU configurations:
 
@@ -8658,11 +8731,11 @@ Choose from the latest NVIDIA GPU configurations:
 
 All nodes feature high-speed InfiniBand networking for multi-node training (except inference-optimized variants).
 
-## Capacity Options
+## Capacity options
 
 GPU Clusters offer two billing modes to match different workload patterns and budget requirements. You can choose **Reserved** capacity for predictable, sustained workloads with cost savings, or **On-demand** capacity for flexible, pay-as-you-go usage.
 
-### Reserved Capacity
+### Reserved capacity
 
 Reserve GPU capacity upfront for a commitment period of 1-90 days at discounted rates.
 
@@ -8683,7 +8756,7 @@ Reserve GPU capacity upfront for a commitment period of 1-90 days at discounted 
 
 Note: The lifecycle of the shared volumes attached to a reserved cluster is decoupled from the clusters; i.e. storage volumes are not decommissioned when the cluster is decommissioned at the reservation expiration. Shared volumes automatically move to on-demand pricing and continue to persist, and can be attached to other clusters or deleted post data extraction.
 
-### On-demand Capacity
+### On-demand capacity
 
 Pay only for what you use with hourly billing and no upfront commitment.
 
@@ -8701,7 +8774,7 @@ Pay only for what you use with hourly billing and no upfront commitment.
 * Exploratory testing before committing to longer runs
 * Temporary capacity needs beyond reserved baseline
 
-### Mixing Capacity Types
+### Mixing capacity types
 
 You can combine reserved and on-demand capacity in the same cluster for optimal cost and flexibility:
 
@@ -8711,7 +8784,7 @@ You can combine reserved and on-demand capacity in the same cluster for optimal 
 
 Any usage beyond your reserved capacity is automatically billed at on-demand rates.
 
-### Choosing the Right Type
+### Choosing the right type
 
 **Choose Reserved if:**
 
@@ -8749,7 +8822,7 @@ Storage can be dynamically resized as your data grows.
 
 [Learn more about storage →](/docs/cluster-storage)
 
-## Workload Management
+## Workload management
 
 ### Kubernetes
 
@@ -8771,7 +8844,7 @@ For HPC-style workflows, use Slurm with:
 
 [Learn more about Slurm →](/docs/slurm)
 
-## Getting Started
+## Getting started
 
 Ready to create your first cluster?
 
@@ -8790,17 +8863,17 @@ Source: https://docs.together.ai/docs/gpu-clusters-quickstart
 
 Get started with GPU Clusters in minutes.
 
-## Create a Cluster
+## Create a cluster
 
 Follow these steps to create your first GPU cluster:
 
-### 1. Access the Cluster Console
+### 1. Access the cluster console
 
 1. Log into [api.together.ai](https://api.together.ai)
 2. Select **GPU Clusters** in the top navigation menu
 3. Select **Create Cluster**
 
-### 2. Choose Capacity Type
+### 2. Choose capacity type
 
 Select the billing mode that fits your needs:
 
@@ -8809,7 +8882,7 @@ Select the billing mode that fits your needs:
 
 [Learn more about capacity types →](/docs/gpu-clusters-capacity-types)
 
-### 3. Configure Your Cluster
+### 3. Configure your cluster
 
 **Cluster Size**
 
@@ -8846,17 +8919,17 @@ Select the billing mode that fits your needs:
 * Select NVIDIA driver version
 * Select CUDA version
 
-### 4. Create and Verify
+### 4. Create and verify
 
-1. Click **Proceed** to create your cluster
+1. Select **Proceed** to create your cluster
 2. Monitor the cluster status in the UI as it provisions
 3. Wait for status to transition to **Ready**
 
 Your cluster is now ready to use!
 
-## Next Steps
+## Next steps
 
-### For Kubernetes Clusters
+### For Kubernetes clusters
 
 1. **Install kubectl**
    * [MacOS installation guide](https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/)
@@ -8882,7 +8955,7 @@ You should see all worker and control plane nodes listed.
    * [Deploy workloads](/docs/gpu-clusters-management#kubernetes-usage)
    * [Access the K8s Dashboard](/docs/gpu-clusters-management#kubernetes-dashboard)
 
-### For Slurm Clusters
+### For Slurm clusters
 
 1. **Choose an SSH access method**
    * On clusters with OIDC enabled, select **OIDC** or **Key-based** in **SSH access method** on the cluster details page.
@@ -8915,9 +8988,9 @@ tg beta clusters get-credentials [CLUSTER_ID] --set-default-context
 
 SSH to the login node remains the primary workflow for submitting jobs. See [Download cluster kubeconfig](/docs/gpu-clusters-management#download-cluster-kubeconfig) for console steps and OIDC visibility rules.
 
-## Common First Tasks
+## Common first tasks
 
-### Upload Data
+### Upload data
 
 For small datasets:
 
@@ -8929,7 +9002,7 @@ kubectl cp local_file.tar.gz pod-name:/mnt/shared/
 
 For large datasets, create a pod that downloads from S3 or your data source.
 
-### Run a Test Job
+### Run a test job
 
 **Kubernetes example:**
 
@@ -8964,12 +9037,25 @@ nvidia-smi
 * Try a different region
 * Contact [support@together.ai](mailto:support@together.ai) for custom requirements
 
-## What's Next?
+## Next steps
 
-* [Learn cluster management operations](/docs/gpu-clusters-management)
-* [Understand capacity types and billing](/docs/gpu-clusters-capacity-types)
-* [Explore API and CLI options](/docs/gpu-clusters-api)
-* [View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters)
+<CardGroup>
+  <Card title="Manage clusters" icon="server" href="/docs/gpu-clusters-management">
+    Deploy workloads, manage storage, and scale a running cluster.
+  </Card>
+
+  <Card title="Capacity types" icon="scale" href="/docs/gpu-clusters-capacity-types">
+    Compare reserved and on-demand capacity and how each is billed.
+  </Card>
+
+  <Card title="API and CLI" icon="terminal" href="/docs/gpu-clusters-api">
+    Create and manage clusters from the API or Together CLI.
+  </Card>
+
+  <Card title="GPU cluster pricing" icon="currency-dollar" href="https://www.together.ai/pricing#gpu-clusters">
+    View current reserved and on-demand GPU cluster rates.
+  </Card>
+</CardGroup>
 
 
 # Health checks
@@ -9083,7 +9169,7 @@ Each health check validates different aspects of your GPU infrastructure:
 * Runs a short [TorchTitan](https://github.com/pytorch/torchtitan) training benchmark on a single node or across multiple nodes.
 * Measures the steady-state median model FLOPs utilization (MFU), skipping the warmup step.
 * Validates that a node sustains the expected training throughput for its GPU type, catching grossly degraded nodes that still pass point-in-time diagnostics.
-* **Requires:** NVIDIA B200 (Blackwell) GPU nodes. The benchmark runs a CUDA and PyTorch training stack (PyTorch with FlashAttention 4) built for the B200 architecture (compute capability `sm_100`), so it does not run on other GPU types.
+* **Requires:** NVIDIA B200 (Blackwell) GPU nodes. The benchmark runs a CUDA and PyTorch training stack (PyTorch with FlashAttention-4) built for the B200 architecture (compute capability `sm_100`), so it does not run on other GPU types.
 * **Runtime:** About 15 minutes total, roughly 9 minutes to initialize and 6 minutes to run.
 * **Use for:** End-to-end training-readiness validation.
 
@@ -9526,7 +9612,7 @@ Batch jobs run against a separate rate-limit pool from the standard real-time AP
 * Up to 30B tokens enqueued per model at any time.
 * Completion window defaults to `24h` and cannot be changed; it is a best-effort target.
 
-See [rate limits](https://docs.together.ai/docs/serverless/rate-limits) for more info.
+See [rate limits](/docs/serverless/rate-limits) for more info.
 
 ## Supported models
 
@@ -10419,7 +10505,7 @@ Match the problem you're solving to the parameter most likely to help.
 
 ## Length and stopping
 
-### max\_tokens
+### `max_tokens`
 
 The maximum number of tokens the model is allowed to generate in the response. Shorter values return faster but risk truncating the answer mid-sentence.
 
@@ -10427,7 +10513,7 @@ Increase this when the model is cutting off long answers. Decrease it (sometimes
 
 Typical default: unset (the model generates until it hits a stop condition or the context limit).
 
-### stop
+### `stop`
 
 A string or list of strings that tell the model to stop generating as soon as one of them is produced. Useful for short, structured outputs where you know the boundary, for example a newline between rows or a closing tag.
 
@@ -10491,7 +10577,7 @@ Typical default: unset.
 
 `temperature`, `top_p`, and `top_k` all narrow the candidate token set. In most cases, you'll want to tune one of them and leave the others at their defaults. Similarly, `repetition_penalty`, `frequency_penalty`, and `presence_penalty` all discourage repetition in different ways. Pick the parameter that fits the issue you're trying to address rather than stacking them all together.
 
-### temperature
+### `temperature`
 
 A decimal that controls how random the output is. `0` always picks the highest-probability token (deterministic for a given prompt). Values closer to `1` introduce more variety. Values above `1` are usually too noisy for production workloads.
 
@@ -10499,7 +10585,7 @@ Lower it for extraction, classification, and other tasks where there is one righ
 
 Typical default: model-specific (often `0.7`, see `generation_config.json`).
 
-### top\_p
+### `top_p`
 
 Nucleus sampling. The model samples only from the smallest set of tokens whose cumulative probability exceeds `top_p`. A value of `0.9` means "only consider tokens that together make up the top 90% of probability mass."
 
@@ -10507,7 +10593,7 @@ Use it as a softer alternative to `temperature`. Most users tune one or the othe
 
 Typical default: `1.0` (no truncation).
 
-### top\_k
+### `top_k`
 
 Limits sampling to the `k` most likely next tokens. `top_k=1` is greedy decoding. Larger values allow more variety.
 
@@ -10515,7 +10601,7 @@ Use it when you want a hard cap on the candidate set. Like `top_p`, prefer tunin
 
 Typical default: `0` or unset (no cap).
 
-### repetition\_penalty
+### `repetition_penalty`
 
 Reduces the probability of tokens that have already appeared anywhere in the prompt or response. Values above `1.0` discourage repetition; values below `1.0` encourage it.
 
@@ -10523,7 +10609,7 @@ Raise it slightly (for example, `1.1`) when the model loops or repeats phrases. 
 
 Typical default: `1.0`.
 
-### frequency\_penalty
+### `frequency_penalty`
 
 Penalizes tokens proportionally to how often they have already appeared in the response so far. Higher positive values make the model less likely to repeat the same exact tokens; negative values make repetition more likely. Range: `-2.0` to `2.0`.
 
@@ -10531,7 +10617,7 @@ Use it to reduce verbatim repetition in long generations (lists, summaries, code
 
 Typical default: `0`.
 
-### presence\_penalty
+### `presence_penalty`
 
 Penalizes tokens that have appeared at all in the response so far, regardless of how many times. Higher positive values push the model toward new topics and vocabulary. Range: `-2.0` to `2.0`.
 
@@ -10539,7 +10625,7 @@ Use it when you want the model to cover more ground (idea generation, topic expa
 
 Typical default: `0`.
 
-### seed
+### `seed`
 
 An integer that makes sampling deterministic. With the same `seed`, prompt, model, and parameters, the model returns the same response. Determinism is best-effort and may not hold across model or backend updates.
 
@@ -10594,7 +10680,7 @@ Typical default: unset (responses vary between calls).
 
 ## Response shape
 
-### n
+### `n`
 
 The number of independent completions to generate for a given prompt. Each completion appears as a separate entry in `choices`. Higher values cost more (you pay for the output tokens of every completion).
 
@@ -11927,7 +12013,7 @@ In retrieval-augmented generation (RAG) pipelines, the reranking step sits betwe
 
 ## How the rerank API works
 
-Together's [rerank API](https://docs.together.ai/reference/rerank-1) takes a `query` and a list of `documents`, and returns a relevancy score and ordering index for each document. It can also filter the response to the top `n` most relevant documents.
+Together's [rerank API](/reference/rerank) takes a `query` and a list of `documents`, and returns a relevancy score and ordering index for each document. It can also filter the response to the top `n` most relevant documents.
 
 Key features:
 
@@ -14576,7 +14662,7 @@ Match the problem you're solving to the parameter most likely to help.
 
 ## Prompting
 
-### prompt
+### `prompt`
 
 A description of the image to generate. Required for every model except Kling. Maximum length varies by model.
 
@@ -14584,7 +14670,7 @@ Be specific about subject, setting, lighting, composition, and style. Vague prom
 
 Typical default: required.
 
-### negative\_prompt
+### `negative_prompt`
 
 A description of what to avoid in the generated image. Useful for excluding common artifacts.
 
@@ -14594,7 +14680,7 @@ Typical default: unset.
 
 ## Output dimensions
 
-### width and height
+### `width` and `height`
 
 The size of the generated image in pixels. Available combinations differ by model. Both values should be multiples of `8`.
 
@@ -14712,7 +14798,7 @@ Typical default: `1024` x `1024`.
 
 ## Quality and speed
 
-### steps
+### `steps`
 
 The number of diffusion steps. More steps generally improve quality at a near-linear cost in latency. Past a model-specific point, additional steps stop helping.
 
@@ -14779,7 +14865,7 @@ Typical default: model-specific (often `20`).
 
 <img alt="Reference image: steps.png" />
 
-### guidance\_scale
+### `guidance_scale`
 
 Controls how closely the image follows the prompt. Higher values make the output more faithful to the prompt but can introduce artifacts and oversaturation. Lower values give the model more creative freedom.
 
@@ -14789,13 +14875,13 @@ Typical default: `3.5`.
 
 ## Reproducibility and variations
 
-### seed
+### `seed`
 
 An integer that fixes the random initialization. With the same `seed`, prompt, model, and parameters, the model returns the same image. Useful for reproducibility, regression tests, and fair comparisons when tuning other parameters.
 
 Typical default: unset (each call returns a new image).
 
-### n
+### `n`
 
 The number of images to generate per request. Each image appears as a separate entry in `data`. Higher values cost more (you pay for every image generated).
 
@@ -14805,7 +14891,7 @@ Typical default: `1`.
 
 ## Output format
 
-### response\_format
+### `response_format`
 
 Controls how the image is returned. `"url"` (default) returns a hosted URL you can fetch later. `"base64"` embeds the image bytes directly in the response under `b64_json`, so you don't need a second HTTP request.
 
@@ -14885,7 +14971,7 @@ When `response_format` is `"base64"`, the response includes a `b64_json` field w
 }
 ```
 
-### output\_format
+### `output_format`
 
 The encoded image format: `"jpeg"` or `"png"`. PNG preserves transparency and crisp edges but produces larger files. JPEG is smaller but lossy.
 
@@ -14893,7 +14979,7 @@ Typical default: `"jpeg"`.
 
 ## Safety
 
-### disable\_safety\_checker
+### `disable_safety_checker`
 
 Disables the built-in NSFW safety checker. By default, requests that trigger the checker return `422 Unprocessable Entity`. The checker runs on every model except FLUX Schnell Free and FLUX Pro.
 
@@ -15106,7 +15192,7 @@ Source: https://docs.together.ai/docs/inference/openai-compatibility
 Point your OpenAI Python or TypeScript client at Together AI to call open-source models without rewriting your app.
 
 <Note>
-  You can access our full OpenAPI spec here: [https://docs.together.ai/openapi.yaml](https://docs.together.ai/openapi.yaml).
+  The full OpenAPI spec is available at [openapi.yaml](https://docs.together.ai/openapi.yaml).
 </Note>
 
 Together's API is compatible with the OpenAI REST API and SDKs across chat, completions, vision, image generation, text-to-speech, and embeddings. If you have an application that uses the OpenAI Python or TypeScript client (or cURL against `api.openai.com`), you can point it at models hosted on Together with two changes: the API key and base URL.
@@ -15618,7 +15704,7 @@ Use Together AI as a provider for [Hugging Face Inference](https://huggingface.c
   ```
 </CodeGroup>
 
-See the [Together AI Hugging Face guide](https://docs.together.ai/docs/quickstart-using-hugging-face-inference) for more details.
+See the [Together AI Hugging Face guide](/docs/quickstart-using-hugging-face-inference) for more details.
 
 ## Vercel AI SDK
 
@@ -15640,7 +15726,7 @@ const { text } = await generateText({
 console.log(text);
 ```
 
-See the [Together AI Vercel AI SDK guide](https://docs.together.ai/docs/using-together-with-vercels-ai-sdk) for details on streaming, tool use, and structured outputs.
+See the [Together AI Vercel AI SDK guide](/docs/using-together-with-vercels-ai-sdk) for details on streaming, tool use, and structured outputs.
 
 ## LangChain
 
@@ -18529,7 +18615,7 @@ Match the problem you're solving to the parameter most likely to help.
 
 ## Prompting
 
-### prompt
+### `prompt`
 
 A description of the video to generate. Required for every model except Kling. Maximum length is 32,000 characters.
 
@@ -18537,7 +18623,7 @@ Be specific about subject, action, setting, camera movement, and pacing. Vague p
 
 Typical default: required.
 
-### negative\_prompt
+### `negative_prompt`
 
 A description of what to avoid in the generated video. Useful for excluding common artifacts.
 
@@ -18547,19 +18633,19 @@ Typical default: unset.
 
 ## Output dimensions
 
-### width and height
+### `width` and `height`
 
 The size of the generated video in pixels. Available combinations differ by model.
 
 Typical default: `1366` x `768`.
 
-### resolution
+### `resolution`
 
 A resolution tier used by Wan 2.7 models in place of `width` and `height`. Accepts `"720P"` or `"1080P"`.
 
 Typical default: `"1080P"`.
 
-### ratio
+### `ratio`
 
 The aspect ratio used by Wan 2.7 models. Accepts `"16:9"`, `"9:16"`, `"1:1"`, `"4:3"`, or `"3:4"`.
 
@@ -18567,7 +18653,7 @@ Typical default: `"16:9"`.
 
 ## Length and frame rate
 
-### seconds
+### `seconds`
 
 Clip duration in seconds. Accepted range is `"1"` through `"10"`. Passed as a string.
 
@@ -18575,7 +18661,7 @@ Longer clips cost more and take longer to generate. Use shorter clips while iter
 
 Typical default: `"6"`.
 
-### fps
+### `fps`
 
 Frames per second. Higher values produce smoother motion at the cost of generation time and file size.
 
@@ -18583,7 +18669,7 @@ Typical default: `24` (some models accept up to `60`).
 
 ## Quality and speed
 
-### steps
+### `steps`
 
 The number of denoising steps. More steps generally improve visual quality and temporal consistency at a near-linear cost in latency. Past a model-specific point, additional steps stop helping.
 
@@ -18629,7 +18715,7 @@ Typical default: model-specific.
   ```
 </CodeGroup>
 
-### guidance\_scale
+### `guidance_scale`
 
 Controls how closely the video follows the prompt. Higher values make the model adhere more strictly to the text description. Lower values give the model more creative freedom. Affects both visual content and temporal consistency.
 
@@ -18689,7 +18775,7 @@ Typical default: model-specific.
 
 ## Reproducibility
 
-### seed
+### `seed`
 
 An integer that fixes the random initialization. With the same `seed`, prompt, model, and parameters, the model returns the same video. Useful for reproducibility and for fair comparisons when tuning other parameters.
 
@@ -18697,13 +18783,13 @@ Typical default: unset (each call returns a new video).
 
 ## Output format
 
-### output\_format
+### `output_format`
 
 The encoded video format. Accepts `"MP4"` or `"WEBM"`. MP4 is the broadest-compatible default. WEBM produces smaller files but isn't supported by every player.
 
 Typical default: `"MP4"`.
 
-### output\_quality
+### `output_quality`
 
 Compression quality. Lower values produce higher fidelity and larger files. Higher values produce smaller files with more compression artifacts.
 
@@ -18711,7 +18797,7 @@ Typical default: `20`.
 
 ## Audio
 
-### generate\_audio
+### `generate_audio`
 
 Whether the model should generate audio for the video. Only applies to models that support audio generation.
 
@@ -18749,7 +18835,7 @@ These parameters belong to features with their own dedicated pages. Each link be
   The top-level `frame_images` and `reference_images` parameters are deprecated. Use `media.frame_images` and `media.reference_images` instead.
 </Note>
 
-### media object schema
+### `media` object schema
 
 The `media` object is the unified way to pass images, videos, and audio into video generation requests.
 
@@ -20017,7 +20103,7 @@ Train Andrej Karpathy's end-to-end ChatGPT clone on Together's on-demand GPU clu
 
 ## Overview
 
-[nanochat](https://github.com/karpathy/nanochat) is Andrej Karpathy's end-to-end ChatGPT clone that demonstrates how a full conversational AI stack, from tokenizer to web UI, can be trained and deployed for \$100 on 8×H100 hardware. In this guide, you'll learn how to train and deploy nanochat using Together's [Instant Clusters](https://api.together.ai/clusters).
+[nanochat](https://github.com/karpathy/nanochat) is Andrej Karpathy's end-to-end ChatGPT clone that demonstrates how a full conversational AI stack, from tokenizer to web UI, can be trained and deployed for \$100 on 8×H100 hardware. In this guide, you'll learn how to train and deploy nanochat using Together's [instant clusters](https://api.together.ai/clusters).
 
 The entire process takes approximately 4 hours on an 8×H100 cluster and includes:
 
@@ -20031,13 +20117,13 @@ The entire process takes approximately 4 hours on an 8×H100 cluster and include
 
 Before you begin, make sure you have:
 
-* A Together AI account with access to [Instant Clusters](https://api.together.ai/clusters)
-* Basic familiarity with SSH and command line operations
-* `kubectl` installed on your local machine ([installation guide](https://kubernetes.io/docs/tasks/tools/))
+* A Together AI account with access to [instant clusters](https://api.together.ai/clusters).
+* Basic familiarity with SSH and command line operations.
+* `kubectl` installed on your local machine ([installation guide](https://kubernetes.io/docs/tasks/tools/)).
 
-# Training nanochat
+## Training nanochat
 
-## Step 1: Create an Instant Cluster
+## Step 1: Create an instant cluster
 
 First, let's create an 8×H100 cluster to train nanochat.
 
@@ -20050,7 +20136,7 @@ First, let's create an 8×H100 cluster to train nanochat.
 7. Select **Slurm on Kubernetes** as the cluster type
 8. Choose your preferred region
 9. Create a shared volume, min 1 TB storage
-10. Click **Preview Cluster** and then "Confirm & Create"
+10. Select **Preview Cluster** and then "Confirm & Create"
     <Frame>
       <img alt="" />
     </Frame>
@@ -20058,12 +20144,12 @@ First, let's create an 8×H100 cluster to train nanochat.
 Your cluster will be ready in a few minutes. Once the status shows **Ready**, you can proceed to the next step.
 
 <Info>
-  For detailed information about Instant Clusters features and options, see the [Instant Clusters documentation](/docs/gpu-clusters-overview).
+  For detailed information about instant clusters features and options, see the [instant clusters documentation](/docs/gpu-clusters-overview).
 </Info>
 
-## Step 2: SSH into Your Cluster
+## Step 2: SSH into your cluster
 
-From the Instant Clusters UI, you'll find SSH access details for your cluster.
+From the instant clusters UI, you'll find SSH access details for your cluster.
 
 A command like the one below can be copied from the instant clusters dashboard.
 
@@ -20073,7 +20159,7 @@ A command like the one below can be copied from the instant clusters dashboard.
 
 <CodeGroup>
   ```bash Shell theme={null}
-  ssh <username>@<cluster-hostname>
+  ssh <username>@<cluster_hostname>
   ```
 </CodeGroup>
 
@@ -20081,7 +20167,7 @@ You can also use `ssh -o ServerAliveInterval=60` - it sends a ping to the ssh se
 
 Once connected, you'll be in the login node of your Slurm cluster.
 
-## Step 3: Clone nanochat and Set Up Environment
+## Step 3: Clone nanochat and set up the environment
 
 Let's clone the nanochat repository and set up the required dependencies.
 
@@ -20114,7 +20200,7 @@ nanochat requires Python 3.10 and development headers:
   ```
 </CodeGroup>
 
-## Step 4: Access GPU Resources
+## Step 4: Access GPU resources
 
 Use Slurm's `srun` command to allocate 8 GPUs for your training job:
 
@@ -20138,7 +20224,7 @@ You should see all 8 H100 GPUs listed with their memory and utilization stats li
   <img alt="" />
 </Frame>
 
-## Step 5: Configure Cache Directory
+## Step 5: Configure the cache directory
 
 To optimize data loading performance, set the nanochat cache directory to the `/scratch` volume, which is optimized for high-throughput I/O:
 
@@ -20154,7 +20240,7 @@ This needs to be changed inside the `speedrun.sh` file and ensures that dataset 
   This step is critical and without it, during training, you'll notice that your FLOP utilization is only \~13% instead of \~50%. This is due to dataloading bottlenecks.
 </Info>
 
-## Step 6: Run the Training Pipeline
+## Step 6: Run the training pipeline
 
 Now you're ready to kick off the full training pipeline! nanochat includes a `speedrun.sh` script that orchestrates all training phases:
 
@@ -20170,11 +20256,11 @@ Now you're ready to kick off the full training pipeline! nanochat includes a `sp
 
 This script will execute the following stages:
 
-1. **Tokenizer Training** - Trains a GPT-4 style BPE tokenizer on FineWeb-Edu data
-2. **Base Model Pretraining** - Trains the base transformer model with rotary embeddings and Muon optimizer
-3. **Midtraining** - Fine-tunes on a curated mixture of SmolTalk, MMLU, and GSM8K tasks
-4. **Supervised Fine-Tuning (SFT)** - Aligns the model for conversational interactions
-5. **Evaluation** - Runs CORE benchmarks and generates a comprehensive report
+1. **Tokenizer training:** Trains a GPT-4 style BPE tokenizer on FineWeb-Edu data.
+2. **Base model pretraining:** Trains the base transformer model with rotary embeddings and Muon optimizer.
+3. **Midtraining:** Fine-tunes on a curated mixture of SmolTalk, MMLU, and GSM8K tasks.
+4. **Supervised fine-tuning (SFT):** Aligns the model for conversational interactions.
+5. **Evaluation:** Runs CORE benchmarks and generates a comprehensive report.
 
 The entire training process takes approximately **4 hours** on 8×H100 GPUs.
 
@@ -20196,9 +20282,9 @@ The scripts automatically log progress and save checkpoints under `$NANOCHAT_BAS
   <img alt="" />
 </Frame>
 
-# nanochat Inference
+## nanochat inference
 
-## Step 1: Download Your Cluster's Kubeconfig
+## Step 1: Download your cluster's kubeconfig
 
 While training is running (or after it completes), download your cluster's kubeconfig so you can access the cluster using kubectl. Use the [Together CLI](/reference/cli/clusters) to write the credentials to a local file. Find your cluster ID with `tg beta clusters list`:
 
@@ -20206,7 +20292,7 @@ While training is running (or after it completes), download your cluster's kubec
 tg beta clusters get-credentials [CLUSTER_ID] --file ~/.kube/nanochat-cluster-config
 ```
 
-## Step 2: Access the Compute Pod via kubectl
+## Step 2: Access the compute pod via kubectl
 
 From your **local machine**, set up kubectl access to your cluster:
 
@@ -20229,7 +20315,7 @@ You should see your Slurm compute pods listed. Identify the production pod where
   # slurm-compute-production-abc123   1/1     Running   0          2h
 
   # Exec into the pod
-  kubectl -n slurm exec -it <your-slurm-compute-production-pod> -- /bin/bash
+  kubectl -n slurm exec -it <your_slurm_compute_production_pod> -- /bin/bash
   ```
 </CodeGroup>
 
@@ -20277,7 +20363,7 @@ The server will start on port 8000 inside the pod. You should see output indicat
   <img alt="" />
 </Frame>
 
-## Step 4: Port Forward to Access the UI
+## Step 4: Port-forward to access the UI
 
 In a **new terminal window on your local machine**, set up port forwarding to access the web UI:
 
@@ -20287,7 +20373,7 @@ In a **new terminal window on your local machine**, set up port forwarding to ac
   export KUBECONFIG=~/.kube/nanochat-cluster-config
 
   # Forward port 8000 from the pod to local port 6818
-  kubectl -n slurm port-forward <your-slurm-compute-production-pod> 6818:8000
+  kubectl -n slurm port-forward <your_slurm_compute_production_pod> 6818:8000
   ```
 </CodeGroup>
 
@@ -20307,9 +20393,9 @@ You should see the nanochat web interface! You can now have conversations with y
   <img alt="" />
 </Frame>
 
-## Understanding Training Costs and Performance
+## Understanding training costs and performance
 
-The nanochat training pipeline on 8×H100 Instant Clusters typically:
+The nanochat training pipeline on 8×H100 instant clusters typically:
 
 * **Training time**: \~4 hours for the full speedrun pipeline
 * **Model Flops Utilization**: \~50% (indicating efficient GPU utilization)
@@ -20347,7 +20433,7 @@ If you can't connect to the web UI:
 2. Ensure the web server is running: check logs in the pod terminal
 3. Try a different local port if 6818 is in use
 
-## Next Steps
+## Next steps
 
 Now that you have nanochat running, you can:
 
@@ -20359,12 +20445,12 @@ Now that you have nanochat running, you can:
 
 For more details on the nanochat architecture and training process, visit the [nanochat GitHub repository](https://github.com/karpathy/nanochat).
 
-## Additional Resources
+## Additional resources
 
-* [Instant Clusters Documentation](/docs/gpu-clusters-overview)
-* [Instant Clusters API Reference](/reference/clusters-create)
-* [nanochat Repository](https://github.com/karpathy/nanochat)
-* [Together AI Models](/docs/serverless/models)
+* [Instant clusters documentation](/docs/gpu-clusters-overview).
+* [Instant clusters API reference](/reference/clusters-create).
+* [nanochat repository](https://github.com/karpathy/nanochat).
+* [Together AI models](/docs/serverless/models).
 
 ***
 
@@ -20780,7 +20866,7 @@ nvidia-smi pmon
 nvidia-smi -q
 ```
 
-[Learn how to SSH into nodes →](/docs/gpu-clusters-management#direct-ssh-access)
+See [Direct SSH access](/docs/gpu-clusters-management#direct-ssh-access) to connect to nodes.
 
 ## When to contact support
 
@@ -21917,7 +22003,7 @@ Supported dimensions: 1K: 1024×1024 (1:1), 1264×848 (3:2), 848×1264 (2:3), 12
 
 ## Vision models
 
-If you're not sure which vision model to use, we currently recommend **Qwen3.5 9B** (`Qwen/Qwen3.5-9B`) to get started. For model specific rate limits, navigate [here](/docs/serverless/rate-limits).
+If you're not sure which vision model to use, start with **Qwen3.5 9B** (`Qwen/Qwen3.5-9B`). For model-specific rate limits, see [Rate limits](/docs/serverless/rate-limits).
 
 | Organization | Model name | API model string     | Context length | Input pricing (per 1M tokens) | Output pricing (per 1M tokens) |
 | :----------- | :--------- | :------------------- | :------------- | :---------------------------- | :----------------------------- |
@@ -21995,7 +22081,7 @@ There are currently no embedding models offered via serverless.
 
 ### **Embedding model examples**
 
-* [Contextual RAG](https://docs.together.ai/docs/how-to-implement-contextual-rag-from-anthropic): An open source implementation of contextual RAG by Anthropic.
+* [Contextual RAG](/docs/how-to-implement-contextual-rag-from-anthropic): An open source implementation of contextual RAG by Anthropic.
 * [Code generation agent](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/Looping_Agent_Workflow.ipynb): An agent workflow to generate and iteratively improve code.
 * [Multimodal search and image generation](https://github.com/togethercomputer/together-cookbook/blob/main/Multimodal_Search_and_Conditional_Image_Generation.ipynb): Search for images and generate more similar ones.
 * [Visualizing embeddings](https://github.com/togethercomputer/together-cookbook/blob/main/Embedding_Visualization.ipynb): Visualizing and clustering vector embeddings.
@@ -22182,7 +22268,7 @@ Use Slurm for HPC-style workload management on GPU clusters with familiar batch 
 
 Slurm is a cluster management system that allows users to manage and schedule jobs on a cluster of computers. A Together GPU Cluster provides Slurm configured out-of-the-box for distributed training and the option to use your own scheduler. Users can submit computing jobs to the Slurm head node where the scheduler will assign the tasks to available GPU nodes based on resource availability. For more information on Slurm, see the [Slurm Quick Start User Guide](https://slurm.schedmd.com/quickstart.html).
 
-### **Slurm Basic Concepts**
+### Slurm basic concepts
 
 1. **Jobs**: A job is a unit of work that is submitted to the cluster. Jobs can be scripts, programs, or other types of tasks.
 2. **Nodes**: A node is a computer in the cluster that can run jobs. Nodes can be physical machines or virtual machines.
@@ -22199,12 +22285,12 @@ Slurm is a cluster management system that allows users to manage and schedule jo
 <Warning>
   **Set memory limits explicitly in your `sbatch` scripts.**
 
-  Set `--mem` to a specific value (e.g., `--mem=500G`) rather than `--mem=0`. `--mem=0` tells Slurm to use all memory on the node, which can crash the node under load. We recommend not exceeding 90% of the node's memory to leave headroom for system processes. Adjust lower based on what your job actually needs.
+  Set `--mem` to a specific value (e.g., `--mem=500G`) rather than `--mem=0`. `--mem=0` tells Slurm to use all memory on the node, which can crash the node under load. Do not exceed 90% of the node's memory, so system processes have headroom. Adjust lower based on what your job actually needs.
 
   If a job exceeds its allocation, Slurm fails it with an `OUT_OF_MEMORY` error instead of crashing the node.
 </Warning>
 
-### Slurm Job Arrays
+### Slurm job arrays
 
 You can use Slurm job arrays to partition input files into k chunks and distribute the chunks across the nodes. See this example on processing RPv1 which will need to be adapted to your processing: [arxiv-clean-slurm.sbatch](https://github.com/togethercomputer/RedPajama-Data/blob/rp_v1/data_prep/arxiv/scripts/arxiv-clean-slurm.sbatch)
 
@@ -22314,7 +22400,7 @@ Raise it in `slurm.conf` the same way as other configuration changes. See [Slurm
 # Slurm configuration
 Source: https://docs.together.ai/docs/slurm-configuration
 
-Customize Slurm cluster settings to match your workload requirements
+Customize Slurm cluster settings to match your workload requirements.
 
 Modify Slurm configuration files to optimize scheduling, resource allocation, and job management for your GPU cluster.
 
@@ -22324,7 +22410,7 @@ Modify Slurm configuration files to optimize scheduling, resource allocation, an
 * Kubeconfig downloaded from your cluster
 * Access to your cluster's Slurm namespace
 
-## Configuration Files
+## Configuration files
 
 Your Slurm cluster configuration is stored in a Kubernetes ConfigMap with four main files:
 
@@ -22335,7 +22421,7 @@ Your Slurm cluster configuration is stored in a Kubernetes ConfigMap with four m
 | `cgroup.conf`    | Control group resource management                          |
 | `plugstack.conf` | SPANK plugin configuration                                 |
 
-## Edit Configuration
+## Edit configuration
 
 ### Update ConfigMap
 
@@ -22360,7 +22446,7 @@ kubectl get configmap slurm -n slurm -o yaml > slurm-config.yaml
 kubectl apply -f slurm-config.yaml
 ```
 
-### Restart Components
+### Restart components
 
 After editing the ConfigMap, restart the appropriate components:
 
@@ -22381,7 +22467,7 @@ kubectl delete pods -n slurm -l app=slurm-compute-production
 kubectl delete pods -n slurm -l app=slurm-compute-production
 ```
 
-### Verify Changes
+### Verify changes
 
 ```bash theme={null}
 # Check rollout status
@@ -22394,9 +22480,9 @@ kubectl exec -it slurm-controller-0 -n slurm -- cat /etc/slurm/slurm.conf
 kubectl exec -it slurm-controller-0 -n slurm -- scontrol show config
 ```
 
-## Configuration Examples
+## Configuration examples
 
-### Configure GPU Resources
+### Configure GPU resources
 
 Edit `gres.conf` to define GPU resources:
 
@@ -22405,7 +22491,7 @@ Name=gpu Type=a100 File=/dev/nvidia[0-7]
 Name=gpu Type=h100 File=/dev/nvidia[8-15]
 ```
 
-### Modify Partitions
+### Modify partitions
 
 Edit the partition section in `slurm.conf`:
 
@@ -22414,7 +22500,7 @@ PartitionName=gpu Nodes=gpu-nodes State=UP Default=NO MaxTime=24:00:00
 PartitionName=cpu Nodes=cpu-nodes State=UP Default=YES
 ```
 
-### Tune Scheduler
+### Tune scheduler
 
 Adjust scheduler parameters in `slurm.conf`:
 
@@ -22422,7 +22508,7 @@ Adjust scheduler parameters in `slurm.conf`:
 SchedulerParameters=batch_sched_delay=10,bf_interval=180,sched_max_job_start=500
 ```
 
-### Update Resource Allocation
+### Update resource allocation
 
 Modify resource allocation settings:
 
@@ -22431,7 +22517,7 @@ SelectTypeParameters=CR_Core_Memory
 DefMemPerCPU=4096  # 4GB per CPU
 ```
 
-### Enable Cgroup Limits
+### Enable cgroup limits
 
 Edit `cgroup.conf` to enforce resource limits:
 
@@ -22450,7 +22536,7 @@ TaskPlugin=task/cgroup,task/affinity
 
 ## Troubleshooting
 
-### Configuration Not Applied
+### Configuration not applied
 
 ```bash theme={null}
 # Verify ConfigMap was updated
@@ -22463,7 +22549,7 @@ kubectl get pods -n slurm
 kubectl logs slurm-controller-0 -n slurm
 ```
 
-### Syntax Errors
+### Syntax errors
 
 ```bash theme={null}
 # Check controller logs for errors
@@ -22473,7 +22559,7 @@ kubectl logs slurm-controller-0 -n slurm | grep -i error
 kubectl get events -n slurm --sort-by='.lastTimestamp'
 ```
 
-### Pods Not Restarting
+### Pods not restarting
 
 ```bash theme={null}
 # Check rollout status
@@ -22483,7 +22569,7 @@ kubectl rollout status statefulset slurm-controller -n slurm
 kubectl delete pod slurm-controller-0 -n slurm
 ```
 
-### Jobs Failing After Changes
+### Jobs failing after changes
 
 ```bash theme={null}
 # Check node status
@@ -22496,9 +22582,9 @@ kubectl exec -it slurm-controller-0 -n slurm -- scontrol show node <nodename>
 kubectl exec -it slurm-controller-0 -n slurm -- scontrol show job <jobid>
 ```
 
-## Quick Reference
+## Quick reference
 
-### View Configurations
+### View configurations
 
 ```bash theme={null}
 # View all Slurm configmaps
@@ -22511,7 +22597,7 @@ kubectl get configmap slurm -n slurm -o jsonpath='{.data.slurm\.conf}'
 kubectl get configmap slurm -n slurm -o jsonpath='{.data.gres\.conf}'
 ```
 
-### Restart Components
+### Restart components
 
 ```bash theme={null}
 # Restart controller
@@ -22524,7 +22610,7 @@ kubectl rollout restart statefulset slurm-accounting -n slurm
 kubectl delete pods -n slurm -l app=slurm-compute-production
 ```
 
-### Monitor Cluster
+### Monitor cluster
 
 ```bash theme={null}
 # Watch pod status
@@ -22537,7 +22623,7 @@ kubectl logs -f slurm-controller-0 -n slurm
 kubectl exec -it slurm-controller-0 -n slurm -- sinfo
 ```
 
-## Best Practices
+## Best practices
 
 * **Back up configurations** before making changes
 * **Test in development** before applying to production
@@ -22550,7 +22636,7 @@ kubectl exec -it slurm-controller-0 -n slurm -- sinfo
   Slurm compute nodes run as pods (not daemonsets). When you delete compute node pods, they will automatically restart with the new configuration. Running jobs may be affected during the restart.
 </Note>
 
-## Additional Resources
+## Additional resources
 
 * [Slurm Configuration Tool](https://slurm.schedmd.com/configurator.html) - Interactive configuration generator
 * [Slurm Configuration Reference](https://slurm.schedmd.com/slurm.conf.html) - Complete parameter documentation
@@ -23843,7 +23929,7 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 # Manage your account
 Source: https://docs.together.ai/docs/account-management
 
-Sign up for Together AI, get your API key, and manage your account settings
+Sign up for Together AI, get your API key, and manage your account settings.
 
 ## Create an account
 
@@ -23862,7 +23948,7 @@ Together uses OAuth (Open Authorization) instead of a traditional username and p
 Once your account is set up, create a Project API key to start making requests.
 
 <Card title="API Keys & Authentication" icon="key" href="/docs/api-keys-authentication">
-  Learn how to create, scope, and manage your API keys
+  Create, scope, and manage your API keys.
 </Card>
 
 ## Change your email address
@@ -23946,7 +24032,7 @@ Composio provides a platform for building and deploying AI applications with reu
 # Agno
 Source: https://docs.together.ai/docs/agno
 
-Using Agno with Together AI
+Using Agno with Together AI.
 
 Agno is an open-source library for creating multimodal agents. It supports interactions with text, images, audio, and video while remaining model-agnostic, allowing you to use any model in the Together AI library with this integration.
 
@@ -24456,7 +24542,7 @@ And if you’re ready to add streaming LLM features like the chat completions we
 # Build an interactive AI tutor with Llama 3.1
 Source: https://docs.together.ai/docs/ai-tutor
 
-Learn how to create LlamaTutor from scratch, an open source AI tutor with 90k users.
+Create LlamaTutor from scratch, an open source AI tutor with 90k users.
 
 [LlamaTutor](https://llamatutor.together.ai/) is an app that creates an interactive tutoring session for a given topic using [Together AI’s](https://www.together.ai/) open-source LLMs.
 
@@ -25304,7 +25390,7 @@ If a legacy key is compromised, any project admin or editor can rotate it. In th
 # AutoGen(AG2)
 Source: https://docs.together.ai/docs/autogen
 
-Using AutoGen(AG2) with Together AI
+Using AutoGen(AG2) with Together AI.
 
 AG2 (formerly AutoGen) is an open-source framework for building and orchestrating AI agents. It focuses on enabling multiple agents to cooperate in solving complex tasks. The framework supports various language models from Together AI, tool integrations, and both autonomous and human-in-the-loop workflows.
 
@@ -25762,7 +25848,7 @@ The chart updates as you change controls. The summary in the top right shows the
 # Build a RAG workflow
 Source: https://docs.together.ai/docs/building-a-rag-workflow
 
-Learn how to build a RAG workflow with Together AI embedding and chat endpoints!
+Build a RAG workflow with Together AI embedding and chat endpoints.
 
 ## Introduction
 
@@ -25796,7 +25882,7 @@ mkdir datasets
 mv movies.json datasets/movies.json
 ```
 
-```py Python theme={null}
+```python Python theme={null}
 import together, os
 from together import Together
 
@@ -25813,7 +25899,7 @@ movies_data[:1]
 
 This dataset consists of movie information as below:
 
-```py Python theme={null}
+```python Python theme={null}
 [
     {
         "title": "Minions",
@@ -25846,7 +25932,7 @@ Below we implement a simple retrieval pipeline:
 1. Embed movie documents and query
 2. Obtain top k movies ranked based on cosine similarities between the query and movie vectors.
 
-```py Python theme={null}
+```python Python theme={null}
 # This function will be used to access the Together API to generate embeddings for the movie plots
 
 from typing import List
@@ -25895,7 +25981,7 @@ This will generate embeddings of the movies which we can use later to retrieve s
 
 When a user makes a query we can embed the query using the same model and perform a vector similarity search as shown below:
 
-```py Python theme={null}
+```python Python theme={null}
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Generate the vector embeddings for the query
@@ -25913,7 +25999,7 @@ We get a similarity score for each of our 1000 movies - the higher the score, th
 
 We can sort this similarity score to get the movies most similar to our query = `super hero action movie with a timeline twist`
 
-```py Python theme={null}
+```python Python theme={null}
 # Get the indices of the highest to lowest values
 indices = np.argsort(-similarity_scores)
 
@@ -25941,7 +26027,7 @@ This produces the top ten most similar movie titles below:
 
 ## We can encapsulate the above in a function
 
-```py Python theme={null}
+```python Python theme={null}
 def retrieve(
     query: str,
     top_k: int = 5,
@@ -25967,7 +26053,7 @@ def retrieve(
 
 Which can be used as follows:
 
-```py Python theme={null}
+```python Python theme={null}
 retrieve(
     "super hero action movie with a timeline twist",
     top_k=5,
@@ -25987,7 +26073,7 @@ Below we will inject/augment the information the retrieval pipeline extracts int
 
 This will help guide the generation by grounding it from facts in our knowledge base!
 
-```py Python theme={null}
+```python Python theme={null}
 # Extract out the titles and overviews of the top 10 most similar movies
 titles = [movies_data[index]["title"] for index in indices[0]][:10]
 overviews = [movies_data[index]["overview"] for index in indices[0]][:10]
@@ -26045,7 +26131,7 @@ To learn more about the Together AI API refer to the [docs here](/intro)!
 # Composio
 Source: https://docs.together.ai/docs/composio
 
-Using Composio With Together AI
+Use Composio with Together AI.
 
 Composio allows developers to integrate external tools and services into their AI applications. It handles tool calling, web-hooks, authentication, and more.
 
@@ -26065,7 +26151,7 @@ You need to register on a Composio account - Sign up here if you haven't already
 
 Set your `TOGETHER_API_KEY` environment variable.
 
-```sh Shell theme={null}
+```bash Shell theme={null}
 export TOGETHER_API_KEY=***
 export COMPOSIO_API_KEY=***
 ```
@@ -26110,15 +26196,15 @@ In this example, you will use Together AI to star a repository on GitHub using C
 
 ### Connect your GitHub account
 
-You need to have an active GitHub Integration in Composio. Learn how to do this [here](https://www.youtube.com/watch?v=LmyWy4LiedQ)
+You need to have an active GitHub Integration in Composio. See the [Composio GitHub setup video](https://www.youtube.com/watch?v=LmyWy4LiedQ).
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   request = toolset.initiate_connection(app=App.GITHUB)
   print(f"Open this URL to authenticate: {request.redirectUrl}")
   ```
 
-  ```sh Shell theme={null}
+  ```bash Shell theme={null}
   composio login
   composio add github
   ```
@@ -26203,7 +26289,7 @@ Create an agent that conditionally routes tasks to specialized models.
 
 ## Set up client and helper functions
 
-```py Python theme={null}
+```python Python theme={null}
 import json
 from pydantic import ValidationError
 from together import Together
@@ -26257,7 +26343,7 @@ def JSON_llm(user_prompt: str, schema, system_prompt: str = None):
 ## Implement workflow
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   from pydantic import BaseModel, Field
   from typing import Literal, Dict
 
@@ -26293,7 +26379,7 @@ def JSON_llm(user_prompt: str, schema, system_prompt: str = None):
       return response
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import dedent from "dedent";
   import assert from "node:assert";
   import Together from "together-ai";
@@ -26379,7 +26465,7 @@ def JSON_llm(user_prompt: str, schema, system_prompt: str = None):
 
 ## Example usage
 
-```py Python theme={null}
+```python Python theme={null}
 prompt_list = [
     "Produce python snippet to check to see if a number is prime or not.",
     "Plan and provide a short itinerary for a 2 week vacation in Europe.",
@@ -26407,7 +26493,7 @@ for i, prompt in enumerate(prompt_list):
 * If one model's output doesn't meet a certain confidence threshold or fails for some reason, route automatically to a fallback model.
 
 <Note>
-  ### Conditional Workflow Cookbook
+  ### Conditional workflow cookbook
 
   For a more detailed walk-through refer to the [notebook here](https://togetherai.link/agent-recipes-deep-dive-routing).
 </Note>
@@ -26416,7 +26502,7 @@ for i, prompt in enumerate(prompt_list):
 # CrewAI
 Source: https://docs.together.ai/docs/crewai
 
-Using CrewAI with Together
+Using CrewAI with Together.
 
 CrewAI is an open source production-grade framework for orchestrating AI agent systems. It enables multiple AI agents to collaborate effectively by assuming roles and working toward shared goals. The framework supports both simple automations and complex applications that require coordinated agent behavior.
 
@@ -26479,7 +26565,7 @@ Set your Together AI API key:
   ```
 </CodeGroup>
 
-## Example Output
+## Example output
 
 ```
 [2025-03-09 16:20:14][🚀 CREW 'CREW' STARTED, 42A4F700-E955-4794-B6F3-6EA6EF279E93]: 2025-03-09 16:20:14.069394
@@ -26745,11 +26831,11 @@ In this example, we'll show you how to build an AI data analyst that can read in
 
 Create a `main.ipynb` file and save your Together & E2B API keys in there.
 
-Get the E2B API key [here](https://e2b.dev/docs/api-key) and the Together AI API key [here](https://api.together.ai/settings/projects/~current/api-keys). Download the CSV file from [here](https://www.kaggle.com/datasets/nishanthsalian/socioeconomic-country-profiles) and upload it to the same directory as your program. Rename it to `data.csv`.
+Get the [E2B API key](https://e2b.dev/docs/api-key) and the [Together AI API key](https://api.together.ai/settings/projects/~current/api-keys). Download the [CSV dataset](https://www.kaggle.com/datasets/nishanthsalian/socioeconomic-country-profiles) and upload it to the same directory as your program. Rename it to `data.csv`.
 
 ## 2. Install the SDKs
 
-```sh Shell theme={null}
+```bash Shell theme={null}
 pip install together==1.2.6 e2b-code-interpreter==0.0.10 dotenv==1.0.0
 ```
 
@@ -26757,7 +26843,7 @@ pip install together==1.2.6 e2b-code-interpreter==0.0.10 dotenv==1.0.0
 
 In the following code snippet, we'll define our API keys, our model of choice, and our system prompt.
 
-You can pick the model of your choice by uncommenting it. There are some recommended models that are great at code generation, but you can add a different one from [here](/docs/serverless/models#chat-models).
+You can pick the model of your choice by uncommenting it. There are some recommended models that are great at code generation, but you can add a different one from the [chat models catalog](/docs/serverless/models#chat-models).
 
 For the system prompt, we tell the model it's a data scientist and give it some information about the uploaded CSV. You can choose different data but will need to update the instructions accordingly.
 
@@ -26857,7 +26943,7 @@ Generally, you follow these rules:
 
 ## 4. Add code interpreting capabilities and initialize the model
 
-Now we define the function that will use the E2B code interpreter. Every time the LLM assistant decides that it needs to execute code, this function will be used. Read more about the code interpreter SDK [here](https://e2b.dev/docs/legacy/code-interpreter/installation).
+Now we define the function that will use the E2B code interpreter. Every time the LLM assistant decides that it needs to execute code, this function will be used. See the [E2B code interpreter installation guide](https://e2b.dev/docs/legacy/code-interpreter/installation).
 
 We also initialize the Together AI client. The function for matching code blocks is important because we need to pick the right part of the output that contains the code produced by the LLM. The chat function takes care of the interaction with the LLM. It calls the E2B code interpreter anytime there is a code to be run.
 
@@ -26923,9 +27009,9 @@ def chat_with_llm(e2b_code_interpreter, user_message):
 
 ## 5. Upload the dataset
 
-The CSV data is uploaded programmatically, not via AI-generated code. The code interpreter by E2B runs inside the E2B sandbox. Read more about the file upload [here](https://e2b.dev/docs/filesystem/upload).
+The CSV data is uploaded programmatically, not via AI-generated code. The code interpreter by E2B runs inside the E2B sandbox. See the [E2B file upload docs](https://e2b.dev/docs/filesystem/upload).
 
-```py Python theme={null}
+```python Python theme={null}
 def upload_dataset(code_interpreter):
     print("Uploading dataset to Code Interpreter sandbox...")
     dataset_path = "./data.csv"
@@ -26951,7 +27037,7 @@ def upload_dataset(code_interpreter):
 
 Finally we put everything together and let the AI assistant upload the data, run an analysis, and generate a PNG file with a chart. You can update the task for the assistant in this step. If you decide to change the CSV file you are using, don't forget to update the prompt too.
 
-```py Python theme={null}
+```python Python theme={null}
 with CodeInterpreter(api_key=E2B_API_KEY) as code_interpreter:
     # Upload the dataset to the code interpreter sandbox
     upload_dataset(code_interpreter)
@@ -26975,7 +27061,7 @@ first_result
 
 The resulting chart is generated within the notebook. The plot shows the linear regression of the relationship between GDP per capita and life expectancy from the CSV data:
 
-```py Python theme={null}
+```python Python theme={null}
 # Uploading dataset to Code Interpreter sandbox...
 # Uploaded at /home/user/data.csv
 #
@@ -28697,7 +28783,7 @@ Turn 2.2
 # DSPy
 Source: https://docs.together.ai/docs/dspy
 
-Using DSPy with Together AI
+Using DSPy with Together AI.
 
 DSPy is a framework for programming language models rather than relying on static prompts. It enables you to build modular AI systems with code instead of hand-crafted prompting, and it offers methods to automatically optimize these systems.
 
@@ -30266,7 +30352,7 @@ Since reasoning models produce longer responses with chain-of-thought processing
           print(chunk.choices[0].delta.content or "", end="", flush=True)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
   const together = new Together();
 
@@ -30538,7 +30624,7 @@ Quickstarts and step-by-step guides for building with Together AI.
 # Build a lovable clone with Kimi K2
 Source: https://docs.together.ai/docs/how-to-build-a-lovable-clone-with-kimi-k2
 
-Learn how to build a full-stack Next.js app that can generate React apps with a single prompt.
+Build a full-stack Next.js app that generates React apps from a single prompt.
 
 [LlamaCoder](https://llamacoder.together.ai/) is a Lovable-inspired app that shows off how to use Together AI’s hosted LLM endpoints to build AI applications.
 
@@ -31021,7 +31107,7 @@ We'll create an LLM that can call tools that allow it to create, edit, and read 
 First, let's import the necessary libraries. We'll be using the `together` library to interact with the Together AI API.
 
 <CodeGroup>
-  ```sh Shell theme={null}
+  ```bash Shell theme={null}
   !pip install together
   ```
 
@@ -31117,7 +31203,7 @@ Pretty simple! We asked the model to use the `get_weather()` function if needed 
 
 This is all function calling/tool-use really is!
 
-## Defining Tools for the Agent
+## Defining tools for the agent
 
 To make this workflow of instructing the model to use tools and then running the functions it calls and sending it the response more convenient people have built scaffolding where we can pass in pre-specified tools to LLMs as follows:
 
@@ -31253,7 +31339,7 @@ Now we need to run the function that the model has asked for and feed the respon
   ```python Python theme={null}
   tool_calls = response.choices[0].message.tool_calls
 
-  # check is a tool was called by the first model call
+  # check if a tool was called by the first model call
   if tool_calls:
       for tool_call in tool_calls:
           function_name = tool_call.function.name
@@ -33617,7 +33703,7 @@ If the assistant cuts in too often, raise the barge-in threshold or require more
 # Build an audio transcription app with Whisper
 Source: https://docs.together.ai/docs/how-to-build-real-time-audio-transcription-app
 
-Learn how to build a real-time AI audio transcription app with Whisper, Next.js, and Together AI.
+Build a real-time AI audio transcription app with Whisper, Next.js, and Together AI.
 
 In this guide, we're going to go over how we built [UseWhisper.io](https://usewhisper.io), an open source speech-to-text app that transcribes audio almost instantly & can transform it into summaries. It's built using the [Whisper Large v3 API](https://www.together.ai/models/openai-whisper-large-v3) on Together AI and supports both live recording and file uploads.
 
@@ -33993,7 +34079,7 @@ pip install bm25s # To implement our key-word BM25 search
 
 We will RAG over Paul Graham's latest essay titled [Founder Mode](https://paulgraham.com/foundermode.html).
 
-```py Python theme={null}
+```python Python theme={null}
 # Let's download the essay from Paul Graham's website
 
 import requests
@@ -34035,7 +34121,7 @@ pg_essay = scrape_pg_essay()
 
 This will give us the essay, we still need to chunk the essay, so let's implement a function and use it:
 
-```py Python theme={null}
+```python Python theme={null}
 # We can get away with naive fixed sized chunking as the context generation will add meaning to these chunks
 
 
@@ -34072,7 +34158,7 @@ Prompt caching allows key and value matrices corresponding to the document to be
 
 We will use the following prompt to generate context for each chunk:
 
-```py Python theme={null}
+```python Python theme={null}
 # We want to generate a snippet explaining the relevance/importance of the chunk with
 # full document in mind.
 
@@ -34091,7 +34177,7 @@ Answer ONLY with a succinct explaination of the meaning of the chunk in the cont
 
 Now we can prep each chunk into these prompt template and generate the context:
 
-```py Python theme={null}
+```python Python theme={null}
 from typing import List
 import together, os
 from together import Together
@@ -34136,7 +34222,7 @@ def generate_context(prompt: str):
 
 We can now use the functions above to generate context for each chunk and append it to the chunk itself:
 
-```py Python theme={null}
+```python Python theme={null}
 # Let's generate the entire list of contextual chunks and concatenate to the original chunk
 
 contextual_chunks = [
@@ -34150,7 +34236,7 @@ Now we can embed each chunk into a vector index.
 
 We will now use `multilingual-e5-large-instruct` to embed the augmented chunks above into a vector index.
 
-```py Python theme={null}
+```python Python theme={null}
 from typing import List
 import together
 import numpy as np
@@ -34184,7 +34270,7 @@ contextual_embeddings = generate_embeddings(
 
 Next we need to write a function that can retrieve the top matching chunks from this index given a query:
 
-```py Python theme={null}
+```python Python theme={null}
 def vector_retrieval(
     query: str,
     top_k: int = 5,
@@ -34221,7 +34307,7 @@ We now have a way to retrieve from the vector index given a query.
 
 Let's build a keyword index that allows us to use BM25 to perform lexical search based on the words present in the query and the contextual chunks. For this we will use the `bm25s` python library:
 
-```py Python theme={null}
+```python Python theme={null}
 import bm25s
 
 # Create the BM25 model and index the corpus
@@ -34231,7 +34317,7 @@ retriever.index(bm25s.tokenize(contextual_chunks))
 
 Which can be queried as follows:
 
-```py Python theme={null}
+```python Python theme={null}
 # Query the corpus and get top-k results
 query = "What are 'skip-level' meetings?"
 results, scores = retriever.retrieve(
@@ -34242,7 +34328,7 @@ results, scores = retriever.retrieve(
 
 Similar to the function above which produces vector results from the vector index we can write a function that produces keyword search results from the BM25 index:
 
-```py Python theme={null}
+```python Python theme={null}
 def bm25_retrieval(query: str, k: int, bm25_index) -> List[int]:
     """
     Retrieve the top-k document indices based on the BM25 algorithm for a given query.
@@ -34263,7 +34349,7 @@ def bm25_retrieval(query: str, k: int, bm25_index) -> List[int]:
 
 Once a user submits a query we are going to use both functions above to perform Vector and BM25 retrieval and then fuse the ranks using the RRF algorithm implemented below.
 
-```py Python theme={null}
+```python Python theme={null}
 # Example ranked lists from different sources
 vector_top_k = vector_retreival(
     query="What are 'skip-level' meetings?",
@@ -34279,7 +34365,7 @@ bm25_top_k = bm25_retreival(
 
 The Reciprocal Rank Fusion algorithm takes two ranked list of objects and combines them:
 
-```py Python theme={null}
+```python Python theme={null}
 from collections import defaultdict
 
 
@@ -34311,7 +34397,7 @@ def reciprocal_rank_fusion(*list_of_list_ranks_system, K=60):
 
 We can use the RRF function above as follows:
 
-```py Python theme={null}
+```python Python theme={null}
 # Combine the lists using RRF
 hybrid_top_k = reciprocal_rank_fusion(vector_top_k, bm25_top_k)
 hybrid_top_k[1]
@@ -34327,7 +34413,7 @@ Now we add a retrieval quality improvement step here to make sure only the highe
   Rerank models like `Mxbai-Rerank-Large-V2` are only available with [dedicated model inference](https://api.together.ai/endpoints/configure). You can bring up a dedicated endpoint to use reranking in your applications.
 </Tip>
 
-```py Python theme={null}
+```python Python theme={null}
 query = "What are 'skip-level' meetings?"  # we keep the same query - can change if we want
 
 response = client.rerank.create(
@@ -34357,7 +34443,7 @@ This chunk explains that founder mode, a hypothetical approach to running a comp
 
 We will pass the finalized 3 chunks into an LLM to get our final answer.
 
-```py Python theme={null}
+```python Python theme={null}
 # Generate a story based on the top 10 most similar movies
 
 query = "What are 'skip-level' meetings?"
@@ -34416,7 +34502,7 @@ mkdir datasets
 mv movies.json datasets/movies.json
 ```
 
-```py Python theme={null}
+```python Python theme={null}
 import json
 import together, os
 from together import Together
@@ -34458,7 +34544,7 @@ Below we implement a simple semantic search pipeline:
 1. Embed movie documents + query
 2. Obtain a list of movies ranked based on cosine similarities between the query and movie vectors.
 
-```py Python theme={null}
+```python Python theme={null}
 # This function will be used to access the Together API to generate embeddings for the movie plots
 
 from typing import List
@@ -34501,7 +34587,7 @@ embeddings = generate_embeddings(
 
 Next we implement a function that when given the above embeddings and a test query will return indices of most semantically similar data objects:
 
-```py Python theme={null}
+```python Python theme={null}
 def retrieve(
     query: str,
     top_k: int = 5,
@@ -34527,7 +34613,7 @@ def retrieve(
 
 We will use the above function to retrieve 25 movies most similar to our query:
 
-```py Python theme={null}
+```python Python theme={null}
 indices = retrieve(
     query="super hero mystery action movie about bats",
     top_k=25,
@@ -34542,7 +34628,7 @@ array([ 13, 265, 451,  33,  56,  17, 140, 450,  58, 828, 227,  62, 337,
        172, 724, 424, 585, 696, 933, 996, 932, 433, 883, 420, 744])
 ```
 
-```py Python theme={null}
+```python Python theme={null}
 # Get the top 25 movie titles that are most similar to the query - these will be passed to the reranker
 top_25_sorted_titles = [movies_data[index]["title"] for index in indices[0]][
     :25
@@ -34585,7 +34671,7 @@ The reranker can more closely determine the similarity between these 25 candidat
 
 Treating the top 25 matching movies as good candidate matches, potentially with irrelevant false positives, that might have snuck in we want to have the reranker model look and rerank each based on similarity to the query.
 
-```py Python theme={null}
+```python Python theme={null}
 query = "super hero mystery action movie about bats"  # we keep the same query - can change if we want
 
 response = client.rerank.create(
@@ -34637,7 +34723,7 @@ Learn more about how to use reranker models in the [docs here](/docs/inference/e
 # Configure Cline with Together AI models
 Source: https://docs.together.ai/docs/how-to-use-cline
 
-Learn how to power Cline (an AI coding agent) with Together AI models.
+Power Cline, an AI coding agent, with Together AI models.
 
 Cline is a popular open source AI coding agent with nearly 2 million installs that is installable through any IDE including VS Code, Cursor, and Windsurf. This quick guide takes you through how you can combine Cline with powerful open source models on Together AI like Kimi K2.7 Code to supercharge your development process.
 
@@ -34764,7 +34850,7 @@ That's it! You now have Moonshot's own coding agent running Kimi K3 on Together 
 # Configure OpenClaw with Together AI models
 Source: https://docs.together.ai/docs/how-to-use-openclaw
 
-Learn how to power OpenClaw (an autonomous agent) with Together AI models.
+Power OpenClaw, an autonomous agent, with Together AI models.
 
 OpenClaw is the first Jarvis-like agent that actually gets things done: writing and executing scripts, browsing the web, using apps, and managing tasks from Telegram, WhatsApp, or any chat interface. By pairing it with [Together AI](https://together.ai), you unlock access to leading open-source models like Kimi K3, GLM 5.2, and DeepSeek V4 Pro through a single OpenAI-compatible API, at a fraction of the cost of closed-source alternatives.
 
@@ -34841,7 +34927,7 @@ You don't have to choose between performance, quality, and cost. Together AI giv
 # Configure OpenCode with Together AI models
 Source: https://docs.together.ai/docs/how-to-use-opencode
 
-Learn how to power OpenCode (a powerful terminal-based AI coding agent) with Together AI models.
+Power OpenCode, a terminal-based AI coding agent, with Together AI models.
 
 OpenCode is a powerful AI coding agent built specifically for the terminal, offering a native TUI experience with LSP support and multi-session capabilities. This guide shows you how to combine OpenCode with powerful open source models on Together AI like Kimi K3 and GLM 5.3 to supercharge your development workflow directly from your terminal.
 
@@ -34967,7 +35053,7 @@ That's it! You now have one of the most powerful terminal-based AI coding agents
 # Configure Qwen Code with Together AI models
 Source: https://docs.together.ai/docs/how-to-use-qwen-code
 
-Learn how to power Qwen Code with Together AI models.
+Power Qwen Code with Together AI models.
 
 Qwen Code is a powerful command-line AI workflow tool specifically optimized for code understanding, automated tasks, and intelligent development assistance. While it comes with built-in Qwen OAuth support, you can also configure it to use Together AI's extensive model selection for even more flexibility and control over your AI coding experience.
 
@@ -35192,7 +35278,7 @@ The installed TogetherLink CLI periodically checks for updates. When an update i
 # IAM model
 Source: https://docs.together.ai/docs/identity-access-management
 
-How users, credentials, and resources are organized across the Together platform
+How users, credentials, and resources are organized across the Together platform.
 
 Together's Identity and Access Management (IAM) model controls how your team collaborates on the platform, and how your workloads are authenticated. It determines who can access what, how credentials are scoped, and how resources are organized.
 
@@ -35309,7 +35395,7 @@ Build an agent that iteratively improves responses.
 ## Setup client & helper functions
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import json
   from pydantic import ValidationError
   from together import Together
@@ -35360,7 +35446,7 @@ Build an agent that iteratively improves responses.
           print(error_message)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import assert from "node:assert";
   import Together from "together-ai";
   import { z, type ZodType } from "zod";
@@ -35415,7 +35501,7 @@ Build an agent that iteratively improves responses.
 ## Implement workflow
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   from pydantic import BaseModel
   from typing import Literal
 
@@ -35526,7 +35612,7 @@ Build an agent that iteratively improves responses.
           memory.append(response)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import dedent from "dedent";
   import { z } from "zod";
 
@@ -35660,7 +35746,7 @@ Build an agent that iteratively improves responses.
 ## Example usage
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   task = """
   Implement a Stack with:
   1. push(x)
@@ -35672,7 +35758,7 @@ Build an agent that iteratively improves responses.
   loop_workflow(task, EVALUATOR_PROMPT, GENERATOR_PROMPT)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   const task = dedent`
     Implement a Stack with:
 
@@ -35696,7 +35782,7 @@ Build an agent that iteratively improves responses.
 * Creating user interface text, like tooltips or error messages, and using an evaluator to confirm the text is concise, clear, and contextually appropriate.
 
 <Note>
-  ### Iterative Workflow Cookbook
+  ### Iterative workflow cookbook
 
   For a more detailed walk-through refer to the [notebook here](https://togetherai.link/agent-recipes-deep-dive-evaluator).
 </Note>
@@ -37181,7 +37267,7 @@ K3 is strongest where a task runs long and needs little supervision:
 # LangGraph
 Source: https://docs.together.ai/docs/langgraph
 
-Using LangGraph with Together AI
+Using LangGraph with Together AI.
 
 LangGraph is an OSS library for building stateful, multi-actor applications with LLMs, specifically designed for agent and multi-agent workflows. The framework supports critical agent architecture features including persistent memory across conversations and human-in-the-loop capabilities through checkpointed states.
 
@@ -37328,7 +37414,7 @@ export TOGETHER_API_KEY='xxxx'
 
 This implementation of MoA uses 2 layers and 4 LLMs. We’ll define our 4 initial LLMs and our aggregator LLM, along with our prompt. We’ll also add in a prompt to send to the aggregator to combine responses effectively. Now that we have this, we’ll send the prompt to the 4 LLMs and compute all results simultaneously. Finally, we'll send the results from the four LLMs to our final LLM, along with a system prompt instructing it to combine them into a final answer, and we’ll stream results back.
 
-```py Python theme={null}
+```python Python theme={null}
 # Mixture-of-Agents in 50 lines of code
 import asyncio
 import os
@@ -37395,7 +37481,7 @@ In the previous example, we went over how to implement MoA with 2 layers (4 LLMs
   <img alt="" />
 </Frame>
 
-```py Python theme={null}
+```python Python theme={null}
 # Advanced Mixture-of-Agents example – 3 layers
 import asyncio
 import os
@@ -37535,7 +37621,7 @@ To ask a question with Together AI, you'll need an API route, and a page with a 
 
 Make a new POST route that takes in a `question` and returns a chat completion as a stream:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/api/answer/route.ts
 import Together from "together-ai";
 
@@ -37559,7 +37645,7 @@ export async function POST(request: Request) {
 
 Add a form that sends a POST request to your new API route, and use the `ChatCompletionStream` helper to read the stream and update some React state to display the answer:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/page.tsx
 "use client";
 
@@ -37620,7 +37706,7 @@ To build a chatbot with Together AI, you'll need an API route that accepts an ar
 
 Make a new POST route that takes in a `messages` array and returns a chat completion as a stream:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/api/chat/route.ts
 import Together from "together-ai";
 
@@ -37644,7 +37730,7 @@ export async function POST(request: Request) {
 
 Create a form to submit a new message, and some React state to store the `messages` for the session. In the form's submit handler, send over the new array of messages, and use the `ChatCompletionStream` helper to read the stream and update the last message with the LLM's response.
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/page.tsx
 "use client";
 
@@ -37729,7 +37815,7 @@ npm i ai @ai-sdk/togetherai
 
 The API route uses `streamText` instead of the Together SDK directly:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/api/chat/route.ts
 import { streamText, convertToModelMessages } from "ai";
 import { createTogetherAI } from "@ai-sdk/togetherai";
@@ -37752,7 +37838,7 @@ export async function POST(req: Request) {
 
 The page uses the `useChat` hook which handles all message state and streaming automatically:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/page.tsx
 "use client";
 
@@ -37810,7 +37896,7 @@ npm i @mastra/core
 
 The API route uses Mastra's Together AI integration:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/api/chat/route.ts
 import { Agent } from "@mastra/core/agent";
 import { NextRequest } from "next/server";
@@ -37852,7 +37938,7 @@ export async function POST(request: NextRequest) {
 
 The page uses Mastra's chat hooks to manage conversation state:
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 // app/page.tsx
 "use client";
 
@@ -37942,7 +38028,7 @@ Below we define the required classes:
 * The overall conversation consists of lines said by either the host or the guest. The `DialogueItem` class specifies the structure of these lines.
 * The full script is a combination of multiple lines performed by the speakers, here we also include a `scratchpad` field to allow the LLM to ideate and brainstorm the overall flow of the script prior to actually generating the lines. The `Dialogue` class specifies this.
 
-```py Python theme={null}
+```python Python theme={null}
 from pydantic import BaseModel
 from typing import List, Literal, Tuple, Optional
 
@@ -37968,7 +38054,7 @@ The inclusion of a scratchpad field is very important - it allows the LLM comput
 
 Next we need to define a detailed prompt template engineered to guide the LLM through the generation of the script. Feel free to modify and update the prompt below.
 
-```py Python theme={null}
+```python Python theme={null}
 # Adapted and modified from https://github.com/gabrielchua/open-notebooklm
 SYSTEM_PROMPT = """
 You are a world-class podcast producer tasked with transforming the provided input text into an engaging and informative podcast script. The input may be unstructured or messy, sourced from PDFs or web pages. Your goal is to extract the most interesting and insightful content for a compelling podcast discussion.
@@ -38043,7 +38129,7 @@ Download the PDF file and then extract text contents using the function below.
 !mv 2406.04692 MoA.pdf
 ```
 
-```py Python theme={null}
+```python Python theme={null}
 from pypdf import PdfReader
 
 
@@ -38074,7 +38160,7 @@ text = get_PDF_text("MoA.pdf")
 
 Below we call Llama3.1 70B with JSON mode to generate a script for our podcast. JSON mode makes it so that the LLM will only generate responses in the format specified by the `Script` class. We will also be able to read its scratchpad and see how it structured the overall conversation.
 
-```py Python theme={null}
+```python Python theme={null}
 from together import Together
 from pydantic import ValidationError
 
@@ -38148,7 +38234,7 @@ Now we can have a look at the script that is generated:
 
 Below we read through the script and choose the TTS voice depending on the speaker. We define a speaker and guest voice id.
 
-```py Python theme={null}
+```python Python theme={null}
 import subprocess
 import ffmpeg
 from cartesia import Cartesia
@@ -38172,7 +38258,7 @@ ws = client_cartesia.tts.websocket()
 
 We can loop through the lines in the script and generate them by a call to the TTS model with specific voice and lines configurations. The lines all appended to the same buffer and once the script finishes we write this out to a wav file, ready to be played.
 
-```py Python theme={null}
+```python Python theme={null}
 # Open a file to write the raw PCM audio bytes to.
 f = open("podcast.pcm", "wb")
 
@@ -38213,7 +38299,7 @@ If you're ready to create your own PDF to podcast app like above [sign up for To
 # Organizations
 Source: https://docs.together.ai/docs/organizations
 
-Create and manage your Together organization, invite members, and configure billing
+Create and manage your Together organization, invite members, and configure billing.
 
 An organization is your company's account on Together. It's the top-level container for everything: projects, members, resources, and billing. Every Together account belongs to one organization.
 
@@ -38597,7 +38683,7 @@ An alternate and useful parallel workflow. This workflow begins with an LLM brea
 </Frame>
 
 <Info>
-  ### Subtask Workflow Cookbook
+  ### Subtask workflow cookbook
 
   For a more detailed walk-through refer to the [notebook here](https://togetherai.link/agent-recipes-deep-dive-orchestrator).
 </Info>
@@ -39419,7 +39505,7 @@ Teams organize projects differently depending on their needs:
 # PydanticAI
 Source: https://docs.together.ai/docs/pydanticai
 
-Using PydanticAI with Together
+Using PydanticAI with Together.
 
 PydanticAI is an agent framework created by the Pydantic team to simplify building production-grade generative AI applications. It brings the ergonomic design philosophy of FastAPI to AI agent development, offering a familiar and type-safe approach to working with language models.
 
@@ -39473,7 +39559,7 @@ Set your Together AI API key:
 The first known use of "hello, world" was in a 1974 textbook about the C programming language.
 ```
 
-## Next Steps
+## Next steps
 
 <Info>
   ### PydanticAI - Together AI Notebook
@@ -39482,7 +39568,7 @@ The first known use of "hello, world" was in a 1974 textbook about the C program
 </Info>
 
 
-# Python v2 SDK Migration Guide
+# Python v2 SDK migration guide
 Source: https://docs.together.ai/docs/pythonv2-migration-guide
 
 Migrate from Together Python v1 to v2 - the new Together AI Python SDK with improved type safety and modern architecture.
@@ -40206,7 +40292,7 @@ The evaluations API has significant changes including a namespace rename and res
 * Parameters restructured with typed parameter objects
 * `retrieve()` and `status()` no longer use named arguments
 
-## New SDK-Only Features
+## New SDK-only features
 
 **Raw Response Access**
 
@@ -40417,7 +40503,7 @@ If you encounter issues during migration:
 # FLUX.2 quickstart
 Source: https://docs.together.ai/docs/quickstart-flux
 
-Learn how to use FLUX.2, the next generation image model with advanced prompting capabilities
+Use FLUX.2, the next generation image model with advanced prompting capabilities.
 
 ## FLUX.2
 
@@ -41156,13 +41242,13 @@ FLUX.2 does **not** support negative prompts. Instead of saying what you don't w
 * Specify camera angle, distance, and composition type
 * Use position descriptors (foreground, midground, background)
 
-Check out all available Flux models [here](/docs/serverless/models#image-models)
+See all available FLUX models in the [image models catalog](/docs/serverless/models#image-models).
 
 
 # FLUX Kontext quickstart
 Source: https://docs.together.ai/docs/quickstart-flux-kontext
 
-Learn how to use Flux's new in-context image generation models
+Use FLUX Kontext for in-context image generation.
 
 ## FLUX Kontext
 
@@ -41264,10 +41350,10 @@ For complete parameter documentation, see the [Images Overview](/docs/inference/
 See all available image models: [Image Models](/docs/serverless/models#image-models)
 
 
-# Quickstart: How to do OCR
+# OCR quickstart
 Source: https://docs.together.ai/docs/quickstart-how-to-do-ocr
 
-A step by step guide on how to do OCR with Together AI's vision models with structured outputs
+Run OCR on documents with Together AI vision models and structured outputs.
 
 ## Understanding OCR and its importance
 
@@ -41610,11 +41696,11 @@ export TOGETHER_API_KEY=xxxxx
 
 Together provides an official library for Python:
 
-```sh Shell theme={null}
+```bash Shell theme={null}
 pip install together --upgrade
 ```
 
-```py Python theme={null}
+```python Python theme={null}
 from together import Together
 
 client = Together(api_key=TOGETHER_API_KEY)
@@ -41624,7 +41710,7 @@ client = Together(api_key=TOGETHER_API_KEY)
 
 You'll RAG over Paul Graham's latest essay titled [Founder Mode](https://paulgraham.com/foundermode.html). The code below will scrape and load the essay into memory.
 
-```py Python theme={null}
+```python Python theme={null}
 import requests
 from bs4 import BeautifulSoup
 
@@ -41663,7 +41749,7 @@ pg_essay = scrape_pg_essay()
 
 Chunk the essay:
 
-```py Python theme={null}
+```python Python theme={null}
 # Naive fixed sized chunking with overlaps
 def create_chunks(document, chunk_size=300, overlap=50):
     return [
@@ -41679,7 +41765,7 @@ chunks = create_chunks(pg_essay, chunk_size=250, overlap=30)
 
 You'll now use `multilingual-e5-large-instruct` to embed the augmented chunks above into a vector index.
 
-```py Python theme={null}
+```python Python theme={null}
 from typing import List
 import numpy as np
 
@@ -41711,7 +41797,7 @@ embeddings = generate_embeddings(
 
 The function below will help us perform vector search:
 
-```py Python theme={null}
+```python Python theme={null}
 def vector_retrieval(
     query: str,
     top_k: int = 5,
@@ -41756,7 +41842,7 @@ You'll use a reranker model to improve retrieved chunk relevance quality:
   Rerank models like `Mxbai-Rerank-Large-V2` are only available with [dedicated model inference](https://api.together.ai/endpoints/configure). You can bring up a dedicated endpoint to use reranking in your applications.
 </Tip>
 
-```py Python theme={null}
+```python Python theme={null}
 def rerank(query: str, chunks: List[str], top_k=3) -> List[int]:
 
     response = client.rerank.create(
@@ -41787,7 +41873,7 @@ print(reranked_chunks)
 
 You'll pass the final 3 concatenated chunks into an LLM to get the final answer.
 
-```py Python theme={null}
+```python Python theme={null}
 query = "What are 'skip-level' meetings?"
 
 response = client.chat.completions.create(
@@ -41839,11 +41925,11 @@ The examples below demonstrate how to interact with various models using Python 
 First, ensure you have the `huggingface_hub` library installed (version v0.29.0 or later):
 
 <CodeGroup>
-  ```sh Shell theme={null}
+  ```bash Shell theme={null}
   pip install huggingface_hub>=0.29.0
   ```
 
-  ```sh Shell theme={null}
+  ```bash Shell theme={null}
   npm install @huggingface/inference
   ```
 </CodeGroup>
@@ -41853,7 +41939,7 @@ First, ensure you have the `huggingface_hub` library installed (version v0.29.0 
 ### a. Chat completion with Hugging Face Hub library
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   from huggingface_hub import InferenceClient
 
   # Initialize the InferenceClient with together as the provider
@@ -41880,7 +41966,7 @@ First, ensure you have the `huggingface_hub` library installed (version v0.29.0 
   print(completion.choices[0].message)
   ```
 
-  ```js TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import { HfInference } from "@huggingface/inference";
 
   // Initialize the HfInference client with your API key
@@ -41912,7 +41998,7 @@ You can also call inference providers via the [OpenAI python client](https://git
 
 The easiest way is to go to [a model’s page](https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813?inference_api=true\&inference_provider=together\&language=python) on the hub and copy the snippet.
 
-```py Python theme={null}
+```python Python theme={null}
 from openai import OpenAI
 
 client = OpenAI(
@@ -41934,7 +42020,7 @@ print(completion.choices[0].message)
 ## 2. Text-to-image generation
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   from huggingface_hub import InferenceClient
 
   # Initialize the InferenceClient with together as the provider
@@ -41956,7 +42042,7 @@ print(completion.choices[0].message)
   image.show()
   ```
 
-  ```js TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import { HfInference } from "@huggingface/inference";
 
   // Initialize the HfInference client with your API key
@@ -42576,7 +42662,7 @@ This guide sends one user message and waits for one complete response. These fea
 # Roles & permissions (RBAC)
 Source: https://docs.together.ai/docs/roles-permissions
 
-Understand organization and project role-based access control (RBAC), including the admin, developer, and editor roles, and what each can do across Together
+Understand organization and project role-based access control (RBAC), including the admin, developer, and editor roles, and what each can do across Together.
 
 Together uses role-based access control (RBAC) at both the [organization](/docs/organizations) and [project](/docs/projects) level. Every member of an organization is assigned an organization role, and every collaborator of a project is assigned a project role.
 
@@ -43286,7 +43372,7 @@ Chain multiple LLM calls sequentially to process complex tasks.
 # Single sign-on (SSO)
 Source: https://docs.together.ai/docs/sso
 
-Connect your Identity Provider for secure, automated team access to Together
+Connect your Identity Provider for secure, automated team access to Together.
 
 Single Sign-On enables your company to authenticate to your Together Organization through your company's existing Identity Provider (IdP) when configured for SSO. Instead of managing separate credentials, Members sign in with the same account they use for everything else at your company.
 
@@ -44020,7 +44106,7 @@ Output:
 
 [TCI API Reference docs](/reference/tci-execute)
 
-[Together Code Interpreter Cookbook](https://github.com/togethercomputer/together-cookbook/blob/main/Together_Code_Interpreter.ipynb)
+[Together code interpreter cookbook](https://github.com/togethercomputer/together-cookbook/blob/main/Together_Code_Interpreter.ipynb)
 
 ## Troubleshooting & questions
 
@@ -44030,7 +44116,7 @@ If you have questions about integrating TCI into your workflow or encounter any 
 # Code sandbox
 Source: https://docs.together.ai/docs/together-code-sandbox
 
-Level-up generative code tooling with fast, secure code sandboxes at scale
+Run generative code tooling in fast, secure sandboxes at scale.
 
 Together Code Sandbox offers a fully configurable development environment with fast start-up times, robust snapshotting, and a suite of mature dev tools.
 
@@ -44327,7 +44413,7 @@ In case you expect a high volume of VM runtime, the Enterprise plan also provide
 <Tip>
   ### For enterprise
 
-  Please [contact Sales](https://www.together.ai/contact-sales)
+  [Contact Sales](https://www.together.ai/contact-sales)
 </Tip>
 
 ### Estimating your bill
@@ -44460,9 +44546,9 @@ Use Together models with Mastra.
 
 ## Next steps
 
-* Explore the [Mastra documentation](https://mastra.ai) for more advanced features
-* Check out [Together AI's model documentation](https://docs.together.ai/docs/serverless/models) for the latest available models
-* Learn about building workflows and tools in Mastra
+* Explore the [Mastra documentation](https://mastra.ai) for more advanced features.
+* See the [serverless models](/docs/serverless/models) catalog for the latest available models.
+* Learn about building workflows and tools in Mastra.
 
 
 # Vercel AI SDK quickstart
@@ -44492,7 +44578,7 @@ The Vercel AI SDK is a powerful Typescript library designed to help developers b
 
 2. Import the Together AI provider and call the `generateText` function with Kimi K2 to generate some text.
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 import { generateText } from "ai";
 import { createTogetherAI } from '@ai-sdk/togetherai';
 
@@ -44574,7 +44660,7 @@ Enjoy your delicious vegetarian lasagna!
 
 To stream from Together AI models using the Vercel AI SDK, use `streamText` as seen below.
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 import { streamText } from "ai";
 import { createTogetherAI } from '@ai-sdk/togetherai';
 
@@ -44634,7 +44720,7 @@ Luminaria Day is a time to come together, celebrate the return of light and life
 
 To generate images with Together AI models using the Vercel AI SDK, use the `.image()` factory method. For more on image generation with the AI SDK see [generateImage()](https://ai-sdk.dev/docs/reference/ai-sdk-core/generate-image).
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 import { createTogetherAI } from '@ai-sdk/togetherai';
 import { generateImage } from 'ai';
 
@@ -44652,7 +44738,7 @@ const { images } = await generateImage({
 
 You can pass optional provider-specific request parameters using the `providerOptions` argument.
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 import { createTogetherAI } from '@ai-sdk/togetherai';
 import { generateImage } from 'ai';
 
@@ -44682,14 +44768,14 @@ Available Models:
 * `black-forest-labs/FLUX.1-kontext-pro`
 * `black-forest-labs/FLUX.1-kontext-max`
 
-See the [Together AI models page](https://docs.together.ai/docs/serverless/models#image-models) for a full list of available image models and their capabilities.
+See the [Together AI models page](/docs/serverless/models#image-models) for a full list of available image models and their capabilities.
 
 ## Embedding models
 
 To embed text with Together AI models using the Vercel AI SDK, use the `.embeddingModel()` factory method.
 For more on embedding models with the AI SDK see [embed()](https://ai-sdk.dev/docs/reference/ai-sdk-core/embed).
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 import { createTogetherAI } from '@ai-sdk/togetherai';
 import { embed } from 'ai';
 
@@ -44705,7 +44791,7 @@ const { embedding } = await embed({
 
 <Note>
   For a complete list of available embedding models and their model IDs, see the [Together AI models
-  page](https://docs.together.ai/docs/serverless/models#embedding-models).
+  page](/docs/serverless/models#embedding-models).
 </Note>
 
 Some available model IDs include:
@@ -44736,7 +44822,7 @@ Wan 2.7 is a family of video generation models supporting text-to-video, image-t
 Generate a video from a text prompt. Video generation is asynchronous: you create a job, receive a job ID, and poll for the result.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -44766,7 +44852,7 @@ Generate a video from a text prompt. Video generation is asynchronous: you creat
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();
@@ -44820,7 +44906,7 @@ Generate a video from a text prompt. Video generation is asynchronous: you creat
 Drive video generation with an audio file using `media.audio_inputs`. The model synchronizes the generated video to the audio, useful for lip sync, beat-matched motion, or narration-driven scenes. If no audio is provided, the model automatically generates matching background music or sound effects.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -44855,7 +44941,7 @@ Drive video generation with an audio file using `media.audio_inputs`. The model 
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();
@@ -44905,7 +44991,7 @@ Drive video generation with an audio file using `media.audio_inputs`. The model 
 Animate a still image by using it as the first frame. Pass images via `media.frame_images` with `frame` set to `"first"` or `"last"`.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -44943,7 +45029,7 @@ Animate a still image by using it as the first frame. Pass images via `media.fra
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();
@@ -45008,7 +45094,7 @@ Animate a still image by using it as the first frame. Pass images via `media.fra
 Provide both a starting and ending frame to control the video's transition. The model generates smooth motion between the two keyframes.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -45044,7 +45130,7 @@ Provide both a starting and ending frame to control the video's transition. The 
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();
@@ -45091,7 +45177,7 @@ Provide both a starting and ending frame to control the video's transition. The 
 Continue from an existing video clip using `media.frame_videos`. The model generates new content that seamlessly extends the input video.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -45126,7 +45212,7 @@ Continue from an existing video clip using `media.frame_videos`. The model gener
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();
@@ -45172,7 +45258,7 @@ Continue from an existing video clip using `media.frame_videos`. The model gener
 Generate video featuring a specific person or object by providing reference images or videos via `media.reference_images` or `media.reference_videos`. The model maintains the character's appearance throughout the generated video. Multiple references can be passed for multi-character scenes.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -45207,7 +45293,7 @@ Generate video featuring a specific person or object by providing reference imag
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();
@@ -45270,7 +45356,7 @@ Generate video featuring a specific person or object by providing reference imag
 Edit an existing video with text instructions using `media.source_video`. Optionally pass `media.reference_images` to guide the edit with a visual reference.
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import time
   from together import Together
 
@@ -45302,7 +45388,7 @@ Edit an existing video with text instructions using `media.source_video`. Option
       time.sleep(60)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
 
   const together = new Together();
@@ -45772,7 +45858,7 @@ Prompting steers an existing model. Fine-tuning changes its weights. You should 
 
 ## Try prompting first
 
-Prompting has four huge advantages, which taken together should always make it your default starting point. First off, it's basically **free**, because you are already paying for inference and there is no extra training run or labeled dataset you need to build. Second, it's **fast**, because changing the prompt and running it again takes seconds, while fine-tuning a model takes hours, or even days. Third, it's **reversible**, because a bad prompt costs you only the tokens you wasted, while a bad fine-tune costs you the wasted time and compute of an entire training run. And lastly it **composes**, because each request can have a different prompt for a different task, while a fine-tuned model creates one new behavioral shape and applies it to every request.
+Prompting has four huge advantages, which taken together should always make it your default starting point. First off, it's effectively **free**, because you are already paying for inference and there is no extra training run or labeled dataset you need to build. Second, it's **fast**, because changing the prompt and running it again takes seconds, while fine-tuning a model takes hours, or even days. Third, it's **reversible**, because a bad prompt costs you only the tokens you wasted, while a bad fine-tune costs you the wasted time and compute of an entire training run. And lastly it **composes**, because each request can have a different prompt for a different task, while a fine-tuned model creates one new behavioral shape and applies it to every request.
 
 For almost all cases in which a model is not doing what you want, the right tool is [better prompting](/learn/prompt-engineering)—better instructions, more examples, more structure, tighter constraints. If iterating on the prompt gets you to an acceptable quality threshold, you should stop there.
 
@@ -46119,7 +46205,7 @@ Three things to know about attention:
 
 Below is an example of what this might look like for the sentence "The cat sat on the mat." Each row represents one query position. Colored cells are the earlier tokens it pays the most attention to.
 
-Click on any row to see the attention weights for that token:
+Select any row to see the attention weights for that token:
 
 <AttentionMatrixDiagram />
 
@@ -46640,7 +46726,7 @@ How tokenization works, what the model reads, and why tokens drive cost and cont
 **TL;DR:** A model never reads actual words or characters. It reads tokens, subword chunks of about four characters each, where every chunk has a fixed integer ID. Tokenization is the deterministic step that turns your text into those IDs before the model ever sees it. Understanding this step matters because you pay per token, and filling your LLM's context window with the right tokens makes all the difference for generating useful outputs.
 
 <a href="https://tiktokenizer.vercel.app/">
-  <img alt="Tokenized example: &#x22;What are the top 3 things to do in NYC?&#x22; split into 12 tokens with integer IDs shown. Click to open tiktokenizer.vercel.app." />
+  <img alt="Tokenized example: &#x22;What are the top 3 things to do in NYC?&#x22; split into 12 tokens with integer IDs shown. Select to open tiktokenizer.vercel.app." />
 </a>
 
 <p>
@@ -48296,6 +48382,14 @@ Source: https://docs.together.ai/docs/changelog
 </Update>
 
 <Update label="August 10, 2026">
+  ## HIPAA compliance policy on dedicated endpoint placement
+
+  Inline placement on [dedicated model inference](/docs/dedicated-endpoints/manage#placement-profiles) deployments now accepts an optional `compliancePolicy` object. Set `hipaa: true` so replicas only schedule on HIPAA-attested clusters. The policy is always enforced strictly, regardless of `constraint`, and the deployment stays unscheduled while no qualifying cluster is available.
+
+  See [Compliance policy](/docs/dedicated-endpoints/manage#compliance-policy).
+</Update>
+
+<Update label="August 10, 2026">
   ## Tokenized dataset download in the fine-tuning console
 
   Open a job on the [fine-tuning jobs dashboard](https://api.together.ai/fine-tuning). When the job has a tokenized dataset archive, the job details show a **Tokenized dataset** row with **Download**. Selecting **Download** opens a presigned archive URL in a new tab.
@@ -48556,6 +48650,22 @@ Source: https://docs.together.ai/docs/changelog
   * `MiniMaxAI/MiniMax-M2.7`.
 
   See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
+<Update label="July 27, 2026">
+  ## GPU quota rejections return HTTP 429
+
+  Creating or updating a [dedicated endpoint](/docs/dedicated-endpoints/manage) deployment that would exceed your project or organization GPU quota now returns HTTP `429` with a message that names the GPU type and the would-be usage against the limit. Platform-wide capacity checks return the same status and ask you to retry later.
+
+  See [Error codes](/docs/error-codes) and [Troubleshooting](/docs/dedicated-endpoints/manage#troubleshooting).
+</Update>
+
+<Update label="July 27, 2026">
+  ## CLI get by endpoint or deployment name
+
+  `tg beta endpoints get` now accepts endpoint and deployment names in addition to IDs (`ep_...`, `dep_...`). You can also pass the name or ID directly as `tg beta endpoints <name_or_id>`. If a bare deployment name matches more than one deployment, the CLI asks for a deployment ID or a fully qualified name.
+
+  See [Get](/reference/cli/endpoints-beta#get).
 </Update>
 
 <Update label="July 27, 2026">
@@ -50458,19 +50568,19 @@ Source: https://docs.together.ai/docs/error-codes
 
 An overview on error status codes, causes, and quick fix solutions.
 
-| Code                       | Cause                                                                                                                                 | Solution                                                                                                                                                                                                                                                           |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 400 - Invalid Request      | Misconfigured request                                                                                                                 | Ensure your request is a [Valid JSON](/reference/chat-completions) and your [API Key](https://api.together.ai/settings/projects/~current/api-keys) is correct. Also ensure you're using the right prompt format - which is different for Mistral and LLaMA models. |
-| 401 - Authentication Error | Missing or Invalid API Key                                                                                                            | Ensure you are using the correct [API Key](https://api.together.ai/settings/projects/~current/api-keys) and [supplying it correctly](/reference/chat-completions)                                                                                                  |
-| 402 - Payment Required     | The account associated with the API key has reached its maximum allowed monthly spending limit.                                       | Adjust your [billing settings](https://api.together.ai/settings/organization/~current/billing) or make a payment to resume service.                                                                                                                                |
-| 403 - Bad Request          | Input token count + `max_tokens` parameter must be less than the [context](/docs/inference-models) length of the model being queried. | Set `max_tokens` to a lower number. If querying a chat model, you may set `max_tokens` to `null` and let the model decide when to stop generation.                                                                                                                 |
-| 404 - Not Found            | Invalid Endpoint URL or model name                                                                                                    | Check your request is being made to the correct endpoint (see the [API reference](/reference/chat-completions) page for details) and that the [model being queried is available](/docs/inference-models)                                                           |
-| 429 - Rate limit           | Too many requests sent in a short period of time                                                                                      | Throttle the rate at which requests are sent to Together's servers (see the [rate limits](/docs/serverless/rate-limits))                                                                                                                                           |
-| 500 - Server Error         | Unknown server error                                                                                                                  | This error is caused by a server-side issue. Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                               |
-| 503 - Engine Overloaded    | Servers are seeing high amounts of traffic                                                                                            | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                            |
-| 504 - Timeout              | The request did not complete in time                                                                                                  | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                            |
-| 524 - Cloudflare Timeout   | The connection timed out at the network edge                                                                                          | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                            |
-| 529 - Server Error         | Unknown server error                                                                                                                  | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                            |
+| Code                       | Cause                                                                                                                                                                                                      | Solution                                                                                                                                                                                                                                                                                         |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 400 - Invalid Request      | Misconfigured request                                                                                                                                                                                      | Ensure your request is a [Valid JSON](/reference/chat-completions) and your [API Key](https://api.together.ai/settings/projects/~current/api-keys) is correct. Also ensure you're using the right prompt format - which is different for Mistral and LLaMA models.                               |
+| 401 - Authentication Error | Missing or Invalid API Key                                                                                                                                                                                 | Ensure you are using the correct [API Key](https://api.together.ai/settings/projects/~current/api-keys) and [supplying it correctly](/reference/chat-completions)                                                                                                                                |
+| 402 - Payment Required     | The account associated with the API key has reached its maximum allowed monthly spending limit.                                                                                                            | Adjust your [billing settings](https://api.together.ai/settings/organization/~current/billing) or make a payment to resume service.                                                                                                                                                              |
+| 403 - Bad Request          | Input token count + `max_tokens` parameter must be less than the [context](/docs/inference-models) length of the model being queried.                                                                      | Set `max_tokens` to a lower number. If querying a chat model, you may set `max_tokens` to `null` and let the model decide when to stop generation.                                                                                                                                               |
+| 404 - Not Found            | Invalid Endpoint URL or model name                                                                                                                                                                         | Check your request is being made to the correct endpoint (see the [API reference](/reference/chat-completions) page for details) and that the [model being queried is available](/docs/inference-models)                                                                                         |
+| 429 - Too Many Requests    | Serverless [rate limit](/docs/serverless/rate-limits) exceeded, or a [dedicated endpoint](/docs/dedicated-endpoints/manage) deployment would exceed your project or organization GPU quota for a GPU type. | For rate limits, throttle requests (see [rate limits](/docs/serverless/rate-limits)). For GPU quota, lower the requested replica count, stop unused deployments on that GPU type, or [contact support](https://www.together.ai/contact). Platform-wide capacity messages ask you to retry later. |
+| 500 - Server Error         | Unknown server error                                                                                                                                                                                       | This error is caused by a server-side issue. Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                             |
+| 503 - Engine Overloaded    | Servers are seeing high amounts of traffic                                                                                                                                                                 | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                                                          |
+| 504 - Timeout              | The request did not complete in time                                                                                                                                                                       | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                                                          |
+| 524 - Cloudflare Timeout   | The connection timed out at the network edge                                                                                                                                                               | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                                                          |
+| 529 - Server Error         | Unknown server error                                                                                                                                                                                       | Try again after a brief wait. If the issue persists, [contact support](https://www.together.ai/contact)                                                                                                                                                                                          |
 
 If you are seeing other error codes or the solutions do not work, [contact support](https://www.together.ai/contact) for help.
 
@@ -51093,9 +51203,9 @@ The CLI defaults `--min-replicas` and `--max-replicas` to 1, which may differ fr
 | `--scaling-percentile [p50 \| p90 \| p95 \| p99]` | Optional percentile for the latency metrics (`ttft`, `decoding_speed`, `e2e_latency`). Defaults to `p95`.                                                                                                                                                                                                                                                                                                                        |
 | `--deployment-name [string]`                      | Name for the deployment created by this command. Defaults to a combination of the endpoint and model names.                                                                                                                                                                                                                                                                                                                      |
 | `--model-revision [string]`                       | Deprecated. Model revision ID to pin the deployment to. Prefer passing a fully qualified model path ending in `/revisions/<REVISION_ID>` as the `MODEL` argument.                                                                                                                                                                                                                                                                |
-| `--placement [string]`                            | Placement profile to use.                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `--placement [string]`                            | [Placement profile](/docs/dedicated-endpoints/manage#placement-profiles) ID (`pp_...`) to attach.                                                                                                                                                                                                                                                                                                                                |
 | `--placement.regions [string]`                    | Comma-separated inline placement regions.                                                                                                                                                                                                                                                                                                                                                                                        |
-| `--placement.constraint [required \| preferred]`  | How strictly to enforce the inline placement.                                                                                                                                                                                                                                                                                                                                                                                    |
+| `--placement.constraint [required \| preferred]`  | How strictly to enforce the inline placement regions. A [compliance policy](/docs/dedicated-endpoints/manage#compliance-policy) is not exposed in the CLI and is always enforced strictly.                                                                                                                                                                                                                                       |
 | `--enable-lora`                                   | Run the multi-LoRA kernel so adapters hot-load after deploy. Toggling this later requires a redeploy.                                                                                                                                                                                                                                                                                                                            |
 | `--traffic-weight [number]`                       | Relative capacity weight for this deployment in the endpoint's live traffic split. Set to `0` for no live traffic, or omit to leave routing unchanged.                                                                                                                                                                                                                                                                           |
 
@@ -51118,16 +51228,31 @@ tg beta endpoints ls
 
 ## Get
 
-Print details for an endpoint or deployment. Pass an endpoint ID (`ep_...`) to see its deployments and traffic split, or pass a deployment ID (`dep_...`) to inspect that deployment directly.
+Print details for an endpoint or deployment. Pass an endpoint name or ID (`ep_...`) to see its deployments and traffic split, or pass a deployment name or ID (`dep_...`) to inspect that deployment directly. You can also omit `get` and pass the name or ID as the first argument (`tg beta endpoints <name_or_id>`).
 
 Endpoint responses include at most the 10 newest deployment summaries per endpoint. To list every deployment, use the [deployments list API](/docs/dedicated-endpoints/manage#list-resources).
 
 ```bash Shell theme={null}
+# By name
+tg beta endpoints get my-endpoint
+
+# By ID
 tg beta endpoints get ep_abc123
 tg beta endpoints get dep_abc123
+
+# Implicit get (same as `get`)
+tg beta endpoints my-endpoint
 ```
 
+If more than one deployment shares the same bare name across endpoints, the CLI errors and asks you to pass a deployment ID (`dep_...`) or a fully qualified deployment name.
+
 With `--json`, endpoint responses expose deployment state under `deployments[].state`, while deployment responses expose it under `status.state`.
+
+### Parameters
+
+| Flag | Description                                                                                          |
+| ---- | ---------------------------------------------------------------------------------------------------- |
+| `ID` | (**required**) Endpoint name, endpoint ID (`ep_...`), deployment name, or deployment ID (`dep_...`). |
 
 ## Update
 
@@ -51140,7 +51265,7 @@ tg beta endpoints update dep_abc123 --min-replicas 2 --max-replicas 4
 # Scale on a specific metric and target
 tg beta endpoints update dep_abc123 --scaling-metric gpu_utilization --scaling-target 70
 
-# Stop a deployment by scaling it to zero
+# Stop a deployment by scaling it to zero (both flags required)
 tg beta endpoints update dep_abc123 --min-replicas 0 --max-replicas 0
 
 # Set a deployment's weight in the endpoint traffic split
@@ -51152,6 +51277,8 @@ tg beta endpoints update dep_abc123 --traffic-weight 0
 # Set an A/B variant's percent (takes from or returns to control)
 tg beta endpoints update dep_variant456 --ab-percent 20
 ```
+
+To stop a deployment, pass both `--min-replicas 0` and `--max-replicas 0`. Passing only one zero bound returns an error. Partial nonzero updates (for example, only `--min-replicas 3`) still patch that field alone.
 
 ### Parameters
 

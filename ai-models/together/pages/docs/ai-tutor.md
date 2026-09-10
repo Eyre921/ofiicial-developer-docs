@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/ai-tutor
 path: docs/ai-tutor
 ---
 
-Learn how to create LlamaTutor from scratch, an open source AI tutor with 90k users.
+Create LlamaTutor from scratch, an open source AI tutor with 90k users.
 
 [LlamaTutor](https://llamatutor.together.ai/) is an app that creates an interactive tutoring session for a given topic using [Together AI’s](https://www.together.ai/) open-source LLMs.
 

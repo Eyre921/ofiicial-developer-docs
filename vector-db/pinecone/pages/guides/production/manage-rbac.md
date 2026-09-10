@@ -224,7 +224,7 @@ curl "https://api.pinecone.io/admin/role-bindings" \
   }'
 ```
 
-For more information, see [Create a role binding](/reference/api/2026-04/admin/create_role_binding).
+For more information, see [Create a role binding](/reference/api/latest/admin/role-bindings/create-a-role-binding).
 
 ### List role bindings
 
@@ -239,7 +239,7 @@ curl "https://api.pinecone.io/admin/role-bindings?principal_type=service_account
   -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN"
 ```
 
-For more information, see [List role bindings](/reference/api/2026-04/admin/list_role_bindings) and [Fetch a role binding](/reference/api/2026-04/admin/fetch_role_binding).
+For more information, see [List role bindings](/reference/api/latest/admin/role-bindings/list-role-bindings) and [Fetch a role binding](/reference/api/latest/admin/role-bindings/get-role-binding-details).
 
 ### Delete a role binding
 
@@ -258,4 +258,4 @@ curl -X DELETE "https://api.pinecone.io/admin/role-bindings/9a8e3528-b9c0-4358-8
   You cannot delete the last `OrgOwner` role binding for an organization. An organization must always have at least one owner.
 </Warning>
 
-For more information, see [Delete a role binding](/reference/api/2026-04/admin/delete_role_binding).
+For more information, see [Delete a role binding](/reference/api/latest/admin/role-bindings/delete-a-role-binding).

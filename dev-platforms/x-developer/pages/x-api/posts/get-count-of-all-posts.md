@@ -1,8 +1,8 @@
 ---
-title: "Get count of all Posts"
+title: "Get Posts Counts All"
 source: https://docs.x.com/x-api/posts/get-count-of-all-posts
 path: x-api/posts/get-count-of-all-posts
 ---
 
 get /2/tweets/counts/all
-Retrieves the count of Posts matching a search query from the full archive.
+At most one of `pagination_token`, `next_token` may be provided.

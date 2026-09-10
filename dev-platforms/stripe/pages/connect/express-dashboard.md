@@ -48,7 +48,11 @@ The notification banner renders and collects the currently due requirements. The
 
 ### Account settings
 
-Connected accounts can view and update their settings in Account settings. They can view and edit personal or business information, public information, and the bank accounts used for payouts. If you enable **Close account**, connected accounts can also close their own account in the Express Dashboard.
+Connected accounts can view and update their settings in Account settings. They can view and edit personal or business information, public details, and the bank accounts used for payouts.
+
+Connected accounts can also edit their display name, which helps distinguish between accounts in the account switcher if they log in to multiple accounts on the same platform.
+
+If you enable Close account, connected accounts can close their own account from the Express Dashboard.
 
 To receive notifications when a connected account closes its own account, set up a webhook to listen for the appropriate event based on the API version you use:
 

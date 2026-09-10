@@ -134,7 +134,7 @@ Integrated-embedding indexes are created with `pc.create_index_for_model` and re
 
 ### Bring your own vectors
 
-1. Use an embedding model to convert your text to vectors. The model can be [hosted by Pinecone](/reference/api/latest/inference/generate-embeddings) or an external provider.
+1. Use an embedding model to convert your text to vectors. The model can be [hosted by Pinecone](/reference/api/latest/inference/generate-vectors) or an external provider.
 2. [Create an index](/guides/index-data/create-an-index) that matches the characteristics of the model.
 3. [Upsert](/guides/index-data/upsert-data) your vectors directly.
 4. Use the same external embedding model to convert a query to a vector.

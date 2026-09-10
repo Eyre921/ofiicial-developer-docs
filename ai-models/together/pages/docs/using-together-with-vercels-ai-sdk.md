@@ -28,7 +28,7 @@ The Vercel AI SDK is a powerful Typescript library designed to help developers b
 
 2. Import the Together AI provider and call the `generateText` function with Kimi K2 to generate some text.
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 import { generateText } from "ai";
 import { createTogetherAI } from '@ai-sdk/togetherai';
 
@@ -110,7 +110,7 @@ Enjoy your delicious vegetarian lasagna!
 
 To stream from Together AI models using the Vercel AI SDK, use `streamText` as seen below.
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 import { streamText } from "ai";
 import { createTogetherAI } from '@ai-sdk/togetherai';
 
@@ -170,7 +170,7 @@ Luminaria Day is a time to come together, celebrate the return of light and life
 
 To generate images with Together AI models using the Vercel AI SDK, use the `.image()` factory method. For more on image generation with the AI SDK see [generateImage()](https://ai-sdk.dev/docs/reference/ai-sdk-core/generate-image).
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 import { createTogetherAI } from '@ai-sdk/togetherai';
 import { generateImage } from 'ai';
 
@@ -188,7 +188,7 @@ const { images } = await generateImage({
 
 You can pass optional provider-specific request parameters using the `providerOptions` argument.
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 import { createTogetherAI } from '@ai-sdk/togetherai';
 import { generateImage } from 'ai';
 
@@ -218,14 +218,14 @@ Available Models:
 * `black-forest-labs/FLUX.1-kontext-pro`
 * `black-forest-labs/FLUX.1-kontext-max`
 
-See the [Together AI models page](https://docs.together.ai/docs/serverless/models#image-models) for a full list of available image models and their capabilities.
+See the [Together AI models page](/docs/serverless/models#image-models) for a full list of available image models and their capabilities.
 
 ## Embedding models
 
 To embed text with Together AI models using the Vercel AI SDK, use the `.embeddingModel()` factory method.
 For more on embedding models with the AI SDK see [embed()](https://ai-sdk.dev/docs/reference/ai-sdk-core/embed).
 
-```js TypeScript theme={null}
+```typescript TypeScript theme={null}
 import { createTogetherAI } from '@ai-sdk/togetherai';
 import { embed } from 'ai';
 
@@ -241,7 +241,7 @@ const { embedding } = await embed({
 
 <Note>
   For a complete list of available embedding models and their model IDs, see the [Together AI models
-  page](https://docs.together.ai/docs/serverless/models#embedding-models).
+  page](/docs/serverless/models#embedding-models).
 </Note>
 
 Some available model IDs include:

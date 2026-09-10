@@ -29,7 +29,7 @@ Kubernetes' API server can validate JSON Web Tokens (JWTs) issued by an external
     </Step>
 
     <Step title="Validate">
-      `kubectl` sends the API request with the token in the `Authorization: Bearer …` header. The Kubernetes API server validates the token by fetching the IdP's public signing keys from its OIDC discovery document (`<issuer-url>/.well-known/openid-configuration`), verifying the token's signature, and checking that the `iss` and `aud` claims match the issuer URL and client ID configured on the cluster. A failure here returns `401 Unauthorized`.
+      `kubectl` sends the API request with the token in the `Authorization: Bearer …` header. The Kubernetes API server validates the token by fetching the IdP's public signing keys from its OIDC discovery document (`<issuer_url>/.well-known/openid-configuration`), verifying the token's signature, and checking that the `iss` and `aud` claims match the issuer URL and client ID configured on the cluster. A failure here returns `401 Unauthorized`.
     </Step>
 
     <Step title="Authorize">
@@ -64,8 +64,8 @@ The username claim is the field in the OIDC token that Kubernetes uses as the id
   **The username claim affects the RBAC `--user` value.** The format Kubernetes uses for the identity depends on which claim you choose:
 
   * `email` produces `user@company.com`, used as-is.
-  * `sub` produces `<issuer-url>#<sub-value>` (e.g., `https://accounts.google.com#105010678054620911233`).
-  * `preferred_username` produces `<issuer-url>#<username>` (e.g., `https://login.microsoftonline.com/<TENANT_ID>/v2.0#user@company.com`).
+  * `sub` produces `<issuer_url>#<sub_value>` (e.g., `https://accounts.google.com#105010678054620911233`).
+  * `preferred_username` produces `<issuer_url>#<username>` (e.g., `https://login.microsoftonline.com/<TENANT_ID>/v2.0#user@company.com`).
 
   You'll need this exact value when creating RBAC bindings.
 </Note>
@@ -156,7 +156,7 @@ The tasks in this section are run by a cluster admin using the [admin kubeconfig
     **If username claim is `sub`:**
 
     ```bash theme={null}
-    # Format: <issuer-url>#<sub-value>
+    # Format: <issuer_url>#<sub_value>
     kubectl create clusterrolebinding my-user-admin \
       --clusterrole=cluster-admin \
       --user="https://accounts.google.com#105010678054620911233"
@@ -165,7 +165,7 @@ The tasks in this section are run by a cluster admin using the [admin kubeconfig
     **If username claim is `preferred_username`:**
 
     ```bash theme={null}
-    # Format: <issuer-url>#<preferred-username-value>
+    # Format: <issuer_url>#<preferred_username_value>
     kubectl create clusterrolebinding my-user-admin \
       --clusterrole=cluster-admin \
       --user="https://login.microsoftonline.com/<TENANT_ID>/v2.0#user@company.com"
@@ -260,7 +260,7 @@ The tasks in this section are run by each team member using their local machine.
     If your provider requires it, set it for the current session:
 
     ```bash theme={null}
-    export OIDC_CLIENT_SECRET="<your-client-secret>"
+    export OIDC_CLIENT_SECRET="<your_client_secret>"
     ```
 
     <Warning>
@@ -360,7 +360,7 @@ Your IdP requires a client secret that wasn't provided.
 **Fix:**
 
 ```bash theme={null}
-export OIDC_CLIENT_SECRET="<your-client-secret>"
+export OIDC_CLIENT_SECRET="<your_client_secret>"
 ```
 
 ### Browser login doesn't open

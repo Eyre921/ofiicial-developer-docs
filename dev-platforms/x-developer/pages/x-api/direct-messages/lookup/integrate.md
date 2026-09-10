@@ -36,11 +36,11 @@ DM endpoints require user authentication to access private conversations:
 ## Conversation types
 
 <CardGroup>
-  <Card title="One-to-one" icon="message">
+  <Card title="One-to-one" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=9fde7d51b4f18c96d3a38a81d519761f">
     Always has exactly two participants. Conversation ID format: `{smaller_user_id}-{larger_user_id}`
   </Card>
 
-  <Card title="Group" icon="comments">
+  <Card title="Group" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat-unread.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=ce6313d8c0b7b4e5363f2ce80b89f7e4">
     Two or more participants. Membership can change over time.
   </Card>
 </CardGroup>
@@ -139,7 +139,7 @@ DM endpoints require user authentication to access private conversations:
     -H "Authorization: Bearer $USER_ACCESS_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_USER_ACCESS_TOKEN")
@@ -156,7 +156,7 @@ DM endpoints require user authentication to access private conversations:
           print(f"Event: {event.event_type} - {event.text}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -194,7 +194,7 @@ DM events are returned in reverse chronological order (newest first):
     -H "Authorization: Bearer $USER_ACCESS_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_USER_ACCESS_TOKEN")
@@ -209,7 +209,7 @@ DM events are returned in reverse chronological order (newest first):
   print(f"Found {len(all_events)} DM events")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -253,7 +253,7 @@ Conversation and event IDs are shared between v1.1 and v2 endpoints. This means 
 ## Next steps
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/direct-messages/lookup/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/direct-messages/lookup/quickstart">
     Make your first DM lookup request
   </Card>
 
@@ -261,7 +261,7 @@ Conversation and event IDs are shared between v1.1 and v2 endpoints. This means 
     Send Direct Messages
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/direct-messages/get-dm-events">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/direct-messages/get-dm-events">
     Full endpoint documentation
   </Card>
 

@@ -42,7 +42,7 @@ Populate the `via` property of a Tweet button by linking to your X profile page 
 
 Set a `me` link relationship in the `<head>` section of your webpage.
 
-```
+```xml theme={null}
 <link
   rel="me"
   href="https://x.com/XDevelopers">

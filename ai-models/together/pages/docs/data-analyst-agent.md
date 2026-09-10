@@ -19,11 +19,11 @@ In this example, we'll show you how to build an AI data analyst that can read in
 
 Create a `main.ipynb` file and save your Together & E2B API keys in there.
 
-Get the E2B API key [here](https://e2b.dev/docs/api-key) and the Together AI API key [here](https://api.together.ai/settings/projects/~current/api-keys). Download the CSV file from [here](https://www.kaggle.com/datasets/nishanthsalian/socioeconomic-country-profiles) and upload it to the same directory as your program. Rename it to `data.csv`.
+Get the [E2B API key](https://e2b.dev/docs/api-key) and the [Together AI API key](https://api.together.ai/settings/projects/~current/api-keys). Download the [CSV dataset](https://www.kaggle.com/datasets/nishanthsalian/socioeconomic-country-profiles) and upload it to the same directory as your program. Rename it to `data.csv`.
 
 ## 2. Install the SDKs
 
-```sh Shell theme={null}
+```bash Shell theme={null}
 pip install together==1.2.6 e2b-code-interpreter==0.0.10 dotenv==1.0.0
 ```
 
@@ -31,7 +31,7 @@ pip install together==1.2.6 e2b-code-interpreter==0.0.10 dotenv==1.0.0
 
 In the following code snippet, we'll define our API keys, our model of choice, and our system prompt.
 
-You can pick the model of your choice by uncommenting it. There are some recommended models that are great at code generation, but you can add a different one from [here](/docs/serverless/models#chat-models).
+You can pick the model of your choice by uncommenting it. There are some recommended models that are great at code generation, but you can add a different one from the [chat models catalog](/docs/serverless/models#chat-models).
 
 For the system prompt, we tell the model it's a data scientist and give it some information about the uploaded CSV. You can choose different data but will need to update the instructions accordingly.
 
@@ -131,7 +131,7 @@ Generally, you follow these rules:
 
 ## 4. Add code interpreting capabilities and initialize the model
 
-Now we define the function that will use the E2B code interpreter. Every time the LLM assistant decides that it needs to execute code, this function will be used. Read more about the code interpreter SDK [here](https://e2b.dev/docs/legacy/code-interpreter/installation).
+Now we define the function that will use the E2B code interpreter. Every time the LLM assistant decides that it needs to execute code, this function will be used. See the [E2B code interpreter installation guide](https://e2b.dev/docs/legacy/code-interpreter/installation).
 
 We also initialize the Together AI client. The function for matching code blocks is important because we need to pick the right part of the output that contains the code produced by the LLM. The chat function takes care of the interaction with the LLM. It calls the E2B code interpreter anytime there is a code to be run.
 
@@ -197,9 +197,9 @@ def chat_with_llm(e2b_code_interpreter, user_message):
 
 ## 5. Upload the dataset
 
-The CSV data is uploaded programmatically, not via AI-generated code. The code interpreter by E2B runs inside the E2B sandbox. Read more about the file upload [here](https://e2b.dev/docs/filesystem/upload).
+The CSV data is uploaded programmatically, not via AI-generated code. The code interpreter by E2B runs inside the E2B sandbox. See the [E2B file upload docs](https://e2b.dev/docs/filesystem/upload).
 
-```py Python theme={null}
+```python Python theme={null}
 def upload_dataset(code_interpreter):
     print("Uploading dataset to Code Interpreter sandbox...")
     dataset_path = "./data.csv"
@@ -225,7 +225,7 @@ def upload_dataset(code_interpreter):
 
 Finally we put everything together and let the AI assistant upload the data, run an analysis, and generate a PNG file with a chart. You can update the task for the assistant in this step. If you decide to change the CSV file you are using, don't forget to update the prompt too.
 
-```py Python theme={null}
+```python Python theme={null}
 with CodeInterpreter(api_key=E2B_API_KEY) as code_interpreter:
     # Upload the dataset to the code interpreter sandbox
     upload_dataset(code_interpreter)
@@ -249,7 +249,7 @@ first_result
 
 The resulting chart is generated within the notebook. The plot shows the linear regression of the relationship between GDP per capita and life expectancy from the CSV data:
 
-```py Python theme={null}
+```python Python theme={null}
 # Uploading dataset to Code Interpreter sandbox...
 # Uploaded at /home/user/data.csv
 #

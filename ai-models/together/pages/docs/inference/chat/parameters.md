@@ -28,7 +28,7 @@ Match the problem you're solving to the parameter most likely to help.
 
 ## Length and stopping
 
-### max\_tokens
+### `max_tokens`
 
 The maximum number of tokens the model is allowed to generate in the response. Shorter values return faster but risk truncating the answer mid-sentence.
 
@@ -36,7 +36,7 @@ Increase this when the model is cutting off long answers. Decrease it (sometimes
 
 Typical default: unset (the model generates until it hits a stop condition or the context limit).
 
-### stop
+### `stop`
 
 A string or list of strings that tell the model to stop generating as soon as one of them is produced. Useful for short, structured outputs where you know the boundary, for example a newline between rows or a closing tag.
 
@@ -100,7 +100,7 @@ Typical default: unset.
 
 `temperature`, `top_p`, and `top_k` all narrow the candidate token set. In most cases, you'll want to tune one of them and leave the others at their defaults. Similarly, `repetition_penalty`, `frequency_penalty`, and `presence_penalty` all discourage repetition in different ways. Pick the parameter that fits the issue you're trying to address rather than stacking them all together.
 
-### temperature
+### `temperature`
 
 A decimal that controls how random the output is. `0` always picks the highest-probability token (deterministic for a given prompt). Values closer to `1` introduce more variety. Values above `1` are usually too noisy for production workloads.
 
@@ -108,7 +108,7 @@ Lower it for extraction, classification, and other tasks where there is one righ
 
 Typical default: model-specific (often `0.7`, see `generation_config.json`).
 
-### top\_p
+### `top_p`
 
 Nucleus sampling. The model samples only from the smallest set of tokens whose cumulative probability exceeds `top_p`. A value of `0.9` means "only consider tokens that together make up the top 90% of probability mass."
 
@@ -116,7 +116,7 @@ Use it as a softer alternative to `temperature`. Most users tune one or the othe
 
 Typical default: `1.0` (no truncation).
 
-### top\_k
+### `top_k`
 
 Limits sampling to the `k` most likely next tokens. `top_k=1` is greedy decoding. Larger values allow more variety.
 
@@ -124,7 +124,7 @@ Use it when you want a hard cap on the candidate set. Like `top_p`, prefer tunin
 
 Typical default: `0` or unset (no cap).
 
-### repetition\_penalty
+### `repetition_penalty`
 
 Reduces the probability of tokens that have already appeared anywhere in the prompt or response. Values above `1.0` discourage repetition; values below `1.0` encourage it.
 
@@ -132,7 +132,7 @@ Raise it slightly (for example, `1.1`) when the model loops or repeats phrases. 
 
 Typical default: `1.0`.
 
-### frequency\_penalty
+### `frequency_penalty`
 
 Penalizes tokens proportionally to how often they have already appeared in the response so far. Higher positive values make the model less likely to repeat the same exact tokens; negative values make repetition more likely. Range: `-2.0` to `2.0`.
 
@@ -140,7 +140,7 @@ Use it to reduce verbatim repetition in long generations (lists, summaries, code
 
 Typical default: `0`.
 
-### presence\_penalty
+### `presence_penalty`
 
 Penalizes tokens that have appeared at all in the response so far, regardless of how many times. Higher positive values push the model toward new topics and vocabulary. Range: `-2.0` to `2.0`.
 
@@ -148,7 +148,7 @@ Use it when you want the model to cover more ground (idea generation, topic expa
 
 Typical default: `0`.
 
-### seed
+### `seed`
 
 An integer that makes sampling deterministic. With the same `seed`, prompt, model, and parameters, the model returns the same response. Determinism is best-effort and may not hold across model or backend updates.
 
@@ -203,7 +203,7 @@ Typical default: unset (responses vary between calls).
 
 ## Response shape
 
-### n
+### `n`
 
 The number of independent completions to generate for a given prompt. Each completion appears as a separate entry in `choices`. Higher values cost more (you pay for the output tokens of every completion).
 

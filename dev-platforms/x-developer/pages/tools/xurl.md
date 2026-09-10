@@ -26,13 +26,34 @@ go install github.com/xdevplatform/xurl@latest
 
 ## Setup
 
-Authorize xurl with your X API credentials on first use:
+### 1. Create an X app
+
+xurl authenticates using your own developer app. In the [X Developer Portal](https://developer.x.com):
+
+1. Create (or open) an app with **OAuth 2.0** enabled.
+2. Register the redirect URI `http://localhost:8080/callback` on the app.
+3. Copy the app's **Client ID** and **Client Secret** from the "Keys and tokens" page.
+
+### 2. Set your credentials
+
+Export the credentials in the same shell you'll run xurl from:
 
 ```bash theme={null}
-xurl auth
+export CLIENT_ID="your-x-app-client-id"
+export CLIENT_SECRET="your-x-app-client-secret"
 ```
 
-This opens a browser-based OAuth flow. Once authorized, xurl stores your tokens locally so you don't need to authenticate again.
+### 3. Authorize
+
+```bash theme={null}
+xurl auth oauth2
+```
+
+This opens a browser-based OAuth flow. Once authorized, xurl stores your tokens locally in `~/.xurl` so you don't need to authenticate again.
+
+<Warning>
+  If the browser shows **"Something went wrong — You weren't able to give access to the App"**, xurl started the login without valid credentials. Make sure `CLIENT_ID` and `CLIENT_SECRET` are exported in the shell where you ran `xurl auth oauth2`, and that `http://localhost:8080/callback` is registered as a redirect URI on your app.
+</Warning>
 
 ***
 
@@ -94,7 +115,7 @@ npx skills add https://github.com/xdevplatform/xurl
 ## Related
 
 <CardGroup>
-  <Card title="Make your first request" icon="rocket" href="/make-your-first-request">
+  <Card title="Make your first request" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/make-your-first-request">
     Get started with the X API using cURL or SDKs.
   </Card>
 

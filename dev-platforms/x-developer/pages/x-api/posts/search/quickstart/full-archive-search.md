@@ -60,7 +60,7 @@ By default, results return Posts from the last 30 days. Use `start_time` and `en
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -76,7 +76,7 @@ By default, results return Posts from the last 30 days. Use `start_time` and `en
           print(post.text)
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -101,7 +101,7 @@ By default, results return Posts from the last 30 days. Use `start_time` and `en
 
 ## Step 4: Review the response
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
@@ -146,7 +146,7 @@ Request additional data with query parameters:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -165,7 +165,7 @@ Request additional data with query parameters:
           print(f"{post.created_at}: {post.text[:50]}...")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -203,7 +203,7 @@ next_token=b26v89c19zqg8o3fo7gesq314yb9l2l4ptqy" \
   -H "Authorization: Bearer $BEARER_TOKEN"
 ```
 
-<Card title="Pagination guide" icon="arrow-right" href="/x-api/posts/search/integrate/paginate">
+<Card title="Pagination guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" href="/x-api/posts/search/integrate/paginate">
   Learn more about navigating large result sets
 </Card>
 
@@ -239,7 +239,7 @@ next_token=b26v89c19zqg8o3fo7gesq314yb9l2l4ptqy" \
 ## Next steps
 
 <CardGroup>
-  <Card title="Build a query" icon="magnifying-glass" href="/x-api/posts/search/integrate/build-a-query">
+  <Card title="Build a query" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/posts/search/integrate/build-a-query">
     Master query syntax and operators
   </Card>
 
@@ -247,11 +247,11 @@ next_token=b26v89c19zqg8o3fo7gesq314yb9l2l4ptqy" \
     See all available operators
   </Card>
 
-  <Card title="Pagination guide" icon="arrow-right" href="/x-api/posts/search/integrate/paginate">
+  <Card title="Pagination guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" href="/x-api/posts/search/integrate/paginate">
     Handle large result sets
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/full-archive-search">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/full-archive-search">
     Full endpoint documentation
   </Card>
 </CardGroup>

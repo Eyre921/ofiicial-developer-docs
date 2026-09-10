@@ -13,7 +13,7 @@ The TypeScript SDK provides real-time streaming capabilities for live data feeds
 Connect to real-time sampled posts:
 
 <CodeGroup>
-  ```typescript stream.ts theme={null} theme={null}
+  ```typescript title="stream.ts" lines wrap icon="square-js" theme={null} theme={null}
   import { Client } from '@xdevplatform/xdk';
 
   const client: Client = new Client({ bearerToken: 'your-bearer-token' });

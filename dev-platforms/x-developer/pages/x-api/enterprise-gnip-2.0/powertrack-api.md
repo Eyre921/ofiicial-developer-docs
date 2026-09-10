@@ -99,7 +99,7 @@ For more details, please see the [Getting started with enterprise rules](/x-api
 
 Below is a sample payload from the PowerTrack API in Native Enriched format:
 
-```
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "created_at": "Wed Oct 10 20:19:24 +0000 2018",
   "id": 1050118621198921700,

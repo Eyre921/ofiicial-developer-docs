@@ -29,7 +29,7 @@ Match the problem you're solving to the parameter most likely to help.
 
 ## Prompting
 
-### prompt
+### `prompt`
 
 A description of the image to generate. Required for every model except Kling. Maximum length varies by model.
 
@@ -37,7 +37,7 @@ Be specific about subject, setting, lighting, composition, and style. Vague prom
 
 Typical default: required.
 
-### negative\_prompt
+### `negative_prompt`
 
 A description of what to avoid in the generated image. Useful for excluding common artifacts.
 
@@ -47,7 +47,7 @@ Typical default: unset.
 
 ## Output dimensions
 
-### width and height
+### `width` and `height`
 
 The size of the generated image in pixels. Available combinations differ by model. Both values should be multiples of `8`.
 
@@ -165,7 +165,7 @@ Typical default: `1024` x `1024`.
 
 ## Quality and speed
 
-### steps
+### `steps`
 
 The number of diffusion steps. More steps generally improve quality at a near-linear cost in latency. Past a model-specific point, additional steps stop helping.
 
@@ -232,7 +232,7 @@ Typical default: model-specific (often `20`).
 
 <img alt="Reference image: steps.png" />
 
-### guidance\_scale
+### `guidance_scale`
 
 Controls how closely the image follows the prompt. Higher values make the output more faithful to the prompt but can introduce artifacts and oversaturation. Lower values give the model more creative freedom.
 
@@ -242,13 +242,13 @@ Typical default: `3.5`.
 
 ## Reproducibility and variations
 
-### seed
+### `seed`
 
 An integer that fixes the random initialization. With the same `seed`, prompt, model, and parameters, the model returns the same image. Useful for reproducibility, regression tests, and fair comparisons when tuning other parameters.
 
 Typical default: unset (each call returns a new image).
 
-### n
+### `n`
 
 The number of images to generate per request. Each image appears as a separate entry in `data`. Higher values cost more (you pay for every image generated).
 
@@ -258,7 +258,7 @@ Typical default: `1`.
 
 ## Output format
 
-### response\_format
+### `response_format`
 
 Controls how the image is returned. `"url"` (default) returns a hosted URL you can fetch later. `"base64"` embeds the image bytes directly in the response under `b64_json`, so you don't need a second HTTP request.
 
@@ -338,7 +338,7 @@ When `response_format` is `"base64"`, the response includes a `b64_json` field w
 }
 ```
 
-### output\_format
+### `output_format`
 
 The encoded image format: `"jpeg"` or `"png"`. PNG preserves transparency and crisp edges but produces larger files. JPEG is smaller but lossy.
 
@@ -346,7 +346,7 @@ Typical default: `"jpeg"`.
 
 ## Safety
 
-### disable\_safety\_checker
+### `disable_safety_checker`
 
 Disables the built-in NSFW safety checker. By default, requests that trigger the checker return `422 Unprocessable Entity`. The checker runs on every model except FLUX Schnell Free and FLUX Pro.
 

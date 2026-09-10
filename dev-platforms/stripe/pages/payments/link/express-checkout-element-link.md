@@ -41,4 +41,5 @@ expressCheckoutElement.mount('#express-checkout-element')
 - [Stripe Web Elements](https://docs.stripe.com/payments/elements.md)
 - [Contact Details Element](https://docs.stripe.com/payments/elements/contact-details-element.md)
 - [Address Element](https://docs.stripe.com/elements/address-element.md)
+- [Accept a payment with the Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element/accept-a-payment.md)
 

@@ -126,7 +126,7 @@ To fetch records from a namespace based on their IDs, use the `fetch` operation 
 
   curl -X GET "https://$INDEX_HOST/vectors/fetch?ids=id-1&ids=id-2&namespace=example-namespace" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10"
+    -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </CodeGroup>
 
@@ -377,7 +377,7 @@ For example, the following code fetches 2 records with a `genre` field set to `A
   curl -X POST "https://$INDEX_HOST/vectors/fetch_by_metadata" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "namespace": "__default__",
       "filter": {"genre": {"$eq": "Action/Adventure"}},
@@ -468,7 +468,7 @@ To fetch the next page of results, pass the pagination token from the previous r
   curl -X POST "https://$INDEX_HOST/vectors/fetch_by_metadata" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "namespace": "__default__",
       "filter": {"genre": {"$eq": "Action/Adventure"}},

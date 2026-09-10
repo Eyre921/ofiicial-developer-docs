@@ -132,16 +132,12 @@ To learn more about how pricing works for Agent Runners, check out [Pricing for 
 
 ### When your team runs out of credits
 
-If your team runs out of credits while an agent is working, Netlify keeps the progress the agent made and cancels the run. To continue the run, your team needs credits again. You can get more credits in one of the following ways:
+If your team is close to running out of credits, the agent tries to finish what's in progress and stops instead of starting anything new. If your team runs out of credits earlier than the agent can finish up, Netlify keeps the progress the agent made and cancels the run. To continue the run, your team needs credits again. You can get more credits in one of the following ways:
 - Wait until your plan's monthly credits reset.
 - Upgrade from the Free plan to a [paid plan](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/#personal-plan).
 - Buy more credits with a [credit pack](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/buy-credit-packs/) if your team is already on a paid plan.
 
 Once your team has credits again, select **Continue** on the cancelled run to resume the task. For details, see [Running out of credits during an agent run](/build/build-with-ai/agent-runners/make-changes-with-agent-runners/#running-out-of-credits-during-an-agent-run).
-
-#### Stopped agent runs
-
-When you [create a new project with an AI agent](/start/quickstarts/create-new-project-with-ai-agent/) and your team is close to running out of credits, the agent finishes what's in progress and stops instead of starting anything new.
 
 ## Use Agent Runners
 

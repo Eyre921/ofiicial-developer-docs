@@ -122,6 +122,8 @@ The following additional rules apply for any use of the X services or features l
 
 ***Once someone on your service authenticates via Sign in with X you must clearly display their X identity.*** X identity includes the person’s current X @handle, avatar, and X logo. Any display of someone’s X followers on your service must clearly show that the relationship is associated with X.
 
+X reserves the right to monitor the total number of unique users who have authenticated or logged in via Sign In with X (or other X authentication methods) to your products, services, or those made available by or for you or your affiliates and, in the event that total number greatly exceeds the normal levels of other developers subscribed to a similar tier of service, you must apply (or already subscribe) to an Enterprise plan upon written notice from X.
+
 You agree that X may, from time to time, review your *Sign in with X* option and, in its sole discretion, remove this X feature from your service.
 
 ## X Cards
@@ -165,7 +167,7 @@ Your use case description is binding on you, and any substantive deviation from 
 
 ## Privacy and control are essential
 
-X takes privacy seriously, and we expect everyone using X Content and the X API to do the same. Any use of the X developer platform, X API, or X Content in a manner that is inconsistent with peoples’ reasonable expectations of privacy may be subject to enforcement action, which can include suspension and termination of API and X Content access.
+X takes privacy seriously, and we expect everyone using X Content and the X API to do the same. Any use of the X developer platform, X API, or X Content in a manner that is inconsistent with people’s reasonable expectations of privacy may be subject to enforcement action, which can include suspension and termination of API and X Content access.
 
 Your commitment to privacy and control must extend to all uses of X Content and all aspects of the service that you build using our API. To that end, the people using your service must understand and consent to how you use their data, and how you access X on their behalf. This can be accomplished through providing people with a clear, comprehensive, and transparent privacy policy, as well as ensuring that you get express and informed consent from each person using your service before taking any action on their behalf. **Please note that a person authenticating into your service does not by itself constitute consent.**
 
@@ -218,7 +220,7 @@ Modified content can take various forms. This includes (but is not limited to):
 
 **We limit the circumstances under which you may match a person on X to information obtained or stored off-X.** Off-X matching involves associating X Content, including a X @handle or user ID, with a person, household, device, browser, or other off-X identifier. You may only do this if you have express opt-in consent from the person before making the association, or as described below.
 
-In situations in which you don’t have a person’s express, opt-in consent to link their Xidentity to an off-X identifier, we require that any connection you draw be based only on information that someone would reasonably expect to be used for that purpose. In addition, absent a person’s express opt-in consent you may only attempt to match your records about someone to a X identity based on:
+In situations in which you don’t have a person’s express, opt-in consent to link their X identity to an off-X identifier, we require that any connection you draw be based only on information that someone would reasonably expect to be used for that purpose. In addition, absent a person’s express opt-in consent you may only attempt to match your records about someone to a X identity based on:
 
 * **Information provided directly to you by the person.** Note that records about individuals with whom you have no prior relationship, including data about individuals obtained from third parties, do not meet this standard; and/or
 * **Public data.** “Public data” in this context refers to:

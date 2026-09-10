@@ -45,7 +45,7 @@ Want to learn more about these features?
 * [**Tracing**](https://docs.sentry.io/product/tracing.md): Track software performance while seeing the impact of errors across multiple systems. For example, distributed tracing allows you to follow a request from the frontend to the backend and back.
 * [**Profiling**](https://docs.sentry.io/product/profiling.md): Gain deeper insight than traditional tracing without custom instrumentation, letting you discover slow-to-execute or resource-intensive functions in your app.
 * [**Logs**](https://docs.sentry.io/product/logs.md): Centralize and analyze your application logs to correlate them with errors and performance issues. Search, filter, and visualize log data to understand what's happening in your applications.
-* [**Application Metrics**](https://docs.sentry.io/product/metrics.md): Track and analyze custom application metrics, such as response times and database query durations, to understand trends and patterns in your application's performance and behavior over time.
+* [**Application Metrics**](https://docs.sentry.io/product/metrics.md) (always enabled): Track and analyze custom application metrics, such as response times and database query durations, to understand trends and patterns in your application's performance and behavior over time.
 
 ### [Initialize the Sentry SDK](https://docs.sentry.io/platforms/python.md#initialize-the-sentry-sdk)
 
@@ -162,9 +162,9 @@ sentry_sdk.logger.warning("This is a warning message")
 sentry_sdk.logger.error("This is an error message")
 ```
 
-### [Metrics](https://docs.sentry.io/platforms/python.md#metrics)
+### [Application Metrics NEW](https://docs.sentry.io/platforms/python.md#application-metrics-)
 
-Send test metrics from your app to verify metrics are arriving in Sentry:
+Send test metrics from your app to verify that metrics are arriving in Sentry:
 
 ```py
 from sentry_sdk import metrics

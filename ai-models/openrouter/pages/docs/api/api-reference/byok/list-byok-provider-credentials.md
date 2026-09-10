@@ -229,6 +229,7 @@ paths:
               - modular
               - moonshotai
               - morph
+              - near-ai
               - nebius
               - nex-agi
               - nextbit
@@ -285,7 +286,9 @@ paths:
                     created_at: '2025-08-24T10:30:00Z'
                     disabled: false
                     id: 11111111-2222-3333-4444-555555555555
+                    is_byok_only: false
                     is_fallback: false
+                    is_required: false
                     label: sk-...AbCd
                     name: Production OpenAI Key
                     provider: openai
@@ -336,7 +339,9 @@ components:
             created_at: '2025-08-24T10:30:00Z'
             disabled: false
             id: 11111111-2222-3333-4444-555555555555
+            is_byok_only: false
             is_fallback: false
+            is_required: false
             label: sk-...AbCd
             name: Production OpenAI Key
             provider: openai
@@ -428,7 +433,9 @@ components:
         created_at: '2025-08-24T10:30:00Z'
         disabled: false
         id: 11111111-2222-3333-4444-555555555555
+        is_byok_only: false
         is_fallback: false
+        is_required: false
         label: sk-...AbCd
         name: Production OpenAI Key
         provider: openai
@@ -482,10 +489,29 @@ components:
           example: 11111111-2222-3333-4444-555555555555
           format: uuid
           type: string
+        is_byok_only:
+          description: >-
+            Whether OpenRouter's shared endpoints on this provider are removed
+            for every model, including models outside `allowed_models` and after
+            all of your keys for the provider fail. The provider is skipped
+            instead of spending OpenRouter credits. Only valid on non-fallback
+            credentials.
+          example: false
+          type: boolean
         is_fallback:
           description: >-
             Whether this credential is treated as a fallback — used only after
-            non-fallback keys for the same provider have been tried.
+            non-fallback keys for the same provider have been tried. Cannot be
+            combined with `is_byok_only`.
+          example: false
+          type: boolean
+        is_required:
+          description: >-
+            Whether OpenRouter's shared endpoints on this provider are removed
+            for the models this credential applies to (its `allowed_models`, or
+            every model when `null`). Requests for those models run only on your
+            keys; models outside the allowlist may still fall back to shared
+            capacity on this provider.
           example: false
           type: boolean
         label:
@@ -525,6 +551,8 @@ components:
         - label
         - disabled
         - is_fallback
+        - is_required
+        - is_byok_only
         - allowed_models
         - allowed_api_key_hashes
         - allowed_user_ids
@@ -656,6 +684,7 @@ components:
         - modular
         - moonshotai
         - morph
+        - near-ai
         - nebius
         - nex-agi
         - nextbit

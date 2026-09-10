@@ -19,7 +19,7 @@ A comprehensive TypeScript SDK for the X API (formerly Twitter API) with advance
 ## Quick Start
 
 <CodeGroup>
-  ```typescript quickstart.ts theme={null} theme={null}
+  ```typescript title="quickstart.ts" lines wrap icon="square-js" theme={null} theme={null}
   import { 
       Client, 
       type ClientConfig,

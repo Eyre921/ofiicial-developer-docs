@@ -606,7 +606,7 @@ Output:
 
 [TCI API Reference docs](/reference/tci-execute)
 
-[Together Code Interpreter Cookbook](https://github.com/togethercomputer/together-cookbook/blob/main/Together_Code_Interpreter.ipynb)
+[Together code interpreter cookbook](https://github.com/togethercomputer/together-cookbook/blob/main/Together_Code_Interpreter.ipynb)
 
 ## Troubleshooting & questions
 

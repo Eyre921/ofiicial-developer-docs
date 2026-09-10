@@ -54,7 +54,7 @@ Queries use operators to match Posts. Combine operators with boolean logic:
 | **Standalone**           | Can be used alone                       | `#python`, `from:user`    |
 | **Conjunction-required** | Must be used with a standalone operator | `has:media`, `is:retweet` |
 
-<Card title="Build a query" icon="magnifying-glass" href="/x-api/posts/search/integrate/build-a-query">
+<Card title="Build a query" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/posts/search/integrate/build-a-query">
   Learn query syntax in detail
 </Card>
 
@@ -81,7 +81,7 @@ By default, the response includes only `id`, `text`, and `edit_history_tweet_ids
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -99,7 +99,7 @@ By default, the response includes only `id`, `text`, and `edit_history_tweet_ids
           print(f"{post.text} - Likes: {post.public_metrics.like_count}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -162,7 +162,7 @@ Search endpoints return results in pages. Use the `next_token` from the response
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -177,7 +177,7 @@ Search endpoints return results in pages. Use the `next_token` from the response
   print(f"Found {len(all_posts)} posts")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -203,7 +203,7 @@ Search endpoints return results in pages. Use the `next_token` from the response
   ```
 </CodeGroup>
 
-<Card title="Pagination guide" icon="arrow-right" href="/x-api/posts/search/integrate/paginate">
+<Card title="Pagination guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" href="/x-api/posts/search/integrate/paginate">
   Learn more about pagination
 </Card>
 
@@ -219,7 +219,7 @@ Posts can be edited up to 5 times within 30 minutes. The search endpoints always
 * Posts fetched after the 30-minute window represent the final version
 * For near-real-time use cases, recently-published Posts may still be edited
 
-<Card title="Edit Posts fundamentals" icon="clock-rotate-left" href="/x-api/fundamentals/edit-posts">
+<Card title="Edit Posts fundamentals" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-history.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=6afe17587c08ee621e37afde19a07ff1" href="/x-api/fundamentals/edit-posts">
   Learn more about Post edits
 </Card>
 
@@ -236,7 +236,7 @@ Posts can be edited up to 5 times within 30 minutes. The search endpoints always
     Start broad, then refine based on results.
   </Card>
 
-  <Card title="Handle pagination" icon="arrow-right">
+  <Card title="Handle pagination" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e">
     Implement proper pagination for large result sets.
   </Card>
 
@@ -250,7 +250,7 @@ Posts can be edited up to 5 times within 30 minutes. The search endpoints always
 ## Next steps
 
 <CardGroup>
-  <Card title="Build a query" icon="magnifying-glass" href="/x-api/posts/search/integrate/build-a-query">
+  <Card title="Build a query" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/posts/search/integrate/build-a-query">
     Master query syntax
   </Card>
 
@@ -258,11 +258,11 @@ Posts can be edited up to 5 times within 30 minutes. The search endpoints always
     All available operators
   </Card>
 
-  <Card title="Pagination" icon="arrow-right" href="/x-api/posts/search/integrate/paginate">
+  <Card title="Pagination" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e" href="/x-api/posts/search/integrate/paginate">
     Handle large result sets
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/recent-search">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/recent-search">
     Full endpoint documentation
   </Card>
 </CardGroup>

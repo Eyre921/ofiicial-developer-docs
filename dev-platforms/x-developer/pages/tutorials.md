@@ -7,7 +7,7 @@ path: tutorials
 X API tutorials covering Postman, Python, R, filtered streaming, full-archive search, webhooks, OAuth authentication, and other common workflows.
 
 <CardGroup>
-  <Card title="Explore a user's Posts" icon="user">
+  <Card title="Explore a user's Posts" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-person.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=507a4bbcdcf5744bd18781508002e305">
     Learn how to explore a user's Posts and mentions using the user Post timeline and user mention timeline endpoints from the last 7 days.
 
     <br />
@@ -17,7 +17,7 @@ X API tutorials covering Postman, Python, R, filtered streaming, full-archive se
     [**View tutorial**](/tutorials/explore-a-users-posts)
   </Card>
 
-  <Card title="Getting started with Postman" icon="rocket">
+  <Card title="Getting started with Postman" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d">
     Learn how to start using Postman to make requests to the X API and X Ads API.
 
     <br />
@@ -27,7 +27,7 @@ X API tutorials covering Postman, Python, R, filtered streaming, full-archive se
     [**View tutorial**](/tutorials/postman-getting-started)
   </Card>
 
-  <Card title="Getting started with R and v2 of the X API" icon="rocket">
+  <Card title="Getting started with R and v2 of the X API" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d">
     Learn about using R to connect to the user lookup endpoint and how to work with JSON returned from X API v2.
 
     <br />
@@ -37,7 +37,7 @@ X API tutorials covering Postman, Python, R, filtered streaming, full-archive se
     [**View tutorial**](/tutorials/getting-started-with-r-and-v2-of-the-x-api)
   </Card>
 
-  <Card title="Getting historical Posts using the full-archive search endpoint" icon="magnifying-glass">
+  <Card title="Getting historical Posts using the full-archive search endpoint" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834">
     Learn to use the full-archive search endpoint to search the complete history of public X data, build a dataset of geo-tagged Posts, and paginate through results for a query.
 
     <br />

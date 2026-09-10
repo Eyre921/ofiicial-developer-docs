@@ -129,9 +129,12 @@ websocket.on('user_transcript', (event) => {
 
 #### agent\_response
 
-* Contains complete agent message
-* Sent with first audio chunk
+* Contains the complete agent message
+* Sent once that message is finished, so in voice conversations it usually arrives after the message's audio has already started streaming.
 * Used for display and history
+
+To display the agent's text as it is produced, use the `agent_chat_response_part` event
+described below instead of waiting for this event.
 
 ```json
 // Example response event structure
@@ -418,9 +421,10 @@ const conversation = await Conversation.startSession({
 
 #### agent\_chat\_response\_part
 
-* Contains streaming text chunks during text-only conversations
-* Provides start, delta, and stop events for real-time text streaming
-* Used for progressive display of agent responses in text-only mode
+* Streams the agent's response text as it is generated, as `start`, `delta` and `stop` messages
+* Always sent in text-only mode; in voice conversations it must be explicitly enabled in the agent's `client_events` configuration
+* Not sent while the agent or an active procedure uses a blocking guardrail, which has to evaluate the whole response before any of it is released
+* `response_id` identifies the message being streamed and matches the `response_id` of the `agent_response` that later commits it
 
 ```json
 // Example start event
@@ -429,7 +433,8 @@ const conversation = await Conversation.startSession({
   "text_response_part": {
     "type": "start",
     "text": "",
-    "event_id": "evt_123456"
+    "event_id": 12345,
+    "response_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
   }
 }
 ```
@@ -441,7 +446,8 @@ const conversation = await Conversation.startSession({
   "text_response_part": {
     "type": "delta",
     "text": "Hello, how can I",
-    "event_id": "evt_123456"
+    "event_id": 12345,
+    "response_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
   }
 }
 ```
@@ -453,7 +459,8 @@ const conversation = await Conversation.startSession({
   "text_response_part": {
     "type": "stop",
     "text": "",
-    "event_id": "evt_123456"
+    "event_id": 12345,
+    "response_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
   }
 }
 ```
@@ -462,14 +469,14 @@ const conversation = await Conversation.startSession({
 // Example handler
 websocket.on('agent_chat_response_part', (event) => {
   const { text_response_part } = event;
-  const { type: partType, text, event_id } = text_response_part;
+  const { type: partType, text, response_id } = text_response_part;
 
   if (partType === 'start') {
-    initializeResponseBuffer(event_id);
+    initializeResponseBuffer(response_id);
   } else if (partType === 'delta') {
-    appendToResponseBuffer(text);
+    appendToResponseBuffer(response_id, text);
   } else if (partType === 'stop') {
-    finalizeResponse();
+    finalizeResponse(response_id);
   }
 });
 ```

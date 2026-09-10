@@ -18,7 +18,7 @@ The SDK simplifies this with:
 Use the `iterate()` method on paginated responses to fetch all results lazily.
 **Example: Paginated Search**
 
-```python theme={null}
+```python title="Example" lines wrap icon="python" theme={null}
 from xdk import Client
 client = Client(bearer_token="your_bearer_token")
 # Search with automatic pagination
@@ -41,7 +41,7 @@ print(f"Total tweets: {len(all_posts)}")
 
 If you require control over the results for some custom logic (e.g. processing page-by-page), you can still use the `next_token` and do the pagination manually as shown below:
 
-```python theme={null}
+```python title="Example" lines wrap icon="python" theme={null}
 # Get first page - search_recent returns an Iterator
 first_page = next(client.posts.search_recent(
     query="xdk python sdk",

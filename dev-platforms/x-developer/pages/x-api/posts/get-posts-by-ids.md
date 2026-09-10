@@ -5,4 +5,3 @@ path: x-api/posts/get-posts-by-ids
 ---
 
 get /2/tweets
-Retrieves details of multiple Posts by their IDs.

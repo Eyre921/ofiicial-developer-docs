@@ -19,7 +19,7 @@ The Retweets endpoints let you retweet and undo retweets, see who retweeted a Po
     Remove a retweet
   </Card>
 
-  <Card title="Retweeting users" icon="users">
+  <Card title="Retweeting users" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-people.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=9d5f3f82edcd2a4070364193436e7980">
     See who retweeted a Post
   </Card>
 
@@ -91,7 +91,7 @@ curl -X POST "https://api.x.com/2/users/123456789/retweets" \
     Get reposts of your Posts
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/get-reposted-by">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/get-reposted-by">
     Full endpoint documentation
   </Card>
 </CardGroup>

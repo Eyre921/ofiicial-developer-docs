@@ -5,4 +5,4 @@ path: x-api/users/unmute-user
 ---
 
 delete /2/users/{source_user_id}/muting/{target_user_id}
-Causes the authenticated user to unmute a specific user by their ID.
+Causes the authenticated user to unmute the target user.

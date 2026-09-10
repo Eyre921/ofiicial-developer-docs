@@ -10,6 +10,8 @@ Create and manage subscriptions, track usage, and issue invoices.
 
 Use Stripe Billing to manage subscriptions and invoicing. It automates recurring payments, creates custom pricing plans, and handles billing periods, such as trials and renewals. Learn more about [Billing](https://docs.stripe.com/billing/billing-apis.md) and its [features](https://docs.stripe.com/billing.md#features).
 
+For new integrations, use separate general sandboxes for local development and continuous integration (CI) instead of the account’s test mode sandbox. Learn how to [test your Billing integration](https://docs.stripe.com/billing/testing.md).
+
 ## Automate billing
 [Build a subscriptions integration, and set up pricing models](https://docs.stripe.com/billing/subscriptions/build-subscriptions.md)
 ## No code options

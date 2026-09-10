@@ -39,7 +39,7 @@ This guide walks you through getting Post counts (volume) for the last 7 days.
         -H "Authorization: Bearer $BEARER_TOKEN"
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
 
       client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -56,7 +56,7 @@ This guide walks you through getting Post counts (volume) for the last 7 days.
       print(f"Total: {response.meta.total_tweet_count}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -125,7 +125,7 @@ Control how counts are grouped:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -140,7 +140,7 @@ Control how counts are grouped:
       print(f"{bucket.start}: {bucket.tweet_count}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -173,7 +173,7 @@ Limit counts to a specific time period:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -189,7 +189,7 @@ Limit counts to a specific time period:
   print(f"Total Posts: {response.meta.total_tweet_count}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -226,11 +226,11 @@ Limit counts to a specific time period:
     Get historical Post counts
   </Card>
 
-  <Card title="Build a query" icon="magnifying-glass" href="/x-api/posts/counts/integrate/build-a-query">
+  <Card title="Build a query" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834" href="/x-api/posts/counts/integrate/build-a-query">
     Master query syntax
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/get-count-of-recent-posts">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/get-count-of-recent-posts">
     Full endpoint documentation
   </Card>
 </CardGroup>

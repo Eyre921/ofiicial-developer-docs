@@ -35,7 +35,7 @@ This guide walks you through retrieving your muted users list using the X API.
         -H "Authorization: Bearer $USER_ACCESS_TOKEN"
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
 
       client = Client(bearer_token="YOUR_USER_ACCESS_TOKEN")
@@ -50,7 +50,7 @@ This guide walks you through retrieving your muted users list using the X API.
               print(f"{user.username} - Muted")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -106,7 +106,7 @@ Use expansions to get related data like pinned Posts:
     -H "Authorization: Bearer $USER_ACCESS_TOKEN"
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_USER_ACCESS_TOKEN")
@@ -123,7 +123,7 @@ Use expansions to get related data like pinned Posts:
       # Pinned Posts are in page.includes.tweets
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ accessToken: "YOUR_USER_ACCESS_TOKEN" });
@@ -146,7 +146,7 @@ Use expansions to get related data like pinned Posts:
 
 ### Response with expansion
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
@@ -194,7 +194,7 @@ pagination_token=1710819323648428707" \
     Mute and unmute users
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/users/get-muting">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/users/get-muting">
     Full endpoint documentation
   </Card>
 </CardGroup>

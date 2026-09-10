@@ -20,7 +20,7 @@ This guide walks you through retrieving Posts from a List timeline.
 ***
 
 <Steps>
-  <Step title="Find a List ID" icon="list">
+  <Step title="Find a List ID" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5">
     You can find a List ID in the URL when viewing a List on x.com:
 
     ```
@@ -40,7 +40,7 @@ This guide walks you through retrieving Posts from a List timeline.
         -H "Authorization: Bearer $BEARER_TOKEN"
       ```
 
-      ```python Python SDK theme={null}
+      ```python title="Python SDK" lines wrap icon="python" theme={null}
       from xdk import Client
 
       client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -57,7 +57,7 @@ This guide walks you through retrieving Posts from a List timeline.
               print(f"{post.text[:50]}... - Likes: {post.public_metrics.like_count}")
       ```
 
-      ```javascript JavaScript SDK theme={null}
+      ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
       import { Client } from "@xdevplatform/xdk";
 
       const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
@@ -114,7 +114,7 @@ This guide walks you through retrieving Posts from a List timeline.
     ```
   </Step>
 
-  <Step title="Paginate through results" icon="arrow-right">
+  <Step title="Paginate through results" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-arrow-right.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=88e933002782dbdeb204043cedef033e">
     The SDKs handle pagination automatically. For cURL, use the `next_token` from the response to get more Posts:
 
     ```bash theme={null}
@@ -135,19 +135,19 @@ This guide walks you through retrieving Posts from a List timeline.
 ## Next steps
 
 <CardGroup>
-  <Card title="List lookup" icon="list" href="/x-api/lists/list-lookup/quickstart">
+  <Card title="List lookup" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5" href="/x-api/lists/list-lookup/quickstart">
     Get List details
   </Card>
 
-  <Card title="List members" icon="users" href="/x-api/lists/list-members/introduction">
+  <Card title="List members" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-people.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=9d5f3f82edcd2a4070364193436e7980" href="/x-api/lists/list-members/introduction">
     Get List members
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/lists/list-tweets/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/lists/list-tweets/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/lists/get-list-posts">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/lists/get-list-posts">
     Full endpoint documentation
   </Card>
 </CardGroup>

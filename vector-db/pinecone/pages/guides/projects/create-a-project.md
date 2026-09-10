@@ -45,7 +45,7 @@ If you are an [organization owner or organization manager](/guides/organizations
       PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
 
       curl "https://api.pinecone.io/admin/projects" \
-          -H "X-Pinecone-Api-Version: 2025-10" \
+          -H "X-Pinecone-Api-Version: 2026-07" \
       	-H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
       	-d '{
                 "name":"example-project"

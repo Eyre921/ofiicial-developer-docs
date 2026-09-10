@@ -60,7 +60,7 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Generate vectors">
-    Use Pinecone's [hosted embedding models](/guides/index-data/create-an-index#embedding-models) to [convert data into dense and sparse vectors](/reference/api/latest/inference/generate-embeddings).
+    Use Pinecone's [hosted embedding models](/guides/index-data/create-an-index#embedding-models) to [convert data into dense and sparse vectors](/reference/api/latest/inference/generate-vectors).
 
     ```python Python [expandable] theme={null}
     # Define the records
@@ -213,7 +213,7 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Search the index">
-    Use the [`embed`](/reference/api/latest/inference/generate-embeddings) operation to convert your query into a dense vector and a sparse vector, and then use the [`query`](/reference/api/latest/data-plane/query) operation to search the index for the 40 most relevant records.
+    Use the [`embed`](/reference/api/latest/inference/generate-vectors) operation to convert your query into a dense vector and a sparse vector, and then use the [`query`](/reference/api/latest/data-plane/query) operation to search the index for the 40 most relevant records.
 
     ```Python Python theme={null}
     query = "Q3 2024 us economic data"

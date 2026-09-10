@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/building-a-rag-workflow
 path: docs/building-a-rag-workflow
 ---
 
-Learn how to build a RAG workflow with Together AI embedding and chat endpoints!
+Build a RAG workflow with Together AI embedding and chat endpoints.
 
 ## Introduction
 
@@ -38,7 +38,7 @@ mkdir datasets
 mv movies.json datasets/movies.json
 ```
 
-```py Python theme={null}
+```python Python theme={null}
 import together, os
 from together import Together
 
@@ -55,7 +55,7 @@ movies_data[:1]
 
 This dataset consists of movie information as below:
 
-```py Python theme={null}
+```python Python theme={null}
 [
     {
         "title": "Minions",
@@ -88,7 +88,7 @@ Below we implement a simple retrieval pipeline:
 1. Embed movie documents and query
 2. Obtain top k movies ranked based on cosine similarities between the query and movie vectors.
 
-```py Python theme={null}
+```python Python theme={null}
 # This function will be used to access the Together API to generate embeddings for the movie plots
 
 from typing import List
@@ -137,7 +137,7 @@ This will generate embeddings of the movies which we can use later to retrieve s
 
 When a user makes a query we can embed the query using the same model and perform a vector similarity search as shown below:
 
-```py Python theme={null}
+```python Python theme={null}
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Generate the vector embeddings for the query
@@ -155,7 +155,7 @@ We get a similarity score for each of our 1000 movies - the higher the score, th
 
 We can sort this similarity score to get the movies most similar to our query = `super hero action movie with a timeline twist`
 
-```py Python theme={null}
+```python Python theme={null}
 # Get the indices of the highest to lowest values
 indices = np.argsort(-similarity_scores)
 
@@ -183,7 +183,7 @@ This produces the top ten most similar movie titles below:
 
 ## We can encapsulate the above in a function
 
-```py Python theme={null}
+```python Python theme={null}
 def retrieve(
     query: str,
     top_k: int = 5,
@@ -209,7 +209,7 @@ def retrieve(
 
 Which can be used as follows:
 
-```py Python theme={null}
+```python Python theme={null}
 retrieve(
     "super hero action movie with a timeline twist",
     top_k=5,
@@ -229,7 +229,7 @@ Below we will inject/augment the information the retrieval pipeline extracts int
 
 This will help guide the generation by grounding it from facts in our knowledge base!
 
-```py Python theme={null}
+```python Python theme={null}
 # Extract out the titles and overviews of the top 10 most similar movies
 titles = [movies_data[index]["title"] for index in indices[0]][:10]
 overviews = [movies_data[index]["overview"] for index in indices[0]][:10]

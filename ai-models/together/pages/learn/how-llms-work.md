@@ -111,7 +111,7 @@ Three things to know about attention:
 
 Below is an example of what this might look like for the sentence "The cat sat on the mat." Each row represents one query position. Colored cells are the earlier tokens it pays the most attention to.
 
-Click on any row to see the attention weights for that token:
+Select any row to see the attention weights for that token:
 
 <AttentionMatrixDiagram />
 

@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/how-to-use-opencode
 path: docs/how-to-use-opencode
 ---
 
-Learn how to power OpenCode (a powerful terminal-based AI coding agent) with Together AI models.
+Power OpenCode, a terminal-based AI coding agent, with Together AI models.
 
 OpenCode is a powerful AI coding agent built specifically for the terminal, offering a native TUI experience with LSP support and multi-session capabilities. This guide shows you how to combine OpenCode with powerful open source models on Together AI like Kimi K3 and GLM 5.3 to supercharge your development workflow directly from your terminal.
 

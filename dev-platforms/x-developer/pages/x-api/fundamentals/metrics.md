@@ -65,7 +65,7 @@ curl "https://api.x.com/2/tweets/1234567890?tweet.fields=public_metrics" \
 
 Response:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "1234567890",
@@ -93,7 +93,7 @@ curl "https://api.x.com/2/tweets/1234567890?tweet.fields=non_public_metrics,orga
 
 Response:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "1234567890",
@@ -132,7 +132,7 @@ media.fields=public_metrics,non_public_metrics" \
 
 Response:
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": {
     "id": "1234567890",
@@ -222,11 +222,11 @@ tweet.fields=public_metrics,organic_metrics,promoted_metrics
 ## Next steps
 
 <CardGroup>
-  <Card title="Data Dictionary" icon="book" href="/x-api/fundamentals/data-dictionary">
+  <Card title="Data Dictionary" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/fundamentals/data-dictionary">
     Complete field reference.
   </Card>
 
-  <Card title="Authentication" icon="key" href="/resources/fundamentals/authentication/overview">
+  <Card title="Authentication" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-key.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=de93497af2dde62afd3a06e896d330f5" href="/resources/fundamentals/authentication/overview">
     Set up user context auth.
   </Card>
 </CardGroup>

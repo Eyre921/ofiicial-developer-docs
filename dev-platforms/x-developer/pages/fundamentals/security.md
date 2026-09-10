@@ -17,7 +17,7 @@ Building secure applications protects both your users and the X platform. This g
     All API requests must use HTTPS. Plain HTTP is rejected.
   </Card>
 
-  <Card title="Credential security" icon="key">
+  <Card title="Credential security" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-key.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=de93497af2dde62afd3a06e896d330f5">
     Never expose API keys or tokens in client-side code, logs, or repositories.
   </Card>
 </CardGroup>
@@ -130,7 +130,7 @@ if request.args.get('state') != session.get('oauth_state'):
 ## Secure development practices
 
 <CardGroup>
-  <Card title="Security audits" icon="magnifying-glass">
+  <Card title="Security audits" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834">
     Conduct regular security reviews and penetration testing.
   </Card>
 
@@ -142,7 +142,7 @@ if request.args.get('state') != session.get('oauth_state'):
     Log security events but never log credentials or sensitive data.
   </Card>
 
-  <Card title="Monitoring" icon="chart-line">
+  <Card title="Monitoring" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bar-chart.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=e2a41caa858b122416f0005a55a8f143">
     Set up alerts for unusual API usage patterns.
   </Card>
 </CardGroup>
@@ -162,7 +162,7 @@ If you discover a security vulnerability affecting X:
     Report vulnerabilities in X's systems through HackerOne.
   </Card>
 
-  <Card title="Your app incident" icon="triangle-exclamation" href="https://hackerone.com/twitter">
+  <Card title="Your app incident" icon="https://mintcdn.com/x-preview/jLbdFJYHCS9a6gmb/icons/xds/icon-warning.svg?fit=max&auto=format&n=jLbdFJYHCS9a6gmb&q=85&s=3760ceda7c43e1ffbd9f8b7ccbf83cca" href="https://hackerone.com/twitter">
     If your app using X data is breached, report through the same channel.
   </Card>
 </CardGroup>
@@ -189,11 +189,11 @@ If you discover a security vulnerability affecting X:
 ## Resources
 
 <CardGroup>
-  <Card title="Authentication guide" icon="key" href="/resources/fundamentals/authentication/overview">
+  <Card title="Authentication guide" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-key.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=de93497af2dde62afd3a06e896d330f5" href="/resources/fundamentals/authentication/overview">
     Implement OAuth correctly.
   </Card>
 
-  <Card title="App permissions" icon="shield-check" href="/resources/fundamentals/developer-apps#app-permissions">
+  <Card title="App permissions" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-shield-check.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=768533bde161ac68862de87449f011c3" href="/resources/fundamentals/developer-apps#app-permissions">
     Configure minimal required permissions.
   </Card>
 </CardGroup>

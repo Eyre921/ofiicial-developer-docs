@@ -15,7 +15,7 @@ The Quote Posts endpoint lets you retrieve Posts that quote a specific Post. See
     Get all Quote Posts for a Post
   </Card>
 
-  <Card title="Engagement insight" icon="chart-line">
+  <Card title="Engagement insight" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bar-chart.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=e2a41caa858b122416f0005a55a8f143">
     See how content is being discussed
   </Card>
 </CardGroup>
@@ -42,7 +42,7 @@ user.fields=username" \
 
 ## Example response
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "data": [
     {
@@ -79,11 +79,11 @@ user.fields=username" \
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/posts/quote-tweets/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/posts/quote-tweets/quickstart">
     Get Quote Posts for a Post
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/posts/get-quoted-posts">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/posts/get-quoted-posts">
     Full endpoint documentation
   </Card>
 </CardGroup>

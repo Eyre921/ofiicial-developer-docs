@@ -316,9 +316,9 @@ Use the [`start_import`](/reference/api/latest/data-plane/start_import) operatio
   INDEX_HOST="INDEX_HOST"
 
   curl "https://$INDEX_HOST/bulk/imports" \
-    -H 'Api-Key: $YOUR_API_KEY' \
-    -H 'Content-Type: application/json' \
-    -H 'X-Pinecone-Api-Version: 2025-10' \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
           "integrationId": "a12b3d4c-47d2-492c-a97a-dd98c8dbefde",
           "uri": "s3://example_bucket/import",
@@ -446,9 +446,9 @@ To track an import's progress, check its status bar in the [Pinecone console](ht
   PINECONE_API_KEY="YOUR_API_KEY"
   INDEX_HOST="INDEX_HOST"
 
-  curl -X GET "https://{INDEX_HOST}/bulk/imports/101" \
-    -H 'Api-Key: $YOUR_API_KEY' \
-    -H 'X-Pinecone-Api-Version: 2025-10'
+  curl -X GET "https://$INDEX_HOST/bulk/imports/101" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </CodeGroup>
 
@@ -758,8 +758,8 @@ Use the [`list_imports`](/reference/api/latest/data-plane/list_imports) operatio
       INDEX_HOST="INDEX_HOST"
 
       curl -X GET "https://$INDEX_HOST/bulk/imports?paginationToken==Tm90aGluZyB0byBzZWUgaGVyZQo" \
-        -H 'Api-Key: $YOUR_API_KEY' \
-        -H 'X-Pinecone-Api-Version: 2025-10'
+        -H "Api-Key: $PINECONE_API_KEY" \
+        -H "X-Pinecone-Api-Version: 2026-07"
       ```
     </CodeGroup>
   </Tab>
@@ -861,9 +861,9 @@ The [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operation 
   PINECONE_API_KEY="YOUR_API_KEY"
   INDEX_HOST="INDEX_HOST"
 
-  curl -X DELETE "https://{INDEX_HOST}/bulk/imports/101" \
-    -H 'Api-Key: $YOUR_API_KEY' \
-    -H "X-Pinecone-Api-Version: 2025-10"
+  curl -X DELETE "https://$INDEX_HOST/bulk/imports/101" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </CodeGroup>
 

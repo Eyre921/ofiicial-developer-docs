@@ -64,7 +64,7 @@ Successful response example:
 
 Once you have your Filtered Stream instance to your webhook, you will start to receive Posts matching your rules like shown below:
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
     "data": {
         "id": "1346889436626259968",
@@ -102,7 +102,7 @@ GET /2/tweets/search/stream/webhooks
 
 Example Response:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
     "data": {
         "links": [

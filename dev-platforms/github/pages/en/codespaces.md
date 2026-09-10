@@ -28,11 +28,11 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Creating a codespace from a template](/en/codespaces/developing-in-a-codespace/creating-a-codespace-from-a-template)
 
-  If you're starting a new project, you can create a codespace from a blank template or choose a template specially designed for the type of work you want to do.
+  <p>If you're starting a new project, you can create a codespace from a blank template or choose a template specially designed for the type of work you want to do.</p>
 
 * [Introduction to dev containers](/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers)
 
-  When you work in a codespace, the environment you are working in is created using a development container, or dev container, hosted on a virtual machine.
+  <p>When you work in a codespace, the environment you are working in is created using a development container, or dev container, hosted on a virtual machine.</p>
 
 * [Using source control in your codespace](/en/codespaces/developing-in-a-codespace/using-source-control-in-your-codespace)
 
@@ -40,11 +40,11 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Enabling or disabling GitHub Codespaces for your organization](/en/codespaces/managing-codespaces-for-your-organization/enabling-or-disabling-github-codespaces-for-your-organization)
 
-  <p>You can control which users can use GitHub Codespaces in your organization's private repositories.</p>
+  You can control which users can use GitHub Codespaces in your organization's private repositories.
 
 * [Security in GitHub Codespaces](/en/codespaces/reference/security-in-github-codespaces)
 
-  Overview of the GitHub Codespaces security architecture, with guidelines to help you maintain security and minimize the risk of attack.
+  <p>Overview of the GitHub Codespaces security architecture, with guidelines to help you maintain security and minimize the risk of attack.</p>
 
 ## Links
 

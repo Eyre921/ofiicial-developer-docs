@@ -6,6 +6,10 @@ path: x-api/enterprise-gnip-2.0/fundamentals/account-activity
 
 Manage webhooks and subscriptions with the enterprise Account Activity API to stream realtime Posts, Direct Messages, likes, follows, and edits.
 
+<Warning>
+  The Account Activity API (AAA) is being deprecated. Check out the [X Activity API (XAA)](/x-api/activity/introduction) for real-time user activity delivery going forward.
+</Warning>
+
 <Note>
   This endpoint has been updated to include Post edit metadata. Learn more about these metadata on the ["Edit Posts" fundamentals page](/x-api/enterprise-gnip-2.0/fundamentals/edit-tweets). 
 

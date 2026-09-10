@@ -15,15 +15,15 @@ The Direct Messages lookup endpoints let you retrieve DM events for the authenti
     Get all DM events for the user
   </Card>
 
-  <Card title="One-to-one" icon="message">
+  <Card title="One-to-one" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=9fde7d51b4f18c96d3a38a81d519761f">
     Get events from a specific conversation
   </Card>
 
-  <Card title="By conversation ID" icon="comments">
+  <Card title="By conversation ID" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat-unread.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=ce6313d8c0b7b4e5363f2ce80b89f7e4">
     Get events by conversation ID
   </Card>
 
-  <Card title="Event types" icon="bell">
+  <Card title="Event types" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bell.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=5e0b3dcfbb39ba3d4619931d7cd927d1">
     Messages, joins, and leaves
   </Card>
 </CardGroup>
@@ -69,15 +69,15 @@ The Direct Messages lookup endpoints let you retrieve DM events for the authenti
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/direct-messages/lookup/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/direct-messages/lookup/quickstart">
     Make your first DM lookup request
   </Card>
 
-  <Card title="Integration guide" icon="book" href="/x-api/direct-messages/lookup/integrate">
+  <Card title="Integration guide" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/direct-messages/lookup/integrate">
     Key concepts and best practices
   </Card>
 
-  <Card title="API Reference" icon="code" href="/x-api/direct-messages/get-dm-events">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/direct-messages/get-dm-events">
     Full endpoint documentation
   </Card>
 

@@ -19,7 +19,7 @@ Build an agent that iteratively improves responses.
 ## Setup client & helper functions
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   import json
   from pydantic import ValidationError
   from together import Together
@@ -70,7 +70,7 @@ Build an agent that iteratively improves responses.
           print(error_message)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import assert from "node:assert";
   import Together from "together-ai";
   import { z, type ZodType } from "zod";
@@ -125,7 +125,7 @@ Build an agent that iteratively improves responses.
 ## Implement workflow
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   from pydantic import BaseModel
   from typing import Literal
 
@@ -236,7 +236,7 @@ Build an agent that iteratively improves responses.
           memory.append(response)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import dedent from "dedent";
   import { z } from "zod";
 
@@ -370,7 +370,7 @@ Build an agent that iteratively improves responses.
 ## Example usage
 
 <CodeGroup>
-  ```py Python theme={null}
+  ```python Python theme={null}
   task = """
   Implement a Stack with:
   1. push(x)
@@ -382,7 +382,7 @@ Build an agent that iteratively improves responses.
   loop_workflow(task, EVALUATOR_PROMPT, GENERATOR_PROMPT)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   const task = dedent`
     Implement a Stack with:
 
@@ -406,7 +406,7 @@ Build an agent that iteratively improves responses.
 * Creating user interface text, like tooltips or error messages, and using an evaluator to confirm the text is concise, clear, and contextually appropriate.
 
 <Note>
-  ### Iterative Workflow Cookbook
+  ### Iterative workflow cookbook
 
   For a more detailed walk-through refer to the [notebook here](https://togetherai.link/agent-recipes-deep-dive-evaluator).
 </Note>

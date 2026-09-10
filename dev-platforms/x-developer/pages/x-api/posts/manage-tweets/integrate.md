@@ -59,6 +59,12 @@ If neither condition is met, the reply request will be rejected.
 
 Posts created via the API are limited to a maximum of 1 cashtag (e.g. `$TICKER`) per post. Requests that include more than 1 cashtag will be rejected.
 
+### Media attachments
+
+Upload media with the [chunked upload](/x-api/media/quickstart/media-upload-chunked) endpoints, then pass the `media_id` in `media.media_ids`. A Post may include up to 4 photos, 1 animated GIF, or 1 video.
+
+Video duration and file size are checked again at Post create. They follow the posting user's X Premium / verified status (20 minutes / 8 GB by default; 125 minutes / 16 GB for Premium / verified, for `tweet_video` and `amplify_video`). If the video exceeds that user's cap, `POST /2/tweets` returns **403** `This user is not allowed to post a video longer than N minutes.` See [size and duration limits](/x-api/media/introduction#size-and-duration-limits).
+
 ### Rate limits
 
 Every day, many thousands of developers make requests to the X API. To help manage the sheer volume of these requests, [rate limits](https://developer.x.com/x-api/fundamentals/rate-limits) are placed on each endpoint that limits the number of requests that you can make on behalf of your app or on behalf of an authenticated user.
@@ -91,7 +97,7 @@ Currently, isn't a way to fully upload media using v2 of the X API currently. Ho
     -d '{"text": "Hello world!"}'
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -109,7 +115,7 @@ Currently, isn't a way to fully upload media using v2 of the X API currently. Ho
   print(f"Created Post: {response.data.id}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({
@@ -137,7 +143,7 @@ Currently, isn't a way to fully upload media using v2 of the X API currently. Ho
     -d '{"text": "This is a reply!", "reply": {"in_reply_to_tweet_id": "1234567890"}}'
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -158,7 +164,7 @@ Currently, isn't a way to fully upload media using v2 of the X API currently. Ho
   print(f"Created reply: {response.data.id}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({
@@ -187,7 +193,7 @@ Currently, isn't a way to fully upload media using v2 of the X API currently. Ho
     -H "Authorization: OAuth ..."
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
   from xdk.oauth1_auth import OAuth1
 
@@ -205,7 +211,7 @@ Currently, isn't a way to fully upload media using v2 of the X API currently. Ho
   print(f"Deleted: {response.data.deleted}")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client, OAuth1 } from "@xdevplatform/xdk";
 
   const oauth1 = new OAuth1({

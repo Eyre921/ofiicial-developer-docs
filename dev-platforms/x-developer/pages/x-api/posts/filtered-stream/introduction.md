@@ -9,7 +9,7 @@ Receive near real-time Posts that match custom rules with X API v2 Filtered Stre
 The Filtered Stream endpoints let you receive near real-time Posts that match your filter rules. Create rules using powerful operators, then connect to a persistent stream to receive matching Posts as they're published.
 
 <Note>
-  Filtered Stream prioritizes data hydration and delivery, with approximately 6-7 seconds of P99 latency. For lower latency requirements, see [Powerstream](/x-api/powerstream/introduction).
+  Filtered Stream prioritizes data hydration and delivery, with approximately 4-5 seconds of P99 latency. For lower latency requirements, see [Powerstream](/x-api/powerstream/introduction).
 </Note>
 
 ## Overview
@@ -19,11 +19,11 @@ The Filtered Stream endpoints let you receive near real-time Posts that match yo
     Receive Posts within seconds of publication
   </Card>
 
-  <Card title="Persistent rules" icon="filter">
+  <Card title="Persistent rules" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e">
     Add and remove rules without disconnecting
   </Card>
 
-  <Card title="Powerful operators" icon="magnifying-glass">
+  <Card title="Powerful operators" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-search.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=8c11ad89387b7c09ced1553d5c232834">
     Match on keywords, hashtags, users, and more
   </Card>
 
@@ -67,7 +67,7 @@ flowchart LR
 | Core operators               | ✓           | ✓                           |
 | Semantic embedding operators | —           | ✓ (requires Embedding tier) |
 
-<Card title="Contact for Enterprise" icon="building" href="https://developer.x.com/en/products/x-api/enterprise/enterprise-api-interest-form">
+<Card title="Contact for Enterprise" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bank.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=6dd9ad48fa88936abb112b49e022abff" href="https://developer.x.com/en/products/x-api/enterprise/enterprise-api-interest-form">
   Get higher limits and additional features
 </Card>
 
@@ -95,7 +95,7 @@ Rules use the same operators as search queries:
 | `(@XDevelopers OR @X) -is:retweet`  | Mentions, excluding retweets                                          |
 | `embedding:"climate change policy"` | Posts semantically about climate policy (Enterprise + Embedding tier) |
 
-<Card title="Build a rule" icon="filter" href="/x-api/posts/filtered-stream/integrate/build-a-rule">
+<Card title="Build a rule" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e" href="/x-api/posts/filtered-stream/integrate/build-a-rule">
   Learn rule syntax and operators
 </Card>
 
@@ -159,7 +159,7 @@ The stream delivers edited Posts with their edit history. Each edit creates a ne
 }
 ```
 
-<Card title="Edit Posts fundamentals" icon="clock-rotate-left" href="/x-api/fundamentals/edit-posts">
+<Card title="Edit Posts fundamentals" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-history.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=6afe17587c08ee621e37afde19a07ff1" href="/x-api/fundamentals/edit-posts">
   Learn more about Post edits
 </Card>
 
@@ -176,11 +176,11 @@ The stream delivers edited Posts with their edit history. Each edit creates a ne
 </Note>
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/x-api/posts/filtered-stream/quickstart">
+  <Card title="Quickstart" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/posts/filtered-stream/quickstart">
     Connect to the stream in minutes
   </Card>
 
-  <Card title="Build a rule" icon="filter" href="/x-api/posts/filtered-stream/integrate/build-a-rule">
+  <Card title="Build a rule" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-filter.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=5d59aff402c1f2aeae0e9e44bb23400e" href="/x-api/posts/filtered-stream/integrate/build-a-rule">
     Learn rule syntax
   </Card>
 
@@ -206,7 +206,7 @@ The stream delivers edited Posts with their edit history. Each edit creates a ne
     Handle high throughput
   </Card>
 
-  <Card title="Recovery and redundancy" icon="shield" href="/x-api/fundamentals/recovery-and-redundancy">
+  <Card title="Recovery and redundancy" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-shield-keyhole.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=a0e05514090c8a6af232297bfb9c4055" href="/x-api/fundamentals/recovery-and-redundancy">
     Build resilient applications
   </Card>
 

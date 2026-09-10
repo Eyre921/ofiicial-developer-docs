@@ -80,7 +80,7 @@ Other metadata, such as the ID or the created at time, are also included, but ar
 
 An example A/B Test entity for campaign level is shown below.
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
   "created_at": "2020-12-01T00:00:00Z",
   "created_by": {
@@ -127,7 +127,7 @@ An example A/B Test entity for campaign level is shown below.
 
 An example A/B Test entity for line item level is shown below.
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 {
    "created_by":{
       "user_id":"756201191646691328",
@@ -214,7 +214,7 @@ The following request creates an A/B Test on the campaign level that lasts four 
 
 twurl -X POST -H ads-api.x.com "/8/accounts/18ce54d4x5t/ab\_tests" -d '\{"end\_time": "2020-12-05T01:00:00Z", "entity\_type" : "CAMPAIGN", "start\_time": "2020-12-01T01:00:00Z", "user\_groups": \[\{"entity\_ids": \["f2qcw", "f2tht"], "size": "50.00", "name": "first group"},\{"entity\_ids": \["f2rqi", "f2tws"], "size": "50.00", "name": "second group", "description": "second AB test group"}], "name": "first AB test", "description": "documentation example"}'
 
-```json theme={null}
+```json title="Example response" expandable lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 twurl -X POST -H ads-api.x.com "/8/accounts/18ce54d4x5t/ab_tests" -d '{"end_time": "2020-12-05T01:00:00Z", "entity_type" : "CAMPAIGN", "start_time": "2020-12-01T01:00:00Z", "user_groups": [{"entity_ids": ["f2qcw", "f2tht"], "size": "50.00", "name": "first group"},{"entity_ids": ["f2rqi", "f2tws"], "size": "50.00", "name": "second group", "description": "second AB test group"}], "name": "first AB test", "description": "documentation example"}'
 
 {

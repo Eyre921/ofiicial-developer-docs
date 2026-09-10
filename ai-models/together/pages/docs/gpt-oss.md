@@ -45,7 +45,7 @@ Since reasoning models produce longer responses with chain-of-thought processing
           print(chunk.choices[0].delta.content or "", end="", flush=True)
   ```
 
-  ```ts TypeScript theme={null}
+  ```typescript TypeScript theme={null}
   import Together from "together-ai";
   const together = new Together();
 

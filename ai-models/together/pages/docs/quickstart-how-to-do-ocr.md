@@ -1,10 +1,10 @@
 ---
-title: "Quickstart: How to do OCR"
+title: "OCR quickstart"
 source: https://docs.together.ai/docs/quickstart-how-to-do-ocr
 path: docs/quickstart-how-to-do-ocr
 ---
 
-A step by step guide on how to do OCR with Together AI's vision models with structured outputs
+Run OCR on documents with Together AI vision models and structured outputs.
 
 ## Understanding OCR and its importance
 

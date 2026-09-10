@@ -887,6 +887,7 @@ components:
         - Moonshot AI
         - Morph
         - VoyageAI by MongoDB
+        - Near AI
         - Nebius
         - Nex AGI
         - NextBit

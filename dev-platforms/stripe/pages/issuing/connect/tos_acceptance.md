@@ -17,15 +17,15 @@ Platforms must present the account representative with the business information 
 
 ### US (Celtic Bank)
 
-Present the account representative with a disclosure stating that Celtic Bank, a member of FDIC, issues the cards. Additionally, provide them with all relevant links to the Issuing program’s [terms and disclosures](https://docs.stripe.com/issuing/compliance-us.md#issuing-terms). The representative must accept the terms to complete their application.
+Present the account representative with a disclosure stating that Celtic Bank, a member of FDIC, issues the cards. Additionally, provide them with all relevant links to the Issuing program’s [terms and disclosures](https://docs.stripe.com/issuing/commercial-compliance.md#issuing-terms). The representative must accept the terms to complete their application.
 
 ### US (Cross River Bank)
 
-Present the account representative with a disclosure stating that Cross River Bank, a member of FDIC, issues the cards. Additionally, provide them with all applicable links to the Issuing program’s [terms and disclosures](https://docs.stripe.com/issuing/compliance-us.md#issuing-terms). The representative must accept the terms to complete their application.
+Present the account representative with a disclosure stating that Cross River Bank, a member of FDIC, issues the cards. Additionally, provide them with all applicable links to the Issuing program’s [terms and disclosures](https://docs.stripe.com/issuing/commercial-compliance.md#issuing-terms). The representative must accept the terms to complete their application.
 
 ### US (Fifth Third Bank)
 
-Present the account representative with a disclosure stating that Fifth Third Bank, a member of FDIC, issues the cards. Additionally, provide them with all applicable links to the Issuing program’s [terms and disclosures](https://docs.stripe.com/issuing/compliance-us.md#issuing-terms). The representative must accept the terms to complete their application.
+Present the account representative with a disclosure stating that Fifth Third Bank, a member of FDIC, issues the cards. Additionally, provide them with all applicable links to the Issuing program’s [terms and disclosures](https://docs.stripe.com/issuing/commercial-compliance.md#issuing-terms). The representative must accept the terms to complete their application.
 
 ### UK and Euro area
 

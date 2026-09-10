@@ -188,7 +188,7 @@ You must use the Stripe [Change Request Form](https://form.asana.com/?k=8K51UWmW
 
 To comply with applicable laws and regulations, you must send certain communications to both your applicants and account holders upon certain trigger events.
 
-To learn about customer communication requirements when using Issuing and Treasury for platforms together, see [Issuing regulated customer notices](https://docs.stripe.com/issuing/compliance-us/issuing-regulated-customer-notices.md).
+To learn about customer communication requirements when using Issuing and Treasury for platforms together, see [Issuing regulated customer notices](https://docs.stripe.com/issuing/commercial-compliance/issuing-regulated-customer-notices.md).
 
 ### Statements
 

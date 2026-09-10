@@ -5,4 +5,3 @@ path: x-api/media/get-media-by-media-keys
 ---
 
 get /2/media
-Retrieves details of Media files by their media keys.

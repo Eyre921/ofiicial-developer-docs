@@ -24,7 +24,7 @@ Enterprise plans are custom-tailored to your organization's needs. Work with a d
   </Card>
 
   <Card title="No post read cap" icon="infinity">
-    Custom or unlimited post read volumes, far beyond the 2 million monthly cap on pay-per-use plans.
+    Custom or unlimited post read volumes, far beyond the 3 million monthly cap on pay-per-use plans.
   </Card>
 
   <Card title="Dedicated support included" icon="headset">
@@ -58,7 +58,7 @@ Every Enterprise plan includes access to the full X API plus exclusive Enterpris
 |                                  | Pay-per-use                 | Enterprise                                                               |
 | :------------------------------- | :-------------------------- | :----------------------------------------------------------------------- |
 | **Pricing model**                | Credit-based, pay as you go | Custom contract                                                          |
-| **Monthly post cap**             | 2 million reads             | Custom / unlimited                                                       |
+| **Monthly post cap**             | 3 million reads             | Custom / unlimited                                                       |
 | **Volume streams**               | Not available               | Full firehose and language streams                                       |
 | **Likes streams**                | Not available               | Full and sampled likes                                                   |
 | **Semantic embedding operators** | Not available               | `embedding:` operator for Filtered Stream only (requires Embedding tier) |
@@ -110,11 +110,11 @@ This returns daily Post consumption counts, helping you:
 ## Next steps
 
 <CardGroup>
-  <Card title="Apply for access" icon="key" href="/forms/enterprise-api-interest">
+  <Card title="Apply for access" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-key.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=de93497af2dde62afd3a06e896d330f5" href="/forms/enterprise-api-interest">
     Contact our sales team to get started.
   </Card>
 
-  <Card title="Usage API" icon="chart-line" href="/x-api/usage/introduction">
+  <Card title="Usage API" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bar-chart.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=e2a41caa858b122416f0005a55a8f143" href="/x-api/usage/introduction">
     Monitor usage programmatically.
   </Card>
 </CardGroup>

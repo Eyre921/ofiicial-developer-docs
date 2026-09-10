@@ -128,7 +128,7 @@ These protocols cannot be used: `javascript`, `data`, `file`, `ftp`, `mailto`, `
     Regenerate keys periodically and if you suspect a compromise.
   </Card>
 
-  <Card title="Minimal permissions" icon="shield-check">
+  <Card title="Minimal permissions" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-shield-check.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=768533bde161ac68862de87449f011c3">
     Request only the permissions your app actually needs.
   </Card>
 

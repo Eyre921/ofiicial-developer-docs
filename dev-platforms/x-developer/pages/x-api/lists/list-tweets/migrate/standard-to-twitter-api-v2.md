@@ -119,7 +119,7 @@ The following standard v1.1 request parameters have equivalents in X API v2:
     -H "Authorization: Bearer $BEARER_TOKEN"
   ```
 
-  ```python Python theme={null}
+  ```python title="Python" lines wrap icon="python" theme={null}
   import requests
 
   bearer_token = "YOUR_BEARER_TOKEN"
@@ -135,7 +135,7 @@ The following standard v1.1 request parameters have equivalents in X API v2:
   print(response.json())
   ```
 
-  ```python Python SDK theme={null}
+  ```python title="Python SDK" lines wrap icon="python" theme={null}
   from xdk import Client
 
   client = Client(bearer_token="YOUR_BEARER_TOKEN")
@@ -150,7 +150,7 @@ The following standard v1.1 request parameters have equivalents in X API v2:
           print(f"{post.created_at}: {post.text[:50]}...")
   ```
 
-  ```javascript JavaScript SDK theme={null}
+  ```javascript title="JavaScript SDK" lines wrap icon="square-js" theme={null}
   import { Client } from "@xdevplatform/xdk";
 
   const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });

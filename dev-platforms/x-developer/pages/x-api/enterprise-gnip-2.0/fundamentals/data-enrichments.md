@@ -190,7 +190,7 @@ See the sample payload below for further reference.
 
 Below is a snippet of the enriched native format payload highlighting the added poll metadata:
 
-```json theme={null}
+```json title="Example response" lines wrap icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-brackets.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=ed2428e77bab43e57800e1a590e982fa" theme={null}
 "entities":{
           "hashtags":[],
           "urls":[],

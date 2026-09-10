@@ -10,14 +10,28 @@ Workspace plan limits are separate from request limits. See [Workspace block lim
 
 ## Rate limits
 
-The Notion API enforces two rate limits:
+The Notion API enforces two rate limits: a per-connection limit and a per-workspace limit.
 
-* **Per connection** — an average of three requests per second, with some bursts beyond the average allowed.
-* **Per workspace** — shared across all of the workspace's connections and scaled to the workspace's plan.
+### Per-connection limit
 
-Requests that exceed either limit return a `"rate_limited"` error code and an HTTP 429 response, with `additional_data.rate_limit_reason` indicating which limit was exceeded (for example, `public_api_request_rate_limit` or `public_api_space_request_rate_limit`).
+Each connection has a fixed budget of requests per 60-second window, based on the workspace's plan:
 
-Connections should handle HTTP 429 and 529 responses and respect the `Retry-After` response header. The header value is an integer number of seconds. A 529 response carries the `"service_overload"` code and means Notion is temporarily overloaded; retry it the same way as a 429.
+| Workspace plan          | Limit                                                 |
+| :---------------------- | :---------------------------------------------------- |
+| Business and Enterprise | 600 requests per minute (an average of 10 per second) |
+| All other plans         | 180 requests per minute (an average of 3 per second)  |
+
+The budget can be spent at any pace within the window — spread out evenly or in a single burst. When a request exceeds this limit, the `Retry-After` value is the time until the window resets, so it is at most 60 seconds.
+
+### Per-workspace limit
+
+A separate limit is shared across all of the workspace's connections and scaled to the workspace's plan. Because it's shared, requests can be rate limited even when each individual connection is within its per-connection limit. `Retry-After` for this limit can be longer than a minute.
+
+### Rate limit responses
+
+Requests that exceed either limit return a `"rate_limited"` error code and an HTTP 429 response, with `additional_data.rate_limit_reason` indicating which limit was exceeded (for example, `public_api_request_rate_limit` or `public_api_space_request_rate_limit`). Per-connection 429 responses also repeat the wait in the body as `additional_data.retry_after` (an integer number of seconds, as a string), for clients that can't read response headers.
+
+Connections should handle HTTP 429 and 529 responses and respect the `Retry-After` response header. The header value is an integer number of seconds. Use the returned value rather than assuming a fixed wait. A 529 response carries the `"service_overload"` code and means Notion is temporarily overloaded; retry it the same way as a 429.
 
 ### Retry rate-limited requests
 

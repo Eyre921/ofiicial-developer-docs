@@ -71,6 +71,7 @@
 - [Cohere's Command R+ Model](https://docs.cohere.com/docs/command-r-plus.md): Command R+ is Cohere's optimized for conversational interaction and long-context tasks, best suited for complex RAG workflows and multi-step tool use.
 - [Cohere's Command R Model](https://docs.cohere.com/docs/command-r.md): Command R is a conversational model that excels in language tasks and supports multiple languages, making it ideal for coding use cases.
 - [Cohere's Embed Models (Details and Application)](https://docs.cohere.com/docs/cohere-embed.md): Explore Embed models for text classification and embedding generation in English and multiple languages, with details on dimensions and endpoints.
+- [North Small Translate](https://docs.cohere.com/docs/north-small-translate-1.0.md): North Small Translate is a 218B total / 25B active parameter MoE model purpose-built for machine translation across more than 50 languages.
 - [North Mini Code](https://docs.cohere.com/docs/north-mini-code-1.0.md): North Mini Code is a 30B total / 3B active parameter MoE model trained for agentic coding, released under Apache 2.0 and suitable for local deployment.
 - [Cohere's Rerank Model (Details and Application)](https://docs.cohere.com/docs/rerank.md): This page describes how Cohere's Rerank models work and how to use them.
 - [Aya Family of Models](https://docs.cohere.com/docs/aya.md): Understand Cohere Labs groundbreaking multilingual Aya models, which aim to bring many more languages into generative AI.

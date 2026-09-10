@@ -15,7 +15,7 @@ We'll create an LLM that can call tools that allow it to create, edit, and read 
 First, let's import the necessary libraries. We'll be using the `together` library to interact with the Together AI API.
 
 <CodeGroup>
-  ```sh Shell theme={null}
+  ```bash Shell theme={null}
   !pip install together
   ```
 
@@ -111,7 +111,7 @@ Pretty simple! We asked the model to use the `get_weather()` function if needed 
 
 This is all function calling/tool-use really is!
 
-## Defining Tools for the Agent
+## Defining tools for the agent
 
 To make this workflow of instructing the model to use tools and then running the functions it calls and sending it the response more convenient people have built scaffolding where we can pass in pre-specified tools to LLMs as follows:
 
@@ -247,7 +247,7 @@ Now we need to run the function that the model has asked for and feed the respon
   ```python Python theme={null}
   tool_calls = response.choices[0].message.tool_calls
 
-  # check is a tool was called by the first model call
+  # check if a tool was called by the first model call
   if tool_calls:
       for tool_call in tool_calls:
           function_name = tool_call.function.name

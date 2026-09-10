@@ -45,7 +45,7 @@ In cases where you have different workload patterns (e.g., RAG and semantic sear
 
   * **Cost efficiency:** Query cost is based on namespace size (1 RU per 1 GB). With 100 tenants of 1 GB each, querying one tenant's namespace costs 1 RU. Using metadata filtering in a single 100 GB namespace would cost 100 RUs for the same query, because it scans all data regardless of filters.
 
-  * **Simple tenant offboarding:** To offboard a tenant/customer, you just [delete the relevant namespace](/guides/manage-data/delete-data#delete-all-records-from-a-namespace). This is a lightweight and almost instant operation.
+  * **Simple tenant offboarding:** To offboard a tenant/customer, you just [delete the relevant namespace](/guides/manage-data/delete-data#delete-all-records-in-a-namespace). This is a lightweight and almost instant operation.
 </Accordion>
 
 ## 1. Create a serverless index

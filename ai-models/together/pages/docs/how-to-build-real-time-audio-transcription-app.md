@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/how-to-build-real-time-audio-transcription
 path: docs/how-to-build-real-time-audio-transcription-app
 ---
 
-Learn how to build a real-time AI audio transcription app with Whisper, Next.js, and Together AI.
+Build a real-time AI audio transcription app with Whisper, Next.js, and Together AI.
 
 In this guide, we're going to go over how we built [UseWhisper.io](https://usewhisper.io), an open source speech-to-text app that transcribes audio almost instantly & can transform it into summaries. It's built using the [Whisper Large v3 API](https://www.together.ai/models/openai-whisper-large-v3) on Together AI and supports both live recording and file uploads.
 

@@ -20,14 +20,14 @@ X streaming endpoints are categorized by volume:
 
 ## Data delivery and latency
 
-X API streaming endpoints prioritize **data hydration and delivery**. To ensure you receive hydrated Post data with all metadata, these streams have a **P99 latency of approximately 6-7 seconds**.
+X API streaming endpoints prioritize **data hydration and delivery**. To ensure you receive hydrated Post data with all metadata, these streams have a **P99 latency of approximately 4-5 seconds**.
 
 ### Delivery guarantees
 
 | Metric         | Value                |
 | :------------- | :------------------- |
 | Retry strategy | Exponential back-off |
-| P99 latency    | \~6-7 seconds        |
+| P99 latency    | \~4-5 seconds        |
 
 ### High-volume streams
 
@@ -42,7 +42,7 @@ For streams with potentially lower-volume like Filtered Stream, delivery times m
 </Note>
 
 <Warning>
-  Latency and data delivery may be negatively impacted during outages. Refer to the [status page](https://docs.x.com/status) for updates when issues occur.
+  Latency and data delivery may be negatively impacted during outages. Refer to the [status page](https://developer.x.com/status) for updates when issues occur.
 </Warning>
 
 ***
@@ -184,7 +184,7 @@ flowchart LR
     Handle high throughput streams
   </Card>
 
-  <Card title="Recovery and redundancy" icon="shield" href="/x-api/fundamentals/recovery-and-redundancy">
+  <Card title="Recovery and redundancy" icon="https://mintcdn.com/x-preview/cfyQtgCdwk8p69aa/icons/xds/icon-shield-keyhole.svg?fit=max&auto=format&n=cfyQtgCdwk8p69aa&q=85&s=a0e05514090c8a6af232297bfb9c4055" href="/x-api/fundamentals/recovery-and-redundancy">
     Build resilient streaming applications
   </Card>
 </CardGroup>

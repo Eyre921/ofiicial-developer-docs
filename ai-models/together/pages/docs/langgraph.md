@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/langgraph
 path: docs/langgraph
 ---
 
-Using LangGraph with Together AI
+Using LangGraph with Together AI.
 
 LangGraph is an OSS library for building stateful, multi-actor applications with LLMs, specifically designed for agent and multi-agent workflows. The framework supports critical agent architecture features including persistent memory across conversations and human-in-the-loop capabilities through checkpointed states.
 

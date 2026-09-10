@@ -173,7 +173,7 @@ Options include:
 * **onUnhandledClientToolCall** - handler called when an unhandled client tool call is encountered.
 * **onVadScore** - handler called when voice activity detection score changes.
 * **onAudioAlignment** - handler called when audio alignment data is received, providing character-level timing information for agent speech.
-* **onAgentChatResponsePart** - handler called with streaming text chunks during text-only conversations. Provides start, delta, and stop events for real-time text streaming.
+* **onAgentChatResponsePart** - handler called with the agent's response text as it is generated, as start, delta and stop events. Always sent in text-only mode; for voice conversations, enable `agent_chat_response_part` in the agent's `client_events` configuration.
 
 ##### Client Tools
 

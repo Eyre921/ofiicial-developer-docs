@@ -71,7 +71,7 @@ console.log(userResponse.data?.username);
   </Tab>
 
   <Tab title="OAuth 2.0">
-    ```typescript theme={null}
+    ```typescript title="Example" lines wrap icon="square-js" theme={null}
     import { Client, OAuth2, generateCodeVerifier, generateCodeChallenge } from '@xdevplatform/xdk';
 
     const oauth2 = new OAuth2({
@@ -128,7 +128,7 @@ console.log(userResponse.data?.username);
     Package managers, TypeScript setup, and requirements.
   </Card>
 
-  <Card title="Authentication" icon="key" href="/xdks/typescript/authentication">
+  <Card title="Authentication" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-key.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=de93497af2dde62afd3a06e896d330f5" href="/xdks/typescript/authentication">
     Detailed guide for all auth methods.
   </Card>
 
@@ -140,7 +140,7 @@ console.log(userResponse.data?.username);
     Event-driven streaming with reconnection.
   </Card>
 
-  <Card title="API Reference" icon="book" href="/xdks/typescript/reference/modules">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/xdks/typescript/reference/modules">
     Complete client, interface, and type reference.
   </Card>
 </CardGroup>

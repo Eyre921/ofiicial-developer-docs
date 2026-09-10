@@ -27,7 +27,7 @@ You can view the details of a project, as in the following example:
 
   curl -X GET "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
        -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -H "accept: application/json"
   ```
 
@@ -102,7 +102,7 @@ You can change the name of your project:
       curl -X PATCH "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
            -H "accept: application/json" \
            -H "Content-Type: application/json" \
-           -H "X-Pinecone-Api-Version: 2025-10" \
+           -H "X-Pinecone-Api-Version: 2026-07" \
            -d '{
                  "name": "updated-example-project"
                }'
@@ -184,7 +184,7 @@ To delete a project, you must first [delete all data](/guides/manage-data/delete
       PROJECT_ID="32c8235a-5220-4a80-a9f1-69c24109e6f2"
 
       curl -X DELETE "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
-           -H "X-Pinecone-Api-Version: 2025-10" \
+           -H "X-Pinecone-Api-Version: 2026-07" \
            -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN"
       ```
 

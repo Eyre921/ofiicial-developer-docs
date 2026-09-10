@@ -94,3 +94,8 @@ curl https://api.stripe.com/v1/payment_intents \
 
 If multiple payment methods are passed, Checkout dynamically reorders them to prioritize the most relevant payment methods based on the customer’s location and other characteristics. The payments acceptance page prioritizes showing payment methods known to increase conversion for your customer’s location while lower priority payment methods are hidden in an overflow menu.
 
+## See also
+
+- [Quickstart](https://docs.stripe.com/payments/quickstart.md)
+- [Accept a payment](https://docs.stripe.com/payments/accept-a-payment.md)
+

@@ -104,6 +104,6 @@ Use Together models with Mastra.
 
 ## Next steps
 
-* Explore the [Mastra documentation](https://mastra.ai) for more advanced features
-* Check out [Together AI's model documentation](https://docs.together.ai/docs/serverless/models) for the latest available models
-* Learn about building workflows and tools in Mastra
+* Explore the [Mastra documentation](https://mastra.ai) for more advanced features.
+* See the [serverless models](/docs/serverless/models) catalog for the latest available models.
+* Learn about building workflows and tools in Mastra.

@@ -48,4 +48,5 @@ Stripe charges the applicable fee when funds settle into a non-primary settlemen
 - [Instant currency conversion](https://docs.stripe.com/treasury/convert-funds.md)
 - [Supported currencies](https://docs.stripe.com/currencies.md)
 - [Localize prices](https://docs.stripe.com/payments/currencies/localize-prices.md)
+- [Multi-currency settlement for Connect platforms and marketplaces](https://docs.stripe.com/connect/multi-currency-settlement.md)
 

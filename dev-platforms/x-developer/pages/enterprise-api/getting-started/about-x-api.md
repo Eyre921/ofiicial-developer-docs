@@ -37,7 +37,7 @@ These endpoints are only available with Enterprise access:
     Full firehose and language-specific streams for complete real-time coverage.
   </Card>
 
-  <Card title="Likes Streams" icon="heart" href="/x-api/stream/likes-streams-introduction">
+  <Card title="Likes Streams" icon="https://mintcdn.com/x-preview/szd6PKNMlRQoyyAo/icons/xds/icon-heart.svg?fit=max&auto=format&n=szd6PKNMlRQoyyAo&q=85&s=3a435e6393c019d681c6f1a0737e21a8" href="/x-api/stream/likes-streams-introduction">
     Stream all likes or sampled likes across the platform.
   </Card>
 
@@ -45,11 +45,11 @@ These endpoints are only available with Enterprise access:
     High-performance filtered streaming with advanced operators.
   </Card>
 
-  <Card title="Engagement Metrics" icon="chart-bar" href="/x-api/posts/get-post-analytics">
+  <Card title="Engagement Metrics" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bar-chart.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=e2a41caa858b122416f0005a55a8f143" href="/x-api/posts/get-post-analytics">
     Post and media analytics for deep engagement insights.
   </Card>
 
-  <Card title="Account Activity" icon="bell" href="/x-api/account-activity/introduction">
+  <Card title="Account Activity" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-bell.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=5e0b3dcfbb39ba3d4619931d7cd927d1" href="/x-api/account-activity/introduction">
     Real-time event subscriptions for user activity.
   </Card>
 
@@ -65,27 +65,27 @@ These endpoints are only available with Enterprise access:
 Enterprise access includes the full set of X API resources:
 
 <CardGroup>
-  <Card title="Posts" icon="message">
+  <Card title="Posts" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=9fde7d51b4f18c96d3a38a81d519761f">
     Search, retrieve, create, and delete posts. Access timelines, threads, and quote posts.
   </Card>
 
-  <Card title="Users" icon="user">
+  <Card title="Users" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-person.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=507a4bbcdcf5744bd18781508002e305">
     Look up profiles, manage relationships, and access follower data.
   </Card>
 
-  <Card title="Spaces" icon="microphone">
+  <Card title="Spaces" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-microphone.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=84616ff8f3d942047a71ee5e0a5adab9">
     Discover live audio conversations and participants.
   </Card>
 
-  <Card title="Direct Messages" icon="envelope">
+  <Card title="Direct Messages" icon="https://mintcdn.com/x-preview/UIyI4eSwiP2OpODQ/icons/xds/icon-envelope.svg?fit=max&auto=format&n=UIyI4eSwiP2OpODQ&q=85&s=fbd38dbcd64d8688d3c9912ac30c4621">
     Send and receive private messages between users.
   </Card>
 
-  <Card title="Lists" icon="list">
+  <Card title="Lists" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-bulleted-list.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=b9bf8323233df59c682b0fec8e3f88d5">
     Create and manage curated lists of accounts.
   </Card>
 
-  <Card title="Trends" icon="arrow-trend-up">
+  <Card title="Trends" icon="https://mintcdn.com/x-preview/UIyI4eSwiP2OpODQ/icons/xds/icon-feather-chart-line.svg?fit=max&auto=format&n=UIyI4eSwiP2OpODQ&q=85&s=185e7e1271f798947403bb3f0c44f294">
     Access trending topics by location.
   </Card>
 </CardGroup>
@@ -149,11 +149,11 @@ Enterprise plans are custom-tailored to your organization's needs. Pricing is ba
 ## Next steps
 
 <CardGroup>
-  <Card title="Apply for access" icon="key" href="/forms/enterprise-api-interest">
+  <Card title="Apply for access" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-key.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=de93497af2dde62afd3a06e896d330f5" href="/forms/enterprise-api-interest">
     Contact our sales team to discuss your needs.
   </Card>
 
-  <Card title="Explore endpoints" icon="rocket" href="/x-api/posts/create-post">
+  <Card title="Explore endpoints" icon="https://mintcdn.com/x-preview/oR-aRNyj1BKPJtxM/icons/xds/icon-rocket.svg?fit=max&auto=format&n=oR-aRNyj1BKPJtxM&q=85&s=b978d7a9225de31709efbbed5b84e92d" href="/x-api/posts/create-post">
     Browse all available endpoints including Enterprise-exclusive ones.
   </Card>
 </CardGroup>

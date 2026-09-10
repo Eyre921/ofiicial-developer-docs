@@ -1653,6 +1653,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/get-started/quickstart
 /en/copilot/get-started/cli-quickstart
 /en/copilot/get-started/quickstart-copilot-app
+/en/copilot/get-started/sdk-quickstart
 /en/copilot/get-started/what-is-github-copilot
 /en/copilot/get-started/plans
 /en/copilot/get-started/features
@@ -1853,7 +1854,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/github-copilot-app/use-byok-models
 /en/copilot/how-tos/github-copilot-app/open-with-deep-links
 /en/copilot/how-tos/copilot-sdk
-/en/copilot/how-tos/copilot-sdk/getting-started
 /en/copilot/how-tos/copilot-sdk/auth
 /en/copilot/how-tos/copilot-sdk/auth/authenticate
 /en/copilot/how-tos/copilot-sdk/auth/byok

@@ -1,5 +1,5 @@
 ---
-title: "Important Resources"
+title: "Important resources for Enterprise API customers"
 source: https://docs.x.com/enterprise-api/getting-started/important-resources
 path: enterprise-api/getting-started/important-resources
 ---
@@ -13,15 +13,15 @@ Bookmark these essential resources for X API development.
 ## Documentation
 
 <CardGroup>
-  <Card title="API Reference" icon="code" href="/x-api/introduction">
+  <Card title="API Reference" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-code.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=488e23401b19225b89acc0136d242219" href="/x-api/introduction">
     Complete endpoint documentation with parameters and examples.
   </Card>
 
-  <Card title="Data Dictionary" icon="book" href="/x-api/fundamentals/data-dictionary">
+  <Card title="Data Dictionary" icon="https://mintcdn.com/x-preview/Vn2KEkZaPF9LiPi3/icons/xds/icon-book.svg?fit=max&auto=format&n=Vn2KEkZaPF9LiPi3&q=85&s=22ac564792481d14ae36a941546039c8" href="/x-api/fundamentals/data-dictionary">
     Object schemas for posts, users, media, and more.
   </Card>
 
-  <Card title="Authentication" icon="key" href="/resources/fundamentals/authentication/overview">
+  <Card title="Authentication" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-key.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=de93497af2dde62afd3a06e896d330f5" href="/resources/fundamentals/authentication/overview">
     OAuth 1.0a and OAuth 2.0 implementation guides.
   </Card>
 
@@ -69,7 +69,7 @@ Bookmark these essential resources for X API development.
 ## Community and support
 
 <CardGroup>
-  <Card title="Developer Forum" icon="comments" href="https://devcommunity.x.com">
+  <Card title="Developer Forum" icon="https://mintcdn.com/x-preview/ygI6sSJPehlc0qNT/icons/xds/icon-chat-unread.svg?fit=max&auto=format&n=ygI6sSJPehlc0qNT&q=85&s=ce6313d8c0b7b4e5363f2ce80b89f7e4" href="https://devcommunity.x.com">
     Ask questions and share solutions with the community.
   </Card>
 
@@ -77,11 +77,11 @@ Bookmark these essential resources for X API development.
     FAQs, troubleshooting, and contact options.
   </Card>
 
-  <Card title="@XDevelopers" icon="x-twitter" href="https://x.com/XDevelopers">
+  <Card title="@XDevelopers" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-logo-x.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=53e3153f3b8d6efdad31484ef133b274" href="https://x.com/XDevelopers">
     Official updates and announcements.
   </Card>
 
-  <Card title="@API" icon="x-twitter" href="https://x.com/api">
+  <Card title="@API" icon="https://mintcdn.com/x-preview/SxzTbJaLjs3MidH1/icons/xds/icon-logo-x.svg?fit=max&auto=format&n=SxzTbJaLjs3MidH1&q=85&s=53e3153f3b8d6efdad31484ef133b274" href="https://x.com/api">
     API-specific news and tips.
   </Card>
 </CardGroup>
@@ -95,7 +95,7 @@ Bookmark these essential resources for X API development.
 | [Changelog](/changelog)                                              | All platform changes and updates     |
 | [Newsletter](/newsletter)                                            | Monthly roundup of news and features |
 | [Forum Announcements](https://devcommunity.x.com/c/announcements/22) | Important platform notices           |
-| [API Status](/status)                                                | Real-time service availability       |
+| [API Status](https://developer.x.com/status)                         | Real-time service availability       |
 
 <Tip>
   Follow [@XDevelopers](https://x.com/XDevelopers) and turn on notifications to catch breaking changes and new features.
