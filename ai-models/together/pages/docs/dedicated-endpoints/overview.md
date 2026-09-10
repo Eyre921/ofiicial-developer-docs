@@ -61,6 +61,10 @@ The [quickstart](/docs/dedicated-endpoints/quickstart) breaks down this flow and
     Deploy a model you fine-tuned from a supported base model.
   </Card>
 
+  <Card title="Upload a LoRA adapter" icon="layers-intersect" href="/docs/dedicated-endpoints/adapter">
+    Import a custom low-rank adapter (LoRA) from Hugging Face or S3 and serve it.
+  </Card>
+
   <Card title="Migrate from v1" icon="git-branch" href="/docs/dedicated-endpoints/migrate-from-v1">
     Migrate a dedicated endpoint to the new DMI resource model.
   </Card>

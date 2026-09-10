@@ -10,13 +10,13 @@ Train Andrej Karpathy's end-to-end ChatGPT clone on Together's on-demand GPU clu
 
 [nanochat](https://github.com/karpathy/nanochat) is Andrej Karpathy's end-to-end ChatGPT clone that demonstrates how a full conversational AI stack, from tokenizer to web UI, can be trained and deployed for \$100 on 8×H100 hardware. In this guide, you'll learn how to train and deploy nanochat using Together's [instant clusters](https://api.together.ai/clusters).
 
-The entire process takes approximately 4 hours on an 8×H100 cluster and includes:
+The entire process takes approximately four hours on an 8×H100 cluster and includes:
 
-* Training a BPE tokenizer on [FineWeb-Edu](https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu)
-* Pretraining a base transformer model
-* Midtraining on curated tasks
-* Supervised fine-tuning for conversational alignment
-* Deploying a FastAPI web server with a chat interface
+* Training a BPE tokenizer on [FineWeb-Edu](https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu).
+* Pretraining a base transformer model.
+* Midtraining on curated tasks.
+* Supervised fine-tuning for conversational alignment.
+* Deploying a FastAPI web server with a chat interface.
 
 ## Requirements
 
@@ -32,16 +32,16 @@ Before you begin, make sure you have:
 
 First, let's create an 8×H100 cluster to train nanochat.
 
-1. Log into [api.together.ai](https://api.together.ai)
-2. Select **GPU Clusters** in the top navigation menu
-3. Select **Create Cluster**
-4. Select **On-demand** capacity
-5. Choose **8xH100** as your cluster size
-6. Enter a cluster name (e.g., `nanochat-training`)
-7. Select **Slurm on Kubernetes** as the cluster type
-8. Choose your preferred region
-9. Create a shared volume, min 1 TB storage
-10. Select **Preview Cluster** and then "Confirm & Create"
+1. Log into [api.together.ai](https://api.together.ai).
+2. Select **GPU Clusters** in the top navigation menu.
+3. Select **Create Cluster**.
+4. Select **On-demand** capacity.
+5. Choose **8xH100** as your cluster size.
+6. Enter a cluster name (e.g., `nanochat-training`).
+7. Select **Slurm on Kubernetes** as the cluster type.
+8. Choose your preferred region.
+9. Create a shared volume, min 1 TB storage.
+10. Select **Preview Cluster** and then "Confirm & Create".
     <Frame>
       <img alt="" />
     </Frame>
@@ -68,7 +68,7 @@ A command like the one below can be copied from the instant clusters dashboard.
   ```
 </CodeGroup>
 
-You can also use `ssh -o ServerAliveInterval=60` - it sends a ping to the ssh server every 60s, so it keeps the TCP ssh session alive, even if there's no terminal input/output for a long time during training.
+You can also use `ssh -o ServerAliveInterval=60`. It sends a ping to the ssh server every 60s, so it keeps the TCP ssh session alive, even if there's no terminal input/output for a long time during training.
 
 Once connected, you'll be in the login node of your Slurm cluster.
 
@@ -90,7 +90,7 @@ Let's clone the nanochat repository and set up the required dependencies.
   ```
 </CodeGroup>
 
-**Install System Dependencies**
+**Install system dependencies**
 
 nanochat requires Python 3.10 and development headers:
 
@@ -107,7 +107,7 @@ nanochat requires Python 3.10 and development headers:
 
 ## Step 4: Access GPU resources
 
-Use Slurm's `srun` command to allocate 8 GPUs for your training job:
+Use Slurm's `srun` command to allocate eight GPUs for your training job:
 
 <CodeGroup>
   ```bash Shell theme={null}
@@ -115,7 +115,7 @@ Use Slurm's `srun` command to allocate 8 GPUs for your training job:
   ```
 </CodeGroup>
 
-This command requests 8 GPUs and gives you an interactive bash session on a compute node. Once you're on the compute node, verify GPU access:
+This command requests eight GPUs and gives you an interactive bash session on a compute node. Once you're on the compute node, verify GPU access:
 
 <CodeGroup>
   ```bash Shell theme={null}
@@ -123,7 +123,7 @@ This command requests 8 GPUs and gives you an interactive bash session on a comp
   ```
 </CodeGroup>
 
-You should see all 8 H100 GPUs listed with their memory and utilization stats like below.
+You should see all eight H100 GPUs listed with their memory and utilization stats like below.
 
 <Frame>
   <img alt="" />
@@ -167,19 +167,19 @@ This script will execute the following stages:
 4. **Supervised fine-tuning (SFT):** Aligns the model for conversational interactions.
 5. **Evaluation:** Runs CORE benchmarks and generates a comprehensive report.
 
-The entire training process takes approximately **4 hours** on 8×H100 GPUs.
+The entire training process takes approximately **four hours** on 8×H100 GPUs.
 
 <Frame>
   <img alt="" />
 </Frame>
 
-**Monitor Training Progress**
+**Monitor training progress**
 
 During training, you can monitor several key metrics:
 
-* **Model Flops Utilization (MFU)**: Should be around 50% for optimal performance
-* **tok/sec**: Tracks tokens processed per second of training
-* **Step timing**: Each step should complete in a few seconds
+* **Model Flops Utilization (MFU):** Should be around 50% for optimal performance.
+* **tok/sec:** Tracks tokens processed per second of training.
+* **Step timing:** Each step should complete in a few seconds.
 
 The scripts automatically log progress and save checkpoints under `$NANOCHAT_BASE_DIR`.
 
@@ -189,7 +189,7 @@ The scripts automatically log progress and save checkpoints under `$NANOCHAT_BAS
 
 ## nanochat inference
 
-## Step 1: Download your cluster's kubeconfig
+## Step 7: Download your cluster's kubeconfig
 
 While training is running (or after it completes), download your cluster's kubeconfig so you can access the cluster using kubectl. Use the [Together CLI](/reference/cli/clusters) to write the credentials to a local file. Find your cluster ID with `tg beta clusters list`:
 
@@ -197,7 +197,7 @@ While training is running (or after it completes), download your cluster's kubec
 tg beta clusters get-credentials [CLUSTER_ID] --file ~/.kube/nanochat-cluster-config
 ```
 
-## Step 2: Access the compute pod via kubectl
+## Step 8: Access the compute pod via kubectl
 
 From your **local machine**, set up kubectl access to your cluster:
 
@@ -232,7 +232,7 @@ Once inside the pod, navigate to the nanochat directory:
   ```
 </CodeGroup>
 
-**Set Up Python Virtual Environment**
+**Set up the Python virtual environment**
 
 Inside the compute pod, set up the Python virtual environment using `uv`:
 
@@ -252,7 +252,7 @@ Inside the compute pod, set up the Python virtual environment using `uv`:
   ```
 </CodeGroup>
 
-## Step 3: Launch the nanochat Web Server
+## Step 9: Launch the nanochat web server
 
 Now that training is complete and your environment is set up, launch the FastAPI web server:
 
@@ -268,7 +268,7 @@ The server will start on port 8000 inside the pod. You should see output indicat
   <img alt="" />
 </Frame>
 
-## Step 4: Port-forward to access the UI
+## Step 10: Port-forward to access the UI
 
 In a **new terminal window on your local machine**, set up port forwarding to access the web UI:
 
@@ -284,11 +284,11 @@ In a **new terminal window on your local machine**, set up port forwarding to ac
 
 The port forwarding will remain active as long as this terminal session is open.
 
-## Step 5: Chat with nanochat!
+## Step 11: Chat with nanochat
 
 Open your web browser and navigate to:
 
-```
+```text theme={null}
 http://localhost:6818/
 ```
 
@@ -302,16 +302,16 @@ You should see the nanochat web interface! You can now have conversations with y
 
 The nanochat training pipeline on 8×H100 instant clusters typically:
 
-* **Training time**: \~4 hours for the full speedrun pipeline
-* **Model Flops Utilization**: \~50% (indicating efficient GPU utilization)
-* **Cost**: Approximately \$100 depending on your selected hardware and duration
-* **Final model**: A fully functional conversational AI
+* **Training time:** \~4 hours for the full speedrun pipeline.
+* **Model Flops Utilization:** \~50% (indicating efficient GPU utilization).
+* **Cost:** Approximately \$100 depending on your selected hardware and duration.
+* **Final model:** A fully functional conversational AI.
 
 After training completes, check the generated report `report.md` for detailed metrics.
 
 ## Troubleshooting
 
-**GPU Not Available**
+**GPU not available**
 
 If `nvidia-smi` doesn't show GPUs after `srun`:
 
@@ -322,31 +322,31 @@ If `nvidia-smi` doesn't show GPUs after `srun`:
   ```
 </CodeGroup>
 
-**Out of Memory Errors**
+**Out of memory errors**
 
 If you encounter OOM errors during training:
 
-1. Check that `NANOCHAT_BASE_DIR` is set to `/scratch`
-2. Ensure no other processes are using GPU memory
-3. The default batch sizes should work on H100 80GB
+1. Check that `NANOCHAT_BASE_DIR` is set to `/scratch`.
+2. Ensure no other processes are using GPU memory.
+3. The default batch sizes should work on H100 80GB.
 
-**Port Forwarding Connection Issues**
+**Port forwarding connection issues**
 
 If you can't connect to the web UI:
 
-1. Verify the pod name matches exactly: `kubectl -n slurm get pods`
-2. Ensure the web server is running: check logs in the pod terminal
-3. Try a different local port if 6818 is in use
+1. Verify the pod name matches exactly: `kubectl -n slurm get pods`.
+2. Ensure the web server is running: check logs in the pod terminal.
+3. Try a different local port if 6818 is in use.
 
 ## Next steps
 
 Now that you have nanochat running, you can:
 
-1. **Experiment with different prompts** - Test the model's conversational abilities and domain knowledge
-2. **Fine-tune further** - Modify the SFT data or run additional RL training for specific behaviors
-3. **Deploy to production** - Extend `chat_web.py` with authentication and persistence layers
-4. **Scale the model** - Try the `run1000.sh` script for a larger model with better performance
-5. **Integrate with other tools** - Use the inference API to build custom applications
+1. **Experiment with different prompts:** Test the model's conversational abilities and domain knowledge.
+2. **Fine-tune further:** Modify the SFT data or run additional RL training for specific behaviors.
+3. **Deploy to production:** Extend `chat_web.py` with authentication and persistence layers.
+4. **Scale the model:** Try the `run1000.sh` script for a larger model with better performance.
+5. **Integrate with other tools:** Use the inference API to build custom applications.
 
 For more details on the nanochat architecture and training process, visit the [nanochat GitHub repository](https://github.com/karpathy/nanochat).
 

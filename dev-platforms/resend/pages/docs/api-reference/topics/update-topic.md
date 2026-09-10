@@ -36,13 +36,11 @@ Update an existing topic.
 
   const resend = new Resend('re_xxxxxxxxx');
 
-  const { data, error } = await resend.topics.update(
-    'b6d24b8e-af0b-4c3c-be0c-359bbd97381e',
-    {
-      name: 'Weekly Newsletter',
-      description: 'Weekly newsletter for our subscribers',
-    },
-  );
+  const { data, error } = await resend.topics.update({
+    id: 'b6d24b8e-af0b-4c3c-be0c-359bbd97381e',
+    name: 'Weekly Newsletter',
+    description: 'Weekly newsletter for our subscribers',
+  });
   ```
 
   ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -62,8 +60,8 @@ Update an existing topic.
   resend.Topics.update(
       id="b6d24b8e-af0b-4c3c-be0c-359bbd97381e",
       params={
-          "name": "Monthly Newsletter",
-          "description": "Subscribe to our monthly newsletter for updates",
+          "name": "Weekly Newsletter",
+          "description": "Weekly newsletter for our subscribers",
       }
   )
   ```
@@ -147,7 +145,6 @@ Update an existing topic.
     new TopicData() {
       Name = "Weekly Newsletter",
       Description = "Weekly newsletter for our subscribers",
-      SubscriptionDefault = SubscriptionType.OptIn,
     }
   );
   ```
@@ -158,7 +155,7 @@ Update an existing topic.
        -H 'Content-Type: application/json' \
        -d $'{
     "name": "Weekly Newsletter",
-    "default_subscription": "opt_in"
+    "description": "Weekly newsletter for our subscribers"
   }'
   ```
 

@@ -1,5 +1,5 @@
 ---
-title: "Build a lovable clone with Kimi K2"
+title: "Build a Lovable clone with Kimi K3"
 source: https://docs.together.ai/docs/how-to-build-a-lovable-clone-with-kimi-k2
 path: docs/how-to-build-a-lovable-clone-with-kimi-k2
 ---
@@ -14,7 +14,7 @@ Build a full-stack Next.js app that generates React apps from a single prompt.
 
 In this post, we’re going to learn how to build the core parts of the app. LlamaCoder is a Next.js app, but Together’s APIs can be used with any web framework or language!
 
-## Scaffolding the initial UI
+## Step 1: Scaffold the initial UI
 
 The core interaction of LlamaCoder is a text field where the user can enter a prompt for an app they’d like to build. So to start, we need that text field:
 
@@ -83,7 +83,7 @@ async function createApp(e) {
 
 Looks good – let’s go implement it!
 
-## Generating code in an API route
+## Step 2: Generate code in an API route
 
 To create an API route in the Next.js 14 app directory, we can make a new `route.js` file:
 
@@ -96,7 +96,7 @@ export async function POST(req) {
 }
 ```
 
-If we submit the form, we’ll see the user’s prompt logged to the console. Now we’re ready to send it off to our LLM and ask it to generate our user’s app! We tested many open source LLMs and found that Kimi K2 was the only one that did a good job at generating small apps, so that’s what we decided to use for the app.
+If we submit the form, we’ll see the user’s prompt logged to the console. Now we’re ready to send it off to our LLM and ask it to generate our user’s app! We tested many open source LLMs and found that Kimi K3 was the only one that did a good job at generating small apps, so that’s what we decided to use for the app.
 
 We’ll install Together’s node SDK:
 
@@ -104,7 +104,7 @@ We’ll install Together’s node SDK:
 npm i together-ai
 ```
 
-and use it to kick off a chat with Kimi K2.
+and use it to kick off a chat with Kimi K3.
 
 Here’s what it looks like:
 
@@ -118,7 +118,7 @@ export async function POST(req) {
   let json = await req.json();
 
   let completion = await together.chat.completions.create({
-    model: 'moonshotai/Kimi-K2.5',
+    model: 'moonshotai/Kimi-K3',
     messages: [
       {
         role: 'system',
@@ -173,11 +173,11 @@ If you take a look at your logs, you should see something like this:
   <img alt="" />
 </Frame>
 
-Not bad – Kimi K2 has generated some code that looks pretty good and matches our user’s prompt!
+Not bad – Kimi K3 has generated some code that looks pretty good and matches our user’s prompt!
 
-However, for this app, we’re only interested in the code, since we’re going to be actually running it in our user’s browser. So we need to do some prompt engineering to get Llama to only return the code in a format we expect.
+However, for this app, we’re only interested in the code, since we’re going to be actually running it in our user’s browser. So we need to do some prompt engineering to get Kimi K3 to only return the code in a format we expect.
 
-## Engineering the system message to only return code
+## Step 3: Engineer the system message to only return code
 
 We spent some time tweaking the system message to make sure it output the best code possible – here’s what we ended up with for LlamaCoder:
 
@@ -191,7 +191,7 @@ export async function POST(req) {
   let json = await req.json();
 
    let res = await together.chat.completions.create({
-    model: 'moonshotai/Kimi-K2.5',
+    model: 'moonshotai/Kimi-K3',
     messages: [
       {
         role: 'system',
@@ -235,7 +235,7 @@ Now if we try again, we’ll see something like this:
 
 Much better –this is something we can work with!
 
-## Running the generated code in the browser
+## Step 4: Run the generated code in the browser
 
 Now that we’ve got a pure code response from our LLM, how can we actually execute it in the browser for our user?
 
@@ -332,9 +332,9 @@ Once our API endpoint responds, `<Sandpack>` renders our generated app!
   <img alt="" />
 </Frame>
 
-The basic functionality is working great! Together AI (with Kimi K2) + Sandpack have made it a breeze to run generated code right in our user’s browser.
+The basic functionality is working great! Together AI (with Kimi K3) + Sandpack have made it a breeze to run generated code right in our user’s browser.
 
-## Streaming the code for immediate UI feedback
+## Step 5: Stream the code for immediate UI feedback
 
 Our app is working well –but we’re not showing our user any feedback while the LLM is generating the code. This makes our app feel broken and unresponsive, especially for more complex prompts.
 
@@ -342,8 +342,8 @@ To fix this, we can use Together AI’s support for streaming. With a streamed r
 
 To enable streaming, there are two changes we need to make:
 
-1. Update our API route to respond with a stream
-2. Update our React app to read the stream
+1. Update our API route to respond with a stream.
+2. Update our React app to read the stream.
 
 Let’s start with the API route.
 
@@ -361,7 +361,7 @@ export async function POST(req) {
   let json = await req.json();
 
   let res = await together.chat.completions.create({
-    model: 'moonshotai/Kimi-K2.5',
+    model: 'moonshotai/Kimi-K3',
     messages: [
       {
         role: 'system',

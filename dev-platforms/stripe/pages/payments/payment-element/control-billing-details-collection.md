@@ -12,7 +12,7 @@ You can collect billing details several ways with the Payment Element:
 
 - `never`: Don’t collect any billing details in the Payment Element. You can set this for all [fields](https://docs.stripe.com/js/elements_object/create_payment_element#payment_element_create-options-fields) or on specific fields subcomponents, like `name`, `email`, and `address`.
 - `if_required`: Collect only the address fields required for each payment method to complete the payment.
-
+- `always`: Always collect the billing name in the Payment Element. You can set this for `name` across all payment methods, or for a specific payment method.
 - `auto` (default): Stripe determines which billing fields to collect based on customer friction and authorization success rate for each payment method. You don’t need to pass in additional billing details at confirm time for this mode.
 
 By default, all fields are set to `auto`. This balances minimizing customer friction and maintaining optimal authorization rates.
@@ -61,6 +61,37 @@ const paymentElement = elements.create('payment', {
   fields: {
     billingDetails: {
       address: 'if_required',
+    }
+  }
+});
+```
+
+## Collect billing names
+
+Specify `always` to make the Payment Element collect the customer’s billing name for payment methods that don’t collect it by default.
+
+```javascript
+const paymentElement = elements.create('payment', {
+  fields: {
+    billingDetails: {
+      name: 'always',
+    }
+  }
+});
+```
+
+You can also set billing detail collection for a specific payment method. Payment-method-specific settings override the top-level `billingDetails` setting.
+
+```javascript
+const paymentElement = elements.create('payment', {
+  fields: {
+    billingDetails: {
+      name: 'auto',
+    },
+    klarna: {
+      billingDetails: {
+        name: 'always',
+      }
     }
   }
 });

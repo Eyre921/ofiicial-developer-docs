@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1299 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1300 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -708,6 +708,7 @@
 - `docs/eleven-agents/whatsapp/interactive-messages` — [Interactive messages](pages/docs/eleven-agents/whatsapp/interactive-messages.md) · [原文](https://elevenlabs.io/docs/eleven-agents/whatsapp/interactive-messages.md)
 - `docs/eleven-agents/whatsapp/outbound` — [Outbound messages & templates](pages/docs/eleven-agents/whatsapp/outbound.md) · [原文](https://elevenlabs.io/docs/eleven-agents/whatsapp/outbound.md)
 - `docs/eleven-agents/whatsapp/tools` — [WhatsApp tools](pages/docs/eleven-agents/whatsapp/tools.md) · [原文](https://elevenlabs.io/docs/eleven-agents/whatsapp/tools.md)
+- `docs/eleven-agents/whatsapp/troubleshooting` — [Troubleshooting & FAQ](pages/docs/eleven-agents/whatsapp/troubleshooting.md) · [原文](https://elevenlabs.io/docs/eleven-agents/whatsapp/troubleshooting.md)
 - `docs/eleven-agents/workflows/post-call-webhooks` — [Post-call webhooks](pages/docs/eleven-agents/workflows/post-call-webhooks.md) · [原文](https://elevenlabs.io/docs/eleven-agents/workflows/post-call-webhooks.md)
 - `docs/eleven-api/choosing-the-right-model` — [How to choose the right model](pages/docs/eleven-api/choosing-the-right-model.md) · [原文](https://elevenlabs.io/docs/eleven-api/choosing-the-right-model.md)
 - `docs/eleven-api/concepts/audio-streaming` — [Understanding audio streaming](pages/docs/eleven-api/concepts/audio-streaming.md) · [原文](https://elevenlabs.io/docs/eleven-api/concepts/audio-streaming.md)

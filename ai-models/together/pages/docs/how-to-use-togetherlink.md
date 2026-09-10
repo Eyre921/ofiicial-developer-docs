@@ -73,6 +73,6 @@ The installed TogetherLink CLI periodically checks for updates. When an update i
 
 ## Learn more
 
-* [TogetherLink](https://togetherlink.vercel.app)
-* [TogetherLink on GitHub](https://github.com/Nutlope/togetherlink)
-* [Together AI models](https://www.together.ai/models)
+* [TogetherLink](https://togetherlink.vercel.app).
+* [TogetherLink on GitHub](https://github.com/Nutlope/togetherlink).
+* [Together AI models](https://www.together.ai/models).

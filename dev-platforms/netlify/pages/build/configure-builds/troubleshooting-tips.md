@@ -60,7 +60,7 @@ Project configuration > Build & deploy > Continuous deployment > Repository
 
 ### Note - Permission levels
 
-Your GitHub, GitLab, Bitbucket, or Azure DevOps user account may not have the privilege level required to link the repo to Netlify, even if you can log in and access it from the Git host's website. You generally need administrative privileges on the repository, owning organization, or both. Related: [documentation about repository permissions and linking]( /build/git-workflows/repo-permissions-linking).
+Your GitHub, GitLab, Bitbucket, Azure DevOps, or Cursor Origin user account may not have the privilege level required to link the repo to Netlify, even if you can log in and access it from the Git host's website. You generally need administrative privileges on the repository, owning organization, or both. Related: [documentation about repository permissions and linking]( /build/git-workflows/repo-permissions-linking).
 
 ## Build fails on warning message
 

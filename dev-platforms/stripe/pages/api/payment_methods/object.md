@@ -83,7 +83,7 @@ Possible enum values:
     This is the default value for payment methods where `allow_redisplay` wasn’t set.
 
 - `alma` (object, nullable)
-  If this is a Alma PaymentMethod, this hash contains details about the Alma payment method.
+  If this is an Alma PaymentMethod, this hash contains details about the Alma payment method.
 
 - `amazon_pay` (object, nullable)
   If this is a AmazonPay PaymentMethod, this hash contains details about the AmazonPay payment method.

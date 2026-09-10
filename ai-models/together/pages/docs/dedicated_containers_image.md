@@ -6,21 +6,21 @@ path: docs/dedicated_containers_image
 
 Deploy a Flux2 image generation model on Together's managed GPU infrastructure using dedicated containers.
 
-This example demonstrates deploying a text-to-image model using Dedicated Containers. You'll build a Sprocket worker that generates images from text prompts and deploy it to Together's managed GPU infrastructure.
+This example demonstrates deploying a text-to-image model using dedicated containers. You'll build a Sprocket worker that generates images from text prompts and deploy it to Together's managed GPU infrastructure.
 
 ## What you'll learn
 
-* Deploying a custom model with Sprocket and Jig
-* Returning base64-encoded images from your worker
-* Submitting jobs via the Queue API and polling for results
-* Configuring autoscaling for production workloads
+* Deploying a custom model with Sprocket and Jig.
+* Returning base64-encoded images from your worker.
+* Submitting jobs via the Queue API and polling for results.
+* Configuring autoscaling for production workloads.
 
 ## Requirements
 
-* **Together API key**: Get one from [together.ai](https://together.ai)
-* **Dedicated Containers access**: Contact [support@together.ai](mailto:support@together.ai) to enable for your organization
-* **Docker**: For building container images. [Install Docker](https://docs.docker.com/engine/install)
-* **Together CLI**: Install with `pip install "together[cli]" --upgrade` or `uv tool install "together[cli]"`
+* **Together API key:** Get one from [together.ai](https://together.ai).
+* **Dedicated containers access:** Contact [support@together.ai](mailto:support@together.ai) to enable for your organization.
+* **Docker:** For building container images. [Install Docker](https://docs.docker.com/engine/install).
+* **Together CLI:** Install with `pip install "together[cli]" --upgrade` or `uv tool install "together[cli]"`.
 
 Set your API key:
 
@@ -42,25 +42,25 @@ Install Together library:
 
 ## Overview
 
-This example deploys a Flux2 text-to-image model as a Dedicated Container. The Sprocket worker handles job processing, and Together manages GPU provisioning, autoscaling, and observability.
+This example deploys a Flux2 text-to-image model as a dedicated container. The Sprocket worker handles job processing, and Together manages GPU provisioning, autoscaling, and observability.
 
 **What gets deployed:**
 
-* A Sprocket worker running on an H100 GPU
-* Queue-based job processing for async image generation
-* Automatic scaling based on queue depth
+* A Sprocket worker running on an H100 GPU.
+* Queue-based job processing for async image generation.
+* Automatic scaling based on queue depth.
 
 ## How it works
 
-1. **Build**: Jig builds a Docker image from your `pyproject.toml` configuration
-2. **Push**: The image is pushed to Together's private container registry
-3. **Deploy**: Together provisions an H100 GPU and starts your container
-4. **Queue**: Jobs are submitted to the managed queue and processed by your Sprocket worker
-5. **Scale**: The autoscaler adjusts replicas based on queue depth
+1. **Build:** Jig builds a Docker image from your `pyproject.toml` configuration.
+2. **Push:** The image is pushed to Together's private container registry.
+3. **Deploy:** Together provisions an H100 GPU and starts your container.
+4. **Queue:** Jobs are submitted to the managed queue and processed by your Sprocket worker.
+5. **Scale:** The autoscaler adjusts replicas based on queue depth.
 
 ## Project structure
 
-```
+```text theme={null}
 flux2-dev/
 ├── pyproject.toml    # Configuration and dependencies
 └── run.py             # Sprocket worker implementation
@@ -386,9 +386,9 @@ Jobs are submitted to the managed queue and processed asynchronously. You'll nee
 }
 ```
 
-* `image`: Base64-encoded PNG image data
-* `format`: Image format (always `"png"`)
-* `encoding`: Encoding type (always `"base64"`)
+* `image`: Base64-encoded PNG image data.
+* `format`: Image format (always `"png"`).
+* `encoding`: Encoding type (always `"base64"`).
 
 ### Batch processing and autoscaling
 
@@ -426,9 +426,9 @@ When you're done, delete the deployment:
 
 ## Next steps
 
-* [Video Generation Example](/docs/dedicated_containers_video) – Multi-GPU inference with torchrun
-* [OpenAI-Compatible Endpoint Example](/docs/dedicated_containers_openai) – Serve the same model behind the OpenAI Images API
-* [Quickstart](/docs/containers-quickstart) – Deploy your first container in 20 minutes
-* [Sprocket SDK](/reference/dci-reference-sprocket) – Full SDK reference for workers
-* [Jig CLI Reference](/reference/cli/jig) – CLI commands and configuration options
-* [Deployments API Reference](/reference/deployments-list) – REST API for deployments, secrets, storage, and queues
+* [Video Generation Example](/docs/dedicated_containers_video) – Multi-GPU inference with torchrun.
+* [OpenAI-Compatible Endpoint Example](/docs/dedicated_containers_openai) – Serve the same model behind the OpenAI Images API.
+* [Quickstart](/docs/containers-quickstart) – Deploy your first container in 20 minutes.
+* [Sprocket SDK](/reference/dci-reference-sprocket) – Full SDK reference for workers.
+* [Jig CLI Reference](/reference/cli/jig) – CLI commands and configuration options.
+* [Deployments API Reference](/reference/deployments-list) – REST API for deployments, secrets, storage, and queues.

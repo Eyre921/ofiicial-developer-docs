@@ -6,7 +6,7 @@ path: docs/how-to-build-coding-agents
 
 Build a simple code editing agent from scratch in 400 lines of code.
 
-I recently read a great [blog post](https://ampcode.com/how-to-build-an-agent) by Thorsten Ball on how simple it is to build coding agents and was inspired to make a python version guide here!
+I recently read a great [blog post](https://ampcode.com/how-to-build-an-agent) by Thorsten Ball on how simple it is to build coding agents and was inspired to make a Python version guide here!
 
 We'll create an LLM that can call tools that allow it to create, edit, and read the contents of files and repos!
 
@@ -60,7 +60,7 @@ Let's start with a simple loop that takes user input, sends it to a language mod
 
 Usage:
 
-```
+```text theme={null}
 You: Hey! I'm Zain! How are you?
 
 LLM: Nice to meet you, Zain. I'm doing well, thanks for asking. I'm a large language model, so I don't have feelings or emotions like humans do, but I'm always happy to chat and help with any questions or topics you'd like to discuss. How about you? How's your day going?
@@ -86,14 +86,14 @@ Tool use is pretty simple - we tell the model that it has access to certain tool
 
 To summarize, all there is to tools and tool use are two things:
 
-1. You tell the model what tools are available
-2. When the model wants to execute the tool, it tells you, you execute the tool and send the response up
+1. You tell the model what tools are available.
+2. When the model wants to execute the tool, it tells you, you execute the tool and send the response up.
 
 To make (1) easier, the big model providers have built-in APIs to send tool definitions along.
 
-To get the intuition behind `tool_use` you don't need to make any code changes - we can simply use the same `chat()` function above:
+To get the intuition behind `tool_use` you don't need to make any code changes - we can use the same `chat()` function above:
 
-```
+```text theme={null}
 You: You are a weather expert. When I ask you about the weather in a given location, I want you to reply with `get_weather(<location_name>)`. I will then tell you what the weather in that location is. Understood?
 
 LLM: You're reminding me of our previous agreement. Yes, I understand. When you ask about the weather in a location, I'll respond with `get_weather(<location_name>)`, and you'll provide the actual weather conditions. Let's get back to it.
@@ -283,7 +283,7 @@ Now we need to run the function that the model has asked for and feed the respon
 Output:
 
 <CodeGroup>
-  ```json Json theme={null}
+  ```json JSON theme={null}
   {
     "role": "assistant",
     "content": "The secret from the file secret.txt is \"my favourite colour is cyan sanguine\".",
@@ -304,7 +304,7 @@ Now let's make our coding agent more interesting by creating two more tools!
 
 We'll want our coding agent to be able to see what files exist in a repo and also modify pre-existing files as well so we'll add two more tools:
 
-### `list_files` Tool: Given a path to a repo, this tool lists the files in that repo.
+### `list_files` tool: Given a path to a repo, this tool lists the files in that repo
 
 <CodeGroup>
   ```python Python theme={null}
@@ -370,7 +370,7 @@ We'll want our coding agent to be able to see what files exist in a repo and als
   ```
 </CodeGroup>
 
-### `edit_file` Tool: Edit files by adding new content or replacing old content
+### `edit_file` tool: Edit files by adding new content or replacing old content
 
 <CodeGroup>
   ```python Python theme={null}
@@ -550,7 +550,7 @@ Now we can add all three of these tools into the simple looping chat function we
 
 Output:
 
-````
+````text theme={null}
 You: Create a congrats.py script that rot13-decodes the following string ‘Pbatenghyngvbaf ba ohvyqvat n pbqr-rqvgvat ntrag!’ and prints it.
 
 Tool call: edit_file
@@ -586,7 +586,7 @@ print(decoded_string)
 You can save this code in a file named `congrats.py` and run it to see the decoded message.
 ````
 
-This code will give you a new python script: `congrats.py` which you can run!
+This code will give you a new Python script: `congrats.py` which you can run!
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -596,6 +596,6 @@ This code will give you a new python script: `congrats.py` which you can run!
 
 Output:
 
-```
+```text theme={null}
 Congratulations on building a code-editing agent!
 ```

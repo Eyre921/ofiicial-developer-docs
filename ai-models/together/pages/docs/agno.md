@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/agno
 path: docs/agno
 ---
 
-Using Agno with Together AI.
+Use Agno with Together AI to build multimodal agents.
 
 Agno is an open-source library for creating multimodal agents. It supports interactions with text, images, audio, and video while remaining model-agnostic, allowing you to use any model in the Together AI library with this integration.
 
@@ -26,7 +26,7 @@ Set your `TOGETHER_API_KEY` environment variable.
 
 ## Example
 
-Below is a simple agent with access to web search.
+Below is an agent with access to web search.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -48,5 +48,5 @@ Below is a simple agent with access to web search.
 <Info>
   ### Agno - Together AI Cookbook
 
-  Explore our in-depth [Agno Cookbook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/Agno/Agents_Agno.ipynb)
+  Explore the in-depth [Agno Cookbook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/Agno/Agents_Agno.ipynb).
 </Info>

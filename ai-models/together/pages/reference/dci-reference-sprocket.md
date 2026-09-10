@@ -156,11 +156,11 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 
 ## HTTP endpoints
 
-| Endpoint    | Method | Response                                                                                                                           |
-| ----------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `/health`   | GET    | `200 {"status": "healthy"}` or `503 {"status": "unhealthy"}`                                                                       |
-| `/metrics`  | GET    | `requests_inflight 0.0` or `1.0` (Prometheus format)                                                                               |
-| `/generate` | POST   | Direct HTTP inference (non-queue mode). Route is configurable via the `predict_path` parameter of [`sprocket.run`](#sprocket-run). |
+| Endpoint    | Method | Response                                                                                                                          |
+| ----------- | ------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| `/health`   | GET    | `200 {"status": "healthy"}` or `503 {"status": "unhealthy"}`                                                                      |
+| `/metrics`  | GET    | `requests_inflight 0.0` or `1.0` (Prometheus format)                                                                              |
+| `/generate` | POST   | Direct HTTP inference (non-queue mode). Route is configurable via the `predict_path` parameter of [`sprocket.run`](#sprocketrun). |
 
 ## CLI arguments
 

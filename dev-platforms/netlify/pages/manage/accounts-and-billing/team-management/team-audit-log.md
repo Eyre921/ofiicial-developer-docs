@@ -25,10 +25,10 @@ You can also sort team audit log events by the oldest and newest events. Note th
 
 You can monitor actions for a specific site by accessing its [Site audit log](/manage/monitoring/logs#site-audit-log).
 
-To access a team's audit log, select the team in the navigation and then select 
+To access a team's audit log, select the team in the navigation and then go to 
 ### NavigationPath Component:
 
-Audit log
+Team settings > Audit log
 .
 
 ![Team audit log page showing the drop-down menu in the top right with the options All events, Site events, Team events, Newest, and Oldest.](/images/accounts-and-billing-audit-log.png)

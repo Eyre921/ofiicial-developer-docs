@@ -10,16 +10,16 @@ Migrate from Together Python v1 to v2 - the new Together AI Python SDK with impr
 
 Python v2 is an upgrade to the Together AI Python SDK. This guide will help you migrate from the legacy (v1) SDK to the new version.
 
-**Why Migrate?**
+**Why migrate?**
 
 The new SDK offers several advantages:
 
-* **Modern Architecture**: Built with Stainless OpenAPI generator for consistency and reliability
-* **Better Type Safety**: Comprehensive typing for better IDE support and fewer runtime errors
-* **Broader Python Support**: Python 3.8+ (vs 3.10+ in legacy)
-* **Modern HTTP Client**: Uses `httpx` instead of `requests`
-* **Faster Performance**: \~20ms faster per request on internal benchmarks
-* **uv Support**: Compatible with [uv](https://docs.astral.sh/uv/), the fast Python package installer - `uv add together`
+* **Modern architecture:** Built with Stainless OpenAPI generator for consistency and reliability.
+* **Better type safety:** Comprehensive typing for better IDE support and fewer runtime errors.
+* **Broader Python support:** Python 3.8+ (vs 3.10+ in legacy).
+* **Modern HTTP client:** Uses `httpx` instead of `requests`.
+* **Faster performance:** \~20ms faster per request on internal benchmarks.
+* **uv support:** Compatible with [uv](https://docs.astral.sh/uv/), the fast Python package installer (`uv add together`).
 
 ## Feature parity matrix
 
@@ -27,34 +27,34 @@ Use this table to quickly assess the migration effort for your specific use case
 
 **Legend:** ✅ No changes | ⚠️ Minor changes needed | 🆕 New capability
 
-| Feature                         | Legacy SDK | New SDK | Migration Notes                                                |
+| Feature                         | Legacy SDK | New SDK | Migration notes                                                |
 | :------------------------------ | :--------- | :------ | :------------------------------------------------------------- |
 | Chat completions                | ✅          | ✅       | No changes required                                            |
-| Text Completions                | ✅          | ✅       | No changes required                                            |
+| Text completions                | ✅          | ✅       | No changes required                                            |
 | Vision                          | ✅          | ✅       | No changes required                                            |
 | Function calling                | ✅          | ✅       | No changes required                                            |
-| Structured Decoding (JSON mode) | ✅          | ✅       | No changes required                                            |
+| Structured decoding (JSON mode) | ✅          | ✅       | No changes required                                            |
 | Embeddings                      | ✅          | ✅       | No changes required                                            |
-| Image Generation                | ✅          | ✅       | No changes required                                            |
-| Video Generation                | ✅          | ✅       | No changes required                                            |
+| Image generation                | ✅          | ✅       | No changes required                                            |
+| Video generation                | ✅          | ✅       | No changes required                                            |
 | Streaming                       | ✅          | ✅       | No changes required                                            |
-| Async Support                   | ✅          | ✅       | No changes required                                            |
-| Models List                     | ✅          | ✅       | No changes required                                            |
+| Async support                   | ✅          | ✅       | No changes required                                            |
+| Models list                     | ✅          | ✅       | No changes required                                            |
 | Rerank                          | ✅          | ✅       | No changes required                                            |
-| Audio Speech (TTS)              | ✅          | ✅       | ⚠️ Voice listing: dict access → attribute access               |
-| Audio Transcription             | ✅          | ✅       | ⚠️ File paths → file objects with context manager              |
-| Audio Translation               | ✅          | ✅       | ⚠️ File paths → file objects with context manager              |
+| Audio speech (TTS)              | ✅          | ✅       | ⚠️ Voice listing: dict access → attribute access               |
+| Audio transcription             | ✅          | ✅       | ⚠️ File paths → file objects with context manager              |
+| Audio translation               | ✅          | ✅       | ⚠️ File paths → file objects with context manager              |
 | Fine-tuning                     | ✅          | ✅       | ⚠️ `list_checkpoints` response changed, `download` → `content` |
 | File Upload/Download            | ✅          | ✅       | ⚠️ `retrieve_content` → `content`, no longer writes to disk    |
 | Batches                         | ✅          | ✅       | ⚠️ Method names simplified, response shape changed             |
 | Endpoints                       | ✅          | ✅       | ⚠️ `get` → `retrieve`, response shapes changed                 |
 | Evaluations                     | ✅          | ✅       | ⚠️ Namespace changed to `evals`, parameters restructured       |
 | Code interpreter                | ✅          | ✅       | ⚠️ `run` → `execute`                                           |
-| **Raw Response Access**         | ❌          | ✅       | 🆕 New feature                                                 |
+| **Raw response access**         | ❌          | ✅       | 🆕 New feature                                                 |
 
 ## Installation & setup
 
-**1. Install the New SDK**
+**1. Install the new SDK**
 
 ```bash theme={null}
 # Install uv
@@ -71,13 +71,13 @@ uv add together
 pip install together
 ```
 
-**2. Dependency Changes**
+**2. Dependency changes**
 
 The new SDK uses different dependencies. You can remove legacy dependencies if not used elsewhere:
 
 **Old dependencies (can remove):**
 
-```
+```text theme={null}
 requests>=2.31.0
 typer>=0.9
 aiohttp>=3.9.3
@@ -85,13 +85,13 @@ aiohttp>=3.9.3
 
 **New dependencies (automatically installed):**
 
-```
+```text theme={null}
 httpx>=0.23.0
 pydantic>=1.9.0
 typing-extensions>=4.10
 ```
 
-**3. Client Initialization**
+**3. Client initialization**
 
 Basic client setup remains the same:
 
@@ -111,7 +111,7 @@ async_client = AsyncTogether()
 ```
 
 <Note>
-  Some constructor parameters have changed. See [Constructor Parameters](#constructor-parameters) for details.
+  Some constructor parameters have changed. See [Constructor parameters](#constructor-parameters) for details.
 </Note>
 
 ## Global breaking changes
@@ -146,10 +146,10 @@ The client constructor has been updated with renamed and new parameters:
   ```
 </CodeGroup>
 
-**Key Changes:**
+**Key changes:**
 
-* `supplied_headers` → `default_headers` (renamed)
-* New optional parameters: `default_query`, `http_client`
+* `supplied_headers` → `default_headers` (renamed).
+* New optional parameters: `default_query`, `http_client`.
 
 ### Keyword-only arguments
 
@@ -227,9 +227,9 @@ from together.types.chat.chat_completion import ChatCompletion
 
 The following CLI commands have been removed in the new SDK:
 
-* `together chat.completions`
-* `together completions`
-* `together images generate`
+* `together chat.completions`.
+* `together completions`.
+* `together images generate`.
 
 ## APIs with no changes required
 
@@ -330,7 +330,7 @@ response = client.rerank.create(
 )
 ```
 
-**Fine-tuning (Basic Operations)**
+**Fine-tuning (basic operations)**
 
 ```python theme={null}
 # Create fine-tune job
@@ -393,13 +393,13 @@ Method names have been simplified, and the response structure has changed slight
   ```
 </CodeGroup>
 
-**Key Changes:**
+**Key changes:**
 
-* `create_batch()` → `create()`
-* `get_batch()` → `retrieve()`
-* `list_batches()` → `list()`
-* `cancel_batch()` → `cancel()`
-* `file_id` → `input_file_id`
+* `create_batch()` → `create()`.
+* `get_batch()` → `retrieve()`.
+* `list_batches()` → `list()`.
+* `cancel_batch()` → `cancel()`.
+* `file_id` → `input_file_id`.
 * `create()` returns the full response. Access `.job` for the job object.
 
 **Endpoints**
@@ -458,11 +458,11 @@ Method names have been simplified, and the response structure has changed slight
   ```
 </CodeGroup>
 
-**Key Changes:**
+**Key changes:**
 
-* `get()` → `retrieve()`
-* `min_replicas` and `max_replicas` are now nested inside `autoscaling` parameter
-* `list()` response changed: previously returned array directly, now returns object with `.data`
+* `get()` → `retrieve()`.
+* `min_replicas` and `max_replicas` are now nested inside `autoscaling` parameter.
+* `list()` response changed: previously returned array directly, now returns object with `.data`.
 
 **Files**
 
@@ -489,12 +489,12 @@ Method names have been simplified, and the response structure has changed slight
   ```
 </CodeGroup>
 
-**Key Changes:**
+**Key changes:**
 
-* `retrieve_content()` → `content()`
+* `retrieve_content()` → `content()`.
 * No longer writes to disk automatically. Returns binary data for you to handle.
 
-**Fine-tuning Checkpoints**
+**Fine-tuning checkpoints**
 
 <CodeGroup>
   ```python Legacy SDK theme={null}
@@ -524,13 +524,13 @@ Method names have been simplified, and the response structure has changed slight
   ```
 </CodeGroup>
 
-**Key Changes:**
+**Key changes:**
 
-* Response is now an object with `.data` containing the list of checkpoints
-* Checkpoint properties renamed: `type` → `checkpoint_type`, `timestamp` → `created_at`
+* Response is now an object with `.data` containing the list of checkpoints.
+* Checkpoint properties renamed: `type` → `checkpoint_type`, `timestamp` → `created_at`.
 * `name` no longer exists. Construct it from `ft_id` and `step`.
 
-**Fine-tuning Download**
+**Fine-tuning download**
 
 <CodeGroup>
   ```python Legacy SDK theme={null}
@@ -551,10 +551,10 @@ Method names have been simplified, and the response structure has changed slight
   ```
 </CodeGroup>
 
-**Key Changes:**
+**Key changes:**
 
-* `download()` → `content()` with streaming response
-* No longer writes to disk automatically
+* `download()` → `content()` with streaming response.
+* No longer writes to disk automatically.
 
 **Code interpreter**
 
@@ -582,13 +582,13 @@ Method names have been simplified, and the response structure has changed slight
   ```
 </CodeGroup>
 
-**Key Changes:**
+**Key changes:**
 
-* `run()` → `execute()`
-* Output access: `result.output` → `result.data.outputs[0].data`
-* New `sessions.list()` method for session management
+* `run()` → `execute()`.
+* Output access: `result.output` → `result.data.outputs[0].data`.
+* New `sessions.list()` method for session management.
 
-**Audio Transcriptions & Translations**
+**Audio transcriptions & translations**
 
 The new SDK requires file objects instead of file paths for audio operations. Use context managers for proper resource handling.
 
@@ -626,12 +626,12 @@ The new SDK requires file objects instead of file paths for audio operations. Us
   ```
 </CodeGroup>
 
-**Key Changes:**
+**Key changes:**
 
-* File paths (strings) → file objects opened with `open(file, "rb")`
-* Use context managers (`with open(...) as f:`) for proper resource cleanup
+* File paths (strings) → file objects opened with `open(file, "rb")`.
+* Use context managers (`with open(...) as f:`) for proper resource cleanup.
 
-**Audio Speech (TTS) - Voice Listing**
+**Audio speech (TTS) - voice listing**
 
 When listing available voices, voice properties are now accessed as object attributes instead of dictionary keys.
 
@@ -655,9 +655,9 @@ When listing available voices, voice properties are now accessed as object attri
   ```
 </CodeGroup>
 
-**Key Changes:**
+**Key changes:**
 
-* Voice properties: `voice['name']` → `voice.name` (dict access → attribute access)
+* Voice properties: `voice['name']` → `voice.name` (dict access → attribute access).
 
 **Evaluations**
 
@@ -719,15 +719,15 @@ The evaluations API has significant changes including a namespace rename and res
   ```
 </CodeGroup>
 
-**Key Changes:**
+**Key changes:**
 
-* Namespace: `client.evaluation` → `client.evals`
-* Parameters restructured with typed parameter objects
-* `retrieve()` and `status()` no longer use named arguments
+* Namespace: `client.evaluation` → `client.evals`.
+* Parameters restructured with typed parameter objects.
+* `retrieve()` and `status()` no longer use named arguments.
 
 ## New SDK-only features
 
-**Raw Response Access**
+**Raw response access**
 
 Access raw HTTP responses for debugging:
 
@@ -743,7 +743,7 @@ print(f"Headers: {response.headers}")
 completion = response.parse()  # Get parsed response
 ```
 
-**Streaming with Context Manager**
+**Streaming with context manager**
 
 Better resource management for streaming:
 
@@ -763,7 +763,7 @@ with client.chat.completions.with_streaming_response.create(
 
 The exception hierarchy has been completely restructured with a new, more granular set of HTTP status-specific exceptions. Update your error handling code accordingly:
 
-| Legacy SDK Exception      | New SDK Exception            | Notes                                   |
+| Legacy SDK exception      | New SDK exception            | Notes                                   |
 | :------------------------ | :--------------------------- | :-------------------------------------- |
 | `TogetherException`       | `TogetherError`              | Base exception renamed                  |
 | `AuthenticationError`     | `AuthenticationError`        | HTTP 401                                |
@@ -781,16 +781,16 @@ The exception hierarchy has been completely restructured with a new, more granul
 
 **New exceptions added:**
 
-* `PermissionDeniedError` (403)
-* `NotFoundError` (404)
-* `ConflictError` (409)
-* `UnprocessableEntityError` (422)
+* `PermissionDeniedError` (403).
+* `NotFoundError` (404).
+* `ConflictError` (409).
+* `UnprocessableEntityError` (422).
 
 <Warning>
   Exception attributes have changed. For example, `http_status` is now `status_code`. Check your error handling code for attribute access.
 </Warning>
 
-**Updated Error Handling Example**
+**Updated error handling example**
 
 ```python theme={null}
 import together
@@ -815,7 +815,7 @@ except together.APIStatusError as e:
 
 ## Troubleshooting
 
-**Import Errors**
+**Import errors**
 
 **Problem:**
 
@@ -833,7 +833,7 @@ from together.types import ChatCompletionResponse
 from together.types.chat.chat_completion import ChatCompletion
 ```
 
-**Method Not Found Errors**
+**Method not found errors**
 
 **Problem:**
 
@@ -852,7 +852,7 @@ client.endpoints.get(...)         →  client.endpoints.retrieve(...)
 client.code_interpreter.run(...)  →  client.code_interpreter.execute(...)
 ```
 
-**Parameter Type Errors**
+**Parameter type errors**
 
 **Problem:**
 
@@ -870,7 +870,7 @@ client.chat.completions.create(model="...", messages=[...], max_tokens=None)
 client.chat.completions.create(model="...", messages=[...])
 ```
 
-**Namespace Errors**
+**Namespace errors**
 
 **Problem:**
 
@@ -890,7 +890,7 @@ client.evals.create(...)
 
 ## Best practices
 
-**Type Safety**
+**Type safety**
 
 Take advantage of improved typing:
 
@@ -910,7 +910,7 @@ def create_chat_completion(
     )
 ```
 
-**HTTP Client Configuration**
+**HTTP client configuration**
 
 The new SDK uses `httpx`. Configure it as needed:
 
@@ -927,7 +927,7 @@ client = Together(
 
 If you encounter issues during migration:
 
-* To see the code check the [new SDK repo](https://github.com/togethercomputer/together-py)
-* Review the [API Reference](/reference/chat-completions-1) which has updated v2 code examples
-* Report issues and discuss changes on [discord](https://discord.com/channels/1082503318624022589/1228037496257118242)
-* [Contact support](https://www.together.ai/contact) for additional help
+* To see the code check the [new SDK repo](https://github.com/togethercomputer/together-py).
+* Review the [API reference](/reference/chat-completions-1) which has updated v2 code examples.
+* Report issues and discuss changes on [Discord](https://discord.com/channels/1082503318624022589/1228037496257118242).
+* [Contact support](https://www.together.ai/contact) for additional help.

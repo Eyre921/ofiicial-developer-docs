@@ -10,10 +10,10 @@ This guide walks you through deploying a sample inference worker to Together's m
 
 ## Requirements
 
-* **Together API Key** – Required for all operations. Get one from [together.ai](https://together.ai).
-* **Dedicated Containers access** – Contact your account representative or [support@together.ai](mailto:support@together.ai) to enable Dedicated Containers for your organization.
+* **Together API key:** Required for all operations. Get one from [together.ai](https://together.ai).
+* **Dedicated containers access:** Contact your account representative or [support@together.ai](mailto:support@together.ai) to enable dedicated containers for your organization.
 * **Docker:** For building and pushing container images. See the [Docker installation guide](https://docs.docker.com/engine/install).
-* **uv** (optional) – For Python/package management. Install from [astral-sh/uv](https://github.com/astral-sh/uv).
+* **uv** (optional): For Python/package management. Install from [astral-sh/uv](https://github.com/astral-sh/uv).
 
 ## Step 1: Install the Together CLI
 
@@ -119,9 +119,9 @@ Navigate to the example worker and deploy:
 
 This command:
 
-1. Builds the Docker image from the example
-2. Pushes it to Together's private registry
-3. Creates a deployment on Together's GPU infrastructure
+1. Builds the Docker image from the example.
+2. Pushes it to Together's private registry.
+3. Creates a deployment on Together's GPU infrastructure.
 
 ## Step 4: Watch deployment status
 
@@ -131,7 +131,7 @@ This command:
   ```
 </CodeGroup>
 
-Wait until the deployment shows `running` and replicas are ready. Press `Ctrl+C` to stop watching. Note that `watch` is not installed by default on MacOS, use `brew install watch` or your package manager of choice.
+Wait until the deployment shows `running` and replicas are ready. Press `Ctrl+C` to stop watching. Note that `watch` is not installed by default on macOS, use `brew install watch` or your package manager of choice.
 
 <Note>
   You can also view the status of your deployments from the [Together AI web console](https://api.together.ai/containers).
@@ -225,12 +225,12 @@ When you're done, delete the deployment:
 
 Now that you've deployed your first container, explore the full platform:
 
-* [**Dedicated Containers Overview**](/docs/dedicated-container-inference) – Architecture and concepts
-* [**Jig CLI**](/docs/deployments-jig) – Build, push, deploy, secrets, and volumes
-* [**Sprocket SDK**](/docs/deployments-sprocket) – Build queue-integrated inference workers
-* [**API Reference**](/reference/deployments-list) – REST API for deployments, secrets, and queues
+* [**Dedicated containers overview**](/docs/dedicated-container-inference): Architecture and concepts.
+* [**Jig CLI**](/docs/deployments-jig): Build, push, deploy, secrets, and volumes.
+* [**Sprocket SDK**](/docs/deployments-sprocket): Build queue-integrated inference workers.
+* [**API reference**](/reference/deployments-list): REST API for deployments, secrets, and queues.
 
 ### Example guides
 
-* [**Image Generation with Flux2**](/docs/dedicated_containers_image) – Single-GPU inference with 4-bit quantization
-* [**Video Generation with Wan 2.1**](/docs/dedicated_containers_video) – Multi-GPU inference with torchrun
+* [**Image generation with Flux2**](/docs/dedicated_containers_image): Single-GPU inference with 4-bit quantization.
+* [**Video generation with Wan 2.1**](/docs/dedicated_containers_video): Multi-GPU inference with torchrun.

@@ -6,7 +6,7 @@ path: docs/using-together-with-vercels-ai-sdk
 
 Use Together models with the Vercel AI SDK.
 
-The Vercel AI SDK is a powerful Typescript library designed to help developers build AI-powered applications. Using Together AI and the Vercel AI SDK, you can integrate AI into your TypeScript, React, or Next.js project. This tutorial shows how to use Together AI's models with the Vercel AI SDK.
+The Vercel AI SDK is a powerful TypeScript library designed to help developers build AI-powered applications. Using Together AI and the Vercel AI SDK, you can integrate AI into your TypeScript, React, or Next.js project. This tutorial shows how to use Together AI's models with the Vercel AI SDK.
 
 ## Quickstart: 15 lines of code
 
@@ -50,7 +50,7 @@ main();
 
 ### Output
 
-```
+```text theme={null}
 Here's a delicious vegetarian lasagna recipe for 4 people:
 
 **Ingredients:**
@@ -134,7 +134,7 @@ main();
 
 ### Output
 
-```
+```text theme={null}
 Introducing "Luminaria Day" - a joyous holiday celebrated on the spring equinox, marking the return of warmth and light to the world. This festive occasion is a time for family, friends, and community to come together, share stories, and bask in the radiance of the season.
 
 **Date:** Luminaria Day is observed on the spring equinox, typically around March 20th or 21st.
@@ -211,12 +211,12 @@ const { images } = await generateImage({
 
 Together AI image models support various image dimensions that vary by model. Common sizes include 512x512, 768x768, and 1024x1024, with some models supporting up to 1792x1792. The default size is 1024x1024.
 
-Available Models:
+Available models:
 
-* `black-forest-labs/FLUX.2-dev`
-* `black-forest-labs/FLUX.1.1-pro`
-* `black-forest-labs/FLUX.1-kontext-pro`
-* `black-forest-labs/FLUX.1-kontext-max`
+* `black-forest-labs/FLUX.2-dev`.
+* `black-forest-labs/FLUX.1.1-pro`.
+* `black-forest-labs/FLUX.1-kontext-pro`.
+* `black-forest-labs/FLUX.1-kontext-max`.
 
 See the [Together AI models page](/docs/serverless/models#image-models) for a full list of available image models and their capabilities.
 
@@ -246,6 +246,6 @@ const { embedding } = await embed({
 
 Some available model IDs include:
 
-* `intfloat/multilingual-e5-large-instruct`
+* `intfloat/multilingual-e5-large-instruct`.
 
 ***

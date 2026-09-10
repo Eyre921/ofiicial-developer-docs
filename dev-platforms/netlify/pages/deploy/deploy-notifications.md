@@ -300,6 +300,18 @@ Project configuration > Notifications > Deploy notifications
 
 ![](/images/site-deploys-azure-devops-pull-request-configuration.png)
 
+## Cursor Origin notifications
+
+Deploy notifications for Cursor Origin allow your team to check out the latest deploy status and Deploy Preview from Cursor Origin.
+
+### Cursor Origin commit statuses
+
+This type of notification sets commit statuses directly in your Cursor Origin branches, pull requests, and commit lists. For successful deploys, this includes a link to the Deploy Preview. For failed deploys, this includes a link to the Netlify dashboard's deploy details page where you can examine the deploy log and deploy the latest branch commit.
+
+### Cursor Origin pull request comments
+
+This type of notification adds a comment to your Cursor Origin pull requests with a Deploy Preview link and deploy status. This comment automatically updates with any new commits to your pull request.
+
 ## Notifications for monorepos or repositories building multiple apps
 
 For monorepos or setups where one repository builds multiple applications, you can manage the amount of commit status and commit check notifications for sites linked from GitHub or GitLab. This team-level setting works in tandem with deploy notifications configured individually for each site. Check out our [monorepo docs](/build/configure-builds/monorepos#commit-status-notifications) to learn more.

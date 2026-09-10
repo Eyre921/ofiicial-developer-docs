@@ -8,26 +8,26 @@ Build an AI data analyst with code interpreter, E2B, and Together AI.
 
 Giving LLMs the ability to execute code is very powerful – it has many advantages such as:
 
-* Better reasoning
-* More complex tasks (e.g., advanced data analysis or mathematics)
-* Producing tangible results such as charts
+* Better reasoning.
+* More complex tasks (e.g., advanced data analysis or mathematics).
+* Producing tangible results such as charts.
 * Immediate testing (and correcting) of the produced output.
 
 In this example, we'll show you how to build an AI data analyst that can read in data and make charts. We'll be using [E2B](https://e2b.dev/docs) for the code interpreter and Together AI for the LLM piece.
 
-## 1. Requirements
+## Requirements
 
 Create a `main.ipynb` file and save your Together & E2B API keys in there.
 
 Get the [E2B API key](https://e2b.dev/docs/api-key) and the [Together AI API key](https://api.together.ai/settings/projects/~current/api-keys). Download the [CSV dataset](https://www.kaggle.com/datasets/nishanthsalian/socioeconomic-country-profiles) and upload it to the same directory as your program. Rename it to `data.csv`.
 
-## 2. Install the SDKs
+## Step 1: Install the SDKs
 
 ```bash Shell theme={null}
 pip install together==1.2.6 e2b-code-interpreter==0.0.10 dotenv==1.0.0
 ```
 
-## 3. Define your model and system prompt
+## Step 2: Define your model and system prompt
 
 In the following code snippet, we'll define our API keys, our model of choice, and our system prompt.
 
@@ -129,7 +129,7 @@ Generally, you follow these rules:
    """
 ````
 
-## 4. Add code interpreting capabilities and initialize the model
+## Step 3: Add code interpreting capabilities and initialize the model
 
 Now we define the function that will use the E2B code interpreter. Every time the LLM assistant decides that it needs to execute code, this function will be used. See the [E2B code interpreter installation guide](https://e2b.dev/docs/legacy/code-interpreter/installation).
 
@@ -195,7 +195,7 @@ def chat_with_llm(e2b_code_interpreter, user_message):
         return []
 ````
 
-## 5. Upload the dataset
+## Step 4: Upload the dataset
 
 The CSV data is uploaded programmatically, not via AI-generated code. The code interpreter by E2B runs inside the E2B sandbox. See the [E2B file upload docs](https://e2b.dev/docs/filesystem/upload).
 
@@ -221,7 +221,7 @@ def upload_dataset(code_interpreter):
         raise error
 ```
 
-## 6. Put everything together
+## Step 5: Put everything together
 
 Finally we put everything together and let the AI assistant upload the data, run an analysis, and generate a PNG file with a chart. You can update the task for the assistant in this step. If you decide to change the CSV file you are using, don't forget to update the prompt too.
 
@@ -245,7 +245,7 @@ with CodeInterpreter(api_key=E2B_API_KEY) as code_interpreter:
 first_result
 ```
 
-## 7. Run the program and see the results
+## Step 6: Run the program and see the results
 
 The resulting chart is generated within the notebook. The plot shows the linear regression of the relationship between GDP per capita and life expectancy from the CSV data:
 
@@ -299,6 +299,6 @@ plt.show()
 
 ## Resources
 
-* [More guides: Mixture of Agents](/docs/mixture-of-agents)
-* [E2B docs](https://e2b.dev/docs)
-* [E2B Cookbook](https://github.com/e2b-dev/e2b-cookbook/tree/main)
+* [More guides: Mixture of Agents](/docs/mixture-of-agents).
+* [E2B docs](https://e2b.dev/docs).
+* [E2B Cookbook](https://github.com/e2b-dev/e2b-cookbook/tree/main).

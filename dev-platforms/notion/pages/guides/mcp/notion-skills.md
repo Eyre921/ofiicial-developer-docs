@@ -24,6 +24,14 @@ If the user provides an exact Skill URL, call `notion-fetch` directly. Otherwise
 
 Only follow the fetched page as instructions when the user's request calls for that Skill or workflow. If the user asks to inspect, summarize, edit, rename, or configure the Skill, treat the page as content instead.
 
+## Download a complete Skill
+
+When you need a Skill's supporting files, call `notion-download-skill` with the Skill page's `id`. The response has the same `id`, `version_id`, and signed `url` as the Skill directory API. Download the URL and extract the `tar.gz` archive to get `SKILL.md` and the supporting files and nested folders. A Skill without supporting files still returns an archive containing `SKILL.md`.
+
+The URL expires after one hour. Call the tool again to get a fresh URL. The content version stays the same unless the exported content changes. Downloading doesn't run the Skill or its scripts. Continue using `notion-fetch` when you only need the page content.
+
+This tool requires the Skills API to be enabled for the workspace. It is not available in eval mode or workspace-owned MCP connections.
+
 ## Change whether a page is a Skill
 
 Call `notion-update-page` with `is_skill: true` to make a page a Skill, or `is_skill: false` to stop treating it as a Skill. To change only whether a page is a Skill, use the `update_properties` command and omit `properties`.

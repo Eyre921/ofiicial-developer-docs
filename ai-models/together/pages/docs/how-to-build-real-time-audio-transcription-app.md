@@ -213,7 +213,7 @@ The beauty of tRPC is that our frontend gets full TypeScript intellisense and ty
 
 For users who want to upload existing audio files, we use react-dropzone and next-s3-upload.
 
-Next-s3-upload handles the S3 upload in the backend and fully integrates with Next.js API routes in a simple 5 minute setup. You can read more here: [https://next-s3-upload.codingvalue.com/](https://next-s3-upload.codingvalue.com/)
+Next-s3-upload handles the S3 upload in the backend and fully integrates with Next.js API routes in a five-minute setup. You can read more here: [https://next-s3-upload.codingvalue.com/](https://next-s3-upload.codingvalue.com/)
 
 ```tsx theme={null}
 import Dropzone from "react-dropzone";

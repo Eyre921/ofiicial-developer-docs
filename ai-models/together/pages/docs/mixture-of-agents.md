@@ -4,6 +4,8 @@ source: https://docs.together.ai/docs/mixture-of-agents
 path: docs/mixture-of-agents
 ---
 
+Combine responses from multiple open-source LLMs to produce higher-quality outputs with mixture of agents (MoA).
+
 <Frame>
   <img alt="" />
 </Frame>
@@ -12,9 +14,9 @@ path: docs/mixture-of-agents
 
 Mixture of Agents (MoA) is a novel approach that leverages the collective strengths of multiple LLMs to enhance performance, achieving state-of-the-art results. By employing a layered architecture where each layer comprises several LLM agents, **MoA significantly outperforms** GPT-4 Omni’s 57.5% on AlpacaEval 2.0 with a score of 65.1%, using only open-source models!
 
-The way Together MoA works is that given a prompt, like `tell me the best things to do in SF`, it sends it to 4 different OSS LLMs. It then combines results from all 4, sends it to a final LLM, and asks it to combine all 4 responses into an ideal response. That’s it! It’s just the idea of combining the results of 4 different LLMs to produce a better final output. It’s slower than using a single LLM, but it can be great for use cases where latency doesn't matter as much, like synthetic data generation.
+The way Together MoA works is that given a prompt, like `tell me the best things to do in SF`, it sends it to four different OSS LLMs. It then combines results from all four, sends it to a final LLM, and asks it to combine all four responses into an ideal response. That’s it! It’s the idea of combining the results of four different LLMs to produce a better final output. It’s slower than using a single LLM, but it can be great for use cases where latency doesn't matter as much, like synthetic data generation.
 
-For a quick summary and 3-minute demo on how to implement MoA with code, watch the video below:
+For a quick summary and three-minute demo on how to implement MoA with code, watch the video below:
 
 <Frame>
   <iframe title="YouTube embed" />
@@ -22,15 +24,15 @@ For a quick summary and 3-minute demo on how to implement MoA with code, watch t
 
 ## Together MoA in 50 lines of code
 
-To get started with using MoA in your own apps, you'll need to install the Together python library, get your Together API key, and run the code below which uses our chat completions API to interact with OSS models.
+To get started with using MoA in your own apps, you'll need to install the Together Python library, get your Together API key, and run the code below which uses our chat completions API to interact with OSS models.
 
-1. Install the Together Python library
+1. Install the Together Python library.
 
 ```bash Shell theme={null}
 pip install together
 ```
 
-2. Get your [Together API key](https://api.together.ai/settings/projects/~current/api-keys) & export it
+2. Get your [Together API key](https://api.together.ai/settings/projects/~current/api-keys) and export it.
 
 ```bash Shell theme={null}
 export TOGETHER_API_KEY='xxxx'
@@ -38,7 +40,7 @@ export TOGETHER_API_KEY='xxxx'
 
 3. Run the code below, which interacts with our chat completions API.
 
-This implementation of MoA uses 2 layers and 4 LLMs. We’ll define our 4 initial LLMs and our aggregator LLM, along with our prompt. We’ll also add in a prompt to send to the aggregator to combine responses effectively. Now that we have this, we’ll send the prompt to the 4 LLMs and compute all results simultaneously. Finally, we'll send the results from the four LLMs to our final LLM, along with a system prompt instructing it to combine them into a final answer, and we’ll stream results back.
+This implementation of MoA uses two layers and four LLMs. We’ll define our four initial LLMs and our aggregator LLM, along with our prompt. We’ll also add in a prompt to send to the aggregator to combine responses effectively. Now that we have this, we’ll send the prompt to the four LLMs and compute all results simultaneously. Finally, we'll send the results from the four LLMs to our final LLM, along with a system prompt instructing it to combine them into a final answer, and we’ll stream results back.
 
 ```python Python theme={null}
 # Mixture-of-Agents in 50 lines of code
@@ -101,7 +103,7 @@ asyncio.run(main())
 
 ## Advanced MoA example
 
-In the previous example, we went over how to implement MoA with 2 layers (4 LLMs answering and one LLM aggregating). However, one strength of MoA is being able to go through several layers to get an even better response. In this example, we'll go through how to run MoA with 3+ layers.
+In the previous example, we went over how to implement MoA with two layers (four LLMs answering and one LLM aggregating). However, one strength of MoA is being able to go through several layers to get an even better response. In this example, we'll go through how to run MoA with 3+ layers.
 
 <Frame>
   <img alt="" />
@@ -210,6 +212,6 @@ asyncio.run(main())
 
 ## Resources
 
-* [Together MoA GitHub Repo](https://github.com/togethercomputer/MoA) (includes an interactive demo)
-* [Together MoA blog post](https://www.together.ai/blog/together-moa)
-* [MoA Technical Paper](https://arxiv.org/abs/2406.04692)
+* [Together MoA GitHub Repo](https://github.com/togethercomputer/MoA) (includes an interactive demo).
+* [Together MoA blog post](https://www.together.ai/blog/together-moa).
+* [MoA Technical Paper](https://arxiv.org/abs/2406.04692).

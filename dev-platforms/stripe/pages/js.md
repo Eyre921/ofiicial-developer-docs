@@ -334,7 +334,7 @@ When providing a `customerSessionClientSecret` and using the Payment Element, th
           Installment configuration.
           - `enabled`
             When `true`, shows the card installment plan selection UI (depending on issuer and country support) if you don't manage your payment methods in the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods).
- You must set `mode='payment'` _and_ explicitly specify `paymentMethodTypes` in the Elements `options`. Setting installments to `true` without these settings returns an error.
+ You must set `mode='payment'` _and_ explicitly specify `allowedPaymentMethodTypes` in the Elements `options`. Setting installments to `true` without these settings returns an error.
  Incompatible with `paymentMethodCreation='manual'`.
         - `setup_future_usage`
           Indicates that you intend to make future payments with the payment details collected by the Payment Element.
@@ -838,7 +838,7 @@ When providing a `customerSessionClientSecret` and using the Payment Element, th
           Installment configuration.
           - `enabled`
             When `true`, shows the card installment plan selection UI (depending on issuer and country support) if you don't manage your payment methods in the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods).
-You must set `mode='payment'` _and_ explicitly specify `paymentMethodTypes` in the Elements `options`. Setting installments to `true` without these settings returns an error.
+You must set `mode='payment'` _and_ explicitly specify `allowedPaymentMethodTypes` in the Elements `options`. Setting installments to `true` without these settings returns an error.
 Incompatible with `paymentMethodCreation='manual'`.
       - `cashapp`
         If this is a `cashapp` PaymentMethod, this sub-hash contains details about the Cash App Pay payment method options.
@@ -1258,6 +1258,9 @@ If you disable collecting certain fields
 with the `fields` option, you must pass that same data to [stripe.confirmPayment](https://docs.stripe.com/js/payment_intents/confirm_payment.md)
 or we'll reject the payment.
 
+You can set `billingDetails` at the top level to apply the same field collection settings to all payment methods,
+or set `billingDetails` under a supported payment method type to override the top-level setting for that payment method.
+
 Learn how to [customize the billing details to collect](https://docs.stripe.com/payments/payment-element/control-billing-details-collection.md) and
 the [customized fields](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-customized_fields).
       - `billingDetails`
@@ -1266,6 +1269,7 @@ in the Payment Element. If you would like to disable only certain billing detail
 pass an object specifying which fields you would like to disable collection for.
 The default setting for each field or object is `auto`.
         - `name`
+          Specify `always` to require the Payment Element to collect the customer's billing name.
         - `email`
           Specify `never` to avoid collecting email in the Payment Element.
 
@@ -1292,6 +1296,41 @@ Depending on the country, this might correspond to a state, a province, an oblas
             Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
           - `postalCode`
             The postal code or ZIP code, also known as PIN code in India.
+      - `[paymentMethodType]`
+        Optionally specify the billing detail collection settings for any Payment Element payment method type. Examples of valid values are `card`, `klarna`, or `us_bank_account`. You can include one or more payment method type keys.
+        - `billingDetails`
+          Specify `never` to avoid collecting all [billing details](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-billing_details)
+in the Payment Element. If you would like to disable only certain billing details,
+pass an object specifying which fields you would like to disable collection for.
+The default setting for each field or object is `auto`.
+          - `name`
+            Specify `always` to require the Payment Element to collect the customer's billing name.
+          - `email`
+            Specify `never` to avoid collecting email in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.email=never` and `walletOptions.emailRequired=true`, email is still collected from wallets.
+          - `phone`
+            Specify `never` to avoid collecting phone in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.phone=never` and `walletOptions.phoneNumberRequired=true`, phone is still collected from wallets.
+          - `address`
+            Specify `if_required` to only collect the minimum billing address fields required to complete the payment.
+You can omit and hide optional address fields in the card form, such as country and postal code.
+Unlike the `never` option, you don't need to include fields omitted in the Payment Element when confirming the payment.
+This can reduce the amount of information required to complete the form.
+
+Disabling address collection can negatively impact authorization rates and network fees for users on a network cost plus pricing plan.
+            - `line1`
+            - `line2`
+            - `city`
+              The name of a city, town, village, etc.
+            - `state`
+              The most coarse subdivision of a country.
+Depending on the country, this might correspond to a state, a province, an oblast, a prefecture, or something else along these lines.
+            - `country`
+              Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
+            - `postalCode`
+              The postal code or ZIP code, also known as PIN code in India.
     - `readOnly`
       Applies a read-only state to the Payment Element so that payment details can’t be changed. Default is false.
 
@@ -1400,6 +1439,7 @@ in the Payment Element. If you would like to disable only certain billing detail
 pass an object specifying which fields you would like to disable collection for.
 The default setting for each field or object is `auto`.
       - `name`
+        Specify `always` to require the Payment Element to collect the customer's billing name.
       - `email`
         Specify `never` to avoid collecting email in the Payment Element.
 
@@ -1426,6 +1466,41 @@ Depending on the country, this might correspond to a state, a province, an oblas
           Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
         - `postalCode`
           The postal code or ZIP code, also known as PIN code in India.
+    - `[paymentMethodType]`
+      Optionally specify the billing detail collection settings for any Payment Element payment method type. Examples of valid values are `card`, `klarna`, or `us_bank_account`. You can include one or more payment method type keys.
+      - `billingDetails`
+        Specify `never` to avoid collecting all [billing details](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-billing_details)
+in the Payment Element. If you would like to disable only certain billing details,
+pass an object specifying which fields you would like to disable collection for.
+The default setting for each field or object is `auto`.
+        - `name`
+          Specify `always` to require the Payment Element to collect the customer's billing name.
+        - `email`
+          Specify `never` to avoid collecting email in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.email=never` and `walletOptions.emailRequired=true`, email is still collected from wallets.
+        - `phone`
+          Specify `never` to avoid collecting phone in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.phone=never` and `walletOptions.phoneNumberRequired=true`, phone is still collected from wallets.
+        - `address`
+          Specify `if_required` to only collect the minimum billing address fields required to complete the payment.
+You can omit and hide optional address fields in the card form, such as country and postal code.
+Unlike the `never` option, you don't need to include fields omitted in the Payment Element when confirming the payment.
+This can reduce the amount of information required to complete the form.
+
+Disabling address collection can negatively impact authorization rates and network fees for users on a network cost plus pricing plan.
+          - `line1`
+          - `line2`
+          - `city`
+            The name of a city, town, village, etc.
+          - `state`
+            The most coarse subdivision of a country.
+Depending on the country, this might correspond to a state, a province, an oblast, a prefecture, or something else along these lines.
+          - `country`
+            Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
+          - `postalCode`
+            The postal code or ZIP code, also known as PIN code in India.
 
 ### Example
 
@@ -1554,6 +1629,9 @@ If you disable collecting certain fields
 with the `fields` option, you must pass that same data to [stripe.confirmPayment](https://docs.stripe.com/js/payment_intents/confirm_payment.md)
 or we'll reject the payment.
 
+You can set `billingDetails` at the top level to apply the same field collection settings to all payment methods,
+or set `billingDetails` under a supported payment method type to override the top-level setting for that payment method.
+
 Learn how to [customize the billing details to collect](https://docs.stripe.com/payments/payment-element/control-billing-details-collection.md) and
 the [customized fields](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-customized_fields).
       - `billingDetails`
@@ -1562,6 +1640,7 @@ in the Payment Element. If you would like to disable only certain billing detail
 pass an object specifying which fields you would like to disable collection for.
 The default setting for each field or object is `auto`.
         - `name`
+          Specify `always` to require the Payment Element to collect the customer's billing name.
         - `email`
           Specify `never` to avoid collecting email in the Payment Element.
 
@@ -1588,6 +1667,41 @@ Depending on the country, this might correspond to a state, a province, an oblas
             Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
           - `postalCode`
             The postal code or ZIP code, also known as PIN code in India.
+      - `[paymentMethodType]`
+        Optionally specify the billing detail collection settings for any Payment Element payment method type. Examples of valid values are `card`, `klarna`, or `us_bank_account`. You can include one or more payment method type keys.
+        - `billingDetails`
+          Specify `never` to avoid collecting all [billing details](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-billing_details)
+in the Payment Element. If you would like to disable only certain billing details,
+pass an object specifying which fields you would like to disable collection for.
+The default setting for each field or object is `auto`.
+          - `name`
+            Specify `always` to require the Payment Element to collect the customer's billing name.
+          - `email`
+            Specify `never` to avoid collecting email in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.email=never` and `walletOptions.emailRequired=true`, email is still collected from wallets.
+          - `phone`
+            Specify `never` to avoid collecting phone in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.phone=never` and `walletOptions.phoneNumberRequired=true`, phone is still collected from wallets.
+          - `address`
+            Specify `if_required` to only collect the minimum billing address fields required to complete the payment.
+You can omit and hide optional address fields in the card form, such as country and postal code.
+Unlike the `never` option, you don't need to include fields omitted in the Payment Element when confirming the payment.
+This can reduce the amount of information required to complete the form.
+
+Disabling address collection can negatively impact authorization rates and network fees for users on a network cost plus pricing plan.
+            - `line1`
+            - `line2`
+            - `city`
+              The name of a city, town, village, etc.
+            - `state`
+              The most coarse subdivision of a country.
+Depending on the country, this might correspond to a state, a province, an oblast, a prefecture, or something else along these lines.
+            - `country`
+              Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
+            - `postalCode`
+              The postal code or ZIP code, also known as PIN code in India.
     - `readOnly`
       Applies a read-only state to the Payment Element so that payment details can’t be changed. Default is false.
 
@@ -4316,12 +4430,16 @@ This method creates an instance of a Payment Element.
       By default, the Payment Element collects only the necessary billing details to complete a payment.
 
 To collect billing details outside of the Payment Element, use the `fields` option to disable Payment Element collection of certain fields.
+
+You can set `billingDetails` at the top level to apply the same field collection settings to all payment methods,
+or set `billingDetails` under a supported payment method type to override the top-level setting for that payment method.
       - `billingDetails`
         Specify `never` to avoid collecting all [billing details](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-billing_details)
 in the Payment Element. If you would like to disable only certain billing details,
 pass an object specifying which fields you would like to disable collection for.
 The default setting for each field or object is `auto`.
         - `name`
+          Specify `always` to require the Payment Element to collect the customer's billing name.
         - `email`
           Specify `never` to avoid collecting email in the Payment Element.
 
@@ -4348,6 +4466,41 @@ Depending on the country, this might correspond to a state, a province, an oblas
             Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
           - `postalCode`
             The postal code or ZIP code, also known as PIN code in India.
+      - `[paymentMethodType]`
+        Optionally specify the billing detail collection settings for any Payment Element payment method type. Examples of valid values are `card`, `klarna`, or `us_bank_account`. You can include one or more payment method type keys.
+        - `billingDetails`
+          Specify `never` to avoid collecting all [billing details](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-billing_details)
+in the Payment Element. If you would like to disable only certain billing details,
+pass an object specifying which fields you would like to disable collection for.
+The default setting for each field or object is `auto`.
+          - `name`
+            Specify `always` to require the Payment Element to collect the customer's billing name.
+          - `email`
+            Specify `never` to avoid collecting email in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.email=never` and `walletOptions.emailRequired=true`, email is still collected from wallets.
+          - `phone`
+            Specify `never` to avoid collecting phone in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.phone=never` and `walletOptions.phoneNumberRequired=true`, phone is still collected from wallets.
+          - `address`
+            Specify `if_required` to only collect the minimum billing address fields required to complete the payment.
+You can omit and hide optional address fields in the card form, such as country and postal code.
+Unlike the `never` option, you don't need to include fields omitted in the Payment Element when confirming the payment.
+This can reduce the amount of information required to complete the form.
+
+Disabling address collection can negatively impact authorization rates and network fees for users on a network cost plus pricing plan.
+            - `line1`
+            - `line2`
+            - `city`
+              The name of a city, town, village, etc.
+            - `state`
+              The most coarse subdivision of a country.
+Depending on the country, this might correspond to a state, a province, an oblast, a prefecture, or something else along these lines.
+            - `country`
+              Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
+            - `postalCode`
+              The postal code or ZIP code, also known as PIN code in India.
     - `layout`
       Specify the layout for the Payment Element. If you only pass a layout type (`'accordion'` or `‘tabs’`) without any additional parameters, the Payment Element renders using that layout and the default values associated with it.
 
@@ -6626,12 +6779,16 @@ target the Element for styling or testing.
       By default, the Payment Element collects only the necessary billing details to complete a payment.
 
 To collect billing details outside of the Payment Element, use the `fields` option to disable Payment Element collection of certain fields.
+
+You can set `billingDetails` at the top level to apply the same field collection settings to all payment methods,
+or set `billingDetails` under a supported payment method type to override the top-level setting for that payment method.
       - `billingDetails`
         Specify `never` to avoid collecting all [billing details](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-billing_details)
 in the Payment Element. If you would like to disable only certain billing details,
 pass an object specifying which fields you would like to disable collection for.
 The default setting for each field or object is `auto`.
         - `name`
+          Specify `always` to require the Payment Element to collect the customer's billing name.
         - `email`
           Specify `never` to avoid collecting email in the Payment Element.
 
@@ -6658,6 +6815,41 @@ Depending on the country, this might correspond to a state, a province, an oblas
             Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
           - `postalCode`
             The postal code or ZIP code, also known as PIN code in India.
+      - `[paymentMethodType]`
+        Optionally specify the billing detail collection settings for any Payment Element payment method type. Examples of valid values are `card`, `klarna`, or `us_bank_account`. You can include one or more payment method type keys.
+        - `billingDetails`
+          Specify `never` to avoid collecting all [billing details](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-billing_details)
+in the Payment Element. If you would like to disable only certain billing details,
+pass an object specifying which fields you would like to disable collection for.
+The default setting for each field or object is `auto`.
+          - `name`
+            Specify `always` to require the Payment Element to collect the customer's billing name.
+          - `email`
+            Specify `never` to avoid collecting email in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.email=never` and `walletOptions.emailRequired=true`, email is still collected from wallets.
+          - `phone`
+            Specify `never` to avoid collecting phone in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.phone=never` and `walletOptions.phoneNumberRequired=true`, phone is still collected from wallets.
+          - `address`
+            Specify `if_required` to only collect the minimum billing address fields required to complete the payment.
+You can omit and hide optional address fields in the card form, such as country and postal code.
+Unlike the `never` option, you don't need to include fields omitted in the Payment Element when confirming the payment.
+This can reduce the amount of information required to complete the form.
+
+Disabling address collection can negatively impact authorization rates and network fees for users on a network cost plus pricing plan.
+            - `line1`
+            - `line2`
+            - `city`
+              The name of a city, town, village, etc.
+            - `state`
+              The most coarse subdivision of a country.
+Depending on the country, this might correspond to a state, a province, an oblast, a prefecture, or something else along these lines.
+            - `country`
+              Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
+            - `postalCode`
+              The postal code or ZIP code, also known as PIN code in India.
     - `layout`
       Specify the layout for the Payment Element. If you only pass a layout type (`'accordion'` or `‘tabs’`) without any additional parameters, the Payment Element renders using that layout and the default values associated with it.
 
@@ -8700,7 +8892,7 @@ When providing a `customerSessionClientSecret` and using the Payment Element, th
           Installment configuration.
           - `enabled`
             When `true`, shows the card installment plan selection UI (depending on issuer and country support) if you don't manage your payment methods in the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods).
- You must set `mode='payment'` _and_ explicitly specify `paymentMethodTypes` in the Elements `options`. Setting installments to `true` without these settings returns an error.
+ You must set `mode='payment'` _and_ explicitly specify `allowedPaymentMethodTypes` in the Elements `options`. Setting installments to `true` without these settings returns an error.
  Incompatible with `paymentMethodCreation='manual'`.
         - `setup_future_usage`
           Indicates that you intend to make future payments with the payment details collected by the Payment Element.
@@ -9204,6 +9396,9 @@ If you disable collecting certain fields
 with the `fields` option, you must pass that same data to [stripe.confirmPayment](https://docs.stripe.com/js/payment_intents/confirm_payment.md)
 or we'll reject the payment.
 
+You can set `billingDetails` at the top level to apply the same field collection settings to all payment methods,
+or set `billingDetails` under a supported payment method type to override the top-level setting for that payment method.
+
 Learn how to [customize the billing details to collect](https://docs.stripe.com/payments/payment-element/control-billing-details-collection.md) and
 the [customized fields](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-customized_fields).
       - `billingDetails`
@@ -9212,6 +9407,7 @@ in the Payment Element. If you would like to disable only certain billing detail
 pass an object specifying which fields you would like to disable collection for.
 The default setting for each field or object is `auto`.
         - `name`
+          Specify `always` to require the Payment Element to collect the customer's billing name.
         - `email`
           Specify `never` to avoid collecting email in the Payment Element.
 
@@ -9238,6 +9434,41 @@ Depending on the country, this might correspond to a state, a province, an oblas
             Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
           - `postalCode`
             The postal code or ZIP code, also known as PIN code in India.
+      - `[paymentMethodType]`
+        Optionally specify the billing detail collection settings for any Payment Element payment method type. Examples of valid values are `card`, `klarna`, or `us_bank_account`. You can include one or more payment method type keys.
+        - `billingDetails`
+          Specify `never` to avoid collecting all [billing details](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-billing_details)
+in the Payment Element. If you would like to disable only certain billing details,
+pass an object specifying which fields you would like to disable collection for.
+The default setting for each field or object is `auto`.
+          - `name`
+            Specify `always` to require the Payment Element to collect the customer's billing name.
+          - `email`
+            Specify `never` to avoid collecting email in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.email=never` and `walletOptions.emailRequired=true`, email is still collected from wallets.
+          - `phone`
+            Specify `never` to avoid collecting phone in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.phone=never` and `walletOptions.phoneNumberRequired=true`, phone is still collected from wallets.
+          - `address`
+            Specify `if_required` to only collect the minimum billing address fields required to complete the payment.
+You can omit and hide optional address fields in the card form, such as country and postal code.
+Unlike the `never` option, you don't need to include fields omitted in the Payment Element when confirming the payment.
+This can reduce the amount of information required to complete the form.
+
+Disabling address collection can negatively impact authorization rates and network fees for users on a network cost plus pricing plan.
+            - `line1`
+            - `line2`
+            - `city`
+              The name of a city, town, village, etc.
+            - `state`
+              The most coarse subdivision of a country.
+Depending on the country, this might correspond to a state, a province, an oblast, a prefecture, or something else along these lines.
+            - `country`
+              Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
+            - `postalCode`
+              The postal code or ZIP code, also known as PIN code in India.
     - `readOnly`
       Applies a read-only state to the Payment Element so that payment details can’t be changed. Default is false.
 

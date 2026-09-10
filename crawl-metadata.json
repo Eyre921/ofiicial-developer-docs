@@ -10,7 +10,7 @@
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (7) for https://docs.perplexity.ai/llms-full.txt: curl: (7) Failed to connect to docs.perplexity.ai port 443 after 15 ms: Could not connect to server\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
     "pages": 191,
@@ -23,7 +23,7 @@
     "status": "error: curl failed (22) for https://developers.openai.com/api/docs/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/together": {
-    "pages": 340,
+    "pages": 342,
     "status": "ok"
   },
   "ai-models/fireworks": {
@@ -102,7 +102,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -121,7 +121,7 @@
     "status": "ok"
   },
   "dev-platforms/upstash": {
-    "pages": 945,
+    "pages": 946,
     "status": "ok"
   },
   "dev-platforms/expo": {
@@ -129,7 +129,7 @@
     "status": "ok"
   },
   "dev-platforms/langfuse": {
-    "pages": 2,
+    "pages": 11,
     "status": "ok"
   },
   "ai-models/replicate": {
@@ -137,8 +137,7 @@
     "status": "ok"
   },
   "dev-platforms/x-developer": {
-    "pages": 1057,
-    "status": "ok"
+    "status": "error: curl failed (35) for https://docs.x.com/llms-full.txt: curl: (35) Recv failure: Connection reset by peer\n"
   },
   "dev-platforms/n8n": {
     "pages": 0,
@@ -188,7 +187,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 99,
+    "pages": 107,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -204,8 +203,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1299,
+    "pages": 1300,
     "status": "ok"
   },
-  "_last_crawl": "2026-09-10T11:30:25Z"
+  "_last_crawl": "2026-09-10T23:30:25Z"
 }

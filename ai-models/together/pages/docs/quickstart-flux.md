@@ -12,7 +12,7 @@ Black Forest Labs has released FLUX.2 with support on Together AI. FLUX.2 is the
 
 Four model variants are available:
 
-| Model              | Best For                | Key Features                                        |
+| Model              | Best for                | Key features                                        |
 | ------------------ | ----------------------- | --------------------------------------------------- |
 | **FLUX.2 \[max]**  | Ultimate quality        | Highest fidelity output, best for premium use cases |
 | **FLUX.2 \[pro]**  | Maximum quality         | Up to 9 MP output, fastest generation               |
@@ -22,10 +22,10 @@ Four model variants are available:
 <Tip>
   **Which model should I use?**
 
-  * Use **\[max]** for the ultimate quality and fidelity in premium production workloads
-  * Use **\[pro]** for production workloads requiring high quality and speed
-  * Use **\[dev]** for development, experimentation, and when you need a balance of quality and control
-  * Use **\[flex]** when you need maximum control over generation parameters or require exceptional typography
+  * Use **\[max]** for the ultimate quality and fidelity in premium production workloads.
+  * Use **\[pro]** for production workloads requiring high quality and speed.
+  * Use **\[dev]** for development, experimentation, and when you need a balance of quality and control.
+  * Use **\[flex]** when you need maximum control over generation parameters or require exceptional typography.
 </Tip>
 
 ## Generating an image
@@ -174,7 +174,7 @@ The flex variant provides maximum customization with the `guidance_scale` and `s
 
 ## Parameters
 
-**Common Parameters (All Models)**
+**Common parameters (all models)**
 
 | Parameter           | Type    | Description                                        | Default      |
 | ------------------- | ------- | -------------------------------------------------- | ------------ |
@@ -186,7 +186,7 @@ The flex variant provides maximum customization with the `guidance_scale` and `s
 | `output_format`     | string  | Output format: `jpeg` or `png`                     | jpeg         |
 | `reference_images`  | array   | Reference image URL(s) for image-to-image editing  | -            |
 
-**Additional Parameters for \[dev] and \[flex]**
+**Additional parameters for \[dev] and \[flex]**
 
 FLUX.2 \[dev] and FLUX.2 \[flex] support additional parameters:
 
@@ -199,7 +199,7 @@ FLUX.2 \[dev] and FLUX.2 \[flex] support additional parameters:
 
 FLUX.2 supports powerful image-to-image editing using the `reference_images` parameter. Pass one or more image URLs to guide generation.
 
-**Core Capabilities:**
+**Core capabilities:**
 
 | Capability                  | Description                                                    |
 | --------------------------- | -------------------------------------------------------------- |
@@ -209,7 +209,7 @@ FLUX.2 supports powerful image-to-image editing using the `reference_images` par
 | **Image indexing**          | Reference specific images by number: "the jacket from image 2" |
 | **Natural language**        | Describe elements naturally: "the woman in the blue dress"     |
 
-**Single Reference Image**
+**Single reference image**
 
 Edit or transform a single input image:
 
@@ -276,7 +276,7 @@ Edit or transform a single input image:
   <img />
 </div>
 
-**Multiple Reference Images**
+**Multiple reference images**
 
 Combine elements from multiple images. Reference them by index (image 1, image 2, etc.):
 
@@ -314,7 +314,7 @@ print(response.data[0].url)
   <img />
 </div>
 
-**Using Image Indexing**
+**Using image indexing**
 
 Reference specific images by their position in the array:
 
@@ -349,7 +349,7 @@ print(response.data[0].url)
   <img />
 </div>
 
-**Using Natural Language**
+**Using natural language**
 
 FLUX.2 understands the content in your images, so you can describe elements naturally:
 
@@ -392,7 +392,7 @@ print(response.data[0].url)
   <img />
 </div>
 
-**Color Editing with Reference Images**
+**Color editing with reference images**
 
 To change colors precisely, provide a color swatch image as a reference:
 
@@ -427,7 +427,7 @@ print(response.data[0].url)
   <img />
 </div>
 
-**Best Practices for Reference Images**
+**Best practices for reference images**
 
 1. **Use image indexing:** Reference images by number ("image 1", "image 2") for precise control.
 2. **Be descriptive:** Clearly describe what you want to change or combine.
@@ -438,7 +438,7 @@ print(response.data[0].url)
 
 FLUX.2 is trained to understand structured JSON prompts, giving you precise control over subjects, composition, lighting, and camera settings.
 
-**Basic JSON Prompt Structure**
+**Basic JSON prompt structure**
 
 ```python theme={null}
 from together import Together
@@ -485,7 +485,7 @@ print(response.data[0].url)
 
 <img />
 
-**JSON Schema Reference**
+**JSON schema reference**
 
 Here's the recommended schema for structured prompts:
 
@@ -518,7 +518,7 @@ Here's the recommended schema for structured prompts:
 }
 ```
 
-**Composition Options**
+**Composition options**
 
 | Option                      | Description                  |
 | --------------------------- | ---------------------------- |
@@ -529,9 +529,9 @@ Here's the recommended schema for structured prompts:
 | `vanishing point center`    | Depth and perspective focus  |
 | `triangular arrangement`    | Stable, hierarchical layout  |
 
-**Camera Angle Options**
+**Camera angle options**
 
-| Angle               | Use Case                       |
+| Angle               | Use case                       |
 | ------------------- | ------------------------------ |
 | `eye level`         | Natural, relatable perspective |
 | `low angle`         | Heroic, powerful subjects      |
@@ -560,7 +560,7 @@ print(response.data[0].url)
 
 <img />
 
-**Gradient Example**
+**Gradient example**
 
 ```python theme={null}
 response = client.images.generate(
@@ -592,7 +592,7 @@ response = client.images.generate(
 
 <img />
 
-**Website & App Design Mocks**
+**Website & app design mocks**
 
 Generate full web design mockups for prototyping:
 
@@ -609,7 +609,7 @@ response = client.images.generate(
 
 <img />
 
-**Comic Strips**
+**Comic strips**
 
 Create consistent comic-style illustrations:
 
@@ -651,13 +651,13 @@ response = client.images.generate(
 
 FLUX.2 excels at various photography aesthetics. Add style keywords to your prompts:
 
-| Style               | Prompt Suffix                                          |
+| Style               | Prompt suffix                                          |
 | ------------------- | ------------------------------------------------------ |
-| Modern Photorealism | `close up photo, photorealistic`                       |
-| 2000s Digicam       | `2000s digicam style`                                  |
-| 80s Vintage         | `80s vintage photo`                                    |
-| Analogue Film       | `shot on 35mm film, f/2.8, film grain`                 |
-| Vintage Cellphone   | `picture taken from a vintage cellphone, selfie style` |
+| Modern photorealism | `close up photo, photorealistic`                       |
+| 2000s digicam       | `2000s digicam style`                                  |
+| 80s vintage         | `80s vintage photo`                                    |
+| Analog film         | `shot on 35mm film, f/2.8, film grain`                 |
+| Vintage cellphone   | `picture taken from a vintage cellphone, selfie style` |
 
 ```python theme={null}
 # Example: 80s vintage style
@@ -701,21 +701,21 @@ response = client.images.generate(
 
 ## Prompting best practices
 
-**Golden Rules**
+**Golden rules**
 
 1. **Order by importance:** List the most important elements first in your prompt.
 2. **Be specific:** The more detailed, the more controlled the output.
 
-**Prompt Framework**
+**Prompt framework**
 
 Follow this structure: **Subject + Action + Style + Context**
 
-* **Subject**: The main focus (person, object, character)
-* **Action**: What the subject is doing or their pose
-* **Style**: Artistic approach, medium, or aesthetic
-* **Context**: Setting, lighting, time, mood
+* **Subject:** The main focus (person, object, character).
+* **Action:** What the subject is doing or their pose.
+* **Style:** Artistic approach, medium, or aesthetic.
+* **Context:** Setting, lighting, time, mood.
 
-**Avoid Negative Prompting**
+**Avoid negative prompting**
 
 FLUX.2 does **not** support negative prompts. Instead of saying what you don't want, describe what you do want:
 
@@ -728,19 +728,19 @@ FLUX.2 does **not** support negative prompts. Instead of saying what you don't w
 
 **Text not rendering correctly**
 
-* Use FLUX.2 \[flex] for better typography
-* Put exact text in quotes within the prompt
-* Keep text short and clear
+* Use FLUX.2 \[flex] for better typography.
+* Put exact text in quotes within the prompt.
+* Keep text short and clear.
 
 **Colors not matching**
 
-* Use HEX codes with "color" or "hex" keyword
-* Be explicit about which element should have which color
+* Use HEX codes with "color" or "hex" keyword.
+* Be explicit about which element should have which color.
 
 **Composition not as expected**
 
-* Use JSON structured prompts for precise control
-* Specify camera angle, distance, and composition type
-* Use position descriptors (foreground, midground, background)
+* Use JSON structured prompts for precise control.
+* Specify camera angle, distance, and composition type.
+* Use position descriptors (foreground, midground, background).
 
 See all available FLUX models in the [image models catalog](/docs/serverless/models#image-models).

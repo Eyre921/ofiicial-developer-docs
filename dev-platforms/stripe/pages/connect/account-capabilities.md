@@ -214,6 +214,9 @@ Available with `card_payments` | Yes | Yes | No | Connected account must be in a
 | [TWINT](https://docs.stripe.com/payments/twint.md)
 
 `twint_payments` | No. See [onboarding requirements](https://docs.stripe.com/payments/twint.md#scheme-onboarding-requirements). | Activate the payment method in the Dashboard settings page. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/twint.md?pm-info=business-locations). | Yes |
+| [UK Bank Transfers](https://docs.stripe.com/payments/bank-transfers.md)
+
+`gb_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md?pm-info=business-locations). | Yes |
 | [USD Bank Transfers](https://docs.stripe.com/payments/bank-transfers.md)
 
 `us_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md?pm-info=business-locations). | Yes |
@@ -326,6 +329,9 @@ Available with `card_payments` | Yes | Yes | No | Connected account must be in a
 | [TWINT](https://docs.stripe.com/payments/twint.md)
 
 `twint_payments` | Yes | No. See [onboarding requirements](https://docs.stripe.com/payments/twint.md#scheme-onboarding-requirements). | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/twint.md?pm-info=business-locations). | Yes |
+| [UK Bank Transfers](https://docs.stripe.com/payments/bank-transfers.md)
+
+`gb_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md?pm-info=business-locations). | Yes |
 | [USD Bank Transfers](https://docs.stripe.com/payments/bank-transfers.md)
 
 `us_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md?pm-info=business-locations). | Yes |

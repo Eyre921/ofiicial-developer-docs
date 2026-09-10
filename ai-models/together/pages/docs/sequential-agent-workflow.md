@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/sequential-agent-workflow
 path: docs/sequential-agent-workflow
 ---
 
-Coordinating a chain of LLM calls to solve a complex task.
+Coordinate a chain of LLM calls to solve a complex task.
 
 A workflow where the output of one LLM call becomes the input for the next. This sequential design allows for structured reasoning and step-by-step task completion.
 
@@ -13,13 +13,13 @@ A workflow where the output of one LLM call becomes the input for the next. This
 Chain multiple LLM calls sequentially to process complex tasks.
 
 <Frame>
-  <img alt="" />
+  <img alt="Diagram of a sequential workflow where each LLM call's output feeds the next call's input" />
 </Frame>
 
 <Info>
-  ### Sequential Workflow Cookbook
+  ### Sequential workflow cookbook
 
-  For a more detailed walk-through refer to the [notebook here](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/Serial_Chain_Agent_Workflow.ipynb)
+  For a more detailed walk-through refer to the [notebook here](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/Serial_Chain_Agent_Workflow.ipynb).
 </Info>
 
 ## Setup client
@@ -169,7 +169,7 @@ Chain multiple LLM calls sequentially to process complex tasks.
 
 ## Use cases
 
-* Generating Marketing copy, then translating it into a different language.
+* Generating marketing copy, then translating it into a different language.
 * Writing an outline of a document, checking that the outline meets certain criteria, then writing the document based on the outline.
 * Using an LLM to clean and standardize raw data, then passing the cleaned data to another LLM for insights, summaries, or visualizations.
 * Generating a set of detailed questions based on a topic with one LLM, then passing those questions to another LLM to produce well-researched answers.

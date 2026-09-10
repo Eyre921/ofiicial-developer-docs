@@ -252,6 +252,8 @@ If you are on a Legacy Pro plan, you will be charged for Git Contributors who ha
 
 Reference the [Billing FAQ](/manage/accounts-and-billing/billing/billing-for-legacy-plans/billing-faq-for-legacy-plans#git-contributors-and-billing) page for Legacy plan details.
 
+Netlify doesn't track Git Contributors for repositories hosted on [Cursor Origin](/build/git-workflows/overview#cursor-origin-support), on any plan.
+
 ### Reviewer
 
 The official Reviewer role allows a person to access preview URLs for your project to give feedback. 

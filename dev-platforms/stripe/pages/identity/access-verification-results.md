@@ -84,7 +84,7 @@ To create a new restricted key,
 
 1. Go to the [API keys page](https://dashboard.stripe.com/apikeys) in the Dashboard and click [**Create restricted key**](https://dashboard.stripe.com/apikeys/create).
 2. Name your key.
-3. Make sure the Identity **Verification Sessions and Reports** and **Access recent sensitive verification results** permissions are set to **Read**.
+3. Make sure the **Identity Verification Results** and **Recent Detailed Verification Results** permissions are set to **Read**.
 4. (optional) If you need to access collected images, add the Files **Write** permission.
 5. Click **Create key**.
 6. Store the key securely. [Learn more about keeping your keys safe](https://docs.stripe.com/keys-best-practices.md).
@@ -200,7 +200,7 @@ Make sure your privacy policy includes information on your use of sensitive veri
 
 Long term programmatic access to sensitive verification results increases the impact of leaking an API key. Consider if your use case really requires it. [Reach out to support](https://support.stripe.com/contact) if you need any help.
 
-Restricted API keys with **Access recent sensitive verification results** permissions allow programmatic access for verifications submitted in the last 48 hours.
+Restricted API keys with **Recent Detailed Verification Results** permissions allow programmatic access for verifications submitted in the last 48 hours.
 
 If you need programmatic access to verifications beyond 48 hours, you’ll need to add additional security to your restricted key by adding IP restrictions.
 
@@ -208,7 +208,7 @@ If you need programmatic access to verifications beyond 48 hours, you’ll need 
 2. In the overflow menu (**…**) click **Manage IP restrictions** for the restricted key you created in step 1.
 3. Specify the IP addresses of your production servers. You can express these origins as simply an IP v4 address, or using CIDR ([Classless Inter-Domain Routing](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)) notation for a whole range of IP addresses. Learn more about adding [IP Key restrictions](https://docs.stripe.com/keys-best-practices.md#ip-allowlist).
 4. **Save** the key
-5. Edit the key and add the **Access all sensitive verification results** permission.
+5. Edit the key and add the **All Detailed Verification Results** permission.
 
 You can now access sensitive verification results for verifications submitted beyond the 48 hour mark.
 

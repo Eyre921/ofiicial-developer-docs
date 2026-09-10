@@ -4,16 +4,16 @@ source: https://docs.together.ai/docs/dspy
 path: docs/dspy
 ---
 
-Using DSPy with Together AI.
+Use DSPy to program language models with Together AI.
 
 DSPy is a framework for programming language models rather than relying on static prompts. It enables you to build modular AI systems with code instead of hand-crafted prompting, and it offers methods to automatically optimize these systems.
 
 Features
 
-* Programmatic approach to LLM interactions through Python
-* Modular components for building complex AI pipelines
-* Self-improvement algorithms that optimize prompts and weights
-* Support for various applications from simple classifiers to RAG systems and agent loops
+* Programmatic approach to LLM interactions through Python.
+* Modular components for building complex AI pipelines.
+* Self-improvement algorithms that optimize prompts and weights.
+* Support for various applications from simple classifiers to RAG systems and agent loops.
 
 ## Installing libraries
 
@@ -33,7 +33,7 @@ Set your Together AI API key:
 
 ## Example
 
-Setup and connect DSPy to LLMs on Together AI
+Set up and connect DSPy to LLMs on Together AI.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -41,7 +41,7 @@ Setup and connect DSPy to LLMs on Together AI
 
   # Configure dspy with an LLM from Together AI
   lm = dspy.LM(
-      "together_ai/togethercomputer/llama-2-70b-chat",
+      "together_ai/Qwen/Qwen3.5-9B",
       api_key=os.environ.get("TOGETHER_API_KEY"),
       api_base="https://api.together.ai/v1",
   )
@@ -54,7 +54,7 @@ Setup and connect DSPy to LLMs on Together AI
   ```
 </CodeGroup>
 
-Now we can set up a DSPy module, like `dspy.ReAct` with a task-specific signature. For example, `question -> answer: float` tells the module to take a question and to produce a floating point number answer below.
+Now you can set up a DSPy module, like `dspy.ReAct` with a task-specific signature. For example, `question -> answer: float` tells the module to take a question and to produce a floating point number answer below.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -93,7 +93,7 @@ Now we can set up a DSPy module, like `dspy.ReAct` with a task-specific signatur
 ## Next steps
 
 <Info>
-  ### DSPy - Together AI Notebook
+  ### DSPy - Together AI notebook
 
   Learn more about building agents using DSPy with Together AI in this [notebook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/DSPy/DSPy_Agents.ipynb).
 </Info>

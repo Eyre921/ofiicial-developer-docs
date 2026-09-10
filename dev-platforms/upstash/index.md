@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 945 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 946 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -50,6 +50,7 @@
 - `docs/box/guides/ai-sdk-setup` — [Vercel AI SDK Tools](pages/docs/box/guides/ai-sdk-setup.md) · [原文](https://upstash.com/docs/box/guides/ai-sdk-setup)
 - `docs/box/guides/code-review-agent` — [Build a Code Review Agent](pages/docs/box/guides/code-review-agent.md) · [原文](https://upstash.com/docs/box/guides/code-review-agent)
 - `docs/box/guides/eve-setup` — [Vercel Eve Sandboxes](pages/docs/box/guides/eve-setup.md) · [原文](https://upstash.com/docs/box/guides/eve-setup)
+- `docs/box/guides/herdr-setup` — [Herdr Plugin Setup](pages/docs/box/guides/herdr-setup.md) · [原文](https://upstash.com/docs/box/guides/herdr-setup)
 - `docs/box/guides/hermes-setup` — [Hermes Setup](pages/docs/box/guides/hermes-setup.md) · [原文](https://upstash.com/docs/box/guides/hermes-setup)
 - `docs/box/guides/langchain-deep-agents` — [LangChain Deep Agents](pages/docs/box/guides/langchain-deep-agents.md) · [原文](https://upstash.com/docs/box/guides/langchain-deep-agents)
 - `docs/box/guides/nextjs-setup` — [Next.js Setup](pages/docs/box/guides/nextjs-setup.md) · [原文](https://upstash.com/docs/box/guides/nextjs-setup)

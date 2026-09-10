@@ -57,6 +57,10 @@ Integrate Resend with the tools you already use.
 ## AI
 
 <CardGroup>
+  <Card title="v0" href="https://vercel.com/marketplace/resend" icon={<V0Icon />}>
+    Add email to your v0 apps with the Vercel Marketplace
+  </Card>
+
   <Card title="Lovable" href="https://docs.lovable.dev/integrations/resend" icon={<LovableIcon />}>
     Tell the Lovable AI to send emails
   </Card>

@@ -10,7 +10,7 @@ Generate videos from text, images, and reference materials with the Wan 2.7 mode
 
 Wan 2.7 is a family of video generation models supporting text-to-video, image-to-video with keyframe control, reference-based character/object consistency, and video editing. All models output 720P or 1080P video at 30fps in MP4 format.
 
-| Model                  | API String                | Best For                                                     | Duration  |
+| Model                  | API string                | Best for                                                     | Duration  |
 | ---------------------- | ------------------------- | ------------------------------------------------------------ | --------- |
 | **Wan 2.7 T2V**        | `Wan-AI/wan2.7-t2v`       | Text-to-video with audio                                     | Up to 15s |
 | **Wan 2.7 I2V**        | `Wan-AI/wan2.7-i2v`       | Image-to-video, keyframe control, video continuation         | Up to 15s |
@@ -704,13 +704,13 @@ Not all `media` fields are supported on every model. Unsupported fields are reje
 
 **Use negative prompts** to avoid common artifacts:
 
-```
+```text theme={null}
 low resolution, errors, worst quality, low quality, incomplete, extra fingers, bad proportions, blurry, distorted
 ```
 
 **Control aspect ratio and resolution:** Use `resolution` and `ratio` to set output dimensions:
 
-| Aspect Ratio | 720P Dimensions | 1080P Dimensions |
+| Aspect ratio | 720P dimensions | 1080P dimensions |
 | ------------ | --------------- | ---------------- |
 | 16:9         | 1280x720        | 1920x1080        |
 | 9:16         | 720x1280        | 1080x1920        |

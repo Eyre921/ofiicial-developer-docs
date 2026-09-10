@@ -116,15 +116,15 @@ curl https://api.stripe.com/v1/payment_intents \
   -d "payment_method_options[card][capture_method]=manual"
 ```
 
-Alternatively, you can list `card` and `sepa_debit` using [payment method types](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-payment_method_types) like in the example below.
+Alternatively, you can list `card` and `sepa_debit` using [allowed_payment_method_types](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-allowed_payment_method_types), as in the following example.
 
 ```curl
 curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d amount=1099 \
   -d currency=eur \
-  -d "payment_method_types[]=card" \
-  -d "payment_method_types[]=sepa_debit" \
+  -d "allowed_payment_method_types[]=card" \
+  -d "allowed_payment_method_types[]=sepa_debit" \
   -d "payment_method_options[card][capture_method]=manual"
 ```
 

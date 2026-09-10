@@ -11,7 +11,7 @@ description: "Configure build settings for a repository that uses continuous dep
 
 > For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
-Netlify lets you link a GitHub, GitLab, Bitbucket, or Azure DevOps repository to a site for [continuous deployment](/deploy/create-deploys#deploy-with-git). Each time you push to your Git provider, Netlify runs a build with your tool of choice and deploys the result to our powerful CDN.
+Netlify lets you link a GitHub, GitLab, Bitbucket, Azure DevOps, or Cursor Origin repository to a site for [continuous deployment](/deploy/create-deploys#deploy-with-git). Each time you push to your Git provider, Netlify runs a build with your tool of choice and deploys the result to our powerful CDN.
 
 ![Simple workflow diagram with words "start, build, deploy, manage, extend" with build highlighted](/images/simplified-start-build-deploy-manage-extend-diagram-with-build-highlighted.png)
 

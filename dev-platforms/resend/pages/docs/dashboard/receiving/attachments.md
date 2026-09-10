@@ -57,12 +57,16 @@ Here's how you can implement this:
     const event = await request.json();
 
     if (event.type === 'email.received') {
-      const { data: attachments } =
+      const { data: attachments, error } =
         await resend.emails.receiving.attachments.list({
           emailId: event.data.email_id,
         });
 
-      for (const attachment of attachments) {
+      if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+
+      for (const attachment of attachments.data) {
         // use the download_url to download attachments however you want
         const response = await fetch(attachment.download_url);
         if (!response.ok) {
@@ -76,7 +80,9 @@ Here's how you can implement this:
         // process the content (e.g., save to storage, analyze, etc.)
       }
 
-      return NextResponse.json({ attachmentsProcessed: attachments.length });
+      return NextResponse.json({
+        attachmentsProcessed: attachments.data.length,
+      });
     }
 
     return NextResponse.json({});

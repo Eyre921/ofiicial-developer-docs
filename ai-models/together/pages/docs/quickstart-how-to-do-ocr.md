@@ -19,7 +19,7 @@ Together AI provides powerful vision models that can process images and extract 
 The basic approach involves sending an image to a vision model and receiving extracted text in return.\
 A great example of this implementation can be found at [llamaOCR.com](https://llamaocr.com/).
 
-Here's a basic Typescript/Python implementation for standard OCR:
+Here's a basic TypeScript/Python implementation for standard OCR:
 
 <CodeGroup>
   ```typescript TypeScript theme={null}
@@ -101,7 +101,7 @@ Here's a basic Typescript/Python implementation for standard OCR:
   ```
 </CodeGroup>
 
-Here's the output from the code snippet above – we're simply giving it a receipt and asking it to extract all the information:
+Here's the output from the code snippet above – we're giving it a receipt and asking it to extract all the information:
 
 ```text Text theme={null}
 **Restaurant Information:**
@@ -316,9 +316,9 @@ In this case, we passed in a schema to the model since we want specific informat
 
 ## Best practices
 
-1. **Structured Data Definition**: Define clear schemas for your expected output, making it easier to validate and process the extracted data.
-2. **Model Selection**: Choose the appropriate model based on your use case. Feel free to experiment with [Together's vision models](/docs/serverless/models#vision-models) to find the best one for you.
-3. **Error Handling**: Always implement robust error handling for cases where the OCR might fail or return unexpected results.
-4. **Validation**: Implement validation for the extracted data to ensure accuracy and completeness.
+1. **Structured data definition:** Define clear schemas for your expected output, making it easier to validate and process the extracted data.
+2. **Model selection:** Choose the appropriate model based on your use case. Feel free to experiment with [Together's vision models](/docs/serverless/models#vision-models) to find the best one for you.
+3. **Error handling:** Always implement robust error handling for cases where the OCR might fail or return unexpected results.
+4. **Validation:** Implement validation for the extracted data to ensure accuracy and completeness.
 
 By following these patterns and leveraging Together AI's vision models, you can build powerful OCR applications that go beyond simple text extraction to provide structured, actionable data from images.

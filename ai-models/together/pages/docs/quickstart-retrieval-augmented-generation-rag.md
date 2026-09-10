@@ -6,11 +6,11 @@ path: docs/quickstart-retrieval-augmented-generation-rag
 
 Build a RAG workflow in under five minutes.
 
-In this Quickstart you'll learn how to build a RAG workflow using Together AI in 6 quick steps that can be run in under 5 minutes!
+In this quickstart you'll learn how to build a retrieval-augmented generation (RAG) workflow using Together AI in six quick steps that can be run in under five minutes!
 
 You'll leverage the embedding, reranking, and inference endpoints.
 
-## 1. Register for an account
+## Step 1: Register for an account
 
 First, [register for an account](https://api.together.ai/settings/projects/~first/api-keys) to get an API key.
 
@@ -20,7 +20,7 @@ Once you've registered, set your account's API key to an environment variable na
 export TOGETHER_API_KEY=xxxxx
 ```
 
-## 2. Install your preferred library
+## Step 2: Install your preferred library
 
 Together provides an official library for Python:
 
@@ -34,7 +34,7 @@ from together import Together
 client = Together(api_key=TOGETHER_API_KEY)
 ```
 
-## 3. Data processing and chunking
+## Step 3: Process and chunk the data
 
 You'll RAG over Paul Graham's latest essay titled [Founder Mode](https://paulgraham.com/foundermode.html). The code below will scrape and load the essay into memory.
 
@@ -89,7 +89,7 @@ def create_chunks(document, chunk_size=300, overlap=50):
 chunks = create_chunks(pg_essay, chunk_size=250, overlap=30)
 ```
 
-## 4. Generate vector index and perform retrieval
+## Step 4: Generate vector index and perform retrieval
 
 You'll now use `multilingual-e5-large-instruct` to embed the augmented chunks above into a vector index.
 
@@ -123,7 +123,7 @@ embeddings = generate_embeddings(
 )
 ```
 
-The function below will help us perform vector search:
+The function below will help you perform vector search:
 
 ```python Python theme={null}
 def vector_retrieval(
@@ -162,7 +162,7 @@ top_k_chunks = [chunks[i] for i in top_k_indices]
 
 You now have a way to retrieve from the vector index given a query.
 
-## 5. Rerank to improve quality
+## Step 5: Rerank to improve quality
 
 You'll use a reranker model to improve retrieved chunk relevance quality:
 
@@ -197,9 +197,9 @@ for index in rerank_indices:
 print(reranked_chunks)
 ```
 
-## 6. Call generative model
+## Step 6: Call generative model
 
-You'll pass the final 3 concatenated chunks into an LLM to get the final answer.
+You'll pass the final three concatenated chunks into an LLM to get the final answer.
 
 ```python Python theme={null}
 query = "What are 'skip-level' meetings?"

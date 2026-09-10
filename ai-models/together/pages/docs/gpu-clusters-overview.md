@@ -148,6 +148,21 @@ Any usage beyond your reserved capacity is automatically billed at on-demand rat
 * ✓ You want cost savings on steady-state workload
 * ✓ You need flexibility for peak periods
 
+## Preemptible compute (Preview)
+
+<Note>
+  Preemptible compute is in public preview for Kubernetes clusters (Slurm clusters are not supported yet). There is no minimum-lifetime guarantee for preemptible nodes during preview, so design workloads that can survive losing nodes at any time.
+</Note>
+
+Together GPU clusters offer two compute types:
+
+* **Standard:** The default. Standard nodes are provisioned up front when you create or scale a cluster, and are never preempted.
+* **Preemptible:** You set a preemptible GPU target, and Together provisions toward it as spare capacity becomes available. The target is not guaranteed, and preemptible nodes can be preempted at any time. They are discounted relative to on-demand at a flat rate (not a bid), and billing is sub-hourly: usage is metered every one to two minutes.
+
+There is no separate preemptible cluster type—you add preemptible capacity to a cluster, at create time or later. Each cluster has a standard node count and a preemptible node count, and preemptible nodes join the same Kubernetes cluster. Every cluster requires at least one standard node (`num_gpus`), and you cannot convert a node between standard and preemptible in place.
+
+[Learn more about preemptible compute →](/docs/preemptible-compute)
+
 ## Storage
 
 Clusters include multiple storage tiers:

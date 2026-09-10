@@ -16,7 +16,7 @@ Build an agent that iteratively improves responses.
   <img alt="" />
 </Frame>
 
-## Setup client & helper functions
+## Set up client and helper functions
 
 <CodeGroup>
   ```python Python theme={null}

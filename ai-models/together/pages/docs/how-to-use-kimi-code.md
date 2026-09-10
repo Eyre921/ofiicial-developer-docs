@@ -12,7 +12,7 @@ This guide shows you how to connect the Kimi Code CLI directly to the Together A
 
 You can use this same approach to connect Kimi Code to any open-source model in the [serverless catalog](/docs/serverless/models), like GLM 5.2 or Qwen3 Coder Next, and switch between them as you work.
 
-## 1. Install Kimi Code
+## Step 1: Install Kimi Code
 
 Install with the standalone installer:
 
@@ -32,7 +32,7 @@ Verify the installation:
 kimi --version
 ```
 
-## 2. Add Together AI as a provider
+## Step 2: Add Together AI as a provider
 
 Kimi Code reads providers and models from `~/.kimi-code/config.toml`. Add Together AI as an OpenAI-compatible provider, register Kimi K3 under it, and make it the default model:
 
@@ -62,7 +62,7 @@ Validate the configuration:
 kimi doctor
 ```
 
-## 3. Run Kimi Code
+## Step 3: Run Kimi Code
 
 Launch the agent from your project directory:
 

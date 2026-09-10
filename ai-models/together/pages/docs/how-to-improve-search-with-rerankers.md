@@ -47,7 +47,7 @@ movies_data[10:13]
 
 Our dataset contains information about popular movies:
 
-```
+```text theme={null}
 [{'title': 'Terminator Genisys',
   'overview': "The year is 2029. John Connor, leader of the resistance continues the war against the machines. At the Los Angeles offensive, John's fears of the unknown future begin to emerge when TECOM spies reveal a new plot by SkyNet that will attack him from both fronts; past and future, and will ultimately change warfare forever.",
   'director': 'Alan Taylor',
@@ -69,7 +69,7 @@ Our dataset contains information about popular movies:
 
 Below we implement a simple semantic search pipeline:
 
-1. Embed movie documents + query
+1. Embed movie documents + query.
 2. Obtain a list of movies ranked based on cosine similarities between the query and movie vectors.
 
 ```python Python theme={null}
@@ -151,7 +151,7 @@ indices = retrieve(
 
 This will give us the following movie indices and movie titles:
 
-```
+```text theme={null}
 array([ 13, 265, 451,  33,  56,  17, 140, 450,  58, 828, 227,  62, 337,
        172, 724, 424, 585, 696, 933, 996, 932, 433, 883, 420, 744])
 ```
@@ -163,7 +163,7 @@ top_25_sorted_titles = [movies_data[index]["title"] for index in indices[0]][
 ]
 ```
 
-```
+```text theme={null}
 ['The Dark Knight',
  'Watchmen',
  'Predator',
@@ -195,7 +195,7 @@ Notice here that not all movies in our top 25 have to do with our query - super 
 
 The reranker can more closely determine the similarity between these 25 candidates and rerank which ones deserve to be atop our list.
 
-## Use Llama Rank to rerank top 25 movies
+## Use Mxbai Rerank to rerank top 25 movies
 
 Treating the top 25 matching movies as good candidate matches, potentially with irrelevant false positives, that might have snuck in we want to have the reranker model look and rerank each based on similarity to the query.
 
@@ -217,7 +217,7 @@ for result in response.results:
 
 This will give us a reranked list of movies as shown below:
 
-```
+```text theme={null}
 Document Index: 12
 Document: Batman Returns
 Relevance Score: 0.35380946383813044
@@ -241,7 +241,7 @@ Relevance Score: 0.258483721657576
 
 Here we can see that the reranker was able to improve the list by demoting irrelevant movies like Watchmen, Predator, Despicable Me 2, Night at the Museum: Secret of the Tomb, Penguins of Madagascar, further down the list and promoting Batman Returns, Batman Begins, Batman & Robin, Batman v Superman: Dawn of Justice to the top of the list!
 
-The `multilingual-e5-large-instruct` embedding model gives us a fuzzy match to concepts mentioned in the query, the Llama-Rank-V1 reranker then improves the quality of our list further by spending more compute to resort the list of movies.
+The `multilingual-e5-large-instruct` embedding model gives us a fuzzy match to concepts mentioned in the query, the Mxbai Rerank Large V2 reranker then improves the quality of our list further by spending more compute to resort the list of movies.
 
 Learn more about how to use reranker models in the [docs here](/docs/inference/embeddings/rerank)!
 

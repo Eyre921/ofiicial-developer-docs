@@ -1,5 +1,5 @@
 ---
-title: "Build an interactive AI tutor with Llama 3.1"
+title: "Build an interactive AI tutor"
 source: https://docs.together.ai/docs/ai-tutor
 path: docs/ai-tutor
 ---
@@ -58,9 +58,9 @@ function Page() {
 
 When the user submits our form, our submit handler ultimately needs to do three things:
 
-1. Use the Exa API to fetch six different websites related to the topic
-2. Parse the text from each website
-3. Pass all the parsed text, as well as the education level, to Together AI to kick off the tutoring session
+1. Use the Exa API to fetch six different websites related to the topic.
+2. Parse the text from each website.
+3. Pass all the parsed text, as well as the education level, to Together AI to kick off the tutoring session.
 
 Let’s start by fetching the websites with Exa. We’ll wire up a submit handler to our form that makes a POST request to a new `/getSources` endpoint:
 
@@ -328,7 +328,7 @@ async function getTextFromURL(url) {
 
 Let’s implement this new function. We’ll start by installing the `jsdom` and `@mozilla/readability` libraries:
 
-```jsx JSX theme={null}
+```bash theme={null}
 npm i jsdom @mozilla/readability
 ```
 
@@ -484,11 +484,11 @@ We’re ready to implement our final API endpoint at `/chat`!
 
 Let’s install Together AI’s node SDK:
 
-```jsx JSX theme={null}
+```bash theme={null}
 npm i together-ai
 ```
 
-and use it to query Llama 3.1 8B Turbo:
+and use it to query Qwen3.5 9B:
 
 ```jsx JSX theme={null}
 // api/chat/route.js
@@ -694,7 +694,7 @@ function Page() {
 }
 ```
 
-Because we have all the messages in React state, we can just create a new object for the user’s latest message, send it over to our existing `chat` endpoint, and reuse the same logic to update our app’s state as the latest response streams in.
+Because we have all the messages in React state, we can create a new object for the user’s latest message, send it over to our existing `chat` endpoint, and reuse the same logic to update our app’s state as the latest response streams in.
 
 The core features of our app are working great!
 

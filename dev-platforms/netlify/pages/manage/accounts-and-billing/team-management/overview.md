@@ -23,7 +23,7 @@ When working with sites or team settings, you can find the name of the current t
 
 If you are a member of more than one team, you can change the default team that appears on login by going to your [user settings](/manage/accounts-and-billing/user-settings).
 
-Once you've selected a team, you can access the team's overview, sites, [domains](/manage/domains/why-netlify-dns), [audit log](/manage/accounts-and-billing/team-management/team-audit-log), [billing](/manage/accounts-and-billing/billing/overview), and other team settings. To [manage who belongs to the team](/manage/accounts-and-billing/team-management/manage-team-members), go to 
+Once you've selected a team, you can access the team's overview, sites, [domains](/manage/domains/why-netlify-dns), [billing](/manage/accounts-and-billing/billing/overview), and other team settings, including the [audit log](/manage/accounts-and-billing/team-management/team-audit-log). To [manage who belongs to the team](/manage/accounts-and-billing/team-management/manage-team-members), go to 
 ### NavigationPath Component:
 
 Team settings > Members

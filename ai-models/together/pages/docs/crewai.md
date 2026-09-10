@@ -4,11 +4,11 @@ source: https://docs.together.ai/docs/crewai
 path: docs/crewai
 ---
 
-Using CrewAI with Together.
+Use CrewAI with Together AI models to orchestrate AI agent systems.
 
 CrewAI is an open source production-grade framework for orchestrating AI agent systems. It enables multiple AI agents to collaborate effectively by assuming roles and working toward shared goals. The framework supports both simple automations and complex applications that require coordinated agent behavior.
 
-## Installing libraries
+## Install libraries
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -69,7 +69,7 @@ Set your Together AI API key:
 
 ## Example output
 
-```
+```text theme={null}
 [2025-03-09 16:20:14][🚀 CREW 'CREW' STARTED, 42A4F700-E955-4794-B6F3-6EA6EF279E93]: 2025-03-09 16:20:14.069394
 
 [2025-03-09 16:20:14][📋 TASK STARTED: CONDUCT A THOROUGH RESEARCH ABOUT AI AGENTS.]: 2025-03-09 16:20:14.085335

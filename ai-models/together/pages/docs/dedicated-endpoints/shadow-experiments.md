@@ -88,7 +88,7 @@ Create an experiment that samples 10% of gateway traffic uniformly and mirrors i
     Note the experiment ID (`exp_...`) from the response. You use it to inspect, update, or delete the experiment.
 
     <Note>
-      `name` is immutable after creation and must be unique within the endpoint. `description` can't be set on create. Set it by [updating the experiment](#update-an-experiment).
+      `name` is immutable after creation and must be unique within the endpoint. `description` can't be set on create. Set it by [updating the experiment](/reference/dmi/shadow-experiments-update).
     </Note>
   </Tab>
 
@@ -180,9 +180,9 @@ Because targets never return their responses to your caller, evaluate them the s
 
 ## Pause, retune, or stop an experiment
 
-* **Pause without deleting:** [Update](#update-an-experiment) the experiment's `source` to set the sampling `rate` to `0`. The experiment stays `ACTIVE` but samples nothing.
+* **Pause without deleting:** [Update](/reference/dmi/shadow-experiments-update) the experiment's `source` to set the sampling `rate` to `0`. The experiment stays `ACTIVE` but samples nothing.
 * **Retune sampling:** Update the experiment's `source`, for example to raise `uniform.rate` or switch strategy. Fetch the experiment first to get its current `etag` and pass it back on the update; a stale value returns `409 ABORTED`.
-* **Fan out to more targets:** [Add a target](#add-a-target) to the experiment. One sampling decision fans out to every target, so adding a target roughly multiplies mirrored volume.
+* **Fan out to more targets:** [Add a target](/reference/dmi/shadow-experiment-targets-create) to the experiment. One sampling decision fans out to every target, so adding a target roughly multiplies mirrored volume.
 * **Stop mirroring:** [Delete the experiment](#delete-an-experiment) (which cascade-deletes its targets), or remove all its targets so the experiment goes `INACTIVE`.
 
 Mirrored requests are never sampled and mirrored again; the system prevents shadow loops automatically.

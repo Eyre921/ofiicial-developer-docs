@@ -15,11 +15,11 @@ Two things make a container OpenAI-compatible:
 
 ## Requirements
 
-* **Together API key**: Get one from [together.ai](https://together.ai).
-* **Dedicated containers access**: Contact [support@together.ai](mailto:support@together.ai) to enable it for your organization.
-* **Docker**: For building container images. [Install Docker](https://docs.docker.com/engine/install).
-* **Together CLI**: Install with `pip install "together[cli]" --upgrade` or `uv tool install "together[cli]"`.
-* **Hugging Face token**: The FLUX.2 weights are gated. Request access to [black-forest-labs/FLUX.2-klein-9B](https://huggingface.co/black-forest-labs/FLUX.2-klein-9B).
+* **Together API key:** Get one from [together.ai](https://together.ai).
+* **Dedicated containers access:** Contact [support@together.ai](mailto:support@together.ai) to enable it for your organization.
+* **Docker:** For building container images. [Install Docker](https://docs.docker.com/engine/install).
+* **Together CLI:** Install with `pip install "together[cli]" --upgrade` or `uv tool install "together[cli]"`.
+* **Hugging Face token:** The FLUX.2 weights are gated. Request access to [black-forest-labs/FLUX.2-klein-9B](https://huggingface.co/black-forest-labs/FLUX.2-klein-9B).
 
 ## HTTP server mode vs queue mode
 

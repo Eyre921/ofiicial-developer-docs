@@ -66,7 +66,7 @@ Since reasoning models produce longer responses with chain-of-thought processing
   }
   ```
 
-  ```curl cURL theme={null}
+  ```bash cURL theme={null}
   curl -X POST "https://api.together.ai/v1/chat/completions" \
        -H "Authorization: Bearer $TOGETHER_API_KEY" \
        -H "Content-Type: application/json" \
@@ -85,7 +85,7 @@ Since reasoning models produce longer responses with chain-of-thought processing
 
 This will produce the response below:
 
-```plain theme={null}
+```json theme={null}
 {
   "id": "o669aLj-62bZhn-96b01dc00f33ab9a",
   "object": "chat.completion",
@@ -133,96 +133,96 @@ Two flexible open-weight models are available to meet different deployment needs
 
 **GPT-OSS 120B:**
 
-* **Model String**: `openai/gpt-oss-120b`
-* **Hardware Requirements**: Fits on 80GB GPU
-* **Architecture**: Mixture-of-Experts (MoE) with token-choice routing
-* **Context Length**: 128k tokens with RoPE
-* **Best for**: Enterprise applications requiring maximum reasoning performance
+* **Model string:** `openai/gpt-oss-120b`.
+* **Hardware requirements:** Fits on 80 GB GPU.
+* **Architecture:** Mixture-of-Experts (MoE) with token-choice routing.
+* **Context length:** 128K tokens with RoPE.
+* **Best for:** Enterprise applications requiring maximum reasoning performance.
 
 **GPT-OSS 20B:**
 
-* **Model String**: `openai/gpt-oss-20b`
-* **Hardware Requirements**: Lower GPU memory requirements
-* **Architecture**: Optimized MoE for efficiency
-* **Context Length**: 128k tokens with RoPE
-* **Best for**: Research, development, and cost-efficient deployments
+* **Model string:** `openai/gpt-oss-20b`.
+* **Hardware requirements:** Lower GPU memory requirements.
+* **Architecture:** Optimized MoE for efficiency.
+* **Context length:** 128K tokens with RoPE.
+* **Best for:** Research, development, and cost-efficient deployments.
 
 ## GPT-OSS best practices
 
 Reasoning models like GPT-OSS should be used differently than standard instruct models to get optimal results:
 
-**Recommended Parameters:**
+**Recommended parameters:**
 
-* **Reasoning Effort**: Use the adjustable reasoning effort levels to control computational cost vs. accuracy.
-* **Temperature**: Use 1.0 for maximum creativity and diverse reasoning approaches.
-* **Top-p**: Use 1.0 to allow the full vocabulary distribution for optimal reasoning exploration.
-* **System Prompt**: The system prompt can be provided as a `developer` message which is used to provide information about the instructions for the model and available function tools.
-* **System message**: It's recommended not to modify the `system` message which is used to specify reasoning effort, meta information like knowledge cutoff and built-in tools.
+* **Reasoning effort:** Use the adjustable reasoning effort levels to control computational cost vs. accuracy.
+* **Temperature:** Use 1.0 for maximum creativity and diverse reasoning approaches.
+* **Top-p:** Use 1.0 to allow the full vocabulary distribution for optimal reasoning exploration.
+* **System prompt:** The system prompt can be provided as a `developer` message which is used to provide information about the instructions for the model and available function tools.
+* **System message:** It's recommended not to modify the `system` message which is used to specify reasoning effort, meta information like knowledge cutoff, and built-in tools.
 
-**Prompting Best Practices:**
+**Prompting best practices:**
 Think of GPT-OSS as a senior problem-solver – provide high-level objectives and let it determine the methodology:
 
-* **Strengths**: Excels at open-ended reasoning, multi-step logic, and inferring unstated requirements
-* **Avoid over-prompting**: Micromanaging steps can limit its advanced reasoning capabilities
-* **Provide clear objectives**: Balance clarity with flexibility for optimal results
+* **Strengths:** Excels at open-ended reasoning, multi-step logic, and inferring unstated requirements.
+* **Avoid over-prompting:** Micromanaging steps can limit its advanced reasoning capabilities.
+* **Provide clear objectives:** Balance clarity with flexibility for optimal results.
 
 ## GPT-OSS use cases
 
-* **Code Review & Analysis:** Comprehensive code analysis across large codebases with detailed improvement suggestions
-* **Strategic Planning:** Multi-stage planning with reasoning about optimal approaches and resource allocation
-* **Complex Document Analysis:** Processing legal contracts, technical specifications, and regulatory documents
-* **Benchmarking AI Systems:** Evaluates other LLM responses with contextual understanding, particularly useful in critical validation scenarios
-* **AI Model Evaluation:** Sophisticated evaluation of other AI systems with contextual understanding
-* **Scientific Research:** Multi-step reasoning for hypothesis generation and experimental design
-* **Academic Analysis:** Deep analysis of research papers and literature reviews
-* **Information Extraction:** Efficiently extracts relevant data from large volumes of unstructured information, ideal for RAG systems
-* **Agent Workflows:** Building sophisticated AI agents with complex reasoning capabilities
-* **RAG Systems:** Enhanced information extraction and synthesis from large knowledge bases
-* **Problem Solving:** Handling ambiguous requirements and inferring unstated assumptions
-* **Ambiguity Resolution:** Interprets unclear instructions effectively and seeks clarification when needed
+* **Code review & analysis:** Comprehensive code analysis across large codebases with detailed improvement suggestions.
+* **Strategic planning:** Multi-stage planning with reasoning about optimal approaches and resource allocation.
+* **Complex document analysis:** Processing legal contracts, technical specifications, and regulatory documents.
+* **Benchmarking AI systems:** Evaluates other LLM responses with contextual understanding, particularly useful in critical validation scenarios.
+* **AI model evaluation:** Sophisticated evaluation of other AI systems with contextual understanding.
+* **Scientific research:** Multi-step reasoning for hypothesis generation and experimental design.
+* **Academic analysis:** Deep analysis of research papers and literature reviews.
+* **Information extraction:** Efficiently extracts relevant data from large volumes of unstructured information, ideal for RAG systems.
+* **Agent workflows:** Building sophisticated AI agents with complex reasoning capabilities.
+* **RAG systems:** Enhanced information extraction and synthesis from large knowledge bases.
+* **Problem solving:** Handling ambiguous requirements and inferring unstated assumptions.
+* **Ambiguity resolution:** Interprets unclear instructions effectively and seeks clarification when needed.
 
 ## Managing context and costs
 
-#### **Reasoning effort control:**
+### Reasoning effort control
 
 GPT-OSS features adjustable reasoning effort levels to optimize for your specific use case:
 
-* **Low effort:** Faster responses for simpler tasks with reduced reasoning depth
-* **Medium effort:** Balanced performance for most use cases (recommended default)
+* **Low effort:** Faster responses for simpler tasks with reduced reasoning depth.
+* **Medium effort:** Balanced performance for most use cases (recommended default).
 * **High effort:** Maximum reasoning for complex problems requiring deep analysis. You should also specify `max_tokens` of \~30,000 with this setting.
 
-#### **Token management:**
+### Token management
 
 When working with reasoning models, it's crucial to maintain adequate space in the context window:
 
-* Use `max_tokens` parameter to control response length and costs
-* Monitor reasoning token usage vs. output tokens - reasoning tokens can vary from hundreds to tens of thousands based on complexity
-* Consider reasoning effort level based on task complexity and budget constraints
-* Simpler problems may only require a few hundred reasoning tokens, while complex challenges could generate extensive reasoning
+* Use `max_tokens` parameter to control response length and costs.
+* Monitor reasoning token usage vs. output tokens - reasoning tokens can vary from hundreds to tens of thousands based on complexity.
+* Consider reasoning effort level based on task complexity and budget constraints.
+* Simpler problems may only require a few hundred reasoning tokens, while complex challenges could generate extensive reasoning.
 
-#### **Cost/latency optimization:**
+### Cost/latency optimization
 
-* Implement limits on total token generation using the `max_tokens` parameter
-* Balance thorough reasoning with resource utilization based on your specific requirements
-* Consider using lower reasoning effort for routine tasks and higher effort for critical decisions
+* Implement limits on total token generation using the `max_tokens` parameter.
+* Balance thorough reasoning with resource utilization based on your specific requirements.
+* Consider using lower reasoning effort for routine tasks and higher effort for critical decisions.
 
 ## Technical architecture
 
-#### **Model architecture:**
+### Model architecture
 
-* **MoE Design:** Token-choice Mixture-of-Experts with SwiGLU activations for improved performance
-* **Expert Selection:** Softmax-after-topk approach for calculating MoE weights, ensuring optimal expert utilization
-* **Attention Mechanism:** RoPE (Rotary Position Embedding) with 128k context length
-* **Attention Patterns:** Alternating between full context and sliding 128-token window for efficiency
-* **Attention Sink:** Learned attention sink per-head with additional additive value in the softmax denominator
+* **MoE design:** Token-choice Mixture-of-Experts with SwiGLU activations for improved performance.
+* **Expert selection:** Softmax-after-topk approach for calculating MoE weights, ensuring optimal expert utilization.
+* **Attention mechanism:** RoPE (Rotary Position Embedding) with 128K context length.
+* **Attention patterns:** Alternating between full context and sliding 128-token window for efficiency.
+* **Attention sink:** Learned attention sink per-head with additional additive value in the softmax denominator.
 
-#### **Tokenization:**
+### Tokenization
 
-* **Standard Compatibility:** Uses the same tokenizer as GPT-4o
-* **Broad Support:** Ensures seamless integration with existing applications and tools
+* **Standard compatibility:** Uses the same tokenizer as GPT-4o.
+* **Broad support:** Ensures seamless integration with existing applications and tools.
 
-#### **Context handling:**
+### Context handling
 
-* **128k Context Window:** Large context capacity for processing extensive documents
-* **Efficient Patterns:** Optimized attention patterns for long-context scenarios
-* **Memory Optimization:** GPT-OSS Large is designed to fit efficiently within 80GB GPU memory
+* **128K context window:** Large context capacity for processing extensive documents.
+* **Efficient patterns:** Optimized attention patterns for long-context scenarios.
+* **Memory optimization:** GPT-OSS Large is designed to fit efficiently within 80 GB GPU memory.

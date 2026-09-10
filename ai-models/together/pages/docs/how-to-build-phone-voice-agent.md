@@ -16,11 +16,11 @@ This guide walks through creating a phone-based voice agent. You will create a l
 
 Before you start, make sure you have:
 
-* Node.js `18+`
-* A Together AI account and API key
-* A Twilio account with a voice-capable phone number
-* ngrok or another HTTPS tunnel for local testing
-* The [Silero VAD](https://github.com/snakers4/silero-vad) ONNX model saved in your project root as `silero_vad.onnx`
+* Node.js `18+`.
+* A Together AI account and API key.
+* A Twilio account with a voice-capable phone number.
+* ngrok or another HTTPS tunnel for local testing.
+* The [Silero VAD](https://github.com/snakers4/silero-vad) ONNX model saved in your project root as `silero_vad.onnx`.
 
 ## Step 1: Create the project
 
@@ -83,19 +83,19 @@ TTS_VOICE=af_heart
 
 The build below supports three personas:
 
-* `kira` - a support engineer at Together AI
-* `account_exec` - an account executive at Together AI
-* `marcus` - an engineer at Together AI
+* `kira` - a support engineer at Together AI.
+* `account_exec` - an account executive at Together AI.
+* `marcus` - an engineer at Together AI.
 
 ## Step 3: Add the audio conversion layer
 
 Create `audio-convert.ts`. This file handles:
 
-* mu-law encode and decode - this is needed to convert audio I/O over the phone
-* sample-rate conversion between `8 kHz`(needed for phone), `16 kHz`(needed for STT), and `24 kHz`(output by TTS)
-* parsing WAV headers when the first TTS chunk arrives with a WAV header attached
-* converting Twilio chunks into Together STT input
-* converting Together TTS output back into Twilio playback audio
+* mu-law encode and decode - this is needed to convert audio I/O over the phone.
+* sample-rate conversion between `8 kHz`(needed for phone), `16 kHz`(needed for STT), and `24 kHz`(output by TTS).
+* parsing WAV headers when the first TTS chunk arrives with a WAV header attached.
+* converting Twilio chunks into Together STT input.
+* converting Together TTS output back into Twilio playback audio.
 
 <Accordion title="audio-convert.ts">
   ```typescript audio-convert.ts theme={null}
@@ -587,10 +587,10 @@ The wrapper loads the ONNX model once and shares the session across all concurre
 
 Create `pipeline.ts`. This file does four jobs:
 
-1. Defines the personas and system prompts used by the assistant
-2. Maintains a long-lived realtime STT WebSocket per call
-3. Maintains a long-lived realtime TTS WebSocket per call
-4. Orchestrates each turn: commit STT, stream chat completions, split by sentence, and synthesize those sentences immediately
+1. Defines the personas and system prompts used by the assistant.
+2. Maintains a long-lived realtime STT WebSocket per call.
+3. Maintains a long-lived realtime TTS WebSocket per call.
+4. Orchestrates each turn: commit STT, stream chat completions, split by sentence, and synthesize those sentences immediately.
 
 <Accordion title="pipeline.ts">
   ```typescript pipeline.ts theme={null}
@@ -1491,11 +1491,11 @@ Create `pipeline.ts`. This file does four jobs:
 
 Create `media-stream.ts`. This is the per-call state machine. It handles:
 
-* Twilio `connected`, `start`, `media`, `mark`, and `stop` events
-* local voice activity detection
-* turn transitions between `listening`, `processing`, and `speaking`
-* barge-in by clearing Twilio's playback buffer and interrupting TTS
-* bounded in-memory conversation history
+* Twilio `connected`, `start`, `media`, `mark`, and `stop` events.
+* local voice activity detection.
+* turn transitions between `listening`, `processing`, and `speaking`.
+* barge-in by clearing Twilio's playback buffer and interrupting TTS.
+* bounded in-memory conversation history.
 
 <Accordion title="media-stream.ts">
   ```typescript media-stream.ts theme={null}
@@ -1839,8 +1839,8 @@ Create `media-stream.ts`. This is the per-call state machine. It handles:
 
 Create `server.ts`. This file serves two purposes:
 
-* `POST /twiml` returns TwiML that tells Twilio to open a bidirectional Media Stream to your server
-* the `WebSocketServer` accepts those `/media-stream` connections and hands them to `handleMediaStream()`
+* `POST /twiml` returns TwiML that tells Twilio to open a bidirectional Media Stream to your server.
+* the `WebSocketServer` accepts those `/media-stream` connections and hands them to `handleMediaStream()`.
 
 <Accordion title="server.ts">
   ```typescript server.ts theme={null}
@@ -1973,36 +1973,36 @@ Dial your Twilio number from any phone.
 
 The expected flow is:
 
-1. Twilio connects the call and opens the WebSocket
-2. The server warms up STT, TTS, and VAD
-3. The assistant plays a short greeting
-4. The caller speaks
-5. Local VAD decides when the caller has stopped
-6. The server commits the buffered STT stream
-7. The chat model starts streaming a reply
-8. Completed sentences are sent immediately to TTS
-9. TTS audio is converted back to `audio/x-mulaw` and played to the caller
-10. If the caller interrupts, the server sends Twilio a `clear` event and starts listening again
+1. Twilio connects the call and opens the WebSocket.
+2. The server warms up STT, TTS, and VAD.
+3. The assistant plays a short greeting.
+4. The caller speaks.
+5. Local VAD decides when the caller has stopped.
+6. The server commits the buffered STT stream.
+7. The chat model starts streaming a reply.
+8. Completed sentences are sent immediately to TTS.
+9. TTS audio is converted back to `audio/x-mulaw` and played to the caller.
+10. If the caller interrupts, the server sends Twilio a `clear` event and starts listening again.
 
 ## How the low-latency path works
 
 This architecture stays fast because it avoids unnecessary waits:
 
-* caller audio streams into STT continuously instead of being uploaded after the turn
-* turn detection happens locally with Silero VAD, so there is no extra network hop to decide when to process
-* chat completions stream token by token
-* TTS starts on each completed sentence instead of waiting for the full reply
-* Twilio playback can be interrupted immediately with a `clear` event
+* caller audio streams into STT continuously instead of being uploaded after the turn.
+* turn detection happens locally with Silero VAD, so there is no extra network hop to decide when to process.
+* chat completions stream token by token.
+* TTS starts on each completed sentence instead of waiting for the full reply.
+* Twilio playback can be interrupted immediately with a `clear` event.
 
 ## Tuning the voice experience
 
 The behavior is mostly controlled by a few thresholds in `media-stream.ts`:
 
-* `SPEECH_START_PROB`
-* `SPEECH_END_PROB`
-* `SILENCE_DURATION_MS`
-* `MIN_SPEECH_MS`
-* `BARGE_IN_PROB_THRESHOLD`
-* `BARGE_IN_CONSECUTIVE_FRAMES`
+* `SPEECH_START_PROB`.
+* `SPEECH_END_PROB`.
+* `SILENCE_DURATION_MS`.
+* `MIN_SPEECH_MS`.
+* `BARGE_IN_PROB_THRESHOLD`.
+* `BARGE_IN_CONSECUTIVE_FRAMES`.
 
 If the assistant cuts in too often, raise the barge-in threshold or require more consecutive frames. If it waits too long after the caller stops, reduce the silence duration slightly.

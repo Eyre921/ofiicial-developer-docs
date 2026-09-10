@@ -10,7 +10,7 @@ Build a RAG workflow with Together AI embedding and chat endpoints.
 
 For AI models to be effective in specialized tasks, they often require domain-specific knowledge. For instance, a financial advisory chatbot needs to understand market trends and products offered by a specific bank, while an AI legal assistant must be equipped with knowledge of statutes, regulations, and past case law.
 
-A common solution is Retrieval-Augmented Generation (RAG), which retrieves relevant data from a knowledge base and combines it with the user’s prompt, thereby improving and customizing the model's output to the provided data.
+A common solution is retrieval-augmented generation (RAG), which retrieves relevant data from a knowledge base and combines it with the user’s prompt, thereby improving and customizing the model's output to the provided data.
 
 <Frame>
   <img alt="" />
@@ -22,15 +22,15 @@ RAG operates by preprocessing a large knowledge base and dynamically retrieving 
 
 Here's a breakdown of the process:
 
-1. Indexing the Knowledge Base: The corpus (collection of documents) is divided into smaller, manageable chunks of text. Each chunk is converted into a vector embedding using an embedding model. These embeddings are stored in a vector database optimized for similarity searches.
-2. Query Processing and Retrieval: When a user submits a prompt that would initially go directly to an LLM we process that and extract a query, the system searches the vector database for chunks semantically similar to the query. The most relevant chunks are retrieved and injected into the prompt sent to the generative AI model.
-3. Response Generation: The AI model then uses the retrieved information along with its pre-trained knowledge to generate a response. Not only does this reduce the likelihood of hallucination since relevant context is provided directly in the prompt but it also allows us to cite to source material as well.
+1. Indexing the knowledge base: The corpus (collection of documents) is divided into smaller, manageable chunks of text. Each chunk is converted into a vector embedding using an embedding model. These embeddings are stored in a vector database optimized for similarity searches.
+2. Query processing and retrieval: When a user submits a prompt that would initially go directly to an LLM we process that and extract a query, the system searches the vector database for chunks semantically similar to the query. The most relevant chunks are retrieved and injected into the prompt sent to the generative AI model.
+3. Response generation: The AI model then uses the retrieved information along with its pre-trained knowledge to generate a response. Not only does this reduce the likelihood of hallucination since relevant context is provided directly in the prompt but it also allows us to cite to source material as well.
 
 <Frame>
   <img alt="" />
 </Frame>
 
-## Download and view the dataset
+## Step 1: Download and view the dataset
 
 ```bash Shell theme={null}
 wget https://raw.githubusercontent.com/togethercomputer/together-cookbook/refs/heads/main/datasets/movies.json
@@ -81,11 +81,11 @@ This dataset consists of movie information as below:
 ]
 ```
 
-## Implement retrieval pipeline - "R" part of RAG
+## Step 2: Implement the retrieval pipeline ("R" part of RAG)
 
-Below we implement a simple retrieval pipeline:
+Below we implement a retrieval pipeline:
 
-1. Embed movie documents and query
+1. Embed movie documents and query.
 2. Obtain top k movies ranked based on cosine similarities between the query and movie vectors.
 
 ```python Python theme={null}
@@ -168,7 +168,7 @@ top_10_sorted_titles
 
 This produces the top ten most similar movie titles below:
 
-```
+```text theme={null}
 ['The Incredibles',
  'Watchmen',
  'Mr. Peabody & Sherman',
@@ -181,7 +181,7 @@ This produces the top ten most similar movie titles below:
  'Despicable Me 2']
 ```
 
-## We can encapsulate the above in a function
+## Step 3: Encapsulate retrieval in a function
 
 ```python Python theme={null}
 def retrieve(
@@ -219,13 +219,13 @@ retrieve(
 
 Which returns an array of indices for movies that best match the query.
 
-```
+```text theme={null}
 array([172, 265, 768, 621, 929])
 ```
 
-## Generation step - "G" part of RAG
+## Step 4: Generate a response ("G" part of RAG)
 
-Below we will inject/augment the information the retrieval pipeline extracts into the prompt to the Llama3 8b Model.
+Below we will inject/augment the information the retrieval pipeline extracts into the prompt to the Qwen3.5 9B model.
 
 This will help guide the generation by grounding it from facts in our knowledge base!
 
@@ -257,7 +257,7 @@ print(response.choices[0].message.content)
 
 Which produces the grounded output below:
 
-```txt Text theme={null}
+```text Text theme={null}
 What a delightful mix of plots! Here's a story that weaves them together:
 
 In a world where superheroes are a thing of the past, Bob Parr, aka Mr. Incredible, has given up his life of saving the world to become an insurance adjuster in the suburbs. His wife, Helen, aka Elastigirl, has also hung up her superhero suit to raise their three children. However, when Bob receives a mysterious assignment from a secret organization, he's forced to don his old costume once again.
@@ -279,6 +279,6 @@ In the end, Bob and his friends succeed in stopping the Watchmen and preventing 
 The story concludes with Bob and his family returning to their normal lives, but with a newfound appreciation for the importance of family and the power of teamwork. The movie ends with a shot of the Parr family, including their three children, who are all wearing superhero costumes, ready to take on the next adventure that comes their way.
 ```
 
-Here we can see a simple RAG pipeline where we use semantic search to perform retrieval and pass relevant information into the prompt of an LLM to condition its generation.
+Here we can see a RAG pipeline where we use semantic search to perform retrieval and pass relevant information into the prompt of an LLM to condition its generation.
 
 To learn more about the Together AI API refer to the [docs here](/intro)!

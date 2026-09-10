@@ -28,7 +28,7 @@ Either `id` or `email` must be provided.
   const resend = new Resend('re_xxxxxxxxx');
 
   const { data, error } = await resend.contacts.segments.list({
-    id: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
+    contactId: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
   });
   ```
 

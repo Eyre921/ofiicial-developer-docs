@@ -6,21 +6,21 @@ path: docs/dedicated_containers_video
 
 Deploy a multi-GPU video generation model on Together's managed GPU infrastructure using dedicated containers.
 
-This example demonstrates deploying a multi-GPU video generation model using Dedicated Containers. You'll build a Sprocket worker that uses `torchrun` for distributed inference across multiple GPUs and deploy it to Together's managed infrastructure.
+This example demonstrates deploying a multi-GPU video generation model using dedicated containers. You'll build a Sprocket worker that uses `torchrun` for distributed inference across multiple GPUs and deploy it to Together's managed infrastructure.
 
 ## What you'll learn
 
-* Deploying multi-GPU models with Sprocket and Jig
-* Using `use_torchrun=True` for distributed inference
-* Automatic file upload with `FileOutput`
-* Submitting jobs via the Queue API and polling for results
+* Deploying multi-GPU models with Sprocket and Jig.
+* Using `use_torchrun=True` for distributed inference.
+* Automatic file upload with `FileOutput`.
+* Submitting jobs via the queue API and polling for results.
 
 ## Requirements
 
-* **Together API key**: Get one from [together.ai](https://together.ai)
-* **Dedicated Containers access**: Contact [support@together.ai](mailto:support@together.ai) to enable for your organization
-* **Docker**: For building container images. [Install Docker](https://docs.docker.com/engine/install)
-* **Together CLI**: Install with `pip install "together[cli]" --upgrade` or `uv tool install "together[cli]"`
+* **Together API key:** Get one from [together.ai](https://together.ai).
+* **Dedicated containers access:** Contact [support@together.ai](mailto:support@together.ai) to enable for your organization.
+* **Docker:** For building container images. [Install Docker](https://docs.docker.com/engine/install).
+* **Together CLI:** Install with `pip install "together[cli]" --upgrade` or `uv tool install "together[cli]"`.
 
 Set your API key:
 
@@ -42,31 +42,31 @@ Install Together library:
 
 ## Overview
 
-This example deploys a Wan 2.1 text-to-video model as a Dedicated Container with multi-GPU support. The Sprocket worker handles distributed inference across 2 GPUs, and Together manages provisioning, autoscaling, and observability.
+This example deploys a Wan 2.1 text-to-video model as a dedicated container with multi-GPU support. The Sprocket worker handles distributed inference across two GPUs, and Together manages provisioning, autoscaling, and observability.
 
 **Output specs:**
 
-* Resolution: 480×832
-* Frames: 81 (5.4 seconds at 15fps)
-* Format: MP4
+* Resolution: 480×832.
+* Frames: 81 (5.4 seconds at 15fps).
+* Format: MP4.
 
 **Why multi-GPU?**
 
-* Video generation requires significant VRAM for temporal attention
-* Context parallelism splits the sequence dimension across GPUs
-* 2x H100 allows comfortable generation without memory pressure
+* Video generation requires significant VRAM for temporal attention.
+* Context parallelism splits the sequence dimension across GPUs.
+* 2x H100 allows comfortable generation without memory pressure.
 
 ## How it works
 
-1. **Build** – Jig builds a Docker image from your `pyproject.toml` configuration
-2. **Push** – The image is pushed to Together's private container registry
-3. **Deploy** – Together provisions 2x H100 GPUs and starts your container
-4. **Torchrun** – Sprocket's `use_torchrun=True` launches child processes (one per GPU)
-5. **Queue** – Jobs are submitted to the managed queue, broadcast to all GPU ranks, and processed in parallel
+1. **Build:** Jig builds a Docker image from your `pyproject.toml` configuration.
+2. **Push:** The image is pushed to Together's private container registry.
+3. **Deploy:** Together provisions 2x H100 GPUs and starts your container.
+4. **Torchrun:** Sprocket's `use_torchrun=True` launches child processes (one per GPU).
+5. **Queue:** Jobs are submitted to the managed queue, broadcast to all GPU ranks, and processed in parallel.
 
 ## Project structure
 
-```
+```text theme={null}
 sprocket_wan2.1/
 ├── pyproject.toml    # Configuration and dependencies
 └── run_wan.py        # Distributed Sprocket worker
@@ -180,12 +180,12 @@ When you call `sprocket.run(..., use_torchrun=True)`, Sprocket handles multi-GPU
 
 **Flow:**
 
-1. Parent process receives a job from Together's queue
-2. Job payload is broadcast to all child processes via Unix socket
-3. Each rank executes `setup()` once at startup, then `predict()` for each job
-4. Ranks synchronize via NCCL during forward pass
-5. Only rank 0 saves output and returns result
-6. Parent uploads `FileOutput` and reports job completion
+1. Parent process receives a job from Together's queue.
+2. Job payload is broadcast to all child processes via Unix socket.
+3. Each rank executes `setup()` once at startup, then `predict()` for each job.
+4. Ranks synchronize via NCCL during forward pass.
+5. Only rank 0 saves output and returns result.
+6. Parent uploads `FileOutput` and reports job completion.
 
 ### Distributed process initialization
 
@@ -227,9 +227,9 @@ def predict(self, args: dict) -> Optional[dict]:
 
 **Why this pattern?**
 
-* Avoids duplicate file writes
-* Reduces memory on non-rank-0 GPUs (tensor output vs PIL)
-* Sprocket collects output from rank 0 only
+* Avoids duplicate file writes.
+* Reduces memory on non-rank-0 GPUs (tensor output vs PIL).
+* Sprocket collects output from rank 0 only.
 
 ### Automatic file upload with `FileOutput`
 
@@ -241,9 +241,9 @@ return {"url": sprocket.FileOutput("output.mp4")}
 
 **What happens:**
 
-1. Sprocket detects the `FileOutput` in the response
-2. Uploads the file to Together's storage
-3. Replaces `FileOutput` with the access URL in the final response
+1. Sprocket detects the `FileOutput` in the response.
+2. Uploads the file to Together's storage.
+3. Replaces `FileOutput` with the access URL in the final response.
 
 The client receives (when polling job status):
 
@@ -453,8 +453,8 @@ When you're done, delete the deployment:
 
 ## Next steps
 
-* [Image Generation Example](/docs/dedicated_containers_image) – Single-GPU inference with Flux2
-* [Quickstart](/docs/containers-quickstart) – Deploy your first container in 20 minutes
-* [Sprocket SDK](/reference/dci-reference-sprocket) – Full SDK reference for workers
-* [Jig CLI Reference](/reference/cli/jig) – CLI commands and configuration options
-* [Deployments API Reference](/reference/deployments-list) – REST API for deployments, secrets, storage, and queues
+* [Image Generation Example](/docs/dedicated_containers_image) – Single-GPU inference with Flux2.
+* [Quickstart](/docs/containers-quickstart) – Deploy your first container in 20 minutes.
+* [Sprocket SDK](/reference/dci-reference-sprocket) – Full SDK reference for workers.
+* [Jig CLI Reference](/reference/cli/jig) – CLI commands and configuration options.
+* [Deployments API Reference](/reference/deployments-list) – REST API for deployments, secrets, storage, and queues.

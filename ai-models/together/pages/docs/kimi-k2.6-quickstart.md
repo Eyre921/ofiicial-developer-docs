@@ -224,14 +224,14 @@ K2.6 can decompose a complex task into parallel sub-tasks and coordinate them as
 
 ## Prompting tips
 
-| Tip                                                                                        | Rationale                                                                                                              |
-| ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
-| **Temperature = 1.0 for thinking, 0.6 for instant**                                        | Critical for output quality. Thinking mode needs higher temperature. Instant mode benefits from more focused sampling. |
-| **top\_p = 0.95**                                                                          | Recommended default for both modes.                                                                                    |
-| **Keep system prompts simple** - `"You are Kimi, an AI assistant created by Moonshot AI."` | Matches the prompt used during instruction tuning.                                                                     |
-| **Leverage native tool calling with vision**                                               | Pass images in user messages alongside tool definitions. K2.6 can ground tool calls in visual context.                 |
-| **Think in goals, not steps**                                                              | Give high-level objectives and let the model orchestrate sub-tasks, especially for agentic workflows.                  |
-| **Chunk very long contexts**                                                               | 256K context is large, but response speed drops on >100K inputs. Provide an executive summary to focus the model.      |
+| Tip                                                                                       | Rationale                                                                                                              |
+| ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Temperature = 1.0 for thinking, 0.6 for instant**                                       | Critical for output quality. Thinking mode needs higher temperature. Instant mode benefits from more focused sampling. |
+| **top\_p = 0.95**                                                                         | Recommended default for both modes.                                                                                    |
+| **Keep system prompts simple:** `"You are Kimi, an AI assistant created by Moonshot AI."` | Matches the prompt used during instruction tuning.                                                                     |
+| **Leverage native tool calling with vision**                                              | Pass images in user messages alongside tool definitions. K2.6 can ground tool calls in visual context.                 |
+| **Think in goals, not steps**                                                             | Give high-level objectives and let the model orchestrate sub-tasks, especially for agentic workflows.                  |
+| **Chunk very long contexts**                                                              | 256K context is large, but response speed drops on >100K inputs. Provide an executive summary to focus the model.      |
 
 ## Multi-turn tool calling with images
 

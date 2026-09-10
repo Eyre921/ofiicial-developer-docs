@@ -6,9 +6,9 @@ path: docs/composio
 
 Use Composio with Together AI.
 
-Composio allows developers to integrate external tools and services into their AI applications. It handles tool calling, web-hooks, authentication, and more.
+Composio allows developers to integrate external tools and services into their AI applications. It handles tool calling, webhooks, authentication, and more.
 
-You need to register on a Composio account - Sign up here if you haven't already to get their API key [https://platform.composio.dev/](https://platform.composio.dev/)
+You need to register on a Composio account. Sign up here if you haven't already to get their API key [https://platform.composio.dev/](https://platform.composio.dev/).
 
 ## Install libraries
 
@@ -22,7 +22,7 @@ You need to register on a Composio account - Sign up here if you haven't already
   ```
 </CodeGroup>
 
-Set your `TOGETHER_API_KEY` environment variable.
+Set your `TOGETHER_API_KEY` and `COMPOSIO_API_KEY` environment variables.
 
 ```bash Shell theme={null}
 export TOGETHER_API_KEY=***

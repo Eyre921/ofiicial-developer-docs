@@ -63,6 +63,17 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Use my weekly project update Skill"
   </Accordion>
 
+  <Accordion title="Download a Notion Skill">
+    `notion-download-skill`
+
+    Downloads a complete [Notion Skill](/guides/mcp/notion-skills#download-a-complete-skill). Pass the Skill page's `id`. The response contains `id`, `version_id`, and a signed `url` for a `tar.gz` archive with `SKILL.md` and supporting files and folders. The URL expires after one hour. Skills without supporting files still return an archive. Requires the Skills API to be enabled for the workspace; unavailable in eval mode and workspace-owned MCP connections.
+
+    **Example prompts:**
+
+    * "Download this Skill and its supporting files for my local agent"
+    * "Get the complete directory for this Skill"
+  </Accordion>
+
   <Accordion title="Fetch Notion content">
     `notion-fetch`
 

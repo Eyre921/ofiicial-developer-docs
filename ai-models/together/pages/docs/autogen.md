@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/autogen
 path: docs/autogen
 ---
 
-Using AutoGen(AG2) with Together AI.
+Use AutoGen (AG2) to build and orchestrate AI agents with Together AI models.
 
 AG2 (formerly AutoGen) is an open-source framework for building and orchestrating AI agents. It focuses on enabling multiple agents to cooperate in solving complex tasks. The framework supports various language models from Together AI, tool integrations, and both autonomous and human-in-the-loop workflows.
 
@@ -26,7 +26,7 @@ Set your Together AI API key:
 
 ## Example
 
-Setup and configure AutoGen to use LLMs from Together AI
+Set up and configure AutoGen to use LLMs from Together AI.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -95,7 +95,7 @@ Importantly, we have tweaked the system message so that the model doesn't return
 
 ## Output
 
-````
+````text theme={null}
 User (to Together Assistant):
 
 Provide code to count the number of prime numbers from 1 to 10000.

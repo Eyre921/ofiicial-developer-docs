@@ -4,11 +4,11 @@ source: https://docs.together.ai/docs/pydanticai
 path: docs/pydanticai
 ---
 
-Using PydanticAI with Together.
+Use PydanticAI with Together AI.
 
 PydanticAI is an agent framework created by the Pydantic team to simplify building production-grade generative AI applications. It brings the ergonomic design philosophy of FastAPI to AI agent development, offering a familiar and type-safe approach to working with language models.
 
-## Installing libraries
+## Install libraries
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -54,14 +54,14 @@ Set your Together AI API key:
 
 ### Output
 
-```
+```text theme={null}
 The first known use of "hello, world" was in a 1974 textbook about the C programming language.
 ```
 
 ## Next steps
 
 <Info>
-  ### PydanticAI - Together AI Notebook
+  ### PydanticAI - Together AI notebook
 
   Learn more about building agents using PydanticAI with Together AI in our [notebook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/PydanticAI/PydanticAI_Agents.ipynb).
 </Info>

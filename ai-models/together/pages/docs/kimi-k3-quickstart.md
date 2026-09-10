@@ -785,7 +785,7 @@ On top of that, Moonshot pushed mixture-of-experts (MoE) sparsity further with t
 * **Sigmoid Tanh Unit (SiTU):** Improves activation control.
 * **Gated MLA:** Improves attention selectivity.
 
-K3 continues a sustained scaling push: in nine of the twelve months from July 2025 to July 2026, Kimi models set the upper bound of open-model scale. At 2.8T parameters, K3 is the largest open-weight model released to date.
+K3 continues a sustained scaling push: in nine of the 12 months from July 2025 to July 2026, Kimi models set the upper bound of open-model scale. At 2.8T parameters, K3 is the largest open-weight model released to date.
 
 ## Use cases
 

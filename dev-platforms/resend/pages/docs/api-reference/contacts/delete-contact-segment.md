@@ -31,7 +31,7 @@ Either `id` or `email` must be provided.
 
   // Remove by contact id
   const { data, error } = await resend.contacts.segments.remove({
-    id: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
+    contactId: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
     segmentId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
   });
 
@@ -137,7 +137,7 @@ Either `id` or `email` must be provided.
   async fn main() -> Result<()> {
     let resend = Resend::new("re_xxxxxxxxx");
 
-    // Update by contact id
+    // Remove by contact id
     let _contact = resend
       .contacts
       .delete_contact_segment(
@@ -146,7 +146,7 @@ Either `id` or `email` must be provided.
       )
       .await?;
 
-    // // Update by contact email
+    // Remove by contact email
     let _contact = resend
       .contacts
       .delete_contact_segment(
@@ -197,11 +197,11 @@ Either `id` or `email` must be provided.
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  // Update by contact id
+  # Remove by contact id
   curl -X DELETE 'https://api.resend.com/contacts/e169aa45-1ecf-4183-9955-b1499d5701d3/segments/78261eea-8f8b-4381-83c6-79fa7120f1cf' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
 
-  // Update by contact email
+  # Remove by contact email
   curl -X DELETE 'https://api.resend.com/contacts/steve.wozniak@gmail.com/segments/78261eea-8f8b-4381-83c6-79fa7120f1cf' \
        -H 'Authorization: Bearer re_xxxxxxxxx' \
        -H 'Content-Type: application/json'

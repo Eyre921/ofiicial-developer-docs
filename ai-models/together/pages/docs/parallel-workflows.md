@@ -21,7 +21,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
 </Info>
 
 <Info>
-  ### Parallel Workflow Cookbook
+  ### Parallel workflow cookbook
 
   For a more detailed walk-through refer to the [notebook here](https://togetherai.link/agent-recipes-deep-dive-parallelization).
 </Info>
@@ -521,7 +521,7 @@ An alternate and useful parallel workflow. This workflow begins with an LLM brea
       )
   ```
 
-  ````bash Bash theme={null}
+  ````typescript TypeScript theme={null}
   import dedent from "dedent";
   import { z } from "zod";
 

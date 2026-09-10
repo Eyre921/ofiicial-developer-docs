@@ -10,7 +10,7 @@ OpenCode is a powerful AI coding agent built specifically for the terminal, offe
 
 With OpenCode's agent, you can ask it to build features, fix bugs, explain codebases, and start new projects – all while maintaining full transparency in terms of cost and token usage. Here's how you can start using it with Together AI's models:
 
-## 1. Install OpenCode
+## Step 1: Install OpenCode
 
 Install OpenCode directly from your terminal with a single command:
 
@@ -20,7 +20,7 @@ curl -fsSL https://opencode.ai/install | bash
 
 This will install OpenCode and make it available system-wide.
 
-## 2. Launch OpenCode
+## Step 2: Launch OpenCode
 
 Navigate to your project directory and launch OpenCode:
 
@@ -31,33 +31,33 @@ opencode
 
 OpenCode will start with its native terminal UI interface, automatically detecting and loading the appropriate Language Server Protocol (LSP) for your project.
 
-## 3. Configure Together AI
+## Step 3: Configure Together AI
 
 When you first run OpenCode, you'll need to configure it to use Together AI as your model provider. Follow these steps:
 
-* **Set up your API provider**: Configure OpenCode to use Together AI
-  * **opencode auth login**
+* **Set up your API provider:** Configure OpenCode to use Together AI.
+  * `opencode auth login`.
 
 <img alt="image.png" />
 
-> To find the Together AI provider you will need to scroll the provider list or type together
+> To find the Together AI provider you will need to scroll the provider list or enter `together`.
 
 <img alt="Screenshot 2025-08-12 at 12.36.16.png" />
 
-* **Add your API key**: Get your [Together AI API key](https://api.together.ai/settings/projects/~current/api-keys) and paste it into the opencode terminal
-* **Select a model**: Choose from powerful models like:
+* **Add your API key:** Get your [Together AI API key](https://api.together.ai/settings/projects/~current/api-keys) and paste it into the OpenCode terminal.
+* **Select a model:** Choose from powerful models like:
   * `moonshotai/Kimi-K3` - Top pick for coding agents.
   * `zai-org/GLM-5.3` - Strong coding and agentic all-rounder.
   * `deepseek-ai/DeepSeek-V4-Pro-0813` - Advanced reasoning capabilities.
   * `deepseek-ai/DeepSeek-V4-Flash-0731` - Fast, cost-effective coding model.
 
-## 4. Bonus: install the opencode vs-code extension
+## Step 4: Install the OpenCode VS Code extension
 
 For developers who prefer working within VS Code, OpenCode offers a dedicated extension that integrates seamlessly into your IDE workflow while still leveraging the power of the terminal-based agent.
 
 Install the extension: Search for "opencode" in the VS Code Extensions Marketplace or directly use this link:
 
-* [https://open-vsx.org/extension/sst-dev/opencode](https://open-vsx.org/extension/sst-dev/opencode)
+* [OpenCode extension on Open VSX](https://open-vsx.org/extension/sst-dev/opencode).
 
 ## Key features & usage
 
@@ -69,14 +69,14 @@ OpenCode provides a responsive, native terminal UI that's fully themeable and in
 
 Switch between modes using the **Tab** key:
 
-* **Plan Mode**: Ask OpenCode to create implementation plans without making changes
-* **Build Mode**: Let OpenCode directly implement features and make code changes
+* **Plan Mode:** Ask OpenCode to create implementation plans without making changes.
+* **Build Mode:** Let OpenCode directly implement features and make code changes.
 
 ### File references with fuzzy search
 
 Use the `@` key to fuzzy search and reference files in your project:
 
-```
+```text theme={null}
 How is authentication handled in @packages/functions/src/api/index.ts
 ```
 
@@ -86,7 +86,7 @@ How is authentication handled in @packages/functions/src/api/index.ts
 
 Talk to OpenCode like you're talking to a junior developer:
 
-```
+```text theme={null}
 When a user deletes a note, flag it as deleted in the database instead of removing it. 
 Then create a "Recently Deleted" screen where users can restore or permanently delete notes.
 Use the same design patterns as our existing settings page.
@@ -96,7 +96,7 @@ Use the same design patterns as our existing settings page.
 
 Provide plenty of context and examples:
 
-```
+```text theme={null}
 Add error handling to the API similar to how it's done in @src/utils/errorHandler.js
 ```
 
@@ -104,7 +104,7 @@ Add error handling to the API similar to how it's done in @src/utils/errorHandle
 
 In Plan Mode, review and refine the approach before implementation:
 
-```
+```text theme={null}
 That looks good, but let's also add input validation and rate limiting
 ```
 
@@ -118,10 +118,10 @@ See the [pricing page](https://www.together.ai/pricing) for current per-token ra
 
 ## Getting started
 
-1. Install OpenCode: `curl -fsSL https://opencode.ai/install | bash`
-2. Navigate to your project: `cd your-project`
-3. Launch OpenCode: `opencode`
-4. Configure Together AI with your API key
-5. Start building faster with AI assistance!
+1. Install OpenCode: `curl -fsSL https://opencode.ai/install | bash`.
+2. Navigate to your project: `cd your-project`.
+3. Launch OpenCode: `opencode`.
+4. Configure Together AI with your API key.
+5. Start building faster with AI assistance.
 
 That's it! You now have one of the most powerful terminal-based AI coding agents running with fast, secure, and private open source models hosted on Together AI. OpenCode's native terminal interface combined with Together AI's powerful models will transform your development workflow.

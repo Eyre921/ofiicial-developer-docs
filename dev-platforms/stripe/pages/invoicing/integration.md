@@ -665,5 +665,5 @@ curl https://api.stripe.com/v1/customers \
 
 - [How Invoicing Works](https://docs.stripe.com/invoicing/overview.md)
 
-- [Hosted Invoice Page](https://docs.stripe.com/invoicing/hosted-invoice-page.md)
+- [Hosted invoice page](https://docs.stripe.com/invoicing/hosted-invoice-page.md)
 

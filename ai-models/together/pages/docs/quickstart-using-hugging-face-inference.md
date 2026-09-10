@@ -12,14 +12,14 @@ This documentation provides a concise guide for developers to integrate and use 
 
 When using Together AI through Hugging Face, you have two options for authentication:
 
-* Direct Requests: Use your Together AI API key in your Hugging Face user account settings. In this mode, inference requests are sent directly to Together AI, and billing is handled by your Together AI account.
-* Routed Requests: If you don't configure a Together AI API key, your requests will be routed through Hugging Face. In this case, you can use a Hugging Face token for authentication. Billing for routed requests is applied to your Hugging Face account at standard provider API rates. You don’t need an account on Together AI to do this. Use your HF one!
+* **Direct requests:** Use your Together AI API key in your Hugging Face user account settings. In this mode, inference requests are sent directly to Together AI, and billing is handled by your Together AI account.
+* **Routed requests:** If you don't configure a Together AI API key, your requests will be routed through Hugging Face. In this case, you can use a Hugging Face token for authentication. Billing for routed requests is applied to your Hugging Face account at standard provider API rates. You don’t need an account on Together AI to do this. Use your HF one.
 
 To add a Together AI API key to your Hugging Face settings, follow these steps:
 
 1. Go to your [Hugging Face user account settings](https://huggingface.co/settings/inference-providers).
 2. Locate the "Inference Providers" section.
-3. You can add your API keys for different providers, including Together AI
+3. You can add your API keys for different providers, including Together AI.
 4. You can also set your preferred provider order, which will influence the display order in model widgets and code snippets.
 
 <Info>
@@ -42,9 +42,9 @@ First, ensure you have the `huggingface_hub` library installed (version v0.29.0 
   ```
 </CodeGroup>
 
-## 1. Text generation - LLMs
+## Text generation - LLMs
 
-### a. Chat completion with Hugging Face Hub library
+### Chat completion with Hugging Face Hub library
 
 <CodeGroup>
   ```python Python theme={null}
@@ -100,11 +100,11 @@ First, ensure you have the `huggingface_hub` library installed (version v0.29.0 
 
 You can swap this for any compatible LLM from Together AI, here’s a handy [URL](https://huggingface.co/models?inference_provider=together\&other=text-generation-inference\&sort=trending) to find the list.
 
-### b. OpenAI client library
+### OpenAI client library
 
-You can also call inference providers via the [OpenAI python client](https://github.com/openai/openai-python). You will need to specify the `base_url` and `model` parameters in the client and call respectively.
+You can also call inference providers via the [OpenAI Python client](https://github.com/openai/openai-python). You will need to specify the `base_url` and `model` parameters in the client and call respectively.
 
-The easiest way is to go to [a model’s page](https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813?inference_api=true\&inference_provider=together\&language=python) on the hub and copy the snippet.
+Go to [a model’s page](https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813?inference_api=true\&inference_provider=together\&language=python) on the hub and copy the snippet.
 
 ```python Python theme={null}
 from openai import OpenAI
@@ -125,7 +125,7 @@ completion = client.chat.completions.create(
 print(completion.choices[0].message)
 ```
 
-## 2. Text-to-image generation
+## Text-to-image generation
 
 <CodeGroup>
   ```python Python theme={null}

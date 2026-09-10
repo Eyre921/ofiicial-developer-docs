@@ -81,8 +81,8 @@ The response separates the chain of thought from the final answer: reasoning tok
 
 DeepSeek V4 Pro accepts two effort levels through the `reasoning_effort` parameter:
 
-* `"high"`: the default thinking depth. Use for most complex problems.
-* `"max"`: maximum reasoning effort. Use for the hardest math, planning, and multi-step coding agents. Set the context window to at least 384K tokens for Think Max mode, and set `max_tokens` generously, since `"max"` mode can produce very long chains of thought.
+* `"high"`: The default thinking depth. Use for most complex problems.
+* `"max"`: Maximum reasoning effort. Use for the hardest math, planning, and multi-step coding agents. Set the context window to at least 384K tokens for Think Max mode, and set `max_tokens` generously, since `"max"` mode can produce very long chains of thought.
 
 Together normalizes other values automatically: `"low"` and `"medium"` map to `"high"`, and `"xhigh"` maps to `"max"`.
 
@@ -169,7 +169,7 @@ DeepSeek recommends `temperature=1.0` and `top_p=1.0` for V4 Pro. Lower temperat
 
 ## Reducing reasoning overhead
 
-V4 Pro is a thinking-by-default hybrid model on Together. For simple turns where reasoning overhead is not needed, disable reasoning with `reasoning={"enabled": False}`:
+V4 Pro is a thinking-by-default hybrid model on Together. For turns where reasoning overhead is not needed, disable reasoning with `reasoning={"enabled": False}`:
 
 ```python theme={null}
 response = client.chat.completions.create(

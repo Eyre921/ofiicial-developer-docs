@@ -16,5 +16,6 @@ This article has multiple variants. Fetch one of the following URLs to view spec
 - [Selfie](https://docs.stripe.com/identity/verification-checks.md?type=selfie)
 - [ID Number](https://docs.stripe.com/identity/verification-checks.md?type=id-number)
 - [Phone (Invite only)](https://docs.stripe.com/identity/verification-checks.md?type=phone)
+- [Email (Invite only)](https://docs.stripe.com/identity/verification-checks.md?type=email)
 - [Address (Invite only)](https://docs.stripe.com/identity/verification-checks.md?type=address)
 

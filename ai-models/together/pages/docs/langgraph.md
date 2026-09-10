@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/langgraph
 path: docs/langgraph
 ---
 
-Using LangGraph with Together AI.
+Use LangGraph with Together AI to build agent workflows.
 
 LangGraph is an OSS library for building stateful, multi-actor applications with LLMs, specifically designed for agent and multi-agent workflows. The framework supports critical agent architecture features including persistent memory across conversations and human-in-the-loop capabilities through checkpointed states.
 
@@ -15,7 +15,7 @@ LangGraph is an OSS library for building stateful, multi-actor applications with
     pip install -U langgraph langchain-together
   ```
 
-  ```shell Typescript theme={null}
+  ```shell TypeScript theme={null}
     pnpm add @langchain/langgraph @langchain/core  @langchain/community
   ```
 </CodeGroup>
@@ -30,7 +30,7 @@ Set your Together AI API key:
 
 ## Example
 
-In this simple example you augment an LLM with a calculator tool!
+In this example you augment an LLM with a calculator tool!
 
 <CodeGroup>
   ```python Python theme={null}
@@ -58,7 +58,7 @@ In this simple example you augment an LLM with a calculator tool!
   msg.tool_calls
   ```
 
-  ```typescript Typescript theme={null}
+  ```typescript TypeScript theme={null}
   import { ChatTogetherAI } from "@langchain/community/chat_models/togetherai";
 
   const llm = new ChatTogetherAI({
@@ -101,10 +101,10 @@ In this simple example you augment an LLM with a calculator tool!
 ## Next steps
 
 <Info>
-  ### LangGraph - Together AI Notebook
+  ### LangGraph - Together AI notebook
 
   Learn more about building agents using LangGraph with Together AI in these notebooks:
 
-  * [Agentic RAG Notebook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/LangGraph/Agentic_RAG_LangGraph.ipynb)
-  * [Planning Agent Notebook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/LangGraph/LangGraph_Planning_Agent.ipynb)
+  * [Agentic RAG Notebook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/LangGraph/Agentic_RAG_LangGraph.ipynb).
+  * [Planning Agent Notebook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/LangGraph/LangGraph_Planning_Agent.ipynb).
 </Info>

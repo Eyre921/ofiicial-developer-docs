@@ -22883,6 +22883,7 @@ The branch argument is optional. Run `neon checkout` with no branch in an intera
 
 | Option         | Description                                                                                                                                                                                                                                                                                                                            | Type    | Default | Required |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--create`     | Create the named branch if it does not exist, then check it out                                                                                                                                                                                                                                                                        | boolean | `false` |    No    |
 | `--env`        | Path to a .env file to load into the environment before evaluating neon.ts so Function env values resolve from it. Existing env vars are not overridden. Function env values that read process.env must be set in this file or the environment. Used when this checkout creates a branch from neon.ts; ignored for an existing branch. | string  | —       |    No    |
 | `--env-pull`   | Pull the branch's Neon env vars (DATABASE\_URL, ...) into a local .env after checkout. On by default; use --no-env-pull to skip, for example when injecting env at runtime with `neon-env run` (from `@neon/env`) or `neon dev`.                                                                                                       | boolean | `true`  |    No    |
 | `--project-id` | Project ID                                                                                                                                                                                                                                                                                                                             | string  | —       |    No    |
@@ -22896,7 +22897,7 @@ Creating a branch from a [`neon.ts`](https://neon.com/docs/reference/neon-ts) po
 Branch ID vs name is detected automatically (a `br-…` value is treated as an ID):
 
 - **ID:** Matched strictly by ID. A non-existent ID is a hard "not found" error (IDs are server-assigned, so `checkout` never creates one).
-- **Name:** Matched by name. If the name does not exist, in an interactive terminal `checkout` offers to create it (equivalent to `neon branches create --name <name>`: branched from the project's default branch with a read-write compute), then checks it out. In a non-interactive context, a missing name is the usual "not found" error.
+- **Name:** Matched by name. If the name doesn't exist, pass `--create` to create it (equivalent to `neon branches create --name <name>`: branched from the project's default branch with a read-write compute), then check it out. Without `--create`, an interactive terminal offers to create it, while a non-interactive context (CI or no TTY) exits with a "not found" error that tells you to pass `--create`. `--create` needs a branch name, so `neon checkout --create` on its own is an error. `--create` requires neon 4.15.0 or later.
 
 ## Project resolution
 
@@ -22940,6 +22941,12 @@ Pin a branch by ID:
 
 ```bash
 neon checkout br-cool-snow-12345678 --project-id polished-snowflake-12345678
+```
+
+Create a branch by name if it doesn't exist yet, then pin it:
+
+```bash
+neon checkout dev --create --project-id polished-snowflake-12345678
 ```
 
 After checking out a branch, commands such as [`connection-string`](https://neon.com/docs/cli/connection-string) and [`psql`](https://neon.com/docs/cli/psql) use the pinned branch by default.
@@ -23180,7 +23187,7 @@ export default defineConfig({
 
 If a `neon.ts`, `neon.mts`, `neon.js`, or `neon.mjs` file already exists, `config init` is idempotent: it leaves that file untouched instead of overwriting hand-written policy.
 
-`config init` runs entirely locally and does not call the Neon API. It detects your package manager (npm, pnpm, yarn, or bun) from how the command was invoked. Pass `--no-install` to skip installation and just print the command to run.
+`config init` runs entirely locally and does not call the Neon API. It detects your package manager (npm, pnpm, yarn, or bun) from how the command was invoked. Before installing, it makes sure `node_modules/` is listed in your `.gitignore`, appending it if it's missing. Pass `--no-install` to skip installation and just print the command to run.
 
 ```bash
 neon config init [options]
@@ -24296,6 +24303,8 @@ By default the command resolves the project, branch, database, and role from you
 When you omit `--database-name`, `inspect` covers every database on the branch and adds a `database` column so you can tell the rows apart. Pass `--database-name` to inspect a single database, which also scopes `locks` and `long-running-queries` to that database so lock and relation names resolve correctly. Database-scoped checks such as `table-sizes`, `locks`, and `outliers` run against each database, while compute-wide checks (`lfc-hit-rate`, `working-set`, and `replication-slots`) run once. If any database fails, the whole run fails, so pass `--database-name` to narrow to one when that happens. `--db-url` always inspects the single database in the connection string and never adds the `database` column.
 
 Some queries read from Postgres statistics extensions. `outliers` and `calls` need [`pg_stat_statements`](https://neon.com/docs/extensions/pg_stat_statements), and `lfc-hit-rate` and `working-set` need the [`neon`](https://neon.com/docs/extensions/neon) extension. If a required extension is not installed, the command reports it instead of returning rows.
+
+**Note:** On large fixed-size computes (18 CU and above), Neon disables the file cache and serves the [compute cache](https://neon.com/docs/extensions/neon#what-is-the-compute-cache) from Postgres `shared_buffers`, so `lfc-hit-rate` and `working-set` return empty or misleading results on those computes. Use the [Compute cache hit rate](https://neon.com/docs/introduction/monitoring-page#compute-cache-hit-rate) graph or run `SHOW shared_buffers` instead.
 
 From an AI assistant, the same checks are available through the Neon MCP server's `inspect_database` tool. See [Database diagnostics](https://neon.com/docs/ai/neon-mcp-server#database-diagnostics).
 
@@ -43891,7 +43900,11 @@ The `neon_stat_file_cache` view provides insights into how effectively your Neon
 
 ## What is the compute cache?
 
-Neon uses up to 75% of your compute's RAM for data caching. This cache stores frequently accessed data in the local memory of the Neon compute, which reduces latency and improves query performance by minimizing the need to fetch data from database storage. Like Postgres [shared buffers](https://neon.com/docs/reference/glossary#shared-buffers), it caches your most recently accessed data. To view the compute cache size for each Neon compute size, see [How to size your compute](https://neon.com/docs/manage/computes#how-to-size-your-compute).
+Neon caches frequently accessed data on the compute, which reduces latency and improves query performance by minimizing reads from database storage. This compute cache provides up to 75% of your compute's RAM in capacity and can span two tiers: Postgres [shared buffers](https://neon.com/docs/reference/glossary#shared-buffers), which are held in memory and are the fastest to read, and a larger secondary file cache on the compute's local disk that holds more data but requires disk I/O. A read checks shared buffers first, then the file cache, and only then falls through to database storage. The `neon_stat_file_cache` view reports the file-cache tier. To view the compute cache size for each Neon compute size, see [How to size your compute](https://neon.com/docs/manage/computes#how-to-size-your-compute).
+
+**Note: Large fixed-size computes**
+
+On large fixed-size computes (18 CU and above), Neon sets `shared_buffers` to 75% of RAM (backed by huge pages) and disables the secondary file cache, so the entire compute cache is held in memory as shared buffers. The capacity is unchanged; what differs is that hot pages stay in the fastest tier instead of falling through to disk, and how you measure the cache. Because the file cache is off, `neon_stat_file_cache`, [`neon inspect db lfc-hit-rate`](https://neon.com/docs/cli/inspect#db-lfc-hit-rate), and [`neon inspect db working-set`](https://neon.com/docs/cli/inspect#db-working-set) no longer report it on these computes. Run `SHOW shared_buffers` and `SHOW huge_pages` to confirm the configuration, and use the [Compute cache hit rate](https://neon.com/docs/introduction/monitoring-page#compute-cache-hit-rate) graph, which works on every compute size. For background, see [Improving Postgres compute cache on Neon](https://neon.com/blog/improving-lakebase-compute-cache-part-1).
 
 ## Monitoring compute cache usage
 
@@ -62467,7 +62480,7 @@ export default defineConfig({
     }
     if (!branch.exists) {
       // New non-default branches: auto-expire
-      // Run `neon checkout <name>` to create a new branch with these settings
+      // Run `neon checkout <name> --create` to create a new branch with these settings
       return { ttl: "7d" };
     }
     // Existing branch: no changes
@@ -62645,11 +62658,11 @@ const userId = String(payload.sub);
 
 A branch forks the whole backend through service-specific mechanics. Postgres and Object Storage branch their state copy-on-write. Each branch runs its own Functions at their own URLs and gets its own Managed Better Auth environment, Data API endpoint, and AI Gateway endpoint. AI Gateway credentials work on the branch where they're issued and its descendants.
 
-To try a change to the notes app safely, switch to a new branch with [`neon checkout`](https://neon.com/docs/cli/checkout), which offers to create the branch if it doesn't exist:
+To try a change to the notes app safely, switch to a new branch with [`neon checkout`](https://neon.com/docs/cli/checkout). Pass `--create` to create the branch if it doesn't exist yet:
 
 ```bash
-neon checkout my-feature      # switch to my-feature (offers to create it if new)
-neon deploy                   # provisions that branch's services
+neon checkout my-feature --create   # create my-feature if new, then switch to it
+neon deploy                         # provisions that branch's services
 ```
 
 `neon deploy` writes the new branch's credentials into `.env`, so the same code now runs against branch-specific infrastructure: a different database, an isolated `attachments` bucket, and its own `chat` URL. A note you write on the branch never appears on `main`.
@@ -119185,6 +119198,10 @@ The following table outlines the RAM, compute cache size (75% of RAM), and the `
 
 **Note:** Compute size support differs by [Neon plan](https://neon.com/docs/introduction/plans). Autoscaling is supported up to 16 CU. Neon supports fixed compute sizes (no autoscaling) for computes sizes larger than 16 CU.
 
+**Note: Caching on large fixed-size computes**
+
+On fixed-size computes of 18 CU and above, Neon delivers this cache as Postgres `shared_buffers` set to 75% of RAM and backed by huge pages, and disables the secondary file cache that smaller and autoscaling computes rely on. This keeps hot data in memory rather than on the compute's local disk. Confirm the configuration with `SHOW shared_buffers` and `SHOW huge_pages`, and measure cache efficiency with the [Compute cache hit rate](https://neon.com/docs/introduction/monitoring-page#compute-cache-hit-rate) graph. See [What is the compute cache?](https://neon.com/docs/extensions/neon#what-is-the-compute-cache) for details.
+
 | Compute Size (CU) | RAM (GB) | Compute cache size (GB) | max\_connections |
 | :---------------- | :------- | :---------------------- | :--------------- |
 | 0.25              | 1        | 0.75                    | 104              |
@@ -125107,7 +125124,9 @@ For information about right-sizing your compute in Neon, see [How to size your c
 
 A cache hit ratio tells you the percentage of queries served from memory. Queries not served from memory retrieve data from disk, which is more costly and can result in slower query performance.
 
-In a standalone Postgres instance, you can query the cache hit ratio with an SQL statement that looks for `shared buffers` block hits. In Neon, it's a little different. Neon caches data in your compute's memory (up to 75% of your compute's RAM). To query your cache hit ratio in Neon, you need to look at compute cache hits instead of shared buffer hits.
+In a standalone Postgres instance, you can query the cache hit ratio with an SQL statement that looks for `shared buffers` block hits. In Neon, it's a little different. Neon caches data on your compute (up to 75% of your compute's RAM). To query your cache hit ratio in Neon, you need to look at compute cache hits instead of shared buffer hits.
+
+**Note:** This applies to autoscaling computes and fixed-size computes below 18 CU. On fixed-size computes of 18 CU and above, Neon caches data in Postgres `shared_buffers` rather than the file cache, so the `neon_stat_file_cache` view below does not reflect the working cache there. On those computes, check the [Compute cache hit rate](https://neon.com/docs/introduction/monitoring-page#compute-cache-hit-rate) graph or `SHOW shared_buffers` instead. See [What is the compute cache?](https://neon.com/docs/extensions/neon#what-is-the-compute-cache) for details.
 
 To enable querying compute cache statistics, Neon provides a [neon_stat_file_cache](https://neon.com/docs/extensions/neon#the-neonstatfilecache-view) view. To access this view, you need to install the [neon](https://neon.com/docs/extensions/neon) extension:
 
@@ -126999,37 +127018,37 @@ The following table shows parameter settings that are set explicitly for your da
 
 If you are a Neon [Scale plan](https://neon.com/docs/introduction/plans) user and require a different Postgres instance-level setting, you can contact [Neon Support](https://neon.com/docs/introduction/support) to see if the desired setting can be supported. Please keep in mind that it may not be possible to support some parameters due to platform limitations and constraints.
 
-| Parameter                             | Value         | Note                                                                                                                                                                                                             |
-| ------------------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `client_connection_check_interval`    | 60000         |                                                                                                                                                                                                                  |
-| `dynamic_shared_memory_type`          | mmap          |                                                                                                                                                                                                                  |
-| `effective_io_concurrency`            | 20            |                                                                                                                                                                                                                  |
-| `effective_cache_size`                |               | Set based on the [compute cache](https://neon.com/docs/reference/glossary#compute-cache) size of your maximum Neon compute size                                                                                  |
-| `fsync`                               | off           | Neon syncs data to the Neon database storage engine to store your data safely and reliably                                                                                                                       |
-| `hot_standby`                         | off           |                                                                                                                                                                                                                  |
-| `idle_in_transaction_session_timeout` | 300000        |                                                                                                                                                                                                                  |
-| `listen_addresses`                    | '\*'          |                                                                                                                                                                                                                  |
-| `log_connections`                     | on            |                                                                                                                                                                                                                  |
-| `log_disconnections`                  | on            |                                                                                                                                                                                                                  |
-| `log_min_error_statement`             | panic         |                                                                                                                                                                                                                  |
-| `log_temp_files`                      | 1048576       |                                                                                                                                                                                                                  |
-| `maintenance_work_mem`                | 65536         | The value differs by compute size. See [below](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size).                                                                    |
-| `max_connections`                     | 112           | The value differs by compute size. See [below](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size).                                                                    |
-| `max_parallel_workers`                | 8             |                                                                                                                                                                                                                  |
-| `max_replication_flush_lag`           | 10240         |                                                                                                                                                                                                                  |
-| `max_replication_slots`               | 10            |                                                                                                                                                                                                                  |
-| `max_replication_write_lag`           | 500           |                                                                                                                                                                                                                  |
-| `max_wal_senders`                     | 10            |                                                                                                                                                                                                                  |
-| `max_wal_size`                        | 1024          |                                                                                                                                                                                                                  |
-| `max_worker_processes`                | 26            | The value differs by compute size. See [below](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size).                                                                    |
-| `password_encryption`                 | scram-sha-256 |                                                                                                                                                                                                                  |
-| `restart_after_crash`                 | off           |                                                                                                                                                                                                                  |
-| `shared_buffers`                      | 128MB         | In Neon, up to 75% of your compute's RAM is used for data caching. The value differs by compute size. See [below](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size). |
-| `superuser_reserved_connections`      | 7             |                                                                                                                                                                                                                  |
-| `synchronous_standby_names`           | 'walproposer' |                                                                                                                                                                                                                  |
-| `wal_level`                           | replica       | Defaults to `replica`. When you [enable logical replication](https://neon.com/docs/guides/logical-replication-neon#enable-logical-replication), Neon changes it to `logical`.                                    |
-| `wal_log_hints`                       | off           |                                                                                                                                                                                                                  |
-| `wal_sender_timeout`                  | 10000         |                                                                                                                                                                                                                  |
+| Parameter                             | Value         | Note                                                                                                                                                                                                                                                                                 |
+| ------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `client_connection_check_interval`    | 60000         |                                                                                                                                                                                                                                                                                      |
+| `dynamic_shared_memory_type`          | mmap          |                                                                                                                                                                                                                                                                                      |
+| `effective_io_concurrency`            | 20            |                                                                                                                                                                                                                                                                                      |
+| `effective_cache_size`                |               | Set based on the [compute cache](https://neon.com/docs/reference/glossary#compute-cache) size of your maximum Neon compute size                                                                                                                                                      |
+| `fsync`                               | off           | Neon syncs data to the Neon database storage engine to store your data safely and reliably                                                                                                                                                                                           |
+| `hot_standby`                         | off           |                                                                                                                                                                                                                                                                                      |
+| `idle_in_transaction_session_timeout` | 300000        |                                                                                                                                                                                                                                                                                      |
+| `listen_addresses`                    | '\*'          |                                                                                                                                                                                                                                                                                      |
+| `log_connections`                     | on            |                                                                                                                                                                                                                                                                                      |
+| `log_disconnections`                  | on            |                                                                                                                                                                                                                                                                                      |
+| `log_min_error_statement`             | panic         |                                                                                                                                                                                                                                                                                      |
+| `log_temp_files`                      | 1048576       |                                                                                                                                                                                                                                                                                      |
+| `maintenance_work_mem`                | 65536         | The value differs by compute size. See [below](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size).                                                                                                                                        |
+| `max_connections`                     | 112           | The value differs by compute size. See [below](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size).                                                                                                                                        |
+| `max_parallel_workers`                | 8             |                                                                                                                                                                                                                                                                                      |
+| `max_replication_flush_lag`           | 10240         |                                                                                                                                                                                                                                                                                      |
+| `max_replication_slots`               | 10            |                                                                                                                                                                                                                                                                                      |
+| `max_replication_write_lag`           | 500           |                                                                                                                                                                                                                                                                                      |
+| `max_wal_senders`                     | 10            |                                                                                                                                                                                                                                                                                      |
+| `max_wal_size`                        | 1024          |                                                                                                                                                                                                                                                                                      |
+| `max_worker_processes`                | 26            | The value differs by compute size. See [below](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size).                                                                                                                                        |
+| `password_encryption`                 | scram-sha-256 |                                                                                                                                                                                                                                                                                      |
+| `restart_after_crash`                 | off           |                                                                                                                                                                                                                                                                                      |
+| `shared_buffers`                      | 128MB         | The `shared_buffers` value differs by compute size; the [compute cache](https://neon.com/docs/reference/glossary#compute-cache) provides up to 75% of your compute's RAM. See [below](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size). |
+| `superuser_reserved_connections`      | 7             |                                                                                                                                                                                                                                                                                      |
+| `synchronous_standby_names`           | 'walproposer' |                                                                                                                                                                                                                                                                                      |
+| `wal_level`                           | replica       | Defaults to `replica`. When you [enable logical replication](https://neon.com/docs/guides/logical-replication-neon#enable-logical-replication), Neon changes it to `logical`.                                                                                                        |
+| `wal_log_hints`                       | off           |                                                                                                                                                                                                                                                                                      |
+| `wal_sender_timeout`                  | 10000         |                                                                                                                                                                                                                                                                                      |
 
 ### Parameter settings that differ by compute size
 
@@ -127139,6 +127158,8 @@ _For most applications, we recommend using connection pooling, which supports up
   backends = 1 + max_connections + max_worker_processes
   shared_buffers_mb = max(128, (1023 + backends * 256) / 1024)
   ```
+
+  On large fixed-size computes (18 CU and above), `shared_buffers` is instead set to 75% of your compute's RAM (backed by huge pages) and the secondary file cache is disabled, so this formula does not apply. See [What is the compute cache?](https://neon.com/docs/extensions/neon#what-is-the-compute-cache).
 
 - The `effective_cache_size` parameter is set based on the [compute cache](https://neon.com/docs/reference/glossary#compute-cache) size of your maximum Neon compute size. This helps the Postgres query planner make smarter decisions, which can improve query performance. For details on compute cache size by compute size, see the table in [How to size your compute](https://neon.com/docs/manage/computes#how-to-size-your-compute).
 
@@ -127728,7 +127749,7 @@ Neon creates a primary read-write compute for the project's default branch. Neon
 
 ## compute cache
 
-The compute cache is a layer of caching that stores frequently accessed data from the storage layer in the local memory of the compute. This cache helps to reduce latency and improve query performance by minimizing the need to fetch data from the storage layer repeatedly. Like Postgres [shared buffers](https://neon.com/docs/reference/glossary#shared-buffers), it caches your most recently accessed data. In Neon, up to 75% of your compute's RAM is used for data caching.
+The compute cache is a layer of caching on the compute that stores frequently accessed data from the storage layer, reducing latency and improving query performance by avoiding repeated fetches from storage. Exposed as a single cache, it can span two tiers: Postgres [shared buffers](https://neon.com/docs/reference/glossary#shared-buffers), which are held in memory, and a larger secondary file cache on the compute's local disk. It provides up to 75% of your compute's RAM in capacity. For details, see [What is the compute cache?](https://neon.com/docs/extensions/neon#what-is-the-compute-cache).
 
 ## compute endpoint
 
@@ -128168,7 +128189,7 @@ A cloud-based development model that enables developing and running applications
 
 ## shared buffers
 
-A memory area in Postgres for caching blocks of data from storage (disk on standalone Postgres or Pageservers in Neon). This cache enhances the performance of database operations by reducing the need to access the slower storage for frequently accessed data. In Neon, the `shared_buffers` parameter [scales with compute size](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size), and up to 75% of your compute's RAM is used for data caching. For additional information about shared buffers in Postgres, see [Resource Consumption](https://www.postgresql.org/docs/current/runtime-config-resource.html), in the Postgres documentation.
+A memory area in Postgres for caching blocks of data from storage (disk on standalone Postgres or Pageservers in Neon). This cache enhances the performance of database operations by reducing the need to access the slower storage for frequently accessed data. In Neon, `shared_buffers` is the in-memory tier of the [compute cache](https://neon.com/docs/reference/glossary#compute-cache), and its value [differs by compute size](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size). For additional information about shared buffers in Postgres, see [Resource Consumption](https://www.postgresql.org/docs/current/runtime-config-resource.html), in the Postgres documentation.
 
 ## Snapshot
 

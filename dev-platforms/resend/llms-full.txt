@@ -249,7 +249,7 @@ Claude and Codex also offer one-click installs that bundle the MCP server and ev
 * [Resend plugin for Codex](https://chatgpt.com/plugins/plugin_asdk_app_6a3c407853888191beddc2151c2b6f8b?open_in_codex)
 
 <Card title="MCP Server" icon="microchip-ai" href="/docs/mcp-server">
-  View setup instructions for Claude, Cursor, Codex, Copilot, Windsurf,
+  View setup instructions for Claude, Cursor, Codex, Copilot, Devin,
   Antigravity, and more.
 </Card>
 
@@ -5967,7 +5967,7 @@ Either `id` or `email` must be provided.
 
   // Remove by contact id
   const { data, error } = await resend.contacts.segments.remove({
-    id: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
+    contactId: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
     segmentId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
   });
 
@@ -6073,7 +6073,7 @@ Either `id` or `email` must be provided.
   async fn main() -> Result<()> {
     let resend = Resend::new("re_xxxxxxxxx");
 
-    // Update by contact id
+    // Remove by contact id
     let _contact = resend
       .contacts
       .delete_contact_segment(
@@ -6082,7 +6082,7 @@ Either `id` or `email` must be provided.
       )
       .await?;
 
-    // // Update by contact email
+    // Remove by contact email
     let _contact = resend
       .contacts
       .delete_contact_segment(
@@ -6133,11 +6133,11 @@ Either `id` or `email` must be provided.
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  // Update by contact id
+  # Remove by contact id
   curl -X DELETE 'https://api.resend.com/contacts/e169aa45-1ecf-4183-9955-b1499d5701d3/segments/78261eea-8f8b-4381-83c6-79fa7120f1cf' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
 
-  // Update by contact email
+  # Remove by contact email
   curl -X DELETE 'https://api.resend.com/contacts/steve.wozniak@gmail.com/segments/78261eea-8f8b-4381-83c6-79fa7120f1cf' \
        -H 'Authorization: Bearer re_xxxxxxxxx' \
        -H 'Content-Type: application/json'
@@ -6885,7 +6885,7 @@ Either `id` or `email` must be provided.
   const resend = new Resend('re_xxxxxxxxx');
 
   const { data, error } = await resend.contacts.segments.list({
-    id: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
+    contactId: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
   });
   ```
 
@@ -18337,13 +18337,11 @@ Update an existing topic.
 
   const resend = new Resend('re_xxxxxxxxx');
 
-  const { data, error } = await resend.topics.update(
-    'b6d24b8e-af0b-4c3c-be0c-359bbd97381e',
-    {
-      name: 'Weekly Newsletter',
-      description: 'Weekly newsletter for our subscribers',
-    },
-  );
+  const { data, error } = await resend.topics.update({
+    id: 'b6d24b8e-af0b-4c3c-be0c-359bbd97381e',
+    name: 'Weekly Newsletter',
+    description: 'Weekly newsletter for our subscribers',
+  });
   ```
 
   ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -18363,8 +18361,8 @@ Update an existing topic.
   resend.Topics.update(
       id="b6d24b8e-af0b-4c3c-be0c-359bbd97381e",
       params={
-          "name": "Monthly Newsletter",
-          "description": "Subscribe to our monthly newsletter for updates",
+          "name": "Weekly Newsletter",
+          "description": "Weekly newsletter for our subscribers",
       }
   )
   ```
@@ -18448,7 +18446,6 @@ Update an existing topic.
     new TopicData() {
       Name = "Weekly Newsletter",
       Description = "Weekly newsletter for our subscribers",
-      SubscriptionDefault = SubscriptionType.OptIn,
     }
   );
   ```
@@ -18459,7 +18456,7 @@ Update an existing topic.
        -H 'Content-Type: application/json' \
        -d $'{
     "name": "Weekly Newsletter",
-    "default_subscription": "opt_in"
+    "description": "Weekly newsletter for our subscribers"
   }'
   ```
 
@@ -35874,12 +35871,16 @@ Here's how you can implement this:
     const event = await request.json();
 
     if (event.type === 'email.received') {
-      const { data: attachments } =
+      const { data: attachments, error } =
         await resend.emails.receiving.attachments.list({
           emailId: event.data.email_id,
         });
 
-      for (const attachment of attachments) {
+      if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+
+      for (const attachment of attachments.data) {
         // use the download_url to download attachments however you want
         const response = await fetch(attachment.download_url);
         if (!response.ok) {
@@ -35893,7 +35894,9 @@ Here's how you can implement this:
         // process the content (e.g., save to storage, analyze, etc.)
       }
 
-      return NextResponse.json({ attachmentsProcessed: attachments.length });
+      return NextResponse.json({
+        attachmentsProcessed: attachments.data.length,
+      });
     }
 
     return NextResponse.json({});
@@ -41761,6 +41764,10 @@ Integrate Resend with the tools you already use.
 ## AI
 
 <CardGroup>
+  <Card title="v0" href="https://vercel.com/marketplace/resend" icon={<V0Icon />}>
+    Add email to your v0 apps with the Vercel Marketplace
+  </Card>
+
   <Card title="Lovable" href="https://docs.lovable.dev/integrations/resend" icon={<LovableIcon />}>
     Tell the Lovable AI to send emails
   </Card>
@@ -49448,14 +49455,6 @@ Connect any MCP client that supports remote servers (Streamable HTTP). There's n
 When you connect, your client opens a browser window to log in to Resend and approve access using OAuth.
 
 <Tabs>
-  <Tab title="Claude Code">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude plugin install resend@claude-plugins-official
-    ```
-
-    Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login. The plugin bundles the MCP server and every [Resend skill](/docs/resend-skill).
-  </Tab>
-
   <Tab title="Claude">
     Connect Resend in one click from the [connector directory](https://claude.ai/directory/connectors/resend). The connector bundles the MCP server and every Resend skill.
 
@@ -49466,8 +49465,35 @@ When you connect, your client opens a browser window to log in to Resend and app
     ```
   </Tab>
 
+  <Tab title="Copilot">
+    To use GitHub Copilot in VS Code, add the following to your `settings.json`:
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcp": {
+        "servers": {
+          "resend": {
+            "type": "http",
+            "url": "https://mcp.resend.com/mcp"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Claude Code">
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    claude plugin install resend@claude-plugins-official
+    ```
+
+    Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login. The plugin bundles the MCP server and every [Resend skill](/docs/resend-skill).
+  </Tab>
+
   <Tab title="Cursor">
-    Open the command palette and choose "Cursor Settings" > "MCP" > "Add new global MCP server".
+    Run `/add-plugin resend` in Cursor's chat to install the official plugin. It bundles the MCP server and every Resend skill.
+
+    To connect only the MCP server, open the command palette and choose "Cursor Settings" > "MCP" > "Add new global MCP server".
 
     ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
     {
@@ -49490,6 +49516,23 @@ When you connect, your client opens a browser window to log in to Resend and app
     ```
   </Tab>
 
+  <Tab title="OpenCode">
+    Add to your `opencode.json` config:
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "$schema": "https://opencode.ai/config.json",
+      "mcp": {
+        "resend": {
+          "type": "remote",
+          "url": "https://mcp.resend.com/mcp",
+          "enabled": true
+        }
+      }
+    }
+    ```
+  </Tab>
+
   <Tab title="Antigravity">
     Add this to your `~/.gemini/config/mcp_config.json` file:
 
@@ -49504,29 +49547,43 @@ When you connect, your client opens a browser window to log in to Resend and app
     ```
   </Tab>
 
-  <Tab title="Copilot">
-    To use GitHub Copilot in VS Code, add the following to your `settings.json`:
+  <Tab title="Gemini CLI">
+    Add this to your `~/.gemini/settings.json` file:
 
     ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
     {
-      "mcp": {
-        "servers": {
-          "resend": {
-            "type": "http",
-            "url": "https://mcp.resend.com/mcp"
-          }
+      "mcpServers": {
+        "resend": {
+          "httpUrl": "https://mcp.resend.com/mcp"
         }
       }
     }
     ```
   </Tab>
 
-  <Tab title="Windsurf">
+  <Tab title="Devin">
+    In Devin, open **Settings** > **Connections** > **MCP Servers** and click **Add a custom MCP**. See the [Devin guide](/docs/guides/devin) for the full step-by-step.
+
     ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
     {
       "mcpServers": {
         "resend": {
-          "serverUrl": "https://mcp.resend.com/mcp"
+          "transport": "HTTP",
+          "url": "https://mcp.resend.com/mcp"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Zed">
+    Add this to your Zed `settings.json`:
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "context_servers": {
+        "resend": {
+          "url": "https://mcp.resend.com/mcp"
         }
       }
     }
@@ -49544,6 +49601,17 @@ When you connect, your client opens a browser window to log in to Resend and app
     }
     ```
   </Tab>
+
+  <Tab title="fx">
+    [fx](https://fx.sh) is a tiny, open, native coding agent from Vercel Labs. Install it, then add Resend as an HTTP server:
+
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    curl -fsSL https://fx.sh/setup.sh | bash
+    fx mcp add --transport http resend https://mcp.resend.com/mcp
+    ```
+
+    fx completes the OAuth login the first time it connects. Inside the fx shell, the equivalent is `/mcp add --transport http resend https://mcp.resend.com/mcp`.
+  </Tab>
 </Tabs>
 
 ***
@@ -49558,7 +49626,7 @@ When you connect, your client opens a browser window to log in to Resend and app
   </Tab>
 
   <Tab title="JSON config">
-    For clients configured with JSON (Cursor, Windsurf, and others), add an `Authorization` header:
+    For clients configured with JSON (Cursor, Zed, and others), add an `Authorization` header:
 
     ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
     {
@@ -49589,22 +49657,8 @@ Choose your preferred mode and client below to get started. Remember to replace 
 ### Stdio Transport (Default)
 
 <Tabs>
-  <Tab title="Claude Code">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add resend -e RESEND_API_KEY=re_xxxxxxxxx -- npx -y resend-mcp
-    ```
-  </Tab>
-
-  <Tab title="Codex">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    codex mcp add resend \
-      --env RESEND_API_KEY=re_xxxxxxxxx \
-      -- npx -y resend-mcp
-    ```
-  </Tab>
-
-  <Tab title="Antigravity">
-    Add this to your `~/.gemini/config/mcp_config.json` file:
+  <Tab title="Claude Desktop">
+    Open Claude Desktop settings > "Developer" tab > "Edit Config".
 
     ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
     {
@@ -49618,6 +49672,32 @@ Choose your preferred mode and client below to get started. Remember to replace 
         }
       }
     }
+    ```
+  </Tab>
+
+  <Tab title="Copilot">
+    To use GitHub Copilot in VS Code, add the following to your `settings.json`:
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcp": {
+        "servers": {
+          "resend": {
+            "command": "npx",
+            "args": ["-y", "resend-mcp"],
+            "env": {
+              "RESEND_API_KEY": "re_xxxxxxxxx"
+            }
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Claude Code">
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    claude mcp add resend -e RESEND_API_KEY=re_xxxxxxxxx -- npx -y resend-mcp
     ```
   </Tab>
 
@@ -49639,57 +49719,11 @@ Choose your preferred mode and client below to get started. Remember to replace 
     ```
   </Tab>
 
-  <Tab title="Claude Desktop">
-    Open Claude Desktop settings > "Developer" tab > "Edit Config".
-
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "mcpServers": {
-        "resend": {
-          "command": "npx",
-          "args": ["-y", "resend-mcp"],
-          "env": {
-            "RESEND_API_KEY": "re_xxxxxxxxx"
-          }
-        }
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Copilot">
-    To use Github Copilot in VS Code, add the following to your `settings.json`:
-
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "mcp": {
-        "servers": {
-          "resend": {
-            "command": "npx",
-            "args": ["-y", "resend-mcp"],
-            "env": {
-              "RESEND_API_KEY": "re_xxxxxxxxx"
-            }
-          }
-        }
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Gemini CLI">
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "mcpServers": {
-        "resend": {
-          "command": "npx",
-          "args": ["-y", "resend-mcp"],
-          "env": {
-            "RESEND_API_KEY": "re_xxxxxxxxx"
-          }
-        }
-      }
-    }
+  <Tab title="Codex">
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    codex mcp add resend \
+      --env RESEND_API_KEY=re_xxxxxxxxx \
+      -- npx -y resend-mcp
     ```
   </Tab>
 
@@ -49713,10 +49747,65 @@ Choose your preferred mode and client below to get started. Remember to replace 
     ```
   </Tab>
 
-  <Tab title="Windsurf">
+  <Tab title="Antigravity">
+    Add this to your `~/.gemini/config/mcp_config.json` file:
+
     ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
     {
       "mcpServers": {
+        "resend": {
+          "command": "npx",
+          "args": ["-y", "resend-mcp"],
+          "env": {
+            "RESEND_API_KEY": "re_xxxxxxxxx"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Gemini CLI">
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcpServers": {
+        "resend": {
+          "command": "npx",
+          "args": ["-y", "resend-mcp"],
+          "env": {
+            "RESEND_API_KEY": "re_xxxxxxxxx"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Devin">
+    In Devin, open **Settings** > **Connections** > **MCP Servers** and click **Add a custom MCP**. See the [Devin guide](/docs/guides/devin) for the full step-by-step.
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcpServers": {
+        "resend": {
+          "command": "npx",
+          "args": ["-y", "resend-mcp"],
+          "env": {
+            "RESEND_API_KEY": "re_xxxxxxxxx",
+            "SENDER_EMAIL_ADDRESS": "onboarding@resend.dev"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Zed">
+    Add this to your Zed `settings.json`:
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "context_servers": {
         "resend": {
           "command": "npx",
           "args": ["-y", "resend-mcp"],
@@ -49745,18 +49834,17 @@ Choose your preferred mode and client below to get started. Remember to replace 
     ```
   </Tab>
 
-  <Tab title="Devin">
-    In Devin, open **Settings** > **Connections** > **MCP Servers** and click **Add a custom MCP**. See the [Devin guide](/docs/guides/devin) for the full step-by-step.
+  <Tab title="fx">
+    Add this to your `~/.fx/mcp.json` file:
 
     ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
     {
-      "mcpServers": {
+      "mcp": {
         "resend": {
-          "command": "npx",
-          "args": ["-y", "resend-mcp"],
-          "env": {
-            "RESEND_API_KEY": "re_xxxxxxxxx",
-            "SENDER_EMAIL_ADDRESS": "onboarding@resend.dev"
+          "type": "stdio",
+          "command": ["npx", "-y", "resend-mcp"],
+          "environment": {
+            "RESEND_API_KEY": "re_xxxxxxxxx"
           }
         }
       }

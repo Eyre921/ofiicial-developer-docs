@@ -58,7 +58,7 @@ See [Dynamic payment methods](https://docs.stripe.com/payments/payment-methods/d
 
 ### Manually list payment methods  
 
-Listing payment methods manually requires some coding. Every payment method you want your PaymentIntent to accept must be added to `payment_method_types`. Unless your integration requires that you list payment methods manually, we recommend that you manage payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods). Stripe handles the return of eligible payment methods based on factors such as the transaction’s amount, currency, and payment flow.
+Listing payment methods manually requires some coding. Every payment method you want your PaymentIntent to accept must be added to `allowed_payment_method_types`. Unless your integration requires that you list payment methods manually, we recommend that you manage payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods). Stripe handles the return of eligible payment methods based on factors such as the transaction’s amount, currency, and payment flow.
 
 #### Checkout Sessions
 
@@ -84,12 +84,12 @@ curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d amount=1099 \
   -d currency=eur \
-  -d "payment_method_types[]=bancontact" \
-  -d "payment_method_types[]=card" \
-  -d "payment_method_types[]=eps" \
-  -d "payment_method_types[]=ideal" \
-  -d "payment_method_types[]=p24" \
-  -d "payment_method_types[]=sepa_debit"
+  -d "allowed_payment_method_types[]=bancontact" \
+  -d "allowed_payment_method_types[]=card" \
+  -d "allowed_payment_method_types[]=eps" \
+  -d "allowed_payment_method_types[]=ideal" \
+  -d "allowed_payment_method_types[]=p24" \
+  -d "allowed_payment_method_types[]=sepa_debit"
 ```
 
 If multiple payment methods are passed, Checkout dynamically reorders them to prioritize the most relevant payment methods based on the customer’s location and other characteristics. The payments acceptance page prioritizes showing payment methods known to increase conversion for your customer’s location while lower priority payment methods are hidden in an overflow menu.

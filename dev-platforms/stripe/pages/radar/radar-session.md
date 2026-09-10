@@ -67,7 +67,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d amount=1099 \
   -d currency=usd \
-  -d "payment_method_types[]=card" \
+  -d "allowed_payment_method_types[]=card" \
   -d "payment_method={{PAYMENTMETHOD_ID}}" \
   -d confirm=true \
   -d "radar_options[session]={{RADAR_SESSION_ID}}"

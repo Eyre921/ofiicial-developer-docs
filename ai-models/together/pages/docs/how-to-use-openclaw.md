@@ -8,14 +8,14 @@ Power OpenClaw, an autonomous agent, with Together AI models.
 
 OpenClaw is the first Jarvis-like agent that actually gets things done: writing and executing scripts, browsing the web, using apps, and managing tasks from Telegram, WhatsApp, or any chat interface. By pairing it with [Together AI](https://together.ai), you unlock access to leading open-source models like Kimi K3, GLM 5.2, and DeepSeek V4 Pro through a single OpenAI-compatible API, at a fraction of the cost of closed-source alternatives.
 
-## Get started in 2 minutes
+## Get started in two minutes
 
 ### Requirements
 
-1. An OpenClaw installation ([install guide](https://docs.openclaw.ai/install))
-2. A Together AI API key (grab one at [api.together.ai](https://api.together.ai))
+* An OpenClaw installation ([install guide](https://docs.openclaw.ai/install)).
+* A Together AI API key (grab one at [api.together.ai](https://api.together.ai)).
 
-### Step 1: Onboard with Together AI
+## Step 1: Onboard with Together AI
 
 <img alt="" />
 
@@ -25,15 +25,15 @@ Run the interactive onboarding and select Together AI as your provider:
 openclaw onboard --auth-choice together-api-key
 ```
 
-This will prompt you for your `TOGETHER_API_KEY` and store it securely for the Gateway.
+This prompts you for your `TOGETHER_API_KEY` and stores it securely for the Gateway.
 
 <img alt="" />
 
-### Step 2: Set your default model
+## Step 2: Set your default model
 
 Using the onboard command and "QuickStart" mode, OpenClaw selects a default model for you.
 
-Set Kimi K3 as your default model in your OpenClaw config. Remember to prefix the model name with "together/":
+Set Kimi K3 as your default model in your OpenClaw config. Remember to prefix the model name with `together/`:
 
 ```json5 theme={null}
 {
@@ -45,7 +45,7 @@ Set Kimi K3 as your default model in your OpenClaw config. Remember to prefix th
 }
 ```
 
-### Step 3: Launch and chat
+## Step 3: Launch and chat
 
 Start the Gateway and begin chatting via the web UI, CLI, Telegram, or WhatsApp:
 
@@ -63,9 +63,9 @@ If the Gateway runs as a daemon (launchd / systemd), make sure `TOGETHER_API_KEY
 
 Together AI gives you access to the best open-source models with high throughput and low latency. For token-hungry agentic workflows like OpenClaw, this translates to massive savings without sacrificing quality:
 
-* **Kimi K3**: 1M context, top pick for coding and agentic workflows.
-* **GLM 5.2**: Top-tier coding and agentic all-rounder.
-* **DeepSeek V4 Pro 0813**: Advanced reasoning for complex tasks.
+* **Kimi K3:** 1M context, top pick for coding and agentic workflows.
+* **GLM 5.2:** Top-tier coding and agentic all-rounder.
+* **DeepSeek V4 Pro 0813:** Advanced reasoning for complex tasks.
 
 All models are OpenAI API compatible, so OpenClaw works with them out of the box.
 

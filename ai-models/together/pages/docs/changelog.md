@@ -4,6 +4,20 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="September 10, 2026">
+  ## Preemptible compute for GPU clusters
+
+  Preemptible compute is now in public preview for Kubernetes GPU clusters. Alongside standard nodes, you can set a preemptible GPU target, and Together provisions toward it as spare capacity becomes available, at a flat discounted rate relative to on-demand.
+
+  **What's new:**
+
+  * **Preemptible GPU targets:** Set `num_preemptible_gpus` at cluster create or update from the console, CLI, or API. Together automatically provisions replacements toward the target after nodes are reclaimed.
+  * **Five-minute drain window:** Reclaimed nodes are cordoned and emit a `TogetherPreemptionNotified` Kubernetes event, and pods receive SIGTERM with up to 300 seconds of grace to checkpoint and exit.
+  * **Sub-hourly billing:** Usage is metered every one to two minutes, so you pay only for the time a node is live.
+
+  See [Preemptible compute](/docs/preemptible-compute) for the preemption contract, scheduling guidance, and checkpoint examples.
+</Update>
+
 <Update label="September 1, 2026">
   ## Pricing update
 

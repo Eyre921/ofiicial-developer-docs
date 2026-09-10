@@ -92,8 +92,8 @@ Get started with this model in a few lines of code. Since thinking is on by defa
 
 GLM-5.2 accepts two effort levels through the `reasoning_effort` parameter when thinking is enabled:
 
-* `"high"`: enhanced reasoning. Use for most coding and reasoning tasks.
-* `"max"`: deep reasoning, the default. Use for the hardest planning, architecture, and multi-step agentic problems. Set `max_tokens` generously, since `"max"` mode can produce long chains of thought.
+* `"high"`: Enhanced reasoning. Use for most coding and reasoning tasks.
+* `"max"`: Deep reasoning, the default. Use for the hardest planning, architecture, and multi-step agentic problems. Set `max_tokens` generously, since `"max"` mode can produce long chains of thought.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -163,9 +163,9 @@ For broader guidance on reasoning controls and prompting, see [Reasoning](/docs/
 
 GLM-5.2 has thinking enabled by default and supports multiple thinking modes for different scenarios:
 
-* **Interleaved thinking** (default): the model thinks between tool calls and after receiving tool results, interpreting each tool output before deciding what to do next.
-* **Preserved thinking**: the model retains reasoning content from previous assistant turns in the context, improving reasoning continuity and cache hit rates. Ideal for coding agents and agentic workflows.
-* **Turn-level thinking**: control reasoning on a per-turn basis within the same session. Enable thinking for hard turns, disable it for simple ones.
+* **Interleaved thinking** (default): The model thinks between tool calls and after receiving tool results, interpreting each tool output before deciding what to do next.
+* **Preserved thinking:** The model retains reasoning content from previous assistant turns in the context, improving reasoning continuity and cache hit rates. Ideal for coding agents and agentic workflows.
+* **Turn-level thinking:** Control reasoning on a per-turn basis within the same session. Enable thinking for hard turns, disable it for simple ones.
 
 ### Recommended thinking mode by use case
 

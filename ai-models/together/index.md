@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 340 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 342 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -19,7 +19,7 @@
 - `docs/agno` — [Agno](pages/docs/agno.md) · [原文](https://docs.together.ai/docs/agno)
 - `docs/ai-evaluations` — [Evaluations](pages/docs/ai-evaluations.md) · [原文](https://docs.together.ai/docs/ai-evaluations)
 - `docs/ai-search-engine` — [Build an AI search engine](pages/docs/ai-search-engine.md) · [原文](https://docs.together.ai/docs/ai-search-engine)
-- `docs/ai-tutor` — [Build an interactive AI tutor with Llama 3.1](pages/docs/ai-tutor.md) · [原文](https://docs.together.ai/docs/ai-tutor)
+- `docs/ai-tutor` — [Build an interactive AI tutor](pages/docs/ai-tutor.md) · [原文](https://docs.together.ai/docs/ai-tutor)
 - `docs/api-keys-authentication` — [Authentication](pages/docs/api-keys-authentication.md) · [原文](https://docs.together.ai/docs/api-keys-authentication)
 - `docs/autogen` — [AutoGen(AG2)](pages/docs/autogen.md) · [原文](https://docs.together.ai/docs/autogen)
 - `docs/billing-credits` — [Credits](pages/docs/billing-credits.md) · [原文](https://docs.together.ai/docs/billing-credits)
@@ -38,6 +38,7 @@
 - `docs/data-analyst-agent` — [Build an AI data analyst](pages/docs/data-analyst-agent.md) · [原文](https://docs.together.ai/docs/data-analyst-agent)
 - `docs/dedicated-container-inference` — [Overview](pages/docs/dedicated-container-inference.md) · [原文](https://docs.together.ai/docs/dedicated-container-inference)
 - `docs/dedicated-endpoints/ab-tests` — [Run an A/B test](pages/docs/dedicated-endpoints/ab-tests.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/ab-tests)
+- `docs/dedicated-endpoints/adapter` — [Upload a LoRA adapter](pages/docs/dedicated-endpoints/adapter.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/adapter)
 - `docs/dedicated-endpoints/concepts` — [Concepts](pages/docs/dedicated-endpoints/concepts.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/concepts)
 - `docs/dedicated-endpoints/configs` — [Choose a deployment profile](pages/docs/dedicated-endpoints/configs.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/configs)
 - `docs/dedicated-endpoints/custom-models` — [Upload a fine-tuned model](pages/docs/dedicated-endpoints/custom-models.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/custom-models)
@@ -90,7 +91,7 @@
 - `docs/gpu-clusters-quickstart` — [Quickstart](pages/docs/gpu-clusters-quickstart.md) · [原文](https://docs.together.ai/docs/gpu-clusters-quickstart)
 - `docs/guides` — [Overview](pages/docs/guides.md) · [原文](https://docs.together.ai/docs/guides)
 - `docs/health-checks` — [Health checks](pages/docs/health-checks.md) · [原文](https://docs.together.ai/docs/health-checks)
-- `docs/how-to-build-a-lovable-clone-with-kimi-k2` — [Build a lovable clone with Kimi K2](pages/docs/how-to-build-a-lovable-clone-with-kimi-k2.md) · [原文](https://docs.together.ai/docs/how-to-build-a-lovable-clone-with-kimi-k2)
+- `docs/how-to-build-a-lovable-clone-with-kimi-k2` — [Build a Lovable clone with Kimi K3](pages/docs/how-to-build-a-lovable-clone-with-kimi-k2.md) · [原文](https://docs.together.ai/docs/how-to-build-a-lovable-clone-with-kimi-k2)
 - `docs/how-to-build-coding-agents` — [Build a coding agent](pages/docs/how-to-build-coding-agents.md) · [原文](https://docs.together.ai/docs/how-to-build-coding-agents)
 - `docs/how-to-build-phone-voice-agent` — [Build a phone voice agent with Together AI](pages/docs/how-to-build-phone-voice-agent.md) · [原文](https://docs.together.ai/docs/how-to-build-phone-voice-agent)
 - `docs/how-to-build-real-time-audio-transcription-app` — [Build an audio transcription app with Whisper](pages/docs/how-to-build-real-time-audio-transcription-app.md) · [原文](https://docs.together.ai/docs/how-to-build-real-time-audio-transcription-app)
@@ -156,6 +157,7 @@
 - `docs/organizations` — [Organizations](pages/docs/organizations.md) · [原文](https://docs.together.ai/docs/organizations)
 - `docs/parallel-workflows` — [Parallel workflow](pages/docs/parallel-workflows.md) · [原文](https://docs.together.ai/docs/parallel-workflows)
 - `docs/pdf-to-website-with-structured-outputs` — [Build a resume-to-website app with structured outputs](pages/docs/pdf-to-website-with-structured-outputs.md) · [原文](https://docs.together.ai/docs/pdf-to-website-with-structured-outputs)
+- `docs/preemptible-compute` — [Preemptible compute](pages/docs/preemptible-compute.md) · [原文](https://docs.together.ai/docs/preemptible-compute)
 - `docs/privacy-and-security` — [Privacy and security](pages/docs/privacy-and-security.md) · [原文](https://docs.together.ai/docs/privacy-and-security)
 - `docs/projects` — [Projects](pages/docs/projects.md) · [原文](https://docs.together.ai/docs/projects)
 - `docs/pydanticai` — [PydanticAI](pages/docs/pydanticai.md) · [原文](https://docs.together.ai/docs/pydanticai)

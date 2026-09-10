@@ -28,7 +28,7 @@ pip install -U together datasets transformers tqdm
 
 Make sure to export your API key before you begin:
 
-```shellscript theme={null}
+```bash theme={null}
 export TOGETHER_API_KEY=<your_key>
 ```
 

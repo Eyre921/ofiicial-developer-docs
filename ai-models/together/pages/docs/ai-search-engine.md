@@ -14,7 +14,7 @@ Build an open source AI search engine inspired by Perplexity with Next.js and To
 
 In this post, you’ll learn how to build the core parts of TurboSeek. The app is [open-source](https://github.com/Nutlope/turboseek/) and built with Next.js and Tailwind, but Together’s API can be used with any language or framework.
 
-## Building the input prompt
+## Step 1: Build the input prompt
 
 TurboSeek’s core interaction is a text field where the user can enter a question:
 
@@ -43,8 +43,8 @@ function Page() {
 
 When the user submits our form, we need to do two things:
 
-1. Use the Exa API to fetch sources from the web, and
-2. Pass the text from the sources to an LLM to summarize and generate an answer
+1. Use the Exa API to fetch sources from the web.
+2. Pass the text from the sources to an LLM to summarize and generate an answer.
 
 Let’s start by fetching the sources. We’ll wire up a submit handler to our form that makes a POST request to a new endpoint, `/getSources`:
 
@@ -86,7 +86,7 @@ If we submit the form, we see our React app makes a request to `/getSources`:
 
 Our frontend is ready! Let’s add an API route to get the sources.
 
-## Getting web sources with Exa
+## Step 2: Get web sources with Exa
 
 To create our API route, we’ll make a new `app/api/getSources/route.js` file:
 
@@ -130,8 +130,7 @@ export async function POST(req) {
 
 In order to make a request to Exa API, you’ll need to get an [API key from Exa](https://exa.ai/). Once you have it, set it in `.env.local`:
 
-```jsx JSX theme={null}
-// .env.local
+```bash .env.local theme={null}
 EXA_API_KEY=xxxxxxxxxxxx
 ```
 
@@ -229,7 +228,7 @@ If we try it out, our app is working great so far! We’re taking the user’s q
 
 Next, let’s work on summarizing the sources.
 
-## Fetching the content from each source
+## Step 3: Fetch the content from each source
 
 Now that our React app has the sources, we can send them to a second endpoint where we’ll use Together to summarize them into our final answer.
 
@@ -278,13 +277,13 @@ export async function POST(req) {
 }
 ```
 
-## Summarizing the sources
+## Step 4: Summarize the sources
 
 Now that we have the text content from each source, we can pass it along with a prompt to Together to get a final answer.
 
 Let’s install Together’s node SDK:
 
-```jsx JSX theme={null}
+```bash theme={null}
 npm i together-ai
 ```
 
@@ -330,7 +329,7 @@ export async function POST(req) {
 
 Now we’re ready to read it in our React app!
 
-## Displaying the answer in the UI
+## Step 5: Display the answer in the UI
 
 Back in our page, let’s create some new React state called `answer` to store the text from our LLM:
 

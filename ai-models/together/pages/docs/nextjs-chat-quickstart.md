@@ -8,8 +8,8 @@ Build an app that can ask a single question or chat with an LLM using Next.js an
 
 In this guide you'll learn how to use Together AI and Next.js to build two common AI features:
 
-* Ask a question and get a response
-* Have a long-running chat with a bot
+* Ask a question and get a response.
+* Have a long-running chat with a bot.
 
 You'll first build these features using the Together AI SDK directly, then see how to build a chat app using popular frameworks like Vercel AI SDK and Mastra.
 
@@ -21,7 +21,7 @@ Let's get started!
 
 After [creating a new Next.js app](https://nextjs.org/docs/app/getting-started/installation), install the [Together AI TypeScript SDK](https://www.npmjs.com/package/together-ai):
 
-```
+```bash theme={null}
 npm i together-ai
 ```
 
@@ -213,7 +213,7 @@ export default function Chat() {
 }
 ```
 
-You've built a simple chatbot with Together AI!
+You've built a chatbot with Together AI!
 
 ***
 

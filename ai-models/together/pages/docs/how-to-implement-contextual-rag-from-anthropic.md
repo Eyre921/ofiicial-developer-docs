@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/how-to-implement-contextual-rag-from-anthr
 path: docs/how-to-implement-contextual-rag-from-anthropic
 ---
 
-An open source line-by-line implementation of contextual RAG from Anthropic.
+Implement contextual RAG from Anthropic line by line with open source models.
 
 [Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval) is a chunk augmentation technique that uses an LLM to enhance each chunk.
 
@@ -14,42 +14,42 @@ An open source line-by-line implementation of contextual RAG from Anthropic.
 
 Here's an overview of how it works.
 
-## Contextual RAG:
+## Contextual RAG
 
 1. For every chunk - prepend an explanatory context snippet that situates the chunk within the rest of the document. -> Get a small cost effective LLM to do this.
-2. Hybrid Search: Embed the chunk using both sparse (keyword) and dense(semantic) embeddings.
-3. Perform rank fusion using an algorithm like Reciprocal Rank Fusion(RRF).
-4. Retrieve top 150 chunks and pass those to a Reranker to obtain top 20 chunks.
+2. Hybrid search: Embed the chunk using both sparse (keyword) and dense (semantic) embeddings.
+3. Perform rank fusion using an algorithm like Reciprocal Rank Fusion (RRF).
+4. Retrieve top 150 chunks and pass those to a reranker to obtain top 20 chunks.
 5. Pass top 20 chunks to LLM to generate an answer.
 
-Below we implement each step in this process using Open Source models.
+Below we implement each step in this process using open source models.
 
 To break down the concept further we break down the process into a one-time indexing step and a query time step.
 
-**Data Ingestion Phase:**
+**Data ingestion phase:**
 
 <Frame>
   <img alt="" />
 </Frame>
 
-1. Data processing and chunking
-2. Context generation using Qwen3.5-9B
-3. Vector Embedding and Index Generation
-4. BM25 Keyword Index Generation
+1. Data processing and chunking.
+2. Context generation using Qwen3.5-9B.
+3. Vector embedding and index generation.
+4. BM25 keyword index generation.
 
-**At Query Time:**
+**At query time:**
 
 <Frame>
   <img alt="" />
 </Frame>
 
-1. Perform retrieval using both indices and combine them using RRF
-2. Reranker to improve retrieval quality
-3. Generation with Llama3.1 405B
+1. Perform retrieval using both indices and combine them using RRF.
+2. Reranker to improve retrieval quality.
+3. Generation with GPT-OSS 120B.
 
 ## Install libraries
 
-```
+```bash theme={null}
 pip install together # To access open source LLMs
 pip install --upgrade tiktoken # To count total token counts
 pip install beautifulsoup4 # To scrape documents to RAG over
@@ -125,7 +125,7 @@ for i, chunk in enumerate(chunks):
 
 We get the following chunked content:
 
-```
+```text theme={null}
 Chunk 1: September 2024At a YC event last week Brian Chesky gave a talk that everyone who was there will remember. Most founders I talked to afterward said it was the best they'd ever heard. Ron Conway, for the first time in his life, forgot to take notes. I'
 Chunk 2: life, forgot to take notes. I'm not going to try to reproduce it here. Instead I want to talk about a question it raised.The theme of Brian's talk was that the conventional wisdom about how to run larger companies is mistaken. As Airbnb grew, well-me
 ...
@@ -133,7 +133,7 @@ Chunk 2: life, forgot to take notes. I'm not going to try to reproduce it here. 
 
 ## Generating contextual chunks
 
-This part contains the main intuition behind `Contextual Retrieval`. We will make an LLM call for each chunk to add much needed relevant context to the chunk. In order to do this we pass in the ENTIRE document per LLM call.
+This part contains the main intuition behind Contextual Retrieval. We will make an LLM call for each chunk to add much needed relevant context to the chunk. In order to do this we pass in the ENTIRE document per LLM call.
 
 It may seem that passing in the entire document per chunk and making an LLM call per chunk is quite inefficient, this is true and there very well might be more efficient techniques to accomplish the same end goal. But in keeping with implementing the current technique at hand let's do it.
 
@@ -160,7 +160,7 @@ Answer ONLY with a succinct explaination of the meaning of the chunk in the cont
 """
 ```
 
-Now we can prep each chunk into these prompt template and generate the context:
+Now we can prep each chunk into this prompt template and generate the context:
 
 ```python Python theme={null}
 from typing import List
@@ -279,7 +279,7 @@ def vector_retrieval(
     return list(np.argsort(-similarity_scores)[0][:top_k])
 
 
-vector_retreival(
+vector_retrieval(
     query="What are 'skip-level' meetings?",
     top_k=5,
     vector_index=contextual_embeddings,
@@ -290,7 +290,7 @@ We now have a way to retrieve from the vector index given a query.
 
 ## BM25 index
 
-Let's build a keyword index that allows us to use BM25 to perform lexical search based on the words present in the query and the contextual chunks. For this we will use the `bm25s` python library:
+Let's build a keyword index that allows us to use BM25 to perform lexical search based on the words present in the query and the contextual chunks. For this we will use the `bm25s` Python library:
 
 ```python Python theme={null}
 import bm25s
@@ -330,18 +330,18 @@ def bm25_retrieval(query: str, k: int, bm25_index) -> List[int]:
     return [contextual_chunks.index(doc) for doc in results[0]]
 ```
 
-## Everything below this point will happen at query time!
+## Everything below this point will happen at query time
 
 Once a user submits a query we are going to use both functions above to perform Vector and BM25 retrieval and then fuse the ranks using the RRF algorithm implemented below.
 
 ```python Python theme={null}
 # Example ranked lists from different sources
-vector_top_k = vector_retreival(
+vector_top_k = vector_retrieval(
     query="What are 'skip-level' meetings?",
     top_k=5,
     vector_index=contextual_embeddings,
 )
-bm25_top_k = bm25_retreival(
+bm25_top_k = bm25_retrieval(
     query="What are 'skip-level' meetings?",
     k=5,
     bm25_index=retriever,
@@ -408,15 +408,16 @@ response = client.rerank.create(
     top_n=3,  # we only want the top 3 results but this can be a lot higher
 )
 
+retrieved_chunks = ""
 for result in response.results:
-    retreived_chunks += hybrid_top_k_docs[result.index] + "\n\n"
+    retrieved_chunks += hybrid_top_k_docs[result.index] + "\n\n"
 
-print(retreived_chunks)
+print(retrieved_chunks)
 ```
 
 This will produce the following three chunks from our essay:
 
-```
+```text theme={null}
 This chunk refers to "skip-level" meetings, which are a key characteristic of founder mode, where the CEO engages directly with the company beyond their direct reports. This contrasts with the "manager mode" of addressing company issues, where decisions are made perfunctorily via a hierarchical system, to which founders instinctively rebel. that there's a name for it. And once you abandon that constraint there are a huge number of permutations to choose from.For example, Steve Jobs used to run an annual retreat for what he considered the 100 most important people at Apple, and these wer
 
 This chunk discusses the shift in company management away from the "manager mode" that most companies follow, where CEOs engage with the company only through their direct reports, to "founder mode", where CEOs engage more directly with even higher-level employees and potentially skip over direct reports, potentially leading to "skip-level" meetings. ts of, it's pretty clear that it's going to break the principle that the CEO should engage with the company only via his or her direct reports. "Skip-level" meetings will become the norm instead of a practice so unusual that there's a name for it. An
@@ -424,12 +425,12 @@ This chunk discusses the shift in company management away from the "manager mode
 This chunk explains that founder mode, a hypothetical approach to running a company by its founders, will differ from manager mode in that founders will engage directly with the company, rather than just their direct reports, through "skip-level" meetings, disregarding the traditional principle that CEOs should only interact with their direct reports, as managers do.  can already guess at some of the ways it will differ.The way managers are taught to run companies seems to be like modular design in the sense that you treat subtrees of the org chart as black boxes. You tell your direct reports what to do, and it's
 ```
 
-## Call generative model - Llama 3.1 405B
+## Call the generative model (GPT-OSS 120B)
 
-We will pass the finalized 3 chunks into an LLM to get our final answer.
+We will pass the finalized three chunks into an LLM to get our final answer.
 
 ```python Python theme={null}
-# Generate a story based on the top 10 most similar movies
+# Answer the query using the retrieved chunks as context
 
 query = "What are 'skip-level' meetings?"
 
@@ -439,7 +440,7 @@ response = client.chat.completions.create(
         {"role": "system", "content": "You are a helpful chatbot."},
         {
             "role": "user",
-            "content": f"Answer the question: {query}. Here is relevant information: {retreived_chunks}",
+            "content": f"Answer the question: {query}. Here is relevant information: {retrieved_chunks}",
         },
     ],
 )
@@ -447,7 +448,7 @@ response = client.chat.completions.create(
 
 Which produces the following response:
 
-```
+```text theme={null}
 '"Skip-level" meetings refer to a management practice where a CEO or high-level executive engages directly with employees who are not their direct reports, bypassing the traditional hierarchical structure of the organization. This approach is characteristic of "founder mode," where the CEO seeks to have a more direct connection with the company beyond their immediate team. In contrast to the traditional "manager mode," where decisions are made through a hierarchical system, skip-level meetings allow for more open communication and collaboration between the CEO and various levels of employees. This approach is often used by founders who want to stay connected to the company\'s operations and culture, and to foster a more flat and collaborative organizational structure.'
 ```
 
