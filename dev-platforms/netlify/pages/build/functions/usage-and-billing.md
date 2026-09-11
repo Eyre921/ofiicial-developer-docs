@@ -50,7 +50,7 @@ Usage & billing > Account usage insights > Compute
 For detailed visibility into function invocations in a specific project, down to individual requests, go to 
 ### NavigationPath Component:
 
-Logs & Metrics > Observability
+Analytics & metrics > Observability
 .
 
 Observability provides built-in [quick actions](/manage/monitoring/observability/overview#quick-insights) to help you easily determine which functions are invoked the most, which are the slowest to run, and which client types make the most requests which invoke functions.

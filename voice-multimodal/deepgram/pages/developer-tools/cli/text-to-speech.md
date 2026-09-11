@@ -13,14 +13,14 @@ path: developer-tools/cli/text-to-speech
 ## Basic Synthesis
 
 ```shell
-dg speak "Hello from Deepgram"
+dg speak "Hello from Deepgram" -o hello.wav
 ```
 
 ## Save to File
 
 ```shell
 dg speak "Hello from Deepgram" -o hello.wav
-dg speak "Hello" -o hello.mp3
+dg speak "Hello" -m aura-2-luna-en --encoding mp3 -o hello.mp3
 ```
 
 ## Pipe to Speaker
@@ -31,33 +31,43 @@ echo "Latest headlines" | dg speak | ffplay -nodisp -autoexit -
 
 ## Options
 
-### Voice Selection
+### Model Selection
 
 ```shell
-dg speak "Hello" --voice aura-2-luna-en
-dg speak "Hola" --voice aura-2-asteria-en
+dg speak "Hello" --model flux-alexis-en -o hello.wav
+dg speak "Hello" -m aura-2-luna-en --encoding mp3 -o hello.mp3
 ```
 
-List available voices:
+`dg speak` defaults to `flux-alexis-en`. Flux TTS uses the Speak v2 WebSocket API and streams raw audio; when writing the default `linear16` output to a file, the CLI wraps it in a WAV container. Use an `aura-*` model for the Speak v1 REST API.
+
+List available TTS models:
 
 ```shell
-dg speak --list-voices
+dg models --type tts
 ```
 
 ### Output Format
 
+`-o` or `--output` sets the output file path. To select audio encoding, use `--encoding`; Aura models also support `--container`.
+
 ```shell
-dg speak "Hello" -o wav    # WAV (default)
-dg speak "Hello" -o mp3    # MP3
-dg speak "Hello" -o flac   # FLAC
+dg speak "Hello" -o hello.wav
+dg speak "Hello" -m aura-2-asteria-en --encoding mp3 -o hello.mp3
+dg speak "Hello" -m aura-2-asteria-en --encoding linear16 --container wav -o hello.wav
 ```
 
 ### Streaming
 
-For low-latency streaming, use the WebSocket mode:
+Flux TTS streams audio by default. Pipe the WAV stream to a player instead of writing it to a file:
 
 ```shell
-dg speak "Hello" --stream
+dg speak "Hello" | ffplay -loglevel error -nodisp -autoexit -
+```
+
+Flux models also support `--speed` from `0.85` to `1.15` in `0.05` increments and beta `--expressivity` from `-2` to `2`:
+
+```shell
+dg speak "A little slower" --speed 0.9 --expressivity 1 -o slow.wav
 ```
 
 ## Example Workflows
@@ -73,7 +83,8 @@ done
 
 ### Language Selection
 
+Choose a model for the required language. The language is part of the model identifier; `dg speak` does not have a `--language` option.
+
 ```shell
-dg speak "Bonjour" --language fr-FR
-dg speak "Guten Tag" --language de-DE
+dg speak "Hola" -m aura-2-selena-es --encoding mp3 -o hola.mp3
 ```

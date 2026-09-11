@@ -86,13 +86,7 @@ Add to `.windsurf/mcp.json`:
 
 ## Available Tools
 
-The MCP server exposes these capabilities:
-
-* `transcribe_audio` — Transcribe audio from URL or file path
-* `synthesize_speech` — Generate speech from text
-* `analyze_text` — Sentiment, topics, summarization
-* `list_models` — List available Deepgram models
-* `get_usage` — Check API usage
+`dg mcp` proxies the tools exposed by the Deepgram developer API to your editor. The remote service owns the available tool list, so inspect the connected MCP client for the current tools and their schemas.
 
 ## Authentication
 

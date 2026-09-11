@@ -473,6 +473,46 @@ components:
       required:
         - agent_response_event
       title: AgentResponse
+    QueueStatusQueueStatusEventStatus:
+      type: string
+      enum:
+        - waiting
+        - admitted
+        - timed_out
+      title: QueueStatusQueueStatusEventStatus
+    QueueStatusQueueStatusEvent:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/QueueStatusQueueStatusEventStatus'
+      required:
+        - status
+      description: Data for concurrency wait-queue status events.
+      title: QueueStatusQueueStatusEvent
+    QueueStatus:
+      type: object
+      properties:
+        queue_status_event:
+          $ref: '#/components/schemas/QueueStatusQueueStatusEvent'
+          description: Data for concurrency wait-queue status events.
+        type:
+          type: string
+          enum:
+            - queue_status
+      required:
+        - queue_status_event
+      description: >-
+        Status of a caller held in the concurrency wait queue. Sent once when
+        the wait
+
+        starts (`waiting`) and once when it ends: `admitted` when the caller is
+        connected
+
+        to the agent, or `timed_out` right before the connection is closed with
+        code 4300.
+
+        Hold audio arrives as regular `audio` events while the caller waits.
+      title: QueueStatus
     AgentResponseCorrectionAgentResponseCorrectionEvent:
       type: object
       properties:
@@ -926,6 +966,7 @@ components:
         - $ref: '#/components/schemas/GuardrailTriggered'
         - $ref: '#/components/schemas/UserTranscript'
         - $ref: '#/components/schemas/AgentResponse'
+        - $ref: '#/components/schemas/QueueStatus'
         - $ref: '#/components/schemas/AgentResponseCorrection'
         - $ref: '#/components/schemas/AgentResponseMetadata'
         - $ref: '#/components/schemas/AudioResponse'

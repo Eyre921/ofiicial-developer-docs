@@ -18,7 +18,7 @@ The `dg` CLI supports plugins that add new commands and capabilities.
 dg plugin install <package-name>
 ```
 
-Plugins are installed in an isolated virtual environment.
+Plugin installation follows the CLI installation method. Homebrew and system installations use an isolated plugin environment; other installations may add plugins to the CLI environment.
 
 ## List Installed Plugins
 
@@ -29,14 +29,13 @@ dg plugin list
 ## Update Plugins
 
 ```shell
-dg plugin update
 dg plugin update <package-name>
 ```
 
-## Uninstall a Plugin
+## Remove a Plugin
 
 ```shell
-dg plugin uninstall <package-name>
+dg plugin remove <package-name>
 ```
 
 ## Example Plugins
@@ -49,38 +48,36 @@ dg plugin search <keyword>
 
 ## Plugin Development
 
-Plugins are Python packages that expose CLI commands:
+Plugins are Python packages that expose a `BaseCommand` class through the `deepctl.plugins` entry-point group:
 
 ```python
-# my-dg-plugin/my_plugin/__init__.py
-from deepgram_cli.plugins import hookimpl
-import click
+from typing import Any
 
-@hookimpl
-def register_commands(cli_group):
-    @cli_group.command()
-    def mycommand():
-        """My custom command"""
-        click.echo("Hello from my plugin!")
+from deepctl_core import AuthManager, BaseCommand, Config, DeepgramClient
+
+
+class MyCommand(BaseCommand):
+    name = "mycommand"
+    help = "My plugin command"
+    requires_auth = False
+
+    def handle(
+        self,
+        config: Config,
+        auth_manager: AuthManager,
+        client: DeepgramClient,
+        **kwargs: Any,
+    ) -> None:
+        print("Hello from my plugin!")
 ```
 
-## Plugin Configuration
+## Register a Plugin
 
-Plugins can read from your Deepgram config:
+Add the command to your package's `pyproject.toml`:
 
-```python
-from deepgram_cli.config import get_config
-
-config = get_config()
-api_key = config.get("api_key")
-```
-
-## Trusted Plugins
-
-Mark a plugin as trusted (skips confirmation prompts):
-
-```shell
-dg plugin trust <package-name>
+```toml
+[project.entry-points."deepctl.plugins"]
+mycommand = "my_plugin.command:MyCommand"
 ```
 
 ## Security

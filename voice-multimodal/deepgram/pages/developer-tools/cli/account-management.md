@@ -76,8 +76,8 @@ Available scopes: `owner`, `admin`, `member`. See [Working With Roles & API Scop
 ### Remove Member
 
 ```shell
-dg members --remove <member-id>
-dg members --revoke-invite user@example.com
+dg members --remove <member-id> --yes
+dg members --revoke-invite user@example.com --yes
 ```
 
 ## Usage

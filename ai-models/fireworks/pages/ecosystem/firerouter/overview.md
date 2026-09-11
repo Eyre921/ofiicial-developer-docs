@@ -27,10 +27,10 @@ Use FireRouter when you want **automatic cost optimization** without picking a d
 
 FireRouter evaluates each new user request. The default `firerouter` configuration picks one of two paths:
 
-| Path             | When                                      | What runs                                         | Billing                           |
-| ---------------- | ----------------------------------------- | ------------------------------------------------- | --------------------------------- |
-| **Redirect**     | Simple or low-complexity work             | A Fireworks open model (for example GLM 5.2 Fast) | Your Fireworks API key            |
-| **Pass-through** | Hard reasoning, judgment, or long context | A closed-source model (by default Claude Opus 5)  | Your provider API key (Anthropic) |
+| Path             | When                                      | What runs                                        | Billing                           |
+| ---------------- | ----------------------------------------- | ------------------------------------------------ | --------------------------------- |
+| **Redirect**     | Simple or low-complexity work             | A Fireworks open model (by default GLM 5.3)      | Your Fireworks API key            |
+| **Pass-through** | Hard reasoning, judgment, or long context | A closed-source model (by default Claude Opus 5) | Your provider API key (Anthropic) |
 
 FireRouter uses a bring-your-own-key (BYOK) model:
 
@@ -94,10 +94,10 @@ FireRouter decides the target model for each request based on request complexity
 
 The short `firerouter` model ID currently routes between:
 
-| Role                         | Model                             |
-| ---------------------------- | --------------------------------- |
-| Pass-through (closed-source) | **Claude Opus 5**                 |
-| Redirect (open)              | **GLM 5.2 Fast** (`glm-5p2-fast`) |
+| Role                         | Model                               |
+| ---------------------------- | ----------------------------------- |
+| Pass-through (closed-source) | **Claude Opus 5** (`claude-opus-5`) |
+| Redirect (open)              | **GLM 5.3** (`glm-5p3`)             |
 
 These models are subject to change as FireRouter is updated. This page reflects the current configuration.
 

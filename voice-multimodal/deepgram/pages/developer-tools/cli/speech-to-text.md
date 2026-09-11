@@ -37,7 +37,7 @@ Press `Ctrl+C` to stop.
 Pipe audio from another tool:
 
 ```shell
-ffmpeg -i video.mp4 -f wav - | dg listen -
+ffmpeg -i video.mp4 -f s16le -ar 16000 -ac 1 - | dg listen --encoding linear16
 ```
 
 ## Options
@@ -47,7 +47,7 @@ ffmpeg -i video.mp4 -f wav - | dg listen -
 ```shell
 dg -o json listen audio.mp3    # JSON
 dg -o yaml listen audio.mp3    # YAML
-dg -o table listen audio.mp3   # ASCII table
+dg -o table listen audio.mp3   # Formatted terminal table
 dg -o csv listen audio.mp3     # CSV
 ```
 
@@ -56,7 +56,7 @@ dg -o csv listen audio.mp3     # CSV
 ### Model Selection
 
 ```shell
-dg listen audio.mp3 --model nova-3    # Default streaming model
+dg listen audio.mp3 --model nova-3    # Default model
 dg listen audio.mp3 --model nova-2    # General purpose
 dg listen audio.mp3 --model whisper   # Whisper model
 ```
@@ -76,7 +76,6 @@ dg listen audio.mp3 --sentiment        # Sentiment analysis
 ```shell
 dg listen audio.mp3 --webvtt           # WebVTT captions
 dg listen audio.mp3 --srt              # SRT subtitles
-dg listen audio.mp3 --vtt              # Legacy VTT format
 ```
 
 ### Language
@@ -87,17 +86,20 @@ dg listen audio.mp3 --language es     # Spanish
 dg listen audio.mp3 --language de     # German
 ```
 
-### Custom Parameters
+### Boolean Options
 
-Pass any Deepgram API parameter:
+Boolean options do not take a value:
 
 ```shell
-dg listen audio.mp3 --punctuate true --interim true
+dg listen audio.mp3 --punctuate
+dg listen --mic --interim
 ```
+
+Run `dg listen --help` for the complete set of supported CLI options. The command does not forward arbitrary API parameters.
 
 ## Command Alias
 
-`dg transcribe` is an alias for `dg listen`:
+`dg transcribe` is a deprecated alias for `dg listen`:
 
 ```shell
 dg transcribe audio.mp3

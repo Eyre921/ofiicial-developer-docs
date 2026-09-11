@@ -108,7 +108,7 @@ ElevenAgents sends caller context in the request body:
 
 `caller_id` and `called_number` are phone numbers on Twilio, Exotel, SIP, and SMS. On inbound WhatsApp they are the WhatsApp user ID and your WhatsApp phone number ID. On outbound calls, `caller_id` is your number and `called_number` is the person being dialed. `call_sid` is the provider call SID on telephony and an empty string on WhatsApp and SMS. SIP calls may also include `call_id` and `sip_headers`.
 
-Your response must use the `conversation_initiation_client_data` shape above. Include every custom dynamic variable the agent defines. Overrides are optional and must be enabled in **Security**.
+Your response must use the `conversation_initiation_client_data` shape above. Include every custom dynamic variable the agent defines. Overrides are optional and must be enabled in **Security**. The HTTP response body must be 256 KB or smaller (262,144 bytes).
 
 A failed or timed-out webhook can prevent the conversation from starting. For Twilio setup, see [Twilio personalization](/docs/eleven-agents/customization/personalization/twilio-personalization). This webhook is separate from [post-call webhooks](/docs/eleven-agents/workflows/post-call-webhooks).
 

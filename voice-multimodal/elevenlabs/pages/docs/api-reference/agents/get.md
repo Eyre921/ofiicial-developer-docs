@@ -1111,6 +1111,15 @@ Successful Response
     - `agent_concurrency_limit` (integer, optional, default: -1) — The maximum number of concurrent conversations. -1 indicates that there is no maximum
     - `daily_limit` (integer, optional, default: 100000) — The maximum number of conversations per day
     - `bursting_enabled` (boolean, optional, default: true) — Whether to enable bursting. If true, exceeding workspace concurrency limit will be allowed up to 3 times the limit. Calls will be charged at double rate when exceeding the limit.
+  - `queueing_config` (object, optional) — Concurrency wait-queue config for the agent
+    - `enabled` (boolean, optional, default: false) — Hold callers in a wait queue when the agent is at its concurrency limit, instead of rejecting them immediately
+    - `wait_timeout_seconds` (integer, optional, default: 180) — Maximum time a caller can wait in the queue before being rejected
+    - `hold_audio` (object, optional, nullable) — Custom hold audio played to queued callers; when unset, callers hear the default hold tone. Read-only: set it by uploading a file through the agent hold-audio endpoint.
+      - `audio_path` (string, required) — Storage path of the uploaded clip
+      - `audio_url` (string, required) — Public CDN URL of the uploaded clip
+      - `original_filename` (string, required) — Filename of the uploaded clip as provided by the user
+      - `duration_secs` (double, required) — Duration of the uploaded clip in seconds
+      - `size_bytes` (integer, required) — Size of the uploaded clip in bytes
   - `privacy` (object, optional) — Privacy settings for the agent
     - `record_voice` (boolean, optional, default: true) — Whether to record the conversation
     - `retention_days` (integer, optional, default: -1) — The number of days to retain the conversation. -1 indicates there is no retention limit
@@ -1614,6 +1623,7 @@ Successful Response
   - `referenced_procedure_ids` (list of string, optional) — Procedure IDs referenced in the procedure content
   - `referenced_dynamic_variables` (list of string, optional) — Dynamic variable names used in the procedure content
   - `folder_parent_id` (string, optional, nullable) — Procedure ID of the folder this procedure is placed in. None means root.
+- `default_hold_audio_url` (string, optional, default: https://eleven-public-cdn-common.elevenlabs.io/convai/ambient-audio-assets/elevator1.mp3) — URL of the default hold tone played to queued callers when no custom hold audio is uploaded, so the dashboard can preview it.
 
 ## Examples
 

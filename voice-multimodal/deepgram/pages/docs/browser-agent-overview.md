@@ -76,7 +76,7 @@ Each layer pulls in the layer below as a dependency, and re-exports the parts yo
 
 * **Client-side function calling** scoped to React component lifecycle. Register tool handlers with `useAgentClientTool` — they mount and unmount with the component. Dynamic tools are checked first, then the provider falls back to `onFunctionCall`.
 * **Conversation state management.** The `useAgentConversation` hook accumulates transcript events into a structured message array with roles, content, and IDs.
-* **Mode awareness.** The `useAgentMode` hook tracks whether the agent is idle, listening, or speaking — with the playback-aware delay described above.
+* **Mode awareness.** The `useAgentMode` hook tracks whether the agent is idle, listening, thinking, or speaking — with the playback-aware delay described above.
 
 ### What the UI Layer Adds
 

@@ -30,7 +30,7 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   }'
 ```
 
-With the default `firerouter` model ID, simple prompts are usually redirected to GLM 5.2 Fast on Fireworks. Harder prompts pass through to Claude Opus 5 using your Anthropic key.
+With the default `firerouter` model ID, simple prompts are usually redirected to GLM 5.3 (`glm-5p3`) on Fireworks. Harder prompts pass through to Claude Opus 5 (`claude-opus-5`) using your Anthropic key.
 
 To use a different model combination, replace `firerouter` with one of the [model-specific FireRouter slugs](/ecosystem/firerouter/overview#choose-different-models).
 

@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1300 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1303 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -23,6 +23,8 @@
 - `docs/api-reference/agents/get` — [Get agent](pages/docs/api-reference/agents/get.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/get.md)
 - `docs/api-reference/agents/get-link` — [Get link](pages/docs/api-reference/agents/get-link.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/get-link.md)
 - `docs/api-reference/agents/get-summaries` — [Get agent summaries](pages/docs/api-reference/agents/get-summaries.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/get-summaries.md)
+- `docs/api-reference/agents/hold-audio/create` — [Post agent hold audio](pages/docs/api-reference/agents/hold-audio/create.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/hold-audio/create.md)
+- `docs/api-reference/agents/hold-audio/delete` — [Delete agent hold audio](pages/docs/api-reference/agents/hold-audio/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/hold-audio/delete.md)
 - `docs/api-reference/agents/list` — [List agents](pages/docs/api-reference/agents/list.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/list.md)
 - `docs/api-reference/agents/procedures/compile` — [Compile Procedures](pages/docs/api-reference/agents/procedures/compile.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/compile.md)
 - `docs/api-reference/agents/procedures/create` — [Create Procedure](pages/docs/api-reference/agents/procedures/create.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/create.md)
@@ -395,6 +397,8 @@
 - `docs/eleven-agents/api-reference/agents/get` — [Get agent](pages/docs/eleven-agents/api-reference/agents/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get.md)
 - `docs/eleven-agents/api-reference/agents/get-link` — [Get link](pages/docs/eleven-agents/api-reference/agents/get-link.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-link.md)
 - `docs/eleven-agents/api-reference/agents/get-summaries` — [Get agent summaries](pages/docs/eleven-agents/api-reference/agents/get-summaries.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-summaries.md)
+- `docs/eleven-agents/api-reference/agents/hold-audio/create` — [Post agent hold audio](pages/docs/eleven-agents/api-reference/agents/hold-audio/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/hold-audio/create.md)
+- `docs/eleven-agents/api-reference/agents/hold-audio/delete` — [Delete agent hold audio](pages/docs/eleven-agents/api-reference/agents/hold-audio/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/hold-audio/delete.md)
 - `docs/eleven-agents/api-reference/agents/list` — [List agents](pages/docs/eleven-agents/api-reference/agents/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/list.md)
 - `docs/eleven-agents/api-reference/agents/procedures/compile` — [Compile Procedures](pages/docs/eleven-agents/api-reference/agents/procedures/compile.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/compile.md)
 - `docs/eleven-agents/api-reference/agents/procedures/create` — [Create Procedure](pages/docs/eleven-agents/api-reference/agents/procedures/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/create.md)
@@ -773,7 +777,6 @@
 - `docs/eleven-api/resources/webhooks` — [Webhooks](pages/docs/eleven-api/resources/webhooks.md) · [原文](https://elevenlabs.io/docs/eleven-api/resources/webhooks.md)
 - `docs/eleven-api/resources/zero-retention-mode` — [Zero Retention Mode (Enterprise)](pages/docs/eleven-api/resources/zero-retention-mode.md) · [原文](https://elevenlabs.io/docs/eleven-api/resources/zero-retention-mode.md)
 - `docs/eleven-creative/audio-tools/audio-detector` — [Audio detector](pages/docs/eleven-creative/audio-tools/audio-detector.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/audio-detector.md)
-- `docs/eleven-creative/audio-tools/audio-native` — [Audio Native](pages/docs/eleven-creative/audio-tools/audio-native.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/audio-native.md)
 - `docs/eleven-creative/audio-tools/audio-native/framer` — [Audio Native with Framer](pages/docs/eleven-creative/audio-tools/audio-native/framer.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/audio-native/framer.md)
 - `docs/eleven-creative/audio-tools/audio-native/ghost` — [Audio Native with Ghost](pages/docs/eleven-creative/audio-tools/audio-native/ghost.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/audio-native/ghost.md)
 - `docs/eleven-creative/audio-tools/audio-native/react` — [Audio Native with React](pages/docs/eleven-creative/audio-tools/audio-native/react.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/audio-native/react.md)

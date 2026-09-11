@@ -48,6 +48,7 @@ Successful Response
   - `start_time_unix_secs` (integer, required)
   - `call_duration_secs` (integer, required)
   - `accepted_time_unix_secs` (integer, optional)
+  - `queue_wait_secs` (double, optional) — Seconds the caller was held in the concurrency wait queue. Excluded from call_duration_secs and from billed time. None when the conversation was never queued.
   - `cost` (integer, optional)
   - `deletion_settings` (object, optional)
     - `deletion_time_unix_secs` (integer, optional)
@@ -230,6 +231,12 @@ Successful Response
       - `enabled` (boolean, optional, default: false)
       - `used` (boolean, optional, default: false)
     - `file_input` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `freeform_procedure` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `structured_procedure` (object, optional)
       - `enabled` (boolean, optional, default: false)
       - `used` (boolean, optional, default: false)
   - `eleven_assistant` (object, optional)
@@ -775,6 +782,7 @@ Successful Response
     "start_time_unix_secs": 1714423232,
     "call_duration_secs": 10,
     "accepted_time_unix_secs": 1,
+    "queue_wait_secs": 1.1,
     "cost": 1,
     "deletion_settings": {
       "deletion_time_unix_secs": 1,

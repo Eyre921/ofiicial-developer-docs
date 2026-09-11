@@ -24,7 +24,7 @@ npm install @deepgram/react
 
 ## Usage
 
-Wrap your component tree in `AgentProvider`, then use hooks to subscribe to exactly the state slices you need. Each hook triggers re-renders only when its own values change.
+Wrap your component tree in `AgentProvider`, then use focused hooks to access the state and controls your component needs.
 
 ```tsx
 import {
@@ -92,21 +92,31 @@ The provider creates and manages `AgentSession`, `AgentMicrophone`, and `AgentPl
 
 ### Props
 
-| Prop                | Type                                                  | Default     | Description                                                                                                                                      |
-| ------------------- | ----------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `config`            | `AgentSessionConfig`                                  | required    | Session configuration. See [JavaScript SDK](/docs/browser-agent-javascript) for all options.                                                     |
-| `microphone`        | `boolean`                                             | `true`      | Enable microphone capture.                                                                                                                       |
-| `microphoneOptions` | `MicrophoneOptions`                                   | `undefined` | Options passed to `AgentMicrophone` (sample rate, VAD, noise suppression). See [JavaScript SDK](/docs/browser-agent-javascript#agentmicrophone). |
-| `tts`               | `boolean`                                             | `true`      | Enable TTS audio playback.                                                                                                                       |
-| `playerSampleRate`  | `number`                                              | `24000`     | Sample rate for the audio player.                                                                                                                |
-| `autoStart`         | `boolean`                                             | `false`     | Connect to the agent immediately on mount.                                                                                                       |
-| `onFunctionCall`    | `(fn: FunctionCallItem) => Promise<string> \| string` | `undefined` | Default handler for agent function call requests. Dynamic tools registered with `useAgentClientTool` take priority over this prop.               |
+| Prop                 | Type                                                  | Default     | Description                                                                                                                                      |
+| -------------------- | ----------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `config`             | `AgentSessionConfig`                                  | required    | Session configuration. See [JavaScript SDK](/docs/browser-agent-javascript) for all options.                                                     |
+| `microphone`         | `boolean`                                             | `true`      | Enable microphone capture.                                                                                                                       |
+| `microphoneOptions`  | `MicrophoneOptions`                                   | `undefined` | Options passed to `AgentMicrophone` (sample rate, VAD, noise suppression). See [JavaScript SDK](/docs/browser-agent-javascript#agentmicrophone). |
+| `tts`                | `boolean`                                             | `true`      | Enable TTS audio playback.                                                                                                                       |
+| `playerSampleRate`   | `number`                                              | `24000`     | Sample rate for the audio player.                                                                                                                |
+| `autoStart`          | `boolean`                                             | `false`     | Connect to the agent immediately on mount.                                                                                                       |
+| `onFunctionCall`     | `(fn: FunctionCallItem) => Promise<string> \| string` | `undefined` | Default handler for agent function call requests. Dynamic tools registered with `useAgentClientTool` take priority over this prop.               |
+| `onError`            | `(message: AgentErrorMessage) => void`                | `undefined` | Handler for server-reported agent errors.                                                                                                        |
+| `onSdkError`         | `(error: Error) => void`                              | `undefined` | Handler for SDK transport errors and automatic-start failures.                                                                                   |
+| `onWarning`          | `(message: AgentWarningMessage) => void`              | `undefined` | Handler for server-reported agent warnings.                                                                                                      |
+| `onLatencyReport`    | `(message: LatencyReportMessage) => void`             | `undefined` | Handler for agent latency reports.                                                                                                               |
+| `onInjectionRefused` | `(message: InjectionRefusedMessage) => void`          | `undefined` | Handler when the server rejects an injected message.                                                                                             |
+| `onListenUpdated`    | `(message: ListenUpdatedMessage) => void`             | `undefined` | Handler when the server confirms a `updateListen()` request.                                                                                     |
+| `onPromptUpdated`    | `(message: PromptUpdatedMessage) => void`             | `undefined` | Handler when the server confirms a `updatePrompt()` request.                                                                                     |
+| `onSpeakUpdated`     | `(message: SpeakUpdatedMessage) => void`              | `undefined` | Handler when the server confirms a `updateSpeak()` request.                                                                                      |
+| `onThinkUpdated`     | `(message: ThinkUpdatedMessage) => void`              | `undefined` | Handler when the server confirms a `updateThink()` request.                                                                                      |
+| `onHistory`          | `(message: HistoryMessage) => void`                   | `undefined` | Handler for conversation history received from the server.                                                                                       |
 
 ## Hooks
 
 ### useAgentState
 
-Connection state and lifecycle controls. Re-renders only when connection state changes.
+Connection state and lifecycle controls.
 
 ```tsx
 const {
@@ -124,13 +134,14 @@ const {
 
 ### useAgentConversation
 
-Conversation history and text input. Re-renders when a new message arrives.
+Conversation history and text input.
 
 ```tsx
 const {
   conversation,       // ConversationEntry[]
   clearConversation,  // () => void
   sendUserMessage,    // (text: string) => void — inject a text message as the user
+  sendAgentMessage,   // (message: string, behavior?: "default" | "queue" | "interrupt") => void
 } = useAgentConversation();
 ```
 
@@ -148,9 +159,10 @@ Tracks the agent's speaking/listening mode with playback awareness. The mode tra
 
 ```tsx
 const {
-  mode,        // "idle" | "listening" | "speaking"
+  mode,        // "idle" | "listening" | "thinking" | "speaking"
   isSpeaking,  // true when mode === "speaking"
   isListening, // true when mode === "listening"
+  isThinking,  // true when mode === "thinking"
 } = useAgentMode();
 ```
 
@@ -189,7 +201,7 @@ const {
 
 ### useAgentControls
 
-Action methods only, no state. All returned functions are `useCallback`-wrapped refs with stable identity -- they never change between renders. Components that use only this hook will never re-render due to agent state changes.
+Action methods only, no state. Like the other focused hooks, it consumes `AgentContext`, so its component re-renders when the provider value changes.
 
 Use this for components that dispatch commands but do not display state, such as a toolbar or keyboard shortcut handler.
 
@@ -198,6 +210,11 @@ const {
   start,              // () => Promise<void>
   stop,               // () => void
   sendUserMessage,    // (text: string) => void
+  sendAgentMessage,   // (message: string, behavior?: "default" | "queue" | "interrupt") => void
+  updateListen,       // (listen: ListenSettings) => void
+  updateThink,        // (think: ThinkSettings | ThinkSettings[]) => void
+  updateSpeak,        // (speak: SpeakSettings | SpeakSettings[]) => void
+  updatePrompt,       // (prompt: string) => void
   clearConversation,  // () => void
   setMicMuted,        // (muted: boolean) => void
   setOutputMuted,     // (muted: boolean) => void
@@ -205,14 +222,13 @@ const {
 ```
 
 ```tsx
-// Safe in effects — stable refs mean no re-runs
 useEffect(() => {
   const handleKey = (e: KeyboardEvent) => {
-    if (e.key === "m") setMicMuted((prev) => !prev);
+    if (e.key === "m") setMicMuted(true);
   };
   window.addEventListener("keydown", handleKey);
   return () => window.removeEventListener("keydown", handleKey);
-}, [setMicMuted]); // setMicMuted identity never changes
+}, [setMicMuted]);
 ```
 
 ### useAgentClientTool
@@ -280,7 +296,7 @@ useEffect(() => {
 
 ### useAgentContext
 
-Access the full context value. Prefer the focused hooks above for selective re-rendering. This hook is available when you need several unrelated values without importing multiple hooks.
+Access the full context value. Prefer the focused hooks above for a smaller, purpose-specific API surface. This hook is available when you need several unrelated values without importing multiple hooks.
 
 ```tsx
 const ctx = useAgentContext();
@@ -337,26 +353,47 @@ function VoiceAgent() {
 
 ### Options
 
-| Option             | Type                                | Default     | Description                                               |
-| ------------------ | ----------------------------------- | ----------- | --------------------------------------------------------- |
-| `config`           | `AgentSessionConfig`                | required    | Session configuration (auth, agent ID, settings).         |
-| `micOptions`       | `MicrophoneOptions`                 | `{}`        | Microphone options (sample rate, VAD, noise suppression). |
-| `playerSampleRate` | `number`                            | `24000`     | Audio player sample rate.                                 |
-| `onFunctionCall`   | `(fn) => Promise<string> \| string` | `undefined` | Handler for agent function call requests.                 |
+| Option               | Type                                         | Default     | Description                                                  |
+| -------------------- | -------------------------------------------- | ----------- | ------------------------------------------------------------ |
+| `config`             | `AgentSessionConfig`                         | required    | Session configuration (auth, agent ID, settings).            |
+| `micOptions`         | `MicrophoneOptions`                          | `{}`        | Microphone options (sample rate, VAD, noise suppression).    |
+| `playerSampleRate`   | `number`                                     | `24000`     | Audio player sample rate.                                    |
+| `onFunctionCall`     | `(fn) => Promise<string> \| string`          | `undefined` | Handler for agent function call requests.                    |
+| `onError`            | `(message: AgentErrorMessage) => void`       | `undefined` | Handler for server-reported agent errors.                    |
+| `onSdkError`         | `(error: Error) => void`                     | `undefined` | Handler for SDK transport errors.                            |
+| `onWarning`          | `(message: AgentWarningMessage) => void`     | `undefined` | Handler for server-reported agent warnings.                  |
+| `onLatencyReport`    | `(message: LatencyReportMessage) => void`    | `undefined` | Handler for agent latency reports.                           |
+| `onInjectionRefused` | `(message: InjectionRefusedMessage) => void` | `undefined` | Handler when the server rejects an injected message.         |
+| `onListenUpdated`    | `(message: ListenUpdatedMessage) => void`    | `undefined` | Handler when the server confirms a `updateListen()` request. |
+| `onPromptUpdated`    | `(message: PromptUpdatedMessage) => void`    | `undefined` | Handler when the server confirms a `updatePrompt()` request. |
+| `onSpeakUpdated`     | `(message: SpeakUpdatedMessage) => void`     | `undefined` | Handler when the server confirms a `updateSpeak()` request.  |
+| `onThinkUpdated`     | `(message: ThinkUpdatedMessage) => void`     | `undefined` | Handler when the server confirms a `updateThink()` request.  |
+| `onHistory`          | `(message: HistoryMessage) => void`          | `undefined` | Handler for conversation history received from the server.   |
 
 ### Return values
 
-| Value             | Type                       | Description                              |
-| ----------------- | -------------------------- | ---------------------------------------- |
-| `state`           | `AgentState`               | Current connection state.                |
-| `micActive`       | `boolean`                  | Whether the microphone hardware is open. |
-| `outputMuted`     | `boolean`                  | Whether agent audio output is muted.     |
-| `conversation`    | `ConversationEntry[]`      | Conversation history.                    |
-| `start`           | `() => Promise<void>`      | Connect session and open microphone.     |
-| `stop`            | `() => void`               | Disconnect session and close microphone. |
-| `setMicMuted`     | `(muted: boolean) => void` | Mute or unmute the microphone.           |
-| `setOutputMuted`  | `(muted: boolean) => void` | Mute or unmute agent audio.              |
-| `sendUserMessage` | `(text: string) => void`   | Inject a text message as the user.       |
-| `interrupt`       | `() => void`               | Interrupt agent speech immediately.      |
+| Value               | Type                                                         | Description                                                                                     |
+| ------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| `state`             | `AgentState`                                                 | Current connection state.                                                                       |
+| `mode`              | `AgentMode`                                                  | Current agent mode: `"idle"`, `"listening"`, `"thinking"`, or `"speaking"`.                     |
+| `isSpeaking`        | `boolean`                                                    | Whether the agent is speaking.                                                                  |
+| `isListening`       | `boolean`                                                    | Whether the agent is listening.                                                                 |
+| `isThinking`        | `boolean`                                                    | Whether the agent is preparing a response.                                                      |
+| `micActive`         | `boolean`                                                    | Whether the microphone hardware is open.                                                        |
+| `micMuted`          | `boolean`                                                    | Whether the microphone is muted.                                                                |
+| `outputMuted`       | `boolean`                                                    | Whether agent audio output is muted.                                                            |
+| `conversation`      | `ConversationEntry[]`                                        | Conversation history.                                                                           |
+| `start`             | `() => Promise<void>`                                        | Connect session and open microphone.                                                            |
+| `stop`              | `() => void`                                                 | Disconnect session and close microphone.                                                        |
+| `setMicMuted`       | `(muted: boolean) => void`                                   | Mute or unmute the microphone.                                                                  |
+| `setOutputMuted`    | `(muted: boolean) => void`                                   | Mute or unmute agent audio.                                                                     |
+| `sendUserMessage`   | `(text: string) => void`                                     | Inject a text message as the user.                                                              |
+| `sendAgentMessage`  | `(message: string, behavior?: AgentMessageBehavior) => void` | Inject a text message as the agent. `behavior` can be `"default"`, `"queue"`, or `"interrupt"`. |
+| `updateListen`      | `(listen: ListenSettings) => void`                           | Update speech-to-text settings during the session.                                              |
+| `updateThink`       | `(think: ThinkSettings \| ThinkSettings[]) => void`          | Update LLM settings during the session.                                                         |
+| `updateSpeak`       | `(speak: SpeakSettings \| SpeakSettings[]) => void`          | Update text-to-speech settings during the session.                                              |
+| `updatePrompt`      | `(prompt: string) => void`                                   | Update the agent system prompt during the session.                                              |
+| `clearConversation` | `() => void`                                                 | Clear the local conversation history and request that the session clears its history.           |
+| `interrupt`         | `() => void`                                                 | Interrupt agent speech immediately.                                                             |
 
 `useDeepgramAgent` does not support `useAgentClientTool`. Use the provider pattern if you need per-component tool registration.

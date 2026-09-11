@@ -29,6 +29,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/
 - `agent_id` (string, required) — Agent id (agent_…) or speech engine external id (seng_), resolved to the same underlying resource.
 - `include_conversation_id` (boolean, optional, default: false) — Whether to include a conversation_id with the response. If included, the conversation_signature cannot be used again.
 - `branch_id` (string, optional) — The ID of the branch to use
+- `version_id` (string, optional) — The ID of the version to use
 - `environment` (string, optional) — The environment to use for resolving environment variables (e.g. 'production', 'staging'). Defaults to 'production'.
 - `debug_events_request` (boolean, optional, default: false) — Whether to enable debug events. Only available for users with editor access to the agent.
 
@@ -63,6 +64,7 @@ async function main() {
         debugEventsRequest: true,
         environment: "environment",
         includeConversationId: true,
+        versionId: "version_id",
     });
 }
 main();
@@ -80,6 +82,7 @@ client.conversational_ai.conversations.get_signed_url(
     debug_events_request=True,
     environment="environment",
     include_conversation_id=True,
+    version_id="version_id",
 )
 
 ```
@@ -95,7 +98,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&include_conversation_id=true"
+	url := "https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&include_conversation_id=true&version_id=version_id"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -114,7 +117,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&include_conversation_id=true")
+url = URI("https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&include_conversation_id=true&version_id=version_id")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -129,7 +132,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&include_conversation_id=true")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&include_conversation_id=true&version_id=version_id")
   .asString();
 ```
 
@@ -139,7 +142,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&include_conversation_id=true');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&include_conversation_id=true&version_id=version_id');
 
 echo $response->getBody();
 ```
@@ -147,7 +150,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&include_conversation_id=true");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&include_conversation_id=true&version_id=version_id");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -155,7 +158,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&include_conversation_id=true")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&include_conversation_id=true&version_id=version_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

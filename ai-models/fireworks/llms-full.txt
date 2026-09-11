@@ -6034,10 +6034,10 @@ Use FireRouter when you want **automatic cost optimization** without picking a d
 
 FireRouter evaluates each new user request. The default `firerouter` configuration picks one of two paths:
 
-| Path             | When                                      | What runs                                         | Billing                           |
-| ---------------- | ----------------------------------------- | ------------------------------------------------- | --------------------------------- |
-| **Redirect**     | Simple or low-complexity work             | A Fireworks open model (for example GLM 5.2 Fast) | Your Fireworks API key            |
-| **Pass-through** | Hard reasoning, judgment, or long context | A closed-source model (by default Claude Opus 5)  | Your provider API key (Anthropic) |
+| Path             | When                                      | What runs                                        | Billing                           |
+| ---------------- | ----------------------------------------- | ------------------------------------------------ | --------------------------------- |
+| **Redirect**     | Simple or low-complexity work             | A Fireworks open model (by default GLM 5.3)      | Your Fireworks API key            |
+| **Pass-through** | Hard reasoning, judgment, or long context | A closed-source model (by default Claude Opus 5) | Your provider API key (Anthropic) |
 
 FireRouter uses a bring-your-own-key (BYOK) model:
 
@@ -6101,10 +6101,10 @@ FireRouter decides the target model for each request based on request complexity
 
 The short `firerouter` model ID currently routes between:
 
-| Role                         | Model                             |
-| ---------------------------- | --------------------------------- |
-| Pass-through (closed-source) | **Claude Opus 5**                 |
-| Redirect (open)              | **GLM 5.2 Fast** (`glm-5p2-fast`) |
+| Role                         | Model                               |
+| ---------------------------- | ----------------------------------- |
+| Pass-through (closed-source) | **Claude Opus 5** (`claude-opus-5`) |
+| Redirect (open)              | **GLM 5.3** (`glm-5p3`)             |
 
 These models are subject to change as FireRouter is updated. This page reflects the current configuration.
 
@@ -6199,7 +6199,7 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   }'
 ```
 
-With the default `firerouter` model ID, simple prompts are usually redirected to GLM 5.2 Fast on Fireworks. Harder prompts pass through to Claude Opus 5 using your Anthropic key.
+With the default `firerouter` model ID, simple prompts are usually redirected to GLM 5.3 (`glm-5p3`) on Fireworks. Harder prompts pass through to Claude Opus 5 (`claude-opus-5`) using your Anthropic key.
 
 To use a different model combination, replace `firerouter` with one of the [model-specific FireRouter slugs](/ecosystem/firerouter/overview#choose-different-models).
 
@@ -16728,7 +16728,7 @@ Once you have your API key, export it as an environment variable in your termina
 To create and manage on-demand deployments, you'll need the `firectl` CLI tool. Install it using one of the following methods, based on your platform:
 
 <CodeGroup>
-  ```bash homebrew theme={null} theme={null}
+  ```bash homebrew theme={null}
   brew tap fw-ai/firectl
   brew install firectl
 
@@ -16736,27 +16736,27 @@ To create and manage on-demand deployments, you'll need the `firectl` CLI tool. 
   brew update
   ```
 
-  ```bash macOS (Apple Silicon) theme={null} theme={null}
+  ```bash macOS (Apple Silicon) theme={null}
   curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-arm64.gz -o firectl.gz
   gzip -d firectl.gz && chmod a+x firectl
   sudo mv firectl /usr/local/bin/firectl
   sudo chown root: /usr/local/bin/firectl
   ```
 
-  ```bash macOS (x86_64) theme={null} theme={null}
+  ```bash macOS (x86_64) theme={null}
   curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-amd64.gz -o firectl.gz
   gzip -d firectl.gz && chmod a+x firectl
   sudo mv firectl /usr/local/bin/firectl
   sudo chown root: /usr/local/bin/firectl
   ```
 
-  ```bash Linux  (x86_64) theme={null} theme={null}
+  ```bash Linux  (x86_64) theme={null}
   wget -O firectl.gz https://storage.googleapis.com/fireworks-public/firectl/stable/linux-amd64.gz
   gunzip firectl.gz
   sudo install -o root -g root -m 0755 firectl /usr/local/bin/firectl
   ```
 
-  ```Text Windows (64 bit) theme={null} theme={null}
+  ```Text Windows (64 bit) theme={null}
   wget -L https://storage.googleapis.com/fireworks-public/firectl/stable/firectl.exe
   ```
 </CodeGroup>
@@ -16838,15 +16838,15 @@ Now you can query your on-demand deployment using the same API as serverless mod
     </Note>
 
     <CodeGroup>
-      ```bash pip theme={null} theme={null}
+      ```bash pip theme={null}
       pip install --pre fireworks-ai
       ```
 
-      ```bash poetry theme={null} theme={null}
+      ```bash poetry theme={null}
       poetry add --pre fireworks-ai
       ```
 
-      ```bash uv theme={null} theme={null}
+      ```bash uv theme={null}
       uv add --pre fireworks-ai
       ```
     </CodeGroup>

@@ -249,6 +249,16 @@ AI Gateway uses Neon bearer credentials, the same scoped-credential system as [O
 
 A credential must include the `ai_gateway:invoke` scope.
 
+**CLI**
+
+Create a credential with the [Neon CLI](https://neon.com/docs/cli/credentials):
+
+```bash
+neon credentials create --scope ai_gateway:invoke --name my-app-credential
+```
+
+The `api_token` is printed once; set it as `NEON_AI_GATEWAY_TOKEN`. Run it in a directory [linked](https://neon.com/docs/cli/link) to your project, or pass `--project-id` and `--branch`.
+
 **Console**
 
 In the Neon Console, select your branch and click **Credentials** under **Branch** in the sidebar. Click **Create credential**, give it a name, and check **ai_gateway:invoke**.
@@ -414,13 +424,19 @@ This design lets you use a single credential across your entire development work
 
 ## Rotating credentials
 
-To rotate a credential: create a new one, update your environment variables, then revoke the old one.
+To rotate a credential in place with the [Neon CLI](https://neon.com/docs/cli/credentials), run `neon credentials rotate <token_id>` (find the id with `neon credentials list`). The `token_id` stays the same and a new `api_token` is minted, so update `NEON_AI_GATEWAY_TOKEN` with it. Otherwise, create a new credential, update your environment variables, then revoke the old one.
 
 To revoke from the Console, open the **Credentials** page and use the action menu (⋮) next to the credential. To revoke via the API:
 
 ```bash
 curl -X DELETE "https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id}/credentials/{token_id}" \
   -H "Authorization: Bearer $NEON_API_KEY"
+```
+
+Or with the [Neon CLI](https://neon.com/docs/cli/credentials):
+
+```bash
+neon credentials revoke <token_id>
 ```
 
 --- [Document source](https://neon.com/docs/ai-gateway/chat-completions.md) ---
@@ -830,7 +846,13 @@ You need a project in AWS US East (Ohio) (`aws-us-east-2`) or AWS Europe (Frankf
 
 ## Create a credential
 
-In the Neon Console, select your branch, click **Credentials** under **Branch**, then click **Create credential** and check **ai_gateway:invoke**. Copy the credential before closing, it's shown only once.
+With the [Neon CLI](https://neon.com/docs/cli/credentials), run:
+
+```bash
+neon credentials create --scope ai_gateway:invoke
+```
+
+Or, in the Neon Console, select your branch, click **Credentials** under **Branch**, then click **Create credential** and check **ai_gateway:invoke**. Copy the credential before closing, it's shown only once.
 
 Or use the API:
 
@@ -10488,7 +10510,7 @@ Pi reads the `skills/` directory directly, so there's no separate sync step. Thi
 
 ### neon init
 
-The `neon init` command sets up the current directory to use Neon with your AI coding assistant. Run it in a terminal: it installs agent tooling (either a plugin, or skills and the MCP server), links a Neon project, and writes a `neon.ts` config. In an empty directory, it scaffolds a starter template first.
+The `neon init` command sets up the current directory to use Neon with your AI coding assistant. Run it in a terminal: it installs agent tooling (either a plugin, or skills and the MCP server), links a Neon project, and optionally writes a `neon.ts` config. In an empty directory, it lets you pick a starter template, name one with `--template`, or skip scaffolding with `--skip-template`.
 
 ```bash
 npx neon@latest init
@@ -12325,7 +12347,7 @@ The fastest way to get started:
 npx neon@latest init
 ```
 
-**`neon init`** (see [`neon init` reference](https://neon.com/docs/cli/init)) sets up the current directory for Neon. Run it in a terminal: it installs agent tooling (either the Neon plugin, or [agent skills](https://github.com/neondatabase/agent-skills) and the MCP server), links a Neon project, and writes a `neon.ts` config. Then restart your editor and ask your AI assistant **"Get started with Neon"**.
+**`neon init`** (see [`neon init` reference](https://neon.com/docs/cli/init)) sets up the current directory for Neon. Run it in a terminal: it installs agent tooling (either the Neon plugin, or [agent skills](https://github.com/neondatabase/agent-skills) and the MCP server), links a Neon project, and optionally writes a `neon.ts` config. Then restart your editor and ask your AI assistant **"Get started with Neon"**.
 
 If you only want the MCP server and nothing else, run [`neon mcp`](https://neon.com/docs/cli/mcp):
 
@@ -21306,6 +21328,18 @@ Get connection string.
 
 Usage: `neon connection-string [branch] [options]`
 
+### credentials (alias: `credential`)
+
+Manage branch credentials.
+
+| Subcommand                          | Description                                                         |
+| ----------------------------------- | ------------------------------------------------------------------- |
+| `neon credentials create`           | Issue a scoped credential on the branch                             |
+| `neon credentials list`             | List credentials on the branch                                      |
+| `neon credentials reveal <tokenId>` | Show a credential's api\_token and s3\_secret\_access\_key          |
+| `neon credentials revoke <tokenId>` | Revoke a credential                                                 |
+| `neon credentials rotate <tokenId>` | Replace a credential's secrets in place. The token id is unchanged. |
+
 ### data-api
 
 Manage the Neon Data API for a database.
@@ -21370,7 +21404,7 @@ Manage Neon Functions.
 
 ### init
 
-Set up this directory for Neon: agent tooling, a linked project, and neon.ts. In an empty directory, scaffolds a template first. Skills needs Node.js 22.20 or newer.
+Set up this directory for Neon: agent tooling, a linked project, and optionally neon.ts. In an empty directory, pick a template or skip scaffolding.
 
 Usage: `neon init [options]`
 
@@ -21572,6 +21606,20 @@ Manage snapshots.
 Show the branch's live Neon state (alias of `config status`).
 
 Usage: `neon status [options]`
+
+### triggers (alias: `trigger`)
+
+Manage function triggers.
+
+| Subcommand                   | Description                                                 |
+| ---------------------------- | ----------------------------------------------------------- |
+| `neon triggers create`       | Create a trigger that invokes a function on a cron schedule |
+| `neon triggers delete <id>`  | Delete a trigger                                            |
+| `neon triggers disable <id>` | Disable a trigger without deleting it                       |
+| `neon triggers enable <id>`  | Enable a trigger                                            |
+| `neon triggers get <id>`     | Show a trigger                                              |
+| `neon triggers list`         | List triggers on the branch                                 |
+| `neon triggers update <id>`  | Update a trigger                                            |
 
 ### vpc
 
@@ -23214,7 +23262,7 @@ npm install @neon/config @neon/env
 
 Use `config init` when you want a trusted starter artifact and package list. Hand-write `neon.ts` instead when you need a different filename/module format or want to avoid modifying files in the current directory.
 
-**Tip:** After running an interactive [`neon link`](https://neon.com/docs/cli/link), the CLI offers to run `config init` as its final step, unless the project already has a `neon.ts` file.
+**Tip:** After running an interactive [`neon link`](https://neon.com/docs/cli/link), the CLI prompts you to run `config init` as its final step, unless the project already has a `neon.ts` file.
 
 ## neon config status
 
@@ -23416,6 +23464,173 @@ Get a connection string, connect with `psql`, and run a query:
 
 ```bash
 neon connection-string --psql -- -c "SELECT version()"
+```
+
+--- [Document source](https://neon.com/docs/cli/credentials.md) ---
+
+> Summary: The Neon CLI `neon credentials` command manages branch-scoped credentials: issue a credential with storage, AI gateway, or function-invoke scopes, list the credentials on a branch, reveal a credential's secrets, rotate its secrets in place, and revoke it.
+
+# Neon CLI command: credentials
+
+Issue, list, reveal, rotate, and revoke scoped credentials on a branch
+
+The `credentials` command manages scoped credentials on a branch. A credential grants an application or agent direct access to a branch's surfaces without an account API key. Each credential carries one or more scopes and, when issued, a pair of secrets: an `api_token` and an `s3_secret_access_key`.
+
+The available scopes are:
+
+- `storage:read` and `storage:write` for [Neon Object Storage](https://neon.com/docs/storage/overview)
+- `ai_gateway:invoke` for the [Neon AI Gateway](https://neon.com/docs/ai-gateway/overview)
+- `functions:invoke` for invoking [Neon Functions](https://neon.com/docs/compute/functions/overview)
+
+Credentials are branch-scoped. Pass `--project-id` and `--branch` to target a branch, or let the CLI resolve them from your [context file](https://neon.com/docs/cli/set-context). A credential's `token_id` has the form `nak_live_<hex>` and is stable across a rotation.
+
+**Important: Secrets are shown only once**
+
+The `api_token` and `s3_secret_access_key` are returned only when you create or rotate a credential, or when you explicitly run `neon credentials reveal`. Store them securely as soon as they're issued.
+
+Subcommands: [create](https://neon.com/docs/cli/credentials#create), [list](https://neon.com/docs/cli/credentials#list), [reveal](https://neon.com/docs/cli/credentials#reveal), [revoke](https://neon.com/docs/cli/credentials#revoke), [rotate](https://neon.com/docs/cli/credentials#rotate)
+
+## neon credentials list
+
+Lists the credentials on the branch. Secrets are never included; use [`neon credentials reveal`](https://neon.com/docs/cli/credentials#reveal) to see them.
+
+```bash
+neon credentials list [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+```bash
+neon credentials list --project-id solitary-heart-93902637 --branch main
+```
+
+```text filename="Output"
+Token Id                                   Name                               Principal Type  Scopes                       Created At
+nak_live_aaaa1111bbbb2222cccc3333dddd4444  Default AI gateway credential      user            ai_gateway:invoke            2026-09-10T20:02:49Z
+nak_live_eeee5555ffff6666aaaa7777bbbb8888  Default object storage credential  user            storage:read, storage:write  2026-09-10T20:02:50Z
+```
+
+## neon credentials create
+
+Issues a new credential. `--scope` is required and repeatable; pass one for each capability you want to grant. `--name` is an optional label.
+
+```bash
+neon credentials create [options]
+```
+
+| Option         | Description                                                                                                                                                                                          | Type   | Default | Required |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--name`       | Label for the credential                                                                                                                                                                             | string | —       |    No    |
+| `--scope`      | Capability to grant. Repeatable. Values: storage:read, storage:write, ai\_gateway:invoke, functions:invoke Possible values: `storage:read`, `storage:write`, `ai_gateway:invoke`, `functions:invoke` | string | —       |    Yes   |
+| `--branch`     | Branch ID or name                                                                                                                                                                                    | string | —       |    No    |
+| `--project-id` | Project ID                                                                                                                                                                                           | string | —       |    No    |
+
+```bash
+neon credentials create --name uploads --scope storage:read --scope storage:write --project-id solitary-heart-93902637 --branch main
+```
+
+```text filename="Output"
+Token Id  nak_live_0123456789abcdef0123456789abcdef
+Name      uploads
+Scopes    storage:read, storage:write
+api_token: <api_token>
+s3_secret_access_key: <s3_secret_access_key>
+WARNING: Store these secrets now: they are not shown again unless you run neon credentials reveal.
+```
+
+With `--output json`, the secrets stay on the object so scripts can read them:
+
+<details>
+
+<summary>Show output</summary>
+
+```json
+{
+  "token_id": "nak_live_0123456789abcdef0123456789abcdef",
+  "token_id_short": "0123456789ab",
+  "name": "uploads",
+  "api_token": "<api_token>",
+  "s3_secret_access_key": "<s3_secret_access_key>",
+  "scopes": ["storage:read", "storage:write"],
+  "branch_id": "br-morning-frost-a1b2c3d4",
+  "created_at": "2026-09-10T20:02:49Z"
+}
+```
+
+</details>
+
+## neon credentials reveal
+
+Shows a credential's `api_token` and `s3_secret_access_key` again, looked up by `token_id`.
+
+```bash
+neon credentials reveal <tokenId> [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+```bash
+neon credentials reveal nak_live_0123456789abcdef0123456789abcdef --project-id solitary-heart-93902637 --branch main
+```
+
+```text filename="Output"
+Token Id  nak_live_0123456789abcdef0123456789abcdef
+api_token: <api_token>
+s3_secret_access_key: <s3_secret_access_key>
+WARNING: These are live secrets. Treat them like a password.
+```
+
+## neon credentials rotate
+
+Replaces a credential's secrets in place. The `token_id` is unchanged, so anything that references the credential by ID keeps working once you update the stored secrets.
+
+```bash
+neon credentials rotate <tokenId> [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+```bash
+neon credentials rotate nak_live_0123456789abcdef0123456789abcdef --project-id solitary-heart-93902637 --branch main
+```
+
+```text filename="Output"
+Token Id  nak_live_0123456789abcdef0123456789abcdef
+Name      uploads
+Scopes    storage:read, storage:write
+api_token: <new api_token>
+s3_secret_access_key: <new s3_secret_access_key>
+WARNING: Store the new secrets now: a retry mints another pair and does not recover a lost response. A replica may briefly accept the previous secret.
+```
+
+## neon credentials revoke
+
+Revokes a credential. Its secrets stop working and the `token_id` can no longer be revealed or rotated.
+
+```bash
+neon credentials revoke <tokenId> [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+```bash
+neon credentials revoke nak_live_0123456789abcdef0123456789abcdef --project-id solitary-heart-93902637 --branch main
+```
+
+```text filename="Output"
+INFO: Credential nak_live_0123456789abcdef0123456789abcdef revoked
 ```
 
 --- [Document source](https://neon.com/docs/cli/data-api.md) ---
@@ -24148,13 +24363,13 @@ Routing changes are eventually consistent, so the custom URL can continue reachi
 
 --- [Document source](https://neon.com/docs/cli/init.md) ---
 
-> Summary: The `neon init` command sets up the current directory to use Neon with your AI coding assistant. In an empty directory it scaffolds a starter template first, then installs agent tooling (either a plugin, or skills and the MCP server), links a Neon project, and writes a neon.ts config. It runs interactively by default; pass -y and --agent for an unattended agent setup.
+> Summary: The `neon init` command sets up the current directory to use Neon with your AI coding assistant. In an empty directory it lets you pick a starter template or skip scaffolding, then installs agent tooling (either a plugin, or skills and the MCP server), links a Neon project, and optionally writes a neon.ts config. It runs interactively by default; pass -y and --agent for an unattended agent setup.
 
 # Neon CLI command: init
 
-Set up the current directory for Neon with agent tooling, a linked project, and a neon.ts config
+Set up the current directory for Neon with agent tooling, a linked project, and an optional neon.ts config
 
-The `init` command sets up the current directory to use Neon with your AI coding assistant. It's a thin wrapper that runs Neon's other setup commands for you: it installs agent tooling (either the [Neon plugin](https://neon.com/docs/cli/plugins), or [agent skills](https://neon.com/docs/cli/skills) and the [Neon MCP server](https://neon.com/docs/cli/mcp)), [links a Neon project](https://neon.com/docs/cli/link), and writes a [`neon.ts` config](https://neon.com/docs/cli/config). In an empty directory, it [scaffolds a starter template](https://neon.com/docs/cli/bootstrap) first.
+The `init` command sets up the current directory to use Neon with your AI coding assistant. It's a thin wrapper that runs Neon's other setup commands for you: it installs agent tooling (either the [Neon plugin](https://neon.com/docs/cli/plugins), or [agent skills](https://neon.com/docs/cli/skills) and the [Neon MCP server](https://neon.com/docs/cli/mcp)), [links a Neon project](https://neon.com/docs/cli/link), and can write a [`neon.ts` config](https://neon.com/docs/cli/config). In an empty directory, it also [scaffolds a starter template](https://neon.com/docs/cli/bootstrap): pick one interactively, name one with `--template`, or skip scaffolding with `--skip-template`.
 
 `init` is interactive, so run it from a terminal. It asks how coding agents should get Neon, and prompts you to pick a project to link. If you don't have the CLI installed, run it with `npx`:
 
@@ -24174,12 +24389,14 @@ neon init [options]
 
 What `init` runs depends on whether the directory is empty:
 
-| Directory                  | What `init` does                                                                                                   |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Empty (nothing but `.git`) | Runs [`neon bootstrap`](https://neon.com/docs/cli/bootstrap): scaffolds a template, then agent tooling and linking |
-| Already has files          | Installs agent tooling, links a project, then runs [`neon config init`](https://neon.com/docs/cli/config)          |
+| Directory                  | What `init` does                                                                                                                          |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Empty (nothing but `.git`) | Scaffolds a starter template with [`neon bootstrap`](https://neon.com/docs/cli/bootstrap), then sets up agent tooling and links a project |
+| Already has files          | Sets up agent tooling, links a project, and optionally writes a [`neon.ts` config](https://neon.com/docs/cli/config)                      |
 
 A directory counts as empty only when it contains nothing but a `.git` folder. Any other entry, including a `README`, a `.env` file, or a `.gitignore`, makes it an existing app. So a directory you just ran `git init` in that already has a `.gitignore` takes the existing-app path.
+
+In an empty directory, pass `--skip-template` to skip scaffolding and take the existing-app path instead: `init` sets up agent tooling, links a project, and optionally writes `neon.ts` without adding template files.
 
 ### Choose how coding agents get Neon
 
@@ -24195,14 +24412,24 @@ The plugin and the skills-plus-MCP option are mutually exclusive. Installing ski
 
 ### Link a project and write neon.ts
 
-After agent setup, `init` runs [`neon link`](https://neon.com/docs/cli/link) (unless the directory is already linked). Linking writes a `.neon` file with your org, project, and branch, and pulls the branch's environment variables (including `DATABASE_URL`) into `.env` if one exists, otherwise `.env.local`. It then runs [`neon config init`](https://neon.com/docs/cli/config), which creates a `neon.ts` config you can edit and apply with `neon config apply`.
+After agent setup, `init` runs [`neon link`](https://neon.com/docs/cli/link) (unless the directory is already linked). Linking writes a `.neon` file with your org, project, and branch, and pulls the branch's environment variables (including `DATABASE_URL`) into `.env` if one exists, otherwise `.env.local`.
+
+It can also write a [`neon.ts` config](https://neon.com/docs/cli/config) you can edit and apply with `neon config apply`. In a terminal, `init` asks whether to create it. Pass `--config` to create it without asking, `--no-config` to skip it, or `--services` to create it with specific services declared (which implies `--config`). When you scaffold a template, `init` keeps the `neon.ts` that template ships and ignores these flags.
 
 ## Options
 
-| Option          | Description                                                                                                                                                                                                                                         | Type    | Default | Required |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--agent`, `-a` | Coding agent to install into (repeatable). Forwarded to plugins, or to skills and mcp. Skips agent selection. Values listed below                                                                                                                   | array   | —       |    No    |
-| `--yes`, `-y`   | Empty dir: bootstrap --default. Otherwise plugin, or skills and MCP, for project folders, else the host CLI agent. Exits if none. Then link --yes and config init --services none. link --yes still asks for a project unless one is already linked | boolean | `false` |    No    |
+| Option                    | Description                                                                                                                                                                                                                                                          | Type    | Default | Required |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a`           | Coding agent to install into (repeatable). Forwarded to plugins, or to skills and mcp. Skips agent selection. Values listed below                                                                                                                                    | array   | —       |    No    |
+| `--branch`, `--branch-id` | Forwarded to link: branch name or ID to pin                                                                                                                                                                                                                          | string  | —       |    No    |
+| `--config`                | Existing app or --skip-template: create neon.ts after linking. Use --no-config to skip. Omitted in a terminal: you will be asked. Scaffolding a template keeps that template's neon.ts                                                                               | boolean | —       |    No    |
+| `--org-id`                | Forwarded to link: organization ID to link to                                                                                                                                                                                                                        | string  | —       |    No    |
+| `--project-id`            | Forwarded to link: existing project ID to link to                                                                                                                                                                                                                    | string  | —       |    No    |
+| `--project-name`          | Forwarded to link: name for a new project                                                                                                                                                                                                                            | string  | —       |    No    |
+| `--region-id`             | Forwarded to link: region for a new project                                                                                                                                                                                                                          | string  | —       |    No    |
+| `--skip-template`         | Do not scaffold a template. Set up agents, link a project, and optionally neon.ts in this directory                                                                                                                                                                  | boolean | `false` |    No    |
+| `--template`              | Template to scaffold into an empty directory. Conflicts with --skip-template                                                                                                                                                                                         | string  | —       |    No    |
+| `--yes`, `-y`             | Empty dir: scaffold the default template. --skip-template: plugin, or skills and MCP, for project folders, else the host CLI agent. Exits if none. Then link --yes and config init --services none. link --yes still asks for a project unless one is already linked | boolean | `false` |    No    |
 
 Pass `-y` (alias `--yes`) to run each step with its defaults instead of prompting. In an empty directory it scaffolds the default template. Otherwise it sets up agent tooling, then links and writes `neon.ts`. With `-y`, `init` detects the target agent from the project folders, else the host CLI agent you're running inside. It installs the plugin for a plugin-capable agent (Cursor, Claude Code, or Codex), or skills and MCP for any other agent. If it detects no agent, it exits and asks you to pass `--agent`. Even with `-y`, first-time sign-in still opens a browser, and `link` still asks which project to use unless the directory is already linked.
 
@@ -24216,22 +24443,17 @@ Combine `-y` with `--agent` to do the agent setup without prompts, for example i
 neon init -y --agent cursor
 ```
 
-For the project, `init` links to the one the directory is already linked to. When the directory isn't linked yet, `neon link` picks the project interactively. To target a specific project without prompts, run the underlying commands directly and pass the project explicitly, each taking its own flags:
+By default, `init` links to the project the directory is already linked to, and when it isn't linked yet, [`neon link`](https://neon.com/docs/cli/link) picks one interactively. To target a project without prompts, `init` forwards project-selection flags to `link`: pass `--project-id` (with `--org-id`) to link an existing project, or `--org-id`, `--project-name`, and `--region-id` to create and link a new one. Pass `--branch` to pin a branch.
 
 ```bash
-# Install agent tooling for a specific editor
-neon skills --agent cursor -s neon -s neon-postgres
-# or install the plugin instead:
-neon plugins --agent cursor
+# Existing project, fully non-interactive
+neon init -y --agent cursor --project-id <project-id> --org-id <org-id>
 
-# Link a specific project (no prompt)
-neon link --project-id <project-id> --org-id <org-id>
-
-# Scaffold neon.ts
-neon config init --services none
+# Create a new project and link it
+neon init -y --agent cursor --org-id <org-id> --project-name my-app --region-id aws-us-east-2
 ```
 
-Authenticate without a browser by setting `NEON_API_KEY` or passing `--api-key`. See [`neon skills`](https://neon.com/docs/cli/skills), [`neon plugins`](https://neon.com/docs/cli/plugins), [`neon link`](https://neon.com/docs/cli/link), and [`neon config`](https://neon.com/docs/cli/config) for the full options.
+Authenticate without a browser by setting `NEON_API_KEY` or passing `--api-key`. Agents can find the IDs with `neon orgs list --output json` and `neon projects list --org-id <org-id> --output json`. To control `neon.ts` in the same run, add `--config`, `--no-config`, or `--services`; in an empty directory, add `--skip-template` to skip scaffolding.
 
 ## What gets created
 
@@ -24850,6 +25072,7 @@ neon link [options]
 | `--branch`, `--branch-id` | Branch name or ID to pin in the context (resolved to its name before writing).                                                                                                                                                                                | string  | —       |    No    |
 | `--checks`                | Verify the org/project/branch exist (and resolve the org from the project) before writing. On by default; use --no-checks to write the context offline with no API calls — it then requires --org-id and --project-id (--branch optional) and skips env pull. | boolean | `true`  |    No    |
 | `--clear`                 | Remove the org/project/branch context (writes an empty context file) instead of linking.                                                                                                                                                                      | boolean | `false` |    No    |
+| `--config`                | Offer to create neon.ts after interactive linking. Use --no-config to skip the offer                                                                                                                                                                          | boolean | `true`  |    No    |
 | `--env-pull`              | Pull the linked branch's Neon env vars (DATABASE\_URL, ...) into a local .env after linking. On by default; use --no-env-pull to skip, for example when injecting env at runtime with `neon-env run` (from `@neon/env`) or `neon dev`.                        | boolean | `true`  |    No    |
 | `--org-id`                | Organization ID to link to                                                                                                                                                                                                                                    | string  | —       |    No    |
 | `--params`                | JSON object with link parameters, e.g. '\{"orgId":"...","projectId":"..."}' or '\{"orgId":"...","projectName":"...","regionId":"..."}'. Flags take precedence over fields in --params.                                                                        | string  | —       |    No    |
@@ -24859,6 +25082,8 @@ neon link [options]
 | `--yes`, `-y`             | Skip the "already linked" confirmation, and pin the project's default branch when linking a project that has more than one.                                                                                                                                   | boolean | `false` |    No    |
 
 By default, linking pulls the linked branch's environment variables (such as `DATABASE_URL`) into a local `.env` file. Use `--no-env-pull` to skip this step, for example when you inject environment variables at runtime instead.
+
+After an interactive link, `link` also prompts you to create a [`neon.ts` config](https://neon.com/docs/cli/config) when the directory doesn't already have one, so you can manage the project's Neon setup as code. Accept the prompt to write `neon.ts`, or pass `--no-config` to skip it. This applies to interactive linking only; non-interactive runs never prompt.
 
 ## Interactive mode (default)
 
@@ -27599,6 +27824,199 @@ neon status [options]
 
 ```bash
 neon status
+```
+
+--- [Document source](https://neon.com/docs/cli/triggers.md) ---
+
+> Summary: The Neon CLI `neon triggers` command manages function triggers on a branch: list, get, create, update, enable, disable, and delete triggers that invoke a Neon Function on a cron schedule.
+
+# Neon CLI command: triggers
+
+Create and manage function triggers that invoke a Neon Function on a cron schedule
+
+**Note: Beta**
+
+The **Function Triggers** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
+
+The `triggers` command manages function triggers on a branch. A trigger invokes a [Neon Function](https://neon.com/docs/compute/functions/overview) on a cron schedule, so you can run recurring work (a nightly report, a cleanup job, a periodic sync) without a separate scheduler. You deploy the function with [`neon functions deploy`](https://neon.com/docs/cli/functions), then point a trigger at it by slug.
+
+Triggers are branch-scoped. Pass `--project-id` and `--branch` to target a branch, or let the CLI resolve them from your [context file](https://neon.com/docs/cli/set-context). Triggers can also be inherited: a trigger created on a parent branch is visible on its child branches, where the `Inherited` column shows `true` and `source_branch_id` points to the origin branch. An inherited trigger stays disabled on the child until you enable it there with [`neon triggers enable`](https://neon.com/docs/cli/triggers#enable).
+
+Subcommands: [create](https://neon.com/docs/cli/triggers#create), [delete](https://neon.com/docs/cli/triggers#delete), [disable](https://neon.com/docs/cli/triggers#disable), [enable](https://neon.com/docs/cli/triggers#enable), [get](https://neon.com/docs/cli/triggers#get), [list](https://neon.com/docs/cli/triggers#list), [update](https://neon.com/docs/cli/triggers#update)
+
+## neon triggers list
+
+Lists the triggers on the branch.
+
+```bash
+neon triggers list [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+```bash
+neon triggers list --project-id solitary-heart-93902637 --branch main
+```
+
+```text filename="Output"
+Trigger Id                                    Name            Function Slug  Function Path  Schedule   Enabled  Inherited  Next Run At
+trigger-12345678-90ab-cdef-1234-567890abcdef  nightly-report  child404       /              0 6 * * *  true     false      2026-09-11T06:00:00.000000Z
+```
+
+## neon triggers get
+
+Shows a single trigger by ID.
+
+```bash
+neon triggers get <id> [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+```bash
+neon triggers get trigger-12345678-90ab-cdef-1234-567890abcdef --project-id solitary-heart-93902637 --branch main --output json
+```
+
+<details>
+
+<summary>Show output</summary>
+
+```json
+{
+  "type": "schedule",
+  "trigger_id": "trigger-12345678-90ab-cdef-1234-567890abcdef",
+  "function_slug": "child404",
+  "name": "nightly-report",
+  "function_path": "/",
+  "schedule": {
+    "cron": "0 6 * * *"
+  },
+  "enabled": true,
+  "version": 1390408,
+  "next_run_at": "2026-09-11T06:00:00.000000Z",
+  "source_branch_id": "br-morning-frost-a1b2c3d4",
+  "inherited": false
+}
+```
+
+</details>
+
+## neon triggers create
+
+Creates a trigger that invokes a function on a cron schedule. `--function-slug`, `--name`, and `--cron` are required. `--cron` takes a five-field UTC cron expression. The trigger name must be unique on the branch.
+
+```bash
+neon triggers create [options]
+```
+
+| Option            | Description                                              | Type    | Default | Required |
+| ----------------- | -------------------------------------------------------- | ------- | ------- | :------: |
+| `--cron`          | Five-field UTC cron expression, e.g. '\*/15 \* \* \* \*' | string  | —       |    Yes   |
+| `--enabled`       | Whether the trigger runs (default true)                  | boolean | —       |    No    |
+| `--function-path` | Path the invocation is sent to (default '/')             | string  | —       |    No    |
+| `--function-slug` | Slug of the function to invoke                           | string  | —       |    Yes   |
+| `--name`          | Trigger name (unique per branch)                         | string  | —       |    Yes   |
+| `--branch`        | Branch ID or name                                        | string  | —       |    No    |
+| `--project-id`    | Project ID                                               | string  | —       |    No    |
+
+By default the invocation is sent to `/` and the trigger is enabled. Use `--function-path` to send it to another route, and `--enabled false` to create it in a disabled state.
+
+```bash
+neon triggers create --function-slug child404 --name nightly-report --cron '0 6 * * *' --project-id solitary-heart-93902637 --branch main
+```
+
+```text filename="Output"
+Trigger Id     trigger-12345678-90ab-cdef-1234-567890abcdef
+Name           nightly-report
+Function Slug  child404
+Function Path  /
+Schedule       0 6 * * *
+Enabled        true
+Inherited      false
+Next Run At    2026-09-11T06:00:00.000000Z
+```
+
+## neon triggers update
+
+Updates a trigger. Pass at least one of `--function-slug`, `--name`, `--cron`, `--function-path`, or `--enabled`; with no fields to change, the command returns an error. Changing the schedule recomputes `Next Run At`.
+
+```bash
+neon triggers update <id> [options]
+```
+
+| Option            | Description                      | Type    | Default | Required |
+| ----------------- | -------------------------------- | ------- | ------- | :------: |
+| `--cron`          | Five-field UTC cron expression   | string  | —       |    No    |
+| `--enabled`       | Whether the trigger runs         | boolean | —       |    No    |
+| `--function-path` | Path the invocation is sent to   | string  | —       |    No    |
+| `--function-slug` | Slug of the function to invoke   | string  | —       |    No    |
+| `--name`          | Trigger name (unique per branch) | string  | —       |    No    |
+| `--branch`        | Branch ID or name                | string  | —       |    No    |
+| `--project-id`    | Project ID                       | string  | —       |    No    |
+
+```bash
+neon triggers update trigger-12345678-90ab-cdef-1234-567890abcdef --cron '*/30 * * * *' --project-id solitary-heart-93902637 --branch main
+```
+
+## neon triggers enable
+
+Enables a trigger so it runs on its schedule. Enabling recomputes `Next Run At`.
+
+```bash
+neon triggers enable <id> [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+```bash
+neon triggers enable trigger-12345678-90ab-cdef-1234-567890abcdef --project-id solitary-heart-93902637 --branch main
+```
+
+## neon triggers disable
+
+Disables a trigger without deleting it. A disabled trigger keeps its definition but does not run, and its `Next Run At` is cleared. Re-enable it with [`neon triggers enable`](https://neon.com/docs/cli/triggers#enable).
+
+```bash
+neon triggers disable <id> [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+```bash
+neon triggers disable trigger-12345678-90ab-cdef-1234-567890abcdef --project-id solitary-heart-93902637 --branch main
+```
+
+## neon triggers delete
+
+Deletes a trigger.
+
+```bash
+neon triggers delete <id> [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+```bash
+neon triggers delete trigger-12345678-90ab-cdef-1234-567890abcdef --project-id solitary-heart-93902637 --branch main
+```
+
+```text filename="Output"
+INFO: Trigger trigger-12345678-90ab-cdef-1234-567890abcdef deleted
 ```
 
 --- [Document source](https://neon.com/docs/cli/vpc.md) ---
@@ -63337,15 +63755,15 @@ A single [`neon.ts`](https://neon.com/docs/reference/neon-ts) file declares your
 
 Work through the commands on the right:
 
-1. `neon link` connects the directory to your project (writing a `.neon` file); `neon checkout` then pins the branch and pulls its env vars, including `DATABASE_URL`, into `.env.local`. If you haven't signed in to the CLI yet, run `neon login` first.
+1. `neon link` connects the directory to your project (writing a `.neon` file); `neon checkout` then pins the branch and pulls its env vars, including `DATABASE_URL`, into `.env.local`. If you haven't signed in to the CLI yet, run `neon login` first. Run interactively, `neon link` prompts you to create `neon.ts`; the `--no-config` flag skips that prompt so the explicit `neon config init` in step 2 stays in control.
 2. `neon config init` scaffolds `neon.ts` and installs `@neon/config` and `@neon/env`. It includes a branch policy; keep it and add the `preview` blocks shown in later steps alongside it (those snippets omit the policy for brevity).
 
 Postgres is already available on the branch, so `DATABASE_URL` is in `.env.local` and you can build the data layer before adding any beta services.
 
 ```bash filename="Terminal"
-neon link            # select the my-backend project
-neon checkout main   # pin the branch, pull env vars into .env.local
-neon config init     # scaffold neon.ts, install @neon/config and @neon/env
+neon link --no-config  # select the my-backend project; skip link's neon.ts prompt
+neon checkout main     # pin the branch, pull env vars into .env.local
+neon config init       # scaffold neon.ts, install @neon/config and @neon/env
 ```
 
 ## Install dependencies
@@ -64916,7 +65334,7 @@ From your project root, run:
 npx neon@latest init
 ```
 
-`neon init` is interactive, so run it in a terminal. It asks how your coding agents should get Neon (either a plugin, or skills and the MCP server), links a Neon project, and writes a `neon.ts` config. In an empty directory, it scaffolds a starter template first. For the full flow, and a non-interactive setup for agents and CI, see the [`neon init` reference](https://neon.com/docs/cli/init).
+`neon init` is interactive, so run it in a terminal. It asks how your coding agents should get Neon (either a plugin, or skills and the MCP server), links a Neon project, and optionally writes a `neon.ts` config. In an empty directory, it lets you pick a starter template, name one with `--template`, or skip scaffolding with `--skip-template`. For the full flow, and a non-interactive setup for agents and CI, see the [`neon init` reference](https://neon.com/docs/cli/init).
 
 If you only want the MCP server, without the skills or plugin, run [`npx neon@latest mcp`](https://neon.com/docs/cli/mcp) instead. If you only want agent skills, run [`npx neon@latest skills`](https://neon.com/docs/cli/skills).
 
@@ -126360,14 +126778,19 @@ Interface-specific indexes:
 
 [All functions endpoints](https://neon.com/docs/reference/api/functions.md)
 
+- [Create a trigger](https://neon.com/docs/reference/api/functions/create-project-branch-trigger.md) `POST /projects/{project_id}/branches/{branch_id}/triggers`
 - [Delete a custom domain from a branch](https://neon.com/docs/reference/api/functions/delete-project-branch-custom-domain.md) `DELETE /projects/{project_id}/branches/{branch_id}/custom-domains/{domain}`
 - [Delete a function on the branch](https://neon.com/docs/reference/api/functions/delete-project-branch-function.md) `DELETE /projects/{project_id}/branches/{branch_id}/functions/{slug}`
+- [Delete a trigger](https://neon.com/docs/reference/api/functions/delete-project-branch-trigger.md) `DELETE /projects/{project_id}/branches/{branch_id}/triggers/{trigger_id}`
 - [Deploy code to a function](https://neon.com/docs/reference/api/functions/create-project-branch-function-deployment.md) `POST /projects/{project_id}/branches/{branch_id}/functions/{slug}/deployments`
+- [Get a trigger](https://neon.com/docs/reference/api/functions/get-project-branch-trigger.md) `GET /projects/{project_id}/branches/{branch_id}/triggers/{trigger_id}`
 - [Get function details](https://neon.com/docs/reference/api/functions/get-project-branch-function.md) `GET /projects/{project_id}/branches/{branch_id}/functions/{slug}`
 - [List functions on the branch](https://neon.com/docs/reference/api/functions/list-project-branch-functions.md) `GET /projects/{project_id}/branches/{branch_id}/functions`
 - [List the custom domains on a branch](https://neon.com/docs/reference/api/functions/list-project-branch-custom-domains.md) `GET /projects/{project_id}/branches/{branch_id}/custom-domains`
+- [List triggers on the branch](https://neon.com/docs/reference/api/functions/list-project-branch-triggers.md) `GET /projects/{project_id}/branches/{branch_id}/triggers`
 - [Register a custom domain on a branch](https://neon.com/docs/reference/api/functions/register-project-branch-custom-domain.md) `POST /projects/{project_id}/branches/{branch_id}/custom-domains`
 - [Update a function](https://neon.com/docs/reference/api/functions/update-project-branch-function.md) `PATCH /projects/{project_id}/branches/{branch_id}/functions/{slug}`
+- [Update a trigger](https://neon.com/docs/reference/api/functions/update-project-branch-trigger.md) `PATCH /projects/{project_id}/branches/{branch_id}/triggers/{trigger_id}`
 
 ## Logs
 
@@ -132709,6 +133132,16 @@ An object storage credential requires at minimum one of:
 - [`storage:read`](https://neon.com/docs/storage/authentication#read-vs-write-scopes): allows GetObject, HeadObject, ListObjects, and ListBuckets
 - [`storage:write`](https://neon.com/docs/storage/authentication#read-vs-write-scopes): allows all read operations plus PutObject and DeleteObject
 
+**CLI**
+
+Create a credential with the [Neon CLI](https://neon.com/docs/cli/credentials):
+
+```bash
+neon credentials create --scope storage:read --scope storage:write --name my-app-credential
+```
+
+The `api_token` and `s3_secret_access_key` are printed once, so store them right away. Map `token_id` to `AWS_ACCESS_KEY_ID` and `s3_secret_access_key` to `AWS_SECRET_ACCESS_KEY` (see [Mapping to your S3 SDK](https://neon.com/docs/storage/authentication#mapping-to-your-s3-sdk)). Run it in a directory [linked](https://neon.com/docs/cli/link) to your project, or pass `--project-id` and `--branch`.
+
 **Console**
 
 In the Neon Console, select your branch and click **Credentials** under **Branch** in the sidebar. Click **Create credential**, give it a name, and check the storage scopes you need.
@@ -132897,7 +133330,13 @@ curl -X DELETE "https://console.neon.tech/api/v2/projects/{project_id}/branches/
   -H "Authorization: Bearer $NEON_API_KEY"
 ```
 
-To rotate a credential, create a new one, update your environment variables, then revoke the old one.
+With the [Neon CLI](https://neon.com/docs/cli/credentials), run `neon credentials list` to find a credential, then revoke it by its `token_id`:
+
+```bash
+neon credentials revoke <token_id>
+```
+
+To rotate a credential in place, run `neon credentials rotate <token_id>`. This mints a new `s3_secret_access_key` while keeping the `token_id` (your `AWS_ACCESS_KEY_ID`) the same, so you only update the secret. Otherwise, create a new credential, update your environment variables, then revoke the old one.
 
 ## Common errors
 
@@ -133193,7 +133632,13 @@ A `404` response means object storage is not available for that branch. There is
 
 ## Create a credential
 
-Use the Neon API to create a credential with storage access:
+Create a credential with storage access. With the [Neon CLI](https://neon.com/docs/cli/credentials):
+
+```bash
+neon credentials create --scope storage:read --scope storage:write
+```
+
+Or use the Neon API:
 
 ```bash
 curl -X POST "https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id}/credentials" \

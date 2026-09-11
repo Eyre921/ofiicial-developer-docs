@@ -10,7 +10,7 @@ path: developer-tools/cli/getting-started
 
 # Deepgram CLI — Getting Started
 
-The `dg` CLI gives you full access to Deepgram APIs from your terminal. Transcribe files, stream live audio, synthesize speech, analyze text, and manage your Deepgram account — without writing a single line of code.
+The `dg` CLI lets you transcribe files, stream live audio, synthesize speech, analyze text, and manage your Deepgram account from the terminal.
 
 ## Prerequisites
 
@@ -21,7 +21,7 @@ The `dg` CLI gives you full access to Deepgram APIs from your terminal. Transcri
 
 ```shell
 # Install
-curl -fsSL deepgram.com/install.sh | sh
+curl -fsSL https://deepgram.com/install.sh | sh
 
 # Authenticate
 dg login
@@ -29,8 +29,8 @@ dg login
 # Transcribe an audio file
 dg listen recording.wav
 
-# Synthesize text-to-speech
-dg speak "Hello from Deepgram"
+# Synthesize text-to-speech to a file
+dg speak "Hello from Deepgram" -o hello.wav
 ```
 
 ## Core Workflows
@@ -48,7 +48,7 @@ dg listen https://example.com/audio.mp3
 dg listen --mic
 
 # Pipe transcript to another tool
-dg -o json listen audio.mp3 | jq '.results.channels[0].alternatives[0].transcript'
+dg -o json listen audio.mp3 | jq '.full_result.results.channels[0].alternatives[0].transcript'
 ```
 
 ### Text-to-speech
@@ -64,8 +64,8 @@ echo "Latest headlines" | dg speak | ffplay -nodisp -autoexit -
 ### Text intelligence
 
 ```shell
-# Analyze a document
-dg read report.txt --topics --sentiment --summarize
+# Analyze a text file
+dg read --file report.txt --topics --sentiment --summarize
 
 # Summarize piped text
 cat transcript.txt | dg read --summarize
@@ -93,15 +93,15 @@ The CLI defaults to human-readable output in the terminal. Use `-o` or `--output
 ```shell
 dg -o json listen audio.mp3   # Structured JSON
 dg -o yaml listen audio.mp3   # YAML
-dg -o table listen audio.mp3  # ASCII table
+dg -o table listen audio.mp3  # Formatted terminal table
 dg -o csv listen audio.mp3    # CSV
 ```
 
-`-o` belongs to `dg` itself, so it goes before the subcommand name. After the subcommand it fails to parse — `dg listen audio.mp3 -o json` exits `1` with `Error: No such option '-o'.` On `dg speak` the collision is quieter: there, a bare `-o` is the output file path, not a format.
+`-o` belongs to `dg` itself, so it goes before the subcommand name. After the subcommand it fails to parse and exits `1`. On `dg speak` the collision is quieter: there, a bare `-o` is the output file path, not a format.
 
 [Agent-friendly mode](#agent-friendly-mode) selects JSON on its own, without `-o`. A piped stdout alone does not trigger it.
 
-Usage errors, cancellation messages, and progress output go to stderr rather than stdout, so redirecting stderr leaves stdout carrying the payload:
+For `dg -o json listen`, parse errors and progress output go to stderr, so redirecting stderr leaves stdout carrying the payload:
 
 ```shell
 dg -o json listen audio.mp3 2>/dev/null > transcript.json
@@ -111,13 +111,13 @@ Some command-level errors still print to stdout — an authentication failure is
 
 ## Exit Codes
 
-Every command reports its outcome through the exit code, so scripts and CI steps can branch on it:
+Most command and usage outcomes use these exit codes, so scripts and CI steps can branch on them:
 
-| Code | Meaning                                                                              |
-| ---- | ------------------------------------------------------------------------------------ |
-| `0`  | Success                                                                              |
-| `1`  | Error, including crashes and usage errors such as an unknown command or invalid flag |
-| `2`  | User interrupt: Ctrl-C, or Ctrl-D at a prompt                                        |
+| Code | Meaning                                                                        |
+| ---- | ------------------------------------------------------------------------------ |
+| `0`  | Success                                                                        |
+| `1`  | Command, execution, or usage error, such as an unknown command or invalid flag |
+| `2`  | Root-level user interrupt                                                      |
 
 ```shell
 if dg -o json listen audio.mp3 > transcript.json; then
@@ -127,15 +127,14 @@ else
 fi
 ```
 
-Exit codes are enforced as of CLI `0.3.0`. Earlier versions exited `0` regardless of outcome, so a pipeline that ignored the exit code may begin surfacing failures it previously swallowed. No command that succeeds changes its exit code.
+Exit codes are enforced as of CLI `0.3.0`. Earlier versions exited `0` regardless of outcome, so a pipeline that ignored the exit code may begin surfacing failures it previously swallowed. `dg listen --mic` and `dg mcp` currently handle Ctrl-C themselves and exit `0`; do not rely on an interrupt exit code for those commands.
 
 ## Agent-Friendly Mode
 
-The CLI auto-detects AI agent environments (Claude Code, Aider, OpenAI Codex, Gemini) and adjusts its behavior:
+The CLI auto-detects AI agent environments, including Claude Code, Aider, and OpenAI Codex, and adjusts its behavior:
 
 * Disables interactive prompts
 * Defaults to JSON output
-* Routes status messages and warnings to stderr
 
 To force the mode on:
 
@@ -148,6 +147,21 @@ dg listen audio.mp3 --non-interactive
 
 ```shell
 dg listen --agent-friendly
+```
+
+## Other Commands
+
+The CLI also includes commands for models, requests, profiles, updates, debugging, starter scaffolding, audio probing, and coding-assistant skills:
+
+```shell
+dg models --help
+dg requests --help
+dg profiles --help
+dg update --help
+dg debug --help
+dg init --help
+dg ffprobe --help
+dg skills --help
 ```
 
 ## Next Steps

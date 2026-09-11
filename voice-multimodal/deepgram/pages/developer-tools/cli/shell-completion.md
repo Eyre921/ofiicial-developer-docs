@@ -10,75 +10,30 @@ path: developer-tools/cli/shell-completion
 
 # Shell Completion
 
-## Generate Completion Script
+## Install Completion
 
 ```shell
-dg completion bash > dg-completion.bash
-dg completion zsh > dg-completion.zsh
-dg completion fish > dg-completion.fish
+dg completion bash --install
+dg completion zsh --install
+dg completion fish --install
 ```
 
-## bash
+The command appends the appropriate completion setup to your shell profile. Restart your shell or source that profile after installation.
 
-Add to your `~/.bashrc`:
+## Current Shell Session
+
+To enable Bash completion only for the current session:
 
 ```shell
-source ~/dg-completion.bash
+eval "$(_DG_COMPLETE=bash_source dg)"
 ```
 
-Or copy to the completion directory:
-
-```shell
-sudo cp dg-completion.bash //bash_completion.d/
-```
-
-## zsh
-
-Add to your `~/.zshrc`:
-
-```shell
-source ~/dg-completion.zsh
-```
-
-Or copy to the completion directory:
-
-```shell
-mkdir -p ~/.zsh/completions
-cp dg-completion.zsh ~/.zsh/completions/_dg
-```
-
-Make sure completions are enabled:
-
-```shell
-autoload -Uz compinit
-compinit
-```
-
-## fish
-
-Add to your `~/.config/fish/config.fish`:
-
-```shell
-source ~/dg-completion.fish
-```
-
-## Verify Installation
-
-```shell
-dg completion --verify
-```
+For zsh or fish, use the `--install` command above.
 
 ## What Gets Completed
 
 * Commands: `dg listen`, `dg speak`, `dg read`, etc.
 * Options: command options such as `--mic` and `--model`, and root options such as `-o`
 * File paths after `dg listen`
-* Project IDs and key names
 
-## Refresh Completions
-
-After updating the CLI, regenerate completions:
-
-```shell
-dg completion bash > dg-completion.bash
-```
+The installed setup evaluates completion support from the current `dg` command, so it automatically reflects a CLI update.

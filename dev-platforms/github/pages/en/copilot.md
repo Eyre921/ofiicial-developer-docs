@@ -210,10 +210,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Cloud and local sandboxes provide isolated execution environments that let Copilot safely interact with code, tools, filesystem, and network resources securely on your local machine or in fully isolated cloud environments.
 
-* [GitHub Copilot usage metrics](/en/copilot/concepts/copilot-usage-metrics/copilot-metrics)
-
-  Copilot usage metrics provide visibility into how Copilot is adopted and used across your organization, including engagement, activity, code generation, and pull request lifecycle trends.
-
 * [Prompt engineering for GitHub Copilot Chat](/en/copilot/concepts/prompting/prompt-engineering)
 
   Follow these strategies to improve your Copilot results.
@@ -246,6 +242,14 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Integrate Copilot with other tools and platforms to streamline your workflow.
 
+* [Models in GitHub Copilot](/en/copilot/concepts/models/overview)
+
+  Understand the types and availability of AI models in GitHub Copilot.
+
+* [About Copilot auto model selection](/en/copilot/concepts/models/auto-model-selection)
+
+  Automatically select the best model for each task.
+
 * [Bring your own key for GitHub Copilot](/en/copilot/concepts/models/bring-your-own-key)
 
   Use your existing LLM provider with GitHub Copilot to save costs or consolidate billing.
@@ -254,33 +258,33 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Utility models power background Copilot features.
 
-* [About Copilot auto model selection](/en/copilot/concepts/models/auto-model-selection)
-
-  Automatically select the best model for each task.
-
 * [Base and long-term support (LTS) models](/en/copilot/concepts/models/fallback-and-lts-models)
 
   Learn about base models, long-term support (LTS) models, and how they affect model availability for enterprises using GitHub Copilot.
 
-* [Usage limits for GitHub Copilot](/en/copilot/concepts/usage-limits)
-
-  Learn about GitHub Copilot usage limits and what to do if you hit a limit.
-
-* [Usage-based billing for individuals](/en/copilot/concepts/billing/usage-based-billing-for-individuals)
-
-  Your Copilot plan includes a monthly allowance of GitHub AI Credits. If you exhaust your AI credits, you can pay extra to keep working.
-
-* [About billing for GitHub Copilot in organizations and enterprises](/en/copilot/concepts/billing/organizations-and-enterprises/fundamentals)
-
-  Learn about pricing and billing cycles for Copilot.
-
-* [Usage-based billing for organizations and enterprises](/en/copilot/concepts/billing/organizations-and-enterprises/usage-based-billing)
+* [Usage-based billing for organizations and enterprises](/en/copilot/concepts/billing-and-usage/organizations-and-enterprises/billing)
 
   Under usage-based billing, Copilot usage in organizations and enterprises is measured in AI credits.
 
-* [Budgets for usage-based billing](/en/copilot/concepts/billing/budgets-for-usage-based-billing)
+* [GitHub Copilot seats and billing cycles for organizations and enterprises](/en/copilot/concepts/billing-and-usage/organizations-and-enterprises/seats-and-billing-cycles)
+
+  Learn about seats and billing cycles for Copilot.
+
+* [Budgets for usage-based billing](/en/copilot/concepts/billing-and-usage/organizations-and-enterprises/budgets)
 
   Under usage-based billing, budget controls at the user, organization, cost center, and enterprise levels determine how Copilot usage is served, metered, or blocked.
+
+* [Usage-based billing for individuals](/en/copilot/concepts/billing-and-usage/individuals/billing)
+
+  Your Copilot plan includes a monthly allowance of GitHub AI Credits. If you exhaust your AI credits, you can pay extra to keep working.
+
+* [Usage limits for GitHub Copilot](/en/copilot/concepts/billing-and-usage/individuals/usage-limits)
+
+  Learn about GitHub Copilot usage limits and what to do if you hit a limit.
+
+* [GitHub Copilot usage metrics](/en/copilot/concepts/billing-and-usage/copilot-usage-metrics/copilot-metrics)
+
+  Copilot usage metrics provide visibility into how Copilot is adopted and used across your organization, including engagement, activity, code generation, and pull request lifecycle trends.
 
 * [Network settings for GitHub Copilot](/en/copilot/concepts/network-settings)
 

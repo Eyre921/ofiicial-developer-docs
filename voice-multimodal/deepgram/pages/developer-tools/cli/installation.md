@@ -15,17 +15,17 @@ path: developer-tools/cli/installation
 The fastest way to install on macOS and Linux:
 
 ```shell
-curl -fsSL deepgram.com/install.sh | sh
+curl -fsSL https://deepgram.com/install.sh | sh
 ```
 
-This script detects your OS, checks for Python 3.10+, and installs the `dg` command to your PATH.
+The CLI requires Python 3.10 or later. This script detects your OS, uses an available Python package manager, and installs the `dg` command to your PATH.
 
 ## Windows
 
 In PowerShell:
 
 ```powershell
-iwr deepgram.com/install.ps1 -useb | iex
+iwr https://deepgram.com/install.ps1 -useb | iex
 ```
 
 ## Package Managers
@@ -79,7 +79,7 @@ brew upgrade deepgram
 Otherwise, re-run the install script:
 
 ```shell
-curl -fsSL deepgram.com/install.sh | sh
+curl -fsSL https://deepgram.com/install.sh | sh
 ```
 
 Or update via pip:

@@ -13,13 +13,13 @@ path: developer-tools/cli/text-intelligence
 ## Basic Analysis
 
 ```shell
-dg read document.txt
+dg read "Customer called about a billing issue."
 ```
 
-## Analyze a URL
+## Analyze a File
 
 ```shell
-dg read https://example.com/article.txt
+dg read --file document.txt
 ```
 
 ## Piped Input
@@ -34,15 +34,15 @@ echo "Your text here" | dg read
 ### Sentiment Analysis
 
 ```shell
-dg read document.txt --sentiment
+dg read --file document.txt --sentiment
 ```
 
-Output includes sentiment per sentence and overall document sentiment.
+Output includes overall document sentiment and its score.
 
 ### Topic Detection
 
 ```shell
-dg read document.txt --topics
+dg read --file document.txt --topics
 ```
 
 Returns detected topics with confidence scores.
@@ -50,7 +50,7 @@ Returns detected topics with confidence scores.
 ### Summarization
 
 ```shell
-dg read document.txt --summarize
+dg read --file document.txt --summarize
 ```
 
 Generates a brief summary of the content.
@@ -58,7 +58,7 @@ Generates a brief summary of the content.
 ### Intent Recognition
 
 ```shell
-dg read document.txt --intents
+dg read --file document.txt --intents
 ```
 
 Detects user intents within the text.
@@ -66,16 +66,16 @@ Detects user intents within the text.
 ### Full Analysis
 
 ```shell
-dg read document.txt --sentiment --topics --summarize --intents
+dg read --file document.txt --sentiment --topics --summarize --intents
 ```
 
 ## Output Format
 
 ```shell
-dg -o json read document.txt    # JSON
-dg -o yaml read document.txt    # YAML
-dg -o table read document.txt   # ASCII table
-dg -o csv read document.txt     # CSV
+dg -o json read --file document.txt    # JSON
+dg -o yaml read --file document.txt    # YAML
+dg -o table read --file document.txt   # Formatted terminal table
+dg -o csv read --file document.txt     # CSV
 ```
 
 `-o` belongs to `dg` itself, so it goes before the subcommand name. Without it, `dg read` prints human-readable output.
@@ -91,5 +91,5 @@ dg listen meeting.mp3 | dg read --summarize
 ### Analyze Customer Feedback
 
 ```shell
-dg read feedback.txt --sentiment --topics
+dg read --file feedback.txt --sentiment --topics
 ```

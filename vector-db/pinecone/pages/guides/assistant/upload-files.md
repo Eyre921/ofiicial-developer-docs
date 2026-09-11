@@ -53,7 +53,7 @@ You can [upload a file to your assistant](/reference/api/latest/assistant/upload
 
   curl -X POST "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -F "file=@$LOCAL_FILE_PATH"
   ```
 </CodeGroup>
@@ -111,7 +111,7 @@ You can upload a file with metadata. Metadata is a dictionary of key-value pairs
 
   curl -X POST "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME" \
       -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2026-04" \
+      -H "X-Pinecone-Api-Version: 2026-07" \
       -F "file=@$LOCAL_FILE_PATH" \
       -F 'metadata={"published": "2024-01-01", "document_type": "manuscript"}'
   ```
@@ -138,7 +138,7 @@ File IDs must be 1-128 characters long and can contain alphanumeric characters, 
 
   curl -X PUT "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/$FILE_ID" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -F "file=@$LOCAL_FILE_PATH"
   ```
 </CodeGroup>
@@ -158,7 +158,7 @@ You can upsert a file with metadata by including it as a field in the multipart 
 
   curl -X PUT "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/$FILE_ID" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -F "file=@$LOCAL_FILE_PATH" \
     -F 'metadata={"published": "2024-01-01", "document_type": "manuscript"}'
   ```

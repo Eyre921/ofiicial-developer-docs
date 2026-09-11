@@ -18,7 +18,7 @@ The simplest way to authenticate:
 dg login
 ```
 
-This opens your browser to the Deepgram Console where you can authorize the CLI. Once authorized, your API key is stored securely in `~/.config/deepgram/credentials`.
+This opens your browser to the Deepgram Console where you can authorize the CLI. The CLI stores API keys in your operating system keyring when available. Direct API-key login falls back to profile configuration when the keyring is unavailable.
 
 ## API Key Flag
 
@@ -49,7 +49,7 @@ dg login --profile development
 dg --profile production listen audio.mp3
 ```
 
-Profiles store credentials in `~/.config/deepgram/profiles/<name>/credentials`.
+Profiles select separate credentials in the system keyring when available, along with separate configuration values.
 
 ## Check Auth Status
 
@@ -57,13 +57,7 @@ Profiles store credentials in `~/.config/deepgram/profiles/<name>/credentials`.
 dg whoami
 ```
 
-Output:
-
-```
-Logged in as: you@company.com
-API Key: sk_live_...1234
-Source: ~/.config/deepgram/credentials
-```
+The command reports the active profile, a masked API key, its credential source, and the configured project ID.
 
 ## CI/CD Usage
 

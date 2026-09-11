@@ -47,6 +47,7 @@ Successful Response
   - `call_duration_secs` (integer, required)
   - `cost_fiat` (double, required, nullable) — Total fiat cost of the conversation in USD, i.e. the sum of the LLM price and the non-LLM platform price (the fiat analogue of ``cost``). ``None`` when neither is set (e.g. conversations that predate fiat cost tracking).
   - `accepted_time_unix_secs` (integer, optional, nullable)
+  - `queue_wait_secs` (double, optional, nullable) — Seconds the caller was held in the concurrency wait queue. Excluded from call_duration_secs and from billed time. None when the conversation was never queued.
   - `cost` (integer, optional, nullable)
   - `deletion_settings` (object, optional)
     - `deletion_time_unix_secs` (integer, optional, nullable)
@@ -229,6 +230,12 @@ Successful Response
       - `enabled` (boolean, optional, default: false)
       - `used` (boolean, optional, default: false)
     - `file_input` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `freeform_procedure` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `structured_procedure` (object, optional)
       - `enabled` (boolean, optional, default: false)
       - `used` (boolean, optional, default: false)
   - `eleven_assistant` (object, optional)

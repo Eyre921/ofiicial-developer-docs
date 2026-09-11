@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/database-limits/operation-limits
 path: reference/api/database-limits/operation-limits
 ---
 
-Fixed limits on Pinecone Database operations, including upsert, import, query, fetch, and delete batch sizes and metadata filter expressions.
+Fixed limits on Pinecone Database operations, including upsert, update, import, query, fetch, and delete batch sizes and metadata filter expressions.
 
 Operation limits are restrictions on the size, number, or other characteristics of operations in Pinecone. Operation limits are fixed and don't vary based on pricing plan.
 
@@ -32,6 +32,13 @@ If one of these limits is blocking you, [contact Support](https://app.pinecone.i
 The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) doing the conversion.
 
 The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.
+
+## Update limits
+
+| Metric                                          | Limit   |
+| :---------------------------------------------- | :------ |
+| Max documents per by-ID document update request | 1,000   |
+| Max records per update-by-metadata request      | 100,000 |
 
 ## Import limits
 

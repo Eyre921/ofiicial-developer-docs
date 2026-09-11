@@ -127,143 +127,83 @@ You can use the Pinecone Assistant through the [Pinecone console](https://app.pi
       #                        {
       #                            'pages': [78, 72, 79], 
       #                            'file': {
-      #                                'name': 'Netflix-10-K-01262024.pdf', 
-      #                                'id': '76a11dd1...', 
-      #                                'metadata': {
-      #                                    'company': 'netflix', 
-      #                                    'document_type': 'form 10k'
-      #                                    }, 
-      #                                    'created_on': '2024-12-06T01:29:07.369208590Z', 
-      #                                    'updated_on': '2024-12-06T01:29:50.923493799Z', 
-      #                                    'status': 'Available', 
-      #                                    'signed_url': 'https://storage.googleapis.com/...',
-      #                                    'size': 1073470.0
-      #                                }
-      #                            }
-      #                        ]
-      #                    }
-      #                ]
-      #            }
+      #                                'name': 'Netflix-10-K-01262024.p# Architecture
+Source: https://docs.pinecone.io/guides/core-concepts/architecture
 
-      # Evaluate the assistant's response.
-      payload["answer"] = resp.message.content
+Learn how Pinecone is built, from organizations, projects, indexes, and namespaces down to the infrastructure that stores and serves your data.
 
-      headers = {
-          "Api-Key": "YOUR_API_KEY",
-          "Content-Type": "application/json"
-      }
+Pinecone's architecture has two layers: the resource hierarchy that organizes your data, and the serverless infrastructure that stores and serves it.
 
-      url = "https://prod-1-data.ke.pinecone.io/assistant/evaluation/metrics/alignment"
+## Resource hierarchy
 
-      response = requests.request("POST", url, json=payload, headers=headers)
+Your data in Pinecone is organized as a hierarchy of resources. An [organization](/guides/core-concepts/key-terms#organization) contains [projects](/guides/core-concepts/key-terms#project), a project contains [indexes](/guides/core-concepts/key-terms#index), and an index is divided into [namespaces](/guides/core-concepts/key-terms#namespace) that hold your [records](/guides/core-concepts/key-terms#record) or [documents](/guides/core-concepts/key-terms#document). For a definition of each object, see [Key terms](/guides/core-concepts/key-terms).
 
-      print(response.text)
+<img />
 
-      # {
-      #    "metrics":
-      #    {
-      #        "correctness":1.0,
-      #        "completeness":1.0,
-      #        "alignment":1.0
-      #    },
-      #    "reasoning":
-      #    {
-      #        "evaluated_facts":
-      #        [
-      #            {
-      #                "fact":
-      #                {
-      #                    "content":"Spencer Neumann is the CFO of Netflix."
-      #                    },
-      #                    "entailment":"entailed"
-      #                }
-      #            ]
-      #        },
-      #        "usage":
-      #        {
-      #            "prompt_tokens":1221,
-      #            "completion_tokens":24,
-      #            "total_tokens":1245
-      #            }
-      #        }
-      ```
+<img />
 
-      ```javascript JavaScript theme={null}
-      import { Pinecone } from "@pinecone-database/pinecone";
+## Serverless infrastructure
 
-      function sleep(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      }
+Pinecone runs as a managed service on AWS, GCP, and Azure cloud platforms. When you send a request to Pinecone, it goes through an [API gateway](#api-gateway) that routes it to either a global [control plane](#control-plane) or a regional [data plane](#data-plane). All your vector data is stored in highly efficient, distributed [object storage](#object-storage).
 
-      async function testPinecone() {
-        try {
-          console.log("Initializing Pinecone client...");
+<img />
 
-          const pc = new Pinecone({
-            apiKey: "YOUR_API_KEY",
-          });
+<img />
 
-          console.log("Pinecone client initialized successfully.");
+### API gateway
 
-          const assistantName = "test-assistant";
+Every request to Pinecone includes an [API key](/guides/projects/manage-api-keys) that's assigned to a specific [project](/guides/projects/understanding-projects). The API gateway first validates your API key to make sure you have permission to access the project. Once validated, it routes your request to either the global control plane (for managing projects and indexes) or a regional data plane (for reading and writing data), depending on what you're trying to do.
 
-          // Create a new assistant.
-          console.log(`Creating new assistant: ${assistantName}...`);
-          await pc.createAssistant({
-            name: assistantName,
-            region: "us",
-            metadata: { 'test-key': 'test-value' },
-          });
+### Control plane
 
-          // Validate Assistant was created through describe.
-          const asstDesc = await pc.describeAssistant(assistantName);
-          console.log(`Described Assistant: ${JSON.stringify(asstDesc)}`);
+The global control plane manages your organizational resources like projects and indexes. It uses a dedicated database to keep track of all these objects. The control plane also handles billing, user management, and coordinates operations across different regions.
 
-          // Delay to ensure the Assistant is ready.
-          await sleep(4000);
+### Data plane
 
-          // Upload file
-          const assistant = pc.Assistant(assistantName);
-          await assistant.uploadFile({
-            path: '/Users/jdoe/Downloads/Netflix-10-K-01262024.pdf',
-            metadata: { 'test-key': 'test-value' },
-          });
-          console.log("File uploaded. Processsing...");
+The data plane handles all requests to write and read records in [indexes](/guides/index-data/indexing-overview) within a specific [cloud region](/guides/index-data/create-an-index#cloud-regions). Each index is divided into one or more logical [namespaces](/guides/index-data/indexing-overview#namespaces), and all your data read and write requests target a specific namespace.
 
-          // Delay to ensure file is available.
-          await sleep(45000);
+Pinecone separates write and read operations into different paths, with each scaling independently based on demand. This separation ensures that your queries never slow down your writes, and your writes never slow down your queries.
 
-          // Chat
-          const chatResp = await assistant.chat({
-            messages: [{ role: 'user', content: 'Who is the CFO of Netflix?' }]
-          });
-          console.log(chatResp);
-          
-        // Error handling
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      }
+### Object storage
 
-      // Run the sample code
-      testAssistant();
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+For each namespace in a serverless index, Pinecone organizes records into immutable files called slabs. These slabs are [optimized for fast querying](#index-builder) and stored in distributed object storage that provides virtually unlimited scalability and high availability.
 
-## Learn more
+## Write path
 
-<CardGroup>
-  <Card title="API Reference" icon="code-simple" href="/reference">
-    Comprehensive details about the Pinecone APIs, SDKs, utilities, and architecture.
-  </Card>
+<img />
 
-  <Card title="Blog" icon="blog" href="https://www.pinecone.io/learn/assistant-api-deep-dive/">
-    Four features of the Assistant API you aren't using - but should
-  </Card>
+<img />
 
-  <Card title="Changelog" icon="party-horn" href="/release-notes">
-    News about features and changes in Pinecone and related tools.
-  </Card>
-</CardGroup>
+### Request log
+
+When you send a write request (to add, update, or delete records), the [data plane](#data-plane) first logs the request details with a unique sequence number (LSN). This ensures all operations happen in the correct order and provides a way to track the state of the index.
+
+Pinecone immediately returns a `200 OK` response, guaranteeing that your write is durable and won't be lost. The system then processes your write in the background.
+
+### Index builder
+
+The index builder stores your write data in an in-memory structure called a memtable. This includes your vector data, any metadata you've attached, and the sequence number. If you're updating or deleting a record, the system also tracks how to handle the old version during queries.
+
+Periodically, the index builder moves data from the memtable to permanent storage. In [object storage](#object-storage), your data is organized into immutable files called slabs. These slabs are optimized for query performance. Smaller slabs use fast indexing techniques that provide good performance with minimal resource requirements. As slabs grow, the system merges them into larger slabs that use more sophisticated methods that provide better performance at scale. This adaptive process both optimizes query performance for each slab and amortizes the cost of more expensive indexing through the lifetime of the namespace.
+
+<Note>
+  All read operations check the memtable first, so you can immediately search data that you've just written, even before it's moved to permanent storage. For more details, see [Query executors](#query-executors).
+</Note>
+
+## Read path
+
+<img />
+
+<img />
+
+### Query routers
+
+When you send a search query, the [data plane](#data-plane) first validates your request and checks that it meets system limits like [rate and object limits](/reference/api/database-limits). The query router then identifies which slabs contain relevant data and routes your query to the appropriate executors. It also searches the memtable for any recent data that hasn't been moved to permanent storage yet.
+
+### Query executors
+
+Each query executor searches through its assigned slabs and returns the most relevant candidates to the query router. If your query includes metadata filters, the executors exclude records that don't match your criteria before finding the best matches.
+
+Most of the time, the slabs are cached in memory or on local SSD, which provides very fast query performance. If a slab isn't cached (which happens when it's accessed for the first time or hasn't been used recently), the executor fetches it from object storage and caches it for future queries.
+
+The query router then combines results from all executors, removes duplicates, merges them with results from the memtable, and returns the final set of best matches to you.

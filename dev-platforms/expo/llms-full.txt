@@ -620,6 +620,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [App usage](https://docs.expo.dev/eas-insights/app-usage.md)
 - [EAS Workflows insights](https://docs.expo.dev/eas-insights/workflows.md)
 - [Maestro insights](https://docs.expo.dev/eas-insights/maestro.md)
+- [Query EAS Insights with EAS CLI](https://docs.expo.dev/eas-insights/eas-cli.md)
 
 ## Distribution
 

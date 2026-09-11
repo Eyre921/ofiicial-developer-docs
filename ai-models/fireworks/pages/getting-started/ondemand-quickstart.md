@@ -33,7 +33,7 @@ Once you have your API key, export it as an environment variable in your termina
 To create and manage on-demand deployments, you'll need the `firectl` CLI tool. Install it using one of the following methods, based on your platform:
 
 <CodeGroup>
-  ```bash homebrew theme={null} theme={null}
+  ```bash homebrew theme={null}
   brew tap fw-ai/firectl
   brew install firectl
 
@@ -41,27 +41,27 @@ To create and manage on-demand deployments, you'll need the `firectl` CLI tool. 
   brew update
   ```
 
-  ```bash macOS (Apple Silicon) theme={null} theme={null}
+  ```bash macOS (Apple Silicon) theme={null}
   curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-arm64.gz -o firectl.gz
   gzip -d firectl.gz && chmod a+x firectl
   sudo mv firectl /usr/local/bin/firectl
   sudo chown root: /usr/local/bin/firectl
   ```
 
-  ```bash macOS (x86_64) theme={null} theme={null}
+  ```bash macOS (x86_64) theme={null}
   curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-amd64.gz -o firectl.gz
   gzip -d firectl.gz && chmod a+x firectl
   sudo mv firectl /usr/local/bin/firectl
   sudo chown root: /usr/local/bin/firectl
   ```
 
-  ```bash Linux  (x86_64) theme={null} theme={null}
+  ```bash Linux  (x86_64) theme={null}
   wget -O firectl.gz https://storage.googleapis.com/fireworks-public/firectl/stable/linux-amd64.gz
   gunzip firectl.gz
   sudo install -o root -g root -m 0755 firectl /usr/local/bin/firectl
   ```
 
-  ```Text Windows (64 bit) theme={null} theme={null}
+  ```Text Windows (64 bit) theme={null}
   wget -L https://storage.googleapis.com/fireworks-public/firectl/stable/firectl.exe
   ```
 </CodeGroup>
@@ -143,15 +143,15 @@ Now you can query your on-demand deployment using the same API as serverless mod
     </Note>
 
     <CodeGroup>
-      ```bash pip theme={null} theme={null}
+      ```bash pip theme={null}
       pip install --pre fireworks-ai
       ```
 
-      ```bash poetry theme={null} theme={null}
+      ```bash poetry theme={null}
       poetry add --pre fireworks-ai
       ```
 
-      ```bash uv theme={null} theme={null}
+      ```bash uv theme={null}
       uv add --pre fireworks-ai
       ```
     </CodeGroup>
